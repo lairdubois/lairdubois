@@ -70,7 +70,7 @@ Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The se
 Now you are ready to setup the website itself !
 
 
-### Step 1 - Create the web root directory
+### Step 1 - Create the website root directory
 
 ``` bash
     $ sudo mkdir /var/www/www.lairdubois.fr
@@ -97,6 +97,98 @@ L'Air du Bois uses a lot of external libs and bundles. This step permits to auto
 ``` bash
     $ composer install
 ```
+
+Now you are ready to configure Nginx to acces to the webroot directory.
+
+### Step 5 - Configure Nginx
+
+``` bash
+    $ sudo nano /etc/nginx/sites-enabled/www.lairdubois.fr.conf
+```
+
+And put the following content inside.
+
+```
+geo $banned_ip {
+  default           0;
+}
+
+server {
+    listen                  443 ssl;
+    server_name             www.lairdubois.fr;
+    root                    /var/www/www.lairdubois.fr/web;
+    client_max_body_size    8M;
+
+    ssl_certificate         /etc/letsencrypt/live/lairdubois.fr/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/lairdubois.fr/privkey.pem;
+
+    # strip app.php/ prefix if it is present
+    rewrite ^/app\.php/?(.*)$ /$1 permanent;
+
+    location / {
+        index app.php;
+        try_files $uri @rewriteapp;
+    }
+
+    location ~ ^/media/cache {
+        try_files $uri @rewriteapp;
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    location @rewriteapp {
+        if ($banned_ip) {
+            rewrite ^(.*)$ /maintenance.html last;
+            break;
+        }
+        rewrite ^(.*)$ /app.php/$1 last;
+    }
+
+    location ~ ^/(app|app_dev|config)\.php(/|$) {
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param HTTPS on;
+        fastcgi_param HTTP_SCHEME https;
+        fastcgi_param PATH /usr/bin:;
+        # Prevents URIs that include the front controller. This will 404:
+        # http://domain.tld/app.php/some-path
+        # Remove the internal directive to allow URIs like this
+        internal;
+    }
+
+    # Media: images, icons
+    location ~* (?!sticker)\.(?:jpg|jpeg|ico|cur|svg|svgz)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    # CSS and Javascript
+    location ~* \.(?:css|js)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    error_log /var/log/nginx/www.lairdubois.fr_error.log;
+    access_log /var/log/nginx/www.lairdubois.fr_access.log;
+}
+
+server {
+    listen          80;
+    listen          [::]:80;
+    listen          443 ssl;
+    server_name     lairdubois.fr
+                    *.lairdubois.fr
+                    lairdubois.com
+                    *.lairdubois.com;
+    return          301 https://www.lairdubois.fr$request_uri;
+}
+```
+
 
 
 
