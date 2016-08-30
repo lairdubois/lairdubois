@@ -15,7 +15,9 @@ Documentation is stored under `docs` in this repository.
 License
 -------
 
-Documentation is stored under the `LICENSE` file in this repository.
+This bundle is under the GNU GPLv3 license. See the complete license in the repository.
+
+[Read the license](LICENSE)
 
 Authors
 -------
