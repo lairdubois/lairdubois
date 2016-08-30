@@ -115,9 +115,9 @@ L'Air du Bois uses a lot of external libs and bundles. This step permits to auto
 ```
 
 At the end of the download process, you will be invite to enter configuration parameters (like database server, etc ...).
-This will auto generate the app/config/parameters.yml file.
+This will auto generate the `app/config/parameters.yml` file.
 
-Now you are ready to configure Nginx to acces to the webroot directory.
+Now you are ready to configure Nginx to access to the webroot directory.
 
 ## Step 5 - Setup the virtual host on Nginx
 
@@ -144,23 +144,37 @@ Emails sended by the
 > If you are on the **PROD** server :
 
 ``` bash
-    $ cd /var/www/www.lairdubois.fr/keys
-    $ openssl genrsa -out private.pem 1024
-    $ openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+    $ openssl genrsa -out keys/private.pem 1024
+    $ openssl rsa -in keys/private.pem -outform PEM -pubout -out keys/public.pem
 ```
 
 Copy public key and remove line breaks by the following command !
 
 ``` bash
-    $ cat public.pem
+    $ cat keys/public.pem
 ```
 
 Add the following parameters to DNS TXT record  (tuto : https://www.mailjet.com/docs/1and1-setup-spf-dkim-record)
 
-``` bash
+```
 type    = TXT
 prefix  = dkim._domainkey               // dkim is facutative
 value   = k=rsa; p=[PUBLIC KEY HERE]
 ```
+
+## Step 7 - Setup the database
+
+### Create the database
+
+``` bash
+    $ app/console doctrine:database:create
+```
+
+### Build the schema (tables, etc ...)
+
+``` bash
+    $ app/console doctrine:schema:update --force
+```
+
 
 
