@@ -13,6 +13,7 @@ app/spool/*
 build/
 bin/
 components/
+docs/private
 downloads/
 scripts/
 uploads/

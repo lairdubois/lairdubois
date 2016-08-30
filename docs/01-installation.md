@@ -67,6 +67,13 @@ L'Air du Bois uses some important tools you need to install first.
     $ sudo apt-get install elasticsearch
 ```
 
+Configure Elasticsearch to automatically start during bootup.
+
+``` bash
+    sudo /bin/systemctl daemon-reload
+    sudo /bin/systemctl enable elasticsearch.service
+```
+
 ### Install [pngquant](https://pngquant.org/), [optipng](http://optipng.sourceforge.net/) and [jpegoptim](https://github.com/tjko/jpegoptim) - *The image optimizers*
 
 ``` bash
