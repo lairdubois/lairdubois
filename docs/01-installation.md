@@ -78,14 +78,14 @@ Now you are ready to setup the website itself !
 
 ## Step 1 - Create the website root directory
 
-If you are on the **PROD** server :
+> If you are on the **PROD** server :
 
 ``` bash
     $ mkdir /var/www/www.lairdubois.fr
     $ cd /var/www/www.lairdubois.fr
 ```
 
-If you are on the **DEV** server :
+> If you are on the **DEV** server :
 
 ``` bash
     $ mkdir /var/www/dev.lairdubois.fr
@@ -114,11 +114,14 @@ L'Air du Bois uses a lot of external libs and bundles. This step permits to auto
     $ composer install
 ```
 
+At the end of the download process, you will be invite to enter configuration parameters (like database server, etc ...).
+This will auto generate the app/config/parameters.yml file.
+
 Now you are ready to configure Nginx to acces to the webroot directory.
 
 ## Step 5 - Setup the virtual host on Nginx
 
-If you are on the **PROD** server :
+> If you are on the **PROD** server :
 
 ``` bash
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr.conf /etc/nginx/sites-available/www.lairdubois.fr.conf
@@ -126,7 +129,7 @@ If you are on the **PROD** server :
     $ service nginx restart
 ```
 
-If you are on the **DEV** server :
+> If you are on the **DEV** server :
 
 ``` bash
     $ sudo cp /var/www/dev.lairdubois.fr/docs/nginx/conf/dev.lairdubois.fr.conf /etc/nginx/sites-available/dev.lairdubois.fr.conf
@@ -135,6 +138,8 @@ If you are on the **DEV** server :
 ```
 
 ## Step 6 - Generate and configure DKIM keys
+
+Emails sended by the
 
 > If you are on the **PROD** server :
 
@@ -150,7 +155,7 @@ Copy public key and remove line breaks by the following command !
     $ cat public.pem
 ```
 
-ADD the following parameters to DNS TXT record  (tuto : https://www.mailjet.com/docs/1and1-setup-spf-dkim-record)
+Add the following parameters to DNS TXT record  (tuto : https://www.mailjet.com/docs/1and1-setup-spf-dkim-record)
 
 ``` bash
 type    = TXT
