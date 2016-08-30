@@ -67,19 +67,25 @@ Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The se
     $ sudo apt-get install elasticsearch
 ```
 
+Install [pngquant](https://pngquant.org/), [optipng](http://optipng.sourceforge.net/) and [jpegoptim](https://github.com/tjko/jpegoptim) - *The image optimizers*
+
+``` bash
+    $ sudo apt-get install pngquant optipng jpegoptim
+```
+
 Now you are ready to setup the website itself !
 
 
 ### Step 1 - Create the website root directory
 
-If you are on the **production** server :
+If you are on the **PROD** server :
 
 ``` bash
     $ mkdir /var/www/www.lairdubois.fr
     $ cd /var/www/www.lairdubois.fr
 ```
 
-If you are on the **development** server :
+If you are on the **DEV** server :
 
 ``` bash
     $ mkdir /var/www/dev.lairdubois.fr
@@ -112,18 +118,18 @@ Now you are ready to configure Nginx to acces to the webroot directory.
 
 ### Step 5 - Configure Nginx
 
-If you are on the **production** server :
+If you are on the **PROD** server :
 
 ``` bash
-    $ sudo cp /var/www/www.lairdubois.fr/docs/www.lairdubois.fr.conf /etc/nginx/sites-enabled/www.lairdubois.fr.conf
+    $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr.conf /etc/nginx/sites-available/www.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/www.lairdubois.fr.conf /etc/nginx/sites-enabled/www.lairdubois.fr.conf
     $ service nginx restart
 ```
 
-If you are on the **development** server :
+If you are on the **DEV** server :
 
 ``` bash
-    $ sudo cp /var/www/www.lairdubois.fr/docs/www.lairdubois.fr.conf /etc/nginx/sites-enabled/www.lairdubois.fr.conf
+    $ sudo cp /var/www/dev.lairdubois.fr/docs/nginx/conf/dev.lairdubois.fr.conf /etc/nginx/sites-available/dev.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/dev.lairdubois.fr.conf /etc/nginx/sites-enabled/dev.lairdubois.fr.conf
     $ service nginx restart
 ```
