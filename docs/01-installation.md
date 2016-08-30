@@ -5,41 +5,41 @@ The following installation instruction suppose that your server is running under
 To write this documentation the [Debian 8 "Jessie"](https://www.debian.org) distribution is used.
 Else you need to adapt it to your configuration.
 
-### Step 0 - Install required softwares
+## Step 0 - Install required softwares
 
 L'Air du Bois uses some important tools you need to install first.
 
-Install [MySQL](https://www.mysql.com/) - *The database*
+### Install [MySQL](https://www.mysql.com/) - *The database*
 
 ``` bash
     $ sudo apt-get install mysql-server mysql-client
 ```
 
-Install [Ningx](https://nginx.org/) - *The webserver*
+### Install [Ningx](https://nginx.org/) - *The webserver*
 
 ``` bash
     $ sudo apt-get install nginx
 ```
 
-Install [PHP](http://www.php.net/) - *The scripting language*
+### Install [PHP](http://www.php.net/) - *The scripting language*
 
 ``` bash
     $ sudo apt-get install php5 php5-cli php5-curl php5-intl php5-gd php5-imagick php-apc php5-mysql php5-fpm
 ```
 
-Install [Git](https://git-scm.com/) - *The version control system *
+### Install [Git](https://git-scm.com/) - *The version control system *
 
 ``` bash
     $ sudo apt-get install git
 ```
 
-Install [Composer](https://getcomposer.org/) - *The dependency manager for PHP*
+### Install [Composer](https://getcomposer.org/) - *The dependency manager for PHP*
 
 ``` bash
     $ sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
-Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package** - *The CSS pre-processor*
+### Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package** - *The CSS pre-processor*
 
 ``` bash
     $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -47,7 +47,7 @@ Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package**
     $ npm install -g less
 ```
 
-Install *Java* - *Used to run Elesticsearch*
+### Install *Java* - *Used to run Elesticsearch*
 
 ``` bash
     $ echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/webupd8team-java.list
@@ -58,7 +58,7 @@ Install *Java* - *Used to run Elesticsearch*
     $ sudo apt-get install oracle-java8-set-default
 ```
 
-Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The search engine*
+### Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The search engine*
 
 ``` bash
     $ wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
@@ -67,7 +67,7 @@ Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The se
     $ sudo apt-get install elasticsearch
 ```
 
-Install [pngquant](https://pngquant.org/), [optipng](http://optipng.sourceforge.net/) and [jpegoptim](https://github.com/tjko/jpegoptim) - *The image optimizers*
+### Install [pngquant](https://pngquant.org/), [optipng](http://optipng.sourceforge.net/) and [jpegoptim](https://github.com/tjko/jpegoptim) - *The image optimizers*
 
 ``` bash
     $ sudo apt-get install pngquant optipng jpegoptim
@@ -76,7 +76,7 @@ Install [pngquant](https://pngquant.org/), [optipng](http://optipng.sourceforge.
 Now you are ready to setup the website itself !
 
 
-### Step 1 - Create the website root directory
+## Step 1 - Create the website root directory
 
 If you are on the **PROD** server :
 
@@ -93,20 +93,20 @@ If you are on the **DEV** server :
 ```
 
 
-### Step 2 - Setup the GIT repository
+## Step 2 - Setup the GIT repository
 
 ``` bash
     $ git init
     $ git remote add origin https://github.com/lairdubois/lairdubois.git
 ```
 
-### Step 3 - Clone repository
+## Step 3 - Clone repository
 
 ``` bash
     $ git pull origin master
 ```
 
-### Step 4 - Run composer to retrieve vendor dependencies
+## Step 4 - Run composer to retrieve vendor dependencies
 
 L'Air du Bois uses a lot of external libs and bundles. This step permits to automaticaly download them.
 
@@ -116,7 +116,7 @@ L'Air du Bois uses a lot of external libs and bundles. This step permits to auto
 
 Now you are ready to configure Nginx to acces to the webroot directory.
 
-### Step 5 - Configure Nginx
+## Step 5 - Configure Nginx
 
 If you are on the **PROD** server :
 
