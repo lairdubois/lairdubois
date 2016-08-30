@@ -6,19 +6,19 @@ Else you need to adapt it to your needs.
 
 ### Step 0 - Install required softwares
 
-Install **Git**
+Install [Git](https://git-scm.com/)
 
 ``` bash
     sudo apt-get install git
 ```
 
-Install **Composer**
+Install [Composer](https://getcomposer.org/)
 
 ``` bash
     sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
-Install **NodeJS** and **Less package**
+Install [NodeJS](https://nodejs.org) and **Less package**
 
 ``` bash
     curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -26,7 +26,7 @@ Install **NodeJS** and **Less package**
     npm install -g less
 ```
 
-Install **Java**
+Install *Java*
 
 ``` bash
     echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/webupd8team-java.list
@@ -37,7 +37,7 @@ Install **Java**
     sudo apt-get install oracle-java8-set-default
 ```
 
-Install **Elasticsearch**
+Install [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 
 ``` bash
     wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
