@@ -1,0 +1,22 @@
+
+{# set type #}
+{# set title #}
+{# set icon #}
+{# set form #}
+
+<div id="{{ form.vars.id }}_block_form" class="ladb-block-form ladb-block-form-{{ type }} infinite_collections_item">
+    <div class="ladb-block-form-heading">
+        <div class="ladb-tools">
+            <a class="btn btn-xs btn-default infinite_collections_anchor_item" data-tooltip="tooltip" title="Définir comme ancre"><i class="ladb-icon-anchor"></i></a>&nbsp;
+            <a class="btn btn-xs btn-default infinite_collections_move_up_item" data-tooltip="tooltip"><i class="ladb-icon-arrow-up"></i></a>&nbsp;
+            <a class="btn btn-xs btn-default infinite_collections_move_down_item" data-tooltip="tooltip"><i class="ladb-icon-arrow-down"></i></a>&nbsp;
+            <a class="btn btn-xs btn-danger infinite_collections_remove_item">{{ 'default.remove'|trans() }}</a>
+        </div>
+        <a data-toggle="collapse" href="#{{ form.vars.id }}_block_form_body"><i class="ladb-icon-{{ icon }}"></i> {{ ('block.'~type)|trans()|capitalize }}</a>
+    </div>
+    <div id="{{ form.vars.id }}_block_form_body" class="collapse in ladb-block-form-body">
+        {% block body %}{% endblock %}
+        {{ form_rest(form) }}
+    </div>
+    {% block footer %}{% endblock %}
+</div>

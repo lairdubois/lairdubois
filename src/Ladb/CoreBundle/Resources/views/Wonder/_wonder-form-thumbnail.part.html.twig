@@ -1,0 +1,14 @@
+
+{# set wonder #}
+
+{% set typeStrippedName = ladb_entity_type_stripped_name(wonder) %}
+
+<li id="{{ typeStrippedName }}_{{ wonder.id }}" class="ladb-{{ typeStrippedName }} ladb-form-thumbnail">
+    <div class="uk-overlay">
+        <img src="{{ wonder.mainPicture.webPath|imagine_filter('128x128o') }}" width="128" height="128">
+        <div class="uk-overlay-caption">{{ wonder.title }}<br><small>{{ 'default.by'|trans() }} {{ wonder.user.displayName }}</small></div>
+    </div>
+    <div style="text-align: center;margin-top: 5px;">
+        <a href="#" class="btn btn-xs btn-danger" onclick="$('#{{ typeStrippedName }}_{{ wonder.id }}').remove();{{ typeStrippedName }}Removed();return false;">{{ 'default.remove'|trans() }}</a>
+    </div>
+</li>

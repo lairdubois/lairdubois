@@ -1,0 +1,36 @@
+{% extends 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' %}
+
+{% set filterPath = filterPath|default('core_howto_list_filter') %}
+{% set filterPathParameters = filterPathParameters|default({}) %}
+{% set baseFilterDefs = {
+    'recent':           { 'label':'Récents', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'recent' }))) },
+    'popular':          { 'label':'Populaires', 'path':null,
+                            'subFilterDefs': {
+                                'popular-views':        { 'label':'Plus vus', 'icon':'eye', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-views' }))) },
+                                'popular-likes':        { 'label':'Préférés', 'icon':'like', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-likes' }))) },
+                                'popular-comments':     { 'label':'Plus commentés', 'icon':'comment', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-comments' }))) },
+                                'popular-spotlights':   { 'label':'Coups de projecteur', 'icon':'spotlight', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-spotlights' }))) },
+                            }
+                        },
+    'content':          { 'label':'Contenu', 'path':null,
+                            'subFilterDefs': {
+                                'content-creations':    { 'label':'Avec création', 'icon':'creation', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-creations' }))) },
+                                'content-plans':        { 'label':'Avec plan', 'icon':'plan', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-plans' }))) },
+                                'content-workshops':    { 'label':'Avec atelier', 'icon':'workshop', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-workshops' }))) },
+                                'content-videos':       { 'label':'Avec vidéo', 'icon':'video', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-videos' }))) },
+                                'content-wip':          { 'label':'En cours de réalisation', 'icon':'wip', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-wip' }))) },
+                            }
+                        },
+    'license':          { 'label':'Licence', 'path':null,
+                            'subFilterDefs': {
+                                'license-by':         { 'label':'by', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by' }))) },
+                                'license-by-nc':      { 'label':'by-nc', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc' }))) },
+                                'license-by-nc-nd':   { 'label':'by-nc-nd', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc-nd' }))) },
+                                'license-by-nc-sa':   { 'label':'by-nc-sa', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc-sa' }))) },
+                                'license-by-nd':      { 'label':'by-nd', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nd' }))) },
+                                'license-by-sa':      { 'label':'by-sa', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-sa' }))) },
+                            }
+                        },
+} %}
+{% set filterDefs = customFilterDefs is defined ? baseFilterDefs|merge(customFilterDefs) : baseFilterDefs %}
+

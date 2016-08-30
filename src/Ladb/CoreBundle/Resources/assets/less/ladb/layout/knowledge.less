@@ -1,0 +1,65 @@
+//
+// LADB Knowledge
+//
+
+.ladb-knowledge-showcase {
+
+  .thumbnail {
+    cursor: pointer;
+
+    &:hover {
+      border: 1px solid @ladb-brand-primary;
+
+      .ladb-minitools > a > i {
+        color: @ladb-brand-primary;
+      }
+
+    }
+
+    .ladb-picture-box {
+      position: relative;
+
+      .ladb-picture-counter {
+        position: absolute;
+        right: 10px;
+        bottom: 7px;
+        color: #fff;
+        background-color: rgba(0, 0, 0, .3);
+        padding: 2px 5px;
+        .border-radius(5px);
+      }
+
+    }
+
+    .caption {
+      padding: 5px 4px 1px 4px;
+      font-size: 90%;
+    }
+
+  }
+
+}
+
+.ladb-provider-compact-infos {
+  color: #555;
+
+  a {
+    color: #555 !important;
+  }
+
+  .ladb-provider-badges {
+    font-size: 120%;
+    border-top: 1px solid @ladb-global-border;
+    margin-top: 5px;
+    padding-top: 5px;
+  }
+
+}
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+  .ladb-provider-compact-infos {
+    font-size: 80%;
+  }
+}
+

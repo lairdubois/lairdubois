@@ -1,0 +1,15 @@
+{% spaceless %}
+
+{# set entity #}
+{# set hideBy (facultative) #}
+{# set noMicrodata (facultative) #}
+{# set noMicrodataAuthor (facultative) #}
+{# set itemprop (facultative) #}
+
+{% set hideBy = hideBy|default(false) %}
+{% set noMicrodata = noMicrodata|default(false) %}
+{% set noMicrodataAuthor = noMicrodata or noMicrodataAuthor|default(false) %}
+{% set itemprop = itemprop|default('author') %}
+
+<span{% if not noMicrodataAuthor %} itemprop="{{ itemprop }}" itemscope itemtype="http://schema.org/Person"{% endif %} class="author">{% if not hideBy %}{{ 'default.by'|trans() }} {% endif %}{% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':entity.user } %}</span>
+{% endspaceless %}

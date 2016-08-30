@@ -1,0 +1,34 @@
+/* LESS related */
+@import "../ladb/_variables.less";
+@import "../bootstrap/_variables.less";
+
+.autocomplete-suggestions {
+  border: 1px solid @ladb-global-border;
+  background: #FFF;
+  overflow: auto;
+}
+
+.autocomplete-suggestion {
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.autocomplete-selected {
+  background: @dropdown-link-hover-bg;
+}
+
+.autocomplete-suggestions strong {
+  font-weight: normal;
+  color: @ladb-brand-primary;
+}
+
+.autocomplete-group {
+  padding: 2px 5px;
+}
+
+.autocomplete-group strong {
+  display: block;
+  border-bottom: 1px solid #000;
+}

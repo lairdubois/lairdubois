@@ -1,0 +1,856 @@
+default:
+  ladb: L'Air du Bois
+  slogan: Découvrez, fabriquez, partagez
+  about: A propos
+  legals: Mentions légales
+  credits: Crédits
+  explore: Explorer
+  discover: Découvrir
+  know: Savoir
+  exchange: Echanger
+  cancel: Annuler
+  edit: Editer
+  unpublish: Dépublier
+  unpublishing: Dépublication
+  publish: Publier
+  publishing: Publication
+  update: Mettre à jour
+  delete: Supprimer
+  deletion: Suppression
+  remove: Retirer
+  restore: Restaurer
+  save: Enregistrer
+  send: Envoyer
+  share: Partager
+  activate: Activer
+  deactivate: Désactiver
+  convert: Convertir
+  empty: Vider
+  emptying: Vidange
+  descriptive: Descriptif
+  characteristics: Caractéristiques
+  body: Corps
+  back: Retour
+  links: Contenus associés
+  no_links: Aucun
+  license: Licence
+  loading: Chargement...
+  by: par
+  or: ou
+  on: sur
+  showcase: Vitrine
+  content: Contenu
+  file: Fichier
+  link: Lien
+  location: Lieu
+  start_date: Date
+  start_time: Heure
+  end_date: Date de fin
+  end_time: Heure de fin
+  area: Surface
+  picture: Image
+  show_my_drafts: Voir mes brouillons
+  choose: Choisir
+  close: Fermer
+  continue: Continuer
+  help: Aide
+  collective_contents: Contenus collectifs
+  see_more: Voir la suite...
+  unviewed: Non vu
+  thumbnail: Miniature
+  warning:
+    be_owner: Vous devez avoir les droits sur ce que vous publiez.
+    may_be_rejected: Les publications ne correspondant pas à ces critères pourront faire l'objet d'un rejet.
+  geocode:
+    loading: <i class="ladb-icon-spinner"></i> Recherche de votre position...
+    permission_denied: Vous avez refusé la requête de géolocalisation.
+    position_unavailable: Impossible de récupérer votre position.
+    unkonw_error: Une erreur est survenue dans la recherche de votre position.
+    unsupported_browser: Votre navigateur ne supporte pas la géolocalisation.
+  spotlight: Coup de projecteur
+  spotlight_tooltip: Cette publication a mérité un coup de projecteur %age%.
+  spotlight_popover: Cette publication a mérité un coup de projecteur <strong>%age%</strong>.
+
+  form:
+    alert:
+      error: <i class="ladb-icon-warning"></i> Le formulaire contient des erreurs. <br>Faites défiler la page pour voir les champs concernés.
+  alert:
+    email_not_confirmed_error: <i class="ladb-icon-warning"></i> Vous ne receverez aucune notification tant que vous n'aurez pas confirmé votre adresse e-mail.
+  choice:
+    views: '[0,1]vue|]1,Inf]vues'
+    downloads: '[0,1]téléchargement|]1,Inf]téléchargements'
+    contributions: '[0,1]contribution|]1,Inf]contributions'
+    draft: '[0,1]brouillon|]1,Inf]brouillons'
+    inspirations: '[0,1]inspiration|]1,Inf]inspirations'
+    rebounds: '[0,1]rebond|]1,Inf]rebonds'
+    show_inspirations: "[0,1]Voir l'inspiration|]1,Inf]Voir les inspirations"
+    show_rebounds: '[0,1]Voir le rebond|]1,Inf]Voir les rebonds'
+    proposals: '[0,1]proposition|]1,Inf]propositions'
+    files: '[0,1]fichier|]1,Inf]fichiers'
+    contains_videos: '[0,1]Cette contribution contient %count% video|]1,Inf]Cette contribution contient %count% videos'
+
+registration:
+    heading: Inscription
+    check_email: Un e-mail a été envoyé à l'adresse <strong>%email%</strong>. Il contient un lien d'activation sur lequel il vous faudra cliquer afin d'activer votre compte.
+    confirmed: Félicitations <strong>%username%</strong>, votre compte est maintenant activé.
+    submit: S'inscrire
+
+security:
+    login:
+        heading: Connexion
+        username: Nom d'utilisateur
+        password: Mot de passe
+        remember_me: Se souvenir de moi
+        submit: Se connecter
+
+resetting:
+    password_already_requested: Un nouveau mot de passe a déjà été demandé pour cet utilisateur dans les dernières 24 heures.
+    check_email: Un e-mail a été envoyé à l'adresse <strong>%email%</strong>. Il contient un lien sur lequel il vous faudra cliquer afin de réinitialiser votre mot de passe.
+    request:
+        heading: Mot de passe oublié ?
+        invalid_username: Le nom d'utilisateur ou l'adresse e-mail <strong>%username%</strong> n'existe pas.
+        username: Nom d'utilisateur ou adresse e-mail
+        submit: Envoyer
+    reset:
+        heading: Modifier le mot de passe
+        submit: Envoyer
+
+change_password:
+    heading: Modifier le mot de passe
+    submit: Envoyer
+
+creation:
+  description: Retrouvez toutes les créations
+  new: Ajouter une création
+  edit: Edition de la création
+  list: Les créations
+  nav: Créations
+  other_from: Autres créations de
+  similar: Voir aussi
+  linkto: Associer une création déjà publiée
+  linked_to: Cette création est associée à
+  new_warning: Une <strong>création</strong> est une réalisation <strong>personnelle</strong> achevée, majoritairement constituée de <strong>bois</strong> ou conçue pour le <strong>travail du bois</strong> et ne doit représenter qu'<strong>un seul projet</strong>.
+  converttofind: Convertir en trouvaille
+  converttoworkshop: Convertir en atelier
+  form:
+    alert:
+      publish_success: La création <strong>%title%</strong> a été publiée.
+      unpublish_success: La création <strong>%title%</strong> a été dépubliée.
+      update_success: La création <strong>%title%</strong> a été mise à jour.
+      delete_success: La création <strong>%title%</strong> a été supprimée.
+    help:
+      title: Renseignez ici le titre de votre création.
+      showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre création. La première photo sera utilisée comme miniature.
+      body: Décrivez ici votre création.
+      plans: Associez jusqu'à <strong>4 plans</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces plans.
+      howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces pas à pas.
+      inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la source d'inspiration de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
+  choice:
+    new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles creations'
+    creations: '[0,1]création|]1,Inf]creations'
+    show_linked_to: '[0,1]Voir la création|]1,Inf]Voir les créations'
+    draft_alert: '[0,1]Vous avez 1 creation en brouillon.|]1,Inf]Vous avez %count% creations en brouillon.'
+    inspiration: '[0,1]Cette création est un rebond pour une autre création|]1,Inf]Cette création est un rebond pour %count% autres créations'
+    rebound: '[0,1]Cette création est une inspiration pour une autre création|]1,Inf]Cette création est une inspiration pour %count% autres créations'
+  admin:
+    alert:
+      converttofind_success: La création %title% a été converti en trouvaille avec succès.
+      converttoworkshop_success: La création %title% a été converti en atelier avec succès.
+
+plan:
+  description: Retrouvez tous les plans
+  new: Ajouter un plan
+  create: Créer un nouveau plan
+  edit: Edition du plan
+  list: Les plans
+  nav: Plans
+  other_from: Autres plans de
+  similar: Voir aussi
+  download: Télécharger le plan
+  linkto: Associer un plan déjà publié
+  linked_to: Ce plan est associé à
+  new_warning: Un <strong>plan</strong> est un ensemble de <strong>fichiers numériques</strong> (modélisation 3D ou dessin technique 2D) permettant une réalisation majoritairement constituée de <strong>bois</strong>.
+  kind:
+    unknow: Inconnu
+    autocad: AutoCAD
+    sketchup: Sketchup
+    pdf: PDF
+    geogebra: GeoGebra
+    svg: SVG
+    freecad: FreeCAD
+    stl: STL
+    123ddesign: 123D Design
+    libreoffice: LibreOffice/Excel
+  form:
+    alert:
+      publish_success: Le plan <strong>%title%</strong> a été publié.
+      unpublish_success: Le plan <strong>%title%</strong> a été dépublié.
+      update_success: Le plan <strong>%title%</strong> a été mis à jour.
+      delete_success: Le plan <strong>%title%</strong> a été supprimé.
+    help:
+      title: Renseignez ici le titre de votre plan.
+      body: Décrivez ici votre plan.
+      resource: "Ajoutez ici jusqu'à <strong>10 fichiers</strong> issues de votre logiciel de <abbr title=\"Dessin Assisté par Ordinateur\">DAO</abbr>.<br><em>Les formats autorisés sont : AutoCAD (DWF, DWG), Sketchup (SKP), PDF, SVG, STL, 123D Design (123DX), Geogebra (GGB), FreeCAD (FCSTD), LibreOffice/Excel (ODS, XLSX, XLSM)</em>."
+      showcase: Ajoutez jusqu'à <strong>5 images</strong> d'aperçu de votre plan. La première image sera utilisée comme miniature.
+      inspirations: Associez jusqu'à <strong>4 plans</strong> qui ont été la source d'inspiration de votre plan. Vous n'êtes pas obligé d'être l'auteur de ces plans.<br>Cette association est intéressante si vous avez fait une précédente version de votre plan ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
+  choice:
+    new_plans: '[0,1]nouveau plan|]1,Inf]nouveaux plans'
+    plans: '[0,1]plan|]1,Inf]plans'
+    show_linked_to: '[0,1]Voir le plan|]1,Inf]Voir les plans'
+    draft_alert: '[0,1]Vous avez 1 plan en brouillon.|]1,Inf]Vous avez %count% plans en brouillon.'
+    inspiration: '[0,1]Ce plan est le rebond pour un autre plan|]1,Inf]Ce plan un rebond pour %count% autres plans'
+    rebound: '[0,1]Ce plan est une inspiration pour un autre plan|]1,Inf]Ce plan est une inspiration pour %count% autres plans'
+
+workshop:
+  description: Retrouvez tous les ateliers
+  new: Ajouter un atelier
+  edit: Edition de l'atelier
+  list: Les ateliers
+  nav: Ateliers
+  other_from: Autres ateliers de
+  similar: Voir aussi
+  linked_to: Cet atelier est associé à
+  new_warning: Un <strong>atelier</strong> est un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>.
+  converttohowto: Convertir en pas à pas
+  form:
+    alert:
+      publish_success: L'atelier <strong>%title%</strong> a été publié.
+      unpublish_success: L'atelier <strong>%title%</strong> a été dépublié.
+      update_success: L'atelier <strong>%title%</strong> a été mis à jour.
+      delete_success: L'atelier <strong>%title%</strong> a été supprimé.
+    help:
+      title: Renseignez ici le titre de votre atelier.
+      showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre atelier. La première photo sera utilisée comme miniature.
+      body: Décrivez ici votre atelier.
+      plans: Associez jusqu'à <strong>4 plans</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces plans.
+      howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces pas à pas.
+  choice:
+    new_workshops: '[0,1]nouvel atelier|]1,Inf]nouveaux ateliers'
+    workshops: '[0,1]atelier|]1,Inf]ateliers'
+    show_linked_to: "[0,1]Voir l'atelier|]1,Inf]Voir les ateliers"
+    draft_alert: '[0,1]Vous avez 1 atelier en brouillon.|]1,Inf]Vous avez %count% ateliers en brouillon.'
+  admin:
+    alert:
+      converttohowto_success: L'atelier %title% a été converti en pas à pas avec succès.
+
+howto:
+  description: Retrouvez tous les pas à pas
+  new: Ajouter un pas à pas
+  create: Créer un nouveau pas à pas
+  edit: Edition du pas à pas
+  unpublish: Dépublication du pas à pas
+  list: Les pas à pas
+  nav: Pas à pas
+  other_from: Autres pas à pas de
+  similar: Voir aussi
+  linkto: Associer un pas à pas déjà publié
+  linked_to: Ce pas à pas est associé à
+  new_warning: Un <strong>pas à pas</strong> présente une méthode ou des étapes de fabrication ou d'aménagement directement liées au travail du <strong>bois</strong>.
+  wip_tooltip: Ce pas à pas présente un projet en cours de réalisation
+  wip_warning: Ce pas à pas présente un projet <strong>en cours de réalisation</strong>.
+  form:
+    alert:
+      publish_success: Le pas à pas <strong>%title%</strong> a été publié.
+      unpublish_success: Le pas à pas <strong>%title%</strong> a été dépublié.
+      update_success: Le pas à pas <strong>%title%</strong> a été mis à jour.
+      delete_success: Le pas à pas <strong>%title%</strong> a été supprimé.
+    help:
+      title: Renseignez ici le titre de votre pas à pas.
+      main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre pas à pas.
+      body: Renseignez ici un petit texte introductif qui présente votre pas à pas. Le contenu de votre pas à pas sera détaillé dans les articles.
+      plans: Associez jusqu'à <strong>4 plans</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces plans.
+      wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
+  article:
+    new: Ajouter un article
+    edit: Edition de l'article
+    unpublish: Dépublication de l'article
+    list: Liste des articles
+    share: Partage de l'article
+    new_warning: Votre <strong>pas à pas</strong> est enregistré.<br/>Vous pouvez maintenant ajouter son contenu dans ce premier <strong>article</strong>.
+    form:
+      alert:
+        publish_success: L'article <strong>%title%</strong> a été publié.
+        unpublish_success: L'article <strong>%title%</strong> a été dépublié.
+        update_success: L'article <strong>%title%</strong> a été mis à jour.
+        delete_success: L'article <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre article.
+        body: Renseigner ici le corps de votre article.
+  choice:
+    new_howtos: '[0,1]nouveau pas à pas|]1,Inf]nouveaux pas à pas'
+    howtos: '[0,1]pas à pas|]1,Inf]pas à pas'
+    new_articles: '[0,1]nouvel article|]1,Inf]nouveaux articles'
+    articles: '[0,1]article|]1,Inf]articles'
+    show_linked_to: '[0,1]Voir le pas à pas|]1,Inf]Voir les pas à pas'
+    draft_alert: '[0,1]Vous avez 1 pas à pas en brouillon.|]1,Inf]Vous avez %count% pas à pas en brouillon.'
+
+find:
+  description: Retrouvez toutes les trouvailles
+  new: Ajouter une trouvaille
+  edit: Edition de la trouvaille
+  list: Les trouvailles
+  nav: Trouvailles
+  other_from: Autres trouvailles de
+  similar: Voir aussi
+  new_warning: Une <strong>trouvaille</strong> est un <strong>lien</strong> vers un <strong>site web</strong> (blog, forum, ...) ou une <strong>vidéo</strong> ou des <strong>photos</strong> ou un <strong>évènement</strong> ayant rapport avec le <strong>bois</strong>.
+  content:
+    link:
+      name: Lien
+    gallery:
+      name: Photos
+    event:
+      name: Evènement
+      scheduled: Prochainement
+      running: En ce moment
+      completed: Terminé
+      event_starts: L'évènement commence
+      event_ends: L'évènement se termine
+      event_was_completed: L'évènement s'est terminé
+  form:
+    alert:
+      publish_success: La trouvaille <strong>%title%</strong> a été publiée.
+      unpublish_success: La trouvaille <strong>%title%</strong> a été dépubliée.
+      update_success: La trouvaille <strong>%title%</strong> a été mise à jour.
+      delete_success: La trouvaille <strong>%title%</strong> a été supprimée.
+    help:
+      title: Renseignez ici le titre de votre trouvaille.
+      body: Décrivez ici votre trouvaille.
+      data: Sélectionnez le type de votre trouvaille et renseignez son contenu (URL du site web, URL de la vidéo, liste de photos ou évènement).
+      gallery_pictures: Ajoutez jusqu'à <strong>5 photos</strong> de votre trouvaille. La première photo sera utilisée comme miniature.<br/><p class="ladb-color-danger"><i class="ladb-icon-warning"></i> N'ajoutez que des photos qui vous appartiennent. Pour des raisons de droit, si les photos sont issuent d'un autre site, utilisez le type <strong>Lien</strong> pour pointer vers ce site.</p>
+      gallery_location: Indiquez le lieu géographique de prise de vos photos.
+      event_pictures: Ajoutez jusqu'à <strong>5 images</strong> de l'évènement. La première image sera utilisée comme miniature.
+      event_location: Indiquez le lieu géographique de l'évènement.
+      event_url: Indiquez, le cas échéant, le site web de l'évènement.
+  choice:
+    new_finds: '[0,1]nouvelle trouvaille|]1,Inf]nouvelles trouvailles'
+    finds: '[0,1]trouvaille|]1,Inf]trouvailles'
+    draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
+
+blog:
+  title: Le blog
+  description: Ce blog vous permet de rester informé et de réagir sur les nouveautés et futurs projets de L'Air du Bois.
+  post:
+    list: Les sujets
+    nav: Le blog
+    new: Ajouter un sujet
+    edit: Edition du sujet
+    similar: Voir aussi
+    form:
+      alert:
+        publish_success: Le sujet <strong>%title%</strong> a été publié.
+        unpublish_success: Le sujet <strong>%title%</strong> a été dépublié.
+        update_success: Le sujet <strong>%title%</strong> a été mis à jour.
+        delete_success: Le sujet <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre sujet.
+        main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre sujet.
+  choice:
+    new_posts: '[0,1]nouveau sujet sur le blog|]1,Inf]nouveaux sujets sur le blog'
+
+faq:
+  title: La foire aux questions
+  description: Retrouvez ici toute les réponses à vos questions sur L'Air du Bois.
+  question:
+    list: Les questions
+    nav: FAQ
+    new: Ajouter une question
+    edit: Edition de la question
+    icon: Icone
+    weight: Poids
+    links: Questions associées
+    form:
+      alert:
+        publish_success: La question <strong>%title%</strong> a été publiée.
+        unpublish_success: La question <strong>%title%</strong> a été dépubliée.
+        update_success: La question <strong>%title%</strong> a été mise à jour.
+        delete_success: La question <strong>%title%</strong> a été supprimée.
+      help:
+        title: Renseignez ici le titre de votre question.
+        main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre question.
+
+message:
+  list: Messagerie
+  nav: Messagerie
+  mailbox: Boîte aux lettre
+  sendTo: Envoyer un message à %NAME%
+  contact: Contacter
+  thread:
+    announcement:
+      new: Nouvelle annonce
+    new: Nouveau message
+
+user:
+  description: Retrouvez tous les boiseux
+  list: Les boiseux
+  nav: Boiseux
+  home: Ma page
+  settings: Paramètres
+  register: Rejoindre l'Air du Bois
+  login: Se connecter
+  logout: Se déconnecter
+  about: A propos
+  avatar: Photo de profil
+  avatar_help: Votre photo de profil permet de vous reconnaitre plus facilement et sera présente sur toutes vos contributions.
+  account: Compte
+  banner: Bannière
+  banner_help: Votre bannière est affichée en en-tête de votre page.
+  location: Lieu
+  location_help: Indiquez la ville ou la région dans laquelle vous résidez.
+  social: Réseaux sociaux
+  website_help: Indiquez l'adresse de votre blog ou site personnel.
+  facebook_help: Indiquez votre <strong>nom d'utilisateur</strong> Facebook en complétant l'adresse ci dessous.
+  twitter_help: Indiquez votre <strong>nom d'utilisateur</strong> Twitter en complétant l'adresse ci dessous.
+  googleplus_help: Indiquez votre <strong>Google+ ID</strong> en complétant l'adresse ci dessous.
+  youtube_help: Indiquez votre <strong>YouTube ID</strong> en complétant l'adresse ci dessous.
+  vimeo_help: Indiquez votre <strong>nom d'utilisateur</strong> Vimeo en complétant l'adresse ci dessous.
+  dailymotion_help: Indiquez votre <strong>nom de châine</strong> Dailymotion en complétant l'adresse ci dessous.
+  pinterest_help: Indiquez votre <strong>nom d'utilisateur</strong> Pinterest en complétant l'adresse ci dessous.
+  instagram_help: Indiquez votre <strong>nom d'utilisateur</strong> Instagram en complétant l'adresse ci dessous.
+  options: Options
+  email_notifications: Notifications par e-mail
+  add_banner: Ajoutez votre bannière
+  add_biography: Ajoutez votre biographie
+  add_location: Ajoutez votre localisation
+  email_confirmation:
+    title: Confirmation de votre adresse e-mail
+    body: N'oubliez pas de confirmer votre adresse e-mail pour accéder à toutes les fonctionnalités.
+    check:
+      action: Demander la confirmation maintenant
+      body: |
+        Un e-mail a été envoyé à l'adresse **%email%**.
+        Il contient un lien sur lequel il vous faudra cliquer afin de confirmer votre adresse.
+
+         - Si cet e-mail tarde à vous arriver, vérifiez bien qu'il n'est pas dans votre spam.
+         - Si l'adresse e-mail *%email%* n'est pas correcte, [modifiez-la](%path%) ici.
+      modal_action: Découvrir pourquoi ?
+      modal_body: |
+        La confirmation de votre adresse e-mail vous permet :
+
+         - Recevoir les informations de réinitialisation en cas de perte de vos informations de connexion
+         - Recevoir les notifications par e-mail
+         - Recevoir les messages privés par e-mail
+
+        Pour autant, votre adresse e-mail **ne** sera **jamais** rendue publique.
+    confirm:
+      invalid_token: La clé de confirmation de votre adresse e-mail n'est pas valide
+      invalid_user: L'utilisateur ne correspond pas à la clé de confirmation de l'adresse e-mail.
+      success: Votre adresse e-mail <strong>%email%</strong> a bien été confirmée.
+  admin:
+    tab: Admin
+    alert:
+      activate_success: Le compte <strong>%displayname%</strong> a été activé avec succès.
+      deactivate_success: Le compte <strong>%displayname%</strong> a été désactivé avec succès.
+      empty_success: Le compte <strong>%displayname%</strong> a été vidé avec succès.
+  form:
+    alert:
+      settings_success: Vos paramètres ont été enregistrés.
+  choice:
+    users: '[0,1]boiseu|]1,Inf]boiseux'
+    contributors: '[0,1]contributeur|]1,Inf]contributeurs'
+
+follower:
+  follow: S'abonner
+  follow_tooltip: Suivre l'activité de %name%
+  following: Abonné
+  following_tooltip: Se désabonner
+  choice:
+    followers: '[0,1]abonné|]1,Inf]abonnés'
+    following: '[0,1]abonnement|]1,Inf]abonnements'
+
+comment:
+  list: On en parle ici
+  choice:
+    comments: '[0,1]commentaire|]1,Inf]commentaires'
+
+referer:
+  list: On en parle ailleurs
+  choice:
+    referrals: '[0,1]référence|]1,Inf]références'
+  referral:
+    alert:
+      delete_success: La référence <strong>%title%</strong> a été supprimée.
+
+like:
+  create: Ajouter mon coup de coeur
+  delete: Retirer mon coup de coeur
+  like: J'aime
+  liked: Coup de coeur
+  choice:
+    likes: '[0,1]coup de coeur|]1,Inf]coups de coeur'
+    recieved_likes: '[0,1]coup de coeur reçu|]1,Inf]coups de coeur reçus'
+    sent_likes: '[0,1]coup de coeur envoyé|]1,Inf]coups de coeur envoyés'
+
+watch:
+  watch: Surveiller
+  watched: Surveillé
+  create: Surveiller l'activité de cette contribution
+  delete: Ne plus surveiller cette contribution
+  choice:
+    watches: '[0,1]boiseu surveille cette contribution|]1,Inf]boiseux surveillent cette contribution'
+
+vote:
+  vote: Vérification
+  tooltip:
+    vote_up: Je valide
+    vote_down: Je rejette
+  choice:
+    votes: '[-Inf,1]vérification|]1,Inf]vérifications'
+    positive_votes: '[-Inf,1]vérification favorable|]1,Inf]vérifications favorables'
+    negative_votes: '[-Inf,1]vérification défavorable|]1,Inf]vérifications défavorables'
+
+join:
+  create: Ajouter ma participation
+  delete: Retirer ma participation
+  join: J'y participe
+  joined: J'y participe
+  choice:
+    joins: '[0,1]participant|]1,Inf]participants'
+
+report:
+  report: Signaler
+  create: Signaler un abus ou un problème
+  created: Votre rapport a été enregistré
+  reasons: Pourquoi signalez vous ce contenu ?
+  reason1: Nudité ou pornographie
+  reason2: Violence
+  reason3: Propos ou symboles haineux
+  reason4: Droits d'auteur
+  reason5: Spam
+  reason6: Contenu manquant
+  reason7: Contenu hors sujet
+
+knowledge:
+  show_proposals: Voir les propositions
+  add_proposal: Ajouter une proposition
+  add_proposal_of: Ajouter une proposition au champ
+  proposals: Liste des propositions
+  proposals_of: Liste des propositions du champ
+  no_proposal: Ce champ ne contient encore aucune proposition. Soyez le premier à y contribuer !
+  tooltip:
+    vote_up: Je valide cette proposition
+    vote_down: Je rejette cette proposition
+  info:
+    single_proposal: Ce champ ne permet qu'une seule valeur. La proposition la plus récente ou avec le meilleur score positif ou nul sera sélectionnée.
+    multiple_proposal: Ce champ permet plusieurs valeurs. Les propositions les plus récentes ou avec les meilleurs scores positifs ou nuls seront sélectionnées.
+  proposal_value:
+    data: Valeur
+    legend: Légende
+    source: Source
+    country: Pays
+  bullet:
+    not_verified: Cette proposition n'a pas été vérifiée
+    undetermined: Les avis divergent sur la validation de cette proposition.
+    choice:
+      rejected: '[0,1]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;vérification défavorable|]1,Inf]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;vérifications défavorables'
+      verified: '[0,1]Cette proposition a été validée par %count%&nbsp;vérification favorable|]1,Inf]Cette proposition a été validée par %count%&nbsp;vérifications favorables'
+  wood:
+    description: Retrouvez toutes les essences de bois
+    new: Ajouter une essence
+    list: Les essences
+    nav: Xylothèque
+    red_list: Cette essence est menacée d'extinction
+    hardwood: Feuillus
+    resinous: Résineux
+    new_warning: Une <strong>essence</strong> est le <strong>bois</strong> d'une espèce d'arbre et n'inclu pas ses dérivés industriels.
+    field:
+      name: Nom français
+      scientificname: Nom scientifique
+      englishname: Nom anglais
+      grain: Bois de fil
+      endgrain: Bois de bout
+      lumber: Bois débité
+      tree: Arbre
+      leaf: Feuillage
+      bark: Ecorce
+      family: Famille
+      density: Densité moyenne
+      availability: Disponibilité
+      price: Prix
+      origin: Provenance
+      utilization: Utilisation
+    help:
+      name: Le **Nom français** est le nom couramment utilsé en France.
+      scientificname: Le **Nom scientifique** est le nom faisant référence à la classification botanique de cette essence.
+      englishname: Le **Nom anglais** est le nom couramment utilsé par les anglosaxons pour désigner cette essence.
+      grain: La vue **Bois de fil** est une photo montrant les dessins de l'essence par une coupe faite dans le fil du bois.
+      endgrain: La vue **Bois de bout** est une photo montrant les dessins de l'essence par une coupe faite perpendiculairement au fil du bois.
+      lumber: La vue **Bois débité** est une photo de l'essence coupées en planches, plateaux ou autres coupes permettant une lecture claire.
+      tree: La vue **Arbre** est une photo de l'arbre sur pied correspondant à cette essence.
+      leaf: La vue **Feuillage** est une photo des feuilles ou du feuillage de l'arbre correspondant à cette essence.
+      bark: La vue **Ecorse** est une photo de l'écorse de l'arbre correspondant à cette essence.
+      family: "La **Famille** est le groupe dans lequel se classe cette essence. Deux valeurs sont possibles : *Feuillus*, *Résineux*."
+      density: La **Densité moyenne** est la masse volumique moyenne en **kg/m3** de cette essence pour un bois à moins de 15% d'humidité.
+      availability: "La **Disponibilité** est une indication sur les possibilités d'approvisionnement de cette essence en France. Quatre valeurs sont possibles : *Menacée*, *Limitée*, *Importante*, *Régulière*."
+      price: "Le **Prix** est un ordre de grandeur sur le coût d'achat de cette essence. Trois valeurs sont possibles : *Modéré*, *Moyen*, *Elevé*."
+      origin: La **Provenance** est un continent, pays ou région où cette essence pousse.
+      utilization: L'**Utilisation** est un domaine ou secteur dans lequel cette essence est employée.
+    token:
+      help: Saisissez une essence et cliquez sur la flèche pour l'ajouter
+    form:
+      alert:
+        delete_success: L'essence <strong>%title%</strong> a été supprimée.
+      help:
+        legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
+        source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        grain: |
+          - Préférez un bois raboté.
+          - Préférer l'utilisation d'un **scanner** plutôt que d'un appareil photo.
+          - Le type de coupe peut-être indiqué dans la légende.
+          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+        endgrain: |
+          - Préférer l'utilisation d'un scanner plutôt que d'un appareil photo
+          - Préférez une lumière neutre (blanche) pour conserver au mieux les couleurs d'origines de l'essence.
+          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+        lumber: |
+          - Préférez une lumière neutre (blanche) pour conserver au mieux les couleurs d'origines de l'essence.
+          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+        tree: |
+          - Préférez les images haute définition.
+          - Il doit être facile de le distinguer sur la photo.
+          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+        leaf: |
+          - Préférez les images haute définition.
+          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+        bark: |
+          - Préférez les images haute définition.
+          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+        name: |
+          - N'indiquez **qu'un seul** nom par proposition.
+        scientificname: |
+          - N'indiquez **qu'un seul** nom par proposition.
+        englishname: |
+          - N'indiquez **qu'un seul** nom par proposition.
+        density: |
+          - Saisissez une valeur entière sans indiquer l'unité (ex: *750*).
+        origin: |
+          - N'indiquez **qu'une seule** provenance par proposition.
+        utilization: |
+          - N'indiquez **qu'une seule** utilisation par proposition.
+    texture:
+      download: Télécharger cette texture
+      single_picture: Simple
+      mosaic_picture: Mosaïque
+      choice:
+        textures: '[0,1]texture|]1,Inf]textures'
+    choice:
+      new_woods: '[0,1]nouvelle essence|]1,Inf]nouvelles essences'
+      woods: '[0,1]essence|]1,Inf]essences'
+  provider:
+    description: Retrouvez tous les fournisseurs
+    new: Ajouter un fournisseur
+    list: Les fournisseurs
+    nav: Fournisseurs
+    new_warning: Un <strong>fournisseur</strong> est une entreprise, une association ou un organisme qui vend des produits ou services <strong>pour le travail du bois</strong>.
+    field:
+      sign: Enseigne
+      logo: Logo
+      photo: Photo
+      website: Site internet
+      address: Adresse
+      phone: Téléphone
+      description: Descriptif
+      in_store_selling: Vente en boutique
+      mail_order_selling: Vente par correspondance
+      sale_to_individuals: Vente aux particuliers
+      pro_only: Professionnels uniquement
+      products: Type de produits
+      services: Type de services
+      woods: Essences
+    help:
+      sign: "L'**Enseigne** comprend la marque du fournisseur ainsi que facultativement le nom de l'agence ou de la boutique."
+      logo: "Le **Logo** est une image représentant le logotype du fournisseur."
+      photo: "La **Photo** est une photo de la boutique ou une capture du site marchand."
+      website: "Le **Site internet** est l'adresse du site web du fournisseur."
+      address: "L'**Adresse** est l'adresse postale du fournisseur."
+      phone: "Le **Téléphone** est le numéro de téléphone du fournisseur."
+      description: "Le **Descriptif** décrit succintement ce fournisseur."
+      in_store_selling: "**Vente en boutique** indique si ce fournisseur vend en boutique ou magasin."
+      mail_order_selling: "**Vente par correspondance** indique si ce fournisseur vend par correspondance."
+      sale_to_individuals: "**Vente aux particuliers** indique si ce fournisseur vend aux particuliers."
+      products: "**Type de produits** permet de lister les principales familles de produits proposées par ce fournisseur."
+      services: "**Type de services** permet de lister les principales familles de services proposées par ce fournisseur."
+      woods: |
+        Le champ **Essences** permet, le cas échéant, de lister les principales essences de bois proposées par ce fournisseur.
+        *Ce champs n'est disponible que si le type de produits **Bois massifs** est actif sur ce fournisseur.*
+    form:
+      alert:
+        delete_success: Le fournisseur <strong>%title%</strong> a été supprimé.
+      help:
+        legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
+        source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        logo: |
+          - Préférez les images carrées.
+        photo:
+        sign: |
+          Utilisez le champ **Nom d'Agence ou de Boutique** pour préciser la boutique à laquelle vous faites référence dans cette fiche si le fournisseur fait partie d'une chaîne avec plusieurs points de ventes.
+        website:
+        address:
+        phone: |
+          Le **Pays** permet un formatage automatique du numéro.
+        description: |
+          Ce champ peut être utilisé pour définir plus précisément un fournisseur.
+          *(ex : Boutique en ligne de roulettes)*
+        in_store_selling:
+        mail_order_selling:
+        sale_to_individuals:
+        products: |
+          - Ajoutez plusieurs propositions pour faire apparaitre plusieurs types de produits.
+        services: |
+          - Ajoutez plusieurs propositions pour faire apparaitre plusieurs types de services.
+    choice:
+      new_providers: '[0,1]nouveau fournisseur|]1,Inf]nouveaux fournisseurs'
+      providers: '[0,1]fournisseur|]1,Inf]fournisseurs'
+      stores: '[0,1]agence ou boutique|]1,Inf]agences ou boutiques'
+  tool:
+    list: Outils
+    token:
+      help: Saisissez un outil et cliquez sur la flèche pour l'ajouter
+    choice:
+      tools: '[0,1]outil|]1,Inf]outils'
+  finish:
+    list: Finitions
+    token:
+      help: Saisissez une finition et cliquez sur la flèche pour l'ajouter
+    choice:
+      finishes: '[0,1]finition|]1,Inf]finitions'
+
+skill:
+  skills: Compétences
+  none: Non renseigné
+  token:
+    help: Saisissez une competence et cliquez sur la flèche pour l'ajouter
+
+biography:
+  biography: Biographie
+  form:
+    help: Parlez de vous, de votre parcours et de ce que vous aimez.
+
+tag:
+  tags: Tags
+  none: Aucun
+  token:
+    help: Saisissez un tag et cliquez sur la flèche pour l'ajouter
+    proposals:
+      help: Voir les tags les plus utilisés
+
+picture:
+  add_one: Télécharger une image
+  add_multiple: Télécharger des images
+  edit: Editer - légende & rotation
+  reorder: Réorganiser
+  no_legend: Aucune légende
+  turn_left: Tourner l'image vers la gauche
+  turn_right: Tourner l'image vers la droite
+  form:
+    text_overlay_warning: Par mesure de lisibilité, les photos présentant des points de vue multiples et/ou du texte pourront faire l'objet d'une modération.
+    choice:
+      mandatory: "[0,1]Cette image est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins une image."
+
+resource:
+  add_one: Télécharger un fichier
+  add_multiple: Télécharger des fichiers
+  form:
+    choice:
+      mandatory: "[0,1]Ce fichier est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins un fichier."
+
+search:
+  in:
+    creations: Recherche dans les créations
+    workshops: Recherche dans les ateliers
+    plans: Recherche dans les plans
+    howtos: Recherche dans les pas à pas
+    finds: Recherche dans les trouvailles
+    users: Recherche dans les boiseaux
+    posts: Recherche dans le blog
+    woods: Recherche dans les essences
+    questions: Recherche dans la FAQ
+  choices:
+    results: '[0,1]résultat|]1,Inf]résultats'
+
+license:
+  allow_derivs: J'autorise les modifications.
+  share_alike: J'autorise les modifications, sous condition de partage dans les mêmes conditions.
+  allow_commercial: J'autorise les utilisations commerciales.
+  by: Licence Creative Commons Attribution 3.0 non transposé
+  by-sa: Licence Creative Commons Attribution - Partage dans les Mêmes Conditions 3.0 non transposé
+  by-nd: Licence Creative Commons Attribution - Pas de Modification 3.0 non transposé
+  by-nc: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale 3.0 non transposé
+  by-nc-sa: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 non transposé
+  by-nc-nd: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Pas de Modification 3.0 non transposé
+
+block:
+  text: bloc de texte
+  gallery: bloc d'images
+  video: bloc video
+  form:
+    help: Cette section peut-être constituée de blocs de texte, images et vidéo. Ajoutez et organisez ces blocs selon vos besoins. Ils seront affichés dans le même ordre.
+
+notification:
+  list: Notifications
+  nav: Notifications
+  your:
+    creation: votre création
+    workshop: votre atelier
+    plan: votre plan
+    howto: votre pas à pas
+    article: votre article
+    find: votre trouvaille
+    post: votre sujet
+    question: votre question
+  the:
+    creation: la création
+    workshop: l'atelier
+    plan: le plan
+    howto: le pas à pas
+    article: l'article
+    find: la trouvaille
+    wood: l'essence
+    provider: le fournisseur
+    post: le sujet
+    question: la question
+  one_new:
+    creation: une nouvelle création
+    workshop: un nouvel atelier
+    plan: un nouveau plan
+    howto: un nouveau pas à pas
+    article: un nouvel article
+    find: une nouvelle trouvaille
+  tooltip:
+    all: Toutes les notifications
+    comment: Notifications de commentaires
+    contribute: Notifications de contributions
+    follow: Notifications d'abonnements
+    like: Notifications de coups de coeur
+    mention: Notifications de mentions
+    publish: Notifications de publications
+    vote: Notifications de vérification
+    join: Notifications de participation
+    write: Notifications de messages
+  choice:
+    comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
+    contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
+    follow: '[0,1]Notification de nouvel abonnement|]1,Inf]Notification de nouveaux abonnements'
+    like: '[0,Inf]Notification de nouveau coups de coeur'
+    mention: '[0,1]Notification de nouvelle mention|]1,Inf]Notification de nouvelles mentions'
+    publish: '[0,1]Notification de nouvelle publication|]1,Inf]Notification de nouvelles publications'
+    vote: '[0,1]Notification de nouveau vote|]1,Inf]Notification de nouveaux votes'
+    join: '[0,1]Notification de nouvelle participation|]1,Inf]Notification de nouvelles participations'
+    write: '[0,1]Notification de nouveau message|]1,Inf]Notification de nouveaux messages'
+
+share:
+  social:
+    heading: Partage sur les réseaux sociaux
+  sticker:
+    heading: Partage par vignette
+    help:
+      creation: Le partage par vignette vous permet d'afficher cette création sur d'autres sites, comme les <strong>forums</strong> ou les <strong>blogs</strong> par exemple.
+      plan: Le partage par vignette vous permet d'afficher ce plan sur d'autres sites, comme les <strong>forums</strong> ou les <strong>blogs</strong> par exemple.
+      workshop: Le partage par vignette vous permet d'afficher cet atelier sur d'autres sites, comme les <strong>forums</strong> ou les <strong>blogs</strong> par exemple.
+      howto: Le partage par vignette vous permet d'afficher ce pas à pas sur d'autres sites, comme les <strong>forums</strong> ou les <strong>blogs</strong> par exemple.
+      article: Le partage par vignette vous permet d'afficher cet article sur d'autres sites, comme les <strong>forums</strong> ou les <strong>blogs</strong> par exemple.
+      common: Choisissez le format approprié et Copiez / Collez le code ci-dessous.
+    title_suffix:
+      creation: Création
+      plan: Plan
+      workshop: Atelier
+      howto: Pas à pas

@@ -1,0 +1,25 @@
+
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
+
+{# set actionPath #}
+{# set knowledge #}
+{# set field #}
+{# set form #}
+{# set label #}
+{# set cancelEdit (facultative) #}
+
+{% set actionPath = actionPath is defined ? actionPath : path('core_knowledge_value_create', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field }) %}
+{% set fieldType = knowledge.fieldDefs[field][constant('ATTRIB_TYPE', knowledge)] %}
+{% set formSection = form.vars.id~'_data' %}
+
+<form action="{{ actionPath }}" method="post" novalidate class="ladb-value-proposal-form">
+    <fieldset>
+        {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-'~fieldType~'.part.html.twig' %}
+    </fieldset>
+    {% block buttons %}
+        {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
+    {% endblock %}
+    {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') %}
+        {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.data.vars.id, 'maxPictureCount':1, 'editable':true } %}
+    {% endif %}
+</form>

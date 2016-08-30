@@ -1,0 +1,57 @@
+
+{# set entity #}
+{# set headingClasses (facultative) #}
+{# set titleLinkClasses (facultative) #}
+
+{% set noMicrodata = true %}
+
+<div class="ladb-masonry-item ladb-masonry-column-wide">
+    <div class="ladb-box" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A') { document.location = '{{ ladb_entity_url_action(entity) }}'; }">
+        {% if entity.isDraft %}
+            <div class="ladb-draft-badge">
+                {{ 'default.choice.draft'|transchoice(1)|capitalize }}
+                <div class="ladb-minitools">
+                    <a href="#delete_post_modal_{{ entity.id }}" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
+                </div>
+            </div>
+        {% endif %}
+        <div class="ladb-content">
+            {% block contentInner %}
+                <div class="ladb-heading">
+                    <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% block title %}<a href="{{ ladb_entity_url_action(entity) }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
+                </div>
+                {% block imageOuter %}
+                    <div class="ladb-image">
+                        {% block image %}
+                            {% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':'180', 'height':'180', 'alt':entity.title } %}
+                        {% endblock %}
+                        {% if entity.bodyBlockVideoCount is defined and entity.bodyBlockVideoCount > 0 %}
+                            <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'default.choice.contains_videos'|transchoice(entity.bodyBlockVideoCount, { '%count%':entity.bodyBlockVideoCount }) }}"><i class="ladb-icon-video"></i></div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+                <div class="ladb-body">{% block body %}{{ entity.bodyExtract|striptags|ladb_truncate_at|truncate(180, true, ' [...]') }}{% endblock %}</div>
+                <ul class="ladb-counters">
+                    {% block entityMetas %}
+                        <li class="ladb-counter"><i class="ladb-icon-eye"></i> <span>{{ entity.viewCount|number_format(0, ',', ' ') }}</span></li>
+                        {% if entity.commentCount is defined and entity.commentCount > 0 %}
+                            <li class="ladb-counter"><i class="ladb-icon-comment"></i> <span>{{ entity.commentCount|number_format(0, ',', ' ') }}</span></li>
+                        {% endif %}
+                        {% if entity.likeCount is defined and entity.likeCount > 0 %}
+                            <li class="ladb-counter"><i class="ladb-icon-like"></i> <span>{{ entity.likeCount|number_format(0, ',', ' ') }}</span></li>
+                        {% endif %}
+                    {% endblock %}
+                </ul>
+            {% endblock %}
+        </div>
+        <div class="ladb-footer">
+            {% block footer %}
+                {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' %}
+                {% include 'LadbCoreBundle:Common:_author.part.html.twig' %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-visible-desktop' } %}
+            {% endblock %}
+        </div>
+    </div>
+    {% if entity.isDraft %}
+        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':('delete_post_modal_'~entity.id), 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', true, false) } %}
+    {% endif %}
+</div>

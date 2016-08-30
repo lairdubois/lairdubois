@@ -1,0 +1,35 @@
+//
+// LADB Readmore
+//
+
+.ladb-readmore-more, .ladb-readmore-less {
+  text-align: center;
+  color: #555;
+  line-height: 35px;
+
+  &:hover {
+    color: @ladb-brand-primary;
+    text-decoration: none;
+  }
+
+  > i {
+    font-size: 120%;
+  }
+
+}
+
+.ladb-readmore-more {
+  .box-shadow(0px -4px 8px #eee);
+  #gradient > .vertical(#f5f5f5; @ladb-global-bg; 0%; 100%);
+  border-top: 1px solid @ladb-global-border;
+
+  &.ladb-readmore-more-lg {
+    margin: 0 -10px 10px -10px;
+    pagging: 0 10px;
+  }
+
+}
+
+.ladb-readmore-less {
+  border-top: 1px dotted @ladb-global-border;
+}

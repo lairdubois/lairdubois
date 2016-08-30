@@ -1,0 +1,5 @@
+{# set noMicrodata (facultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+
+{{ ladb_video_player_frame(block.kind, block.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail')|raw }}

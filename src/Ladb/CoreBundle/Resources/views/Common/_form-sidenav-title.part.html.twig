@@ -1,0 +1,7 @@
+{# set formSection (facultative) #}
+{# set title (facultative) #}
+
+{% set formSection = formSection|default('title') %}
+{% set title = title|default('Titre') %}
+
+<li id="{{ formSection }}_sidenav"><a href="#{{ formSection }}"><i class="ladb-icon-title"></i> {{ title }}</a></li>

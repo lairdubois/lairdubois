@@ -1,0 +1,10 @@
+
+{# set post #}
+
+<div class="alert alert-info">
+    <p><i class="ladb-icon-warning"></i> Ce sujet est un brouillon. Il n'est visible que par vous. Pour le rendre publique, vous devez le publier.</p>
+    <p class="text-right"><a href="#publish_post_modal" data-toggle="modal" class="btn btn-primary"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></p>
+</div>
+{% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_post_modal', 'title':('default.publishing'|trans()), 'entity':post } %}
+    {% block whatItIs %}La publication du sujet <strong>{{ post.title }}</strong> le rendra public.{% endblock %}
+{% endembed %}

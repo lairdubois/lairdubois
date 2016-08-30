@@ -1,0 +1,17 @@
+
+{# set fieldId #}
+{# set proposals #}
+{# set proposalsHelp (facultative) #}
+
+<div class="ladb-token-proposals">
+    <a class="btn btn-default btn-sm" data-toggle="collapse" href="#{{ fieldId }}_collapse">
+        <i class="ladb-icon-caret-down"></i> {{ proposalsHelp|default('Voir les plus utilisés') }}
+    </a>
+    <div id="{{ fieldId }}_collapse" class="ladb-collapse collapse">
+        <ul>
+            {% for proposal in proposals %}
+                <li><a href="#" onclick="add{{ fieldId|capitalize }}Token('{{ proposal[0] }}');return false;"{% if proposal[1] %} class="ladb-highlighted"{% endif %}>{{ proposal[0] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

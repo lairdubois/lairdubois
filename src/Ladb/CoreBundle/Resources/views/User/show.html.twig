@@ -1,0 +1,107 @@
+{% extends 'LadbCoreBundle::layout.html.twig' %}
+
+{% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
+
+{% set pageTitle = user.username %}
+{% set pageItemType = 'Person' %}
+{% if user.biography is not null and user.biography.htmlBody|length > 0 %}
+    {% set pageDescription = user.biography.htmlBody|striptags|truncate(200, true, '...') %}
+{% endif %}
+{% if user.avatar is not null %}
+    {% set pageImage = 'http://www.lairdubois.fr'~(user.avatar.webPath|imagine_filter('400x400o')) %}
+    {% set pageImageWidth = '400' %}
+    {% set pageImageHeight = '400' %}
+{% endif %}
+
+{% set navSection = 'users' %}
+{% set searchPath = path('core_user_list') %}
+{% set isOwner = is_granted("ROLE_USER") and app.user.id == user.id %}
+{% set isDraftVisible = is_granted("ROLE_ADMIN") or isOwner %}
+{% set hasBanner = user.banner is not null %}
+{% set topbarTranslucent = hasBanner %}
+{% set noStickyHeader = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('blueimpGalleryStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('blueimpGalleryJavascripts') }}
+    <script>
+        $(document).ready(function() {
+            setupTooltips();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ block('blueimpGalleryWidget') }}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% if user.banner is not null %}
+        <div class="ladb-user-banner" style="background-image: url({{ user.banner.webPath|imagine_filter('800x800i') }}); background-position: {{ user.banner.centerX100 }}% {{ user.banner.centerY100 }}%;"></div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    <div class="ladb-avatar-header{% if hasBanner %} ladb-avatar-header-with-banner{% endif %}">
+        <div class="ladb-header-tools">
+            {% block headerToolsInner %}
+                {% if followerContext is not null %}
+                    {% include 'LadbCoreBundle:Follower:_widget.part.html.twig' with { 'followerContext':followerContext } %}
+                {% endif %}
+                &nbsp;
+                {% if isOwner %}
+                    <a href="{{ path('core_user_settings') }}" class="btn btn-default"><i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}</a>
+                {% else %}
+                    <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayName }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }}</a>
+                {% endif %}
+            {% endblock %}
+        </div>
+        <a href="{{ user.avatar.webPath|imagine_filter('1024x1024i') }}" data-gallery="avatar" class="ladb-cursor-preview">
+            {% include 'LadbCoreBundle:User:_avatar.part.html.twig' with { 'size':'128', 'imgClasses':'ladb-avatar' } %}
+        </a>
+        <div class="ladb-body">
+            <h1 class="ladb-heading"><span itemprop="name"{% if not user.enabled %} class="ladb-strikethrough"{% endif %}>{{ user.displayname }}</span>{% include 'LadbCoreBundle:User:_account-type.part.html.twig' %}{% if user.isFullnameDisplayble %} <small>(<span itemprop="additionalName">{{ user.fullname }}</span>)</small>{% endif %}</h1>
+            <span class="ladb-subheading">
+                {% include 'LadbCoreBundle:User:_location-and-social.part.html.twig' %}
+            </span>
+        </div>
+    </div>
+    <ul class="nav nav-tabs">
+        <li{% if tab == 'about' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_about', { 'username':user.usernameCanonical }) }}">{{ 'user.about'|trans() }}</a>
+        </li>
+        <li{% if tab == 'creations' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'creation.choice.creations'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedCreationCount > 0 %} badge-black{% endif %}">{{ user.publishedCreationCount }}</span>{% if isDraftVisible and user.draftCreationCount > 0 %} <span class="badge badge-warning">+{{ user.draftCreationCount }}</span>{% endif %}</a>
+        </li>
+        <li{% if tab == 'plans' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{{ 'plan.choice.plans'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedPlanCount > 0 %} badge-black{% endif %}">{{ user.publishedPlanCount }}</span>{% if isDraftVisible and user.draftPlanCount > 0 %} <span class="badge badge-warning">+{{ user.draftPlanCount }}</span>{% endif %}</a>
+        </li>
+        <li{% if tab == 'howtos' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{{ 'howto.choice.howtos'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedHowtoCount > 0 %} badge-black{% endif %}">{{ user.publishedHowtoCount }}</span>{% if isDraftVisible and user.draftHowtoCount > 0 %} <span class="badge badge-warning">+{{ user.draftHowtoCount }}</span>{% endif %}</a>
+        </li>
+        <li{% if tab == 'workshops' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{{ 'workshop.choice.workshops'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedWorkshopCount > 0 %} badge-black{% endif %}">{{ user.publishedWorkshopCount }}</span>{% if isDraftVisible and user.draftWorkshopCount > 0 %} <span class="badge badge-warning">+{{ user.draftWorkshopCount }}</span>{% endif %}</a>
+        </li>
+        <li{% if tab == 'finds' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{{ 'find.choice.finds'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedFindCount > 0 %} badge-black{% endif %}">{{ user.publishedFindCount }}</span>{% if isDraftVisible and user.draftFindCount > 0 %} <span class="badge badge-warning">+{{ user.draftFindCount }}</span>{% endif %}</a>
+        </li>
+        <li{% if tab == 'following' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_following', { 'username':user.usernameCanonical }) }}">{{ 'follower.choice.following'|transchoice(2)|capitalize }} <span class="badge{% if user.followingCount > 0 %} badge-black{% endif %}">{{ user.followingCount }}</span></a>
+        </li>
+        <li{% if tab == 'followers' %} class="active"{% endif %}>
+            <a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}">{{ 'follower.choice.followers'|transchoice(2)|capitalize }} <span class="badge{% if user.followerCount > 0 %} badge-black{% endif %}">{{ user.followerCount }}</span></a>
+        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li{% if tab == 'admin' %} class="active"{% endif %}>
+                <a href="{{ path('core_user_show_admin', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-lock"></i>&nbsp;{{ 'user.admin.tab'|trans()|capitalize }}</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endblock %}

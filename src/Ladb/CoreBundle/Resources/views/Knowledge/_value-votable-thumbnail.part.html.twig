@@ -1,0 +1,10 @@
+
+{# set knowledge #}
+{# set value #}
+
+{% set fieldDef = knowledge.fieldDefs[value.parentEntityField] %}
+{% set fieldType = fieldDef[constant('ATTRIB_TYPE', knowledge)] %}
+{% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', knowledge)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', knowledge)] : null %}
+
+<div class="col-xs-4"><strong>{{ ('knowledge.'~knowledge.strippedName~'.field.'~value.parentEntityField)|trans() }}</strong></div>
+<div class="col-xs-7">{% include 'LadbCoreBundle:Knowledge:_field-value-proposal-'~fieldType~'.part.html.twig' with { 'knowledge':knowledge, 'value':value, 'clickable':false, 'size':128 } %}{% if fieldSuffix is not null %}&nbsp;<em>{{ fieldSuffix|raw }}</em>{% endif %}</div>

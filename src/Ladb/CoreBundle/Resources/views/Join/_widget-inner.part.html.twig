@@ -1,0 +1,14 @@
+{% if joinContext is not null and joinContext.isJoinable %}
+    {% if joinContext.id is null %}
+        <a href="{{ path('core_join_create', { 'entityType':joinContext.entityType, 'entityId':joinContext.entityId, 'rtu':app.request.requesturi }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'join.create'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-join-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
+            <i class="ladb-icon-join"></i> {{ 'join.join'|trans() }}
+        </a>
+    {%  else %}
+        <a href="{{ path('core_join_delete', { 'id':joinContext.id }) }}" class="btn btn-default active" data-tooltip="tooltip" title="{{ 'join.delete'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-join-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
+            <i class="ladb-icon-check"></i> {{ 'join.joined'|trans() }}
+        </a>
+    {% endif %}
+    {% if joinContext.count > 0 %}
+        <a href="{{ path('core_join_list_entity', { 'entityType':joinContext.entityType, 'entityId':joinContext.entityId }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ joinContext.count }}&nbsp;{{ 'join.choice.joins'|transchoice(joinContext.count) }}">{{ joinContext.count }}</a>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,14 @@
+
+{# set entity #}
+{# set picture (facultative) #}
+{# set title (facultative) #}
+{# set size (facultative) #}
+{# set noMicrodata (facultative) #}
+
+{% set picture = picture|default(entity.mainPicture) %}
+{% set title = title|default(entity.title) %}
+{% set width = size|default('32') %}
+{% set height = size|default('32') %}
+{% set imgClasses = 'img-rounded '~(imgClasses|default()) %}
+
+{% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'alt':title, 'noSizer':true } %}

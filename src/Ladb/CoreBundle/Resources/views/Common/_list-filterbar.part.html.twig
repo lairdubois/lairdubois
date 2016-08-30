@@ -1,0 +1,45 @@
+
+{# set filterDefs #}
+{# set heading (facultative) #}
+{# set headingLevel (facultative) #}
+
+<div class="ladb-filterbar{% if classes is defined %} {{ classes }}{% endif %}">
+    {% if heading is defined %}
+        <span class="ladb-filterbar-heading ladb-hidden-mobile">
+            {% set headingLevel = headingLevel|default(1) %}
+            <h{{ headingLevel }}>{{ heading }}</h{{ headingLevel }}>
+        </span>
+    {% endif %}
+    <div class="navbar navbar-default navbar-ladb-filterbar">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ladb_filterbar_collapse">
+                <i class="ladb-icon-filter"></i>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="ladb_filterbar_collapse">
+            <ul class="nav navbar-nav">
+                {% for filterName, filterDef in filterDefs %}
+                    {% if not filterDef['hidden']|default(false) %}
+                        {% if filterDef['path'] %}
+                            <li{% if filter == filterName %} class="active"{% endif %}><a href="{{ filterDef['path'] }}">{% if filterDef['icon'] is defined %}<i class="ladb-icon-{{ filterDef['icon'] }}"></i> {% endif %}{{ filterDef['label']|raw }}</a></li>
+                        {% else %}
+                            <li class="dropdown{% if filter|slice(0,(filterName|length)) == filterName %} active{% endif %}">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ filterDef['label'] }} <i class="ladb-icon-caret-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    {% if filterDef['dropdown-header'] is defined %}
+                                        <li class="dropdown-header">{{ filterDef['dropdown-header'] }}</li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    {% for subFilterName, subFilterDef in filterDef['subFilterDefs'] %}
+                                        <li><a href="{{ subFilterDef['path'] }}">{% if filter == subFilterName %}<i class="ladb-icon-caret-right"></i> {% endif %}{% if subFilterDef['icon'] is defined %}<i class="ladb-icon-{{ subFilterDef['icon'] }}"></i> {% endif %}{{ subFilterDef['label'] }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <span class="ladb-filterbar-right">{% block filterbarRightContent %}{% endblock %}</span>
+</div>

@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle::email-layout.txt.twig' %}
+
+{% block content %}
+Un nouveau rapport d'abus a été envoyé par {{ actorUser.displayname|raw }}.
+
+entityType = {{ report.entityType }}
+entityId = {{ report.entityId }}
+reason = {{ ('report.reason'~report.reason)|trans()|raw }} ({{ report.reason }})
+
+{{ ladb_entity_url_action(entity) }}
+{% endblock %}

@@ -1,0 +1,163 @@
+
+// Global colors
+// -------------------------
+
+@ladb-global-bg:                        #fafafa;
+@ladb-global-color:                     #333;
+@ladb-global-light-color:               lighten(@ladb-global-color, 50%);
+@ladb-global-lighter-color:             lighten(@ladb-global-color, 65%);
+@ladb-global-border:                    #ddd;
+
+@ladb-global-dark-bg:                   darken(@ladb-global-bg, 5%);
+@ladb-global-dark-color:                darken(@ladb-global-dark-bg, 30%);
+
+@ladb-global-positive-color:            #5cb85c;
+@ladb-global-null-color:                #999;
+@ladb-global-undeterminated-color:      #f0ad4e;
+@ladb-global-negative-color:            #d9534f;
+
+// Brand colors
+// -------------------------
+
+@ladb-brand-primary:                    #f77f00;
+@ladb-brand-success:                    #5cb85c;
+@ladb-brand-warning:                    #f0ad4e;
+@ladb-brand-danger:                     #d9534f;
+@ladb-brand-info:                       #5bc0de;
+@ladb-brand-notification:               lighten(#f77f00, 5%);
+@ladb-brand-notification-important:     #d9534f;
+@ladb-brand-notification-info:          #999999;
+
+@ladb-brand-dark:                       #3e3b33;
+@ladb-brand-light:                      lighten(@ladb-brand-dark, 60%);
+
+@ladb-facebook-color:                   #3b5998;
+@ladb-twitter-color:                    #00aced;
+@ladb-google-plus-color:                #d53326;
+@ladb-youtube-color:                    #bb0000;
+@ladb-pinterest-color:                  #cb2027;
+@ladb-vimeo-color:                      #1ab7ea;
+@ladb-dailymotion-color:                #005792;
+@ladb-instagram-color:                  #3f729b;
+
+// Footer
+// -------------------------
+
+@ladb-footer-height:                    200px;
+
+// Z-index master list
+// -------------------------
+
+@ladb-zindex-map-area:                  990;
+@ladb-zindex-dropdown:                  1000;
+@ladb-zindex-popover:                   1010;
+@ladb-zindex-topbar-fixed:              1020;
+@ladb-zindex-bottombar-fixed:           1030;
+@ladb-zindex-leftbar-fixed:             1040;
+@ladb-zindex-modal-background:          1050;
+@ladb-zindex-modal:                     1060;
+@ladb-zindex-notify:                    1070;
+@ladb-zindex-tooltip:                   1080;
+
+// Media queries breakpoints
+// --------------------------------------------------
+
+// Tiny screen / phone
+@ladb-screen-xs:                        480px;
+@ladb-screen-phone:                     @ladb-screen-xs;
+
+// Small screen / tablet
+@ladb-screen-sm:                        768px;
+@ladb-screen-tablet:                    @ladb-screen-sm;
+
+// Medium screen / desktop
+@ladb-screen-md:                        992px;
+@ladb-screen-desktop:                   @ladb-screen-md;
+
+// Large screen / wide desktop
+@ladb-screen-lg:                        1200px;
+@ladb-screen-large-desktop:             @ladb-screen-lg;
+
+@ladb-screen-phone-max:                 (@ladb-screen-sm - 1);
+@ladb-screen-small-max:                 (@ladb-screen-md - 1);
+@ladb-screen-tablet-max:                (@ladb-screen-desktop - 1);
+@ladb-screen-desktop-max:               (@ladb-screen-large-desktop - 1);
+
+@ladb-screen-height-md:                 700px;
+
+// Grid system
+// --------------------------------------------------
+
+@ladb-gutter:                           20px;
+
+// Components
+// -------------------------
+
+@ladb-border-radius-base:               0px;
+@ladb-border-radius-large:              0px;
+@ladb-border-radius-small:              0px;
+
+// Scaffolding
+// -------------------------
+
+@ladb-body-color:                       @ladb-global-bg;
+@ladb-text-color:                       @ladb-global-color;
+
+// Buttons
+// -------------------------
+
+@ladb-btn-default-color:                @ladb-global-color;
+@ladb-btn-default-bg:                   #f7f7f7;
+
+// Topbar
+// -------------------------
+
+@ladb-topbar-color:                     #fff;
+@ladb-topbar-bg:                        @ladb-brand-dark;
+@ladb-topbar-translucent-bg:            rgba(0, 0, 0, 0.5);
+
+@ladb-topbar-height:                    50px;
+
+// Bottombar
+// -------------------------
+
+@ladb-bottombar-bg:                     @ladb-global-dark-bg; //@ladb-brand-dark;
+
+@ladb-bottombar-height:                 30px;
+
+// Leftbar
+// -------------------------
+
+@ladb-leftbar-bg:                       #999;
+@ladb-leftbar-width:                    90px;
+@ladb-leftbar-height:                   80px;
+
+@ladb-leftbar-width-tablet:             75px;
+@ladb-leftbar-height-tablet:            70px;
+
+@ladb-leftbar-width-desktop:            90px;
+@ladb-leftbar-height-desktop:           80px;
+
+// Search
+// -------------------------
+
+@ladb-search-padding:                   30px;
+@ladb-search-icon-size:                 1.1em;
+@ladb-search-icon-color:                @ladb-brand-dark;
+@ladb-search-font-size:                 1em;
+@ladb-search-height:                    30px;
+@ladb-search-width:                     200px;
+@ladb-search-focus-width:               300px;
+@ladb-search-placeholder-color:         #999;
+
+// Container sizes
+// -------------------------
+
+// Small screen / tablet
+@ladb-container-tablet:                 @ladb-screen-tablet - @ladb-gutter * 2 - @ladb-leftbar-width-tablet;
+
+// Medium screen / desktop
+@ladb-container-desktop:                @ladb-screen-desktop - @ladb-gutter * 2 - @ladb-leftbar-width-desktop;
+
+// Large screen / wide desktop
+@ladb-container-large-desktop:          @ladb-screen-large-desktop - @ladb-gutter * 2 - @ladb-leftbar-width-desktop;

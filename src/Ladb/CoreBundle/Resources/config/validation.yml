@@ -1,0 +1,4 @@
+Ladb\CoreBundle\Entity\User:
+    constraints:
+        - Callback:
+            methods:   [isUsernameValid]

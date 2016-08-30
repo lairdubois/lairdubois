@@ -1,0 +1,18 @@
+{% extends 'LadbCoreBundle::email-layout.html.twig' %}
+
+{% block content %}
+    <p style="margin: 5px 0 5px 0;">
+        La confirmation de votre adresse e-mail vous donnera un accès complet à toutes les fonctionnalités de L'Air du Bois et toutes les futures notifications seront envoyées à cette adresse.
+    </p>
+    <p style="padding: 10px 0 10px 0; display: block; text-align: center;">
+        <a href="{{ url('core_user_email_confirm', { 'token':token }) }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;" target="_blank">Confirmer mon adresse e-mail dès maintenant</a>
+    </p>
+    <p style="margin: 0;">
+        Ou cliquez sur le lien ci-dessous :
+    </p>
+    <p style="margin: 0;">
+        <a href="{{ url('core_user_email_confirm', { 'token':token }) }}" style="color: #f77f00" target="_blank">{{ url('core_user_email_confirm', { 'token':token }) }}</a>
+    </p>
+{% endblock %}
+
+{% block footer %}{% endblock %}

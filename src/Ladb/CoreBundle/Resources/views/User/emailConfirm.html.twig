@@ -1,0 +1,34 @@
+{% extends "::base.html.twig" %}
+
+{% set bodyClass = 'ladb-topbar-enabled' %}
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+
+{% block bodyHeader %}
+    {% include '::_topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainer %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+            <div class="panel panel-danger panel-lg">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'user.email_confirmation.title'|trans() }}</h1>
+                </div>
+                <div class="panel-body">
+                    <p class="text-center">
+                        <i class="ladb-icon-warning ladb-icon-lg text-danger"></i>
+                        {% if invalidToken %}{{ 'user.email_confirmation.confirm.invalid_token'|trans() }}{% endif %}
+                        {% if invalidUser %}{{ 'user.email_confirmation.confirm.invalid_user'|trans() }}{% endif %}
+                    </p>
+                </div>
+                <div class="panel-footer">
+                    {% if invalidUser %}
+                        <a href="{{ path('core_smartlogin') }}" class="btn btn-primary">Changer d'utilisateur</a>
+                    {% else %}
+                        <a href="{{ path('core_welcome') }}" class="btn btn-default">Retour à l'accueil</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

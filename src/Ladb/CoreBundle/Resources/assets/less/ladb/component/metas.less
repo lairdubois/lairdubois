@@ -1,0 +1,89 @@
+//
+// Metas
+//
+
+.ladb-metas {
+
+  .ladb-heading {
+    padding-bottom: 10px;
+    margin-bottom: 0px;
+    margin-top: 15px;
+  }
+
+  .ladb-meta {
+    border-top: 1px solid @ladb-global-border;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .ladb-value {
+      font-weight: normal;
+      font-size: 90%;
+
+      a {
+        color: @ladb-global-color;
+      }
+
+      .ladb-data {
+        padding-left: 20px;
+      }
+
+    }
+
+    .ladb-key {
+      font-weight: normal;
+      font-style: italic;
+      font-size: 90%;
+    }
+
+    .ladb-scrollto-btn {
+      float: right;
+      display: none;
+    }
+
+    &:hover .ladb-scrollto-btn {
+      display: block;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 40px;
+    }
+
+    &.ladb-meta-editable {
+      padding-left: 5px;
+      padding-right: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #efefef;
+
+        .ladb-minitools > a > i {
+          color: @ladb-brand-primary;
+        }
+
+      }
+
+      .ladb-minitools {
+        float: right;
+        font-size: 110%;
+      }
+
+    }
+
+  }
+
+  .ladb-meta:first-child {
+    border: none;
+  }
+
+  .ladb-btn {
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    a.btn {
+      display: block;
+      line-height: 30px;
+    }
+
+  }
+}

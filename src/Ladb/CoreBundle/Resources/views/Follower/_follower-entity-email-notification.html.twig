@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle::email-layout.html.twig' %}
+
+{% block content %}
+    <p style="margin: 5px 0 5px 0;">
+        {% block message %}{% endblock %}
+    </p>
+    <table cellspacing="10" cellpadding="0">
+        <tbody>
+            {% include 'LadbCoreBundle:Common:_entity-email-row.part.html.twig' %}
+        </tbody>
+    </table>
+    <p>Vous recevez cet email parce que vous suivez <a href="{{ url('core_user_show', { 'username':actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none;">{{ actorUser.displayname }}</a>.</p>
+{% endblock %}

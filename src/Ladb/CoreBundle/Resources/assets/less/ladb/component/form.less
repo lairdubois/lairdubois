@@ -1,0 +1,192 @@
+//
+// LADB Form
+//
+
+@colorBoxBackground: #fff;
+
+.form-untitled-section {
+  margin-bottom: 15px;
+  padding: 14px 19px 14px;
+  background-color: @colorBoxBackground;
+  border: 1px solid @ladb-global-border;
+}
+
+.ladb-highlighted .form-section {
+  border-color: @ladb-brand-primary;
+  .box-shadow(0 0 1px 1px @ladb-brand-primary);
+
+  .form-section-title {
+    border-top-color: @ladb-brand-primary;
+    border-left-color: @ladb-brand-primary;
+  }
+
+}
+
+.form-section {
+  position: relative;
+  margin-bottom: 15px;
+  padding: 39px 19px 14px;
+  background-color: @colorBoxBackground;
+  border: 1px solid @ladb-global-border;
+
+  .help-block {
+    font-size: 90%;
+  }
+
+}
+
+.form-section-title {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: darken(@colorBoxBackground, 5%);
+  border: 1px solid @ladb-global-border;
+}
+
+.ladb-textarea-mini-tools {
+  margin-top: -1px;
+  position: absolute;
+  right: @ladb-gutter;
+
+  a {
+    padding: 2px 7px;
+    margin-left: 2px;
+  }
+
+}
+
+ul.ladb-form-thumbnails {
+  padding: 0;
+  overflow: hidden;
+  .user-select(none);
+
+  li {
+    list-style: none;
+  }
+
+  .ladb-form-thumbnail {
+    margin: 0 (@ladb-gutter / 2) (@ladb-gutter / 2) 0;
+    border: solid 1px @ladb-global-border;
+    padding: 4px;
+    float: left;
+    background-color: #fff;
+
+    &.ladb-picture {
+      width: 138px;
+      height: 168px;
+    }
+
+    &.ladb-resource {
+      float: none;
+
+      i {
+        float: left;
+        line-height: 30px;
+        width: 29px;
+        text-align: center;
+      }
+
+      .ladb-body {
+        margin-left: 30px;
+
+        .ladb-subheading {
+          font-size: 80%;
+        }
+
+      }
+
+      > .ladb-tools {
+        float: right;
+        margin-right: 5px;
+      }
+
+    }
+
+    .ladb-minitools {
+      line-height: 32px;
+      line-height: 32px;
+
+      .ladb-sortable-handle {
+        float: left;
+        margin-left: 5px;
+      }
+
+      .ladb-edit {
+        float: right;
+        margin-right: 5px;
+      }
+
+    }
+
+    .ladb-tools {
+      line-height: 32px;
+      text-align: center;
+
+      .ladb-remove {
+        left: 50%;
+      }
+
+    }
+
+    .ladb-legend {
+      font-size: 80%;
+    }
+
+  }
+
+}
+
+.ladb-form-article-list {
+  margin-bottom: @ladb-gutter;
+
+  .ladb-form-article-row {
+    line-height: 32px;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid @ladb-global-border;
+    background-color: #fff;
+
+    .ladb-sortable-handle {
+      margin: 0 10px 0 10px;
+    }
+
+  }
+
+}
+
+.ladb-form-sidenav {
+  display: block;
+
+  &.affix {
+    position: static;
+  }
+
+}
+
+// desktop
+@media screen and (min-width: @ladb-screen-desktop) and (max-width: @ladb-screen-desktop-max) {
+  .ladb-form-sidenav {
+
+    &.affix {
+      position: fixed;
+      width: (@ladb-container-desktop / 12 * 3 - 10px);
+    }
+
+  }
+}
+
+// large desktop
+@media screen and (min-width: @ladb-screen-large-desktop) {
+  .ladb-form-sidenav {
+
+    &.affix {
+      position: fixed;
+      width: (@ladb-container-large-desktop / 12 * 3 - 10px);
+    }
+
+  }
+}
+

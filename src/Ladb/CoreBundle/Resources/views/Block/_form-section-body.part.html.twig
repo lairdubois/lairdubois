@@ -1,0 +1,20 @@
+{% extends 'LadbCoreBundle:Common:_form-section.part.html.twig' %}
+
+{# set formSection (facultative) #}
+{# set mandatory (facultative) #}
+{# set title (facultative) #}
+{# set icon (facultative) #}
+{# set help (facultative) #}
+
+{% set icon = icon|default('body') %}
+{% set title = title|default('default.body'|trans()) %}
+{% set formSection = formSection|default('body_blocks') %}
+{% set classes = 'ladb-block-section' %}
+
+{% block body %}
+    {% if help is defined %}<p class="help-block"><i>{{ help }}</i></p><p class="help-block"><i>{{ 'block.form.help'|trans() }}</i></p>{% endif %}
+    {{ form_errors(form.bodyBlocks) }}
+    {{ form_widget(form.bodyBlocks) }}
+    <hr>
+    <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-mettre-des-images-ou-videos-dans-les-textes-de-descriptif' }) }}" target="_blank">Comment mettre des images ou vidéos dans les textes de descriptif ?</a> </p>
+{% endblock %}

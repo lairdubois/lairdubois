@@ -1,0 +1,12 @@
+{% spaceless %}
+
+{# set likeContext #}
+{# set followerContext #}
+
+<div class="ladb-like-and-follow-row">
+    {% include 'LadbCoreBundle:Like:_widget.part.html.twig' %}
+    {% if followerContext is not null %}
+        &nbsp;{% include 'LadbCoreBundle:Follower:_widget.part.html.twig' %}
+    {% endif %}
+</div>
+{% endspaceless %}

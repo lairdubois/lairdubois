@@ -1,0 +1,5 @@
+
+{# set text #}
+{# set classes (facultative) #}
+
+<button{% if id is defined %} id="{{ id }}"{% endif %} type="submit" class="btn{% if classes is defined %} {{ classes }}{% else %} btn-default{% endif %}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ text }}</button>

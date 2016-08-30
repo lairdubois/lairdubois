@@ -1,0 +1,38 @@
+{% extends 'LadbCoreBundle:User:_show-list.html.twig' %}
+
+{% set masonry = true %}
+
+{% block bodyContainerContent %}
+    {% if creations.count == 0 and filter != 'draft' %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                <p>Vous n'avez pas encore publié de <strong>création</strong> !</p>
+                <p><a href="{{ path('core_creation_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'creation.new'|trans() }}</a></p>
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas encore publié de création.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Creation:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_user_show_creations_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% set customFilterDefs = {
+                'draft':    { 'label':('default.choice.draft'|transchoice(2)|capitalize), 'path':path('core_user_show_creations_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
+            } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">
+                    {% if filter == 'draft' and isDraftVisible %}
+                        {{ user.draftCreationCount~' '~('default.choice.draft'|transchoice(user.draftCreationCount)) }}
+                    {% else %}
+                        {{ user.publishedCreationCount }} {{ 'creation.choice.creations'|transchoice(user.publishedCreationCount) }}{% if isDraftVisible and user.draftCreationCount > 0 %} (+{{ user.draftCreationCount~' '~('default.choice.draft'|transchoice(user.draftCreationCount)) }}){% endif %}
+                    {% endif %}
+                </span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Creation:_list-n.part.html.twig' %}
+{% endblock %}

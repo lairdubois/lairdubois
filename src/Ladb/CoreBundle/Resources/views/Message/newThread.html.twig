@@ -1,0 +1,60 @@
+{% extends 'LadbCoreBundle:Message:_layout.html.twig' %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set tab = announcement ? 'new_thread_announcement' : 'new_thread' %}
+
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
+
+{% block bodyContainerContent %}
+    <div id="message-reply" class="ladb-message">
+        {% include 'LadbCoreBundle:User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
+        <div class="ladb-box">
+            <div class="ladb-body">
+                <form action="{{ path(announcement ? 'core_message_thread_create_announcement' : 'core_message_thread_create') }}" method="post" novalidate>
+                    {% if not announcement %}
+                        <div class="form-group">
+                            {{ form_label(form.recipient, 'Destinataire') }}
+                            {{ form_errors(form.recipient) }}
+                            {{ form_widget(form.recipient, { 'attr': { 'class':'form-control' } }) }}
+                        </div>
+                    {% endif %}
+                    <div class="form-group">
+                        {{ form_label(form.subject, 'Objet') }}
+                        {{ form_errors(form.subject) }}
+                        {{ form_widget(form.subject, { 'attr': { 'class':'form-control' } }) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.body, 'Message') }}
+                        {{ form_errors(form.body) }}
+                        {{ form_widget(form.body, { 'attr': { 'rows':'15', 'class':'form-control ladb-autosize' } }) }}
+                        <script>
+                            if (document.readyState == "complete") {
+                                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
+                            } else {
+                                $(document).ready(function() {
+                                    $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
+                                });
+                            }
+                        </script>
+                    </div>
+                    {{ form_rest(form) }}
+                    {% if announcement %}
+                        <a href="#new_thread_modal" class="btn btn-danger" data-toggle="modal" >{{ 'default.send'|trans() }}</a>
+                        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_thread_modal', 'title':('message.thread.announcement.new'|trans()) } %}
+                            {% block bodyInner %}
+                                <p>Ce mesage est une annonce, il sera envoyé à tout le monde.</p>
+                                <p>Confirmez l'action pour continuer.</p>
+                            {% endblock %}
+                            {% block footerInner %}
+                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()), 'classes':'btn-danger' } %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% else %}
+                        {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,110 @@
+//
+// LADB Leftbar
+//
+
+.ladb-leftbar {
+  z-index: @ladb-zindex-leftbar-fixed;
+  position: fixed;
+  top: @ladb-topbar-height;
+  left: 0;
+  height: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background: @ladb-brand-dark;
+
+  a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: @ladb-brand-light;
+    position: relative;
+
+    &:hover {
+      background-color: @ladb-brand-light;
+      color: @ladb-brand-dark;
+    }
+
+    &.ladb-active {
+      background-color: @ladb-brand-primary;
+      color: #fff;
+
+      >.badge.badge-notification {
+        background-color: @ladb-brand-dark;
+      }
+
+    }
+
+    >.badge.badge-notification {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+
+  }
+
+}
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+  body.ladb-leftbar-enabled {
+    padding-left: 0;
+  }
+  .ladb-leftbar {
+    display: none;
+  }
+}
+
+// tablet
+@media screen and (min-width: @ladb-screen-tablet) {
+  body.ladb-leftbar-enabled {
+    padding-left: @ladb-leftbar-width-tablet;
+  }
+  .ladb-leftbar {
+    width: @ladb-leftbar-width-tablet;
+
+    a {
+      padding-top: 12px;
+      width: @ladb-leftbar-width-tablet;
+      height: @ladb-leftbar-height-tablet;
+
+      i {
+        font-size: 25px;
+      }
+
+      div {
+        margin: 4px;
+        font-size: 80%;
+      }
+
+    }
+
+  }
+}
+
+// desktop
+@media screen and (min-width: @ladb-screen-desktop) and (min-height: @ladb-screen-height-md) {
+  body.ladb-leftbar-enabled {
+    padding-left: @ladb-leftbar-width-desktop;
+  }
+  .ladb-leftbar {
+    width: @ladb-leftbar-width-desktop;
+
+    a {
+      padding-top: 15px;
+      width: @ladb-leftbar-width-desktop;
+      height: @ladb-leftbar-height-desktop;
+
+      i {
+        font-size: 30px;
+      }
+
+      div {
+        margin: 5px;
+        font-size: 90%;
+      }
+
+    }
+
+  }
+}

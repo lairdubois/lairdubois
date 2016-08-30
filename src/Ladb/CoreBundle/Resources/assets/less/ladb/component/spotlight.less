@@ -1,0 +1,186 @@
+//
+// LADB Spotlight
+//
+
+@ladb-header-spotlight-height-lg: 500px;
+@ladb-header-spotlight-height-xs: 350px;
+@ladb-header-spotlight-overlap-lg: 110px;
+@ladb-header-spotlight-overlap-xs: 0;
+
+.ladb-header-spotlight {
+  margin-top: -@ladb-topbar-height;
+  height: @ladb-header-spotlight-height-lg;
+  background-repeat: no-repeat;
+  background-position: center, center;
+  background-size: cover;
+  background-color: @ladb-brand-light;
+  color: #fff !important;
+  position: relative;
+  border-bottom: 3px solid @ladb-global-border;
+  margin-bottom: -@ladb-header-spotlight-overlap-lg + 3;
+  cursor: pointer;
+
+  &:hover .ladb-open {
+    display: block;
+  }
+
+  .ladb-open {
+    display: none;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    font-size: 150px;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    margin-left: -75px;
+    margin-top: -75px;
+    text-align: center;
+    opacity: 0.4;
+  }
+
+  .ladb-shadow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    #gradient > .vertical(rgba(0, 0, 0, 0), rgba(0, 0, 0, .4), 0%, 50%);
+
+    .ladb-caption {
+      position: relative;
+      padding: 20px 0 20px 0;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
+    }
+
+    .ladb-overlap {
+      height: @ladb-header-spotlight-overlap-lg;
+      background-color: @ladb-global-bg;
+      border-top: 3px solid @ladb-global-border;
+      margin: 0 -20px -3px -20px;
+
+      > .ladb-fake-header {
+        display: block;
+        background-color: #ededed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        border-bottom: 1px solid #ddd;
+        padding: 0 @ladb-gutter;
+      }
+
+    }
+
+    .ladb-avatar {
+      float: left;
+    }
+
+    .ladb-body {
+      margin-left: 60px;
+    }
+
+    .ladb-heading {
+      margin: 0;
+      line-height: 30px;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .ladb-subheading {
+      margin-left: 2px;
+    }
+
+    .ladb-age {
+      .age();
+      color: #fff;
+    }
+
+    .ladb-counters {
+      position: absolute;
+      bottom: 10px;
+      right: 0;
+      margin: 0;
+
+      > li {
+        list-style: none;
+
+        &.ladb-counter {
+          float: right;
+          font-size: 110%;
+          padding: 0 0 0 10px;
+        }
+
+        &.ladb-linkto {
+          float: left;
+          font-size: 150%;
+
+          &:last-child {
+            margin-right: 20px;
+          }
+
+          > a {
+            text-decoration: none;
+            color: #fff;
+            padding-right: 10px;
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+.ladb-spotlight-badge {
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  margin-bottom: 10px;
+  .border-radius(4px);
+
+  &:hover {
+    background-color: @ladb-brand-primary;
+  }
+
+  a {
+    color: #fff;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+@media screen and (max-width: @ladb-screen-phone-max) {
+  .ladb-header-spotlight {
+    height: @ladb-header-spotlight-height-xs;
+    margin-bottom: @ladb-header-spotlight-overlap-xs;
+
+    .ladb-shadow {
+
+      .ladb-body {
+        margin-left: 0;
+      }
+
+      .ladb-caption {
+        padding-bottom: 10px;
+      }
+
+      .ladb-overlap {
+        display: none;
+      }
+
+      .ladb-heading {
+        font-size: 18px;
+      }
+
+    }
+  }
+}

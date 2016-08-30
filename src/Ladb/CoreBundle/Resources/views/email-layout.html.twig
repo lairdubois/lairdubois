@@ -1,0 +1,46 @@
+{% spaceless %}
+
+    <html>
+    <head></head>
+    <body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+
+    <table cellpadding="0" cellspaceing="0" border="0" width="100%" style="position:relative;">
+        <tbody>
+        <tr>
+            <td style="padding-top: 5px; padding-bottom: 5px;">
+                <table align="center" cellpadding="0" cellspacing="0" border="0" width="670" style="position: relative;">
+                    <tbody>
+                    <tr>
+                        <td height="50" style="padding: 0 40px 0 40px; background: #3e3b33;" align="center">
+                            <a href="{{ url('core_welcome') }}" style="color: #fff;"><img src="{{ absolute_url(asset('/bundles/ladbcore/ladb/images/logo.png')) }}" width="194" height="32" alt="L'Air du Bois"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 0; border-left: 1px solid #ddd; border-right: 1px solid #ddd; padding: 20px 40px 20px 40px; background: #fff;">
+                            <p style="margin: 5px 0 10px 0;">Bonjour <strong>{{ recipientUser.displayname }}</strong> !</p>
+                            {% block content %}{% endblock %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="border: 1px solid #ddd; padding: 10px; background: #fafafa; color: #999">
+                            Découvrez, fabriquez, partagez.<br>
+                            <a href="{{ url('core_welcome') }}" style="color: #f77f00; text-decoration: none" target="_blank">www.lairdubois.fr</a>
+                        </td>
+                    </tr>
+                    {% block footer %}
+                    <tr>
+                        <td align="center" style="padding: 20px; color: #999; font-size: 80%;">
+                            <p style="margin: 5px 0 5px 0;">Vous pouvez vous désabonner de ces emails en modifiant vos <a href="{{ url('core_user_settings')~'#email_notifications' }}" style="color:#f77f00; text-decoration: none;" target="_blank">paramètres de notification</a>.</p>
+                        </td>
+                    </tr>
+                    {% endblock %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </body>
+    </html>
+
+{% endspaceless %}

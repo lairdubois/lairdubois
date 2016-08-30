@@ -1,0 +1,28 @@
+{% extends 'LadbCoreBundle:Common:_form-section.part.html.twig' %}
+
+{# set formSection (facultative) #}
+{# set mandatory (facultative) #}
+{# set help (facultative) #}
+{# set tips (facultative) #}
+
+{% set icon = 'body' %}
+{% set title = title|default('default.descriptive'|trans()) %}
+{% set formSection = formSection|default('body') %}
+
+{% block body %}
+    {% if help is defined %}<p class="help-block"><i>{{ help|raw }}</i></p>{% endif %}
+    <div class="form-group">
+        {{ form_errors(form.body) }}
+        {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize', 'rows':15 } }) }}
+    </div>
+    <script>
+        if (document.readyState == "complete") {
+            $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
+        } else {
+            $(document).ready(function() {
+                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
+            });
+        }
+    </script>
+    {% if tips is defined %}<p class="help-block"><i>{{ tips|raw }}</i></p>{% endif %}
+{% endblock %}

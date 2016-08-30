@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set likes #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for like in likes %}
+        {% include 'LadbCoreBundle:User:_list-row.part.html.twig' with { 'user':like.user } %}
+    {% endfor %}
+{% endblock %}

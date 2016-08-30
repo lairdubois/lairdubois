@@ -1,0 +1,9 @@
+{% extends 'LadbCoreBundle::email-layout.html.twig' %}
+
+{% block content %}
+    {% for row in rows %}
+        <div style="border-top: 1px solid #ddd">
+            {% block rowContent %}{% endblock %}
+        </div>
+    {% endfor %}
+{% endblock %}

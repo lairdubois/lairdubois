@@ -1,0 +1,30 @@
+{% extends 'LadbCoreBundle:Common:_modal.part.html.twig' %}
+
+{# entity #}
+{# licenseEntity (facultative) #}
+
+{% set licenseEntity = licenseEntity is defined ? licenseEntity : entity %}
+{% set license = licenseEntity.license is defined ? licenseEntity.license : null %}
+
+{% block bodyInner %}
+    {% if app.user.emailConfirmed %}
+        <p>{% block whatItIs %}{% endblock %} Cette action est définitive.</p>
+        {% if license is not null %}
+            <blockquote>{% include 'LadbCoreBundle:License:_publish-modal.part.html.twig' with { 'license':license } %}</blockquote>
+        {% endif %}
+        <p>Confirmez l'action pour continuer.</p>
+    {% else %}
+        <i class="ladb-icon-warning"></i> Avant de pouvoir publier ce contenu, vous devez confirmer l'adresse e-mail associée à votre compte.
+    {% endif %}
+{% endblock %}
+{% block footerInner %}
+    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
+    {% if app.user.emailConfirmed %}
+        {% if license is not null %}
+            <a href="{{ ladb_entity_url_action(licenseEntity, 'edit', true, false) }}#license" class="btn btn-default">Modifier la licence</a>
+        {% endif %}
+        <a href="{{ ladb_entity_url_action(entity, 'publish', true, false) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a>
+    {% else %}
+        <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+    {% endif %}
+{% endblock %}

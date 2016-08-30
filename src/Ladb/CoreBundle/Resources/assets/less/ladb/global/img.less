@@ -1,0 +1,68 @@
+//
+// LADB Pictures
+//
+
+.ladb-img-sizer {
+  position:relative;
+  width:100%;
+  height:0;
+
+  & > img {
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+  }
+
+}
+
+.ladb-img-sizer-32x32o,
+.ladb-img-sizer-50x50o,   // Spotlight avatar
+.ladb-img-sizer-64x64o,
+.ladb-img-sizer-128x128o,
+.ladb-img-sizer-180x180o, // Block gallery (small)
+.ladb-img-sizer-400x400o  // Page image
+{
+  padding-top: 100%;
+}
+
+.ladb-img-sizer-80x60o // Find linkedTo
+{
+  padding-top: 100% * (60 / 80);
+}
+
+.ladb-img-sizer-126x170o // Wood (showcase small)
+{
+  padding-top: 100% * (170 / 126);
+}
+
+.ladb-img-sizer-282x280o // Wood (showcase wide)
+{
+  padding-top: 100% * (280 / 282);
+}
+
+.ladb-img-sizer-282x200o // Provider (showcase wide)
+{
+  padding-top: 100% * (200 / 282);
+}
+
+.ladb-img-sizer-505x180o // Banner
+{
+  padding-top: 100% * (180 / 505);
+}
+
+.ladb-img-sizer-594x294o // Blog main picture
+{
+  padding-top: 100% * (294 / 594);
+}
+
+.ladb-img-sizer-600x450o // Block gallery (large)
+{
+  padding-top: 100% * (450 / 600);
+}
+
+.ladb-img-sizer-800x350o // Spotlight
+{
+  padding-top: 100% * (350 / 800);
+}
+

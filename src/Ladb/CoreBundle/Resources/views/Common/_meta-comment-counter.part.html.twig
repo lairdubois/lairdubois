@@ -1,0 +1,14 @@
+{# set entity #}
+{# set noMicrodata (facultative) #}
+{# set noMicrodataCommentCount (facultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+{% set noMicrodataCommentCount = noMicrodata or noMicrodataCommentCount|default(false) %}
+
+<div class="ladb-meta{% if entity.commentCount == 0 %} text-muted{% endif %}">
+    <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_comment_{{ entity.type }}_{{ entity.id }}_widget').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+    <i class="ladb-icon-comment ladb-icon-fixed-center"></i>
+    <strong{% if not noMicrodataCommentCount %} itemprop="commentCount"{% endif %}>{{ entity.commentCount|number_format(0, ',', ' ') }}</strong>
+    <small>{{ 'comment.choice.comments'|transchoice(entity.commentCount) }}</small>
+    {% if not noMicrodata %}<meta itemprop="interactionCount" content="UserComments:{{ entity.commentCount }}"/>{% endif %}
+</div>

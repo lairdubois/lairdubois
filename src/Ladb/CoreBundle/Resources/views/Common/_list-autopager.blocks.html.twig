@@ -1,0 +1,29 @@
+
+{# set container (facultative) #}
+{# set masonry (facultative) #}
+{# set masonryWide (facultative) #}
+
+{% block autopagerScript %}
+    <script>
+        $(document).ready(function() {
+            {% block autopagerScriptCall %}
+                {% set autopagerContainerSelector = autopagerContainerSelector|default('#ladb_autopager_container') %}
+                {% set masonry = masonry|default(false) %}
+                {% set masonryWide = masonryWide|default(false) %}
+                $('{{ autopagerContainerSelector }}').ladbAutopager({
+                    loadingHtml: '{{ include('LadbCoreBundle:Common:_loading.part.html.twig', { 'float':true, 'noHidden':true }) }}',
+                    masonry: {% if masonry %}true{% else %}false{% endif %},
+                    masonryWide: {% if masonryWide %}true{% else %}false{% endif %}
+                });
+            {% endblock %}
+        });
+    </script>
+{% endblock %}
+
+{% block autopagerContainer %}
+    {% set masonry = masonry|default(false) %}
+    {% set masonryWide = masonryWide|default(false) %}
+    <div id="ladb_autopager_container"{% if masonry %} class="row ladb-margin-top"{% endif %}>
+        {% block autopagerContainerInner %}{% endblock %}
+    </div>
+{% endblock %}

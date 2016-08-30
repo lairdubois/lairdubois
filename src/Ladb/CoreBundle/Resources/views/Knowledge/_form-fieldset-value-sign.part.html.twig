@@ -1,0 +1,33 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.brand) }}
+    {{ form_widget(form.brand, { 'attr':{ 'class':'form-control input-lg', 'placeholder':'Marque' } }) }}
+{% endblock %}
+
+{% block dataFormGroupOuter %}
+    {{ parent() }}
+    <div class="checkbox">
+        <label>{{ form_widget(form.isAffiliate) }} Cette enseigne fait partie d'une chaîne ou franchise.</label>
+    </div>
+    <div id="{{ form.store.vars.id }}_form_group" class="form-group ladb-margin-left"{% if form.isAffiliate.vars.data is empty or not form.isAffiliate.vars.data %} style="display: none;"{% endif %}>
+        {{ form_label(form.store, 'Nom d\'Agence ou de Boutique') }}
+        {{ form_errors(form.store) }}
+        {{ form_widget(form.store, { 'attr':{ 'class':'form-control' } }) }}
+    </div>
+    <script>
+        $(document).ready(function() {
+            var $isAffiliateInput = $('#{{ form.isAffiliate.vars.id }}');
+            var $storeInput = $('#{{ form.store.vars.id }}');
+            var $group = $('#{{ form.store.vars.id }}_form_group');
+            $isAffiliateInput.on('click', function() {
+                if ($isAffiliateInput.prop('checked')) {
+                    $group.show();
+                    $storeInput.focus();
+                } else {
+                    $group.hide();
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,12 @@
+
+{# set totalHits (facultative) #}
+{# set nextPageUrl (facultative) #}
+
+{% if totalHits is defined and totalHits >= 0 and prevPageUrl is null %}
+    <span id="ladb_total_hits" class="ladb-total-hits{% if totalHits == 0 %} ladb-total-hits-null{% endif %}" style="display: none;">{{ totalHits|number_format(0, ',', ' ') }} {{ ('search.choices.results')|transchoice(totalHits) }}</span>
+{% endif %}
+{% block items %}{% endblock %}
+{% if nextPageUrl is not null %}
+    <link rel="next" href="{{ nextPageUrl }}">
+{% endif %}
+

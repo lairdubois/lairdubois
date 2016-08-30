@@ -1,0 +1,18 @@
+{% extends 'LadbCoreBundle:Search:_searchbox.part.html.twig' %}
+
+{% set placeholder = 'search.in.posts'|trans() %}
+{% set searchPath = path('core_blog_post_list') %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+
+{% block filtersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
+{% endblock %}
+
+{% block sortersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="recent" data-label="Récents" data-unique="true" data-icon="time"><i class="ladb-icon-time"></i> Récents</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-views" data-label="Plus vus" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus vus</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-likes" data-label="Préférés" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférés</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-comments" data-label="Plus commentés" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentés</a></li>
+{% endblock %}

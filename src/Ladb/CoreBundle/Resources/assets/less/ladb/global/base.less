@@ -1,0 +1,50 @@
+//
+// LADB Base
+//
+
+html, body {
+  height: 100%;
+}
+
+// Body
+body {
+  &.ladb-embedded {
+    padding: 20px;
+    background: #fff;
+  }
+}
+
+// Textarea
+textarea {
+  resize: none;
+}
+
+// Video
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+// iFrame...
+iframe,
+embed,
+object {
+  max-width: 100%;
+}
+
+// Address
+address {
+  margin: 0;
+}
+address.author {
+  display: inline-block;
+  margin: 0;
+}
+
+// blockquote
+blockquote {
+  margin: 0 0 10px;
+  font-size: 100%;
+  border-left: 5px solid #eee;
+  background-color: lighten(@ladb-global-bg, 5%);
+}

@@ -1,0 +1,13 @@
+{# set post #}
+
+<div id="ladb_corner_slider" class="panel panel-default">
+    <div class="panel-heading">
+        <button type="button" class="close">&times;</button>
+        <i class="ladb-icon-blog"></i> Nouveau sur le blog
+    </div>
+    <div class="panel-body close-area" onclick="document.location = '{{ ladb_entity_url_action(post) }}';">
+        <div class="ladb-heading"><a href="{{ ladb_entity_url_action(post) }}">{{ post.title }}</a></div>
+        <div class="ladb-image">{% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'picture':post.mainPicture, 'width':'64', 'height':'64', 'alt':post.title, 'noSizer':true } %}</div>
+        <div class="ladb-body">{% block body %}{{ post.bodyExtract|striptags|ladb_truncate_at|truncate(150, true, ' [...]') }}{% endblock %}</div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+{% extends 'LadbCoreBundle:Common:_modal.part.html.twig' %}
+
+{# set cancelPath #}
+{# set textTransKey #}
+
+{% block bodyInner %}
+    <div class="media">
+        <div class="media-left">
+            <i class="ladb-icon-warning ladb-icon-lg"></i>
+        </div>
+        <div class="media-body">
+            <p>{{ textTransKey|trans()|raw }}</p>
+        </div>
+    </div>
+    <em class="ladb-color-danger">{{ 'default.warning.may_be_rejected'|trans() }}</em>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="{{ path(cancelPath) }}" class="btn btn-default">{{ 'default.cancel'|trans() }}</a>
+    <a href="#" class="btn btn-primary" data-dismiss="modal">{{ 'default.continue'|trans() }}</a>
+{% endblock %}

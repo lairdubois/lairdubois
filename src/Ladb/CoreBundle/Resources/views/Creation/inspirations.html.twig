@@ -1,0 +1,31 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set navSection = 'creations' %}
+
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':creation } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if inspirations.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            Cette création n'a aucune inspiration
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Creation:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_creation_inspirations_filter' %}
+            {% set filterPathParameters = { 'id':creation.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ creation.inspirationCount }} {{ 'default.choice.inspirations'|transchoice(creation.inspirationCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Creation:_list-n.part.html.twig' with { 'creations':inspirations } %}
+{% endblock %}

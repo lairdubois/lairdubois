@@ -1,0 +1,23 @@
+{% extends 'LadbCoreBundle:Comment:watch-email-notification.html.twig' %}
+
+{% set fieldDef = entity.fieldDefs[childEntity.parentEntityField] %}
+{% set fieldType = fieldDef[constant('ATTRIB_TYPE', entity)] %}
+{% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', entity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', entity)] : null %}
+
+{% block whatName %}la proposition pour le champ <em>{{ ('knowledge.'~entity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}</em> de <em>{{ entity.title|raw }}</em>{% endblock %}
+
+{% block messageActivity %}
+    <table cellpadding="0" cellspacing="10" border="0" width="100%" style="border-top: 1px solid #ddd">
+        <tbody>
+        <tr>
+            <td width="120" valign="middle">
+                <strong>{{ ('knowledge.'~entity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }} :</strong>
+            </td>
+            <td>
+                {% include 'LadbCoreBundle:Knowledge:_field-'~fieldType~'-value.part.html.twig' with { 'knowledge':entity, 'value':childEntity, 'fullHtmlStyle':true } %}{% if fieldSuffix is not null %}&nbsp;<em>{{ fieldSuffix|raw }}</em>{% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {{ parent() }}
+{% endblock %}

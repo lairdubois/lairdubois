@@ -1,0 +1,35 @@
+parameters:
+    database_driver:                pdo_mysql
+    database_host:                  localhost
+    database_port:                  null
+    database_name:                  db_fr_lairdubois_www
+    database_user:                  YOUR_DATABASE_USER
+    database_password:              YOUR_DATABASE_PASSWORD
+    database_path:                  null
+
+    mailer_transport:               smtp
+    mailer_host:                    YOUR_MAILER_HOST
+    mailer_user:                    YOUR_MAILER_USER
+    mailer_password:                YOUR_MAILER_PASSWORD
+
+    elasticsearch_host:             localhost
+    elasticsearch_port:             9200
+
+    locale:                         fr
+    secret:                         THIS_TOKEN_IS_NOT_SECRET_CHANGE_IT
+
+    router.request_context.host:    www.lairdubois.fr
+    router.request_context.scheme:  https
+
+    node:                           /usr/bin/node
+    node_paths:                     [/usr/lib/node_modules/]
+
+    twitter_consumer_key:           YOUR_TWITTER_CONSUMER_KEY
+    twitter_consumer_secret:        YOUR_TWITTER_CONSUMER_SECRET
+    twitter_access_token:           YOUR_TWITTER_ACCESS_TOKEN
+    twitter_access_secret:          YOUR_TWITTER_ACCESS_SECRET
+
+    facebook_app_id:                YOUR_FACEBOOK_APP_ID
+    facebook_app_secret:            YOUR_FACEBOOK_APP_SECRET
+    facebook_page_id:               YOUR_FACEBOOK_PAGE_ID
+    facebook_access_token:          YOUR_FACEBOOK_ACCESS_TOKEN

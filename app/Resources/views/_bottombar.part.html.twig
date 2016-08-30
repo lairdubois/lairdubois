@@ -1,0 +1,14 @@
+{% spaceless %}
+<div class="ladb-bottombar">
+    <ul class="ladb-nav">
+        <li class="ladb-hidden-mobile"><a href="{{ path('core_blog_post_list') }}"{% if navSection is defined and navSection == 'blog' %} class="ladb-active"{% endif %}><i class="ladb-icon-blog"></i>&nbsp;{{ 'blog.post.nav'|trans() }}{% block bottomBarBlogPostNotificationBadge %}{% endblock %}</a></li>
+        <li class="ladb-hidden-mobile"><a href="{{ path('core_faq_question_list') }}"{% if navSection is defined and navSection == 'faq' %} class="ladb-active"{% endif %}><i class="ladb-icon-help"></i>&nbsp;{{ 'faq.question.nav'|trans() }}{% block bottomBarFaqQuestionNotificationBadge %}{% endblock %}</a></li>
+        <li><a href="{{ path('core_about_legals') }}"{% if navSection is defined and navSection == 'legals' %} class="ladb-active"{% endif %}>{{ 'default.legals'|trans() }}</a></li>
+    </ul>
+    <ul class="ladb-social">
+        <li><a href="https://www.facebook.com/LAirDuBois" target="_blank" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Facebook"><i class="ladb-icon-facebook ladb-icon-lg"></i></a></li>
+        <li><a href="https://www.twitter.com/LAirDuBois" target="_blank" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Twitter"><i class="ladb-icon-twitter ladb-icon-lg"></i></a></li>
+        <li><a href="https://plus.google.com/+LairduboisFr" target="_blank" data-tooltip="tooltip" rel="publisher" title="Suivez L'Air du Bois sur Google+"><i class="ladb-icon-google-plus ladb-icon-lg"></i></a></li>
+    </ul>
+</div>
+{% endspaceless %}

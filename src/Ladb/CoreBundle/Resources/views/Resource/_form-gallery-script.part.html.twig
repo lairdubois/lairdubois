@@ -1,0 +1,98 @@
+{# set formSection #}
+{# set fieldId #}
+{# set maxResourceCount #}
+{# set acceptedFileTypes (facultative) #}
+{# set sortable (facultative) #}
+
+{% set formSection = formSection is defined ? formSection : 'resources' %}
+{% set acceptedFileTypes = acceptedFileTypes is defined ? acceptedFileTypes : constant('\\Ladb\\CoreBundle\\Entity\\Resource::DEFAULT_ACCEPTED_FILE_TYPE') %}
+{% set maxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Resource::DEFAULT_MAX_FILE_SIZE') %}
+{% set sortable = sortable is defined ? sortable : false %}
+
+<script>
+    var {{ formSection }}ThumnailTemplate = "{% spaceless %}{{ include('LadbCoreBundle:Resource:_form-thumbnail.part.html.twig')|escape('js') }}{% endspaceless %}";
+    function {{ formSection }}UpdateForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#{{ formSection }}_thumbnails").find("li.ladb-resource").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(9); {# 9 = "resource_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount >= {{ maxResourceCount }}) {
+            $("#{{ formSection }}_fileupload").hide();
+        } else {
+            $("#{{ formSection }}_fileupload").show();
+        }
+    }
+    function {{ formSection }}RemoveResource(id) {
+        $("#resource_" + id).remove();
+        {{ formSection }}UpdateForm();
+    }
+    $("#{{ formSection }}_fileupload [type=file]").fileupload({
+        dataType: "json",
+        disableImageResize: true,
+        acceptFileTypes: {{ acceptedFileTypes }},
+        maxFileSize: {{ maxFileSize }},
+        sequentialUploads: true,
+        messages: {
+            acceptFileTypes: "Type de fichier non accepté (DWF, DWG, STL, SKP, PDF, SVG, FCStd, 123DX, ODS, XLSX, XLSM et GGB seulement)",
+            maxFileSize: "Le fichier est trop volumineux (max {{ maxFileSize|ladb_file_size_format }})"
+        },
+        processstart: function(e) {
+            $("#{{ formSection }}_fileupload .progress").show();
+        },
+        processfail: function (e, data) {
+            var file = data.files[data.index];
+            notifyFileError(file.name, file.error);
+        },
+        send: function (e, data) {
+            if ($("#{{ formSection }}_thumbnails li.ladb-resource").length >= {{ maxResourceCount }}) {
+                return false;
+            }
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $("#{{ formSection }}_fileupload .progress-bar").css("width", progress + "%");
+        },
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                if (file.error) {
+                    notifyFileError(file.name, file.error);
+                } else {
+                    $({{ formSection }}ThumnailTemplate
+                            .replace(new RegExp("000", 'g'), file.id)
+                            .replace(new RegExp("NAME", 'g'), file.name)
+                            .replace(new RegExp("SIZE", 'g'), file.size))
+                            .appendTo("#{{ formSection }}_thumbnails");
+                }
+            });
+        },
+        fail: function (e, data) {
+            if (data.textStatus != undefined) {
+                notifyError(data.textStatus);
+            }
+        },
+        stop: function (e) {
+            $("#{{ formSection }}_fileupload .progress").hide();
+            $("#{{ formSection }}_fileupload .progress-bar").css("width", 0);
+            {{ formSection }}UpdateForm();
+            {% if sortable %}
+            $("#{{ formSection }}_thumbnails").sortable("refresh").sortable("refreshPositions");
+            {% endif %}
+        }
+    })
+    .prop('disabled', !$.support.fileInput)
+    .parent().addClass($.support.fileInput ? undefined : 'disabled')
+    {% if sortable %}
+        $("#{{ formSection }}_thumbnails").sortable({
+            tolerance: "pointer",
+            update: function(event, ui) {
+                {{ formSection }}UpdateForm();
+            }
+        });
+    {% endif %}
+</script>

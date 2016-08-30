@@ -1,0 +1,34 @@
+//
+// LADB Minitools
+//
+
+.ladb-minitools {
+
+  > a {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+
+      > i {
+        color: @ladb-global-color;
+      }
+
+      &.ladb-minitool-danger {
+
+        > i {
+          color: @ladb-brand-danger
+        }
+
+      }
+
+    }
+
+    > i {
+      color: @ladb-global-lighter-color;
+      text-decoration: none;
+    }
+
+  }
+
+}

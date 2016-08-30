@@ -1,0 +1,16 @@
+
+{# set icon #}
+{# set title #}
+{# set mandatory (facultative) #}
+{# set formSection #}
+{# set classes (facultative) #}
+
+{% set formSection = formSection is defined ? formSection : 'resources' %}
+{% set mandatory = mandatory is defined ? mandatory : false %}
+
+<section id="{{ formSection }}_section">
+    <div class="form-section{% if classes is defined %} {{ classes }}{% endif %}">
+        <p class="form-section-title"><i class="ladb-icon-{{ icon }}"></i> {{ title }}{% if mandatory %} <span class="ladb-mandatory">*</span>{% endif %}</p>
+        {% block body %}{% endblock %}
+    </div>
+</section>

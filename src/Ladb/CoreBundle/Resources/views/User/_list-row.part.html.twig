@@ -1,0 +1,65 @@
+{% extends 'LadbCoreBundle:Common:_list-row.part.html.twig' %}
+
+{% set entity = user %}
+{% set classes = 'ladb-user-row' %}
+{% set showPath = path('core_user_show', { 'username':user.usernameCanonical }) %}
+
+{% block rowInner %}
+    {% set subfilter = filter is defined ? filter|slice(13) : '' %}
+    {% if subfilter == 'creations' %}
+        <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.publishedCreationCount }}</div>
+            <span class="ladb-subheading">{{ 'creation.choice.creations'|transchoice(user.publishedCreationCount)|capitalize }}</span>
+        </a>
+    {% elseif subfilter == 'plans' %}
+        <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.publishedPlanCount }}</div>
+            <span class="ladb-subheading">{{ 'plan.choice.plans'|transchoice(user.publishedPlanCount)|capitalize }}</span>
+        </a>
+    {% elseif subfilter == 'howtos' %}
+        <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.publishedHowtoCount }}</div>
+            <span class="ladb-subheading">{{ 'howto.choice.howtos'|transchoice(user.publishedHowtoCount)|capitalize }}</span>
+        </a>
+    {% elseif subfilter == 'workshops' %}
+        <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.publishedWorkshopCount }}</div>
+            <span class="ladb-subheading">{{ 'workshop.choice.workshops'|transchoice(user.publishedWorkshopCount)|capitalize }}</span>
+        </a>
+    {% elseif subfilter == 'comments' %}
+        <div class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.commentCount }}</div>
+            <span class="ladb-subheading">{{ 'comment.choice.comments'|transchoice(user.commentCount)|capitalize }}</span>
+        </div>
+    {% elseif subfilter == 'finds' %}
+        <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.publishedFindCount }}</div>
+            <span class="ladb-subheading">{{ 'find.choice.finds'|transchoice(user.publishedFindCount)|capitalize }}</span>
+        </a>
+    {% else %}
+        <div class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.contributionCount }}</div>
+            <span class="ladb-subheading">{{ 'default.choice.contributions'|transchoice(user.contributionCount)|capitalize }}</span>
+        </div>
+    {% endif %}
+    {% if filter is defined and filter == 'popular-likes' %}
+        <div class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.recievedLikeCount }}</div>
+            <span class="ladb-subheading">{{ 'like.choice.likes'|transchoice(user.recievedLikeCount)|capitalize }}</span>
+        </div>
+    {% else %}
+        <a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+            <div class="ladb-heading">{{ user.followerCount }}</div>
+            <span class="ladb-subheading">{{ 'follower.choice.followers'|transchoice(user.followerCount)|capitalize }}</span>
+        </a>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block headingInner %}
+    {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' %}{% if user.isFullnameDisplayble %}&nbsp;<small>(<span itemprop="familyName">{{ user.fullname }}</span>)</small>{% endif %}
+{% endblock %}
+
+{% block subheadingInner %}
+    {% include 'LadbCoreBundle:User:_location-and-social.part.html.twig' %}
+{% endblock %}

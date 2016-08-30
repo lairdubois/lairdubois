@@ -1,0 +1,32 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail.part.html.twig' %}
+
+{# set wood #}
+
+{% set entity = wood %}
+{% set headingClasses = wood.nameRejected ? 'ladb-strikethrough' : null %}
+{% set pictureWidth = '282' %}
+{% set pictureHeight = '280' %}
+{% set pictureFilterMode = 'o' %}
+
+{% block title %}
+    {% if wood.family == 1 %}
+        <i class="ladb-icon-hardwood"></i>
+    {% elseif wood.family == 2 %}
+        <i class="ladb-icon-resinous"></i>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block entityMetas %}
+    {% if wood.availability == 1 %}
+        <li class="ladb-linkto"><a href="#" data-tooltip="tooltip" title="{{ 'knowledge.wood.red_list'|trans() }}"><i class="ladb-icon-warning ladb-color-negative"></i></a></li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' with { 'entity':wood } %}
+    {{ wood.contributorCount }} <i class="ladb-icon-users"></i>{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}
+{% endblock %}
+
+

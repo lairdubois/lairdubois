@@ -1,0 +1,14 @@
+
+{# set likeContext #}
+
+{% if likeContext is not null and likeContext.isLikable %}
+    {% if likeContext.id is null %}
+        <a href="{{ path('core_like_create', { 'entityType':likeContext.entityType, 'entityId':likeContext.entityId, 'rtu':app.request.requesturi }) }}" class="btn btn-default ladb-like-widget" data-tooltip="tooltip" title="{{ 'like.create'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-like-widget' });{% else %}$(this).button('loading');{% endif %}">
+            <i class="ladb-icon-like"></i>  {{ 'like.like'|trans() }}
+        </a>
+    {%  else %}
+        <a href="{{ path('core_like_delete', { 'id':likeContext.id }) }}" class="btn btn-default active ladb-like-widget" data-tooltip="tooltip" title="{{ 'like.delete'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-like-widget' });{% else %}$(this).button('loading');{% endif %}">
+            <i class="ladb-icon-check"></i>  {{ 'like.liked'|trans() }}
+        </a>
+    {% endif %}
+{% endif %}

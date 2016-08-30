@@ -1,0 +1,38 @@
+<div class="ladb-page">
+    {% set positiveCount = 0 %}
+    {% set nullCount = 0 %}
+    {% set undeterminedCount = 0 %}
+    {% set negativeCount = 0 %}
+    {% for value in values %}
+        {% if value.voteScore > 0 %}
+            {% set positiveCount = positiveCount + 1 %}
+        {% elseif value.voteScore < 0 %}
+            {% set negativeCount = negativeCount + 1 %}
+        {% elseif value.voteScore == 0 and value.positiveVoteScore > 0 %}
+            {% set undeterminedCount = undeterminedCount + 1 %}
+        {% else %}
+            {% set nullCount = nullCount + 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if values is not empty %}
+        <div class="ladb-proposal-list-header row">
+            <div class="ladb-heading col-sm-8 col-xs-10">
+                <span>{{ values|length }} {{ 'default.choice.proposals'|transchoice(values|length) }}</span>
+                <ul>
+                    <li class="ladb-color-positive" data-tooltip="tooltip" title="Propositions validées">{{ positiveCount }} <i class="ladb-icon-check"></i></li>
+                    <li class="ladb-color-null" data-tooltip="tooltip" title="Propositions non vérifiées">{{ nullCount }} <i class="ladb-icon-warning"></i></li>
+                    <li class="ladb-color-undetermined" data-tooltip="tooltip" title="Propositions indécises">{{ undeterminedCount }} <i class="ladb-icon-warning"></i></li>
+                    <li class="ladb-color-negative" data-tooltip="tooltip" title="Propositions rejetées">{{ negativeCount }} <i class="ladb-icon-warning"></i></li>
+                </ul>
+            </div>
+            <div class="col-sm-4 col-xs-2 text-right">
+                {% block headerRightInner %}{% endblock %}
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">{{ 'knowledge.no_proposal'|trans() }}</div>
+    {% endif %}
+    {% for value in values %}
+        {% include 'LadbCoreBundle:Knowledge:_field-value-proposal.part.html.twig' with { 'commentContext':commentContexts[value.id], 'voteContext':voteContexts[value.id] } %}
+    {% endfor %}
+</div>

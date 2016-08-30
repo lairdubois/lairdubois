@@ -1,0 +1,27 @@
+{% extends 'LadbCoreBundle:About:_layout.html.twig' %}
+
+{% set pageTitle = ('default.ladb'|trans())~' - '~('default.legals'|trans()) %}
+{% set titleSuffixHidden = true %}
+
+{% set navSection = 'legals' %}
+{% set tab = 'legals' %}
+
+{% block bodyContainerContent %}
+    <h3>Contact</h3>
+
+    <p>Boris Beaulant</p>
+    <a href="mailto:contact@lairdubois.fr">contact@lairdubois.fr</a>
+
+    <h3>Conditions générales d'utilisation</h3>
+
+    <p>Toute reproduction ou représentation, en tout ou partie, hors contenus sous licence Creative Commons, à d'autres fins sur un quelconque support est interdite sans l'autorisation expresse et préalable de <i>lairdubois.fr</i> et constituerait une contrefaçon au sens des articles L 335-2 et suivants du code de la propriété intellectuelle.</p>
+    <p>Le non-respect de cette interdiction constitue une contrefaçon pouvant engager la responsabilité civile et pénale du contrefacteur.</p>
+    <p>Les liens hypertextes mis en oeuvre au sein du site <i>lairdubois.fr</i> en direction d'autres sites et/ou de pages personnelles et d'une manière générale vers toutes ressources existantes sur internet ne sauraient engager la responsabilité de <i>lairdubois.fr</i>.</p>
+
+    <h3>Législation française</h3>
+
+    <h4>Droit d'accès au fichier informatisé</h4>
+
+    <p>Tout utilisateur ayant déposé dans le service des informations directement ou indirectement nominatives peut demander la communication des informations nominatives le concernant à l'administrateur du service et les faire rectifier le cas échéant, conformément à la loi française No 78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés.</p>
+    <p>Toutes les marques commerciales citées dans ce service sont des marques déposées. Toute représentation et/ou reproduction et/ou exploitation partielle ou totale de ces marques est donc prohibée.</p>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'LadbCoreBundle:User:_show-list.html.twig' %}
+
+{% block bodyContainerContent %}
+    {% if followers.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                Vous n'avez pas d'abonnements.
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas d'abonnements.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:User:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
+            {% set filterPath = 'core_user_show_following_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ user.followingCount }} {{ 'follower.choice.following'|transchoice(user.followingCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Follower:_following-list-n.part.html.twig' %}
+{% endblock %}

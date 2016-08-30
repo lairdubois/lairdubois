@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle:Picture:_img.part.html.twig' %}
+
+{# set aClasses (facutative) #}
+{# set dataGallery (facutative) #}
+
+{% set dataGallery = dataGallery|default('#blueimp-gallery') %}
+
+{% block img %}
+    <a href="{{ webPath|imagine_filter('1024x1024i') }}" data-gallery="{{ dataGallery }}" title="{{ picture.legend }}" class="thumbnail ladb-cursor-preview{% if aClasses is defined %} {{ aClasses }}{% endif %}" onclick="return false;"{% if not noMicrodata %} itemprop="image"{% endif %}>
+        {% set noMicrodata = true %}
+        {{ parent() }}
+    </a>
+{% endblock %}

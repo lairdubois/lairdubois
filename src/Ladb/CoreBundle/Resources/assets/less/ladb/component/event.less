@@ -1,0 +1,72 @@
+//
+// LADB Event
+//
+
+.ladb-event {
+
+  .ladb-full-date {
+    font-weight: bold;
+    font-size: 110%;
+    line-height: 25px;
+
+    .ladb-time {
+      padding: 0 3px 1px 3px;
+      border-radius: 5px;
+      border: 2px solid @ladb-global-color;
+    }
+
+    .ladb-link-word {
+      font-weight: normal;
+      font-size: 80%;
+      font-style: italic;
+    }
+
+  }
+
+  .ladb-duration {
+    font-size: 80%;
+  }
+
+}
+
+.ladb-event-calendar {
+  position: absolute;
+  color: #000;
+  border: 1px solid @ladb-global-light-color;
+  border-top-width: 3px;
+  text-align: center;
+  padding: 0 5px 1px 5px;
+  background-color: #fff;
+  .box-shadow(0 0 1px 1px rgba(0,0,0,.1));
+
+  &.ladb-top-right {
+    top: 20px;
+    right: 30px;
+  }
+
+  &.ladb-bottom-right {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .ladb-arrow {
+    line-height: 26px;
+    margin: 0 2px;
+  }
+
+  .ladb-day {
+    font-size: 25px;
+    margin: -4px 0 -5px;
+    color: @ladb-brand-primary;
+  }
+
+  .ladb-month {
+    font-size: 15px;
+  }
+
+  .ladb-year {
+    margin-top: -4px;
+    font-size: 13px;
+  }
+
+}

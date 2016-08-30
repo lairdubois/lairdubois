@@ -1,0 +1,26 @@
+{% block blueimpGalleryStylesheets %}
+    {% stylesheets filter='?yui_css'
+        '@LadbCoreBundle/Resources/assets/css/blueimp-gallery/blueimp-gallery.css' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block blueimpGalleryJavascripts %}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/blueimp-gallery/blueimp-gallery.js'
+        '@LadbCoreBundle/Resources/assets/js/blueimp-gallery/jquery.blueimp-gallery.js' %}
+        <script type="text/javascript" src="{{ asset_url }}" id="blueimp"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block blueimpGalleryWidget %}
+    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-stretch-images="true">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+{% endblock %}

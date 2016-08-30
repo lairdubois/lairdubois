@@ -1,0 +1,13 @@
+{# set entity #}
+
+<div class="ladb-meta{% if entity.joinCount == 0 %} text-muted{% endif %}">
+    <i class="ladb-icon-users"></i>
+    {% if entity.joinCount > 0 %}
+        <a href="{{ path('core_join_list_entity', { 'entityType':entity.type, 'entityId':entity.id }) }}">
+    {% endif %}
+            <strong>{{ entity.joinCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'join.choice.joins'|transchoice(entity.joinCount) }}</small>
+    {% if entity.joinCount > 0 %}
+        </a>
+    {% endif %}
+</div>

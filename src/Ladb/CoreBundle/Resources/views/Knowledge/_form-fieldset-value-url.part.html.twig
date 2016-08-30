@@ -1,0 +1,6 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.data) }}
+    {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
+{% endblock %}

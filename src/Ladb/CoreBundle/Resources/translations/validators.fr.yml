@@ -1,0 +1,3 @@
+default:
+  title:
+    regex: Ce titre contient des caractères invalides.

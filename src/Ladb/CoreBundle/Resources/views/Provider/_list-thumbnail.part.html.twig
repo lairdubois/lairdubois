@@ -1,0 +1,20 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{# set provider #}
+
+{% set entity = provider %}
+{% set headingClasses = provider.signRejected ? 'ladb-strikethrough' : null %}
+{% set titleLinkClasses = provider.signRejected ? 'ladb-color-null' : null %}
+
+{% block title %}
+    {{ parent() }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}
+{% endblock %}
+
+{% block body %}
+    {% include 'LadbCoreBundle:Provider:_compact-infos.part.html.twig' %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' with { 'entity':provider } %}
+    {{ provider.contributorCount }} <i class="ladb-icon-users"></i>{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}
+{% endblock %}

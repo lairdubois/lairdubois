@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    <div class="form-group">
+        {{ form_errors(form.rawPhoneNumber) }}
+        {{ form_widget(form.rawPhoneNumber, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.country, ('knowledge.proposal_value.country'|trans())) }}
+        {{ form_errors(form.country) }}
+        {{ form_widget(form.country, { 'attr':{ 'class':'form-control', } }) }}
+    </div>
+{% endblock %}

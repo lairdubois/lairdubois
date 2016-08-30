@@ -1,0 +1,118 @@
+//
+// Buttons
+// --------------------------------------------------
+
+
+// Base styles
+// --------------------------------------------------
+
+// Core styles
+.btn {
+  font-weight: normal;
+
+  &:active,
+  &.active {
+    outline: 0;
+    .box-shadow(inset 0 0 5px rgba(0,0,0,.125));
+  }
+
+  &:active,
+  &.active {
+    background-color: @btn-default-active-bg;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.3);
+  }
+
+}
+
+.btn-primary {
+
+  &:hover,
+  &:focus {
+    color: @btn-primary-hover-color;
+  }
+
+  &:active,
+  &.active {
+    background-color: @btn-primary-active-bg;
+  }
+
+}
+
+.btn-success {
+
+  &:hover,
+  &:focus {
+    color: @btn-success-hover-color;
+  }
+
+  &:active,
+  &.active {
+    background-color: @btn-success-active-bg;
+  }
+
+}
+
+.btn-danger {
+
+  &:hover,
+  &:focus {
+    color: @btn-danger-hover-color;
+  }
+
+  &:active,
+  &.active {
+    background-color: @btn-danger-active-bg;
+  }
+
+}
+
+.btn-warning {
+
+  &:hover,
+  &:focus {
+    color: @btn-warning-hover-color;
+  }
+
+  &:active,
+  &.active {
+    background-color: @btn-warning-active-bg;
+  }
+
+}
+
+.btn-info {
+
+  &:hover,
+  &:focus {
+    color: @btn-info-hover-color;
+  }
+
+  &:active,
+  &.active {
+    background-color: @btn-info-active-bg;
+  }
+
+}
+
+.btn-infield {
+  border: none;
+  background-color: #eee;
+  border-radius: 3px;
+
+  &:hover,
+  &:focus {
+    color: #555;
+    background-color: #ddd;
+  }
+
+  &:active,
+  &.active {
+    background-color: #ddd;
+  }
+
+}

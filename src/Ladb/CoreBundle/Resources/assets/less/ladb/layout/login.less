@@ -1,0 +1,49 @@
+//
+// LADB Login
+//
+
+.ladb-login-panel {
+
+  .ladb-register-body {
+    text-align: center;
+  }
+
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: (@ladb-screen-phone-max)) {
+  .ladb-login-panel {
+
+    .ladb-login-body {
+      padding-bottom: 15px;
+      border-bottom: 1px solid @ladb-global-border;
+    }
+
+    .ladb-register-body {
+      padding-top: 15px;
+    }
+
+  }
+}
+
+// tablet - desktop
+@media screen and (min-width: @ladb-screen-tablet) {
+  .ladb-login-panel {
+
+    .ladb-login-body {
+      padding-right: 30px;
+      border-right: 1px solid @ladb-global-border;
+    }
+
+    .ladb-register-body {
+
+      h4 {
+        margin: 40px 0;
+      }
+
+    }
+
+  }
+}

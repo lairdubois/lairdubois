@@ -1,0 +1,73 @@
+{% extends 'LadbCoreBundle:Common:_modal-content.part.html.twig' %}
+
+{% set fieldDef = knowledge.fieldDefs[field] %}
+{% set fieldMultiple = fieldDef[constant('ATTRIB_MULTIPLE', knowledge)] %}
+{% set id = field~'_modal' %}
+{% set title = ('knowledge.proposals_of'|trans())~' <em>'~(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())~'</em>' %}
+
+{% block contentInner %}
+    {{ parent() }}
+    <script>
+        bindNewCommentAjaxForm();
+        bindNewValueProposalAjaxForm();
+        setupPopovers();
+        setupTooltips();
+        {% if values is empty %}
+            $(".modal input[type=text]").first().focus();
+        {% endif %}
+    </script>
+{% endblock %}
+
+{% block bodyInner %}
+    <div id="ladb_new_value_proposal" class="ladb-value-proposal" onclick="cancelEditValueProposal();"{% if values is not empty %} style="display: none;"{% endif %}>
+        <div class="ladb-box  ladb-margin-bottom">
+            {% if form is not null %}
+                <div class="ladb-box-inner row">
+                    <div class="col-xs-12">
+                        <h4><i class="ladb-icon-plus"></i> {{ 'knowledge.add_proposal_of'|trans() }} <em>{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</em></h4>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        {% include 'LadbCoreBundle:Knowledge:_form-value.part.html.twig' with { 'cancelEdit':true } %}
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                            <div class="panel-body small">
+                                {{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}
+                                {% if ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans() != 'knowledge.'~knowledge.strippedName~'.form.help.'~field %}
+                                    {{ ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans()|ladb_markdown|raw }}
+                                {% endif %}
+                                {{ ('knowledge.wood.form.help.legend')|trans({ '%field%':(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())})|ladb_markdown|raw }}
+                                {{ ('knowledge.wood.form.help.source')|trans()|ladb_markdown|raw }}
+                                <hr>
+                                <i class="ladb-icon-plus"></i>&nbsp;<a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">Comment contribuer aux contenus collaboratifs ?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div style="padding: 20px;">
+                    <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter une proposition.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div id="ladb_proposal_list">
+        {% embed 'LadbCoreBundle:Knowledge:_value-list.part.html.twig' %}
+            {% block headerRightInner %}
+                <button class="btn btn-default" onclick="$('#ladb_new_value_proposal').toggle(); $(this).hide();"><i class="ladb-icon-plus"></i> <span class="ladb-hidden-mobile">Ajouter une proposition</span></button>
+            {% endblock %}
+        {% endembed %}
+    </div>
+    {% if values is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <i class="ladb-icon-help"></i> {{ ('knowledge.info.'~(fieldMultiple ? 'multiple' : 'single')~'_proposal')|trans() }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block footerInner %}
+    <button class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</button>
+{% endblock %}

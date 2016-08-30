@@ -1,0 +1,142 @@
+//
+// LADB Map
+//
+
+.ladb-map-thumbnail {
+  border: 1px solid @ladb-global-border;
+  padding: 4px;
+  background-color: #fff;
+
+  .ladb-map-area-controls {
+    left: 0;
+    top: 0;
+  }
+
+}
+
+.ladb-map-banner {
+  margin-top: -@ladb-topbar-height;
+  border-bottom: 1px solid #cccccc;
+
+  .ladb-map-area-controls {
+    display: none;
+  }
+
+}
+
+.ladb-map-area {
+  position: relative;
+
+  &.ladb-fullscreen {
+    position: fixed;
+    top: @ladb-topbar-height;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: @ladb-zindex-modal;
+    height: auto;
+
+    .ladb-map-area-controls {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      display: block !important;
+    }
+
+  }
+
+  .ladb-map-area-overlay {
+    position: absolute;
+    z-index: @ladb-zindex-map-area;
+    background-color: white;
+    opacity: 0.2;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ladb-map-area-controls {
+    position: absolute;
+    z-index: @ladb-zindex-map-area + 1;
+
+    .ladb-map-area-btn {
+      background-color: white;
+      padding: 10px;
+      text-align: center;
+
+      &:hover {
+        color: @ladb-brand-primary;
+      }
+
+    }
+
+  }
+
+  #ladb_map_area_map {
+    width: 100%;
+    height: 100%;
+  }
+
+  // Leaflet popup
+
+  .leaflet-popup-content-wrapper {
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 0;
+
+    a {
+      color: @ladb-brand-primary;
+
+      &:hover {
+        color: darken(@ladb-brand-primary, 15%)
+      }
+
+    }
+
+  }
+
+  .leaflet-control-attribution {
+
+    a, a:hover {
+      color: @ladb-global-color;
+    }
+
+  }
+
+}
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+  .ladb-map-area {
+    height: 250px;
+
+    &.ladb-fullscreen .ladb-map-area-controls {
+      top: auto;
+      left: auto;
+      bottom: 5px;
+      left: 5px;
+    }
+
+  }
+}
+
+// tablet
+@media screen and (min-width: @ladb-screen-tablet) and (max-width: @ladb-screen-tablet-max) {
+  .ladb-map-area {
+    height: 300px;
+  }
+}
+
+// desktop
+@media screen and (min-width: @ladb-screen-desktop) {
+  .ladb-map-area {
+    height: 300px;
+  }
+}
+
+// large desktop
+@media screen and (min-width: @ladb-screen-large-desktop) and (min-height: @ladb-screen-height-md)  {
+  .ladb-map-area {
+    height: 400px;
+  }
+}
+

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="Description" content="L'Air du Bois est un espace de partage collaboratif ouvert à tous les amateurs et curieux du travail du bois">
+		<meta name="Keywords" content="bois,menuiserie,ebenisterie,plans,meubles,bricolage,astuces,partage,creations,atelier,blog">
+		<meta name="Author" content="Boris Beaulant">
+		<meta name="Publisher" content="Boris Beaulant">
+		<meta name="Copyright" content="Boris Beaulant">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>L'Air du Bois - Découvrez, frabriquez, partagez</title>
+		<link rel="icon" sizes="16x16" href="/favicon.ico" />
+		<style>
+			body {
+				background-color: #3e3b33;
+				color: #fff;
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				font-size: 13px;
+			}
+			.box {
+                text-align: center;
+				position: absolute;
+				top: 30%;
+				height: 30%;
+				left: 25%;
+				width: 50%
+			}
+			.box img {
+				margin-bottom: 20px;
+			}
+            .ladb-browser-box {
+                margin-top: 20px;
+            }
+            .ladb-browser-list-item {
+                margin: 0 10px;
+                text-align: center;
+            }
+            .ladb-browser-list-item a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 120%;
+                display: block;
+            }
+            .ladb-browser-list-item a:hover {
+                text-decoration: underline;
+            }
+            .ladb-browser-list-item img {
+                margin: 0;
+                border: none;
+            }
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<img src="/bundles/ladbcore/ladb/images/logo_big.png">
+			<h1>Votre navigateur est trop ancien et n'est pas supporté.</h1>
+            <div class="ladb-browser-box">
+                <p>Vous pouvez essayer avec l'un des navigateurs suivants :</p>
+                <table border="0" width="100%">
+                    <tr>
+                        <td>
+                            <div class="ladb-browser-list-item" style="float: right;">
+                                <a href="http://www.mozilla.org/fr/firefox/new/" target="_blank">
+                                    <img src="/bundles/ladbcore/ladb/images/browser_firefox.png">
+                                    <div>Mozilla Firefox</div>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ladb-browser-list-item" style="float: left;">
+                                <a href="https://www.google.fr/intl/fr/chrome/browser/" target="_blank">
+                                    <img src="/bundles/ladbcore/ladb/images/browser_chrome.png">
+                                    <div>Google Chrome</div>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+	</body>
+</html>

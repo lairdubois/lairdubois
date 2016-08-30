@@ -1,0 +1,100 @@
+//
+// LADB Bottombar
+//
+
+.ladb-bottombar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: @ladb-zindex-bottombar-fixed;
+  min-height: @ladb-bottombar-height;
+  background-color: @ladb-bottombar-bg;
+  border-top: 1px solid @ladb-global-border;
+  font-size: 80%;
+
+  > ul {
+    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    float: right;
+
+    li {
+      display: inline-block;
+      border-left: 1px solid @ladb-global-border;
+
+      > a {
+        color: @ladb-brand-dark;
+        display: inline-block;
+        line-height: @ladb-bottombar-height;
+        text-align: center;
+        position: relative;
+
+        &:hover, &.ladb-active {
+          text-decoration: none;
+          background-color: @ladb-brand-dark;
+          color: @ladb-brand-light;
+        }
+
+      }
+
+    }
+
+    &.ladb-social li {
+
+      > a {
+        padding: 0 5px 0 5px;
+
+      }
+
+    }
+
+    &.ladb-nav li {
+
+      > a {
+        padding: 0 (@ladb-gutter / 2) 0 (@ladb-gutter / 2);
+
+        >.badge.badge-notification {
+          font-size: 90%;
+          position: relative;
+          top: -5px;
+        }
+
+      }
+
+    }
+  }
+
+}
+
+body.ladb-bottombar-enabled {
+
+  .ladb-footer {
+    padding-bottom: (@ladb-bottombar-height * 2);
+  }
+
+}
+
+/* Responsive */
+
+// min
+@media screen and (max-height: 400px) {
+  .ladb-bottombar {
+    display: none;
+  }
+}
+
+// tablet
+@media screen and (min-width: @ladb-screen-tablet) and (max-width: @ladb-screen-tablet-max) {
+  body.ladb-leftbar-enabled .ladb-bottombar {
+    left: @ladb-leftbar-width-tablet;
+  }
+}
+
+// desktop
+@media acreen and (min-width: @ladb-screen-desktop) {
+  body.ladb-leftbar-enabled .ladb-bottombar {
+    left: @ladb-leftbar-width-desktop;
+  }
+}

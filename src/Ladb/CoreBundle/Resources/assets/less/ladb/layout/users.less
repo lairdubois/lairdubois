@@ -1,0 +1,121 @@
+//
+// LADB Users
+//
+
+@ladb-user-banner-height-lg: 400px;
+@ladb-user-banner-height-xs: 350px;
+@ladb-avatar-size-small: 64px;
+@ladb-avatar-size-large: 128px;
+
+.ladb-user-banner {
+  margin-top: -@ladb-topbar-height;
+  height: @ladb-user-banner-height-lg;
+  background-repeat: no-repeat;
+  background-position: center, center;
+  background-size: cover;
+  background-color: @ladb-brand-light;
+  border-bottom: 1px solid @ladb-global-border;
+}
+
+.ladb-avatar-header {
+
+  .ladb-avatar {
+    width: @ladb-avatar-size-small;
+    height: @ladb-avatar-size-small;
+  }
+
+  .ladb-body {
+    margin-left: @ladb-avatar-size-small + @ladb-gutter;
+  }
+
+  &.ladb-avatar-header-with-banner {
+
+    .ladb-header-tools {
+     position: absolute;
+     top: -(@ladb-avatar-size-large / 2);
+     right: @ladb-gutter / 2;
+    }
+
+    .ladb-avatar {
+      position: absolute;
+      top: -((@ladb-avatar-size-large / 2) - 15px);
+      left: @ladb-gutter / 2;
+      width: @ladb-avatar-size-large;
+      height: @ladb-avatar-size-large;
+    }
+
+    .ladb-body {
+      margin-left: @ladb-avatar-size-large + @ladb-gutter;
+    }
+
+  }
+
+}
+
+.ladb-user-row {
+
+  .ladb-counter {
+    .row-counter();
+    width: 100px;
+  }
+
+  a.ladb-counter:hover {
+    background-color: @ladb-brand-primary;
+    border-color: @ladb-brand-primary;
+    color: white;
+    text-decoration: none;
+  }
+
+}
+
+.ladb-user-badge {
+  color: #aaa;
+}
+
+.ladb-fake-biography, .ladb-fake-location {
+  display: block;
+  border: 2px dashed @ladb-global-border;
+  border-radius: 5px;
+  text-align: center;
+  color: @ladb-global-light-color;
+
+  &:hover {
+    border-color: @ladb-brand-primary;
+    text-decoration: none;
+  }
+
+}
+
+.ladb-fake-biography {
+  height: 300px;
+  line-height: 300px;
+}
+
+.ladb-fake-location {
+  height: 490px + @ladb-gutter;
+  line-height: 490px + @ladb-gutter;
+}
+
+/* Responsive */
+
+@media screen and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-user-banner {
+    height: @ladb-user-banner-height-xs;
+  }
+
+  .ladb-avatar-header.ladb-avatar-header-with-banner {
+
+    .ladb-avatar {
+      position: inherit;
+      width: @ladb-avatar-size-small;
+      height: @ladb-avatar-size-small;
+    }
+
+    .ladb-body {
+      margin-left: @ladb-avatar-size-small + @ladb-gutter;
+    }
+
+  }
+
+}

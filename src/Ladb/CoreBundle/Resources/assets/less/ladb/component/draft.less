@@ -1,0 +1,29 @@
+//
+// LADB Draft
+//
+
+@ladb-draft-color: #f0ad4e;
+
+.ladb-draft-badge {
+  background-color: lighten(@ladb-draft-color, 10%);
+  color: darken(@ladb-draft-color, 30%);
+  padding: 5px 10px;
+  text-align: center;
+//  font-size: 90%;
+
+  .ladb-minitools {
+    float: right;
+    display: inline;
+
+    a > i {
+      color: darken(@ladb-draft-color, 30%);
+    }
+
+  }
+
+  &.ladb-block {
+    position: inherit;
+    display: block;
+  }
+
+}

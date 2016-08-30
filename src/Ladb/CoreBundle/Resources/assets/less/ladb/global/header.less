@@ -1,0 +1,142 @@
+//
+// LADB Header
+//
+
+.sticky-wrapper.is-sticky > .ladb-header {
+  z-index: @ladb-zindex-topbar-fixed - 1;
+}
+
+.ladb-fake-header {
+  position: relative;
+  background-color: @ladb-global-dark-bg;
+  margin: 0 -@ladb-gutter;
+  padding: 0 @ladb-gutter;
+  border-bottom: 1px solid @ladb-global-border;
+}
+
+header {
+  position: relative;
+
+  .ladb-header {
+    background-color: @ladb-global-dark-bg;
+    padding: 0;
+    border-bottom: 1px solid @ladb-global-border;
+  }
+
+  .ladb-alerts {
+
+    &.ladb-alerts-translucent {
+      position: absolute;
+      top: @ladb-topbar-height;
+      left: 0;
+      right: 0;
+      z-index: @ladb-zindex-map-area + 1;
+    }
+
+    .alert {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      margin: 0;
+      padding: 10px 10px 5px 10px;
+      text-align: center;
+
+      p {
+       padding: 0 0 5px 0;
+      }
+
+     }
+
+  }
+
+  .nav-tabs {
+    margin-bottom: -1px;
+  }
+
+  .ladb-heading {
+    margin: 15px 0 15px 0;
+    color: @ladb-global-dark-color;
+    line-height: 30px;
+    font-size: 2em;
+  }
+
+  .ladb-avatar-header {
+    margin-top: 13px;
+    margin-bottom: 13px;
+    min-height: 64px;
+
+    .ladb-avatar {
+      float: left;
+    }
+
+    .ladb-body {
+      margin-left: 74px;
+    }
+
+    .ladb-heading {
+      margin-bottom: 0;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      color: @ladb-global-color;
+      font-size: 30px;
+
+      small {
+        color: @ladb-global-dark-color;
+      }
+
+    }
+
+    .ladb-subheading {
+      color: @ladb-global-dark-color;
+      margin-left: 2px;
+
+      .ladb-subblock {
+        display: inline-block;
+
+        a:hover {
+          text-decoration: none;
+
+          i {
+            opacity: 0.5
+          }
+
+        }
+
+      }
+
+      i {
+        color: @ladb-global-dark-color;
+      }
+
+    }
+
+    .ladb-age {
+      .age();
+      color: @ladb-global-dark-color;
+    }
+
+  }
+
+  .ladb-header-tools {
+    margin: 15px 0 15px 0;
+    float: right;
+
+    form {
+      display: inline;
+      margin-bottom: 0px;
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+// phone & tablet
+@media screen and (max-width: @ladb-screen-tablet-max) {
+  header .ladb-avatar-header .ladb-header-tools {
+    float: none;
+    text-align: right;
+  }
+}
+

@@ -1,0 +1,10 @@
+
+{# set find #}
+
+<div class="alert alert-info">
+    <p><i class="ladb-icon-warning"></i> Cette trouvaille est un brouillon. Elle n'est visible que par vous, depuis votre <a href="{{ path('core_user_show_finds', { 'username':app.user.usernameCanonical }) }}" target="_blank" class="alert-link">liste des trouvailles</a>. Pour la rendre publique, vous devez la publier.</p>
+    <p class="text-right"><a href="#publish_find_modal" data-toggle="modal" class="btn btn-primary"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></p>
+</div>
+{% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_find_modal', 'title':('default.publishing'|trans()), 'entity':find } %}
+    {% block whatItIs %}La publication de la trouvaille <strong>{{ find.title }}</strong> la rendra publique.{% endblock %}
+{% endembed %}

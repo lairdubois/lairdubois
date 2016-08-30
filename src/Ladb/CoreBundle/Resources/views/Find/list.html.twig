@@ -1,0 +1,27 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set pageTitle = 'find.list'|trans() %}
+{% set pageDescription = 'find.description'|trans() %}
+
+{% set navSection = 'finds' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Find:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {#{% embed 'LadbCoreBundle:Find:_list-filterbar.part.html.twig' %}#}
+        {#{% set heading = 'find.list'|trans() %}#}
+        {#{% block filterbarRightContent%}#}
+            {#<a href="{{ path('core_find_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'find.new'|trans() }}</a>#}
+        {#{% endblock %}#}
+    {#{% endembed %}#}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Find:_list-n.part.html.twig' %}
+{% endblock %}

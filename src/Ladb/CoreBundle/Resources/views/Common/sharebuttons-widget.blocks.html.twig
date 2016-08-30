@@ -1,0 +1,84 @@
+{% block sharebuttonsJavascript %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".ladb-sharebuttons").ladbShareButtonsBuilder();
+        });
+    </script>
+{% endblock %}
+
+{% block sharebuttonsList %}
+
+    {% set sbUrl = sbUrl|default(ladb_entity_url_action(entity)) %}
+    {% set sbTitle = sbTitle|default(pageTitle) %}
+    {% set sbDescription = sbDescription|default(pageDescription) %}
+    {% set sbImage = sbImage|default(entity.mainPicture is defined and entity.mainPicture is not null ? (entity.mainPicture.webPath|imagine_filter('600x600i')) : pageImage is iterable ? pageImage[0] : pageImage) %}
+    {% set sbTooltip = sbTooltip|default('cette page') %}
+    {% set sbTooltipPlacement = sbTooltipPlacement|default('left') %}
+
+    <ul>
+        <li>
+            <a class="ladb-sharebuttons-btn ladb-sharebuttons-btn-facebook"
+               data-sb-network="facebook"
+               data-sb-url="{{ sbUrl }}"
+               data-sb-width="600"
+               data-sb-height="368"
+               title="Partager {{ sbTooltip }} sur Facebook"
+               data-tooltip="tooltip"
+               data-placement="{{ sbTooltipPlacement }}">
+                <i class="ladb-sharebuttons-btn-icon ladb-icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a class="ladb-sharebuttons-btn ladb-sharebuttons-btn-twitter"
+               data-sb-network="twitter"
+               data-sb-url="{{ sbUrl }}"
+               data-sb-text="{{ sbTitle }} {{ sbUrl }}"
+               {% if hashtags is defined %} data-sb-hashtags="{{ hashtags }}"{% endif %}
+               data-sb-width="600"
+               data-sb-height="258"
+               title="Partager {{ sbTooltip }} sur Twitter"
+               data-tooltip="tooltip"
+               data-placement="{{ sbTooltipPlacement }}">
+                <i class="ladb-sharebuttons-btn-icon ladb-icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a class="ladb-sharebuttons-btn ladb-sharebuttons-btn-google-plus"
+               data-sb-network="google-plus"
+               data-sb-url="{{ sbUrl }}"
+               data-sb-width="500"
+               data-sb-height="505"
+               title="Partager {{ sbTooltip }} sur Google+"
+               data-tooltip="tooltip"
+               data-placement="{{ sbTooltipPlacement }}">
+                <i class="ladb-sharebuttons-btn-icon ladb-icon-google-plus"></i>
+            </a>
+        </li>
+        <li>
+            <a class="ladb-sharebuttons-btn ladb-sharebuttons-btn-pinterest"
+               data-sb-network="pinterest"
+               data-sb-url="{{ sbUrl }}"
+               {% if sbImage is defined %} data-sb-media="{{ sbImage }}"{% endif %}
+               data-sb-description="{{ sbTitle }} - {{ sbDescription }}"
+               data-sb-width="750"
+               data-sb-height="322"
+               title="Partager {{ sbTooltip }} sur Pinterest"
+               data-tooltip="tooltip"
+               data-placement="{{ sbTooltipPlacement }}">
+                <i class="ladb-sharebuttons-btn-icon ladb-icon-pinterest"></i>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block sharebuttonsInlineHorizontal %}
+    <div class="ladb-sharebuttons ladb-sharebuttons-inline-horizontal" data-sb-counters="false">
+        {{ block('sharebuttonsList') }}
+    </div>
+{% endblock %}
+
+{% block sharebuttonsFloatVertical %}
+    <div class="ladb-sharebuttons ladb-sharebuttons-float-vertical ladb-visible-desktop" data-sb-counters="true">
+        {{ block('sharebuttonsList') }}
+    </div>
+{% endblock %}

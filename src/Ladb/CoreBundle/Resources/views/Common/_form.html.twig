@@ -1,0 +1,106 @@
+{% extends 'LadbCoreBundle::layout.html.twig' %}
+
+{# set formAction #}
+
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' 'LadbCoreBundle:Block:_form-theme.html.twig' %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var unsaved = false;
+        var highlightedSection = null;
+        function highlightSection(section) {
+            if (highlightedSection != null) {
+                highlightedSection.removeClass("ladb-highlighted");
+            }
+            section.addClass("ladb-highlighted");
+            highlightedSection = section;
+        }
+        function scrollToSection(sectionId) {
+            if (sectionId == "") {
+                return;
+            }
+            var section = $(sectionId + "_section");
+            if (section.length > 0) {
+                highlightSection(section);
+                section.ladbScrollTo();
+            }
+        }
+        function markAsUnsaved() {
+            unsaved = true;
+            $(".ladb-form-save-btn").removeClass("disabled");
+        }
+        $(window)
+                .on("hashchange", function() {
+                    scrollToSection(window.location.hash);
+                })
+                .on('beforeunload', function() {
+                    if (unsaved){
+                        return "Ce formulaire contient des modifications non enregistrées.";
+                    }
+                });
+        $(document)
+                .ready(function() {
+                    scrollToSection(window.location.hash);
+                })
+                .on("change", "input[type='text'], input[type='url'], input[type='email'], input[type='checkbox'], input[type='radio'], input[type='hidden'], input[type='time'], textarea", function(e) {
+                    markAsUnsaved();
+                })
+                .on("keypress", function(event) {
+                    var $target = $(event.target);
+                    if ($target.is("textarea") || $target.is("input")) {
+                        markAsUnsaved();
+                    }
+                    if (event.which == '13') {
+                        if (!$target.is("textarea") && !$target.is(":button,:submit") && !$target.is(".ladb-search-field")) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+        $(".ladb-form-save-btn")
+                .on("click", function() {
+                    unsaved = false;
+                })
+                .addClass("disabled");
+        $("input[type=text]").first().focus();
+        $(function () {
+            $("[data-form-widget=collection]").each(function () {
+                new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainer %}{% endblock %}
+
+{% block bodyContainerContent %}
+    {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+        <div class="row">
+            <div class="col-md-3 col-xs-12">
+                <aside class="ladb-form-sidenav" data-spy="affix" data-offset-top="0">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h1 class="panel-title">{% block sidenavHeading %}{% endblock %}</h1></div>
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                {% block sidenav %}{% endblock %}
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            {% block form_buttons %}{% endblock %}
+                        </div>
+                    </div>
+                    <small class="text-muted text-center"><p>Vous êtes perdu ? <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':'zeloko' }) }}" target="_blank">Demandez de l'aide</a>.</p></small>
+                </aside>
+            </div>
+            <div class="ladb-form-sections col-md-9 col-xs-12">
+                {% block sections %}
+                    <p class="ladb-translucent"><em>Les champs marqués d'un <span class="ladb-mandatory">*</span> sont obligatoires.</em></p>
+                    {{ form_errors(form) }}
+                {% endblock %}
+                {{ form_rest(form) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,12 @@
+Bonjour {{ recipientUser.displayname }},
+
+Bienvenue sur **L'Air du Bois** !
+
+Pour retrouver tout de suite plus d'informations sur ce portail, je vous invite à consulter la [FAQ]({{ path('core_faq_question_list') }}) et le [Blog]({{ path('core_blog_post_list') }}).
+
+Vous pouvez aussi éditer vos [paramètres]({{ path('core_user_settings') }}) pour personnaliser votre [page perso]({{ path('core_user_show', { 'username':recipientUser.usernameCanonical }) }}).
+
+L'Air du Bois est un espace de **partage** et d'**échange**, merci d'avoir choisi d'y prendre part.
+
+Bons copeaux,
+Zeloko

@@ -1,0 +1,248 @@
+//
+// LADB Masonry
+//
+
+.ladb-masonry-column, .ladb-masonry-column-wide {
+  padding: 0 10px 20px 10px;
+
+  >.ladb-box {
+    .list-box();
+    .list-box-hover();
+    padding: 4px;
+
+    >.ladb-content {
+
+      .ladb-image-overlay {
+        position: absolute;
+        top: 5px;
+        right: 7px;
+        color: #fff;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
+      }
+
+      >.ladb-counters {
+        position: relative;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        height: 20px;
+        line-height: 20px;
+
+        > li {
+          list-style: none;
+          font-size: 85%;
+
+          &.ladb-counter {
+            float: right;
+            color: @ladb-global-light-color;
+            padding: 0 5px 0 0;
+          }
+
+          &.ladb-linkto {
+            float: left;
+
+            > a {
+              text-decoration: none;
+              color: #000;
+              padding: 2px 0 2px 5px;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+    >.ladb-footer {
+      border-top: 1px solid @ladb-global-border;
+      padding: 4px 0 0 4px;
+      color: @ladb-global-light-color;
+      font-size: 85%;
+
+      a {
+        font-weight: bold;
+      }
+
+      .ladb-age {
+        .age();
+      }
+
+    }
+
+  }
+
+}
+
+.ladb-masonry-column {
+
+  >.ladb-box {
+
+    >.ladb-content {
+      padding: 0;
+
+      h2 {
+        font-size: 100%;
+        margin-top: 0;
+        display: inline;
+      }
+
+      .ladb-overlay-caption {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 15px 10px 8px 10px;
+        color: #fff;
+        #gradient > .vertical(rgba(0, 0, 0, 0), rgba(0, 0, 0, .3), 0%, 100%);
+        text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
+      }
+
+      >.ladb-counters {
+        height: 30px;
+        line-height: 30px;
+      }
+
+    }
+
+  }
+
+}
+
+.ladb-masonry-column-wide {
+
+  >.ladb-box {
+
+    >.ladb-content {
+      padding: 6px 6px 10px 6px;
+      min-height: 157px;
+
+      >.ladb-heading {
+
+        h2 {
+          font-size: 130%;
+          margin-top: 0;
+        }
+
+      }
+
+      >.ladb-image {
+        position: relative;
+        float: left;
+        width: 180px;
+        height: 180px;
+        border: 1px solid #ddd;
+
+        &+.ladb-body {
+          padding-left: 180px + (@ladb-gutter / 2);
+        }
+
+      }
+
+      >.ladb-body {
+        color: #555;
+        min-height: 160px;
+      }
+
+      >.ladb-counters {
+        padding-left: 190px;
+      }
+
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+// phone portrait
+@media screen and (max-width: @ladb-screen-phone) {
+
+  .ladb-masonry-column {
+    width: 100%;
+  }
+
+  .ladb-masonry-column-wide {
+    width: 100%;
+
+    >.ladb-box {
+
+      > .ladb-content {
+
+        > .ladb-image {
+          width: 128px;
+          height: 128px;
+
+          & + .ladb-body {
+            padding-left: 128px + (@ladb-gutter / 2);
+          }
+
+        }
+
+        > .ladb-body {
+          min-height: 128px;
+        }
+
+        >.ladb-counters {
+          padding-left: 138px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+// phone landscape
+@media screen and (min-width: @ladb-screen-phone) and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-masonry-column {
+    width: 50%;
+  }
+
+  .ladb-masonry-column-wide {
+    width: 100%;
+  }
+
+}
+
+// tablet
+@media screen and (min-width: @ladb-screen-tablet) and (max-width: @ladb-screen-tablet-max) {
+
+  .ladb-masonry-column {
+    width: 33.3%;
+
+    .ladb-overlay-caption {
+      font-size: 80%;
+    }
+
+  }
+
+  .ladb-masonry-column-wide {
+    width: 100%;
+  }
+
+}
+
+// desktop
+@media screen and (min-width: @ladb-screen-desktop) {
+
+  .ladb-masonry-column {
+    width: 33.3%;
+
+    .ladb-overlay-caption {
+      font-size: 90%;
+    }
+
+  }
+
+  .ladb-masonry-column-wide {
+    width: 50%;
+  }
+
+}

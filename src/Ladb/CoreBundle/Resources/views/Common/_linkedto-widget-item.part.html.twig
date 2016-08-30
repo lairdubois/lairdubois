@@ -1,0 +1,6 @@
+<div class="col-md-3 col-xs-6 ladb-item">
+    <a href="{{ path }}" class="thumbnail">
+        <img src="{{ (picture is not null ? picture.webPath : 'avatar.png')|imagine_filter('128x128o') }}">
+        <div class="ladb-caption"><i class="{{ icon }}"></i> {{ caption }}</div>
+    </a>
+</div>

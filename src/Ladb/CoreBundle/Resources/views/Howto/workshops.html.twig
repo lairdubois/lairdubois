@@ -1,0 +1,31 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set navSection = 'howtos' %}
+
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':howto } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if workshops.count == 0 %}
+        <div class="alert alert-info">
+            Aucun atelier n'est associé à ce pas à pas.
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Workshop:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_howto_workshops_filter' %}
+            {% set filterPathParameters = { 'id':howto.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ howto.workshops.count }} {{ 'workshop.choice.workshops'|transchoice(howto.workshops.count) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Workshop:_list-n.part.html.twig' %}
+{% endblock %}

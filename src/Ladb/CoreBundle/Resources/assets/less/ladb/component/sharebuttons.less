@@ -1,0 +1,78 @@
+//
+// LADB Shareaholic
+//
+
+.ladb-sharebuttons-inline-horizontal {
+
+  li {
+    display: inline;
+  }
+
+}
+
+.ladb-sharebuttons-float-vertical {
+  position: fixed;
+  top: 240px;
+  right: 10px;
+}
+
+.ladb-sharebuttons {
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ladb-sharebuttons-btn {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    padding: 8px 8px;
+    margin: 5px;
+    text-align: center;
+    line-height: 0;
+    background-color: black;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      text-decoration: none;
+      opacity: 0.8;
+    }
+
+    &.ladb-sharebuttons-btn-facebook {
+      background-color: @ladb-facebook-color;
+    }
+
+    &.ladb-sharebuttons-btn-twitter {
+      background-color: @ladb-twitter-color;
+    }
+
+    &.ladb-sharebuttons-btn-google-plus {
+      background-color: @ladb-google-plus-color;
+    }
+
+    &.ladb-sharebuttons-btn-pinterest {
+      background-color: @ladb-pinterest-color;
+    }
+
+    .ladb-sharebuttons-btn-icon {
+      font-size: 24px;
+
+      &:before {
+        color: white;
+      }
+
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+
+  }
+
+}
+

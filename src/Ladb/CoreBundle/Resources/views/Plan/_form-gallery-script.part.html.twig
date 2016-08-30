@@ -1,0 +1,36 @@
+
+{# set fieldId #}
+{# set maxPlanCount #}
+{# set excludedId (facultative) #}
+
+<script>
+    function updatePlansForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#plan_thumbnails").find("li.ladb-plan").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(5); {# 5 = "plan_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount == {{ maxPlanCount }}) {
+            $("#linkto_plan_buttons").hide();
+        } else {
+            $("#linkto_plan_buttons").show();
+        }
+    }
+    function planAdded(data) {
+        $("#plan_thumbnails").append(data);
+        updatePlansForm();
+        $("#linkto_plan_modal_iframe").attr("src", "");
+        $("#linkto_plan_modal").find("button.close").click();
+    }
+    function planRemoved() {
+        updatePlansForm();
+    }
+    function updatePlanChoiceModal() {
+        $('#linkto_plan_modal_iframe').attr('src', '{{ path('core_plan_list', { 'layout':'choice' }) }}&ex=' + $("#{{ fieldId }}").val(){% if excludedId is defined and excludedId is not empty %}+',{{ excludedId }}'{% endif %});
+    }
+</script>

@@ -1,0 +1,31 @@
+diff:
+  ago:
+    year: '[0,1]il y a %count% an|]1,Inf]il y a %count% ans'
+    month: il y a %count% mois
+    day: '[0,1]il y a %count% jour|]1,Inf]il y a %count% jours'
+    hour: '[0,1]il y a %count% heure|]1,Inf]il y a %count% heures'
+    minute: '[0,1]il y a %count% minute|]1,Inf]il y a %count% minutes'
+    second: A l'instant
+  in:
+    year: '[0,1]dans %count% an|]1,Inf]dans %count% ans'
+    month: dans %count% mois
+    day: '[0,1]dans %count% jour|]1,Inf]dans %count% jours'
+    hour: '[0,1]dans %count% heure|]1,Inf]dans %count% heures'
+    minute: '[0,1]dans %count% minute|]1,Inf]dans %count% minutes'
+    second: A l'instant
+
+month:
+  short:
+    jan: jan
+    feb: fev
+    mar: mar
+    apr: avr
+    may: mai
+    jun: jui
+    jul: jul
+    aug: aoû
+    sep: sep
+    oct: oct
+    nov: nov
+    dec: dec
+

@@ -1,0 +1,670 @@
+imports:
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: %kernel.debug%
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:
+        assets_base_urls:
+            http:   ["%router.request_context.scheme%://%router.request_context.host%"]
+        engines:    ['twig']
+    default_locale:  %locale%
+    trusted_proxies: ~
+    session:
+        save_path: "%kernel.root_dir%/sessions"
+    fragments:       ~
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ LadbCoreBundle, FOSUserBundle, TwigBundle ]
+    #java: /usr/bin/java
+    filters:
+        less:
+            node: %node%
+            node_paths: %node_paths%
+            apply_to: "\.less$"
+        closure:
+            jar: %kernel.root_dir%/Resources/java/compiler.jar
+        yui_css:
+            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+        mappings:
+            gedmo_loggable:
+                type: annotation
+                prefix: Gedmo\Loggable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+                is_bundle: false
+            gedmo_tree:
+                type: annotation
+                prefix: Gedmo\Tree\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                alias: GedmoTree # this one is optional and will default to the name set for the mapping
+                is_bundle: false
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
+        dql:
+            string_functions:
+                GROUP_CONCAT: Ladb\CoreBundle\DoctrineExtensions\Query\Mysql\GroupConcat
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:
+        type: file
+        path: "%kernel.root_dir%/spool"
+
+# StofDoctrineExtensions
+stof_doctrine_extensions:
+    default_locale: %locale%
+
+    # Only used if you activated the Uploadable extension
+    uploadable:
+        # Default file path: This is one of the three ways you can configure the path for the Uploadable extension
+        default_file_path:       %kernel.root_dir%/../web/uploads
+
+        # Mime type guesser class: Optional. By default, we provide an adapter for the one present in the HttpFoundation component of Symfony
+        mime_type_guesser_class: Stof\DoctrineExtensionsBundle\Uploadable\MimeTypeGuesserAdapter
+
+        # Default file info class implementing FileInfoInterface: Optional. By default we provide a class which is prepared to receive an UploadedFile instance.
+        default_file_info_class: Stof\DoctrineExtensionsBundle\Uploadable\UploadedFileInfo
+
+        validate_writable_directory: true # Fix issue https://github.com/stof/StofDoctrineExtensionsBundle/pull/187
+    orm:
+        default:
+            loggable: true
+            sluggable: true
+            timestampable: true
+            softdeleteable: true
+
+# FOSUserBundle
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Ladb\CoreBundle\Entity\User
+    use_listener: false
+    from_email:
+        address:        noreply@lairdubois.fr
+        sender_name:    L'Air du Bois
+    registration:
+        confirmation:
+            enabled:    false
+
+# LiipImagineBundle
+liip_imagine:
+
+    resolvers:
+        default:
+            web_path:
+                web_root: %kernel.root_dir%/../web
+                cache_prefix: media/cache
+
+    loaders:
+        default:
+            filesystem:
+                data_root: %kernel.root_dir%/../uploads
+
+    driver:               gd
+    cache:                default
+    data_loader:          default
+    default_image:        null
+    controller:
+        filter_action:         liip_imagine.controller:filterAction
+        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+
+    filter_sets:
+        cache: ~
+
+        # Outbound
+
+        32x32o:
+            filters:
+                thumbnail: { size: [32, 32], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        50x50o: # Spotlight avatar
+            filters:
+                thumbnail: { size: [50, 50], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        64x64o:
+            filters:
+                thumbnail: { size: [64, 64], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        80x60o: # Find linkedTo
+            filters:
+                thumbnail: { size: [80, 60], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        128x128o:
+            filters:
+                thumbnail: { size: [128, 128], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        126x170o: # Wood (showcase small)
+            filters:
+                thumbnail: { size: [126, 170], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        180x180o: # Block gallery (small)
+            filters:
+                thumbnail: { size: [180, 180], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        282x280o: # Wood (showcase wide + cards + list thumbnail)
+            filters:
+                upscale: { min: [282, 280] }
+                thumbnail: { size: [282, 280], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        282x200o: # Provider (showcase wide)
+            filters:
+                upscale: { min: [282, 200] }
+                thumbnail: { size: [282, 200], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        400x400o: # Page image
+            filters:
+                thumbnail: { size: [400, 400], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        505x180o: # Banner
+            filters:
+                thumbnail: { size: [505, 180], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        594x294o: # Blog main picture
+            filters:
+                thumbnail: { size: [594, 294], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        600x450o: # Block gallery (large)
+            filters:
+                thumbnail: { size: [600, 450], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+        800x350o: # Spotlight
+            filters:
+                thumbnail: { size: [800, 350], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
+
+        # Inset
+
+        240x300i:
+            filters:
+                thumbnail: { size: [240, 300], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+        300x300i: # Picture form
+            filters:
+                thumbnail: { size: [300, 300], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+        300x550i: # list thumbnail
+            filters:
+                thumbnail: { size: [300, 550], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+        600x600i: # Showcase & Share
+            filters:
+                thumbnail: { size: [600, 600], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+        800x800i: # Spotlight
+            filters:
+                thumbnail: { size: [800, 800], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+        1024x1024i: # Full gallery picture
+            filters:
+                thumbnail: { size: [1024, 1024], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+
+        # Widen
+
+        598w: # Sticker
+            filters:
+                relative_resize: { widen: 598 }
+            post_processors:
+                ladb_imageoptimizer: {}
+
+# FOSElasticaBundle
+fos_elastica:
+    clients:
+        default: { host: %elasticsearch_host%, port: %elasticsearch_port% }
+    indexes:
+        ladb:
+            client: default
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            title_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter : [lowercase, fr_stemmer, asciifolding, fr_elision]
+                            name_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter : [lowercase, fr_stemmer, asciifolding, fr_elision]
+                            body_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter : [lowercase, fr_stemmer, fr_stop, asciifolding, fr_elision]
+                            exact_lowercase_analyzer:
+                                type: custom
+                                tokenizer: keyword
+                                filter : [lowercase, asciifolding]
+                            ngram_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter : [lowercase, asciifolding, my_ngram]
+                        filter:
+                            fr_stop:
+                                type: stop
+                                stopwords: _french_
+                            fr_stemmer:
+                                type: stemmer
+                                name: french
+                            fr_elision:
+                                type: elision
+                                articles: [l, m, t, qu, n, s, j, d]
+                            my_ngram:
+                                type: nGram
+                                min_gram: 3
+                                max_gram: 5
+            types:
+                user:
+                    mappings:
+                        displayname: { boost: 2, analyzer: name_analyzer }
+                        fullname: { boost: 1, analyzer: name_analyzer }
+                        username: { analyzer: name_analyzer }
+                        createdAt: { type: date }
+                        followerCount: { type: integer }
+                        recievedLikeCount: { type: integer }
+                        accountType: { type: short }
+                        location:
+                        geoPoint: { type: geo_point }
+                        skills:
+                            type: "object"
+                            properties:
+                                label:
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\User
+                        provider:
+                            query_builder_method: "createIsEnabledQueryBuilder"
+                        listener:
+                            update: false
+                creation:
+                    mappings:
+                        title: { boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        bodyBlockVideoCount: { type: integer }
+                        planCount: { type: integer }
+                        howtoCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                name: { boost: 2 }
+                        woods:
+                            type: "object"
+                            properties:
+                                label: { analyzer: body_analyzer }
+                        tools:
+                            type: "object"
+                            properties:
+                                label: { analyzer: body_analyzer }
+                        finishes:
+                            type: "object"
+                            properties:
+                                label: { analyzer: body_analyzer }
+                        license:
+                            type: "object"
+                            properties:
+                                strippedname:
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Wonder\Creation
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                workshop:
+                    mappings:
+                        title: { boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        bodyBlockVideoCount: { type: integer }
+                        planCount: { type: integer }
+                        howtoCount: { type: integer }
+                        area: { type: integer }
+                        geoPoint: { type: geo_point }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                name: { boost: 2 }
+                        license:
+                            type: "object"
+                            properties:
+                                strippedname:
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Wonder\Workshop
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                plan:
+                    mappings:
+                        title: { boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        downloadCount: { type: integer }
+                        creationCount: { type: integer }
+                        howtoCount: { type: integer }
+                        workshopCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                name: { boost: 2 }
+                        license:
+                            type: "object"
+                            properties:
+                                strippedname:
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Wonder\Plan
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                howto:
+                    mappings:
+                        title: { boost: 3, analyzer: title_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        bodyBlockVideoCount: { type: integer }
+                        creationCount: { type: integer }
+                        planCount: { type: integer }
+                        workshopCount: { type: integer }
+                        isWorkInProgress: { type: boolean }
+                        articles:
+                            type: "object"
+                            properties:
+                                title: { boost: 3, analyzer: title_analyzer }
+                                body: { analyzer: body_analyzer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                name: { boost: 2 }
+                        license:
+                            type: "object"
+                            properties:
+                                strippedname:
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Howto\Howto
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                find:
+                    mappings:
+                        title: { boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        kind: { type: short }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                name: { boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Find\Find
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                post:
+                    mappings:
+                        title: { boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        tags:
+                            type: "object"
+                            properties:
+                                name: { boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Blog\Post
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                question:
+                    mappings:
+                        title: { boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        weight: { type: integer }
+                        tags:
+                            type: "object"
+                            properties:
+                                name: { boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Faq\Question
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                wood:
+                    mappings:
+                        name: { boost: 2, analyzer: name_analyzer }
+                        scientificname: { analyzer: name_analyzer }
+                        englishname: { analyzer: name_analyzer }
+                        density: { type: integer }
+                        origin: { analyzer: name_analyzer }
+                        utilization: { analyzer: name_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Knowledge\Wood
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                provider:
+                    mappings:
+                        sign: { boost: 2, analyzer: name_analyzer }
+                        brand: { type: string, analyzer: exact_lowercase_analyzer }
+                        address: { analyzer: body_analyzer }
+                        geographicalAreas: { analyzer: body_analyzer }
+                        description: { analyzer: body_analyzer }
+                        products: { analyzer: body_analyzer }
+                        services: { analyzer: body_analyzer }
+                        woods: { analyzer: body_analyzer }
+                        geoPoint: { type: geo_point }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        inStoreSelling: { type: boolean }
+                        mailOrderSelling: { type: boolean }
+                        saleToIndividuals: { type: boolean }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Knowledge\Provider
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                tag:
+                    mappings:
+                        name: { analyzer: ngram_analyzer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Tag
+                        provider: ~
+                        listener: ~
+                input_skill:
+                    mappings:
+                        label: { analyzer: ngram_analyzer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Input\Skill
+                        provider: ~
+                        listener: ~
+                input_wood:
+                    mappings:
+                        label: { analyzer: ngram_analyzer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Input\Wood
+                        provider: ~
+                        listener: ~
+                input_tool:
+                    mappings:
+                        label: { analyzer: ngram_analyzer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Input\Tool
+                        provider: ~
+                        listener: ~
+                input_finish:
+                    mappings:
+                        label: { analyzer: ngram_analyzer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Input\Finish
+                        provider: ~
+                        listener: ~
+
+# IvoryGoogleMapBundle
+ivory_google_map:
+    geocoder:
+        enabled: true
+        provider:
+            locale: %locale%
+    map:
+        map_options:
+            disableDefaultUI: true
+        width: 100%
+        height: 100%
+        language: fr
+
+# EWZRecaptchaBundle
+#ewz_recaptcha:
+#    public_key:   6Le9CekSAAAAAFKfMduUfCiRrN3ak13YaaUk-psu
+#    private_key:  6Le9CekSAAAAAOFchweVQbcUXLR7tQrGwuuHjKGN
+#    secure:       false
+#    locale_key:   kernel.default_locale

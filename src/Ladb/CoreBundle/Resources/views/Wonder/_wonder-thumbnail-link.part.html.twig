@@ -1,0 +1,8 @@
+
+{# set showPath #}
+{# set wonder #}
+{# set classes (facultative) #}
+
+<a href="{{ path(showPath, { 'id':wonder.sluggedId }) }}" class="thumbnail{% if classes is defined %} {{ classes }}{% endif %}" data-tooltip="tooltip" title="{{ wonder.title }} {{ 'default.by'|trans() }} {{ wonder.user.displayname }}">
+    {% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'picture':wonder.mainPicture, 'width':'240', 'height':'300', 'filterMode':'i', 'alt':wonder.title, 'attributes':'nopin="nopin"', 'noMicrodata':true } %}
+</a>

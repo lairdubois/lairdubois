@@ -1,0 +1,32 @@
+{% extends 'LadbCoreBundle::email-layout.html.twig' %}
+
+{% block content %}
+    <p style="margin: 5px 0 5px 0;">Voici les nouveautés <em>L'Air du Bois</em> de la semaine.</p>
+    {% if posts is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':posts, 'type':'post', 'typePrefix':'blog_', 'transPrefix':'blog' } %}
+    {% endif %}
+    {% if creations is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':creations, 'type':'creation' } %}
+    {% endif %}
+    {% if plans is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':plans, 'type':'plan' } %}
+    {% endif %}
+    {% if howtos is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':howtos, 'type':'howto' } %}
+    {% endif %}
+    {% if howtoArticles is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':howtoArticles, 'type':'article', 'typePrefix':'howto_', 'transPrefix':'howto', 'noShowMore':true } %}
+    {% endif %}
+    {% if woods is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':woods, 'type':'wood', 'transPrefix':'knowledge.wood' } %}
+    {% endif %}
+    {% if providers is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':providers, 'type':'provider', 'transPrefix':'knowledge.provider' } %}
+    {% endif %}
+    {% if workshops is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':workshops, 'type':'workshop' } %}
+    {% endif %}
+    {% if finds is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':finds, 'type':'find' } %}
+    {% endif %}
+{% endblock %}

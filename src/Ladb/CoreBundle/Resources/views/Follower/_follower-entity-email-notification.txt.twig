@@ -1,0 +1,9 @@
+{% extends 'LadbCoreBundle::email-layout.txt.twig' %}
+
+{% block content %}
+{% block message %}, cliquez sur le lien suivant:
+{{ ladb_entity_url_action(entity) }}
+{% endblock %}
+
+Vous recevez cet email parce que vous suivez {{ actorUser.displayname|raw }}.
+{% endblock %}

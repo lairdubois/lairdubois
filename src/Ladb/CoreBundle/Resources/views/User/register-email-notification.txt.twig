@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle::email-layout.txt.twig' %}
+
+{% block content %}
+    Un nouvel utilisateur vient d'être créé : {{ actorUser.displayname|raw }}.
+
+    {{ url('core_user_show', { 'username':actorUser.usernameCanonical }) }}
+
+    EMAIL : {{ actorUser.email }}
+    REMOTE_ADDR : {{ app.request.server.get('REMOTE_ADDR') }}
+    HTTP_USER_AGENT : {{ app.request.server.get('HTTP_USER_AGENT') }}
+{% endblock %}

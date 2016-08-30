@@ -1,0 +1,13 @@
+<div class="ladb-topbar">
+    <ul class="ladb-topbar-left">
+        {% block topbarLeftContent %}
+            <li class="ladb-hidden-mobile"><a href="{{ path('core_welcome') }}" class="ladb-home-link"><i class="ladb-icon-home ladb-icon-lg"></i></a></li>
+        {% endblock %}
+    </ul>
+    <ul class="ladb-topbar-right">
+        {% block topbarRightContent %}{% endblock %}
+    </ul>
+    <div class="ladb-topbar-brand">
+        <a href="{{ path('core_welcome') }}"><span class="ladb-icon-logo"></span></a>
+    </div>
+</div>

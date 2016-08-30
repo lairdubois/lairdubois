@@ -1,0 +1,5 @@
+
+{# set title (falcultative) #}
+{# set icon (falcultative) #}
+
+<li><a href="#plans"><i class="{{ icon|default('ladb-icon-plan') }}"></i> {{ title is defined ? title : ('plan.choice.plans'|transchoice(2)|capitalize) }}</a></li>

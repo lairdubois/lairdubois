@@ -1,0 +1,25 @@
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
+
+<div class="col-xs-12">
+    {{ form_errors(form) }}
+    <fieldset>
+        <div class="form-group">
+            {{ form_label(form.legend, 'Légende de l\'image') }}
+            {{ form_errors(form.legend) }}
+            {{ form_widget(form.legend, { 'attr':{ 'class':'form-control' } }) }}
+        </div>
+        <div class="row{% if not is_granted("ROLE_ADMIN") %} hidden{% endif %}">
+            <div class="form-group col-xs-6">
+                {{ form_label(form.centerX100, 'CenterX') }}
+                {{ form_errors(form.centerX100) }}
+                {{ form_widget(form.centerX100, { 'attr':{ 'class':'form-control' } }) }}
+            </div>
+            <div class="form-group col-xs-6">
+                {{ form_label(form.centerY100, 'CenterY') }}
+                {{ form_errors(form.centerY100) }}
+                {{ form_widget(form.centerY100, { 'attr':{ 'class':'form-control' } }) }}
+            </div>
+        </div>
+        {{ form_rest(form) }}
+    </fieldset>
+</div>

@@ -1,0 +1,20 @@
+{# set event #}
+{# set topRight (facultative) #}
+
+{% set topRight = topRight|default(false) %}
+
+<div class="ladb-event-calendar{% if topRight %} ladb-top-right{% else %} ladb-bottom-right{% endif %}">
+    <div class="pull-left">
+        <div class="ladb-day">{{ event.startDate|date('d') }}</div>
+        <div class="ladb-month">{{ (('month.short.'~(event.startDate|date('M')|lower))|trans({}, 'date'))|upper }}</div>
+        <div class="ladb-year">{{ event.startDate|date('Y') }}</div>
+    </div>
+    {% if event.endDate is not null and event.startDate|date('d') != event.endDate|date('d') or event.duration.d >= 1 %}
+        <span class="ladb-arrow">></span>
+        <div class="pull-right">
+            <div class="ladb-day">{{ event.endDate|date('d') }}</div>
+            <div class="ladb-month">{{ (('month.short.'~(event.endDate|date('M')|lower))|trans({}, 'date'))|upper }}</div>
+            <div class="ladb-year">{{ event.endDate|date('Y') }}</div>
+        </div>
+    {% endif %}
+</div>

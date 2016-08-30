@@ -1,0 +1,45 @@
+//
+// Alerts
+// --------------------------------------------------
+
+
+// Base styles
+// -------------------------
+
+.ladb-alerts-translucent {
+
+  .alert {
+    border: none;
+
+    &.alert-success {
+      background-color: @state-success-translucent-bg;
+    }
+
+    &.alert-info {
+      background-color: @state-info-translucent-bg;
+    }
+
+    &.alert-warning {
+      background-color: @state-warning-translucent-bg;
+    }
+
+    &.alert-danger {
+      background-color: @state-danger-translucent-bg;
+    }
+
+  }
+
+}
+
+.alert {
+  border-radius: 0;
+}
+
+.alert-error {
+  .alert-danger();
+}
+
+.alert-btn-group {
+  display: block;
+  margin-top: 5px;
+}

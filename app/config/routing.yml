@@ -1,0 +1,136 @@
+# FOSUserBundle
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /rejoindre
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /parametres
+
+fos_user_profile_show:
+    path:   /parametres
+    defaults:  { _controller: LadbCoreBundle:User:settings }
+
+# Imagine Bundle
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+# Ladb Bundles
+
+ladb_core:
+    resource: "Ladb\\CoreBundle\\Controller\\DefaultController"
+    type:     annotation
+
+ladb_core_api:
+    resource: "Ladb\\CoreBundle\\Controller\\ApiController"
+    type:     annotation
+
+ladb_core_creation:
+    resource: "Ladb\\CoreBundle\\Controller\\CreationController"
+    type:     annotation
+
+ladb_core_workshop:
+    resource: "Ladb\\CoreBundle\\Controller\\WorkshopController"
+    type:     annotation
+
+ladb_core_plan:
+    resource: "Ladb\\CoreBundle\\Controller\\PlanController"
+    type:     annotation
+
+ladb_core_howto:
+    resource: "Ladb\\CoreBundle\\Controller\\HowtoController"
+    type:     annotation
+
+ladb_core_find:
+    resource: "Ladb\\CoreBundle\\Controller\\FindController"
+    type:     annotation
+
+ladb_core_blog:
+    resource: "Ladb\\CoreBundle\\Controller\\BlogController"
+    type:     annotation
+
+ladb_core_about:
+    resource: "Ladb\\CoreBundle\\Controller\\AboutController"
+    type:     annotation
+
+ladb_core_faq:
+    resource: "Ladb\\CoreBundle\\Controller\\FaqController"
+    type:     annotation
+
+ladb_core_message:
+    resource: "Ladb\\CoreBundle\\Controller\\MessageController"
+    type:     annotation
+
+ladb_core_notification:
+    resource: "Ladb\\CoreBundle\\Controller\\NotificationController"
+    type:     annotation
+
+ladb_core_search:
+    resource: "Ladb\\CoreBundle\\Controller\\SearchController"
+    type:     annotation
+
+ladb_core_comment:
+    resource: "Ladb\\CoreBundle\\Controller\\CommentController"
+    type:     annotation
+
+ladb_core_follower:
+    resource: "Ladb\\CoreBundle\\Controller\\FollowerController"
+    type:     annotation
+
+ladb_core_like:
+    resource: "Ladb\\CoreBundle\\Controller\\LikeController"
+    type:     annotation
+
+ladb_core_watch:
+    resource: "Ladb\\CoreBundle\\Controller\\WatchController"
+    type:     annotation
+
+ladb_core_vote:
+    resource: "Ladb\\CoreBundle\\Controller\\VoteController"
+    type:     annotation
+
+ladb_core_join:
+    resource: "Ladb\\CoreBundle\\Controller\\JoinController"
+    type:     annotation
+
+ladb_core_report:
+    resource: "Ladb\\CoreBundle\\Controller\\ReportController"
+    type:     annotation
+
+ladb_core_picture:
+    resource: "Ladb\\CoreBundle\\Controller\\PictureController"
+    type:     annotation
+
+ladb_core_resource:
+    resource: "Ladb\\CoreBundle\\Controller\\ResourceController"
+    type:     annotation
+
+ladb_core_wood:
+    resource: "Ladb\\CoreBundle\\Controller\\WoodController"
+    type:     annotation
+
+ladb_core_provider:
+    resource: "Ladb\\CoreBundle\\Controller\\ProviderController"
+    type:     annotation
+
+ladb_core_knowledge:
+    resource: "Ladb\\CoreBundle\\Controller\\KnowledgeController"
+    type:     annotation
+
+ladb_core_user:
+    resource: "Ladb\\CoreBundle\\Controller\\UserController"
+    type:     annotation
+
+ladb_core_referer:
+    resource: "Ladb\\CoreBundle\\Controller\\RefererController"
+    type:     annotation
+

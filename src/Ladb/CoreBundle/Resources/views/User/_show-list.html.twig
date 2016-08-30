@@ -1,0 +1,12 @@
+{% extends 'LadbCoreBundle:User:show.html.twig' %}
+
+{% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('autopagerScript') }}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {{ block('autopagerContainer') }}
+{% endblock %}

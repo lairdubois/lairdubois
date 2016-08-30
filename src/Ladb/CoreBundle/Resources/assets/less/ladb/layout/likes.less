@@ -1,0 +1,68 @@
+//
+// LADB Likes
+//
+
+.ladb-like-thumbnail {
+  padding: 0 10px 20px 10px;
+
+  >.ladb-box {
+    .list-box();
+
+    >.ladb-content {
+
+      >.ladb-image {
+        float: left;
+      }
+
+      >.ladb-heading {
+
+        &:not(:first-child) {
+          margin-left: 74px;
+        }
+
+        h3 {
+          margin: 5px 0;
+        }
+
+      }
+
+    }
+
+    >.ladb-likables {
+      padding: 6px 10px;
+      border-left: 1px solid @ladb-global-border;
+      min-height: 74px;
+
+      >.ladb-likable {
+        display: block;
+        min-height: 37px;
+        padding-bottom: 5px;
+
+        >.ladb-heading {
+          margin-left: 42px;
+          padding-top: 5px;
+        }
+
+        >.ladb-image {
+          float: left;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-like-thumbnail > .ladb-box > .ladb-likables {
+    border-left: none;
+    border-top: 1px solid @ladb-global-border;;
+  }
+
+}

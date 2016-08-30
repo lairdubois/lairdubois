@@ -1,0 +1,17 @@
+{# set entity #}
+{# set noMicrodata (facultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+
+<div class="ladb-meta{% if entity.likeCount == 0 %} text-muted{% endif %}">
+    <i class="ladb-icon-like"></i>
+    {% if entity.likeCount > 0 %}
+        <a href="{{ path('core_like_list_entity', { 'entityType':entity.type, 'entityId':entity.id }) }}">
+    {% endif %}
+            <strong>{{ entity.likeCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'like.choice.likes'|transchoice(entity.likeCount) }}</small>
+            {% if not noMicrodata %}<meta itemprop="interactionCount" content="UserLikes:{{ entity.likeCount }}"/>{% endif %}
+    {% if entity.likeCount > 0 %}
+        </a>
+    {% endif %}
+</div>

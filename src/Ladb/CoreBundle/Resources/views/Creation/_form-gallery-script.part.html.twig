@@ -1,0 +1,36 @@
+
+{# set fieldId #}
+{# set maxCreationCount #}
+{# set excludedId (facultative) #}
+
+<script>
+    function updateCreationsForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#creation_thumbnails").find("li.ladb-creation").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(9); {# 9 = "creation_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount == {{ maxCreationCount }}) {
+            $("#linkto_creation_buttons").hide();
+        } else {
+            $("#linkto_creation_buttons").show();
+        }
+    }
+    function creationAdded(data) {
+        $("#creation_thumbnails").append(data);
+        updateCreationsForm();
+        $("#linkto_creation_modal_iframe").attr("src", "");
+        $("#linkto_creation_modal").find("button.close").click();
+    }
+    function creationRemoved() {
+        updateCreationsForm();
+    }
+    function updateCreationChoiceModal() {
+        $('#linkto_creation_modal_iframe').attr('src', '{{ path('core_creation_list', { 'layout':'choice' }) }}&ex=' + $("#{{ fieldId }}").val(){% if excludedId is defined and excludedId is not empty %}+',{{ excludedId }}'{% endif %});
+    }
+</script>

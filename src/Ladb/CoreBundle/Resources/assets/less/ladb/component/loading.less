@@ -1,0 +1,65 @@
+//
+// LADB Loading
+//
+
+@ladb-loading-bounce-size:    12px;
+@ladb-loading-bounce-gutter:  2px;
+
+@ladb-loading-width:          (@ladb-loading-bounce-size * 3 + @ladb-loading-bounce-gutter * 6);
+
+.ladb-loading {
+  display: block;
+  text-align: center;
+
+  &.ladb-loading-float {
+    position: absolute;
+    margin-left: auto;
+    padding: (@ladb-loading-width / 2);
+    left: 50%;
+  }
+
+  .spinner {
+    margin: 0 auto 0;
+    width: @ladb-loading-width;
+    text-align: center;
+
+    & > div {
+      width: @ladb-loading-bounce-size;
+      height: @ladb-loading-bounce-size;
+      background-color: @ladb-brand-dark;
+      margin: 0 @ladb-loading-bounce-gutter;
+
+      border-radius: 100%;
+      display: inline-block;
+      -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+      animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    }
+
+    .bounce1 {
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+
+    .bounce2 {
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+
+  }
+
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+}

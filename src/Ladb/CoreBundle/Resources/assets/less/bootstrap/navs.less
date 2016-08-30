@@ -1,0 +1,64 @@
+//
+// Navs
+// --------------------------------------------------
+
+
+// Pills
+// -------------------------
+.nav-pills {
+
+  > li {
+
+    > a {
+      border-radius: @border-radius-base;
+      padding: 6px 15px;
+    }
+
+  }
+
+}
+
+// Tabs
+// -------------------------
+
+// Give the tabs something to sit on
+.nav-tabs {
+  border-bottom: 1px solid transparent;
+  > li {
+
+    // Actual tabs (as links)
+    > a {
+      color: @text-color;
+      border: 1px solid lighten(@nav-tabs-border-color, 2%);
+      background-color: lighten(@ladb-global-dark-bg, 2%);
+      &:hover {
+        border-color: @nav-tabs-link-hover-border-color;
+      }
+    }
+
+    // Active state, and it's :hover to override normal :hover
+    &.active > a {
+      &,
+      &:hover,
+      &:focus {
+        background-color: @nav-tabs-active-link-hover-bg;
+        border: 1px solid @nav-tabs-link-hover-border-color;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+
+}
+
+// phone
+@media (max-width: (@ladb-screen-phone-max)) {
+  .nav-tabs {
+
+    > li {
+      float: none;
+    }
+
+  }
+}
+
+

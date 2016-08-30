@@ -1,0 +1,204 @@
+{% spaceless %}
+
+{# set pageItemType (facultative) #}
+
+{% set pageUrl = pageUrl|default(app.request.uri) %}
+{% set pageType = pageType|default('website') %}
+{% set pageCard = pageCard|default('summary_large_image') %}
+{% set pageTitle = pageTitle|default('default.slogan'|trans()) %}
+{% set pageDescription = pageDescription|default('L\'Air du Bois est un espace de partage collaboratif ouvert à tous les amateurs et curieux du travail du bois') %}
+{% set pageAuthor = pageAuthor|default('L\'Air du Bois') %}
+{% set pageImage = pageImage|default(asset('banner-600x376.jpg')) %}
+{% set pageImageWidth = pageImageWidth|default('620') %}
+{% set pageImageHeight = pageImageHeight|default('376') %}
+{% set titleSuffixHidden = titleSuffixHidden|default(false) %}
+
+{% endspaceless %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head prefix="{% block headPrefix %}og: http://ogp.me/ns#{% endblock %}">
+        {% block head %}
+            <title>{% if is_granted("ROLE_USER") and app.user.freshNotificationCount > 0 %}({{ app.user.freshNotificationCount }}) {% endif %}{% if pageTitlePrefix is defined %}{{ pageTitlePrefix }} {% endif %}{% block title %}{{ pageTitle }}{% if not titleSuffixHidden %} {{ ('default.on'|trans())~' '~('default.ladb'|trans()) }}{% endif %}{% endblock %}</title>
+            {% block headMetas %}
+                <meta charset="UTF-8" />
+                <meta name="description" content="{{ pageDescription }}" />
+                <meta name="author" content="{{ pageAuthor }}">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                {% block headOpenGraphMetas %}
+                    <meta property="fb:app_id" content="456294721102605" />
+                    <meta property="og:url" content="{{ pageUrl }}" />
+                    <meta property="og:type" content="{{ pageType }}" />
+                    <meta property="og:title" content="{{ pageTitle }}" />
+                    <meta property="og:description" content="{{ pageDescription }}" />
+                    <meta property="og:site_name" content="L'Air du Bois" />
+                    <meta property="og:image:width" content="{{ pageImageWidth }}" />
+                    <meta property="og:image:height" content="{{ pageImageHeight }}" />
+                    {% if pageImage is iterable %}
+                        {% for image in pageImage %}
+                            <meta property="og:image" content="{{ image }}" />
+                        {% endfor %}
+                    {% else %}
+                        <meta property="og:image" content="{{ pageImage }}" />
+                    {% endif %}
+                {% endblock %}
+                {% block headTwitterCardMetas %}
+                    <meta name="twitter:card" content="{{ pageCard }}" />
+                    <meta name="twitter:site" content="@LAirDuBois" />
+                    <meta name="twitter:title" content="{{ pageTitle }}" />
+                    <meta name="twitter:description" content="{{ pageDescription }}" />
+                    {% if pageImage is iterable %}
+                        <meta name="twitter:image" content="{{ pageImage[0] }}" />
+                    {% else %}
+                        <meta name="twitter:image" content="{{ pageImage }}" />
+                    {% endif %}
+                    <meta name="twitter:url" content="{{ pageUrl }}" />
+                {% endblock %}
+            {% endblock %}
+            {% if prevPageUrl is defined and prevPageUrl is not empty %}
+                <link rel="prev" href="{{ prevPageUrl }}" />
+            {% endif %}
+            {% if nextPageUrl is defined and nextPageUrl is not empty %}
+                <link rel="next" href="{{ nextPageUrl }}" />
+            {% endif %}
+            <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+            <link rel="apple-touch-icon-precomposed" href="{{ asset('favicon-76x76.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ asset('favicon-72x72.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ asset('favicon-76x76.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('favicon-114x114.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ asset('favicon-120x120.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ asset('favicon-144x144.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ asset('favicon-152x152.png') }}">
+            {% block headStylesheets %}
+                {% stylesheets filter='less,?yui_css'
+                    '@LadbCoreBundle/Resources/assets/less/bootstrap/bootstrap.less'
+                    '@LadbCoreBundle/Resources/assets/less/jquery-autocomplete/jquery-autocomplete.less'
+                    '@LadbCoreBundle/Resources/assets/less/uikit/core/animation.less'
+                    '@LadbCoreBundle/Resources/assets/less/uikit/core/nav.less'
+                    '@LadbCoreBundle/Resources/assets/less/uikit/core/offcanvas.less'
+                    '@LadbCoreBundle/Resources/assets/less/uikit/core/overlay.less'
+                    '@LadbCoreBundle/Resources/assets/less/uikit/components/notify.less'
+                    '@LadbCoreBundle/Resources/assets/less/bootstrap-markdown/bootstrap-markdown-v1.less'
+                    '@LadbCoreBundle/Resources/assets/less/bootstrap-datetimepicker/bootstrap-datetimepicker.less'
+                    '@LadbCoreBundle/Resources/assets/less/ladb/ladb.less' %}
+                    <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201608081338" media="screen" />
+                {% endstylesheets %}
+            {% endblock %}
+            {% block headJavascripts %}
+                {% javascripts filter='?closure'
+                    '../components/jquery/jquery.js' %}
+                    <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endjavascripts %}
+                <!--[if lt IE 9]>
+                    {% javascripts filter='?closure'
+                        '../components/html5shiv/dist/html5shiv.js'
+                        '@LadbCoreBundle/Resources/assets/js/respond/respond.js' %}
+                        <script type="text/javascript" src="{{ asset_url }}"></script>
+                    {% endjavascripts %}
+                <![endif]-->
+            {% endblock %}
+        {% endblock %}
+    </head>
+    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageItemType is defined %} itemscope itemtype="http://schema.org/{{ pageItemType }}"{% endif %}>
+        {% block bodyMetas %}
+            {% if pageItemType is defined %}
+                <meta itemprop="{{ pageItemType == 'Article' ? 'headline' : 'name' }}" content="{{ pageTitle }}" />
+                <meta itemprop="description" content="{{ pageDescription }}" />
+                {% if pageImage is iterable %}
+                    <meta itemprop="image" content="{{ pageImage[0] }}" />
+                {% else %}
+                    <meta itemprop="image" content="{{ pageImage }}" />
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+        {% block body %}
+            <div class="ladb-wrapper">
+                {% block bodyHeader %}{% endblock %}
+                <div id="container" class="container{% if bodyContainerClasses is defined %} {{ bodyContainerClasses }}{% endif %}">
+                    {% block bodyContainer %}{% endblock %}
+                </div>
+            </div>
+            {% block bodyFooter %}{% endblock %}
+        {% endblock %}
+        {% block bodyJavascripts %}
+            {% javascripts filter='?closure'
+                '../components/jquery-ui/jquery-ui.js'
+                '../components/jquery-ui/ui/sortable.js'
+                '../components/masonry/masonry.pkgd.js'
+                '../components/moment/moment.js'
+                '../components/moment/locale/fr.js'
+                '../components/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-form/jquery.form.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-ui-touch-punch/jquery.ui.touch-punch.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-autosize/jquery.autosize.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-textcomplete/jquery.textcomplete.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-autocomplete/jquery.autocomplete.js'
+                '../vendor/twitter/bootstrap/js/modal.js'
+                '../vendor/twitter/bootstrap/js/tooltip.js'
+                '../vendor/twitter/bootstrap/js/popover.js'
+                '../vendor/twitter/bootstrap/js/button.js'
+                '../vendor/twitter/bootstrap/js/collapse.js'
+                '../vendor/twitter/bootstrap/js/dropdown.js'
+                '../vendor/twitter/bootstrap/js/affix.js'
+                '../vendor/twitter/bootstrap/js/tab.js'
+                '../vendor/uikit/uikit/src/js/core/core.js'
+                '../vendor/uikit/uikit/src/js/core/offcanvas.js'
+                '../vendor/uikit/uikit/src/js/core/scrollspy.js'
+                '../vendor/uikit/uikit/src/js/components/notify.js'
+                '@LadbCoreBundle/Resources/assets/js/bootbox/bootbox.js'
+                '@LadbCoreBundle/Resources/assets/js/bootstrap-markdown/bootstrap-markdown-v1.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-scrollto/jquery.scrollto.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-jscroll/jquery.jscroll.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-cornerslider/jquery.cornerslider.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-sticky/jquery.sticky.js'
+                '@LadbCoreBundle/Resources/assets/js/readmorejs/readmore.js'
+
+                '@LadbCoreBundle/Resources/assets/js/javascript-load-image/load-image.min.js'
+                '@LadbCoreBundle/Resources/assets/js/javascript-canvas-to-blob/canvas-to-blob.min.js'
+                '@LadbCoreBundle/Resources/assets/js/infinite/collections.js'
+                '../vendor/blueimp/jquery-file-upload/js/jquery.fileupload.js'
+                '../vendor/blueimp/jquery-file-upload/js/jquery.iframe-transport.js'
+                '../vendor/blueimp/jquery-file-upload/js/jquery.fileupload-process.js'
+                '../vendor/blueimp/jquery-file-upload/js/jquery.fileupload-image.js'
+                '../vendor/blueimp/jquery-file-upload/js/jquery.fileupload-validate.js'
+
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.hrefajax.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.textcompletify.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.sharebuttonsbuilder.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.scrollto.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.appendscrolltotopbtn.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.autopager.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.maparea.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.smartsearch.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.topbartranslucent.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.commentwidget.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/ladb-common.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/ladb-reports.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/ladb-comments.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/ladb-votes.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/ladb-pictures.js' %}
+                <script type="text/javascript" src="{{ asset_url }}?v=201608291639"></script>
+            {% endjavascripts %}
+            <script>
+                $(document).ready(function() {
+                    {% block bodyJavascriptsInlineReady %}
+                        setupTextareas();
+                    {% endblock %}
+                });
+            </script>
+            {% block googleAnalytics %}
+                {% if not app.debug and not is_granted("ROLE_ADMIN") %}
+                    {# Google analytics #}
+                    <script>
+                        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                        ga('create', 'UA-36508374-2', 'lairdubois.fr');
+                        ga('send', 'pageview');
+                    </script>
+                {% endif %}
+            {% endblock %}
+        {% endblock %}
+    </body>
+</html>

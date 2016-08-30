@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set creations #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for creation in creations %}
+        {% include 'LadbCoreBundle:Creation:_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

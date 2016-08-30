@@ -1,0 +1,39 @@
+{% extends 'LadbCoreBundle:Common:_form-section.part.html.twig' %}
+
+{# set formCreations #}
+{# set creations #}
+{# set maxCreationCount #}
+{# set title (falcultative) #}
+{# set help (facultative) #}
+{# set icon (facultative) #}
+
+{% set formSection = 'creations' %}
+{% set icon = icon|default('creation') %}
+{% set title = title|default('creation.choice.creations'|transchoice(2)|capitalize) %}
+
+{% if formCreations is not defined %}
+    {% set formCreations = form.creations %}
+{% endif %}
+{% if creations is not defined %}
+    {% set creations = form.vars.data.creations %}
+{% endif %}
+
+{% block body %}
+    {% if help is defined %}<p class="help-block"><i>{{ help|raw }}</i></p>{% endif %}
+    {{ form_errors(formCreations) }}
+    {{ form_widget(formCreations) }}
+    <ul id="creation_thumbnails" class="ladb-form-thumbnails">
+        {% for creation in creations %}
+            {% include 'LadbCoreBundle:Wonder:_wonder-form-thumbnail.part.html.twig' with { 'wonder':creation } %}
+        {% endfor %}
+    </ul>
+    <div id="linkto_creation_buttons">
+        <a href="#linkto_creation_modal" data-toggle="modal" class="btn btn-success" onclick="updateCreationChoiceModal();"><i class="ladb-icon-link"></i> {{ 'creation.linkto'|trans() }}</a>
+        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'linkto_creation_modal', 'title':('creation.linkto'|trans()), 'embeddedBody':true } %}
+            {% block bodyInner %}
+                <iframe id="linkto_creation_modal_iframe" src="" frameborder="0" width="100%" height="380"></iframe>
+            {% endblock %}
+            {% block footer %}{% endblock %}
+        {% endembed %}
+    </div>
+{% endblock %}

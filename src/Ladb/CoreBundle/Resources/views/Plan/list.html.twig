@@ -1,0 +1,29 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set pageTitle = 'plan.list'|trans() %}
+{% set pageDescription = 'plan.description'|trans() %}
+
+{% set navSection = 'plans' %}
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Plan:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {#{% embed 'LadbCoreBundle:Plan:_list-filterbar.part.html.twig' %}#}
+        {#{% set heading = 'Les plans' %}#}
+        {#{% set customFilterDefs = {#}
+            {#'followed':         { 'label':'Suivis', 'path':path('core_plan_list_filter', { 'filter':'followed' }), 'hidden':(not is_granted("ROLE_USER") or app.user.followingCount == 0) },#}
+        {#} %}#}
+        {#{% block filterbarRightContent%}#}
+            {#<a href="{{ path('core_plan_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'plan.new'|trans() }}</a>#}
+        {#{% endblock %}#}
+    {#{% endembed %}#}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Plan:_list-n.part.html.twig' %}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends '::base.html.twig' %}
+
+{% set bodyClass = 'ladb-topbar-enabled ladb-bottombar-enabled' %}
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+
+{#{% block headStylesheets %}{% endblock %}#}
+{% block headJavascripts %}{% endblock %}
+{% block bodyJavascripts %}{% endblock %}
+
+{% block body %}
+    {% include '::_topbar.part.html.twig' %}
+    {% include '::_bottombar.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyContainer %}
+    <div class="row">
+        <div class="col-12 col-sm-8 col-sm-push-2">
+            <div class="panel panel-lg panel-danger">
+                <div class="panel-heading">
+                    <h1 class="panel-title"><i class="ladb-icon-warning-sign"></i> Une erreur est survenue</h1>
+                </div>
+                <div class="panel-body">
+                    <p><strong>{{ status_code }}</strong> {{ status_text }}</p>
+                    {% if status_code == 404 %}
+                        <p class="lead">Désolé, cette page n’est malheureusement pas disponible.</p>
+                    {% elseif status_code == 410 %}
+                        <p class="lead">Désolé, cette page n'est plus disponible.</p>
+                    {% else %}
+                        <p class="lead">Désolé, une erreur ne permet pas de fournir la page demandée.</p>
+                    {% endif %}
+                </div>
+                <div class="panel-footer">
+                    <a href="{{ path('core_welcome') }}" class="btn btn-default btn-lg">Retour à la page d'accueil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

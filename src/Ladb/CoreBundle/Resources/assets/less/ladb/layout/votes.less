@@ -1,0 +1,131 @@
+//
+// LADB Votes
+//
+
+.ladb-vote-widget {
+  color: #aaa;
+  background-color: #efefef;
+
+  &.ladb-positive {
+    color: darken(@ladb-global-positive-color, 10%);
+    background-color: lighten(@ladb-global-positive-color, 30%);
+  }
+
+  &.ladb-undeterminated {
+    color: darken(@ladb-global-undeterminated-color, 10%);
+    background-color: lighten(@ladb-global-undeterminated-color, 30%);
+  }
+
+  &.ladb-negative {
+    color: darken(@ladb-global-negative-color, 10%);
+    background-color: lighten(@ladb-global-negative-color, 30%);
+  }
+
+  .ladb-vote-score {
+    text-align: center;
+    font-size: 200%;
+  }
+
+  >.ladb-vote-box {
+    position: relative;
+    text-align: center;
+
+    .ladb-vote-up {
+      color: @ladb-global-positive-color;
+
+      &:hover, &.ladb-active {
+        background-color: @ladb-global-positive-color;
+      }
+
+    }
+
+    .ladb-vote-down {
+      color: @ladb-global-negative-color;
+      margin-top: 2px;
+
+      &:hover, &.ladb-active {
+        background-color: @ladb-global-negative-color;
+      }
+
+    }
+
+    .ladb-vote-up, .ladb-vote-down {
+      width: 100%;
+      text-align: center;
+      font-size: 130%;
+      padding: 5px;
+      display: block;
+
+      &.ladb-disabled {
+        color: #aaa;
+      }
+
+      &:hover, &.ladb-active {
+        text-decoration: none;
+        color: #fff;
+      }
+
+    }
+
+  }
+
+}
+
+.ladb-vote-thumbnail {
+  padding: 0 10px 20px 10px;
+
+  >.ladb-box {
+    .list-box();
+
+    >.ladb-content {
+
+      >.ladb-image {
+        float: left;
+      }
+
+      >.ladb-heading {
+
+        &:not(:first-child) {
+          margin-left: 74px;
+        }
+
+        h3 {
+          margin: 5px 0;
+        }
+
+      }
+
+    }
+
+    >.ladb-votables {
+      padding: 6px 10px;
+      border-left: 1px solid @ladb-global-border;
+      min-height: 74px;
+
+      >.ladb-votable {
+        padding: 5px 0;
+        border-top: 1px solid @ladb-global-border;
+
+        &:first-child {
+          border-top: none;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-tablet-max) {
+
+  .ladb-vote-thumbnail > .ladb-box > .ladb-votables {
+    border-left: none;
+    border-top: 1px solid @ladb-global-border;;
+  }
+
+}

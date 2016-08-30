@@ -1,0 +1,287 @@
+{% extends 'LadbCoreBundle:Common:_show.html.twig' %}
+
+{# set wonder #}
+{# set wonderType #}
+{# set userWonders #}
+{# set similarWonders #}
+
+{% set entity = wonder %}
+
+{% set navSection = wonderType~'s' %}
+{% set searchPath = path('core_'~wonderType~'_list') %}
+{% set transType = wonderType %}
+
+{% set showPath = 'core_'~wonderType~'_show' %}
+{% set editPath = 'core_'~wonderType~'_edit' %}
+{% set deletePath = 'core_'~wonderType~'_delete' %}
+{% set unpublishPath = 'core_'~wonderType~'_unpublish' %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == wonder.user.id %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':wonder} %}
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% if not wonder.isDraft %}
+                    <a href="#share_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
+                    &nbsp;
+                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+                        {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
+                        {% block bodyInner %}
+                            <h4>{{ 'share.social.heading'|trans() }}</h4>
+                            {% set sbTooltipPlacement = 'top' %}
+                            {{ block('sharebuttonsInlineHorizontal') }}
+                            <hr>
+                            <h4>{{ 'share.sticker.heading'|trans() }}</h4>
+                            <p>{{ ('share.sticker.help.'~wonderType)|trans()|raw }}</p>
+                            <p>{{ 'share.sticker.help.common'|trans()|raw }}</p>
+                            <ul class="nav nav-pills">
+                                <li class="active"><a href="#ladb_sticker_bbcode" data-toggle="tab">BBCode</a></li>
+                                <li><a href="#ladb_sticker_html" data-toggle="tab">HTML</a></li>
+                                <li><a href="#ladb_sticker_markdown" data-toggle="tab">Markdown</a></li>
+                                <li><a href="#ladb_sticker_preview" data-toggle="tab">Aperçu</a></li>
+                            </ul>
+                            <div class="tab-content ladb-margin-top">
+                                <div class="tab-pane active" id="ladb_sticker_bbcode">
+                                    <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
+                                </div>
+                                <div class="tab-pane" id="ladb_sticker_html">
+                                    <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
+                                </div>
+                                <div class="tab-pane" id="ladb_sticker_markdown">
+                                    <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
+                                </div>
+                                <div class="tab-pane" id="ladb_sticker_preview" style="height: 300px;">
+                                    {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true} %}
+                                    <p class="text-center"><img src="" height="300"></p>
+                                </div>
+                            </div>
+                            <script>
+                                $('#share_modal').on('show.bs.modal', function (e) {
+                                    $("#ladb_sticker_bbcode textarea").val("{{ include('LadbCoreBundle:Wonder:_sticker.bbcode.twig')|escape('js') }}");
+                                    $("#ladb_sticker_html textarea").val("{{ include('LadbCoreBundle:Wonder:_sticker.html.twig')|escape('js') }}");
+                                    $("#ladb_sticker_markdown textarea").val("{{ include('LadbCoreBundle:Wonder:_sticker.markdown.twig')|escape('js') }}");
+                                })
+                                $('a[href="#ladb_sticker_preview"]').on("shown.bs.tab", function (e) {
+                                    var img = $("#ladb_sticker_preview img");
+                                    if (img.attr("src") == "") {
+                                        var src = "{{ path('core_'~wonderType~'_sticker', { 'id':wonder.id }) }}";
+                                        img.on("load", function() {
+                                            $("#ladb_sticker_preview .ladb-loading").remove();
+                                        });
+                                        img.attr("src", src);
+                                    }
+                                });
+                            </script>
+                        {% endblock %}
+                        {% block footerInner %}
+                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
+                {% if not ownerUser %}
+                    {% include 'LadbCoreBundle:Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% endif %}
+                {% if watchContext is not null and is_granted("ROLE_USER") %}
+                    {% include 'LadbCoreBundle:Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                {% endif %}
+                {% if not ownerUser %}
+                    &nbsp;
+                    {% include 'LadbCoreBundle:Report:_widget-button.part.html.twig' with { 'entityType':wonder.type, 'entityId':wonder.id } %}
+                {% endif %}
+                {% if ownerUser or is_granted("ROLE_ADMIN") %}
+                    &nbsp;
+                    <a href="{{ path(editPath, { 'id':wonder.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
+                    {% if is_granted("ROLE_ADMIN") or (ownerUser and wonder.isDraft) %}
+                        <a href="#delete_wonder_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_wonder_modal', 'entityTitle':wonder.title, 'deletePath':path(deletePath, { 'id':wonder.id }) } %}
+                    {% endif %}
+                    {% if is_granted("ROLE_ADMIN") and (not wonder.isDraft or wonderType == 'creation') %}
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="ladb-icon-lock"></i> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% if not wonder.isDraft %}
+                                    <li><a href="#unpublish_wonder_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>
+                                {% endif %}
+                                {% if wonderType == 'creation' %}
+                                    <li><a href="#admin_converttoworkshop_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'creation.converttoworkshop'|trans() }}</a></li>
+                                    <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'creation.converttofind'|trans() }}</a></li>
+                                {% endif %}
+                                {% if wonderType == 'workshop' %}
+                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'workshop.converttohowto'|trans() }}</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% if not wonder.isDraft %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_wonder_modal', 'title':('default.unpublishing'|trans()) } %}
+                                {% block bodyInner %}
+                                    <p>La dépublication de <strong>{{ wonder.title }}</strong> la rendra invisible pour les autres utilisateurs.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path(unpublishPath, { 'id':wonder.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+                        {% if wonderType == 'creation' %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttoworkshop_wonder_modal', 'title':('creation.converttoworkshop'|trans()) } %}
+                                {% block bodyInner %}
+                                    <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en atelier.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_creation_admin_converttoworkshop', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttofind_wonder_modal', 'title':('creation.converttofind'|trans()) } %}
+                                {% block bodyInner %}
+                                    <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en trouvaille.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_creation_admin_converttofind', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+                        {% if wonderType == 'workshop' %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('workshop.converttohowto'|trans()) } %}
+                                {% block bodyInner %}
+                                    <p>La convertion transformera l'atelier <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en pas à pas.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_workshop_admin_converttohowto', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if wonder.isDraft %}
+        {% include 'LadbCoreBundle:'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
+    {% endif %}
+    {{ parent() }}
+    {% if referral is defined and referral is not null and referral.displayRedirectionWarning %}
+        {% include 'LadbCoreBundle:Referer:_referral-modal.part.html.twig' %}
+        <script>
+            $(window).load(function() {
+                $("#referral_modal").modal('show');
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block contentBody %}
+    {% block wonderShowcase %}
+        <div class="ladb-wonder-showcase row">
+            <div class="col-xs-12">
+                {% include 'LadbCoreBundle:Picture:_img-link.part.html.twig' with { 'picture':wonder.pictures[0], 'width':'600', 'height':'600', 'filterMode':'i', 'alt':wonder.title } %}
+            </div>
+            {% if wonder.pictures.count > 1 %}
+                {% for index in 1..(wonder.maxPictureCount - 1) %}
+                    <div class="col-xs-6 col-md-3">
+                        {% if index < wonder.pictures.count %}
+                            {% include 'LadbCoreBundle:Picture:_img-link.part.html.twig' with { 'picture':wonder.pictures[index], 'width':'128', 'height':'128', 'alt':wonder.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top' } %}
+                        {% else %}
+                            <span class="thumbnail thumbnail-empty{% if index > 2 and wonder.pictures.count <= 3  %} ladb-hidden-mobile ladb-hidden-tablet{% endif %} ladb-margin-top"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" alt="empty" nopin="nopin"></span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    <hr>
+    {% endblock %}
+    <div class="ladb-wonder-body">
+        {% if wonder.bodyBlocks is defined %}
+            {% for block in wonder.bodyBlocks %}
+                {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        {% else %}
+            {{ wonder.htmlBody|raw }}
+        {% endif %}
+    </div>
+    {% if wonder.updatedAt > wonder.createdAt %}
+        {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':wonder } %}
+    {% endif %}
+    {% if not ownerUser %}
+        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% block contentLinkedTo %}{% endblock %}
+    {% if wonder.referralCount > 0 %}
+        {% include 'LadbCoreBundle:Referer:_widget.part.html.twig' with { 'referrals':wonder.referrals } %}
+    {% endif %}
+    {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' with { 'commentContext':commentContext } %}
+{% endblock %}
+
+{% block contentMetas %}
+    {% block wonderMetas %}
+        <div class="ladb-metas">
+            {% block baseMetas %}
+                {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+                {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
+                {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+                {% if wonder.referralCount > 0 %}
+                    <div class="ladb-meta">
+                        <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_referer_widget').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+                        <i class="ladb-icon-referral ladb-icon-fixed-center"></i>
+                        <strong>{{ wonder.referralCount|number_format(0, ',', ' ') }}</strong>
+                        <small>{{ 'referer.choice.referrals'|transchoice(wonder.referralCount) }}</small>
+                    </div>
+                {% endif %}
+            {% endblock %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+            {% block characteristicsMetas %}{% endblock %}
+        </div>
+    {% endblock %}
+    {% include 'LadbCoreBundle:Tag:_metas.part.html.twig' with { 'tags':wonder.tags } %}
+    {% include 'LadbCoreBundle:License:_metas.part.html.twig' with { 'license':wonder.license } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if userWonders is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <small>{{ (transType~'.other_from')|trans() }} {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':wonder.user, 'noMicrodata':true } %}</small>
+            </div>
+            <div class="panel-body row">
+                {% for userWonder in userWonders %}
+                    <div class="col-lg-12 col-xs-6{% if loop.first and userWonders|length > 1 %} ladb-margin-bottom{% endif %}">
+                        {% include 'LadbCoreBundle:Wonder:_wonder-thumbnail-link.part.html.twig' with { 'wonder':userWonder } %}
+                    </div>
+                {% endfor %}
+                {% if attribute(wonder.user, 'published'~(wonderType|capitalize)~'Count') > 2 %}
+                    <div class="col-xs-12 ladb-margin-top">
+                        <a href="{{ path('core_user_show_'~wonderType~'s', { 'username':wonder.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if similarWonders is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <small>{{ (transType~'.similar')|trans() }}</small>
+            </div>
+            <div class="panel-body row">
+                {% for similarWonder in similarWonders %}
+                    <div class="col-lg-12 col-xs-6">
+                        {% include 'LadbCoreBundle:Wonder:_wonder-thumbnail-link.part.html.twig' with { 'wonder':similarWonder, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

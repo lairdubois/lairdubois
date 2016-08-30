@@ -1,0 +1,172 @@
+//
+// LADB Comments
+//
+
+@boxMarginLeft: 42px;
+@boxMinHeight: 32px;
+
+.ladb-comment-widget {
+  margin-top: 20px;
+  
+  h2 {
+    font-size: 25px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid @ladb-global-border;
+  }
+  
+  .ladb-deleted {
+    color: @ladb-global-light-color;
+    text-decoration: line-through;
+  }
+  
+  .ladb-new {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+    .ladb-box {
+      margin-left: @boxMarginLeft;
+      min-height: @boxMinHeight;
+    }
+    
+  }
+
+  .ladb-form-gallery {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    margin-bottom: 10px;
+
+    >.ladb-form-gallery-section {
+      padding: 10px;
+    }
+
+    >.ladb-form-gallery-header {
+      background-color: #f3f3f3;
+      padding: 5px 10px;
+
+      a {
+        color: #999;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+      }
+
+    }
+
+  }
+
+  .ladb-activity-row {
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid @ladb-global-border;
+    position: relative;
+
+    .ladb-icon {
+      float: left;
+      width: 32px;
+      text-align: center;
+    }
+
+    .ladb-body {
+      margin-left: 42px;
+      font-size: 90%;
+    }
+
+    .ladb-age {
+      .age();
+    }
+
+  }
+
+}
+
+.ladb-comment-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid @ladb-global-border;
+
+  form {
+    margin: 0;
+  }
+
+  > .ladb-minitools {
+    float: right;
+  }
+
+  .ladb-avatar {
+    float: left;
+  }
+
+  .ladb-box {
+    margin-left: @boxMarginLeft;
+    min-height: @boxMinHeight;
+
+    .ladb-heading {
+      margin-bottom: 5px;
+
+      & .author > a {
+        font-weight: bold;
+      }
+
+    }
+
+    .ladb-age {
+      .age();
+    }
+
+  }
+
+}
+
+.ladb-comment-thumbnail {
+  padding: 0 10px 20px 10px;
+
+  >.ladb-box {
+    .list-box();
+    .list-box-hover();
+
+    >.ladb-content {
+
+      >.ladb-image {
+        float: left;
+      }
+
+      >.ladb-heading {
+        margin-left: 74px;
+
+        h3 {
+          margin: 5px 0;
+        }
+
+      }
+
+    }
+
+    >.ladb-comments {
+      padding: 6px 10px;
+      border-left: 1px solid @ladb-global-border;
+      min-height: 64px;
+
+      >.ladb-comment-row:last-child {
+        border-bottom: none;
+      }
+
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-comment-thumbnail > .ladb-box > .ladb-comments {
+    border-left:none;
+  }
+
+}
+

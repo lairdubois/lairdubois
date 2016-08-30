@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set woods #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for wood in woods %}
+        {% include 'LadbCoreBundle:Wood:_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

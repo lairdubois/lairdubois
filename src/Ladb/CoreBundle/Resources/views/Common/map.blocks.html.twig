@@ -1,0 +1,16 @@
+{% block mapAreaStylesheets %}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/css/leaflet/leaflet.css'
+        '@LadbCoreBundle/Resources/assets/css/leaflet-markercluster/MarkerCluster.css'
+        '@LadbCoreBundle/Resources/assets/less/leaflet-markercluster/MarkerCluster.Ladb.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201604301916" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block mapAreaJavascripts %}
+    {% javascripts
+        '@LadbCoreBundle/Resources/assets/js/leaflet/leaflet-src.js'
+        '@LadbCoreBundle/Resources/assets/js/leaflet-markercluster/leaflet.markercluster-src.js' %}
+        <script src="{{ asset_url }}?v=201604301916"></script>
+    {% endjavascripts %}
+{% endblock %}

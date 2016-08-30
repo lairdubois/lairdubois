@@ -1,0 +1,6 @@
+{% extends 'LadbCoreBundle:Common:_avatar-link.part.html.twig' %}
+
+{# set user #}
+
+{% set entity = user %}
+{% set showPath = path('core_user_show', { 'username' : user.usernameCanonical }) %}

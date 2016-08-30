@@ -1,0 +1,142 @@
+//
+// LADB Messages
+//
+
+.ladb-thread-list-header {
+  height: 30px;
+  border-bottom: 1px solid @ladb-global-border;
+  font-weight: bold;
+  color: #333333;
+  padding-left: 30px;
+}
+
+.ladb-thread-row {
+  min-height: 42px;
+  border-bottom: 1px solid @ladb-global-border;
+  cursor: pointer;
+  padding: 5px 0 5px 0;
+
+  &:hover {
+    background-color: lighten(@ladb-brand-primary, 45%);
+  }
+
+  .ladb-unread-message-count {
+    float: left;
+    line-height: 32px;
+    width: 30px;
+    text-align: center;
+  }
+
+  .ladb-participants {
+    display: inline-block;
+    margin-left: 5px;
+    line-height: 32px;
+  }
+
+  .ladb-subject {
+    line-height: 32px;
+
+    > a {
+      color: @ladb-global-color;
+    }
+
+  }
+
+  .ladb-age {
+    float: right;
+    line-height: 32px;
+    width: 80px;
+    text-align: right;
+    font-size: 80%;
+    color: @ladb-global-light-color;
+    margin-right: 10px;
+  }
+
+  .ladb-message-count {
+    float: right;
+    line-height: 32px;
+    width: 40px;
+  }
+
+}
+
+.ladb-unread {
+  font-weight: bold;
+}
+
+.ladb-announcement {
+  background-color: #fff0f0;
+  font-style: italic;
+}
+
+.ladb-thread {
+
+  .ladb-subject {
+    margin-bottom: 10px;
+    line-height: 32px;
+  }
+
+  .ladb-participants {
+    margin-bottom: 20px;
+    color: @ladb-global-light-color;
+  }
+
+  .ladb-participants > span {
+    margin-right: 10px;
+  }
+
+  .ladb-message {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid @ladb-global-border;
+  }
+
+}
+
+.ladb-message {
+  position: relative;
+
+  .ladb-box {
+    margin-left: 42px;
+  }
+
+  .ladb-heading {
+    margin-bottom: 5px;
+    color: @ladb-global-light-color;
+  }
+
+  .ladb-heading > a {
+    font-weight: bold;
+  }
+
+  .ladb-age {
+    .age();
+  }
+
+  .ladb-body > form {
+    margin-bottom: 0;
+  }
+
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: (@ladb-screen-phone-max)) {
+  .ladb-thread-row {
+
+    .ladb-unread-message-count {
+      float: right;
+    }
+
+    .ladb-unread-message-count, .ladb-participants, .ladb-subject, .ladb-age {
+      line-height: 25px;
+    }
+
+    .ladb-subject {
+      margin-left: 5px;
+    }
+
+  }
+}
+

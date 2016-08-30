@@ -1,0 +1,153 @@
+//
+// LADB Utilities
+//
+
+/* Margin */
+
+.ladb-margin-remove {
+  margin: 0;
+}
+
+.ladb-margin-top {
+  margin-top: @ladb-gutter;
+}
+
+.ladb-margin-bottom {
+  margin-bottom: @ladb-gutter;
+}
+
+/* Padding */
+
+.ladb-padding-remove {
+  padding: 0;
+}
+
+.ladb-padding-top {
+  padding-top: @ladb-gutter;
+}
+
+.ladb-padding-bottom {
+  padding-bottom: @ladb-gutter;
+}
+
+/* Indent */
+
+.ladb-indent {
+  margin-left: @ladb-gutter;
+}
+
+/* Translucent */
+
+.ladb-translucent {
+  opacity: 0.6;
+}
+
+/* UndecoratedLink */
+
+.ladb-undecorated-link {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+/* Underline */
+
+.ladb-underline {
+  text-decoration: underline;
+}
+
+/* Strikethrough */
+
+.ladb-strikethrough {
+  text-decoration: line-through;
+}
+a.ladb-strikethrough:hover {
+  text-decoration: line-through underline;
+}
+
+/* Mandatory */
+
+.ladb-mandatory {
+  color: red;
+  font-size: 120%;
+}
+
+/* Sortable */
+
+.ladb-sortable {
+
+  .ladb-sortable-handle {
+    color: #ccc;
+    font-size: 120%;
+    cursor: move;
+
+    &:hover {
+      color: @ladb-global-color;
+    }
+
+  }
+
+}
+
+/* Pseudo hidden */
+
+.ladb-pseudo-hidden {
+  position: absolute;
+  left: -9999em;
+}
+
+/* Rotate */
+
+.ladb-rotate90 {
+  .transform(rotate(90deg));
+}
+.ladb-rotate180 {
+  .transform(rotate(180deg));
+}
+.ladb-rotate270 {
+  .transform(rotate(270deg));
+}
+
+/* NoTransition */
+
+.ladb-no-transition {
+  .transition(none);
+}
+
+/* Anchor */
+
+.ladb-offsetted-anchor {
+  display: block;
+  position: relative;
+  top: -60px;
+  visibility: hidden;
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-visible-tablet { display: none !important; }
+  .ladb-visible-desktop { display: none !important; }
+  .ladb-hidden-mobile { display: none !important; }
+
+}
+
+// tablet
+@media screen and (min-width: @ladb-screen-tablet) and (max-width: @ladb-screen-tablet-max) {
+
+  .ladb-visible-mobile { display: none !important; }
+  .ladb-visible-desktop { display: none !important; }
+  .ladb-hidden-tablet { display: none !important; }
+
+}
+// desktop
+@media screen and (min-width: @ladb-screen-desktop) {
+
+  .ladb-visible-mobile { display: none !important; }
+  .ladb-visible-tablet { display: none !important; }
+  .ladb-hidden-desktop { display: none !important; }
+
+}

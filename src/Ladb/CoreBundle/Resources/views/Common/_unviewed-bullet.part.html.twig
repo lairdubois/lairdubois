@@ -1,0 +1,3 @@
+{# set entity #}
+
+{% if is_granted("ROLE_USER") and entity.isShown is defined and not entity.isShown %}<span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}"><i class="ladb-icon-bullet ladb-icon-lg" style="color: #f77f00;"></i></span>{% endif %}

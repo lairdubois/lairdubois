@@ -1,0 +1,5 @@
+{# set noMicrodata (facultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+
+<a href="tel:{{ value.data }}"{% if not noMicrodata %} itemprop="telephone"{% endif %}>{{ value.data }}</a>

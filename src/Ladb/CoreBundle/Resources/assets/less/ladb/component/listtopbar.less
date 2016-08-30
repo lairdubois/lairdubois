@@ -1,0 +1,45 @@
+//
+// LADB List Topbar
+//
+
+.sticky-wrapper.is-sticky > .ladb-list-topbar {
+    z-index: @ladb-zindex-topbar-fixed - 1;
+    background-color: @ladb-global-bg;
+    .box-shadow(0 0 2px 5px @ladb-global-bg);
+}
+
+.ladb-list-topbar {
+  padding: 15px 0;
+  min-height: 64px;
+  position: relative;
+
+  .ladb-list-topbar-left {
+    display: table-cell;
+    vertical-align: top;
+    margin-right: 10px;
+
+    h1, h2 {
+      display: inline;
+      margin: 0;
+      padding-right: 10px;
+      font-size: 150%;
+      line-height: 32px;
+      color: @ladb-global-light-color;
+      white-space: nowrap;
+    }
+
+  }
+
+  .ladb-list-topbar-middle {
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+  }
+
+  .ladb-list-topbar-right {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 10px;
+  }
+
+}

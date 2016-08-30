@@ -1,0 +1,219 @@
+{% extends 'LadbCoreBundle:Common:_form.html.twig' %}
+
+{% set navSection = 'finds' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'formSection':'content_link', 'fieldId':form.link.thumbnail.vars.id, 'maxPictureCount':1 } %}
+    {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'formSection':'content_gallery', 'fieldId':form.gallery.pictures.vars.id, 'maxPictureCount':5, 'sortable':true } %}
+    {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'formSection':'content_event', 'fieldId':form.event.pictures.vars.id, 'maxPictureCount':5 , 'sortable':true } %}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    <li><a href="#content"><i class="ladb-icon-globe"></i> {{ 'default.content'|trans() }}</a></li>
+    {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' %}
+    {% include 'LadbCoreBundle:Tag:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'find.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('find.form.help.title'|trans()) } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'globe', 'title':('default.content'|trans()), 'formSection':'content' } %}
+        {% block body %}
+            <p class="help-block"><i>{{ 'find.form.help.data'|trans()|raw }}</i></p>
+            <div class="form-group">
+                {{ form_errors(form.contentType) }}
+                {{ form_widget(form.contentType, { 'attr': { 'class':'form-control' } }) }}
+                <script>
+                    $("#{{ form.contentType.vars.id }}").on("change", function() {
+                        $("#ladb_content_tab_content").find(".tab-pane").removeClass("active");
+                        $("#ladb_content_tab_pane_" + $(this).val()).addClass("active");
+                    });
+                </script>
+            </div>
+            <div id="ladb_content_tab_content" class="tab-content">
+                <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') %} active{% endif %}">
+                    <div class="form-group">
+                        {{ form_errors(form.link.url) }}
+                        <div class="input-group">
+                            <span class="input-group-addon">{% if form.link.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-link"></i>{% endif %}</span>
+                            {{ form_widget(form.link.url) }}
+                        </div>
+                    </div>
+                    <div{% if not is_granted("ROLE_ADMIN") %} class="ladb-pseudo-hidden"{% endif %}>
+                        <label>{{ 'default.thumbnail'|trans() }}</label>
+                        {% include 'LadbCoreBundle:Picture:_form-gallery.part.html.twig' with { 'formSection':'content_link', 'formPictures':form.link.thumbnail, 'pictures':(form.link.vars.data is null or form.link.vars.data.thumbnail is null ? [] : [ form.link.vars.data.thumbnail ]), 'form':form.link, 'maxPictureCount':1, 'title':('default.thumbnail'|trans), 'hideTextOverlayWarning':true } %}
+                    </div>
+                </div>
+                <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') %} active{% endif %}">
+                    <div class="form-group">
+                        <label>Photos<span class="ladb-mandatory">*</span></label>
+                        {% include 'LadbCoreBundle:Picture:_form-gallery.part.html.twig' with { 'formSection':'content_gallery', 'form':form.gallery, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.form.help.gallery_pictures'|trans()), 'hideTextOverlayWarning':true } %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.gallery.location, 'default.location') }}<span class="ladb-mandatory">*</span>
+                        <p class="help-block"><i>{{ 'find.form.help.gallery_location'|trans() }}</i></p>
+                        {{ form_errors(form.gallery.location) }}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
+                            {{ form_widget(form.gallery.location) }}
+                        </div>
+                    </div>
+                </div>
+                <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} active{% endif %}">
+                    <div class="form-group">
+                        <label>Images<span class="ladb-mandatory">*</span></label>
+                        {% include 'LadbCoreBundle:Picture:_form-gallery.part.html.twig' with { 'formSection':'content_event', 'form':form.event, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.form.help.event_pictures'|trans()), 'hideTextOverlayWarning':true } %}
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                            {{ form_label(form.event.startDate, 'default.start_date') }}<span class="ladb-mandatory">*</span>
+                            {{ form_errors(form.event.startDate) }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                {{ form_widget(form.event.startDate) }}
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            {{ form_label(form.event.startTime, 'default.start_time') }}
+                            {{ form_errors(form.event.startTime) }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ladb-icon-time"></i></span>
+                                {{ form_widget(form.event.startTime) }}
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="$('#{{ form.event.startTime.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                            {{ form_label(form.event.endDate, 'default.end_date') }}
+                            {{ form_errors(form.event.endDate) }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                {{ form_widget(form.event.endDate) }}
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="$('#{{ form.event.endDate.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            {{ form_label(form.event.endTime, 'default.end_time') }}
+                            {{ form_errors(form.event.endTime) }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ladb-icon-time"></i></span>
+                                {{ form_widget(form.event.endTime) }}
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="$('#{{ form.event.endTime.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.event.location, 'default.location') }}<span class="ladb-mandatory">*</span>
+                        <p class="help-block"><i>{{ 'find.form.help.event_location'|trans() }}</i></p>
+                        {{ form_errors(form.event.location) }}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
+                            {{ form_widget(form.event.location) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.event.url, 'default.link') }}
+                        <p class="help-block"><i>{{ 'find.form.help.event_url'|trans() }}</i></p>
+                        {{ form_errors(form.event.url) }}
+                        <div class="input-group">
+                            <span class="input-group-addon">{% if form.event.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-link"></i>{% endif %}</span>
+                            {{ form_widget(form.event.url) }}
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#{{ form.event.startDate.vars.id }}')
+                                .datetimepicker({
+                                    locale: 'fr',
+                                    format: 'DD/MM/YYYY',
+                                    icons: {
+                                        previous : "ladb-icon-chevron-left",
+                                        next : "ladb-icon-chevron-right"
+                                    }
+                                })
+                                .on("dp.change", function (e) {
+                                    if (e.date) {
+                                        var endDatePicker = $('#{{ form.event.endDate.vars.id }}').data("DateTimePicker");
+                                        var startDate = e.date;
+                                        var endDate = endDatePicker.date();
+                                        if (endDate) {
+                                            endDatePicker.date(moment.max(startDate, endDate));
+                                        }
+                                    }
+                                    markAsUnsaved();
+                                })
+                            ;
+                            $('#{{ form.event.startTime.vars.id }}')
+                                .datetimepicker({
+                                    locale: 'fr',
+                                    format: 'HH:mm',
+                                    stepping: 5,
+                                    icons: {
+                                        up: "ladb-icon-plus",
+                                        down: "ladb-icon-minus"
+                                    }
+                                })
+                                .on("dp.change", function (e) {
+                                    markAsUnsaved();
+                                })
+                            ;
+                            $('#{{ form.event.endDate.vars.id }}')
+                                .datetimepicker({
+                                    locale: 'fr',
+                                    format: 'DD/MM/YYYY',
+                                    icons: {
+                                        previous : "ladb-icon-chevron-left",
+                                        next : "ladb-icon-chevron-right"
+                                    }
+                                })
+                                .on("dp.change", function (e) {
+                                    if (e.date) {
+                                        var startDatePicker = $('#{{ form.event.startDate.vars.id }}').data("DateTimePicker");
+                                        var startDate = startDatePicker.date();
+                                        if (startDate) {
+                                            var endDate = e.date;
+                                            startDatePicker.date(moment.min(startDate, endDate));
+                                        }
+                                    }
+                                    markAsUnsaved();
+                                })
+                            ;
+                            $('#{{ form.event.endTime.vars.id }}')
+                                .datetimepicker({
+                                    locale: 'fr',
+                                    format: 'HH:mm',
+                                    stepping: 5,
+                                    icons: {
+                                        up: "ladb-icon-plus",
+                                        down: "ladb-icon-minus"
+                                    }
+                                })
+                                .on("dp.change", function (e) {
+                                    markAsUnsaved();
+                                })
+                            ;
+                        });
+                    </script>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('find.form.help.body'|trans()) } %}
+    {% include 'LadbCoreBundle:Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre trouvaille.' } %}
+{% endblock %}

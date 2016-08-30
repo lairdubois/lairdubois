@@ -1,0 +1,21 @@
+{% spaceless %}
+
+{# set entities #}
+{# set noShowMore (facultative) #}
+
+{% set maxResults = maxResults|default(3) %}
+{% set typePrefix = typePrefix|default('') %}
+{% set transPrefix = transPrefix|default(type) %}
+{% set noShowMore = noShowMore|default(false) %}
+
+{% endspaceless %}
+----------
+
+{{ entities|length }} {{ (transPrefix~'.choice.new_'~type~'s')|transchoice((entities|length)) }}
+{% for entity in entities|slice(0, maxResults) %}
+  - "{{ entity.title|raw }}" {{ 'default.by'|trans() }}{% if entity.user is defined %} {{ entity.user.displayname }}{% endif %} ({{ url('core_'~typePrefix~type~'_show', { 'id':entity.sluggedId }) }})
+{% endfor %}
+{% if entities|length > maxResults and not noShowMore %}
+
+  Voir la suite... {{ url('core_'~typePrefix~type~'_list') }}
+{% endif %}

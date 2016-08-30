@@ -1,0 +1,46 @@
+/*
+ * jquery.tocify.css 1.9.0
+ * Author: @gregfranko
+ */
+
+/* The Table of Contents container element */
+.tocify {
+    max-height: 90%;
+    overflow: auto;
+}
+
+/* The Table of Contents is composed of multiple nested unordered lists.  These styles remove the default styling of an unordered list because it is ugly. */
+.tocify ul, .tocify li {
+    margin: 0;
+    border: none;
+}
+
+.tocify-focus > a {
+    color: #000;
+    font-weight: bold;
+}
+
+/* Top level header elements */
+.tocify-header {
+    list-style: disc;
+    padding-left: 20px !important;
+}
+
+/* Top level subheader elements.  These are the first nested items underneath a header element. */
+.tocify-subheader {
+    list-style: none;
+    padding-left: 10px !important;
+    display: none;
+}
+
+/* Makes the font smaller for all subheader elements. */
+.tocify-subheader li {
+    font-size: 80%;
+}
+
+.tocify-anchor {
+    display: block;
+    position: relative;
+    top: -60px;
+    visibility: hidden;
+}

@@ -1,0 +1,63 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% set pageTitle = 'registration.heading'|trans() %}
+
+{% block subtitle %}{{ 'registration.heading'|trans() }}{% endblock %}
+
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
+
+{% block fos_user_content %}
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-xs-12">
+            <div class="ladb-register-panel panel panel-default panel-lg">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'registration.heading'|trans() }}</h1>
+                </div>
+                <div class="panel-body row">
+                    <div class="ladb-register-body col-sm-6 col-xs-12">
+                        {{ form_start(form, { 'action':path('fos_user_registration_register'), 'method':'POST' }) }}
+                        <fieldset>
+                            <div class="form-group">
+                                {{ form_label(form.username, 'Nom d\'utilisateur') }}
+                                {{ form_errors(form.username) }}
+                                {{ form_widget(form.username, { 'attr':{ 'class':'form-control' } }) }}
+                                <p class="help-block">
+                                    Choissez bien votre nom d'utilisateur.<br>Il donnera accès à votre page.
+                                </p>
+                                <p class="help-block">
+                                    Exemple : <strong>http://www.lairdubois.fr/jean</strong>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.email, 'Adresse email') }}
+                                {{ form_errors(form.email) }}
+                                {{ form_widget(form.email, { 'attr':{ 'class':'form-control' } }) }}
+                            </div>
+                            {% for field in form.plainPassword %}
+                                <div class="form-group">
+                                    {{ form_label(field, loop.first ? 'Mot de passe' : 'Confirmation du mot de passe') }}
+                                    {{ form_errors(field) }}
+                                    {{ form_widget(field, { 'attr':{ 'class':'form-control' } }) }}
+                                </div>
+                            {% endfor %}
+                            {{ form_rest(form) }}
+                        </fieldset>
+                        <div class="text-right">
+                            <input type="submit" value="{{ 'registration.submit'|trans() }}" class="btn btn-primary" />
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                    <div class="ladb-login-body col-sm-6 col-xs-12">
+                        <h4>Déjà inscrit ?</h4>
+                        <a href="{{ path('fos_user_security_login') }}" class="btn btn-default"><i class="ladb-icon-lock"></i> {{ 'user.login'|trans() }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            Qu'est-ce que L'Air du Bois ? <a href="{{ path('core_about') }}">Découvrez-le</a>.
+        </div>
+    </div>
+{% endblock %}

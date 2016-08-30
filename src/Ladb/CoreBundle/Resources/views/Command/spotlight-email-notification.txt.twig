@@ -1,0 +1,6 @@
+{% extends 'LadbCoreBundle::email-layout.txt.twig' %}
+
+{% block content %}
+Votre publication "{{ entity.title|raw }} vient d'être mise en avant sur la page d'accueil{% if twitterSuccess %} et la page Twitter{% endif %} de L'Air du Bois par un coup de projecteur, cliquez sur le lien suivant:
+{{ ladb_entity_url_action(entity) }}
+{% endblock %}

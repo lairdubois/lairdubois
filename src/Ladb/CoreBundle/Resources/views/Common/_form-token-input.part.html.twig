@@ -1,0 +1,18 @@
+
+{# set help #}
+
+<div id="{{ fieldId }}_token_widget" class="row">
+    <div class="col-xs-5">
+        <input id="{{ fieldId }}_token_input" type="text" class="ladb-token-input form-control">
+    </div>
+    <div class="col-xs-1">
+        <button class="btn btn-success" type="button" onclick="add{{ fieldId|capitalize }}Token($('#{{ fieldId }}_token_input').val());" data-tooltip="tooltip" title="Ajouter à la liste">
+            <i class="ladb-icon-arrow-right"></i>
+        </button>
+    </div>
+    <div class="col-xs-6">
+        <ul id="{{ fieldId }}_token_list" class="ladb-token-list">
+            <li class="ladb-token-empty">{{ help }}</li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+{% extends 'LadbCoreBundle:Common:_form-section.part.html.twig' %}
+
+{# set help #}
+
+{% set icon = 'license' %}
+{% set title = 'default.license'|trans() %}
+{% set formSection = 'license' %}
+
+{% block body %}
+    <p class="help-block">
+        {% if help is defined %}
+            {{ help|raw }}
+        {% else %}
+            Cette contribution sera partagée selon les termes d'une licence <a href="http://creativecommons.org/licenses/" target="_blank">Creative Commons</a>. Choisissez les options qui correspondent à vos critères de partage.
+        {% endif %}
+    </p>
+    <div class="checkbox">
+        {{ form_errors(form.allowDerivs) }}
+        <label>
+            {{ form_widget(form.allowDerivs, { 'attr':{ 'onchange':'if (this.checked == 1) { $("#'~form.shareAlike.vars.id~'").attr("disabled", false); $("#label_'~form.shareAlike.vars.id~'").removeClass("text-muted"); } else { $("#'~form.shareAlike.vars.id~'").attr("disabled", true); $("#label_'~form.shareAlike.vars.id~'").addClass("text-muted") }' } }) }}
+            {{ 'license.allow_derivs'|trans() }}
+        </label>
+    </div>
+    <div class="checkbox">
+        {{ form_errors(form.shareAlike) }}
+        <label style="margin-left: 20px;">
+            {% if form.vars.data is not null and form.vars.data.allowDerivs == 1 %}
+                {{ form_widget(form.shareAlike) }}
+                <span id="label_{{ form.shareAlike.vars.id }}">{{ 'license.share_alike'|trans() }}</span>
+            {% else %}
+                {{ form_widget(form.shareAlike, { 'attr':{ 'disabled':'true' } }) }}
+                <span id="label_{{ form.shareAlike.vars.id }}" class="text-muted">{{ 'license.share_alike'|trans() }}</span>
+            {% endif %}
+        </label>
+    </div>
+    <div class="checkbox">
+        {{ form_errors(form.allowCommercial) }}
+        <label>
+            {{ form_widget(form.allowCommercial) }}
+            {{ 'license.allow_commercial'|trans() }}
+        </label>
+    </div>
+{% endblock %}
+

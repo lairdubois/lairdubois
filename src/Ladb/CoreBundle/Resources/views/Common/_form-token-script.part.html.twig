@@ -1,0 +1,101 @@
+
+{# set fieldId #}
+{# set proposals (facultative) #}
+{# set help (facultative) #}
+{# set typeaheadSourcePath (facultative) #}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var inputField = $("#{{ fieldId }}");
+        {% if proposals is defined and proposals is not empty %}
+            inputField.after("{% spaceless %}{{ include('LadbCoreBundle:Common:_form-token-proposals.part.html.twig')|escape('js') }}{% endspaceless %}");
+        {% endif %}
+        inputField.after("{% spaceless %}{{ include('LadbCoreBundle:Common:_form-token-input.part.html.twig')|escape('js') }}{% endspaceless %}");
+        var inputFieldValue = inputField.val();
+        if (inputFieldValue != undefined && inputFieldValue.length > 0) {
+            var tokens = inputFieldValue.length > 0 ? inputFieldValue.split(",") : [];
+            var tokenList = $("#{{ fieldId }}_token_list");
+            for (var i = 0; i < tokens.length; ++i) {
+                tokenList.append("<li id=\"token_" + i + "\" class=\"ladb-token\"><a onclick=\"remove{{ fieldId|capitalize }}Token('" + i + "');\"><i class=\"ladb-icon-remove ladb-icon-sm\"></i></a>" + tokens[i] + "</li>");
+            }
+            if (tokens.length > 0) {
+                tokenList.find(".ladb-token-empty").hide();
+            }
+        }
+        {% if typeaheadSourcePath is defined %}
+            var input = $("#{{ fieldId }}_token_input");
+            input.autocomplete({
+                serviceUrl: "{{ typeaheadSourcePath }}",
+                paramName: "q",
+                minChars: 3,
+                triggerSelectOnValidInput: false,
+                deferRequestBy: 100,
+                onSelect: function (suggestion) {
+                    add{{ fieldId|capitalize }}Token(suggestion.value);
+                    input.focus();
+                }
+            }).on('keyup', function(evt) {
+                if (evt.which == 13 && input.val()) {
+                    add{{ fieldId|capitalize }}Token(input.val());
+                    input.focus();
+                }
+            });
+        {% endif %}
+    });
+    function add{{ fieldId|capitalize }}Token(tokenString) {
+        if (tokenString === undefined || tokenString.length == 0) {
+            $("#{{ fieldId }}_token_input").popover({
+                content: "Saississez un terme",
+                placement: "top"
+            })
+            return;
+        }
+        var tokenStrings = tokenString.split(",");
+        for (var i in tokenStrings) {
+            var token = $.trim(tokenStrings[i]);
+            var input = $("#{{ fieldId }}_token_input");
+            var inputField = $("#{{ fieldId }}");
+            var inputFieldValue = inputField.val();
+            var tokens = (inputFieldValue != undefined && inputFieldValue.length > 0) ? inputFieldValue.split(",") : [];
+            var exists = false;
+            for (var i = 0; i < tokens.length; ++i) {
+                if (token.toLowerCase() == tokens[i].toLowerCase()) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) {
+                continue;
+            }
+            var tokenList = $("#{{ fieldId }}_token_list");
+            var maxTokenId = -1;
+            tokenList.find("li.ladb-token").each(function(index, value) {
+                tmpTokenId = parseInt(value.id.substring(6)); {# 6 = "token_" length #}
+                maxTokenId = Math.max(maxTokenId, tmpTokenId);
+            });
+            var tokenId = (maxTokenId + 1);
+            tokens.push(token);
+            tokenList.append("<li id=\"token_" + tokenId + "\" class=\"ladb-token\"><a onclick=\"remove{{ fieldId|capitalize }}Token('" + tokenId + "');\"><i class=\"ladb-icon-remove ladb-icon-sm\"></i></a>" + token + "</li>");
+            inputField.val(tokens.toString()).trigger('change');
+            tokenList.find(".ladb-token-empty").hide();
+        }
+        input.val("");
+    }
+    function remove{{ fieldId|capitalize }}Token(tokenId) {
+        var inputField = $("#{{ fieldId }}");
+        var inputFieldValue = inputField.val();
+        var tokens = inputFieldValue.split(",");
+        var tokenList = $("#{{ fieldId }}_token_list");
+        tokenList.find("li.ladb-token").each(function(index, value) {
+            tmpTokenId = parseInt(value.id.substring(6)); {# 6 = "token_" length #}
+            if (tmpTokenId == tokenId) {
+                tokens.splice(index, 1);
+                inputField.val(tokens.toString()).trigger('change');
+                if (tokens.length == 0) {
+                    tokenList.find(".ladb-token-empty").show();
+                }
+            }
+        });
+        tokenList.find("#token_" + tokenId).remove();
+    }
+</script>

@@ -1,0 +1,21 @@
+User-agent: *
+Disallow: /login$
+Disallow: /connexion$
+Disallow: /request
+Disallow: /api*
+Disallow: /*/new$
+Disallow: /*/create*$
+Disallow: /*/edit$
+Disallow: /*/delete$
+Disallow: /*/update$
+Disallow: /rechercher/*
+Disallow: /*download$
+Disallow: /*.xhr$
+Disallow: /*.geojson$
+Disallow: /*?referer=1$
+Disallow: /*?q=*
+
+User-agent: Googlebot-Image
+Allow: /media/
+
+Sitemap: https://www.lairdubois.fr/sitemap-index.xml

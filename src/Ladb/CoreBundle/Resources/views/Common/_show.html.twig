@@ -1,0 +1,97 @@
+{% extends 'LadbCoreBundle::layout.html.twig' %}
+
+{% if entity is defined %}
+    {% set pageUrl = pageUrl|default(ladb_entity_url_action(entity, 'show', true, false)) %}
+    {% set pageType = 'article' %}
+    {% set pageTitle = pageTitle|default(entity.title) %}
+    {% if entity.user is defined %}
+        {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.by'|trans()))~' '~entity.user.displayname %}
+    {% endif %}
+    {% if pageDescription is not defined and entity.body is defined and entity.body is not empty %}
+        {% set pageDescription = entity.body|striptags|truncate(200, true, '...') %}
+    {% endif %}
+    {% if entity.user is defined %}
+        {% set pageAuthor = entity.user.displayname %}
+    {% endif %}
+    {% if pageImage is not defined %}
+        {% if entity.pictures is defined and entity.pictures is not empty %}
+            {% set pageImage = [] %}
+            {% for picture in entity.pictures %}
+                {% set pageImage = pageImage|merge([picture.webPath|imagine_filter('400x400o')]) %}
+            {% endfor %}
+            {% set pageImageWidth = '400' %}
+            {% set pageImageHeight = '400' %}
+        {% elseif entity.mainPicture is defined and entity.mainPicture is not null %}
+            {% set pageImage = (entity.mainPicture.webPath|imagine_filter('400x400o')) %}
+            {% set pageImageWidth = '400' %}
+            {% set pageImageHeight = '400' %}
+        {% endif %}
+    {% endif %}
+    {% set pageItemType = pageItemType|default('CreativeWork') %}
+{% endif %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set noStickyHeader = true %}
+
+{% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
+{% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
+
+{% block headPrefix %}{{ parent() }} article: http://ogp.me/ns/article#{% endblock %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    {# OpenGraph metas #}
+    {% if entity is defined %}
+        <meta property="article:modified_time" content="{{ entity.updatedAt|date('c') }}" />
+        <meta property="article:published_time" content="{{ entity.createdAt|date('c') }}" />
+        <meta property="article:section" content="{{ (ladb_entity_type_stripped_name(entity, true)~'.nav')|trans() }}" />
+        {% if entity.tags is defined %}
+            {% for tag in entity.tags %}
+                <meta property="article:tag" content="{{ tag.name }}" />
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('blueimpGalleryStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            setupTooltips();
+            $('#ladb_block_metas').ladbAppendScrollToTopBtn();
+            $('.ladb-comment-widget').ladbCommentWidget();
+        });
+    </script>
+    {{ block('blueimpGalleryJavascripts') }}
+    {% if entity.isDraft is defined and not entity.isDraft %}
+        {{ block('sharebuttonsJavascript') }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ block('blueimpGalleryWidget') }}
+    {% if entity.isDraft is defined and not entity.isDraft %}
+        {{ block('sharebuttonsFloatVertical') }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="row">
+        <div id="ladb_block_body" class="col-lg-push-3 col-lg-7 col-sm-push-4 col-sm-8 col-xs-12">
+            {% block contentBody %}{% endblock %}
+        </div>
+        <div id="ladb_block_metas" class="col-lg-pull-7 col-lg-3 col-sm-pull-8 col-sm-4 col-xs-12">
+            {% block contentMetas %}{% endblock %}
+        </div>
+        <div id="ladb_block_suggest" class="col-lg-2 col-xs-12">
+            {% block contentSuggests %}{% endblock %}
+        </div>
+    </div>
+    {% include 'LadbCoreBundle:Report:_modal.part.html.twig' %}
+{% endblock %}

@@ -1,0 +1,5 @@
+{% if howto.isWorkInProgress %}
+    <div class="alert alert-warning">
+        <p><i class="ladb-icon-wip ladb-icon-lg"></i>&nbsp;&nbsp;{{ ('howto.wip_warning'|trans())|raw }}</p>
+    </div>
+{% endif %}

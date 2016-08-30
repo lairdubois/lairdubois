@@ -1,0 +1,53 @@
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: security.csrf.token_manager
+                use_referer: true
+            logout:
+                success_handler: ladb_core.authentification_handler
+            anonymous: true
+            remember_me:
+                key:      "%secret%"
+                lifetime: 31536000 # 365 days in seconds
+                path:     /
+                domain:   ~ # Defaults to the current domain from $_SERVER
+
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connexion$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/rejoindre$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/email/check$, role: ROLE_USER }
+        - { path: ^/email/confirm, role: ROLE_USER }
+
+        - { path: ^/parametres$, role: ROLE_USER }
+        - { path: ^/messages, role: ROLE_USER }
+        - { path: ^/notifications, role: ROLE_USER }
+
+        - { path: /new$, role: ROLE_USER }
+        - { path: /create$, role: ROLE_USER }
+        - { path: /publish$, role: ROLE_USER }
+        - { path: /unpublish$, role: ROLE_USER }
+        - { path: /update$, role: ROLE_USER }
+        - { path: /edit$, role: ROLE_USER }
+        - { path: /delete$, role: ROLE_USER }
+        - { path: /upload$, role: ROLE_USER }

@@ -1,0 +1,25 @@
+//
+// Modals
+// --------------------------------------------------
+
+.modal-content {
+  background-color: @ladb-global-bg;
+}
+
+// Scale up the modal
+@media screen and (min-width: @screen-lg-min) {
+
+  .modal-wide .modal-dialog {
+    width: @container-large-desktop;
+  }
+
+}
+
+@media screen and (max-width: @screen-lg-min) {
+
+  .modal-wide .modal-dialog {
+    width: auto;
+    margin: 10px;
+  }
+
+}

@@ -1,0 +1,5 @@
+<address>
+{% for part in value.data|split(',') %}
+    {{ part }}{% if not loop.last %}<br>{% endif %}
+{% endfor %}
+</address>

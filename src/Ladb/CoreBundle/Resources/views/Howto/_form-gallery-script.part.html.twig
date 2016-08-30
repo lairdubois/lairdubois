@@ -1,0 +1,35 @@
+
+{# set fieldId #}
+{# set maxHowtoCount #}
+
+<script>
+    function updateHowtosForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#howto_thumbnails").find("li.ladb-howto").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(6); {# 6 = "howto_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount == {{ maxHowtoCount }}) {
+            $("#linkto_howto_buttons").hide();
+        } else {
+            $("#linkto_howto_buttons").show();
+        }
+    }
+    function howtoAdded(data) {
+        $("#howto_thumbnails").append(data);
+        updateHowtosForm();
+        $("#linkto_howto_modal_iframe").attr("src", "");
+        $("#linkto_howto_modal").find("button.close").click();
+    }
+    function howtoRemoved() {
+        updateHowtosForm();
+    }
+    function updateHowtoChoiceModal() {
+        $('#linkto_howto_modal_iframe').attr('src', '{{ path('core_howto_list', { 'layout':'choice' }) }}&ex=' + $("#{{ fieldId }}").val());
+    }
+</script>

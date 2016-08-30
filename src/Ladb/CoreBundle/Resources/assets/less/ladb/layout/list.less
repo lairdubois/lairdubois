@@ -1,0 +1,57 @@
+//
+// LADB List
+//
+
+.ladb-list-row {
+  .row();
+
+  .ladb-avatar {
+    margin-top: 5px;
+    float: left;
+  }
+
+  .ladb-body {
+    .row-body();
+    margin-left: 74px;
+    padding-top: 10px;
+
+    .ladb-heading {
+      margin: 0;
+      line-height: 30px;
+
+      small {
+        color: @ladb-global-light-color;
+        font-weight: normal;
+      }
+
+    }
+
+    .ladb-subheading {
+      font-size: 100%;
+
+      .ladb-subblock {
+        display: inline-block;
+
+        a:hover {
+          text-decoration: none;
+
+          i {
+            opacity: 0.5
+          }
+
+        }
+
+      }
+
+      a {
+        font-size: 85%;
+      }
+
+      i {
+        color: @ladb-global-light-color;
+      }
+
+    }
+  }
+
+}

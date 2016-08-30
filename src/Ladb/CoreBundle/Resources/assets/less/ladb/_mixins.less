@@ -1,0 +1,242 @@
+
+/* */
+
+#gradient {
+
+  // Horizontal gradient, from left to right
+  //
+  // Creates two color stops, start and end, by specifying a color and position for each color stop.
+  // Color stops are not available in IE9 and below.
+  .horizontal(@start-color: #555; @end-color: #333; @start-percent: 0%; @end-percent: 100%) {
+    background-image: -webkit-linear-gradient(left, @start-color @start-percent, @end-color @end-percent); // Safari 5.1-6, Chrome 10+
+    background-image: -o-linear-gradient(left, @start-color @start-percent, @end-color @end-percent); // Opera 12
+    background-image: linear-gradient(to right, @start-color @start-percent, @end-color @end-percent); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",argb(@start-color),argb(@end-color))); // IE9 and down
+  }
+
+  // Vertical gradient, from top to bottom
+  //
+  // Creates two color stops, start and end, by specifying a color and position for each color stop.
+  // Color stops are not available in IE9 and below.
+  .vertical(@start-color: #555; @end-color: #333; @start-percent: 0%; @end-percent: 100%) {
+    background-image: -webkit-linear-gradient(top, @start-color @start-percent, @end-color @end-percent);  // Safari 5.1-6, Chrome 10+
+    background-image: -o-linear-gradient(top, @start-color @start-percent, @end-color @end-percent);  // Opera 12
+    background-image: linear-gradient(to bottom, @start-color @start-percent, @end-color @end-percent); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@start-color),argb(@end-color))); // IE9 and down
+  }
+
+}
+
+/* box-shadow */
+
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow;
+     -moz-box-shadow: @shadow;
+          box-shadow: @shadow;
+}
+
+/* border-radius */
+
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+/* column-count */
+
+.column-count(@count) {
+  -moz-column-count:@count;
+  -webkit-column-count:@count;
+  column-count:4;
+}
+
+/* user-select */
+
+.user-select(@select) {
+  -webkit-user-select: @select;
+  -moz-user-select: @select;
+  -ms-user-select: @select;
+  user-select: @select;
+}
+
+/* transform */
+
+.transform(@transform) {
+  -webkit-transform: @transform;
+  -ms-transform: @transform;
+  transform: @transform;
+}
+
+/* transition */
+
+.transition(@transition) {
+  -moz-transition: @transition;
+  -webkit-transition: @transition;
+  transition: @transition;
+}
+
+.placeholder(@color: #ddd) {
+  // Firefox
+  &::-moz-placeholder {
+    color: @color;
+    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+  }
+  &:-ms-input-placeholder { color: @color; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: @color; } // Safari and Chrome
+}
+
+/* blink */
+
+.blink(@duration: 1s, @timing-function: ease-in-out) {
+  -webkit-animation-name: blinker;
+  -webkit-animation-duration: @duration;
+  -webkit-animation-timing-function: @timing-function;
+  -webkit-animation-iteration-count: infinite;
+
+  -moz-animation-name: blinker;
+  -moz-animation-duration: @duration;
+  -moz-animation-timing-function: @timing-function;
+  -moz-animation-iteration-count: infinite;
+
+  animation-name: blinker;
+  animation-duration: @duration;
+  animation-timing-function: @timing-function;
+  animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1.0; }
+}
+
+/* age */
+
+.age() {
+  font-size: 80%;
+  border-left: 1px solid @ladb-global-light-color;
+  margin-left: 5px;
+  padding-left: 5px;
+  color: @ladb-global-light-color;
+}
+
+/* list-box */
+
+.list-box() {
+  border: 1px solid @ladb-global-border;
+  padding: 4px;
+  background-color: #fff;
+  .box-shadow(0 0 1px 1px rgba(0,0,0,.055));
+
+  >.ladb-content {
+    padding: 6px;
+    min-height: 64px;
+
+    >.ladb-heading {
+
+      h3 {
+        font-size: 130%;
+      }
+
+    }
+
+    >.ladb-subheading {
+      margin-left: 74px;
+      color: @ladb-global-light-color;
+      font-size: 85%;
+
+      .ladb-age {
+        .age();
+      }
+
+    }
+
+  }
+
+}
+.list-box-hover() {
+  cursor: pointer;
+
+  &:hover {
+    border-color: @ladb-brand-primary;
+    .box-shadow(0 0 1px 1px @ladb-brand-primary);
+  }
+
+}
+
+/* row */
+
+.row() {
+  min-height: 81px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid @ladb-global-border;
+  position: relative;
+}
+.row-body {
+
+  .ladb-heading {
+    font-weight: bold;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+
+    small {
+      display: inline-block;
+    }
+
+  }
+
+  .ladb-subheading {
+    margin-bottom: 4px;
+    font-size: 85%;
+    color: @ladb-global-light-color;
+
+    > span {
+      display: inline-block;
+    }
+  }
+
+  .ladb-age {
+    .age();
+  }
+
+}
+.row-counter() {
+  float: right;
+  margin: 5px 0 5px 15px;
+  border-left: 1px solid @ladb-global-border;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100px;
+  height: 60px;
+  color: @ladb-global-light-color;
+
+  .ladb-heading {
+    font-size: 160%;
+    margin-top: 0px;
+    line-height: 30px;
+  }
+
+  .ladb-subheading {
+    font-size: 85%;
+  }
+
+}
+

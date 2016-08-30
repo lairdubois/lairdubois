@@ -1,0 +1,16 @@
+
+{# set entity #}
+{# set headingClasses (facultative) #}
+
+<div class="ladb-avatar-header">
+    {% block headerTools %}
+        <div class="ladb-header-tools">
+            <a href="{{ ladb_entity_url_action(entity) }}" class="btn btn-default">{{ 'default.back'|trans() }}</a>
+        </div>
+    {% endblock %}
+    {% include 'LadbCoreBundle:Common:_avatar.part.html.twig' with { 'size':64, 'imgClasses':'ladb-avatar', 'noMicrodata':true } %}
+    <div class="ladb-body">
+        <h1 class="ladb-heading{% if headingClasses is defined and not null %} {{ headingClasses }}{% endif %}">{% block headingInner %}{{ entity.title|raw }}{% endblock %}</h1>
+        {% block subheading %}<span class="ladb-subheading">{% block subheadingInner %}{% endblock %}</span>{% endblock %}
+    </div>
+</div>

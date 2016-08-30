@@ -1,0 +1,22 @@
+{% extends 'LadbCoreBundle:Search:_searchbox.part.html.twig' %}
+
+{% set placeholder = 'search.in.woods'|trans() %}
+{% set searchPath = path('core_wood_list') %}
+{% set masonry = true %}
+
+{% block filtersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="origin" data-label="Provenance" data-editable="true" data-icon="globe"><i class="ladb-icon-globe"></i> Provenance</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="utilization" data-label="Utilisation" data-editable="true" data-icon="creation"><i class="ladb-icon-creation"></i> Utilisation</a></li>
+    {# Hidden filters #}
+    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="name" data-label="Nom français" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Nom français</a></li>
+{% endblock %}
+
+{% block sortersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="recent" data-label="Récentes" data-unique="true" data-icon="time"><i class="ladb-icon-time"></i> Récentes</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-views" data-label="Plus vues" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus vues</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-likes" data-label="Préférées" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférées</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-comments" data-label="Plus commentées" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentées</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="density" data-label="Plus denses" data-unique="true" data-icon="weight"><i class="ladb-icon-weight"></i> Plus denses</a></li>
+{% endblock %}

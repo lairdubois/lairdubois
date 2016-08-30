@@ -1,0 +1,83 @@
+//
+// LADB Filterbar
+//
+
+.ladb-listsearchbar {
+  display: table;
+  padding: 15px 0;
+  min-height: 60px;
+  position: relative;
+
+  .ladb-listsearchbar-left {
+    display: table-cell;
+    vertical-align: top;
+    margin-right: 10px;
+
+    h1, h2 {
+      display: inline;
+      margin: 0;
+      padding-right: 10px;
+      font-size: 150%;
+      line-height: 32px;
+      color: @ladb-global-light-color;
+      white-space: nowrap;
+    }
+
+  }
+
+  .ladb-listsearchbar-middle {
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+  }
+
+  .ladb-listsearchbar-right {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 10px;
+  }
+
+}
+
+// Filter bar
+
+.ladb-filterbar {
+  padding-top: 15px;
+  min-height: 60px;
+  position: relative;
+
+  .ladb-filterbar-heading {
+    float: left;
+    margin-right: 10px;
+    border-right: 1px solid @ladb-global-border;
+
+    h1, h2 {
+      display: inline;
+      margin: 0;
+      padding-right: 10px;
+      font-size: 150%;
+      line-height: 32px;
+      color: @ladb-global-light-color;
+    }
+
+  }
+
+  .ladb-filterbar-right {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+  }
+
+  .ladb-heading {
+    color: @ladb-global-light-color;
+    font-size: 150%;
+    margin: 0;
+  }
+
+}
+
+.ladb-filterbar-line {
+  border-bottom: 1px solid @ladb-global-border;
+}
+
+

@@ -1,0 +1,8 @@
+
+{# set searchPath (facultative) #}
+{# set searchFormClasses (facultative) #}
+{# set searchFieldClasses (facultative) #}
+
+<form action="{{ searchPath is defined ? searchPath : path('core_search') }}" method="GET" class="ladb-search{% if searchFormClasses is defined %} {{ searchFormClasses }}{% endif %}">
+    <input name="q" type="search" class="ladb-search-field{% if searchFieldClasses is defined %} {{ searchFieldClasses }}{% endif %}" placeholder="Recherche">
+</form>

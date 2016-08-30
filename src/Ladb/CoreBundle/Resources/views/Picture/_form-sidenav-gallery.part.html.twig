@@ -1,0 +1,6 @@
+
+{# set title (facultative) #}
+
+{% set formSection = formSection|default('pictures') %}
+
+<li><a href="#{{ formSection }}"><i class="ladb-icon-camera"></i> {{ title is defined ? title : 'Images' }}</a></li>

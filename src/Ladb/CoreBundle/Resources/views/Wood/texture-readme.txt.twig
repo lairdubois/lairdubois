@@ -1,0 +1,12 @@
+IMPORTANT:
+----------
+
+Le contenu original de cette archive a été publié *{{ texture.value.user.displayName }}*{% if texture.value.user.fullName %} ({{ texture.value.user.fullName }}){% endif %} sur L'Air du Bois dans l'essence *{{ texture.wood.title }}* ({{ ladb_entity_url_action(texture.wood) }}).
+
+Cette archive contient {{ files|length }} {{ 'default.choice.files'|transchoice(files|length) }} :
+{% for file in files %}
+    - {{ file }}
+{% endfor %}
+
+L'Air du Bois - Découvrez, fabriquez, partagez.
+http://www.lairdubois.fr
