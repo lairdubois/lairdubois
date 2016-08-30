@@ -27,7 +27,7 @@ L'Air du Bois uses some important tools you need to install first.
     $ sudo apt-get install php5 php5-cli php5-curl php5-intl php5-gd php5-imagick php-apc php5-mysql php5-fpm
 ```
 
-### Install [Git](https://git-scm.com/) - *The version control system *
+### Install [Git](https://git-scm.com/) - *The version control system*
 
 ``` bash
     $ sudo apt-get install git
@@ -116,7 +116,7 @@ L'Air du Bois uses a lot of external libs and bundles. This step permits to auto
 
 Now you are ready to configure Nginx to acces to the webroot directory.
 
-## Step 5 - Configure Nginx
+## Step 5 - Setup the virtual host on Nginx
 
 If you are on the **PROD** server :
 
@@ -134,6 +134,28 @@ If you are on the **DEV** server :
     $ service nginx restart
 ```
 
+## Step 6 - Generate and configure DKIM keys
 
+> If you are on the **PROD** server :
+
+``` bash
+    $ cd /var/www/www.lairdubois.fr/keys
+    $ openssl genrsa -out private.pem 1024
+    $ openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+```
+
+Copy public key and remove line breaks by the following command !
+
+``` bash
+    $ cat public.pem
+```
+
+ADD the following parameters to DNS TXT record  (tuto : https://www.mailjet.com/docs/1and1-setup-spf-dkim-record)
+
+``` bash
+type    = TXT
+prefix  = dkim._domainkey               // dkim is facutative
+value   = k=rsa; p=[PUBLIC KEY HERE]
+```
 
 
