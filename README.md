@@ -22,4 +22,4 @@ This code is under the **GNU GPLv3 license**.
 Authors
 -------
 
-See the list of [our contributors](http://github.com/lairdubois/lairdubois/contributors).
+See the list of [contributors](http://github.com/lairdubois/lairdubois/contributors).
