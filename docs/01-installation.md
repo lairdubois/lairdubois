@@ -7,6 +7,8 @@ Else you need to adapt it to your configuration.
 
 ### Step 0 - Install required softwares
 
+L'Air du Bois uses some important tools you need to install first.
+
 Install [MySQL](https://www.mysql.com/) - *The database*
 
 ``` bash
@@ -19,25 +21,25 @@ Install [Ningx](https://nginx.org/) - *The webserver*
     $ sudo apt-get install nginx
 ```
 
-Install [Php](http://www.php.net/) - **
+Install [PHP](http://www.php.net/) - *The scripting language*
 
 ``` bash
     $ sudo apt-get install php5 php5-cli php5-curl php5-intl php5-gd php5-imagick php-apc php5-mysql php5-fpm
 ```
 
-Install [Git](https://git-scm.com/)
+Install [Git](https://git-scm.com/) - *The version control system *
 
 ``` bash
     $ sudo apt-get install git
 ```
 
-Install [Composer](https://getcomposer.org/) - *The Dependency Manager for PHP*
+Install [Composer](https://getcomposer.org/) - *The dependency manager for PHP*
 
 ``` bash
     $ sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
-Install [NodeJS](https://nodejs.org) and **Less package**
+Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package**
 
 ``` bash
     $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -64,6 +66,9 @@ Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The se
     $ sudo apt-get update
     $ sudo apt-get install elasticsearch
 ```
+
+Now you are ready to setup the website itself !
+
 
 ### Step 1 - Create the web root directory
 
