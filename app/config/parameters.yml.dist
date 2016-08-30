@@ -17,6 +17,7 @@ parameters:
 
     locale:                         fr
     secret:                         THIS_TOKEN_IS_NOT_SECRET_CHANGE_IT
+    welcome_username:               zeloko
 
     router.request_context.host:    www.lairdubois.fr
     router.request_context.scheme:  https
