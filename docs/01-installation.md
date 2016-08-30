@@ -39,7 +39,7 @@ Install [Composer](https://getcomposer.org/) - *The dependency manager for PHP*
     $ sudo curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
-Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package**
+Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package** - *The CSS pre-processor*
 
 ``` bash
     $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -47,7 +47,7 @@ Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package**
     $ npm install -g less
 ```
 
-Install *Java*
+Install *Java* - *Used to run Elesticsearch*
 
 ``` bash
     $ echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/webupd8team-java.list
