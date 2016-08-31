@@ -55,7 +55,7 @@ class UserListener implements EventSubscriberInterface {
 		/////
 
 		// Send welcome Message
-		$welcomeUsername = $this->getContainer()->getParameter('welcome_username');
+		$welcomeUsername = $this->container->getParameter('welcome_username');
 		$sender = $userManager->findUserByUsername($welcomeUsername);
 		if (!is_null($sender)) {
 			$messageUtils->composeThread($sender, array( $user ), 'Bienvenue !', $templating->render('LadbCoreBundle:User:message-welcome.md.twig', array( 'recipientUser' => $user )), true);

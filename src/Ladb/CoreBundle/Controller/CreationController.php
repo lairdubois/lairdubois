@@ -228,8 +228,8 @@ class CreationController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($creation);
 
-			$embaddableUtils = $this->get(EmbeddableUtils::NAME);
-			$embaddableUtils->resetSticker($creation);
+			$embeddableUtils = $this->get(EmbeddableUtils::NAME);
+			$embeddableUtils->resetSticker($creation);
 
 			$creation->setMainPicture($creation->getPictures()->first());
 			if ($creation->getUser()->getId() == $this->getUser()->getId()) {
@@ -559,7 +559,7 @@ class CreationController extends Controller {
 			$highlightedPost = $postRepository->findOneLastOnHighlightLevel($this->get('security.authorization_checker')->isGranted('ROLE_USER') ? Post::HIGHLIGHT_LEVEL_USER_ONLY : Post::HIGHLIGHT_LEVEL_ALL);
 
 			// Check if post is already viewed
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+			if (!is_null($highlightedPost) && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 				$viewRepository = $om->getRepository(View::CLASS_NAME);
 				if ($viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($highlightedPost->getType(), $highlightedPost->getId(), $this->getUser(), View::KIND_SHOWN)) {
 					$highlightedPost = null;
