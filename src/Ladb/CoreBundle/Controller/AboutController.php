@@ -57,7 +57,7 @@ class AboutController extends Controller {
 			array( 'name' => 'ImageOptimizer', 'url' => 'https://github.com/psliwa/image-optimizer', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'EmailValidator', 'url' => 'https://github.com/egulias/EmailValidator', 'labels' => array( 'PHP' ) ),
 
-			array( 'name' => 'Elasticsearch', 'url' => 'https://www.elastic.co' ),
+			array( 'name' => 'Elasticsearch', 'url' => 'https://www.elastic.co', 'labels' => array( 'JAVA' ) ),
 
 			array( 'name' => 'jQuery', 'url' => 'https://jquery.com/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jQuery UI', 'url' => 'http://jqueryui.com/', 'labels' => array( 'JS' ) ),
