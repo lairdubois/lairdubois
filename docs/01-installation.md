@@ -144,11 +144,10 @@ Now you are ready to configure Nginx to access to the webroot directory.
     $ service nginx restart
 ```
 
-## Step 6 - Generate and configure DKIM keys
+## Step 6 - Generate and configure DKIM keys (facultative)
 
-Emails sended by the
-
-> If you are on the **PROD** server :
+Emails sended by L'Air du Bois uses DKIM (DomainKeys Identified Mail) email authentication method.
+But as you need to add parameter on the DNS record, it may be usefull only on **PROD** server.
 
 ``` bash
     $ openssl genrsa -out keys/private.pem 1024
@@ -181,6 +180,14 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 
 ``` bash
     $ app/console doctrine:schema:update --force
+```
+
+## Step 8 - Compile and Minimize CSS and JS
+
+This step will create `web/js` and `web/css` folders and fill them with compiled and minimized assets. 
+
+``` bash
+    $ app/console assetic:dump
 ```
 
 
