@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "48de88798c0f4a8ca1a5ee3c895d76fb",
-    "content-hash": "c79053f1ac8ab9171f55c3153d750a7b",
+    "hash": "a328eb0f1fe60a1aafe655b559d85d37",
+    "content-hash": "692a2ce7b9e0e7057f9df6dd1d5ca223",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -2679,6 +2679,47 @@
             "time": "2016-07-29 03:23:52"
         },
         {
+            "name": "nnnick/chartjs",
+            "version": "v2.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chartjs/Chart.js.git",
+                "reference": "0ebe388611a8d394750aa6dba5634db26e378742"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chartjs/Chart.js/zipball/0ebe388611a8d394750aa6dba5634db26e378742",
+                "reference": "0ebe388611a8d394750aa6dba5634db26e378742",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "release/2.0": "v2.0-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NICK DOWNIE",
+                    "email": "hello@nickdownie.com"
+                }
+            ],
+            "description": "Simple HTML5 charts using the canvas element.",
+            "homepage": "http://www.chartjs.org/",
+            "keywords": [
+                "JS",
+                "chart"
+            ],
+            "time": "2016-08-27 12:29:09"
+        },
+        {
             "name": "ocramius/proxy-manager",
             "version": "1.0.2",
             "source": {
@@ -3204,6 +3245,61 @@
                 "tree"
             ],
             "time": "2016-01-26 23:58:32"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v3.21.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682",
+                "reference": "0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~0.6.1",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "time": "2016-08-25 22:58:28"
         },
         {
             "name": "swiftmailer/swiftmailer",

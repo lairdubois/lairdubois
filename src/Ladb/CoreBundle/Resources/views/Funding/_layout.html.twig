@@ -1,0 +1,12 @@
+{% extends 'LadbCoreBundle::layout.html.twig' %}
+
+{# set tab #}
+
+{% block bodyHeaderContainerContent %}
+    <h1 class="ladb-heading"><i class="ladb-icon-funding"></i> {{ 'funding.funding'|trans() }}</h1>
+    <ul class="nav nav-tabs">
+        <li{% if tab == 'dashboard' %} class="active"{% endif %}><a href="{{ path('core_funding_dashboard' )}}">{{ 'funding.dashboard'|trans() }}</a></li>
+        <li{% if tab == 'statistics' %} class="active"{% endif %}><a href="{{ path('core_funding_statistics' )}}">{{ 'funding.statistics'|trans() }}</a></li>
+        <li{% if tab == 'my-donations' %} class="active"{% endif %}><a href="{{ path('core_funding_statistics' )}}">{{ 'funding.my_donations'|trans() }}</a></li>
+    </ul>
+{% endblock %}

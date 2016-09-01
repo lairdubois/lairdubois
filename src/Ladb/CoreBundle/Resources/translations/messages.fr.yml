@@ -854,3 +854,11 @@ share:
       plan: Plan
       workshop: Atelier
       howto: Pas à pas
+
+funding:
+  funding: Financement
+  nav: Financement
+  dashboard: Tableau de bord
+  statistics: Statistiques
+  my_donations: Mes dons
+  donate: Faire un don

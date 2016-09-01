@@ -49,10 +49,12 @@
         "jmikola/geojson": "^1.0",
         "giggsey/libphonenumber-for-php": "^7.2",
         "cebe/markdown": "1.1.0",
+        "stripe/stripe-php": "3.21.0",
 
         "components/jquery": "1.12.1",
         "components/jqueryui": "1.11.4",
-        "components/masonry": "3.2.2"
+        "components/masonry": "3.2.2",
+        "nnnick/chartjs": "^2.2"
 
     },
     "require-dev": {

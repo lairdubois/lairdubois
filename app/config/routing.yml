@@ -134,3 +134,7 @@ ladb_core_referer:
     resource: "Ladb\\CoreBundle\\Controller\\RefererController"
     type:     annotation
 
+ladb_core_funding:
+    resource: "Ladb\\CoreBundle\\Controller\\FundingController"
+    type:     annotation
+
