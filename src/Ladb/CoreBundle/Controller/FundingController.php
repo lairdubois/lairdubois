@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller;
 
 use Ladb\CoreBundle\Entity\Funding\Funding;
+use Ladb\CoreBundle\Manager\Funding\FundingManager;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -35,12 +36,11 @@ class FundingController extends Controller {
 		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
 
 		if (is_null($year) || is_null($month)) {
-			$now = new \DateTime();
-			$year = $now->format('Y');
-			$month = $now->format('m');
+			$fundingManager = $this->get(FundingManager::NAME);
+			$funding = $fundingManager->getOrCreateCurrent();
+		} else {
+			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
 		}
-
-		$funding = $fundingRepository->findOneByMonthAndYear($month, $year);
 		if (is_null($funding)) {
 			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
 		}
@@ -100,14 +100,18 @@ class FundingController extends Controller {
 		$donation->setStripeChargeId($charge['id']);
 
 		$om->persist($donation);
+
+		// Update current Funding
+		$fundingManager = $this->get(FundingManager::NAME);
+		$funding = $fundingManager->getOrCreateCurrent();
+		$funding->incrementDonationBalance($donation->getAmount() - $donation->getFee());
+
 		$om->flush();
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('funding.alert.pay_success', array( '%amount%' => $amount / 100 )));
 
-		return array(
-		);
-
+		return;
 	}
 
 	/**

@@ -43,7 +43,7 @@ class Donation {
 	private $fee = 0;
 
 	/**
-	 * @ORM\Column(type="string", length=30, unique=true)
+	 * @ORM\Column(name="stripe_charge_id", type="string", length=30, unique=true)
 	 */
 	private $stripeChargeId;
 

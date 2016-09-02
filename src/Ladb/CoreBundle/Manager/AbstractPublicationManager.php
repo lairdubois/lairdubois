@@ -14,7 +14,7 @@ use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\ReportableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 
-abstract class AbstractPublicationManager extends AbstractManager{
+abstract class AbstractPublicationManager extends AbstractManager {
 
 	public function publishPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

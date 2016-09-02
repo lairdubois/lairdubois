@@ -16,15 +16,31 @@ class FundingRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findOneByMonthAndYear($month, $year) {
+	public function findOneByYearAndMonth($year, $month) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'f', ))
 			->from($this->getEntityName(), 'f')
-			->where('f.month = :month')
-			->andWhere('f.year = :year')
-			->setParameter('month', $month)
+			->where('f.year = :year')
+			->andWhere('f.month = :month')
 			->setParameter('year', $year)
+			->setParameter('month', $month)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	public function findOneLast() {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'f', ))
+			->from($this->getEntityName(), 'f')
+			->orderBy('f.year', 'DESC')
+			->orderBy('f.month', 'DESC')
 		;
 
 		try {

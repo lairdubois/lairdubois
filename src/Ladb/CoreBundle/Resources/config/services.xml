@@ -165,6 +165,9 @@
         <service id="ladb_core.witness_manager" class="Ladb\CoreBundle\Manager\WitnessManager">
             <argument type="service" id="service_container"/>
         </service>
+        <service id="ladb_core.funding_manager" class="Ladb\CoreBundle\Manager\Funding\FundingManager">
+            <argument type="service" id="service_container"/>
+        </service>
 
         <!-- Validators -->
         <service id="ladb_core.self_recipient_validator" class="Ladb\CoreBundle\Validator\Constraints\SelfRecipientValidator">

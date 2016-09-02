@@ -31,24 +31,19 @@ class Funding {
 	private $year;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(name="charge_balance", type="integer")
 	 */
-	private $chargeAmount;
+	private $chargeBalance = 0;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(name="carried_forward_balance", type="integer")
 	 */
-	private $donationAmount;
+	private $carriedForwoardBalance = 0;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(name="donation_balance", type="integer")
 	 */
-	private $carriedForwoardDonationAmount;
-
-	/**
-	 * @ORM\Column(type="integer")
-	 */
-	private $currentDonationAmount;
+	private $donationBalance = 0;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Funding\Charge", mappedBy="funding", cascade={"all"})
@@ -89,33 +84,83 @@ class Funding {
 		return $this->year;
 	}
 
-	// ChargeAmount /////
+	// ChargeBalance /////
 
-	public function setChargeAmount($chargeAmount) {
-		$this->chargeAmount = $chargeAmount;
+	public function incrementChargeBalance($by) {
+		$this->chargeBalance += $by;
 		return $this;
 	}
 
-	public function getChargeAmount() {
-		return $this->chargeAmount;
-	}
-
-	// DonationAmount /////
-
-	public function setDonationAmount($donationAmount) {
-		$this->donationAmount = $donationAmount;
+	public function setChargeBalance($chargeBalance) {
+		$this->chargeBalance = $chargeBalance;
 		return $this;
 	}
 
-	public function getDonationAmount() {
-		return $this->donationAmount;
+	public function getChargeBalance() {
+		return $this->chargeBalance;
+	}
+
+	public function getChargeBalanceEur() {
+		return $this->getChargeBalance() / 100;
+	}
+
+	// CarriedForwardBalance /////
+
+	public function setCarriedForwardBalance($carriedForwoardBalance) {
+		$this->carriedForwoardBalance = $carriedForwoardBalance;
+		return $this;
+	}
+
+	public function getCarriedForwardBalance() {
+		return $this->carriedForwoardBalance;
+	}
+
+	// DonationBalance /////
+
+	public function incrementDonationBalance($by) {
+		$this->donationBalance += $by;
+		return $this;
+	}
+
+	public function setDonationBalance($donationBalance) {
+		$this->donationBalance = $donationBalance;
+		return $this;
+	}
+
+	public function getDonationBalance() {
+		return $this->donationBalance;
+	}
+
+	public function getDonationBalanceEur() {
+		return $this->getDonationBalance() / 100;
+	}
+
+	// Balance /////
+
+	public function getBalance() {
+		return $this->getCarriedForwardBalance() + $this->getDonationBalance();
+	}
+
+	public function getBalanceEur() {
+		return $this->getBalance() / 100;
 	}
 
 	// Charges /////
 
-	public function setCharges($charges) {
-		$this->charges = $charges;
+	// Articles /////
+
+	public function addCharge(\Ladb\CoreBundle\Entity\Funding\Charge $charge) {
+		if (!$this->charges->contains($charge)) {
+			$this->charges[] = $charge;
+			$charge->setFunding($this);
+		}
 		return $this;
+	}
+
+	public function removeCharge(\Ladb\CoreBundle\Entity\Funding\Charge $charge) {
+		if ($this->charges->removeElement($charge)) {
+			$charge->setFunding(null);
+		}
 	}
 
 	public function getCharges() {
