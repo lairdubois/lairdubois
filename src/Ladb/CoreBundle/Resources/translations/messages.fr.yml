@@ -862,3 +862,5 @@ funding:
   statistics: Statistiques
   my_donations: Mes dons
   donate: Faire un don
+  alert:
+    pay_success: Votre paiement de <strong>%amount%€</strong> a bien été enregistré. Merci de votre soutien !

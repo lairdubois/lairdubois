@@ -37,7 +37,8 @@
     {{ parent() }}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-circle-progress/jquery.circle-progress.js'
-        '@LadbCoreBundle/Resources/assets/js/jquery-payment/jquery.payment.js' %}
+        '@LadbCoreBundle/Resources/assets/js/jquery-payment/jquery.payment.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.donate.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=201609011842"></script>
     {% endjavascripts %}
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
@@ -47,7 +48,7 @@
             // Circle /////
 
             $('#circle').circleProgress({
-                value: 0.42,
+                value: {{ funding.donationAmount / funding.chargeAmount }},
                 size: 400,
                 thickness: 20,
                 startAngle: -Math.PI / 2,
@@ -55,57 +56,13 @@
                     color: ["#5cb85c"], //"#f77f00"]
                 }
             }).on('circle-animation-progress', function(event, progress) {
-                $(this).find('span:first').html(parseInt(42 * progress));
+                $(this).find('span:first').html(parseInt({{ funding.donationAmount / funding.chargeAmount * 100 }} * progress));
             });
 
-            // Setup payment form /////
-
-            $('input.cc-number').payment('formatCardNumber');
-            $('input.cc-exp').payment('formatCardExpiry');
-            $('input.cc-cvc').payment('formatCardCVC');
-
-            $.fn.toggleInputError = function(erred) {
-                this.parent('.form-group').toggleClass('has-error', erred);
-                return this;
-            };
-
-            // Validate payment form /////
-
-            $('#pay_button').on('click', function() {
-
-                var cardType = $.payment.cardType($('.cc-number').val());
-                $('.cc-number').toggleInputError(!$.payment.validateCardNumber($('.cc-number').val()));
-                $('.cc-exp').toggleInputError(!$.payment.validateCardExpiry($('.cc-exp').payment('cardExpiryVal')));
-                $('.cc-cvc').toggleInputError(!$.payment.validateCardCVC($('.cc-cvc').val(), cardType));
-                $('.cc-brand').text(cardType);
-                $('#donate_modal .modal-content').removeClass('shake');
-                if ($('.has-error').length) {
-                    $('#donate_modal .modal-content').addClass('shake');
-                } else {
-
-                    var $form = $('#payment-form');
-
-                    Stripe.setPublishableKey('pk_test_toeDHC0usy5koMdwC8yJr8wE');
-
-                    // Request a token from Stripe:
-                    Stripe.card.createToken($form, function(status, response) {
-                        if (response.error) { // Problem!
-
-                            // Show the errors on the form:
-                            $form.find('.payment-errors').text(response.error.message);
-
-                        } else { // Token was created!
-
-                            // Get the token ID:
-                            var token = response.id;
-
-                            console.log("token = " + token);
-
-                        }
-                    });
-
-                }
-
+            $('.ladb-donate-widget').ladbDonate({
+                publishableKey: 'pk_test_toeDHC0usy5koMdwC8yJr8wE',
+                dashboardUrl: '{{ path('core_funding_dashboard') }}',
+                chargeUrl: '{{ path('core_funding_create') }}'
             });
 
         });
@@ -131,8 +88,8 @@
                             </div>
                         </div>
                         <div style="font-size: 160%" class="col-xs-4 text-right">
-                            <small>Charges</small>&nbsp;:&nbsp;<strong class="ladb-color-negative">22,00€</strong>
-                            <small>Dons</small>&nbsp;:&nbsp;<strong class="ladb-color-positive">9,24€</strong>
+                            <small>Charges</small>&nbsp;:&nbsp;<strong class="ladb-color-negative">{{ funding.chargeAmount / 100 }}€</strong>
+                            <small>Dons</small>&nbsp;:&nbsp;<strong class="ladb-color-positive">{{ funding.donationAmount / 100 }}€</strong>
                         </div>
                     </div>
                 </div>
@@ -140,60 +97,7 @@
         </div>
         <div class="col-sm-4 col-xs-12">
             <p>Par volonté d'indépendance, <em>L'Air du Bois</em> a fait le pari de fonctionner sans faire appel à la publicité.</p>
-            <div class="text-center">
-                {#<button id="customButton" class="btn btn-lg btn-primary"><i class="ladb-icon-donate"></i> Faire un don</button>#}
-                <h2>Je donne</h2>
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group input-group-lg">
-                            <input type="text" class="form-control input-lg" value="5" style="width: 50px;">
-                            <div class="input-group-addon">€</div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-lg" onclick="$('#donate_modal').modal(); return false;">Faire un don</button>
-                </form>
-            </div>
+            {% include 'LadbCoreBundle:Funding:_widget.part.html.twig' %}
         </div>
     </div>
-    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'donate_modal', 'title':('funding.donate'|trans()) } %}
-        {% block bodyInner %}
-            <p>Vous êtes sur le point de faire un don de XX euros pour soutenir le projet <em>L'Air du Bois</em>.</p>
-            <br/>
-
-            <div class="row">
-                <div class="col-md-10 col-md-push-1 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="ladb-icon-credit-card ladb-icon-lg"></i> Paiement par carte bancaire
-                        </div>
-                        <div class="panel-body">
-                            <form id="payment-form">
-                                <span class="payment-errors"></span>
-                                <div class="row">
-                                    <div class="form-group col-xs-12">
-                                        <label for="cc-number" class="control-label">Numéro de carte <small class="text-muted">[<span class="cc-brand"></span>]</small></label>
-                                        <input id="cc-number" type="tel" class="input-lg form-control cc-number" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" required data-stripe="number">
-                                    </div>
-                                    <div class="form-group col-xs-6">
-                                        <label for="cc-exp" class="control-label">Date d'expiration</label>
-                                        <input id="cc-exp" type="tel" class="input-lg form-control cc-exp" autocomplete="cc-exp" placeholder="•• / ••" required  data-stripe="exp">
-                                    </div>
-                                    <div class="form-group col-xs-6">
-                                        <label for="cc-cvc" class="control-label">Cryptogramme visuel</label>
-                                        <input id="cc-cvc" type="tel" class="input-lg form-control cc-cvc" autocomplete="off" placeholder="•••" required data-stripe="cvc">
-                                    </div>
-                                </div>
-                            </form>
-                            <p class="help-block text-center">La transation de paiement est assurée par <a href="https://stripe.com">Stripe</a>.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        {% endblock %}
-        {% block footerInner %}
-            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-            <a id="pay_button" href="#" class="btn btn-primary">Payer 5€</a>
-        {% endblock %}
-    {% endembed %}
 {% endblock %}

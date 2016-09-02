@@ -1,0 +1,60 @@
+<div class="ladb-donate-widget">
+    <h2>Je donne</h2>
+    <form>
+        <div class="row">
+            <div class="col-xs-5">
+                <div class="form-group">
+                    <div class="input-group input-group-lg">
+                        <input id="ladb_donate_amount_input" type="text" class="form-control input-lg text-right">
+                        <div class="input-group-addon">€</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-7">
+                <button id="ladb_donate_btn" class="btn btn-primary btn-lg" onclick="$('#donate_modal').modal(); return false;">Faire un don</button>
+            </div>
+        </div>
+    </form>
+    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'donate_modal', 'title':('funding.donate'|trans()) } %}
+        {% block bodyInner %}
+            <p>Vous êtes sur le point de faire un don de <strong><span class="ladb-donate-amount"></span>€</strong> pour soutenir le projet <em>L'Air du Bois</em>.</p>
+            <br/>
+
+            <div class="row">
+                <div class="col-md-10 col-md-push-1 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="ladb-icon-credit-card ladb-icon-lg"></i> Paiement par carte bancaire
+                        </div>
+                        <div class="panel-body">
+                            <form id="payment-form">
+                                <span class="payment-errors"></span>
+                                <div class="row">
+                                    <div class="form-group col-xs-12">
+                                        <label for="cc-number" class="control-label">Numéro de carte <small class="text-muted">[<span class="cc-brand"></span>]</small></label>
+                                        <input id="cc-number" type="tel" class="input-lg form-control cc-number" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" required data-stripe="number">
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label for="cc-exp" class="control-label">Date d'expiration</label>
+                                        <input id="cc-exp" type="tel" class="input-lg form-control cc-exp" autocomplete="cc-exp" placeholder="•• / ••" required  data-stripe="exp">
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label for="cc-cvc" class="control-label">Cryptogramme visuel</label>
+                                        <input id="cc-cvc" type="tel" class="input-lg form-control cc-cvc" autocomplete="off" placeholder="•••" required data-stripe="cvc">
+                                    </div>
+                                </div>
+                            </form>
+                            <p class="help-block text-center">La transation de paiement est assurée par <a href="https://stripe.com">Stripe</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endblock %}
+        {% block footerInner %}
+            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+            <a id="ladb_donate_pay_btn" href="#" class="btn btn-primary">Payer <span class="ladb-donate-amount"></span>€</a>
+        {% endblock %}
+    {% endembed %}
+</div>
+

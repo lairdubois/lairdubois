@@ -27,6 +27,7 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         ga_tracking_id: %ga_tracking_id%
+        strip_publishable_key: %strip_publishable_key%
 
 # Assetic Configuration
 assetic:

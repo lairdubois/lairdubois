@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Entity\Funding\Funding;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,13 +27,26 @@ class FundingController extends Controller {
 
 	/**
 	 * @Route(pattern="/tableau-de-bord", name="core_funding_dashboard")
+	 * @Route(pattern="/tableau-de-bord/{year}/{month}", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_dashboard_year_month")
 	 * @Template()
 	 */
-	public function dashboardAction() {
+	public function dashboardAction($year = null, $month = null) {
+		$om = $this->getDoctrine()->getManager();
+		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
 
-		\Stripe\Stripe::setApiKey("sk_test_fcfqu5FwyxWsRVileU2SReWn");
+		if (is_null($year) || is_null($month)) {
+			$now = new \DateTime();
+			$year = $now->format('Y');
+			$month = $now->format('m');
+		}
+
+		$funding = $fundingRepository->findOneByMonthAndYear($month, $year);
+		if (is_null($funding)) {
+			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
+		}
 
 		return array(
+			'funding' => $funding,
 		);
 	}
 
@@ -45,16 +60,19 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/checkout/create", name="core_funding_checkout_create")
-	 * @Template("LadbCoreBundle:Funding:checkout-create.html.twig")
+	 * @Route(pattern="/create", name="core_funding_create")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Funding:create.html.twig")
 	 */
-	public function checkoutCreateAction(Request $request) {
+	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
 
+		// Retrieve parameters
 		$amount = $request->get('amount');
-		$tokenId = $request->get('token_id');
+		$token = $request->get('token');
 
-		\Stripe\Stripe::setApiKey("sk_test_fcfqu5FwyxWsRVileU2SReWn");
+		// Setup Stripe API
+		\Stripe\Stripe::setApiKey($this->getParameter('strip_secret_key'));
 
 		// Create a charge: this will charge the user's card
 		try {
@@ -63,7 +81,7 @@ class FundingController extends Controller {
 			$charge = \Stripe\Charge::create(array(
 				'amount'      => $amount, // Amount in cents
 				'currency'    => 'eur',
-				'source'      => $tokenId,
+				'source'      => $token,
 				'metadata'    => array( 'user_id' => $this->getUser()->getId())
 			));
 
@@ -71,19 +89,55 @@ class FundingController extends Controller {
 			// The card has been declined
 		}
 
+		// Retrieve the balance transaction
+		$balanceTransaction = \Stripe\BalanceTransaction::retrieve($charge['balance_transaction']);
+
 		// Create the Donation
 		$donation = new Donation();
 		$donation->setUser($this->getUser());
 		$donation->setAmount($amount);
-		$donation->setFee(0);
-		$donation->setStripeCHargeIt('');
+		$donation->setFee($balanceTransaction['fee']);
+		$donation->setStripeChargeId($charge['id']);
 
 		$om->persist($donation);
 		$om->flush();
 
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('funding.alert.pay_success', array( '%amount%' => $amount / 100 )));
+
 		return array(
-			'tokenId' => $tokenId,
 		);
+
+	}
+
+	/**
+	 * @Route("/mes-dons", name="core_funding_list")
+	 * @Route("/mes-dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_list_filter")
+	 * @Route("/mes-dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_list_filter_page")
+	 * @Template()
+	 */
+	public function listAction(Request $request, $filter = 'all', $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
+		$paginator = $donationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+
+		$parameters = array(
+			'filter'        => $filter,
+			'prevPageUrl'   => $pageUrls->prev,
+			'nextPageUrl'   => $pageUrls->next,
+			'donations'     => $paginator,
+			'donationCount' => $paginator->count(),
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Message:mailbox-xhr.html.twig', $parameters);
+		}
+		return $parameters;
 
 	}
 

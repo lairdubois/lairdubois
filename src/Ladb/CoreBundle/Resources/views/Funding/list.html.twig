@@ -1,0 +1,39 @@
+{% extends 'LadbCoreBundle:Funding:_layout.html.twig' %}
+
+{% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
+
+{% set tab = 'list' %}
+
+{% set masonry = false %}
+{% set masonryWide = false %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('autopagerScript') }}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="row">
+        <br/>
+        <div class="col-sm-8 col-xs-12">
+            {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
+                {% set filterDefs = {
+                'all':  { 'label':'Toutes', 'path':path('core_message_mailbox_filter', { 'filter':'all' }) },
+                'sent': { 'label':'Envoyées', 'path':path('core_message_mailbox_filter', { 'filter':'sent' }) },
+                } %}
+                {% block filterbarRightContent%}
+                    <span class="ladb-heading">{{ donationCount }} {% transchoice donationCount %}[0,1]don|]1,Inf]dons{% endtranschoice %}</span>
+                {% endblock %}
+            {% endembed %}
+            {{ block('autopagerContainer') }}
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <p>Par volonté d'indépendance, <em>L'Air du Bois</em> a fait le pari de fonctionner sans faire appel à la publicité.</p>
+            {% include 'LadbCoreBundle:Funding:_widget.part.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Funding:_list-n.part.html.twig' %}
+{% endblock %}

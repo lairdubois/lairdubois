@@ -1,0 +1,17 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set donations #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for donation in donations %}
+        <div class="ladb-donation-row ladb-list-row">
+            <div class="row">
+                <div class="col-xs-12">
+                    Don #{{ donation.id }}
+                    <h1>{{ donation.amount / 100 }}€<small>{{ donation.fee / 100 }}€</small></h1>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

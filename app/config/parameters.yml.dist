@@ -35,3 +35,6 @@ parameters:
     facebook_app_secret:            YOUR_FACEBOOK_APP_SECRET
     facebook_page_id:               YOUR_FACEBOOK_PAGE_ID
     facebook_access_token:          YOUR_FACEBOOK_ACCESS_TOKEN
+
+    strip_secret_key:               YOUR_STRIPE_SECRET_KEY
+    strip_publishable_key:          YOUR_STRIPE_PUBLISHABLE_KEY
