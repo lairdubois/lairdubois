@@ -219,7 +219,8 @@ EOT
 			->from('LadbCoreBundle:Blog\Post', 'p')
 			->innerJoin('p.user', 'u')
 			->leftJoin('p.mainPicture', 'mp')
-			->where('p.createdAt > :date')
+			->where('p.isDraft = false')
+			->andWhere('p.createdAt > :date')
 			->orderBy('p.createdAt', 'DESC')
 			->setParameter('date', $date)
 		;
