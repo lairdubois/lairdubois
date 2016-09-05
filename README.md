@@ -3,7 +3,7 @@ L'Air du Bois
 
 *L'Air du Bois* is a Woodworkers Sharing Platform available at https://www.lairdubois.fr
 
-![L'Air du Bois](https://www.lairdubois.fr/banner-600x376.jpg)
+![L'Air du Bois](https://www.lairdubois.fr/capture.jpg)
 
 Documentation
 -------------
