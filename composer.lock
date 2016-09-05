@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a328eb0f1fe60a1aafe655b559d85d37",
-    "content-hash": "692a2ce7b9e0e7057f9df6dd1d5ca223",
+    "hash": "fc310e0450aeb268fc52fbce4ab3cbdf",
+    "content-hash": "8439ad594454637a9ad985ff7c2ca4de",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -1740,12 +1740,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "147ca6888712365e5ad3b7906f7b6e8654da2f48"
+                "reference": "b7b93061dbaccec6acbedab7f200869e20909861"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/147ca6888712365e5ad3b7906f7b6e8654da2f48",
-                "reference": "147ca6888712365e5ad3b7906f7b6e8654da2f48",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/b7b93061dbaccec6acbedab7f200869e20909861",
+                "reference": "b7b93061dbaccec6acbedab7f200869e20909861",
                 "shasum": ""
             },
             "require": {
@@ -1804,7 +1804,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2016-08-31 11:01:35"
+            "time": "2016-09-02 11:25:50"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -2677,47 +2677,6 @@
                 "psr-3"
             ],
             "time": "2016-07-29 03:23:52"
-        },
-        {
-            "name": "nnnick/chartjs",
-            "version": "v2.2.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/chartjs/Chart.js.git",
-                "reference": "0ebe388611a8d394750aa6dba5634db26e378742"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/chartjs/Chart.js/zipball/0ebe388611a8d394750aa6dba5634db26e378742",
-                "reference": "0ebe388611a8d394750aa6dba5634db26e378742",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "release/2.0": "v2.0-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "NICK DOWNIE",
-                    "email": "hello@nickdownie.com"
-                }
-            ],
-            "description": "Simple HTML5 charts using the canvas element.",
-            "homepage": "http://www.chartjs.org/",
-            "keywords": [
-                "JS",
-                "chart"
-            ],
-            "time": "2016-08-27 12:29:09"
         },
         {
             "name": "ocramius/proxy-manager",
@@ -4055,16 +4014,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.9",
+            "version": "v2.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "df02dd5d3f7decb3a05c6d0f31054b4263625dcb"
+                "reference": "84e8eb7690eea267526c3d40050b4c54f1878b7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/df02dd5d3f7decb3a05c6d0f31054b4263625dcb",
-                "reference": "df02dd5d3f7decb3a05c6d0f31054b4263625dcb",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/84e8eb7690eea267526c3d40050b4c54f1878b7a",
+                "reference": "84e8eb7690eea267526c3d40050b4c54f1878b7a",
                 "shasum": ""
             },
             "require": {
@@ -4185,7 +4144,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-07-30 08:48:52"
+            "time": "2016-09-02 20:40:06"
         },
         {
             "name": "twig/extensions",
@@ -4241,16 +4200,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.24.1",
+            "version": "v1.24.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512"
+                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3566d311a92aae4deec6e48682dc5a4528c4a512",
-                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
+                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
                 "shasum": ""
             },
             "require": {
@@ -4298,7 +4257,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-05-30 09:11:59"
+            "time": "2016-09-01 17:50:53"
         },
         {
             "name": "twitter/bootstrap",
@@ -4605,16 +4564,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v2.8.9",
+            "version": "v2.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "bc61b781fa7f07f9a2ed4e69b15d5c2238695fc0"
+                "reference": "fc69aad7dba2ab3eed5cf90c8e3ede4fb961effd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/bc61b781fa7f07f9a2ed4e69b15d5c2238695fc0",
-                "reference": "bc61b781fa7f07f9a2ed4e69b15d5c2238695fc0",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/fc69aad7dba2ab3eed5cf90c8e3ede4fb961effd",
+                "reference": "fc69aad7dba2ab3eed5cf90c8e3ede4fb961effd",
                 "shasum": ""
             },
             "require": {
@@ -4656,7 +4615,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2016-06-29 05:31:50"
+            "time": "2016-08-19 06:48:01"
         }
     ],
     "aliases": [],

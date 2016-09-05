@@ -2,15 +2,15 @@
 
 namespace Ladb\CoreBundle\Controller;
 
-use Ladb\CoreBundle\Entity\Funding\Funding;
-use Ladb\CoreBundle\Manager\Funding\FundingManager;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Ladb\CoreBundle\Entity\Funding\Donation;
+use Ladb\CoreBundle\Entity\Funding\Funding;
+use Ladb\CoreBundle\Manager\Funding\FundingManager;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 
 /**
  * @Route("/financement")
@@ -115,9 +115,9 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route("/mes-dons", name="core_funding_list")
-	 * @Route("/mes-dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_list_filter")
-	 * @Route("/mes-dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_list_filter_page")
+	 * @Route("/dons", name="core_funding_list")
+	 * @Route("/dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_list_filter")
+	 * @Route("/dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_list_filter_page")
 	 * @Template()
 	 */
 	public function listAction(Request $request, $filter = 'all', $page = 0) {
@@ -139,7 +139,7 @@ class FundingController extends Controller {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Message:mailbox-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Funding:list-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 
