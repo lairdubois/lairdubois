@@ -86,6 +86,10 @@ class Donation {
 		return $this->amount;
 	}
 
+	public function getAmountEur() {
+		return $this->getAmount() / 100;
+	}
+
 	// Fee /////
 
 	public function setFee($fee) {
@@ -95,6 +99,10 @@ class Donation {
 
 	public function getFee() {
 		return $this->fee;
+	}
+
+	public function getFeeEur() {
+		return $this->getFee() / 100;
 	}
 
 	// StripeChargeId /////

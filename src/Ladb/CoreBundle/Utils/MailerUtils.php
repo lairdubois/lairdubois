@@ -74,6 +74,20 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		);
 	}
 
+	public function sendFundingPaymentReceiptEmailMessage(User $recipientUser, $donation) {
+		$parameters = array(
+			'recipientUser' => $recipientUser,
+			'donation'      => $donation,
+		);
+		$this->sendEmailMessage(
+			$recipientUser->getEmail(),
+			'Confirmation du paiement de votre don',
+			$this->_renderTemplate('LadbCoreBundle:Funding:payment-receipt-email.txt.twig', $parameters),
+			$this->_renderTemplate('LadbCoreBundle:Funding:payment-receipt-email.html.twig', $parameters)
+		);
+		unset($parameters);
+	}
+
 	public function sendWeekNewsEmailMessage(User &$recipientUser, &$creations, &$plans, &$workshops, &$howtos, &$howtoArticles, &$finds, &$posts, &$woods, &$providers) {
 		if ($recipientUser->getWeekNewsEmailEnabled()) {
 			$parameters = array(

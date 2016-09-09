@@ -429,8 +429,9 @@ user:
          - Recevoir les informations de réinitialisation en cas de perte de vos informations de connexion
          - Recevoir les notifications par e-mail
          - Recevoir les messages privés par e-mail
+         - Faire des dons
 
-        Pour autant, votre adresse e-mail **ne** sera **jamais** rendue publique.
+        Pour autant, votre adresse e-mail **ne** sera **jamais** rendue publique, ni communiquée à un autre organisme.
     confirm:
       invalid_token: La clé de confirmation de votre adresse e-mail n'est pas valide
       invalid_user: L'utilisateur ne correspond pas à la clé de confirmation de l'adresse e-mail.
@@ -862,5 +863,16 @@ funding:
   statistics: Statistiques
   my_donations: Mes dons
   donate: Faire un don
-  alert:
-    pay_success: Votre paiement de <strong>%amount%€</strong> a bien été enregistré. Merci de votre soutien !
+  message:
+    pay_success: Le paiement de votre don de <strong>%amount%€</strong> a bien été enregistré.<br>Merci pour votre soutien au projet <em>L'Air du Bois</em> !
+    pay_error:
+      invalid_number: Le numéro de carte est invalide.
+      invalid_expiry_month: Le mois d'expiration de la carte est invalide.
+      invalid_expiry_year: L'année d'expiration de la carte est invalide.
+      invalid_cvc: Le cryptogramme visuel est invalide.
+      incorrect_number: Le numéro de carte est incorrect.
+      expired_card: La carte est expirée.
+      incorrect_cvc: La validation du cryptogramme visuel a échouée.
+      incorrect_zip: La validation du code postal a échouée.
+      card_declined: La carte a été refusée.
+      processing_error: Une erreur s'est produite lors du traitement de la carte.

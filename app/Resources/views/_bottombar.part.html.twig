@@ -1,7 +1,7 @@
 {% spaceless %}
 <div class="ladb-bottombar">
     <ul class="ladb-nav">
-        <li style="background-color: #f0ad4e;"><a href="{{ path('core_funding') }}"{% if navSection is defined and navSection == 'blog' %} class="ladb-active"{% endif %}><i class="ladb-icon-funding"></i>&nbsp;{{ 'funding.nav'|trans() }}</a></li>
+        <li style="background-color: #f0ad4e;"><a href="{{ path('core_funding') }}"{% if navSection is defined and navSection == 'funding' %} class="ladb-active"{% endif %}><i class="ladb-icon-funding"></i>&nbsp;{{ 'funding.nav'|trans() }}</a></li>
         <li class="ladb-hidden-mobile"><a href="{{ path('core_blog_post_list') }}"{% if navSection is defined and navSection == 'blog' %} class="ladb-active"{% endif %}><i class="ladb-icon-blog"></i>&nbsp;{{ 'blog.post.nav'|trans() }}{% block bottomBarBlogPostNotificationBadge %}{% endblock %}</a></li>
         <li class="ladb-hidden-mobile"><a href="{{ path('core_faq_question_list') }}"{% if navSection is defined and navSection == 'faq' %} class="ladb-active"{% endif %}><i class="ladb-icon-help"></i>&nbsp;{{ 'faq.question.nav'|trans() }}{% block bottomBarFaqQuestionNotificationBadge %}{% endblock %}</a></li>
         <li><a href="{{ path('core_about_legals') }}"{% if navSection is defined and navSection == 'legals' %} class="ladb-active"{% endif %}>{{ 'default.legals'|trans() }}</a></li>

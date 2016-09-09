@@ -28,4 +28,17 @@ month:
     oct: oct
     nov: nov
     dec: dec
+  long:
+    jan: janvier
+    feb: février
+    mar: mars
+    apr: avril
+    may: mai
+    jun: juin
+    jul: juillet
+    aug: août
+    sep: septembre
+    oct: octobre
+    nov: novembre
+    dec: décembre
 

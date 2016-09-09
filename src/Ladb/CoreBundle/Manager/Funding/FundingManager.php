@@ -41,7 +41,7 @@ class FundingManager extends AbstractManager {
 				// Create a funding every month between last and now
 				for ($i = 1; $i <= $diffMonth; $i++) {
 
-					$year = $lastFunding->getYear() + intval(($lastFunding->getMonth() + $i) / 12);
+					$year = $lastFunding->getYear() + intval(($lastFunding->getMonth() - 1 + $i) / 12);
 					$month = ($lastFunding->getMonth() + $i) % 12;
 
 					// Create a new funding

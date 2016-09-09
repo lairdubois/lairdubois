@@ -14,7 +14,14 @@
         {% endif %}
         <p>Confirmez l'action pour continuer.</p>
     {% else %}
-        <i class="ladb-icon-warning"></i> Avant de pouvoir publier ce contenu, vous devez confirmer l'adresse e-mail associée à votre compte.
+        <div class="media">
+            <div class="media-left" style="padding-top: 5px;">
+                <i class="ladb-icon-warning ladb-icon-lg"></i>
+            </div>
+            <div class="media-body">
+                Avant de pouvoir publier ce contenu, vous devez confirmer l'adresse e-mail associée à votre compte.
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
 {% block footerInner %}

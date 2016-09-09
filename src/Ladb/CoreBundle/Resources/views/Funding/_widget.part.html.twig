@@ -1,60 +1,96 @@
-<div class="ladb-donate-widget">
-    <h2>Je donne</h2>
-    <form>
-        <div class="row">
-            <div class="col-xs-5">
-                <div class="form-group">
-                    <div class="input-group input-group-lg">
-                        <input id="ladb_donate_amount_input" type="text" class="form-control input-lg text-right">
-                        <div class="input-group-addon">€</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-7">
-                <button id="ladb_donate_btn" class="btn btn-primary btn-lg" onclick="$('#donate_modal').modal(); return false;">Faire un don</button>
+<div class="ladb-funding-widget">
+    <form action="{{ path('core_funding_new') }}" class="form-inline text-center" method="get">
+        <div class="form-group">
+            <div class="input-group input-group-lg">
+                <input name="amount_eur" id="ladb_donate_amount_input" type="text" class="form-control input-lg text-right" style="width: 70px;" value="{{ amountEur }}">
+                <div class="input-group-addon">€</div>
             </div>
         </div>
+        <button id="ladb_donate_btn" class="btn btn-primary btn-lg">Faire un don</button>
     </form>
-    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'donate_modal', 'title':('funding.donate'|trans()) } %}
-        {% block bodyInner %}
-            <p>Vous êtes sur le point de faire un don de <strong><span class="ladb-donate-amount"></span>€</strong> pour soutenir le projet <em>L'Air du Bois</em>.</p>
-            <br/>
-
-            <div class="row">
-                <div class="col-md-10 col-md-push-1 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="ladb-icon-credit-card ladb-icon-lg"></i> Paiement par carte bancaire
-                        </div>
-                        <div class="panel-body">
-                            <form id="payment-form">
-                                <span class="payment-errors"></span>
-                                <div class="row">
-                                    <div class="form-group col-xs-12">
-                                        <label for="cc-number" class="control-label">Numéro de carte <small class="text-muted">[<span class="cc-brand"></span>]</small></label>
-                                        <input id="cc-number" type="tel" class="input-lg form-control cc-number" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" required data-stripe="number">
-                                    </div>
-                                    <div class="form-group col-xs-6">
-                                        <label for="cc-exp" class="control-label">Date d'expiration</label>
-                                        <input id="cc-exp" type="tel" class="input-lg form-control cc-exp" autocomplete="cc-exp" placeholder="•• / ••" required  data-stripe="exp">
-                                    </div>
-                                    <div class="form-group col-xs-6">
-                                        <label for="cc-cvc" class="control-label">Cryptogramme visuel</label>
-                                        <input id="cc-cvc" type="tel" class="input-lg form-control cc-cvc" autocomplete="off" placeholder="•••" required data-stripe="cvc">
+    {% if is_granted("ROLE_USER") %}
+        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'payment_modal', 'title':('funding.donate'|trans()) } %}
+            {% block bodyInner %}
+                {% if app.user.emailConfirmed %}
+                    <p class="text-center">
+                        Vous êtes sur le point de faire un don de <strong><span class="ladb-donate-amount"></span>€</strong> pour soutenir le projet <em>L'Air du Bois</em>.
+                        <br>
+                        Des frais de transaction seront prélevés sur cette somme par la plateforme de paiement et sont estimés à <strong><span class="ladb-donate-fee"></span>€</strong>. <a href="https://stripe.com/fr/pricing" target="_blank">En savoir plus</a>.
+                    </p>
+                    <p class="text-center">Vous receverez un récapitulatif par email à l'adresse <strong>{{ app.user.email }}</strong>.</p>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-10 col-md-push-1 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="ladb-icon-credit-card ladb-icon-lg"></i> Paiement par carte bancaire
+                                </div>
+                                <div class="panel-body">
+                                    <div style="position: relative;">
+                                        <form id="payment-form">
+                                            <span class="payment-errors"></span>
+                                            <div class="row">
+                                                <div class="form-group col-xs-12">
+                                                    <label for="cc-number" class="control-label">Numéro de carte <i id="ladb_cc_icon"></i></label>
+                                                    <input id="cc-number" type="tel" class="input-lg form-control cc-number" autocomplete="cc-number" placeholder="XXXX XXXX XXXX XXXX" required data-stripe="number" value="4242424242424242">
+                                                </div>
+                                                <div class="form-group col-xs-6">
+                                                    <label for="cc-exp" class="control-label">Date d'expiration</label>
+                                                    <input id="cc-exp" type="tel" class="input-lg form-control cc-exp" autocomplete="cc-exp" placeholder="MM / AA" required  data-stripe="exp" value="05/17">
+                                                </div>
+                                                <div class="form-group col-xs-6">
+                                                    <label for="cc-cvc" class="control-label">Cryptogramme visuel</label>
+                                                    <input id="cc-cvc" type="tel" class="input-lg form-control cc-cvc" autocomplete="off" placeholder="XXX" required data-stripe="cvc" value="123">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <p class="help-block text-center">
+                                            <small><em><i class="ladb-icon-lock ladb-icon-lg"></i> La transation est assurée par <a href="https://stripe.com"><img src="{{ asset('/bundles/ladbcore/ladb/images/logo-stripe.svg') }}" width="40px"></a>.</em></small>
+                                        <br>
+                                            <small><em>Aucune donnée bancaire ne transite par le serveur de L'Air du Bois.</em></small>
+                                        </p>
+                                        {% embed 'LadbCoreBundle:Common:_loading-panel.part.html.twig' %}
+                                            {% block inner %}
+                                                <i class="ladb-icon-lock ladb-icon-lg"></i>
+                                                {{ parent() }}
+                                            {% endblock %}
+                                        {% endembed %}
                                     </div>
                                 </div>
-                            </form>
-                            <p class="help-block text-center">La transation de paiement est assurée par <a href="https://stripe.com">Stripe</a>.</p>
+                            </div>
                         </div>
                     </div>
+                {% else %}
+                    <div class="media">
+                        <div class="media-left" style="padding-top: 5px;">
+                            <i class="ladb-icon-warning ladb-icon-lg"></i>
+                        </div>
+                        <div class="media-body">
+                            Avant de pouvoir effectuer un don, vous devez confirmer l'adresse e-mail associée à votre compte.
+                        </div>
+                    </div>
+                {% endif %}
+            {% endblock %}
+            {% block footerInner %}
+                <a id="ladb_donate_cancel_btn" href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                {% if app.user.emailConfirmed %}
+                    <a id="ladb_donate_pay_btn" href="#" class="btn btn-primary">Payer <span class="ladb-donate-amount"></span>€</a>
+                {% else %}
+                    <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+                {% endif %}
+            {% endblock %}
+        {% endembed %}
+        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'payment_success_modal', 'title':('funding.donate'|trans()) } %}
+            {% block bodyInner %}
+                <div class="text-center">
+                    <i class="ladb-icon-donate ladb-color-positive" style="font-size: 100px;"></i>
                 </div>
-            </div>
-
-        {% endblock %}
-        {% block footerInner %}
-            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-            <a id="ladb_donate_pay_btn" href="#" class="btn btn-primary">Payer <span class="ladb-donate-amount"></span>€</a>
-        {% endblock %}
-    {% endembed %}
+                <p style="text-align: center; margin-top: 20px;"></p>
+            {% endblock %}
+            {% block footerInner %}
+                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
 </div>
 

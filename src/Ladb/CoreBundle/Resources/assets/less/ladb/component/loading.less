@@ -7,6 +7,29 @@
 
 @ladb-loading-width:          (@ladb-loading-bounce-size * 3 + @ladb-loading-bounce-gutter * 6);
 
+.ladb-loading-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  opacity: 0.9;
+
+  > div {
+    position: absolute;
+    height: 50px;
+    top: 50%;
+    margin-top: -25px;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    display: block;
+    text-align: center;
+  }
+
+}
+
 .ladb-loading {
   display: block;
   text-align: center;

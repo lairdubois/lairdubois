@@ -2,15 +2,18 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Utils\MailerUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Ladb\CoreBundle\Entity\Funding\Donation;
 use Ladb\CoreBundle\Entity\Funding\Funding;
 use Ladb\CoreBundle\Manager\Funding\FundingManager;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/financement")
@@ -31,9 +34,13 @@ class FundingController extends Controller {
 	 * @Route(pattern="/tableau-de-bord/{year}/{month}", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_dashboard_year_month")
 	 * @Template()
 	 */
-	public function dashboardAction($year = null, $month = null) {
+	public function dashboardAction(Request $request, $year = null, $month = null) {
 		$om = $this->getDoctrine()->getManager();
 		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+
+		// Retrieve parameters
+		$amountEur = $request->get('amount_eur', 5);	// default amount = 5€
+		$autoShow = $request->get('auto_show', false);
 
 		if (is_null($year) || is_null($month)) {
 			$fundingManager = $this->get(FundingManager::NAME);
@@ -45,24 +52,45 @@ class FundingController extends Controller {
 			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
 		}
 
-		return array(
-			'funding' => $funding,
+		$prevDate = $funding->getId() == 1 ? null : new \DateTime($funding->getYear().'-'.$funding->getMonth().'-01 first day of previous month');
+		$nextDate = $funding->getIsCurrent() ? null : new \DateTime($funding->getYear().'-'.$funding->getMonth().'-01 first day of next month');
+
+		$prevPageUrl = $prevDate ? $this->get('router')->generate('core_funding_dashboard_year_month', array( 'month' => $prevDate->format('m'), 'year' => $prevDate->format('Y') )) : null;
+		$nextPageUrl = $nextDate ? $this->get('router')->generate('core_funding_dashboard_year_month', array( 'month' => $nextDate->format('m'), 'year' => $nextDate->format('Y') )) : null;
+
+		$parameters = array(
+			'funding'     => $funding,
+			'prevPageUrl' => $prevPageUrl,
+			'nextPageUrl' => $nextPageUrl,
+			'amountEur'   => $amountEur,
+			'autoShow'    => $autoShow,
 		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Funding:dashboard-xhr.html.twig', $parameters);
+		}
+
+		return $parameters;
 	}
 
 	/**
-	 * @Route(pattern="/statistiques", name="core_funding_statistics")
-	 * @Template()
+	 * @Route(pattern="/new", name="core_funding_new")
 	 */
-	public function statisticsAction() {
-		return array(
-		);
+	public function newAction(Request $request) {
+
+		// Retrieve parameters
+		$amountEur = $request->get('amount_eur');
+
+		$response = $this->forward('LadbCoreBundle:Funding:Dashboard', array(
+			'amount_eur' => $amountEur,
+			'auto_show' => true,
+		));
+		return $response;
 	}
 
 	/**
-	 * @Route(pattern="/create", name="core_funding_create")
+	 * @Route(pattern="/create", name="core_funding_create", defaults={"_format" = "json"})
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Funding:create.html.twig")
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -70,6 +98,13 @@ class FundingController extends Controller {
 		// Retrieve parameters
 		$amount = $request->get('amount');
 		$token = $request->get('token');
+
+		if (is_null($amount)) {
+			throw $this->createNotFoundException('No amount.');
+		}
+		if (is_null($token)) {
+			throw $this->createNotFoundException('No token.');
+		}
 
 		// Setup Stripe API
 		\Stripe\Stripe::setApiKey($this->getParameter('strip_secret_key'));
@@ -79,39 +114,48 @@ class FundingController extends Controller {
 
 			// Create the Stripe charge
 			$charge = \Stripe\Charge::create(array(
-				'amount'      => $amount, // Amount in cents
-				'currency'    => 'eur',
-				'source'      => $token,
-				'metadata'    => array( 'user_id' => $this->getUser()->getId())
+				'amount'        => $amount, // Amount in cents
+				'currency'      => 'eur',
+				'source'        => $token,
+				'metadata'      => array('user_id' => $this->getUser()->getId()),
+				"description"   => "Don au profit de L'Air du Bois",
 			));
 
+			// Retrieve the balance transaction
+			$balanceTransaction = \Stripe\BalanceTransaction::retrieve($charge['balance_transaction']);
+
+			// Create the Donation
+			$donation = new Donation();
+			$donation->setUser($this->getUser());
+			$donation->setAmount($amount);
+			$donation->setFee($balanceTransaction['fee']);
+			$donation->setStripeChargeId($charge['id']);
+
+			$om->persist($donation);
+
+			// Update current Funding
+			$fundingManager = $this->get(FundingManager::NAME);
+			$funding = $fundingManager->getOrCreateCurrent();
+			$funding->incrementDonationBalance($donation->getAmount() - $donation->getFee());
+
+			$om->flush();
+
+			// Email confirmation (after persist to have a donation id)
+			$mailerUtils = $this->get(MailerUtils::NAME);
+			$mailerUtils->sendFundingPaymentReceiptEmailMessage($this->getUser(), $donation);
+
 		} catch (\Stripe\Error\Card $e) {
-			// The card has been declined
+			return new JsonResponse(array(
+				'success' => false,
+				'error_code' => $e->getStripeCode(),
+				'message' => $this->get('translator')->trans('funding.message.pay_error.'.$e->getStripeCode()),
+			));
 		}
 
-		// Retrieve the balance transaction
-		$balanceTransaction = \Stripe\BalanceTransaction::retrieve($charge['balance_transaction']);
-
-		// Create the Donation
-		$donation = new Donation();
-		$donation->setUser($this->getUser());
-		$donation->setAmount($amount);
-		$donation->setFee($balanceTransaction['fee']);
-		$donation->setStripeChargeId($charge['id']);
-
-		$om->persist($donation);
-
-		// Update current Funding
-		$fundingManager = $this->get(FundingManager::NAME);
-		$funding = $fundingManager->getOrCreateCurrent();
-		$funding->incrementDonationBalance($donation->getAmount() - $donation->getFee());
-
-		$om->flush();
-
-		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('funding.alert.pay_success', array( '%amount%' => $amount / 100 )));
-
-		return;
+		return new JsonResponse(array(
+			'success' => true,
+			'message' => $this->get('translator')->trans('funding.message.pay_success', array( '%amount%' => $amount / 100 )),
+		));
 	}
 
 	/**

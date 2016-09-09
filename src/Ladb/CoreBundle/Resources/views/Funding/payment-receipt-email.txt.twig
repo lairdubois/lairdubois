@@ -1,0 +1,3 @@
+{% extends 'LadbCoreBundle::email-layout.txt.twig' %}
+
+{% block content %}('funding.message.pay_success'|trans({ '%amount%':(donation.amountEur|number_format(2, ',', ' ')))|raw }){% endblock %}

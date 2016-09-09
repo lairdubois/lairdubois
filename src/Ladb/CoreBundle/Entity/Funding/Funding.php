@@ -84,6 +84,19 @@ class Funding {
 		return $this->year;
 	}
 
+	// IsCurrent /////
+
+	public function getDate() {
+		return new \DateTime($this->getYear().'-'.$this->getMonth().'-01');
+	}
+
+	// IsCurrent /////
+
+	public function getIsCurrent() {
+		$now = new \DateTime();
+		return $this->getMonth() == $now->format('m') && $this->getYear() == $now->format('Y');
+	}
+
 	// ChargeBalance /////
 
 	public function incrementChargeBalance($by) {
@@ -113,6 +126,10 @@ class Funding {
 
 	public function getCarriedForwardBalance() {
 		return $this->carriedForwoardBalance;
+	}
+
+	public function getCarriedForwardBalanceEur() {
+		return $this->getCarriedForwardBalance() / 100;
 	}
 
 	// DonationBalance /////
@@ -145,9 +162,19 @@ class Funding {
 		return $this->getBalance() / 100;
 	}
 
-	// Charges /////
+	// Visibilité /////
 
-	// Articles /////
+	public function getVisibility() {
+		return max(0, floor($this->getBalance() / $this->getChargeBalance()));
+	}
+
+	// PartialVisibilité /////
+
+	public function getPartialVisibility() {
+		return max(0, ceil($this->getBalance() / $this->getChargeBalance()));
+	}
+
+	// Charges /////
 
 	public function addCharge(\Ladb\CoreBundle\Entity\Funding\Charge $charge) {
 		if (!$this->charges->contains($charge)) {
