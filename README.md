@@ -15,7 +15,7 @@ Documentation is stored under `docs` in this repository.
 License
 -------
 
-This code is under the **GNU GPLv3 license**.
+This code is under the **GNU AGPLv3 license**.
 
 [Read the license](LICENSE)
 
