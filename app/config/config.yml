@@ -665,9 +665,3 @@ ivory_google_map:
         height: 100%
         language: fr
 
-# EWZRecaptchaBundle
-#ewz_recaptcha:
-#    public_key:   6Le9CekSAAAAAFKfMduUfCiRrN3ak13YaaUk-psu
-#    private_key:  6Le9CekSAAAAAOFchweVQbcUXLR7tQrGwuuHjKGN
-#    secure:       false
-#    locale_key:   kernel.default_locale

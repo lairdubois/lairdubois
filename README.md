@@ -3,7 +3,7 @@ L'Air du Bois
 
 *L'Air du Bois* is a Woodworkers Sharing Platform available at https://www.lairdubois.fr
 
-![L'Air du Bois](https://www.lairdubois.fr/banner-600x376.jpg)
+![L'Air du Bois](web/capture.jpg)
 
 Documentation
 -------------
@@ -15,7 +15,7 @@ Documentation is stored under `docs` in this repository.
 License
 -------
 
-This code is under the **GNU GPLv3 license**.
+This code is under the **GNU AGPLv3 license**.
 
 [Read the license](LICENSE)
 

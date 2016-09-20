@@ -132,6 +132,14 @@ header {
 
 /* Responsive */
 
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+  .ladb-fake-header {
+    margin: 0 -@ladb-gutter / 2;
+    padding: 0 @ladb-gutter / 2;
+  }
+}
+
 // phone & tablet
 @media screen and (max-width: @ladb-screen-tablet-max) {
   header .ladb-avatar-header .ladb-header-tools {
