@@ -71,6 +71,22 @@ class UserMeta {
 	 */
 	private $unlistedQuestionCount = 0;
 
+
+	/**
+	 * @ORM\Column(name="donation_count", type="integer")
+	 */
+	private $donationCount = 0;
+
+	/**
+	 * @ORM\Column(name="donation_balance", type="integer")
+	 */
+	private $donationBalance = 0;
+
+	/**
+	 * @ORM\Column(name="donation_fee_balance", type="integer")
+	 */
+	private $donationFeeBalance = 0;
+
 	/////
 
 	// Id /////
@@ -83,6 +99,7 @@ class UserMeta {
 
 	public function setUser($user) {
 		$this->user = $user;
+		return $this;
 	}
 
 	public function getUser() {
@@ -109,6 +126,7 @@ class UserMeta {
 
 	public function setUnlistedCreationCount($unlistedCreationCount) {
 		$this->unlistedCreationCount = $unlistedCreationCount;
+		return $this;
 	}
 
 	public function getUnlistedCreationCount() {
@@ -119,6 +137,7 @@ class UserMeta {
 
 	public function setUnlistedPlanCount($unlistedPlanCount) {
 		$this->unlistedPlanCount = $unlistedPlanCount;
+		return $this;
 	}
 
 	public function getUnlistedPlanCount() {
@@ -129,6 +148,7 @@ class UserMeta {
 
 	public function setUnlistedWorkshopCount($unlistedWorkshopCount) {
 		$this->unlistedWorkshopCount = $unlistedWorkshopCount;
+		return $this;
 	}
 
 	public function getUnlistedWorkshopCount() {
@@ -139,6 +159,7 @@ class UserMeta {
 
 	public function setUnlistedFindCount($unlistedFindCount) {
 		$this->unlistedFindCount = $unlistedFindCount;
+		return $this;
 	}
 
 	public function getUnlistedFindCount() {
@@ -149,6 +170,7 @@ class UserMeta {
 
 	public function setUnlistedHowtoCount($unlistedHowtoCount) {
 		$this->unlistedHowtoCount = $unlistedHowtoCount;
+		return $this;
 	}
 
 	public function getUnlistedHowtoCount() {
@@ -159,6 +181,7 @@ class UserMeta {
 
 	public function setUnlistedWoodCount($unlistedWoodCount) {
 		$this->unlistedWoodCount = $unlistedWoodCount;
+		return $this;
 	}
 
 	public function getUnlistedWoodCount() {
@@ -169,6 +192,7 @@ class UserMeta {
 
 	public function setUnlistedProviderCount($unlistedProviderCount) {
 		$this->unlistedProviderCount = $unlistedProviderCount;
+		return $this;
 	}
 
 	public function getUnlistedProviderCount() {
@@ -179,6 +203,7 @@ class UserMeta {
 
 	public function setUnlistedPostCount($unlistedBlogPostCount) {
 		$this->unlistedPostCount = $unlistedBlogPostCount;
+		return $this;
 	}
 
 	public function getUnlistedPostCount() {
@@ -189,10 +214,50 @@ class UserMeta {
 
 	public function setUnlistedQuestionCount($unlistedFaqQuestionCount) {
 		$this->unlistedQuestionCount = $unlistedFaqQuestionCount;
+		return $this;
 	}
 
 	public function getUnlistedQuestionCount() {
 		return $this->unlistedQuestionCount;
+	}
+
+
+	// DonationCount /////
+
+	public function incrementDonationCount($by = 1) {
+		return $this->donationCount += intval($by);
+	}
+
+	public function getDonationCount() {
+		return $this->donationCount;
+	}
+
+	// DonationBalance /////
+
+	public function incrementDonationBalance($by = 1) {
+		return $this->donationBalance += intval($by);
+	}
+
+	public function getDonationBalance() {
+		return $this->donationBalance;
+	}
+
+	public function getDonationBalanceEur() {
+		return $this->getDonationBalance() / 100;
+	}
+
+	// DonationFeeBalance /////
+
+	public function incrementDonationFeeBalance($by = 1) {
+		return $this->donationFeeBalance += intval($by);
+	}
+
+	public function getDonationFeeBalance() {
+		return $this->donationFeeBalance;
+	}
+
+	public function getDonationFeeBalanceEur() {
+		return $this->getDonationFeeBalance() / 100;
 	}
 
 }

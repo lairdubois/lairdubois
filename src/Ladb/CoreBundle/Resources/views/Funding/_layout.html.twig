@@ -5,13 +5,9 @@
 {% set navSection = 'funding' %}
 
 {% block bodyHeaderContainerContent %}
-    <div class="ladb-header-tools">
-        <a href="#" class="btn btn-default"><i class="ladb-icon-donate"></i> Mes dons</a>
-    </div>
-
     <h1 class="ladb-heading"><i class="ladb-icon-funding"></i> {{ 'funding.funding'|trans() }}</h1>
-    {#<ul class="nav nav-tabs">#}
-        {#<li{% if tab == 'dashboard' %} class="active"{% endif %}><a href="{{ path('core_funding_dashboard' )}}">{{ 'funding.dashboard'|trans() }}</a></li>#}
-        {#<li{% if tab == 'list' %} class="active"{% endif %}><a href="{{ path('core_funding_list' )}}">{{ 'funding.my_donations'|trans() }}</a></li>#}
-    {#</ul>#}
+    <ul class="nav nav-tabs">
+        <li{% if tab == 'dashboard' %} class="active"{% endif %}><a href="{{ path('core_funding_dashboard' )}}">{{ 'funding.dashboard'|trans() }}</a></li>
+        <li{% if tab == 'list' %} class="active"{% endif %}><a href="{{ path('core_funding_list' )}}">{{ 'funding.my_donations'|trans() }}</a></li>
+    </ul>
 {% endblock %}

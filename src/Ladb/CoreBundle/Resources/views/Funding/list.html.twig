@@ -15,11 +15,10 @@
 {% block bodyContainerContent %}
     <div class="row">
         <br/>
-        <div class="col-sm-8 col-xs-12">
+        <div class="col-sm-7 col-xs-12">
             {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
                 {% set filterDefs = {
-                'all':  { 'label':'Toutes', 'path':path('core_message_mailbox_filter', { 'filter':'all' }) },
-                'sent': { 'label':'Envoyées', 'path':path('core_message_mailbox_filter', { 'filter':'sent' }) },
+                    'recent':  { 'label':'Récents', 'path':path('core_funding_list', { 'filter':'recent' }) },
                 } %}
                 {% block filterbarRightContent%}
                     <span class="ladb-heading">{{ donationCount }} {% transchoice donationCount %}[0,1]don|]1,Inf]dons{% endtranschoice %}</span>
@@ -27,7 +26,30 @@
             {% endembed %}
             {{ block('autopagerContainer') }}
         </div>
-        <div class="col-sm-4 col-xs-12">
+        <div class="col-sm-5 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Statistiques</h4>
+                </div>
+                <div class="panel-body">
+                    <table width="100%">
+                        <tr>
+                            <td>Montant total brut</td>
+                            <td class="ladb-amount">{{ app.user.meta.donationBalanceEur|number_format(2, ',', ' ') }}€</td>
+                        </tr>
+                        <tr>
+                            <td>Montant total net</td>
+                            <td class="ladb-amount">{{ (app.user.meta.donationBalanceEur - app.user.meta.donationFeeBalanceEur)|number_format(2, ',', ' ') }}€</td>
+                        </tr>
+                        <tr>
+                            <td>Don moyen</td>
+                            <td class="ladb-amount">{% if app.user.meta.donationBalanceEur > 0 %}{{ (app.user.meta.donationBalanceEur / app.user.meta.donationCount)|number_format(2, ',', ' ') }}€{% else %}-{% endif %}</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}

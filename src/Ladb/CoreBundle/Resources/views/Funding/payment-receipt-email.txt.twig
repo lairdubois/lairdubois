@@ -1,3 +1,4 @@
 {% extends 'LadbCoreBundle::email-layout.txt.twig' %}
 
-{% block content %}('funding.message.pay_success'|trans({ '%amount%':(donation.amountEur|number_format(2, ',', ' ')))|raw }){% endblock %}
+{% block content %}Le paiement de votre don de {{ donation.amountEur|number_format(2, ',', ' ') }}€ effectué le {{ donation.createdAt|date("d/m/Y") }} à {{ donation.createdAt|date("H:i") }} avec la référence {{ donation.hashid }} a bien été enregistré.
+Merci pour votre soutien au projet L'Air du Bois !{% endblock %}

@@ -67,7 +67,7 @@
                             <form action="{{ path('core_funding_new') }}" class="form-inline text-center" method="get">
                                 <div class="form-group">
                                     <div class="input-group input-group-lg">
-                                        <input name="amount_eur" id="ladb_donate_amount_input" type="text" class="form-control input-lg text-right" maxlength="3" size="3" value="{{ amountEur }}">
+                                        <input name="amount_eur" id="ladb_donate_amount_input" type="text" class="form-control input-lg text-right" maxlength="3" size="3" value="{{ amountEur|default(5) }}">
                                         <div class="input-group-addon">€</div>
                                     </div>
                                 </div>

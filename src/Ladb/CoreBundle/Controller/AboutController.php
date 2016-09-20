@@ -56,6 +56,7 @@ class AboutController extends Controller {
 			array( 'name' => 'PHP Phantomjs', 'url' => 'https://github.com/jonnnnyw/php-phantomjs', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'ImageOptimizer', 'url' => 'https://github.com/psliwa/image-optimizer', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'EmailValidator', 'url' => 'https://github.com/egulias/EmailValidator', 'labels' => array( 'PHP' ) ),
+			array( 'name' => 'Hashids', 'url' => 'http://hashids.org/php/', 'labels' => array( 'PHP' ) ),
 
 			array( 'name' => 'Elasticsearch', 'url' => 'https://www.elastic.co', 'labels' => array( 'JAVA' ) ),
 

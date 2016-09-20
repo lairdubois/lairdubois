@@ -21,6 +21,11 @@ class Donation {
 	private $id;
 
 	/**
+	 * @ORM\Column(type="string", length=20, nullable=true)
+	 */
+	private $hashid;
+
+	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
@@ -51,6 +56,17 @@ class Donation {
 
 	public function getId() {
 		return $this->id;
+	}
+
+	// Hashid /////
+
+	public function setHashid($hashid) {
+		$this->hashid = $hashid;
+		return $this;
+	}
+
+	public function getHashid() {
+		return $this->hashid;
 	}
 
 	// CreatedAt /////

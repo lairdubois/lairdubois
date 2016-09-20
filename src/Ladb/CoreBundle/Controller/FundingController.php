@@ -13,7 +13,6 @@ use Ladb\CoreBundle\Entity\Funding\Donation;
 use Ladb\CoreBundle\Entity\Funding\Funding;
 use Ladb\CoreBundle\Manager\Funding\FundingManager;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/financement")
@@ -142,26 +141,6 @@ class FundingController extends Controller {
 			// Retrieve the balance transaction
 			$balanceTransaction = \Stripe\BalanceTransaction::retrieve($charge['balance_transaction']);
 
-			// Create the Donation
-			$donation = new Donation();
-			$donation->setUser($this->getUser());
-			$donation->setAmount($amount);
-			$donation->setFee($balanceTransaction['fee']);
-			$donation->setStripeChargeId($charge['id']);
-
-			$om->persist($donation);
-
-			// Update current Funding
-			$fundingManager = $this->get(FundingManager::NAME);
-			$funding = $fundingManager->getOrCreateCurrent();
-			$funding->incrementDonationBalance($donation->getAmount() - $donation->getFee());
-
-			$om->flush();
-
-			// Email confirmation (after persist to have a donation id)
-			$mailerUtils = $this->get(MailerUtils::NAME);
-			$mailerUtils->sendFundingPaymentReceiptEmailMessage($this->getUser(), $donation);
-
 		} catch (\Stripe\Error\Card $e) {
 			return new JsonResponse(array(
 				'success' => false,
@@ -169,6 +148,38 @@ class FundingController extends Controller {
 				'message' => $this->get('translator')->trans('funding.message.pay_error.'.$e->getStripeCode()),
 			));
 		}
+
+		// Create the Donation
+		$donation = new Donation();
+		$donation->setUser($this->getUser());
+		$donation->setAmount($amount);
+		$donation->setFee($balanceTransaction['fee']);
+		$donation->setStripeChargeId($charge['id']);
+
+		$om->persist($donation);
+
+		// Update current Funding
+		$fundingManager = $this->get(FundingManager::NAME);
+		$funding = $fundingManager->getOrCreateCurrent();
+		$funding->incrementDonationBalance($donation->getAmount() - $donation->getFee());
+
+		// Increment user donation stats
+		$this->getUser()->getMeta()->incrementDonationCount();
+		$this->getUser()->getMeta()->incrementDonationBalance($donation->getAmount());
+		$this->getUser()->getMeta()->incrementDonationFeeBalance($donation->getFee());
+
+		$om->flush();	// Flush to be sure that donation id is generated
+
+		// Generate donation hashid
+		$hashids = new \Hashids\Hashids($this->getParameter('secret'), 5);
+		$donation->setHashid($hashids->encode($donation->getId()));
+
+		$om->flush();
+
+		// Email confirmation (after persist to have a donation id)
+		$mailerUtils = $this->get(MailerUtils::NAME);
+		$mailerUtils->sendFundingPaymentReceiptEmailMessage($this->getUser(), $donation);
+
 
 		return new JsonResponse(array(
 			'success' => true,
@@ -182,7 +193,7 @@ class FundingController extends Controller {
 	 * @Route("/dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_list_filter_page")
 	 * @Template()
 	 */
-	public function listAction(Request $request, $filter = 'all', $page = 0) {
+	public function listAction(Request $request, $filter = 'recent', $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);

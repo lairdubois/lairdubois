@@ -7,9 +7,13 @@
     {% for donation in donations %}
         <div class="ladb-donation-row ladb-list-row">
             <div class="row">
-                <div class="col-xs-12">
-                    Don #{{ donation.id }}
-                    <h1>{{ donation.amount / 100 }}€<small>{{ donation.fee / 100 }}€</small></h1>
+                <div class="col-xs-4" style="padding-top: 10px;">
+                    <span style="font-size: 110%;">{{ donation.createdAt|date("d/m/Y") }}</span>
+                    <br>
+                    <span class="help-block">ref: <strong>{{ donation.hashid }}</strong></span>
+                </div>
+                <div class="col-xs-8" style="line-height: 64px; text-align: right">
+                    <div class="text-right" style="font-size: 30px">{{ donation.amountEur|number_format(2, ',', ' ') }}€</div>
                 </div>
             </div>
         </div>

@@ -50,6 +50,7 @@
         "giggsey/libphonenumber-for-php": "^7.2",
         "cebe/markdown": "1.1.0",
         "stripe/stripe-php": "3.21.0",
+        "hashids/hashids": "^1.0",
 
         "components/jquery": "1.12.1",
         "components/jqueryui": "1.11.4",
