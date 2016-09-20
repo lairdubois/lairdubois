@@ -9,45 +9,37 @@
         this.$element = $(element);
 
         this.amount = this.options.defaultAmount;
+        this.amountEur = this.amount / 100;
+        this.payed = false;
 
-        this.$fundingWidgetButton = $('#ladb_donate_btn', this.$element);
         this.$amountInput = $('#ladb_donate_amount_input', this.$element);
+        this.$fundingWidgetButton = $('#ladb_donate_btn', this.$element);
 
-        this.$paymentModal = $('#payment_modal', this.$element);
-        this.$loadingPanel = $('.ladb-loading-panel', this.$paymentModal);
-        this.$cancelButton = $('#ladb_donate_cancel_btn', this.$paymentModal);
-        this.$payButton = $('#ladb_donate_pay_btn', this.$paymentModal);
-        this.$ccNumberInput = $('input.cc-number', this.$paymentModal);
-        this.$ccExpInput = $('input.cc-exp', this.$paymentModal);
-        this.$ccCvcInput = $('input.cc-cvc', this.$paymentModal);
-
-        this.$paymentSuccessModal = $('#payment_success_modal', this.$element);
+        this.$newModal = $('#new_modal');
+        this.$newModalDefaultHtml = this.$newModal.html();
 
     };
 
     LadbFundingWidget.DEFAULTS = {
         stripePublishableKey: null,
         autoShow: false,
-        dashboardUrl: null,
-        chargeUrl: null
+        defaultAmount: 500,
+        newUrl: null,
+        createUrl: null,
+        dashboardUrl: null
     };
+
+    /////
 
     LadbFundingWidget.prototype.retrieveAmount = function() {
-        this.amount = this.$amountInput.val() * 100;
-    };
-
-    LadbFundingWidget.prototype.displayAmount = function() {
-        var euroAmount = this.amount / 100;
-        var euroFee = euroAmount * 0.014 + 0.25;
-        this.$amountInput.val(euroAmount);
-        $('.ladb-donate-amount', this.$paymentModal).html(euroAmount);
-        $('.ladb-donate-fee', this.$paymentModal).html(euroFee.toFixed(2));
+        this.amountEur = this.$amountInput.val();
+        this.amount = this.amountEur * 100;
     };
 
     LadbFundingWidget.prototype.toggleShakePaymentModal = function(shake) {
         var that = this;
 
-        $('.modal-content', this.$paymentModal).toggleClass('ladb-animation-shake', shake);
+        $('.modal-content', this.$newModal).toggleClass('ladb-animation-shake', shake);
         if (shake) {
             setTimeout(function() {
                 $('.modal-content', that.$paymentModal).removeClass('ladb-animation-shake');
@@ -77,50 +69,14 @@
     };
 
     LadbFundingWidget.prototype.clearErrorMessage = function() {
-        $('.alert', this.$paymentModal).remove();
+        $('.alert', this.$newModal).remove();
     };
 
-    LadbFundingWidget.prototype.bind = function() {
+
+    /////
+
+    LadbFundingWidget.prototype.bindNewModal = function() {
         var that = this;
-
-        // Bind payment modal
-        this.$paymentModal.on('hide.bs.modal', function(e) {
-
-            // Remove errors and shake
-            that.toggleShakePaymentModal(false);
-            that.clearErrorMessage();
-            $(this).find('.form-group').removeClass('has-error');
-
-            // Empty input fields
-            that.$ccNumberInput.val('');
-            that.$ccExpInput.val('');
-            that.$ccCvcInput.val('');
-
-            // Reset Loading on button
-            that.$payButton.button('reset');
-
-        });
-
-        // Bind payment success modal
-        this.$paymentSuccessModal.on('hide.bs.modal', function(e) {
-
-            // Reload dashboard
-            window.location.href = that.options.dashboardUrl;
-
-        });
-
-        // Bind "FundingWidget" button
-        this.$fundingWidgetButton.on('click', function(e) {
-            e.preventDefault();
-
-            // Update amount
-            that.retrieveAmount();
-            that.displayAmount();
-
-            // Open modal
-            that.$paymentModal.modal();
-
-        });
 
         // Bind "ccNumber" inpout
         this.$ccNumberInput.on('keyup', function(e) {
@@ -175,7 +131,7 @@
                         // Charging the customer
                         $.ajax({
                             type: "POST",
-                            url: that.options.chargeUrl,
+                            url: that.options.createUrl,
                             data: {
                                 token: token,
                                 amount: that.amount
@@ -183,11 +139,13 @@
                             success: function(response) {
                                 if (response.success) {
 
-                                    that.$paymentModal.modal('hide');
-                                    that.$paymentSuccessModal
-                                        .find('.modal-body p')
-                                        .html(response.message);
-                                    that.$paymentSuccessModal.modal('show');
+                                    // Display success message
+                                    that.$newModal
+                                        .find('.modal-content')
+                                        .html(response.content);
+
+                                    // Flag as payed
+                                    that.payed = true;
 
                                 } else {
 
@@ -250,14 +208,66 @@
 
     };
 
+    LadbFundingWidget.prototype.bind = function() {
+        var that = this;
+
+        // Bind modal
+        this.$newModal
+            .on('loaded.bs.modal', function(e) {
+
+                that.$loadingPanel = $('.ladb-loading-panel', that.$newModal);
+                that.$cancelButton = $('#ladb_donate_cancel_btn', that.$newModal);
+                that.$payButton = $('#ladb_donate_pay_btn', that.$newModal);
+                that.$ccNumberInput = $('input.cc-number', that.$newModal);
+                that.$ccExpInput = $('input.cc-exp', that.$newModal);
+                that.$ccCvcInput = $('input.cc-cvc', that.$newModal);
+
+                // Initialize payment form
+                that.$ccNumberInput.payment('formatCardNumber');
+                that.$ccExpInput.payment('formatCardExpiry');
+                that.$ccCvcInput.payment('formatCardCVC');
+
+                // Bind newModal
+                that.bindNewModal();
+
+            })
+            .on('hidden.bs.modal', function(e) {
+                that.$newModal
+                    .removeData('bs.modal')
+                    .find(".modal-body").remove();
+                that.$newModal
+                    .find('.modal-footer').remove();
+                that.$newModal
+                    .html(that.$newModalDefaultHtml);
+
+                // If payed, reload the dashboard page
+                if (that.payed) {
+                    that.payed = false;
+                    window.location = that.options.dashboardUrl;
+                }
+
+            });
+
+        // Bind "FundingWidget" button
+        this.$fundingWidgetButton.on('click', function(e) {
+            e.preventDefault();
+
+            // Retrieve amount
+            that.retrieveAmount();
+
+            // Load modal content
+            that.$newModal
+                .modal({ remote: that.options.newUrl + '?amount_eur=' + that.amountEur });
+        });
+
+    };
+
     LadbFundingWidget.prototype.init = function() {
 
         this.bind();
 
-        // Initialize payment form
-        this.$ccNumberInput.payment('formatCardNumber');
-        this.$ccExpInput.payment('formatCardExpiry');
-        this.$ccCvcInput.payment('formatCardCVC');
+        // Restrict amount input to numeric
+        this.$amountInput.payment('restrictNumeric');
 
         $.fn.toggleInputError = function(erred) {
             this.parent('.form-group').toggleClass('has-error', erred);

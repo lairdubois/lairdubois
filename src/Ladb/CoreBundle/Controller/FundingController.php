@@ -21,17 +21,8 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class FundingController extends Controller {
 
 	/**
-	 * @Route(pattern="/", name="core_funding")
-	 * @Template()
-	 */
-	public function fundingAction() {
-		$response = $this->forward('LadbCoreBundle:Funding:dashboard');
-		return $response;
-	}
-
-	/**
-	 * @Route(pattern="/tableau-de-bord", name="core_funding_dashboard")
-	 * @Route(pattern="/tableau-de-bord/{year}/{month}", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_dashboard_year_month")
+	 * @Route(pattern="/", name="core_funding_dashboard")
+	 * @Route(pattern="/{year}/{month}", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_dashboard_year_month")
 	 * @Template()
 	 */
 	public function dashboardAction(Request $request, $year = null, $month = null) {
@@ -75,17 +66,31 @@ class FundingController extends Controller {
 
 	/**
 	 * @Route(pattern="/new", name="core_funding_new")
+	 * @Template()
 	 */
 	public function newAction(Request $request) {
 
 		// Retrieve parameters
-		$amountEur = $request->get('amount_eur');
+		$amountEur = intval($request->get('amount_eur', 5));	// Default 5 euros
 
-		$response = $this->forward('LadbCoreBundle:Funding:Dashboard', array(
+		if ($request->isXmlHttpRequest()) {
+
+			$minAmountEur = $this->getParameter('funding_min_amount_eur');
+			$maxAmountEur = $this->getParameter('funding_max_amount_eur');
+
+			return array(
+				'amountEur'    => $amountEur,
+				'feeEur'       => $amountEur * 0.014 + 0.25,
+				'validAmount'  => $amountEur >= $minAmountEur && $amountEur <= $maxAmountEur,
+				'minAmountEur' => $minAmountEur,
+				'maxAmountEur' => $maxAmountEur,
+			);
+		}
+
+		return $this->redirect($this->generateUrl('core_funding_dashboard', array(
 			'amount_eur' => $amountEur,
 			'auto_show' => true,
-		));
-		return $response;
+		)));
 	}
 
 	/**
@@ -95,6 +100,16 @@ class FundingController extends Controller {
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
 
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_create)');
+		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('User email is not confirmed.');
+		}
+
+		$minAmount = $this->getParameter('funding_min_amount_eur') * 100;
+		$maxAmount = $this->getParameter('funding_max_amount_eur') * 100;
+
 		// Retrieve parameters
 		$amount = $request->get('amount');
 		$token = $request->get('token');
@@ -102,12 +117,15 @@ class FundingController extends Controller {
 		if (is_null($amount)) {
 			throw $this->createNotFoundException('No amount.');
 		}
+		if ($amount < $minAmount || $amount > $maxAmount) {
+			throw $this->createNotFoundException('Amount is out of range ($amount='.$amount.')');
+		}
 		if (is_null($token)) {
 			throw $this->createNotFoundException('No token.');
 		}
 
 		// Setup Stripe API
-		\Stripe\Stripe::setApiKey($this->getParameter('strip_secret_key'));
+		\Stripe\Stripe::setApiKey($this->getParameter('stripe_secret_key'));
 
 		// Create a charge: this will charge the user's card
 		try {
@@ -154,7 +172,7 @@ class FundingController extends Controller {
 
 		return new JsonResponse(array(
 			'success' => true,
-			'message' => $this->get('translator')->trans('funding.message.pay_success', array( '%amount%' => $amount / 100 )),
+			'content' => $this->get('templating')->render('LadbCoreBundle:Funding:create.html.twig', array( 'donation' => $donation )),
 		));
 	}
 

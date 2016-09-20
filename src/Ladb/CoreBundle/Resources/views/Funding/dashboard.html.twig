@@ -25,10 +25,11 @@
 
             {% if is_granted('ROLE_USER') %}
                 $('.ladb-funding-widget').ladbFundingWidget({
-                    stripePublishableKey: '{{ strip_publishable_key }}',
+                    stripePublishableKey: '{{ stripe_publishable_key }}',
                     autoShow: {% if autoShow %}true{% else %}false{% endif %},
-                    dashboardUrl: '{{ path('core_funding_dashboard') }}',
-                    chargeUrl: '{{ path('core_funding_create') }}'
+                    newUrl: '{{ path('core_funding_new') }}',
+                    createUrl: '{{ path('core_funding_create') }}',
+                    dashboardUrl: '{{ path('core_funding_dashboard') }}'
                 });
             {% endif %}
 
@@ -50,7 +51,7 @@
             {% include 'LadbCoreBundle:Funding:_dashboard.part.html.twig' %}
         </div>
         <div class="col-md-5 col-xs-12">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="min-height: 311px;">
                 <div class="panel-heading">
                     <h4>Pourquoi contribuer ?</h4>
                 </div>
@@ -60,10 +61,27 @@
                         <li>Pour permettre à d'autres de partager leur passion</li>
                         <li>Pour rester indépendant</li>
                         <li>Pour être libre</li>
-                        <li>Pour regarder les oiseaux chanter</li>
                     </ul>
                     <div style="margin: 20px 0;">
-                        {% include 'LadbCoreBundle:Funding:_widget.part.html.twig' %}
+                        <div class="ladb-funding-widget">
+                            <form action="{{ path('core_funding_new') }}" class="form-inline text-center" method="get">
+                                <div class="form-group">
+                                    <div class="input-group input-group-lg">
+                                        <input name="amount_eur" id="ladb_donate_amount_input" type="text" class="form-control input-lg text-right" maxlength="3" size="3" value="{{ amountEur }}">
+                                        <div class="input-group-addon">€</div>
+                                    </div>
+                                </div>
+                                <button id="ladb_donate_btn" class="btn btn-primary btn-lg">Faire un don</button>
+                            </form>
+                            {% if is_granted("ROLE_USER") %}
+                                {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_modal', 'title':('funding.donate'|trans()) } %}
+                                    {% block bodyInner %}
+                                        {{ 'default.loading'|trans() }}
+                                    {% endblock %}
+                                    {% block footer %}{% endblock %}
+                                {% endembed %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

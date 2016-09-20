@@ -36,5 +36,8 @@ parameters:
     facebook_page_id:               YOUR_FACEBOOK_PAGE_ID
     facebook_access_token:          YOUR_FACEBOOK_ACCESS_TOKEN
 
-    strip_secret_key:               YOUR_STRIPE_SECRET_KEY
-    strip_publishable_key:          YOUR_STRIPE_PUBLISHABLE_KEY
+    stripe_secret_key:              YOUR_STRIPE_SECRET_KEY
+    stripe_publishable_key:         YOUR_STRIPE_PUBLISHABLE_KEY
+
+    funding_min_amount_eur:         1
+    funding_max_amount_eur:         100
