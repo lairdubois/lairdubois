@@ -80,6 +80,12 @@ class Donation {
 		return $this->createdAt;
 	}
 
+	// Age /////
+
+	public function getAge() {
+		return $this->getCreatedAt()->diff(new \DateTime());
+	}
+
 	// User /////
 
 	public function setUser(\Ladb\CoreBundle\Entity\User $user) {

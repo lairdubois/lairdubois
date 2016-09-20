@@ -84,6 +84,42 @@
 }
 
 .ladb-donation-row {
+  min-height: 50px !important;
+  display: table;
+
+  > .ladb-donation-row-left {
+    display: table-cell;
+    vertical-align: middle;
+    white-space: nowrap;
+
+    .ladb-age {
+      .age();
+    }
+
+    .ladb-ref {
+      font-style: italic;
+
+      span {
+        font-weight: bold;
+      }
+
+    }
+
+  }
+
+  > .ladb-donation-row-right {
+    display: table-cell;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 100%;
+
+    .ladb-fee {
+      font-size: 80%;
+      color: #888;
+      text-align: right;
+    }
+
+  }
 
 }
 

@@ -2,10 +2,11 @@
 
 {% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
 
-{% set tab = 'list' %}
+{% set tab = 'user-donation-list' %}
 
 {% set masonry = false %}
 {% set masonryWide = false %}
+{% set noStickyHeader = true %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
@@ -13,32 +14,25 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    <div class="row">
-        <br/>
-        <div class="col-sm-7 col-xs-12">
-            {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
-                {% set filterDefs = {
-                    'recent':  { 'label':'Récents', 'path':path('core_funding_list', { 'filter':'recent' }) },
-                } %}
-                {% block filterbarRightContent%}
-                    <span class="ladb-heading">{{ donationCount }} {% transchoice donationCount %}[0,1]don|]1,Inf]dons{% endtranschoice %}</span>
-                {% endblock %}
-            {% endembed %}
-            {{ block('autopagerContainer') }}
+    <div class="panel panel-default ladb-margin-top" style="margin-bottom: 0;">
+        <div class="panel-body">
+            <i class="ladb-icon-info"></i> Vous seul pouvez visualiser cette page.
         </div>
-        <div class="col-sm-5 col-xs-12">
-            <div class="panel panel-default">
+    </div>
+    <div class="row">
+        <div class="col-sm-5 col-sm-push-7 col-xs-12">
+            <div class="panel panel-default ladb-margin-top">
                 <div class="panel-heading">
                     <h4>Statistiques</h4>
                 </div>
                 <div class="panel-body">
                     <table width="100%">
                         <tr>
-                            <td>Montant total brut</td>
+                            <td>Cumul brut</td>
                             <td class="ladb-amount">{{ app.user.meta.donationBalanceEur|number_format(2, ',', ' ') }}€</td>
                         </tr>
                         <tr>
-                            <td>Montant total net</td>
+                            <td>Cumul net</td>
                             <td class="ladb-amount">{{ (app.user.meta.donationBalanceEur - app.user.meta.donationFeeBalanceEur)|number_format(2, ',', ' ') }}€</td>
                         </tr>
                         <tr>
@@ -49,11 +43,22 @@
 
                 </div>
             </div>
-
+        </div>
+        <div class="col-sm-7 col-sm-pull-5 col-xs-12">
+            {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
+                {% set filterDefs = {
+                    'recent':       { 'label':'Récents', 'path':path('core_funding_user_donation_list_filter', { 'filter':'recent' }) },
+                    'generous':     { 'label':'Généreux', 'path':path('core_funding_user_donation_list_filter', { 'filter':'generous' }) },
+                } %}
+                {% block filterbarRightContent%}
+                    <span class="ladb-heading">{{ donationCount }} {% transchoice donationCount %}[0,1]don|]1,Inf]dons{% endtranschoice %}</span>
+                {% endblock %}
+            {% endembed %}
+            {{ block('autopagerContainer') }}
         </div>
     </div>
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Funding:_list-n.part.html.twig' %}
+    {% include 'LadbCoreBundle:Funding:_donation-list-n.part.html.twig' %}
 {% endblock %}

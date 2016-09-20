@@ -64,8 +64,8 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/new", name="core_funding_new")
-	 * @Template()
+	 * @Route(pattern="/donation/new", name="core_funding_new")
+	 * @Template("LadbCoreBundle:Funding:donation-new.html.twig")
 	 */
 	public function newAction(Request $request) {
 
@@ -93,7 +93,7 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/create", name="core_funding_create", defaults={"_format" = "json"})
+	 * @Route(pattern="/donation/create", name="core_funding_create", defaults={"_format" = "json"})
 	 * @Method("POST")
 	 */
 	public function createAction(Request $request) {
@@ -171,7 +171,7 @@ class FundingController extends Controller {
 		$om->flush();	// Flush to be sure that donation id is generated
 
 		// Generate donation hashid
-		$hashids = new \Hashids\Hashids($this->getParameter('secret'), 5);
+		$hashids = new \Hashids\Hashids($this->getParameter('secret'), 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
 		$donation->setHashid($hashids->encode($donation->getId()));
 
 		$om->flush();
@@ -180,28 +180,31 @@ class FundingController extends Controller {
 		$mailerUtils = $this->get(MailerUtils::NAME);
 		$mailerUtils->sendFundingPaymentReceiptEmailMessage($this->getUser(), $donation);
 
-
 		return new JsonResponse(array(
 			'success' => true,
-			'content' => $this->get('templating')->render('LadbCoreBundle:Funding:create.html.twig', array( 'donation' => $donation )),
+			'content' => $this->get('templating')->render('LadbCoreBundle:Funding:donation-create.html.twig', array( 'donation' => $donation )),
 		));
 	}
 
 	/**
-	 * @Route("/dons", name="core_funding_list")
-	 * @Route("/dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_list_filter")
-	 * @Route("/dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_list_filter_page")
-	 * @Template()
+	 * @Route("/admin/dons", name="core_funding_admin_donation_list")
+	 * @Route("/admin/dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_admin_donation_list_filter")
+	 * @Route("/admin/dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_admin_donation_list_filter_page")
+	 * @Template("LadbCoreBundle:Funding:donation-list.html.twig")
 	 */
-	public function listAction(Request $request, $filter = 'recent', $page = 0) {
+	public function donationListAction(Request $request, $filter = 'recent', $page = 0) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
 		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
-		$paginator = $donationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+		$paginator = $donationRepository->findPagined($offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_admin_donation_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
 
 		$parameters = array(
 			'filter'        => $filter,
@@ -212,7 +215,38 @@ class FundingController extends Controller {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Funding:list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Funding:donation-list-xhr.html.twig', $parameters);
+		}
+		return $parameters;
+
+	}
+
+	/**
+	 * @Route("/mes-dons", name="core_funding_user_donation_list")
+	 * @Route("/mes-dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_user_donation_list_filter")
+	 * @Route("/mes-dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_user_donation_list_filter_page")
+	 * @Template("LadbCoreBundle:Funding:user-donation-list.html.twig")
+	 */
+	public function userDonationListAction(Request $request, $filter = 'recent', $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
+		$paginator = $donationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_user_donation_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+
+		$parameters = array(
+			'filter'        => $filter,
+			'prevPageUrl'   => $pageUrls->prev,
+			'nextPageUrl'   => $pageUrls->next,
+			'donations'     => $paginator,
+			'donationCount' => $paginator->count(),
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Funding:user-donation-list-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 

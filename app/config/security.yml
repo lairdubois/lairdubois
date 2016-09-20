@@ -42,6 +42,7 @@ security:
         - { path: ^/parametres$, role: ROLE_USER }
         - { path: ^/messages, role: ROLE_USER }
         - { path: ^/notifications, role: ROLE_USER }
+        - { path: /mes-dons$, role: ROLE_USER }
 
         - { path: /new$, role: ROLE_USER }
         - { path: /create$, role: ROLE_USER }

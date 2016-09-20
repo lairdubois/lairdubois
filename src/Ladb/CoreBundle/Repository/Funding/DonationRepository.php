@@ -17,6 +17,12 @@ class DonationRepository extends AbstractEntityRepository {
 	/////
 
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		if ('generous' == $filter) {
+			$queryBuilder
+				->addOrderBy('d.amount', 'DESC')
+			;
+		}
+
 		$queryBuilder
 			->addOrderBy('d.createdAt', 'DESC')
 		;
