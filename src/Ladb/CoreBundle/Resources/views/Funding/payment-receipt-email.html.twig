@@ -1,6 +1,7 @@
 {% extends 'LadbCoreBundle::email-layout.html.twig' %}
 
 {% block content %}
-    <p>Le paiement de votre don de <strong>{{ donation.amountEur|number_format(2, ',', ' ') }}€</strong> effectué le <strong>{{ donation.createdAt|date("d/m/Y") }}</strong> à <strong>{{ donation.createdAt|date("H:i") }}</strong> avec la référence <strong>{{ donation.hashid }}</strong> a bien été enregistré.</p>
+    <p>Le paiement de votre don de <strong>{{ donation.amountEur|number_format(2, ',', ' ') }}€</strong> effectué le <strong>{{ donation.createdAt|date("d/m/Y") }}</strong> à <strong>{{ donation.createdAt|date("H:i") }}</strong> a bien été enregistré avec le numéro <strong>{{ donation.hashid }}</strong>.</p>
     <p>Merci pour votre soutien au projet <em>L'Air du Bois</em> !</p>
+    <p>Retrouvez la liste de vos dons sur la page <a href="{{ path('core_funding_user_donation_list') }}" style="color: #f77f00; text-decoration: none;">Mes dons</a>.</p>
 {% endblock %}
