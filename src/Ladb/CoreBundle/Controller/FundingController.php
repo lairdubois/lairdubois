@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Entity\User;
 use Ladb\CoreBundle\Utils\MailerUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -257,6 +258,37 @@ class FundingController extends Controller {
 	}
 
 	/**
+	 * @Route("/mes-dons", name="core_funding_user_donation_list")
+	 * @Route("/mes-dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_user_donation_list_filter")
+	 * @Route("/mes-dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_user_donation_list_filter_page")
+	 * @Template("LadbCoreBundle:Funding:user-donation-list.html.twig")
+	 */
+	public function userDonationListAction(Request $request, $filter = 'recent', $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
+		$paginator = $donationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_user_donation_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+
+		$parameters = array(
+			'filter'        => $filter,
+			'prevPageUrl'   => $pageUrls->prev,
+			'nextPageUrl'   => $pageUrls->next,
+			'donations'     => $paginator,
+			'donationCount' => $paginator->count(),
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Funding:user-donation-list-xhr.html.twig', $parameters);
+		}
+		return $parameters;
+
+	}
+
+	/**
 	 * @Route("/admin/dons", name="core_funding_admin_donation_list")
 	 * @Route("/admin/dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_admin_donation_list_filter")
 	 * @Route("/admin/dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_admin_donation_list_filter_page")
@@ -297,27 +329,30 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route("/mes-dons", name="core_funding_user_donation_list")
-	 * @Route("/mes-dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_user_donation_list_filter")
-	 * @Route("/mes-dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_user_donation_list_filter_page")
-	 * @Template("LadbCoreBundle:Funding:user-donation-list.html.twig")
+	 * @Route("/donateurs", name="core_funding_donors")
+	 * @Route("/donateurs/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_donors_page")
+	 * @Template()
 	 */
-	public function userDonationListAction(Request $request, $filter = 'recent', $page = 0) {
+	public function donorsAction(Request $request, $filter = 'alpha', $page = 0) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
 		$om = $this->getDoctrine()->getManager();
-		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
 		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
-		$paginator = $donationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_user_donation_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+		$paginator = $userRepository->findDonorsPagined($offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_donors_page', array(), $page, $paginator->count(), 20, 20);
 
 		$parameters = array(
-			'filter'        => $filter,
-			'prevPageUrl'   => $pageUrls->prev,
-			'nextPageUrl'   => $pageUrls->next,
-			'donations'     => $paginator,
-			'donationCount' => $paginator->count(),
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'users'       => $paginator,
+			'userCount'   => $paginator->count(),
 		);
 
 		if ($request->isXmlHttpRequest()) {

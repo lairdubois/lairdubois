@@ -134,6 +134,26 @@ class UserRepository extends AbstractEntityRepository {
 		}
 	}
 
+	public function findDonorsPagined($offset, $limit, $filter = 'alpha') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'u', 'a' ))
+			->from($this->getEntityName(), 'u')
+			->leftJoin('u.avatar', 'a')
+			->leftJoin('u.meta', 'm')
+			->where('m.donationCount > 0')
+			->orderBy('u.displayname', 'ASC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$queryBuilder
+			->andWhere('u.enabled = 1')
+		;
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	public function findPagined($offset, $limit, $filter = 'recent', $isAdmin = false) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
