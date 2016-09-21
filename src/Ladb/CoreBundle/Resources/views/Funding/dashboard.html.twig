@@ -56,7 +56,7 @@
                     <h4>Envie de contribuer ?</h4>
                 </div>
                 <div class="panel-body">
-                    <em>L'Air du Bois</em> a fait le pari de financer ses frais de fonctionnement uniquement sur des dons volontaires.
+                    <em>L'Air du Bois</em> a fait le pari de financer ses frais de fonctionnement uniquement par des dons volontaires.
                     <ul>
                         <li>Pour permettre à chacun de partager sa passion</li>
                         <li>Pour rester indépendant</li>
@@ -67,7 +67,7 @@
                             <form action="{{ path('core_funding_new') }}" class="form-inline text-center" method="get">
                                 <div class="form-group">
                                     <div class="input-group input-group-lg">
-                                        <input name="amount_eur" id="ladb_donate_amount_input" type="text" class="form-control input-lg text-right" maxlength="3" size="3" value="{{ amountEur|default(5) }}">
+                                        <input name="amount_eur" id="ladb_donate_amount_input" type="tel" class="form-control input-lg text-right" maxlength="3" size="3" value="{{ amountEur|default(5) }}">
                                         <div class="input-group-addon">€</div>
                                     </div>
                                 </div>

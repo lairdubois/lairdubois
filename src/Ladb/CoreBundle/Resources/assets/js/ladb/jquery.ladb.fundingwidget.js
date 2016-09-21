@@ -211,6 +211,11 @@
     LadbFundingWidget.prototype.bind = function() {
         var that = this;
 
+        // Bin amount input
+        this.$amountInput.on('focus', function(event) {
+            this.setSelectionRange(0, this.value.length);
+        });
+
         // Bind modal
         this.$newModal
             .on('loaded.bs.modal', function(e) {

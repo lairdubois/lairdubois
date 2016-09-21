@@ -329,11 +329,11 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route("/donateurs", name="core_funding_donors")
-	 * @Route("/donateurs/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_donors_page")
+	 * @Route("/admin/donateurs", name="core_funding_admin_donors")
+	 * @Route("/admin/donateurs/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_admin_donors_page")
 	 * @Template()
 	 */
-	public function donorsAction(Request $request, $filter = 'alpha', $page = 0) {
+	public function donorsAction(Request $request, $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('Access denied');
 		}
@@ -344,11 +344,10 @@ class FundingController extends Controller {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
 		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
-		$paginator = $userRepository->findDonorsPagined($offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_donors_page', array(), $page, $paginator->count(), 20, 20);
+		$paginator = $userRepository->findDonorsPagined($offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_admin_donors_page', array(), $page, $paginator->count(), 20, 20);
 
 		$parameters = array(
-			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
 			'users'       => $paginator,

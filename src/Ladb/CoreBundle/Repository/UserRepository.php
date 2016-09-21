@@ -134,7 +134,7 @@ class UserRepository extends AbstractEntityRepository {
 		}
 	}
 
-	public function findDonorsPagined($offset, $limit, $filter = 'alpha') {
+	public function findDonorsPagined($offset, $limit) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'u', 'a' ))
