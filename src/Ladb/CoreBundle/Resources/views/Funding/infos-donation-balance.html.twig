@@ -6,7 +6,7 @@
 {% block bodyInner %}
     <p>Les dons nets représentent la somme des dons effectués sur le mois à laquelle sont retranchés les frais de transaction.</p>
     {% if funding.donationCount > 0 %}
-        <p>Ce mois compte <strong>{{ funding.donationCount }}</strong> don{% if funding.donationCount > 1 %}s{% endif %} cumulant <strong>{{ funding.donationBalanceEur|number_format(2, ',' ,' ') }}€</strong>.
+        <p>Ce mois compte <strong>{{ funding.donationCount }}</strong> don{% if funding.donationCount > 1 %}s{% endif %} cumulant <strong>{{ funding.donationBalanceEur|number_format(2, ',' ,' ') }}€</strong> net.
         {% if funding.donationCount > 1 %}<br>Soit un don net moyen de <strong>{{ (funding.donationBalanceEur / funding.donationCount)|number_format(2, ',' ,' ') }}€</strong>{% endif %}
         </p>
     {% else %}
