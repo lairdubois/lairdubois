@@ -64,6 +64,75 @@ class FundingController extends Controller {
 	}
 
 	/**
+	 * @Route("/{year}/{month}/infos/charge-balance", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_infos_charge_balance")
+	 * @Template("LadbCoreBundle:Funding:infos-charge-balance.html.twig")
+	 */
+	public function infosChargeBalanceAction(Request $request, $year = null, $month = null) {
+		$om = $this->getDoctrine()->getManager();
+		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+
+		if (is_null($year) || is_null($month)) {
+			$fundingManager = $this->get(FundingManager::NAME);
+			$funding = $fundingManager->getOrCreateCurrent();
+		} else {
+			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
+		}
+		if (is_null($funding)) {
+			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
+		}
+
+		return array(
+			'funding' => $funding,
+		);
+	}
+
+	/**
+	 * @Route("/{year}/{month}/infos/carried-forward-balance", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_infos_carried_forward_balance")
+	 * @Template("LadbCoreBundle:Funding:infos-carried-forward-balance.html.twig")
+	 */
+	public function infosCarriedForwardBalanceAction(Request $request, $year = null, $month = null) {
+		$om = $this->getDoctrine()->getManager();
+		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+
+		if (is_null($year) || is_null($month)) {
+			$fundingManager = $this->get(FundingManager::NAME);
+			$funding = $fundingManager->getOrCreateCurrent();
+		} else {
+			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
+		}
+		if (is_null($funding)) {
+			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
+		}
+
+		return array(
+			'funding' => $funding,
+		);
+	}
+
+	/**
+	 * @Route("/{year}/{month}/infos/charges-balance", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_infos_donation_balance")
+	 * @Template("LadbCoreBundle:Funding:infos-donation-balance.html.twig")
+	 */
+	public function infosDonationBalanceAction(Request $request, $year = null, $month = null) {
+		$om = $this->getDoctrine()->getManager();
+		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+
+		if (is_null($year) || is_null($month)) {
+			$fundingManager = $this->get(FundingManager::NAME);
+			$funding = $fundingManager->getOrCreateCurrent();
+		} else {
+			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
+		}
+		if (is_null($funding)) {
+			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
+		}
+
+		return array(
+			'funding' => $funding,
+		);
+	}
+
+	/**
 	 * @Route(pattern="/donation/new", name="core_funding_new")
 	 * @Template("LadbCoreBundle:Funding:donation-new.html.twig")
 	 */
@@ -162,6 +231,7 @@ class FundingController extends Controller {
 		$fundingManager = $this->get(FundingManager::NAME);
 		$funding = $fundingManager->getOrCreateCurrent();
 		$funding->incrementDonationBalance($donation->getAmount() - $donation->getFee());
+		$funding->incrementDonationCount();
 
 		// Increment user donation stats
 		$this->getUser()->getMeta()->incrementDonationCount();

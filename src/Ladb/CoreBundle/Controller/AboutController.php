@@ -57,6 +57,7 @@ class AboutController extends Controller {
 			array( 'name' => 'ImageOptimizer', 'url' => 'https://github.com/psliwa/image-optimizer', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'EmailValidator', 'url' => 'https://github.com/egulias/EmailValidator', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'Hashids', 'url' => 'http://hashids.org/php/', 'labels' => array( 'PHP' ) ),
+			array( 'name' => 'Stripe PHP', 'url' => 'https://github.com/stripe/stripe-php', 'labels' => array( 'PHP' ) ),
 
 			array( 'name' => 'Elasticsearch', 'url' => 'https://www.elastic.co', 'labels' => array( 'JAVA' ) ),
 
@@ -73,6 +74,7 @@ class AboutController extends Controller {
 			array( 'name' => 'jquery-ui-touch-punch', 'url' => 'https://github.com/furf/jquery-ui-touch-punch/issues', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-sticky', 'url' => 'http://stickyjs.com/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-readmorejs', 'url' => 'http://jedfoster.com/Readmore.js/', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'jquery-payment', 'url' => 'https://github.com/stripe/jquery.payment', 'labels' => array( 'JS' ) ),
 
 			array( 'name' => 'Bootstrap', 'url' => 'http://getbootstrap.com/', 'labels' => array( 'HTML', 'CSS', 'JS' ) ),
 			array( 'name' => 'bootstrap-datetimepicker', 'url' => 'https://github.com/Eonasdan/bootstrap-datetimepicker', 'labels' => array( 'JS' ) ),

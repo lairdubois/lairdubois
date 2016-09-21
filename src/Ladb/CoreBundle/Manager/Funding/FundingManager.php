@@ -53,6 +53,7 @@ class FundingManager extends AbstractManager {
 
 						// Duplicate charge
 						$charge = new Charge();
+						$charge->setDutyFreeAmount($previousCharge->getDutyFreeAmount());
 						$charge->setAmount($previousCharge->getAmount());
 						$charge->setType($previousCharge->getType());
 

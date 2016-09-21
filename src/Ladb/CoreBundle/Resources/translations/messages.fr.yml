@@ -863,6 +863,11 @@ funding:
   statistics: Statistiques
   my_donations: Mes dons
   donate: Faire un don
+  charge_balance: Charges
+  carried_forward_balance: Reports
+  donation_balance: Dons nets
+  charge_types:
+    type_1: Hébergement
   message:
     pay_success: Le paiement de votre don de <strong>%amount%€</strong> a bien été enregistré.<br>Merci pour votre soutien au projet <em>L'Air du Bois</em> !
     pay_error:

@@ -1,0 +1,26 @@
+{% extends 'LadbCoreBundle:Common:_modal-content.part.html.twig' %}
+
+{% set id = 'infos_modal' %}
+{% set title = 'funding.charge_balance'|trans()~' - '~(('month.long.'~(funding.date|date('M')|lower))|trans({}, 'date'))|capitalize~' '~funding.year %}
+
+{% block bodyInner %}
+    <p>Les charges représentent l'ensemble des frais de fonctionnement de <em>L'Air du Bois</em> pour le mois.</p>
+    <table class="table table-bordered">
+        <tr>
+            <th class="text-center">Type</th>
+            <th class="text-center">Montant HT</th>
+            <th class="text-center">Montant TTC</th>
+        </tr>
+        {% for charge in funding.charges %}
+            <tr>
+                <td>{{ ('funding.charge_types.type_'~charge.type)|trans() }}</td>
+                <td class="ladb-amount">{{ charge.dutyFreeAmountEur|number_format(2, ',', ' ') }}€</td>
+                <td class="ladb-amount">{{ charge.amountEur|number_format(2, ',', ' ') }}€</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+{% endblock %}

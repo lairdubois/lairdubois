@@ -22,22 +22,22 @@
                 <div class="ladb-board">
                     <table width="100%">
                         <tr style="border-bottom: 1px solid #ccc;">
-                            <td>Charges</td>
-                            <td class="ladb-amount"><span class="ladb-color-negative">{{ funding.chargeBalanceEur|number_format(2, ',', ' ') }}€</span></td>
+                            <td>{{ 'funding.charge_balance'|trans() }}</td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="ladb-color-negative">{{ funding.chargeBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos_charge_balance', { 'year':funding.year, 'month':funding.month }) }}" id="ladb_charge_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
                         </tr>
                         <tr>
-                            <td>Report</td>
-                            <td class="ladb-amount"><span class="{% if funding.carriedForwardBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.carriedForwardBalanceEur|number_format(2, ',', ' ') }}€</span></td>
+                            <td>{{ 'funding.carried_forward_balance'|trans() }}</td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.carriedForwardBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.carriedForwardBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos_carried_forward_balance', { 'year':funding.year, 'month':funding.month }) }}" id="ladb_carried_forward_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
                         </tr>
                         <tr>
-                            <td>Dons nets</td>
-                            <td class="ladb-amount"><span class="{% if funding.donationBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.donationBalanceEur|number_format(2, ',', ' ') }}€</span></td>
+                            <td>{{ 'funding.donation_balance'|trans() }}</td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.donationBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.donationBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos_donation_balance', { 'year':funding.year, 'month':funding.month }) }}" id="ladb_donation_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
                         </tr>
                     </table>
                     <br>
                     {% if funding.visibility > 0 %}
                         {% if funding.isCurrent %}
-                            <small><i class="ladb-icon-check"></i> <strong>Financé</strong> pour <strong>{{ funding.visibility }} mois</strong> entier{% if funding.visibility > 2 %} !{% else %}.{% endif %}</small>
+                            <small><i class="ladb-icon-check"></i> <strong>Financé</strong> pour <strong>{{ funding.visibility }} mois</strong> entier{% if funding.visibility > 1 %}s{% endif %}{% if funding.visibility > 2 %} !{% else %}.{% endif %}</small>
                         {% else %}
                             <small><i class="ladb-icon-check"></i> Mois <strong>financé</strong>.{% if funding.visibility > 1 %} Report sur <strong>{{ funding.visibility - 1 }} mois</strong> entiers.{% elseif funding.partialVisibility > 1 %} Report partiel sur le mois suivant.{% endif %}</small>
                         {% endif %}
@@ -49,4 +49,11 @@
             {% include 'LadbCoreBundle:Common:_loading-panel.part.html.twig' %}
         </div>
     </div>
+    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'infos_modal' } %}
+        {% block header %}{% endblock %}
+        {% block bodyInner %}
+            {{ 'default.loading'|trans() }}
+        {% endblock %}
+        {% block footer %}{% endblock %}
+    {% endembed %}
 </div>

@@ -24,6 +24,11 @@ class Charge {
 	private $id;
 
 	/**
+	 * @ORM\Column(name="duty_free_amount", type="integer")
+	 */
+	private $dutyFreeAmount = 0;
+
+	/**
 	 * @ORM\Column(type="integer")
 	 */
 	private $amount = 0;
@@ -45,6 +50,21 @@ class Charge {
 		return $this->id;
 	}
 
+	// DutyFreeAmount /////
+
+	public function setDutyFreeAmount($dutyFreeAmount) {
+		$this->dutyFreeAmount = $dutyFreeAmount;
+		return $this;
+	}
+
+	public function getDutyFreeAmount() {
+		return $this->dutyFreeAmount;
+	}
+
+	public function getDutyFreeAmountEur() {
+		return $this->getDutyFreeAmount() / 100;
+	}
+
 	// Amount /////
 
 	public function setAmount($amount) {
@@ -54,6 +74,10 @@ class Charge {
 
 	public function getAmount() {
 		return $this->amount;
+	}
+
+	public function getAmountEur() {
+		return $this->getAmount() / 100;
 	}
 
 	// Type /////

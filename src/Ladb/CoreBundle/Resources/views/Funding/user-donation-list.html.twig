@@ -29,15 +29,15 @@
                     <table width="100%">
                         <tr>
                             <td>Cumul brut</td>
-                            <td class="ladb-amount">{{ app.user.meta.donationBalanceEur|number_format(2, ',', ' ') }}€</td>
+                            <td class="ladb-amount ladb-amount-lg">{{ app.user.meta.donationBalanceEur|number_format(2, ',', ' ') }}€</td>
                         </tr>
                         <tr>
                             <td>Cumul net</td>
-                            <td class="ladb-amount">{{ (app.user.meta.donationBalanceEur - app.user.meta.donationFeeBalanceEur)|number_format(2, ',', ' ') }}€</td>
+                            <td class="ladb-amount ladb-amount-lg">{{ (app.user.meta.donationBalanceEur - app.user.meta.donationFeeBalanceEur)|number_format(2, ',', ' ') }}€</td>
                         </tr>
                         <tr>
                             <td>Don moyen</td>
-                            <td class="ladb-amount">{% if app.user.meta.donationBalanceEur > 0 %}{{ (app.user.meta.donationBalanceEur / app.user.meta.donationCount)|number_format(2, ',', ' ') }}€{% else %}-{% endif %}</td>
+                            <td class="ladb-amount ladb-amount-lg">{% if app.user.meta.donationBalanceEur > 0 %}{{ (app.user.meta.donationBalanceEur / app.user.meta.donationCount)|number_format(2, ',', ' ') }}€{% else %}-{% endif %}</td>
                         </tr>
                     </table>
 

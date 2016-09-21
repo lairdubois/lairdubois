@@ -13,6 +13,10 @@
         this.$loadingPanel = $('.ladb-loading-panel', this.$element);
         this.$navPrev = $('.ladb-prev', this.$element);
         this.$navNext = $('.ladb-next', this.$element);
+        this.$chargeBalanceInfosBtn = $('#ladb_charge_balance_infos_btn', this.$element);
+        this.$carriedForwardBalanceInfosBtn = $('#ladb_carried_forward_balance_infos_btn', this.$element);
+        this.$donationBalanceInfosBtn = $('#ladb_donation_balance_infos_btn', this.$element);
+        this.$infosModal = $('#infos_modal', this.$element);
     };
 
     LadbFundingDashboard.DEFAULTS = {
@@ -52,6 +56,27 @@
         this.$navNext.on('click', function(event) {
             event.preventDefault();
             that.load($(this).attr("href"));
+        });
+
+        // Bind infos modal
+        this.$infosModal.on('hidden.bs.modal', function(event) {
+            that.$infosModal
+                .removeData('bs.modal')
+                .find('.modal-content').empty().append('<div class="modal-body">Chargement...</div>');
+        });
+
+        // Bind infos
+        this.$chargeBalanceInfosBtn.on('click', function(event) {
+            event.preventDefault();
+            that.$infosModal.modal({ remote: $(this).attr("href") });
+        });
+        this.$carriedForwardBalanceInfosBtn.on('click', function(event) {
+            event.preventDefault();
+            that.$infosModal.modal({ remote: $(this).attr("href") });
+        });
+        this.$donationBalanceInfosBtn.on('click', function(event) {
+            event.preventDefault();
+            that.$infosModal.modal({ remote: $(this).attr("href") });
         });
 
     };

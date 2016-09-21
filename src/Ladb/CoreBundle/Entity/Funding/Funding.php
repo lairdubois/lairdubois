@@ -46,6 +46,11 @@ class Funding {
 	private $donationBalance = 0;
 
 	/**
+	 * @ORM\Column(name="donation_count", type="integer")
+	 */
+	private $donationCount = 0;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Funding\Charge", mappedBy="funding", cascade={"all"})
 	 */
 	private $charges;
@@ -172,6 +177,17 @@ class Funding {
 
 	public function getPartialVisibility() {
 		return max(0, ceil($this->getBalance() / $this->getChargeBalance()));
+	}
+
+	// DonationCount /////
+
+	public function incrementDonationCount($by = 1) {
+		$this->donationCount += $by;
+		return $this;
+	}
+
+	public function getDonationCount() {
+		return $this->donationCount;
 	}
 
 	// Charges /////
