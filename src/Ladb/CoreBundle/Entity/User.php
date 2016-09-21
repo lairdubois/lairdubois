@@ -406,6 +406,7 @@ class User extends \FOS\UserBundle\Model\User implements LocalisableInterface, I
 			'blog',
 			'xylotheque',
 			'fournisseurs',
+			'financement',
 			'outils',
 			'api',
 
