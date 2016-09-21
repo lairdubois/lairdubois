@@ -16,6 +16,36 @@ class DonationRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function sumAmounts() {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select('sum(d.amount)')
+			->from($this->getEntityName(), 'd')
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleScalarResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return false;
+		}
+	}
+
+	public function sumFees() {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select('sum(d.fee)')
+			->from($this->getEntityName(), 'd')
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleScalarResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return false;
+		}
+	}
+
+	/////
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('generous' == $filter) {
 			$queryBuilder

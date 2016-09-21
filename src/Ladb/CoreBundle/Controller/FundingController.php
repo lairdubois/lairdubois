@@ -276,12 +276,17 @@ class FundingController extends Controller {
 		$paginator = $donationRepository->findPagined($offset, $limit, $filter);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_admin_donation_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
 
+		$donationBalance = $donationRepository->sumAmounts();
+		$donationFeeBalance = $donationRepository->sumFees();
+
 		$parameters = array(
-			'filter'        => $filter,
-			'prevPageUrl'   => $pageUrls->prev,
-			'nextPageUrl'   => $pageUrls->next,
-			'donations'     => $paginator,
-			'donationCount' => $paginator->count(),
+			'filter'                => $filter,
+			'prevPageUrl'           => $pageUrls->prev,
+			'nextPageUrl'           => $pageUrls->next,
+			'donations'             => $paginator,
+			'donationCount'         => $paginator->count(),
+			'donationBalanceEur'    => $donationBalance / 100,
+			'donationFeeBalanceEur' => $donationFeeBalance / 100,
 		);
 
 		if ($request->isXmlHttpRequest()) {

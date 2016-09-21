@@ -21,28 +21,11 @@
     </div>
     <div class="row">
         <div class="col-sm-5 col-sm-push-7 col-xs-12">
-            <div class="panel panel-default ladb-margin-top">
-                <div class="panel-heading">
-                    <h4>Statistiques</h4>
-                </div>
-                <div class="panel-body">
-                    <table width="100%">
-                        <tr>
-                            <td>Cumul brut</td>
-                            <td class="ladb-amount ladb-amount-lg">{{ app.user.meta.donationBalanceEur|number_format(2, ',', ' ') }}€</td>
-                        </tr>
-                        <tr>
-                            <td>Cumul net</td>
-                            <td class="ladb-amount ladb-amount-lg">{{ (app.user.meta.donationBalanceEur - app.user.meta.donationFeeBalanceEur)|number_format(2, ',', ' ') }}€</td>
-                        </tr>
-                        <tr>
-                            <td>Don moyen</td>
-                            <td class="ladb-amount ladb-amount-lg">{% if app.user.meta.donationBalanceEur > 0 %}{{ (app.user.meta.donationBalanceEur / app.user.meta.donationCount)|number_format(2, ',', ' ') }}€{% else %}-{% endif %}</td>
-                        </tr>
-                    </table>
-
-                </div>
-            </div>
+            {% include 'LadbCoreBundle:Funding:_list-stats.part.html.twig' with {
+                'donationBalanceEur':app.user.meta.donationBalanceEur,
+                'donationFeeBalanceEur':app.user.meta.donationFeeBalanceEur,
+                'donationCount':app.user.meta.donationCount
+            } %}
         </div>
         <div class="col-sm-7 col-sm-pull-5 col-xs-12">
             {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}

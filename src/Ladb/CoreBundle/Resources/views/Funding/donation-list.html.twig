@@ -16,13 +16,7 @@
 {% block bodyContainerContent %}
     <div class="row">
         <div class="col-sm-5 col-sm-push-7 col-xs-12">
-            <div class="panel panel-default ladb-margin-top">
-                <div class="panel-heading">
-                    <h4>Statistiques</h4>
-                </div>
-                <div class="panel-body">
-                </div>
-            </div>
+            {% include 'LadbCoreBundle:Funding:_list-stats.part.html.twig' %}
         </div>
         <div class="col-sm-7 col-sm-pull-5 col-xs-12">
             {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
