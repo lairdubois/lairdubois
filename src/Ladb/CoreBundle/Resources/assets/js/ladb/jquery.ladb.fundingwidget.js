@@ -62,9 +62,7 @@
     LadbFundingWidget.prototype.displayErrorMessage = function(message) {
         this.clearErrorMessage();
         $('#payment-form').prepend(
-            $('<div/>', {
-                class: 'alert alert-danger'
-            }).text(message)
+            $('<div class="alert alert-danger"/>').text(message)
         );
     };
 
