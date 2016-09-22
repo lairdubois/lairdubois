@@ -251,6 +251,9 @@ class FundingController extends Controller {
 		$mailerUtils = $this->get(MailerUtils::NAME);
 		$mailerUtils->sendFundingPaymentReceiptEmailMessage($this->getUser(), $donation);
 
+		// Email notification (to admin)
+		$mailerUtils->sendNewDonationNotificationEmailMessage($this->getUser(), $donation);
+
 		return new JsonResponse(array(
 			'success' => true,
 			'content' => $this->get('templating')->render('LadbCoreBundle:Funding:donation-create.html.twig', array( 'donation' => $donation )),

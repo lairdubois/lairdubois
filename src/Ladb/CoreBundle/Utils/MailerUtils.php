@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Ladb\CoreBundle\Entity\Funding\Donation;
 use Ladb\CoreBundle\Entity\Spotlight;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -71,6 +72,14 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			'contact@lairdubois.fr',
 			'Notification de nouvel utilisateur',
 			$this->_renderTemplate('LadbCoreBundle:User:register-email-notification.txt.twig', array( 'actorUser' => $actorUser ))
+		);
+	}
+
+	public function sendNewDonationNotificationEmailMessage(User $actorUser, Donation $donation) {
+		$this->sendEmailMessage(
+			'contact@lairdubois.fr',
+			'Notification de nouveau don',
+			$this->_renderTemplate('LadbCoreBundle:Funding:donation-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'donation' => $donation ))
 		);
 	}
 
