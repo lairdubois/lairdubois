@@ -94,7 +94,7 @@
             thickness: 10,
             startAngle: -Math.PI / 2,
             fill: {
-                color: ["#5cb85c"], //"#f77f00"]
+                color: ["#5cb85c"] //"#f77f00"]
             }
         }).on('circle-animation-progress', function(event, progress) {
             $(this).find('span:first').html(parseInt( that.balanceRatio * 100 * progress));
