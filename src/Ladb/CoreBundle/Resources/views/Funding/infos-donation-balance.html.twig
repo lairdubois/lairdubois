@@ -10,7 +10,7 @@
         {% if funding.donationCount > 1 %}<br>Soit un don net moyen de <strong>{{ (funding.donationBalanceEur / funding.donationCount)|number_format(2, ',' ,' ') }}€</strong>{% endif %}
         </p>
     {% else %}
-        <p>Ce mois ne nompte <strong>aucun</strong> don.</p>
+        <p>Ce mois ne compte <strong>aucun</strong> don.</p>
     {% endif %}
 {% endblock %}
 
