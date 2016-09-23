@@ -4,7 +4,7 @@
 {% set title = 'funding.charge_balance'|trans()~' - '~(('month.long.'~(funding.date|date('M')|lower))|trans({}, 'date'))|capitalize~' '~funding.year %}
 
 {% block bodyInner %}
-    <p>Les charges représentent l'ensemble des frais de fonctionnement de <em>L'Air du Bois</em> pour le mois.</p>
+    <p>Les <em>charges</em> représentent l'ensemble des frais de fonctionnement de <em>L'Air du Bois</em> pour le mois.</p>
     <table class="table table-bordered">
         <tr>
             <th class="text-center">Type</th>

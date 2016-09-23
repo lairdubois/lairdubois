@@ -19,27 +19,33 @@
             <i class="ladb-icon-info"></i> Vous seul pouvez visualiser cette page.
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-5 col-sm-push-7 col-xs-12">
-            {% include 'LadbCoreBundle:Funding:_list-stats.part.html.twig' with {
-                'donationBalanceEur':app.user.meta.donationBalanceEur,
-                'donationFeeBalanceEur':app.user.meta.donationFeeBalanceEur,
-                'donationCount':app.user.meta.donationCount
-            } %}
+    {% if donationCount == 0%}
+        <div class="alert alert-info ladb-margin-top">
+            <p>Vous n'avez pas encore effectué de <strong>don</strong> !</p>
         </div>
-        <div class="col-sm-7 col-sm-pull-5 col-xs-12">
-            {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
-                {% set filterDefs = {
-                    'recent':       { 'label':'Récents', 'path':path('core_funding_user_donation_list_filter', { 'filter':'recent' }) },
-                    'generous':     { 'label':'Généreux', 'path':path('core_funding_user_donation_list_filter', { 'filter':'generous' }) },
+    {% else %}
+        <div class="row">
+            <div class="col-sm-5 col-sm-push-7 col-xs-12">
+                {% include 'LadbCoreBundle:Funding:_list-stats.part.html.twig' with {
+                    'donationBalanceEur':app.user.meta.donationBalanceEur,
+                    'donationFeeBalanceEur':app.user.meta.donationFeeBalanceEur,
+                    'donationCount':app.user.meta.donationCount
                 } %}
-                {% block filterbarRightContent%}
-                    <span class="ladb-heading">{{ donationCount }} {% transchoice donationCount %}[0,1]don|]1,Inf]dons{% endtranschoice %}</span>
-                {% endblock %}
-            {% endembed %}
-            {{ block('autopagerContainer') }}
+            </div>
+            <div class="col-sm-7 col-sm-pull-5 col-xs-12">
+                    {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
+                        {% set filterDefs = {
+                            'recent':       { 'label':'Récents', 'path':path('core_funding_user_donation_list_filter', { 'filter':'recent' }) },
+                            'generous':     { 'label':'Généreux', 'path':path('core_funding_user_donation_list_filter', { 'filter':'generous' }) },
+                        } %}
+                        {% block filterbarRightContent%}
+                            <span class="ladb-heading">{{ donationCount }} {% transchoice donationCount %}[0,1]don|]1,Inf]dons{% endtranschoice %}</span>
+                        {% endblock %}
+                    {% endembed %}
+                {{ block('autopagerContainer') }}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
 {% block autopagerContainerInner %}

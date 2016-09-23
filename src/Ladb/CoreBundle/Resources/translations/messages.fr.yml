@@ -865,7 +865,8 @@ funding:
   donate: Faire un don
   charge_balance: Charges
   carried_forward_balance: Reports
-  donation_balance: Dons nets
+  donation_fee_balance: Frais de transaction
+  donation_balance: Dons
   charge_types:
     type_1: Hébergement
   message:

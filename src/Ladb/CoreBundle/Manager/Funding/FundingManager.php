@@ -63,7 +63,7 @@ class FundingManager extends AbstractManager {
 					}
 
 					// Compute the carried forward balance
-					$carriedForwardBalance = $previousFunding->getBalance() - $previousFunding->getChargeBalance();
+					$carriedForwardBalance = $previousFunding->getEarningsBalance() - $previousFunding->getOutgoingsBalance();
 					if ($carriedForwardBalance > 0) {
 						$funding->setCarriedForwardBalance($carriedForwardBalance);
 					}

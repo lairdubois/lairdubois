@@ -36,6 +36,11 @@ class Funding {
 	private $chargeBalance = 0;
 
 	/**
+	 * @ORM\Column(name="donation_fee_balance", type="integer")
+	 */
+	private $donationFeeBalance = 0;
+
+	/**
 	 * @ORM\Column(name="carried_forward_balance", type="integer")
 	 */
 	private $carriedForwoardBalance = 0;
@@ -122,6 +127,26 @@ class Funding {
 		return $this->getChargeBalance() / 100;
 	}
 
+	// DonationFeeBalance /////
+
+	public function incrementDonationFeeBalance($by) {
+		$this->donationFeeBalance += $by;
+		return $this;
+	}
+
+	public function setDonationFeeBalance($donationFeeBalance) {
+		$this->donationFeeBalance = $donationFeeBalance;
+		return $this;
+	}
+
+	public function getDonationFeeBalance() {
+		return $this->donationFeeBalance;
+	}
+
+	public function getDonationFeeBalanceEur() {
+		return $this->getDonationFeeBalance() / 100;
+	}
+
 	// CarriedForwardBalance /////
 
 	public function setCarriedForwardBalance($carriedForwoardBalance) {
@@ -157,28 +182,6 @@ class Funding {
 		return $this->getDonationBalance() / 100;
 	}
 
-	// Balance /////
-
-	public function getBalance() {
-		return $this->getCarriedForwardBalance() + $this->getDonationBalance();
-	}
-
-	public function getBalanceEur() {
-		return $this->getBalance() / 100;
-	}
-
-	// Visibilité /////
-
-	public function getVisibility() {
-		return max(0, floor($this->getBalance() / $this->getChargeBalance()));
-	}
-
-	// PartialVisibilité /////
-
-	public function getPartialVisibility() {
-		return max(0, ceil($this->getBalance() / $this->getChargeBalance()));
-	}
-
 	// DonationCount /////
 
 	public function incrementDonationCount($by = 1) {
@@ -209,4 +212,39 @@ class Funding {
 	public function getCharges() {
 		return $this->charges;
 	}
+
+	/////
+
+	// OutgoingsBalance /////
+
+	public function getOutgoingsBalance() {
+		return $this->getChargeBalance() + $this->getDonationFeeBalance();
+	}
+
+	public function getOutgoingsBalanceEur() {
+		return $this->getOutgoingsBalance() / 100;
+	}
+
+	// EarningsBalance /////
+
+	public function getEarningsBalance() {
+		return $this->getCarriedForwardBalance() + $this->getDonationBalance();
+	}
+
+	public function getEarningsBalanceEur() {
+		return $this->getEarningsBalance() / 100;
+	}
+
+	// Visibility /////
+
+	public function getVisibility() {
+		return max(0, floor($this->getEarningsBalance() / $this->getOutgoingsBalance()));
+	}
+
+	// PartialVisibility /////
+
+	public function getPartialVisibility() {
+		return max(0, ceil($this->getEarningsBalance() / $this->getOutgoingsBalance()));
+	}
+
 }
