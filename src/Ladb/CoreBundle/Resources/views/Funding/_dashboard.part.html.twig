@@ -1,6 +1,6 @@
 {# set funding #}
 
-<div id="ladb_funding_dashboard" class="panel panel-default ladb-funding-dashboard" data-ladb-balance-ratio="{{ funding.earningsBalance / funding.outgoingsBalance }}">
+<div id="ladb_funding_dashboard" class="panel panel-default ladb-funding-dashboard" data-ladb-balance-ratio="{{ (funding.earningsBalance - funding.donationFeeBalance) / funding.chargeBalance }}">
     <div class="panel-body">
         <div class="ladb-nav">
             <a href="{{ prevPageUrl ? prevPageUrl : '#' }}" class="btn btn-default {% if not prevPageUrl %} disabled{% endif %} ladb-prev" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-chevron-left"></i></a>
