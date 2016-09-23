@@ -238,13 +238,13 @@ class Funding {
 	// Visibility /////
 
 	public function getVisibility() {
-		return max(0, floor($this->getEarningsBalance() / $this->getOutgoingsBalance()));
+		return max(0, floor(($this->getEarningsBalance() - $this->getDonationFeeBalance()) / $this->getChargeBalance()));
 	}
 
 	// PartialVisibility /////
 
 	public function getPartialVisibility() {
-		return max(0, ceil($this->getEarningsBalance() / $this->getOutgoingsBalance()));
+		return max(0, ceil(($this->getEarningsBalance() - $this->getDonationFeeBalance()) / $this->getChargeBalance()));
 	}
 
 }
