@@ -253,7 +253,7 @@ class FundingController extends Controller {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Funding:user-donation-list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Funding:donors-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 
