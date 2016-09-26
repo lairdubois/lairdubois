@@ -1,7 +1,6 @@
-{% extends 'LadbCoreBundle:Common:_modal-content.part.html.twig' %}
+{% extends 'LadbCoreBundle:Funding:_infos-xhr.html.twig' %}
 
-{% set id = 'infos_modal' %}
-{% set title = 'funding.carried_forward_balance'|trans()~' - '~(('month.long.'~(funding.date|date('M')|lower))|trans({}, 'date'))|capitalize~' '~funding.year %}
+{% set title = 'funding.carried_forward_balance'|trans() %}
 
 {% block bodyInner %}
     <p>Les <em>reports</em> représentent la valeur de l'excédant du mois précédent reportée sur ce mois.</p>
@@ -10,8 +9,4 @@
     {% else %}
         <p>Le mois précédent n'a compté <strong>aucun</strong> excédant.</p>
     {% endif %}
-{% endblock %}
-
-{% block footerInner %}
-    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
 {% endblock %}

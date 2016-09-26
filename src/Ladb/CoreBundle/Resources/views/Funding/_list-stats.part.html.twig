@@ -1,25 +1,25 @@
 <div class="panel panel-default ladb-margin-top">
     <div class="panel-heading">
-        <h4>Statistiques</h4>
+        <h4>{{ 'funding.statistics'|trans() }}</h4>
     </div>
     <div class="panel-body">
         <table width="100%">
             <tr>
-                <td>Cumul brut</td>
+                <td>{{ 'funding.total_volume'|trans() }}</td>
                 <td class="ladb-amount ladb-amount-lg">{{ donationBalanceEur|number_format(2, ',', ' ') }}€</td>
             </tr>
             <tr>
-                <td>Frais de transaction</td>
+                <td>{{ 'funding.donation_fee_balance'|trans() }}</td>
                 <td class="ladb-amount ladb-amount-lg">{{ donationFeeBalanceEur|number_format(2, ',', ' ') }}€</td>
             </tr>
             <tr style="border-top: 1px solid #ccc;">
-                <td>Cumul net</td>
+                <td>{{ 'funding.available_balance'|trans() }}</td>
                 <td class="ladb-amount ladb-amount-lg">{{ (donationBalanceEur - donationFeeBalanceEur)|number_format(2, ',', ' ') }}€</td>
             </tr>
             {% if donationCount > 1 %}
                 <tr><td>&nbsp;</td></tr>
                 <tr>
-                    <td>Don moyen</td>
+                    <td>{{ 'funding.average_donation'|trans() }}</td>
                     <td class="ladb-amount ladb-amount-lg">{% if donationBalanceEur > 0 %}{{ (donationBalanceEur / donationCount)|number_format(2, ',', ' ') }}€{% else %}-{% endif %}</td>
                 </tr>
             {% endif %}

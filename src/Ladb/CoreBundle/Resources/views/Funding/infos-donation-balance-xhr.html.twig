@@ -1,0 +1,14 @@
+{% extends 'LadbCoreBundle:Funding:_infos-xhr.html.twig' %}
+
+{% set title = 'funding.donation_balance'|trans() %}
+
+{% block bodyInner %}
+    <p>Les <em>dons</em> représentent la somme des dons effectués sur le mois.</p>
+    {% if funding.donationCount > 0 %}
+        <p>Ce mois compte <strong>{{ funding.donationCount }}</strong> {{ 'funding.choice.donations'|transchoice(funding.donationCount) }} cumulant <strong>{{ funding.donationBalanceEur|number_format(2, ',' ,' ') }}€</strong>.
+        {% if funding.donationCount > 1 %}<br>Soit un don moyen de <strong>{{ (funding.donationBalanceEur / funding.donationCount)|number_format(2, ',' ,' ') }}€</strong>.{% endif %}
+        </p>
+    {% else %}
+        <p>Ce mois ne compte <strong>aucun</strong> don.</p>
+    {% endif %}
+{% endblock %}

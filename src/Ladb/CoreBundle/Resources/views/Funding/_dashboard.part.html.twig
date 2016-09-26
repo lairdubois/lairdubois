@@ -23,19 +23,19 @@
                     <table width="100%">
                         <tr>
                             <td>{{ 'funding.charge_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="ladb-color-negative">{{ funding.chargeBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos_charge_balance', { 'year':funding.year, 'month':funding.month }) }}" id="ladb_charge_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="ladb-color-negative">{{ funding.chargeBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'charge-balance' }) }}" id="ladb_charge_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
                         </tr>
                         <tr style="border-bottom: 1px solid #ccc;">
                             <td>{{ 'funding.donation_fee_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.donationFeeBalanceEur > 0 %}ladb-color-negative{% else %}ladb-color-null{% endif %}">{{ funding.donationFeeBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos_donation_fee_balance', { 'year':funding.year, 'month':funding.month }) }}" id="ladb_donation_fee_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.donationFeeBalanceEur > 0 %}ladb-color-negative{% else %}ladb-color-null{% endif %}">{{ funding.donationFeeBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'donation-fee-balance' }) }}" id="ladb_transaction_fee_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
                         </tr>
                         <tr>
                             <td>{{ 'funding.carried_forward_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.carriedForwardBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.carriedForwardBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos_carried_forward_balance', { 'year':funding.year, 'month':funding.month }) }}" id="ladb_carried_forward_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.carriedForwardBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.carriedForwardBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'carried-forward-balance' }) }}" id="ladb_carried_forward_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
                         </tr>
                         <tr>
                             <td>{{ 'funding.donation_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.donationBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.donationBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos_donation_balance', { 'year':funding.year, 'month':funding.month }) }}" id="ladb_donation_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.donationBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.donationBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'donation-balance' }) }}" id="ladb_donation_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
                         </tr>
                     </table>
                     <br>

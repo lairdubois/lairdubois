@@ -28,6 +28,7 @@ class FundingController extends Controller {
 	public function dashboardAction(Request $request, $year = null, $month = null) {
 		$om = $this->getDoctrine()->getManager();
 		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 
 		// Retrieve parameters
 		$amountEur = $request->get('amount_eur', 5);	// default amount = 5€
@@ -55,6 +56,7 @@ class FundingController extends Controller {
 			'nextPageUrl' => $nextPageUrl,
 			'amountEur'   => $amountEur,
 			'autoShow'    => $autoShow,
+			'donorCount'  => $userRepository->countDonors(),
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -65,10 +67,10 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route("/{year}/{month}/infos/charge-balance", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_infos_charge_balance")
+	 * @Route("/{year}/{month}/infos/{panel}.xhr", requirements={"year" = "\d+", "month" = "\d+", "panel"="[a-z-]+"}, name="core_funding_infos")
 	 * @Template("LadbCoreBundle:Funding:infos-charge-balance.html.twig")
 	 */
-	public function infosChargeBalanceAction(Request $request, $year = null, $month = null) {
+	public function infosAction(Request $request, $year = null, $month = null, $panel = null) {
 		$om = $this->getDoctrine()->getManager();
 		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
 
@@ -82,78 +84,22 @@ class FundingController extends Controller {
 			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
 		}
 
-		return array(
+		$parameters = array(
 			'funding' => $funding,
 		);
-	}
 
-	/**
-	 * @Route("/{year}/{month}/infos/donation-fee-balance", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_infos_donation_fee_balance")
-	 * @Template("LadbCoreBundle:Funding:infos-donation-fee-balance.html.twig")
-	 */
-	public function infosFeeBalanceAction(Request $request, $year = null, $month = null) {
-		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
-
-		if (is_null($year) || is_null($month)) {
-			$fundingManager = $this->get(FundingManager::NAME);
-			$funding = $fundingManager->getOrCreateCurrent();
-		} else {
-			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
-		}
-		if (is_null($funding)) {
-			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
+		switch ($panel) {
+			case 'charge-balance':
+				return $this->render('LadbCoreBundle:Funding:infos-charge-balance-xhr.html.twig', $parameters);
+			case 'donation-fee-balance':
+				return $this->render('LadbCoreBundle:Funding:infos-donation-fee-balance-xhr.html.twig', $parameters);
+			case 'carried-forward-balance':
+				return $this->render('LadbCoreBundle:Funding:infos-carried-forward-balance-xhr.html.twig', $parameters);
+			case 'donation-balance':
+				return $this->render('LadbCoreBundle:Funding:infos-donation-balance-xhr.html.twig', $parameters);
 		}
 
-		return array(
-			'funding' => $funding,
-		);
-	}
-
-	/**
-	 * @Route("/{year}/{month}/infos/carried-forward-balance", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_infos_carried_forward_balance")
-	 * @Template("LadbCoreBundle:Funding:infos-carried-forward-balance.html.twig")
-	 */
-	public function infosCarriedForwardBalanceAction(Request $request, $year = null, $month = null) {
-		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
-
-		if (is_null($year) || is_null($month)) {
-			$fundingManager = $this->get(FundingManager::NAME);
-			$funding = $fundingManager->getOrCreateCurrent();
-		} else {
-			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
-		}
-		if (is_null($funding)) {
-			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
-		}
-
-		return array(
-			'funding' => $funding,
-		);
-	}
-
-	/**
-	 * @Route("/{year}/{month}/infos/charges-balance", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_infos_donation_balance")
-	 * @Template("LadbCoreBundle:Funding:infos-donation-balance.html.twig")
-	 */
-	public function infosDonationBalanceAction(Request $request, $year = null, $month = null) {
-		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
-
-		if (is_null($year) || is_null($month)) {
-			$fundingManager = $this->get(FundingManager::NAME);
-			$funding = $fundingManager->getOrCreateCurrent();
-		} else {
-			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
-		}
-		if (is_null($funding)) {
-			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
-		}
-
-		return array(
-			'funding' => $funding,
-		);
+		throw $this->createNotFoundException('Unknow infos panel (panel='.$panel.').');
 	}
 
 	/**
@@ -285,6 +231,35 @@ class FundingController extends Controller {
 	}
 
 	/**
+	 * @Route("/donateurs", name="core_funding_donors")
+	 * @Route("/donateurs/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_donors_page")
+	 * @Template()
+	 */
+	public function donorsAction(Request $request, $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
+		$paginator = $userRepository->findDonorsPagined($offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_donors_page', array(), $page, $paginator->count(), 20, 20);
+
+		$parameters = array(
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'donors'      => $paginator,
+			'donorCount'  => $paginator->count(),
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Funding:user-donation-list-xhr.html.twig', $parameters);
+		}
+		return $parameters;
+
+	}
+
+	/**
 	 * @Route("/mes-dons", name="core_funding_user_donation_list")
 	 * @Route("/mes-dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_user_donation_list_filter")
 	 * @Route("/mes-dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_user_donation_list_filter_page")
@@ -293,6 +268,7 @@ class FundingController extends Controller {
 	public function userDonationListAction(Request $request, $filter = 'recent', $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
@@ -306,6 +282,7 @@ class FundingController extends Controller {
 			'nextPageUrl'   => $pageUrls->next,
 			'donations'     => $paginator,
 			'donationCount' => $paginator->count(),
+			'donorCount'    => $userRepository->countDonors(),
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -328,6 +305,7 @@ class FundingController extends Controller {
 
 		$om = $this->getDoctrine()->getManager();
 		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
@@ -346,43 +324,11 @@ class FundingController extends Controller {
 			'donationCount'         => $paginator->count(),
 			'donationBalanceEur'    => $donationBalance / 100,
 			'donationFeeBalanceEur' => $donationFeeBalance / 100,
+			'donorCount'            => $userRepository->countDonors(),
 		);
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Funding:donation-list-xhr.html.twig', $parameters);
-		}
-		return $parameters;
-
-	}
-
-	/**
-	 * @Route("/admin/donateurs", name="core_funding_admin_donors")
-	 * @Route("/admin/donateurs/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_admin_donors_page")
-	 * @Template()
-	 */
-	public function donorsAction(Request $request, $page = 0) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
-
-		$om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
-		$paginatorUtils = $this->get(PaginatorUtils::NAME);
-
-		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
-		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
-		$paginator = $userRepository->findDonorsPagined($offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_funding_admin_donors_page', array(), $page, $paginator->count(), 20, 20);
-
-		$parameters = array(
-			'prevPageUrl' => $pageUrls->prev,
-			'nextPageUrl' => $pageUrls->next,
-			'users'       => $paginator,
-			'userCount'   => $paginator->count(),
-		);
-
-		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Funding:user-donation-list-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 

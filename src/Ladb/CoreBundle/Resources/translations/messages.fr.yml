@@ -860,17 +860,20 @@ funding:
   funding: Financement
   nav: Financement
   dashboard: Tableau de bord
-  statistics: Statistiques
+  donors: Donateurs
   my_donations: Mes dons
   donate: Faire un don
   charge_balance: Charges
   carried_forward_balance: Reports
   donation_fee_balance: Frais de transaction
   donation_balance: Dons
+  statistics: Statistiques
+  total_volume: Cumul brut
+  available_balance: Cumul net
+  average_donation: Don moyen
   charge_types:
     type_1: Hébergement
   message:
-    pay_success: Le paiement de votre don de <strong>%amount%€</strong> a bien été enregistré.<br>Merci pour votre soutien au projet <em>L'Air du Bois</em> !
     pay_error:
       invalid_number: Le numéro de carte est invalide.
       invalid_expiry_month: Le mois d'expiration de la carte est invalide.
@@ -882,3 +885,7 @@ funding:
       incorrect_zip: La validation du code postal a échouée.
       card_declined: La carte a été refusée.
       processing_error: Une erreur s'est produite lors du traitement de la carte.
+  choice:
+    donations: '[0,1]don|]1,Inf]dons'
+    donors: '[0,1]donateur|]1,Inf]donateurs'
+    transactions: '[0,1]transaction|]1,Inf]transactions'

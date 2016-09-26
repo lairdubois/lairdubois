@@ -14,6 +14,25 @@ class UserRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function countDonors() {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'COUNT(u.id)' ))
+			->from($this->getEntityName(), 'u')
+			->leftJoin('u.meta', 'm')
+			->where('m.donationCount > 0')
+			->andWhere('u.enabled = 1')
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleScalarResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return 0;
+		}
+	}
+
+	/////
+
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -142,13 +161,10 @@ class UserRepository extends AbstractEntityRepository {
 			->leftJoin('u.avatar', 'a')
 			->leftJoin('u.meta', 'm')
 			->where('m.donationCount > 0')
+			->andWhere('u.enabled = 1')
 			->orderBy('u.displayname', 'ASC')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
-		;
-
-		$queryBuilder
-			->andWhere('u.enabled = 1')
 		;
 
 		return new Paginator($queryBuilder->getQuery());

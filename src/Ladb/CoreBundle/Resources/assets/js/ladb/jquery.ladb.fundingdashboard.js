@@ -14,7 +14,7 @@
         this.$navPrev = $('.ladb-prev', this.$element);
         this.$navNext = $('.ladb-next', this.$element);
         this.$chargeBalanceInfosBtn = $('#ladb_charge_balance_infos_btn', this.$element);
-        this.$donationFeeBalanceInfosBtn = $('#ladb_donation_fee_balance_infos_btn', this.$element);
+        this.$transactionFeeBalanceInfosBtn = $('#ladb_transaction_fee_balance_infos_btn', this.$element);
         this.$carriedForwardBalanceInfosBtn = $('#ladb_carried_forward_balance_infos_btn', this.$element);
         this.$donationBalanceInfosBtn = $('#ladb_donation_balance_infos_btn', this.$element);
         this.$infosModal = $('#infos_modal', this.$element);
@@ -71,7 +71,7 @@
             event.preventDefault();
             that.$infosModal.modal({ remote: $(this).attr("href") });
         });
-        this.$donationFeeBalanceInfosBtn.on('click', function(event) {
+        this.$transactionFeeBalanceInfosBtn.on('click', function(event) {
             event.preventDefault();
             that.$infosModal.modal({ remote: $(this).attr("href") });
         });
