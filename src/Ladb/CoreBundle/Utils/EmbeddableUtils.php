@@ -273,7 +273,8 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 				return null;
 			}
 
-			$url = $request->headers->get('referer');
+//			$url = $request->headers->get('referer');
+			$url = 'http://www.copaindescopeaux.fr/forum/vos-realisations/14167.html?start=15';
 			if (!is_null($url) && strlen($url) > 0) {
 
 				// Process URL
@@ -302,7 +303,10 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 					$query = '';
 				}
 				$baseUrl = $scheme.'://'.$host;
-				$route = $path.$query;
+				$route = $path;
+				if (!empty($query)) {
+					$route .= '?'.$query;
+				}
 
 				$om = $this->getDoctrine()->getManager();
 
@@ -338,11 +342,12 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 						$embeddable->addReferral($referral);
 					}
 
+					$om->persist($referral);
+
 				}
 				$referral->incrementAccessCount();
 				$referral->setDisplayRedirectionWarning($request->get('displayRedirectionWarning', '1') == '1');	// By default redirection warning is displayed
 
-				$om->persist($referral);
 				$om->flush();
 
 				return $referral;
