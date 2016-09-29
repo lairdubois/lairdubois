@@ -273,8 +273,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 				return null;
 			}
 
-//			$url = $request->headers->get('referer');
-			$url = 'http://www.copaindescopeaux.fr/forum/vos-realisations/14167.html?start=15';
+			$url = $request->headers->get('referer');
 			if (!is_null($url) && strlen($url) > 0) {
 
 				// Process URL
