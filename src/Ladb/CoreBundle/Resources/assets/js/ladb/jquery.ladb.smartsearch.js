@@ -8,12 +8,16 @@
         this.options = options;
         this.$element = $(element);
 
-        this.$box = this.$element;
+        this.$widget = this.$element;
+        this.$box = $('.ladb-search-box', this.$element);
         this.$boxBottom = $('.ladb-search-box-bottom', this.$box);
         this.$boxBottomLeft = $('.ladb-search-box-bottom-left', this.$boxBottom);
         this.$boxBottomRight = $('.ladb-search-box-bottom-right', this.$boxBottom);
         this.$searchIcon = $('.ladb-search-box-top-left > i', this.$box);
         this.$textInput = $('.ladb-input > input', this.$box);
+        this.$filtersBtn = $('.ladb-filters-btn', this.$box);
+        this.$sortersBtn = $('.ladb-filters-btn', this.$box);
+        this.$shortcuts = $('.ladb-search-shortcuts', this.$element);
 
         this.facetDefs = {};
         this.isFirstSearch = true;
@@ -66,7 +70,10 @@
                 }
 
                 if (name) {
-                    var facetDef = this.facetDefs[this.generateFacetDefId(name, value)];
+                    var facetDef = this.facetDefs[this.generateFacetDefId(name, null)];
+                    if (!facetDef) {
+                        facetDef = this.facetDefs[this.generateFacetDefId(name, value)];
+                    }
                     if (facetDef) {
                         if (facetDef.unique) {
                             this.removeFacetNamed(name);
@@ -205,7 +212,7 @@
     };
 
     LadbSmartSearch.prototype.generateFacetDefId = function(name, value) {
-        return name == 'sort' ? name + ':' + value : name;
+        return value ? name + ':' + value : name;
     };
 
     LadbSmartSearch.prototype.markLoading = function() {
@@ -402,6 +409,25 @@
 
             });
 
+        });
+
+        // bind shortcutItems
+        this.$shortcuts.find('.ladb-smartsearch-shortcut').each(function (i, v) {
+
+            var $shortcutItem = $(v);
+
+            var query = $shortcutItem.data('query');
+            if (query) {
+                $shortcutItem.on('click', function() {
+                    that.parseQuery(query);
+                    that.search();
+                });
+            }
+
+        });
+        this.$shortcuts.find('.ladb-smartsearch-shortcut-more').on('click', function(event) {
+            event.stopPropagation();
+            that.$filtersBtn.click();
         });
 
         // Grab totalHits

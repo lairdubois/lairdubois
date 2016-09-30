@@ -27,3 +27,9 @@
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-likes" data-label="Préférés" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférés</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-comments" data-label="Plus commentés" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentés</a></li>
 {% endblock %}
+
+{% block searchboxShortcuts %}
+    <li><a class="ladb-smartsearch-shortcut" data-query="@products:&quot;Bois massifs&quot;"><i class="ladb-icon-provider-products"></i> Bois massifs</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@products:&quot;Outillage&quot;"><i class="ladb-icon-provider-products"></i> Outillage</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@products:&quot;Quincaillerie&quot;"><i class="ladb-icon-provider-products"></i> Quincaillerie</a></li>
+{% endblock %}
