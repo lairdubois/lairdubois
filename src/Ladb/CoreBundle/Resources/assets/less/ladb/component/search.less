@@ -189,6 +189,7 @@
     > li > a {
       cursor: pointer;  // Force a to pointer cursor
       color: #888;
+      font-size: 90%;
 
       &:hover {
         color: #555;
@@ -292,6 +293,8 @@
 
 }
 
+/* Responsive */
+
 // phone
 @media screen and (max-width: @ladb-screen-phone-max) {
   .ladb-search-box {
@@ -311,6 +314,13 @@
       }
 
     }
+  }
+}
+
+// desktop
+@media screen and (min-width: @ladb-screen-large-desktop) {
+  .ladb-search-shortcuts > ul > li > a {
+    font-size: 100%;
   }
 }
 

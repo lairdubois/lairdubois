@@ -17,7 +17,7 @@
 {% set webPath = (picture is empty ? emptyWebPath : picture.webPath) %}
 {% set filter = width~'x'~height~filterMode %}
 {% set noMicrodata = (noMicrodata|default(false)) or picture is empty %}
-{% set noSizer = noSizer|default(false) %}
+{% set noSizer = noSizer|default(picture.width == 0) %}
 {% set autoSizer = autoSizer is defined ? autoSizer : (filterMode == 'i' or picture is not empty and (picture.width < width or picture.height < height)) %}
 
 {% block img %}

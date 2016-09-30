@@ -16,7 +16,6 @@
         this.$searchIcon = $('.ladb-search-box-top-left > i', this.$box);
         this.$textInput = $('.ladb-input > input', this.$box);
         this.$filtersBtn = $('.ladb-filters-btn', this.$box);
-        this.$sortersBtn = $('.ladb-filters-btn', this.$box);
         this.$shortcuts = $('.ladb-search-shortcuts', this.$element);
 
         this.facetDefs = {};
@@ -153,6 +152,9 @@
                 .append('<i class="ladb-icon-remove"></i>')
                 .on('click', function() {
                     that.removeFacet($(this).parent());
+                    if (that.countFacets() == 0) {
+                        that.$shortcuts.show(); // No more facet => display shortcuts
+                    }
                     that.search();
                 }))
             .prepend($input)
@@ -178,6 +180,10 @@
                 that.removeFacet($facet);
             }
         });
+    };
+
+    LadbSmartSearch.prototype.countFacets = function() {
+        return $('.ladb-facet', this.$boxBottomLeft).length;
     };
 
     LadbSmartSearch.prototype.generateQuery = function() {
@@ -358,6 +364,8 @@
 
             $facetItem.on('click', function() {
 
+                that.$shortcuts.hide();
+
                 var $facet = that.createFacet(facetDef);
 
                 if (unique) {
@@ -457,6 +465,9 @@
     LadbSmartSearch.prototype.init = function() {
         this.bind();
         this.parseQuery(this.options.query);
+        if (this.countFacets() == 0) {
+            this.$shortcuts.show();
+        }
     };
 
 
