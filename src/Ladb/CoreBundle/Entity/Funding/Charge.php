@@ -39,6 +39,11 @@ class Charge {
 	private $type = Charge::TYPE_UNKNOW;
 
 	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $isRecurrent = false;
+
+	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Funding\Funding", inversedBy="charges")
 	 * @ORM\JoinColumn(nullable=true)
 	 */
@@ -89,6 +94,17 @@ class Charge {
 
 	public function getType() {
 		return $this->type;
+	}
+
+	// IsRecurrent /////
+
+	public function setIsRecurrent($isRecurrent) {
+		$this->isRecurrent = $isRecurrent;
+		return $this;
+	}
+
+	public function getIsRecurrent() {
+		return $this->isRecurrent;
 	}
 
 	// Funding /////

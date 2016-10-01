@@ -30,32 +30,38 @@ class FundingManager extends AbstractManager {
 			$lastFunding = $fundingRepository->findOneLast();
 			if (!is_null($lastFunding)) {
 
-				$dateLast = new \DateTime($lastFunding->getYear().'-'.$lastFunding->getMonth().'-01');
-				$dateCurrent = new \DateTime($nowYear.'-'.$nowMonth.'-01');
-				$diff = $dateLast->diff($dateCurrent);
-
-				$diffMonth = (($diff->format('%y') * 12) + $diff->format('%m'));
+				$diffMonth = ($nowYear - $lastFunding->getYear()) * 12 + $nowMonth - $lastFunding->getMonth();
 
 				$previousFunding = $lastFunding;
+				$year = $lastFunding->getYear();
+				$month = $lastFunding->getMonth();
 
 				// Create a funding every month between last and now
 				for ($i = 1; $i <= $diffMonth; $i++) {
 
-					$year = $lastFunding->getYear() + intval(($lastFunding->getMonth() - 1 + $i) / 12);
-					$month = ($lastFunding->getMonth() + $i) % 12;
+					$month += 1;
+					if ($month > 12) {
+						$month = 1;
+						$year++;
+					}
 
 					// Create a new funding
 					$funding = new Funding();
 					$funding->setYear($year);
-					$funding->setMonth($month == 0 ? 12 : $month);
+					$funding->setMonth($month);
 
 					foreach ($previousFunding->getCharges() as $previousCharge) {
+
+						if (!$previousCharge->getIsRecurrent()) {
+							continue;
+						}
 
 						// Duplicate charge
 						$charge = new Charge();
 						$charge->setDutyFreeAmount($previousCharge->getDutyFreeAmount());
 						$charge->setAmount($previousCharge->getAmount());
 						$charge->setType($previousCharge->getType());
+						$charge->setIsRecurrent($previousCharge->getIsRecurrent());
 
 						$funding->addCharge($charge);
 						$funding->incrementChargeBalance($charge->getAmount());

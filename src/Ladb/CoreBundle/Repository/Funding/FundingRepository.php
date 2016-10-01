@@ -25,6 +25,7 @@ class FundingRepository extends AbstractEntityRepository {
 			->andWhere('f.month = :month')
 			->setParameter('year', $year)
 			->setParameter('month', $month)
+			->setMaxResults(1)
 		;
 
 		try {
@@ -40,7 +41,8 @@ class FundingRepository extends AbstractEntityRepository {
 			->select(array( 'f', ))
 			->from($this->getEntityName(), 'f')
 			->orderBy('f.year', 'DESC')
-			->orderBy('f.month', 'DESC')
+			->addOrderBy('f.month', 'DESC')
+			->setMaxResults(1)
 		;
 
 		try {
