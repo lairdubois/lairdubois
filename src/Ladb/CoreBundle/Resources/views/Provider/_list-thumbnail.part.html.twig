@@ -5,6 +5,7 @@
 {% set entity = provider %}
 {% set headingClasses = provider.signRejected ? 'ladb-strikethrough' : null %}
 {% set titleLinkClasses = provider.signRejected ? 'ladb-color-null' : null %}
+{% set imgClasses = provider.signRejected ? 'ladb-desaturate ladb-translucent' : null %}
 
 {% block title %}
     {{ parent() }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}

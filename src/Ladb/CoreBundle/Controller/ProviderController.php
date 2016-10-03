@@ -271,6 +271,13 @@ class ProviderController extends Controller {
 
 						break;
 
+					case 'rejected':
+
+						$filter = new \Elastica\Query\Range('signRejected', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'sort':
 
 						switch ($facet->value) {
@@ -307,6 +314,9 @@ class ProviderController extends Controller {
 				}
 			},
 			function(&$filters, &$sort) {
+
+				$filter = new \Elastica\Query\Range('signRejected', array( 'lt' => 1 ));
+				$filters[] = $filter;
 
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 

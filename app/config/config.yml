@@ -587,6 +587,7 @@ fos_elastica:
                 provider:
                     mappings:
                         sign: { boost: 2, analyzer: name_analyzer }
+                        signRejected: { type: boolean }
                         brand: { type: string, analyzer: exact_lowercase_analyzer }
                         address: { analyzer: body_analyzer }
                         geographicalAreas: { analyzer: body_analyzer }
