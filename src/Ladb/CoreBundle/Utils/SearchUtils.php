@@ -239,7 +239,9 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		if (empty($filters) || is_null($sort)) {
 			$defaultFilters = array();
 			$defaultSort = null;
-			$defaultsCallBack($defaultFilters, $defaultSort);
+			if (!is_null($defaultsCallBack)) {
+				$defaultsCallBack($defaultFilters, $defaultSort);
+			}
 			if (empty($filters)) {
 				$filters = $defaultFilters;
 			} else {
