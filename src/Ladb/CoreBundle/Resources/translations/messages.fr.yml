@@ -871,6 +871,8 @@ funding:
   total_volume: Cumul brut
   available_balance: Cumul net
   average_donation: Don moyen
+  outgoings_balance: Total dépenses
+  earnings_balance: Total ressources
   charge_types:
     type_1: Hébergement
   message:

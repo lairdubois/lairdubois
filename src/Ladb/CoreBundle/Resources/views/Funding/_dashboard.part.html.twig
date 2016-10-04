@@ -22,33 +22,51 @@
                 <div class="ladb-board">
                     <table width="100%">
                         <tr>
-                            <td>{{ 'funding.charge_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="ladb-color-negative">{{ funding.chargeBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'charge-balance' }) }}" id="ladb_charge_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ccc;">
-                            <td>{{ 'funding.donation_fee_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.donationFeeBalanceEur > 0 %}ladb-color-negative{% else %}ladb-color-null{% endif %}">{{ funding.donationFeeBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'donation-fee-balance' }) }}" id="ladb_donation_fee_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
+                            <td><small>{{ 'funding.charge_balance'|trans() }}</small></td>
+                            <td class="ladb-amount"><span class="ladb-color-negative">{{ funding.chargeBalanceEur|number_format(2, ',', ' ') }}€</span></td>
+                            <td class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'charge-balance' }) }}" id="ladb_charge_balance_infos_btn"><i class="ladb-icon-help"></i></a></td>
                         </tr>
                         <tr>
-                            <td>{{ 'funding.carried_forward_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.carriedForwardBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.carriedForwardBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'carried-forward-balance' }) }}" id="ladb_carried_forward_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
+                            <td><small>{{ 'funding.donation_fee_balance'|trans() }}</small></td>
+                            <td class="ladb-amount"><span class="{% if funding.donationFeeBalanceEur > 0 %}ladb-color-negative{% else %}ladb-color-null{% endif %}">{{ funding.donationFeeBalanceEur|number_format(2, ',', ' ') }}€</span></td>
+                            <td class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'donation-fee-balance' }) }}" id="ladb_donation_fee_balance_infos_btn"><i class="ladb-icon-help"></i></a></td>
                         </tr>
                         <tr>
-                            <td>{{ 'funding.donation_balance'|trans() }}</td>
-                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.donationBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.donationBalanceEur|number_format(2, ',', ' ') }}€</span>&nbsp;<span class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'donation-balance' }) }}" id="ladb_donation_balance_infos_btn"><i class="ladb-icon-help"></i></a></span></td>
+                            <td>{{ 'funding.outgoings_balance'|trans() }}</td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.outgoingsBalanceEur > 0 %}ladb-color-negative{% else %}ladb-color-null{% endif %}">{{ (funding.outgoingsBalanceEur)|number_format(2, ',', ' ') }}€</span></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><hr></td>
+                        </tr>
+                        <tr>
+                            <td><small>{{ 'funding.carried_forward_balance'|trans() }}</small></td>
+                            <td class="ladb-amount"><span class="{% if funding.carriedForwardBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.carriedForwardBalanceEur|number_format(2, ',', ' ') }}€</span></td>
+                            <td class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'carried-forward-balance' }) }}" id="ladb_carried_forward_balance_infos_btn"><i class="ladb-icon-help"></i></a></td>
+                        </tr>
+                        <tr style="line-height: 22px;">
+                            <td><small>{{ 'funding.donation_balance'|trans() }}</small></td>
+                            <td class="ladb-amount"><span class="{% if funding.donationBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ funding.donationBalanceEur|number_format(2, ',', ' ') }}€</span></td>
+                            <td class="ladb-minitools"><a href="{{ path('core_funding_infos', { 'year':funding.year, 'month':funding.month, panel:'donation-balance' }) }}" id="ladb_donation_balance_infos_btn"><i class="ladb-icon-help"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'funding.earnings_balance'|trans() }}</td>
+                            <td class="ladb-amount ladb-amount-lg"><span class="{% if funding.earningsBalanceEur > 0 %}ladb-color-positive{% else %}ladb-color-null{% endif %}">{{ (funding.earningsBalanceEur)|number_format(2, ',', ' ') }}€</span></td>
+                            <td>&nbsp;</td>
                         </tr>
                     </table>
-                    <br>
-                    {% if funding.visibility > 0 %}
-                        {% if funding.isCurrent %}
-                            <small><i class="ladb-icon-check"></i> <strong>Financé</strong> pour <strong>{{ funding.visibility }} mois</strong> entier{% if funding.visibility > 1 %}s{% endif %}{% if funding.visibility > 2 %} !{% else %}.{% endif %}</small>
-                        {% else %}
-                            <small><i class="ladb-icon-check"></i> Mois <strong>financé</strong>.{% if funding.visibility > 1 %} Report sur <strong>{{ funding.visibility - 1 }} mois</strong> entiers.{% elseif funding.partialVisibility > 1 %} Report partiel sur le mois suivant.{% endif %}</small>
-                        {% endif %}
-                    {% else %}
-                        <small class="ladb-color-negative"><i class="ladb-icon-warning"></i> Mois <strong>{% if funding.earningsBalanceEur == 0 %}non{% else %}partiellement{% endif %} financé</strong>. Il manque <strong>{{ (funding.outgoingsBalanceEur - funding.earningsBalanceEur)|number_format(2, ',', ' ') }}€</strong> :(</small>
-                    {% endif %}
                 </div>
+            </div>
+            <div class="col-xs-12 ladb-caption">
+                {% if funding.visibility > 0 %}
+                    {% if funding.isCurrent %}
+                        <small><i class="ladb-icon-check"></i> <strong>Financé</strong> pour <strong>{{ funding.visibility }} mois</strong> entier{% if funding.visibility > 1 %}s{% endif %}{% if funding.visibility > 2 %} !{% else %}.{% endif %}</small>
+                    {% else %}
+                        <small><i class="ladb-icon-check"></i> Mois <strong>financé</strong>.{% if funding.visibility > 1 %} Report sur <strong>{{ funding.visibility - 1 }} mois</strong> entiers.{% elseif funding.partialVisibility > 1 %} Report partiel sur le mois suivant.{% endif %}</small>
+                    {% endif %}
+                {% else %}
+                    <small class="ladb-color-negative"><i class="ladb-icon-warning"></i> Mois <strong>{% if funding.earningsBalanceEur == 0 %}non{% else %}partiellement{% endif %} financé</strong>. Il manque <strong>{{ (funding.outgoingsBalanceEur - funding.earningsBalanceEur)|number_format(2, ',', ' ') }}€</strong> :(</small>
+                {% endif %}
             </div>
             {% include 'LadbCoreBundle:Common:_loading-panel.part.html.twig' %}
         </div>
