@@ -37,7 +37,7 @@ class FundingManager extends AbstractManager {
 				$month = $lastFunding->getMonth();
 
 				// Create a funding every month between last and now
-				for ($i = 1; $i <= $diffMonth; $i++) {
+				for ($i = 0; $i < $diffMonth; $i++) {
 
 					$month += 1;
 					if ($month > 12) {
@@ -60,7 +60,7 @@ class FundingManager extends AbstractManager {
 						$charge = new Charge();
 						$charge->setDutyFreeAmount($previousCharge->getDutyFreeAmount());
 						$charge->setAmount($previousCharge->getAmount());
-						$charge->setType($previousCharge->getType());
+						$charge->setLabel($previousCharge->getLabel());
 						$charge->setIsRecurrent($previousCharge->getIsRecurrent());
 
 						$funding->addCharge($charge);
@@ -87,6 +87,47 @@ class FundingManager extends AbstractManager {
 		}
 
 		return $funding;
+	}
+
+	public function updateCarriedForwardBalancesFrom($startFunding, $flush = false) {
+		$om = $this->getDoctrine()->getManager();
+		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+
+		$now = new \DateTime();
+		$nowMonth = $now->format('m');
+		$nowYear = $now->format('Y');
+		$diffMonth = ($nowYear - $startFunding->getYear()) * 12 + $nowMonth - $startFunding->getMonth();
+
+		$previousFunding = $startFunding;
+		$year = $startFunding->getYear();
+		$month = $startFunding->getMonth();
+
+		for ($i = 0; $i < $diffMonth; $i++) {
+
+			$month += 1;
+			if ($month > 12) {
+				$month = 1;
+				$year++;
+			}
+
+			// Fetch funding
+			$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
+			if (is_null($funding)) {
+				return;
+			}
+
+			// Compute the carried forward balance
+			$carriedForwardBalance = $previousFunding->getEarningsBalance() - $previousFunding->getOutgoingsBalance();
+			$funding->setCarriedForwardBalance(max(0, $carriedForwardBalance));
+
+			$previousFunding = $funding;
+
+		}
+
+		if ($flush) {
+			$om->flush();
+		}
+
 	}
 
 }

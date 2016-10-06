@@ -1,0 +1,11 @@
+
+{# set charge #}
+
+<tr{% if is_granted('ROLE_ADMIN') %} class="ladb-charge-row" data-href="{{ path('core_funding_admin_charge_edit', { 'id':charge.id }) }}"{% endif %}>
+    <td>{{ charge.label }}</td>
+    <td class="ladb-amount">{{ charge.dutyFreeAmountEur|number_format(2, ',', ' ') }}€</td>
+    <td class="ladb-amount">{{ charge.amountEur|number_format(2, ',', ' ') }}€</td>
+    {% if is_granted('ROLE_ADMIN') %}
+        <td>{% if charge.isRecurrent %}<i class="ladb-icon-check"></i>{% endif %}</td>
+    {% endif %}
+</tr>

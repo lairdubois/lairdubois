@@ -17,8 +17,14 @@
         '@LadbCoreBundle/Resources/assets/js/jquery-payment/jquery.payment.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingdashboard.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingwidget.js' %}
-        <script type="text/javascript" src="{{ asset_url }}?v=201609261103"></script>
+        <script type="text/javascript" src="{{ asset_url }}?v=201610061908"></script>
     {% endjavascripts %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% javascripts filter='?closure'
+            '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingchargeinfos.js' %}
+            <script type="text/javascript" src="{{ asset_url }}?v=201610061908"></script>
+        {% endjavascripts %}
+    {% endif %}
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script>
         $(document).ready(function() {
@@ -27,13 +33,15 @@
                 $('.ladb-funding-widget').ladbFundingWidget({
                     stripePublishableKey: '{{ stripe_publishable_key }}',
                     autoShow: {% if autoShow %}true{% else %}false{% endif %},
-                    newUrl: '{{ path('core_funding_new') }}',
-                    createUrl: '{{ path('core_funding_create') }}',
+                    newUrl: '{{ path('core_funding_donation_new') }}',
+                    createUrl: '{{ path('core_funding_donation_create') }}',
                     dashboardUrl: '{{ path('core_funding_dashboard') }}'
                 });
             {% endif %}
 
-            $('.ladb-funding-dashboard').ladbFundingDashboard();
+            $('.ladb-funding-dashboard').ladbFundingDashboard({
+                currentUrl: '{{ app.request.uri }}'
+            });
 
         });
     </script>
@@ -64,7 +72,7 @@
                     </ul>
                     <div style="margin: 20px 0;">
                         <div class="ladb-funding-widget">
-                            <form action="{{ path('core_funding_new') }}" class="form-inline text-center" method="get">
+                            <form action="{{ path('core_funding_donation_new') }}" class="form-inline text-center" method="get">
                                 <div class="form-group">
                                     <div class="input-group input-group-lg">
                                         <input name="amount_eur" id="ladb_donate_amount_input" type="tel" class="form-control input-lg text-right" maxlength="3" size="3" value="{{ amountEur|default(5) }}">

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Funding;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_funding_charge")
@@ -34,9 +35,10 @@ class Charge {
 	private $amount = 0;
 
 	/**
-	 * @ORM\Column(type="smallint")
+	 * @ORM\Column(type="string")
+	 * @Assert\NotBlank()
 	 */
-	private $type = Charge::TYPE_UNKNOW;
+	private $label = '';
 
 	/**
 	 * @ORM\Column(type="boolean")
@@ -85,15 +87,15 @@ class Charge {
 		return $this->getAmount() / 100;
 	}
 
-	// Type /////
+	// Label /////
 
-	public function setType($type) {
-		$this->type = $type;
+	public function setLabel($label) {
+		$this->label = $label;
 		return $this;
 	}
 
-	public function getType() {
-		return $this->type;
+	public function getLabel() {
+		return $this->label;
 	}
 
 	// IsRecurrent /////

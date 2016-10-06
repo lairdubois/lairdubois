@@ -2,7 +2,9 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Entity\Funding\Charge;
 use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Form\Type\Funding\ChargeType;
 use Ladb\CoreBundle\Utils\MailerUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -71,6 +73,10 @@ class FundingController extends Controller {
 	 * @Template("LadbCoreBundle:Funding:infos-charge-balance.html.twig")
 	 */
 	public function infosAction(Request $request, $year = null, $month = null, $panel = null) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
 
@@ -103,10 +109,199 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/donation/new", name="core_funding_new")
+	 * @Route("/{year}/{month}/admin/charge/new", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_admin_charge_new")
+	 * @Template("LadbCoreBundle:Funding:charge-new-xhr.html.twig")
+	 */
+	public function chargeNewAction(Request $request, $year = null, $month = null) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+
+		$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
+		if (is_null($funding)) {
+			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
+		}
+
+		$charge = new Charge();
+		$form = $this->createForm(ChargeType::class, $charge);
+
+		return array(
+			'form' => $form->createView(),
+			'funding' => $funding,
+		);
+	}
+
+	/**
+	 * @Route("/{year}/{month}/admin/charge/create", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_admin_charge_create")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Funding:charge-new-xhr.html.twig")
+	 */
+	public function chargeCreateAction(Request $request, $year = null, $month = null) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+
+		$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
+		if (is_null($funding)) {
+			throw $this->createNotFoundException('Unable to find Funding entity (month='.$month.', year='.$year.').');
+		}
+
+		$charge = new Charge();
+		$form = $this->createForm(ChargeType::class, $charge);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			// Update funding charge balance
+			$funding->addCharge($charge);
+			$funding->incrementChargeBalance($charge->getAmount());
+
+			// Compute carriedForwardBalance to all next fundings
+			$fundingManager = $this->get(FundingManager::NAME);
+			$fundingManager->updateCarriedForwardBalancesFrom($funding, false);
+
+			$om->flush();
+
+			return $this->render('LadbCoreBundle:Funding:charge-create-xhr.html.twig', array(
+				'charge' => $charge,
+			));
+		}
+
+		return array(
+			'form' => $form->createView(),
+			'funding' => $funding,
+		);
+	}
+
+	/**
+	 * @Route("/admin/charge/{id}/edit", requirements={"id" = "\d+"}, name="core_funding_admin_charge_edit")
+	 * @Template("LadbCoreBundle:Funding:charge-edit-xhr.html.twig")
+	 */
+	public function chargeEditAction(Request $request, $id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$chargeRepository = $om->getRepository(Charge::CLASS_NAME);
+
+		$charge = $chargeRepository->findOneById($id);
+		if (is_null($charge)) {
+			throw $this->createNotFoundException('Unable to find Charge entity (id='.$id.').');
+		}
+
+		$form = $this->createForm(ChargeType::class, $charge);
+
+		return array(
+			'form'   => $form->createView(),
+			'charge' => $charge,
+		);
+	}
+
+	/**
+	 * @Route("/admin/charge/{id}/update", requirements={"id" = "\d+"}, name="core_funding_admin_charge_update")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Funding:charge-update-xhr.html.twig")
+	 */
+	public function chargeUpdateAction(Request $request, $id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$chargeRepository = $om->getRepository(Charge::CLASS_NAME);
+
+		$charge = $chargeRepository->findOneById($id);
+		if (is_null($charge)) {
+			throw $this->createNotFoundException('Unable to find Charge entity (id='.$id.').');
+		}
+
+		$previousChargeAmount = $charge->getAmount();
+
+		$form = $this->createForm(ChargeType::class, $charge);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			// Update funding charge balance
+			$funding = $charge->getFunding();
+			$funding->incrementChargeBalance($charge->getAmount() - $previousChargeAmount);
+
+			// Compute carriedForwardBalance to all next fundings
+			$fundingManager = $this->get(FundingManager::NAME);
+			$fundingManager->updateCarriedForwardBalancesFrom($funding, false);
+
+			$om->flush();
+
+			return $this->render('LadbCoreBundle:Funding:charge-update-xhr.html.twig', array(
+				'charge' => $charge,
+			));
+		}
+
+		return array(
+			'form'   => $form->createView(),
+			'charge' => $charge,
+		);
+	}
+
+	/**
+	 * @Route("/admin/charge/{id}/delete", requirements={"id" = "\d+"}, name="core_funding_admin_charge_delete")
+	 * @Template("LadbCoreBundle:Funding:charge-delete-xhr.html.twig")
+	 */
+	public function chargeDeleteAction(Request $request, $id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$chargeRepository = $om->getRepository(Charge::CLASS_NAME);
+
+		$charge = $chargeRepository->findOneById($id);
+		if (is_null($charge)) {
+			throw $this->createNotFoundException('Unable to find Charge entity (id='.$id.').');
+		}
+
+		// Update funding balance
+		$funding = $charge->getFunding();
+		$funding->incrementChargeBalance(-$charge->getAmount());
+		$funding->removeCharge($charge);
+
+		// Compute carriedForwardBalance to all next fundings
+		$fundingManager = $this->get(FundingManager::NAME);
+		$fundingManager->updateCarriedForwardBalancesFrom($funding, false);
+
+		$om->remove($charge);
+		$om->flush();
+
+		return;
+	}
+
+	/**
+	 * @Route(pattern="/donation/new", name="core_funding_donation_new")
 	 * @Template("LadbCoreBundle:Funding:donation-new.html.twig")
 	 */
-	public function newAction(Request $request) {
+	public function donationNewAction(Request $request) {
 
 		// Retrieve parameters
 		$amountEur = intval($request->get('amount_eur', 5));	// Default 5 euros
@@ -132,14 +327,14 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/donation/create", name="core_funding_create", defaults={"_format" = "json"})
+	 * @Route(pattern="/donation/create", name="core_funding_donation_create", defaults={"_format" = "json"})
 	 * @Method("POST")
 	 */
-	public function createAction(Request $request) {
+	public function donationCreateAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
 
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_funding_create)');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_donation_create)');
 		}
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('User email is not confirmed.');

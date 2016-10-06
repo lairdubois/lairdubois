@@ -21,7 +21,13 @@
     };
 
     LadbFundingDashboard.DEFAULTS = {
-        ratio: 0.2
+        currentUrl: null
+    };
+
+    LadbFundingDashboard.prototype.reload = function() {
+        if (this.options.currentUrl) {
+            this.load(this.options.currentUrl);
+        }
     };
 
     LadbFundingDashboard.prototype.load = function(url) {
@@ -36,7 +42,9 @@
             success: function(data, textStatus, jqXHR) {
                 $(data)
                     .insertBefore(that.$element)
-                    .ladbFundingDashboard();
+                    .ladbFundingDashboard({
+                        currentUrl: url
+                    });
                 that.$element.remove();
             },
             error: function () {

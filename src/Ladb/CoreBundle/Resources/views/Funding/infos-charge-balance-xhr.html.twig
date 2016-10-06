@@ -4,18 +4,23 @@
 
 {% block bodyInner %}
     <p>Les <em>charges</em> représentent l'ensemble des frais de fonctionnement de <em>L'Air du Bois</em> pour le mois.</p>
-    <table class="table table-bordered">
+    <table class="table table-bordered ladb-charge-table" style="background-color: white;">
         <tr>
             <th class="text-center">Type</th>
             <th class="text-center">Montant HT</th>
             <th class="text-center">Montant TTC</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th class="text-center"></th>
+            {% endif %}
         </tr>
         {% for charge in funding.charges %}
-            <tr>
-                <td>{{ ('funding.charge_types.type_'~charge.type)|trans() }}</td>
-                <td class="ladb-amount">{{ charge.dutyFreeAmountEur|number_format(2, ',', ' ') }}€</td>
-                <td class="ladb-amount">{{ charge.amountEur|number_format(2, ',', ' ') }}€</td>
-            </tr>
+            {% include 'LadbCoreBundle:Funding:_charge-row.part.html.twig' %}
         {% endfor %}
     </table>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('core_funding_admin_charge_new', { 'year':funding.year, 'month':funding.month }) }}" class="btn btn-default ladb-charge-new-btn"><i class="ladb-icon-plus"></i> Ajouter une charge</a>
+        <script>
+            $('#{{ id }}').ladbFundingChargeInfos();
+        </script>
+    {% endif %}
 {% endblock %}
