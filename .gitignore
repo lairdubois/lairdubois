@@ -11,6 +11,7 @@
 /app/logs/*
 /app/spool/*
 /build/
+/backups/
 /bin/
 /components/
 /docs/private
