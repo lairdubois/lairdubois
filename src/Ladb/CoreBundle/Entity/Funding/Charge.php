@@ -14,9 +14,6 @@ class Charge {
 
 	const CLASS_NAME = 'LadbCoreBundle:Funding\Charge';
 
-	const TYPE_UNKNOW = 0;
-	const TYPE_HOSTING = 1;
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
