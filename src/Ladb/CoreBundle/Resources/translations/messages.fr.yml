@@ -371,7 +371,7 @@ faq:
 message:
   list: Messagerie
   nav: Messagerie
-  mailbox: Boîte aux lettre
+  mailbox: Boîte aux lettres
   sendTo: Envoyer un message à %NAME%
   contact: Contacter
   thread:
