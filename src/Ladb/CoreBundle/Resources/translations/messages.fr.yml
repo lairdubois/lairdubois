@@ -133,6 +133,7 @@ creation:
   converttofind: Convertir en trouvaille
   converttoworkshop: Convertir en atelier
   form:
+    inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
     alert:
       publish_success: La création <strong>%title%</strong> a été publiée.
       unpublish_success: La création <strong>%title%</strong> a été dépubliée.
@@ -144,7 +145,7 @@ creation:
       body: Décrivez ici votre création.
       plans: Associez jusqu'à <strong>4 plans</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces plans.
       howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces pas à pas.
-      inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la source d'inspiration de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
+      inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
   choice:
     new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles creations'
     creations: '[0,1]création|]1,Inf]creations'
