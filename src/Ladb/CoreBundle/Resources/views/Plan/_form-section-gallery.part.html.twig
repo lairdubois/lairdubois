@@ -7,6 +7,7 @@
 {# set help (facultative) #}
 {# set icon (facultative) #}
 {# set addButtonHidden (facultative) #}
+{# set showInspirationWarning (facultative) #}
 
 {% set formSection = 'plans' %}
 {% set icon = icon|default('plan') %}
@@ -52,7 +53,9 @@
             {% endembed %}
         {% endif %}
     </div>
-    <br>
-    <p class="help-block ladb-color-danger"><i class="ladb-icon-warning"></i>&nbsp;{{ 'plan.form.inspiration_warning'|trans() }}</p>
+    {% if showInspirationWarning|default(false) %}
+        <br>
+        <p class="help-block ladb-color-danger"><i class="ladb-icon-warning"></i>&nbsp;{{ 'plan.form.inspiration_warning'|trans() }}</p>
+    {% endif %}
 {% endblock %}
 
