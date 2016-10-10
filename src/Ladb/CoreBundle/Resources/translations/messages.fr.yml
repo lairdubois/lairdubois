@@ -183,6 +183,7 @@ plan:
     123ddesign: 123D Design
     libreoffice: LibreOffice/Excel
   form:
+    inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
     alert:
       publish_success: Le plan <strong>%title%</strong> a été publié.
       unpublish_success: Le plan <strong>%title%</strong> a été dépublié.
