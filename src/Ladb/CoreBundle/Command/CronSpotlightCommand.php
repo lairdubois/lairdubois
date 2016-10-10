@@ -211,7 +211,7 @@ EOT
 				->from('LadbCoreBundle:Wonder\Creation', 'c')
 				->leftJoin('c.spotlight', 's')
 				->where('c.isDraft = false')
-				->andWhere('c.likeCount > 2')		// 3 or more likes
+				->andWhere('c.likeCount > 4')		// 5 or more likes
 				->andWhere('c.changedAt > :retrieveDate')
 				->andWhere('c.spotlight IS NULL')
 				->orderBy('score', 'DESC')
