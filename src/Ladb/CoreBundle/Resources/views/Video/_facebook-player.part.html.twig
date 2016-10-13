@@ -13,6 +13,6 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, "script", "facebook-jssdk"));
 </script>
-<div class="fb-video" data-href="{{ embedUrl }}" data-allowfullscreen="true"></div>
+<div class="fb-video" data-href="{{ embedUrl }}" data-allowfullscreen="true"{% if autoPlay %} data-autoplay="true"{% endif %}></div>
 
 {% endspaceless %}

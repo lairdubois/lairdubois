@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Utils;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class VideoHostingUtils {
+class VideoHostingUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.video_hosting_utils';
 
@@ -14,12 +14,6 @@ class VideoHostingUtils {
 	const KIND_VIMEO = 3;
 	const KIND_YOUTUBEPLAYLIST = 4;
 	const KIND_FACEBOOK = 5;
-
-	protected $templating;
-
-	public function __construct(EngineInterface $templating) {
-		$this->templating = $templating;
-	}
 
 	/////
 
@@ -68,28 +62,28 @@ class VideoHostingUtils {
 		);
 	}
 
-	public function getPlayerFrame($kind, $embedIdentifier, $width = '560', $height = '420', $styleClass = '', $format = '16by9' /* or 4by3 */, $itemprop = 'video') {
+	public function getPlayerFrame($kind, $embedIdentifier, $width = '560', $height = '420', $styleClass = '', $autoplay = false, $format = '16by9' /* or 4by3 */, $itemprop = 'video') {
 		$embedUrl = null;
 		$playerTemplate = null;
 		switch ($kind) {
 
 			case VideoHostingUtils::KIND_YOUTUBE:
-				$embedUrl = '//www.youtube.com/embed/'.$embedIdentifier;
+				$embedUrl = '//www.youtube.com/embed/'.$embedIdentifier.($autoplay ? '?autoplay=1' : '');
 				$playerTemplate = 'LadbCoreBundle:Video:_youtube-player.part.html.twig';
 				break;
 
 			case VideoHostingUtils::KIND_YOUTUBEPLAYLIST:
-				$embedUrl = '//www.youtube.com/embed/videoseries?list='.$embedIdentifier;
+				$embedUrl = '//www.youtube.com/embed/videoseries?list='.$embedIdentifier.($autoplay ? '&autoplay=1' : '');
 				$playerTemplate = 'LadbCoreBundle:Video:_youtubeplaylist-player.part.html.twig';
 				break;
 
 			case VideoHostingUtils::KIND_DAILYMOTION:
-				$embedUrl = '//www.dailymotion.com/embed/video/'.$embedIdentifier;
+				$embedUrl = '//www.dailymotion.com/embed/video/'.$embedIdentifier.($autoplay ? '?autoplay=1' : '');
 				$playerTemplate = 'LadbCoreBundle:Video:_youtube-player.part.html.twig';
 				break;
 
 			case VideoHostingUtils::KIND_VIMEO:
-				$embedUrl = '//player.vimeo.com/video/'.$embedIdentifier.'?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff';
+				$embedUrl = '//player.vimeo.com/video/'.$embedIdentifier.'?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff'.($autoplay ? '&autoplay=1' : '');
 				$playerTemplate = 'LadbCoreBundle:Video:_vimeo-player.part.html.twig';
 				break;
 
@@ -102,10 +96,11 @@ class VideoHostingUtils {
 
 		if (!is_null($playerTemplate)) {
 
-			$player = $this->templating->render($playerTemplate, array(
+			$player = $this->get('templating')->render($playerTemplate, array(
 				'width'    => $width,
 				'height'   => $height,
 				'embedUrl' => $embedUrl,
+				'autoPlay' => $autoplay,
 			));
 
 			$microdataScope = 'itemscope itemtype="http://schema.org/VideoObject"';
@@ -118,6 +113,35 @@ class VideoHostingUtils {
 			return '<div class="'.$styleClass.'" '.$microdataScope.'>'.$player.$microdataMetas.'</div>';
 		}
 		return '';
+	}
+
+	public function getThumbnailUrl($kind, $embedIdentifier) {
+		switch ($kind) {
+
+			case VideoHostingUtils::KIND_YOUTUBE:
+				return 'http://img.youtube.com/vi/'.$embedIdentifier.'/hqdefault.jpg';
+
+			case VideoHostingUtils::KIND_YOUTUBEPLAYLIST:
+				$googleApiKey = $this->getParameter('google_api_key');
+				$hash = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/playlists?part=contentDetails%2Csnippet&id='.$embedIdentifier.'&key='.$googleApiKey), true);
+				if ($hash && isset($hash['items']) && isset($hash['items'][0]) && isset($hash['items'][0]['snippet'])) {
+					$snippet = $hash['items'][0]['snippet'];
+					return $snippet['thumbnails']['high']['url'];
+				}
+				break;
+
+			case VideoHostingUtils::KIND_VIMEO:
+				$hash = unserialize(file_get_contents('http://vimeo.com/api/v2/video/'.$embedIdentifier.'.php'));
+				if ($hash && isset($hash[0]) && isset($hash[0]['thumbnail_large'])) {
+					return $hash[0]['thumbnail_large'];
+				}
+				break;
+
+			case VideoHostingUtils::KIND_DAILYMOTION:
+				return 'http://www.dailymotion.com/thumbnail/video/'.$embedIdentifier;
+
+		}
+		return null;
 	}
 
 	public function getIconClass($kind, $prefix = 'ladb-icon-') {
@@ -144,7 +168,8 @@ class VideoHostingUtils {
 		switch ($kind) {
 
 			case VideoHostingUtils::KIND_YOUTUBE:
-				$hash = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet%2Cstatistics&id='.$embedIdentifier.'&key=AIzaSyBtuSA7tq5vlY4FL4tG1X9jFLUtr4VJcfo'), true);
+				$googleApiKey = $this->getParameter('google_api_key');
+				$hash = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet%2Cstatistics&id='.$embedIdentifier.'&key='.$googleApiKey), true);
 				if ($hash && isset($hash['items']) && isset($hash['items'][0]) && isset($hash['items'][0]['snippet']) && isset($hash['items'][0]['contentDetails'])) {
 					$snippet = $hash['items'][0]['snippet'];
 					$contentDetails = $hash['items'][0]['contentDetails'];

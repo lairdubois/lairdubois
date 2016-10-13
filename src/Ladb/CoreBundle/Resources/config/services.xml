@@ -35,7 +35,7 @@
             <argument type="service" id="service_container"/>
         </service>
         <service id="ladb_core.video_hosting_utils" class="Ladb\CoreBundle\Utils\VideoHostingUtils">
-            <argument type="service" id="templating"/>
+            <argument type="service" id="service_container"/>
         </service>
         <service id="ladb_core.viewable_utils" class="Ladb\CoreBundle\Utils\ViewableUtils">
             <argument type="service" id="service_container"/>
@@ -81,8 +81,7 @@
             <argument type="service" id="router"/>
         </service>
         <service id="ladb_core.find_utils" class="Ladb\CoreBundle\Utils\FindUtils">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="Ladb_core.web_screenshot_utils"/>
+            <argument type="service" id="service_container"/>
         </service>
         <service id="ladb_core.search_utils" class="Ladb\CoreBundle\Utils\SearchUtils">
             <argument type="service" id="service_container"/>

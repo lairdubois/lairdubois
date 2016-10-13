@@ -6,19 +6,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Picture;
 
-class FindUtils {
+class FindUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.find_utils';
 
-	protected $om;
-	protected $webScreenshotUtils;
-
-	public function __construct(ObjectManager $om, WebScreenshotUtils $webScreenshotUtils) {
-		$this->om = $om;
-		$this->webScreenshotUtils = $webScreenshotUtils;
-	}
-
 	public function generateMainPicture(Find $find) {
+		$om = $this->getDoctrine()->getManager();
+		$webScreenshotUtils = $this->get(WebScreenshotUtils::NAME);
+		$videoHostingUtils = $this->get(VideoHostingUtils::NAME);
 
 		switch ($find->getKind()) {
 
@@ -26,7 +21,7 @@ class FindUtils {
 				$website = $find->getContent();
 
 				if (is_null($website->getThumbnail())) {
-					$mainPicture = $this->webScreenshotUtils->captureToPicture($website->getUrl(), 1280, 1024, 1280, 1024);
+					$mainPicture = $webScreenshotUtils->captureToPicture($website->getUrl(), 1280, 1024, 1280, 1024);
 					$website->setThumbnail($mainPicture);
 				} else {
 					$mainPicture = $website->getThumbnail();
@@ -39,32 +34,8 @@ class FindUtils {
 				$video = $find->getContent();
 
 				if (is_null($video->getThumbnail())) {
-					switch ($video->getKind()) {
-
-						case VideoHostingUtils::KIND_YOUTUBE:
-							$thumbnailUrl = 'http://img.youtube.com/vi/'.$video->getEmbedIdentifier().'/hqdefault.jpg';
-							break;
-
-						case VideoHostingUtils::KIND_YOUTUBEPLAYLIST:
-							$hash = json_decode(file_get_contents('http://gdata.youtube.com/feeds/api/playlists/'.$video->getEmbedIdentifier().'?alt=json'), true);
-							if ($hash && isset($hash['feed']['media$group']['media$thumbnail'][1]['url'])) {
-								$thumbnailUrl = $hash['feed']['media$group']['media$thumbnail'][1]['url'];
-							}
-							break;
-
-						case VideoHostingUtils::KIND_VIMEO:
-							$hash = unserialize(file_get_contents('http://vimeo.com/api/v2/video/'.$video->getEmbedIdentifier().'.php'));
-							if ($hash && isset($hash[0]) && isset($hash[0]['thumbnail_large'])) {
-								$thumbnailUrl = $hash[0]['thumbnail_large'];
-							}
-							break;
-
-						case VideoHostingUtils::KIND_DAILYMOTION:
-							$thumbnailUrl = 'http://www.dailymotion.com/thumbnail/video/'.$video->getEmbedIdentifier();
-							break;
-
-					}
-					if (isset($thumbnailUrl)) {
+					$thumbnailUrl = $videoHostingUtils->getThumbnailUrl($video->getKind(), $video->getEmbedIdentifier());
+					if (!is_null($thumbnailUrl)) {
 
 						$mainPicture = new Picture();
 						$mainPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
@@ -76,11 +47,11 @@ class FindUtils {
 							$mainPicture->setHeight($height);
 							$mainPicture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
 
-							$this->om->persist($mainPicture);
+							$om->persist($mainPicture);
 						}
 
 					} else {
-						$mainPicture = $this->webScreenshotUtils->captureToPicture($video->getUrl(), 1280, 1024, 1280, 1024);
+						$mainPicture = $webScreenshotUtils->captureToPicture($video->getUrl(), 1280, 1024, 1280, 1024);
 					}
 					$video->setThumbnail($mainPicture);
 				} else {

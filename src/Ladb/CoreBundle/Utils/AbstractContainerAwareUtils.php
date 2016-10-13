@@ -18,6 +18,10 @@ abstract class AbstractContainerAwareUtils {
 		return $this->container->get($id);
 	}
 
+	public function getParameter($name) {
+		return $this->container->getParameter($name);
+	}
+
 	public function getDoctrine() {
 		if (!$this->container->has('doctrine')) {
 			throw new \LogicException('The DoctrineBundle is not registered in your application.');

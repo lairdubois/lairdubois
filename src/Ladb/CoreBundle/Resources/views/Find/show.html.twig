@@ -104,7 +104,7 @@
             </div>
         {% endif %}
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}
-            {{ ladb_video_player_frame(find.content.kind, find.content.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail')|raw }}
+            {{ ladb_video_player_frame(find.content.kind, find.content.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail', true)|raw }}
         {% endif %}
         {% if find.content.pictures is defined %}
             <div class="row">

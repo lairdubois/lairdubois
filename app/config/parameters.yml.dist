@@ -26,6 +26,8 @@ parameters:
     node:                           /usr/bin/node
     node_paths:                     [/usr/lib/node_modules/]
 
+    google_api_key:                 YOUR_GOOGLE_API_KEY
+
     twitter_consumer_key:           YOUR_TWITTER_CONSUMER_KEY
     twitter_consumer_secret:        YOUR_TWITTER_CONSUMER_SECRET
     twitter_access_token:           YOUR_TWITTER_ACCESS_TOKEN

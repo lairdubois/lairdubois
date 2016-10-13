@@ -120,9 +120,9 @@ class LadbExtension extends \Twig_Extension {
 		return min($max, max($min, $rowCount));
 	}
 
-	public function videoPlayerFrameFunction($kind, $embedIdentifier, $width = '560', $height = '420', $styleClass = '') {
+	public function videoPlayerFrameFunction($kind, $embedIdentifier, $width = '560', $height = '420', $styleClass = '', $autoPlay = false) {
 		$videoHostingUtils = $this->container->get(VideoHostingUtils::NAME);
-		return $videoHostingUtils->getPlayerFrame($kind, $embedIdentifier, $width, $height, $styleClass);
+		return $videoHostingUtils->getPlayerFrame($kind, $embedIdentifier, $width, $height, $styleClass, $autoPlay);
 	}
 
 	public function videoIconClassFunction($kind, $prefix = 'ladb-icon-') {
