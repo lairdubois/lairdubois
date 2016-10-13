@@ -67,6 +67,13 @@
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_PHOTO', provider), 'picture':provider.photo, 'values':provider.photoValues, 'itemProperty':'photo' } %}
     </div>
     <div>
+        {% if searchableStoreCount > 1 %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Ce fournisseur est répertorié avec <a href="{{ path('core_provider_list', { 'q':'@brand:"'~provider.brand~'"'}) }}" rel="nofollow"><strong>{{ searchableStoreCount }}</strong> {{ 'knowledge.provider.choice.stores'|transchoice(searchableStoreCount) }}</a>.</span>
+                </div>
+            </div>
+        {% endif %}
         <div class="ladb-metas">
             <h4 class="ladb-heading">Services et Produits</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_SERVICES', provider), 'data':provider.services, 'values':provider.servicesValues } %}
@@ -88,12 +95,6 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', provider), 'data':provider.address, 'values':provider.addressValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', provider), 'data':provider.phone, 'values':provider.phoneValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', provider), 'data':provider.description, 'values':provider.descriptionValues } %}
-            {% if searchableStoreCount > 1 %}
-                <div class="ladb-meta">
-                    <br>
-                    <span class="ladb-key"><i class="ladb-icon-info"></i> Ce fournisseur est répertorié avec <a href="{{ path('core_provider_list', { 'q':'@brand:"'~provider.brand~'"'}) }}" rel="nofollow"><strong>{{ searchableStoreCount }}</strong> {{ 'knowledge.provider.choice.stores'|transchoice(searchableStoreCount) }}</a>.</span>
-                </div>
-            {% endif %}
         </div>
         <div class="panel panel-default ladb-margin-top">
             <div class="panel-body">
