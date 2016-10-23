@@ -16,7 +16,8 @@ class Picture {
 	const CLASS_NAME = 'LadbCoreBundle:Picture';
 
 	const DEFAULT_ACCEPTED_FILE_TYPE = '/\.(jpe?g|png)$/i';
-	const DEFAULT_MAX_FILE_SIZE = 3145728;	// 3Mo
+	const DEFAULT_LOAD_MAX_FILE_SIZE = 8388608; // 8Mo
+	const DEFAULT_MAX_FILE_SIZE = 8388608; // 8Mo
 	const DEFAULT_IMAGE_MAX_WIDTH = 1024;
 	const DEFAULT_IMAGE_MAX_HEIGHT = 1024;
 

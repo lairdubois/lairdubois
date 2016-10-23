@@ -8,6 +8,7 @@
 {% set imageMaxWidth = imageMaxWidth is defined ? imageMaxWidth : constant('\\Ladb\\CoreBundle\\Entity\\Picture::DEFAULT_IMAGE_MAX_WIDTH') %}
 {% set imageMaxHeight = imageMaxHeight is defined ? imageMaxHeight : constant('\\Ladb\\CoreBundle\\Entity\\Picture::DEFAULT_IMAGE_MAX_HEIGHT') %}
 {% set acceptedFileTypes = acceptedFileTypes is defined ? acceptedFileTypes : constant('\\Ladb\\CoreBundle\\Entity\\Picture::DEFAULT_ACCEPTED_FILE_TYPE') %}
+{% set loadMaxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Picture::DEFAULT_LOAD_MAX_FILE_SIZE') %}
 {% set maxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Picture::DEFAULT_MAX_FILE_SIZE') %}
 {% set editable = editable is defined ? editable : true %}
 {% set sortable = sortable is defined ? sortable : false %}
@@ -21,6 +22,7 @@
             imageMaxWidth: {{ imageMaxWidth }},
             imageMaxHeight: {{ imageMaxHeight }},
             acceptedFileTypes: {{ acceptedFileTypes }},
+            loadMaxFileSize: {{ loadMaxFileSize }},
             maxFileSize: {{ maxFileSize }},
             thumnailTemplate: "{% spaceless %}{{ include('LadbCoreBundle:Picture:_form-thumbnail.part.html.twig', { 'formSection':formSection, 'editable':editable, 'sortable':sortable } , with_context = false)|escape('js') }}{% endspaceless %}",
             sortable: {{ sortable ? 'true' : 'false' }}

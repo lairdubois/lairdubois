@@ -66,8 +66,8 @@ function pictureGalleryInit(options) {
     fileupload.data("ladb-max-picture-count", options.maxPictureCount);
     fileupload.find("[type=file]").fileupload({
         dataType: "json",
-        loadImageMaxFileSize: 8388608,
-        disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
+        loadImageMaxFileSize: options.maxFileSize,
+        disableImageResize: true, // /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
         imageMaxWidth: options.imageMaxWidth,
         imageMaxHeight: options.imageMaxHeight,
         acceptFileTypes: options.acceptedFileTypes,

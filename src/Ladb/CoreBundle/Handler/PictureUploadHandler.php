@@ -23,13 +23,14 @@ class PictureUploadHandler extends \UploadHandler {
 	public function handle($acceptFileTypes = Picture::DEFAULT_ACCEPTED_FILE_TYPE, $maxFileSize = Picture::DEFAULT_MAX_FILE_SIZE, $imageMaxWidth = Picture::DEFAULT_IMAGE_MAX_WIDTH, $imageMaxHeight = Picture::DEFAULT_IMAGE_MAX_HEIGHT) {
 		parent::__construct(array(
 			'script_url'                   => '',
-			'upload_dir'                   => __DIR__ . '/../../../../uploads/',
+			'upload_dir'                   => __DIR__.'/../../../../uploads/',
 			'upload_url'                   => '',
 			'access_control_allow_methods' => array(
 				'POST',
 			),
 			'accept_file_types'            => $acceptFileTypes,
 			'max_file_size'                => $maxFileSize,
+			'image_library'                => 2,	// ImageMagick
 			'image_file_types'             => '/\.(jpe?g|png)$/i',
 			'image_versions'               => array(
 				'' => array(

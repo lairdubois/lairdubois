@@ -140,7 +140,7 @@ liip_imagine:
             filesystem:
                 data_root: %kernel.root_dir%/../uploads
 
-    driver:               gd
+    driver:               imagick
     cache:                default
     data_loader:          default
     default_image:        null
