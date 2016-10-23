@@ -74,6 +74,12 @@ Configure Elasticsearch to automatically start during bootup.
     sudo /bin/systemctl enable elasticsearch.service
 ```
 
+### Install [ImageMagick](http://www.imagemagick.org/) - *The image manipulation library*
+
+``` bash
+    $ sudo apt-get install imagemagick
+```
+
 ### Install [pngquant](https://pngquant.org/), [optipng](http://optipng.sourceforge.net/) and [jpegoptim](https://github.com/tjko/jpegoptim) - *The image optimizers*
 
 ``` bash
