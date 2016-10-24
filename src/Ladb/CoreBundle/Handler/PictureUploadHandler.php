@@ -30,7 +30,7 @@ class PictureUploadHandler extends \UploadHandler {
 			),
 			'accept_file_types'            => $acceptFileTypes,
 			'max_file_size'                => $maxFileSize,
-			'image_library'                => 2,	// ImageMagick
+			'image_library'                => 1,    // imagick
 			'image_file_types'             => '/\.(jpe?g|png)$/i',
 			'image_versions'               => array(
 				'' => array(
@@ -38,7 +38,7 @@ class PictureUploadHandler extends \UploadHandler {
 					'max_width'   => $imageMaxWidth,
 					'max_height'  => $imageMaxHeight,
 				),
-		),
+			),
 		));
 	}
 
