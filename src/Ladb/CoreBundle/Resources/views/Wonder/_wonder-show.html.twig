@@ -18,6 +18,8 @@
 
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == wonder.user.id %}
 
+{% set sbImage = url('core_'~wonderType~'_strip', { 'id':wonder.id }) %} {# use Strip as shared image #}
+
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':wonder} %}
         {% block headerTools %}

@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Controller;
 use Ladb\CoreBundle\Manager\Knowledge\WoodManager;
 use Ladb\CoreBundle\Manager\WitnessManager;
 use Ladb\CoreBundle\Manager\Wonder\WorkshopManager;
+use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -230,6 +231,9 @@ class WorkshopController extends Controller {
 			$embaddableUtils = $this->get(EmbeddableUtils::NAME);
 			$embaddableUtils->resetSticker($workshop);
 
+			$stripableUtils = $this->get(StripableUtils::NAME);
+			$stripableUtils->resetStrip($workshop);
+
 			$workshop->setMainPicture($workshop->getPictures()->first());
 			if ($workshop->getUser()->getId() == $this->getUser()->getId()) {
 				$workshop->setUpdatedAt(new \DateTime());
@@ -382,7 +386,8 @@ class WorkshopController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_workshop_sticker")
+	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_workshop_sticker_png")
+	 * @Route("/{id}/sticker", requirements={"id" = "\d+"}, name="core_workshop_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -416,6 +421,45 @@ class WorkshopController extends Controller {
 
 		} else {
 			throw $this->createNotFoundException('No sticker');
+		}
+
+	}
+
+	/**
+	 * @Route("/{id}/strip", requirements={"id" = "\d+"}, name="core_workshop_strip")
+	 */
+	public function stripAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+
+		$id = intval($id);
+
+		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($workshop)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+		if ($workshop->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_workshop_strip)');
+		}
+
+		$strip = $workshop->getStrip();
+		if (is_null($strip)) {
+			$stripableUtils = $this->get(StripableUtils::NAME);
+			$strip = $stripableUtils->generateStrip($workshop);
+			if (!is_null($strip)) {
+				$om->flush();
+			} else {
+				throw $this->createNotFoundException('Error creating strip (core_workshop_strip)');
+			}
+		}
+
+		if (!is_null($strip)) {
+
+			$response = $this->get('liip_imagine.controller')->filterAction($request, $strip->getWebPath(), '564w');
+			return $response;
+
+		} else {
+			throw $this->createNotFoundException('No strip');
 		}
 
 	}

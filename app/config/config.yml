@@ -261,6 +261,11 @@ liip_imagine:
 
         # Widen
 
+        564w: # Strip
+            filters:
+                relative_resize: { widen: 564 }
+            post_processors:
+                ladb_imageoptimizer: {}
         598w: # Sticker
             filters:
                 relative_resize: { widen: 598 }

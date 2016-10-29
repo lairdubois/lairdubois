@@ -104,6 +104,9 @@
         <service id="ladb_core.embeddable_utils" class="Ladb\CoreBundle\Utils\EmbeddableUtils">
             <argument type="service" id="service_container"/>
         </service>
+        <service id="ladb_core.stripable_utils" class="Ladb\CoreBundle\Utils\StripableUtils">
+            <argument type="service" id="service_container"/>
+        </service>
         <service id="ladb_core.web_screenshot_utils" class="Ladb\CoreBundle\Utils\WebScreenshotUtils">
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>

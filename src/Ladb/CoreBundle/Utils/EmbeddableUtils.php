@@ -50,8 +50,6 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 		return $url;
 	}
 
-	/////
-
 	private function _generateEmbeddableTitle(BasicEmbeddableInterface $embeddable) {
 		$title = $embeddable->getTitle();
 		if (!($embeddable instanceof ChildInterface)) {
@@ -61,6 +59,8 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 		}
 		return $title;
 	}
+
+	/////
 
 	public function generateSticker(BasicEmbeddableInterface $embeddable) {
 

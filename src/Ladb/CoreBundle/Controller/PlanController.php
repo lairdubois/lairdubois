@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller;
 
 use Ladb\CoreBundle\Manager\WitnessManager;
 use Ladb\CoreBundle\Manager\Wonder\PlanManager;
+use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -229,6 +230,9 @@ class PlanController extends Controller {
 
 			$embaddableUtils = $this->get(EmbeddableUtils::NAME);
 			$embaddableUtils->resetSticker($plan);
+
+			$stripableUtils = $this->get(StripableUtils::NAME);
+			$stripableUtils->resetStrip($plan);
 
 			$planUtils = $this->get(PlanUtils::NAME);
 			$planUtils->generateKinds($plan);
@@ -548,7 +552,8 @@ class PlanController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_plan_sticker")
+	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_plan_sticker_png")
+	 * @Route("/{id}/sticker", requirements={"id" = "\d+"}, name="core_plan_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -582,6 +587,45 @@ class PlanController extends Controller {
 
 		} else {
 			throw $this->createNotFoundException('No sticker');
+		}
+
+	}
+
+	/**
+	 * @Route("/{id}/strip", requirements={"id" = "\d+"}, name="core_plan_strip")
+	 */
+	public function stripAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+
+		$id = intval($id);
+
+		$plan = $planRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+		if ($plan->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_plan_strip)');
+		}
+
+		$strip = $plan->getStrip();
+		if (is_null($strip)) {
+			$stripableUtils = $this->get(StripableUtils::NAME);
+			$strip = $stripableUtils->generateStrip($plan);
+			if (!is_null($strip)) {
+				$om->flush();
+			} else {
+				throw $this->createNotFoundException('Error creating strip (core_plan_strip)');
+			}
+		}
+
+		if (!is_null($strip)) {
+
+			$response = $this->get('liip_imagine.controller')->filterAction($request, $strip->getWebPath(), '564w');
+			return $response;
+
+		} else {
+			throw $this->createNotFoundException('No strip');
 		}
 
 	}
