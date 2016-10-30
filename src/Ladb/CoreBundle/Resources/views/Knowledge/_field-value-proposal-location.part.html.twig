@@ -1,5 +1,3 @@
 <address>
-    {% for part in value.data|split(',') %}
-        {{ part }}{% if not loop.last %}<br>{% endif %}
-    {% endfor %}
+    {{ value.data|nl2br }}
 </address>

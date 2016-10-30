@@ -657,17 +657,3 @@ fos_elastica:
                         model: Ladb\CoreBundle\Entity\Input\Finish
                         provider: ~
                         listener: ~
-
-# IvoryGoogleMapBundle
-ivory_google_map:
-    geocoder:
-        enabled: true
-        provider:
-            locale: %locale%
-    map:
-        map_options:
-            disableDefaultUI: true
-        width: 100%
-        height: 100%
-        language: fr
-

@@ -2,6 +2,11 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use CommerceGuys\Addressing\Formatter\DefaultFormatter;
+use CommerceGuys\Addressing\Model\Address;
+use CommerceGuys\Addressing\Repository\AddressFormatRepository;
+use CommerceGuys\Addressing\Repository\CountryRepository;
+use CommerceGuys\Addressing\Repository\SubdivisionRepository;
 use Ivory\GoogleMap\Overlays\InfoWindow;
 use Ivory\GoogleMap\Events\MouseEvent;
 use Ivory\GoogleMap\Services\Geocoding\GeocoderRequest;
@@ -17,63 +22,57 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 	public function geocodeLocation(LocalisableInterface $localisable) {
 		if (!is_null($localisable->getLocation())) {
 
-			$geocoder = $this->get('ivory_google_map.geocoder');
-			$request = new GeocoderRequest();
-			$request->setAddress($localisable->getLocation());
-			$request->setLanguage('fr');
-			$response = $geocoder->geocode($request);
+			$adapter  = new \Ivory\HttpAdapter\CurlHttpAdapter();
+			$geocoder = new \Geocoder\Provider\GoogleMaps($adapter);
+			$geocoder->setLocale('fr_FR');
 
-			if (count($response->getResults()) > 0) {
+			$response = $geocoder->geocode($localisable->getLocation());
 
-				$result = $response->getResults()[0];
+			if ($response->count() > 0) {
+
+				$address = $response->first();
 
 				// Location
-				$location = $result->getGeometry()->getLocation();
-				$localisable->setLatitude($location->getLatitude());
-				$localisable->setLongitude($location->getLongitude());
+				$localisable->setLatitude($address->getLatitude());
+				$localisable->setLongitude($address->getLongitude());
 
 				if ($localisable instanceof LocalisableExtendedInterface) {
 
 					// PostalCode /////
 
-					$postalCodes = $result->getAddressComponents('postal_code');
-					if (count($postalCodes) > 0) {
-						$localisable->setPostalCode($postalCodes[0]->getLongName());
+					$postalCode = $address->getPostalCode();
+					if ($postalCode) {
+						$localisable->setPostalCode($postalCode);
 					}
 
 					// Locality /////
 
-					$localities = $result->getAddressComponents('locality');
-					if (count($localities) > 0) {
-						$localisable->setLocality($localities[0]->getLongName());
+					$locality = $address->getLocality();
+					if ($locality) {
+						$localisable->setLocality($locality);
 					}
 
 					// Country /////
 
-					$countries = $result->getAddressComponents('country');
-					if (count($countries) > 0) {
-						$localisable->setCountry($countries[0]->getLongName());
+					$country = $address->getCountry();
+					if ($country) {
+						$localisable->setCountry($country->getName());
 					}
 
 					// GeographicalAreas /////
 
 					$geographicalAreaParts = array();
 
-					$localities = $result->getAddressComponents('locality');
-					foreach ($localities as $locality) {
-						$geographicalAreaParts[] = $locality->getLongName();
+					if ($locality) {
+						$geographicalAreaParts[] = $locality;
 					}
-					$administrativeAreaLevel2s = $result->getAddressComponents('administrative_area_level_2');
-					foreach ($administrativeAreaLevel2s as $administrativeAreaLevel2) {
-						$geographicalAreaParts[] = $administrativeAreaLevel2->getLongName();
+					$adminLevels = $address->getAdminLevels();
+					for ($i = $adminLevels->count(); $i > 0; $i--) {
+						$adminLevel = $adminLevels->get($i);
+						$geographicalAreaParts[] = $adminLevel->getName();
 					}
-					$administrativeAreaLevel1s = $result->getAddressComponents('administrative_area_level_1');
-					foreach ($administrativeAreaLevel1s as $administrativeAreaLevel1) {
-						$geographicalAreaParts[] = $administrativeAreaLevel1->getLongName();
-					}
-					$countries = $result->getAddressComponents('country');
-					foreach ($countries as $country) {
-						$geographicalAreaParts[] = $country->getLongName();
+					if ($country) {
+						$geographicalAreaParts[] = $country->getName();
 					}
 
 					if (!empty($geographicalAreaParts)) {
@@ -84,7 +83,33 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 
 					// FormattedAddress /////
 
-					$localisable->setFormattedAddress($result->getFormattedAddress());
+					$addressFormatRepository = new AddressFormatRepository();
+					$countryRepository = new CountryRepository();
+					$subdivisionRepository = new SubdivisionRepository();
+					$formatter = new DefaultFormatter($addressFormatRepository, $countryRepository, $subdivisionRepository, 'fr_FR', array( 'html' => false ));
+
+					$a = new Address();
+
+					$a = $a->withCountryCode($address->getCountryCode());
+					if ($address->getStreetNumber() && $address->getStreetName()) {
+						$a = $a->withAddressLine1($address->getStreetNumber().' '.$address->getStreetName());
+					} else if ($address->getStreetName()) {
+						$a = $a->withAddressLine1($address->getStreetName());
+					}
+					if ($postalCode) {
+						$a = $a->withPostalCode($postalCode);
+					}
+					if ($locality) {
+						$a = $a->withLocality($locality);
+					}
+					if ($address->getSubLocality()) {
+						$a = $a->withDependentLocality($address->getSubLocality());
+					}
+					if ($address->getAdminLevels()->first()) {
+						$a = $a->withAdministrativeArea($address->getAdminLevels()->first()->getName());
+					}
+
+					$localisable->setFormattedAddress($formatter->format($a));
 
 				}
 

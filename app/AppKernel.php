@@ -22,7 +22,6 @@ class AppKernel extends Kernel
 			new FOS\ElasticaBundle\FOSElasticaBundle(),
 			new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 			new Liip\ImagineBundle\LiipImagineBundle(),
-			new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
 
             new Ladb\CoreBundle\LadbCoreBundle(),
         );

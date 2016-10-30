@@ -32,9 +32,9 @@
         "friendsofsymfony/elastica-bundle": "*",
         "stof/doctrine-extensions-bundle": "*",
         "liip/imagine-bundle": "1.5.2",
-        "egeloen/google-map-bundle": "*",
 
-        "willdurand/geocoder": "~2.0",
+        "willdurand/geocoder": "~3.0",
+        "commerceguys/addressing": "0.8.4",
         "twitter/bootstrap": "3.3.7",
         "uikit/uikit": "2.27.2",
         "afarkas/html5shiv": "3.7.3",
