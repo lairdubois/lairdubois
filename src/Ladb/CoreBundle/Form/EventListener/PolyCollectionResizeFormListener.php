@@ -65,7 +65,7 @@ class PolyCollectionResizeFormListener extends ResizeFormListener
                 $defaultType = $type;
             }
 
-            $typeKey = $type instanceof FormTypeInterface ? $type->getName() : $type;
+            $typeKey = $type instanceof FormTypeInterface ? $type->getBlockPrefix() : $type;
             $this->typeMap[$typeKey] = $type;
             $this->classMap[$modelClass] = $type;
         }
@@ -130,7 +130,7 @@ class PolyCollectionResizeFormListener extends ResizeFormListener
         // Then add all rows again in the correct order
         foreach ($data as $name => $value) {
             $type = $this->getTypeForObject($value);
-            $form->add($name, $type, array_replace(array(
+            $form->add($name, get_class($type), array_replace(array(
                 'property_path' => '['.$name.']',
             ), $this->options));
         }
@@ -168,7 +168,7 @@ class PolyCollectionResizeFormListener extends ResizeFormListener
             foreach ($data as $name => $value) {
                 if (!$form->has($name)) {
                     $type = $this->getTypeForData($value);
-                    $form->add($name, $type, array_replace(array(
+                    $form->add($name, get_class($type), array_replace(array(
                         'property_path' => '['.$name.']',
                     ), $this->options));
                 }

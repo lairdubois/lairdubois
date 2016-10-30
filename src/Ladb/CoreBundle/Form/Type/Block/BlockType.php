@@ -14,7 +14,7 @@ class BlockType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('_type', HiddenType::class, array(
-				'data'   => $this->getName(),
+				'data'   => $this->getBlockPrefix(),
 				'mapped' => false
 			))
 			->add('sortIndex', HiddenType::class)

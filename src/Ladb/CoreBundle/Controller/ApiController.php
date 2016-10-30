@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class ApiController extends Controller {
 
 	/**
-	 * @Route(pattern="/{network}/share.count.json", defaults={"_format" = "json"}, name="core_api_network_share_count")
+	 * @Route("/{network}/share.count.json", defaults={"_format" = "json"}, name="core_api_network_share_count")
 	 * @Template("LadbCoreBundle:Api:networkShareCount.json.twig")
 	 */
 	public function networkShareCountAction(Request $request, $network) {

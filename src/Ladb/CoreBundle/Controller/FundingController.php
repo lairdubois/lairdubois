@@ -23,8 +23,8 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 class FundingController extends Controller {
 
 	/**
-	 * @Route(pattern="/", name="core_funding_dashboard")
-	 * @Route(pattern="/{year}/{month}", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_dashboard_year_month")
+	 * @Route("/", name="core_funding_dashboard")
+	 * @Route("/{year}/{month}", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_dashboard_year_month")
 	 * @Template()
 	 */
 	public function dashboardAction(Request $request, $year = null, $month = null) {
@@ -298,7 +298,7 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/donation/new", name="core_funding_donation_new")
+	 * @Route("/donation/new", name="core_funding_donation_new")
 	 * @Template("LadbCoreBundle:Funding:donation-new.html.twig")
 	 */
 	public function donationNewAction(Request $request) {
@@ -327,7 +327,7 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/donation/create", name="core_funding_donation_create", defaults={"_format" = "json"})
+	 * @Route("/donation/create", name="core_funding_donation_create", defaults={"_format" = "json"})
 	 * @Method("POST")
 	 */
 	public function donationCreateAction(Request $request) {

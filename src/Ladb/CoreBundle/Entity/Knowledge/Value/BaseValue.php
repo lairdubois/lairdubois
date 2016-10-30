@@ -22,7 +22,7 @@ use Ladb\CoreBundle\Model\WatchableChildInterface;
  * @LadbAssert\ValueSource()
  * @UniqueEntity(fields={"dataHash", "parentEntityType", "parentEntityId", "parentEntityField"})
  */
-class BaseValue implements WatchableChildInterface, VotableInterface, CommentableInterface, AuthoredInterface {
+abstract class BaseValue implements WatchableChildInterface, VotableInterface, CommentableInterface, AuthoredInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\BaseValue';
 

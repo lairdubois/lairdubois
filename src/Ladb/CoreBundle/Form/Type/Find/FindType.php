@@ -39,7 +39,7 @@ class FindType extends AbstractType {
 			->add('title')
 			->add('body', TextareaType::class)
 			->add('contentType', ChoiceType::class, array(
-				'choices' => array(Find::CONTENT_TYPE_LINK => 'find.content.link.name', Find::CONTENT_TYPE_GALLERY => 'find.content.gallery.name', Find::CONTENT_TYPE_EVENT => 'find.content.event.name'),
+				'choices' => array_flip(array(Find::CONTENT_TYPE_LINK => 'find.content.link.name', Find::CONTENT_TYPE_GALLERY => 'find.content.gallery.name', Find::CONTENT_TYPE_EVENT => 'find.content.event.name')),
 			))
 			->add('link', Content\LinkType::class, array(
 				'mapped' => false,

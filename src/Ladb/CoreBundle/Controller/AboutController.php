@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class AboutController extends Controller {
 
 	/**
-	 * @Route(pattern="/", name="core_about")
+	 * @Route("/", name="core_about")
 	 * @Template()
 	 */
 	public function aboutAction() {
@@ -21,7 +21,7 @@ class AboutController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/faq.html", name="core_about_faq")
+	 * @Route("/faq.html", name="core_about_faq")
 	 * @Template()
 	 */
 	public function faqAction() {
@@ -29,7 +29,7 @@ class AboutController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/mentions-legales.html", name="core_about_legals")
+	 * @Route("/mentions-legales.html", name="core_about_legals")
 	 * @Template()
 	 */
 	public function legalsAction() {
@@ -37,7 +37,7 @@ class AboutController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/credits.html", name="core_about_credits")
+	 * @Route("/credits.html", name="core_about_credits")
 	 * @Template()
 	 */
 	public function creditsAction() {

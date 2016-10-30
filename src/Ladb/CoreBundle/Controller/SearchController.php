@@ -15,8 +15,8 @@ use Ladb\CoreBundle\Utils\SearchUtils;
 class SearchController extends Controller {
 
 	/**
-	 * @Route(pattern="/", name="core_search")
-	 * @Route(pattern="/creations", name="core_search_creations")
+	 * @Route("/", name="core_search")
+	 * @Route("/creations", name="core_search_creations")
 	 * @Template()
 	 */
 	public function searchAction(Request $request) {

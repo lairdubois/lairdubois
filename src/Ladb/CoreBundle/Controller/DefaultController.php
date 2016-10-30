@@ -7,17 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ladb\CoreBundle\Model\IndexableInterface;
-use Ladb\CoreBundle\Model\BlockBodiedInterface;
-use Ladb\CoreBundle\Model\MultiPicturedInterface;
-use Ladb\CoreBundle\Utils\VideoHostingUtils;
-use Ladb\CoreBundle\Utils\PicturedUtils;
-use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
 	/**
-	 * @Route(pattern="/", name="core_welcome")
+	 * @Route("/", name="core_welcome")
 	 * @Template()
 	 */
 	public function welcomeAction() {
@@ -28,7 +22,7 @@ class DefaultController extends Controller {
 	}
 
 	/**
-	 * @Route(pattern="/connexion", name="core_smartlogin")
+	 * @Route("/connexion", name="core_smartlogin")
 	 * @Template()
 	 */
 	public function smartLoginAction(Request $request) {

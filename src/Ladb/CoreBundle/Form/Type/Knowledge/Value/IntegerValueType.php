@@ -20,7 +20,7 @@ class IntegerValueType extends AbstractValueType {
 		} else {
 			$builder
 				->add('data', ChoiceType::class, array(
-					'choices' => $options['choices'],
+					'choices' => array_flip($options['choices']),
 					'expanded' => true,
 				))
 			;

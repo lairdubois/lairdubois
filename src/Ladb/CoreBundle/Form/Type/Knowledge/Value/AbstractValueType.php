@@ -16,8 +16,8 @@ abstract class AbstractValueType extends AbstractType {
 		$builder
 			->add('legend', TextareaType::class)
 			->add('sourceType', ChoiceType::class, array(
-				'empty_value' => 'Choisissez un type de source',
-				'choices' => BaseValue::$SOURCE_TYPES,
+				'placeholder' => 'Choisissez un type de source',
+				'choices' => array_flip(BaseValue::$SOURCE_TYPES),
 			))
 			->add('source', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 		;
