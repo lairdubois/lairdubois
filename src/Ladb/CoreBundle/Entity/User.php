@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Context\ExecutionContext;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 
@@ -16,6 +16,7 @@ use Ladb\CoreBundle\Model\IndexableInterface;
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("email")
  * @UniqueEntity("displayname")
+ * @LadbAssert\ValidUsername()
  */
 class User extends \FOS\UserBundle\Model\User implements LocalisableInterface, IndexableInterface {
 
@@ -343,87 +344,6 @@ class User extends \FOS\UserBundle\Model\User implements LocalisableInterface, I
 	 * @ORM\JoinColumn(nullable=true, name="meta_id")
 	 */
 	private $meta = null;
-
-	/////
-
-	public function isUsernameValid(ExecutionContext $context) {
-		$unauthorizedUsernames = array(
-
-			'announcement',
-            'admin',
-            'administrator',
-            'administrateur',
-            'modo',
-            'moderateur',
-            'lairdubois',
-
-			'login',
-			'smartlogin',
-			'register',
-			'rejoindre',
-			'resetting',
-			'email',
-			'likes',
-			'comments',
-			'reports',
-			'watches',
-			'followers',
-			'tags',
-			'knowledge',
-			'notifications',
-			'referer',
-
-			'new',
-			'create',
-			'publish',
-			'unpublish',
-			'update',
-			'edit',
-			'delete',
-			'upload',
-
-			'activate',
-			'deactivate',
-			'empty',
-
-			'uploads',
-			'media',
-			'sitemap',
-
-			'rechercher',
-			'a-propos',
-			'faq',
-			'parametres',
-			'messages',
-			'creations',
-			'ateliers',
-			'boiseux',
-			'projets',
-			'pas-a-pas',
-			'plans',
-			'questions',
-			'trouvailles',
-			'blog',
-			'xylotheque',
-			'fournisseurs',
-			'financement',
-			'outils',
-			'api',
-
-		);
-		if (in_array($this->getUsernameCanonical(), $unauthorizedUsernames)) {
-			$context->addViolationAt('username', 'Ce nom d\'utilisateur n\'est pas autorisé', array(), null);
-		}
-		if (strlen($this->getUsername()) > 25) {
-			$context->addViolationAt('username', 'Le nom d\'utilisateur est trop long', array(), null);
-		}
-		if (preg_match('/\s/', $this->getUsername())) {
-			$context->addViolationAt('username', 'Le nom d\'utilisateur ne doit pas contenir d\'espaces', array(), null);
-		}
-		if (!preg_match('/^[a-zA-Z0-9]+$/', $this->getUsername())) {
-			$context->addViolationAt('username', 'Le nom d\'utilisateur ne doit pas contenir de caractères accentués ou de symboles', array(), null);
-		}
-	}
 
 	/////
 

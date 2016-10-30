@@ -172,6 +172,9 @@
         </service>
 
         <!-- Validators -->
+        <service id="ladb_core.valid_username_validator" class="Ladb\CoreBundle\Validator\Constraints\ValidUsernameValidator">
+            <tag name="validator.constraint_validator" alias="ladb_core.valid_username_validator"/>
+        </service>
         <service id="ladb_core.self_recipient_validator" class="Ladb\CoreBundle\Validator\Constraints\SelfRecipientValidator">
             <argument type="service" id="security.token_storage"/>
             <tag name="validator.constraint_validator" alias="ladb_core.self_recipient_validator"/>
