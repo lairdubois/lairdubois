@@ -47,11 +47,11 @@ class AboutController extends Controller {
 			array( 'name' => 'FOSElasticaBundle', 'url' => 'https://github.com/FriendsOfSymfony/FOSElasticaBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'StofDoctrineExtensionsBundle', 'url' => 'https://github.com/stof/StofDoctrineExtensionsBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'LiipImagineBundle', 'url' => 'https://github.com/liip/LiipImagineBundle', 'labels' => array( 'PHP' ) ),
-			array( 'name' => 'IvoryGoogleMapBundle', 'url' => 'https://github.com/egeloen/IvoryGoogleMapBundle', 'labels' => array( 'PHP' ) ),
 
 			array( 'name' => 'Geocoder-PHP', 'url' => 'http://geocoder-php.org/Geocoder/', 'labels' => array( 'PHP' ) ),
+			array( 'name' => 'Addressing', 'url' => 'https://github.com/commerceguys/addressing', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'Codebird-PHP', 'url' => 'http://www.jublo.net/projects/codebird/php', 'labels' => array( 'PHP' ) ),
-			array( 'name' => 'Facebook PHP SDK', 'url' => 'https://github.com/facebook/facebook-php-sdk-v4', 'labels' => array( 'PHP' ) ),
+			array( 'name' => 'Facebook PHP SDK', 'url' => 'https://github.com/facebook/php-graph-sdk', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'Markdown', 'url' => 'http://markdown.cebe.cc/', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'PHP Phantomjs', 'url' => 'https://github.com/jonnnnyw/php-phantomjs', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'ImageOptimizer', 'url' => 'https://github.com/psliwa/image-optimizer', 'labels' => array( 'PHP' ) ),
