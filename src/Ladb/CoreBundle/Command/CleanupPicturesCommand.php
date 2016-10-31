@@ -126,6 +126,10 @@ EOT
 			if (!is_null($sticker)) {
 				$pictureCounters[$sticker->getId()][1]++;
 			}
+			$strip = $creation->getStrip();
+			if (!is_null($strip)) {
+				$pictureCounters[$strip->getId()][1]++;
+			}
 			foreach ($creation->getPictures() as $picture) {
 				$pictureCounters[$picture->getId()][1]++;
 			}
@@ -159,6 +163,10 @@ EOT
 			if (!is_null($sticker)) {
 				$pictureCounters[$sticker->getId()][1]++;
 			}
+			$strip = $plan->getStrip();
+			if (!is_null($strip)) {
+				$pictureCounters[$strip->getId()][1]++;
+			}
 			foreach ($plan->getPictures() as $picture) {
 				$pictureCounters[$picture->getId()][1]++;
 			}
@@ -191,6 +199,10 @@ EOT
 			$sticker = $workshop->getSticker();
 			if (!is_null($sticker)) {
 				$pictureCounters[$sticker->getId()][1]++;
+			}
+			$strip = $workshop->getStrip();
+			if (!is_null($strip)) {
+				$pictureCounters[$strip->getId()][1]++;
 			}
 			foreach ($workshop->getPictures() as $picture) {
 				$pictureCounters[$picture->getId()][1]++;
