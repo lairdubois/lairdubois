@@ -23,17 +23,18 @@ class QuestionType extends AbstractType {
 			->add('title')
 			->add('icon')
 			->add('bodyBlocks', PolyCollectionType::class, array(
-				'types' => array(
+				'types'        => array(
 					\Ladb\CoreBundle\Form\Type\Block\TextBlockType::class,
 					\Ladb\CoreBundle\Form\Type\Block\GalleryBlockType::class,
 					\Ladb\CoreBundle\Form\Type\Block\VideoBlockType::class,
 				),
-				'allow_add' => true,
+				'allow_add'    => true,
 				'allow_delete' => true,
 				'by_reference' => false,
-				'options' => array(
+				'options'      => array(
 					'em' => $this->om,
 				),
+				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
 			->add('weight')
 			->add($builder
@@ -46,7 +47,6 @@ class QuestionType extends AbstractType {
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
 			'data_class'         => 'Ladb\CoreBundle\Entity\Faq\Question',
-			'cascade_validation' => true
 		));
 	}
 

@@ -39,16 +39,19 @@ class FindType extends AbstractType {
 			->add('title')
 			->add('body', TextareaType::class)
 			->add('contentType', ChoiceType::class, array(
-				'choices' => array_flip(array(Find::CONTENT_TYPE_LINK => 'find.content.link.name', Find::CONTENT_TYPE_GALLERY => 'find.content.gallery.name', Find::CONTENT_TYPE_EVENT => 'find.content.event.name')),
+				'choices'     => array_flip(array(Find::CONTENT_TYPE_LINK => 'find.content.link.name', Find::CONTENT_TYPE_GALLERY => 'find.content.gallery.name', Find::CONTENT_TYPE_EVENT => 'find.content.event.name')),
 			))
 			->add('link', Content\LinkType::class, array(
-				'mapped' => false,
+				'mapped'      => false,
+				'constraints' => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
 			->add('gallery', Content\GalleryType::class, array(
-				'mapped' => false,
+				'mapped'      => false,
+				'constraints' => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
 			->add('event', Content\EventType::class, array(
-				'mapped' => false,
+				'mapped'      => false,
+				'constraints' => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
@@ -173,20 +176,19 @@ class FindType extends AbstractType {
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Entity\Find\Find',
-			'cascade_validation' => true,
-			'validation_groups' => function(FormInterface $form) {
+			'data_class'        => 'Ladb\CoreBundle\Entity\Find\Find',
+			'validation_groups' => function (FormInterface $form) {
 				$find = $form->getData();
 				switch ($find->getContentType()) {
 
 					case Find::CONTENT_TYPE_LINK:
-						return array( 'Default', 'link' );
+						return array('Default', 'link');
 
 					case Find::CONTENT_TYPE_GALLERY:
-						return array( 'Default', 'gallery' );
+						return array('Default', 'gallery');
 
 					case Find::CONTENT_TYPE_EVENT:
-						return array( 'Default', 'event' );
+						return array('Default', 'event');
 
 				}
 			},

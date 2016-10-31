@@ -19,15 +19,22 @@ class NewProviderType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('signValue', SignValueType::class, array('choices' => null, 'dataConstraints' => null, 'constraints' => new \Ladb\CoreBundle\Validator\Constraints\UniqueProvider() ))
-			->add('logoValue', PictureValueType::class, array('choices' => null, 'dataConstraints' => null ))
+			->add('signValue', SignValueType::class, array(
+				'choices'         => null,
+				'dataConstraints' => null,
+				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueProvider())
+			))
+			->add('logoValue', PictureValueType::class, array(
+				'choices'         => null,
+				'dataConstraints' => null,
+				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid())
+			))
 		;
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class'         => 'Ladb\CoreBundle\Form\Model\NewProvider',
-			'cascade_validation' => true
+			'data_class' => 'Ladb\CoreBundle\Form\Model\NewProvider',
 		));
 	}
 

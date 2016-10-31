@@ -35,17 +35,18 @@ class CreationType extends AbstractType {
 				->addModelTransformer(new PicturesToIdsTransformer($this->om))
 			)
 			->add('bodyBlocks', PolyCollectionType::class, array(
-				'types' => array(
+				'types'        => array(
 					\Ladb\CoreBundle\Form\Type\Block\TextBlockType::class,
 					\Ladb\CoreBundle\Form\Type\Block\GalleryBlockType::class,
 					\Ladb\CoreBundle\Form\Type\Block\VideoBlockType::class,
 				),
-				'allow_add' => true,
+				'allow_add'    => true,
 				'allow_delete' => true,
 				'by_reference' => false,
-				'options' => array(
+				'options'      => array(
 					'em' => $this->om,
 				),
+				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
 			->add($builder
 				->create('woods', HiddenType::class, array( 'required' => false ))
@@ -81,8 +82,7 @@ class CreationType extends AbstractType {
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class'         => 'Ladb\CoreBundle\Entity\Wonder\Creation',
-			'cascade_validation' => true,
+			'data_class' => 'Ladb\CoreBundle\Entity\Wonder\Creation',
 		));
 	}
 

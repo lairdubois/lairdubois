@@ -6,12 +6,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use FOS\UserBundle\Form\Type\UsernameFormType;
 
 class NewThreadMessageType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-            ->add('recipient', 'fos_user_username')
+            ->add('recipient', UsernameFormType::class)
 			->add('subject')
 			->add('body', TextareaType::class);
 	}

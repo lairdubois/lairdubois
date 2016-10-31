@@ -20,15 +20,22 @@ class NewWoodType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('nameValue', TextValueType::class, array('choices' => null, 'dataConstraints' => array( new OneThing(array('message' => 'N\'indiquez qu\'un seul Nom français' )) ), 'constraints' => new \Ladb\CoreBundle\Validator\Constraints\UniqueWood() ))
-			->add('grainValue', PictureValueType::class, array('choices' => null, 'dataConstraints' => null ))
+			->add('nameValue', TextValueType::class, array(
+				'choices' => null,
+				'dataConstraints' => array( new OneThing(array('message' => 'N\'indiquez qu\'un seul Nom français' )) ),
+				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueWood() )
+			))
+			->add('grainValue', PictureValueType::class, array(
+				'choices' => null,
+				'dataConstraints' => null,
+				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid() )
+			))
 		;
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class'         => 'Ladb\CoreBundle\Form\Model\NewWood',
-			'cascade_validation' => true
+			'data_class' => 'Ladb\CoreBundle\Form\Model\NewWood',
 		));
 	}
 

@@ -37,7 +37,7 @@ class ValueSourceValidator extends ConstraintValidator {
 				} else if ($sourceType == BaseValue::SOURCE_TYPE_OTHER) {
 					$validationGroup[] = 'other';
 				}
-				$errors = $this->validator->validate($value, $validationGroup);
+				$errors = $this->validator->validate($value, null, $validationGroup);
 				if (count($errors) > 0) {
 					foreach ($errors as $error) {
 						$this->context->buildViolation($error->getMessage())

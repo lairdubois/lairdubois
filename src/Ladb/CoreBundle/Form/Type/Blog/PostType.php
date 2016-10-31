@@ -29,17 +29,18 @@ class PostType extends AbstractType {
 					->addModelTransformer(new PictureToIdTransformer($this->om))
 			)
 			->add('bodyBlocks', PolyCollectionType::class, array(
-				'types' => array(
+				'types'           => array(
 					\Ladb\CoreBundle\Form\Type\Block\TextBlockType::class,
 					\Ladb\CoreBundle\Form\Type\Block\GalleryBlockType::class,
 					\Ladb\CoreBundle\Form\Type\Block\VideoBlockType::class,
 				),
-				'allow_add' => true,
-				'allow_delete' => true,
-				'by_reference' => false,
-				'options' => array(
+				'allow_add'       => true,
+				'allow_delete'    => true,
+				'by_reference'    => false,
+				'options'         => array(
 					'em' => $this->om,
 				),
+				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
 			->add($builder
 					->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
@@ -58,7 +59,6 @@ class PostType extends AbstractType {
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
 			'data_class'         => 'Ladb\CoreBundle\Entity\Blog\Post',
-			'cascade_validation' => true
 		));
 	}
 
