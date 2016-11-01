@@ -23,7 +23,7 @@ use Ladb\CoreBundle\Form\Model\ReplyMessage;
 use Ladb\CoreBundle\Utils\MailerUtils;
 
 /**
- * @Route("/messages")
+ * @Route("/messagerie")
  */
 class MessageController extends Controller {
 
