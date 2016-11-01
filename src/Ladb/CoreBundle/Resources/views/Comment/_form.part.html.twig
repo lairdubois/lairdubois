@@ -1,17 +1,11 @@
 {# set action #}
 {# set galleryClasses (facultative) #}
 
-<form action="{{ action }}" method="post" novalidate>
+{{ form_start(form, { 'action':action, 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
     <fieldset>
         {{ form_errors(form.body) }}
         {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize' } }) }}
-        <div class="ladb-form-gallery{% if galleryClasses is defined %} {{ galleryClasses }}{% endif %}">
-            <div class="ladb-form-gallery-section collapse{% if form.vars.data.pictures is not empty %} in{% endif %}" id="{{ formSection }}_collapse">
-                {% include 'LadbCoreBundle:Picture:_form-gallery.part.html.twig' with { 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
-            </div>
-            <div class="ladb-form-gallery-header"><a data-toggle="collapse" href="#{{ formSection }}_collapse" data-tooltip="tooltip" title="Joindre des images"><i class="ladb-icon-camera"> </i></a></div>
-        </div>
-        {{ form_rest(form) }}
+        {% include 'LadbCoreBundle:Picture:_form-gallery-collapse.part.html.twig' %}
         {% block buttons %}{% endblock %}
     </fieldset>
-</form>
+{{ form_end(form) }}

@@ -10,7 +10,10 @@
             </td>
             <td>
                 <a href="{{ url('core_user_show', { 'username':actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none; font-weight: bold;" target="_blank">{{ actorUser.displayname }}</a>
-                <blockquote style="margin: 5px 0 0 0; padding: 0;">{{ messageHtmlBody|raw }}</blockquote>
+                <blockquote style="margin: 5px 0 0 0; padding: 0;">{{ message.htmlBody|raw }}</blockquote>
+                {% for picture in message.pictures %}
+                    <img src="{{ picture.webPath|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px; margin-right: 4px;" alt="{{ picture.legend|raw }}">
+                {% endfor %}
             </td>
         </tr>
         <tr>

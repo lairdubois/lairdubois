@@ -3,19 +3,11 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\Funding\Donation;
+use Ladb\CoreBundle\Entity\Message\Message;
 use Ladb\CoreBundle\Entity\Spotlight;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Ladb\CoreBundle\Entity\User;
 use Ladb\CoreBundle\Entity\Message\Thread;
 use Ladb\CoreBundle\Entity\Report;
-use Ladb\CoreBundle\Entity\Vote;
-use Ladb\CoreBundle\Model\VotableInterface;
-use Ladb\CoreBundle\Model\VotableParentInterface;
-use Ladb\CoreBundle\Model\TypableInterface;
-use Ladb\CoreBundle\Model\TitledInterface;
-use Ladb\CoreBundle\Model\WatchableInterface;
-use Ladb\CoreBundle\Model\WatchableChildInterface;
 
 class MailerUtils extends AbstractContainerAwareUtils {
 
@@ -35,9 +27,9 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
-	public function sendIncomingMessageNotificationEmailMessage(User $recipientUser, User $actorUser, Thread $thread, $messageHtmlBody) {
+	public function sendIncomingMessageNotificationEmailMessage(User $recipientUser, User $actorUser, Thread $thread, Message $message) {
 		if ($recipientUser->getIncomingMessageEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
-			$parameters = array( 'recipientUser' => $recipientUser, 'actorUser' => $actorUser, 'thread' => $thread, 'messageHtmlBody' => $messageHtmlBody );
+			$parameters = array( 'recipientUser' => $recipientUser, 'actorUser' => $actorUser, 'thread' => $thread, 'message' => $message );
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Notification de nouveau message de ' . $actorUser->getDisplayname(),

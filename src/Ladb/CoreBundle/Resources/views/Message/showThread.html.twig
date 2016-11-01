@@ -1,6 +1,25 @@
 {% extends 'LadbCoreBundle:Message:_layout.html.twig' %}
 
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
+
+{% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
+
 {% set tab = 'show_thread' %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('blueimpGalleryStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('blueimpGalleryJavascripts') }}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ block('blueimpGalleryWidget') }}
+{% endblock %}
 
 {% block tools %}
     <div class="ladb-header-tools pull-right">
@@ -17,8 +36,6 @@
         {% endembed %}
     </div>
 {% endblock %}
-
-{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
 
 {% block bodyContainerContent %}
     <div class="ladb-thread">
@@ -40,6 +57,15 @@
                     </div>
                     <div id="ladb_message_{{ message.id }}_body" class="ladb-body collapse{% if not message.isRead or loop.last %} in{% endif %}">
                         {{ message.htmlBody|raw }}
+                        {% if message.pictures is not empty %}
+                            <div class="row">
+                                {% for picture in message.pictures %}
+                                    <div class="col-xs-3">
+                                        {% include 'LadbCoreBundle:Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -49,10 +75,12 @@
                 {% include 'LadbCoreBundle:User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
                 <div class="ladb-box">
                     <div class="ladb-body">
-                        <form action="{{ path('core_message_thread_update', { 'threadId':thread.id }) }}#message_reply" method="post">
+                        {{ form_start(form, { 'action':(path('core_message_thread_update', { 'threadId':thread.id })~'#message_reply'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
                             <div class="form-group">
                                 {{ form_errors(form.body) }}
-                                {{ form_widget(form.body, { 'attr': { 'rows':'15', 'class':'form-control ladb-autosize' } }) }}
+                                {{ form_widget(form.body, { 'attr': { 'rows':'10', 'class':'form-control ladb-autosize' } }) }}
+                                {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
+                                {% include 'LadbCoreBundle:Picture:_form-gallery-collapse.part.html.twig' %}
                                 <script>
                                     if (document.readyState == "complete") {
                                         $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
@@ -65,7 +93,7 @@
                             </div>
                             {{ form_rest(form) }}
                             {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
-                        </form>
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>

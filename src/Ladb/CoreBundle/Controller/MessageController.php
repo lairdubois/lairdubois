@@ -74,7 +74,7 @@ class MessageController extends Controller {
             $recipients = array( $newThreadMessage->getRecipient() );
 
 			$messageUtils = $this->get(MessageUtils::NAME);
-            $thread = $messageUtils->composeThread($sender, $recipients, $newThreadMessage->getSubject(), $newThreadMessage->getBody());
+            $thread = $messageUtils->composeThread($sender, $recipients, $newThreadMessage->getSubject(), $newThreadMessage->getBody(), $newThreadMessage->getPictures());
 
 			// Flashbag
 			$recipientNames = '';
@@ -93,7 +93,7 @@ class MessageController extends Controller {
 			// Email notification (after flush to have a thread id)
 			$mailerUtils = $this->get(MailerUtils::NAME);
 			foreach ($recipients as $recipient) {
-				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last()->getHtmlBody());
+				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
 			}
 
             return $this->redirect($this->generateUrl('core_message_thread_show', array( 'threadId' => $thread->getId()) ));
@@ -137,10 +137,10 @@ class MessageController extends Controller {
                 }
 
                 // Compose thread
-                $thread = $messageUtils->composeThread($sender, array( $recipient ), $newThreadAnnouncementMessage->getSubject(), $newThreadAnnouncementMessage->getBody(), true);
+                $thread = $messageUtils->composeThread($sender, array( $recipient ), $newThreadAnnouncementMessage->getSubject(), $newThreadAnnouncementMessage->getBody(), null, true);
 
                 // Email notification
-                $mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last()->getBody());
+                $mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
 
             }
 
@@ -228,6 +228,9 @@ class MessageController extends Controller {
 			$message = new Message();
 			$message->setSender($sender);
 			$message->setBody($replyMessage->getBody());
+			foreach ($replyMessage->getPictures() as $picture) {
+				$message->addPicture($picture);
+			}
 			$fieldPreprocessorUtils->preprocessBodyField($message);
 			$thread->addMessage($message);
 
@@ -267,7 +270,7 @@ class MessageController extends Controller {
 			// Email notification
 			$mailerUtils = $this->get(MailerUtils::NAME);
 			foreach ($recipients as $recipient) {
-				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $message->getHtmlBody());
+				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $message);
 			}
 
 			return $this->redirect($this->generateUrl('core_message_thread_show', array('threadId' => $thread->getId())));

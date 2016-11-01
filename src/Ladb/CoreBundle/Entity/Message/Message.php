@@ -50,6 +50,13 @@ class Message implements BodiedInterface {
 	private $htmlBody;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_message_picture")
+	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 */
+	protected $pictures;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Message\MessageMeta", mappedBy="message", cascade={"all"})
 	 */
 	private $metas;
@@ -61,6 +68,7 @@ class Message implements BodiedInterface {
 	/////
 
 	public function __construct() {
+		$this->pictures = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->metas = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -123,6 +131,27 @@ class Message implements BodiedInterface {
 
 	public function getHtmlBody() {
 		return $this->htmlBody;
+	}
+
+	// Pictures /////
+
+	public function addPicture(\Ladb\CoreBundle\Entity\Picture $picture) {
+		if (!$this->pictures->contains($picture)) {
+			$this->pictures[] = $picture;
+		}
+		return $this;
+	}
+
+	public function removePicture(\Ladb\CoreBundle\Entity\Picture $picture) {
+		$this->pictures->removeElement($picture);
+	}
+
+	public function getPictures() {
+		return $this->pictures;
+	}
+
+	public function resetPictures() {
+		$this->pictures->clear();
 	}
 
 	// Metas /////

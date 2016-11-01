@@ -69,6 +69,30 @@ EOT
 		}
 		unset($comments);
 
+		// Check Messages /////
+
+		$output->writeln('<info>Checking messages...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'm', 'ps' ))
+			->from('LadbCoreBundle:Message\Message', 'm')
+			->leftJoin('m.pictures', 'ps')
+		;
+
+		try {
+			$messages = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$messages = array();
+		}
+
+		foreach ($messages as $message) {
+			foreach ($message->getPictures() as $picture) {
+				$pictureCounters[$picture->getId()][1]++;
+			}
+		}
+		unset($messages);
+
 		// Check avatars and banners /////
 
 		$output->writeln('<info>Checking avatars and banners...</info>');

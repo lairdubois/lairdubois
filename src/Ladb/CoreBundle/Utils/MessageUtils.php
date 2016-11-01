@@ -21,7 +21,7 @@ class MessageUtils {
 		$this->fieldPreprocessorUtils = $fieldPreprocessorUtils;
 	}
 
-	public function composeThread(User $sender, $recipients, $subject, $body, $announcement = false, $flush = true) {
+	public function composeThread(User $sender, $recipients, $subject, $body, $pictures = null, $announcement = false, $flush = true) {
 		$participants = array( $sender );
 		$participants = array_merge($participants, $recipients);
 
@@ -34,6 +34,11 @@ class MessageUtils {
 		$message = new Message();
 		$message->setSender($sender);
 		$message->setBody($body);
+		if (!is_null($pictures)) {
+			foreach ($pictures as $picture) {
+				$message->addPicture($picture);
+			}
+		}
 		$this->fieldPreprocessorUtils->preprocessBodyField($message);
 		$thread->addMessage($message);
 

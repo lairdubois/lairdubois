@@ -10,7 +10,7 @@
         {% include 'LadbCoreBundle:User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
         <div class="ladb-box">
             <div class="ladb-body">
-                <form action="{{ path(announcement ? 'core_message_thread_create_announcement' : 'core_message_thread_create') }}" method="post" novalidate>
+                {{ form_start(form, { 'action':path(announcement ? 'core_message_thread_create_announcement' : 'core_message_thread_create'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
                     {% if not announcement %}
                         <div class="form-group">
                             {{ form_label(form.recipient, 'Destinataire') }}
@@ -26,7 +26,9 @@
                     <div class="form-group">
                         {{ form_label(form.body, 'Message') }}
                         {{ form_errors(form.body) }}
-                        {{ form_widget(form.body, { 'attr': { 'rows':'15', 'class':'form-control ladb-autosize' } }) }}
+                        {{ form_widget(form.body, { 'attr': { 'rows':'10', 'class':'form-control ladb-autosize' } }) }}
+                        {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
+                        {% include 'LadbCoreBundle:Picture:_form-gallery-collapse.part.html.twig' %}
                         <script>
                             if (document.readyState == "complete") {
                                 $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
@@ -37,7 +39,6 @@
                             }
                         </script>
                     </div>
-                    {{ form_rest(form) }}
                     {% if announcement %}
                         <a href="#new_thread_modal" class="btn btn-danger" data-toggle="modal" >{{ 'default.send'|trans() }}</a>
                         {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_thread_modal', 'title':('message.thread.announcement.new'|trans()) } %}
@@ -53,7 +54,7 @@
                     {% else %}
                         {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
                     {% endif %}
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>

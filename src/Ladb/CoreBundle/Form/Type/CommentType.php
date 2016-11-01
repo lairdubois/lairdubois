@@ -25,8 +25,8 @@ class CommentType extends AbstractType {
 			->add('body', TextareaType::class)
 			->add($builder
 					->create('pictures', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-					->addModelTransformer(new PicturesToIdsTransformer($this->om))
-		);
+					->addModelTransformer(new PicturesToIdsTransformer($this->om)))
+		;
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {

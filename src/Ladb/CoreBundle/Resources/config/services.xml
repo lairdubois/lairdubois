@@ -333,6 +333,14 @@
             <tag name="form.type" />
             <argument type="service" id="doctrine.orm.entity_manager"></argument>
         </service>
+        <service id="ladb_message_newthread" class="Ladb\CoreBundle\Form\Type\Message\NewThreadMessageType">
+            <tag name="form.type" />
+            <argument type="service" id="doctrine.orm.entity_manager"></argument>
+        </service>
+        <service id="ladb_message_replymessage" class="Ladb\CoreBundle\Form\Type\Message\ReplyMessageType">
+            <tag name="form.type" />
+            <argument type="service" id="doctrine.orm.entity_manager"></argument>
+        </service>
         <service id="ladb_comment" class="Ladb\CoreBundle\Form\Type\CommentType">
             <tag name="form.type" />
             <argument type="service" id="doctrine.orm.entity_manager"></argument>
