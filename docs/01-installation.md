@@ -179,13 +179,13 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 ### Create the database
 
 ``` bash
-    $ app/console doctrine:database:create
+    $ bin/console doctrine:database:create
 ```
 
 ### Build the schema (tables, etc ...)
 
 ``` bash
-    $ app/console doctrine:schema:update --force
+    $ bin/console doctrine:schema:update --force
 ```
 
 ## Step 8 - Compile and Minimize CSS and JS
@@ -193,7 +193,7 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 This step will create `web/js` and `web/css` folders and fill them with compiled and minimized assets. 
 
 ``` bash
-    $ app/console assetic:dump
+    $ bin/console assetic:dump
 ```
 
 
