@@ -428,6 +428,7 @@ user:
       modal_body: |
         La confirmation de votre adresse e-mail vous permet :
 
+         - Publier des contenus
          - Recevoir les informations de réinitialisation en cas de perte de vos informations de connexion
          - Recevoir les notifications par e-mail
          - Recevoir les messages privés par e-mail
