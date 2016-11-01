@@ -21,8 +21,8 @@ class MessageUtils {
 		$this->fieldPreprocessorUtils = $fieldPreprocessorUtils;
 	}
 
-	public function composeThread(User $sender, $recipients, $subject, $body, $announcement = false) {
-		$participants = array($sender);
+	public function composeThread(User $sender, $recipients, $subject, $body, $announcement = false, $flush = true) {
+		$participants = array( $sender );
 		$participants = array_merge($participants, $recipients);
 
 		$thread = new Thread();
@@ -38,6 +38,7 @@ class MessageUtils {
 		$thread->addMessage($message);
 
 		foreach ($participants as $participant) {
+
 			$threadMeta = new ThreadMeta();
 			$threadMeta->setParticipant($participant);
 			$threadMeta->setIsDeleted($announcement && $participant === $sender);
@@ -55,10 +56,13 @@ class MessageUtils {
 			if ($participant != $sender) {
 				$participant->incrementUnreadMessageCount();
 			}
+
 		}
 
 		$this->om->persist($thread);
-		$this->om->flush();
+		if ($flush) {
+			$this->om->flush();
+		}
 
 		return $thread;
 	}

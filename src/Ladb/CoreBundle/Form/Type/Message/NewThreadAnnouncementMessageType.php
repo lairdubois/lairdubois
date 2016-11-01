@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\Type;
+namespace Ladb\CoreBundle\Form\Type\Message;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,7 +22,7 @@ class NewThreadAnnouncementMessageType extends AbstractType {
 	}
 
 	public function getBlockPrefix() {
-		return 'ladb_newthreadannouncement';
+		return 'ladb_message_newthreadannouncement';
 	}
 
 }

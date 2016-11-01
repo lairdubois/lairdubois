@@ -10,13 +10,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Message\Message;
 use Ladb\CoreBundle\Entity\Message\MessageMeta;
 use Ladb\CoreBundle\Entity\Message\Thread;
-use Ladb\CoreBundle\Entity\UserMeta;
+use Ladb\CoreBundle\Entity\User;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\MessageUtils;
-use Ladb\CoreBundle\Form\Type\NewThreadMessageType;
-use Ladb\CoreBundle\Form\Type\NewThreadAnnouncementMessageType;
-use Ladb\CoreBundle\Form\Type\ReplyMessageType;
+use Ladb\CoreBundle\Form\Type\Message\NewThreadMessageType;
+use Ladb\CoreBundle\Form\Type\Message\NewThreadAnnouncementMessageType;
+use Ladb\CoreBundle\Form\Type\Message\ReplyMessageType;
 use Ladb\CoreBundle\Form\Model\NewThreadMessage;
 use Ladb\CoreBundle\Form\Model\NewThreadAnnouncementMessage;
 use Ladb\CoreBundle\Form\Model\ReplyMessage;
@@ -35,7 +35,7 @@ class MessageController extends Controller {
 	 */
 	public function newThreadAction($recipientUsername, $announcement) {
         if ($announcement && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException('Not allowed (core_message_thread_new_XXX)');
+            throw $this->createNotFoundException('Not allowed (core_message_thread_new_announcement)');
         }
 
 		$newThreadMessage = $announcement ? new NewThreadAnnouncementMessage() : new NewThreadMessage();
@@ -90,7 +90,7 @@ class MessageController extends Controller {
 				$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.alert.email_not_confirmed_error'));
 			}
 
-			// Email notification (after persist to have a thread id)
+			// Email notification (after flush to have a thread id)
 			$mailerUtils = $this->get(MailerUtils::NAME);
 			foreach ($recipients as $recipient) {
 				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last()->getHtmlBody());
@@ -124,7 +124,7 @@ class MessageController extends Controller {
 			$sender = $this->getUser();
 
 			$om = $this->getDoctrine()->getManager();
-            $userRepository = $om->getRepository(UserMeta::CLASS_NAME);
+            $userRepository = $om->getRepository(User::CLASS_NAME);
             $recipients = $userRepository->findAll();
 
 			$messageUtils = $this->get(MessageUtils::NAME);
