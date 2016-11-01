@@ -848,6 +848,16 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * @Route("/me", name="core_user_show_me")
+	 * @Template()
+	 */
+	public function showMeAction() {
+		$username = $this->getUser()->getUsername();
+
+		return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $username )));
+	}
+
+	/**
 	 * @Route("/{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show")
 	 * @Template()
 	 */

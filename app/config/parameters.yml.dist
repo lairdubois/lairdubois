@@ -17,7 +17,7 @@ parameters:
 
     locale:                         fr
     secret:                         THIS_TOKEN_IS_NOT_SECRET_CHANGE_IT
-    welcome_username:               zeloko
+    admin_username:                 admin
     ga_tracking_id:                 YOUR_GOOGLE_ANALYTICS_TRACKING_CODE
 
     router.request_context.host:    www.lairdubois.fr

@@ -67,6 +67,7 @@ class ValidUsernameValidator extends ConstraintValidator {
 				'rechercher',
 				'a-propos',
 				'faq',
+				'me',
 				'parametres',
 				'messages',
 				'messagerie',

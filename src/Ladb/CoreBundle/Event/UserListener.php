@@ -15,9 +15,11 @@ class UserListener implements EventSubscriberInterface {
 
 	private $container;
 
-	public function __construct(ContainerInterface $userManager) {
-		$this->container = $userManager;
+	public function __construct(ContainerInterface $container) {
+		$this->container = $container;
 	}
+
+	/////
 
 	public static function getSubscribedEvents() {
 		return array(
@@ -55,10 +57,10 @@ class UserListener implements EventSubscriberInterface {
 		/////
 
 		// Send welcome Message
-		$welcomeUsername = $this->container->getParameter('welcome_username');
-		$sender = $userManager->findUserByUsername($welcomeUsername);
+		$adminUsername = $this->container->getParameter('admin_username');
+		$sender = $userManager->findUserByUsername($adminUsername);
 		if (!is_null($sender)) {
-			$messageUtils->composeThread($sender, array( $user ), 'Bienvenue !', $templating->render('LadbCoreBundle:User:message-welcome.md.twig', null, array( 'recipientUser' => $user )), true);
+			$messageUtils->composeThread($sender, array( $user ), 'Bienvenue !', $templating->render('LadbCoreBundle:User:message-welcome.md.twig', array( 'recipientUser' => $user )), null, true);
 		}
 
 		// Send admin email notification
