@@ -54,7 +54,7 @@ class PictureController extends Controller {
 		$editPicture->setCenterX100($picture->getCenterX100());
 		$editPicture->setCenterY100($picture->getCenterY100());
 
-		$form = $this->createForm(new EditPictureType($om), $editPicture);
+		$form = $this->createForm(EditPictureType::class, $editPicture);
 
 		return array(
 			'picture'     => $picture,
@@ -87,7 +87,7 @@ class PictureController extends Controller {
 
 		$editPicture = new EditPicture();
 
-		$form = $this->createForm(new EditPictureType($om), $editPicture);
+		$form = $this->createForm(EditPictureType::class, $editPicture);
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {

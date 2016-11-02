@@ -345,6 +345,10 @@
             <tag name="form.type" />
             <argument type="service" id="doctrine.orm.entity_manager"></argument>
         </service>
+        <service id="ladb_editpicture" class="Ladb\CoreBundle\Form\Type\EditPictureType">
+            <tag name="form.type" />
+            <argument type="service" id="doctrine.orm.entity_manager"></argument>
+        </service>
         <service id="ladb_usersettings" class="Ladb\CoreBundle\Form\Type\UserSettingsType">
             <tag name="form.type" />
             <argument type="service" id="doctrine.orm.entity_manager"></argument>
