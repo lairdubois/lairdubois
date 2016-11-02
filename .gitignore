@@ -12,7 +12,6 @@
 /app/spool/*
 /build/
 /backups/
-/bin/
 /var/
 /components/
 /docs/private
