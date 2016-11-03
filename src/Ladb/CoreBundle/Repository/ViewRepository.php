@@ -69,13 +69,12 @@ class ViewRepository extends AbstractEntityRepository {
 			->setParameter('entityId', $entityId)
 			->setParameter('user', $user)
 			->setParameter('kind', $kind)
-			->setMaxResults(1)
 		;
 
 		try {
 			return $queryBuilder->getQuery()->getSingleResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return false;
+			return null;
 		}
 	}
 
