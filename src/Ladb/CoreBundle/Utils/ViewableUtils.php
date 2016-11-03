@@ -75,7 +75,8 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 				// Authenticated user -> use viewManager
 
 				$viewRepository = $this->om->getRepository(View::CLASS_NAME);
-				if (!$viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN)) {
+				$view = $viewRepository->findOneByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN);
+				if (is_null($view)) {
 
 					// Create a new view
 					$view = new View();
@@ -100,6 +101,30 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 					if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
 						$searchUtils = $this->get(SearchUtils::NAME);
 						$searchUtils->replaceEntityInIndex($viewable);
+					}
+
+				} else {
+
+					// Exclude self contribution view
+					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+						return;
+					}
+
+					if ($view->getCreatedAt() <= (new \DateTime())->sub(new \DateInterval('P1D'))) { // 1 day
+
+						// View is older than 1 day. Update view, increment view count.
+
+						// Update in ORM
+						$view->setCreatedAt(new \DateTime());
+						$viewable->incrementViewCount();
+						$this->om->flush();
+
+						// Update in Elasticsearch
+						if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
+							$searchUtils = $this->get(SearchUtils::NAME);
+							$searchUtils->replaceEntityInIndex($viewable);
+						}
+
 					}
 
 				}

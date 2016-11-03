@@ -56,6 +56,31 @@ class ViewRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findOneByEntityTypeAndEntityIdAndUserAndKind($entityType, $entityId, User $user, $kind) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'v' ))
+			->from($this->getEntityName(), 'v')
+			->where('v.entityType = :entityType')
+			->andWhere('v.entityId = :entityId')
+			->andWhere('v.user = :user')
+			->andWhere('v.kind = :kind')
+			->setParameter('entityType', $entityType)
+			->setParameter('entityId', $entityId)
+			->setParameter('user', $user)
+			->setParameter('kind', $kind)
+			->setMaxResults(1)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return false;
+		}
+	}
+
+	/////
+
 	public function findByEntityTypeAndEntityId($entityType, $entityId) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
