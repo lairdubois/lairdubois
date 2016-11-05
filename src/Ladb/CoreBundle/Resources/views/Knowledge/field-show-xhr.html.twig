@@ -37,7 +37,9 @@
                                 {% if ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans() != 'knowledge.'~knowledge.strippedName~'.form.help.'~field %}
                                     {{ ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans()|ladb_markdown|raw }}
                                 {% endif %}
+                                <hr>
                                 {{ ('knowledge.wood.form.help.legend')|trans({ '%field%':(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())})|ladb_markdown|raw }}
+                                <hr>
                                 {{ ('knowledge.wood.form.help.source')|trans()|ladb_markdown|raw }}
                                 <hr>
                                 <i class="ladb-icon-plus"></i>&nbsp;<a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">Comment contribuer aux contenus collaboratifs ?</a>

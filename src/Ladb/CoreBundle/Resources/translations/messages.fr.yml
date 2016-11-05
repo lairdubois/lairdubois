@@ -701,6 +701,8 @@ knowledge:
           - Ajoutez plusieurs propositions pour faire apparaitre plusieurs types de produits.
         services: |
           - Ajoutez plusieurs propositions pour faire apparaitre plusieurs types de services.
+        woods: |
+          - Ajoutez **UNE** proposition par essence.
     choice:
       new_providers: '[0,1]nouveau fournisseur|]1,Inf]nouveaux fournisseurs'
       providers: '[0,1]fournisseur|]1,Inf]fournisseurs'
