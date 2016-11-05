@@ -34,7 +34,7 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?-]+$/", message="default.title.regex")
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
 	 * @ladbAssert\UpperCaseRatio()
      */
     private $title;
