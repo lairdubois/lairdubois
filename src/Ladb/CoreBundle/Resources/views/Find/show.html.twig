@@ -62,7 +62,7 @@
                     {% if is_granted("ROLE_ADMIN") and not find.isDraft %}
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="ladb-icon-lock"></i> <span class="caret"></span>
+                                <i class="ladb-icon-admin"></i> <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="{{ ladb_entity_url_action(find, find.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if find.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (find.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>

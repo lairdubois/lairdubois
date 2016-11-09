@@ -11,7 +11,7 @@
         <li{% if tab == 'donors' %} class="active"{% endif %}><a href="{{ path('core_funding_donors' )}}">{{ 'funding.donors'|trans() }}{% if donorCount > 0 %}&nbsp;<span class="badge badge-black">{{ donorCount }}</span>{% endif %}</a></li>
         <li{% if tab == 'user-donation-list' %} class="active"{% endif %}><a href="{{ path('core_funding_user_donation_list' )}}"><i class="ladb-icon-lock"></i> {{ 'funding.my_donations'|trans() }}</a></li>
         {% if is_granted('ROLE_ADMIN') %}
-            <li{% if tab == 'donation-list' %} class="active"{% endif %}><a href="{{ path('core_funding_admin_donation_list' )}}" class="admin"><i class="ladb-icon-lock"></i> Tous les dons</a></li>
+            <li{% if tab == 'donation-list' %} class="active"{% endif %}><a href="{{ path('core_funding_admin_donation_list' )}}" class="admin"><i class="ladb-icon-admin"></i> Tous les dons</a></li>
         {% endif %}
     </ul>
 {% endblock %}
