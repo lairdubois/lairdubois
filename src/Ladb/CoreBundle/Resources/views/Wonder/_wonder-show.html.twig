@@ -104,14 +104,17 @@
                                 <i class="ladb-icon-lock"></i> <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
+                                <li><a href="{{ ladb_entity_url_action(wonder, wonder.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if wonder.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (wonder.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
                                 {% if not wonder.isDraft %}
                                     <li><a href="#unpublish_wonder_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>
                                 {% endif %}
                                 {% if wonderType == 'creation' %}
+                                    <li role="separator" class="divider"></li>
                                     <li><a href="#admin_converttoworkshop_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'creation.converttoworkshop'|trans() }}</a></li>
                                     <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'creation.converttofind'|trans() }}</a></li>
                                 {% endif %}
                                 {% if wonderType == 'workshop' %}
+                                    <li role="separator" class="divider"></li>
                                     <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'workshop.converttohowto'|trans() }}</a></li>
                                 {% endif %}
                             </ul>

@@ -9,7 +9,7 @@ use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Witness;
 use Ladb\CoreBundle\Utils\TypableUtils;
 
-class WitnessManager extends AbstractManager{
+class WitnessManager extends AbstractManager {
 
 	const NAME = 'ladb_core.witness_manager';
 

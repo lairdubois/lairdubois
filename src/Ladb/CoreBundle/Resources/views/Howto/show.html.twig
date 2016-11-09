@@ -152,6 +152,7 @@
                                 <i class="ladb-icon-lock"></i> <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
+                                <li><a href="{{ ladb_entity_url_action(howto, howto.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if howto.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (howto.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
                                 {% if not howto.isDraft %}
                                     <li><a href="#unpublish_howto_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>
                                 {% endif %}

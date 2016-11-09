@@ -33,6 +33,8 @@ class PublicationListener implements EventSubscriberInterface {
 	const PUBLICATION_CHANGED = 'ladb.publication.changed';
 	const PUBLICATION_UPDATED = 'ladb.publication.updated';
 	const PUBLICATION_DELETED = 'ladb.publication.deleted';
+	const PUBLICATION_LOCKED = 'ladb.publication.locked';
+	const PUBLICATION_UNLOCKED = 'ladb.publication.unlocked';
 	const PUBLICATION_PUBLISHED = 'ladb.publication.published';
 	const PUBLICATION_UNPUBLISHED = 'ladb.publication.unpublished';
 	const PUBLICATION_SHOWN = 'ladb.publication.shown';
@@ -51,6 +53,8 @@ class PublicationListener implements EventSubscriberInterface {
 			PublicationListener::PUBLICATION_CHANGED              => 'onPublicationChanged',
 			PublicationListener::PUBLICATION_UPDATED              => 'onPublicationUpdated',
 			PublicationListener::PUBLICATION_DELETED              => 'onPublicationDeleted',
+			PublicationListener::PUBLICATION_LOCKED               => 'onPublicationLocked',
+			PublicationListener::PUBLICATION_UNLOCKED             => 'onPublicationUnlocked',
 			PublicationListener::PUBLICATION_PUBLISHED            => 'onPublicationPublished',
 			PublicationListener::PUBLICATION_UNPUBLISHED          => 'onPublicationUnpublished',
 			PublicationListener::PUBLICATION_SHOWN                => 'onPublicationShown',
@@ -202,6 +206,12 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
+	}
+
+	public function onPublicationLocked(PublicationEvent $event) {
+	}
+
+	public function onPublicationUnlocked(PublicationEvent $event) {
 	}
 
 	public function onPublicationPublished(PublicationEvent $event) {

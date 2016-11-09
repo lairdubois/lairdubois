@@ -96,6 +96,39 @@ class FindController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_find_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_find_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$findRepository = $om->getRepository(Find::CLASS_NAME);
+
+		$find = $findRepository->findOneById($id);
+		if (is_null($find)) {
+			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_find_lock or core_find_unlock)');
+		}
+		if ($find->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_find_lock or core_find_unlock)');
+		}
+
+		// Lock or Unlock
+		$findManager = $this->get(FindManager::NAME);
+		if ($lock) {
+			$findManager->lock($find);
+		} else {
+			$findManager->unlock($find);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $find->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_find_show', array( 'id' => $find->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_find_publish")
 	 */
 	public function publishAction($id) {
@@ -111,6 +144,9 @@ class FindController extends Controller {
 		}
 		if ($find->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_find_publish)');
+		}
+		if ($find->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_find_publish)');
 		}
 
 		// Publish

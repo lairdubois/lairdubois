@@ -40,6 +40,11 @@ abstract class AbstractPublication implements PublicationInterface {
 	 */
 	protected $isDraft = true;
 
+	/**
+	 * @ORM\Column(name="is_locked", type="boolean")
+	 */
+	protected $isLocked = false;
+
 	/////
 
 	// Id /////
@@ -89,12 +94,22 @@ abstract class AbstractPublication implements PublicationInterface {
 
 	// IsDraft /////
 
-	public function setIsDraft($draft) {
-		$this->isDraft = $draft;
+	public function setIsDraft($isDraft) {
+		$this->isDraft = $isDraft;
 	}
 
 	public function getIsDraft() {
 		return $this->isDraft;
+	}
+
+	// IsLocked /////
+
+	public function setIsLocked($isLocked) {
+		$this->isLocked = $isLocked;
+	}
+
+	public function getIsLocked() {
+		return $this->isLocked;
 	}
 
 	// NotificationStrategy /////

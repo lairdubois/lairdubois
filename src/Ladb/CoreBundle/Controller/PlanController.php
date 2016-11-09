@@ -110,6 +110,39 @@ class PlanController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_plan_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_plan_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+
+		$plan = $planRepository->findOneById($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_plan_lock or core_plan_unlock)');
+		}
+		if ($plan->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_plan_lock or core_plan_unlock)');
+		}
+
+		// Lock or Unlock
+		$planManager = $this->get(PlanManager::NAME);
+		if ($lock) {
+			$planManager->lock($plan);
+		} else {
+			$planManager->unlock($plan);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('plan.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $plan->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_plan_show', array( 'id' => $plan->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_plan_publish")
 	 */
 	public function publishAction($id) {
@@ -125,6 +158,9 @@ class PlanController extends Controller {
 		}
 		if ($plan->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_plan_publish)');
+		}
+		if ($plan->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_plan_publish)');
 		}
 
 		// Publish

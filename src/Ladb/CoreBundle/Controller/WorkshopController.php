@@ -2,10 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller;
 
-use Ladb\CoreBundle\Manager\Knowledge\WoodManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
-use Ladb\CoreBundle\Manager\Wonder\WorkshopManager;
-use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -20,8 +16,6 @@ use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
-use Ladb\CoreBundle\Utils\ReportableUtils;
-use Ladb\CoreBundle\Utils\PublicationUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\ExplorableUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
@@ -29,9 +23,12 @@ use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\PicturedUtils;
 use Ladb\CoreBundle\Utils\EmbeddableUtils;
+use Ladb\CoreBundle\Utils\StripableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Wonder\WorkshopManager;
 
 /**
  * @Route("/ateliers")
@@ -104,6 +101,39 @@ class WorkshopController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_workshop_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_workshop_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+
+		$workshop = $workshopRepository->findOneById($id);
+		if (is_null($workshop)) {
+			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_workshop_lock or core_workshop_unlock)');
+		}
+		if ($workshop->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_workshop_lock or core_workshop_unlock)');
+		}
+
+		// Lock or Unlock
+		$workshopManager = $this->get(WorkshopManager::NAME);
+		if ($lock) {
+			$workshopManager->lock($workshop);
+		} else {
+			$workshopManager->unlock($workshop);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $workshop->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_workshop_show', array( 'id' => $workshop->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_workshop_publish")
 	 */
 	public function publishAction($id) {
@@ -119,6 +149,9 @@ class WorkshopController extends Controller {
 		}
 		if ($workshop->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_workshop_publish)');
+		}
+		if ($workshop->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_workshop_publish)');
 		}
 
 		// Publish
@@ -436,7 +469,7 @@ class WorkshopController extends Controller {
 
 		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
 		if ($workshop->getIsDraft() === true) {
 			throw $this->createNotFoundException('Not allowed (core_workshop_strip)');

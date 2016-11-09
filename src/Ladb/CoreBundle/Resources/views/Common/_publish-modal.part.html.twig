@@ -8,11 +8,22 @@
 
 {% block bodyInner %}
     {% if app.user.emailConfirmed %}
-        <p>{% block whatItIs %}{% endblock %} Cette action est définitive.</p>
-        {% if license is not null %}
-            <blockquote>{% include 'LadbCoreBundle:License:_publish-modal.part.html.twig' with { 'license':license } %}</blockquote>
+        {% if entity.isLocked %}
+            <div class="media">
+                <div class="media-left" style="padding-top: 5px;">
+                    <i class="ladb-icon-lock ladb-icon-lg"></i>
+                </div>
+                <div class="media-body">
+                    Ce contenu est verrouillé pour modération. Il est pour le moment impossible de le publier.
+                </div>
+            </div>
+        {% else %}
+            <p>{% block whatItIs %}{% endblock %} Cette action est définitive.</p>
+            {% if license is not null %}
+                <blockquote>{% include 'LadbCoreBundle:License:_publish-modal.part.html.twig' with { 'license':license } %}</blockquote>
+            {% endif %}
+            <p>Confirmez l'action pour continuer.</p>
         {% endif %}
-        <p>Confirmez l'action pour continuer.</p>
     {% else %}
         <div class="media">
             <div class="media-left" style="padding-top: 5px;">
@@ -27,10 +38,12 @@
 {% block footerInner %}
     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
     {% if app.user.emailConfirmed %}
-        {% if license is not null %}
-            <a href="{{ ladb_entity_url_action(licenseEntity, 'edit', true, false) }}#license" class="btn btn-default">Modifier la licence</a>
+        {% if not entity.isLocked %}
+            {% if license is not null %}
+                <a href="{{ ladb_entity_url_action(licenseEntity, 'edit', true, false) }}#license" class="btn btn-default">Modifier la licence</a>
+            {% endif %}
+            <a href="{{ ladb_entity_url_action(entity, 'publish', true, false) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a>
         {% endif %}
-        <a href="{{ ladb_entity_url_action(entity, 'publish', true, false) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a>
     {% else %}
         <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
     {% endif %}

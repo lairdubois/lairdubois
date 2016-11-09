@@ -105,6 +105,39 @@ class CreationController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_creation_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_creation_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$creation = $creationRepository->findOneById($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_creation_lock or core_creation_unlock)');
+		}
+		if ($creation->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_creation_lock or core_creation_unlock)');
+		}
+
+		// Lock or Unlock
+		$creationManager = $this->get(CreationManager::NAME);
+		if ($lock) {
+			$creationManager->lock($creation);
+		} else {
+			$creationManager->unlock($creation);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $creation->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_creation_publish")
 	 */
 	public function publishAction($id) {
@@ -120,6 +153,9 @@ class CreationController extends Controller {
 		}
 		if ($creation->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_creation_publish)');
+		}
+		if ($creation->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_creation_publish)');
 		}
 
 		// Publish

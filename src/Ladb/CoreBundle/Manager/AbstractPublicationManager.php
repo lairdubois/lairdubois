@@ -16,7 +16,41 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 
 abstract class AbstractPublicationManager extends AbstractManager {
 
-	public function publishPublication(AbstractPublication $publication, $flush = true) {
+	/////
+
+	public function lock(AbstractPublication $publication, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$publication->setIsLocked(true);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_LOCKED, new PublicationEvent($publication));
+
+	}
+
+	public function unlock(AbstractPublication $publication, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$publication->setIsLocked(false);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_UNLOCKED, new PublicationEvent($publication));
+
+	}
+
+	/////
+
+	protected function publishPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
 		$publication->setIsDraft(false);
@@ -37,7 +71,7 @@ abstract class AbstractPublicationManager extends AbstractManager {
 
 	}
 
-	public function unpublishPublication(AbstractPublication $publication, $flush = true) {
+	protected function unpublishPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
 		$publication->setIsDraft(true);

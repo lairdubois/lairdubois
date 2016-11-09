@@ -70,6 +70,8 @@ class HowtoController extends Controller {
 		);
 	}
 
+	/////
+
 	/**
 	 * @Route("/pas-a-pas/new", name="core_howto_new")
 	 * @Template()
@@ -131,6 +133,39 @@ class HowtoController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_howto_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_howto_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_howto_lock or core_howto_unlock)');
+		}
+		if ($howto->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_howto_lock or core_howto_unlock)');
+		}
+
+		// Lock or Unlock
+		$howtoManager = $this->get(HowtoManager::NAME);
+		if ($lock) {
+			$howtoManager->lock($howto);
+		} else {
+			$howtoManager->unlock($howto);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $howto->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/pas-a-pas/{id}/publish", requirements={"id" = "\d+"}, name="core_howto_publish")
 	 */
 	public function publishAction($id) {
@@ -146,6 +181,9 @@ class HowtoController extends Controller {
         }
 		if ($howto->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_howto_publish)');
+		}
+		if ($howto->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_howto_publish)');
 		}
 		if ($howto->getPublishedArticleCount() == 0) {
 			throw $this->createNotFoundException('Not enough published articles');

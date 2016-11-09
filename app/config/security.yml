@@ -47,6 +47,8 @@ security:
 
         - { path: /new$, role: ROLE_USER }
         - { path: /create$, role: ROLE_USER }
+        - { path: /lock$, role: ROLE_USER }
+        - { path: /unlock$, role: ROLE_USER }
         - { path: /publish$, role: ROLE_USER }
         - { path: /unpublish$, role: ROLE_USER }
         - { path: /update$, role: ROLE_USER }

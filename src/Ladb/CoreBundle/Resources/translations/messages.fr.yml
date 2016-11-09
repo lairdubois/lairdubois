@@ -14,6 +14,8 @@ default:
   unpublishing: Dépublication
   publish: Publier
   publishing: Publication
+  lock: Verrouiller
+  unlock: Déverrouiller
   update: Mettre à jour
   delete: Supprimer
   deletion: Suppression
@@ -135,6 +137,8 @@ creation:
   form:
     inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
     alert:
+      lock_success: La création <strong>%title%</strong> a été vérrouillée.
+      unlock_success: La création <strong>%title%</strong> a été déverrouillée.
       publish_success: La création <strong>%title%</strong> a été publiée.
       unpublish_success: La création <strong>%title%</strong> a été dépubliée.
       update_success: La création <strong>%title%</strong> a été mise à jour.
@@ -185,6 +189,8 @@ plan:
   form:
     inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
     alert:
+      lock_success: Le plan <strong>%title%</strong> a été vérrouillé.
+      unlock_success: Le plan <strong>%title%</strong> a été dévérrouillé.
       publish_success: Le plan <strong>%title%</strong> a été publié.
       unpublish_success: Le plan <strong>%title%</strong> a été dépublié.
       update_success: Le plan <strong>%title%</strong> a été mis à jour.
@@ -216,6 +222,8 @@ workshop:
   converttohowto: Convertir en pas à pas
   form:
     alert:
+      lock_success: L'atelier <strong>%title%</strong> a été vérrouillé.
+      unlock_success: L'atelier <strong>%title%</strong> a été dévérrouillé.
       publish_success: L'atelier <strong>%title%</strong> a été publié.
       unpublish_success: L'atelier <strong>%title%</strong> a été dépublié.
       update_success: L'atelier <strong>%title%</strong> a été mis à jour.
@@ -252,6 +260,8 @@ howto:
   wip_warning: Ce pas à pas présente un projet <strong>en cours de réalisation</strong>.
   form:
     alert:
+      lock_success: Le pas à pas <strong>%title%</strong> a été vérrouillé.
+      unlock_success: Le pas à pas <strong>%title%</strong> a été dévérrouillé.
       publish_success: Le pas à pas <strong>%title%</strong> a été publié.
       unpublish_success: Le pas à pas <strong>%title%</strong> a été dépublié.
       update_success: Le pas à pas <strong>%title%</strong> a été mis à jour.
@@ -310,6 +320,8 @@ find:
       event_was_completed: L'évènement s'est terminé
   form:
     alert:
+      lock_success: La trouvaille <strong>%title%</strong> a été vérrouillée.
+      lock_success: La trouvaille <strong>%title%</strong> a été dévérrouillée.
       publish_success: La trouvaille <strong>%title%</strong> a été publiée.
       unpublish_success: La trouvaille <strong>%title%</strong> a été dépubliée.
       update_success: La trouvaille <strong>%title%</strong> a été mise à jour.
