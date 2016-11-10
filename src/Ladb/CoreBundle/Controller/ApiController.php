@@ -21,11 +21,28 @@ class ApiController extends Controller {
 
 		$url = $request->get('url');
 
-		if (strpos($url, 'http://www.lairdubois.fr') != 0) {
+		if (strpos($url, 'https://www.lairdubois.fr/') != 0) {
 			throw $this->createNotFoundException('Invalid URL (url='.$url.')');
 		}
 
 		switch ($network) {
+
+			case 'facebook':
+
+				// Facebook
+
+				$accessToken = $this->getParameter('facebook_access_token');
+
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, "https://graph.facebook.com/v2.2/?id=".$url.'&fields=og_object{engagement}&access_token='.$accessToken);
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+				$curlResults = curl_exec($curl);
+				curl_close($curl);
+				$json = json_decode($curlResults, true);
+				$count = intval($json['og_object']['engagement']['count']);
+
+				break;
 
 			case 'google-plus':
 

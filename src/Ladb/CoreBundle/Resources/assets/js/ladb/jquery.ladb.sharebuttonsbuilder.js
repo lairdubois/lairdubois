@@ -34,7 +34,7 @@
                     'p[url]': url
                 });
                 if (withCounters) {
-                    $.getJSON('https://graph.facebook.com/?id=' + url, function(data) {
+                    $.getJSON('/api/facebook/share.count.json?url=' + url, function(data) {
                         that.appendCounterBadge(button, data.shares);
                     });
                 }
