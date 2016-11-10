@@ -24,6 +24,7 @@ use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
+use Ladb\CoreBundle\Model\MultiPicturedInterface;
 use Ladb\CoreBundle\Entity\View;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 
@@ -69,7 +70,7 @@ class PublicationListener implements EventSubscriberInterface {
 		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
 			return;
 		}
-		if ($publication instanceof ViewableInterface && !$publication->getIsViewable()) {
+		if (!($publication instanceof ViewableInterface) || !$publication->getIsViewable()) {
 			return;
 		}
 
@@ -79,33 +80,34 @@ class PublicationListener implements EventSubscriberInterface {
 
 	}
 
-	private function _resolveMainPicturePageImageFilter(AbstractPublication $publication) {
-		if (!($publication instanceof PicturedInterface)) {
-			return;
-		}
-		if ($publication instanceof ViewableInterface && !$publication->getIsViewable()) {
-			return;
-		}
+	private function _resolvePicturesPageImageFilter(AbstractPublication $publication) {
 
-		$mainPicture = $publication->getMainPicture();
-		if (is_null($mainPicture)) {
-			return;
-		}
-
-		$path = $mainPicture->getPath();
 		$filter = '400x400o';
+		if ($publication instanceof MultiPicturedInterface) {
+			$pictures = $publication->getPictures();
+		} else if ($publication instanceof PicturedInterface) {
+			$pictures = array( $publication->getMainPicture() );
+		} else {
+			return;
+		}
 
 		$filterManager = $this->container->get('liip_imagine.filter.manager');
 		$cacheManager = $this->container->get('liip_imagine.cache.manager');
 		$dataManager = $this->container->get('liip_imagine.data.manager');
 
-		if (!$cacheManager->isStored($path, $filter)) {
-			$binary = $dataManager->find($filter, $path);
-			$cacheManager->store(
-				$filterManager->applyFilter($binary, $filter),
-				$path,
-				$filter
-			);
+		foreach ($pictures as $picture) {
+			if (is_null($picture)) {
+				continue;
+			}
+			$path = $picture->getPath();
+			if (!$cacheManager->isStored($path, $filter)) {
+				$binary = $dataManager->find($filter, $path);
+				$cacheManager->store(
+					$filterManager->applyFilter($binary, $filter),
+					$path,
+					$filter
+				);
+			}
 		}
 
 	}
@@ -131,19 +133,11 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if (!($publication instanceof DraftableInterface)) {
+		// Resolve main picture to avoid image url redirection
+		$this->_resolvePicturesPageImageFilter($publication);
 
-			// Search index update
-			$searchUtils = $this->container->get(SearchUtils::NAME);
-			$searchUtils->insertEntityToIndex($publication);
-
-			// Resolve main picture to avoid image url redirection
-			$this->_resolveMainPicturePageImageFilter($publication);
-
-			// Scrape Open Graph URL
-			$this->_scrapeOpenGraph($publication);
-
-		}
+		// Scrape Open Graph URL
+		$this->_scrapeOpenGraph($publication);
 
 	}
 
@@ -163,7 +157,7 @@ class PublicationListener implements EventSubscriberInterface {
 		$searchUtils->insertEntityToIndex($publication);
 
 		// Resolve main picture to avoid image url redirection
-		$this->_resolveMainPicturePageImageFilter($publication);
+		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
 		$this->_scrapeOpenGraph($publication);
@@ -210,15 +204,11 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication instanceof ViewableInterface) {
+		// Resolve pictures
+		$this->_resolvePicturesPageImageFilter($publication);
 
-			// Resolve main picture to avoid image url redirection
-			$this->_resolveMainPicturePageImageFilter($publication);
-
-			// Scrape Open Graph URL
-			$this->_scrapeOpenGraph($publication);
-
-		}
+		// Scrape Open Graph URL
+		$this->_scrapeOpenGraph($publication);
 
 	}
 
@@ -268,16 +258,6 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication instanceof ViewableInterface) {
-
-			// Resolve main picture to avoid image url redirection
-			$this->_resolveMainPicturePageImageFilter($publication);
-
-			// Scrape Open Graph URL
-			$this->_scrapeOpenGraph($publication);
-
-		}
-
 		if ($publication instanceof CommentableInterface) {
 
 			// Increment users counters
@@ -301,6 +281,12 @@ class PublicationListener implements EventSubscriberInterface {
 			$activityUtils->createPublishActivity($publication->getUser(), $publication->getType(), $publication->getId());
 
 		}
+
+		// Resolve main picture to avoid image url redirection
+		$this->_resolvePicturesPageImageFilter($publication);
+
+		// Scrape Open Graph URL
+		$this->_scrapeOpenGraph($publication);
 
 	}
 

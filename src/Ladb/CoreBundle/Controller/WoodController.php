@@ -98,17 +98,18 @@ class WoodController extends Controller {
 
 			$user->incrementProposalCount(2);	// Name and Grain of this new wood
 
-			$wood->setIsDraft(false);
-
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
 			$activityUtils->createContributeActivity($nameValue, false);
 			$activityUtils->createContributeActivity($grainValue, false);
 
+			// Dispatch publication event
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($wood));
+
+			$wood->setIsDraft(false);
 			$om->flush();
 
-			// Dispatch publication events
-			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($wood));
+			// Dispatch publication event
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_PUBLISHED, new PublicationEvent($wood));
 
 			return $this->redirect($this->generateUrl('core_wood_show', array('id' => $wood->getSluggedId())));

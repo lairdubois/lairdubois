@@ -92,17 +92,18 @@ class ProviderController extends Controller {
 
 			$user->incrementProposalCount(2);	// Sign and Logo of this new provider
 
-			$provider->setIsDraft(false);
-
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
 			$activityUtils->createContributeActivity($signValue, false);
 			$activityUtils->createContributeActivity($logoValue, false);
 
+			// Dispatch publication event
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($provider));
+
+			$provider->setIsDraft(false);
 			$om->flush();
 
-			// Dispatch publication events
-			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($provider));
+			// Dispatch publication event
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_PUBLISHED, new PublicationEvent($provider));
 
 			return $this->redirect($this->generateUrl('core_provider_show', array('id' => $provider->getSluggedId())));
