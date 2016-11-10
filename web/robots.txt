@@ -8,7 +8,11 @@ Disallow: /*/create*$
 Disallow: /*/edit$
 Disallow: /*/delete$
 Disallow: /*/update$
+Disallow: /*/lock$
+Disallow: /*/unlock$
 Disallow: /rechercher/*
+Disallow: /likes/*
+Disallow: /votes/*
 Disallow: /*download$
 Disallow: /*.xhr$
 Disallow: /*.geojson$
