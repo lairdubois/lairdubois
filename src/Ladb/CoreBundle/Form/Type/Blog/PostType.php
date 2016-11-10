@@ -47,10 +47,10 @@ class PostType extends AbstractType {
 					->addModelTransformer(new TagsToNamesTransformer($this->om))
 			)
 			->add('highlightLevel', ChoiceType::class, array(
-				'choices' => array(
+				'choices' => array_flip(array(
 					Post::HIGHLIGHT_LEVEL_NONE => 'Aucune mise en avant',
 					Post::HIGHLIGHT_LEVEL_USER_ONLY => 'Mise en avant pour les utilisateurs connectés seulement',
-					Post::HIGHLIGHT_LEVEL_ALL => 'Mise en avant pour tout le monde'),
+					Post::HIGHLIGHT_LEVEL_ALL => 'Mise en avant pour tout le monde')),
 				'expanded' => true,
 			))
 		;

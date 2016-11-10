@@ -107,8 +107,9 @@ class WoodController extends Controller {
 
 			$om->flush();
 
-			// Dispatch publication event
+			// Dispatch publication events
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($wood));
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_PUBLISHED, new PublicationEvent($wood));
 
 			return $this->redirect($this->generateUrl('core_wood_show', array('id' => $wood->getSluggedId())));
 		}

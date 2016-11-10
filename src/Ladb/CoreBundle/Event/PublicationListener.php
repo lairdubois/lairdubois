@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Event;
 
-use Ladb\CoreBundle\Entity\AbstractPublication;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Ladb\CoreBundle\Utils\OpenGraphUtils;
@@ -24,7 +23,9 @@ use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
+use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Entity\View;
+use Ladb\CoreBundle\Entity\AbstractPublication;
 
 class PublicationListener implements EventSubscriberInterface {
 
@@ -64,16 +65,49 @@ class PublicationListener implements EventSubscriberInterface {
 
 	/////
 
-	private function _scrapeOpenGraph($publication) {
+	private function _scrapeOpenGraph(AbstractPublication $publication) {
 		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
 			return;
 		}
-		if (!$publication->getIsViewable()) {
+		if ($publication instanceof ViewableInterface && !$publication->getIsViewable()) {
 			return;
 		}
+
 		// Scrape Open Graph URL (canonical)
 		$openGraphUtils = $this->container->get(OpenGraphUtils::NAME);
 		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL, false));
+
+	}
+
+	private function _resolveMainPicturePageImageFilter(AbstractPublication $publication) {
+		if (!($publication instanceof PicturedInterface)) {
+			return;
+		}
+		if ($publication instanceof ViewableInterface && !$publication->getIsViewable()) {
+			return;
+		}
+
+		$mainPicture = $publication->getMainPicture();
+		if (is_null($mainPicture)) {
+			return;
+		}
+
+		$path = $mainPicture->getPath();
+		$filter = '400x400o';
+
+		$filterManager = $this->container->get('liip_imagine.filter.manager');
+		$cacheManager = $this->container->get('liip_imagine.cache.manager');
+		$dataManager = $this->container->get('liip_imagine.data.manager');
+
+		if (!$cacheManager->isStored($path, $filter)) {
+			$binary = $dataManager->find($filter, $path);
+			$cacheManager->store(
+				$filterManager->applyFilter($binary, $filter),
+				$path,
+				$filter
+			);
+		}
+
 	}
 
 	/////
@@ -103,6 +137,9 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->insertEntityToIndex($publication);
 
+			// Resolve main picture to avoid image url redirection
+			$this->_resolveMainPicturePageImageFilter($publication);
+
 			// Scrape Open Graph URL
 			$this->_scrapeOpenGraph($publication);
 
@@ -124,6 +161,9 @@ class PublicationListener implements EventSubscriberInterface {
 		// Search index update
 		$searchUtils = $this->container->get(SearchUtils::NAME);
 		$searchUtils->insertEntityToIndex($publication);
+
+		// Resolve main picture to avoid image url redirection
+		$this->_resolveMainPicturePageImageFilter($publication);
 
 		// Scrape Open Graph URL
 		$this->_scrapeOpenGraph($publication);
@@ -171,6 +211,9 @@ class PublicationListener implements EventSubscriberInterface {
 		}
 
 		if ($publication instanceof ViewableInterface) {
+
+			// Resolve main picture to avoid image url redirection
+			$this->_resolveMainPicturePageImageFilter($publication);
 
 			// Scrape Open Graph URL
 			$this->_scrapeOpenGraph($publication);
@@ -226,6 +269,9 @@ class PublicationListener implements EventSubscriberInterface {
 		}
 
 		if ($publication instanceof ViewableInterface) {
+
+			// Resolve main picture to avoid image url redirection
+			$this->_resolveMainPicturePageImageFilter($publication);
 
 			// Scrape Open Graph URL
 			$this->_scrapeOpenGraph($publication);

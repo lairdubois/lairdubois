@@ -101,8 +101,9 @@ class ProviderController extends Controller {
 
 			$om->flush();
 
-			// Dispatch publication event
+			// Dispatch publication events
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($provider));
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_PUBLISHED, new PublicationEvent($provider));
 
 			return $this->redirect($this->generateUrl('core_provider_show', array('id' => $provider->getSluggedId())));
 		}
