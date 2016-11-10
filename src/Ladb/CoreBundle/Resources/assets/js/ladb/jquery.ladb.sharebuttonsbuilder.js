@@ -35,7 +35,7 @@
                 });
                 if (withCounters) {
                     $.getJSON('/api/facebook/share.count.json?url=' + url, function(data) {
-                        that.appendCounterBadge(button, data.shares);
+                        that.appendCounterBadge(button, data.count);
                     });
                 }
                 break;
