@@ -100,7 +100,7 @@
         </li>
         {% if is_granted('ROLE_ADMIN') %}
             <li{% if tab == 'admin' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_admin', { 'username':user.usernameCanonical }) }}" class="admin"><i class="ladb-icon-lock"></i>&nbsp;{{ 'user.admin.tab'|trans()|capitalize }}</a>
+                <a href="{{ path('core_user_show_admin', { 'username':user.usernameCanonical }) }}" class="admin"><i class="ladb-icon-admin"></i>&nbsp;{{ 'user.admin.tab'|trans()|capitalize }}</a>
             </li>
         {% endif %}
     </ul>
