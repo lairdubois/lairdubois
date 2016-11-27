@@ -22,7 +22,7 @@
             var $anchor = $('<a>').hide().attr({
                 href: settings.location,
                 target: '_blank',
-                class: 'ladb-box-transient-link-' + Math.random()
+                class: 'ladb-box-transient-link'
             });
             $anchor.appendTo('body');
             var $link = $('.' + $anchor.attr('class'));
