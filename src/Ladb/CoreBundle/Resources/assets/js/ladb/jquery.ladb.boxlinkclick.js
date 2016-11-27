@@ -22,8 +22,8 @@
             var $anchor = $('<a>').hide().attr({
                 href: settings.location,
                 target: '_blank',
-                class: 'ladb-box-transient-link'
             });
+            $anchor.addClass('ladb-box-transient-link');
             $anchor.appendTo('body');
             var $link = $('.' + $anchor.attr('class'));
             $link[0].click();
