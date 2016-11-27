@@ -21,7 +21,7 @@
         if (event.ctrlKey || event.shiftKey || event.metaKey || (event.button && event.button == 1)) {
             var $anchor = $('<a>').hide().attr({
                 href: settings.location,
-                target: '_blank',
+                target: '_blank'
             });
             $anchor.addClass('ladb-box-transient-link');
             $anchor.appendTo('body');
