@@ -8,7 +8,7 @@
 {% set pictureFilterMode = pictureFilterMode|default('i') %}
 
 <div class="ladb-masonry-item ladb-masonry-column">
-    <div class="ladb-box"{% block onClickOuter %} onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A') { {% block onClickInner %}document.location = '{{ ladb_entity_url_action(entity) }}';{% endblock %} }"{% endblock %}>
+    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'}){% endblock %}"{% endblock %}>
         <div class="ladb-content">
             <div class="uk-overlay">
                 {% block imageOuter %}

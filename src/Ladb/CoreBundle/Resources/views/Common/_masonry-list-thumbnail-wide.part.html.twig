@@ -6,7 +6,7 @@
 {% set noMicrodata = true %}
 
 <div class="ladb-masonry-item ladb-masonry-column-wide">
-    <div class="ladb-box" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A') { document.location = '{{ ladb_entity_url_action(entity) }}'; }">
+    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'}){% endblock %}"{% endblock %}>
         {% if entity.isDraft %}
             <div class="ladb-draft-badge">
                 {{ 'default.choice.draft'|transchoice(1)|capitalize }}
