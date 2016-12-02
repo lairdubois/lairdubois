@@ -146,7 +146,7 @@ class User extends \FOS\UserBundle\Model\User implements LocalisableInterface, I
 
 	/**
 	 * @ORM\Column(type="string", length=50, nullable=true)
-	 * @Assert\Regex("/^[a-zA-Z0-9]+$/")
+	 * @Assert\Regex("/^[a-zA-Z0-9_]+$/")
 	 */
 	private $instagram;
 
