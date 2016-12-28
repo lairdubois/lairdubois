@@ -110,12 +110,13 @@
                                 {% endif %}
                                 {% if wonderType == 'creation' %}
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#admin_converttoworkshop_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'creation.converttoworkshop'|trans() }}</a></li>
-                                    <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'creation.converttofind'|trans() }}</a></li>
+                                    <li><a href="#admin_converttoworkshop_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-workshop"></i> {{ 'creation.converttoworkshop'|trans() }}</a></li>
+                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'creation.converttohowto'|trans() }}</a></li>
+                                    <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-globe"></i> {{ 'creation.converttofind'|trans() }}</a></li>
                                 {% endif %}
                                 {% if wonderType == 'workshop' %}
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> {{ 'workshop.converttohowto'|trans() }}</a></li>
+                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'workshop.converttohowto'|trans() }}</a></li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -140,6 +141,16 @@
                                 {% block footerInner %}
                                     <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
                                     <a href="{{ path('core_creation_admin_converttoworkshop', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('creation.converttohowto'|trans()) } %}
+                                {% block bodyInner %}
+                                    <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en pas à pas.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_creation_admin_converttohowto', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
                                 {% endblock %}
                             {% endembed %}
                             {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttofind_wonder_modal', 'title':('creation.converttofind'|trans()) } %}

@@ -7,6 +7,7 @@ use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
@@ -189,6 +190,121 @@ class CreationManager extends AbstractWonderManager {
 		}
 
 		return $workshop;
+	}
+
+	public function convertToHowto(Creation $creation, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Create a new howto and its article
+
+		$article = new \Ladb\CoreBundle\Entity\Howto\Article();
+		$article->setTitle('Le projet');
+		$article->setIsDraft(false);
+
+		if ($creation->getPictures()->count() > 1) {
+
+			$textBlock = new \Ladb\CoreBundle\Entity\Block\Text();
+			$textBlock->setBody('Images du projet');
+			$textBlock->setSortIndex(0);
+			$article->addBodyBlock($textBlock);
+
+			$galleryBlock = new \Ladb\CoreBundle\Entity\Block\Gallery();
+			foreach ($creation->getPictures() as $picture) {
+				$galleryBlock->addPicture($picture);
+			}
+			$galleryBlock->setSortIndex(1);
+			$article->addBodyBlock($galleryBlock);
+
+		}
+
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+		$blockBodiedUtils->copyBlocksTo($creation, $article);
+
+		$howto = new \Ladb\CoreBundle\Entity\Howto\Howto();
+		$howto->setCreatedAt($creation->getCreatedAt());
+		$howto->setUpdatedAt($creation->getUpdatedAt());
+		$howto->setChangedAt($creation->getChangedAt());
+		$howto->setIsDraft($creation->getIsDraft());
+		$howto->setTitle($creation->getTitle());
+		$howto->setUser($creation->getUser());
+		$howto->setMainPicture($creation->getMainPicture());
+		$howto->setBody('Projet de création.');
+		$howto->setLicense(new \Ladb\CoreBundle\Entity\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
+
+		$article->setHowto($howto);		// Workaround to $howto->addArticle($article); because it generates a constraint violation on $this->delete($creation, false, false);
+		if ($howto->getIsDraft()) {
+			$howto->incrementPublishedArticleCount();
+		} else {
+			$howto->incrementDraftArticleCount();
+		}
+		$article->setSortIndex(PHP_INT_MAX);	// Default sort index is max value = new articles at the end of the list
+
+		foreach ($creation->getTags() as $tag) {
+			$howto->addTag($tag);
+		}
+
+		// Transfer plans
+		foreach ($creation->getPlans() as $plan) {
+			$howto->addPlan($plan);
+		}
+
+		// Setup howto's and article's htmlBody
+		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+		$fieldPreprocessorUtils->preprocessFields($howto);
+		$fieldPreprocessorUtils->preprocessFields($article);
+
+		// Persist howto to generate ID
+		$om->persist($howto);
+		$om->persist($article);
+		$om->flush();
+
+		// Dispatch publications event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED_FROM_CONVERT, new PublicationEvent($howto));
+
+		// User counter
+		if ($howto->getIsDraft()) {
+			$howto->getUser()->incrementDraftHowtoCount(1);
+		} else {
+			$howto->getUser()->incrementPublishedHowtoCount(1);
+		}
+
+		// Transfer views
+		$viewableUtils = $this->get(ViewableUtils::NAME);
+		$viewableUtils->transferViews($creation, $howto, false);
+
+		// Transfer likes
+		$likableUtils = $this->get(LikableUtils::NAME);
+		$likableUtils->transferLikes($creation, $howto, false);
+
+		// Transfer comments
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$commentableUtils->transferComments($creation, $howto, false);
+
+		// Transfer watches
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$watchableUtils->transferWatches($creation, $howto, false);
+
+		// transfer reports
+		$reportableUtils = $this->get(ReportableUtils::NAME);
+		$reportableUtils->transferReports($creation, $howto, false);
+
+		// Transfer publish activities
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->transferPublishActivities($creation->getType(), $creation->getId(), $howto->getType(), $howto->getId(), false);
+
+		// Create the witness
+		$witnessManager = $this->get(WitnessManager::NAME);
+		$witnessManager->createConvertedByPublication($creation, $howto, false);
+
+		// Delete the creation
+		$this->delete($creation, false, false);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+		return $howto;
 	}
 
 	public function convertToFind(Creation $creation, $flush = true) {

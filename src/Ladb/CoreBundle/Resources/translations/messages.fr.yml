@@ -132,8 +132,9 @@ creation:
   linkto: Associer une création déjà publiée
   linked_to: Cette création est associée à
   new_warning: Une <strong>création</strong> est une réalisation <strong>personnelle</strong> achevée, majoritairement constituée de <strong>bois</strong> ou conçue pour le <strong>travail du bois</strong> et ne doit représenter qu'<strong>un seul projet</strong>.
-  converttofind: Convertir en trouvaille
   converttoworkshop: Convertir en atelier
+  converttohowto: Convertir en pas à pas
+  converttofind: Convertir en trouvaille
   form:
     inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
     alert:
@@ -159,8 +160,9 @@ creation:
     rebound: '[0,1]Cette création est une inspiration pour une autre création|]1,Inf]Cette création est une inspiration pour %count% autres créations'
   admin:
     alert:
-      converttofind_success: La création %title% a été converti en trouvaille avec succès.
       converttoworkshop_success: La création %title% a été converti en atelier avec succès.
+      converttohowto_success: La création %title% a été converti en pas à pas avec succès.
+      converttofind_success: La création %title% a été converti en trouvaille avec succès.
 
 plan:
   description: Retrouvez tous les plans

@@ -907,6 +907,33 @@ class CreationController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/admin/converttohowto", requirements={"id" = "\d+"}, name="core_creation_admin_converttohowto")
+	 * @Template()
+	 */
+	public function adminConvertToHowtoAction($id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$creation = $creationRepository->findOneById($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
+		}
+
+		// Convert
+		$creationManager = $this->get(CreationManager::NAME);
+		$howto = $creationManager->convertToHowto($creation);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.admin.alert.converttohowto_success', array( '%title%' => $creation->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/admin/converttofind", requirements={"id" = "\d+"}, name="core_creation_admin_converttofind")
 	 * @Template()
 	 */
