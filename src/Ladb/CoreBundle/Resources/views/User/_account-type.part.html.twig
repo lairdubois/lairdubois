@@ -5,6 +5,7 @@
 {% if user.accountType == constant('Ladb\\CoreBundle\\Entity\\User::ACCOUNT_TYPE_ASSO') %}&nbsp;<i class="ladb-icon-badge-asso ladb-user-badge" title="{{ user.displayname }} est une association ou un collectif" data-tooltip="tooltip"></i>
 {% elseif user.accountType == constant('Ladb\\CoreBundle\\Entity\\User::ACCOUNT_TYPE_PRO') %}&nbsp;<i class="ladb-icon-badge-pro ladb-user-badge" title="{{ user.displayname }} travaille dans les métiers du bois" data-tooltip="tooltip"></i>
 {% elseif user.accountType == constant('Ladb\\CoreBundle\\Entity\\User::ACCOUNT_TYPE_HOBBYIST') %}&nbsp;<i class="ladb-icon-badge-hobbyist ladb-user-badge" title="{{ user.displayname }} est passionné-e par le travail du bois" data-tooltip="tooltip"></i>
+{% elseif user.username == 'Toutenbois' %}&nbsp;<i class="ladb-icon-badge-prof ladb-user-badge" title="{{ user.displayname }} est un prof de Maths qui passe beaucoup de temps dans son atelier" data-tooltip="tooltip"></i>
 {% endif %}
 
 {% endspaceless %}
