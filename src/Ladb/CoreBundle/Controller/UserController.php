@@ -151,6 +151,14 @@ class UserController extends Controller {
 
 						break;
 
+					case 'location':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'location' ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'sort':
 
 						switch ($facet->value) {
