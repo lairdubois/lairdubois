@@ -105,7 +105,6 @@ Now you are ready to setup the website itself !
     $ cd /var/www/dev.lairdubois.fr
 ```
 
-
 ## Step 2 - Setup the GIT repository
 
 ``` bash
@@ -144,13 +143,15 @@ Now you are ready to configure Nginx to access to the webroot directory.
 
 > If you are on the **DEV** server :
 
+Not that the given DEV config is configured for running on MacOS.
+
 ``` bash
     $ sudo cp /var/www/dev.lairdubois.fr/docs/nginx/conf/dev.lairdubois.fr.conf /etc/nginx/sites-available/dev.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/dev.lairdubois.fr.conf /etc/nginx/sites-enabled/dev.lairdubois.fr.conf
     $ service nginx restart
 ```
 
-## Step 6 - Generate and configure DKIM keys (facultative)
+## Step 6 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
 
 Emails sended by L'Air du Bois uses DKIM (DomainKeys Identified Mail) email authentication method.
 But as you need to add parameter on the DNS record, it may be usefull only on **PROD** server.
@@ -196,7 +197,15 @@ This step will create `web/js` and `web/css` folders and fill them with compiled
     $ bin/console assetic:dump
 ```
 
-## Step 9 - Activate cron commands
+## Step 9 - Install bundle's assets
+
+This step will install base assets (fonts, base images, ...) in `web/bundles` folder.
+
+``` bash
+    $ bin/console assets:install
+```
+
+## Step 10 - Activate cron commands (Not necessary on the **DEV** server)
 
 ``` bash
     $ crontab -e
