@@ -101,6 +101,7 @@ security:
     login:
         heading: Connexion
         username: Nom d'utilisateur
+        username_email: Nom d'utilisateur ou adresse e-mail
         password: Mot de passe
         remember_me: Se souvenir de moi
         submit: Se connecter
