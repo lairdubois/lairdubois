@@ -62,9 +62,30 @@
     {{ parent() }}
     <script>
         $(document).ready(function() {
+
+            {# Setup Tooltips #}
             setupTooltips();
+
+            {# Setup ScrollToTop button #}
             $('#ladb_block_metas').ladbAppendScrollToTopBtn();
+
+
+            {# Setup Comment Widget #}
             $('.ladb-comment-widget').ladbCommentWidget();
+
+            {# Intercept hash that starts with #_ scrollto behavior #}
+            if (window.location.hash && window.location.hash.startsWith('#_')) {
+                setTimeout(function() {
+                    var selector = window.location.hash.replace('#', '#ladb');   {# Change to a valid element ID like #ladb_XXX #}
+                    var $target = $(selector);
+                    $target.ladbScrollTo(null, {
+                        onAfter: function() {
+                            $target.effect('highlight', {}, 1500);
+                        }
+                    });
+                }, 500);
+            }
+
         });
     </script>
     {{ block('blueimpGalleryJavascripts') }}

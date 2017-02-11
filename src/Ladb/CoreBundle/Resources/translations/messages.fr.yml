@@ -478,6 +478,7 @@ follower:
 
 comment:
   list: On en parle ici
+  get_link: Obtenir le lien
   choice:
     comments: '[0,1]commentaire|]1,Inf]commentaires'
 

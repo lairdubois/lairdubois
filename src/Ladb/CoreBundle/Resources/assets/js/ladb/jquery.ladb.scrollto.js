@@ -4,7 +4,8 @@
 
         var settings = $.extend({
             smoothScroll: true,
-            offset: 100
+            offset: 100,
+            onAfter: null
         }, options );
 
         var target = this;
@@ -20,7 +21,12 @@
         if (scrollTop < scrollMax || targetTop - settings.offset <= scrollTop) {
             $(window).scrollTo(target, {
                 duration: settings.smoothScroll ? 500 : 0,
-                offset: { top: (targetTop - settings.offset) < scrollMax ? -settings.offset : 0 }
+                offset: { top: (targetTop - settings.offset) < scrollMax ? -settings.offset : 0 },
+                onAfter: function() {
+                    if (typeof(settings.onAfter) == 'function') {
+                        settings.onAfter();
+                    }
+                }
             });
         }
 
