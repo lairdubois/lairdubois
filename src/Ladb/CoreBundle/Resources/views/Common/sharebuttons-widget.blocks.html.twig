@@ -8,10 +8,10 @@
 
 {% block sharebuttonsList %}
 
-    {% set sbUrl = sbUrl|default(ladb_entity_url_action(entity)) %}
+    {% set sbUrl = sbUrl|default(entity is defined ? ladb_entity_url_action(entity) : pageUrl) %}
     {% set sbTitle = sbTitle|default(pageTitle) %}
     {% set sbDescription = sbDescription|default(pageDescription) %}
-    {% set sbImage = sbImage|default(entity.mainPicture is defined and entity.mainPicture is not null ? (entity.mainPicture.webPath|imagine_filter('600x600i')) : pageImage is iterable ? pageImage[0] : pageImage) %}
+    {% set sbImage = sbImage|default(entity is defined and entity.mainPicture is defined and entity.mainPicture is not null ? (entity.mainPicture.webPath|imagine_filter('600x600i')) : pageImage is iterable ? pageImage[0] : pageImage) %}
     {% set sbTooltip = sbTooltip|default('cette page') %}
     {% set sbTooltipPlacement = sbTooltipPlacement|default('left') %}
 
