@@ -98,7 +98,7 @@ class NotificationController extends Controller {
 			if ($entity instanceof WatchableChildInterface) {
 				$entity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
 			}
-			$returnToUrl = $typableUtils->getUrlAction($entity).'#ladb_comment_'.$activity->getComment()->getId();
+			$returnToUrl = $typableUtils->getUrlAction($entity).'#_comment_'.$activity->getComment()->getId();
 		}
 
 		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Contribute) {
