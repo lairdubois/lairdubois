@@ -17,7 +17,7 @@ use Ladb\CoreBundle\Utils\VideoHostingUtils;
 class YoutubeController extends Controller {
 
 	/**
-	 * @Route("/{embedIdentifier}/new", name="core_youtube_new")
+	 * @Route("/{embedIdentifier}/create", name="core_youtube_create")
 	 * @Template()
 	 */
 	public function newAction($embedIdentifier) {
@@ -68,7 +68,7 @@ class YoutubeController extends Controller {
 		$video = $videoRepository->findOneByEmbedIdentifier($embedIdentifier);
 
 		if (is_null($video)) {
-			return $this->redirect($this->generateUrl('core_youtube_new', array( 'embedIdentifier' => $embedIdentifier )));
+			return $this->redirect($this->generateUrl('core_youtube_create', array( 'embedIdentifier' => $embedIdentifier )));
 		}
 
 		return array(

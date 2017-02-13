@@ -241,7 +241,7 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 
 				// Video data
 				$hash = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$embedIdentifier.'&key='.$googleApiKey), true);
-				if ($hash && isset($hash['items']) && isset($hash['items'][0]) && isset($hash['items'][0]['snippet']) && isset($hash['items'][0]['contentDetails'])) {
+				if ($hash && isset($hash['items']) && isset($hash['items'][0]) && isset($hash['items'][0]['snippet'])) {
 					$snippet = $hash['items'][0]['snippet'];
 					$videoData = array(
 						'thumbnail_loc' => $snippet['thumbnails']['maxres']['url'],
