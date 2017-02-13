@@ -240,19 +240,13 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 				$googleApiKey = $this->getParameter('google_api_key');
 
 				// Video data
-				$hash = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet%2Cstatistics&id='.$embedIdentifier.'&key='.$googleApiKey), true);
+				$hash = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$embedIdentifier.'&key='.$googleApiKey), true);
 				if ($hash && isset($hash['items']) && isset($hash['items'][0]) && isset($hash['items'][0]['snippet']) && isset($hash['items'][0]['contentDetails'])) {
 					$snippet = $hash['items'][0]['snippet'];
-					$contentDetails = $hash['items'][0]['contentDetails'];
-					$statistics = $hash['items'][0]['statistics'];
 					$videoData = array(
 						'thumbnail_loc' => $snippet['thumbnails']['maxres']['url'],
 						'title' => $snippet['title'],
 						'description' => $snippet['description'],
-						'player_loc' => 'http://www.youtube.com/embed/'.$embedIdentifier,
-						'duration' => date_create('@0')->add(new \DateInterval($contentDetails['duration']))->getTimestamp(),
-						'view_count' => $statistics['viewCount'],
-						'uploader' => $snippet['channelTitle'],
 					);
 
 					// Channel data

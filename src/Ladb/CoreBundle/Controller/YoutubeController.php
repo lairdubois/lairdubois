@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller;
 
 use Ladb\CoreBundle\Entity\Youtube\Video;
+use Ladb\CoreBundle\Utils\OpenGraphUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -33,6 +34,7 @@ class YoutubeController extends Controller {
 				throw $this->createNotFoundException('Video not found (core_youtube_show)');
 			}
 
+			// Create a new video entity and cache it in DB
 			$video = new Video();
 			$video->setUser($this->getUser());
 			$video->setEmbedIdentifier($embedIdentifier);
@@ -46,6 +48,10 @@ class YoutubeController extends Controller {
 
 			$om->persist($video);
 			$om->flush();
+
+			// Scrape Open Graph URL
+			$openGraphUtils = $this->get(OpenGraphUtils::NAME);
+			$openGraphUtils->scrape($this->generateUrl('core_youtube_show', array( 'embedIdentifier' => $embedIdentifier )));
 
 		}
 
