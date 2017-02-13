@@ -244,7 +244,7 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 				if ($hash && isset($hash['items']) && isset($hash['items'][0]) && isset($hash['items'][0]['snippet'])) {
 					$snippet = $hash['items'][0]['snippet'];
 					$videoData = array(
-						'thumbnail_loc' => $snippet['thumbnails']['maxres']['url'],
+						'thumbnail_loc' => $snippet['thumbnails']['high']['url'],
 						'title' => $snippet['title'],
 						'description' => $snippet['description'],
 					);
