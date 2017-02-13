@@ -11,6 +11,9 @@
 {% set pageImage = pageImage|default(asset('banner-600x376.jpg')) %}
 {% set pageImageWidth = pageImageWidth|default('620') %}
 {% set pageImageHeight = pageImageHeight|default('376') %}
+{% set pageVideo = pageVideo|default('') %}
+{% set pageVideoWidth = pageVideoWidth|default('360') %}
+{% set pageVideoHeight = pageVideoHeight|default('640') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
 
 {% endspaceless %}
@@ -40,6 +43,11 @@
                         {% endfor %}
                     {% else %}
                         <meta property="og:image" content="{{ pageImage }}" />
+                    {% endif %}
+                    {% if pageVideo %}
+                        <meta property="og:video:width" content="{{ pageVideoWidth }}" />
+                        <meta property="og:video:height" content="{{ pageVideoHeight }}" />
+                        <meta property="og:video" content="{{ pageVideo }}" />
                     {% endif %}
                 {% endblock %}
                 {% block headTwitterCardMetas %}

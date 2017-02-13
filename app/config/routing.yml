@@ -138,3 +138,7 @@ ladb_core_funding:
     resource: "Ladb\\CoreBundle\\Controller\\FundingController"
     type:     annotation
 
+ladb_core_yt:
+    resource: "Ladb\\CoreBundle\\Controller\\YtController"
+    type:     annotation
+
