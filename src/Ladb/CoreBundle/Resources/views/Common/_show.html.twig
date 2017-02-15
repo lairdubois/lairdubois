@@ -17,14 +17,14 @@
         {% if entity.pictures is defined and entity.pictures is not empty %}
             {% set pageImage = [] %}
             {% for picture in entity.pictures %}
-                {% set pageImage = pageImage|merge([picture.webPath|imagine_filter('400x400o')]) %}
+                {% set pageImage = pageImage|merge([picture.webPath|imagine_filter('470x275o')]) %}
             {% endfor %}
-            {% set pageImageWidth = '400' %}
-            {% set pageImageHeight = '400' %}
+            {% set pageImageWidth = '470' %}
+            {% set pageImageHeight = '275' %}
         {% elseif entity.mainPicture is defined and entity.mainPicture is not null %}
-            {% set pageImage = (entity.mainPicture.webPath|imagine_filter('400x400o')) %}
-            {% set pageImageWidth = '400' %}
-            {% set pageImageHeight = '400' %}
+            {% set pageImage = (entity.mainPicture.webPath|imagine_filter('470x275o')) %}
+            {% set pageImageWidth = '470' %}
+            {% set pageImageHeight = '275' %}
         {% endif %}
     {% endif %}
     {% set pageItemType = pageItemType|default('CreativeWork') %}

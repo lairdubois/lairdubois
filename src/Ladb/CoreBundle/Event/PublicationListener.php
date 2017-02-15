@@ -82,7 +82,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 	private function _resolvePicturesPageImageFilter(AbstractPublication $publication) {
 
-		$filter = '400x400o';
+		$filter = '470x275o';
 		if ($publication instanceof MultiPicturedInterface) {
 			$pictures = $publication->getPictures();
 		} else if ($publication instanceof PicturedInterface) {
