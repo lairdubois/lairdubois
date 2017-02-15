@@ -9,11 +9,11 @@
 {% set pageDescription = pageDescription|default('L\'Air du Bois est un espace de partage collaboratif ouvert à tous les amateurs et curieux du travail du bois') %}
 {% set pageAuthor = pageAuthor|default('L\'Air du Bois') %}
 {% set pageImage = pageImage|default(asset('banner-600x376.jpg')) %}
-{% set pageImageWidth = pageImageWidth|default('620') %}
-{% set pageImageHeight = pageImageHeight|default('376') %}
+{% set pageImageWidth = pageImageWidth|default('') %}
+{% set pageImageHeight = pageImageHeight|default('') %}
 {% set pageVideo = pageVideo|default('') %}
-{% set pageVideoWidth = pageVideoWidth|default('640') %}
-{% set pageVideoHeight = pageVideoHeight|default('360') %}
+{% set pageVideoWidth = pageVideoWidth|default('') %}
+{% set pageVideoHeight = pageVideoHeight|default('') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
 
 {% endspaceless %}
@@ -35,8 +35,6 @@
                     <meta property="og:title" content="{{ pageTitle }}" />
                     <meta property="og:description" content="{{ pageDescription }}" />
                     <meta property="og:site_name" content="L'Air du Bois" />
-                    <meta property="og:image:width" content="{{ pageImageWidth }}" />
-                    <meta property="og:image:height" content="{{ pageImageHeight }}" />
                     {% if pageImage is iterable %}
                         {% for image in pageImage %}
                             <meta property="og:image" content="{{ image }}" />
@@ -44,10 +42,20 @@
                     {% else %}
                         <meta property="og:image" content="{{ pageImage }}" />
                     {% endif %}
+                    {% if pageImageWidth %}
+                        <meta property="og:image:width" content="{{ pageImageWidth }}" />
+                    {% endif %}
+                    {% if pageImageHeight %}
+                        <meta property="og:image:height" content="{{ pageImageHeight }}" />
+                    {% endif %}
                     {% if pageVideo %}
-                        <meta property="og:video:width" content="{{ pageVideoWidth }}" />
-                        <meta property="og:video:height" content="{{ pageVideoHeight }}" />
                         <meta property="og:video" content="{{ pageVideo }}" />
+                        {% if pageVideoWidth %}
+                            <meta property="og:video:width" content="{{ pageVideoWidth }}" />
+                        {% endif %}
+                        {% if pageVideoWidth %}
+                            <meta property="og:video:height" content="{{ pageVideoHeight }}" />
+                        {% endif %}
                     {% endif %}
                 {% endblock %}
                 {% block headTwitterCardMetas %}

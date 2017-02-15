@@ -5,9 +5,9 @@
 {% set pageDescription = took.description|truncate(90) %}
 {% set pageAuthor = took.channelTitle %}
 {% set pageImage = took.thumbnail.webPath|imagine_filter('400x400o') %}
-{% set pageImageWidth = 400 %}
-{% set pageImageHeight = 400 %}
 {% set pageVideo = 'http://www.youtube.com/v/'~took.embedIdentifier~'?version=3' %}
+{% set pageVideoWidth = '640' %}
+{% set pageVideoHeight = '360' %}
 
 {% set hideHeaderContainer = false %}
 {% set bodyContainerClasses = 'ladb-margin-top' %}
