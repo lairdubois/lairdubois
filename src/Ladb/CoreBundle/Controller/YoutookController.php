@@ -208,7 +208,7 @@ class YoutookController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}", name="core_youtook_show")
+	 * @Route("/{id}.html", name="core_youtook_show")
 	 * @Template()
 	 */
 	public function showAction($id) {
