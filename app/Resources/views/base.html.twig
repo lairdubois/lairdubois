@@ -30,11 +30,11 @@
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 {% block headOpenGraphMetas %}
                     <meta property="fb:app_id" content="456294721102605" />
+                    <meta property="og:site_name" content="L'Air du Bois" />
                     <meta property="og:url" content="{{ pageUrl }}" />
                     <meta property="og:type" content="{{ pageType }}" />
                     <meta property="og:title" content="{{ pageTitle }}" />
                     <meta property="og:description" content="{{ pageDescription }}" />
-                    <meta property="og:site_name" content="L'Air du Bois" />
                     {% if pageImage is iterable %}
                         {% for image in pageImage %}
                             <meta property="og:image" content="{{ image }}" />
@@ -49,7 +49,7 @@
                         <meta property="og:image:height" content="{{ pageImageHeight }}" />
                     {% endif %}
                     {% if pageVideo %}
-                        <meta property="og:video" content="{{ pageVideo }}" />
+                        <meta property="og:video:url" content="{{ pageVideo }}" />
                         {% if pageVideoWidth %}
                             <meta property="og:video:width" content="{{ pageVideoWidth }}" />
                         {% endif %}

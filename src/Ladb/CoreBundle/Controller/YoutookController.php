@@ -15,7 +15,7 @@ use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 
 /**
- * @Route("/youtook")
+ * @Route("/yt")
  */
 class YoutookController extends Controller {
 
