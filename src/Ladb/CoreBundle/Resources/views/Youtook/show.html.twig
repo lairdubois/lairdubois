@@ -1,5 +1,6 @@
 {% extends 'LadbCoreBundle::layout.html.twig' %}
 
+{% set pageUrl = ladb_entity_url_action(took, 'show', true, false) %}
 {% set pageType = 'video' %}
 {% set pageTitle = took.title %}
 {% set pageDescription = took.description|truncate(90) %}
