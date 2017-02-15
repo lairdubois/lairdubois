@@ -5,7 +5,9 @@
 {% set pageDescription = took.description|truncate(90) %}
 {% set pageAuthor = took.channelTitle %}
 {% set pageImage = took.thumbnail.webPath|imagine_filter('400x400o') %}
-{% set pageVideo = 'https://www.youtube.com/v/'~took.embedIdentifier %}
+{% set pageImageWidth = 400 %}
+{% set pageImageHeight = 400 %}
+{% set pageVideo = 'http://www.youtube.com/v/'~took.embedIdentifier~'?version=3' %}
 
 {% set hideHeaderContainer = false %}
 {% set bodyContainerClasses = 'ladb-margin-top' %}
@@ -14,6 +16,11 @@
 
 {% set sbUrl = app.request.uri %}
 {% set sbImage = pageImage %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    <meta property="og:video:type" content="application/x-shockwave-flash" />
+{% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
