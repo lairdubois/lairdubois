@@ -4,7 +4,6 @@ namespace Ladb\CoreBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Ladb\CoreBundle\Entity\Howto\Article;
 use Ladb\CoreBundle\Entity\Block\Video;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 

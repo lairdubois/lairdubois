@@ -1,0 +1,68 @@
+{% extends 'LadbCoreBundle::layout.html.twig' %}
+
+{% set pageType = 'video' %}
+{% set pageTitle = took.title %}
+{% set pageDescription = took.description|truncate(90) %}
+{% set pageAuthor = took.channelTitle %}
+{% set pageImage = took.thumbnail.webPath|imagine_filter('400x400o') %}
+{% set pageVideo = 'https://www.youtube.com/v/'~took.embedIdentifier %}
+
+{% set hideHeaderContainer = false %}
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+
+{% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
+
+{% set sbUrl = app.request.uri %}
+{% set sbImage = pageImage %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('sharebuttonsJavascript') }}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ block('sharebuttonsFloatVertical') }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    <div class="ladb-avatar-header">
+        <div class="ladb-header-tools">
+            <a href="#share_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
+            &nbsp;
+            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+                {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
+                {% block bodyInner %}
+                    <h4>{{ 'share.social.heading'|trans() }}</h4>
+                    {% set sbTooltipPlacement = 'top' %}
+                    {{ block('sharebuttonsInlineHorizontal') }}
+                    <hr>
+                    <h4>Partage par lien sur Facebook</h4>
+                    <input type="text" class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();" value="{{ ladb_entity_url_action(took) }}" />
+                {% endblock %}
+                {% block footerInner %}
+                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+                {% endblock %}
+            {% endembed %}
+        </div>
+        <img src="{{ took.channelThumbnailLoc }}" class="ladb-avatar img-rounded">
+        <div class="ladb-body">
+            <h1 class="ladb-heading">{{ pageTitle }}</h1>
+            {% block subheading %}<span class="ladb-subheading">{{ 'default.by'|trans() }} <a href="https://www.youtube.com/channel/{{ took.channelId }}" target="_blank">{{ pageAuthor }}</a></span>{% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {{ ladb_video_player_frame(took.kind, took.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail')|raw }}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ took.description|nl2br }}
+            <hr>
+            <i class="ladb-icon-link"></i> <a href="{{ took.url }}" target="_blank" itemprop="url">{{ took.url|truncate(50) }}</a>
+            <br>
+            <br>
+            Découvrez toutes les vidéos de <strong>{{ pageAuthor }}</strong> sur sa <a href="https://www.youtube.com/channel/{{ took.channelId }}" target="_blank">chaîne YouTube</a>.
+        </div>
+    </div>
+{% endblock %}

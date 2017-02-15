@@ -72,6 +72,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Provider';
+			// Video
+			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
+				return '\Ladb\CoreBundle\Entity\Youtook\Took';
 
 		}
 		return null;
@@ -196,6 +199,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				$url = $router->generate('core_provider_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
+				$url = $router->generate('core_youtook_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

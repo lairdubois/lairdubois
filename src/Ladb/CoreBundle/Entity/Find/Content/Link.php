@@ -46,5 +46,4 @@ class Link extends AbstractContent {
 		return $this->thumbnail;
 	}
 
-
 }

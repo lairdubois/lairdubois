@@ -910,3 +910,11 @@ funding:
     donations: '[0,1]don|]1,Inf]dons'
     donors: '[0,1]donateur|]1,Inf]donateurs'
     transactions: '[0,1]transaction|]1,Inf]transactions'
+
+youtook:
+  new: Ajouter un took
+  edit: Edition du took
+  list: Les tooks
+  user_list: Mes tooks
+  alert:
+    success: <i class="ladb-icon-thumb-up"></i> Félicitations, votre Took a bien été enregistré. Cliquez sur le bouton <strong>Partager</strong> pour récupérer le lien à partager sur votre page <strong>Facebook</strong>.

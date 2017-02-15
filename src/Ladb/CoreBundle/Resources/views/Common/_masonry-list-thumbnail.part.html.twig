@@ -31,17 +31,19 @@
                     <div class="ladb-overlay-caption">{% block title %}<h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{{ entity.title }}</h2>{% endblock %}</div>
                 {% endblock %}
             </div>
-            <ul class="ladb-counters">
-                {% block entityMetas %}
-                    <li class="ladb-counter"><i class="ladb-icon-eye"></i> <span>{{ entity.viewCount|number_format(0, ',', ' ') }}</span></li>
-                    {% if entity.commentCount is defined and entity.commentCount > 0 %}
-                        <li class="ladb-counter"><i class="ladb-icon-comment"></i> <span>{{ entity.commentCount|number_format(0, ',', ' ') }}</span></li>
-                    {% endif %}
-                    {% if entity.likeCount is defined and entity.likeCount > 0 %}
-                        <li class="ladb-counter"><i class="ladb-icon-like"></i> <span>{{ entity.likeCount|number_format(0, ',', ' ') }}</span></li>
-                    {% endif %}
-                {% endblock %}
-            </ul>
+            {% block entityMetasOuter %}
+                <ul class="ladb-counters">
+                    {% block entityMetas %}
+                        <li class="ladb-counter"><i class="ladb-icon-eye"></i> <span>{{ entity.viewCount|number_format(0, ',', ' ') }}</span></li>
+                        {% if entity.commentCount is defined and entity.commentCount > 0 %}
+                            <li class="ladb-counter"><i class="ladb-icon-comment"></i> <span>{{ entity.commentCount|number_format(0, ',', ' ') }}</span></li>
+                        {% endif %}
+                        {% if entity.likeCount is defined and entity.likeCount > 0 %}
+                            <li class="ladb-counter"><i class="ladb-icon-like"></i> <span>{{ entity.likeCount|number_format(0, ',', ' ') }}</span></li>
+                        {% endif %}
+                    {% endblock %}
+                </ul>
+            {% endblock %}
         </div>
         {% block footerOuter %}
             <div class="ladb-footer">

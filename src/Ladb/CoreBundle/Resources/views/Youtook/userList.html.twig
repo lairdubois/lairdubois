@@ -1,0 +1,47 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set pageTitle = 'youtook.user_list'|trans() %}
+{% set pageDescription = 'youtook.description'|trans() %}
+
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+{% set noStickyHeader = true %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.youtookwidget.js' %}
+        <script type="text/javascript" src="{{ asset_url }}?v=201702151127"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#ladb_youtook_widget').ladbYoutookWidget();
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    <div class="ladb-youtook-banner">
+        <i class="ladb-icon-youtube-square"></i>
+        <i class="ladb-icon-caret-right"></i>
+        <i class="ladb-icon-facebook-square"></i>
+    </div>
+    <div id="ladb_youtook_widget">
+        {% include 'LadbCoreBundle:Youtook:_form.part.html.twig' %}&nbsp;
+    </div>
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+        <div class="panel-body">
+            Cette page liste vos <strong>Tooks</strong> : des raccourcis vers vos vidéos <i class="ladb-icon-youtube-square"></i> <strong>YouTube</strong> pour les partager sur <i class="ladb-icon-facebook-square"></i>  <strong>Facebook</strong> <span style="text-decoration: underline;">sans restriction de taille</span>. <small><a href="{{ path('core_faq_question_show', { 'id':'qu-est-ce-qu-un-took' }) }}">(En savoir plus)</a></small>
+            <br>
+            <em>Pour créer un Took, collez le lien de votre vidéo YouTube dans le champs ci-dessus et suivez le guide !</em>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Youtook:_list-n.part.html.twig' %}
+{% endblock %}

@@ -85,6 +85,7 @@ class ValidUsernameValidator extends ConstraintValidator {
 				'financement',
 				'outils',
 				'api',
+				'youtook',
 
 			);
 

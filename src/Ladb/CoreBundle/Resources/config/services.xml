@@ -233,6 +233,9 @@
         <service id="ladb_core.no_media_link_validator" class="Ladb\CoreBundle\Validator\Constraints\NoMediaLinkValidator">
             <tag name="validator.constraint_validator" alias="ladb_core.no_media_link_validator"/>
         </service>
+        <service id="ladb_core.valid_took_validator" class="Ladb\CoreBundle\Validator\Constraints\ValidTookValidator">
+            <tag name="validator.constraint_validator" alias="ladb_core.valid_took_validator"/>
+        </service>
 
         <!-- Listeners -->
         <service id="ladb_core.kernel_listener" class="Ladb\CoreBundle\Event\KernelListener">
@@ -352,6 +355,11 @@
         <service id="ladb_usersettings" class="Ladb\CoreBundle\Form\Type\UserSettingsType">
             <tag name="form.type" />
             <argument type="service" id="doctrine.orm.entity_manager"></argument>
+        </service>
+        <service id="ladb_youtook_took" class="Ladb\CoreBundle\Form\Type\Youtook\NewTookType">
+            <tag name="form.type" />
+            <argument type="service" id="doctrine.orm.entity_manager"></argument>
+            <argument type="service" id="ladb_core.video_hosting_utils"></argument>
         </service>
 
     </services>

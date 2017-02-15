@@ -1,0 +1,35 @@
+{% extends 'LadbCoreBundle:Common:_form.html.twig' %}
+
+{% set pageTitle = 'youtook.edit'|trans() %}
+{% set formAction = path('core_youtook_update', { 'id':took.id }) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'youtook.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_youtook_show', { 'id':took.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.back'|trans() }}</a>
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sidenav %}
+    <li><a href="#content"><i class="ladb-icon-globe"></i> {{ 'default.link'|trans() }}</a></li>
+{% endblock %}
+
+{% block sections %}
+    {{ parent() }}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'globe', 'title':('default.link'|trans()), 'formSection':'content' } %}
+        {% block body %}
+            <div class="form-group">
+                {{ form_label(form.title) }}
+                {{ form_errors(form.title) }}
+                {{ form_widget(form.title) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.description) }}
+                {{ form_errors(form.description) }}
+                {{ form_widget(form.description, { 'attr':{ 'class':'form-control ladb-autosize', 'rows':10 } }) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
