@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Entity\Youtook;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
+use Ladb\CoreBundle\Model\PicturedInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
@@ -15,7 +16,7 @@ use Ladb\CoreBundle\Model\TypableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Youtook\TookRepository")
  * @LadbAssert\ValidTook()
  */
-class Took extends AbstractAuthoredPublication implements TypableInterface{
+class Took extends AbstractAuthoredPublication implements PicturedInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Youtook\Took';
 	const TYPE = 112;
@@ -124,6 +125,10 @@ class Took extends AbstractAuthoredPublication implements TypableInterface{
 
 	public function getThumbnail() {
 		return $this->thumbnail;
+	}
+
+	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
+		return $this->setThumbnail($mainPicture);
 	}
 
 	public function getMainPicture() {

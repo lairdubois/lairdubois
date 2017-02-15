@@ -10,9 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Youtook\Took;
 use Ladb\CoreBundle\Form\Type\Youtook\NewTookType;
 use Ladb\CoreBundle\Form\Type\Youtook\EditTookType;
-use Ladb\CoreBundle\Utils\OpenGraphUtils;
-use Ladb\CoreBundle\Utils\VideoHostingUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
 
 /**
  * @Route("/youtook")
@@ -50,6 +50,10 @@ class YoutookController extends Controller {
 				$om->flush();
 
 			}
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($took));
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('youtook.alert.success'));
@@ -115,6 +119,10 @@ class YoutookController extends Controller {
 			}
 
 			$om->flush();
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($took));
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.update_success', array( '%title%' => $took->getTitle() )));
