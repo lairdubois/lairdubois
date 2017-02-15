@@ -205,6 +205,11 @@ liip_imagine:
                 thumbnail: { size: [400, 400], mode: outbound }
             post_processors:
                 ladb_imageoptimizer: {}
+        470x275o: # Page video thumbnail
+            filters:
+                thumbnail: { size: [470, 275], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
         505x180o: # Banner
             filters:
                 thumbnail: { size: [505, 180], mode: outbound }
