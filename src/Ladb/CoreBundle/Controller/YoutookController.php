@@ -2,8 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller;
 
-use Ladb\CoreBundle\Manager\WitnessManager;
-use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,9 +11,11 @@ use Ladb\CoreBundle\Entity\Youtook\Took;
 use Ladb\CoreBundle\Form\Type\Youtook\NewTookType;
 use Ladb\CoreBundle\Form\Type\Youtook\EditTookType;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\Youtook\TookManager;
+use Ladb\CoreBundle\Manager\WitnessManager;
 
 /**
  * @Route("/yt")
