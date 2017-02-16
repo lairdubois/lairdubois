@@ -5,7 +5,9 @@ namespace Ladb\CoreBundle\Entity\Youtook;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
+use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
+use Ladb\CoreBundle\Model\TitledInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
@@ -16,7 +18,7 @@ use Ladb\CoreBundle\Model\TypableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Youtook\TookRepository")
  * @LadbAssert\ValidTook()
  */
-class Took extends AbstractAuthoredPublication implements PicturedInterface {
+class Took extends AbstractAuthoredPublication implements TitledInterface, BodiedInterface, PicturedInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Youtook\Took';
 	const TYPE = 112;
@@ -35,13 +37,6 @@ class Took extends AbstractAuthoredPublication implements PicturedInterface {
 	private $url;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
-	 * @ORM\JoinColumn(name="thumbnail_id", nullable=true)
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
-	 */
-	private $thumbnail;
-
-	/**
 	 * @ORM\Column(type="smallint")
 	 */
 	private $kind = VideoHostingUtils::KIND_UNKNOW;
@@ -57,9 +52,26 @@ class Took extends AbstractAuthoredPublication implements PicturedInterface {
 	private $title;
 
 	/**
-	 * @ORM\Column(type="text", length=255)
+	 * @ORM\Column(type="text")
 	 */
-	private $description;
+	private $body;
+
+	/**
+	 * @ORM\Column(type="text")
+	 */
+	private $htmlBody;
+
+	/**
+	 * @ORM\Column(type="string", length=255, name="thumbnail_loc")
+	 */
+	private $thumbnailUrl;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\JoinColumn(name="main_picture_id", nullable=true)
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 */
+	private $mainPicture;
 
 	/**
 	 * @ORM\Column(type="string", length=255, name="channel_id")
@@ -67,9 +79,9 @@ class Took extends AbstractAuthoredPublication implements PicturedInterface {
 	private $channelId;
 
 	/**
-	 * @ORM\Column(type="string", length=255, name="channel_thumbnail_loc")
+	 * @ORM\Column(type="string", length=255, name="channel_thumbnail_url")
 	 */
-	private $channelThumbnailLoc;
+	private $channelThumbnailUrl;
 
 	/**
 	 * @ORM\Column(type="string", length=255, name="channel_title")
@@ -116,25 +128,6 @@ class Took extends AbstractAuthoredPublication implements PicturedInterface {
 		return $this->url;
 	}
 
-	// Thumbnail /////
-
-	public function setThumbnail(\Ladb\CoreBundle\Entity\Picture $thumbnail = null) {
-		$this->thumbnail = $thumbnail;
-		return $this;
-	}
-
-	public function getThumbnail() {
-		return $this->thumbnail;
-	}
-
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
-		return $this->setThumbnail($mainPicture);
-	}
-
-	public function getMainPicture() {
-		return $this->getThumbnail();
-	}
-
 	// Kind /////
 
 	public function setKind($kind) {
@@ -161,46 +154,84 @@ class Took extends AbstractAuthoredPublication implements PicturedInterface {
 
 	public function setTitle($title) {
 		$this->title = $title;
+		return $this;
 	}
 
 	public function getTitle() {
 		return $this->title;
 	}
 
-	// Description /////
+	// Body /////
 
-	public function setDescription($description) {
-		$this->description = $description;
+	public function setBody($body) {
+		$this->body = $body;
+		return $this;
 	}
 
-	public function getDescription() {
-		return $this->description;
+	public function getBody() {
+		return $this->body;
+	}
+
+	// Body /////
+
+	public function setHtmlBody($htmlBody) {
+		$this->htmlBody = $htmlBody;
+		return $this;
+	}
+
+	public function getHtmlBody() {
+		return $this->htmlBody;
+	}
+
+	// ThumbnailUrl /////
+
+	public function setThumbnailUrl($thumbnailUrl) {
+		$this->thumbnailUrl = $thumbnailUrl;
+		return $this;
+	}
+
+	public function getThumbnailUrl() {
+		return $this->thumbnailUrl;
+	}
+
+	// Thumbnail /////
+
+	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
+		$this->mainPicture = $mainPicture;
+		return $this;
+	}
+
+	public function getMainPicture() {
+		return $this->mainPicture;
 	}
 
 	// ChannelId /////
 
 	public function setChannelId($channelId) {
 		$this->channelId = $channelId;
+		return $this;
 	}
 
 	public function getChannelId() {
 		return $this->channelId;
 	}
 
-	// ChannelThumbnailLoc /////
+	// ChannelThumbnailUrl /////
 
-	public function setChannelThumbnailLoc($channelThumbnailLoc) {
-		$this->channelThumbnailLoc = $channelThumbnailLoc;
+	public function setChannelThumbnailUrl($channelThumbnailUrl) {
+		$this->channelThumbnailUrl = $channelThumbnailUrl;
+		return $this;
 	}
 
-	public function getChannelThumbnailLoc() {
-		return $this->channelThumbnailLoc;
+	public function getChannelThumbnailUrl() {
+		return $this->channelThumbnailUrl;
 	}
 
 	// ChannelTitle /////
 
 	public function setChannelTitle($channelTitle) {
 		$this->channelTitle = $channelTitle;
+		return $this;
 	}
 
 	public function getChannelTitle() {

@@ -482,6 +482,31 @@ EOT
 		}
 		unset($textures);
 
+		// Check Tooks /////
+
+		$output->writeln('<info>Checking Tooks...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 't', 'mp' ))
+			->from('LadbCoreBundle:Youtook\Took', 't')
+			->leftJoin('t.mainPicture', 'mp')
+		;
+
+		try {
+			$tooks = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$tooks = array();
+		}
+
+		foreach ($tooks as $took) {
+			$mainPicture = $took->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($tooks);
+
 		// Cleanup /////
 
 		$forced = $input->getOption('force');

@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,6 +15,7 @@ use Ladb\CoreBundle\Form\Type\Youtook\EditTookType;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Manager\Youtook\TookManager;
 
 /**
  * @Route("/yt")
@@ -43,6 +46,9 @@ class YoutookController extends Controller {
 				$om->flush();
 
 			} else {
+
+				$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+				$fieldPreprocessorUtils->preprocessFields($took);
 
 				$took->setUser($this->getUser());
 
@@ -95,7 +101,7 @@ class YoutookController extends Controller {
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_youtook_update")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Youtube:edit.html.twig")
+	 * @Template("LadbCoreBundle:Youtook:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -114,6 +120,9 @@ class YoutookController extends Controller {
 
 		if ($form->isValid()) {
 
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($took);
+
 			if ($took->getUser()->getId() == $this->getUser()->getId()) {
 				$took->setUpdatedAt(new \DateTime());
 			}
@@ -128,7 +137,7 @@ class YoutookController extends Controller {
 			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.update_success', array( '%title%' => $took->getTitle() )));
 
 			// Regenerate the form
-			$form = $this->createForm(TookType::class, $took);
+			$form = $this->createForm(EditTookType::class, $took);
 
 		} else {
 
@@ -141,6 +150,31 @@ class YoutookController extends Controller {
 			'took' => $took,
 			'form'  => $form->createView(),
 		);
+	}
+
+	/**
+	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_youtook_delete")
+	 */
+	public function deleteAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+
+		$took = $tookRepository->findOneById($id);
+		if (is_null($took)) {
+			throw $this->createNotFoundException('Unable to find Took entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $took->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_youtook_delete)');
+		}
+
+		// Delete
+		$tookManager = $this->get(TookManager::NAME);
+		$tookManager->delete($took);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('youtook.alert.delete_success', array( '%title%' => $took->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_youtook_user_list'));
 	}
 
 	/**
@@ -214,12 +248,16 @@ class YoutookController extends Controller {
 	public function showAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+		$witnessManager = $this->get(WitnessManager::NAME);
 
 		$id = intval($id);
 
 		$took = $tookRepository->findOneById($id);
 		if (is_null($took)) {
-			throw $this->createNotFoundException('Unable to find Video entity (id='.$id.').');
+			if ($response = $witnessManager->checkResponse(Took::TYPE, $id)) {
+				return $response;
+			}
+			throw $this->createNotFoundException('Unable to find Took entity (id='.$id.').');
 		}
 
 		return array(

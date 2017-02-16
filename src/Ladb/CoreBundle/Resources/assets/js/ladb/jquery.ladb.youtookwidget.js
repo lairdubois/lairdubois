@@ -31,6 +31,7 @@
             clearForm: true,
             beforeSubmit: function() {
                 that.markLoading();
+                that.$element.find('input').prop('disabled', true);
             },
             success: function(data, textStatus, jqXHR) {
                 var $data = $(data);
@@ -43,6 +44,7 @@
             },
             error: function() {
                 that.unmarkLoading();
+                that.$element.find('input').prop('disabled', false);
             }
         });
 

@@ -170,6 +170,9 @@
         <service id="ladb_core.funding_manager" class="Ladb\CoreBundle\Manager\Funding\FundingManager">
             <argument type="service" id="service_container"/>
         </service>
+        <service id="ladb_core.took_manager" class="Ladb\CoreBundle\Manager\Youtook\TookManager">
+            <argument type="service" id="service_container"/>
+        </service>
 
         <!-- Validators -->
         <service id="ladb_core.valid_username_validator" class="Ladb\CoreBundle\Validator\Constraints\ValidUsernameValidator">

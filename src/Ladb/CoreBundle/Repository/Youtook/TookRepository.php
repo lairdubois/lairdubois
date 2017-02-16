@@ -75,10 +75,10 @@ class TookRepository extends AbstractEntityRepository {
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 't', 'u', 'th' ))
+			->select(array( 't', 'u', 'mp' ))
 			->from($this->getEntityName(), 't')
 			->innerJoin('t.user', 'u')
-			->innerJoin('t.thumbnail', 'th')
+			->innerJoin('t.mainPicture', 'mp')
 			->where('t.user = :user')
 			->setParameter('user', $user)
 			->setFirstResult($offset)

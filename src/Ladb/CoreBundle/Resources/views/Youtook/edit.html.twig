@@ -13,23 +13,12 @@
 {% endblock %}
 
 {% block sidenav %}
-    <li><a href="#content"><i class="ladb-icon-globe"></i> {{ 'default.link'|trans() }}</a></li>
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' %}
 {% endblock %}
 
 {% block sections %}
     {{ parent() }}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'globe', 'title':('default.link'|trans()), 'formSection':'content' } %}
-        {% block body %}
-            <div class="form-group">
-                {{ form_label(form.title) }}
-                {{ form_errors(form.title) }}
-                {{ form_widget(form.title) }}
-            </div>
-            <div class="form-group">
-                {{ form_label(form.description) }}
-                {{ form_errors(form.description) }}
-                {{ form_widget(form.description, { 'attr':{ 'class':'form-control ladb-autosize', 'rows':10 } }) }}
-            </div>
-        {% endblock %}
-    {% endembed %}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true } %}
+    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true } %}
 {% endblock %}

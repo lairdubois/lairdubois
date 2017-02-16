@@ -41,10 +41,11 @@ class NewTookType extends AbstractType {
 					$data = $this->videoHostingUtils->getVideoGwData($took->getKind(), $took->getEmbedIdentifier());
 					if (!is_null($data)) {
 
-						if (is_null($took->getThumbnail())) {
+						if (is_null($took->getMainPicture())) {
 							$thumbnailUrl = $data['videoData']['thumbnail_loc'];
 							if (!is_null($thumbnailUrl)) {
 
+								// Grab picture
 								$mainPicture = new Picture();
 								$mainPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
 
@@ -58,15 +59,16 @@ class NewTookType extends AbstractType {
 									$this->om->persist($mainPicture);
 								}
 
-								$took->setThumbnail($mainPicture);
+								$took->setThumbnailUrl($thumbnailUrl);
+								$took->setMainPicture($mainPicture);
 							}
 						}
 
 						// Fill took's properties
 						$took->setTitle($data['videoData']['title']);
-						$took->setDescription($data['videoData']['description']);
+						$took->setBody($data['videoData']['description']);
 						$took->setChannelId($data['channelData']['id']);
-						$took->setChannelThumbnailLoc($data['channelData']['thumbnail_loc']);
+						$took->setChannelThumbnailUrl($data['channelData']['thumbnail_loc']);
 						$took->setChannelTitle($data['channelData']['title']);
 
 					}

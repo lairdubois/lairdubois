@@ -918,3 +918,4 @@ youtook:
   user_list: Mes tooks
   alert:
     success: <i class="ladb-icon-thumb-up"></i> Félicitations, votre Took a bien été enregistré. Cliquez sur le bouton <strong>Partager</strong> pour récupérer le lien à partager sur votre page <strong>Facebook</strong>.
+    delete_success: Le took <strong>%title%</strong> a été supprimé.
