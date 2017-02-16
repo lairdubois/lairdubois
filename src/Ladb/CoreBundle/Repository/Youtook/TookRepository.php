@@ -59,10 +59,10 @@ class TookRepository extends AbstractEntityRepository {
 	public function findPagined($offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 't', 'th' ))
+			->select(array( 't', 'mp' ))
 			->from($this->getEntityName(), 't')
 			->innerJoin('t.user', 'u')
-			->innerJoin('t.thumbnail', 'th')
+			->innerJoin('t.mainPicture', 'mp')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
