@@ -359,10 +359,14 @@
             <tag name="form.type" />
             <argument type="service" id="doctrine.orm.entity_manager"></argument>
         </service>
-        <service id="ladb_youtook_took" class="Ladb\CoreBundle\Form\Type\Youtook\NewTookType">
+        <service id="ladb_youtook_new_took" class="Ladb\CoreBundle\Form\Type\Youtook\NewTookType">
             <tag name="form.type" />
             <argument type="service" id="doctrine.orm.entity_manager"></argument>
             <argument type="service" id="ladb_core.video_hosting_utils"></argument>
+        </service>
+        <service id="ladb_youtook_edit_took" class="Ladb\CoreBundle\Form\Type\Youtook\EditTookType">
+            <tag name="form.type" />
+            <argument type="service" id="doctrine.orm.entity_manager"></argument>
         </service>
 
     </services>

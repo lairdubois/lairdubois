@@ -916,6 +916,11 @@ youtook:
   edit: Edition du took
   list: Les tooks
   user_list: Mes tooks
-  alert:
-    success: <i class="ladb-icon-thumb-up"></i> Félicitations, votre Took a bien été enregistré. Cliquez sur le bouton <strong>Partager</strong> pour récupérer le lien à partager sur votre page <strong>Facebook</strong>.
-    delete_success: Le took <strong>%title%</strong> a été supprimé.
+  new_warning: <p>Une <strong>Took</strong> est un raccourcis vers une vidéo <strong>YouTube</strong> destiné à être partagé sur <strong>Facebook</strong>.</p><ul><li>Les informations présentes dans les champs ci-dessous sont initialement récupérées sur YouTube lors de la création de votre Took.</li><li>La modifications qui peuvent être apportées ici ne sont pas répercutées sur la vidéo <em>YouTube</em> originale. Elles vous permettent surtout à adapter le contenu à votre partage Facebook.</li></ul>
+  form:
+    alert:
+      success: <i class="ladb-icon-thumb-up"></i> Félicitations, votre Took a bien été enregistré. Cliquez sur le bouton <strong>Partager</strong> pour récupérer le lien à partager sur votre page <strong>Facebook</strong>.
+      delete_success: Le took <strong>%title%</strong> a été supprimé.
+    help:
+      title: Renseignez ici le titre de votre Took.
+      thumbnail: Définissez ici la miniature de votre Took. La modification de cette image peut être intéressante pour avoir une miniature spécialement dédiée au partage sur Facebook.

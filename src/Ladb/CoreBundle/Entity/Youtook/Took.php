@@ -48,6 +48,7 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 
 	/**
 	 * @ORM\Column(type="string", length=255)
+	 * @Assert\NotBlank()
 	 */
 	private $title;
 
@@ -70,6 +71,7 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="main_picture_id", nullable=true)
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\NotBlank()
 	 */
 	private $mainPicture;
 
