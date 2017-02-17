@@ -62,7 +62,7 @@ class YoutookController extends Controller {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($took));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('youtook.alert.success'));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('youtook.form.alert.create_success'));
 
 			$success = true;
 		}
@@ -134,7 +134,7 @@ class YoutookController extends Controller {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($took));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.update_success', array( '%title%' => $took->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('youtook.form.alert.update_success', array( '%title%' => $took->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(EditTookType::class, $took);
@@ -172,7 +172,7 @@ class YoutookController extends Controller {
 		$tookManager->delete($took);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('youtook.alert.delete_success', array( '%title%' => $took->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('youtook.form.alert.delete_success', array( '%title%' => $took->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_youtook_user_list'));
 	}
