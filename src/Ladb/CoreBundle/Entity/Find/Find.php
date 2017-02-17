@@ -4,10 +4,10 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Entity\Find\Content\Event;
-use Ladb\CoreBundle\Model\JoinableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\JoinableInterface;
+use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
@@ -19,6 +19,7 @@ use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
+use Ladb\CoreBundle\Entity\Find\Content\Event;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
@@ -26,7 +27,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Find\FindRepository")
  * @LadbAssert\UniqueFind()
  */
-class Find extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
+class Find extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
 	const TYPE = 104;
@@ -177,6 +178,12 @@ class Find extends AbstractAuthoredPublication implements IndexableInterface, Ti
 
 	public function getIsShown() {
 		return $this->isShown;
+	}
+
+	// IsScrapable /////
+
+	public function getIsScrapable() {
+		return $this->getIsViewable();
 	}
 
 	// Title /////

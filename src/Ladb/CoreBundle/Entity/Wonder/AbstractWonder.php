@@ -4,7 +4,6 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\StripableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\EmbeddableInterface;
@@ -20,12 +19,14 @@ use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
+use Ladb\CoreBundle\Model\ScrapableInterface;
+use Ladb\CoreBundle\Model\StripableInterface;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractWonder extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, TaggableInterface, ViewableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
+abstract class AbstractWonder extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -150,6 +151,12 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Ind
 
 	public function getIsShown() {
 		return $this->isShown;
+	}
+
+	// IsScrapable /////
+
+	public function getIsScrapable() {
+		return $this->getIsViewable();
 	}
 
 	// Title /////

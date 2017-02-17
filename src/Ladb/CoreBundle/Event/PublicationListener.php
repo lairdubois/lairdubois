@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Model\ScrapableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Ladb\CoreBundle\Utils\OpenGraphUtils;
@@ -70,7 +71,7 @@ class PublicationListener implements EventSubscriberInterface {
 		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
 			return;
 		}
-		if (!($publication instanceof ViewableInterface) || !$publication->getIsViewable()) {
+		if (!($publication instanceof ScrapableInterface) || !$publication->getIsScrapable()) {
 			return;
 		}
 

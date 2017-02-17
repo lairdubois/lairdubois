@@ -19,13 +19,14 @@ use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
+use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_howto")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Howto\HowtoRepository")
  */
-class Howto extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BodiedInterface, TaggableInterface, LicensedInterface, ViewableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface {
+class Howto extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BodiedInterface, TaggableInterface, LicensedInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
     const TYPE = 106;
@@ -237,7 +238,13 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
 		return $this->isShown;
 	}
 
-    // Title /////
+	// IsScrapable /////
+
+	public function getIsScrapable() {
+		return $this->getIsViewable();
+	}
+
+	// Title /////
 
     public function setTitle($title) {
         $this->title = $title;

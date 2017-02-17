@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
@@ -18,13 +17,15 @@ use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
+use Ladb\CoreBundle\Model\ScrapableInterface;
+use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_blog_post")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Blog\PostRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Post extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BlockBodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
+class Post extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BlockBodiedInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Blog\Post';
 	const TYPE = 108;
@@ -146,6 +147,12 @@ class Post extends AbstractAuthoredPublication implements IndexableInterface, Ti
 
 	public function getIsShown() {
 		return $this->isShown;
+	}
+
+	// IsScrapable /////
+
+	public function getIsScrapable() {
+		return $this->getIsViewable();
 	}
 
 	// Title /////

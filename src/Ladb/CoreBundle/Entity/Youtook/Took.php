@@ -24,12 +24,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 	const TYPE = 112;
 
 	/**
-	 * @Gedmo\Slug(fields={"title"}, separator="-")
-	 * @ORM\Column(type="string", length=100, unique=true)
-	 */
-	private $slug;
-
-	/**
 	 * @ORM\Column(type="string", length=255, nullable=false)
 	 * @Assert\NotBlank()
 	 * @Assert\Url()
@@ -51,6 +45,12 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 	 * @Assert\NotBlank()
 	 */
 	private $title;
+
+	/**
+	 * @Gedmo\Slug(fields={"title"}, separator="-")
+	 * @ORM\Column(type="string", length=100, unique=true)
+	 */
+	private $slug;
 
 	/**
 	 * @ORM\Column(type="text")
@@ -104,19 +104,10 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 		return Took::TYPE;
 	}
 
-	// Slug /////
+	// IsScrapable /////
 
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
+	public function getIsScrapable() {
+		return true;
 	}
 
 	// Url /////
@@ -161,6 +152,21 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 
 	public function getTitle() {
 		return $this->title;
+	}
+
+	// Slug /////
+
+	public function setSlug($slug) {
+		$this->slug = $slug;
+		return $this;
+	}
+
+	public function getSlug() {
+		return $this->slug;
+	}
+
+	public function getSluggedId() {
+		return $this->id.'-'.$this->slug;
 	}
 
 	// Body /////

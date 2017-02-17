@@ -16,11 +16,12 @@ use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\VotableParentInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
+use Ladb\CoreBundle\Model\ScrapableInterface;
 
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractKnowledge extends AbstractPublication implements VotableParentInterface, TitledInterface, PicturedInterface, IndexableInterface, ViewableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface {
+abstract class AbstractKnowledge extends AbstractPublication implements VotableParentInterface, TitledInterface, PicturedInterface, IndexableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface {
 
 	const ATTRIB_TYPE = 0;
 	const ATTRIB_MULTIPLE = 1;
@@ -127,6 +128,12 @@ abstract class AbstractKnowledge extends AbstractPublication implements VotableP
 
 	public function getIsShown() {
 		return $this->isShown;
+	}
+
+	// IsScrapable /////
+
+	public function getIsScrapable() {
+		return $this->getIsViewable();
 	}
 
 	// Title /////

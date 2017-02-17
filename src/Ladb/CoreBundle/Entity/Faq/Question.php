@@ -4,27 +4,27 @@ namespace Ladb\CoreBundle\Entity\Faq;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
-use Ladb\CoreBundle\Model\TypableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
+use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_faq_question")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Faq\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, BlockBodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
+class Question extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, BlockBodiedInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Faq\Question';
 	const TYPE = 110;
@@ -140,6 +140,12 @@ class Question extends AbstractAuthoredPublication implements IndexableInterface
 
 	public function getIsShown() {
 		return $this->isShown;
+	}
+
+	// IsScrapable /////
+
+	public function getIsScrapable() {
+		return $this->getIsViewable();
 	}
 
 	// Weight /////
