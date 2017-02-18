@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
+use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -18,7 +19,7 @@ use Ladb\CoreBundle\Model\TypableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Youtook\TookRepository")
  * @LadbAssert\ValidTook()
  */
-class Took extends AbstractAuthoredPublication implements TitledInterface, BodiedInterface, PicturedInterface {
+class Took extends AbstractAuthoredPublication implements TitledInterface, BodiedInterface, PicturedInterface, ScrapableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Youtook\Took';
 	const TYPE = 112;
