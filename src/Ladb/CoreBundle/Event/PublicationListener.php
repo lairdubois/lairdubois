@@ -77,7 +77,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 		// Scrape Open Graph URL (canonical)
 		$openGraphUtils = $this->container->get(OpenGraphUtils::NAME);
-		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL, false));
+		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', true, false));
 
 	}
 
