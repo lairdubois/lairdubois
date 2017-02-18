@@ -46,7 +46,7 @@
         "afarkas/html5shiv": "3.7.3",
         "blueimp/jquery-file-upload": "9.12.6",
         "jublonet/codebird-php": "2.6.1",
-        "facebook/graph-sdk": "4.0.15",
+        "facebook/graph-sdk": "~5.0",
         "jonnyw/php-phantomjs": "4.5.1",
         "emojione/emojione": "2.2.6",
         "eonasdan/bootstrap-datetimepicker": "4.17.37",

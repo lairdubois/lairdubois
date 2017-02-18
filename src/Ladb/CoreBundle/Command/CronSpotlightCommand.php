@@ -100,7 +100,7 @@ EOT
 
 	private function _publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output) {
 
-		$success = false;
+		$success = true;
 		$message = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		$link = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-facebook-link.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		if ($verbose) {
@@ -113,33 +113,46 @@ EOT
 		$accessToken = $this->getContainer()->getParameter('facebook_access_token');
 
 		// Setup Facebook SDK
-		FacebookSession::setDefaultApplication($appId, $appSecret);
-		$session = new FacebookSession($accessToken);
+		$fb = new \Facebook\Facebook([
+			'app_id' => $appId,
+			'app_secret' => $appSecret,
+			'default_graph_version' => 'v2.8',
+			'default_access_token' => $accessToken,
+		]);
 
 		if ($forced || $forcedFacebook) {
 
-			try {
-
-				$reply = (new FacebookRequest($session, 'POST', '/'. $pageId .'/feed', array(
-					'access_token' => $accessToken,
+			$request = $fb->request(
+				'POST',
+				'/'. $pageId .'/feed',
+				array(
 					'message' => $message,
 					'link' => $link,
-				) ))->execute()->getGraphObject()->asArray();
+				)
+			);
 
-				$success = isset($reply['id']);
+			try {
+				$fb->getClient()->sendRequest($request);
+			} catch (\Facebook\Exceptions\FacebookResponseException $e) {
+
+				// When Graph returns an error
 				if ($verbose) {
-					if ($success) {
-						$output->writeln('<fg=cyan>[Done]</fg=cyan>');
-					} else {
-						$output->writeln('<fg=red>[Error]</fg=red>');
-					}
+					$output->writeln('<fg=red>[Error] Graph returned an error: '.$e->getMessage().'</fg=red>');
 				}
 
-			} catch (\Exception $e) {
 				$success = false;
+			} catch (\Facebook\Exceptions\FacebookSDKException $e) {
+
+				// When validation fails or other local issues
 				if ($verbose) {
-					$output->writeln('<fg=red>[Error] ('.$e->getMessage().')</fg=red>');
+					$output->writeln('<fg=red>[Error] Facebook SDK returned an error: '.$e->getMessage().'</fg=red>');
 				}
+
+				$success = false;
+			}
+
+			if ($verbose && $success) {
+				$output->writeln('<fg=cyan>[Done]</fg=cyan>');
 			}
 
 		} else {
