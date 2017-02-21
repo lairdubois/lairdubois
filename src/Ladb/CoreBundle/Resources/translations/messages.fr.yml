@@ -916,7 +916,13 @@ youtook:
   edit: Edition du took
   list: Les tooks
   user_list: Mes tooks
-  new_warning: <p>Un <strong>Took</strong> est un raccourcis vers une vidéo <strong>YouTube</strong> destiné à être partagé sur <strong>Facebook</strong>.</p><ul><li>Les informations présentes dans les champs ci-dessous sont initialement récupérées sur YouTube lors de la création de votre Took.</li><li>La modifications qui peuvent être apportées ici ne sont pas répercutées sur la vidéo <em>YouTube</em> originale. Elles vous permettent surtout à adapter le contenu à votre partage Facebook.</li><li><span class="ladb-color-danger">Les modifications doivent être faites <strong>AVANT</strong> le partage sur Facebook</span>.</li></ul>
+  new_warning: |
+    <p>Un <strong>Took</strong> est un raccourcis vers une vidéo <strong>YouTube</strong> destiné à être partagé sur <strong>Facebook</strong>.</p>
+    <ul>
+    <li>Les informations présentes dans les champs ci-dessous sont initialement récupérées sur YouTube lors de la création de votre Took.</li>
+    <li>Les modifications qui peuvent être apportées ici ne sont pas répercutées sur la vidéo <em>YouTube</em> originale. Elles vous permettent surtout d'adapter le titre et la miniature à votre partage Facebook.</li>
+    <li><span class="ladb-color-danger">Les modifications doivent être faites <strong>AVANT</strong> le partage sur Facebook</span>.</li>
+    </ul>
   form:
     alert:
       create_success: <i class="ladb-icon-thumb-up"></i> Félicitations, votre Took a bien été enregistré. Cliquez sur le bouton <strong>Partager</strong> pour récupérer le lien à partager sur votre page <strong>Facebook</strong>.
