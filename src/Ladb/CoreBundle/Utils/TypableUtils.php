@@ -72,9 +72,12 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Provider';
-			// Video
+			// Took
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				return '\Ladb\CoreBundle\Entity\Youtook\Took';
+			// Workflow
+			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
+				return '\Ladb\CoreBundle\Entity\Workflow\Workflow';
 
 		}
 		return null;

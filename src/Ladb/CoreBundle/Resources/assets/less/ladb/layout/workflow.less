@@ -1,0 +1,161 @@
+//
+// LADB Workflow
+//
+
+@color-status-1: #ccc;
+@color-status-2: #5c96bc;
+@color-status-3: @ladb-brand-success;
+
+.cnt {
+  position: absolute;
+  top: 50px;
+  left: 90px;
+  right: 0;
+  bottom: 0;
+
+  #ladb_workflow_task_diagram {
+    border: 1px solid @ladb-global-border;
+    background-color: #fff;
+    height: 100%;
+    background-image: linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+    overflow: hidden;
+  }
+
+  .ladb-panzoom {
+    overflow: visible;
+  }
+
+  .ladb-jtk-canvas {
+    position: absolute;
+
+    path, .jtk-endpoint {
+      cursor: pointer;
+    }
+
+    .jtk-drag-hover .ladb-box,
+    .jtk-source-hover .ladb-box,
+    .jtk-target-hover .ladb-box {
+      border-color: @ladb-brand-primary !important;
+    }
+
+  }
+
+}
+
+.ladb-minitools-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  padding: 0;
+  line-height: 24px;
+
+  &:hover {
+    color: @ladb-brand-primary !important;
+  }
+
+}
+
+.ladb-btn-done {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  text-align: center;
+  padding: 0;
+  line-height: 24px;
+
+  &:hover {
+    border-color: #f77f00;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    border-color: #ccc !important;
+  }
+
+}
+
+.ladb-workflow-task-row {
+  line-height: 32px;
+}
+
+.ladb-workflow-task-widget {
+  position: absolute;
+
+  &:hover > .ladb-ep {
+    display: block;
+  }
+
+  .ladb-box {
+    padding: 15px 10px;
+    margin-bottom: 10px;
+    border-width: 2px;
+    border-style: solid;
+    width: 300px;
+    line-height: 28px;
+
+    &.ladb-status-1 {
+      background-color: #eee;
+      border-color: @color-status-1;
+
+      .ladb-minitools-btn {
+        color: darken(@color-status-1, 20%);
+      }
+
+    }
+
+    &.ladb-status-2 {
+      background-color: #fff;
+      border-color: @color-status-2;
+
+      .ladb-minitools-btn {
+        color: darken(@color-status-2, 20%);
+      }
+
+    }
+
+    &.ladb-status-3 {
+      background-color: lighten(@ladb-brand-success, 40%);
+      border-color: @color-status-3;
+
+      .ladb-minitools-btn {
+        color: darken(@color-status-3, 20%);
+      }
+
+    }
+
+  }
+
+  .ladb-ep {
+    display: none;
+    z-index: 4;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    margin-left: -13px;
+    background-color: @ladb-brand-primary;
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+    line-height: 26px;
+    border-radius: 13px;
+
+    &:hover {
+      box-shadow: 0 0 6px #ccc;
+    }
+
+  }
+
+}
+
+.ladb-workflow-task-widget .ladb-body, .ladb-workflow-task-row .ladb-body {
+  margin: 0 38px;
+}
+
+

@@ -142,3 +142,7 @@ ladb_core_youtook:
     resource: "Ladb\\CoreBundle\\Controller\\YoutookController"
     type:     annotation
 
+ladb_core_workflow:
+    resource: "Ladb\\CoreBundle\\Controller\\WorkflowController"
+    type:     annotation
+

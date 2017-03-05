@@ -6,6 +6,6 @@
     <td class="ladb-amount">{{ charge.dutyFreeAmountEur|number_format(2, ',', ' ') }}€</td>
     <td class="ladb-amount">{{ charge.amountEur|number_format(2, ',', ' ') }}€</td>
     {% if is_granted('ROLE_ADMIN') %}
-        <td>{% if charge.isRecurrent %}<i class="ladb-icon-check"></i>{% endif %}</td>
+        <td>{% if charge.isRecurrent %}<i class="ladb-icon-check-square"></i>{% endif %}</td>
     {% endif %}
 </tr>

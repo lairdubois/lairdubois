@@ -371,7 +371,7 @@ class HowtoController extends Controller {
 
 		return array(
 			'howto' => $howto,
-			'form'    => $form->createView(),
+			'form'  => $form->createView(),
 		);
 	}
 

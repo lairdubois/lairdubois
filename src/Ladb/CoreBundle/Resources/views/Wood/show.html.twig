@@ -115,7 +115,7 @@
             {% endif %}
         </div>
         <div class="ladb-meta{% if wood.voteCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-check ladb-icon-fixed-center"></i>
+            <i class="ladb-icon-check-square ladb-icon-fixed-center"></i>
             {% if wood.voteCount > 0 %}
                 <a href="{{ path('core_vote_list_parent_entity', { 'entityType':wood.type, 'entityId':wood.id }) }}">
             {% endif %}

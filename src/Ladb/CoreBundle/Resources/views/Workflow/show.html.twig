@@ -1,0 +1,116 @@
+{% extends 'LadbCoreBundle::layout.html.twig' %}
+
+{% set bodyContainerFluid = true %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
+    <script type="text/javascript" src="http://yurigor.com/js/dagre.min.js"></script>
+    <script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js' %}
+        <script type="text/javascript" src="{{ asset_url }}?v=201703031224"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('.ladb-wrapper').ladbWorkflowBoard({
+                newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
+                createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
+                editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
+                updateTaskPath: '{{ path('core_workflow_task_update', { 'id':workflow.id }) }}',
+                positionUpdateTaskPath: '{{ path('core_workflow_task_position_update', { 'id':workflow.id }) }}',
+                statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
+                deleteTaskPath: '{{ path('core_workflow_task_delete', { 'id':workflow.id }) }}',
+                createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
+                deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
+                startupConnections: [
+                    {% for task in workflow.tasks %}
+                        {% for targetTask in task.targetTasks %}
+                            { from: {{ task.id }}, to: {{ targetTask.id }} },
+                        {% endfor %}
+                    {% endfor %}
+                ]
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+{% endblock %}
+
+{% block bodyWrapperInner %}
+    <div class="cnt">
+        <header style="margin: 0 15px;">
+            {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow} %}
+                {% block headerTools %}
+                    <div class="ladb-header-tools">
+                        <button id="ladb_btn_add_task" class="btn btn-success"><i class="ladb-icon-plus"></i> Ajouter une tâche</button>
+                        {#<button id="ladb_btn_layout" class="btn btn-default"><i class="ladb-icon-plus"></i> Layout</button>#}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </header>
+        <div id="ladb_workflow_task_list" class="panel-group col-md-2 col-xs-12" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_2" aria-expanded="true" aria-controls="collapse_status_2">
+                            <span id="collapse_status_2_badge" class="badge badge-default pull-right">5</span>
+                            Tâches actives
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse_status_2" class="panel-collapse collapse in" role="tabpanel">
+                    <div class="panel-body">
+                        {% for task in workflow.tasks if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %}
+                            {% include 'LadbCoreBundle:Workflow:_task-row.part.html.twig' %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_1" aria-expanded="true" aria-controls="collapse_status_1">
+                            <span id="collapse_status_1_badge" class="badge badge-default pull-right">5</span>
+                            Tâches suivantes
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse_status_1" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        {% for task in workflow.tasks if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_PENDING') %}
+                            {% include 'LadbCoreBundle:Workflow:_task-row.part.html.twig' %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_3" aria-expanded="true" aria-controls="collapse_status_3">
+                            <span id="collapse_status_3_badge" class="badge badge-default pull-right">5</span>
+                            Tâches effectuées
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse_status_3" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        {% for task in workflow.tasks if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') %}
+                            {% include 'LadbCoreBundle:Workflow:_task-row.part.html.twig' %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ladb_workflow_task_diagram" class="col-md-10 col-xs-12">
+            <div class="ladb-panzoom">
+                <div class="ladb-jtk-canvas">
+                    {% for task in workflow.tasks %}
+                        {% include 'LadbCoreBundle:Workflow:_task-widget.part.html.twig' %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bodyFooter %}{% endblock %}

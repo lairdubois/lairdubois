@@ -130,10 +130,12 @@
         {% endblock %}
         {% block body %}
             <div class="ladb-wrapper">
-                {% block bodyHeader %}{% endblock %}
-                <div id="container" class="container{% if bodyContainerClasses is defined %} {{ bodyContainerClasses }}{% endif %}">
-                    {% block bodyContainer %}{% endblock %}
-                </div>
+                {% block bodyWrapperInner %}
+                    {% block bodyHeader %}{% endblock %}
+                    <div id="container" class="container{% if bodyContainerFluid is defined and bodyContainerFluid %}-fluid{% endif %}{% if bodyContainerClasses is defined %} {{ bodyContainerClasses }}{% endif %}">
+                        {% block bodyContainer %}{% endblock %}
+                    </div>
+                {% endblock %}
             </div>
             {% block bodyFooter %}{% endblock %}
         {% endblock %}

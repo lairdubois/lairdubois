@@ -8,7 +8,7 @@
         </a>
     {%  else %}
         <a href="{{ path('core_like_delete', { 'id':likeContext.id }) }}" class="btn btn-default active ladb-like-widget" data-tooltip="tooltip" title="{{ 'like.delete'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-like-widget' });{% else %}$(this).button('loading');{% endif %}">
-            <i class="ladb-icon-check"></i>  {{ 'like.liked'|trans() }}
+            <i class="ladb-icon-check-square"></i>  {{ 'like.liked'|trans() }}
         </a>
     {% endif %}
 {% endif %}

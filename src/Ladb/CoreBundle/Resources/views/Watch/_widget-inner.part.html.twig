@@ -4,7 +4,7 @@
     </a>
 {%  else %}
     <a href="{{ path('core_watch_delete', { 'id':watchContext.id }) }}" class="btn btn-default active" data-tooltip="tooltip" title="{{ 'watch.delete'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-watch-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
-        <i class="ladb-icon-check"></i> {{ 'watch.watched'|trans() }}
+        <i class="ladb-icon-check-square"></i> {{ 'watch.watched'|trans() }}
     </a>
 {% endif %}
 {% if watchContext.count > 0 %}

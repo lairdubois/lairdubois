@@ -60,9 +60,9 @@
             <div class="col-xs-12 ladb-caption">
                 {% if funding.visibility > 0 %}
                     {% if funding.isCurrent %}
-                        <small><i class="ladb-icon-check"></i> <strong>Financé</strong> pour <strong>{{ funding.visibility }} mois</strong> entier{% if funding.visibility > 1 %}s{% endif %}{% if funding.visibility > 2 %} !{% else %}.{% endif %}</small>
+                        <small><i class="ladb-icon-check-square"></i> <strong>Financé</strong> pour <strong>{{ funding.visibility }} mois</strong> entier{% if funding.visibility > 1 %}s{% endif %}{% if funding.visibility > 2 %} !{% else %}.{% endif %}</small>
                     {% else %}
-                        <small><i class="ladb-icon-check"></i> Mois <strong>financé</strong>.{% if funding.visibility > 1 %} Report sur <strong>{{ funding.visibility - 1 }} mois</strong> entiers.{% elseif funding.partialVisibility > 1 %} Report partiel sur le mois suivant.{% endif %}</small>
+                        <small><i class="ladb-icon-check-square"></i> Mois <strong>financé</strong>.{% if funding.visibility > 1 %} Report sur <strong>{{ funding.visibility - 1 }} mois</strong> entiers.{% elseif funding.partialVisibility > 1 %} Report partiel sur le mois suivant.{% endif %}</small>
                     {% endif %}
                 {% else %}
                     <small class="ladb-color-negative"><i class="ladb-icon-warning"></i> Mois <strong>{% if funding.earningsBalanceEur == 0 %}non{% else %}partiellement{% endif %} financé</strong>. Il manque <strong>{{ (funding.outgoingsBalanceEur - funding.earningsBalanceEur)|number_format(2, ',', ' ') }}€</strong> :(</small>

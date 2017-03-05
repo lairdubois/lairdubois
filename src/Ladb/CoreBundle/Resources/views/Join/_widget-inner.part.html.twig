@@ -5,7 +5,7 @@
         </a>
     {%  else %}
         <a href="{{ path('core_join_delete', { 'id':joinContext.id }) }}" class="btn btn-default active" data-tooltip="tooltip" title="{{ 'join.delete'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-join-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
-            <i class="ladb-icon-check"></i> {{ 'join.joined'|trans() }}
+            <i class="ladb-icon-check-square"></i> {{ 'join.joined'|trans() }}
         </a>
     {% endif %}
     {% if joinContext.count > 0 %}
