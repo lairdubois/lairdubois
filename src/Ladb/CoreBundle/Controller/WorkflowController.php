@@ -6,10 +6,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Entity\Workflow\Task;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Form\Type\Workflow\WorkflowType;
 use Ladb\CoreBundle\Form\Type\Workflow\TaskType;
+use Ladb\CoreBundle\Manager\Workflow\WorkflowManager;
+use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 
 /**
  * @Route("/workflow")
@@ -30,23 +36,27 @@ class WorkflowController extends Controller {
 		return $workflow;
 	}
 
-	private function _retrieveTaskFromTaskIdParam(Request $request, $param = 'taskId') {
+	private function _retrieveTaskFromTaskIdParam(Request $request, $param = 'taskId', $notFoundException = true) {
 		$om = $this->getDoctrine()->getManager();
 		$taskRepository = $om->getRepository(Task::CLASS_NAME);
 
-		$taskId = intval($request->get($param));
+		$taskId = intval($request->get($param, 0));
 
 		$task = $taskRepository->findOneById($taskId);
-		if (is_null($task)) {
+		if (is_null($task) && $notFoundException) {
 			throw $this->createNotFoundException('Unable to find Task entity (id='.$taskId.').');
 		}
 
 		return $task;
 	}
 
-	private function _assertValidWorkflow(Task $task, Workflow $workflow) {
+	private function _assertValidWorkflow(Task $task, Workflow $workflow, $wrongWorkflowException = true) {
 		if ($task->getWorkflow() != $workflow) {
-			throw $this->createNotFoundException('Wrong Workflow (id='.$workflow->getId().').');
+			if ($wrongWorkflowException) {
+				throw $this->createNotFoundException('Wrong Workflow (id='.$workflow->getId().').');
+			} else {
+				return false;
+			}
 		}
 
 		return true;
@@ -86,16 +96,24 @@ class WorkflowController extends Controller {
 			$taskInfo = array(
 				"id"     => $task->getId(),
 				"status" => $task->getStatus(),
-				"row"    => $templating->render('LadbCoreBundle:Workflow:_task-row.part.html.twig', array('task' => $task)),
+				"row"    => $templating->render('LadbCoreBundle:Workflow:_task-row.part.html.twig', array( 'task' => $task )),
 			);
 			if ($boxOnly) {
-				$taskInfo["box"] = $templating->render('LadbCoreBundle:Workflow:_task-box.part.html.twig', array('task' => $task));
+				$taskInfo["box"] = $templating->render('LadbCoreBundle:Workflow:_task-box.part.html.twig', array( 'task' => $task ));
 			} else {
-				$taskInfo["widget"] = $templating->render('LadbCoreBundle:Workflow:_task-widget.part.html.twig', array('task' => $task));
+				$taskInfo["widget"] = $templating->render('LadbCoreBundle:Workflow:_task-widget.part.html.twig', array( 'task' => $task ));
 			}
 			$taskInfos[] = $taskInfo;
 		}
 		return $taskInfos;
+	}
+
+	private function _generateWorkflowInfos($workflow) {
+		$templating = $this->get('templating');
+
+		return array(
+			'statusPanel' => $templating->render('LadbCoreBundle:Workflow:_workflow-status-panel.part.html.twig', array( 'workflow' => $workflow )),
+		);
 	}
 
 	/////
@@ -105,16 +123,154 @@ class WorkflowController extends Controller {
 	 * @Template()
 	 */
 	public function newAction() {
+
+		$workflow = new Workflow();
+		$form = $this->createForm(WorkflowType::class, $workflow);
+
+		return array(
+			'form' => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/create", name="core_workflow_create")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Workflow:new.html.twig")
+	 */
+	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
 
 		$workflow = new Workflow();
-		$workflow->setTitle('SansTitre');
-		$workflow->setUser($this->getUser());
+		$form = $this->createForm(WorkflowType::class, $workflow);
+		$form->handleRequest($request);
 
-		$om->persist($workflow);
-		$om->flush();
+		if ($form->isValid()) {
 
-		return $this->redirect($this->generateUrl('core_workflow_show', array('id' => $workflow->getId())));
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($workflow);
+
+			$workflow->setUser($this->getUser());
+
+			$om->persist($workflow);
+			$om->flush();
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($workflow));
+
+			return $this->redirect($this->generateUrl('core_workflow_show', array('id' => $workflow->getSluggedId())));
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
+
+		return array(
+			'workflow' => $workflow,
+			'form'     => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_edit")
+	 * @Template()
+	 */
+	public function editAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+
+		$workflow = $workflowRepository->findOneById($id);
+		if (is_null($workflow)) {
+			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_workflow_edit)');
+		}
+
+		$form = $this->createForm(WorkflowType::class, $workflow);
+
+		return array(
+			'workflow' => $workflow,
+			'form'     => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_workflow_update")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Workflow:edit.html.twig")
+	 */
+	public function updateAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+
+		$workflow = $workflowRepository->findOneById($id);
+		if (is_null($workflow)) {
+			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_find_update)');
+		}
+
+		$form = $this->createForm(WorkflowType::class, $workflow);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($workflow);
+
+			if ($workflow->getUser()->getId() == $this->getUser()->getId()) {
+				$workflow->setUpdatedAt(new \DateTime());
+			}
+
+			$om->flush();
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($workflow));
+
+			// Flashbag
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.form.alert.update_success', array( '%title%' => $workflow->getTitle() )));
+
+			// Regenerate the form
+			$form = $this->createForm(WorkflowType::class, $workflow);
+
+		} else {
+
+			// Flashbag
+			$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
+
+		}
+
+		return array(
+			'workflow' => $workflow,
+			'form'     => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_workflow_delete")
+	 */
+	public function deleteAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+
+		$workflow = $workflowRepository->findOneById($id);
+		if (is_null($workflow)) {
+			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_workflow_delete)');
+		}
+
+		// Delete
+		$workflowManager = $this->get(WorkflowManager::NAME);
+		$workflowManager->delete($workflow);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.form.alert.delete_success', array( '%title%' => $workflow->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_workflow_list'));
 	}
 
 	/**
@@ -146,8 +302,9 @@ class WorkflowController extends Controller {
 		$form = $this->createForm(TaskType::class, $task);
 
 		return array(
-			'workflow' => $workflow,
-			'form'     => $form->createView(),
+			'workflow'     => $workflow,
+			'form'         => $form->createView(),
+			'sourceTaskId' => $request->get('sourceTaskId', 0),
 		);
 	}
 
@@ -170,20 +327,37 @@ class WorkflowController extends Controller {
 			$task->setStatus(Task::STATUS_WORKABLE);
 			$workflow->addTask($task);
 
+			// Link to source task if defined
+			$sourceTask = $this->_retrieveTaskFromTaskIdParam($request, 'sourceTaskId', false);
+			if (!is_null($sourceTask) && !$this->_assertValidWorkflow($sourceTask, $workflow, false)) {
+				$sourceTask = null;
+			}
+			if (!is_null($sourceTask)) {
+				$sourceTask->addTargetTask($task);
+			}
+
 			$om->persist($task);
 			$om->flush();
 
-			return $this->render('LadbCoreBundle:Workflow:task-create-xhr.json.twig', array(
-				'response' => array(
-					'success' => true,
-					'createdTaskInfos' => $this->_generateTaskInfos(array( $task ), false),
-				),
+			$connections = array();
+			if (!is_null($sourceTask)) {
+				$connections[] = array(
+					'from' => $sourceTask->getId(),
+					'to'   => $task->getId(),
+				);
+			}
+
+			return new JsonResponse(array(
+				'success'            => true,
+				'createdTaskInfos'   => $this->_generateTaskInfos(array($task), false),
+				'createdConnections' => $connections,
 			));
 		}
 
 		return array(
-			'workflow' => $workflow,
-			'form'     => $form->createView(),
+			'workflow'     => $workflow,
+			'form'         => $form->createView(),
+			'sourceTaskId' => $request->get('sourceTaskId', 0),
 		);
 	}
 
@@ -230,11 +404,9 @@ class WorkflowController extends Controller {
 
 			$om->flush();
 
-			return $this->render('LadbCoreBundle:Workflow:task-update-xhr.json.twig', array(
-				'response' => array(
-					'success' => true,
-					'updatedTaskInfos' => $this->_generateTaskInfos(array( $task )),
-				),
+			return new JsonResponse(array(
+				'success'          => true,
+				'updatedTaskInfos' => $this->_generateTaskInfos(array($task)),
 			));
 		}
 
@@ -246,7 +418,6 @@ class WorkflowController extends Controller {
 
 	/**
 	 * @Route("/{id}/task/position/update", requirements={"id" = "\d+"}, name="core_workflow_task_position_update")
-	 * @Template("LadbCoreBundle:Workflow:task-update-xhr.json.twig")
 	 */
 	public function positionUpdateTaskAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -272,16 +443,13 @@ class WorkflowController extends Controller {
 
 		$om->flush();
 
-		return array(
-			'response' => array(
-				'success' => true,
-			),
-		);
+		return new JsonResponse(array(
+			'success' => true,
+		));
 	}
 
 	/**
 	 * @Route("/{id}/task/status/update", requirements={"id" = "\d+"}, name="core_workflow_task_status_update")
-	 * @Template("LadbCoreBundle:Workflow:task-update-xhr.json.twig")
 	 */
 	public function statusUpdateTaskAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -295,10 +463,62 @@ class WorkflowController extends Controller {
 
 		// Status
 		$statusChanged = false;
-		if ($request->request->has('status')) {
-			$status = intval($request->request->get('status'));
-			$task->setStatus($status);
+
+		$newStatus = intval($request->get('status', Task::STATUS_UNKNOW));
+		if ($newStatus < Task::STATUS_PENDING || $newStatus > Task::STATUS_DONE) {
+			throw $this->createNotFoundException('Invalid status (status='.$newStatus.')');
+		}
+
+		$previousStatus = $task->getStatus();
+		if ($newStatus != $previousStatus) {
+
+			$now = new \DateTime();
+
+			// The task is running -> increment duration
+			if ($previousStatus == Task::STATUS_RUNNING) {
+
+				// Increment duration
+				$lastRunDuration = $now->getTimestamp() - $task->getLastRunningAt()->getTimestamp();
+				$task->incrementDuration($lastRunDuration);
+				$workflow->incrementDuration($lastRunDuration);
+				$task->setLastRunningAt(null);
+
+			}
+
+			// The task is done -> unset finishedAt
+			if ($previousStatus == Task::STATUS_DONE) {
+
+				if ($task->getDuration() == 0) {
+					$task->setStartedAt(null);
+				}
+				$task->setFinishedAt(null);
+
+			}
+
+			// The task will run -> set start dates
+			if ($newStatus == Task::STATUS_RUNNING) {
+
+				if ($task->getDuration() == 0) {
+					$task->setStartedAt($now);
+				}
+				$task->setLastRunningAt($now);
+
+			}
+
+			// The task done -> set finishedAt
+			if ($newStatus == Task::STATUS_DONE) {
+
+				if (is_null($task->getStartedAt())) {
+					$task->setStartedAt($now);
+				}
+				$task->setFinishedAt($now);
+				$task->setLastRunningAt(null);
+
+			}
+
+			$task->setStatus($newStatus);
 			$statusChanged = true;
+
 		}
 
 		$om->flush();
@@ -313,17 +533,15 @@ class WorkflowController extends Controller {
 			$updatedTasks = array();
 		}
 
-		return array(
-			'response' => array(
-				'success' => true,
-				'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
-			),
-		);
+		return new JsonResponse(array(
+			'success'          => true,
+			'workflowInfos'    => $this->_generateWorkflowInfos($workflow),
+			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+		));
 	}
 
 	/**
 	 * @Route("/{id}/task/delete", requirements={"id" = "\d+"}, name="core_workflow_task_delete")
-	 * @Template("LadbCoreBundle:Workflow:task-delete-xhr.json.twig")
 	 */
 	public function deleteTaskAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -339,6 +557,9 @@ class WorkflowController extends Controller {
 		$sourceTasks = $task->getSourceTasks()->toArray();
 		$targetTasks = $task->getTargetTasks()->toArray();
 
+		// Decrement task duration on workflow
+		$workflow->incrementDuration($task->getDuration());
+
 		// Remove the task
 		$om->remove($task);
 		$om->flush();
@@ -347,18 +568,16 @@ class WorkflowController extends Controller {
 		$updatedTasks = $this->_updateTasksStatus(array_merge($sourceTasks, $targetTasks));
 		$om->flush();
 
-		return array(
-			'response' => array(
-				'success' => true,
-				'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
-				'deletedTaskId' => $taskId,
-			),
-		);
+		return new JsonResponse(array(
+			'success'          => true,
+			'workflowInfos'    => $this->_generateWorkflowInfos($workflow),
+			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+			'deletedTaskId'    => $taskId,
+		));
 	}
 
 	/**
 	 * @Route("/{id}/task/connection/create", requirements={"id" = "\d+"}, name="core_workflow_task_connection_create")
-	 * @Template("LadbCoreBundle:Workflow:task-connection-create-xhr.json.twig")
 	 */
 	public function createTaskConnectionAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -382,17 +601,14 @@ class WorkflowController extends Controller {
 		$updatedTasks = $this->_updateTasksStatus(array( $targetTask ));
 		$om->flush();
 
-		return array(
-			'response' => array(
-				'success' => true,
-				'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
-			),
-		);
+		return new JsonResponse(array(
+			'success'          => true,
+			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+		));
 	}
 
 	/**
 	 * @Route("/{id}/task/connection/delete", requirements={"id" = "\d+"}, name="core_workflow_task_connection_delete")
-	 * @Template("LadbCoreBundle:Workflow:task-connection-delete-xhr.json.twig")
 	 */
 	public function deleteTaskConnectionAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -416,12 +632,10 @@ class WorkflowController extends Controller {
 		$updatedTasks = $this->_updateTasksStatus(array( $targetTask ));
 		$om->flush();
 
-		return array(
-			'response' => array(
-				'success' => true,
-				'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
-			),
-		);
+		return new JsonResponse(array(
+			'success'          => true,
+			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+		));
 	}
 
 }

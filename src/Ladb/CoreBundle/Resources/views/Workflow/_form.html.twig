@@ -1,0 +1,12 @@
+{% extends 'LadbCoreBundle:Common:_form.html.twig' %}
+
+{% set navSection = 'workflows' %}
+
+{% block sidenav %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('workflow.form.help.title'|trans()) } %}
+{% endblock %}

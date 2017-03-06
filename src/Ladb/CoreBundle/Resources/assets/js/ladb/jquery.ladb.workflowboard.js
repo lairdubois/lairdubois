@@ -28,7 +28,6 @@
         updateTaskPath: null,
         positionUpdateTaskPath: null,
         statusUpdateTaskPath: null,
-        deleteTaskPath: null,
         createTaskConnectionPath: null,
         deleteTaskConnectionPath: null,
         startupConnections: []
@@ -80,7 +79,12 @@
 
         var response = JSON.parse(data);
 
-        var i, taskInfos, $taskWidget;
+        var i, taskInfos, $taskWidget, $taskRow;
+
+        // Workflow
+        if (response.workflowInfos) {
+            $('#ladb_workflow_status_panel', this.$element).replaceWith(response.workflowInfos.statusPanel);
+        }
 
         // Created tasks
         if (response.createdTaskInfos) {
@@ -88,11 +92,16 @@
 
                 taskInfos = response.createdTaskInfos[i];
 
-                that.$canvas.append(taskInfos.widget);
-                that.initTaskWidget($('.ladb-workflow-task-widget:last', that.$canvas));
+                $taskWidget = $(taskInfos.widget);
+                that.$canvas.append($taskWidget);
+                that.initTaskWidget($taskWidget);
+                $('.ladb-box', $taskWidget).effect('highlight', {}, 1500);
 
-                $('#collapse_status_' + taskInfos.status + ' .panel-body').append(taskInfos.row);
-                that.bindTaskRow($('#ladb_workflow_task_row_' + taskInfos.id));
+                $taskRow = $(taskInfos.row);
+                $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
+                that.bindTaskRow($taskRow);
+                $('.ladb-box', $taskRow).effect('highlight', {}, 1500);
+
             }
         }
 
@@ -106,9 +115,11 @@
                 $('.ladb-box', $taskWidget).replaceWith(taskInfos.box);
                 that.bindTaskBox(taskInfos.id, $('.ladb-box', $taskWidget));
 
+                $taskRow = $(taskInfos.row);
                 $('#ladb_workflow_task_row_' + taskInfos.id).remove();
-                $('#collapse_status_' + taskInfos.status + ' .panel-body').append(taskInfos.row);
-                that.bindTaskRow($('#ladb_workflow_task_row_' + taskInfos.id));
+                $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
+                that.bindTaskRow($taskRow);
+                $('.ladb-box', $taskRow).effect('highlight', {}, 1500);
 
             }
         }
@@ -117,6 +128,16 @@
         if (response.deletedTaskId) {
             that.plumb.remove('ladb_workflow_task_' + response.deletedTaskId);
             $('#ladb_workflow_task_row_' + response.deletedTaskId).remove();
+        }
+
+        // Created connection
+        if (response.createdConnections) {
+            _.each(response.createdConnections, function (connection) {
+                that.plumb.connect({
+                    source: 'ladb_workflow_task_' + connection.from,
+                    target: 'ladb_workflow_task_' + connection.to
+                });
+            });
         }
 
         for (i = 1; i <= 3; ++i) {
@@ -163,9 +184,29 @@
             }
         });
 
-        // Bind button
+        // Bind submit button
         $('button[type=submit]', $modal).on('click', function() {
             $form.submit();
+        });
+
+        // Bind remove button
+        $('.ladb-btn-delete', $modal).on('click', function(e) {
+            e.preventDefault();
+
+            // Update remote DB
+            $.ajax($(this).attr('href'), {
+                cache: false,
+                dataType: "html",
+                context: document.body,
+                success: function(data, textStatus, jqXHR) {
+                    that.up(data);
+                    $modal.modal('hide');
+                },
+                error: function () {
+                    console.log('ERROR');
+                }
+            });
+
         });
 
         // Show modal
@@ -183,17 +224,18 @@
     LadbWorkflowBoard.prototype.bindTaskBox = function(taskId, $taskBox) {
         var that = this;
 
-        // Bind remove button
-        $('.ladb-btn-remove', $taskBox).on('click', function(e) {
+        // Bind done and run button
+        $('.ladb-status-update-btn', $taskBox).on('click', function(e) {
 
             // Update remote DB
-            $.ajax(that.options.deleteTaskPath, {
+            $.ajax(that.options.statusUpdateTaskPath, {
                 type: "POST",
                 cache: false,
                 dataType: "html",
                 context: document.body,
                 data: {
-                    taskId: taskId
+                    taskId: taskId,
+                    status: $(this).data('action-status')
                 },
                 success: function(data, textStatus, jqXHR) {
                     that.up(data);
@@ -208,29 +250,6 @@
         // Bind remove button
         $('.ladb-btn-edit', $taskBox).on('click', function(e) {
             that.editTask(taskId);
-        });
-
-        // Bind done button
-        $('.ladb-btn-done', $taskBox).on('click', function(e) {
-
-            // Update remote DB
-            $.ajax(that.options.statusUpdateTaskPath, {
-                type: "POST",
-                cache: false,
-                dataType: "html",
-                context: document.body,
-                data: {
-                    taskId: taskId,
-                    status: $('.ladb-icon-check', $(this)).length > 0 ? 2 : 3
-                },
-                success: function(data, textStatus, jqXHR) {
-                    that.up(data);
-                },
-                error: function () {
-                    console.log('ERROR');
-                }
-            });
-
         });
 
     };
@@ -286,6 +305,9 @@
                 $(this).css("cursor", "");
                 that.$panzoom.panzoom("enable");
 
+                var positionLeft = Math.round($taskWidget.position().left / 10) * 10;
+                var positionTop = Math.round($taskWidget.position().top / 10) * 10;
+
                 // Update remote DB
                 $.ajax(that.options.positionUpdateTaskPath, {
                     type: "POST",
@@ -294,8 +316,8 @@
                     context: document.body,
                     data: {
                         taskId: taskId,
-                        positionLeft: $taskWidget.position().left,
-                        positionTop: $taskWidget.position().top
+                        positionLeft: positionLeft,
+                        positionTop: positionTop
                     },
                     error: function () {
                         console.log('ERROR');
@@ -307,16 +329,20 @@
 
     };
 
-    LadbWorkflowBoard.prototype.newTask = function() {
+    LadbWorkflowBoard.prototype.newTask = function(positionLeft, positionTop, sourceTaskId) {
         var that = this;
+
+        positionLeft = Math.round(positionLeft / 10) * 10;
+        positionTop = Math.round(positionTop / 10) * 10;
 
         $.ajax(that.options.newTaskPath, {
             cache: false,
             dataType: "html",
             context: document.body,
             data: {
-                positionLeft: 100,
-                positionTop: 100
+                positionLeft: positionLeft,
+                positionTop: positionTop,
+                sourceTaskId: sourceTaskId
             },
             success: function(data, textStatus, jqXHR) {
                 that.mod(data);
@@ -359,7 +385,11 @@
 
         // Bind buttons
         this.$btnAddTask.on('click', function() {
-            that.newTask();
+
+            var positionLeft = that.$diagram.outerWidth() / 2 - that.$canvas.position().left - 150;
+            var positionTop = that.$diagram.outerHeight() / 2 - that.$canvas.position().top - 30;
+
+            that.newTask(positionLeft, positionTop);
         });
 
         this.$btnLayout.on('click', function() {
@@ -388,11 +418,16 @@
             });
 
         });
-        this.plumb.bind("connectionDrag", function (connection) {
-            console.log('CONNECTION_DRAG');
-        });
-        this.plumb.bind("connectionDragStop", function (connection) {
-            console.log('CONNECTION_DRAG_STOP');
+        this.plumb.bind("connectionAborted", function (connection, originalEvent) {
+
+            var sourceTaskId = connection.sourceId.substring('ladb_workflow_task_'.length);
+
+            var positionLeft = originalEvent.clientX - that.$canvas.offset().left - 150;    // 150 = half task widget width
+            var positionTop = originalEvent.clientY - that.$canvas.offset().top;
+
+            // Drop connection on the board -> new Task
+            that.newTask(positionLeft, positionTop, sourceTaskId);
+
         });
         this.plumb.bind("click", function (connection, originalEvent) {
             that.plumb.detach(connection);
@@ -442,7 +477,7 @@
 
             // Init initiales tasks widgets
             $('.ladb-workflow-task-widget', that.$canvas).each(function (index) {
-                that.initTaskWidget($( this ));
+                that.initTaskWidget($(this));
             });
 
             // Apply startup connections

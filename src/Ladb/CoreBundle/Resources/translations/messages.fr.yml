@@ -343,6 +343,22 @@ find:
     finds: '[0,1]trouvaille|]1,Inf]trouvailles'
     draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
 
+workflow:
+  description: Retrouvez tous les flux de travaux
+  new: Ajouter un flux de travaux
+  edit: Edition du flux de travaux
+  list: Les flus de travaux
+  nav: Flux de travaux
+  form:
+    alert:
+      update_success: Le flux de travaux <strong>%title%</strong> a été mis à jour.
+      delete_success: Le flux de travaux <strong>%title%</strong> a été supprimé.
+    help:
+      title: Renseignez ici le titre de votre flux de travaux.
+  task:
+    new: Ajouter une tâche
+    edit: Edition de la tâche
+
 blog:
   title: Le blog
   description: Ce blog vous permet de rester informé et de réagir sur les nouveautés et futurs projets de L'Air du Bois.

@@ -1,3 +1,0 @@
-<button class="ladb-btn-done pull-left"{% if task.status < constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %} disabled{% endif %}>
-    {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') %}<i class="ladb-icon-check"></i>{% endif %}
-</button>

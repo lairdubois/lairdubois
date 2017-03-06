@@ -33,6 +33,11 @@ class Workflow extends AbstractAuthoredPublication {
 	private $slug;
 
 	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $duration = 0;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Task", mappedBy="workflow", cascade={"all"})
 	 */
 	protected $tasks;
@@ -73,6 +78,21 @@ class Workflow extends AbstractAuthoredPublication {
 
 	public function getSluggedId() {
 		return $this->id.'-'.$this->slug;
+	}
+
+	// Duration /////
+
+	public function incrementDuration($by = 0) {
+		return $this->duration += intval($by);
+	}
+
+	public function setDuration($duration) {
+		$this->duration = $duration;
+		return $this;
+	}
+
+	public function getDuration() {
+		return $this->duration;
 	}
 
 	// Tasks /////

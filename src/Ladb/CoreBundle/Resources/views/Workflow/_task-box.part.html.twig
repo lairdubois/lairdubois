@@ -1,10 +1,20 @@
 <div class="ladb-box ladb-status-{{ task.status }}">
-    <button class="ladb-btn-done pull-left"{% if task.status < constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %} disabled{% endif %}>
+    <button class="ladb-btn-done ladb-status-update-btn pull-left" data-action-status="{{ task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') ? constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') : constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE')}}"{% if task.status < constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %} disabled{% endif %}>
         {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') %}<i class="ladb-icon-check"></i>{% endif %}
     </button>
     <div class="ladb-minitools pull-right">
-        <button class="ladb-minitools-btn ladb-btn-remove"><i class="ladb-icon-delete ladb-icon-lg"></i></button>
+        {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %}
+            <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn " data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') }}"><i class="ladb-icon-task-play ladb-icon-lg"></i></button>
+        {% endif %}
+        {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') %}
+            <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn " data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') }}"><i class="ladb-icon-task-pause ladb-icon-lg"></i></button>
+        {% endif %}
         <button class="ladb-minitools-btn ladb-btn-edit"><i class="ladb-icon-edit ladb-icon-lg"></i></button>
     </div>
-    <div class="ladb-body">{{ task.title }}</div>
+    <div class="ladb-body">
+        {{ task.title }}
+        {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') and task.duration > 0 %}
+            <div class="ladb-duration"><i class="ladb-icon-time"></i> {{ task.duration|ladb_duration() }}</div>
+        {% endif %}
+    </div>
 </div>

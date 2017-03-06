@@ -164,6 +164,9 @@
         <service id="ladb_core.wood_manager" class="Ladb\CoreBundle\Manager\Knowledge\WoodManager">
             <argument type="service" id="service_container"/>
         </service>
+        <service id="ladb_core.workflow_manager" class="Ladb\CoreBundle\Manager\Workflow\WorkflowManager">
+            <argument type="service" id="service_container"/>
+        </service>
         <service id="ladb_core.witness_manager" class="Ladb\CoreBundle\Manager\WitnessManager">
             <argument type="service" id="service_container"/>
         </service>

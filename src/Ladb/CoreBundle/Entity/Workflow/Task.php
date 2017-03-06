@@ -17,7 +17,8 @@ class Task {
 	const STATUS_UNKNOW = 0;
 	const STATUS_PENDING = 1;
 	const STATUS_WORKABLE = 2;
-	const STATUS_DONE = 3;
+	const STATUS_RUNNING = 3;
+	const STATUS_DONE = 4;
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
@@ -55,14 +56,29 @@ class Task {
 	private $positionTop = 0;
 
 	/**
-	 * @ORM\Column(type="boolean", name="is_done")
-	 */
-	private $isDone = false;
-
-	/**
 	 * @ORM\Column(type="smallint")
 	 */
 	private $status = self::STATUS_UNKNOW;
+
+	/**
+	 * @ORM\Column(name="started_at", type="datetime", nullable=true)
+	 */
+	private $startedAt;
+
+	/**
+	 * @ORM\Column(name="last_running_at", type="datetime", nullable=true)
+	 */
+	private $lastRunningAt;
+
+	/**
+	 * @ORM\Column(name="finished_at", type="datetime", nullable=true)
+	 */
+	private $finishedAt;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $duration = 0;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Task", mappedBy="targetTasks")
@@ -156,6 +172,54 @@ class Task {
 
 	public function getStatus() {
 		return $this->status;
+	}
+
+	// StartedAt /////
+
+	public function setStartedAt($startedAt) {
+		$this->startedAt = $startedAt;
+		return $this;
+	}
+
+	public function getStartedAt() {
+		return $this->startedAt;
+	}
+
+	// LastRunningAt /////
+
+	public function setLastRunningAt($lastRunningAt) {
+		$this->lastRunningAt = $lastRunningAt;
+		return $this;
+	}
+
+	public function getLastRunningAt() {
+		return $this->lastRunningAt;
+	}
+
+	// FinishedAt /////
+
+	public function setFinishedAt($finishedAt) {
+		$this->finishedAt = $finishedAt;
+		return $this;
+	}
+
+	public function getFinishedAt() {
+		return $this->finishedAt;
+	}
+
+	// Duration /////
+
+	public function incrementDuration($by = 0) {
+		return $this->duration += intval($by);
+	}
+
+	public function setDuration($duration) {
+		$this->duration = $duration;
+		return $this;
+	}
+
+	public function getDuration() {
+		return $this->duration;
 	}
 
 	// SourceTasks /////

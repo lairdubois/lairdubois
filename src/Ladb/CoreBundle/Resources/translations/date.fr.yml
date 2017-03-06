@@ -14,6 +14,14 @@ diff:
     minute: '[0,1]dans %count% minute|]1,Inf]dans %count% minutes'
     second: A l'instant
 
+interval:
+  year: '[0,1]%count% an|]1,Inf]%count% ans'
+  month: %count% mois
+  day: '[0,1]%count% jour|]1,Inf]%count% jours'
+  hour: '[0,1]%count% heure|]1,Inf]%count% heures'
+  minute: '[0,1]%count% minute|]1,Inf]%count% minutes'
+  second: '[0,1]%count% seconde|]1,Inf]%count% secondes'
+
 month:
   short:
     jan: jan

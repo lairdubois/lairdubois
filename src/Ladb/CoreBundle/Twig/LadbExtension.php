@@ -21,6 +21,7 @@ class LadbExtension extends \Twig_Extension {
 			new \Twig_SimpleFilter('ladb_truncate_at', array( $this, 'truncateAtFilter' )),
 			new \Twig_SimpleFilter('ladb_markdown', array( $this, 'markdownFilter' )),
 			new \Twig_SimpleFilter('ladb_url_trim', array( $this, 'urlTrimFilter' )),
+			new \Twig_SimpleFilter('ladb_duration', array( $this, 'durationFilter' )),
 		);
 	}
 
@@ -66,6 +67,44 @@ class LadbExtension extends \Twig_Extension {
 
 	public function urlTrimFilter($str) {
 		$str = preg_replace('#^https?://#', '', rtrim($str,'/'));
+		return $str;
+	}
+
+	public function durationFilter($duration) {
+		$d = new \DateTime();
+		$d->add(new \DateInterval('PT'.$duration.'S'));
+		$interval = $d->diff(new \DateTime());
+		$translator = $this->container->get('translator');
+		if ($interval->y > 0) {
+			$str = $translator->transChoice('interval.year', $interval->y, array('%count%' => $interval->y), 'date');
+			if ($interval->m > 0) {
+				$str .= ' '.$translator->transChoice('interval.mounth', $interval->m, array('%count%' => $interval->m), 'date');
+			}
+		} else if ($interval->m > 0) {
+			$str = $translator->transChoice('interval.mounth', $interval->m, array('%count%' => $interval->m), 'date');
+			if ($interval->d > 0) {
+				$str .= ' '.$translator->transChoice('interval.day', $interval->d, array('%count%' => $interval->d), 'date');
+			}
+		} else if ($interval->d > 0) {
+			$str = $translator->transChoice('interval.day', $interval->d, array('%count%' => $interval->d), 'date');
+			if ($interval->h > 0) {
+				$str .= ' '.$translator->transChoice('interval.hour', $interval->h, array('%count%' => $interval->h), 'date');
+			}
+		} else if ($interval->h > 0) {
+			$str = $translator->transChoice('interval.hour', $interval->h, array('%count%' => $interval->h), 'date');
+			if ($interval->i > 0) {
+				$str .= ' '.$translator->transChoice('interval.minute', $interval->i, array('%count%' => $interval->i), 'date');
+			}
+		} else if ($interval->i > 0) {
+			$str = $translator->transChoice('interval.minute', $interval->i, array('%count%' => $interval->i), 'date');
+			if ($interval->s > 0) {
+				$str .= ' '.$translator->transChoice('interval.second', $interval->s, array('%count%' => $interval->s), 'date');
+			}
+		} else if ($interval->s > 0) {
+			$str = $translator->transChoice('interval.second', $interval->s, array('%count%' => $interval->s), 'date');
+		} else {
+			$str = '';
+		}
 		return $str;
 	}
 
