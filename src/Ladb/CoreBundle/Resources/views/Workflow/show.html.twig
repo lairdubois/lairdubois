@@ -48,7 +48,7 @@
             {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow} %}
                 {% block headerTools %}
                     <div class="ladb-header-tools">
-                        <button id="ladb_btn_add_task" class="btn btn-success"><i class="ladb-icon-plus"></i> {{ 'workflow.task.new'|trans() }}</button>
+                        <button id="ladb_btn_add_task" class="btn btn-success"><i class="ladb-icon-plus"></i><span class="ladb-visible-desktop">  {{ 'workflow.task.new'|trans() }}</span></button>
                         {#<button id="ladb_btn_layout" class="btn btn-default"><i class="ladb-icon-plus"></i> Layout</button>#}
                         {% if ownerUser or is_granted("ROLE_ADMIN") %}
                             &nbsp;

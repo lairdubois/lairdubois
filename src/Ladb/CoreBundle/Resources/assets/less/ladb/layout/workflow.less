@@ -126,6 +126,12 @@
     border-style: solid;
     width: 300px;
 
+    &.ladb-status-0 {
+      background-color: #fff;
+      border-color: #ccc;
+      border-style: dashed;
+    }
+
     &.ladb-status-1 {
       background-color: @bg-color-status-1;
       border-color: @color-status-1;
@@ -188,29 +194,13 @@
       box-shadow: 0 0 6px #ccc;
     }
 
+    &:active {
+      border: 2px solid #fff;
+    }
+
   }
 
 }
-
-//.panel-heading-status-1 {
-//  //background-color: @bg-color-status-1 !important;
-//  border-left: 10px solid @color-status-1 !important;
-//}
-//
-//.panel-heading-status-2 {
-//  //background-color: @bg-color-status-2 !important;
-//  border-left: 10px solid @color-status-2 !important;
-//}
-//
-//.panel-heading-status-3 {
-//  //background-color: @bg-color-status-3 !important;
-//  border-left: 10px solid @color-status-3 !important;
-//}
-//
-//.panel-heading-status-4 {
-//  //background-color: @bg-color-status-4 !important;
-//  border-left: 10px solid @color-status-4 !important;
-//}
 
 .ladb-workflow-task-widget .ladb-body, .ladb-workflow-task-row .ladb-body {
   padding: 4px 38px 0 38px;
@@ -224,4 +214,21 @@
 
 }
 
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+
+  .cnt {
+    left: 0;
+    right: 0;
+
+    .ladb-workflow-panel {
+      top: 150px;
+    }
+
+  }
+
+}
 

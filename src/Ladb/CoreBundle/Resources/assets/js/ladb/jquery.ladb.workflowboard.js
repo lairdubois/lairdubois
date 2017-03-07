@@ -126,8 +126,10 @@
 
         // Deleted task
         if (response.deletedTaskId) {
-            that.plumb.remove('ladb_workflow_task_' + response.deletedTaskId);
-            $('#ladb_workflow_task_row_' + response.deletedTaskId).remove();
+            $taskWidget = $('#ladb_workflow_task_row_' + response.deletedTaskId);
+            if ($taskWidget.length > 0) {
+                that.plumb.remove('ladb_workflow_task_' + response.deletedTaskId);
+            }
         }
 
         // Created connection
@@ -162,6 +164,7 @@
         });
         $modal.on('hidden.bs.modal', function() {
             $modal.remove();
+            that.removeFakeTask();
         });
 
         // Bind form
@@ -173,6 +176,7 @@
             clearForm: true,
             success: function (data, textStatus, jqXHR) {
                 try {
+                    that.removeFakeTask();
                     that.up(data);
                 } catch (error) {
                     that.mod(data);
@@ -181,6 +185,7 @@
             },
             error: function() {
                 console.log('ERROR');
+                that.removeFakeTask();
             }
         });
 
@@ -247,7 +252,7 @@
 
         });
 
-        // Bind remove button
+        // Bind edit button
         $('.ladb-btn-edit', $taskBox).on('click', function(e) {
             that.editTask(taskId);
         });
@@ -278,6 +283,18 @@
         // Bind box buttons
 
         this.bindTaskBox(taskId, $('.ladb-box', $taskWidget));
+
+        // Bind ep button
+
+        $('.ladb-ep', $taskWidget).on('click', function(e) {
+
+            var positionLeft = e.originalEvent.clientX - that.$canvas.offset().left - 150;    // 150 = half task widget width
+            var positionTop = e.originalEvent.clientY - that.$canvas.offset().top + 100;
+
+            // Drop connection on the board -> new Task
+            that.newTask(positionLeft, positionTop, taskId);
+
+        });
 
         // Make widget draggable
 
@@ -329,11 +346,40 @@
 
     };
 
+    LadbWorkflowBoard.prototype.appendFakeTask = function(positionLeft, positionTop, sourceTaskId) {
+
+        var $fakeTask = $('<div id="fake_task" class="ladb-workflow-task-widget"><div class="ladb-box ladb-status-0">&nbsp;</div></div>');
+        $fakeTask.css('left', positionLeft + 'px');
+        $fakeTask.css('top', positionTop + 'px');
+        this.$canvas.append($fakeTask);
+
+        if (sourceTaskId) {
+            this.plumb.makeTarget($fakeTask, {
+                endpoint: "Blank",
+                anchor: "Top"
+            });
+            this.plumb.connect({
+                source: 'ladb_workflow_task_' + sourceTaskId,
+                target: 'fake_task'
+            });
+        }
+
+    };
+
+    LadbWorkflowBoard.prototype.removeFakeTask = function() {
+        var $fakeTask = $('#fake_task');
+        if ($fakeTask.length > 0) {
+            this.plumb.remove('fake_task');
+        }
+    };
+
     LadbWorkflowBoard.prototype.newTask = function(positionLeft, positionTop, sourceTaskId) {
         var that = this;
 
         positionLeft = Math.round(positionLeft / 10) * 10;
         positionTop = Math.round(positionTop / 10) * 10;
+
+        this.appendFakeTask(positionLeft, positionTop, sourceTaskId);
 
         $.ajax(that.options.newTaskPath, {
             cache: false,
@@ -349,6 +395,7 @@
             },
             error: function () {
                 console.log('ERROR');
+                that.removeFakeTask();
             }
         });
 
@@ -398,6 +445,10 @@
 
         // Bind plumb
         this.plumb.bind("connection", function (info, originalEvent) {
+
+            if (info.targetId == 'fake_task') {
+                return;
+            }
 
             // Update remote DB
             $.ajax(that.options.createTaskConnectionPath, {
@@ -496,9 +547,9 @@
                     increment: that.options.incScale,
                     cursor: "",
                     ignoreChildrensEvents: true
-                }).on("panzoomstart", function (e, pz, ev) {
+                }).on("panzoomstart", function (e, panzoom, event, touches) {
                     that.$panzoom.css("cursor", "move");
-                }).on("panzoomend", function (e, pz) {
+                }).on("panzoomend", function (e, panzoom, matrix, changed) {
                     that.$panzoom.css("cursor", "");
                 });
                 that.$panzoom.parent()
