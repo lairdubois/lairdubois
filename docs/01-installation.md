@@ -232,4 +232,10 @@ And add the following lines
 0 3 * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:sitemaps --force &> /dev/null
 ```
 
+## Step 11 - Run websocket server
+
+``` bash
+    $ bin/console gos:websocket:server --port 1337 -a localhost
+```
+
 

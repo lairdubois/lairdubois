@@ -16,7 +16,7 @@ parameters:
     elasticsearch_port:             9200
 
     websocket_host:                 www.lairdubois.fr
-    websocket_port:                 1337
+    websocket_port:                 1338
     websocket_scheme:               wss
 
     locale:                         fr
