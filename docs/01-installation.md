@@ -235,7 +235,7 @@ And add the following lines
 ## Step 11 - Run websocket server
 
 ``` bash
-    $ bin/console gos:websocket:server --port 1337 -a localhost
+    $ bin/console gos:websocket:server --port 1337 -a 127.0.0.1
 ```
 
 

@@ -43,7 +43,7 @@ twig:
     globals:
         ga_tracking_id: "%ga_tracking_id%"
         stripe_publishable_key: "%stripe_publishable_key%"
-        websocket_uri: "%websocket_scheme%://%websocket_host%:%websocket_port%"
+        websocket_uri: "%websocket_uri%"
 
 # Assetic Configuration
 assetic:

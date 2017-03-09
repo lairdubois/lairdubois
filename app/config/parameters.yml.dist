@@ -16,8 +16,8 @@ parameters:
     elasticsearch_port:             9200
 
     websocket_host:                 www.lairdubois.fr
-    websocket_port:                 1338
-    websocket_scheme:               wss
+    websocket_port:                 1337
+    websocket_uri:                  wss://www.lairdubois.fr:8080
 
     locale:                         fr
     secret:                         THIS_TOKEN_IS_NOT_SECRET_CHANGE_IT
