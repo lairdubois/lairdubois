@@ -15,9 +15,12 @@
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=201703031224"></script>
     {% endjavascripts %}
+    {{ ws_client() }}
     <script>
         $(document).ready(function() {
             $('.ladb-wrapper').ladbWorkflowBoard({
+                wsUri: 'ws://dev.lairdubois.fr:8080',
+                wsChannel: 'workflow/{{ workflow.id }}/show',
                 newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
                 createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
                 editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
@@ -36,7 +39,6 @@
             });
         });
     </script>
-
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
@@ -131,14 +133,15 @@
                 </div>
             </div>
             <div id="ladb_workflow_task_diagram" class="col-lg-9 col-md-9 col-xs-12">
-            <div class="ladb-panzoom">
-                <div class="ladb-jtk-canvas">
-                    {% for task in workflow.tasks %}
-                        {% include 'LadbCoreBundle:Workflow:_task-widget.part.html.twig' %}
-                    {% endfor %}
+                <div class="ladb-panzoom">
+                    <div class="ladb-jtk-canvas">
+                        {% for task in workflow.tasks %}
+                            {% include 'LadbCoreBundle:Workflow:_task-widget.part.html.twig' %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+            {% include 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}
         </div>
     </div>
 {% endblock %}

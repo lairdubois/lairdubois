@@ -18,8 +18,23 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
+        handler_id: session.handler.pdo
         save_path: "%kernel.root_dir%/sessions"
     fragments:       ~
+
+services:
+    pdo:
+        class: PDO
+        arguments:
+            dsn: "mysql:host=%database_host%;dbname=%database_name%"
+            user: "%database_user%"
+            password: "%database_password%"
+        calls:
+            - [ setAttribute, [3, 2] ] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ["@pdo", {lock_mode: 0}]
 
 # Twig Configuration
 twig:
@@ -662,3 +677,19 @@ fos_elastica:
                         model: Ladb\CoreBundle\Entity\Input\Finish
                         provider: ~
                         listener: ~
+
+# GosWebSocketBundle
+gos_web_socket:
+    client:
+        firewall: main
+        session_handler: '@session.handler.pdo'
+    server:
+        port: 8080        #The port the socket server will listen on
+        host: 127.0.0.1   #The host ip to bind to
+        router:
+            resources:
+                - '@LadbCoreBundle/Resources/config/pubsub/routing.yml'
+    pushers:
+        wamp:
+            host: 127.0.0.1
+            port: 8080

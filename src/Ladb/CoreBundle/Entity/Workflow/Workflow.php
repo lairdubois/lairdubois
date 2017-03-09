@@ -42,10 +42,16 @@ class Workflow extends AbstractAuthoredPublication {
 	 */
 	protected $tasks;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Label", mappedBy="workflow", cascade={"all"})
+	 */
+	protected $labels;
+
 	/////
 
 	public function __construct() {
 		$this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// Type /////
@@ -117,6 +123,30 @@ class Workflow extends AbstractAuthoredPublication {
 
 	public function resetTasks() {
 		$this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	// Labels /////
+
+	public function addLabel(\Ladb\CoreBundle\Entity\Workflow\Label $label) {
+		if (!$this->labels->contains($label)) {
+			$this->labels[] = $label;
+			$label->setWorkflow($this);
+		}
+		return $this;
+	}
+
+	public function removeLabel(\Ladb\CoreBundle\Entity\Workflow\Label $label) {
+		if ($this->labels->removeElement($label)) {
+			$label->setWorkflow(null);
+		}
+	}
+
+	public function getLabels() {
+		return $this->labels;
+	}
+
+	public function resetLabels() {
+		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 }

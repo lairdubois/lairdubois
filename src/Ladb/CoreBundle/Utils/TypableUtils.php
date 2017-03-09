@@ -128,6 +128,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return $long ? 'knowledge.provider': 'provider';
+			// Workflow
+			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
+				return 'workflow';
 
 		}
 		return '';
@@ -205,6 +208,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				$url = $router->generate('core_youtook_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
+				$url = $router->generate('core_workflow_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

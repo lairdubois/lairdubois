@@ -25,6 +25,23 @@
     bottom: 0;
     left: 0;
     right: 0;
+
+    .ladb-loading-panel {
+      background-color: rgba(255, 255, 255, 0.4);
+      opacity: 1;
+    }
+
+  }
+
+  #ladb_workflow_task_list {
+    height: 100%;
+
+    .panel {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+
   }
 
   #ladb_workflow_task_diagram {
@@ -206,8 +223,11 @@
   padding: 4px 38px 0 38px;
   min-height: 28px;
 
+  .ladb-labels {
+    min-height: 5px;
+  }
+
   .ladb-duration {
-    margin-top: 5px;
     font-size: 80%;
     opacity: 0.8;
   }
@@ -226,6 +246,20 @@
 
     .ladb-workflow-panel {
       top: 150px;
+
+      #ladb_workflow_task_list {
+        height: auto;
+
+        .panel {
+          height: auto;
+        }
+
+      }
+
+      #ladb_workflow_task_diagram {
+       display: none;
+      }
+
     }
 
   }

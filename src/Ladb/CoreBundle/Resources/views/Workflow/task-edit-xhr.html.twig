@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block footerInner %}
-    <a href="{{ path('core_workflow_task_delete', { 'id':workflow.id, 'taskId':task.id }) }}" class="btn btn-danger pull-left ladb-btn-delete"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+    <a href="{{ path('core_workflow_task_delete', { 'id':workflow.id, 'taskId':task.id }) }}" class="btn btn-danger pull-left ladb-btn-delete"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
     <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
     <button type="submit" class="btn btn-primary">{{ 'default.update'|trans() }}</button>
 {% endblock %}

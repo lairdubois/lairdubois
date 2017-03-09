@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,7 +19,7 @@ use Ladb\CoreBundle\Manager\Workflow\WorkflowManager;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 
 /**
- * @Route("/workflow")
+ * @Route("/processus")
  */
 class WorkflowController extends Controller {
 
@@ -63,6 +64,9 @@ class WorkflowController extends Controller {
 	}
 
 	private function _updateTasksStatus($tasks = array()) {
+		if (!is_array($tasks)) {
+			$tasks = array( $tasks );
+		}
 		$updatedTask = array();
 		foreach ($tasks as $task) {
 
@@ -88,20 +92,42 @@ class WorkflowController extends Controller {
 		return $updatedTask;
 	}
 
-	private function _generateTaskInfos($tasks, $boxOnly = true) {
+	const TASKINFO_NONE 			= 0;
+	const TASKINFO_STATUS 			= 1 << 0;
+	const TASKINFO_POSITION_LEFT 	= 1 << 1;
+	const TASKINFO_POSITION_TOP 	= 1 << 2;
+	const TASKINFO_ROW 				= 1 << 3;
+	const TASKINFO_WIDGET 			= 1 << 4;
+	const TASKINFO_BOX 				= 1 << 5;
+
+	private function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE) {
 		$templating = $this->get('templating');
 
+		if (!is_array($tasks)) {
+			$tasks = array( $tasks );
+		}
 		$taskInfos = array();
 		foreach ($tasks as $task) {
 			$taskInfo = array(
-				"id"     => $task->getId(),
-				"status" => $task->getStatus(),
-				"row"    => $templating->render('LadbCoreBundle:Workflow:_task-row.part.html.twig', array( 'task' => $task )),
+				'id' => $task->getId(),
 			);
-			if ($boxOnly) {
-				$taskInfo["box"] = $templating->render('LadbCoreBundle:Workflow:_task-box.part.html.twig', array( 'task' => $task ));
-			} else {
-				$taskInfo["widget"] = $templating->render('LadbCoreBundle:Workflow:_task-widget.part.html.twig', array( 'task' => $task ));
+			if (($fieldsStrategy & self::TASKINFO_STATUS) == self::TASKINFO_STATUS) {
+				$taskInfo['status'] = $task->getStatus();
+			}
+			if (($fieldsStrategy & self::TASKINFO_POSITION_LEFT) == self::TASKINFO_POSITION_LEFT) {
+				$taskInfo['positionLeft'] = $task->getPositionLeft();
+			}
+			if (($fieldsStrategy & self::TASKINFO_POSITION_TOP) == self::TASKINFO_POSITION_TOP) {
+				$taskInfo['positionTop'] = $task->getPositionTop();
+			}
+			if (($fieldsStrategy & self::TASKINFO_ROW) == self::TASKINFO_ROW) {
+				$taskInfo['row'] = $templating->render('LadbCoreBundle:Workflow:_task-row.part.html.twig', array( 'task' => $task ));
+			}
+			if (($fieldsStrategy & self::TASKINFO_WIDGET) == self::TASKINFO_WIDGET) {
+				$taskInfo['widget'] = $templating->render('LadbCoreBundle:Workflow:_task-widget.part.html.twig', array( 'task' => $task ));
+			}
+			if (($fieldsStrategy & self::TASKINFO_BOX) == self::TASKINFO_BOX) {
+				$taskInfo['box'] = $templating->render('LadbCoreBundle:Workflow:_task-box.part.html.twig', array( 'task' => $task ));
 			}
 			$taskInfos[] = $taskInfo;
 		}
@@ -114,6 +140,11 @@ class WorkflowController extends Controller {
 		return array(
 			'statusPanel' => $templating->render('LadbCoreBundle:Workflow:_workflow-status-panel.part.html.twig', array( 'workflow' => $workflow )),
 		);
+	}
+
+	private function _push($workflow, $response) {
+		$pusher = $this->get('gos_web_socket.wamp.pusher');
+		$pusher->push($response, 'workflow_show_topic', array( 'id' => $workflow->getId() ));
 	}
 
 	/////
@@ -288,6 +319,36 @@ class WorkflowController extends Controller {
 	}
 
 	/**
+	 * @Route("/", name="core_workflow_list")
+	 * @Route("/{filter}", requirements={"filter" = "\w+"}, name="core_workflow_list_filter")
+	 * @Route("/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_workflow_list_filter_page")
+	 * @Template()
+	 */
+	public function listAction(Request $request, $filter = 'all', $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
+		$paginator = $workflowRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+
+		$parameters = array(
+			'filter'        => $filter,
+			'prevPageUrl'   => $pageUrls->prev,
+			'nextPageUrl'   => $pageUrls->next,
+			'workflows'     => $paginator,
+			'workflowCount' => $paginator->count(),
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+		}
+		return $parameters;
+	}
+
+	/**
 	 * @Route("/{id}/task/new", requirements={"id" = "\d+"}, name="core_workflow_task_new")
 	 * @Template("LadbCoreBundle:Workflow:task-new-xhr.html.twig")
 	 */
@@ -334,23 +395,30 @@ class WorkflowController extends Controller {
 			}
 			if (!is_null($sourceTask)) {
 				$sourceTask->addTargetTask($task);
+				if ($sourceTask->getStatus() != Task::STATUS_DONE) {
+					$task->setStatus(Task::STATUS_PENDING);
+				}
 			}
 
 			$om->persist($task);
 			$om->flush();
 
-			$connections = array();
+			$createdConnections = array();
 			if (!is_null($sourceTask)) {
-				$connections[] = array(
+
+				$createdConnections[] = array(
 					'from' => $sourceTask->getId(),
 					'to'   => $task->getId(),
 				);
 			}
 
+			$this->_push($workflow, array(
+				'createdConnections' => $createdConnections,
+				'createdTaskInfos'   => $this->_generateTaskInfos($task, self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET),
+			));
+
 			return new JsonResponse(array(
-				'success'            => true,
-				'createdTaskInfos'   => $this->_generateTaskInfos(array($task), false),
-				'createdConnections' => $connections,
+				'success' => true,
 			));
 		}
 
@@ -404,9 +472,12 @@ class WorkflowController extends Controller {
 
 			$om->flush();
 
+			$this->_push($workflow, array(
+				'updatedTaskInfos' => $this->_generateTaskInfos($task, self::TASKINFO_STATUS | self::TASKINFO_BOX),
+			));
+
 			return new JsonResponse(array(
-				'success'          => true,
-				'updatedTaskInfos' => $this->_generateTaskInfos(array($task)),
+				'success' => true,
 			));
 		}
 
@@ -442,6 +513,10 @@ class WorkflowController extends Controller {
 		}
 
 		$om->flush();
+
+		$this->_push($workflow, array(
+			'movedTaskInfos' => $this->_generateTaskInfos($task, self::TASKINFO_POSITION_LEFT | self::TASKINFO_POSITION_TOP),
+		));
 
 		return new JsonResponse(array(
 			'success' => true,
@@ -533,10 +608,13 @@ class WorkflowController extends Controller {
 			$updatedTasks = array();
 		}
 
-		return new JsonResponse(array(
-			'success'          => true,
+		$this->_push($workflow, array(
 			'workflowInfos'    => $this->_generateWorkflowInfos($workflow),
-			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks, self::TASKINFO_STATUS | self::TASKINFO_BOX),
+		));
+
+		return new JsonResponse(array(
+			'success' => true,
 		));
 	}
 
@@ -558,7 +636,7 @@ class WorkflowController extends Controller {
 		$targetTasks = $task->getTargetTasks()->toArray();
 
 		// Decrement task duration on workflow
-		$workflow->incrementDuration($task->getDuration());
+		$workflow->incrementDuration(-$task->getDuration());
 
 		// Remove the task
 		$om->remove($task);
@@ -568,11 +646,14 @@ class WorkflowController extends Controller {
 		$updatedTasks = $this->_updateTasksStatus(array_merge($sourceTasks, $targetTasks));
 		$om->flush();
 
-		return new JsonResponse(array(
-			'success'          => true,
+		$this->_push($workflow, array(
 			'workflowInfos'    => $this->_generateWorkflowInfos($workflow),
-			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks, self::TASKINFO_STATUS | self::TASKINFO_BOX),
 			'deletedTaskId'    => $taskId,
+		));
+
+		return new JsonResponse(array(
+			'success' => true,
 		));
 	}
 
@@ -593,17 +674,33 @@ class WorkflowController extends Controller {
 		$targetTask = $this->_retrieveTaskFromTaskIdParam($request, 'targetTaskId');
 		$this->_assertValidWorkflow($targetTask, $workflow);
 
-		// Link tasks
-		$sourceTask->addTargetTask($targetTask);
-		$om->flush();
+		// Check if connection exists
+		if (!$sourceTask->getTargetTasks()->contains($targetTask)) {
 
-		// Update dependant tasks status
-		$updatedTasks = $this->_updateTasksStatus(array( $targetTask ));
-		$om->flush();
+			// Link tasks
+			$sourceTask->addTargetTask($targetTask);
+			$om->flush();
+
+			// Update dependant tasks status
+			$updatedTasks = $this->_updateTasksStatus(array($targetTask));
+			$om->flush();
+
+			$createdConnections = array(
+				array(
+					'from' => $sourceTask->getId(),
+					'to'   => $targetTask->getId(),
+				)
+			);
+
+			$this->_push($workflow, array(
+				'createdConnections' => $createdConnections,
+				'updatedTaskInfos'   => $this->_generateTaskInfos($updatedTasks, self::TASKINFO_STATUS | self::TASKINFO_BOX),
+			));
+
+		}
 
 		return new JsonResponse(array(
-			'success'          => true,
-			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+			'success' => true,
 		));
 	}
 
@@ -624,6 +721,13 @@ class WorkflowController extends Controller {
 		$targetTask = $this->_retrieveTaskFromTaskIdParam($request, 'targetTaskId');
 		$this->_assertValidWorkflow($targetTask, $workflow);
 
+		$deletedConnections = array(
+			array(
+				'from' => $sourceTask->getId(),
+				'to'   => $targetTask->getId(),
+			)
+		);
+
 		// Unlink tasks
 		$sourceTask->removeTargetTask($targetTask);
 		$om->flush();
@@ -632,9 +736,13 @@ class WorkflowController extends Controller {
 		$updatedTasks = $this->_updateTasksStatus(array( $targetTask ));
 		$om->flush();
 
+		$this->_push($workflow, array(
+			'deletedConnections' => $deletedConnections,
+			'updatedTaskInfos'   => $this->_generateTaskInfos($updatedTasks, self::TASKINFO_STATUS | self::TASKINFO_BOX),
+		));
+
 		return new JsonResponse(array(
-			'success'          => true,
-			'updatedTaskInfos' => $this->_generateTaskInfos($updatedTasks),
+			'success' => true,
 		));
 	}
 

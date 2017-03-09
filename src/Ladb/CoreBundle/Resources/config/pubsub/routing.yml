@@ -1,0 +1,15 @@
+workflow_show_topic:
+    channel: workflow/{id}/show
+    handler:
+        callback: 'workflow.topic'
+    requirements:
+        id:
+            pattern: "[0-9]+"
+
+workflow_rpc:
+    channel: workflow/{method}
+    handler:
+        callback: 'workflow.rpc'
+    requirements:
+        method:
+            pattern: "[a-z_]+"

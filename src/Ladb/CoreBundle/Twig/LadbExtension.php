@@ -78,10 +78,10 @@ class LadbExtension extends \Twig_Extension {
 		if ($interval->y > 0) {
 			$str = $translator->transChoice('interval.year', $interval->y, array('%count%' => $interval->y), 'date');
 			if ($interval->m > 0) {
-				$str .= ' '.$translator->transChoice('interval.mounth', $interval->m, array('%count%' => $interval->m), 'date');
+				$str .= ' '.$translator->transChoice('interval.month', $interval->m, array('%count%' => $interval->m), 'date');
 			}
 		} else if ($interval->m > 0) {
-			$str = $translator->transChoice('interval.mounth', $interval->m, array('%count%' => $interval->m), 'date');
+			$str = $translator->transChoice('interval.month', $interval->m, array('%count%' => $interval->m), 'date');
 			if ($interval->d > 0) {
 				$str .= ' '.$translator->transChoice('interval.day', $interval->d, array('%count%' => $interval->d), 'date');
 			}

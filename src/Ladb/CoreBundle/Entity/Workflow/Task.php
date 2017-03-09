@@ -81,6 +81,12 @@ class Task {
 	private $duration = 0;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Label")
+	 * @ORM\JoinTable(name="tbl_workflow_task_label")
+	 */
+	protected $labels;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Task", mappedBy="targetTasks")
 	 */
 	private $sourceTasks;
@@ -98,6 +104,7 @@ class Task {
 	/////
 
 	public function __construct() {
+		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->sourceTasks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->targetTasks = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -220,6 +227,23 @@ class Task {
 
 	public function getDuration() {
 		return $this->duration;
+	}
+
+	// Labels /////
+
+	public function addLabel(\Ladb\CoreBundle\Entity\Workflow\Label $label) {
+		if (!$this->labels->contains($label)) {
+			$this->labels[] = $label;
+		}
+		return $this;
+	}
+
+	public function removeLabel(\Ladb\CoreBundle\Entity\Workflow\Label $label) {
+		$this->labels->removeElement($label);
+	}
+
+	public function getLabels() {
+		return $this->labels;
 	}
 
 	// SourceTasks /////

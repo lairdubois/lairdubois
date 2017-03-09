@@ -60,7 +60,8 @@
 
         "components/jquery": "1.12.1",
         "components/jqueryui": "1.11.4",
-        "components/masonry": "3.2.2"
+        "components/masonry": "3.2.2",
+        "gos/web-socket-bundle": "^1.8"
 
     },
     "require-dev": {

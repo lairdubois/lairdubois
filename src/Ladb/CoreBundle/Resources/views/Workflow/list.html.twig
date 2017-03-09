@@ -1,0 +1,24 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set pageTitle = 'workflow.title'|trans() %}
+{% set pageDescription = 'workflow.description'|trans() %}
+
+{% set navSection = 'workflow' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {#{% include 'LadbCoreBundle:Workflow:_list-topbar.part.html.twig' %}#}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
+        <div class="panel-body">{{ 'workflow.description'|trans() }}</div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Workflow:_list-n.part.html.twig' %}
+{% endblock %}

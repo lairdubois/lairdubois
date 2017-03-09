@@ -33,7 +33,9 @@
                 <div class="ladb-body">{% block body %}{{ entity.bodyExtract|striptags|ladb_truncate_at|truncate(180, true, ' [...]') }}{% endblock %}</div>
                 <ul class="ladb-counters">
                     {% block entityMetas %}
-                        <li class="ladb-counter"><i class="ladb-icon-eye"></i> <span>{{ entity.viewCount|number_format(0, ',', ' ') }}</span></li>
+                        {% if entity.viewCount is defined and entity.viewCount > 0 %}
+                            <li class="ladb-counter"><i class="ladb-icon-eye"></i> <span>{{ entity.viewCount|number_format(0, ',', ' ') }}</span></li>
+                        {% endif %}
                         {% if entity.commentCount is defined and entity.commentCount > 0 %}
                             <li class="ladb-counter"><i class="ladb-icon-comment"></i> <span>{{ entity.commentCount|number_format(0, ',', ' ') }}</span></li>
                         {% endif %}
