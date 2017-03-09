@@ -8,10 +8,10 @@
     {{ parent() }}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
-    <script type="text/javascript" src="http://yurigor.com/js/dagre.min.js"></script>
-    <script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>
+    {#<script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>#}
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
     {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=201703031224"></script>
     {% endjavascripts %}
@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function() {
             $('.ladb-wrapper').ladbWorkflowBoard({
-                wsUri: 'ws://dev.lairdubois.fr:8080',
+                wsUri: '{{ websocket_uri }}',
                 wsChannel: 'workflow/{{ workflow.id }}/show',
                 newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
                 createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',

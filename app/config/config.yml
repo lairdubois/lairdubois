@@ -43,6 +43,7 @@ twig:
     globals:
         ga_tracking_id: "%ga_tracking_id%"
         stripe_publishable_key: "%stripe_publishable_key%"
+        websocket_uri: "%websocket_scheme%://%websocket_host%:%websocket_port%"
 
 # Assetic Configuration
 assetic:
@@ -680,16 +681,17 @@ fos_elastica:
 
 # GosWebSocketBundle
 gos_web_socket:
+    shared_config: false
     client:
         firewall: main
         session_handler: '@session.handler.pdo'
     server:
-        port: 8080        #The port the socket server will listen on
-        host: 127.0.0.1   #The host ip to bind to
+        host: '%websocket_host%'
+        port: '%websocket_port%'
         router:
             resources:
                 - '@LadbCoreBundle/Resources/config/pubsub/routing.yml'
     pushers:
         wamp:
-            host: 127.0.0.1
-            port: 8080
+            host: '%websocket_host%'
+            port: '%websocket_port%'
