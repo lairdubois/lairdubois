@@ -103,7 +103,7 @@ class WorkflowController extends Controller {
 	private function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE) {
 		$templating = $this->get('templating');
 
-		if (!is_array($tasks)) {
+		if (!is_array($tasks) && !$tasks instanceof \Traversable) {
 			$tasks = array( $tasks );
 		}
 		$taskInfos = array();
@@ -655,6 +655,33 @@ class WorkflowController extends Controller {
 
 		return new JsonResponse(array(
 			'success' => true,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/tasks", requirements={"id" = "\d+"}, name="core_workflow_task_list")
+	 */
+	public function listTaskAction(Request $request, $id) {
+
+		// Retrieve Workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		$connections = array();
+		foreach ($workflow->getTasks() as $sourceTask) {
+			foreach ($sourceTask->getTargetTasks() as $targetTask) {
+				$connections[] = array(
+					'from' => $sourceTask->getId(),
+					'to'   => $targetTask->getId(),
+				);
+			}
+		}
+
+		return new JsonResponse(array(
+			'success'       => true,
+			'workflowInfos' => $this->_generateWorkflowInfos($workflow),
+			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET),
+			'connections'   => $connections
+
 		));
 	}
 

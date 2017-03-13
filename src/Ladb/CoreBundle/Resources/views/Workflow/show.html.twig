@@ -21,6 +21,7 @@
             $('.ladb-wrapper').ladbWorkflowBoard({
                 wsUri: '{{ websocket_uri }}',
                 wsChannel: 'workflow/{{ workflow.id }}',
+                listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}',
                 newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
                 createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
                 editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
@@ -28,14 +29,7 @@
                 positionUpdateTaskPath: '{{ path('core_workflow_task_position_update', { 'id':workflow.id }) }}',
                 statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
                 createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
-                deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
-                startupConnections: [
-                    {% for task in workflow.tasks %}
-                        {% for targetTask in task.targetTasks %}
-                            { from: {{ task.id }}, to: {{ targetTask.id }} },
-                        {% endfor %}
-                    {% endfor %}
-                ]
+                deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}'
             });
         });
     </script>
@@ -51,7 +45,6 @@
                 {% block headerTools %}
                     <div class="ladb-header-tools">
                         <button id="ladb_btn_add_task" class="btn btn-success"><i class="ladb-icon-plus"></i><span class="ladb-visible-desktop">  {{ 'workflow.task.new'|trans() }}</span></button>
-                        {#<button id="ladb_btn_layout" class="btn btn-default"><i class="ladb-icon-plus"></i> Layout</button>#}
                         {% if ownerUser or is_granted("ROLE_ADMIN") %}
                             &nbsp;
                             <a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
@@ -80,9 +73,6 @@
                     </div>
                     <div id="collapse_status_3" class="panel-collapse collapse in" role="tabpanel">
                         <div class="panel-body">
-                            {% for task in workflow.tasks if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') %}
-                                {% include 'LadbCoreBundle:Workflow:_task-row.part.html.twig' %}
-                            {% endfor %}
                         </div>
                     </div>
                     <div class="panel-heading panel-heading-status-2" role="tab">
@@ -95,9 +85,6 @@
                     </div>
                     <div id="collapse_status_2" class="panel-collapse collapse in" role="tabpanel">
                         <div class="panel-body">
-                            {% for task in workflow.tasks if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %}
-                                {% include 'LadbCoreBundle:Workflow:_task-row.part.html.twig' %}
-                            {% endfor %}
                         </div>
                     </div>
                     <div class="panel-heading panel-heading-status-1" role="tab">
@@ -110,9 +97,6 @@
                     </div>
                     <div id="collapse_status_1" class="panel-collapse collapse in" role="tabpanel">
                         <div class="panel-body">
-                            {% for task in workflow.tasks if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_PENDING') %}
-                                {% include 'LadbCoreBundle:Workflow:_task-row.part.html.twig' %}
-                            {% endfor %}
                         </div>
                     </div>
                     <div class="panel-heading panel-heading-status-4" role="tab">
@@ -125,9 +109,6 @@
                     </div>
                     <div id="collapse_status_4" class="panel-collapse collapse in" role="tabpanel">
                         <div class="panel-body">
-                            {% for task in workflow.tasks if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') %}
-                                {% include 'LadbCoreBundle:Workflow:_task-row.part.html.twig' %}
-                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -135,9 +116,6 @@
             <div id="ladb_workflow_task_diagram" class="col-lg-9 col-md-9 col-xs-12">
                 <div class="ladb-panzoom">
                     <div class="ladb-jtk-canvas">
-                        {% for task in workflow.tasks %}
-                            {% include 'LadbCoreBundle:Workflow:_task-widget.part.html.twig' %}
-                        {% endfor %}
                     </div>
                 </div>
             </div>

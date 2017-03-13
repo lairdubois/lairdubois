@@ -26,6 +26,7 @@
         minScale: 0.4,
         maxScale: 1,
         incScale: 0.1,
+        listTaskPath: null,
         newTaskPath: null,
         createTaskPath: null,
         editTaskPath: null,
@@ -33,8 +34,7 @@
         positionUpdateTaskPath: null,
         statusUpdateTaskPath: null,
         createTaskConnectionPath: null,
-        deleteTaskConnectionPath: null,
-        startupConnections: []
+        deleteTaskConnectionPath: null
     };
 
     LadbWorkflowBoard.prototype.markLoading = function() {
@@ -87,6 +87,32 @@
         // Workflow
         if (response.workflowInfos) {
             $('#ladb_workflow_status_panel', this.$element).replaceWith(response.workflowInfos.statusPanel);
+        }
+
+        // Tasks
+        if (response.taskInfos) {
+
+            if (that.plumb) {
+                that.plumb.detachEveryConnection();
+                that.$canvas.empty();
+            }
+            for (i = 0; i <= 4; i++) {
+                $('#collapse_status_' + i + ' .panel-body').empty();
+            }
+
+            for (i = 0; i < response.taskInfos.length; i++) {
+
+                taskInfos = response.taskInfos[i];
+
+                $taskWidget = $(taskInfos.widget);
+                that.$canvas.append($taskWidget);
+                that.initTaskWidget($taskWidget);
+
+                $taskRow = $(taskInfos.row);
+                $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
+                that.initTaskRow($taskRow);
+
+            }
         }
 
         // Created tasks
@@ -153,6 +179,16 @@
             }
             $taskRow = $('#ladb_workflow_task_row_' + response.deletedTaskId);
             $taskRow.remove();
+        }
+
+        // Connections
+        if (response.connections && that.plumb) {
+            _.each(response.connections, function (connection) {
+                that.plumb.connect({
+                    source: 'ladb_workflow_task_widget_' + connection.from,
+                    target: 'ladb_workflow_task_widget_' + connection.to
+                });
+            });
         }
 
         // Created connections
@@ -426,6 +462,27 @@
 
     };
 
+    LadbWorkflowBoard.prototype.loadTasks = function() {
+        var that = this;
+
+        $.ajax(that.options.listTaskPath, {
+            cache: false,
+            dataType: "html",
+            context: document.body,
+            success: function(data, textStatus, jqXHR) {
+
+                // Hide loading
+                that.unmarkLoading();
+
+                that.updateDiagramFromJsonData(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('listTaskPath failed', textStatus);
+            }
+        });
+
+    };
+
     LadbWorkflowBoard.prototype.newTask = function(positionLeft, positionTop, sourceTaskId) {
         var that = this;
 
@@ -513,25 +570,36 @@
         var ws = WS.connect(this.options.wsUri);
         ws.on('socket/connect', function(session) {
 
-            // Hide loading
-            that.unmarkLoading();
-
             // Keep ws session
             that.session = session;
 
             // Subscribe to the channel
-            session.subscribe(that.options.wsChannel, function (uri, payload) {
-                try {
-                    that.updateDiagramFromJsonData(payload);
-                } catch(error) {}
-            });
+            try {
+                session.subscribe(that.options.wsChannel, function (uri, payload) {
+                    try {
+                        that.updateDiagramFromJsonData(payload);
+                    } catch(error) {
+                        console.log("Error updating diagram", error);
+                    }
+                });
+
+            } catch(error) {
+                console.log("subscription failed", error);
+            }
+
+            // Load tasks
+            that.loadTasks();
 
         });
         ws.on('socket/disconnect', function(error){
-            notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
+
+            // Reset ws session
+            that.session = null;
 
             // Loading
             that.markLoading();
+
+            notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
 
         });
 
@@ -612,14 +680,6 @@
                 // Init initiales tasks widgets
                 $('.ladb-workflow-task-widget', that.$canvas).each(function (index) {
                     that.initTaskWidget($(this));
-                });
-
-                // Apply startup connections
-                _.each(that.options.startupConnections, function (connection) {
-                    that.plumb.connect({
-                        source: 'ladb_workflow_task_widget_' + connection.from,
-                        target: 'ladb_workflow_task_widget_' + connection.to
-                    });
                 });
 
                 // Setup panzoom
