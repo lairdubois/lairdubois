@@ -77,12 +77,12 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 	 * @return mixed|void
 	 */
 	public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible) {
-
-		$user = $this->_getUser($connection);
-
-		// Retieve workflow
-		$workflow = $this->_retrieveWorkflow($connection, $request, $user);
-
+//
+//		$user = $this->_getUser($connection);
+//
+//		// Retieve workflow
+//		$workflow = $this->_retrieveWorkflow($connection, $request, $user);
+//
 		$topic->broadcast($event);
 	}
 
