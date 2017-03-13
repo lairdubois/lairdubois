@@ -23,10 +23,12 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 
 		$workflow = $workflowRepository->findOneById($id);
 		if (is_null($workflow)) {
-			$connection->close();	// Workflow not found
+			$this->get('logger')->error('Unable to find Workflow entity (id='.$id.').');
+			$connection->close();
 		}
 		if (!$user instanceof UserInterface || !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $user->getId()) {
-			$connection->close();	// Not allowed
+			$this->get('logger')->error('Not allowed');
+			$connection->close();
 		}
 
 		return $workflow;
