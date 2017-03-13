@@ -242,14 +242,15 @@
 @media screen and (max-width: @ladb-screen-phone-max) {
 
   .cnt {
-    left: 0;
-    right: 0;
+    position: static;
 
     .ladb-workflow-panel {
-      top: 150px;
+      position: static;
 
       #ladb_workflow_task_list {
         height: auto;
+        margin-bottom: @ladb-bottombar-height;
+        padding-bottom: @ladb-gutter / 2;
 
         .panel {
           height: auto;
