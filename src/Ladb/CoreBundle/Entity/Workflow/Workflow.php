@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Workflow;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\TaggableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
@@ -12,7 +13,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication {
+class Workflow extends AbstractAuthoredPublication implements TaggableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
 	const TYPE = 113;
@@ -47,11 +48,25 @@ class Workflow extends AbstractAuthoredPublication {
 	 */
 	protected $labels;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_workflow_tag")
+	 */
+	private $tags;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\License", cascade={"persist", "remove"})
+	 * @ORM\JoinColumn(nullable=true, name="license_id")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\License")
+	 */
+	private $license;
+
 	/////
 
 	public function __construct() {
 		$this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// Type /////
@@ -147,6 +162,34 @@ class Workflow extends AbstractAuthoredPublication {
 
 	public function resetLabels() {
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	// Tags /////
+
+	public function addTag(\Ladb\CoreBundle\Entity\Tag $tag) {
+		$this->tags[] = $tag;
+		return $this;
+	}
+
+	public function removeTag(\Ladb\CoreBundle\Entity\Tag $tag) {
+		$this->tags->removeElement($tag);
+	}
+
+	public function getTags() {
+		return $this->tags;
+	}
+
+	// License /////
+
+	public function setLicense($license) {
+		$this->license = $license;
+	}
+
+	public function getLicense() {
+		if (is_null($this->license)) {
+			return new \Ladb\CoreBundle\Entity\License();
+		}
+		return $this->license;
 	}
 
 }

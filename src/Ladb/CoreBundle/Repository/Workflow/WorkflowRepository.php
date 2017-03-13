@@ -10,6 +10,21 @@ class WorkflowRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findPagined($offset, $limit, $filter = 'all') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w' ))
+			->from($this->getEntityName(), 'w')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$queryBuilder
+			->addOrderBy('w.createdAt', 'DESC');
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'all') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder

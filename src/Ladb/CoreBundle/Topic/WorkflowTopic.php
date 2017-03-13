@@ -15,7 +15,7 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 		return $this->getClientManipulator()->getClient($connection);
 	}
 
-	private function _retrieveWorkflow(ConnectionInterface $connection, WampRequest $request, User $user) {
+	private function _retrieveWorkflow(ConnectionInterface $connection, WampRequest $request, $user) {
 		$om = $this->getDoctrine()->getManager();
 		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 

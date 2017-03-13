@@ -1,0 +1,30 @@
+{% extends 'LadbCoreBundle:User:_show-list.html.twig' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+
+{% block bodyContainerContent %}
+    {% if workflows.count == 0 and filter != 'draft' %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                <p>Vous n'avez pas encore publié de <strong>trouvaille</strong> !</p>
+                <p><a href="{{ path('core_workflow_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'workflow.new'|trans() }}</a></p>
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas encore publié de trouvaille.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Workflow:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_user_show_workflows_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% set customFilterDefs = {
+                'draft':    { 'label':('default.choice.draft'|transchoice(2)|capitalize), 'path':path('core_user_show_workflows_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
+            } %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Workflow:_list-n.part.html.twig' %}
+{% endblock %}

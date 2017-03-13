@@ -2,11 +2,20 @@
 
 {% set navSection = 'workflows' %}
 
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
 {% block sidenav %}
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Tag:_form-sidenav.part.html.twig' %}
+    {% include 'LadbCoreBundle:License:_form-sidenav.part.html.twig' %}
 {% endblock %}
 
 {% block sections %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('workflow.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Tag:_form-section.part.html.twig' with { 'mandatory':false, 'help':'Indiquez les tags définissant votre processus.' } %}
+    {% include 'LadbCoreBundle:License:_form-section.part.html.twig' with { 'form':form.license } %}
 {% endblock %}

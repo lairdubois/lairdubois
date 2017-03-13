@@ -218,6 +218,10 @@ class YoutookController extends Controller {
 	 * @Template()
 	 */
 	public function userListAction(Request $request, $filter = 'all', $page = 0) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$tookRepository = $om->getRepository(Took::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);

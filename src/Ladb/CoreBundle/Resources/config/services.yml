@@ -325,6 +325,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_workflow_workflow:
+    class: Ladb\CoreBundle\Form\Type\Workflow\WorkflowType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_find_find:
     class: Ladb\CoreBundle\Form\Type\Find\FindType
     tags:

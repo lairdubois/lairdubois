@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Utils\UserUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -754,6 +755,57 @@ class UserController extends Controller {
 		return array_merge($parameters, array(
 			'user'            => $user,
 			'tab'             => 'finds',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
+	 * @Route("/{username}/processus", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workflows")
+	 * @Route("/{username}/processus/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workflows_filter")
+	 * @Route("/{username}/processus/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workflows_filter_page")
+	 * @Template()
+	 */
+	public function showWorkflowsAction(Request $request, $username, $filter = null, $page = 0) {
+		$userManager = $this->get('fos_user.user_manager');
+
+		$user = $userManager->findUserByUsername($username);
+		if (is_null($user)) {
+			throw $this->createNotFoundException('User not found');
+		}
+		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('User not enabled');
+		}
+
+		// Default filter
+
+		$filter = 'recent';
+
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
+		$paginator = $workflowRepository->findPagined($offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+
+		$parameters = array(
+			'filter'        => $filter,
+			'prevPageUrl'   => $pageUrls->prev,
+			'nextPageUrl'   => $pageUrls->next,
+			'workflows'     => $paginator,
+			'workflowCount' => $paginator->count(),
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => 'workflows',
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 		));
 	}

@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller;
 
 use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Ladb\CoreBundle\Utils\TagUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -158,8 +159,11 @@ class WorkflowController extends Controller {
 		$workflow = new Workflow();
 		$form = $this->createForm(WorkflowType::class, $workflow);
 
+		$tagUtils = $this->get(TagUtils::NAME);
+
 		return array(
-			'form' => $form->createView(),
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($workflow),
 		);
 	}
 
@@ -196,9 +200,12 @@ class WorkflowController extends Controller {
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
 
+		$tagUtils = $this->get(TagUtils::NAME);
+
 		return array(
-			'workflow' => $workflow,
-			'form'     => $form->createView(),
+			'workflow'     => $workflow,
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($workflow),
 		);
 	}
 
@@ -220,9 +227,12 @@ class WorkflowController extends Controller {
 
 		$form = $this->createForm(WorkflowType::class, $workflow);
 
+		$tagUtils = $this->get(TagUtils::NAME);
+
 		return array(
-			'workflow' => $workflow,
-			'form'     => $form->createView(),
+			'workflow'     => $workflow,
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($workflow),
 		);
 	}
 
@@ -243,6 +253,8 @@ class WorkflowController extends Controller {
 			throw $this->createNotFoundException('Not allowed (core_find_update)');
 		}
 
+		$previouslyUsedTags = $workflow->getTags()->toArray();	// Need to be an array to copy values
+
 		$form = $this->createForm(WorkflowType::class, $workflow);
 		$form->handleRequest($request);
 
@@ -259,7 +271,7 @@ class WorkflowController extends Controller {
 
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
-			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($workflow));
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($workflow, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.form.alert.update_success', array( '%title%' => $workflow->getTitle() )));
@@ -274,9 +286,12 @@ class WorkflowController extends Controller {
 
 		}
 
+		$tagUtils = $this->get(TagUtils::NAME);
+
 		return array(
-			'workflow' => $workflow,
-			'form'     => $form->createView(),
+			'workflow'     => $workflow,
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($workflow),
 		);
 	}
 
@@ -326,6 +341,40 @@ class WorkflowController extends Controller {
 	 * @Template()
 	 */
 	public function listAction(Request $request, $filter = 'all', $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
+		$paginator = $workflowRepository->findPagined($offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+
+		$parameters = array(
+			'filter'        => $filter,
+			'prevPageUrl'   => $pageUrls->prev,
+			'nextPageUrl'   => $pageUrls->next,
+			'workflows'     => $paginator,
+			'workflowCount' => $paginator->count(),
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+		}
+		return $parameters;
+	}
+
+	/**
+	 * @Route("/mes-processus", name="core_workflow_user_list")
+	 * @Route("/mes-processus/{filter}", requirements={"filter" = "\w+"}, name="core_workflow_user_list_filter")
+	 * @Route("/mes-processus/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_workflow_user_list_filter_page")
+	 * @Template()
+	 */
+	public function userListAction(Request $request, $filter = 'all', $page = 0) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
