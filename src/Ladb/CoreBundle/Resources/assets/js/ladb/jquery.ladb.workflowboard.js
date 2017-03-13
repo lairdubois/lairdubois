@@ -47,25 +47,32 @@
 
     LadbWorkflowBoard.prototype.appendToAnimate = function(element, newParent) {
 
-        var $element = $(element);
+        var $taskRow = $(element);
+        var $taskBox = $('.ladb-box', $taskRow);
         var $newParent= $(newParent);
 
-        var oldOffset = $element.offset();
-        $element.appendTo($newParent);
-        var newOffset = $element.offset();
+        var oldOffset = $taskRow.offset();
+        $taskRow.appendTo($newParent);
+        var newOffset = $taskRow.offset();
 
-        var $tmpElement = $element.clone().appendTo('body');
-        $tmpElement.css({
+        var $tmpTaskRow = $taskRow.clone().appendTo('body');
+        $tmpTaskRow.css({
             'position': 'absolute',
             'left': oldOffset.left,
             'top': oldOffset.top,
-            'width': $element.width(),
+            'width': $taskRow.width(),
             'z-index': 1000
         });
-        $element.hide();
-        $tmpElement.animate({'top': newOffset.top, 'left': newOffset.left}, 500, function(){
-            $element.show();
-            $tmpElement.remove();
+        $taskRow.css({
+            'height': $taskRow.height()
+        });
+        $taskBox.hide();
+        $tmpTaskRow.animate({'top': newOffset.top, 'left': newOffset.left}, 500, function(){
+            $taskRow.css({
+                'height': 'auto'
+            });
+            $taskBox.show();
+            $tmpTaskRow.remove();
         });
 
     };
