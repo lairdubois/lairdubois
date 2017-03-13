@@ -180,6 +180,7 @@ class WorkflowController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($workflow);
 
+			$workflow->setIsDraft(false);
 			$workflow->setUser($this->getUser());
 
 			$om->persist($workflow);
