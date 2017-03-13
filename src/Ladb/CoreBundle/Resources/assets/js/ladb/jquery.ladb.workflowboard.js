@@ -454,6 +454,11 @@
     LadbWorkflowBoard.prototype.bind = function() {
         var that = this;
 
+        // Init initiales tasks rows
+        $('.ladb-workflow-task-row', that.$element).each(function (index) {
+            that.initTaskRow($(this));
+        });
+
         // Bind buttons
         this.$btnAddTask.on('click', function() {
 
@@ -576,11 +581,6 @@
                 // Init initiales tasks widgets
                 $('.ladb-workflow-task-widget', that.$canvas).each(function (index) {
                     that.initTaskWidget($(this));
-                });
-
-                // Init initiales tasks rows
-                $('.ladb-workflow-task-row', that.$element).each(function (index) {
-                    that.initTaskRow($(this));
                 });
 
                 // Apply startup connections
