@@ -341,6 +341,10 @@ class WorkflowController extends Controller {
 	 * @Template()
 	 */
 	public function listAction(Request $request, $filter = 'all', $page = 0) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);

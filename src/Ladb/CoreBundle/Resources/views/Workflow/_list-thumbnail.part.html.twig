@@ -2,8 +2,11 @@
 
 {% set entity = workflow %}
 
-{% block title %}{{ parent() }}{% endblock %}
+{% block title %}<i class="ladb-icon-workflow"></i> {{ parent() }}{% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+    <div>{{ workflow.tasks|length }} tâches</div>
+    {% include 'LadbCoreBundle:Workflow:_workflow-status-panel.part.html.twig' %}
+{% endblock %}
 
 {% block imageOuter %}{% endblock %}

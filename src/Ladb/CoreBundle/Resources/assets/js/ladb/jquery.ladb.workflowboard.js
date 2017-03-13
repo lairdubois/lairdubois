@@ -225,7 +225,13 @@
         for (i = 1; i <= 4; ++i) {
             var $badgeStatus = $('#collapse_status_' + i + '_badge');
             var $collapse = $('#collapse_status_' + i);
-            $badgeStatus.html($('.ladb-workflow-task-row', $collapse).length);
+            var count = $('.ladb-workflow-task-row', $collapse).length;
+            $badgeStatus.html(count);
+            if (count > 0) {
+                $badgeStatus.show();
+            } else {
+                $badgeStatus.hide();
+            }
         }
 
     };
