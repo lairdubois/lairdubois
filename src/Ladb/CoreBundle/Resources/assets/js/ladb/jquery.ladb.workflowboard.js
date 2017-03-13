@@ -45,6 +45,31 @@
         this.$loadingPanel.hide();
     };
 
+    LadbWorkflowBoard.prototype.appendToAnimate = function(element, newParent) {
+
+        var $element = $(element);
+        var $newParent= $(newParent);
+
+        var oldOffset = $element.offset();
+        $element.appendTo($newParent);
+        var newOffset = $element.offset();
+
+        var $tmpElement = $element.clone().appendTo('body');
+        $tmpElement.css({
+            'position': 'absolute',
+            'left': oldOffset.left,
+            'top': oldOffset.top,
+            'width': $element.width(),
+            'z-index': 1000
+        });
+        $element.hide();
+        $tmpElement.animate({'top': newOffset.top, 'left': newOffset.left}, 500, function(){
+            $element.show();
+            $tmpElement.remove();
+        });
+
+    };
+
     LadbWorkflowBoard.prototype.updateDiagramFromJsonData = function(data) {
         var that = this;
 
@@ -105,9 +130,8 @@
 
                 $taskRow = $('#ladb_workflow_task_row_' + taskInfos.id);
                 $('.ladb-box', $taskRow).replaceWith(taskInfos.box);
-                $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
+                that.appendToAnimate($taskRow, $('#collapse_status_' + taskInfos.status + ' .panel-body'));
                 that.bindTaskBox(taskInfos.id, $('.ladb-box', $taskRow));
-                $('.ladb-box', $taskRow).effect('highlight', {}, 500);
 
             }
         }
