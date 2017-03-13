@@ -12,8 +12,9 @@
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
+        '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js' %}
-        <script type="text/javascript" src="{{ asset_url }}?v=201703131244"></script>
+        <script type="text/javascript" src="{{ asset_url }}?v=201703132105"></script>
     {% endjavascripts %}
     {{ ws_client() }}
     <script>
@@ -120,7 +121,7 @@
             {% embed 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}
                 {% block inner %}
                     {{ parent() }}
-                    <div>Connexion en cours...</div>
+                    <div class="ladb-loading-status">Connexion en cours...</div>
                 {% endblock %}
             {% endembed %}
         </div>

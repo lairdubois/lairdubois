@@ -12,6 +12,7 @@
         this.plumb = null;
 
         this.$loadingPanel = $('.ladb-loading-panel', this.$element);
+        this.$loadingStatus = $('.ladb-loading-status', this.$loadingPanel);
 
         this.$diagram = $('#ladb_workflow_task_diagram', this.$element);
         this.$panzoom = $(".ladb-panzoom", this.$diagram);
@@ -37,8 +38,9 @@
         deleteTaskConnectionPath: null
     };
 
-    LadbWorkflowBoard.prototype.markLoading = function() {
+    LadbWorkflowBoard.prototype.markLoading = function(status) {
         this.$loadingPanel.show();
+        this.$loadingStatus.html(status ? status : '');
     };
 
     LadbWorkflowBoard.prototype.unmarkLoading = function() {
@@ -93,7 +95,7 @@
         if (response.taskInfos) {
 
             if (that.plumb) {
-                that.plumb.detachEveryConnection();
+                that.plumb.deleteEveryEndpoint();
                 that.$canvas.empty();
             }
             for (i = 0; i <= 4; i++) {
@@ -467,6 +469,9 @@
     LadbWorkflowBoard.prototype.loadTasks = function() {
         var that = this;
 
+        // Loading
+        this.markLoading('Chargement des tâches...');
+
         $.ajax(that.options.listTaskPath, {
             cache: false,
             dataType: "html",
@@ -568,6 +573,13 @@
     LadbWorkflowBoard.prototype.init = function() {
         var that = this;
 
+        // CHeck capabilities
+        Modernizr.touchevents;
+        Modernizr.websockets;
+
+        // Loading
+        this.markLoading('Connexion...');
+
         // Connect WebSocket
         var ws = WS.connect(this.options.wsUri);
         ws.on('socket/connect', function(session) {
@@ -599,7 +611,7 @@
             that.session = null;
 
             // Loading
-            that.markLoading();
+            that.markLoading('Déconecté :(');
 
             notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
 
@@ -706,7 +718,7 @@
                             focal: e
                         });
                     })
-                    .on("mousedown touchstart", function (e) {
+                    .on("mousedown", function (e) {
                         if (e.button > 0) {
                             return;
                         }
@@ -717,11 +729,29 @@
                         $(e.target).css("cursor", "move");
                         $(this).data('dragstart', dragstart);
                     })
-                    .on("mousemove touchmove", function (e) {
+                    .on("touchstart", function (e) {
+                        var matrix = that.$panzoom.panzoom("getMatrix");
+                        var offsetX = matrix[4];
+                        var offsetY = matrix[5];
+                        var dragstart = {x: e.originalEvent.touches[0].pageX, y: e.originalEvent.touches[0].pageY, dx: offsetX, dy: offsetY};
+                        $(this).data('dragstart', dragstart);
+                    })
+                    .on("mousemove", function (e) {
                         var dragstart = $(this).data('dragstart');
                         if (dragstart) {
                             var deltaX = dragstart.x - e.pageX;
                             var deltaY = dragstart.y - e.pageY;
+                            var matrix = that.$panzoom.panzoom("getMatrix");
+                            matrix[4] = parseInt(dragstart.dx) - deltaX;
+                            matrix[5] = parseInt(dragstart.dy) - deltaY;
+                            that.$panzoom.panzoom("setMatrix", matrix);
+                        }
+                    })
+                    .on("touchmove", function (e) {
+                        var dragstart = $(this).data('dragstart');
+                        if (dragstart) {
+                            var deltaX = dragstart.x - e.originalEvent.touches[0].pageX;
+                            var deltaY = dragstart.y - e.originalEvent.touches[0].pageY;
                             var matrix = that.$panzoom.panzoom("getMatrix");
                             matrix[4] = parseInt(dragstart.dx) - deltaX;
                             matrix[5] = parseInt(dragstart.dy) - deltaY;
