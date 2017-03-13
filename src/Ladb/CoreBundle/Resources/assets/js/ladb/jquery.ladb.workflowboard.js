@@ -77,7 +77,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.updateDiagramFromJsonData = function(data) {
+    LadbWorkflowBoard.prototype.updateBoardFromJsonData = function(data) {
         var that = this;
 
         var response = JSON.parse(data);
@@ -104,9 +104,11 @@
 
                 taskInfos = response.taskInfos[i];
 
-                $taskWidget = $(taskInfos.widget);
-                that.$canvas.append($taskWidget);
-                that.initTaskWidget($taskWidget);
+                if (that.plumb) {
+                    $taskWidget = $(taskInfos.widget);
+                    that.$canvas.append($taskWidget);
+                    that.initTaskWidget($taskWidget);
+                }
 
                 $taskRow = $(taskInfos.row);
                 $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
@@ -474,7 +476,7 @@
                 // Hide loading
                 that.unmarkLoading();
 
-                that.updateDiagramFromJsonData(data);
+                that.updateBoardFromJsonData(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log('listTaskPath failed', textStatus);
@@ -577,7 +579,7 @@
             try {
                 session.subscribe(that.options.wsChannel, function (uri, payload) {
                     try {
-                        that.updateDiagramFromJsonData(payload);
+                        that.updateBoardFromJsonData(payload);
                     } catch(error) {
                         console.log("Error updating diagram", error);
                     }
