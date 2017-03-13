@@ -20,7 +20,7 @@
         $(document).ready(function() {
             $('.ladb-wrapper').ladbWorkflowBoard({
                 wsUri: '{{ websocket_uri }}',
-                wsChannel: 'workflow/{{ workflow.id }}/show',
+                wsChannel: 'workflow/{{ workflow.id }}',
                 newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
                 createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
                 editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
@@ -141,7 +141,12 @@
                     </div>
                 </div>
             </div>
-            {% include 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}
+            {% embed 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}
+                {% block inner %}
+                    {{ parent() }}
+                    <div>Connexion en cours...</div>
+                {% endblock %}
+            {% endembed %}
         </div>
     </div>
 {% endblock %}

@@ -18,6 +18,7 @@ class WorkflowRpc implements RpcInterface {
 	}
 
 	public function doIt(ConnectionInterface $connection, WampRequest $request, $params) {
+		print_r($request);
 		return array("result" => array_sum($params));
 	}
 
