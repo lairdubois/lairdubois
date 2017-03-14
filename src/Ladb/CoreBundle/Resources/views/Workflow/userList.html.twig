@@ -10,7 +10,7 @@
 
 {% block bodyHeaderContainerContent %}
     <div class="ladb-header-tools pull-right">
-        <a href="{{ path('core_workflow_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'workflow.new'|trans() }}</a>
+        <a href="{{ path('core_workflow_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'workflow.new'|trans() }}</span></a>
     </div>
     <h1 class="ladb-heading"><i class="ladb-icon-workflow"></i> {{ 'workflow.user_list'|trans() }}</h1>
 {% endblock %}

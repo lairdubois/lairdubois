@@ -167,7 +167,7 @@
   .ladb-masonry-column-wide {
     width: 100%;
 
-    >.ladb-box {
+    > .ladb-box {
 
       > .ladb-content {
 
@@ -177,15 +177,12 @@
 
           & + .ladb-body {
             padding-left: 128px + (@ladb-gutter / 2);
+            min-height: 128px;
           }
 
         }
 
-        > .ladb-body {
-          min-height: 128px;
-        }
-
-        >.ladb-counters {
+        > .ladb-counters {
           padding-left: 138px;
         }
 

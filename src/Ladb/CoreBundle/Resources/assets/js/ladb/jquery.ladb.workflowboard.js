@@ -125,10 +125,12 @@
 
                 taskInfos = response.createdTaskInfos[i];
 
-                $taskWidget = $(taskInfos.widget);
-                that.$canvas.append($taskWidget);
-                that.initTaskWidget($taskWidget);
-                $('.ladb-box', $taskWidget).effect('highlight', {}, 1500);
+                if (that.plumb) {
+                    $taskWidget = $(taskInfos.widget);
+                    that.$canvas.append($taskWidget);
+                    that.initTaskWidget($taskWidget);
+                    $('.ladb-box', $taskWidget).effect('highlight', {}, 1500);
+                }
 
                 $taskRow = $(taskInfos.row);
                 $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
