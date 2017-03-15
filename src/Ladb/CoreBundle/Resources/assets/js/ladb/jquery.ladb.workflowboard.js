@@ -766,7 +766,7 @@
                             that.$panzoom.panzoom("setMatrix", matrix);
                         }
                     })
-                    .on("mouseup touchend touchcancel", function (e) {
+                    .on("mouseup touchend touchcancel mouseout", function (e) {
                         $(this).data('dragstart', null);
                         $(e.target).css("cursor", "");
                     })

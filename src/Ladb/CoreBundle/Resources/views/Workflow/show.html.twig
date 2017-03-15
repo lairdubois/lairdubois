@@ -8,13 +8,14 @@
     {{ parent() }}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
     {#<script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>#}
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js' %}
-        <script type="text/javascript" src="{{ asset_url }}?v=201703140653"></script>
+        <script type="text/javascript" src="{{ asset_url }}?v=201703150836"></script>
     {% endjavascripts %}
     {{ ws_client() }}
     <script>
