@@ -18,7 +18,7 @@
                 <i class="ladb-icon-bullet" style="color: #{{ label.color }};" title="{{ label.name }}"></i>
             {% endfor %}
         </div>
-        {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') and task.duration > 0 %}
+        {% if task.duration > 0 %}
             <div class="ladb-duration"><i class="ladb-icon-time"></i> {{ task.duration|ladb_duration() }}</div>
         {% endif %}
     </div>
