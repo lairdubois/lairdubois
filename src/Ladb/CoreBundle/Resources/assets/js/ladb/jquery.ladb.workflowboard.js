@@ -1,6 +1,8 @@
 +function ($) {
     'use strict';
 
+    const GRID_SPACING = 10;
+
     // CLASS DEFINITION
     // ======================
 
@@ -380,6 +382,7 @@
 
         $('.ladb-ep', $taskWidget).on('click', function(e) {
 
+            var currentScale = that.$panzoom.panzoom("getMatrix")[0];
             var positionLeft = e.originalEvent.clientX - that.$canvas.offset().left - 150;    // 150 = half task widget width
             var positionTop = e.originalEvent.clientY - that.$canvas.offset().top + 100;
 
@@ -392,10 +395,11 @@
 
         var currentScale = 1;
         $taskWidget.draggable({
-            grid: [10, 10],
+            grid: [GRID_SPACING, GRID_SPACING],
             handle: ".ladb-box",
             start: function (e) {
                 currentScale = that.$panzoom.panzoom("getMatrix")[0];
+                $(this).draggable( "option", "grid", [ GRID_SPACING * currentScale, GRID_SPACING * currentScale ] );
                 $(this).css("cursor", "move");
                 that.$panzoom.panzoom("disable");
             },
@@ -415,8 +419,8 @@
                 that.$panzoom.panzoom("enable");
 
                 // Round coordinates to grid
-                var positionLeft = Math.round($taskWidget.position().left / 10) * 10;
-                var positionTop = Math.round($taskWidget.position().top / 10) * 10;
+                var positionLeft = Math.round(($taskWidget.position().left / currentScale) / GRID_SPACING) * GRID_SPACING ;
+                var positionTop = Math.round(($taskWidget.position().top / currentScale) / GRID_SPACING) * GRID_SPACING;
 
                 // Sync with server
                 $.ajax(that.options.positionUpdateTaskPath, {
@@ -581,9 +585,9 @@
     LadbWorkflowBoard.prototype.init = function() {
         var that = this;
 
-        // CHeck capabilities
-        Modernizr.touchevents;
-        Modernizr.websockets;
+        // Check capabilities
+        if (!Modernizr.touchevents) {}
+        if (!Modernizr.websockets) {}
 
         // Loading
         this.markLoading('Connexion...');
@@ -697,11 +701,6 @@
                         }
                     });
 
-                });
-
-                // Init initiales tasks widgets
-                $('.ladb-workflow-task-widget', that.$canvas).each(function (index) {
-                    that.initTaskWidget($(this));
                 });
 
                 // Setup panzoom

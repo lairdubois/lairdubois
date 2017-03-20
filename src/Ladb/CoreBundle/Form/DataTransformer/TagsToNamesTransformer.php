@@ -37,14 +37,14 @@ class TagsToNamesTransformer implements DataTransformerInterface {
 	/**
 	 * Transforms a string (name) to an object (tag).
 	 */
-	public function reverseTransform($labelsString) {
-		if (!$labelsString) {
+	public function reverseTransform($namesString) {
+		if (!$namesString) {
 			return array();
 		}
-		$labelsString = htmlspecialchars_decode($labelsString, ENT_QUOTES);
+		$namesString = htmlspecialchars_decode($namesString, ENT_QUOTES);
 
 		$tags = array();
-		$namesArray = preg_split("/[,;]+/", $labelsString);
+		$namesArray = preg_split("/[,;]+/", $namesString);
 		$repository = $this->om->getRepository('LadbCoreBundle:Tag');
 		foreach ($namesArray as $name) {
 			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]{2,}$/", $name)) {
