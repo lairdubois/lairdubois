@@ -1,7 +1,7 @@
 +function ($) {
     'use strict';
 
-    const GRID_SPACING = 10;
+    var GRID_SPACING = 10;
 
     // CLASS DEFINITION
     // ======================
