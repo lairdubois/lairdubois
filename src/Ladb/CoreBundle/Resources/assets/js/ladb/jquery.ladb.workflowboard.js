@@ -2,6 +2,7 @@
     'use strict';
 
     var GRID_SPACING = 10;
+    var TASK_WIDGET_PREFIX =  'ladb_workflow_task_widget_';
 
     // CLASS DEFINITION
     // ======================
@@ -38,6 +39,13 @@
         statusUpdateTaskPath: null,
         createTaskConnectionPath: null,
         deleteTaskConnectionPath: null
+    };
+
+    LadbWorkflowBoard.prototype.getCurrentScale = function() {
+        if (this.$panzoom) {
+            return this.$panzoom.panzoom("getMatrix")[0];
+        }
+        return 1;
     };
 
     LadbWorkflowBoard.prototype.markLoading = function(status) {
@@ -182,7 +190,7 @@
             if (that.plumb) {
                 $taskWidget = $('#ladb_workflow_task_widget_' + response.deletedTaskId);
                 if ($taskWidget.length > 0) {
-                    that.plumb.remove('ladb_workflow_task_widget_' + response.deletedTaskId);
+                    that.plumb.remove(TASK_WIDGET_PREFIX + response.deletedTaskId);
                 }
             }
             $taskRow = $('#ladb_workflow_task_row_' + response.deletedTaskId);
@@ -193,8 +201,8 @@
         if (response.connections && that.plumb) {
             _.each(response.connections, function (connection) {
                 that.plumb.connect({
-                    source: 'ladb_workflow_task_widget_' + connection.from,
-                    target: 'ladb_workflow_task_widget_' + connection.to
+                    source: TASK_WIDGET_PREFIX + connection.from,
+                    target: TASK_WIDGET_PREFIX + connection.to
                 });
             });
         }
@@ -202,8 +210,8 @@
         // Created connections
         if (response.createdConnections && that.plumb) {
             _.each(response.createdConnections, function (connection) {
-                var sourceId = 'ladb_workflow_task_widget_' + connection.from;
-                var targetId = 'ladb_workflow_task_widget_' + connection.to;
+                var sourceId = TASK_WIDGET_PREFIX + connection.from;
+                var targetId = TASK_WIDGET_PREFIX + connection.to;
                 that.plumb.detach({
                     source: sourceId,
                     target: targetId
@@ -219,8 +227,8 @@
         if (response.deletedConnections && that.plumb) {
             _.each(response.deletedConnections, function (connection) {
                 that.plumb.detach({
-                    source: 'ladb_workflow_task_widget_' + connection.from,
-                    target: 'ladb_workflow_task_widget_' + connection.to
+                    source: TASK_WIDGET_PREFIX + connection.from,
+                    target: TASK_WIDGET_PREFIX + connection.to
                 });
             });
         }
@@ -356,7 +364,7 @@
     LadbWorkflowBoard.prototype.initTaskWidget = function($taskWidget) {
         var that = this;
 
-        var taskId = $taskWidget.attr('id').substring('ladb_workflow_task_widget_'.length);
+        var taskId = $taskWidget.attr('id').substring(TASK_WIDGET_PREFIX.length);
 
         // Setup as plumb source and target
 
@@ -382,9 +390,9 @@
 
         $('.ladb-ep', $taskWidget).on('click', function(e) {
 
-            var currentScale = that.$panzoom.panzoom("getMatrix")[0];
-            var positionLeft = e.originalEvent.clientX - that.$canvas.offset().left - 150;    // 150 = half task widget width
-            var positionTop = e.originalEvent.clientY - that.$canvas.offset().top + 100;
+            var currentScale = that.getCurrentScale();
+            var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - 150;    // 150 = half task widget width
+            var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale + 100;
 
             // Drop connection on the board -> new Task
             that.newTask(positionLeft, positionTop, taskId);
@@ -398,7 +406,7 @@
             grid: [GRID_SPACING, GRID_SPACING],
             handle: ".ladb-box",
             start: function (e) {
-                currentScale = that.$panzoom.panzoom("getMatrix")[0];
+                currentScale = that.getCurrentScale();
                 $(this).draggable( "option", "grid", [ GRID_SPACING * currentScale, GRID_SPACING * currentScale ] );
                 $(this).css("cursor", "move");
                 that.$panzoom.panzoom("disable");
@@ -459,7 +467,7 @@
                 anchor: "Top"
             });
             this.plumb.connect({
-                source: 'ladb_workflow_task_widget_' + sourceTaskId,
+                source: TASK_WIDGET_PREFIX + sourceTaskId,
                 target: 'fake_task'
             });
         }
@@ -663,8 +671,8 @@
                         dataType: 'html',
                         context: document.body,
                         data: {
-                            sourceTaskId: info.sourceId.substring('ladb_workflow_task_widget_'.length),
-                            targetTaskId: info.targetId.substring('ladb_workflow_task_widget_'.length)
+                            sourceTaskId: info.sourceId.substring(TASK_WIDGET_PREFIX.length),
+                            targetTaskId: info.targetId.substring(TASK_WIDGET_PREFIX.length)
                         },
                         error: function () {
                             console.log('ERROR');
@@ -672,12 +680,16 @@
                     });
 
                 });
+                that.plumb.bind('connectionDrag', function (connection) {
+                    console.log('connection', connection);
+                });
                 that.plumb.bind('connectionAborted', function (connection, originalEvent) {
 
-                    var sourceTaskId = connection.sourceId.substring('ladb_workflow_task_widget_'.length);
+                    var sourceTaskId = connection.sourceId.substring(TASK_WIDGET_PREFIX.length);
 
-                    var positionLeft = originalEvent.clientX - that.$canvas.offset().left - 150;    // 150 = half task widget width
-                    var positionTop = originalEvent.clientY - that.$canvas.offset().top;
+                    var currentScale = that.getCurrentScale();
+                    var positionLeft = (originalEvent.clientX - that.$canvas.offset().left) / currentScale - 150;    // 150 = half task widget width
+                    var positionTop = (originalEvent.clientY - that.$canvas.offset().top) / currentScale;
 
                     // Drop connection on the board -> new Task
                     that.newTask(positionLeft, positionTop, sourceTaskId);
@@ -693,8 +705,8 @@
                         dataType: 'html',
                         context: document.body,
                         data: {
-                            sourceTaskId: connection.sourceId.substring('ladb_workflow_task_widget_'.length),
-                            targetTaskId: connection.targetId.substring('ladb_workflow_task_widget_'.length)
+                            sourceTaskId: connection.sourceId.substring(TASK_WIDGET_PREFIX.length),
+                            targetTaskId: connection.targetId.substring(TASK_WIDGET_PREFIX.length)
                         },
                         error: function () {
                             console.log('ERROR');
@@ -724,6 +736,7 @@
                             animate: false,
                             focal: e
                         });
+                        that.plumb.setZoom(that.getCurrentScale());
                     })
                     .on("mousedown", function (e) {
                         if (e.button > 0) {
@@ -771,8 +784,9 @@
                     })
                     .on('dblclick', function(e) {
 
-                        var positionLeft = e.originalEvent.clientX - that.$canvas.offset().left - 150;    // 150 = half task widget width
-                        var positionTop = e.originalEvent.clientY - that.$canvas.offset().top;
+                        var currentScale = that.getCurrentScale();
+                        var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - 150;    // 150 = half task widget width
+                        var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale;
 
                         that.newTask(positionLeft, positionTop);
                     });
