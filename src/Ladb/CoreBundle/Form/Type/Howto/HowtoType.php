@@ -9,9 +9,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\ArticlesToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Howto\ArticlesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\PlansToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 
 class HowtoType extends AbstractType {

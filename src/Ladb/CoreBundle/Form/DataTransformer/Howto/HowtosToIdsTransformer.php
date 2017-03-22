@@ -1,13 +1,13 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\DataTransformer;
+namespace Ladb\CoreBundle\Form\DataTransformer\Howto;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class PlansToIdsTransformer implements DataTransformerInterface {
+class HowtosToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
@@ -15,18 +15,18 @@ class PlansToIdsTransformer implements DataTransformerInterface {
 		$this->om = $om;
 	}
 
-	public function transform($plans) {
-		if (null === $plans) {
+	public function transform($howtos) {
+		if (null === $howtos) {
 			return '';
 		}
 
-		if (!$plans instanceof \Doctrine\Common\Collections\Collection) {
-			throw new UnexpectedTypeException($plans, '\Doctrine\Common\Collections\Collection');
+		if (!$howtos instanceof \Doctrine\Common\Collections\Collection) {
+			throw new UnexpectedTypeException($howtos, '\Doctrine\Common\Collections\Collection');
 		}
 
 		$idsArray = array();
-		foreach ($plans as $plans) {
-			$idsArray[] = $plans->getId();
+		foreach ($howtos as $howto) {
+			$idsArray[] = $howto->getId();
 		}
 		return implode(',', $idsArray);
 	}
@@ -36,22 +36,22 @@ class PlansToIdsTransformer implements DataTransformerInterface {
 			return array();
 		}
 
-		$plans = array();
+		$howtos = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository('LadbCoreBundle:Wonder\Plan');
+		$repository = $this->om->getRepository('LadbCoreBundle:Howto\Howto');
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);
 			if ($id == 0) {
 				continue;
 			}
-			$plan = $repository->find($id);
-			if (is_null($plan)) {
+			$howto =$repository->find($id);
+			if (is_null($howto)) {
 				throw new TransformationFailedException();
 			}
-			$plans[] = $plan;
+			$howtos[] = $howto;
 		}
 
-		return $plans;
+		return $howtos;
 	}
 
 }

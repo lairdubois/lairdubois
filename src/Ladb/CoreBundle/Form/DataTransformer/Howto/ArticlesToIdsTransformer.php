@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\DataTransformer;
+namespace Ladb\CoreBundle\Form\DataTransformer\Howto;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;

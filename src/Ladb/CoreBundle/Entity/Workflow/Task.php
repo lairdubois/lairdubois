@@ -81,8 +81,9 @@ class Task {
 	private $duration = 0;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Label")
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Label", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_workflow_task_label")
+	 * @ORM\OrderBy({"id" = "ASC"})
 	 */
 	protected $labels;
 
@@ -232,8 +233,11 @@ class Task {
 	// Labels /////
 
 	public function addLabel(\Ladb\CoreBundle\Entity\Workflow\Label $label) {
-		if (!$this->labels->contains($label)) {
+		if (!$this->labels->contains($label) && (is_null($label->getWorkflow()) || $label->getWorkflow()->getId() == $this->getWorkflow()->getId())) {
 			$this->labels[] = $label;
+			if (!is_null($this->getWorkflow()) && is_null($label->getWorkflow())) {
+				$this->getWorkflow()->addLabel($label);
+			}
 		}
 		return $this;
 	}

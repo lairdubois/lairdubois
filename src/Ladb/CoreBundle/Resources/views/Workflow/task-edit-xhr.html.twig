@@ -8,7 +8,22 @@
 {% block bodyInner %}
     {{ form_start(form, { 'action':path('core_workflow_task_update', { 'id':workflow.id }), 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
         <input type="hidden" name="taskId" value="{{ task.id }}">
+        <div class="form-group">
+            {{ form_label(form.title) }}
+            {{ form_errors(form.title) }}
+            {{ form_widget(form.title) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.labels) }}
+            {{ form_errors(form.labels) }}
+            {{ form_widget(form.labels) }}
+        </div>
     {{ form_end(form) }}
+    <select class="form-control input-lg" data-ladb-input="#{{ form.labels.vars.id }}" multiple>
+        {% for label in workflow.labels %}
+            <option data-content="<div style='display: inline-block; width:18px; height:18px; background: #{{ label.color }}; border-radius: 9px;'></div> {{ label.name }}" value="{{ label.id }}">{{ label.name }}</option>
+        {% endfor %}
+    </select>
 {% endblock %}
 
 {% block footerInner %}

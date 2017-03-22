@@ -12,7 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\ResourcesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\PlansToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 
 class PlanType extends AbstractType {

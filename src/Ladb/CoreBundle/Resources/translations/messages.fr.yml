@@ -359,6 +359,8 @@ workflow:
   task:
     new: Ajouter une tâche
     edit: Edition de la tâche
+  label:
+    list: Pastilles
 
 blog:
   title: Le blog

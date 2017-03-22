@@ -38,6 +38,7 @@
         "friendsofsymfony/elastica-bundle": "*",
         "stof/doctrine-extensions-bundle": "*",
         "liip/imagine-bundle": "~1.7",
+        "gos/web-socket-bundle": "^1.8",
 
         "willdurand/geocoder": "~3.0",
         "commerceguys/addressing": "0.8.4",
@@ -60,8 +61,7 @@
 
         "components/jquery": "1.12.1",
         "components/jqueryui": "1.11.4",
-        "components/masonry": "3.2.2",
-        "gos/web-socket-bundle": "^1.8"
+        "components/masonry": "3.2.2"
 
     },
     "require-dev": {

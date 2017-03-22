@@ -13,13 +13,13 @@
     </div>
     <div class="ladb-body">
         {{ task.title }}
-        <div class="ladb-labels">
-            {% for label in task.labels %}
-                <i class="ladb-icon-bullet" style="color: #{{ label.color }};" title="{{ label.name }}"></i>
-            {% endfor %}
-        </div>
         {% if task.duration > 0 %}
             <div class="ladb-duration"><i class="ladb-icon-time"></i> {{ task.duration|ladb_duration() }}</div>
         {% endif %}
+        <div class="ladb-labels" style="margin-top: 4px;">
+            {% for label in task.labels %}
+                <div data-tooltip="tooltip" title="{{ label.name }}" style="display: inline-block; width:18px; height:18px; background: #{{ label.color }}; border: 2px solid #fff; border-radius: 9px;"></div>
+            {% endfor %}
+        </div>
     </div>
 </div>

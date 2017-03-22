@@ -4,17 +4,25 @@
 
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
 
+{% block headStylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" media="screen" />
+{% endblock %}
+
 {% block bodyJavascripts %}
     {{ parent() }}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     {#<script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>#}
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js' %}
+        '@LadbCoreBundle/Resources/assets/js/piklor/piklor.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowlabels.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=201703202218"></script>
     {% endjavascripts %}
     {{ ws_client() }}
@@ -31,7 +39,8 @@
                 positionUpdateTaskPath: '{{ path('core_workflow_task_position_update', { 'id':workflow.id }) }}',
                 statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
                 createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
-                deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}'
+                deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
+                listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}'
             });
         });
     </script>
@@ -46,8 +55,10 @@
             {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow} %}
                 {% block headerTools %}
                     <div class="ladb-header-tools">
-                        <button id="ladb_btn_add_task" class="btn btn-success"><i class="ladb-icon-plus"></i><span class="ladb-visible-desktop">  {{ 'workflow.task.new'|trans() }}</span></button>
                         {% if ownerUser or is_granted("ROLE_ADMIN") %}
+                            <button id="ladb_btn_label_list" class="btn btn-default"><i class="ladb-icon-bullet"></i><span class="ladb-visible-desktop">  {{ 'workflow.label.list'|trans() }}</span></button>
+                            &nbsp;
+                            <button id="ladb_btn_add_task" class="btn btn-success"><i class="ladb-icon-plus"></i><span class="ladb-visible-desktop">  {{ 'workflow.task.new'|trans() }}</span></button>
                             &nbsp;
                             <a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
                             <a href="#delete_workflow_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
@@ -79,7 +90,7 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_2" aria-expanded="true" aria-controls="collapse_status_2">
                                 <span id="collapse_status_2_badge" class="badge badge-default pull-right" style="display: none;">0</span>
-                                Tâches actives
+                                Tâches à effectuer
                             </a>
                         </h4>
                     </div>

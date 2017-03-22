@@ -1,13 +1,13 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\DataTransformer;
+namespace Ladb\CoreBundle\Form\DataTransformer\Workflow;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class CreationsToIdsTransformer implements DataTransformerInterface {
+class LabelsToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
@@ -15,18 +15,18 @@ class CreationsToIdsTransformer implements DataTransformerInterface {
 		$this->om = $om;
 	}
 
-	public function transform($creations) {
-		if (null === $creations) {
+	public function transform($labels) {
+		if (null === $labels) {
 			return '';
 		}
 
-		if (!$creations instanceof \Doctrine\Common\Collections\Collection) {
-			throw new UnexpectedTypeException($creations, '\Doctrine\Common\Collections\Collection');
+		if (!$labels instanceof \Doctrine\Common\Collections\Collection) {
+			throw new UnexpectedTypeException($labels, '\Doctrine\Common\Collections\Collection');
 		}
 
 		$idsArray = array();
-		foreach ($creations as $creations) {
-			$idsArray[] = $creations->getId();
+		foreach ($labels as $label) {
+			$idsArray[] = $label->getId();
 		}
 		return implode(',', $idsArray);
 	}
@@ -36,22 +36,22 @@ class CreationsToIdsTransformer implements DataTransformerInterface {
 			return array();
 		}
 
-		$creations = array();
+		$labels = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository('LadbCoreBundle:Wonder\Creation');
+		$repository = $this->om->getRepository('LadbCoreBundle:Workflow\Label');
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);
 			if ($id == 0) {
 				continue;
 			}
-			$creation = $repository->find($id);
-			if (is_null($creation)) {
+			$label = $repository->find($id);
+			if (is_null($label)) {
 				throw new TransformationFailedException();
 			}
-			$creations[] = $creation;
+			$labels[] = $label;
 		}
 
-		return $creations;
+		return $labels;
 	}
 
 }

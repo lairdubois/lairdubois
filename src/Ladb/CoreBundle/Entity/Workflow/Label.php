@@ -7,11 +7,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table("tbl_workflow_label")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow|Task\LabelRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\LabelRepository")
  */
 class Label {
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Label';
+	const COLOR_SEQUENCE = [ 'ee0701', 'fbca04', '0e8a16', '006b75', '1d76db', '5319e7' ];
 
 	/**
 	 * @ORM\Column(name="id", type="integer")

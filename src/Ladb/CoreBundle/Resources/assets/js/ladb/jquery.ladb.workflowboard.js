@@ -22,6 +22,7 @@
         this.$canvas = $('.ladb-jtk-canvas', this.$panzoom);
 
         this.$btnAddTask = $('#ladb_btn_add_task', this.$element);
+        this.$btnLabelList = $('#ladb_btn_label_list', this.$element);
     };
 
     LadbWorkflowBoard.DEFAULTS = {
@@ -38,7 +39,8 @@
         positionUpdateTaskPath: null,
         statusUpdateTaskPath: null,
         createTaskConnectionPath: null,
-        deleteTaskConnectionPath: null
+        deleteTaskConnectionPath: null,
+        listLabelPath: null
     };
 
     LadbWorkflowBoard.prototype.getCurrentScale = function() {
@@ -246,6 +248,8 @@
             }
         }
 
+        setupTooltips();
+
     };
 
     LadbWorkflowBoard.prototype.appendModalFromHtmlData = function(data) {
@@ -258,7 +262,7 @@
 
         // Bind modal
         $modal.on('shown.bs.modal', function() {
-            $('input', $modal).focus();
+            $('input', $modal).first().focus();
         });
         $modal.on('hidden.bs.modal', function() {
             $modal.remove();
@@ -558,6 +562,38 @@
             },
             success: function(data, textStatus, jqXHR) {
                 that.appendModalFromHtmlData(data);
+                var $select = $('select');
+                var $input = $($select.data('ladb-input'));
+                $select.selectpicker({
+                    noneSelectedText: 'Aucune pastille',
+                    iconBase: '',                    tickIcon: 'ladb-icon-check'
+                });
+                $select.selectpicker('val', $input.val().split(','));
+                $select.on('changed.bs.select', function (e) {
+                    var selectValue = $(this).val();
+                    var fieldValue = selectValue ? selectValue.join(',') : '';
+                    $input.val(fieldValue);
+                });
+            },
+            error: function () {
+                console.log('ERROR');
+            }
+        });
+
+    };
+
+    LadbWorkflowBoard.prototype.labelList = function() {
+        var that = this;
+
+        // Loading
+        this.markLoading();
+
+        $.ajax(that.options.listLabelPath, {
+            cache: false,
+            dataType: "html",
+            context: document.body,
+            success: function(data, textStatus, jqXHR) {
+                that.appendModalFromHtmlData(data);
             },
             error: function () {
                 console.log('ERROR');
@@ -577,10 +613,14 @@
         // Bind buttons
         this.$btnAddTask.on('click', function() {
 
-            var positionLeft = that.$diagram.outerWidth() / 2 - that.$canvas.position().left - 150;
-            var positionTop = that.$diagram.outerHeight() / 2 - that.$canvas.position().top - 30;
+            var currentScale = that.getCurrentScale();
+            var positionLeft = (that.$diagram.outerWidth() / 2 - that.$canvas.position().left) / currentScale - 150;
+            var positionTop = (that.$diagram.outerHeight() / 2 - that.$canvas.position().top) / currentScale - 30;
 
             that.newTask(positionLeft, positionTop);
+        });
+        this.$btnLabelList.on('click', function() {
+            that.labelList();
         });
 
         // Bind loading mask

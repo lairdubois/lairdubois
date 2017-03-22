@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Entity\Workflow\Label;
+use Ladb\CoreBundle\Form\Type\Workflow\LabelType;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -146,6 +148,14 @@ class WorkflowController extends Controller {
 	private function _push($workflow, $response) {
 		$pusher = $this->get('gos_web_socket.wamp.pusher');
 		$pusher->push($response, 'workflow_show_topic', array( 'id' => $workflow->getId() ));
+	}
+
+	private function _computeLabelChoices(Workflow $workflow) {
+		$labelChoices = array();
+		foreach ($workflow->getLabels() as $label) {
+			$labelChoices[$label->getName()] = $label->getId();
+		}
+		return $labelChoices;
 	}
 
 	/////
@@ -414,7 +424,7 @@ class WorkflowController extends Controller {
 		$task = new Task();
 		$task->setPositionLeft(intval($request->get('positionLeft', 0)));
 		$task->setPositionTop(intval($request->get('positionTop', 0)));
-		$form = $this->createForm(TaskType::class, $task);
+		$form = $this->createForm(TaskType::class, $task, array( 'label_choices' => $this->_computeLabelChoices($workflow) ));
 
 		return array(
 			'workflow'     => $workflow,
@@ -434,7 +444,7 @@ class WorkflowController extends Controller {
 		$workflow = $this->_retrieveWorkflow($id);
 
 		$task = new Task();
-		$form = $this->createForm(TaskType::class, $task);
+		$form = $this->createForm(TaskType::class, $task, array( 'label_choices' => $this->_computeLabelChoices($workflow) ));
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
@@ -496,7 +506,7 @@ class WorkflowController extends Controller {
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
 		$this->_assertValidWorkflow($task, $workflow);
 
-		$form = $this->createForm(TaskType::class, $task);
+		$form = $this->createForm(TaskType::class, $task, array( 'label_choices' => $this->_computeLabelChoices($workflow) ));
 
 		return array(
 			'workflow' => $workflow,
@@ -519,7 +529,7 @@ class WorkflowController extends Controller {
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
 		$this->_assertValidWorkflow($task, $workflow);
 
-		$form = $this->createForm(TaskType::class, $task);
+		$form = $this->createForm(TaskType::class, $task, array( 'label_choices' => $this->_computeLabelChoices($workflow) ));
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
@@ -714,7 +724,7 @@ class WorkflowController extends Controller {
 	/**
 	 * @Route("/{id}/tasks", requirements={"id" = "\d+"}, name="core_workflow_task_list")
 	 */
-	public function listTaskAction(Request $request, $id) {
+	public function taskListAction(Request $request, $id) {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
@@ -734,7 +744,6 @@ class WorkflowController extends Controller {
 			'workflowInfos' => $this->_generateWorkflowInfos($workflow),
 			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET),
 			'connections'   => $connections
-
 		));
 	}
 
@@ -825,6 +834,146 @@ class WorkflowController extends Controller {
 		return new JsonResponse(array(
 			'success' => true,
 		));
+	}
+
+	/**
+	 * @Route("/{id}/label/new", requirements={"id" = "\d+"}, name="core_workflow_label_new")
+	 * @Template("LadbCoreBundle:Workflow:label-new-xhr.html.twig")
+	 */
+	public function labelNewAction(Request $request, $id) {
+
+		// Retrieve Workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		$label = new Label();
+		$form = $this->createForm(LabelType::class, $label);
+
+		return array(
+			'form'     => $form->createView(),
+			'workflow' => $workflow,
+		);
+	}
+
+	/**
+	 * @Route("/{id}/label/create", requirements={"id" = "\d+"}, name="core_workflow_label_create")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Workflow:label-create-xhr.html.twig")
+	 */
+	public function labelCreateAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve Workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		$label = new Label();
+		$form = $this->createForm(LabelType::class, $label);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$workflow->addLabel($label);
+
+			$om->flush();
+
+			return $this->render('LadbCoreBundle:Workflow:label-create-xhr.html.twig', array(
+				'label' => $label,
+			));
+		}
+
+		return array(
+			'form'     => $form->createView(),
+			'workflow' => $workflow,
+		);
+	}
+
+	/**
+	 * @Route("/label/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_label_edit")
+	 * @Template("LadbCoreBundle:Workflow:label-edit-xhr.html.twig")
+	 */
+	public function labelEditAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$labelRepository = $om->getRepository(Label::CLASS_NAME);
+
+		$label = $labelRepository->findOneById($id);
+		if (is_null($label)) {
+			throw $this->createNotFoundException('Unable to find Label entity (id='.$id.').');
+		}
+
+		$form = $this->createForm(LabelType::class, $label);
+
+		return array(
+			'form'  => $form->createView(),
+			'label' => $label,
+		);
+	}
+
+	/**
+	 * @Route("/label/{id}/update", requirements={"id" = "\d+"}, name="core_workflow_label_update")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Workflow:label-update-xhr.html.twig")
+	 */
+	public function labelUpdateAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$labelRepository = $om->getRepository(Label::CLASS_NAME);
+
+		$label = $labelRepository->findOneById($id);
+		if (is_null($label)) {
+			throw $this->createNotFoundException('Unable to find Label entity (id='.$id.').');
+		}
+
+		$form = $this->createForm(LabelType::class, $label);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$om->flush();
+
+			return $this->render('LadbCoreBundle:Workflow:label-update-xhr.html.twig', array(
+				'label' => $label,
+			));
+		}
+
+		return array(
+			'form'  => $form->createView(),
+			'label' => $label,
+		);
+	}
+
+	/**
+	 * @Route("/label/{id}/delete", requirements={"id" = "\d+"}, name="core_workflow_label_delete")
+	 * @Template("LadbCoreBundle:Workflow:label-delete-xhr.html.twig")
+	 */
+	public function labelDeleteAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$labelRepository = $om->getRepository(Label::CLASS_NAME);
+
+		$label = $labelRepository->findOneById($id);
+		if (is_null($label)) {
+			throw $this->createNotFoundException('Unable to find Label entity (id='.$id.').');
+		}
+
+		// Update funding balance
+		$workflow = $label->getWorkflow();
+		$workflow->removeLabel($label);
+
+		$om->remove($label);
+		$om->flush();
+
+		return;
+	}
+
+	/**
+	 * @Route("/{id}/labels", requirements={"id" = "\d+"}, name="core_workflow_label_list")
+	 * @Template("LadbCoreBundle:Workflow:label-list-xhr.html.twig")
+	 */
+	public function labelListAction(Request $request, $id) {
+
+		// Retrieve Workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		return array(
+			'workflow' => $workflow,
+		);
 	}
 
 }

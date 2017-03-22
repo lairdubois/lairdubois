@@ -1,0 +1,24 @@
+{% extends 'LadbCoreBundle:Common:_modal.part.html.twig' %}
+
+{% set id = 'ladb_label_list_modal' %}
+{% set title = 'workflow.label.list'|trans() %}
+
+{% block bodyInner %}
+    <table class="table table-bordered ladb-label-table" style="background-color: white;">
+        <tr>
+            <th class="text-center" width="30">Color</th>
+            <th class="text-center">Name</th>
+        </tr>
+        {% for label in workflow.labels %}
+            {% include 'LadbCoreBundle:Workflow:_label-row.part.html.twig' %}
+        {% endfor %}
+    </table>
+    <a href="{{ path('core_workflow_label_new', { 'id':workflow.id }) }}" class="btn btn-default ladb-label-new-btn"><i class="ladb-icon-plus"></i> Ajouter une pastille</a>
+    <script>
+        $('#{{ id }}').ladbWorkflowLabels();
+    </script>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+{% endblock %}

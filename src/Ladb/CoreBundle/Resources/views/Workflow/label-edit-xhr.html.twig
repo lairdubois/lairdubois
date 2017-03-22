@@ -1,0 +1,8 @@
+{% extends 'LadbCoreBundle:Workflow:_label-row-form.html.twig' %}
+
+{% set actionPath = path('core_workflow_label_update', { 'id':label.id }) %}
+
+{% block buttons %}
+    {{ parent() }}
+    <button class="btn btn-danger pull-right ladb-label-delete-btn" data-href="{{ path('core_workflow_label_delete', { 'id':label.id }) }}"><i class="ladb-icon-delete"></i> Supprimer</button>
+{% endblock %}

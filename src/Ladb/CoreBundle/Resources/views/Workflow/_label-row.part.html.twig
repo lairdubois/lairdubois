@@ -1,0 +1,11 @@
+
+{# set label #}
+
+<tr class="ladb-label-row" data-href="{{ path('core_workflow_label_edit', { 'id':label.id }) }}">
+    <td class="text-center">
+        <div style="display: inline-block; width:18px; height:18px; background: #{{ label.color }}; border-radius: 9px;"></div>
+    </td>
+    <td>
+        {{ label.name }} ({{ label.id }})
+    </td>
+</tr>

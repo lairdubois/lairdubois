@@ -1,13 +1,13 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\DataTransformer;
+namespace Ladb\CoreBundle\Form\DataTransformer\Wonder;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class HowtosToIdsTransformer implements DataTransformerInterface {
+class CreationsToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
@@ -15,18 +15,18 @@ class HowtosToIdsTransformer implements DataTransformerInterface {
 		$this->om = $om;
 	}
 
-	public function transform($howtos) {
-		if (null === $howtos) {
+	public function transform($creations) {
+		if (null === $creations) {
 			return '';
 		}
 
-		if (!$howtos instanceof \Doctrine\Common\Collections\Collection) {
-			throw new UnexpectedTypeException($howtos, '\Doctrine\Common\Collections\Collection');
+		if (!$creations instanceof \Doctrine\Common\Collections\Collection) {
+			throw new UnexpectedTypeException($creations, '\Doctrine\Common\Collections\Collection');
 		}
 
 		$idsArray = array();
-		foreach ($howtos as $howtos) {
-			$idsArray[] = $howtos->getId();
+		foreach ($creations as $creation) {
+			$idsArray[] = $creation->getId();
 		}
 		return implode(',', $idsArray);
 	}
@@ -36,22 +36,22 @@ class HowtosToIdsTransformer implements DataTransformerInterface {
 			return array();
 		}
 
-		$howtos = array();
+		$creations = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository('LadbCoreBundle:Howto\Howto');
+		$repository = $this->om->getRepository('LadbCoreBundle:Wonder\Creation');
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);
 			if ($id == 0) {
 				continue;
 			}
-			$howto =$repository->find($id);
-			if (is_null($howto)) {
+			$creation = $repository->find($id);
+			if (is_null($creation)) {
 				throw new TransformationFailedException();
 			}
-			$howtos[] = $howto;
+			$creations[] = $creation;
 		}
 
-		return $howtos;
+		return $creations;
 	}
 
 }

@@ -2,26 +2,47 @@
 
 namespace Ladb\CoreBundle\Form\Type\Workflow;
 
-use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Workflow\LabelsToIdsTransformer;
 
 class TaskType extends AbstractType {
+
+	private $om;
+
+	public function __construct(ObjectManager $om) {
+		$this->om = $om;
+	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('title')
 			->add('positionLeft', HiddenType::class)
 			->add('positionTop', HiddenType::class)
+//			->add($builder
+//				->create('labels', ChoiceType::class, array(
+//					'multiple' => false,
+//					'choices' => $options['label_choices']
+//				))
+//				->addModelTransformer(new LabelsToIdsTransformer($this->om))
+//			)
+			->add($builder
+				->create('labels', TextType::class)
+				->addModelTransformer(new LabelsToIdsTransformer($this->om))
+			)
 		;
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
+		$resolver->setRequired(array(
+			'label_choices',
+		));
 		$resolver->setDefaults(array(
 			'data_class' => 'Ladb\CoreBundle\Entity\Workflow\Task',
 		));
