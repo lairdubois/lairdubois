@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Label {
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Label';
-	const COLOR_SEQUENCE = [ 'ee0701', 'fbca04', '0e8a16', '006b75', '1d76db', '5319e7' ];
+	const COLOR_SEQUENCE = [ '#ee0701', '#fbca04', '#0e8a16', '#006b75', '#1d76db', '#5319e7' ];
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
@@ -27,7 +27,7 @@ class Label {
 	private $name;
 
 	/**
-	 * @ORM\Column(type="string", length=6)
+	 * @ORM\Column(type="string", length=7)
 	 */
 	private $color;
 

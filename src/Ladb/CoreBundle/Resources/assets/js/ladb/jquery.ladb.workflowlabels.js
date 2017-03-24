@@ -25,6 +25,7 @@
         var $cancelBtn = $('.ladb-label-cancel-btn', $rowForm);
         var $saveBtn = $('.ladb-label-save-btn', $rowForm);
         var $deleteBtn = $('.ladb-label-delete-btn', $rowForm);
+        var $inputColor = $('.input-color', $form);
 
         // Bind form
         $form.ajaxForm({
@@ -87,6 +88,10 @@
             });
 
         });
+
+        // Bind color picker
+        $inputColor.simpleColorPicker();
+
     };
 
     LadbWorkflowLabels.prototype.bindRows = function($rows) {

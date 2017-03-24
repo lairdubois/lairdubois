@@ -7,6 +7,10 @@
 {% block headStylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" media="screen" />
+    {% stylesheets filter='?yui_css'
+        '@LadbCoreBundle/Resources/assets/css/jquery-simple-color-picker/jquery.simple-color-picker.css' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201703210943" media="screen" />
+    {% endstylesheets %}
 {% endblock %}
 
 {% block bodyJavascripts %}
@@ -21,6 +25,7 @@
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
         '@LadbCoreBundle/Resources/assets/js/piklor/piklor.js'
+        '@LadbCoreBundle/Resources/assets/js/jquery-simple-color-picker/jquery.simple-color-picker.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowlabels.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=201703202218"></script>

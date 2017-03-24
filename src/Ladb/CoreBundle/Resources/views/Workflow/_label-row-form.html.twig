@@ -9,11 +9,7 @@
         <table class="table table-bordered" style="margin-bottom: 10px;">
             <tbody>
             <tr>
-                <div class="picker-wrapper">
-                    <button class="btn btn-default">Select color</button>
-                    <div class="color-picker"></div>
-                </div>
-                <td>{{ form_errors(form.color) }}{{ form_widget(form.color) }}</td>
+                <td>{{ form_errors(form.color) }}{{ form_widget(form.color, { 'attr':{ 'class':'input-color' } }) }}</td>
                 <td>{{ form_errors(form.name) }}{{ form_widget(form.name) }}</td>
             </tr>
             </tbody>

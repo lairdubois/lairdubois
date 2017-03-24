@@ -566,7 +566,8 @@
                 var $input = $($select.data('ladb-input'));
                 $select.selectpicker({
                     noneSelectedText: 'Aucune pastille',
-                    iconBase: '',                    tickIcon: 'ladb-icon-check'
+                    iconBase: '',
+                    tickIcon: 'ladb-icon-check'
                 });
                 $select.selectpicker('val', $input.val().split(','));
                 $select.on('changed.bs.select', function (e) {

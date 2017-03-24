@@ -1,0 +1,27 @@
+div.color-picker {
+    border-left: 1px solid #000;
+    border-top: 1px solid #000;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0;
+    z-index: 10000;
+}
+
+div.color-picker ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+
+div.color-picker ul li {
+    display: block;
+    width: 25px;
+    height: 25px;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    margin: 0;
+    float: left;
+    cursor: pointer;
+}

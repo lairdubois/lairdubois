@@ -19,9 +19,18 @@
             {{ form_widget(form.labels) }}
         </div>
     {{ form_end(form) }}
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="ladb-icon-plus"></i> Ajouter <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            {% for label in workflow.labels %}
+                <li style="padding: 4px 5px;"><div style='display: inline-block; width:18px; height:18px; background: {{ label.color }}; border-radius: 9px;'></div> {{ label.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <br>
     <select class="form-control input-lg" data-ladb-input="#{{ form.labels.vars.id }}" multiple>
         {% for label in workflow.labels %}
-            <option data-content="<div style='display: inline-block; width:18px; height:18px; background: #{{ label.color }}; border-radius: 9px;'></div> {{ label.name }}" value="{{ label.id }}">{{ label.name }}</option>
+            <option data-content="<div style='display: inline-block; width:18px; height:18px; background: {{ label.color }}; border-radius: 9px;'></div> {{ label.name }}" value="{{ label.id }}">{{ label.name }}</option>
         {% endfor %}
     </select>
 {% endblock %}
