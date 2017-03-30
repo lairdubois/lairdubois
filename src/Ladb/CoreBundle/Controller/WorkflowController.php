@@ -444,6 +444,7 @@ class WorkflowController extends Controller {
 		$workflow = $this->_retrieveWorkflow($id);
 
 		$task = new Task();
+		$task->setWorkflow($workflow);
 		$form = $this->createForm(TaskType::class, $task, array( 'label_choices' => $this->_computeLabelChoices($workflow) ));
 		$form->handleRequest($request);
 
@@ -846,6 +847,7 @@ class WorkflowController extends Controller {
 		$workflow = $this->_retrieveWorkflow($id);
 
 		$label = new Label();
+		$label->setColor(Label::COLOR_SEQUENCE[count($workflow->getLabels()) % count(Label::COLOR_SEQUENCE)]);
 		$form = $this->createForm(LabelType::class, $label);
 
 		return array(
@@ -857,7 +859,7 @@ class WorkflowController extends Controller {
 	/**
 	 * @Route("/{id}/label/create", requirements={"id" = "\d+"}, name="core_workflow_label_create")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Workflow:label-create-xhr.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:label-new-xhr.html.twig")
 	 */
 	public function labelCreateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -928,6 +930,17 @@ class WorkflowController extends Controller {
 
 			$om->flush();
 
+			// Retrieve updated tasks
+			$taskRepository = $om->getRepository(Task::CLASS_NAME);
+			$tasks = $taskRepository->findByLabel($label);
+
+			// Push changes
+			if (is_array($tasks) && count($tasks)) {
+				$this->_push($label->getWorkflow(), array(
+					'updatedTaskInfos'   => $this->_generateTaskInfos($tasks, self::TASKINFO_BOX),
+				));
+			}
+
 			return $this->render('LadbCoreBundle:Workflow:label-update-xhr.html.twig', array(
 				'label' => $label,
 			));
@@ -956,8 +969,19 @@ class WorkflowController extends Controller {
 		$workflow = $label->getWorkflow();
 		$workflow->removeLabel($label);
 
+		// Retrieve updated tasks
+		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+		$tasks = $taskRepository->findByLabel($label);
+
 		$om->remove($label);
 		$om->flush();
+
+		// Push changes
+		if (is_array($tasks) && count($tasks)) {
+			$this->_push($workflow, array(
+				'updatedTaskInfos' => $this->_generateTaskInfos($tasks, self::TASKINFO_BOX),
+			));
+		}
 
 		return;
 	}

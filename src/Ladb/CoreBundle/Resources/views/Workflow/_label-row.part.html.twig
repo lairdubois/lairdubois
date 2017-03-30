@@ -1,11 +1,12 @@
 
 {# set label #}
 
-<tr class="ladb-label-row" data-href="{{ path('core_workflow_label_edit', { 'id':label.id }) }}">
-    <td class="text-center">
-        <div style="display: inline-block; width:18px; height:18px; background: {{ label.color }}; border-radius: 9px;"></div>
-    </td>
+<tr class="ladb-workflow-label-row" data-href="{{ path('core_workflow_label_edit', { 'id':label.id }) }}">
     <td>
-        {{ label.name }}
+        {#<span class="ladb-minitools">#}
+            {#<a href="{{ path('core_workflow_label_edit', { 'id':label.id }) }}" class="ladb-btn-edit"><i class="ladb-icon-edit"></i></a>#}
+            {#<a href="{{ path('core_workflow_label_delete', { 'id':label.id }) }}" class="ladb-btn-delete ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>#}
+        {#</span>#}
+        {% include 'LadbCoreBundle:Workflow:_label-span.part.html.twig' %}
     </td>
 </tr>

@@ -256,6 +256,7 @@
         var that = this;
 
         var $modal = $(data);
+        var hiddableModal = true;
 
         // Append modal to body
         $('body').append($modal);
@@ -263,6 +264,9 @@
         // Bind modal
         $modal.on('shown.bs.modal', function() {
             $('input', $modal).first().focus();
+        });
+        $modal.on('hide.bs.modal', function() {
+            return hiddableModal;
         });
         $modal.on('hidden.bs.modal', function() {
             $modal.remove();
@@ -318,12 +322,39 @@
 
         });
 
+        // Fake Labels select
+        var $select = $('.ladb-workflow-label-fake-select', $modal);
+        if ($select.length > 0) {
+            var $mappedInput = $($select.data('ladb-mapped-input'), $modal);
+            var currentValue = $mappedInput.val();
+            $select.selectpicker({
+                noneSelectedText: 'Aucune pastille',
+                iconBase: '',
+                tickIcon: 'ladb-icon-check'
+            });
+            if (currentValue) {
+                $select.selectpicker('val', currentValue.split(','));
+            }
+            $select.on('changed.bs.select', function (e) {
+                var selectValue = $(this).val();
+                var fieldValue = selectValue ? selectValue.join(',') : '';
+                $mappedInput.val(fieldValue);
+            });
+            $select.on('show.bs.select', function (e) {
+                hiddableModal = false;
+            });
+            $select.on('hidden.bs.select', function (e) {
+                hiddableModal = true;
+            });
+        }
+
         // Show modal
         $modal.modal('show');
 
         // Hide loading
         this.unmarkLoading();
 
+        return $modal;
     };
 
     LadbWorkflowBoard.prototype.bindTaskBox = function(taskId, $taskBox) {
@@ -562,19 +593,6 @@
             },
             success: function(data, textStatus, jqXHR) {
                 that.appendModalFromHtmlData(data);
-                var $select = $('select');
-                var $input = $($select.data('ladb-input'));
-                $select.selectpicker({
-                    noneSelectedText: 'Aucune pastille',
-                    iconBase: '',
-                    tickIcon: 'ladb-icon-check'
-                });
-                $select.selectpicker('val', $input.val().split(','));
-                $select.on('changed.bs.select', function (e) {
-                    var selectValue = $(this).val();
-                    var fieldValue = selectValue ? selectValue.join(',') : '';
-                    $input.val(fieldValue);
-                });
             },
             error: function () {
                 console.log('ERROR');

@@ -25,7 +25,7 @@
         var $cancelBtn = $('.ladb-label-cancel-btn', $rowForm);
         var $saveBtn = $('.ladb-label-save-btn', $rowForm);
         var $deleteBtn = $('.ladb-label-delete-btn', $rowForm);
-        var $inputColor = $('.input-color', $form);
+        var $inputColor = $('.ladb-input-color', $form);
 
         // Bind form
         $form.ajaxForm({
@@ -43,7 +43,7 @@
                 var $data = $(data);
                 $rowForm.replaceWith($data);
 
-                if ($data.hasClass('ladb-label-row')) {
+                if ($data.hasClass('ladb-workflow-label-row')) {
                     if ($row) { $row.remove(); }
                     that.bindRows($data);
                     that.changed = true;
@@ -90,7 +90,11 @@
         });
 
         // Bind color picker
-        $inputColor.simpleColorPicker();
+        $inputColor.simpleColorPicker({
+            onChangeColor: function (color) {
+                $('.ladb-input-color-preview > div', $rowForm).css('background', color);
+            }
+        });
 
     };
 
@@ -100,8 +104,8 @@
         $rows.on('click', function(e) {
 
             // Hide previously edited row
-            $('.ladb-label-row').show();
-            $('.ladb-label-row-form').remove();
+            $('.ladb-workflow-label-row').show();
+            $('.ladb-workflow-label-row-form').remove();
 
             var $row = $(this);
             var url = $row.data('href');
@@ -152,8 +156,8 @@
             e.preventDefault();
 
             // Hide previously edited row
-            $('.ladb-label-row').show();
-            $('.ladb-label-row-form').remove();
+            $('.ladb-workflow-label-row').show();
+            $('.ladb-workflow-label-row-form').remove();
 
             var $newBtn = $(this);
             var url = $newBtn.attr('href');
@@ -188,7 +192,7 @@
         });
 
         // Bind Rows
-        this.bindRows($('.ladb-label-row', this.$element));
+        this.bindRows($('.ladb-workflow-label-row', this.$element));
 
     };
 

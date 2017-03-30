@@ -1,42 +1,18 @@
-{% extends 'LadbCoreBundle:Common:_modal.part.html.twig' %}
+{% extends 'LadbCoreBundle:Workflow:_task-form.html.twig' %}
 
 {% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' 'LadbCoreBundle:Block:_form-theme.html.twig' %}
 
 {% set id = 'task_new_modal' %}
 {% set title = 'workflow.task.edit'|trans() %}
+{% set formAction = path('core_workflow_task_update', { 'id':workflow.id }) %}
 
-{% block bodyInner %}
-    {{ form_start(form, { 'action':path('core_workflow_task_update', { 'id':workflow.id }), 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
-        <input type="hidden" name="taskId" value="{{ task.id }}">
-        <div class="form-group">
-            {{ form_label(form.title) }}
-            {{ form_errors(form.title) }}
-            {{ form_widget(form.title) }}
-        </div>
-        <div class="form-group">
-            {{ form_label(form.labels) }}
-            {{ form_errors(form.labels) }}
-            {{ form_widget(form.labels) }}
-        </div>
-    {{ form_end(form) }}
-    <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="ladb-icon-plus"></i> Ajouter <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-            {% for label in workflow.labels %}
-                <li style="padding: 4px 5px;"><div style='display: inline-block; width:18px; height:18px; background: {{ label.color }}; border-radius: 9px;'></div> {{ label.name }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <br>
-    <select class="form-control input-lg" data-ladb-input="#{{ form.labels.vars.id }}" multiple>
-        {% for label in workflow.labels %}
-            <option data-content="<div style='display: inline-block; width:18px; height:18px; background: {{ label.color }}; border-radius: 9px;'></div> {{ label.name }}" value="{{ label.id }}">{{ label.name }}</option>
-        {% endfor %}
-    </select>
+{% block formInner %}
+    <input type="hidden" name="taskId" value="{{ task.id }}">
+    {{ parent() }}
 {% endblock %}
 
-{% block footerInner %}
+{% block buttons %}
     <a href="{{ path('core_workflow_task_delete', { 'id':workflow.id, 'taskId':task.id }) }}" class="btn btn-danger pull-left ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
-    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    {{ parent() }}
     <button type="submit" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}">{{ 'default.update'|trans() }}</button>
 {% endblock %}

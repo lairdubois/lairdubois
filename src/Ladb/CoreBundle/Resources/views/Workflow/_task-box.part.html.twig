@@ -18,7 +18,7 @@
         {% endif %}
         <div class="ladb-labels" style="margin-top: 4px;">
             {% for label in task.labels %}
-                <div data-tooltip="tooltip" title="{{ label.name }}" style="display: inline-block; width:18px; height:18px; background: {{ label.color }}; border: 2px solid #fff; border-radius: 9px;"></div>
+                {% include 'LadbCoreBundle:Workflow:_label-bullet.part.html.twig' %}
             {% endfor %}
         </div>
     </div>

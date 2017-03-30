@@ -1,10 +1,11 @@
 div.color-picker {
-    border-left: 1px solid #000;
-    border-top: 1px solid #000;
     position: absolute;
     left: 0;
     top: 0;
-    padding: 0;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
     z-index: 10000;
 }
 
@@ -17,10 +18,8 @@ div.color-picker ul {
 
 div.color-picker ul li {
     display: block;
-    width: 25px;
-    height: 25px;
-    border-right: 1px solid #000;
-    border-bottom: 1px solid #000;
+    width: 30px;
+    height: 30px;
     margin: 0;
     float: left;
     cursor: pointer;

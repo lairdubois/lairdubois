@@ -25,15 +25,8 @@ class TaskType extends AbstractType {
 			->add('title')
 			->add('positionLeft', HiddenType::class)
 			->add('positionTop', HiddenType::class)
-//			->add($builder
-//				->create('labels', ChoiceType::class, array(
-//					'multiple' => false,
-//					'choices' => $options['label_choices']
-//				))
-//				->addModelTransformer(new LabelsToIdsTransformer($this->om))
-//			)
 			->add($builder
-				->create('labels', TextType::class)
+				->create('labels', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new LabelsToIdsTransformer($this->om))
 			)
 		;

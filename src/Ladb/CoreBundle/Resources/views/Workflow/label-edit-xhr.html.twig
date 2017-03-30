@@ -1,6 +1,6 @@
 {% extends 'LadbCoreBundle:Workflow:_label-row-form.html.twig' %}
 
-{% set actionPath = path('core_workflow_label_update', { 'id':label.id }) %}
+{% set formAction = path('core_workflow_label_update', { 'id':label.id }) %}
 
 {% block buttons %}
     {{ parent() }}

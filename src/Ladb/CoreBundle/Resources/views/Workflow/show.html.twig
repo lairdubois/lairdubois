@@ -6,10 +6,11 @@
 
 {% block headStylesheets %}
     {{ parent() }}
+    {#<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" media="screen" />#}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" media="screen" />
     {% stylesheets filter='?yui_css'
         '@LadbCoreBundle/Resources/assets/css/jquery-simple-color-picker/jquery.simple-color-picker.css' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201703210943" media="screen" />
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201703301355" media="screen" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -18,6 +19,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>#}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     {#<script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>#}
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}

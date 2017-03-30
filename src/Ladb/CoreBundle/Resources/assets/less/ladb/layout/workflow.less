@@ -12,6 +12,8 @@
 @bg-color-status-3: lighten(@color-status-3, 40%);
 @bg-color-status-4: lighten(@color-status-4, 40%);
 
+@label-bullet-size: 18px;
+
 .cnt {
   position: absolute;
   top: @ladb-topbar-height;
@@ -235,6 +237,48 @@
 
 }
 
+
+.ladb-workflow-label-row {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eee;
+  }
+
+  .ladb-minitools {
+    font-size: 110%;
+    float: right;
+  }
+
+}
+
+.ladb-workflow-label-row-form {
+
+  .ladb-input-color-preview {
+    padding: 6px;
+
+    > div {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+
+  }
+
+}
+
+.ladb-workflow-label-bullet {
+  display: inline-block;
+  width: @label-bullet-size;
+  height: @label-bullet-size;
+  border: 2px solid #fff;
+  border-radius: @label-bullet-size / 2;
+  vertical-align: middle;
+}
+
+.ladb-workflow-label-span {
+  line-height: @label-bullet-size;
+}
 
 /* Moernizr */
 
