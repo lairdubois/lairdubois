@@ -23,7 +23,7 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface 
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
 	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
-	 * @ladbAssert\UpperCaseRatio()
+	 * @LadbAssert\UpperCaseRatio()
 	 */
 	private $title;
 

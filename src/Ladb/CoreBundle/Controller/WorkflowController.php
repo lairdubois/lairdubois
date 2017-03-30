@@ -912,7 +912,7 @@ class WorkflowController extends Controller {
 	/**
 	 * @Route("/label/{id}/update", requirements={"id" = "\d+"}, name="core_workflow_label_update")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Workflow:label-update-xhr.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:label-edit-xhr.html.twig")
 	 */
 	public function labelUpdateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

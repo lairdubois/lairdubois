@@ -57,7 +57,7 @@
             }
         });
 
-        // bind buttons
+        // Bind buttons
         $cancelBtn.on('click', function(e) {
             if ($row) { $row.show(); }
             $cancelBtn.unbind('click');
@@ -89,12 +89,8 @@
 
         });
 
-        // Bind color picker
-        $inputColor.simpleColorPicker({
-            onChangeColor: function (color) {
-                $('.ladb-input-color-preview > div', $rowForm).css('background', color);
-            }
-        });
+        // Bind input color
+        $inputColor.ladbInputColor();
 
     };
 

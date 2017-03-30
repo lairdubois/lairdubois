@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Entity\Workflow;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 
 /**
  * @ORM\Table("tbl_workflow_label")
@@ -30,6 +31,7 @@ class Label {
 
 	/**
 	 * @ORM\Column(type="string", length=7)
+	 * @LadbAssert\ValidHexColor()
 	 */
 	private $color;
 
