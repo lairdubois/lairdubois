@@ -9,5 +9,6 @@
             <a href="{{ path('core_workflow_label_delete', { 'id':label.id }) }}" class="ladb-label-delete-btn ladb-minitool-danger"><i class="ladb-icon-delete ladb-icon-lg"></i></a>
         </span>
         {% include 'LadbCoreBundle:Workflow:_label-span.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_loading-panel.part.html.twig' %}
     </td>
 </tr>

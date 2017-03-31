@@ -81,11 +81,14 @@
         $rows.each(function(index, value) {
 
             var $row = $(value);
+            var $loadingPanel = $('.ladb-loading-panel', $row);
             var $editBtn = $('.ladb-label-edit-btn', $row);
             var $deleteBtn = $('.ladb-label-delete-btn', $row);
 
             $editBtn.on('click', function(e) {
                 e.preventDefault();
+
+                $loadingPanel.show();
 
                 // Hide previously edited row
                 $('.ladb-workflow-label-row').show();
@@ -107,8 +110,10 @@
 
                         that.bindRowForm($rowForm, $row);
 
+                        $loadingPanel.hide();
                     },
                     error: function () {
+                        $loadingPanel.hide();
                     }
                 });
 
@@ -116,6 +121,8 @@
 
             $deleteBtn.on('click', function(e) {
                 e.preventDefault();
+
+                $loadingPanel.show();
 
                 $.ajax($(this).attr('href'), {
                     cache: false,
@@ -126,6 +133,7 @@
                         $deleteBtn.unbind('click');
                     },
                     error: function () {
+                        $loadingPanel.hide();
                     }
                 });
 
