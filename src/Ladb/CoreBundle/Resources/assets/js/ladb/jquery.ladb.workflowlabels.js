@@ -10,11 +10,22 @@
 
         this.changed = false;
 
+        this.$alertEmpty = $('.ladb-label-empty-alert', this.$element);
         this.$table = $('.ladb-label-table', this.$element);
         this.$newBtn = $('.ladb-label-new-btn', this.$element);
     };
 
     LadbWorkflowLabels.DEFAULTS = {
+    };
+
+    LadbWorkflowLabels.prototype.checkEmpty = function($rowForm, $row) {
+        if ($('.ladb-workflow-label-row, .ladb-workflow-label-row-form', this.$table).length == 0) {
+            this.$alertEmpty.show();
+            this.$table.hide();
+        } else {
+            this.$alertEmpty.hide();
+            this.$table.show();
+        }
     };
 
     LadbWorkflowLabels.prototype.bindRowForm = function($rowForm, $row) {
@@ -45,6 +56,7 @@
                     if ($row) { $row.remove(); }
                     that.bindRows($data);
                     that.changed = true;
+                    that.$alertEmpty.hide();
                 } else {
                     that.bindRowForm($data, $row);
                 }
@@ -61,6 +73,7 @@
             $cancelBtn.unbind('click');
             $saveBtn.unbind('click');
             $rowForm.remove();
+            that.checkEmpty();
         });
         $saveBtn.on('click', function(e) {
             $loadingPanel.show();
@@ -130,7 +143,7 @@
                     context: document.body,
                     success: function (data, textStatus, jqXHR) {
                         $row.remove();
-                        $deleteBtn.unbind('click');
+                        that.checkEmpty();
                     },
                     error: function () {
                         $loadingPanel.hide();
@@ -189,8 +202,8 @@
                     // Append row form
                     $tbody.append($rowForm);
 
+                    that.checkEmpty();
                     that.bindRowForm($rowForm, null);
-
                 },
                 error: function () {
                     // Reset loading

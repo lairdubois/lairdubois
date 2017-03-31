@@ -4,7 +4,10 @@
 {% set title = 'workflow.label.list'|trans() %}
 
 {% block bodyInner %}
-    <table class="table table-bordered ladb-label-table" style="background-color: white;">
+    <div class="alert alert-warning ladb-label-empty-alert"{% if workflow.labels|length > 0 %} style="display: none;"{% endif %}>
+        Aucune pastille
+    </div>
+    <table class="table table-bordered ladb-label-table" style="background-color: white;{% if workflow.labels|length == 0 %} display: none;{% endif %}">
         <tbody>
         {% for label in workflow.labels %}
             {% include 'LadbCoreBundle:Workflow:_label-row.part.html.twig' %}
