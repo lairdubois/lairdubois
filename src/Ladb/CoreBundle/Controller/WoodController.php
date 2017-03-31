@@ -299,6 +299,10 @@ class WoodController extends Controller {
 								$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 								break;
 
+							case 'alphabetical':
+								$sort = array( 'title' => array( 'order' => 'asc' ) );
+								break;
+
 							case 'popular-views':
 								$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
 								break;

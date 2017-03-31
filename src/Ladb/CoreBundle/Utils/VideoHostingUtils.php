@@ -37,7 +37,7 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 			}
 
 			// Dailymotion
-			else if (preg_match('%(?:dailymotion\.com/video|dai\.ly)/([A-Za-z0-9]{7}|[A-Za-z0-9]{6})%i', $url, $match)) {
+			else if (preg_match('%(?:dailymotion\.com/video|dai\.ly)/([a-zA-Z0-9]{7}|[A-Za-z0-9]{6})%i', $url, $match)) {
 				$kind = VideoHostingUtils::KIND_DAILYMOTION;
 				$embedIdentifier = $match[1];
 			}
@@ -49,7 +49,7 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 			}
 
 			// Facebook
-			else if (preg_match('%^http(?:s?):\/\/www\.facebook\.com\/(?:video.php\?v=|[a-z.]+\/videos\/)(\d+)%i', $url, $match)) {
+			else if (preg_match('%^http(?:s?):\/\/www\.facebook\.com\/(?:video.php\?v=|[a-zA-Z0-9.]+\/videos\/)(\d+)%i', $url, $match)) {
 				$kind = VideoHostingUtils::KIND_FACEBOOK;
 				$embedIdentifier = $match[1];
 			}
