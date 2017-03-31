@@ -24,8 +24,8 @@
         var $loadingPanel = $('.ladb-loading-panel', $rowForm);
         var $cancelBtn = $('.ladb-label-cancel-btn', $rowForm);
         var $saveBtn = $('.ladb-label-save-btn', $rowForm);
-        var $deleteBtn = $('.ladb-label-delete-btn', $rowForm);
         var $inputColor = $('.ladb-input-color', $form);
+        var $inputName = $('.ladb-input-name', $form);
 
         // Bind form
         $form.ajaxForm({
@@ -37,8 +37,6 @@
 
                 $cancelBtn.unbind('click');
                 $saveBtn.unbind('click');
-                $deleteBtn.unbind('click');
-                if ($row) { $row.unbind('click'); }
 
                 var $data = $(data);
                 $rowForm.replaceWith($data);
@@ -62,72 +60,79 @@
             if ($row) { $row.show(); }
             $cancelBtn.unbind('click');
             $saveBtn.unbind('click');
-            $deleteBtn.unbind('click');
             $rowForm.remove();
         });
         $saveBtn.on('click', function(e) {
             $loadingPanel.show();
             $form.submit();
         });
-        $deleteBtn.on('click', function(e) {
-            $loadingPanel.show();
-            $.ajax($(this).data('href'), {
-                cache: false,
-                dataType: "html",
-                context: document.body,
-                success: function (data, textStatus, jqXHR) {
-                    $row.remove();
-                    $cancelBtn.unbind('click');
-                    $saveBtn.unbind('click');
-                    $deleteBtn.unbind('click');
-                    $rowForm.remove();
-                },
-                error: function () {
-                    $loadingPanel.hide();
-                }
-            });
-
-        });
 
         // Bind input color
         $inputColor.ladbInputColor();
+
+        // Focus name input
+        $inputName.focus();
 
     };
 
     LadbWorkflowLabels.prototype.bindRows = function($rows) {
         var that = this;
 
-        $rows.on('click', function(e) {
+        $rows.each(function(index, value) {
 
-            // Hide previously edited row
-            $('.ladb-workflow-label-row').show();
-            $('.ladb-workflow-label-row-form').remove();
+            var $row = $(value);
+            var $editBtn = $('.ladb-label-edit-btn', $row);
+            var $deleteBtn = $('.ladb-label-delete-btn', $row);
 
-            var $row = $(this);
-            var url = $row.data('href');
+            $editBtn.on('click', function(e) {
+                e.preventDefault();
 
-            $.ajax(url, {
-                cache: false,
-                dataType: "html",
-                context: document.body,
-                success: function(data, textStatus, jqXHR) {
+                // Hide previously edited row
+                $('.ladb-workflow-label-row').show();
+                $('.ladb-workflow-label-row-form').remove();
 
-                    var $rowForm = $(data);
+                $.ajax($(this).attr('href'), {
+                    cache: false,
+                    dataType: "html",
+                    context: document.body,
+                    success: function(data, textStatus, jqXHR) {
 
-                    that.bindRowForm($rowForm, $row);
+                        var $rowForm = $(data);
 
-                    // Hide old row
-                    $row.hide();
+                        // Hide old row
+                        $row.hide();
 
-                    // Append row form
-                    $row.after($rowForm);
+                        // Append row form
+                        $row.after($rowForm);
 
-                },
-                error: function () {
-                }
+                        that.bindRowForm($rowForm, $row);
+
+                    },
+                    error: function () {
+                    }
+                });
+
+            });
+
+            $deleteBtn.on('click', function(e) {
+                e.preventDefault();
+
+                $.ajax($(this).attr('href'), {
+                    cache: false,
+                    dataType: "html",
+                    context: document.body,
+                    success: function (data, textStatus, jqXHR) {
+                        $row.remove();
+                        $deleteBtn.unbind('click');
+                    },
+                    error: function () {
+                    }
+                });
+
             });
 
         });
+
     };
 
     LadbWorkflowLabels.prototype.bind = function() {
@@ -170,13 +175,13 @@
                     var $tbody = $('tbody', that.$table);
                     var $rowForm = $(data);
 
-                    that.bindRowForm($rowForm, null);
-
                     // Reset loading
                     $newBtn.button('reset');
 
                     // Append row form
                     $tbody.append($rowForm);
+
+                    that.bindRowForm($rowForm, null);
 
                 },
                 error: function () {

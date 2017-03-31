@@ -8,20 +8,15 @@
             <div class="form-group col-xs-12 col-sm-4">
                 {{ form_label(form.color) }}
                 {{ form_errors(form.color) }}
-                {#<div class="input-group">#}
-                    {#<div class="input-group-addon ladb-input-color-preview">#}
-                        {#<div{% if form.vars.data %} style="background-color: {{ form.vars.data.color }}"{% endif %}>&nbsp;</div>#}
-                    {#</div>#}
-                    {{ form_widget(form.color, { 'attr':{ 'class':'form-control ladb-input-color' } }) }}
-                {#</div>#}
+                {{ form_widget(form.color, { 'attr':{ 'class':'form-control ladb-input-color' } }) }}
             </div>
             <div class="form-group col-xs-12 col-sm-8">
                 {{ form_label(form.name) }}
                 {{ form_errors(form.name) }}
-                {{ form_widget(form.name) }}
+                {{ form_widget(form.name, { 'attr':{ 'class':'form-control ladb-input-name' } }) }}
             </div>
         {{ form_end(form) }}
-        <div>
+        <div class="pull-right">
             {% block buttons %}
                 <button class="btn btn-default ladb-label-cancel-btn">{{ 'default.cancel'|trans() }}</button>
                 <button class="btn btn-primary ladb-label-save-btn">{{ 'default.save'|trans() }}</button>
