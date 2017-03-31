@@ -575,7 +575,8 @@ fos_elastica:
                             delete: false
                 wood:
                     mappings:
-                        name: { boost: 2, analyzer: name_analyzer }
+                        title: { analyzer: exact_lowercase_analyzer }
+                        name: { boost: 3, analyzer: name_analyzer }
                         scientificname: { analyzer: name_analyzer }
                         englishname: { analyzer: name_analyzer }
                         density: { type: integer }
