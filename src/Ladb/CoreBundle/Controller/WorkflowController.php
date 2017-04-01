@@ -197,6 +197,12 @@ class WorkflowController extends Controller {
 			$workflow->setIsDraft(false);
 			$workflow->setUser($this->getUser());
 
+			// Append a default root task
+			$task = new Task();
+			$task->setTitle('Tâche 1 : Changer le monde');
+			$task->setStatus(Task::STATUS_WORKABLE);
+			$workflow->addTask($task);
+
 			$om->persist($workflow);
 			$om->flush();
 

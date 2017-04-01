@@ -14,7 +14,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('core_workflow_label_new', { 'id':workflow.id }) }}" class="btn btn-default ladb-label-new-btn"><i class="ladb-icon-plus"></i> Ajouter une pastille</a>
+    <a href="{{ path('core_workflow_label_new', { 'id':workflow.id }) }}" class="btn btn-default ladb-label-new-btn" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> Ajouter une pastille</a>
     <script>
         $('#{{ id }}').ladbWorkflowLabels();
     </script>

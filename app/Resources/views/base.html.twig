@@ -104,14 +104,11 @@
                     '@LadbCoreBundle/Resources/assets/less/bootstrap-datetimepicker/bootstrap-datetimepicker.less'
                     '@LadbCoreBundle/Resources/assets/less/ladb/ladb.less'
                     '@LadbCoreBundle/Resources/assets/less/ladb/icons/ladbicons.less' %}
-                    <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201703311854" media="screen" />
+                    <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=20170301041423" media="screen" />
                 {% endstylesheets %}
             {% endblock %}
             {% block headJavascripts %}
-                {% javascripts filter='?closure'
-                    '../components/jquery/jquery.js' %}
-                    <script type="text/javascript" src="{{ asset_url }}"></script>
-                {% endjavascripts %}
+                <script src="https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js"></script>
                 <!--[if lt IE 9]>
                     {% javascripts filter='?closure'
                         '../components/html5shiv/dist/html5shiv.js'

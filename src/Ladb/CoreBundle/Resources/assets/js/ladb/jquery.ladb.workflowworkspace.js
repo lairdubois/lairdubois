@@ -3,11 +3,12 @@
 
     var GRID_SPACING = 10;
     var TASK_WIDGET_PREFIX =  'ladb_workflow_task_widget_';
+    var TASK_WIDGET_BOX_WIDTH = 324;
 
     // CLASS DEFINITION
     // ======================
 
-    var LadbWorkflowBoard = function(element, options) {
+    var LadbWorkflowWorkspace = function(element, options) {
         this.options = options;
         this.$element = $(element);
 
@@ -17,6 +18,7 @@
         this.$loadingPanel = $('.ladb-loading-panel', this.$element);
         this.$loadingStatus = $('.ladb-loading-status', this.$loadingPanel);
 
+        this.$list = $('#ladb_workflow_task_list', this.$element);
         this.$diagram = $('#ladb_workflow_task_diagram', this.$element);
         this.$panzoom = $(".ladb-panzoom", this.$diagram);
         this.$canvas = $('.ladb-jtk-canvas', this.$panzoom);
@@ -25,7 +27,7 @@
         this.$btnLabelList = $('#ladb_btn_label_list', this.$element);
     };
 
-    LadbWorkflowBoard.DEFAULTS = {
+    LadbWorkflowWorkspace.DEFAULTS = {
         wsUri: 'ws://127.0.0.1:8080',
         wsChannel: '',
         minScale: 0.4,
@@ -43,27 +45,33 @@
         listLabelPath: null
     };
 
-    LadbWorkflowBoard.prototype.getCurrentScale = function() {
+    LadbWorkflowWorkspace.prototype.centerOrigin = function() {
         if (this.$panzoom) {
-            return this.$panzoom.panzoom("getMatrix")[0];
+            return this.$panzoom.panzoom('pan', (this.$diagram.outerWidth() - TASK_WIDGET_BOX_WIDTH) / 2, 100, { relative: false });
+        }
+    };
+
+    LadbWorkflowWorkspace.prototype.getCurrentScale = function() {
+        if (this.$panzoom) {
+            return this.$panzoom.panzoom('getMatrix')[0];
         }
         return 1;
     };
 
-    LadbWorkflowBoard.prototype.markLoading = function(status) {
+    LadbWorkflowWorkspace.prototype.markLoading = function(status) {
         this.$loadingPanel.show();
         this.$loadingStatus.html(status ? status : '');
     };
 
-    LadbWorkflowBoard.prototype.unmarkLoading = function() {
+    LadbWorkflowWorkspace.prototype.unmarkLoading = function() {
         this.$loadingPanel.hide();
     };
 
-    LadbWorkflowBoard.prototype.appendToAnimate = function(element, newParent) {
+    LadbWorkflowWorkspace.prototype.appendToAnimate = function(element, newParent) {
 
         var $taskRow = $(element);
         var $taskBox = $('.ladb-box', $taskRow);
-        var $newParent= $(newParent);
+        var $newParent = $(newParent);
 
         var oldOffset = $taskRow.offset();
         $taskRow.appendTo($newParent);
@@ -72,8 +80,8 @@
         var $tmpTaskRow = $taskRow.clone().appendTo('body');
         $tmpTaskRow.css({
             'position': 'absolute',
-            'left': oldOffset.left,
             'top': oldOffset.top,
+            'left': oldOffset.left,
             'width': $taskRow.width(),
             'z-index': 1000
         });
@@ -81,7 +89,10 @@
             'height': $taskRow.height()
         });
         $taskBox.hide();
-        $tmpTaskRow.animate({'top': newOffset.top, 'left': newOffset.left}, 500, function(){
+        $tmpTaskRow.animate({
+            'top': newOffset.top,
+            'left': newOffset.left
+        }, 500, function() {
             $taskRow.css({
                 'height': 'auto'
             });
@@ -91,7 +102,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.updateBoardFromJsonData = function(data) {
+    LadbWorkflowWorkspace.prototype.updateBoardFromJsonData = function(data) {
         var that = this;
 
         var response = JSON.parse(data);
@@ -111,7 +122,7 @@
                 that.$canvas.empty();
             }
             for (i = 0; i <= 4; i++) {
-                $('#collapse_status_' + i + ' .panel-body').empty();
+                $('#panel_body_status_' + i).empty();
             }
 
             for (i = 0; i < response.taskInfos.length; i++) {
@@ -125,7 +136,7 @@
                 }
 
                 $taskRow = $(taskInfos.row);
-                $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
+                $('#panel_body_status_' + taskInfos.status).append($taskRow);
                 that.initTaskRow($taskRow);
 
             }
@@ -145,7 +156,7 @@
                 }
 
                 $taskRow = $(taskInfos.row);
-                $('#collapse_status_' + taskInfos.status + ' .panel-body').append($taskRow);
+                $('#panel_body_status_' + taskInfos.status).append($taskRow);
                 that.initTaskRow($taskRow);
                 $('.ladb-box', $taskRow).effect('highlight', {}, 500);
 
@@ -181,7 +192,7 @@
 
                 $taskRow = $('#ladb_workflow_task_row_' + taskInfos.id);
                 $('.ladb-box', $taskRow).replaceWith(taskInfos.box);
-                that.appendToAnimate($taskRow, $('#collapse_status_' + taskInfos.status + ' .panel-body'));
+                that.appendToAnimate($taskRow, $('#panel_body_status_' + taskInfos.status));
                 that.bindTaskBox(taskInfos.id, $('.ladb-box', $taskRow));
 
             }
@@ -237,14 +248,14 @@
 
         // Update section badges
         for (i = 1; i <= 4; ++i) {
-            var $badgeStatus = $('#collapse_status_' + i + '_badge');
-            var $collapse = $('#collapse_status_' + i);
-            var count = $('.ladb-workflow-task-row', $collapse).length;
+            var $badgeStatus = $('#panel_heading_badge_status_' + i);
+            var $panelBody = $('#panel_body_status_' + i);
+            var count = $('.ladb-workflow-task-row', $panelBody).length;
             $badgeStatus.html(count);
             if (count > 0) {
-                $badgeStatus.show();
+                $badgeStatus.removeClass('ladb-null');
             } else {
-                $badgeStatus.hide();
+                $badgeStatus.addClass('ladb-null');
             }
         }
 
@@ -252,7 +263,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.appendModalFromHtmlData = function(data) {
+    LadbWorkflowWorkspace.prototype.appendModalFromHtmlData = function(data) {
         var that = this;
 
         var $modal = $(data);
@@ -357,7 +368,7 @@
         return $modal;
     };
 
-    LadbWorkflowBoard.prototype.bindTaskBox = function(taskId, $taskBox) {
+    LadbWorkflowWorkspace.prototype.bindTaskBox = function(taskId, $taskBox) {
         var that = this;
 
         // Bind done and run button
@@ -389,14 +400,14 @@
 
     };
 
-    LadbWorkflowBoard.prototype.initTaskRow = function($taskRow) {
+    LadbWorkflowWorkspace.prototype.initTaskRow = function($taskRow) {
 
         var taskId = $taskRow.attr('id').substring('ladb_workflow_task_row_'.length);
 
         this.bindTaskBox(taskId, $('.ladb-box', $taskRow));
     };
 
-    LadbWorkflowBoard.prototype.initTaskWidget = function($taskWidget) {
+    LadbWorkflowWorkspace.prototype.initTaskWidget = function($taskWidget) {
         var that = this;
 
         var taskId = $taskWidget.attr('id').substring(TASK_WIDGET_PREFIX.length);
@@ -407,11 +418,18 @@
             filter: ".ladb-ep",
             endpoint: "Blank",
             anchor: "Bottom",
-            connectorStyle: {stroke: "#5c96bc", strokeWidth: 2, outlineStroke: "transparent", outlineWidth: 6}
+            connectorStyle: {
+                stroke: "#5c96bc",
+                strokeWidth: 2,
+                outlineStroke: "transparent",
+                outlineWidth: 6
+            }
         });
 
         this.plumb.makeTarget($taskWidget, {
-            dropOptions: {hoverClass: "jtk-drag-hover"},
+            dropOptions: {
+                hoverClass: "jtk-drag-hover"
+            },
             endpoint: "Blank",
             anchor: "Top",
             allowLoopback: false
@@ -426,7 +444,7 @@
         $('.ladb-ep', $taskWidget).on('click', function(e) {
 
             var currentScale = that.getCurrentScale();
-            var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - 150;    // 150 = half task widget width
+            var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
             var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale + 100;
 
             // Drop connection on the board -> new Task
@@ -486,7 +504,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.appendFakeTask = function(positionLeft, positionTop, sourceTaskId) {
+    LadbWorkflowWorkspace.prototype.appendFakeTask = function(positionLeft, positionTop, sourceTaskId) {
         if (!this.plumb) {
             return;
         }
@@ -509,7 +527,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.removeFakeTask = function() {
+    LadbWorkflowWorkspace.prototype.removeFakeTask = function() {
         if (!this.plumb) {
             return;
         }
@@ -521,7 +539,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.loadTasks = function() {
+    LadbWorkflowWorkspace.prototype.loadTasks = function() {
         var that = this;
 
         // Loading
@@ -536,7 +554,12 @@
                 // Hide loading
                 that.unmarkLoading();
 
+                // Update board
                 that.updateBoardFromJsonData(data);
+
+                // Center origin
+                that.centerOrigin();
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log('listTaskPath failed', textStatus);
@@ -545,7 +568,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.newTask = function(positionLeft, positionTop, sourceTaskId) {
+    LadbWorkflowWorkspace.prototype.newTask = function(positionLeft, positionTop, sourceTaskId) {
         var that = this;
 
         positionLeft = Math.round(positionLeft / 10) * 10;
@@ -577,7 +600,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.editTask = function(taskId) {
+    LadbWorkflowWorkspace.prototype.editTask = function(taskId) {
         var that = this;
 
         // Loading
@@ -601,7 +624,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.labelList = function() {
+    LadbWorkflowWorkspace.prototype.labelList = function() {
         var that = this;
 
         // Loading
@@ -621,19 +644,14 @@
 
     };
 
-    LadbWorkflowBoard.prototype.bind = function() {
+    LadbWorkflowWorkspace.prototype.bind = function() {
         var that = this;
-
-        // Init initiales tasks rows
-        $('.ladb-workflow-task-row', that.$element).each(function (index) {
-            that.initTaskRow($(this));
-        });
 
         // Bind buttons
         this.$btnAddTask.on('click', function() {
 
             var currentScale = that.getCurrentScale();
-            var positionLeft = (that.$diagram.outerWidth() / 2 - that.$canvas.position().left) / currentScale - 150;
+            var positionLeft = (that.$diagram.outerWidth() / 2 - that.$canvas.position().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
             var positionTop = (that.$diagram.outerHeight() / 2 - that.$canvas.position().top) / currentScale - 30;
 
             that.newTask(positionLeft, positionTop);
@@ -649,7 +667,7 @@
 
     };
 
-    LadbWorkflowBoard.prototype.init = function() {
+    LadbWorkflowWorkspace.prototype.init = function() {
         var that = this;
 
         // Check capabilities
@@ -677,7 +695,7 @@
                 });
 
             } catch(error) {
-                console.log("subscription failed", error);
+                console.log("Subscription failed", error);
             }
 
             // Load tasks
@@ -739,15 +757,12 @@
                     });
 
                 });
-                that.plumb.bind('connectionDrag', function (connection) {
-                    console.log('connection', connection);
-                });
                 that.plumb.bind('connectionAborted', function (connection, originalEvent) {
 
                     var sourceTaskId = connection.sourceId.substring(TASK_WIDGET_PREFIX.length);
 
                     var currentScale = that.getCurrentScale();
-                    var positionLeft = (originalEvent.clientX - that.$canvas.offset().left) / currentScale - 150;    // 150 = half task widget width
+                    var positionLeft = (originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
                     var positionTop = (originalEvent.clientY - that.$canvas.offset().top) / currentScale;
 
                     // Drop connection on the board -> new Task
@@ -844,7 +859,7 @@
                     .on('dblclick', function(e) {
 
                         var currentScale = that.getCurrentScale();
-                        var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - 150;    // 150 = half task widget width
+                        var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
                         var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale;
 
                         that.newTask(positionLeft, positionTop);
@@ -855,7 +870,6 @@
         }
 
         that.bind();
-
     };
 
 
@@ -865,11 +879,11 @@
     function Plugin(option) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('ladb.workflowboard');
-            var options = $.extend({}, LadbWorkflowBoard.DEFAULTS, $this.data(), typeof option == 'object' && option);
+            var data    = $this.data('ladb.workflowworkspace');
+            var options = $.extend({}, LadbWorkflowWorkspace.DEFAULTS, $this.data(), typeof option == 'object' && option);
 
             if (!data) {
-                $this.data('ladb.workflowboard', (data = new LadbWorkflowBoard(this, options)));
+                $this.data('ladb.workflowworkspace', (data = new LadbWorkflowWorkspace(this, options)));
             }
             if (typeof option == 'string') {
                 data[option]();
@@ -879,17 +893,17 @@
         })
     }
 
-    var old = $.fn.ladbWorkflowBoard;
+    var old = $.fn.ladbWorkflowWorkspace;
 
-    $.fn.ladbWorkflowBoard             = Plugin;
-    $.fn.ladbWorkflowBoard.Constructor = LadbWorkflowBoard;
+    $.fn.ladbWorkflowWorkspace             = Plugin;
+    $.fn.ladbWorkflowWorkspace.Constructor = LadbWorkflowWorkspace;
 
 
     // NO CONFLICT
     // =================
 
-    $.fn.ladbWorkflowBoard.noConflict = function () {
-        $.fn.ladbWorkflowBoard = old;
+    $.fn.ladbWorkflowWorkspace.noConflict = function () {
+        $.fn.ladbWorkflowWorkspace = old;
         return this;
     }
 

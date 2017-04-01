@@ -7,6 +7,8 @@
 {% block headStylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" media="screen" />
+    {#<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.css" media="screen" />#}
+    {#<link rel="stylesheet" href="https://cdn.jsdelivr.net/intro.js/2.5.0/introjs.min.css">#}
 {% endblock %}
 
 {% block bodyJavascripts %}
@@ -15,20 +17,22 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.min.js"></script>#}
+    {#<script src="https://cdn.jsdelivr.net/intro.js/2.5.0/intro.min.js"></script>#}
     {#<script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>#}
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputcolor.js'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowboard.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowlabels.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=20170311848"></script>
     {% endjavascripts %}
     {{ ws_client() }}
     <script>
         $(document).ready(function() {
-            $('.ladb-wrapper').ladbWorkflowBoard({
+            $('.ladb-workflow-workspace').ladbWorkflowWorkspace({
                 wsUri: '{{ websocket_uri }}',
                 wsChannel: 'workflow/{{ workflow.id }}',
                 listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}',
@@ -50,8 +54,8 @@
 {% endblock %}
 
 {% block bodyWrapperInner %}
-    <div class="cnt">
-        <header style="margin: 0 15px;">
+    <div class="ladb-workflow-workspace">
+        <header>
             {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow} %}
                 {% block headerTools %}
                     <div class="ladb-header-tools">
@@ -68,66 +72,45 @@
                 {% endblock %}
             {% endembed %}
         </header>
-        <div class="ladb-workflow-panel">
-            <div id="ladb_workflow_task_list" class="panel-group col-lg-3 col-md-3 col-xs-12" role="tablist" aria-multiselectable="true">
+        <div class="ladb-workflow-board">
+            <div id="ladb_workflow_task_list" class="panel-group col-lg-3 col-md-3 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {% include 'LadbCoreBundle:Workflow:_workflow-status-panel.part.html.twig' %}
                     </div>
-                    <div class="panel-heading panel-heading-status-3" role="tab">
+                    <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_3" aria-expanded="true" aria-controls="collapse_status_2">
-                                <span id="collapse_status_3_badge" class="badge badge-default pull-right" style="display: none;">0</span>
-                                Tâches en cours
-                            </a>
+                            <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>
+                            Tâches en cours
                         </h4>
                     </div>
-                    <div id="collapse_status_3" class="panel-collapse collapse in" role="tabpanel">
-                        <div class="panel-body">
-                        </div>
-                    </div>
-                    <div class="panel-heading panel-heading-status-2" role="tab">
+                    <div id="panel_body_status_3" class="panel-body"></div>
+                    <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_2" aria-expanded="true" aria-controls="collapse_status_2">
-                                <span id="collapse_status_2_badge" class="badge badge-default pull-right" style="display: none;">0</span>
-                                Tâches à effectuer
-                            </a>
+                            <span id="panel_heading_badge_status_2" class="badge badge-default pull-right">0</span>
+                            Tâches à effectuer
                         </h4>
                     </div>
-                    <div id="collapse_status_2" class="panel-collapse collapse in" role="tabpanel">
-                        <div class="panel-body">
-                        </div>
-                    </div>
-                    <div class="panel-heading panel-heading-status-1" role="tab">
+                    <div id="panel_body_status_2" class="panel-body"></div>
+                    <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_1" aria-expanded="true" aria-controls="collapse_status_1">
-                                <span id="collapse_status_1_badge" class="badge badge-default pull-right" style="display: none;">0</span>
-                                Tâches en attente
-                            </a>
+                            <span id="panel_heading_badge_status_1" class="badge badge-default pull-right">0</span>
+                            Tâches en attente
                         </h4>
                     </div>
-                    <div id="collapse_status_1" class="panel-collapse collapse in" role="tabpanel">
-                        <div class="panel-body">
-                        </div>
-                    </div>
-                    <div class="panel-heading panel-heading-status-4" role="tab">
+                    <div id="panel_body_status_1" class="panel-body"></div>
+                    <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_status_4" aria-expanded="true" aria-controls="collapse_status_3">
-                                <span id="collapse_status_4_badge" class="badge badge-warning pull-right" style="display: none;">0</span>
-                                Tâches effectuées
-                            </a>
+                            <span id="panel_heading_badge_status_4" class="badge badge-warning pull-right">0</span>
+                            Tâches effectuées
                         </h4>
                     </div>
-                    <div id="collapse_status_4" class="panel-collapse collapse in" role="tabpanel">
-                        <div class="panel-body">
-                        </div>
-                    </div>
+                    <div id="panel_body_status_4" class="panel-body"></div>
                 </div>
             </div>
             <div id="ladb_workflow_task_diagram" class="col-lg-9 col-md-9 col-xs-12">
                 <div class="ladb-panzoom">
-                    <div class="ladb-jtk-canvas">
-                    </div>
+                    <div class="ladb-jtk-canvas"></div>
                 </div>
             </div>
             {% embed 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}

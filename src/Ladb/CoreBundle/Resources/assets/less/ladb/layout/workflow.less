@@ -12,16 +12,21 @@
 @bg-color-status-3: lighten(@color-status-3, 40%);
 @bg-color-status-4: lighten(@color-status-4, 40%);
 
+@task-widget-box-width: 320px;
 @label-bullet-size: 18px;
 
-.cnt {
+.ladb-workflow-workspace {
   position: absolute;
   top: @ladb-topbar-height;
   left: @ladb-leftbar-width;
   right: 0;
   bottom: @ladb-bottombar-height;
 
-  .ladb-workflow-panel {
+  header {
+    margin: 0 15px;
+  }
+
+  .ladb-workflow-board {
     position: absolute;
     top: 94px;
     bottom: 0;
@@ -29,7 +34,7 @@
     right: 0;
 
     .ladb-loading-panel {
-      background-color: rgba(255, 255, 255, 0.6);
+      background-color: @ladb-global-bg;
       opacity: 1;
     }
 
@@ -42,6 +47,17 @@
       height: 100%;
       overflow-x: hidden;
       overflow-y: scroll;
+
+      .panel-heading {
+        border-top: 1px solid @ladb-global-border;
+        border-bottom: 1px solid @ladb-global-border;
+
+        .badge.ladb-null {
+          background-color: @ladb-global-null-color;
+        }
+
+      }
+
     }
 
   }
@@ -144,7 +160,7 @@
     margin-bottom: 10px;
     border-width: 2px;
     border-style: solid;
-    width: 300px;
+    width: @task-widget-box-width;
 
     &.ladb-status-0 {
       background-color: #fff;
@@ -237,7 +253,6 @@
 
 }
 
-
 .ladb-workflow-label-row {
 
   td {
@@ -291,10 +306,10 @@ html.touchevents {
 // phone
 @media screen and (max-width: @ladb-screen-phone-max) {
 
-  .cnt {
+  .ladb-workflow-workspace {
     position: static;
 
-    .ladb-workflow-panel {
+    .ladb-workflow-board {
       position: static;
 
       #ladb_workflow_task_list {
