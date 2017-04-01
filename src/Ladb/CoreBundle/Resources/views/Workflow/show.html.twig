@@ -27,7 +27,7 @@
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputcolor.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.remotemodal.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js' %}
-        <script type="text/javascript" src="{{ asset_url }}?v=20170311848"></script>
+        <script type="text/javascript" src="{{ asset_url }}?v=201704011848"></script>
     {% endjavascripts %}
     {{ ws_client() }}
     <script>
@@ -84,28 +84,36 @@
                             Tâches en cours
                         </h4>
                     </div>
-                    <div id="panel_body_status_3" class="panel-body"></div>
+                    <div id="panel_body_status_3" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_2" class="badge badge-default pull-right">0</span>
                             Tâches à effectuer
                         </h4>
                     </div>
-                    <div id="panel_body_status_2" class="panel-body"></div>
+                    <div id="panel_body_status_2" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_1" class="badge badge-default pull-right">0</span>
                             Tâches en attente
                         </h4>
                     </div>
-                    <div id="panel_body_status_1" class="panel-body"></div>
+                    <div id="panel_body_status_1" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_4" class="badge badge-warning pull-right">0</span>
                             Tâches effectuées
                         </h4>
                     </div>
-                    <div id="panel_body_status_4" class="panel-body"></div>
+                    <div id="panel_body_status_4" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
                 </div>
             </div>
             <div id="ladb_workflow_task_diagram" class="col-lg-9 col-xs-12">

@@ -361,6 +361,7 @@ workflow:
     labels: Etiquettes
     new: Ajouter une tâche
     edit: Edition de la tâche
+    empty: Aucune
   label:
     color: Couleur
     name: Libellé

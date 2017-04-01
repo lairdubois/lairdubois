@@ -128,7 +128,7 @@
                 that.$canvas.empty();
             }
             for (i = 0; i <= 4; i++) {
-                $('#panel_body_status_' + i).empty();
+                $('#panel_body_status_' + i + ' .ladb-workflow-task-row').remove();
             }
 
             for (i = 0; i < response.taskInfos.length; i++) {
@@ -260,8 +260,10 @@
             $badgeStatus.html(count);
             if (count > 0) {
                 $badgeStatus.removeClass('ladb-null');
+                $('.ladb-no-task', $panelBody).hide();
             } else {
                 $badgeStatus.addClass('ladb-null');
+                $('.ladb-no-task', $panelBody).show();
             }
         }
 
@@ -742,6 +744,7 @@
                 that.removeFakeTask();
             }
         });
+        $('input[type=text]', $form).first().focus();
 
         // Bind submit button
         $('button[type=submit]', $modal).on('click', function() {
