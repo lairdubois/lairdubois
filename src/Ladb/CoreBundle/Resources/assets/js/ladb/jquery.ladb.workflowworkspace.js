@@ -23,6 +23,8 @@
         this.$panzoom = $(".ladb-panzoom", this.$diagram);
         this.$canvas = $('.ladb-jtk-canvas', this.$panzoom);
 
+        this.$modal = $('#workflow_modal', this.$element);
+
         this.$btnAddTask = $('#ladb_btn_add_task', this.$element);
         this.$btnLabelList = $('#ladb_btn_label_list', this.$element);
     };
@@ -263,111 +265,6 @@
 
     };
 
-    LadbWorkflowWorkspace.prototype.appendModalFromHtmlData = function(data) {
-        var that = this;
-
-        var $modal = $(data);
-        var hiddableModal = true;
-
-        // Append modal to body
-        $('body').append($modal);
-
-        // Bind modal
-        $modal.on('shown.bs.modal', function() {
-            $('input', $modal).first().focus();
-        });
-        $modal.on('hide.bs.modal', function() {
-            return hiddableModal;
-        });
-        $modal.on('hidden.bs.modal', function() {
-            $modal.remove();
-            that.removeFakeTask();
-        });
-
-        // Bind form
-        var $form = $('form', $modal);
-        $form.ajaxForm({
-            cache: false,
-            dataType: "html",
-            context: document.body,
-            clearForm: true,
-            success: function (data, textStatus, jqXHR) {
-                try {
-                    JSON.parse(data);
-                    that.removeFakeTask();
-                } catch (error) {
-                    that.appendModalFromHtmlData(data);
-                }
-                $modal.modal('hide');
-            },
-            error: function() {
-                console.log('ERROR');
-                that.removeFakeTask();
-            }
-        });
-
-        // Bind submit button
-        $('button[type=submit]', $modal).on('click', function() {
-            $(this).button('loading');
-            $form.submit();
-        });
-
-        // Bind remove button
-        $('.ladb-btn-delete', $modal).on('click', function(e) {
-            e.preventDefault();
-
-            $(this).button('loading');
-
-            // Sync with server
-            $.ajax($(this).attr('href'), {
-                cache: false,
-                dataType: "html",
-                context: document.body,
-                success: function(data, textStatus, jqXHR) {
-                    $modal.modal('hide');
-                },
-                error: function () {
-                    console.log('ERROR');
-                }
-            });
-
-        });
-
-        // Fake Labels select
-        var $select = $('.ladb-workflow-label-fake-select', $modal);
-        if ($select.length > 0) {
-            var $mappedInput = $($select.data('ladb-mapped-input'), $modal);
-            var currentValue = $mappedInput.val();
-            $select.selectpicker({
-                noneSelectedText: 'Aucune pastille',
-                iconBase: '',
-                tickIcon: 'ladb-icon-check'
-            });
-            if (currentValue) {
-                $select.selectpicker('val', currentValue.split(','));
-            }
-            $select.on('changed.bs.select', function (e) {
-                var selectValue = $(this).val();
-                var fieldValue = selectValue ? selectValue.join(',') : '';
-                $mappedInput.val(fieldValue);
-            });
-            $select.on('show.bs.select', function (e) {
-                hiddableModal = false;
-            });
-            $select.on('hidden.bs.select', function (e) {
-                hiddableModal = true;
-            });
-        }
-
-        // Show modal
-        $modal.modal('show');
-
-        // Hide loading
-        this.unmarkLoading();
-
-        return $modal;
-    };
-
     LadbWorkflowWorkspace.prototype.bindTaskBox = function(taskId, $taskBox) {
         var that = this;
 
@@ -577,23 +474,20 @@
         // Append the fake task
         this.appendFakeTask(positionLeft, positionTop, sourceTaskId);
 
-        // Loading
-        this.markLoading();
-
-        $.ajax(that.options.newTaskPath, {
-            cache: false,
-            dataType: "html",
-            context: document.body,
+        that.$modal.ladbRemoteModal('loadContent', {
+            url: that.options.newTaskPath,
             data: {
                 positionLeft: positionLeft,
                 positionTop: positionTop,
                 sourceTaskId: sourceTaskId
             },
-            success: function(data, textStatus, jqXHR) {
-                that.appendModalFromHtmlData(data);
+            onSuccess: function($content) {
+                that.bindNewAndEditModalContent(that.$modal);
             },
-            error: function () {
-                console.log('ERROR');
+            onError: function() {
+                that.removeFakeTask();
+            },
+            onHidden: function() {
                 that.removeFakeTask();
             }
         });
@@ -603,22 +497,15 @@
     LadbWorkflowWorkspace.prototype.editTask = function(taskId) {
         var that = this;
 
-        // Loading
-        this.markLoading();
-
-        $.ajax(that.options.editTaskPath, {
-            type: "POST",
-            cache: false,
-            dataType: "html",
-            context: document.body,
+        that.$modal.ladbRemoteModal('loadContent', {
+            url: that.options.editTaskPath,
             data: {
                 taskId: taskId
             },
-            success: function(data, textStatus, jqXHR) {
-                that.appendModalFromHtmlData(data);
+            onSuccess: function($content) {
+                that.bindNewAndEditModalContent(that.$modal);
             },
-            error: function () {
-                console.log('ERROR');
+            onError: function() {
             }
         });
 
@@ -627,25 +514,291 @@
     LadbWorkflowWorkspace.prototype.labelList = function() {
         var that = this;
 
-        // Loading
-        this.markLoading();
+        // Load modal
+        that.$modal.ladbRemoteModal('loadContent', {
+            url: that.options.listLabelPath,
+            onSuccess: function($content) {
+                // that.$modal.ladbWorkflowLabels();
 
-        $.ajax(that.options.listLabelPath, {
-            cache: false,
-            dataType: "html",
-            context: document.body,
-            success: function(data, textStatus, jqXHR) {
-                that.appendModalFromHtmlData(data);
+                var $alertEmpty = $('.ladb-label-empty-alert', $content);
+                var $table = $('.ladb-label-table', $content);
+                var $newBtn = $('.ladb-label-new-btn', $content);
+
+                // Functions /////
+
+                function checkEmpty() {
+                    if ($('.ladb-workflow-label-row, .ladb-workflow-label-row-form', $table).length == 0) {
+                        $alertEmpty.show();
+                        $table.hide();
+                    } else {
+                        $alertEmpty.hide();
+                        $table.show();
+                    }
+                }
+
+                function bindRowForm($rowForm, $row) {
+
+                    var $form = $('form', $rowForm);
+                    var $loadingPanel = $('.ladb-loading-panel', $rowForm);
+                    var $cancelBtn = $('.ladb-label-cancel-btn', $rowForm);
+                    var $saveBtn = $('.ladb-label-save-btn', $rowForm);
+                    var $inputColor = $('.ladb-input-color', $form);
+                    var $inputName = $('.ladb-input-name', $form);
+
+                    // Bind form
+                    $form.ajaxForm({
+                        cache: false,
+                        dataType: "html",
+                        context: document.body,
+                        clearForm: true,
+                        success: function(data, textStatus, jqXHR) {
+
+                            $cancelBtn.unbind('click');
+                            $saveBtn.unbind('click');
+
+                            var $data = $(data);
+                            $rowForm.replaceWith($data);
+
+                            if ($data.hasClass('ladb-workflow-label-row')) {
+                                if ($row) { $row.remove(); }
+                                bindRows($data);
+                                $alertEmpty.hide();
+                            } else {
+                                bindRowForm($data, $row);
+                            }
+
+                        },
+                        error: function() {
+                            $loadingPanel.hide();
+                        }
+                    });
+
+                    // Bind buttons
+                    $cancelBtn.on('click', function(e) {
+                        if ($row) { $row.show(); }
+                        $cancelBtn.unbind('click');
+                        $saveBtn.unbind('click');
+                        $rowForm.remove();
+                        checkEmpty();
+                    });
+                    $saveBtn.on('click', function(e) {
+                        $loadingPanel.show();
+                        $form.submit();
+                    });
+
+                    // Bind input color
+                    $inputColor.ladbInputColor();
+
+                    // Focus name input
+                    $inputName.focus();
+
+                }
+
+                function bindRows($rows) {
+
+                    $rows.each(function(index, value) {
+
+                        var $row = $(value);
+                        var $loadingPanel = $('.ladb-loading-panel', $row);
+                        var $editBtn = $('.ladb-label-edit-btn', $row);
+                        var $deleteBtn = $('.ladb-label-delete-btn', $row);
+
+                        $editBtn.on('click', function(e) {
+                            e.preventDefault();
+
+                            $loadingPanel.show();
+
+                            // Hide previously edited row
+                            $('.ladb-workflow-label-row').show();
+                            $('.ladb-workflow-label-row-form').remove();
+
+                            $.ajax($(this).attr('href'), {
+                                cache: false,
+                                dataType: "html",
+                                context: document.body,
+                                success: function(data, textStatus, jqXHR) {
+
+                                    var $rowForm = $(data);
+
+                                    // Hide old row
+                                    $row.hide();
+
+                                    // Append row form
+                                    $row.after($rowForm);
+
+                                    bindRowForm($rowForm, $row);
+
+                                    $loadingPanel.hide();
+                                },
+                                error: function () {
+                                    $loadingPanel.hide();
+                                }
+                            });
+
+                        });
+
+                        $deleteBtn.on('click', function(e) {
+                            e.preventDefault();
+
+                            $loadingPanel.show();
+
+                            $.ajax($(this).attr('href'), {
+                                cache: false,
+                                dataType: "html",
+                                context: document.body,
+                                success: function (data, textStatus, jqXHR) {
+                                    $row.remove();
+                                    checkEmpty();
+                                },
+                                error: function () {
+                                    $loadingPanel.hide();
+                                }
+                            });
+
+                        });
+
+                    });
+
+                }
+
+                // Binds /////
+
+                // Bind New buttons
+                $newBtn.on('click', function(e) {
+                    e.preventDefault();
+
+                    // Hide previously edited row
+                    $('.ladb-workflow-label-row', $content).show();
+                    $('.ladb-workflow-label-row-form', $content).remove();
+
+                    var url = $newBtn.attr('href');
+
+                    // Loading button
+                    $newBtn.button('loading');
+
+                    $.ajax(url, {
+                        cache: false,
+                        dataType: "html",
+                        context: document.body,
+                        success: function(data, textStatus, jqXHR) {
+
+                            var $tbody = $('tbody', $table);
+                            var $rowForm = $(data);
+
+                            // Reset loading
+                            $newBtn.button('reset');
+
+                            // Append row form
+                            $tbody.append($rowForm);
+
+                            checkEmpty();
+                            bindRowForm($rowForm, null);
+                        },
+                        error: function () {
+                            // Reset loading
+                            $newBtn.button('reset');
+                        }
+                    });
+
+                });
+
+                // Bind Rows
+                bindRows($('.ladb-workflow-label-row', $content));
+
             },
-            error: function () {
-                console.log('ERROR');
+            onError: function() {
             }
         });
 
     };
 
+    LadbWorkflowWorkspace.prototype.bindNewAndEditModalContent = function($modal) {
+        var that = this;
+
+        // Bind form
+        var $form = $('form', $modal);
+        $form.ajaxForm({
+            cache: false,
+            dataType: "html",
+            context: document.body,
+            clearForm: true,
+            success: function (data, textStatus, jqXHR) {
+                try {
+                    JSON.parse(data);
+                    that.removeFakeTask();
+                    $modal.ladbRemoteModal('hide');
+                    that.removeFakeTask();
+                } catch (error) {
+                    $modal.ladbRemoteModal('setContent', data);
+                    that.bindNewAndEditModalContent($modal);
+                }
+            },
+            error: function() {
+                console.log('ERROR');
+                that.removeFakeTask();
+            }
+        });
+
+        // Bind submit button
+        $('button[type=submit]', $modal).on('click', function() {
+            $(this).button('loading');
+            $form.submit();
+        });
+
+        // Bind remove button
+        $('.ladb-btn-delete', $modal).on('click', function(e) {
+            e.preventDefault();
+
+            $(this).button('loading');
+
+            // Sync with server
+            $.ajax($(this).attr('href'), {
+                cache: false,
+                dataType: "html",
+                context: document.body,
+                success: function(data, textStatus, jqXHR) {
+                    $modal.ladbRemoteModal('hide');
+                },
+                error: function () {
+                    console.log('ERROR');
+                }
+            });
+
+        });
+
+        // Fake Labels select
+        var $select = $('.ladb-workflow-label-fake-select', $modal);
+        if ($select.length > 0) {
+            var $mappedInput = $($select.data('ladb-mapped-input'), $modal);
+            var currentValue = $mappedInput.val();
+            $select.selectpicker({
+                noneSelectedText: 'Aucune pastille',
+                iconBase: '',
+                tickIcon: 'ladb-icon-check'
+            });
+            if (currentValue) {
+                $select.selectpicker('val', currentValue.split(','));
+            }
+            $select.on('changed.bs.select', function (e) {
+                var selectValue = $(this).val();
+                var fieldValue = selectValue ? selectValue.join(',') : '';
+                $mappedInput.val(fieldValue);
+            });
+            $select.on('show.bs.select', function (e) {
+                $modal.ladbRemoteModal('setHiddable', false);
+            });
+            $select.on('hidden.bs.select', function (e) {
+                $modal.ladbRemoteModal('setHiddable', true);
+            });
+        }
+
+    };
+
     LadbWorkflowWorkspace.prototype.bind = function() {
         var that = this;
+
+        // Bind modal
+        this.$modal.ladbRemoteModal();
 
         // Bind buttons
         this.$btnAddTask.on('click', function() {

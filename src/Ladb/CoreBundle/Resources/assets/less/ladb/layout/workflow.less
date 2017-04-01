@@ -33,6 +33,7 @@
     left: 0;
     right: 0;
 
+
     .ladb-loading-panel {
       background-color: @ladb-global-bg;
       opacity: 1;
@@ -310,12 +311,17 @@ html.touchevents {
     position: static;
 
     .ladb-workflow-board {
-      position: static;
+      position: relative;
+      top: auto;
+      bottom: auto;
+      left: auto;
+      right: auto;
 
       #ladb_workflow_task_list {
         height: auto;
-        margin-bottom: @ladb-bottombar-height;
         padding-bottom: @ladb-gutter / 2;
+        margin-bottom: @ladb-bottombar-height;
+        float: none;
 
         .panel {
           height: auto;
@@ -324,7 +330,7 @@ html.touchevents {
       }
 
       #ladb_workflow_task_diagram {
-       display: none;
+        display: none;
       }
 
     }

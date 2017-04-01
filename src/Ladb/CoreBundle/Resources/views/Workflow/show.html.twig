@@ -25,8 +25,8 @@
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputcolor.js'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowlabels.js' %}
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.remotemodal.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=20170311848"></script>
     {% endjavascripts %}
     {{ ws_client() }}
@@ -73,7 +73,7 @@
             {% endembed %}
         </header>
         <div class="ladb-workflow-board">
-            <div id="ladb_workflow_task_list" class="panel-group col-lg-3 col-md-3 col-xs-12">
+            <div id="ladb_workflow_task_list" class="panel-group col-lg-3 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {% include 'LadbCoreBundle:Workflow:_workflow-status-panel.part.html.twig' %}
@@ -108,7 +108,7 @@
                     <div id="panel_body_status_4" class="panel-body"></div>
                 </div>
             </div>
-            <div id="ladb_workflow_task_diagram" class="col-lg-9 col-md-9 col-xs-12">
+            <div id="ladb_workflow_task_diagram" class="col-lg-9 col-xs-12">
                 <div class="ladb-panzoom">
                     <div class="ladb-jtk-canvas"></div>
                 </div>
@@ -120,6 +120,13 @@
                 {% endblock %}
             {% endembed %}
         </div>
+        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'workflow_modal' } %}
+            {% block header %}{% endblock %}
+            {% block bodyInner %}
+                {{ 'default.loading'|trans() }}
+            {% endblock %}
+            {% block footer %}{% endblock %}
+        {% endembed %}
     </div>
 {% endblock %}
 
