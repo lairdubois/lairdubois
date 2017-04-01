@@ -357,10 +357,16 @@ workflow:
     help:
       title: Renseignez ici le titre de votre processus.
   task:
+    title: Titre
+    labels: Etiquettes
     new: Ajouter une tâche
     edit: Edition de la tâche
   label:
-    list: Pastilles
+    color: Couleur
+    name: Libellé
+    list: Etiquettes
+    add: Ajouter une étiquette
+    empty: Aucune étiquette
 
 blog:
   title: Le blog

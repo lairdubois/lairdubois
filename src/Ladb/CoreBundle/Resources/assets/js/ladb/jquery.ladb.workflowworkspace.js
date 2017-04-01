@@ -25,8 +25,8 @@
 
         this.$modal = $('#workflow_modal', this.$element);
 
-        this.$btnAddTask = $('#ladb_btn_add_task', this.$element);
-        this.$btnLabelList = $('#ladb_btn_label_list', this.$element);
+        this.$btnAddTask = $('#ladb_add_task_btn', this.$element);
+        this.$btnListLabels = $('#ladb_list_labels_btn', this.$element);
     };
 
     LadbWorkflowWorkspace.DEFAULTS = {
@@ -63,10 +63,14 @@
     LadbWorkflowWorkspace.prototype.markLoading = function(status) {
         this.$loadingPanel.show();
         this.$loadingStatus.html(status ? status : '');
+        this.$btnAddTask.prop('disabled', true);
+        this.$btnListLabels.prop('disabled', true);
     };
 
     LadbWorkflowWorkspace.prototype.unmarkLoading = function() {
         this.$loadingPanel.hide();
+        this.$btnAddTask.prop('disabled', false);
+        this.$btnListLabels.prop('disabled', false);
     };
 
     LadbWorkflowWorkspace.prototype.appendToAnimate = function(element, newParent) {
@@ -459,7 +463,7 @@
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log('listTaskPath failed', textStatus);
+                console.log('loadTasks failed', textStatus);
             }
         });
 
@@ -511,7 +515,7 @@
 
     };
 
-    LadbWorkflowWorkspace.prototype.labelList = function() {
+    LadbWorkflowWorkspace.prototype.listLabels = function() {
         var that = this;
 
         // Load modal
@@ -809,8 +813,8 @@
 
             that.newTask(positionLeft, positionTop);
         });
-        this.$btnLabelList.on('click', function() {
-            that.labelList();
+        this.$btnListLabels.on('click', function() {
+            that.listLabels();
         });
 
         // Bind loading mask
