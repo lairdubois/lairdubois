@@ -471,22 +471,41 @@ class WorkflowController extends Controller {
 				}
 			}
 
+			$newDuration = $task->getDuration();
+			if ($task->getDuration() > 0) {
+
+				// Update workflow duration
+				$workflow->incrementDuration($task->getDuration());
+
+			}
+
 			$om->persist($task);
 			$om->flush();
 
-			$createdConnections = array();
-			if (!is_null($sourceTask)) {
+			$parameters = array();
 
-				$createdConnections[] = array(
-					'from' => $sourceTask->getId(),
-					'to'   => $task->getId(),
-				);
+			if ($task->getDuration() > 0) {
+
+				$parameters = array_merge($parameters, array(
+					'workflowInfos' => $this->_generateWorkflowInfos($workflow),
+				));
+
 			}
 
-			$this->_push($workflow, array(
-				'createdConnections' => $createdConnections,
-				'createdTaskInfos'   => $this->_generateTaskInfos($task, self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET),
-			));
+			if (!is_null($sourceTask)) {
+
+				$parameters = array_merge($parameters, array(
+					'createdConnections' => array(array(
+						'from' => $sourceTask->getId(),
+						'to'   => $task->getId(),
+					)),
+				));
+
+			}
+
+			$this->_push($workflow, array_merge($parameters, array(
+				'createdTaskInfos' => $this->_generateTaskInfos($task, self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET),
+			)));
 
 			return new JsonResponse(array(
 				'success' => true,
@@ -536,16 +555,37 @@ class WorkflowController extends Controller {
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
 		$this->_assertValidWorkflow($task, $workflow);
 
+		$previousDuration = $task->getDuration();
+
 		$form = $this->createForm(TaskType::class, $task, array( 'label_choices' => $this->_computeLabelChoices($workflow) ));
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
 
+			$parameters = array();
+
+			$newDuration = $task->getDuration();
+			if ($newDuration != $previousDuration) {
+
+				// Update workflow duration
+				$workflow->incrementDuration(-$previousDuration);
+				$workflow->incrementDuration($task->getDuration());
+
+			}
+
 			$om->flush();
 
-			$this->_push($workflow, array(
+			if ($newDuration != $previousDuration) {
+
+				$parameters = array_merge($parameters, array(
+					'workflowInfos' => $this->_generateWorkflowInfos($workflow),
+				));
+
+			}
+
+			$this->_push($workflow, array_merge($parameters, array(
 				'updatedTaskInfos' => $this->_generateTaskInfos($task, self::TASKINFO_STATUS | self::TASKINFO_BOX),
-			));
+			)));
 
 			return new JsonResponse(array(
 				'success' => true,
@@ -554,6 +594,7 @@ class WorkflowController extends Controller {
 
 		return array(
 			'workflow' => $workflow,
+			'task'     => $task,
 			'form'     => $form->createView(),
 		);
 	}

@@ -10,20 +10,25 @@
         <div class="form-group">
             {{ form_label(form.title) }}
             {{ form_errors(form.title) }}
-            {{ form_widget(form.title) }}
+            {{ form_widget(form.title, { 'attr':{ 'class':'form-control input-lg' } }) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.duration) }}
+            {{ form_errors(form.duration) }}
+            {{ form_widget(form.duration) }}
         </div>
         <div class="form-group">
             {{ form_label(form.labels) }}
             {{ form_errors(form.labels) }}
             {{ form_widget(form.labels) }}
+            <select class="ladb-workflow-label-fake-select form-control" data-ladb-mapped-input="#{{ form.labels.vars.id }}" multiple>
+                {% for label in workflow.labels %}
+                    <option data-content="{% spaceless %}{% filter escape %}{% include 'LadbCoreBundle:Workflow:_label-span.part.html.twig' %}{% endfilter %}{% endspaceless %}" value="{{ label.id }}">{{ label.name }}</option>
+                {% endfor %}
+            </select>
         </div>
     {% endblock %}
     {{ form_end(form) }}
-    <select class="ladb-workflow-label-fake-select form-control" data-ladb-mapped-input="#{{ form.labels.vars.id }}" multiple>
-        {% for label in workflow.labels %}
-            <option data-content="{% spaceless %}{% filter escape %}{% include 'LadbCoreBundle:Workflow:_label-span.part.html.twig' %}{% endfilter %}{% endspaceless %}" value="{{ label.id }}">{{ label.name }}</option>
-        {% endfor %}
-    </select>
 {% endblock %}
 
 {% block footerInner %}

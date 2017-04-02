@@ -122,11 +122,11 @@
     function Plugin(option, _parameter) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('ladb.inputColor');
+            var data    = $this.data('ladb.inputcolor');
             var options = $.extend({}, LadbInputColor.DEFAULTS, $this.data(), typeof option == 'object' && option);
 
             if (!data) {
-                $this.data('ladb.inputColor', (data = new LadbInputColor(this, options)));
+                $this.data('ladb.inputcolor', (data = new LadbInputColor(this, options)));
             }
             if (typeof option == 'string') {
                 data[option](_parameter);

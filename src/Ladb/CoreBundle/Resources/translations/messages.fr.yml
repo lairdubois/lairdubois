@@ -359,6 +359,7 @@ workflow:
   task:
     title: Titre
     labels: Etiquettes
+    duration: Durée
     new: Ajouter une tâche
     edit: Edition de la tâche
     empty: Aucune

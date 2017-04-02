@@ -77,6 +77,7 @@ class Task {
 
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Assert\GreaterThanOrEqual(0)
 	 */
 	private $duration = 0;
 

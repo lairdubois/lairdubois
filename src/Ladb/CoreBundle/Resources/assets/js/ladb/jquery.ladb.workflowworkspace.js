@@ -18,7 +18,6 @@
         this.$loadingPanel = $('.ladb-loading-panel', this.$element);
         this.$loadingStatus = $('.ladb-loading-status', this.$loadingPanel);
 
-        this.$list = $('#ladb_workflow_task_list', this.$element);
         this.$diagram = $('#ladb_workflow_task_diagram', this.$element);
         this.$panzoom = $(".ladb-panzoom", this.$diagram);
         this.$canvas = $('.ladb-jtk-canvas', this.$panzoom);
@@ -746,6 +745,10 @@
         });
         $('input[type=text]', $form).first().focus();
 
+        $('#ladb_workflow_task_duration').ladbInputDuration({
+            showSeconds: true
+        });
+
         // Bind submit button
         $('button[type=submit]', $modal).on('click', function() {
             $(this).button('loading');
@@ -779,7 +782,7 @@
             var $mappedInput = $($select.data('ladb-mapped-input'), $modal);
             var currentValue = $mappedInput.val();
             $select.selectpicker({
-                noneSelectedText: 'Aucune pastille',
+                noneSelectedText: 'Aucune étiquette',
                 iconBase: '',
                 tickIcon: 'ladb-icon-check'
             });

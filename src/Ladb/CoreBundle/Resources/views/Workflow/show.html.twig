@@ -9,6 +9,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" media="screen" />
     {#<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.css" media="screen" />#}
     {#<link rel="stylesheet" href="https://cdn.jsdelivr.net/intro.js/2.5.0/introjs.min.css">#}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/component/inputcolor.less'
+        '@LadbCoreBundle/Resources/assets/less/ladb/component/inputduration.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201704011848" media="screen" />
+    {% endstylesheets %}
 {% endblock %}
 
 {% block bodyJavascripts %}
@@ -25,6 +30,7 @@
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputcolor.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputduration.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.remotemodal.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js' %}
         <script type="text/javascript" src="{{ asset_url }}?v=201704011848"></script>

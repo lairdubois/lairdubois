@@ -23,12 +23,13 @@ class TaskType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('title', TextType::class, array( 'label' => 'workflow.task.title' ))
-			->add('positionLeft', HiddenType::class)
-			->add('positionTop', HiddenType::class)
 			->add($builder
 				->create('labels', TextType::class, array( 'label' => 'workflow.task.labels', 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new LabelsToIdsTransformer($this->om))
 			)
+			->add('duration', TextType::class, array( 'label' => 'workflow.task.duration' ))
+			->add('positionLeft', HiddenType::class)
+			->add('positionTop', HiddenType::class)
 		;
 	}
 
