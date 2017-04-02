@@ -32,7 +32,7 @@
     LadbWorkflowWorkspace.DEFAULTS = {
         wsUri: 'ws://127.0.0.1:8080',
         wsChannel: '',
-        minScale: 0.4,
+        minScale: 0.2,
         maxScale: 1,
         incScale: 0.1,
         listTaskPath: null,
