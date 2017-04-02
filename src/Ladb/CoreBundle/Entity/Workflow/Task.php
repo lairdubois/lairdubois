@@ -76,6 +76,12 @@ class Task {
 	private $finishedAt;
 
 	/**
+	 * @ORM\Column(type="integer", name="estimated_duration")
+	 * @Assert\GreaterThanOrEqual(0)
+	 */
+	private $estimatedDuration = 0;
+
+	/**
 	 * @ORM\Column(type="integer")
 	 * @Assert\GreaterThanOrEqual(0)
 	 */
@@ -214,6 +220,21 @@ class Task {
 
 	public function getFinishedAt() {
 		return $this->finishedAt;
+	}
+
+	// EstimatedDuration /////
+
+	public function incrementEstimatedDuration($by = 0) {
+		return $this->estimatedDuration += intval($by);
+	}
+
+	public function setEstimatedDuration($estimatedDuration) {
+		$this->estimatedDuration = $estimatedDuration;
+		return $this;
+	}
+
+	public function getEstimatedDuration() {
+		return $this->estimatedDuration;
 	}
 
 	// Duration /////

@@ -471,7 +471,13 @@ class WorkflowController extends Controller {
 				}
 			}
 
-			$newDuration = $task->getDuration();
+			if ($task->getEstimatedDuration() > 0) {
+
+				// Update workflow estimated duration
+				$workflow->incrementEstimatedDuration($task->getEstimatedDuration());
+
+			}
+
 			if ($task->getDuration() > 0) {
 
 				// Update workflow duration
@@ -484,7 +490,7 @@ class WorkflowController extends Controller {
 
 			$parameters = array();
 
-			if ($task->getDuration() > 0) {
+			if ($task->getEstimatedDuration() > 0 || $task->getDuration() > 0) {
 
 				$parameters = array_merge($parameters, array(
 					'workflowInfos' => $this->_generateWorkflowInfos($workflow),
@@ -555,6 +561,7 @@ class WorkflowController extends Controller {
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
 		$this->_assertValidWorkflow($task, $workflow);
 
+		$previousEstimatedDuration = $task->getEstimatedDuration();
 		$previousDuration = $task->getDuration();
 
 		$form = $this->createForm(TaskType::class, $task, array( 'label_choices' => $this->_computeLabelChoices($workflow) ));
@@ -563,6 +570,15 @@ class WorkflowController extends Controller {
 		if ($form->isValid()) {
 
 			$parameters = array();
+
+			$newEstimatedDuration = $task->getEstimatedDuration();
+			if ($newEstimatedDuration != $previousEstimatedDuration) {
+
+				// Update workflow estimated duration
+				$workflow->incrementEstimatedDuration(-$previousEstimatedDuration);
+				$workflow->incrementEstimatedDuration($task->getEstimatedDuration());
+
+			}
 
 			$newDuration = $task->getDuration();
 			if ($newDuration != $previousDuration) {
@@ -575,7 +591,7 @@ class WorkflowController extends Controller {
 
 			$om->flush();
 
-			if ($newDuration != $previousDuration) {
+			if ($newEstimatedDuration != $previousEstimatedDuration || $newDuration != $previousDuration) {
 
 				$parameters = array_merge($parameters, array(
 					'workflowInfos' => $this->_generateWorkflowInfos($workflow),
@@ -664,11 +680,14 @@ class WorkflowController extends Controller {
 			// The task is running -> increment duration
 			if ($previousStatus == Task::STATUS_RUNNING) {
 
-				// Increment duration
 				$lastRunDuration = $now->getTimestamp() - $task->getLastRunningAt()->getTimestamp();
-				$task->incrementDuration($lastRunDuration);
-				$workflow->incrementDuration($lastRunDuration);
-				$task->setLastRunningAt(null);
+
+				// Increment duration only if it is more than a minute
+				if ($lastRunDuration >= 60) {
+					$task->incrementDuration($lastRunDuration);
+					$workflow->incrementDuration($lastRunDuration);
+					$task->setLastRunningAt(null);
+				}
 
 			}
 
@@ -747,7 +766,8 @@ class WorkflowController extends Controller {
 		$sourceTasks = $task->getSourceTasks()->toArray();
 		$targetTasks = $task->getTargetTasks()->toArray();
 
-		// Decrement task duration on workflow
+		// Decrement task durations on workflow
+		$workflow->incrementEstimatedDuration(-$task->getEstimatedDuration());
 		$workflow->incrementDuration(-$task->getDuration());
 
 		// Remove the task

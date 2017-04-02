@@ -20,7 +20,7 @@
     };
 
     LadbInputDuration.DEFAULTS = {
-        showSeconds: true,
+        showSeconds: false,
         lang: 'fr',
         i18n: {
             fr: {

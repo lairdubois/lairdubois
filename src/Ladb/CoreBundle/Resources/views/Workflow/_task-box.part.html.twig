@@ -12,10 +12,8 @@
         <button class="ladb-minitools-btn ladb-btn-edit"><i class="ladb-icon-edit ladb-icon-lg"></i></button>
     </div>
     <div class="ladb-body">
-        {{ task.title }}
-        {% if task.duration > 0 %}
-            <div class="ladb-duration"><i class="ladb-icon-time"></i> {{ task.duration|ladb_duration() }}</div>
-        {% endif %}
+        <span class="ladb-title">{{ task.title }}</span>
+        {% include 'LadbCoreBundle:Workflow:_duration.part.html.twig' with { 'entity':task } %}
         <div class="ladb-labels" style="margin-top: 4px;">
             {% for label in task.labels %}
                 {% include 'LadbCoreBundle:Workflow:_label-bullet.part.html.twig' %}

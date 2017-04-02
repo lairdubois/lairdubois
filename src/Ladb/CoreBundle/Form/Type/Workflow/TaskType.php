@@ -27,7 +27,8 @@ class TaskType extends AbstractType {
 				->create('labels', TextType::class, array( 'label' => 'workflow.task.labels', 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new LabelsToIdsTransformer($this->om))
 			)
-			->add('duration', TextType::class, array( 'label' => 'workflow.task.duration' ))
+			->add('estimatedDuration', TextType::class, array( 'label' => 'workflow.task.estimated_duration', 'attr' => array( 'data-type' => 'duration' ) ))
+			->add('duration', TextType::class, array( 'label' => 'workflow.task.duration', 'attr' => array( 'data-type' => 'duration' ) ))
 			->add('positionLeft', HiddenType::class)
 			->add('positionTop', HiddenType::class)
 		;

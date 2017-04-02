@@ -70,7 +70,7 @@ class LadbExtension extends \Twig_Extension {
 		return $str;
 	}
 
-	public function durationFilter($duration) {
+	public function durationFilter($duration, $displaySecondsWithMinutes = false) {
 		$d = new \DateTime();
 		$d->add(new \DateInterval('PT'.$duration.'S'));
 		$interval = $d->diff(new \DateTime());
@@ -97,7 +97,7 @@ class LadbExtension extends \Twig_Extension {
 			}
 		} else if ($interval->i > 0) {
 			$str = $translator->transChoice('interval.minute', $interval->i, array('%count%' => $interval->i), 'date');
-			if ($interval->s > 0) {
+			if ($interval->s > 0 && $displaySecondsWithMinutes) {
 				$str .= ' '.$translator->transChoice('interval.second', $interval->s, array('%count%' => $interval->s), 'date');
 			}
 		} else if ($interval->s > 0) {

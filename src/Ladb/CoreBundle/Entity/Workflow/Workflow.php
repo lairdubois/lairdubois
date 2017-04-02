@@ -34,6 +34,11 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface 
 	private $slug;
 
 	/**
+	 * @ORM\Column(type="integer", name="estimated_duration")
+	 */
+	private $estimatedDuration = 0;
+
+	/**
 	 * @ORM\Column(type="integer")
 	 */
 	private $duration = 0;
@@ -99,6 +104,21 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface 
 
 	public function getSluggedId() {
 		return $this->id.'-'.$this->slug;
+	}
+
+	// EstimatedDuration /////
+
+	public function incrementEstimatedDuration($by = 0) {
+		return $this->estimatedDuration += intval($by);
+	}
+
+	public function setEstimatedDuration($estimatedDuration) {
+		$this->estimatedDuration = $estimatedDuration;
+		return $this;
+	}
+
+	public function getEstimatedDuration() {
+		return $this->estimatedDuration;
 	}
 
 	// Duration /////

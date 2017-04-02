@@ -745,9 +745,8 @@
         });
         $('input[type=text]', $form).first().focus();
 
-        $('#ladb_workflow_task_duration').ladbInputDuration({
-            showSeconds: true
-        });
+        // Init duration fileds
+        $('input[data-type=duration]').ladbInputDuration();
 
         // Bind submit button
         $('button[type=submit]', $modal).on('click', function() {

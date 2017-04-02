@@ -12,10 +12,17 @@
             {{ form_errors(form.title) }}
             {{ form_widget(form.title, { 'attr':{ 'class':'form-control input-lg' } }) }}
         </div>
-        <div class="form-group">
-            {{ form_label(form.duration) }}
-            {{ form_errors(form.duration) }}
-            {{ form_widget(form.duration) }}
+        <div class="row">
+            <div class="form-group col-sm-6 col-xs-12">
+                <i class="ladb-icon-estimated-duration"></i> {{ form_label(form.estimatedDuration) }}
+                {{ form_errors(form.estimatedDuration) }}
+                {{ form_widget(form.estimatedDuration) }}
+            </div>
+            <div class="form-group col-sm-6 col-xs-12">
+                <i class="ladb-icon-duration"></i> {{ form_label(form.duration) }}
+                {{ form_errors(form.duration) }}
+                {{ form_widget(form.duration) }}
+            </div>
         </div>
         <div class="form-group">
             {{ form_label(form.labels) }}

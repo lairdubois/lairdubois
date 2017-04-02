@@ -359,7 +359,8 @@ workflow:
   task:
     title: Titre
     labels: Etiquettes
-    duration: Durée
+    estimated_duration: Durée (Estimée)
+    duration: Durée (Mesurée)
     new: Ajouter une tâche
     edit: Edition de la tâche
     empty: Aucune
