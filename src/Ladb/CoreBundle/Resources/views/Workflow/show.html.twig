@@ -1,6 +1,7 @@
 {% extends 'LadbCoreBundle::layout.html.twig' %}
 
 {% set bodyContainerFluid = true %}
+{% set navSection = 'workflow' %}
 
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
 
@@ -26,7 +27,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.min.js"></script>#}
     {#<script src="https://cdn.jsdelivr.net/intro.js/2.5.0/intro.min.js"></script>#}
-    {#<script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>#}
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
