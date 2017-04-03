@@ -90,8 +90,7 @@
         });
         this.labels[id] = label;
 
-        return $('<div>', {
-            class: 'ladb-input-duration-field-block ' + (hidden ? 'hidden' : ''),
+        return $('<div class="ladb-input-duration-field-block ' + (hidden ? 'hidden' : '') +'">', {
             html: [input, label]
         });
     };
