@@ -68,8 +68,7 @@
     LadbInputDuration.prototype.buildFieldBlock = function(id, hidden, max) {
         var that = this;
 
-        var input = $('<input>', {
-            class: 'form-control',
+        var input = $('<input class="form-control">', {
             type: 'number',
             min: 0,
             value: 0,
@@ -101,8 +100,7 @@
 
         // Replace input
 
-        var inputReplacer = $('<div>', {
-            class: 'bdp-input',
+        var inputReplacer = $('<div class="bdp-input">', {
             html: [
                 this.buildFieldBlock('days', false),
                 this.buildFieldBlock('hours', false, 23),
