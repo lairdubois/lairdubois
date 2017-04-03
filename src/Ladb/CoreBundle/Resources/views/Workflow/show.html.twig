@@ -11,8 +11,9 @@
     {#<link rel="stylesheet" href="https://cdn.jsdelivr.net/intro.js/2.5.0/introjs.min.css">#}
     {% stylesheets filter='less,?yui_css'
         '@LadbCoreBundle/Resources/assets/less/ladb/component/inputcolor.less'
-        '@LadbCoreBundle/Resources/assets/less/ladb/component/inputduration.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201704022141" media="screen" />
+        '@LadbCoreBundle/Resources/assets/less/ladb/component/inputduration.less'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/workflow.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -34,7 +35,7 @@
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputduration.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.remotemodal.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js' %}
-        <script type="text/javascript" src="{{ asset_url }}?v=201704031103"></script>
+        <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {{ ws_client() }}
     <script>

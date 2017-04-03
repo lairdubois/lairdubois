@@ -681,9 +681,10 @@ class WorkflowController extends Controller {
 			if ($previousStatus == Task::STATUS_RUNNING) {
 
 				$lastRunDuration = $now->getTimestamp() - $task->getLastRunningAt()->getTimestamp();
+				$lastRunDuration = floor($lastRunDuration / 60) * 60; // Sample to minutes
 
 				// Increment duration only if it is more than a minute
-				if ($lastRunDuration >= 60) {
+				if ($lastRunDuration > 0) {
 					$task->incrementDuration($lastRunDuration);
 					$workflow->incrementDuration($lastRunDuration);
 					$task->setLastRunningAt(null);

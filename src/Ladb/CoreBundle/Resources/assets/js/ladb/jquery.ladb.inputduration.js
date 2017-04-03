@@ -40,7 +40,7 @@
     LadbInputDuration.prototype.updateField = function(id, value) {
 
         // Upate label
-        var key = value === 1 ? id.substring(0, id.length - 1) : id;
+        var key = value > 1 ? id : id.substring(0, id.length - 1);
         this.labels[id].text(this.options.i18n[this.options.lang][key]);
 
         // Update input
