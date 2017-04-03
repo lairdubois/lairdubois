@@ -6,7 +6,7 @@
     {{ parent() }}
     {% stylesheets filter='less,?yui_css'
         '@LadbCoreBundle/Resources/assets/less/ladb/icons/ladbcc.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}?v=201609080754" media="screen" />
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -17,7 +17,7 @@
         '@LadbCoreBundle/Resources/assets/js/jquery-payment/jquery.payment.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingdashboard.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingwidget.js' %}
-        <script type="text/javascript" src="{{ asset_url }}?v=201610061908"></script>
+        <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% if is_granted('ROLE_ADMIN') %}
         {% javascripts filter='?closure'
