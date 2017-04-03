@@ -68,18 +68,20 @@
     LadbInputDuration.prototype.buildFieldBlock = function(id, hidden, max) {
         var that = this;
 
-        var input = $('<input class="form-control">', {
+        var input = $('<input>', {
             type: 'number',
             min: 0,
             value: 0,
             disabled: this.disabled
-        }).change(function() {
-            that.days = Math.max(0, parseInt(that.inputs['days'].val(), 10)) || 0;
-            that.hours = Math.max(0, parseInt(that.inputs['hours'].val(), 10)) || 0;
-            that.minutes = Math.max(0, parseInt(that.inputs['minutes'].val(), 10)) || 0;
-            that.seconds = Math.max(0, parseInt(that.inputs['seconds'].val(), 10)) || 0;
-            that.updateFileds();
-        });
+        })
+            .addClass('form-control')
+            .change(function () {
+                that.days = Math.max(0, parseInt(that.inputs['days'].val(), 10)) || 0;
+                that.hours = Math.max(0, parseInt(that.inputs['hours'].val(), 10)) || 0;
+                that.minutes = Math.max(0, parseInt(that.inputs['minutes'].val(), 10)) || 0;
+                that.seconds = Math.max(0, parseInt(that.inputs['seconds'].val(), 10)) || 0;
+                that.updateFileds();
+            });
         if (max) {
             input.attr('max', max);
         }
@@ -90,23 +92,23 @@
         });
         this.labels[id] = label;
 
-        return $('<div class="ladb-input-duration-field-block ' + (hidden ? 'hidden' : '') +'">', {
+        return $('<div>', {
             html: [input, label]
-        });
+        }).addClass('ladb-input-duration-field-block ' + (hidden ? 'hidden' : ''));
     };
 
     LadbInputDuration.prototype.init = function() {
 
         // Replace input
 
-        var inputReplacer = $('<div class="bdp-input">', {
+        var inputReplacer = $('<div>', {
             html: [
                 this.buildFieldBlock('days', false),
                 this.buildFieldBlock('hours', false, 23),
                 this.buildFieldBlock('minutes', false, 59),
                 this.buildFieldBlock('seconds', !this.options.showSeconds, 59)
             ]
-        });
+        }).addClass('bdp-input');
 
         this.$element.after(inputReplacer).hide().data('ladb-input-duration', '1');
 
