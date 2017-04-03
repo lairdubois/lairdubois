@@ -137,7 +137,7 @@
                         <a href="{{ path('core_user_email_check') }}" class="alert-link">{{ 'user.email_confirmation.check.action'|trans() }}</a> {{ 'default.or'|trans }} <a href="#email_check_modal" class="alert-link" data-toggle="modal">{{ 'user.email_confirmation.check.modal_action'|trans() }}</a>
                     </p>
                 </div>
-                {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
+                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
                     {% block bodyInner %}
                         {{ 'user.email_confirmation.check.modal_body'|trans()|ladb_markdown|raw }}
                     {% endblock %}

@@ -31,7 +31,7 @@
     </ul>
     <div id="linkto_plan_buttons">
         <a href="#linkto_plan_modal" data-toggle="modal" class="btn btn-success" onclick="updatePlanChoiceModal();"><i class="ladb-icon-link"></i> {{ 'plan.linkto'|trans() }}</a>
-        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'linkto_plan_modal', 'title':('plan.linkto'|trans()), 'embeddedBody':true } %}
+        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'linkto_plan_modal', 'title':('plan.linkto'|trans()), 'embeddedBody':true } %}
             {% block bodyInner %}
                 <iframe id="linkto_plan_modal_iframe" src="" frameborder="0" width="100%" height="380"></iframe>
             {% endblock %}
@@ -40,7 +40,7 @@
         {% if not (addButtonHidden|default(false)) %}
             {{ 'default.or'|trans() }}
             <a href="#new_plan_modal" data-toggle="modal" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'plan.create'|trans() }}</a>
-            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_plan_modal', 'title':('plan.create'|trans()) } %}
+            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'new_plan_modal', 'title':('plan.create'|trans()) } %}
                 {% block bodyInner %}
                     <p>Vous allez être redirigé vers une nouvelle fenêtre pour <strong>créer un nouveau plan</strong>. Il est conseillé d'enregistrer vos modifications avant de continuer.</p>
                     <p>Le plan devra être publié avant de pouvoir être associé.</p>

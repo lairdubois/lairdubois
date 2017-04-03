@@ -33,7 +33,7 @@
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputduration.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.remotemodal.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js' %}
-        <script type="text/javascript" src="{{ asset_url }}?v=201704022141"></script>
+        <script type="text/javascript" src="{{ asset_url }}?v=201704030902"></script>
     {% endjavascripts %}
     {{ ws_client() }}
     <script>
@@ -87,7 +87,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>
-                            Tâches en cours
+                            {{ 'workflow.task.status_3'|trans() }}
                         </h4>
                     </div>
                     <div id="panel_body_status_3" class="panel-body">
@@ -96,7 +96,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_2" class="badge badge-default pull-right">0</span>
-                            Tâches à effectuer
+                            {{ 'workflow.task.status_2'|trans() }}
                         </h4>
                     </div>
                     <div id="panel_body_status_2" class="panel-body">
@@ -105,7 +105,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_1" class="badge badge-default pull-right">0</span>
-                            Tâches en attente
+                            {{ 'workflow.task.status_1'|trans() }}
                         </h4>
                     </div>
                     <div id="panel_body_status_1" class="panel-body">
@@ -114,7 +114,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_4" class="badge badge-warning pull-right">0</span>
-                            Tâches effectuées
+                            {{ 'workflow.task.status_4'|trans() }}
                         </h4>
                     </div>
                     <div id="panel_body_status_4" class="panel-body">
@@ -134,13 +134,7 @@
                 {% endblock %}
             {% endembed %}
         </div>
-        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'workflow_modal' } %}
-            {% block header %}{% endblock %}
-            {% block bodyInner %}
-                {{ 'default.loading'|trans() }}
-            {% endblock %}
-            {% block footer %}{% endblock %}
-        {% endembed %}
+        {% include 'LadbCoreBundle:Common:Modal/_modal-empty-loading.part.html.twig' with { 'id':'workflow_modal' } %}
     </div>
 {% endblock %}
 

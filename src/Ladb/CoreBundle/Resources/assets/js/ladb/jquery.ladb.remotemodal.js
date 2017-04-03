@@ -80,10 +80,7 @@
         this.$element
             .on('hidden.bs.modal', function(e) {
                 that.$element
-                    .removeData('bs.modal')
-                    .find(".modal-body").remove();
-                that.$element
-                    .find('.modal-footer').remove();
+                    .removeData('bs.modal');
                 that.$element
                     .html(that.defaultHtml);
                 if (that.onHidden) {
@@ -98,9 +95,13 @@
     };
 
     LadbRemoteModal.prototype.init = function() {
-        var that = this;
 
-        that.bind();
+        // Check element
+        if (!this.$element.hasClass('modal') || $('.modal-dialog > .modal-content', this.$element).length == 0) {
+            throw 'The given element is not a valid Bootstrap modal';
+        }
+
+        this.bind();
     };
 
 

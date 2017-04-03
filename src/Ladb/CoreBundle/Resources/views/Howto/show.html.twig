@@ -80,7 +80,7 @@
                 {% if not howto.isDraft %}
                     <a href="#share_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
                     &nbsp;
-                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+                    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
                         {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
                         {% block bodyInner %}
                             <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -159,7 +159,7 @@
                             </ul>
                         </div>
                         {% if not howto.isDraft %}
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_howto_modal', 'title':('default.unpublishing'|trans()) } %}
+                            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_howto_modal', 'title':('default.unpublishing'|trans()) } %}
                                 {% block bodyInner %}
                                     <p>La dépublication du pas à pas <strong>{{ howto.title }}</strong> le rendra invisible des autres utilisateurs.</p>
                                     <p>Confirmez l'action pour continuer.</p>
@@ -230,7 +230,7 @@
                 {% if not howto.isDraft and not article.isDraft %}
                     <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
                     &nbsp;
-                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
+                    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
                         {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
                         {% block bodyInner %}
                             <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -296,7 +296,7 @@
                 {% endif %}
                 {% if is_granted("ROLE_ADMIN") and not article.isDraft %}
                     <a href="#unpublish_howto_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.unpublish'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
-                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_howto_article_'~article.id~'_modal', 'title':('default.unpublishing'|trans()) } %}
+                    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_howto_article_'~article.id~'_modal', 'title':('default.unpublishing'|trans()) } %}
                         {% block bodyInner %}
                             <p>La dépublication de l'article <strong>{{ article.title }}</strong> le rendra invisible des autres utilisateurs.</p>
                             <p>Confirmez l'action pour continuer.</p>

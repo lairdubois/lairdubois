@@ -72,7 +72,7 @@
                             </ul>
                         </div>
                         {% if not find.isDraft %}
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_find_modal', 'title':('default.unpublishing'|trans()) } %}
+                            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_find_modal', 'title':('default.unpublishing'|trans()) } %}
                                 {% block bodyInner %}
                                     <p>La dépublication de <strong>{{ find.title }}</strong> la rendra invisible pour les autres utilisateurs.</p>
                                     <p>Confirmez l'action pour continuer.</p>

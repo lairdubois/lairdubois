@@ -26,7 +26,7 @@
                     <a href="{{ path('core_faq_question_edit', { 'id':question.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
                     {% if not question.isDraft %}
                         <a href="#unpublish_question_modal" class="btn btn-default" data-toggle="modal" ><i class="ladb-icon-unpublish"></i><span class="ladb-visible-desktop"> {{ 'default.unpublish'|trans() }}</span></a>
-                        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_question_modal', 'title':('default.unpublishing'|trans()) } %}
+                        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_question_modal', 'title':('default.unpublishing'|trans()) } %}
                             {% block bodyInner %}
                                 <p>La dépublication de <strong>{{ question.title }}</strong> le rendra invisible pour les autres utilisateurs.</p>
                                 <p>Confirmez l'action pour continuer.</p>

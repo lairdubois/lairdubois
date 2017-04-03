@@ -41,7 +41,7 @@
                     </div>
                     {% if announcement %}
                         <a href="#new_thread_modal" class="btn btn-danger" data-toggle="modal" >{{ 'default.send'|trans() }}</a>
-                        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_thread_modal', 'title':('message.thread.announcement.new'|trans()) } %}
+                        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'new_thread_modal', 'title':('message.thread.announcement.new'|trans()) } %}
                             {% block bodyInner %}
                                 <p>Ce mesage est une annonce, il sera envoyé à tout le monde.</p>
                                 <p>Confirmez l'action pour continuer.</p>

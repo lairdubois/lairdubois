@@ -35,7 +35,7 @@
                             {% endif %}
                             {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 and not fieldMandatory %}
                                 <a href="#delete_value_proposal_{{ value.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
-                                {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'delete_value_proposal_'~value.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+                                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_value_proposal_'~value.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
                                     {% block bodyInner %}
                                         <p>La suppression de cette proposition entrainera la perte de toutes les informations qui lui sont relatives.</p>
                                         <p>Confirmez l'action pour continuer.</p>

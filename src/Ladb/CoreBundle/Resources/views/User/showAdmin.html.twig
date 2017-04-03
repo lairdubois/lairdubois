@@ -11,7 +11,7 @@
         <a href="{{ path('core_user_admin_activate', { 'username':user.usernameCanonical }) }}" class="btn btn-default"><i class="ladb-icon-lock"></i> Activer</a>
     {% endif %}
     <a href="#empty_user_admin_modal" class="btn btn-danger" data-toggle="modal" ><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}</a>
-    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'empty_user_admin_modal', 'title':('default.emptying'|trans()) } %}
+    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'empty_user_admin_modal', 'title':('default.emptying'|trans()) } %}
         {% block bodyInner %}
             <p>La vidange du compte <strong>{{ user.displayname }}</strong> effacera toutes ces publications.</p>
             <p>Confirmez l'action pour continuer.</p>

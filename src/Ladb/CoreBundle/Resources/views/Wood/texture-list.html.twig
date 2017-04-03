@@ -38,7 +38,7 @@
         {% endblock %}
     {% endembed %}
     {{ parent() }}
-    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'texture_modal', 'title':('knowledge.wood.texture.choice.textures'|transchoice(0)) } %}
+    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'texture_modal', 'title':('knowledge.wood.texture.choice.textures'|transchoice(0)) } %}
         {% block headerInner %}
             {{ 'default.loading'|trans() }}
         {% endblock %}

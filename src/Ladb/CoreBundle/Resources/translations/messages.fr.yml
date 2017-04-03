@@ -364,6 +364,10 @@ workflow:
     new: Ajouter une tâche
     edit: Edition de la tâche
     empty: Aucune
+    status_1: Tâches en attente
+    status_2: Tâches à effectuer
+    status_3: Tâches en cours
+    status_4: Tâches effectuées
   label:
     color: Couleur
     name: Libellé

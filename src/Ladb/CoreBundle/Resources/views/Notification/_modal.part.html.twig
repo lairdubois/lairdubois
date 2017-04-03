@@ -1,4 +1,4 @@
-{% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'notifications_modal', 'title':'<i class="ladb-icon-notifications"></i>&nbsp;'~('notification.list'|trans()) } %}
+{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'notifications_modal', 'title':'<i class="ladb-icon-notifications"></i>&nbsp;'~('notification.list'|trans()) } %}
     {% block bodyInner %}
         {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true } %}
     {% endblock %}

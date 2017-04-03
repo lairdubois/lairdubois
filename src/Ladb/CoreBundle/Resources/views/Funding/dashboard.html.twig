@@ -82,7 +82,7 @@
                                 <button id="ladb_donate_btn" class="btn btn-primary btn-lg">Faire un don</button>
                             </form>
                             {% if is_granted("ROLE_USER") %}
-                                {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_modal', 'title':('funding.donate'|trans()) } %}
+                                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'new_modal', 'title':('funding.donate'|trans()) } %}
                                     {% block bodyInner %}
                                         {{ 'default.loading'|trans() }}
                                     {% endblock %}

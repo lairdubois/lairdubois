@@ -1,4 +1,4 @@
-{% extends 'LadbCoreBundle:Common:_modal-content.part.html.twig' %}
+{% extends 'LadbCoreBundle:Common:Modal/_modal-content.part.html.twig' %}
 
 {% set id = 'texture_modal' %}
 {% set title = ('knowledge.wood.texture.choice.textures'|transchoice(0)|capitalize)~' '~texture.wood.title~' ('~(('knowledge.wood.field.'~texture.value.parentEntityField)|trans())~')' %}
