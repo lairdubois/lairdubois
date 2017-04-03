@@ -1067,4 +1067,35 @@ class WorkflowController extends Controller {
 		);
 	}
 
+	/**
+	 * @Route("/{id}/statistics", requirements={"id" = "\d+"}, name="core_workflow_statistics")
+	 * @Template("LadbCoreBundle:Workflow:statistics-xhr.html.twig")
+	 */
+	public function statisticsAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+
+		// Retrieve Workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		$dataDurationsPerLabel = array();
+		foreach ($workflow->getLabels() as $label) {
+			$tasks = $taskRepository->findByLabel($label);
+			$duration = 0;
+			foreach ($tasks as $task) {
+				$duration += $task->getDuration();
+			}
+			$dataDurationsPerLabel[] = array(
+				'name'     => $label->getName(),
+				'color'    => $label->getColor(),
+				'duration' => floor($duration / 60),
+			);
+		}
+
+		return array(
+			'workflow' => $workflow,
+			'dataDurationsPerLabel' => $dataDurationsPerLabel,
+		);
+	}
+
 }

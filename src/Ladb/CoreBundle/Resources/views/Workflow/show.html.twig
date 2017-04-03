@@ -22,6 +22,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.min.js"></script>#}
     {#<script src="https://cdn.jsdelivr.net/intro.js/2.5.0/intro.min.js"></script>#}
     {#<script type="text/javascript" src="http://yurigor.com/js/jquery.panzoom.min.js"></script>#}
@@ -50,7 +51,8 @@
                 statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
                 createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
                 deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
-                listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}'
+                listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}',
+                statisticsPath: '{{ path('core_workflow_statistics', { 'id':workflow.id }) }}'
             });
         });
     </script>
@@ -66,9 +68,10 @@
                 {% block headerTools %}
                     <div class="ladb-header-tools">
                         {% if ownerUser or is_granted("ROLE_ADMIN") %}
-                            <button id="ladb_list_labels_btn" class="btn btn-default"><i class="ladb-icon-bullet"></i><span class="ladb-visible-desktop">  {{ 'workflow.label.list'|trans() }}</span></button>
-                            &nbsp;
                             <button id="ladb_add_task_btn" class="btn btn-success"><i class="ladb-icon-plus"></i><span class="ladb-visible-desktop">  {{ 'workflow.task.new'|trans() }}</span></button>
+                            &nbsp;
+                            <button id="ladb_list_labels_btn" class="btn btn-default"><i class="ladb-icon-bullet"></i><span class="ladb-visible-desktop">  {{ 'workflow.label.list'|trans() }}</span></button>
+                            <button id="ladb_statistics_btn" class="btn btn-default"><i class="ladb-icon-statistics"></i><span class="ladb-visible-desktop">  {{ 'workflow.statistics'|trans() }}</span></button>
                             &nbsp;
                             <a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
                             <a href="#delete_workflow_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>

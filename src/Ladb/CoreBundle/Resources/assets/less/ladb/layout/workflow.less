@@ -118,42 +118,6 @@
 
 }
 
-.ladb-minitools-btn {
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: transparent;
-  text-align: center;
-  padding: 0;
-  line-height: 24px;
-
-  &:hover {
-    color: @ladb-brand-primary !important;
-  }
-
-}
-
-.ladb-btn-done {
-  width: 28px;
-  height: 28px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  text-align: center;
-  padding: 0;
-  line-height: 24px;
-
-  &:hover {
-    border-color: #f77f00;
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    border-color: #ccc !important;
-  }
-
-}
-
 .ladb-workflow-task-row {
 
   .ladb-box {
@@ -262,22 +226,66 @@
 
 }
 
-.ladb-workflow-task-widget .ladb-body, .ladb-workflow-task-row .ladb-body {
-  padding: 4px 38px 0 38px;
-  min-height: 28px;
+.ladb-workflow-task-widget, .ladb-workflow-task-row {
 
-  .ladb-labels {
-    min-height: 5px;
+  .ladb-body {
+    padding: 4px 38px 0 38px;
+    min-height: 28px;
+
+    .ladb-labels {
+      min-height: 5px;
+    }
+
+    .ladb-title {
+      font-size: 110%;
+    }
+
+    .ladb-duration {
+      margin-top: 4px;
+      font-size: 90%;
+      opacity: 0.9;
+    }
+
   }
 
-  .ladb-title {
-    font-size: 110%;
-  }
+  .ladb-box {
 
-  .ladb-duration {
-    margin-top: 4px;
-    font-size: 90%;
-    opacity: 0.9;
+    .ladb-minitools-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      padding: 0;
+      line-height: 24px;
+
+      &:hover {
+        color: @ladb-brand-primary !important;
+      }
+
+    }
+
+    .ladb-btn-done {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      text-align: center;
+      padding: 0;
+      line-height: 24px;
+
+      &:hover {
+        border-color: #f77f00;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        border-color: #ccc !important;
+      }
+
+    }
+
   }
 
 }

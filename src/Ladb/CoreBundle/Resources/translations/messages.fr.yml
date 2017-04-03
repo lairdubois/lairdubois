@@ -350,6 +350,7 @@ workflow:
   list: Les processus
   user_list: Mes processus
   nav: Processus
+  statistics: Statistiques
   form:
     alert:
       update_success: Le processus <strong>%title%</strong> a été mis à jour.

@@ -26,6 +26,7 @@
 
         this.$btnAddTask = $('#ladb_add_task_btn', this.$element);
         this.$btnListLabels = $('#ladb_list_labels_btn', this.$element);
+        this.$btnStatistics = $('#ladb_statistics_btn', this.$element);
     };
 
     LadbWorkflowWorkspace.DEFAULTS = {
@@ -43,7 +44,8 @@
         statusUpdateTaskPath: null,
         createTaskConnectionPath: null,
         deleteTaskConnectionPath: null,
-        listLabelPath: null
+        listLabelPath: null,
+        statisticsPath: null
     };
 
     LadbWorkflowWorkspace.prototype.centerOrigin = function() {
@@ -64,12 +66,14 @@
         this.$loadingStatus.html(status ? status : '');
         this.$btnAddTask.prop('disabled', true);
         this.$btnListLabels.prop('disabled', true);
+        this.$btnStatistics.prop('disabled', true);
     };
 
     LadbWorkflowWorkspace.prototype.unmarkLoading = function() {
         this.$loadingPanel.hide();
         this.$btnAddTask.prop('disabled', false);
         this.$btnListLabels.prop('disabled', false);
+        this.$btnStatistics.prop('disabled', false);
     };
 
     LadbWorkflowWorkspace.prototype.appendToAnimate = function(element, newParent) {
@@ -717,6 +721,18 @@
 
     };
 
+    LadbWorkflowWorkspace.prototype.showStatistics = function() {
+        var that = this;
+
+        // Load modal
+        that.$modal.ladbRemoteModal('loadContent', {
+            url: that.options.statisticsPath,
+            onSuccess: function ($content) {
+            }
+        });
+
+    };
+
     LadbWorkflowWorkspace.prototype.bindNewAndEditModalContent = function($modal) {
         var that = this;
 
@@ -820,6 +836,9 @@
         });
         this.$btnListLabels.on('click', function() {
             that.listLabels();
+        });
+        this.$btnStatistics.on('click', function() {
+            that.showStatistics();
         });
 
         // Bind loading mask
