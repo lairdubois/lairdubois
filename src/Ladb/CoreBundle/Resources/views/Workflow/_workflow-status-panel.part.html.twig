@@ -6,7 +6,7 @@
                 <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ workflow.duration / workflow.estimatedDuration * 100 }}%"></div>
             {% else %}
                 <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ workflow.estimatedDuration / workflow.duration * 100 }}%">
-                    Estimation
+                    Prévision
                 </div>
                 <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{ (1 - workflow.estimatedDuration / workflow.duration) * 100 }}%" data-tooltip="tooltip" title="+{{ (workflow.duration - workflow.estimatedDuration)|ladb_duration() }}">
                     +{{ (workflow.duration - workflow.estimatedDuration)|ladb_duration() }}

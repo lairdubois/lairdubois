@@ -360,8 +360,8 @@ workflow:
   task:
     title: Titre
     labels: Etiquettes
-    estimated_duration: Durée (Estimée)
-    duration: Durée (Mesurée)
+    estimated_duration: Durée (Prévue)
+    duration: Durée (Réelle)
     new: Ajouter une tâche
     edit: Edition de la tâche
     empty: Aucune

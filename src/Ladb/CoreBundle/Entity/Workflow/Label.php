@@ -14,7 +14,7 @@ use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 class Label {
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Label';
-	const COLOR_SEQUENCE = [ '#ee0701', '#fbca04', '#0e8a16', '#006b75', '#1d76db', '#5319e7' ];
+	const COLOR_SEQUENCE = [ '#ee0701', '#fbca04', '#0e8a16', '#006b75', '#1d76db', '#0052cc', '#5319e7' ];
 
 	/**
 	 * @ORM\Column(name="id", type="integer")

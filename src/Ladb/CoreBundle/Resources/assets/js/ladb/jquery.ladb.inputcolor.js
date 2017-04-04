@@ -14,7 +14,7 @@
     };
 
     LadbInputColor.DEFAULTS = {
-        colors: ['#ee0701', '#f58220', '#fbca04', '#0e8a16', '#006b75', '#1d76db', '#5319e7'],
+        colors: ['#ee0701', '#f58220', '#fbca04', '#0e8a16', '#006b75', '#1d76db', '#0052cc', '#5319e7'],
         colorsPerLine: 8,
         includeMargins: false
     };
