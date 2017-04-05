@@ -459,6 +459,80 @@ class KnowledgeController extends Controller {
 	}
 
 	/**
+	 * @Route("/{entityType}/{entityId}/{fieldSrc}/{fieldDest}/{id}/admin/move", requirements={"entityType" = "\d+","entityId" = "\d+", "fieldSrc" = "\w+", "fieldDest" = "\w+", "id" = "\d+"}, name="core_knowledge_value_admin_move")
+	 * @Template("LadbCoreBundle:Knowledge:value-move-xhr.html.twig")
+	 */
+	public function adminMoveFieldValueAction(Request $request, $entityType, $entityId, $fieldSrc, $fieldDest, $id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_knowledge_value_admin_move)');
+		}
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_admin_move)');
+		}
+		if ($fieldSrc == $fieldDest) {
+			throw $this->createNotFoundException('Can\'t move to the same field (core_knowledge_value_admin_move)');
+		}
+
+		$propertyUtils = $this->get(PropertyUtils::NAME);
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve related entity
+
+		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
+		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+
+		// Process field
+
+		$fieldSrcDef = $this->_retieveFieldDef($entity, $fieldSrc);
+		$fieldDestDef = $this->_retieveFieldDef($entity, $fieldDest);
+
+		$fieldSrcType = $fieldSrcDef[AbstractKnowledge::ATTRIB_TYPE];
+		$fieldDestType = $fieldDestDef[AbstractKnowledge::ATTRIB_TYPE];
+
+		if ($fieldSrcType != $fieldDestType) {
+			throw $this->createNotFoundException('Incompatible field types (core_knowledge_value_admin_move)');
+		}
+
+		$entityClass = $this->_computeEntityClass($fieldSrcType);
+
+		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$value = $this->_retrieveValue($valueRepository, $id);
+
+		$value->setParentEntityField($fieldDest);
+
+		// Remove from SRC
+		$propertyUtils->removeValue($entity, $fieldSrc.'_value', $value);
+
+		// Dispatch knowledge event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_REMOVED, new KnowledgeEvent($entity, array( 'field' => $fieldSrc, 'value' => $value )));
+
+		// Add to DEST
+		$propertyUtils->addValue($entity, $fieldDest.'_value', $value);
+
+		// Dispatch knowledge event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($entity, array( 'field' => $fieldDest, 'value' => $value )));
+
+		$om->flush();
+
+		// Reload values
+
+		$values = $propertyUtils->getValue($entity, $fieldSrc.'_values');
+
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$votableUtils = $this->get(VotableUtils::NAME);
+
+		return array(
+			'knowledge'       => $entity,
+			'field'           => $fieldSrc,
+			'values'          => $values,
+			'commentContexts' => $commentableUtils->getCommentContexts($values),
+			'voteContexts'    => $votableUtils->getVoteContexts($values, $this->getUser()),
+		);
+	}
+
+	/**
 	 * @Route("/{entityType}/{entityId}/{field}.xhr", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+"}, name="core_knowledge_field_show")
 	 * @Template("LadbCoreBundle:Knowledge:field-show-xhr.html.twig")
 	 */

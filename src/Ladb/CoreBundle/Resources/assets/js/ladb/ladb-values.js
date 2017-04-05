@@ -79,6 +79,22 @@ function deleteValueProposal(id, url) {
         }
     });
 }
+function moveValueProposal(id, url) {
+    jQuery.ajax(url, {
+        cache: false,
+        dataType: "html",
+        context: document.body,
+        success: function(data, textStatus, jqXHR) {
+            $(".ladb-page").replaceWith($(data));
+            bindNewCommentAjaxForm();
+            setupTooltips();
+            setupPopovers();
+            $(document).trigger("updated.ladb");
+        },
+        error:function () {
+        }
+    });
+}
 function cancelEditValueProposal() {
     $(".ladb-page .ladb-value-proposal .ladb-content-box .ladb-editable").show();
     $(".ladb-page .ladb-value-proposal .ladb-content-box form").remove();

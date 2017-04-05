@@ -30,6 +30,16 @@
                     </div>
                     <div class="ladb-footer">
                         <div class="ladb-minitools">
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <div class="dropup">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
+                                    <ul class="dropdown-menu">
+                                        {% for fieldDest, fieldDestDef in knowledge.fieldDefs if fieldDestDef[constant('ATTRIB_TYPE', knowledge)] == fieldType and fieldDest != field %}
+                                            <li><a href="#" onclick="moveValueProposal({{ value.id }}, '{{ path('core_knowledge_value_admin_move', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'fieldSrc':value.parentEntityField, 'fieldDest':fieldDest, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.move'|trans() }}"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} '{{ ('knowledge.'~knowledge.strippedName~'.field.'~fieldDest)|trans() }}'</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
                             {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 %}
                                 <a href="#" onclick="editValueProposal({{ value.id }}, '{{ path('core_knowledge_value_edit', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
                             {% endif %}
