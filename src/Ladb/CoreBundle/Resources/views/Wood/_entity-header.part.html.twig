@@ -14,7 +14,7 @@
             <span data-tooltip="tooltip" title="{{ 'knowledge.wood.resinous'|trans() }}"><i class="ladb-icon-resinous ladb-icon-lg"></i></span>&nbsp;
         {% endif %}
         {% if wood.scientificname is not empty or wood.englishname is not empty %}
-            {% if wood.scientificname is not empty %}{{ (wood.scientificname|split(','))[0] }}{% endif %}{% if wood.englishname is not empty %}{% if wood.scientificname is not empty %} / {% endif %}{{ (wood.englishname|split(','))[0] }}{% endif %}
+            {% if wood.scientificname is not empty %}<em>{{ (wood.scientificname|split(','))[0] }}</em>{% endif %}{% if wood.englishname is not empty %}{% if wood.scientificname is not empty %} / {% endif %}{{ (wood.englishname|split(','))[0] }}{% endif %}
         {% endif %}
     </span>
 {% endblock %}
