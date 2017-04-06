@@ -11,10 +11,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class WorkflowTopic extends AbstractContainerAwareTopic {
 
-	private function _getUser(ConnectionInterface $connection) {
-		return $this->getClientManipulator()->getClient($connection);
-	}
-
 	private function _retrieveWorkflow(ConnectionInterface $connection, WampRequest $request, $user) {
 		$om = $this->getDoctrine()->getManager();
 		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
@@ -25,10 +21,12 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 		if (is_null($workflow)) {
 			$this->get('logger')->error('Unable to find Workflow entity (id='.$id.').');
 			$connection->close();
+			return null;
 		}
 		if (!$user instanceof UserInterface || !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $user->getId()) {
 			$this->get('logger')->error('Not allowed');
 			$connection->close();
+			return null;
 		}
 
 		return $workflow;
@@ -46,9 +44,10 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 	 */
 	public function onSubscribe(ConnectionInterface $connection, Topic $topic, WampRequest $request) {
 
-		$user = $this->_getUser($connection);
+		// Retrieve user
+		$user = $this->getUserByConnection($connection);
 
-		// Retieve workflow
+		// Retieve and check workflow
 		$workflow = $this->_retrieveWorkflow($connection, $request, $user);
 
 	}
@@ -79,7 +78,6 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 	 * @return mixed|void
 	 */
 	public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible) {
-		$topic->broadcast($event);
 	}
 
 	/**

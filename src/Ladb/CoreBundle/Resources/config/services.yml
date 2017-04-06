@@ -426,10 +426,3 @@ services:
     tags:
       - { name: gos_web_socket.topic }
     arguments: ['@service_container']
-
-  # Rpcs
-  ladb_workflow_rpc:
-    class: Ladb\CoreBundle\Rpc\WorkflowRpc
-    tags:
-      - { name: gos_web_socket.rpc }
-    arguments: ['@gos_web_socket.wamp.pusher']

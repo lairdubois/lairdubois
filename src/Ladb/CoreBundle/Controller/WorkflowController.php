@@ -841,7 +841,7 @@ class WorkflowController extends Controller {
 			$om->flush();
 
 			// Update dependant tasks status
-			$updatedTasks = $this->_updateTasksStatus(array($targetTask));
+			$updatedTasks = $this->_updateTasksStatus(array( $targetTask ));
 			$om->flush();
 
 			$createdConnections = array(
@@ -1094,7 +1094,7 @@ class WorkflowController extends Controller {
 		}
 
 		return array(
-			'workflow' => $workflow,
+			'workflow'              => $workflow,
 			'dataDurationsPerLabel' => $dataDurationsPerLabel,
 		);
 	}

@@ -10,9 +10,11 @@ use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\Topic;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class AbstractContainerAwareTopic implements TopicInterface {
+abstract class AbstractContainerAwareTopic extends AbstractTopic {
 
 	protected $container;
+
+	/////
 
 	public function __construct(ContainerInterface $container) {
 		$this->container = $container;

@@ -822,7 +822,7 @@
     LadbWorkflowWorkspace.prototype.bind = function() {
         var that = this;
 
-        // Bind modal
+        // Bind modal as remote modal
         this.$modal.ladbRemoteModal();
 
         // Bind buttons
@@ -867,6 +867,7 @@
 
             // Subscribe to the channel
             try {
+
                 session.subscribe(that.options.wsChannel, function (uri, payload) {
                     try {
                         that.updateBoardFromJsonData(payload);
@@ -888,8 +889,31 @@
             // Reset ws session
             that.session = null;
 
-            // Loading
-            that.markLoading('Déconecté :(');
+            switch (error.code) {
+
+                case 2: // Connection max retry
+                    that.markLoading('Re-Connexion impossible avec le serveur :(');
+                    break;
+
+                case 3: // Connection could not be established
+                    that.markLoading('Connexion impossible avec le serveur :(');
+                    break;
+
+                case 5: // Connection unreachable
+                    that.markLoading('Connexion impossible : Nouvel essai');
+                    break;
+
+                case 6: // Connection lost
+                    that.markLoading('Connexion perdue avec le serveur');
+                    break;
+
+                default:
+                    that.markLoading('Déconecté :(');
+                    break;
+
+            }
+
+            console.log(error);
 
             notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
 
