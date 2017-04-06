@@ -4,6 +4,7 @@
 
 {% set bodyClass = 'ladb-topbar-enabled ladb-bottombar-enabled ladb-leftbar-enabled' %}
 {% set topbarTranslucent = topbarTranslucent|default(false) %}
+{% set hideAboutAlert = hideAboutAlert|default(false) %}
 
 {% block bodyJavascriptsInlineReady %}
     {{ parent() }}
@@ -119,7 +120,7 @@
     <header>
         <div class="ladb-alerts{% if topbarTranslucent %} ladb-alerts-translucent{% endif %}">
             {% if not is_granted("ROLE_USER") %}
-                {% if not topbarTranslucent %}
+                {% if not topbarTranslucent and not hideAboutAlert %}
                     <div class="alert alert-info">
                         <p><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les passionnés et curieux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
                         <p>
