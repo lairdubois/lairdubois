@@ -20,6 +20,8 @@ default:
   delete: Supprimer
   deletion: Suppression
   remove: Retirer
+  move: Déplacer
+  move_to: Déplacer vers
   restore: Restaurer
   save: Enregistrer
   send: Envoyer

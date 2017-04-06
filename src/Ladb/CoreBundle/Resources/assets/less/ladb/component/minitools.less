@@ -5,10 +5,10 @@
 .ladb-minitools {
   white-space: nowrap;
 
-  > a {
+  > a, .dropdown > a, .dropup > a {
     cursor: pointer;
 
-    &:hover {
+    &:hover, &:focus {
       text-decoration: none;
 
       > i {
@@ -30,6 +30,10 @@
       text-decoration: none;
     }
 
+  }
+
+  .dropdown, .dropup {
+    display: inline-block;
   }
 
 }
