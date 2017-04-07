@@ -2,6 +2,7 @@
     'use strict';
 
     var GRID_SPACING = 10;
+    var TASK_ROW_PREFIX =  'ladb_workflow_task_row_';
     var TASK_WIDGET_PREFIX =  'ladb_workflow_task_widget_';
     var TASK_WIDGET_BOX_WIDTH = 324;
 
@@ -30,6 +31,7 @@
     };
 
     LadbWorkflowWorkspace.DEFAULTS = {
+        readOnly: false,
         wsUri: 'ws://127.0.0.1:8080',
         wsChannel: '',
         minScale: 0.2,
@@ -48,20 +50,69 @@
         statisticsPath: null
     };
 
-    LadbWorkflowWorkspace.prototype.centerOrigin = function() {
+    LadbWorkflowWorkspace.prototype._uiCenterOrigin = function() {
         if (this.$panzoom) {
             return this.$panzoom.panzoom('pan', (this.$diagram.outerWidth() - TASK_WIDGET_BOX_WIDTH) / 2, 100, { relative: false });
         }
     };
 
-    LadbWorkflowWorkspace.prototype.getCurrentScale = function() {
+    LadbWorkflowWorkspace.prototype._uiShowAll = function() {
+        if (this.$panzoom) {
+
+            var areaPadding = 30;
+
+            var contentRect;
+            $('.ladb-workflow-task-widget', this.$canvas).each(function (index, value) {
+                var clientRect = value.getBoundingClientRect();
+                if (contentRect) {
+                    contentRect.top = Math.min(contentRect.top, clientRect.top);
+                    contentRect.right = Math.max(contentRect.right, clientRect.right);
+                    contentRect.bottom = Math.max(contentRect.bottom, clientRect.bottom);
+                    contentRect.left = Math.min(contentRect.left, clientRect.left);
+                } else {
+                    contentRect = {
+                        top: clientRect.top,
+                        right: clientRect.right,
+                        bottom: clientRect.bottom,
+                        left: clientRect.left
+                    };
+                }
+            });
+            if (contentRect) {
+                contentRect.width = contentRect.right - contentRect.left;
+                contentRect.height = contentRect.bottom - contentRect.top;
+                var areaRect = this.$diagram.get(0).getBoundingClientRect();
+
+                console.log(areaRect);
+                console.log(contentRect);
+
+                var scale = Math.min((areaRect.height - 2 * areaPadding) / contentRect.height, (areaRect.width - 2 * areaPadding) / contentRect.width);
+
+                var panX = areaPadding + areaRect.left - contentRect.left + (areaRect.width - 2 * areaPadding - contentRect.width) / 2;
+                var panY = areaPadding + areaRect.top - contentRect.top;
+
+                console.log(panX, panY);
+
+                this.$panzoom.panzoom('pan', panX, panY, {relative: false});
+
+                this.$panzoom.panzoom('zoom', scale, {
+                    focal: {
+                        clientX: areaRect.left + areaRect.width / 2,
+                        clientY: areaRect.top + areaPadding
+                    }
+                });
+            }
+        }
+    };
+
+    LadbWorkflowWorkspace.prototype._uiGetCurrentScale = function() {
         if (this.$panzoom) {
             return this.$panzoom.panzoom('getMatrix')[0];
         }
         return 1;
     };
 
-    LadbWorkflowWorkspace.prototype.markLoading = function(status) {
+    LadbWorkflowWorkspace.prototype._uiMarkLoading = function(status) {
         this.$loadingPanel.show();
         this.$loadingStatus.html(status ? status : '');
         this.$btnAddTask.prop('disabled', true);
@@ -69,14 +120,14 @@
         this.$btnStatistics.prop('disabled', true);
     };
 
-    LadbWorkflowWorkspace.prototype.unmarkLoading = function() {
+    LadbWorkflowWorkspace.prototype._uiUnmarkLoading = function() {
         this.$loadingPanel.hide();
         this.$btnAddTask.prop('disabled', false);
         this.$btnListLabels.prop('disabled', false);
         this.$btnStatistics.prop('disabled', false);
     };
 
-    LadbWorkflowWorkspace.prototype.appendToAnimate = function(element, newParent) {
+    LadbWorkflowWorkspace.prototype._uiAppendToAnimate = function(element, newParent) {
 
         var $taskRow = $(element);
         var $taskBox = $('.ladb-box', $taskRow);
@@ -178,7 +229,7 @@
 
                 taskInfos = response.movedTaskInfos[i];
 
-                $taskWidget = $('#ladb_workflow_task_widget_' + taskInfos.id, that.$canvas);
+                $taskWidget = $('#' + TASK_WIDGET_PREFIX + taskInfos.id, that.$canvas);
                 $taskWidget.css('left', taskInfos.positionLeft);
                 $taskWidget.css('top', taskInfos.positionTop);
 
@@ -194,14 +245,14 @@
                 taskInfos = response.updatedTaskInfos[i];
 
                 if (that.plumb) {
-                    $taskWidget = $('#ladb_workflow_task_widget_' + taskInfos.id, that.$canvas);
+                    $taskWidget = $('#' + TASK_WIDGET_PREFIX + taskInfos.id, that.$canvas);
                     $('.ladb-box', $taskWidget).replaceWith(taskInfos.box);
                     that.bindTaskBox(taskInfos.id, $('.ladb-box', $taskWidget));
                 }
 
-                $taskRow = $('#ladb_workflow_task_row_' + taskInfos.id);
+                $taskRow = $('#' + TASK_ROW_PREFIX + taskInfos.id);
                 $('.ladb-box', $taskRow).replaceWith(taskInfos.box);
-                that.appendToAnimate($taskRow, $('#panel_body_status_' + taskInfos.status));
+                that._uiAppendToAnimate($taskRow, $('#panel_body_status_' + taskInfos.status));
                 that.bindTaskBox(taskInfos.id, $('.ladb-box', $taskRow));
 
             }
@@ -210,12 +261,12 @@
         // Deleted tasks
         if (response.deletedTaskId) {
             if (that.plumb) {
-                $taskWidget = $('#ladb_workflow_task_widget_' + response.deletedTaskId);
+                $taskWidget = $('#' + TASK_WIDGET_PREFIX + response.deletedTaskId);
                 if ($taskWidget.length > 0) {
                     that.plumb.remove(TASK_WIDGET_PREFIX + response.deletedTaskId);
                 }
             }
-            $taskRow = $('#ladb_workflow_task_row_' + response.deletedTaskId);
+            $taskRow = $('#' + TASK_ROW_PREFIX + response.deletedTaskId);
             $taskRow.remove();
         }
 
@@ -275,6 +326,10 @@
     };
 
     LadbWorkflowWorkspace.prototype.bindTaskBox = function(taskId, $taskBox) {
+        if (this.options.readOnly) {
+            return;
+        }
+
         var that = this;
 
         // Bind done and run button
@@ -301,14 +356,14 @@
 
         // Bind edit button
         $('.ladb-btn-edit', $taskBox).on('click', function(e) {
-            that.editTask(taskId);
+            that.loadModalEditTask(taskId);
         });
 
     };
 
     LadbWorkflowWorkspace.prototype.initTaskRow = function($taskRow) {
 
-        var taskId = $taskRow.attr('id').substring('ladb_workflow_task_row_'.length);
+        var taskId = $taskRow.attr('id').substring(TASK_ROW_PREFIX.length);
 
         this.bindTaskBox(taskId, $('.ladb-box', $taskRow));
     };
@@ -341,6 +396,10 @@
             allowLoopback: false
         });
 
+        if (this.options.readOnly) {
+            return;
+        }
+
         // Bind box buttons
 
         this.bindTaskBox(taskId, $('.ladb-box', $taskWidget));
@@ -349,12 +408,12 @@
 
         $('.ladb-ep', $taskWidget).on('click', function(e) {
 
-            var currentScale = that.getCurrentScale();
+            var currentScale = that._uiGetCurrentScale();
             var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
             var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale + 100;
 
             // Drop connection on the board -> new Task
-            that.newTask(positionLeft, positionTop, taskId);
+            that.loadModalNewTask(positionLeft, positionTop, taskId);
 
         });
 
@@ -365,7 +424,7 @@
             grid: [GRID_SPACING, GRID_SPACING],
             handle: ".ladb-box",
             start: function (e) {
-                currentScale = that.getCurrentScale();
+                currentScale = that._uiGetCurrentScale();
                 $(this).draggable( "option", "grid", [ GRID_SPACING * currentScale, GRID_SPACING * currentScale ] );
                 $(this).css("cursor", "move");
                 that.$panzoom.panzoom("disable");
@@ -449,7 +508,7 @@
         var that = this;
 
         // Loading
-        this.markLoading('Chargement des tâches...');
+        this._uiMarkLoading('Chargement des tâches...');
 
         $.ajax(that.options.listTaskPath, {
             cache: false,
@@ -458,13 +517,14 @@
             success: function(data, textStatus, jqXHR) {
 
                 // Hide loading
-                that.unmarkLoading();
+                that._uiUnmarkLoading();
 
                 // Update board
                 that.updateBoardFromJsonData(data);
 
                 // Center origin
-                that.centerOrigin();
+                that._uiShowAll();
+                // that._uiCenterOrigin();
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -474,7 +534,7 @@
 
     };
 
-    LadbWorkflowWorkspace.prototype.newTask = function(positionLeft, positionTop, sourceTaskId) {
+    LadbWorkflowWorkspace.prototype.loadModalNewTask = function(positionLeft, positionTop, sourceTaskId) {
         var that = this;
 
         positionLeft = Math.round(positionLeft / 10) * 10;
@@ -503,7 +563,7 @@
 
     };
 
-    LadbWorkflowWorkspace.prototype.editTask = function(taskId) {
+    LadbWorkflowWorkspace.prototype.loadModalEditTask = function(taskId) {
         var that = this;
 
         that.$modal.ladbRemoteModal('loadContent', {
@@ -520,7 +580,7 @@
 
     };
 
-    LadbWorkflowWorkspace.prototype.listLabels = function() {
+    LadbWorkflowWorkspace.prototype.loadModalListLabels = function() {
         var that = this;
 
         // Load modal
@@ -721,7 +781,7 @@
 
     };
 
-    LadbWorkflowWorkspace.prototype.showStatistics = function() {
+    LadbWorkflowWorkspace.prototype.loadModalStatistics = function() {
         var that = this;
 
         // Load modal
@@ -825,25 +885,29 @@
         // Bind modal as remote modal
         this.$modal.ladbRemoteModal();
 
-        // Bind buttons
-        this.$btnAddTask.on('click', function() {
-
-            var currentScale = that.getCurrentScale();
-            var positionLeft = (that.$diagram.outerWidth() / 2 - that.$canvas.position().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
-            var positionTop = (that.$diagram.outerHeight() / 2 - that.$canvas.position().top) / currentScale - 30;
-
-            that.newTask(positionLeft, positionTop);
-        });
-        this.$btnListLabels.on('click', function() {
-            that.listLabels();
-        });
-        this.$btnStatistics.on('click', function() {
-            that.showStatistics();
-        });
-
         // Bind loading mask
         this.$loadingPanel.on('mousedown', function(e) {
             e.stopImmediatePropagation();
+        });
+
+        if (this.options.readOnly) {
+            return;
+        }
+
+        // Bind buttons
+        this.$btnAddTask.on('click', function() {
+
+            var currentScale = that._uiGetCurrentScale();
+            var positionLeft = (that.$diagram.outerWidth() / 2 - that.$canvas.position().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
+            var positionTop = (that.$diagram.outerHeight() / 2 - that.$canvas.position().top) / currentScale - 30;
+
+            that.loadModalNewTask(positionLeft, positionTop);
+        });
+        this.$btnListLabels.on('click', function() {
+            that.loadModalListLabels();
+        });
+        this.$btnStatistics.on('click', function() {
+            that.loadModalStatistics();
         });
 
     };
@@ -856,7 +920,7 @@
         if (!Modernizr.websockets) {}
 
         // Loading
-        this.markLoading('Connexion...');
+        this._uiMarkLoading('Connexion...');
 
         // Connect WebSocket
         var ws = WS.connect(this.options.wsUri);
@@ -892,28 +956,30 @@
             switch (error.code) {
 
                 case 2: // Connection max retry
-                    that.markLoading('Re-Connexion impossible avec le serveur :(');
+                    that._uiMarkLoading('Re-Connexion impossible avec le serveur :(');
                     break;
 
                 case 3: // Connection could not be established
-                    that.markLoading('Connexion impossible avec le serveur :(');
+                    that._uiMarkLoading('Connexion impossible avec le serveur :(');
+
+                    // Load tasks
+                    that.loadTasks();
+
                     break;
 
                 case 5: // Connection unreachable
-                    that.markLoading('Connexion impossible : Nouvel essai');
+                    that._uiMarkLoading('Connexion impossible : Nouvel essai');
                     break;
 
                 case 6: // Connection lost
-                    that.markLoading('Connexion perdue avec le serveur');
+                    that._uiMarkLoading('Connexion perdue avec le serveur');
                     break;
 
                 default:
-                    that.markLoading('Déconecté :(');
+                    that._uiMarkLoading('Déconecté :(');
                     break;
 
             }
-
-            console.log(error);
 
             notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
 
@@ -939,60 +1005,64 @@
                     Container: that.$canvas
                 });
 
-                // Bind plumb
-                that.plumb.bind('connection', function (info, originalEvent) {
+                if (!that.options.readOnly) {
 
-                    if (!originalEvent || info.targetId == 'fake_task') {
-                        return;
-                    }
+                    // Bind plumb
+                    that.plumb.bind('connection', function (info, originalEvent) {
 
-                    // Sync with server
-                    $.ajax(that.options.createTaskConnectionPath, {
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'html',
-                        context: document.body,
-                        data: {
-                            sourceTaskId: info.sourceId.substring(TASK_WIDGET_PREFIX.length),
-                            targetTaskId: info.targetId.substring(TASK_WIDGET_PREFIX.length)
-                        },
-                        error: function () {
-                            console.log('ERROR');
+                        if (!originalEvent || info.targetId == 'fake_task') {
+                            return;
                         }
+
+                        // Sync with server
+                        $.ajax(that.options.createTaskConnectionPath, {
+                            type: 'POST',
+                            cache: false,
+                            dataType: 'html',
+                            context: document.body,
+                            data: {
+                                sourceTaskId: info.sourceId.substring(TASK_WIDGET_PREFIX.length),
+                                targetTaskId: info.targetId.substring(TASK_WIDGET_PREFIX.length)
+                            },
+                            error: function () {
+                                console.log('ERROR');
+                            }
+                        });
+
+                    });
+                    that.plumb.bind('connectionAborted', function (connection, originalEvent) {
+
+                        var sourceTaskId = connection.sourceId.substring(TASK_WIDGET_PREFIX.length);
+
+                        var currentScale = that._uiGetCurrentScale();
+                        var positionLeft = (originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
+                        var positionTop = (originalEvent.clientY - that.$canvas.offset().top) / currentScale;
+
+                        // Drop connection on the board -> new Task
+                        that.loadModalNewTask(positionLeft, positionTop, sourceTaskId);
+
+                    });
+                    that.plumb.bind('click', function (connection, originalEvent) {
+                        that.plumb.detach(connection);
+
+                        // Sync with server
+                        $.ajax(that.options.deleteTaskConnectionPath, {
+                            type: 'POST',
+                            cache: false,
+                            dataType: 'html',
+                            context: document.body,
+                            data: {
+                                sourceTaskId: connection.sourceId.substring(TASK_WIDGET_PREFIX.length),
+                                targetTaskId: connection.targetId.substring(TASK_WIDGET_PREFIX.length)
+                            },
+                            error: function () {
+                                console.log('ERROR');
+                            }
+                        });
+
                     });
 
-                });
-                that.plumb.bind('connectionAborted', function (connection, originalEvent) {
-
-                    var sourceTaskId = connection.sourceId.substring(TASK_WIDGET_PREFIX.length);
-
-                    var currentScale = that.getCurrentScale();
-                    var positionLeft = (originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
-                    var positionTop = (originalEvent.clientY - that.$canvas.offset().top) / currentScale;
-
-                    // Drop connection on the board -> new Task
-                    that.newTask(positionLeft, positionTop, sourceTaskId);
-
-                });
-                that.plumb.bind('click', function (connection, originalEvent) {
-                    that.plumb.detach(connection);
-
-                    // Sync with server
-                    $.ajax(that.options.deleteTaskConnectionPath, {
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'html',
-                        context: document.body,
-                        data: {
-                            sourceTaskId: connection.sourceId.substring(TASK_WIDGET_PREFIX.length),
-                            targetTaskId: connection.targetId.substring(TASK_WIDGET_PREFIX.length)
-                        },
-                        error: function () {
-                            console.log('ERROR');
-                        }
-                    });
-
-                });
+                }
 
                 // Setup panzoom
                 that.$panzoom.panzoom({
@@ -1015,7 +1085,7 @@
                             animate: false,
                             focal: e
                         });
-                        that.plumb.setZoom(that.getCurrentScale());
+                        that.plumb.setZoom(that._uiGetCurrentScale());
                     })
                     .on("mousedown", function (e) {
                         if (e.button > 0) {
@@ -1060,15 +1130,21 @@
                     .on("mouseup touchend touchcancel mouseout", function (e) {
                         $(this).data('dragstart', null);
                         $(e.target).css("cursor", "");
-                    })
-                    .on('dblclick', function(e) {
-
-                        var currentScale = that.getCurrentScale();
-                        var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
-                        var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale;
-
-                        that.newTask(positionLeft, positionTop);
                     });
+
+                if (!that.options.readOnly) {
+
+                    that.$panzoom.parent()
+                        .on('dblclick', function(e) {
+
+                            var currentScale = that._uiGetCurrentScale();
+                            var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
+                            var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale;
+
+                            that.loadModalNewTask(positionLeft, positionTop);
+                        });
+
+                }
 
             });
 

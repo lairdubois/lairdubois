@@ -9,11 +9,13 @@
 @color-status-2: #5c96bc;
 @color-status-3: #5c96bc;
 @color-status-4: @ladb-brand-success;
+@color-readonly: #ccc;
 
 @bg-color-status-1: #eee;
 @bg-color-status-2: #fff;
 @bg-color-status-3: lighten(@color-status-3, 40%);
 @bg-color-status-4: lighten(@color-status-4, 40%);
+@bg-readonly: #eee;
 
 @task-widget-box-width: 320px;
 @label-bullet-size: 18px;
@@ -90,6 +92,7 @@
   }
 
   #ladb_workflow_task_diagram {
+    padding: 0;
     border: 1px solid @ladb-global-border;
     border-right: none;
     border-bottom: none;
@@ -201,6 +204,19 @@
 
   }
 
+  &.ladb-readonly {
+
+    .ladb-box {
+      background-color: @bg-readonly;
+      border-color: @color-readonly;
+    }
+
+    > .ladb-ep {
+      display: none !important;
+    }
+
+  }
+
   .ladb-ep {
     display: none;
     z-index: 4;
@@ -269,6 +285,7 @@
     }
 
     .ladb-btn-done {
+      float: left;
       width: 28px;
       height: 28px;
       border: 2px solid #ccc;

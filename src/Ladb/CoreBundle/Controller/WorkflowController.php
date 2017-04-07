@@ -103,7 +103,7 @@ class WorkflowController extends Controller {
 	const TASKINFO_WIDGET 			= 1 << 4;
 	const TASKINFO_BOX 				= 1 << 5;
 
-	private function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE) {
+	private function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE, $readOnly = false) {
 		$templating = $this->get('templating');
 
 		if (!is_array($tasks) && !$tasks instanceof \Traversable) {
@@ -124,13 +124,13 @@ class WorkflowController extends Controller {
 				$taskInfo['positionTop'] = $task->getPositionTop();
 			}
 			if (($fieldsStrategy & self::TASKINFO_ROW) == self::TASKINFO_ROW) {
-				$taskInfo['row'] = $templating->render('LadbCoreBundle:Workflow:_task-row.part.html.twig', array( 'task' => $task ));
+				$taskInfo['row'] = $templating->render('LadbCoreBundle:Workflow:_task-row.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_WIDGET) == self::TASKINFO_WIDGET) {
-				$taskInfo['widget'] = $templating->render('LadbCoreBundle:Workflow:_task-widget.part.html.twig', array( 'task' => $task ));
+				$taskInfo['widget'] = $templating->render('LadbCoreBundle:Workflow:_task-widget.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_BOX) == self::TASKINFO_BOX) {
-				$taskInfo['box'] = $templating->render('LadbCoreBundle:Workflow:_task-box.part.html.twig', array( 'task' => $task ));
+				$taskInfo['box'] = $templating->render('LadbCoreBundle:Workflow:_task-box.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly ));
 			}
 			$taskInfos[] = $taskInfo;
 		}
@@ -347,6 +347,7 @@ class WorkflowController extends Controller {
 
 		return array(
 			'workflow' => $workflow,
+			'readOnly' => false,
 		);
 	}
 

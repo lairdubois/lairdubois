@@ -43,7 +43,7 @@
         <div class="ladb-header-tools">
             {% if ownerUser or is_granted("ROLE_ADMIN") %}
                 <a href="#share_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>&nbsp;
-                {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
                     {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
                     {% block bodyInner %}
                         <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -57,8 +57,6 @@
                         <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
                     {% endblock %}
                 {% endembed %}
-            {% endif %}
-            {% if ownerUser or is_granted("ROLE_ADMIN") %}
                 &nbsp;
                 <a href="{{ path('core_youtook_edit', { 'id':took.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
                 {% if is_granted("ROLE_ADMIN") or ownerUser %}

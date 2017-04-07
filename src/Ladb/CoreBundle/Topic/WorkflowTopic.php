@@ -62,9 +62,8 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 	 */
 	public function onUnSubscribe(ConnectionInterface $connection, Topic $topic, WampRequest $request) {
 		//this will broadcast the message to ALL subscribers of this topic.
-		$topic->broadcast(['data' => $connection->resourceId." has left ".$topic->getId()]);
+		//$topic->broadcast(['data' => $connection->resourceId." has left ".$topic->getId()]);
 	}
-
 
 	/**
 	 * This will receive any Publish requests for this topic.
@@ -78,16 +77,7 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 	 * @return mixed|void
 	 */
 	public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible) {
-	}
-
-	/**
-	 * @param Topic $topic
-	 * @param WampRequest $request
-	 * @param array|string $data
-	 * @param string $provider The name of pusher who push the data
-	 */
-	public function onPush(Topic $topic, WampRequest $request, $data, $provider) {
-		$topic->broadcast($data);
+		$topic->broadcast($event);
 	}
 
 	/**
