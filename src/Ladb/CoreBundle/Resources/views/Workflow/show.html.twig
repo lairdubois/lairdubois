@@ -66,7 +66,7 @@
 {% block bodyWrapperInner %}
     <div class="ladb-workflow-workspace">
         <header>
-            {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow} %}
+            {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow } %}
                 {% block headerTools %}
                     <div class="ladb-header-tools">
                         {% if ownerUser or is_granted("ROLE_ADMIN") %}
@@ -84,14 +84,21 @@
             {% endembed %}
         </header>
         <div class="ladb-workflow-board">
-            <div id="ladb_workflow_task_list" class="panel-group col-lg-3 col-md-4 col-xs-12">
+            <div class="ladb-workflow-task-diagram ladb-with-right-panel">
+                <div class="ladb-panzoom">
+                    <div class="ladb-jtk-canvas"></div>
+                </div>
+            </div>
+            <div class="ladb-panel-buttons">
+                <button class="btn btn-default btn-sm pull-right ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-left"></i></button>
+            </div>
+            <div class="panel-group ladb-right-panel">
                 <div class="panel panel-default">
-                    <div class="panel-body" style="border-bottom: 1px solid #ccc; text-align: center; font-size: 120%;">
-                        Tâches
-                    </div>
                     <div class="panel-body">
-                        {% include 'LadbCoreBundle:Workflow:_workflow-status-panel.part.html.twig' %}
+                        <button class="btn btn-default btn-sm pull-left ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-right"></i></button>
+                        <span>Liste des tâches</span>
                     </div>
+                    {% include 'LadbCoreBundle:Workflow:_workflow-status.part.html.twig' %}
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>
@@ -128,11 +135,6 @@
                     <div id="panel_body_status_4" class="panel-body">
                         <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
                     </div>
-                </div>
-            </div>
-            <div id="ladb_workflow_task_diagram" class="col-lg-9 col-md-8 col-xs-12">
-                <div class="ladb-panzoom">
-                    <div class="ladb-jtk-canvas"></div>
                 </div>
             </div>
             {% embed 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}

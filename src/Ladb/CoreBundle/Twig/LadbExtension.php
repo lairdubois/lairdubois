@@ -70,38 +70,38 @@ class LadbExtension extends \Twig_Extension {
 		return $str;
 	}
 
-	public function durationFilter($duration, $displaySecondsWithMinutes = false) {
+	public function durationFilter($duration, $displaySecondsWithMinutes = false, $long = false) {
 		$d = new \DateTime();
 		$d->add(new \DateInterval('PT'.$duration.'S'));
 		$interval = $d->diff(new \DateTime());
 		$translator = $this->container->get('translator');
 		if ($interval->y > 0) {
-			$str = $translator->transChoice('interval.year', $interval->y, array('%count%' => $interval->y), 'date');
+			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.year', $interval->y, array('%count%' => $interval->y), 'date');
 			if ($interval->m > 0) {
-				$str .= ' '.$translator->transChoice('interval.month', $interval->m, array('%count%' => $interval->m), 'date');
+				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.month', $interval->m, array('%count%' => $interval->m), 'date');
 			}
 		} else if ($interval->m > 0) {
-			$str = $translator->transChoice('interval.month', $interval->m, array('%count%' => $interval->m), 'date');
+			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.month', $interval->m, array('%count%' => $interval->m), 'date');
 			if ($interval->d > 0) {
-				$str .= ' '.$translator->transChoice('interval.day', $interval->d, array('%count%' => $interval->d), 'date');
+				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.day', $interval->d, array('%count%' => $interval->d), 'date');
 			}
 		} else if ($interval->d > 0) {
-			$str = $translator->transChoice('interval.day', $interval->d, array('%count%' => $interval->d), 'date');
+			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.day', $interval->d, array('%count%' => $interval->d), 'date');
 			if ($interval->h > 0) {
-				$str .= ' '.$translator->transChoice('interval.hour', $interval->h, array('%count%' => $interval->h), 'date');
+				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.hour', $interval->h, array('%count%' => $interval->h), 'date');
 			}
 		} else if ($interval->h > 0) {
-			$str = $translator->transChoice('interval.hour', $interval->h, array('%count%' => $interval->h), 'date');
+			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.hour', $interval->h, array('%count%' => $interval->h), 'date');
 			if ($interval->i > 0) {
-				$str .= ' '.$translator->transChoice('interval.minute', $interval->i, array('%count%' => $interval->i), 'date');
+				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.minute', $interval->i, array('%count%' => $interval->i), 'date');
 			}
 		} else if ($interval->i > 0) {
-			$str = $translator->transChoice('interval.minute', $interval->i, array('%count%' => $interval->i), 'date');
+			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.minute', $interval->i, array('%count%' => $interval->i), 'date');
 			if ($interval->s > 0 && $displaySecondsWithMinutes) {
-				$str .= ' '.$translator->transChoice('interval.second', $interval->s, array('%count%' => $interval->s), 'date');
+				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.second', $interval->s, array('%count%' => $interval->s), 'date');
 			}
 		} else if ($interval->s > 0) {
-			$str = $translator->transChoice('interval.second', $interval->s, array('%count%' => $interval->s), 'date');
+			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.second', $interval->s, array('%count%' => $interval->s), 'date');
 		} else {
 			$str = '';
 		}

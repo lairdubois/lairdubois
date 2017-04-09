@@ -18,6 +18,6 @@
         <span class="ladb-subheading">
             {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'noMicrodata':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
         </span>
-        {% if followerContext is defined and followerContext is not null %}<span style="padding-left: 10px;">{% include 'LadbCoreBundle:Follower:_widget.part.html.twig' with { 'followerContext':followerContext, 'tiny':true } %}</span>{% endif %}
+        {% if followerContext is defined and followerContext is not null %}<span class="ladb-hidden-mobile" style="padding-left: 10px;">{% include 'LadbCoreBundle:Follower:_widget.part.html.twig' with { 'followerContext':followerContext, 'tiny':true } %}</span>{% endif %}
     </div>
 </div>

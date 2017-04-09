@@ -134,20 +134,51 @@ header {
 
 // phone
 @media screen and (max-width: @ladb-screen-phone-max) {
+
   .ladb-fake-header {
     margin: 0 -@ladb-gutter / 2;
     padding: 0 @ladb-gutter / 2;
   }
-  header .ladb-avatar-header .ladb-heading {
-    font-size: 20px;
+
+  header .ladb-avatar-header {
+    min-height: 32px;
+
+    .ladb-avatar {
+      width: 32px;
+      height: 32px;
+
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    .ladb-body {
+      margin-left: 42px;
+    }
+
+    .ladb-heading {
+      font-size: 20px;
+      line-height: 20px;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .ladb-subheading {
+      font-size: 80%;
+    }
+
   }
+
 }
 
 // phone & tablet
 @media screen and (max-width: @ladb-screen-tablet-max) {
+
   header .ladb-avatar-header .ladb-header-tools {
     float: none;
     text-align: right;
   }
+
 }
 

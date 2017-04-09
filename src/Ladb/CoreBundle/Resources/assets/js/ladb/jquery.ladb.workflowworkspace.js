@@ -4,7 +4,7 @@
     var GRID_SPACING = 10;
     var TASK_ROW_PREFIX =  'ladb_workflow_task_row_';
     var TASK_WIDGET_PREFIX =  'ladb_workflow_task_widget_';
-    var TASK_WIDGET_BOX_WIDTH = 324;
+    var TASK_WIDGET_BOX_WIDTH = 344;
 
     // CLASS DEFINITION
     // ======================
@@ -19,7 +19,8 @@
         this.$loadingPanel = $('.ladb-loading-panel', this.$element);
         this.$loadingStatus = $('.ladb-loading-status', this.$loadingPanel);
 
-        this.$diagram = $('#ladb_workflow_task_diagram', this.$element);
+        this.$rightPanel = $('.ladb-right-panel', this.$element);
+        this.$diagram = $('.ladb-workflow-task-diagram', this.$element);
         this.$panzoom = $(".ladb-panzoom", this.$diagram);
         this.$canvas = $('.ladb-jtk-canvas', this.$panzoom);
 
@@ -50,13 +51,8 @@
         statisticsPath: null
     };
 
-    LadbWorkflowWorkspace.prototype._uiCenterOrigin = function() {
-        if (this.$panzoom) {
-            return this.$panzoom.panzoom('pan', (this.$diagram.outerWidth() - TASK_WIDGET_BOX_WIDTH) / 2, 100, { relative: false });
-        }
-    };
-
-    LadbWorkflowWorkspace.prototype._uiShowAll = function() {
+    LadbWorkflowWorkspace.prototype._uiDiagramShowAll = function() {
+        console.log('_uiDiagramShowAll');
         if (this.$panzoom) {
 
             var areaPadding = 30;
@@ -78,29 +74,27 @@
                     };
                 }
             });
+
+            console.log('contentRect', contentRect);
+
             if (contentRect) {
+
                 contentRect.width = contentRect.right - contentRect.left;
                 contentRect.height = contentRect.bottom - contentRect.top;
                 var areaRect = this.$diagram.get(0).getBoundingClientRect();
 
-                console.log(areaRect);
-                console.log(contentRect);
-
-                var scale = Math.min((areaRect.height - 2 * areaPadding) / contentRect.height, (areaRect.width - 2 * areaPadding) / contentRect.width);
-
                 var panX = areaPadding + areaRect.left - contentRect.left + (areaRect.width - 2 * areaPadding - contentRect.width) / 2;
                 var panY = areaPadding + areaRect.top - contentRect.top;
+                this.$panzoom.panzoom('pan', panX, panY, { relative: false });
 
-                console.log(panX, panY);
-
-                this.$panzoom.panzoom('pan', panX, panY, {relative: false});
-
+                var scale = Math.min((areaRect.height - 2 * areaPadding) / contentRect.height, (areaRect.width - 2 * areaPadding) / contentRect.width);
                 this.$panzoom.panzoom('zoom', scale, {
                     focal: {
                         clientX: areaRect.left + areaRect.width / 2,
                         clientY: areaRect.top + areaPadding
                     }
                 });
+
             }
         }
     };
@@ -162,6 +156,16 @@
 
     };
 
+    LadbWorkflowWorkspace.prototype._uiToggleRightPanel = function() {
+        if (this.$rightPanel.is(':visible')) {
+            this.$rightPanel.hide();
+            this.$diagram.removeClass('ladb-with-right-panel');
+        } else {
+            this.$rightPanel.show();
+            this.$diagram.addClass('ladb-with-right-panel');
+        }
+    };
+
     LadbWorkflowWorkspace.prototype.updateBoardFromJsonData = function(data) {
         var that = this;
 
@@ -171,7 +175,7 @@
 
         // Workflow
         if (response.workflowInfos) {
-            $('#ladb_workflow_status_panel', this.$element).replaceWith(response.workflowInfos.statusPanel);
+            $('#ladb_workflow_status', this.$element).replaceWith(response.workflowInfos.statusPanel);
         }
 
         // Tasks
@@ -180,6 +184,8 @@
             if (that.plumb) {
                 that.plumb.deleteEveryEndpoint();
                 that.$canvas.empty();
+                that.$panzoom.panzoom('zoom', 1);
+                that.$panzoom.panzoom('pan', 0, 0, { relative: false });
             }
             for (i = 0; i <= 4; i++) {
                 $('#panel_body_status_' + i + ' .ladb-workflow-task-row').remove();
@@ -523,8 +529,7 @@
                 that.updateBoardFromJsonData(data);
 
                 // Center origin
-                that._uiShowAll();
-                // that._uiCenterOrigin();
+                that._uiDiagramShowAll();
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -909,6 +914,9 @@
         this.$btnStatistics.on('click', function() {
             that.loadModalStatistics();
         });
+        $('.ladb-toggle-right-panel-btn', this.$element).on('click', function() {
+            that._uiToggleRightPanel();
+        });
 
     };
 
@@ -991,15 +999,15 @@
 
                 // Init jsPlumb
                 that.plumb = jsPlumb.getInstance({
-                    HoverPaintStyle: {stroke: "#f77f00", strokeWidth: 4},
-                    Connector: ["Bezier", {curviness: 50, stub: 50}],
+                    HoverPaintStyle: { stroke: "#f77f00", strokeWidth: 4 },
+                    Connector: ["Bezier", { curviness: 50 }],
                     ConnectionOverlays: [
                         ["Arrow", {
                             location: 1,
                             id: "arrow",
                             width: 10,
                             length: 10,
-                            foldback: 0.8
+                            foldback: 0.9
                         }]
                     ],
                     Container: that.$canvas
@@ -1125,6 +1133,7 @@
                             matrix[4] = parseInt(dragstart.dx) - deltaX;
                             matrix[5] = parseInt(dragstart.dy) - deltaY;
                             that.$panzoom.panzoom("setMatrix", matrix);
+                            e.preventDefault();
                         }
                     })
                     .on("mouseup touchend touchcancel mouseout", function (e) {
