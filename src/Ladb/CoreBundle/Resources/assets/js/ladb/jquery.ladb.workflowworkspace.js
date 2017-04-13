@@ -52,7 +52,6 @@
     };
 
     LadbWorkflowWorkspace.prototype._uiDiagramShowAll = function() {
-        console.log('_uiDiagramShowAll');
         if (this.$panzoom) {
 
             var areaPadding = 30;
@@ -75,8 +74,6 @@
                 }
             });
 
-            console.log('contentRect', contentRect);
-
             if (contentRect) {
 
                 contentRect.width = contentRect.right - contentRect.left;
@@ -94,6 +91,7 @@
                         clientY: areaRect.top + areaPadding
                     }
                 });
+                this.plumb.setZoom(scale);
 
             }
         }
@@ -183,6 +181,7 @@
 
             if (that.plumb) {
                 that.plumb.deleteEveryEndpoint();
+                that.plumb.setZoom(1);
                 that.$canvas.empty();
                 that.$panzoom.panzoom('zoom', 1);
                 that.$panzoom.panzoom('pan', 0, 0, { relative: false });

@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version: "v4"
+        version: "v5"
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
     templating:
         engines:    ['twig']
