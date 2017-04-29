@@ -107,22 +107,26 @@
     };
 
     LadbWorkflowWorkspace.prototype._uiDiagramCenterOnTask = function(taskId) {
+        if (this.$panzoom) {
 
-        var $taskWidget = $('#' + TASK_WIDGET_PREFIX + taskId);
+            var $taskWidget = $('#' + TASK_WIDGET_PREFIX + taskId);
 
-        // Retrieve widget position and area rect
-        var position = $taskWidget.position();
-        var areaRect = this.$diagram.get(0).getBoundingClientRect();
+            // Retrieve widget position and area rect
+            var position = $taskWidget.position();
+            var areaRect = this.$diagram.get(0).getBoundingClientRect();
 
-        var panX = (areaRect.width - $taskWidget.outerWidth()) / 2 - position.left;
-        var panY = (areaRect.height - $taskWidget.outerHeight()) / 2 - position.top;
-        this.$panzoom.panzoom('resetZoom', { animate: true });
-        this.$panzoom.panzoom('pan', panX, panY, {
-            relative: false,
-            animate: true
-        });
-        $('.ladb-box', $taskWidget).effect('highlight', {}, 1000);
+            var panX = (areaRect.width - $taskWidget.outerWidth()) / 2 - position.left;
+            var panY = (areaRect.height - $taskWidget.outerHeight()) / 2 - position.top;
+            this.$panzoom.panzoom('pan', panX, panY, {
+                relative: false,
+                animate: true
+            });
+            $('.ladb-box', $taskWidget).effect('highlight', {}, 1000);
 
+            this.$panzoom.panzoom('resetZoom', { animate: true });
+            this.plumb.setZoom(1);
+
+        }
     };
 
     LadbWorkflowWorkspace.prototype._uiGetCurrentScale = function() {
