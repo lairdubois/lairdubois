@@ -45,6 +45,7 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface 
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Task", mappedBy="workflow", cascade={"all"})
+	 * @ORM\OrderBy({"positionTop" = "ASC"})
 	 */
 	protected $tasks;
 

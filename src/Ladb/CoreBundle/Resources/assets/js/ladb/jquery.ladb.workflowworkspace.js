@@ -51,41 +51,33 @@
         statisticsPath: null
     };
 
-    LadbWorkflowWorkspace.prototype._uiGetDiagramContentRect = function() {
-
-        var contentRect = null;
-        $('.ladb-workflow-task-widget', this.$canvas).each(function (index, value) {
-            var clientRect = value.getBoundingClientRect();
-            if (contentRect) {
-                contentRect.top = Math.min(contentRect.top, clientRect.top);
-                contentRect.right = Math.max(contentRect.right, clientRect.right);
-                contentRect.bottom = Math.max(contentRect.bottom, clientRect.bottom);
-                contentRect.left = Math.min(contentRect.left, clientRect.left);
-            } else {
-                contentRect = {
-                    top: clientRect.top,
-                    right: clientRect.right,
-                    bottom: clientRect.bottom,
-                    left: clientRect.left
-                };
-            }
-        });
-
-        if (contentRect) {
-            contentRect.width = contentRect.right - contentRect.left;
-            contentRect.height = contentRect.bottom - contentRect.top;
-        }
-
-        return contentRect;
-    };
-
     LadbWorkflowWorkspace.prototype._uiDiagramShowAll = function() {
         if (this.$panzoom) {
 
             var areaPadding = 30;
 
-            var contentRect = this._uiGetDiagramContentRect();
+            var contentRect = null;
+            $('.ladb-workflow-task-widget', this.$canvas).each(function (index, value) {
+                var clientRect = value.getBoundingClientRect();
+                if (contentRect) {
+                    contentRect.top = Math.min(contentRect.top, clientRect.top);
+                    contentRect.right = Math.max(contentRect.right, clientRect.right);
+                    contentRect.bottom = Math.max(contentRect.bottom, clientRect.bottom);
+                    contentRect.left = Math.min(contentRect.left, clientRect.left);
+                } else {
+                    contentRect = {
+                        top: clientRect.top,
+                        right: clientRect.right,
+                        bottom: clientRect.bottom,
+                        left: clientRect.left
+                    };
+                }
+            });
+
             if (contentRect) {
+
+                contentRect.width = contentRect.right - contentRect.left;
+                contentRect.height = contentRect.bottom - contentRect.top;
 
                 var areaRect = this.$diagram.get(0).getBoundingClientRect();
 
@@ -100,13 +92,13 @@
                         clientY: areaRect.top + areaPadding
                     }
                 });
-                this.plumb.setZoom(this._uiGetCurrentScale());
+                this.plumb.setZoom(this._uiDiagramGetCurrentScale());
 
             }
         }
     };
 
-    LadbWorkflowWorkspace.prototype._uiDiagramCenterOnTask = function(taskId) {
+    LadbWorkflowWorkspace.prototype._uiDiagramPanToTaskWidget = function(taskId) {
         if (this.$panzoom) {
 
             var $taskWidget = $('#' + TASK_WIDGET_PREFIX + taskId);
@@ -114,9 +106,10 @@
             // Retrieve widget position and area rect
             var position = $taskWidget.position();
             var areaRect = this.$diagram.get(0).getBoundingClientRect();
+            var currentScale = this._uiDiagramGetCurrentScale();
 
-            var panX = (areaRect.width - $taskWidget.outerWidth()) / 2 - position.left;
-            var panY = (areaRect.height - $taskWidget.outerHeight()) / 2 - position.top;
+            var panX = (areaRect.width - $taskWidget.outerWidth()) / 2 - position.left / currentScale;
+            var panY = (areaRect.height - $taskWidget.outerHeight()) / 2 - position.top / currentScale;
             this.$panzoom.panzoom('pan', panX, panY, {
                 relative: false,
                 animate: true
@@ -129,7 +122,7 @@
         }
     };
 
-    LadbWorkflowWorkspace.prototype._uiGetCurrentScale = function() {
+    LadbWorkflowWorkspace.prototype._uiDiagramGetCurrentScale = function() {
         if (this.$panzoom) {
             return this.$panzoom.panzoom('getMatrix')[0];
         }
@@ -153,19 +146,21 @@
 
     LadbWorkflowWorkspace.prototype._uiAppendToAnimate = function(element, newParent) {
 
+        var $panel = $('.panel', this.$rightPanel);
         var $taskRow = $(element);
         var $taskBox = $('.ladb-box', $taskRow);
         var $newParent = $(newParent);
 
+        var rightPanelOffset = $panel.offset();
         var oldOffset = $taskRow.offset();
         $taskRow.appendTo($newParent);
         var newOffset = $taskRow.offset();
 
-        var $tmpTaskRow = $taskRow.clone().appendTo('body');
+        var $tmpTaskRow = $taskRow.clone().appendTo($panel);
         $tmpTaskRow.css({
             'position': 'absolute',
-            'top': oldOffset.top,
-            'left': oldOffset.left,
+            'top': oldOffset.top - rightPanelOffset.top,
+            'left': oldOffset.left - rightPanelOffset.left,
             'width': $taskRow.width(),
             'z-index': 1000
         });
@@ -174,8 +169,8 @@
         });
         $taskBox.hide();
         $tmpTaskRow.animate({
-            'top': newOffset.top,
-            'left': newOffset.left
+            'top': newOffset.top - rightPanelOffset.top,
+            'left': newOffset.left - rightPanelOffset.left
         }, 500, function() {
             $taskRow.css({
                 'height': 'auto'
@@ -406,7 +401,7 @@
         var taskId = $taskRow.attr('id').substring(TASK_ROW_PREFIX.length);
 
         $taskRow.on('click', function() {
-            that._uiDiagramCenterOnTask(taskId);
+            that._uiDiagramPanToTaskWidget(taskId);
         });
 
         this.bindTaskBox(taskId, $('.ladb-box', $taskRow));
@@ -452,7 +447,7 @@
 
         $('.ladb-ep', $taskWidget).on('click', function(e) {
 
-            var currentScale = that._uiGetCurrentScale();
+            var currentScale = that._uiDiagramGetCurrentScale();
             var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
             var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale + 100;
 
@@ -468,7 +463,7 @@
             grid: [GRID_SPACING, GRID_SPACING],
             handle: ".ladb-box",
             start: function (e) {
-                currentScale = that._uiGetCurrentScale();
+                currentScale = that._uiDiagramGetCurrentScale();
                 $(this).draggable( "option", "grid", [ GRID_SPACING * currentScale, GRID_SPACING * currentScale ] );
                 $(this).css("cursor", "move");
                 that.$panzoom.panzoom("disable");
@@ -940,7 +935,7 @@
         // Bind buttons
         this.$btnAddTask.on('click', function() {
 
-            var currentScale = that._uiGetCurrentScale();
+            var currentScale = that._uiDiagramGetCurrentScale();
             var positionLeft = (that.$diagram.outerWidth() / 2 - that.$canvas.position().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
             var positionTop = (that.$diagram.outerHeight() / 2 - that.$canvas.position().top) / currentScale - 30;
 
@@ -1080,7 +1075,7 @@
 
                         var sourceTaskId = connection.sourceId.substring(TASK_WIDGET_PREFIX.length);
 
-                        var currentScale = that._uiGetCurrentScale();
+                        var currentScale = that._uiDiagramGetCurrentScale();
                         var positionLeft = (originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
                         var positionTop = (originalEvent.clientY - that.$canvas.offset().top) / currentScale;
 
@@ -1131,7 +1126,7 @@
                             animate: false,
                             focal: e
                         });
-                        that.plumb.setZoom(that._uiGetCurrentScale());
+                        that.plumb.setZoom(that._uiDiagramGetCurrentScale());
                     })
                     .on("mousedown", function (e) {
                         if (e.button > 0) {
@@ -1184,7 +1179,7 @@
                     that.$panzoom.parent()
                         .on('dblclick', function(e) {
 
-                            var currentScale = that._uiGetCurrentScale();
+                            var currentScale = that._uiDiagramGetCurrentScale();
                             var positionLeft = (e.originalEvent.clientX - that.$canvas.offset().left) / currentScale - TASK_WIDGET_BOX_WIDTH / 2;
                             var positionTop = (e.originalEvent.clientY - that.$canvas.offset().top) / currentScale;
 

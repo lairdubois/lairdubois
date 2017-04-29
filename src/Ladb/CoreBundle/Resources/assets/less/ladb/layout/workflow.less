@@ -67,13 +67,22 @@
       overflow-y: scroll;
       border-right: none;
 
-      .panel-body:first-child {
-        padding: 10px;
+      .panel-body {
+        padding: 10px 0;
 
-        span {
-          display: block;
-          text-align: center;
-          font-size: 150%;
+        &:first-child {
+          padding: 10px;
+
+          span {
+            display: block;
+            text-align: center;
+            font-size: 150%;
+          }
+
+        }
+
+        .ladb-no-task {
+          padding: 0 10px;
         }
 
       }
@@ -162,7 +171,6 @@
 }
 
 .ladb-workflow-task-row {
-  margin: 0 -15px;
   padding: 0 15px;
 
   &:hover {
