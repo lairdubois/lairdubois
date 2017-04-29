@@ -366,6 +366,7 @@ workflow:
     duration: Durée (Réelle)
     new: Ajouter une tâche
     edit: Edition de la tâche
+    list: Liste des tâches
     empty: Aucune
     status_1: Tâches en attente
     status_2: Tâches à effectuer

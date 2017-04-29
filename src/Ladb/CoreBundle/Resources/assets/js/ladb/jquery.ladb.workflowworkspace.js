@@ -51,33 +51,42 @@
         statisticsPath: null
     };
 
+    LadbWorkflowWorkspace.prototype._uiGetDiagramContentRect = function() {
+
+        var contentRect = null;
+        $('.ladb-workflow-task-widget', this.$canvas).each(function (index, value) {
+            var clientRect = value.getBoundingClientRect();
+            if (contentRect) {
+                contentRect.top = Math.min(contentRect.top, clientRect.top);
+                contentRect.right = Math.max(contentRect.right, clientRect.right);
+                contentRect.bottom = Math.max(contentRect.bottom, clientRect.bottom);
+                contentRect.left = Math.min(contentRect.left, clientRect.left);
+            } else {
+                contentRect = {
+                    top: clientRect.top,
+                    right: clientRect.right,
+                    bottom: clientRect.bottom,
+                    left: clientRect.left
+                };
+            }
+        });
+
+        if (contentRect) {
+            contentRect.width = contentRect.right - contentRect.left;
+            contentRect.height = contentRect.bottom - contentRect.top;
+        }
+
+        return contentRect;
+    };
+
     LadbWorkflowWorkspace.prototype._uiDiagramShowAll = function() {
         if (this.$panzoom) {
 
             var areaPadding = 30;
 
-            var contentRect;
-            $('.ladb-workflow-task-widget', this.$canvas).each(function (index, value) {
-                var clientRect = value.getBoundingClientRect();
-                if (contentRect) {
-                    contentRect.top = Math.min(contentRect.top, clientRect.top);
-                    contentRect.right = Math.max(contentRect.right, clientRect.right);
-                    contentRect.bottom = Math.max(contentRect.bottom, clientRect.bottom);
-                    contentRect.left = Math.min(contentRect.left, clientRect.left);
-                } else {
-                    contentRect = {
-                        top: clientRect.top,
-                        right: clientRect.right,
-                        bottom: clientRect.bottom,
-                        left: clientRect.left
-                    };
-                }
-            });
-
+            var contentRect = this._uiGetDiagramContentRect();
             if (contentRect) {
 
-                contentRect.width = contentRect.right - contentRect.left;
-                contentRect.height = contentRect.bottom - contentRect.top;
                 var areaRect = this.$diagram.get(0).getBoundingClientRect();
 
                 var panX = areaPadding + areaRect.left - contentRect.left + (areaRect.width - 2 * areaPadding - contentRect.width) / 2;
@@ -91,10 +100,29 @@
                         clientY: areaRect.top + areaPadding
                     }
                 });
-                this.plumb.setZoom(scale);
+                this.plumb.setZoom(this._uiGetCurrentScale());
 
             }
         }
+    };
+
+    LadbWorkflowWorkspace.prototype._uiDiagramCenterOnTask = function(taskId) {
+
+        var $taskWidget = $('#' + TASK_WIDGET_PREFIX + taskId);
+
+        // Retrieve widget position and area rect
+        var position = $taskWidget.position();
+        var areaRect = this.$diagram.get(0).getBoundingClientRect();
+
+        var panX = (areaRect.width - $taskWidget.outerWidth()) / 2 - position.left;
+        var panY = (areaRect.height - $taskWidget.outerHeight()) / 2 - position.top;
+        this.$panzoom.panzoom('resetZoom', { animate: true });
+        this.$panzoom.panzoom('pan', panX, panY, {
+            relative: false,
+            animate: true
+        });
+        $('.ladb-box', $taskWidget).effect('highlight', {}, 1000);
+
     };
 
     LadbWorkflowWorkspace.prototype._uiGetCurrentScale = function() {
@@ -339,6 +367,7 @@
 
         // Bind done and run button
         $('.ladb-status-update-btn', $taskBox).on('click', function (e) {
+            e.stopPropagation();
 
             $(this).button('loading');
 
@@ -361,14 +390,20 @@
 
         // Bind edit button
         $('.ladb-btn-edit', $taskBox).on('click', function(e) {
+            e.stopPropagation();
             that.loadModalEditTask(taskId);
         });
 
     };
 
     LadbWorkflowWorkspace.prototype.initTaskRow = function($taskRow) {
+        var that = this;
 
         var taskId = $taskRow.attr('id').substring(TASK_ROW_PREFIX.length);
+
+        $taskRow.on('click', function() {
+            that._uiDiagramCenterOnTask(taskId);
+        });
 
         this.bindTaskBox(taskId, $('.ladb-box', $taskRow));
     };
