@@ -68,7 +68,7 @@
       border-right: none;
 
       .panel-body {
-        padding: 10px 0;
+        padding: 0;
 
         &:first-child {
           padding: 10px;
@@ -82,7 +82,7 @@
         }
 
         .ladb-no-task {
-          padding: 0 10px;
+          padding: 10px;
         }
 
       }
@@ -171,7 +171,8 @@
 }
 
 .ladb-workflow-task-row {
-  padding: 0 15px;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
 
   &:hover {
     background: #f9f9f9;
@@ -183,8 +184,11 @@
 
   }
 
+  &:last-child {
+    border: none;
+  }
+
   .ladb-box {
-    padding: 5px 0;
     background: #fff;
 
     &.ladb-status-1 .ladb-body {
@@ -207,7 +211,7 @@
   }
 
   .ladb-box {
-    padding: 15px 10px;
+    padding: 10px 10px;
     margin-bottom: 10px;
     border-width: 2px;
     border-style: solid;
@@ -305,14 +309,11 @@
 .ladb-workflow-task-widget, .ladb-workflow-task-row {
 
   .ladb-body {
-    padding: 4px 38px 0 38px;
+    padding-left: 38px;
     min-height: 28px;
 
-    .ladb-labels {
-      min-height: 5px;
-    }
-
     .ladb-title {
+      margin-top: 4px;
       font-size: 110%;
     }
 
@@ -320,6 +321,10 @@
       margin-top: 4px;
       font-size: 90%;
       opacity: 0.9;
+    }
+
+    .ladb-labels {
+      margin-top: 4px;
     }
 
   }

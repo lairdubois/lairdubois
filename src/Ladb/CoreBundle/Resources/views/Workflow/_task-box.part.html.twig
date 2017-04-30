@@ -14,12 +14,14 @@
         </div>
     {% endif %}
     <div class="ladb-body">
-        <span class="ladb-title">{{ task.title }}</span>
+        <div class="ladb-title">{{ task.title }}</div>
         {% include 'LadbCoreBundle:Workflow:_duration.part.html.twig' with { 'entity':task } %}
-        <div class="ladb-labels" style="margin-top: 4px;">
-            {% for label in task.labels %}
-                {% include 'LadbCoreBundle:Workflow:_label-bullet.part.html.twig' %}
-            {% endfor %}
-        </div>
+        {% if task.labels is not empty %}
+            <div class="ladb-labels">
+                {% for label in task.labels %}
+                    {% include 'LadbCoreBundle:Workflow:_label-bullet.part.html.twig' %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 </div>
