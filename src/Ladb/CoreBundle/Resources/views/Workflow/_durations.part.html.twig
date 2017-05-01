@@ -1,0 +1,12 @@
+
+{# set entity #}
+
+{% if entity.duration > 0 or entity.estimatedDuration > 0 %}
+    <div class="ladb-duration">
+        {% if entity.estimatedDuration > 0 %}<span><i class="ladb-icon-estimated-duration"></i> {{ entity.estimatedDuration|ladb_hours_minutes_duration() }}</span>{% endif %}
+        {% if entity.duration > 0 %}
+            {% if entity.estimatedDuration > 0 %} | {% endif %}
+            <span {% if entity.estimatedDuration > 0 %}class="{{ entity.estimatedDuration >= entity.duration ? 'ladb-color-positive' : 'ladb-color-negative' }}"{% if entity.estimatedDuration != entity.duration %} data-tooltip="tooltip" title="{{ entity.estimatedDuration > entity.duration ? '-' : '+' }}{{ (entity.estimatedDuration - entity.duration)|abs|ladb_hours_minutes_duration() }}"{% endif %}{% endif %}><i class="ladb-icon-duration"></i> {{ entity.duration|ladb_hours_minutes_duration() }}</span>
+        {% endif %}
+    </div>
+{% endif %}

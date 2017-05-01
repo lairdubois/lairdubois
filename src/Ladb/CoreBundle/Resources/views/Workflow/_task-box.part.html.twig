@@ -15,7 +15,7 @@
     {% endif %}
     <div class="ladb-body">
         <div class="ladb-title">{{ task.title }}</div>
-        {% include 'LadbCoreBundle:Workflow:_duration.part.html.twig' with { 'entity':task } %}
+        {% include 'LadbCoreBundle:Workflow:_durations.part.html.twig' with { 'entity':task } %}
         {% if task.labels is not empty %}
             <div class="ladb-labels">
                 {% for label in task.labels %}
