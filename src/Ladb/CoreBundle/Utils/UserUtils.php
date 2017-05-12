@@ -114,6 +114,9 @@ class UserUtils extends AbstractContainerAwareUtils {
 					$andWheres[] = 'e.user != :user';
 					$parameters = array_merge($parameters, array( 'user' => $user ));
 				}
+				if (is_subclass_of($entityClass, '\Ladb\CoreBundle\Entity\AbstractKnowledge')) {
+					$andWheres[] = 'e.isRejected = false';
+				}
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
 
 				// Update count value on user entity

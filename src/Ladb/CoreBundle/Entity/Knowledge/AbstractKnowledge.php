@@ -4,6 +4,16 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Model\IndexableTrait;
+use Ladb\CoreBundle\Model\LikableTrait;
+use Ladb\CoreBundle\Model\PicturedTrait;
+use Ladb\CoreBundle\Model\ScrapableTrait;
+use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\SitemapableTrait;
+use Ladb\CoreBundle\Model\TitledTrait;
+use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractPublication;
@@ -21,7 +31,10 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractKnowledge extends AbstractPublication implements VotableParentInterface, TitledInterface, PicturedInterface, IndexableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface {
+abstract class AbstractKnowledge extends AbstractPublication implements TitledInterface, PicturedInterface, IndexableInterface, SitemapableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, VotableParentInterface {
+
+	use TitledTrait, ScrapableTrait, IndexableTrait, ViewableTrait, PicturedTrait, LikableTrait, WatchableTrait, CommentableTrait;
+	use SitemapableTrait { getIsSitemapable as public getIsSitemapableTrait; }
 
 	const ATTRIB_TYPE = 0;
 	const ATTRIB_MULTIPLE = 1;
@@ -96,10 +109,6 @@ abstract class AbstractKnowledge extends AbstractPublication implements VotableP
 
 	/////
 
-	private $isShown = true;
-
-	/////
-
 	// StrippedName /////
 
 	public abstract function getStrippedName();
@@ -108,42 +117,16 @@ abstract class AbstractKnowledge extends AbstractPublication implements VotableP
 
 	public abstract function getFieldDefs();
 
-	// IsIndexable /////
+	// IsRejected /////
 
-	public function isIndexable() {
-		return $this->isDraft !== true;
+	public function getIsRejected() {
+		return false;
 	}
 
-	// IsViewable /////
+	// IsSitemapable /////
 
-	public function getIsViewable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsShown /////
-
-	public function setIsShown($isShown) {
-		$this->isShown = $isShown;
-	}
-
-	public function getIsShown() {
-		return $this->isShown;
-	}
-
-	// IsScrapable /////
-
-	public function getIsScrapable() {
-		return $this->getIsViewable();
-	}
-
-	// Title /////
-
-	public function setTitle($title) {
-		return $this->title = ucfirst($title);
-	}
-
-	public function getTitle() {
-		return $this->title;
+	public function getIsSitemapable() {
+		return !$this->getIsRejected() && $this->getIsSitemapableTrait();
 	}
 
 	/////
@@ -165,17 +148,6 @@ abstract class AbstractKnowledge extends AbstractPublication implements VotableP
 
 	public function getSluggedId() {
 		return $this->id.'-'.$this->slug;
-	}
-
-	// MainPicture /////
-
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
-		$this->mainPicture = $mainPicture;
-		return $this;
-	}
-
-	public function getMainPicture() {
-		return $this->mainPicture;
 	}
 
 	// License /////
@@ -242,67 +214,6 @@ abstract class AbstractKnowledge extends AbstractPublication implements VotableP
 
 	public function getVoteCount() {
 		return $this->voteCount;
-	}
-
-	// LikeCount /////
-
-	public function incrementLikeCount($by = 1) {
-		return $this->likeCount += intval($by);
-	}
-
-	public function setLikeCount($likeCount) {
-		$this->likeCount = $likeCount;
-		return $this;
-	}
-
-	public function getLikeCount() {
-		return $this->likeCount;
-	}
-
-	// WatchCount /////
-
-	public function incrementWatchCount($by = 1) {
-		return $this->watchCount += intval($by);
-	}
-
-	public function setWatchCount($watchCount) {
-		$this->watchCount = $watchCount;
-		return $this;
-	}
-
-	public function getWatchCount() {
-		return $this->watchCount;
-	}
-
-	// CommentCount /////
-
-	public function incrementCommentCount($by = 1) {
-		return $this->commentCount += intval($by);
-	}
-
-	public function setCommentCount($commentCount) {
-		$this->commentCount = $commentCount;
-
-		return $this;
-	}
-
-	public function getCommentCount() {
-		return $this->commentCount;
-	}
-
-	// ViewCount /////
-
-	public function incrementViewCount($by = 1) {
-		return $this->viewCount += intval($by);
-	}
-
-	public function setViewCount($viewCount) {
-		$this->viewCount = $viewCount;
-		return $this;
-	}
-
-	public function getViewCount() {
-		return $this->viewCount;
 	}
 
 }

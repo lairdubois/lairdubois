@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\BodiedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  */
 class Biography implements BodiedInterface {
+
+	use BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Biography';
 
@@ -39,28 +42,6 @@ class Biography implements BodiedInterface {
 
 	public function getId() {
 		return $this->id;
-	}
-
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
 	}
 
 }

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge\Value;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CommentableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -23,6 +24,8 @@ use Ladb\CoreBundle\Model\WatchableChildInterface;
  * @UniqueEntity(fields={"dataHash", "parentEntityType", "parentEntityId", "parentEntityField"})
  */
 abstract class BaseValue implements WatchableChildInterface, VotableInterface, CommentableInterface, AuthoredInterface {
+
+	use CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\BaseValue';
 
@@ -321,21 +324,6 @@ abstract class BaseValue implements WatchableChildInterface, VotableInterface, C
 
 	public function getData() {
 		return $this->data;
-	}
-
-	// CommentCount /////
-
-	public function incrementCommentCount($by = 1) {
-		return $this->commentCount += intval($by);
-	}
-
-	public function setCommentCount($commentCount) {
-		$this->commentCount = $commentCount;
-		return $this;
-	}
-
-	public function getCommentCount() {
-		return $this->commentCount;
 	}
 
 }

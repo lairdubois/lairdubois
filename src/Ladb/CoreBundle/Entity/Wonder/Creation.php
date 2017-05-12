@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
@@ -14,6 +15,8 @@ use Ladb\CoreBundle\Model\BlockBodiedInterface;
  * @LadbAssert\BodyBlocks()
  */
 class Creation extends AbstractWonder implements BlockBodiedInterface {
+
+	use BlockBodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Creation';
 	const TYPE = 100;
@@ -147,49 +150,6 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 
 	public function getType() {
 		return Creation::TYPE;
-	}
-
-	// BodyBlocks /////
-
-	public function addBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-        if (!$this->bodyBlocks->contains($bodyBlock)) {
-    		$this->bodyBlocks[] = $bodyBlock;
-        }
-		return $this;
-	}
-
-	public function removeBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-		$this->bodyBlocks->removeElement($bodyBlock);
-	}
-
-	public function getBodyBlocks() {
-		return $this->bodyBlocks;
-	}
-
-	public function resetBodyBlocks() {
-		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
-	}
-
-	// BodyBlockPictureCount /////
-
-	public function setBodyBlockPictureCount($bodyBlockPictureCount) {
-		$this->bodyBlockPictureCount = $bodyBlockPictureCount;
-		return $this;
-	}
-
-	public function getBodyBlockPictureCount() {
-		return $this->bodyBlockPictureCount;
-	}
-
-	// BodyBlockVideoCount /////
-
-	public function setBodyBlockVideoCount($bodyBlockVideoCount) {
-		$this->bodyBlockVideoCount = $bodyBlockVideoCount;
-		return $this;
-	}
-
-	public function getBodyBlockVideoCount() {
-		return $this->bodyBlockVideoCount;
 	}
 
 	// Woods /////

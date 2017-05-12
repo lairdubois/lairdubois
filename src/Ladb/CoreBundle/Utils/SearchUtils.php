@@ -72,7 +72,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		if (empty($filters) && !is_null($sort)) {
 			$query = new \Elastica\Query\MatchAll();
 		} else {
-			$query = new \Elastica\Query\Bool();
+			$query = new \Elastica\Query\BoolQuery();
 			foreach ($filters as $filter) {
 				$query->addMust($filter);
 			}

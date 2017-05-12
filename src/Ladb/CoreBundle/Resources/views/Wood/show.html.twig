@@ -46,7 +46,7 @@
 
 {% block contentBody %}
     <div class="ladb-knowledge-showcase row">
-        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':true, 'field':constant('FIELD_GRAIN', wood), 'picture':wood.grain, 'values':wood.grainValues } %}
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':true, 'field':constant('FIELD_GRAIN', wood), 'picture':wood.grain, 'values':wood.grainValues, 'pictureBoxClasses':(wood.grainRejected ? 'ladb-box-barred' : null) } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':true, 'field':constant('FIELD_ENDGRAIN', wood), 'picture':wood.endgrain, 'values':wood.endgrainValues } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':false, 'field':constant('FIELD_LUMBER', wood), 'picture':wood.lumber, 'values':wood.lumberValues } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':false, 'field':constant('FIELD_TREE', wood), 'picture':wood.tree, 'values':wood.treeValues } %}

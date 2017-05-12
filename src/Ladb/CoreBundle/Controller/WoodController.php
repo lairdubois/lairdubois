@@ -291,6 +291,15 @@ class WoodController extends Controller {
 
 						break;
 
+					case 'rejected':
+
+						$filter = new \Elastica\Query\BoolQuery();
+						$filter->addShould(new \Elastica\Query\Range('nameRejected', array( 'gte' => 1 )));
+						$filter->addShould(new \Elastica\Query\Range('grainRejected', array( 'gte' => 1 )));
+						$filters[] = $filter;
+
+						break;
+
 					case 'sort':
 
 						switch ($facet->value) {
@@ -335,6 +344,9 @@ class WoodController extends Controller {
 				}
 			},
 			function(&$filters, &$sort) {
+
+				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('grainRejected', array( 'lt' => 1 ));
 
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 

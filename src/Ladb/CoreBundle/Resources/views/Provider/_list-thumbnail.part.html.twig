@@ -3,12 +3,22 @@
 {# set provider #}
 
 {% set entity = provider %}
-{% set headingClasses = provider.signRejected ? 'ladb-strikethrough' : null %}
+{% set headingClasses = provider.signRejected ? 'ladb-text-barred' : null %}
 {% set titleLinkClasses = provider.signRejected ? 'ladb-color-null' : null %}
-{% set imgClasses = provider.signRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set imgClasses = provider.signRejected or provider.logoRejected ? 'ladb-desaturate ladb-translucent' : null %}
 
 {% block title %}
     {{ parent() }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}
+{% endblock %}
+
+{% block image %}
+    {% if provider.logoRejected %}
+        <div class="ladb-box-barred">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}

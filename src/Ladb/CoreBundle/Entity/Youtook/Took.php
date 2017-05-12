@@ -6,9 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\PicturedInterface;
+use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\ScrapableInterface;
+use Ladb\CoreBundle\Model\ScrapableTrait;
 use Ladb\CoreBundle\Model\TitledInterface;
+use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
@@ -19,7 +23,10 @@ use Ladb\CoreBundle\Model\TypableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Youtook\TookRepository")
  * @LadbAssert\ValidTook()
  */
-class Took extends AbstractAuthoredPublication implements TitledInterface, BodiedInterface, PicturedInterface, ScrapableInterface {
+class Took extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, ScrapableInterface {
+
+	use TitledTrait, PicturedTrait, BodiedTrait;
+	use ScrapableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Youtook\Took';
 	const TYPE = 112;
@@ -105,12 +112,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 		return Took::TYPE;
 	}
 
-	// IsScrapable /////
-
-	public function getIsScrapable() {
-		return true;
-	}
-
 	// Url /////
 
 	public function setUrl($url) {
@@ -144,17 +145,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 		return $this->embedIdentifier;
 	}
 
-	// Title /////
-
-	public function setTitle($title) {
-		$this->title = $title;
-		return $this;
-	}
-
-	public function getTitle() {
-		return $this->title;
-	}
-
 	// Slug /////
 
 	public function setSlug($slug) {
@@ -170,28 +160,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 		return $this->id.'-'.$this->slug;
 	}
 
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// Body /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
-	}
-
 	// ThumbnailUrl /////
 
 	public function setThumbnailUrl($thumbnailUrl) {
@@ -201,17 +169,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Bodie
 
 	public function getThumbnailUrl() {
 		return $this->thumbnailUrl;
-	}
-
-	// Thumbnail /////
-
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
-		$this->mainPicture = $mainPicture;
-		return $this;
-	}
-
-	public function getMainPicture() {
-		return $this->mainPicture;
 	}
 
 	// ChannelId /////

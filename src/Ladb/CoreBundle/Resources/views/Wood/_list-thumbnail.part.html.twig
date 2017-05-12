@@ -3,7 +3,8 @@
 {# set wood #}
 
 {% set entity = wood %}
-{% set headingClasses = wood.nameRejected ? 'ladb-strikethrough' : null %}
+{% set headingClasses = wood.nameRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = wood.nameRejected or wood.grainRejected ? 'ladb-desaturate ladb-translucent' : null %}
 {% set pictureWidth = '282' %}
 {% set pictureHeight = '280' %}
 {% set pictureFilterMode = 'o' %}
@@ -15,6 +16,16 @@
         <i class="ladb-icon-resinous"></i>
     {% endif %}
     {{ parent() }}
+{% endblock %}
+
+{% block image %}
+    {% if wood.grainRejected %}
+        <div class="ladb-box-barred">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block entityMetas %}

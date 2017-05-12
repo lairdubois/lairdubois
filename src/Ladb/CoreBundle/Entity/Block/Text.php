@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Block;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\BodiedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 
@@ -12,6 +13,8 @@ use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
  * @ORM\Entity
  */
 class Text extends AbstractBlock implements BodiedInterface {
+
+	use BodiedTrait;
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)
@@ -30,28 +33,6 @@ class Text extends AbstractBlock implements BodiedInterface {
 
 	public function getStrippedName() {
 		return 'text';
-	}
-
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
 	}
 
 }

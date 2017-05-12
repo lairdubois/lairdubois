@@ -3,13 +3,12 @@
 {% if homepage %}
     {% set pageTitle = ('default.ladb'|trans())~' - '~('default.slogan'|trans()) %}
     {% set titleSuffixHidden = true %}
+    {% set pageImage = asset('banner-600x376.jpg') %}
 {% else %}
     {% set pageTitle = 'creation.list'|trans() %}
     {% set pageDescription = 'creation.description'|trans() %}
+    {% set pageImage = asset('banner-creations-600x376.jpg') %}
 {% endif %}
-{% set pageImage = asset('banner-creations-600x600.jpg') %}
-{% set pageImageWidth = '600' %}
-{% set pageImageHeight = '600' %}
 
 {% set navSection = 'creations' %}
 {% set masonry = true %}

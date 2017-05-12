@@ -4,6 +4,20 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Model\EmbeddableTrait;
+use Ladb\CoreBundle\Model\IndexableTrait;
+use Ladb\CoreBundle\Model\LicensedTrait;
+use Ladb\CoreBundle\Model\LikableTrait;
+use Ladb\CoreBundle\Model\MultiPicturedTrait;
+use Ladb\CoreBundle\Model\PicturedTrait;
+use Ladb\CoreBundle\Model\ScrapableTrait;
+use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\SitemapableTrait;
+use Ladb\CoreBundle\Model\TaggableTrait;
+use Ladb\CoreBundle\Model\TitledTrait;
+use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\EmbeddableInterface;
@@ -26,7 +40,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractWonder extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
+abstract class AbstractWonder extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
+
+	use TitledTrait, PicturedTrait, MultiPicturedTrait, LicensedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, EmbeddableTrait;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -113,10 +130,6 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Ind
 
 	/////
 
-	private $isShown = true;
-
-	/////
-
 	public function __construct() {
 		$this->pictures = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
@@ -129,45 +142,6 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Ind
 
 	public function getNotificationStrategy() {
 		return self::NOTIFICATION_STRATEGY_FOLLOWER;
-	}
-
-	// IsIndexable /////
-
-	public function isIndexable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsViewable /////
-
-	public function getIsViewable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsShown /////
-
-	public function setIsShown($isShown) {
-		$this->isShown = $isShown;
-	}
-
-	public function getIsShown() {
-		return $this->isShown;
-	}
-
-	// IsScrapable /////
-
-	public function getIsScrapable() {
-		return $this->getIsViewable();
-	}
-
-	// Title /////
-
-	public function setTitle($title) {
-		$this->title = $title;
-		return $this;
-	}
-
-	public function getTitle() {
-		return $this->title;
 	}
 
 	// Slug /////
@@ -196,140 +170,10 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Ind
 		return $this->body;
 	}
 
-	// MainPicture /////
-
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture) {
-		$this->mainPicture = $mainPicture;
-		return $this;
-	}
-
-	public function getMainPicture() {
-		return $this->mainPicture;
-	}
-
 	// Pictures /////
-
-	public function addPicture(\Ladb\CoreBundle\Entity\Picture $picture) {
-		if (!$this->pictures->contains($picture)) {
-			$this->pictures[] = $picture;
-		}
-		return $this;
-	}
-
-	public function removePicture(\Ladb\CoreBundle\Entity\Picture $picture) {
-		$this->pictures->removeElement($picture);
-	}
-
-	public function getPictures() {
-		return $this->pictures;
-	}
-
-	public function resetPictures() {
-		$this->pictures->clear();
-	}
 
 	public function getMaxPictureCount() {
 		return 5;
-	}
-
-	// Tags /////
-
-	public function addTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags[] = $tag;
-		return $this;
-	}
-
-	public function removeTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags->removeElement($tag);
-	}
-
-	public function getTags() {
-		return $this->tags;
-	}
-
-	// License /////
-
-	public function setLicense($license) {
-		$this->license = $license;
-	}
-
-	public function getLicense() {
-		if (is_null($this->license)) {
-			return new \Ladb\CoreBundle\Entity\License();
-		}
-		return $this->license;
-	}
-
-	// LikeCount /////
-
-	public function incrementLikeCount($by = 1) {
-		return $this->likeCount += intval($by);
-	}
-
-	public function setLikeCount($likeCount) {
-		$this->likeCount = $likeCount;
-		return $this;
-	}
-
-	public function getLikeCount() {
-		return $this->likeCount;
-	}
-
-	// WatchCount /////
-
-	public function incrementWatchCount($by = 1) {
-		return $this->watchCount += intval($by);
-	}
-
-	public function setWatchCount($watchCount) {
-		$this->watchCount = $watchCount;
-		return $this;
-	}
-
-	public function getWatchCount() {
-		return $this->watchCount;
-	}
-
-	// CommentCount /////
-
-	public function incrementCommentCount($by = 1) {
-		return $this->commentCount += intval($by);
-	}
-
-	public function setCommentCount($commentCount) {
-		$this->commentCount = $commentCount;
-
-		return $this;
-	}
-
-	public function getCommentCount() {
-		return $this->commentCount;
-	}
-
-	// ViewCount /////
-
-	public function incrementViewCount($by = 1) {
-		return $this->viewCount += intval($by);
-	}
-
-	public function setViewCount($viewCount) {
-		$this->viewCount = $viewCount;
-		return $this;
-	}
-
-	public function getViewCount() {
-		return $this->viewCount;
-	}
-
-	// Sticker /////
-
-	public function setSticker(\Ladb\CoreBundle\Entity\Picture $sticker = null) {
-		$this->sticker = $sticker;
-		return $this;
-	}
-
-	public function getSticker() {
-		return $this->sticker;
 	}
 
 	// Strip /////
@@ -341,38 +185,6 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Ind
 
 	public function getStrip() {
 		return $this->strip;
-	}
-
-	// Referrals /////
-
-	public function addReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral) {
-		if (!$this->referrals->contains($referral)) {
-			$this->referrals[] = $referral;
-			$this->referralCount = count($this->referrals);
-			$referral->setEntityType($this->getType());
-			$referral->setEntityId($this->getId());
-		}
-		return $this;
-	}
-
-	public function removeReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral) {
-		$this->referrals->removeElement($referral);
-		$referral->setEntityType(null);
-		$referral->setEntityId(null);
-	}
-
-	public function getReferrals() {
-		return $this->referrals;
-	}
-
-	// ReferralCount /////
-
-	public function incrementReferralCount($by = 1) {
-		$this->referralCount += intval($by);
-	}
-
-	public function getReferralCount() {
-		return $this->referralCount;
 	}
 
 }

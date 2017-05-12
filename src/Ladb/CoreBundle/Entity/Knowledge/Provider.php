@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
@@ -22,6 +23,8 @@ use Ladb\CoreBundle\Entity\Knowledge\Value\Phone;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\ProviderRepository")
  */
 class Provider extends AbstractKnowledge implements LocalisableInterface {
+
+	use LocalisableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Provider';
 	const TYPE = 111;
@@ -44,7 +47,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	public static $FIELD_DEFS = array(
 		Provider::FIELD_SIGN                => array(Provider::ATTRIB_TYPE => Sign::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true, Provider::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueProvider', array('excludedId' => '@getId'))), Provider::ATTRIB_LINKED_FIELDS => array('brand', 'isAffiliate', 'store')),
-		Provider::FIELD_LOGO                => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
+		Provider::FIELD_LOGO                => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true),
 		Provider::FIELD_PHOTO               => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_WEBSITE             => array(Provider::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_ADDRESS             => array(Provider::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),
@@ -86,7 +89,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	private $signValues;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=false)
+	 * @ORM\Column(type="boolean", nullable=false, name="sign_rejected")
 	 */
 	private $signRejected = false;
 
@@ -97,6 +100,11 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $logoValues;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=false, name="logo_rejected")
+	 */
+	private $logoRejected = false;
 
 
 	/**
@@ -291,6 +299,12 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	/////
 
+	// IsRejected /////
+
+	public function getIsRejected() {
+		return $this->getSignRejected() || $this->getLogoRejected();
+	}
+
 	// Type /////
 
 	public function getType() {
@@ -436,6 +450,17 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return $this->logoValues;
 	}
 
+	// LogoRejected /////
+
+	public function setLogoRejected($logoRejected) {
+		$this->logoRejected = $logoRejected;
+		return $this;
+	}
+
+	public function getLogoRejected() {
+		return $this->logoRejected;
+	}
+
 	// Photo /////
 
 	public function setPhoto($photo) {
@@ -518,37 +543,6 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	public function getLocation() {
 		return $this->getAddress();
-	}
-
-	// Latitude /////
-
-	public function setLatitude($latitude = null) {
-		$this->latitude = $latitude;
-		return $this;
-	}
-
-	public function getLatitude() {
-		return $this->latitude;
-	}
-
-	// Longitude /////
-
-	public function setLongitude($longitude = null) {
-		$this->longitude = $longitude;
-		return $this;
-	}
-
-	public function getLongitude() {
-		return $this->longitude;
-	}
-
-	// GeoPoint /////
-
-	public function getGeoPoint() {
-		if (!is_null($this->latitude) && !is_null($this->longitude)) {
-			return array( $this->longitude, $this->latitude );
-		}
-		return null;
 	}
 
 	// GeographicalAreas /////

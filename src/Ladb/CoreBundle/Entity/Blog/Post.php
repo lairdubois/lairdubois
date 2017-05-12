@@ -4,6 +4,18 @@ namespace Ladb\CoreBundle\Entity\Blog;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
+use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Model\IndexableTrait;
+use Ladb\CoreBundle\Model\LikableTrait;
+use Ladb\CoreBundle\Model\PicturedTrait;
+use Ladb\CoreBundle\Model\ScrapableTrait;
+use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\SitemapableTrait;
+use Ladb\CoreBundle\Model\TaggableTrait;
+use Ladb\CoreBundle\Model\TitledTrait;
+use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\IndexableInterface;
@@ -25,7 +37,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Blog\PostRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Post extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BlockBodiedInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
+class Post extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
+
+	use TitledTrait, PicturedTrait, BlockBodiedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Blog\Post';
 	const TYPE = 108;
@@ -112,10 +127,6 @@ class Post extends AbstractAuthoredPublication implements IndexableInterface, Ti
 
 	/////
 
-	private $isShown = true;
-
-	/////
-
 	public function __construct() {
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
@@ -125,45 +136,6 @@ class Post extends AbstractAuthoredPublication implements IndexableInterface, Ti
 
 	public function getType() {
 		return Post::TYPE;
-	}
-
-	// IsIndexable /////
-
-	public function isIndexable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsViewable /////
-
-	public function getIsViewable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsShown /////
-
-	public function setIsShown($isShown) {
-		$this->isShown = $isShown;
-	}
-
-	public function getIsShown() {
-		return $this->isShown;
-	}
-
-	// IsScrapable /////
-
-	public function getIsScrapable() {
-		return $this->getIsViewable();
-	}
-
-	// Title /////
-
-	public function setTitle($title) {
-		$this->title = $title;
-		return $this;
-	}
-
-	public function getTitle() {
-		return $this->title;
 	}
 
 	// Slug /////
@@ -181,96 +153,6 @@ class Post extends AbstractAuthoredPublication implements IndexableInterface, Ti
 		return $this->id.'-'.$this->slug;
 	}
 
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// BodyExtract /////
-
-	public function getBodyExtract() {
-		$firstBlock = $this->bodyBlocks->first();
-		if ($firstBlock instanceof \Ladb\CoreBundle\Entity\Block\Text) {
-			return $firstBlock->getHtmlBody();
-		}
-		return '';
-	}
-
-	// BodyBlocks /////
-
-	public function addBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-		if (!$this->bodyBlocks->contains($bodyBlock)) {
-			$this->bodyBlocks[] = $bodyBlock;
-		}
-		return $this;
-	}
-
-	public function removeBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-		$this->bodyBlocks->removeElement($bodyBlock);
-	}
-
-	public function getBodyBlocks() {
-		return $this->bodyBlocks;
-	}
-
-	public function resetBodyBlocks() {
-		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
-	}
-
-	// BodyBlockPictureCount /////
-
-	public function setBodyBlockPictureCount($bodyBlockPictureCount) {
-		$this->bodyBlockPictureCount = $bodyBlockPictureCount;
-		return $this;
-	}
-
-	public function getBodyBlockPictureCount() {
-		return $this->bodyBlockPictureCount;
-	}
-
-	// BodyBlockVideoCount /////
-
-	public function setBodyBlockVideoCount($bodyBlockVideoCount) {
-		$this->bodyBlockVideoCount = $bodyBlockVideoCount;
-		return $this;
-	}
-
-	public function getBodyBlockVideoCount() {
-		return $this->bodyBlockVideoCount;
-	}
-
-	// MainPicture /////
-
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture) {
-		$this->mainPicture = $mainPicture;
-		return $this;
-	}
-
-	public function getMainPicture() {
-		return $this->mainPicture;
-	}
-
-	// Tags /////
-
-	public function addTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags[] = $tag;
-		return $this;
-	}
-
-	public function removeTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags->removeElement($tag);
-	}
-
-	public function getTags() {
-		return $this->tags;
-	}
-
 	// HighlightLevel
 
 	public function setHighlightLevel($highlightLevel) {
@@ -280,67 +162,6 @@ class Post extends AbstractAuthoredPublication implements IndexableInterface, Ti
 
 	public function getHighlightLevel() {
 		return $this->highlightLevel;
-	}
-
-	// LikeCount /////
-
-	public function incrementLikeCount($by = 1) {
-		return $this->likeCount += intval($by);
-	}
-
-	public function setLikeCount($likeCount) {
-		$this->likeCount = $likeCount;
-		return $this;
-	}
-
-	public function getLikeCount() {
-		return $this->likeCount;
-	}
-
-	// WatchCount /////
-
-	public function incrementWatchCount($by = 1) {
-		return $this->watchCount += intval($by);
-	}
-
-	public function setWatchCount($watchCount) {
-		$this->watchCount = $watchCount;
-		return $this;
-	}
-
-	public function getWatchCount() {
-		return $this->watchCount;
-	}
-
-	// CommentCount /////
-
-	public function incrementCommentCount($by = 1) {
-		return $this->commentCount += intval($by);
-	}
-
-	public function setCommentCount($commentCount) {
-		$this->commentCount = $commentCount;
-
-		return $this;
-	}
-
-	public function getCommentCount() {
-		return $this->commentCount;
-	}
-
-	// ViewCount /////
-
-	public function incrementViewCount($by = 1) {
-		return $this->viewCount += intval($by);
-	}
-
-	public function setViewCount($viewCount) {
-		$this->viewCount = $viewCount;
-		return $this;
-	}
-
-	public function getViewCount() {
-		return $this->viewCount;
 	}
 
 }

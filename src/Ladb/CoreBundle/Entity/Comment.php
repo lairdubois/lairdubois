@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\MultiPicturedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\TypableInterface;
@@ -15,6 +17,8 @@ use Ladb\CoreBundle\Model\MultiPicturedInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\CommentRepository")
  */
 class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterface {
+
+	use BodiedTrait, MultiPicturedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Comment';
 	const TYPE = 1;
@@ -153,49 +157,6 @@ class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterfa
 
 	public function getUser() {
 		return $this->user;
-	}
-
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
-	}
-
-	// Pictures /////
-
-	public function addPicture(\Ladb\CoreBundle\Entity\Picture $picture) {
-		if (!$this->pictures->contains($picture)) {
-			$this->pictures[] = $picture;
-		}
-		return $this;
-	}
-
-	public function removePicture(\Ladb\CoreBundle\Entity\Picture $picture) {
-		$this->pictures->removeElement($picture);
-	}
-
-	public function getPictures() {
-		return $this->pictures;
-	}
-
-	public function resetPictures() {
-		$this->pictures->clear();
 	}
 
 }

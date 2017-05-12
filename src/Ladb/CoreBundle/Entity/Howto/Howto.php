@@ -4,6 +4,21 @@ namespace Ladb\CoreBundle\Entity\Howto;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BasicEmbeddableTrait;
+use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Model\EmbeddableTrait;
+use Ladb\CoreBundle\Model\IndexableTrait;
+use Ladb\CoreBundle\Model\LicensedTrait;
+use Ladb\CoreBundle\Model\LikableTrait;
+use Ladb\CoreBundle\Model\PicturedTrait;
+use Ladb\CoreBundle\Model\ScrapableTrait;
+use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\SitemapableTrait;
+use Ladb\CoreBundle\Model\TaggableTrait;
+use Ladb\CoreBundle\Model\TitledTrait;
+use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\IndexableInterface;
@@ -26,7 +41,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Table("tbl_howto")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Howto\HowtoRepository")
  */
-class Howto extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BodiedInterface, TaggableInterface, LicensedInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface {
+class Howto extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface {
+
+	use TitledTrait, PicturedTrait, BodiedTrait, LicensedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, EmbeddableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
     const TYPE = 106;
@@ -183,10 +201,6 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
 
 	/////
 
-	private $isShown = true;
-
-	/////
-
     public function __construct() {
         $this->articles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
@@ -216,45 +230,6 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
         return Howto::TYPE;
     }
 
-	// IsIndexable /////
-
-	public function isIndexable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsViewable /////
-
-	public function getIsViewable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsShown /////
-
-	public function setIsShown($isShown) {
-		$this->isShown = $isShown;
-	}
-
-	public function getIsShown() {
-		return $this->isShown;
-	}
-
-	// IsScrapable /////
-
-	public function getIsScrapable() {
-		return $this->getIsViewable();
-	}
-
-	// Title /////
-
-    public function setTitle($title) {
-        $this->title = $title;
-        return $this;
-    }
-
-    public function getTitle() {
-        return $this->title;
-    }
-
     // Slug /////
 
     public function setSlug($slug) {
@@ -269,28 +244,6 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
     public function getSluggedId() {
         return $this->id.'-'.$this->slug;
     }
-
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
-	}
 
 	// BodyBlockVideoCount /////
 
@@ -308,17 +261,6 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
 	public function getBodyExtract() {
 		return $this->getHtmlBody();
 	}
-
-	// MainPicture /////
-
-    public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
-        $this->mainPicture = $mainPicture;
-        return $this;
-    }
-
-    public function getMainPicture() {
-        return $this->mainPicture;
-    }
 
 	// WorkInProgress /////
 
@@ -453,95 +395,6 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
 		return $this->plans;
 	}
 
-	// Tags /////
-
-	public function addTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags[] = $tag;
-		return $this;
-	}
-
-	public function removeTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags->removeElement($tag);
-	}
-
-	public function getTags() {
-		return $this->tags;
-	}
-
-	// License /////
-
-	public function setLicense($license) {
-		$this->license = $license;
-	}
-
-	public function getLicense() {
-		if (is_null($this->license)) {
-			return new \Ladb\CoreBundle\Entity\License();
-		}
-		return $this->license;
-	}
-
-	// LikeCount /////
-
-    public function incrementLikeCount($by = 1) {
-        return $this->likeCount += intval($by);
-    }
-
-    public function setLikeCount($likeCount) {
-        $this->likeCount = $likeCount;
-        return $this;
-    }
-
-    public function getLikeCount() {
-        return $this->likeCount;
-    }
-
-    // WatchCount /////
-
-    public function incrementWatchCount($by = 1) {
-        return $this->watchCount += intval($by);
-    }
-
-    public function setWatchCount($watchCount) {
-        $this->watchCount = $watchCount;
-        return $this;
-    }
-
-    public function getWatchCount() {
-        return $this->watchCount;
-    }
-
-	// CommentCount /////
-
-	public function incrementCommentCount($by = 1) {
-		return $this->commentCount += intval($by);
-	}
-
-	public function setCommentCount($commentCount) {
-		$this->commentCount = $commentCount;
-
-		return $this;
-	}
-
-	public function getCommentCount() {
-		return $this->commentCount;
-	}
-
-	// ViewCount /////
-
-    public function incrementViewCount($by = 1) {
-        return $this->viewCount += intval($by);
-    }
-
-    public function setViewCount($viewCount) {
-        $this->viewCount = $viewCount;
-        return $this;
-    }
-
-    public function getViewCount() {
-        return $this->viewCount;
-    }
-
 	// Spotlight /////
 
 	public function setSpotlight(\Ladb\CoreBundle\Entity\Spotlight $spotlight = null) {
@@ -551,49 +404,6 @@ class Howto extends AbstractAuthoredPublication implements IndexableInterface, T
 
 	public function getSpotlight() {
 		return $this->spotlight;
-	}
-
-	// Sticker /////
-
-	public function setSticker(\Ladb\CoreBundle\Entity\Picture $sticker = null) {
-		$this->sticker = $sticker;
-		return $this;
-	}
-
-	public function getSticker() {
-		return $this->sticker;
-	}
-
-	// Referrals /////
-
-	public function addReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral) {
-		if (!$this->referrals->contains($referral)) {
-			$this->referrals[] = $referral;
-			$this->referralCount = count($this->referrals);
-			$referral->setEntityType($this->getType());
-			$referral->setEntityId($this->getId());
-		}
-		return $this;
-	}
-
-	public function removeReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral) {
-		$this->referrals->removeElement($referral);
-		$referral->setEntityType(null);
-		$referral->setEntityId(null);
-	}
-
-	public function getReferrals() {
-		return $this->referrals;
-	}
-
-	// ReferralCount /////
-
-	public function incrementReferralCount($by = 1) {
-		$this->referralCount += intval($by);
-	}
-
-	public function getReferralCount() {
-		return $this->referralCount;
 	}
 
 }

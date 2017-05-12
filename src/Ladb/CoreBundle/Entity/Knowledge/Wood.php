@@ -42,7 +42,7 @@ class Wood extends AbstractKnowledge {
 		Wood::FIELD_NAME           => array(Wood::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => true, Wood::ATTRIB_MANDATORY => true, Wood::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueWood', array('excludedId' => '@getId'))), Wood::ATTRIB_DATA_CONSTRAINTS => array( array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul Nom français par proposition.')))),
 		Wood::FIELD_SCIENTIFICNAME => array(Wood::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => true, Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul Nom scientifique par proposition.')))),
 		Wood::FIELD_ENGLISHNAME    => array(Wood::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => true, Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul nom anglais par proposition.')))),
-		Wood::FIELD_GRAIN          => array(Wood::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => false),
+		Wood::FIELD_GRAIN          => array(Wood::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => false, Wood::ATTRIB_MANDATORY => true),
 		Wood::FIELD_ENDGRAIN       => array(Wood::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => false),
 		Wood::FIELD_LUMBER         => array(Wood::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => false),
 		Wood::FIELD_TREE           => array(Wood::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => false),
@@ -69,9 +69,10 @@ class Wood extends AbstractKnowledge {
 	private $nameValues;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=false)
+	 * @ORM\Column(type="boolean", nullable=false, name="name_rejected")
 	 */
 	private $nameRejected = false;
+
 
 	/**
 	 * @ORM\Column(type="text", nullable=true)
@@ -105,6 +106,11 @@ class Wood extends AbstractKnowledge {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $grainValues;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=false, name="grain_rejected")
+	 */
+	private $grainRejected = false;
 
 
 	/**
@@ -293,6 +299,12 @@ class Wood extends AbstractKnowledge {
 
 	/////
 
+	// IsRejected /////
+
+	public function getIsRejected() {
+		return $this->getNameRejected() || $this->getGrainRejected();
+	}
+
 	// Type /////
 
 	public function getType() {
@@ -465,6 +477,17 @@ class Wood extends AbstractKnowledge {
 
 	public function getGrainValues() {
 		return $this->grainValues;
+	}
+
+	// GrainRejected /////
+
+	public function setGrainRejected($grainRejected) {
+		$this->grainRejected = $grainRejected;
+		return $this;
+	}
+
+	public function getGrainRejected() {
+		return $this->grainRejected;
 	}
 
 	// Endgrain /////
