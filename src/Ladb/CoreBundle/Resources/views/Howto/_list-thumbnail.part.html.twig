@@ -5,7 +5,7 @@
 {% set entity = howto %}
 {% set itemType = 'Article' %}
 
-{% block title %}{% if howto.isWorkInProgress %}<span class="pull-right" title="{{ 'howto.wip_tooltip'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-wip" style="color: #ddd;"></i></span>{% endif %}{{ parent() }}{% endblock title %}
+{% block headingInner %}{% if howto.isWorkInProgress %}<span class="pull-right" title="{{ 'howto.wip_tooltip'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-wip" style="color: #ddd;"></i></span>{% endif %}{{ parent() }}{% endblock %}
 
 {% block entityMetas %}
     {% if howto.planCount > 0 %}

@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
+use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
@@ -15,6 +17,8 @@ use Ladb\CoreBundle\Model\LocalisableInterface;
  * @LadbAssert\BodyBlocks()
  */
 class Workshop extends AbstractWonder implements BlockBodiedInterface, LocalisableInterface {
+
+	use BlockBodiedTrait, LocalisableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Workshop';
 	const TYPE = 101;
@@ -117,46 +121,6 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 		return Workshop::TYPE;
 	}
 
-	// Location /////
-
-	public function setLocation($location) {
-		$this->location = $location;
-		return $this;
-	}
-
-	public function getLocation() {
-		return $this->location;
-	}
-
-	// Latitude /////
-
-	public function setLatitude($latitude = null) {
-		$this->latitude = $latitude;
-	}
-
-	public function getLatitude() {
-		return $this->latitude;
-	}
-
-	// Longitude /////
-
-	public function setLongitude($longitude = null) {
-		$this->longitude = $longitude;
-	}
-
-	public function getLongitude() {
-		return $this->longitude;
-	}
-
-	// GeoPoint /////
-
-	public function getGeoPoint() {
-		if (!is_null($this->latitude) && !is_null($this->longitude)) {
-			return array( $this->longitude, $this->latitude );
-		}
-		return null;
-	}
-
 	// Area /////
 
 	public function setArea($area) {
@@ -166,49 +130,6 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 
 	public function getArea() {
 		return $this->area;
-	}
-
-	// BodyBlocks /////
-
-	public function addBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-		if (!$this->bodyBlocks->contains($bodyBlock)) {
-			$this->bodyBlocks[] = $bodyBlock;
-		}
-		return $this;
-	}
-
-	public function removeBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-		$this->bodyBlocks->removeElement($bodyBlock);
-	}
-
-	public function getBodyBlocks() {
-		return $this->bodyBlocks;
-	}
-
-	public function resetBodyBlocks() {
-		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
-	}
-
-	// BodyBlockPictureCount /////
-
-	public function setBodyBlockPictureCount($bodyBlockPictureCount) {
-		$this->bodyBlockPictureCount = $bodyBlockPictureCount;
-		return $this;
-	}
-
-	public function getBodyBlockPictureCount() {
-		return $this->bodyBlockPictureCount;
-	}
-
-	// BodyBlockVideoCount /////
-
-	public function setBodyBlockVideoCount($bodyBlockVideoCount) {
-		$this->bodyBlockVideoCount = $bodyBlockVideoCount;
-		return $this;
-	}
-
-	public function getBodyBlockVideoCount() {
-		return $this->bodyBlockVideoCount;
 	}
 
 	// PlanCount /////

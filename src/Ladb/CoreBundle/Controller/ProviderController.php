@@ -238,7 +238,7 @@ class ProviderController extends Controller {
 						$query1 = new \Elastica\Query\QueryString('"Bois massif"');
 						$query1->setFields(array( 'products' ));
 						$query2 = $elasticaQueryUtils->createShouldMatchPhraseQuery('woods', $facet->value);
-						$filter = new \Elastica\Query\Bool();
+						$filter = new \Elastica\Query\BoolQuery();
 						$filter->addMust($query1);
 						$filter->addMust($query2);
 						$filters[] = $filter;
@@ -317,8 +317,7 @@ class ProviderController extends Controller {
 			},
 			function(&$filters, &$sort) {
 
-				$filter = new \Elastica\Query\Range('signRejected', array( 'lt' => 1 ));
-				$filters[] = $filter;
+				$filters[] = new \Elastica\Query\Range('signRejected', array( 'lt' => 1 ));
 
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 

@@ -4,14 +4,12 @@ namespace Ladb\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
-use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
+use Ladb\CoreBundle\Model\SitemapableInterface;
 use Ladb\CoreBundle\Utils\PicturedUtils;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -83,7 +81,7 @@ EOT
 
 			$progress->advance();
 
-			if ($entity instanceof IndexableInterface && !$entity->isIndexable()) {
+			if ($entity instanceof SitemapableInterface && $entity->getIsSitemapable()) {
 				continue;
 			}
 

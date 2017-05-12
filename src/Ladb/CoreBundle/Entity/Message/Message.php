@@ -5,12 +5,17 @@ namespace Ladb\CoreBundle\Entity\Message;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\MultiPicturedInterface;
+use Ladb\CoreBundle\Model\MultiPicturedTrait;
 
 /**
  * @ORM\Table("tbl_message")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Message\MessageRepository")
  */
-class Message implements BodiedInterface {
+class Message implements MultiPicturedInterface, BodiedInterface {
+
+	use MultiPicturedTrait, BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Message\Message';
 
@@ -109,49 +114,6 @@ class Message implements BodiedInterface {
 
 	public function getSender() {
 		return $this->sender;
-	}
-
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
-	}
-
-	// Pictures /////
-
-	public function addPicture(\Ladb\CoreBundle\Entity\Picture $picture) {
-		if (!$this->pictures->contains($picture)) {
-			$this->pictures[] = $picture;
-		}
-		return $this;
-	}
-
-	public function removePicture(\Ladb\CoreBundle\Entity\Picture $picture) {
-		$this->pictures->removeElement($picture);
-	}
-
-	public function getPictures() {
-		return $this->pictures;
-	}
-
-	public function resetPictures() {
-		$this->pictures->clear();
 	}
 
 	// Metas /////

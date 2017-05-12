@@ -22,4 +22,8 @@ interface LocalisableInterface {
 
 	public function getLongitude();
 
+	// GeoPoint /////
+
+	public function getGeoPoint();
+
 }

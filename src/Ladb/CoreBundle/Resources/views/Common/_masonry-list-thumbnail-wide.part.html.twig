@@ -18,7 +18,9 @@
         <div class="ladb-content">
             {% block contentInner %}
                 <div class="ladb-heading">
-                    <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% block title %}<a href="{{ ladb_entity_url_action(entity) }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
+                    {% block headingInner %}
+                        <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% block title %}<a href="{{ ladb_entity_url_action(entity) }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
+                    {% endblock %}
                 </div>
                 {% block imageOuter %}
                     <div class="ladb-image">

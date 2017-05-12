@@ -577,6 +577,8 @@ fos_elastica:
                     mappings:
                         title: { analyzer: exact_lowercase_analyzer }
                         name: { boost: 3, analyzer: name_analyzer }
+                        nameRejected: { type: boolean }
+                        grainRejected: { type: boolean }
                         scientificname: { analyzer: name_analyzer }
                         englishname: { analyzer: name_analyzer }
                         density: { type: integer }

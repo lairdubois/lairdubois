@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BodiedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\EmbeddableInterface;
@@ -15,6 +16,8 @@ use Ladb\CoreBundle\Model\BodiedInterface;
  * @LadbAssert\PlanResourcesMaxSize()
  */
 class Plan extends AbstractWonder implements BodiedInterface {
+
+	use BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Plan';
 	const STRIPPED_NAME = 'plan';
@@ -153,17 +156,6 @@ class Plan extends AbstractWonder implements BodiedInterface {
 	}
 
 	/////
-
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
-	}
 
 	// Type /////
 

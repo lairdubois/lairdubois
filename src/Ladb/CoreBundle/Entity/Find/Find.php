@@ -4,6 +4,18 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Model\IndexableTrait;
+use Ladb\CoreBundle\Model\LikableTrait;
+use Ladb\CoreBundle\Model\PicturedTrait;
+use Ladb\CoreBundle\Model\ScrapableTrait;
+use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\SitemapableTrait;
+use Ladb\CoreBundle\Model\TaggableTrait;
+use Ladb\CoreBundle\Model\TitledTrait;
+use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\JoinableInterface;
@@ -27,7 +39,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Find\FindRepository")
  * @LadbAssert\UniqueFind()
  */
-class Find extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
+class Find extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
+
+	use TitledTrait, PicturedTrait, BodiedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
 	const TYPE = 104;
@@ -121,10 +136,6 @@ class Find extends AbstractAuthoredPublication implements IndexableInterface, Ti
 
 	/////
 
-	private $isShown = true;
-
-	/////
-
 	private $contentType = Find::CONTENT_TYPE_LINK;
 
 	/////
@@ -156,45 +167,6 @@ class Find extends AbstractAuthoredPublication implements IndexableInterface, Ti
 
 	public function getContentType() {
 		return $this->contentType;
-	}
-
-	// IsIndexable /////
-
-	public function isIndexable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsViewable /////
-
-	public function getIsViewable() {
-		return $this->isDraft !== true;
-	}
-
-	// IsShown /////
-
-	public function setIsShown($isShown) {
-		$this->isShown = $isShown;
-	}
-
-	public function getIsShown() {
-		return $this->isShown;
-	}
-
-	// IsScrapable /////
-
-	public function getIsScrapable() {
-		return $this->getIsViewable();
-	}
-
-	// Title /////
-
-	public function setTitle($title) {
-		$this->title = $title;
-		return $this;
-	}
-
-	public function getTitle() {
-		return $this->title;
 	}
 
 	// Slug /////
@@ -234,119 +206,10 @@ class Find extends AbstractAuthoredPublication implements IndexableInterface, Ti
 		return $this->kind;
 	}
 
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
-
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody) {
-		$this->htmlBody = $htmlBody;
-		return $this;
-	}
-
-	public function getHtmlBody() {
-		return $this->htmlBody;
-	}
-
 	// BodyExtract /////
 
 	public function getBodyExtract() {
 		return $this->getHtmlBody();
-	}
-
-	// MainPicture /////
-
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
-		$this->mainPicture = $mainPicture;
-		return $this;
-	}
-
-	public function getMainPicture() {
-		return $this->mainPicture;
-	}
-
-	// Tags /////
-
-	public function addTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags[] = $tag;
-		return $this;
-	}
-
-	public function removeTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags->removeElement($tag);
-	}
-
-	public function getTags() {
-		return $this->tags;
-	}
-
-	// LikeCount /////
-
-	public function incrementLikeCount($by = 1) {
-		return $this->likeCount += intval($by);
-	}
-
-	public function setLikeCount($likeCount) {
-		$this->likeCount = $likeCount;
-		return $this;
-	}
-
-	public function getLikeCount() {
-		return $this->likeCount;
-	}
-
-	// WatchCount /////
-
-	public function incrementWatchCount($by = 1) {
-		return $this->watchCount += intval($by);
-	}
-
-	public function setWatchCount($watchCount) {
-		$this->watchCount = $watchCount;
-		return $this;
-	}
-
-	public function getWatchCount() {
-		return $this->watchCount;
-	}
-
-	// CommentCount /////
-
-	public function incrementCommentCount($by = 1) {
-		return $this->commentCount += intval($by);
-	}
-
-	public function setCommentCount($commentCount) {
-		$this->commentCount = $commentCount;
-
-		return $this;
-	}
-
-	public function getCommentCount() {
-		return $this->commentCount;
-	}
-
-	// ViewCount /////
-
-	public function incrementViewCount($by = 1) {
-		return $this->viewCount += intval($by);
-	}
-
-	public function setViewCount($viewCount) {
-		$this->viewCount = $viewCount;
-		return $this;
-	}
-
-	public function getViewCount() {
-		return $this->viewCount;
 	}
 
 	// IsJoinable /////

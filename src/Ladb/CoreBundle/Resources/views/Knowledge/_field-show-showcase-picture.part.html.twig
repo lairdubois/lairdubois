@@ -5,10 +5,11 @@
 {# set picture #}
 {# set values #}
 {# set itemProperty (facultative) #}
+{# set pictureBoxClasses (facultative) #}
 
 <div class="{% if wide %}col-xs-6{% else %}col-md-3 col-xs-6{% endif %}">
     <div class="thumbnail ladb-margin-bottom" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' });">
-        <div class="ladb-picture-box">
+        <div class="ladb-picture-box{% if pictureBoxClasses is defined %} {{ pictureBoxClasses }}{% endif %}">
             {% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'width':(wide ? '282' : '126'), 'height':(wide ? '280' : '170'), 'alt':knowledge.title, 'emptyWebPath':'empty_add.png', 'autoSizer':false } %}
             {% if values|length %}
                 {% set pictureCount = 0 %}

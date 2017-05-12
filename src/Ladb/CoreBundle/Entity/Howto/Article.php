@@ -4,6 +4,9 @@ namespace Ladb\CoreBundle\Entity\Howto;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BasicEmbeddableTrait;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
+use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractPublication;
@@ -22,6 +25,9 @@ use Ladb\CoreBundle\Model\ChildInterface;
  * @LadbAssert\BodyBlocks()
  */
 class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, BlockBodiedInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface {
+
+	use TitledTrait, BlockBodiedTrait;
+	use BasicEmbeddableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Article';
 	const TYPE = 107;
@@ -121,17 +127,6 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		return $this->howto->getUser();
 	}
 
-	// Title /////
-
-    public function setTitle($title) {
-        $this->title = $title;
-        return $this;
-    }
-
-    public function getTitle() {
-        return $this->title;
-    }
-
     // Slug /////
 
     public function setSlug($slug) {
@@ -146,60 +141,6 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
     public function getSluggedId() {
         return $this->id.'-'.$this->slug;
     }
-
-    // Body /////
-
-    public function setBody($body) {
-        $this->body = $body;
-        return $this;
-    }
-
-    public function getBody() {
-        return $this->body;
-    }
-
-	// BodyBlocks /////
-
-	public function addBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-		if (!$this->bodyBlocks->contains($bodyBlock)) {
-			$this->bodyBlocks[] = $bodyBlock;
-		}
-		return $this;
-	}
-
-	public function removeBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
-		$this->bodyBlocks->removeElement($bodyBlock);
-	}
-
-	public function getBodyBlocks() {
-		return $this->bodyBlocks;
-	}
-
-	public function resetBodyBlocks() {
-		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
-	}
-
-	// BodyBlockPictureCount /////
-
-	public function setBodyBlockPictureCount($bodyBlockPictureCount) {
-		$this->bodyBlockPictureCount = $bodyBlockPictureCount;
-		return $this;
-	}
-
-	public function getBodyBlockPictureCount() {
-		return $this->bodyBlockPictureCount;
-	}
-
-	// BodyBlockVideoCount /////
-
-	public function setBodyBlockVideoCount($bodyBlockVideoCount) {
-		$this->bodyBlockVideoCount = $bodyBlockVideoCount;
-		return $this;
-	}
-
-	public function getBodyBlockVideoCount() {
-		return $this->bodyBlockVideoCount;
-	}
 
 	// MainPicture /////
 
@@ -224,17 +165,6 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 
 	public function getSortIndex() {
 		return $this->sortIndex;
-	}
-
-	// Sticker /////
-
-	public function setSticker(\Ladb\CoreBundle\Entity\Picture $sticker = null) {
-		$this->sticker = $sticker;
-		return $this;
-	}
-
-	public function getSticker() {
-		return $this->sticker;
 	}
 
 	// ParentEntityType /////

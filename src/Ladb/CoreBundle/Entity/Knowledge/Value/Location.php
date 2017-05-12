@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge\Value;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\LocalisableExtendedInterface;
@@ -14,6 +15,8 @@ use Ladb\CoreBundle\Model\LocalisableExtendedInterface;
  * @ladbAssert\ValidLocationValue()
  */
 class Location extends BaseValue implements LocalisableExtendedInterface {
+
+	use LocalisableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\Location';
 	const TYPE = 14;
@@ -68,39 +71,6 @@ class Location extends BaseValue implements LocalisableExtendedInterface {
 
 	public function getType() {
 		return self::TYPE;
-	}
-
-	// Location /////
-
-	public function setLocation($location) {
-		$this->location = $location;
-		return $this;
-	}
-
-	public function getLocation() {
-		return $this->location;
-	}
-
-	// Latitude /////
-
-	public function setLatitude($latitude = null) {
-		$this->latitude = $latitude;
-		return $this;
-	}
-
-	public function getLatitude() {
-		return $this->latitude;
-	}
-
-	// Longitude /////
-
-	public function setLongitude($longitude = null) {
-		$this->longitude = $longitude;
-		return $this;
-	}
-
-	public function getLongitude() {
-		return $this->longitude;
 	}
 
 	// PostalCode /////

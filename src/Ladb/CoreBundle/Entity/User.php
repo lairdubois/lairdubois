@@ -4,6 +4,10 @@ namespace Ladb\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\IndexableTrait;
+use Ladb\CoreBundle\Model\LocalisableTrait;
+use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\SitemapableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -18,7 +22,9 @@ use Ladb\CoreBundle\Model\IndexableInterface;
  * @UniqueEntity("displayname")
  * @LadbAssert\ValidUsername()
  */
-class User extends \FOS\UserBundle\Model\User implements LocalisableInterface, IndexableInterface {
+class User extends \FOS\UserBundle\Model\User implements IndexableInterface, SitemapableInterface, LocalisableInterface {
+
+	use IndexableTrait, SitemapableTrait, LocalisableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:User';
 
@@ -581,45 +587,6 @@ class User extends \FOS\UserBundle\Model\User implements LocalisableInterface, I
 
 	public function getInstagram() {
 		return $this->instagram;
-	}
-
-	// Location /////
-
-	public function setLocation($location) {
-		$this->location = $location;
-	}
-
-	public function getLocation() {
-		return $this->location;
-	}
-
-	// Latitude /////
-
-	public function setLatitude($latitude = null) {
-		$this->latitude = $latitude;
-	}
-
-	public function getLatitude() {
-		return $this->latitude;
-	}
-
-	// Longitude /////
-
-	public function setLongitude($longitude = null) {
-		$this->longitude = $longitude;
-	}
-
-	public function getLongitude() {
-		return $this->longitude;
-	}
-
-	// GeoPoint /////
-
-	public function getGeoPoint() {
-		if (!is_null($this->latitude) && !is_null($this->longitude)) {
-			return array( $this->longitude, $this->latitude );
-		}
-		return null;
 	}
 
 	// MarkerIcon /////
