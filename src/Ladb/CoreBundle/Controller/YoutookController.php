@@ -249,7 +249,7 @@ class YoutookController extends Controller {
 	 * @Route("/{id}.html", name="core_youtook_show")
 	 * @Template()
 	 */
-	public function showAction($id) {
+	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 		$tookRepository = $om->getRepository(Took::CLASS_NAME);
 		$witnessManager = $this->get(WitnessManager::NAME);
@@ -264,9 +264,19 @@ class YoutookController extends Controller {
 			throw $this->createNotFoundException('Unable to find Took entity (id='.$id.').');
 		}
 
-		return array(
-			'took' => $took,
-		);
+		$referer = $request->headers->get('referer');
+		$userAgent = $request->headers->get('User-Agent');
+
+		$isFacebookBotUserAgent = preg_match('/facebookexternalhit/', $userAgent);
+		$isLadbReferrer = preg_match('/lairdubois.fr/', $referer);
+
+		if ($isFacebookBotUserAgent || $isLadbReferrer) {
+			return array(
+				'took' => $took,
+			);
+		}
+
+		return $this->redirect($took->getUrl());
 	}
 
 }
