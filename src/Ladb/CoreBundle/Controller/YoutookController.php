@@ -277,7 +277,6 @@ class YoutookController extends Controller {
 		if ($isFacebookBotUserAgent || $isLadbReferrer) {
 			return array(
 				'took' => $took,
-				'referrer' => $referer.' -> '.$userAgent,
 			);
 		}
 
