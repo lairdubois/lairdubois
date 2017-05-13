@@ -271,6 +271,12 @@ class YoutookController extends Controller {
 		$referer = $request->headers->get('referer');
 		$userAgent = $request->headers->get('User-Agent');
 
+		$logger = $this->get('logger');
+		$logger->error('## referer = '.$referer);
+		$logger->error('## user-agent = '.$userAgent);
+
+		// facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)
+
 		$isFacebookBotUserAgent = preg_match('/facebookexternalhit/', $userAgent);
 		$isLadbReferrer = preg_match('/lairdubois.fr/', $referer) !== false;
 
@@ -280,6 +286,7 @@ class YoutookController extends Controller {
 
 		return array(
 			'took' => $took,
+			'referrer' => $referer.' -> '.$userAgent,
 		);
 	}
 
