@@ -259,8 +259,11 @@ class YoutookController extends Controller {
 		$witnessManager = $this->get(WitnessManager::NAME);
 
 		$referer = $request->headers->get('referer');
+		$userAgent = $request->headers->get('User-Agent');
+
 		$logger = $this->get('logger');
-		$logger->info('## referer = '.$referer);
+		$logger->error('## referer = '.$referer);
+		$logger->error('## user-agent = '.$userAgent);
 
 		$id = intval($id);
 
@@ -274,7 +277,7 @@ class YoutookController extends Controller {
 
 		return array(
 			'took' => $took,
-			'referrer' => $referer,
+			'referrer' => $referer.' -> '.$userAgent,
 		);
 	}
 
