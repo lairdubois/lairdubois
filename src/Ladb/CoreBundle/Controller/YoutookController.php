@@ -258,13 +258,6 @@ class YoutookController extends Controller {
 		$tookRepository = $om->getRepository(Took::CLASS_NAME);
 		$witnessManager = $this->get(WitnessManager::NAME);
 
-		$referer = $request->headers->get('referer');
-		$userAgent = $request->headers->get('User-Agent');
-
-		$logger = $this->get('logger');
-		$logger->error('## referer = '.$referer);
-		$logger->error('## user-agent = '.$userAgent);
-
 		$id = intval($id);
 
 		$took = $tookRepository->findOneById($id);
@@ -275,9 +268,18 @@ class YoutookController extends Controller {
 			throw $this->createNotFoundException('Unable to find Took entity (id='.$id.').');
 		}
 
+		$referer = $request->headers->get('referer');
+		$userAgent = $request->headers->get('User-Agent');
+
+		$isFacebookBotUserAgent = preg_match('/facebookexternalhit/', $userAgent);
+		$isLadbReferrer = preg_match('/lairdubois.fr/', $referer) !== false;
+
+		if (!$isFacebookBotUserAgent && !$isLadbReferrer) {
+			return $this->redirect($took->getUrl());
+		}
+
 		return array(
 			'took' => $took,
-			'referrer' => $referer.' -> '.$userAgent,
 		);
 	}
 
