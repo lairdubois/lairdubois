@@ -253,10 +253,14 @@ class YoutookController extends Controller {
 	 * @Route("/{id}.html", name="core_youtook_show")
 	 * @Template()
 	 */
-	public function showAction($id) {
+	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 		$tookRepository = $om->getRepository(Took::CLASS_NAME);
 		$witnessManager = $this->get(WitnessManager::NAME);
+
+		$referer = $request->headers->get('referer');
+		$logger = $this->get('logger');
+		$logger->info('## referer = '.$referer);
 
 		$id = intval($id);
 
@@ -270,6 +274,7 @@ class YoutookController extends Controller {
 
 		return array(
 			'took' => $took,
+			'referrer' => $referer,
 		);
 	}
 
