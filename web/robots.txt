@@ -2,7 +2,7 @@ User-agent: *
 Disallow: /login$
 Disallow: /connexion$
 Disallow: /request
-Disallow: /api*
+Disallow: /api/*
 Disallow: /*/new$
 Disallow: /*/create*$
 Disallow: /*/edit$

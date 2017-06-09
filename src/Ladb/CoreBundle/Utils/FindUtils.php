@@ -62,16 +62,12 @@ class FindUtils extends AbstractContainerAwareUtils {
 
 			case Find::KIND_GALLERY:
 				$gallery = $find->getContent();
-				if (count($gallery->getPictures()) > 0) {
-					$find->setMainPicture($gallery->getPictures()[0]);
-				}
+				$find->setMainPicture($gallery->getPictures()->first());
 				break;
 
 			case Find::KIND_EVENT:
 				$event = $find->getContent();
-				if (count($event->getPictures()) > 0) {
-					$find->setMainPicture($event->getPictures()[0]);
-				}
+				$find->setMainPicture($event->getPictures()->first());
 				break;
 
 		}
