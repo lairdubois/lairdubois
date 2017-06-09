@@ -271,7 +271,7 @@ class WoodController extends Controller {
 					case 'name':
 
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchPhraseQuery('name', $facet->value);
+						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('name', $facet->value);
 
 						break;
 
@@ -396,7 +396,7 @@ class WoodController extends Controller {
 
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$searchableCreationCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('woods.label', $wood->getName())), null, 'fos_elastica.index.ladb.creation');
-		$searchableProviderCount = $searchUtils->searchEntitiesCount(array( $this->get(ElasticaQueryUtils::NAME)->createShouldMatchPhraseQuery('woods', $wood->getName()) ), null, 'fos_elastica.index.ladb.provider');
+		$searchableProviderCount = $searchUtils->searchEntitiesCount(array( $this->get(ElasticaQueryUtils::NAME)->createShouldMatchQuery('woods', $wood->getName()) ), null, 'fos_elastica.index.ladb.provider');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
