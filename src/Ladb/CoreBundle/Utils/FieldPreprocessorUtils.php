@@ -30,9 +30,6 @@ class FieldPreprocessorUtils {
 
 	public function preprocessBodyField(BodiedInterface $bodied) {
 
-		// Setup EmojiOne
-		\Emojione\Emojione::$imagePathPNG = 'http://cdn.jsdelivr.net/emojione/assets/png/';
-
 		// Cleaup body field
 		$patterns = array(
 			'/\r\n\r\n(\r\n)+|\n\n\n+/', '/ ( )+/'
@@ -41,7 +38,7 @@ class FieldPreprocessorUtils {
 			"\n\n", ' '
 		);
 		$body = trim(preg_replace($patterns, $replacements, $bodied->getBody()));
-		$body = \Emojione\Emojione::toShort($body);
+		$body = (new \Emojione\Client(new \Emojione\Ruleset()))->toShort($body);
 		$bodied->setBody($body);
 
 		// Render HTML Body

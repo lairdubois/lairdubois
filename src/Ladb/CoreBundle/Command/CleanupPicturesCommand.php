@@ -257,7 +257,7 @@ EOT
 				$pictureCounters[$mainPicture->getId()][1]++;
 			}
 			$content = $find->getContent();
-			if ($content instanceof \Ladb\CoreBundle\Entity\Find\Content\Gallery) {
+			if ($content instanceof \Ladb\CoreBundle\Entity\Find\Content\Gallery || $content instanceof \Ladb\CoreBundle\Entity\Find\Content\Event) {
 				foreach ($content->getPictures() as $picture) {
 					$pictureCounters[$picture->getId()][1]++;
 				}
