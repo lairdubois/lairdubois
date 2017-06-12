@@ -22,7 +22,7 @@
     {% if is_granted('ROLE_ADMIN') %}
         {% javascripts filter='?closure'
             '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingchargeinfos.js' %}
-            <script type="text/javascript" src="{{ asset_url }}?v=201610061908"></script>
+            <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endif %}
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
