@@ -36,6 +36,8 @@ security:
         - { path: ^/rejoindre$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
+        - { path: ^/media/cache/resolve/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
         - { path: ^/email/check$, role: ROLE_USER }
         - { path: ^/email/confirm, role: ROLE_USER }
 
