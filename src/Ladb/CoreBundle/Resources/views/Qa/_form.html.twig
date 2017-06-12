@@ -1,0 +1,22 @@
+{% extends 'LadbCoreBundle:Common:_form.html.twig' %}
+
+{% set navSection = 'Qa' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Block:_form-sidenav-body.part.html.twig' %}
+    {% include 'LadbCoreBundle:Tag:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('blog.post.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Block:_form-section-body.part.html.twig' with { 'mandatory':true } %}
+    {% include 'LadbCoreBundle:Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre sujet.' } %}
+{% endblock %}

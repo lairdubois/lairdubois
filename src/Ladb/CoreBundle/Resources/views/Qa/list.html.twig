@@ -1,0 +1,25 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set pageTitle = 'qa.title'|trans() %}
+{% set pageDescription = 'qa.description'|trans() %}
+{% set pageImage = asset('banner-blog-600x376.jpg') %}
+
+{% set navSection = 'qa' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Qa:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
+        <div class="panel-body">{{ 'qa.description'|trans() }}</div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Qa:_list-n.part.html.twig' %}
+{% endblock %}
