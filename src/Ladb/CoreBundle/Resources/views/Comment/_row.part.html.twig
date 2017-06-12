@@ -25,7 +25,7 @@
             {% if comment.pictures is not empty %}
                 <div class="row">
                     {% for picture in comment.pictures %}
-                        <div class="col-xs-3">
+                        <div class="col-md-3 col-xs-6">
                             {% include 'LadbCoreBundle:Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
                         </div>
                     {% endfor %}

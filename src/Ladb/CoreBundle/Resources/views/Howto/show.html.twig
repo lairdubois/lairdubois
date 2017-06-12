@@ -410,17 +410,6 @@
     {% include 'LadbCoreBundle:License:_metas.part.html.twig' with { 'license':howto.license } %}
 {% endblock %}
 
-{% block contentMetas %}
-    {{ parent() }}
-    <div id="ladb_toc_panel" class="panel panel-default ladb-toc-panel">
-        <div class="panel-heading">{{ 'howto.article.list'|trans() }}</div>
-        <div class="panel-body">
-            <div id="tocify_toc">
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
 {% block contentSuggests %}
     {% if userHowtos is not empty %}
         <div class="panel panel-default">
@@ -429,7 +418,7 @@
             </div>
             <div class="panel-body row">
                 {% for userHowto in userHowtos %}
-                    <div class="col-lg-6">
+                    <div class="col-xs-6">
                         {% include 'LadbCoreBundle:Howto:_thumbnail-link.part.html.twig' with { 'howto':userHowto } %}
                     </div>
                 {% endfor %}
@@ -448,11 +437,17 @@
             </div>
             <div class="panel-body row">
                 {% for similarHowto in similarHowtos %}
-                    <div class="col-lg-6">
+                    <div class="col-xs-6">
                         {% include 'LadbCoreBundle:Howto:_thumbnail-link.part.html.twig' with { 'howto':similarHowto, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}
             </div>
         </div>
     {% endif %}
+    <div id="ladb_toc_panel" class="panel panel-default ladb-toc-panel ladb-hidden-mobile">
+        <div class="panel-heading">{{ 'howto.article.list'|trans() }}</div>
+        <div class="panel-body">
+            <div id="tocify_toc"></div>
+        </div>
+    </div>
 {% endblock %}
