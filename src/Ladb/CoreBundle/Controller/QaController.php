@@ -34,9 +34,6 @@ class QaController extends Controller {
 	 * @Template()
 	 */
 	public function newAction() {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_new)');
-		}
 
 		$question = new Question();
 		$question->addBodyBlock(new \Ladb\CoreBundle\Entity\Block\Text());	// Add a default Text body block
@@ -56,10 +53,6 @@ class QaController extends Controller {
 	 * @Template("LadbCoreBundle:Qa:new.html.twig")
 	 */
 	public function createAction(Request $request) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_create)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 
 		$question = new Question();
@@ -92,7 +85,7 @@ class QaController extends Controller {
 		$tagUtils = $this->get(TagUtils::NAME);
 
 		return array(
-			'post'         => $question,
+			'question'         => $question,
 			'form'         => $form->createView(),
 			'tagProposals' => $tagUtils->getProposals($question),
 		);
@@ -102,10 +95,6 @@ class QaController extends Controller {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_qa_question_publish")
 	 */
 	public function publishAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_publish)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
@@ -122,7 +111,7 @@ class QaController extends Controller {
 		$questionManager->publish($question);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('blog.post.form.alert.publish_success', array( '%title%' => $question->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.question.form.alert.publish_success', array( '%title%' => $question->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
 	}
@@ -131,10 +120,6 @@ class QaController extends Controller {
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_qa_question_unpublish")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_unpublish)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
@@ -167,10 +152,6 @@ class QaController extends Controller {
 	 * @Template()
 	 */
 	public function editAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_edit)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
@@ -184,7 +165,7 @@ class QaController extends Controller {
 		$tagUtils = $this->get(TagUtils::NAME);
 
 		return array(
-			'post'         => $question,
+			'question'     => $question,
 			'form'         => $form->createView(),
 			'tagProposals' => $tagUtils->getProposals($question),
 		);
@@ -196,10 +177,6 @@ class QaController extends Controller {
 	 * @Template("LadbCoreBundle:Qa:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_update)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
@@ -248,7 +225,7 @@ class QaController extends Controller {
 		$tagUtils = $this->get(TagUtils::NAME);
 
 		return array(
-			'post'     => $question,
+			'question'     => $question,
 			'form'         => $form->createView(),
 			'tagProposals' => $tagUtils->getProposals($question),
 		);
@@ -342,7 +319,7 @@ class QaController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			'fos_elastica.index.ladb.post',
+			'fos_elastica.index.ladb.qa_question',
 			\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME,
 			'core_qa_question_list_page'
 		);
@@ -352,7 +329,7 @@ class QaController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
 
 		$parameters = array_merge($searchParameters, array(
-			'posts' => $searchParameters['entities'],
+			'questions' => $searchParameters['entities'],
 		));
 
 		if ($request->isXmlHttpRequest()) {
@@ -381,7 +358,7 @@ class QaController extends Controller {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
 		if ($question->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $question->getUser()->getId() != $this->getUser()->getId())) {
 				if ($response = $witnessManager->checkResponse(Question::TYPE, $id)) {
 					return $response;
 				}
@@ -402,7 +379,7 @@ class QaController extends Controller {
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
-			'post'             => $question,
+			'question'         => $question,
 			'similarQuestions' => $similarQuestions,
 			'likeContext'      => $likableUtils->getLikeContext($question, $this->getUser()),
 			'watchContext'     => $watchableUtils->getWatchContext($question, $this->getUser()),

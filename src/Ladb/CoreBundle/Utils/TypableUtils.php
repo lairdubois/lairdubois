@@ -72,9 +72,12 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Provider';
-			// Video
+			// Took
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				return '\Ladb\CoreBundle\Entity\Youtook\Took';
+			// Question (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				return '\Ladb\CoreBundle\Entity\Qa\Question';
 
 		}
 		return null;
@@ -125,6 +128,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return $long ? 'knowledge.provider': 'provider';
+			// Question (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				return $long ? 'qa.question': 'question';
 
 		}
 		return '';
@@ -202,6 +208,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				$url = $router->generate('core_youtook_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				$url = $router->generate('core_qa_question_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

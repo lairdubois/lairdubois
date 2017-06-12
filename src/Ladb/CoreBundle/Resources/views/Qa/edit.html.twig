@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block form_buttons %}
-    <a href="{{ path('core_blog_question_show', { 'id':question.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.back'|trans() }}</a>
+    <a href="{{ path('core_qa_question_show', { 'id':question.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.back'|trans() }}</a>
     {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
 {% endblock %}
 

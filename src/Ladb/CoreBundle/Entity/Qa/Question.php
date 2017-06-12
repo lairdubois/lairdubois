@@ -4,11 +4,12 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
 use Ladb\CoreBundle\Model\LikableTrait;
-use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\ScrapableTrait;
 use Ladb\CoreBundle\Model\SitemapableInterface;
 use Ladb\CoreBundle\Model\SitemapableTrait;
@@ -16,11 +17,8 @@ use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
-use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
@@ -34,16 +32,16 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_qa_question")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\QA\QuestionRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractAuthoredPublication implements TitledInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface {
+class Question extends AbstractAuthoredPublication implements TitledInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
 
 	use TitledTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Question';
-	const TYPE = 108;
+	const TYPE = 113;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -83,7 +81,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_blog_post_tag")
+	 * @ORM\JoinTable(name="tbl_qa_question_tag")
 	 * @Assert\Count(min=2)
 	 */
 	private $tags;

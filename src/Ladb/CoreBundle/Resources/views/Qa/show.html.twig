@@ -22,7 +22,7 @@
                     &nbsp;
                     {% include 'LadbCoreBundle:Report:_widget-button.part.html.twig' with { 'entityType':question.type, 'entityId':question.id } %}
                 {% endif %}
-                {% if is_granted("ROLE_ADMIN") %}
+                {% if ownerUser or is_granted("ROLE_ADMIN") %}
                     &nbsp;
                     <a href="{{ path('core_qa_question_edit', { 'id':question.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
                     {% if not question.isDraft %}
@@ -48,14 +48,13 @@
 
 {% block bodyContainerContent %}
     {% if question.isDraft %}
-        {% include 'LadbCoreBundle:Blog:_draft-alert.part.html.twig' %}
+        {% include 'LadbCoreBundle:Qa:_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
 {% endblock %}
 
 {% block contentBody %}
     <div class="ladb-question">
-        {% include 'LadbCoreBundle:Picture:_img-link.part.html.twig' with { 'picture':question.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':question.title } %}
         <div class="ladb-body" itemprop="articleBody">
             {% for block in question.bodyBlocks %}
                 {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}

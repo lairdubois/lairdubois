@@ -7,19 +7,15 @@ use Ladb\CoreBundle\Manager\AbstractPublicationManager;
 
 class QuestionManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.question_manager';
+	const NAME = 'ladb_core.qa_question_manager';
 
 	/////
 
 	public function publish(Question $question, $flush = true) {
-
-
 		parent::publishPublication($question, $flush);
 	}
 
 	public function unpublish(Question $question, $flush = true) {
-
-
 		parent::unpublishPublication($question, $flush);
 	}
 

@@ -933,3 +933,6 @@ youtook:
     help:
       title: Renseignez ici le titre de votre Took.
       thumbnail: Définissez ici la miniature de votre Took.<br>La modification de cette image peut être intéressante pour avoir une miniature spécialement dédiée au partage sur Facebook.<br>Cette image ne sera visible que sur Facebook.
+
+qa:
+  nav: Questions

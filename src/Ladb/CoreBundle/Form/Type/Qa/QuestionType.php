@@ -10,10 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
-use Ladb\CoreBundle\Entity\Blog\Post;
+use Ladb\CoreBundle\Entity\Blog\Question;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 
-class PostType extends AbstractType {
+class QuestionType extends AbstractType {
 
 	private $om;
 
