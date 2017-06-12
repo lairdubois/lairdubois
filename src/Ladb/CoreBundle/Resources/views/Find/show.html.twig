@@ -195,7 +195,7 @@
     {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' %}
 {% endblock %}
 
-{% block contentMetas %}
+{% block contentMetasPanel %}
     <div class="ladb-metas">
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
@@ -218,11 +218,11 @@
     {% if userFinds is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                <small>{{ ('find.other_from')|trans() }} {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}</small>
+                {{ ('find.other_from')|trans() }} {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userFind in userFinds %}
-                    <div class="col-lg-12 col-xs-6{% if loop.first and userFinds|length > 1 %} ladb-margin-bottom{% endif %}">
+                    <div class="col-lg-6">
                         {% include 'LadbCoreBundle:Find:_thumbnail-link.part.html.twig' with { 'find':userFind } %}
                     </div>
                 {% endfor %}
@@ -237,11 +237,11 @@
     {% if similarFinds is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                <small>{{ ('find.similar')|trans() }}</small>
+                {{ ('find.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarFind in similarFinds %}
-                    <div class="col-lg-12 col-xs-6">
+                    <div class="col-lg-6">
                         {% include 'LadbCoreBundle:Find:_thumbnail-link.part.html.twig' with { 'find':similarFind, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}

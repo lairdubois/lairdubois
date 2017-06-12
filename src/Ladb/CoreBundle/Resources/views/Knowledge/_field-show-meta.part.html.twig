@@ -21,7 +21,7 @@
 {% set disabled = disabled|default(false) %}
 {% set indented = indented|default(false) %}
 
-{% macro queryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) %}
+{% macro searchQueryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) %}
     {% if fieldFilterQuery is not null and not disabled %}
         <a href="{{ path('core_'~knowledge.strippedName~'_list', { 'q':(fieldFilterQuery|replace({ '%q%':fieldUseChoicesValue and fieldChoices[value.data] is defined ? fieldChoices[value.data] : value.data })) }) }}" class="ladb-cursor-filter" rel="nofollow">
     {% endif %}
@@ -31,7 +31,7 @@
     {% endif %}
 {% endmacro %}
 
-{% import _self as query %}
+{% import _self as Self %}
 
 <div class="ladb-meta ladb-meta-editable{% if valueIsUndefined %} text-muted{% endif %}{% if fieldMultiple %} ladb-readmore{% endif %}" onclick="if (event.target.tagName != 'A') { $('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' }); }">
     <div class="row">
@@ -44,11 +44,11 @@
             {% elseif fieldMultiple %}
                 {% if valueIsRejected and fieldMandatory %}
                     {% set value = values[0] %}
-                    <div class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if valueIsRejected %} ladb-strikethrough{% endif %}{% if disabled %} text-muted{% endif %}">{{ _self.queryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
+                    <div class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if valueIsRejected %} ladb-strikethrough{% endif %}{% if disabled %} text-muted{% endif %}">{{ Self.searchQueryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
                 {% else %}
                     {% set definedValueCount = 0 %}
                     {% for value in values if value.voteScore >= 0 %}
-                        <div class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':loop.index0 } %}<div class="ladb-data{% if disabled %} text-muted{% endif %}">{{ _self.queryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
+                        <div class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':loop.index0 } %}<div class="ladb-data{% if disabled %} text-muted{% endif %}">{{ Self.searchQueryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
                         {%  set definedValueCount = definedValueCount + 1 %}
                     {% endfor %}
                     {% if definedValueCount == 0 %}
@@ -57,7 +57,7 @@
                 {% endif %}
             {% else %}
                 {% set value = values[0] %}
-                <div class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if valueIsRejected %} ladb-strikethrough{% endif %}{% if disabled %} text-muted{% endif %}">{{ _self.queryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
+                <div class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if valueIsRejected %} ladb-strikethrough{% endif %}{% if disabled %} text-muted{% endif %}">{{ Self.searchQueryLink(knowledge, value, fieldType, fieldChoices, fieldUseChoicesValue, fieldFilterQuery, disabled) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
             {% endif %}
         </div>
         <div class="col-xs-1">
