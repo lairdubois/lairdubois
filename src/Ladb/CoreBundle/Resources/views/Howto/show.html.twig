@@ -58,15 +58,8 @@
                     hashGenerator: "pretty",
                     history: false
                 });
-                $("#ladb_toc_metas")
-                        .affix({
-                            offset: {
-                                top: $("#ladb_license_metas").offset().top + $("#ladb_license_metas").height() - 60
-                            }
-                        })
-                        .width($('#ladb_common_metas').width());
-                $(window).resize(function () {
-                    $("#ladb_toc_metas").width($("#ladb_common_metas").width());
+                $("#ladb_toc_panel").sticky({
+                    topSpacing: 60
                 });
             }
         });
@@ -178,12 +171,6 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    <div id="ladb_toc_metas" class="ladb-metas ladb-toc">
-        <h4 class="ladb-heading">Navigation</h4>
-        <div class="ladb-meta">
-            <div id="tocify_toc"></div>
-        </div>
-    </div>
     {% if howto.isDraft %}
         {% include 'LadbCoreBundle:Howto:_draft-alert.part.html.twig' %}
     {% endif %}
@@ -368,7 +355,7 @@
     </div>
 {% endblock %}
 
-{% block contentMetas %}
+{% block contentMetasPanel %}
     {% include 'LadbCoreBundle:Spotlight:_spotlight-meta.part.html.twig' %}
     <div id="ladb_common_metas" class="ladb-metas">
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
@@ -423,15 +410,26 @@
     {% include 'LadbCoreBundle:License:_metas.part.html.twig' with { 'license':howto.license } %}
 {% endblock %}
 
+{% block contentMetas %}
+    {{ parent() }}
+    <div id="ladb_toc_panel" class="panel panel-default ladb-toc-panel">
+        <div class="panel-heading">{{ 'howto.article.list'|trans() }}</div>
+        <div class="panel-body">
+            <div id="tocify_toc">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block contentSuggests %}
     {% if userHowtos is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                <small>{{ ('howto.other_from')|trans() }} {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':howto.user, 'noMicrodata':true } %}</small>
+                {{ ('howto.other_from')|trans() }} {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':howto.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userHowto in userHowtos %}
-                    <div class="col-lg-12 col-xs-6{% if loop.first %} ladb-margin-bottom{% endif %}">
+                    <div class="col-lg-6">
                         {% include 'LadbCoreBundle:Howto:_thumbnail-link.part.html.twig' with { 'howto':userHowto } %}
                     </div>
                 {% endfor %}
@@ -446,11 +444,11 @@
     {% if similarHowtos is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                <small>{{ ('howto.similar')|trans() }}</small>
+                {{ ('howto.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarHowto in similarHowtos %}
-                    <div class="col-lg-12 col-xs-6">
+                    <div class="col-lg-6">
                         {% include 'LadbCoreBundle:Howto:_thumbnail-link.part.html.twig' with { 'howto':similarHowto, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}

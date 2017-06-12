@@ -2,20 +2,20 @@
 // LADB Toc
 //
 
-.ladb-toc {
+.ladb-toc-panel {
 
-  max-height: 80%;
-  overflow-y: auto;
-
-  > .ladb-heading, > .ladb-meta {
-    display: none;
+  & > .panel-body {
+    max-height: 550px;
+    overflow-y: auto;
   }
 
-  &.affix {
-    top: @ladb-topbar-height;
+}
 
-    > .ladb-heading, > .ladb-meta {
-      display: block;
+@media screen and (min-height: @ladb-screen-height-lg) {
+  .ladb-toc-panel {
+
+    & > .panel-body {
+      max-height: 700px;
     }
 
   }

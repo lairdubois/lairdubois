@@ -71,7 +71,7 @@
     {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' %}
 {% endblock %}
 
-{% block contentMetas %}
+{% block contentMetasPanel %}
     <div class="ladb-metas">
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
@@ -84,11 +84,11 @@
     {% if similarPosts is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                <small>{{ ('blog.post.similar')|trans() }}</small>
+                {{ ('blog.post.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarPost in similarPosts %}
-                    <div class="col-lg-12 col-xs-6">
+                    <div class="col-lg-6">
                         {% include 'LadbCoreBundle:Blog:_thumbnail-link.part.html.twig' with { 'post':similarPost, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}
