@@ -1,0 +1,409 @@
+services:
+
+  # Twig extensions
+  twig.extension.text:
+    class: Twig_Extensions_Extension_Text
+    tags:
+      - { name: twig.extension }
+  twig.extension.intl:
+    class: Twig_Extensions_Extension_Intl
+    tags:
+      - { name: twig.extension }
+  twig.extension.date:
+    class: Twig_Extensions_Extension_Date
+    tags:
+      - { name: twig.extension }
+    arguments: ['@translator']
+  ladb.twig.ladb_extension:
+    class: Ladb\CoreBundle\Twig\LadbExtension
+    tags:
+      - { name: twig.extension }
+    arguments: ['@service_container']
+
+  # Imagine Post processors
+  ladb_imagine.filter.post_processor.imageoptimizer:
+    class: Ladb\CoreBundle\Imagine\ImageOptimizerPostProcessor
+    tags:
+      - { name: liip_imagine.filter.post_processor, post_processor: ladb_imageoptimizer }
+
+  # Utils
+  ladb_core.global_utils:
+    class: Ladb\CoreBundle\Utils\GlobalUtils
+    arguments: ['@service_container']
+  ladb_core.paginator_utils:
+    class: Ladb\CoreBundle\Utils\PaginatorUtils
+    arguments: ['@service_container']
+  ladb_core.video_hosting_utils:
+    class: Ladb\CoreBundle\Utils\VideoHostingUtils
+    arguments: ['@service_container']
+  ladb_core.viewable_utils:
+    class: Ladb\CoreBundle\Utils\ViewableUtils
+    arguments: ['@service_container']
+  ladb_core.likable_utils:
+    class: Ladb\CoreBundle\Utils\LikableUtils
+    arguments: ['@service_container']
+  ladb_core.watchable_utils:
+    class: Ladb\CoreBundle\Utils\WatchableUtils
+    arguments: ['@service_container']
+  ladb_core.votable_utils:
+    class: Ladb\CoreBundle\Utils\VotableUtils
+    arguments: ['@service_container']
+  ladb_core.joinable_utils:
+    class: Ladb\CoreBundle\Utils\JoinableUtils
+    arguments: ['@service_container']
+  ladb_core.commentable_utils:
+    class: Ladb\CoreBundle\Utils\CommentableUtils
+    arguments: ['@service_container']
+  ladb_core.reportable_utils:
+    class: Ladb\CoreBundle\Utils\ReportableUtils
+    arguments: ['@service_container']
+  ladb_core.localisable_utils:
+    class: Ladb\CoreBundle\Utils\LocalisableUtils
+    arguments: ['@service_container']
+  ladb_core.typable_utils:
+    class: Ladb\CoreBundle\Utils\TypableUtils
+    arguments: ['@service_container']
+  ladb_core.tocable_utils:
+    class: Ladb\CoreBundle\Utils\TocableUtils
+  ladb_core.follower_utils:
+    class: Ladb\CoreBundle\Utils\FollowerUtils
+    arguments: ['@service_container']
+  ladb_core.mailer_utils:
+    class: Ladb\CoreBundle\Utils\MailerUtils
+    arguments: ['@service_container']
+  ladb_core.message_utils:
+    class: Ladb\CoreBundle\Utils\MessageUtils
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.field_preprocessor_utils']
+  ladb_core.plan_utils:
+    class: Ladb\CoreBundle\Utils\PlanUtils
+    arguments: ['@templating', '@router']
+  ladb_core.find_utils:
+    class: Ladb\CoreBundle\Utils\FindUtils
+    arguments: ['@service_container']
+  ladb_core.search_utils:
+    class: Ladb\CoreBundle\Utils\SearchUtils
+    arguments: ['@service_container']
+  ladb_core.explorable_utils:
+    class: Ladb\CoreBundle\Utils\ExplorableUtils
+    arguments: ['@ladb_core.search_utils']
+  ladb_core.pictured_utils:
+    class: Ladb\CoreBundle\Utils\PicturedUtils
+    arguments: ['@liip_imagine.cache.manager']
+  ladb_core.tag_utils:
+    class: Ladb\CoreBundle\Utils\TagUtils
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.field_preprocessor_utils:
+    class: Ladb\CoreBundle\Utils\FieldPreprocessorUtils
+  ladb_core.block_bodied_utils:
+    class: Ladb\CoreBundle\Utils\BlockBodiedUtils
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils']
+  ladb_core.embeddable_utils:
+    class: Ladb\CoreBundle\Utils\EmbeddableUtils
+    arguments: ['@service_container']
+  ladb_core.stripable_utils:
+    class: Ladb\CoreBundle\Utils\StripableUtils
+    arguments: ['@service_container']
+  ladb_core.web_screenshot_utils:
+    class: Ladb\CoreBundle\Utils\WebScreenshotUtils
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.open_graph_utils:
+    class: Ladb\CoreBundle\Utils\OpenGraphUtils
+    arguments: ['@service_container']
+  ladb_core.user_utils:
+    class: Ladb\CoreBundle\Utils\UserUtils
+    arguments: ['@service_container']
+  ladb_core.activity_utils:
+    class: Ladb\CoreBundle\Utils\ActivityUtils
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.texture_utils:
+    class: Ladb\CoreBundle\Utils\TextureUtils
+    arguments: ['@service_container']
+  ladb_core.knowledge_utils:
+    class: Ladb\CoreBundle\Utils\KnowledgeUtils
+    arguments: ['@service_container']
+  ladb_core.property_utils:
+    class: Ladb\CoreBundle\Utils\PropertyUtils
+  ladb_core.elastica_query_utils:
+    class: Ladb\CoreBundle\Utils\ElasticaQueryUtils
+  ladb_core.publication_utils:
+    class: Ladb\CoreBundle\Utils\PublicationUtils
+    arguments: ['@service_container']
+
+  # Managers
+  ladb_core.creation_manager:
+    class: Ladb\CoreBundle\Manager\Wonder\CreationManager
+    arguments: ['@service_container']
+  ladb_core.plan_manager:
+    class: Ladb\CoreBundle\Manager\Wonder\PlanManager
+    arguments: ['@service_container']
+  ladb_core.workshop_manager:
+    class: Ladb\CoreBundle\Manager\Wonder\WorkshopManager
+    arguments: ['@service_container']
+  ladb_core.post_manager:
+    class: Ladb\CoreBundle\Manager\Blog\PostManager
+    arguments: ['@service_container']
+  ladb_core.question_manager:
+    class: Ladb\CoreBundle\Manager\Faq\QuestionManager
+    arguments: ['@service_container']
+  ladb_core.find_manager:
+    class: Ladb\CoreBundle\Manager\Find\FindManager
+    arguments: ['@service_container']
+  ladb_core.howto_manager:
+    class: Ladb\CoreBundle\Manager\Howto\HowtoManager
+    arguments: ['@service_container']
+  ladb_core.article_manager:
+    class: Ladb\CoreBundle\Manager\Howto\ArticleManager
+    arguments: ['@service_container']
+  ladb_core.provider_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\ProviderManager
+    arguments: ['@service_container']
+  ladb_core.wood_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\WoodManager
+    arguments: ['@service_container']
+  ladb_core.witness_manager:
+    class: Ladb\CoreBundle\Manager\WitnessManager
+    arguments: ['@service_container']
+  ladb_core.funding_manager:
+    class: Ladb\CoreBundle\Manager\Funding\FundingManager
+    arguments: ['@service_container']
+  ladb_core.took_manager:
+    class: Ladb\CoreBundle\Manager\Youtook\TookManager
+    arguments: ['@service_container']
+
+  # Validators
+  ladb_core.valid_username_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidUsernameValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_username_validator }
+  ladb_core.self_recipient_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\SelfRecipientValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.self_recipient_validator }
+    arguments: ['@security.token_storage']
+  ladb_core.unique_wood_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueWoodValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.unique_wood_validator }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.unique_provider_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueProviderValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.unique_provider_validator }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.unique_find_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueFindValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.unique_find_validator }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.one_thing_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\OneThingValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.one_thing_validator }
+  ladb_core.value_source_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValueSourceValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.value_source_validator }
+    arguments: ['@validator']
+  ladb_core.ladb_core.valid_phone_value_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidPhoneValueValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_phone_value_validator }
+  ladb_core.ladb_core.valid_location_value_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidLocationValueValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_location_value_validator }
+  ladb_core.ladb_core.valid_sign_value_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidSignValueValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_sign_value_validator }
+  ladb_core.body_blocks_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\BodyBlocksValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.body_blocks_validator }
+    arguments: ['@validator']
+  ladb_core.upper_case_ratio_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UpperCaseRatioValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.upper_case_ratio_validator }
+    arguments: ['@validator']
+  ladb_core.find_event_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\FindEventValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.find_event_validator }
+    arguments: ['@validator']
+  ladb_core.article_body_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ArticleBodyValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.article_body_validator }
+    arguments: ['@validator']
+  ladb_core.supported_video_hosting_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\SupportedVideoHostingValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.supported_video_hosting_validator }
+    arguments: ['@ladb_core.video_hosting_utils']
+  ladb_core.plan_resources_max_size_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\PlanResourcesMaxSizeValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.plan_resources_max_size_validator }
+  ladb_core.no_media_link_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\NoMediaLinkValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.no_media_link_validator }
+  ladb_core.valid_took_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidTookValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_took_validator }
+  ladb_core.valid_hex_color_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidHexColorValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_hex_color_validator }
+
+  # Listeners
+  ladb_core.kernel_listener:
+    class: Ladb\CoreBundle\Event\KernelListener
+    tags:
+      - { name: kernel.event_subscriber }
+    arguments: ['@service_container']
+  ladb_core.user_listener:
+    class: Ladb\CoreBundle\Event\UserListener
+    tags:
+      - { name: kernel.event_subscriber }
+    arguments: ['@service_container']
+  ladb_core.publication_listener:
+    class: Ladb\CoreBundle\Event\PublicationListener
+    tags:
+      - { name: kernel.event_subscriber }
+    arguments: ['@service_container']
+  ladb_core.knowledge_listener:
+    class: Ladb\CoreBundle\Event\KnowledgeListener
+    tags:
+      - { name: kernel.event_subscriber }
+    arguments: ['@service_container']
+  ladb_core.votable_parent_listener:
+    class: Ladb\CoreBundle\Event\VotableListener
+    tags:
+      - { name: kernel.event_subscriber }
+    arguments: ['@service_container']
+
+  # Handlers
+  ladb_core.authentification_handler:
+    class: Ladb\CoreBundle\Handler\AuthenticationHandler
+  ladb_core.picture_upload_handler:
+    class: Ladb\CoreBundle\Handler\PictureUploadHandler
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+  ladb_core.resource_upload_handler:
+    class: Ladb\CoreBundle\Handler\ResourceUploadHandler
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+
+  # Types
+  ladb_blog_post:
+    class: Ladb\CoreBundle\Form\Type\Blog\PostType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_wonder_creation:
+    class: Ladb\CoreBundle\Form\Type\Wonder\CreationType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_wonder_plan:
+    class: Ladb\CoreBundle\Form\Type\Wonder\PlanType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_wonder_workshop:
+    class: Ladb\CoreBundle\Form\Type\Wonder\WorkshopType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.localisable_utils']
+  ladb_howto_howto:
+    class: Ladb\CoreBundle\Form\Type\Howto\HowtoType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_howto_howtoarticle:
+    class: Ladb\CoreBundle\Form\Type\Howto\HowtoArticleType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_find_find:
+    class: Ladb\CoreBundle\Form\Type\Find\FindType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.find_utils', '@ladb_core.video_hosting_utils', '@ladb_core.localisable_utils']
+  ladb_find_content_event:
+    class: Ladb\CoreBundle\Form\Type\Find\Content\EventType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_find_content_gallery:
+    class: Ladb\CoreBundle\Form\Type\Find\Content\GalleryType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_find_content_link:
+    class: Ladb\CoreBundle\Form\Type\Find\Content\LinkType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_faq_question:
+    class: Ladb\CoreBundle\Form\Type\Faq\QuestionType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_knowledge_value_picture:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\Value\PictureValueType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_knowledge_value_location:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\Value\LocationValueType
+    tags:
+      - { name: form.type }
+    arguments: ['@ladb_core.localisable_utils']
+  ladb_knowledge_newwood:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\NewWoodType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_knowledge_newprovider:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\NewProviderType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_message_newthread:
+    class: Ladb\CoreBundle\Form\Type\Message\NewThreadMessageType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_message_replymessage:
+    class: Ladb\CoreBundle\Form\Type\Message\ReplyMessageType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_comment:
+    class: Ladb\CoreBundle\Form\Type\CommentType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_editpicture:
+    class: Ladb\CoreBundle\Form\Type\EditPictureType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_usersettings:
+    class: Ladb\CoreBundle\Form\Type\UserSettingsType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_youtook_new_took:
+    class: Ladb\CoreBundle\Form\Type\Youtook\NewTookType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils']
+  ladb_youtook_edit_took:
+    class: Ladb\CoreBundle\Form\Type\Youtook\EditTookType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
