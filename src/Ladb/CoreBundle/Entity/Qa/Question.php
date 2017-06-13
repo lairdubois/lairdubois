@@ -89,6 +89,21 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $tags;
 
 	/**
+	 * @ORM\Column(type="integer", name="positive_vote_count")
+	 */
+	private $positiveVoteCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="negative_vote_count")
+	 */
+	private $negativeVoteCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="vote_count")
+	 */
+	private $voteCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="like_count")
 	 */
 	private $likeCount = 0;

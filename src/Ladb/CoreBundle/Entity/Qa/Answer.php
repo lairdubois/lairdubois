@@ -48,6 +48,21 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 	const TYPE = 114;
 
 	/**
+	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
+	 */
+	protected $parentEntityType;
+
+	/**
+	 * @ORM\Column(name="parent_entity_id", type="integer", nullable=false)
+	 */
+	protected $parentEntityId;
+
+	/**
+	 * @ORM\Column(name="parent_entity_field", type="string", length=20, nullable=false)
+	 */
+	protected $parentEntityField;
+
+	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
 	private $body;
