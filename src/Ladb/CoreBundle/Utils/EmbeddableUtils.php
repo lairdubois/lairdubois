@@ -28,40 +28,6 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	private function _retrievePageTitle($url, $pattern = null, $replacement = null) {
-		try {
-			$str = file_get_contents($url);
-			if (strlen($str) > 0) {
-				$matches = null;
-				if (preg_match("/\<title\>(.*)\<\/title\>/", $str, $matches)) {
-					$title = $matches[1];
-					if (strlen($title) > 0) {
-						if (!is_null($pattern) && !is_null($replacement)) {
-							$returnValue = preg_replace($pattern, $replacement, $title);
-							if (!is_null($returnValue)) {
-								return $returnValue;
-							}
-						}
-						return $title;
-					}
-				}
-			}
-		} catch (\Exception $e) {}
-		return $url;
-	}
-
-	private function _generateEmbeddableTitle(BasicEmbeddableInterface $embeddable) {
-		$title = $embeddable->getTitle();
-		if (!($embeddable instanceof ChildInterface)) {
-			$translator = $this->get('translator');
-			$typableUtils = $this->get(TypableUtils::NAME);
-			$title = '['.$translator->trans('share.sticker.title_suffix.'.$typableUtils->getStrippedName($embeddable)).'] '.$title;
-		}
-		return $title;
-	}
-
-	/////
-
 	public function generateSticker(BasicEmbeddableInterface $embeddable) {
 
 		$pictureCount = 0;
@@ -95,7 +61,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 		$sticker = new Picture();
 		$sticker->setMasterPath(sha1(uniqid(mt_rand(), true)).'.png');
 
-		$hasSubtitle = $embeddable instanceof ChildInterface && $embeddable->getParent() instanceof EmbeddableInterface;
+		$hasSubtitle = $embeddable instanceof ChildInterface && $embeddable->getParentEntity() instanceof EmbeddableInterface;
 
 		$gutter = 10;
 		$padding = 4;
@@ -228,7 +194,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 				$stickerImage->draw()->text($this->_generateEmbeddableTitle($embeddable), $titleFont, new Point($x, $yy));
 				$yy += $titleFontSize + $textGutter;
 				if ($hasSubtitle) {
-					$stickerImage->draw()->text($this->_generateEmbeddableTitle($embeddable->getParent()), $subtitleFont, new Point($x, $yy));
+					$stickerImage->draw()->text($this->_generateEmbeddableTitle($embeddable->getParentEntity()), $subtitleFont, new Point($x, $yy));
 					$yy += $subtitleFontSize + $textGutter;
 				}
 				$stickerImage->draw()->text('par '.$user->getDisplayname(), $authorFont, new Point($x, $yy));
@@ -243,7 +209,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 		$footerFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Regular.ttf', 10, $palette->color('000', 20));
 		$stickerImage->draw()->text('www.lairdubois.fr', $footerFont, new Point(5, $stickerSize->getHeight() - $footerHeight + ($footerHeight - $footerFont->box('www.lairdubois.fr')->getHeight()) / 2));
 
-		$licence = $embeddable instanceof LicensedInterface ? $embeddable->getLicense() : ($embeddable instanceof ChildInterface && $embeddable->getParent() instanceof LicensedInterface ? $embeddable->getParent()->getLicense() : null);
+		$licence = $embeddable instanceof LicensedInterface ? $embeddable->getLicense() : ($embeddable instanceof ChildInterface && $embeddable->getParentEntity() instanceof LicensedInterface ? $embeddable->getParentEntity()->getLicense() : null);
 		if (!is_null($licence)) {
 			$licenceBadge = $imagine->open(__DIR__.'/../Resources/public/ladb/images/cc/80x15/'.$licence->getStrippedName().'.png');
 			$stickerImage->paste($licenceBadge, new Point($width - $licenceBadge->getSize()->getWidth(), $stickerSize->getHeight() - $footerHeight + ($footerHeight - $licenceBadge->getSize()->getHeight()) / 2));
@@ -258,11 +224,21 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 		return $sticker;
 	}
 
-	public function resetSticker(BasicEmbeddableInterface $embeddable) {
-		$embeddable->setSticker(null);
+	private function _generateEmbeddableTitle(BasicEmbeddableInterface $embeddable) {
+		$title = $embeddable->getTitle();
+		if (!($embeddable instanceof ChildInterface)) {
+			$translator = $this->get('translator');
+			$typableUtils = $this->get(TypableUtils::NAME);
+			$title = '['.$translator->trans('share.sticker.title_suffix.'.$typableUtils->getStrippedName($embeddable)).'] '.$title;
+		}
+		return $title;
 	}
 
 	/////
+
+	public function resetSticker(BasicEmbeddableInterface $embeddable) {
+		$embeddable->setSticker(null);
+	}
 
 	public function processReferer(EmbeddableInterface $embeddable, Request $request) {
 		if ($request->get('referer', '0') == '1') {
@@ -354,6 +330,30 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 		}
 
 		return null;
+	}
+
+	/////
+
+	private function _retrievePageTitle($url, $pattern = null, $replacement = null) {
+		try {
+			$str = file_get_contents($url);
+			if (strlen($str) > 0) {
+				$matches = null;
+				if (preg_match("/\<title\>(.*)\<\/title\>/", $str, $matches)) {
+					$title = $matches[1];
+					if (strlen($title) > 0) {
+						if (!is_null($pattern) && !is_null($replacement)) {
+							$returnValue = preg_replace($pattern, $replacement, $title);
+							if (!is_null($returnValue)) {
+								return $returnValue;
+							}
+						}
+						return $title;
+					}
+				}
+			}
+		} catch (\Exception $e) {}
+		return $url;
 	}
 
 }
