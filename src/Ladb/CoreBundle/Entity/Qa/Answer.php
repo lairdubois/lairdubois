@@ -15,6 +15,7 @@ use Ladb\CoreBundle\Model\SitemapableTrait;
 use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\VotableInterface;
 use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -34,16 +35,16 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_qa_answer")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\QA\AnswerRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\AnswerRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface, CommentableInterface {
+class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface, CommentableInterface, VotableInterface {
 
 	use BlockBodiedTrait;
 	use CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Answer';
-	const TYPE = 108;
+	const TYPE = 114;
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)
