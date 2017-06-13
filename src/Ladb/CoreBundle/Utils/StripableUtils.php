@@ -96,7 +96,7 @@ class StripableUtils extends AbstractContainerAwareUtils {
 		$footerUrlText = ($stripable instanceof AuthoredInterface ? ' | ' : '').'www.lairdubois.fr';
 		$stripImage->draw()->text($footerUrlText, $footerUrlFont, new Point($x, $stripSize->getHeight() - $footerHeight + ($footerHeight - $footerUrlFont->box($footerUrlText)->getHeight()) / 2));
 
-		$licence = $stripable instanceof LicensedInterface ? $stripable->getLicense() : ($stripable instanceof ChildInterface && $stripable->getParent() instanceof LicensedInterface ? $stripable->getParent()->getLicense() : null);
+		$licence = $stripable instanceof LicensedInterface ? $stripable->getLicense() : ($stripable instanceof ChildInterface && $stripable->getParentEntity() instanceof LicensedInterface ? $stripable->getParentEntity()->getLicense() : null);
 		if (!is_null($licence)) {
 			$licenceBadge = $imagine->open(__DIR__.'/../Resources/public/ladb/images/cc/80x15/'.$licence->getStrippedName().'.png');
 			$stripImage->paste($licenceBadge, new Point($width - $licenceBadge->getSize()->getWidth() - $footerPadding, $stripSize->getHeight() - $footerHeight + ($footerHeight - $licenceBadge->getSize()->getHeight()) / 2));
