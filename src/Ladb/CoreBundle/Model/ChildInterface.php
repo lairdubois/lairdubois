@@ -4,8 +4,8 @@ namespace Ladb\CoreBundle\Model;
 
 interface ChildInterface {
 
-	// Parent /////
+	// ParentEntity /////
 
-	public function getParent();
+	public function getParentEntity();
 
 }

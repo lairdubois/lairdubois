@@ -13,6 +13,7 @@ use Ladb\CoreBundle\Model\SitemapableInterface;
 use Ladb\CoreBundle\Model\SitemapableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\VotableParentTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -33,7 +34,7 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
  */
 abstract class AbstractKnowledge extends AbstractPublication implements TitledInterface, PicturedInterface, IndexableInterface, SitemapableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, VotableParentInterface {
 
-	use TitledTrait, ScrapableTrait, IndexableTrait, ViewableTrait, PicturedTrait, LikableTrait, WatchableTrait, CommentableTrait;
+	use TitledTrait, ScrapableTrait, IndexableTrait, ViewableTrait, PicturedTrait, LikableTrait, WatchableTrait, CommentableTrait, VotableParentTrait;
 	use SitemapableTrait { getIsSitemapable as public getIsSitemapableTrait; }
 
 	const ATTRIB_TYPE = 0;
@@ -119,14 +120,14 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 
 	// IsRejected /////
 
-	public function getIsRejected() {
-		return false;
+	public function getIsSitemapable() {
+		return !$this->getIsRejected() && $this->getIsSitemapableTrait();
 	}
 
 	// IsSitemapable /////
 
-	public function getIsSitemapable() {
-		return !$this->getIsRejected() && $this->getIsSitemapableTrait();
+	public function getIsRejected() {
+		return false;
 	}
 
 	/////
@@ -137,13 +138,13 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 
 	// Slug /////
 
+	public function getSlug() {
+		return $this->slug;
+	}
+
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
 	}
 
 	public function getSluggedId() {
@@ -162,58 +163,13 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 		return $this->contributorCount += intval($by);
 	}
 
-	public function setContributorCount($contributorCount) {
-		$this->contributorCount = $contributorCount;
-		return $this;
-	}
-
 	public function getContributorCount() {
 		return $this->contributorCount;
 	}
 
-	// PositiveVoteCount /////
-
-	public function incrementPositiveVoteCount($by = 1) {
-		return $this->positiveVoteCount += intval($by);
-	}
-
-	public function setPositiveVoteCount($positiveVoteCount) {
-		$this->positiveVoteCount = $positiveVoteCount;
+	public function setContributorCount($contributorCount) {
+		$this->contributorCount = $contributorCount;
 		return $this;
-	}
-
-	public function getPositiveVoteCount() {
-		return $this->positiveVoteCount;
-	}
-
-	// NegativeVoteCount /////
-
-	public function incrementNegativeVoteCount($by = 1) {
-		return $this->negativeVoteCount += intval($by);
-	}
-
-	public function setNegativeVoteCount($negativeVoteCount) {
-		$this->negativeVoteCount = $negativeVoteCount;
-		return $this;
-	}
-
-	public function getNegativeVoteCount() {
-		return $this->negativeVoteCount;
-	}
-
-	// VoteCount /////
-
-	public function incrementVoteCount($by = 1) {
-		return $this->voteCount += intval($by);
-	}
-
-	public function setVoteCount($voteCount) {
-		$this->voteCount = $voteCount;
-		return $this;
-	}
-
-	public function getVoteCount() {
-		return $this->voteCount;
 	}
 
 }
