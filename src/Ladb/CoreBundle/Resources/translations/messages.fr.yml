@@ -153,6 +153,7 @@ creation:
       body: Décrivez ici votre création.
       plans: Associez jusqu'à <strong>4 plans</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces plans.
       howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces pas à pas.
+      providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre création.
       inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
   choice:
     new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles creations'
@@ -660,8 +661,10 @@ knowledge:
   provider:
     description: Retrouvez tous les fournisseurs
     new: Ajouter un fournisseur
+    create: Créer un nouveau fournisseur
     list: Les fournisseurs
     nav: Fournisseurs
+    linkto: Associer un fournisseur déjà publié
     new_warning: Un <strong>fournisseur</strong> est une entreprise, une association ou un organisme qui vend des produits ou services <strong>pour le travail du bois</strong>.
     field:
       sign: Enseigne
@@ -783,10 +786,11 @@ search:
     workshops: Recherche dans les ateliers
     plans: Recherche dans les plans
     howtos: Recherche dans les pas à pas
+    woods: Recherche dans les essences
+    providers: Recherche dans les fournisseurs
     finds: Recherche dans les trouvailles
     users: Recherche dans les boiseaux
     posts: Recherche dans le blog
-    woods: Recherche dans les essences
     questions: Recherche dans la FAQ
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'

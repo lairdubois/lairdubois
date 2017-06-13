@@ -186,6 +186,13 @@ class ProviderController extends Controller {
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
+		$layout = $request->get('layout', 'view');
+
+		$routeParameters = array();
+		if ($layout != 'view') {
+			$routeParameters['layout'] = $layout;
+		}
+
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
@@ -324,7 +331,8 @@ class ProviderController extends Controller {
 			},
 			'fos_elastica.index.ladb.provider',
 			\Ladb\CoreBundle\Entity\Knowledge\Provider::CLASS_NAME,
-			'core_provider_list_page'
+			'core_provider_list_page',
+			$routeParameters
 		);
 
 		// Dispatch publication event
@@ -332,7 +340,9 @@ class ProviderController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
 
 		$parameters = array_merge($searchParameters, array(
-			'providers' => $searchParameters['entities'],
+			'providers'       => $searchParameters['entities'],
+			'layout'          => $layout,
+			'routeParameters' => $routeParameters,
 		));
 
 		if ($layout == 'geojson') {
@@ -360,7 +370,15 @@ class ProviderController extends Controller {
 		}
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Provider:list-xhr.html.twig', $parameters);
+			if ($layout == 'choice') {
+				return $this->render('LadbCoreBundle:Provider:list-choice-xhr.html.twig', $parameters);
+			} else {
+				return $this->render('LadbCoreBundle:Provider:list-xhr.html.twig', $parameters);
+			}
+		}
+
+		if ($layout == 'choice') {
+			return $this->render('LadbCoreBundle:Provider:list-choice.html.twig', $parameters);
 		}
 
 		return $parameters;

@@ -6,9 +6,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Resource;
+use Ladb\CoreBundle\Entity\Knowledge\Provider;
 
-class ResourcesToIdsTransformer implements DataTransformerInterface {
+class ProvidersToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
@@ -16,18 +16,18 @@ class ResourcesToIdsTransformer implements DataTransformerInterface {
 		$this->om = $om;
 	}
 
-	public function transform($resources) {
-		if (null === $resources) {
+	public function transform($providers) {
+		if (null === $providers) {
 			return '';
 		}
 
-		if (!$resources instanceof \Doctrine\Common\Collections\Collection) {
-			throw new UnexpectedTypeException($resources, '\Doctrine\Common\Collections\Collection');
+		if (!$providers instanceof \Doctrine\Common\Collections\Collection) {
+			throw new UnexpectedTypeException($providers, '\Doctrine\Common\Collections\Collection');
 		}
 
 		$idsArray = array();
-		foreach ($resources as $resources) {
-			$idsArray[] = $resources->getId();
+		foreach ($providers as $providers) {
+			$idsArray[] = $providers->getId();
 		}
 		return implode(',', $idsArray);
 	}
@@ -37,22 +37,22 @@ class ResourcesToIdsTransformer implements DataTransformerInterface {
 			return array();
 		}
 
-		$resources = array();
+		$providers = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository(Resource::CLASS_NAME);
+		$repository = $this->om->getRepository( Provider::CLASS_NAME);
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);
 			if ($id == 0) {
 				continue;
 			}
-			$resource = $repository->find($id);
-			if (is_null($resource)) {
+			$provider = $repository->find($id);
+			if (is_null($provider)) {
 				throw new TransformationFailedException();
 			}
-			$resources[] = $resource;
+			$providers[] = $provider;
 		}
 
-		return $resources;
+		return $providers;
 	}
 
 }

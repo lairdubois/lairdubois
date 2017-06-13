@@ -6,6 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Picture;
 
 class PicturesToIdsTransformer implements DataTransformerInterface {
 
@@ -38,7 +39,7 @@ class PicturesToIdsTransformer implements DataTransformerInterface {
 
 		$pictures = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository('LadbCoreBundle:Picture');
+		$repository = $this->om->getRepository(Picture::CLASS_NAME);
 		$sortIndex = 0;
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);

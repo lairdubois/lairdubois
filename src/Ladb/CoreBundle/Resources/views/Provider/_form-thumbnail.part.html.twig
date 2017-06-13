@@ -1,0 +1,14 @@
+
+{# set provider #}
+
+{% set typeStrippedName = ladb_entity_type_stripped_name(provider) %}
+
+<li id="provider_{{ provider.id }}" class="ladb-{{ typeStrippedName }} ladb-form-thumbnail thumbnail">
+    <div class="uk-overlay">
+        <img src="{{ (provider.mainPicture is not null ? provider.mainPicture.webPath : 'avatar.png')|imagine_filter('128x128o') }}" width="128" height="128">
+        <div class="uk-overlay-caption">{{ provider.title }}{% if provider.store is not empty %}<br><small>({{ provider.store }})</small>{% endif %}</div>
+    </div>
+    <div style="text-align: center;margin-top: 5px;">
+        <a href="#" class="btn btn-xs btn-danger" onclick="$('#{{ typeStrippedName }}_{{ provider.id }}').remove();{{ typeStrippedName }}Removed();return false;">{{ 'default.remove'|trans() }}</a>
+    </div>
+</li>

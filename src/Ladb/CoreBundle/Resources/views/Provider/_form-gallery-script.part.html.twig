@@ -1,0 +1,35 @@
+
+{# set fieldId #}
+{# set maxProviderCount #}
+
+<script>
+    function updateProvidersForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#provider_thumbnails").find("li.ladb-provider").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(9); {# 9 = "provider_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount == {{ maxProviderCount }}) {
+            $("#linkto_provider_buttons").hide();
+        } else {
+            $("#linkto_provider_buttons").show();
+        }
+    }
+    function providerAdded(data) {
+        $("#provider_thumbnails").append(data);
+        updateProvidersForm();
+        $("#linkto_provider_modal_iframe").attr("src", "");
+        $("#linkto_provider_modal").find("button.close").click();
+    }
+    function providerRemoved() {
+        updateProvidersForm();
+    }
+    function updateProviderChoiceModal() {
+        $('#linkto_provider_modal_iframe').attr('src', '{{ path('core_provider_list', { 'layout':'choice' }) }}&ex=' + $("#{{ fieldId }}").val());
+    }
+</script>
