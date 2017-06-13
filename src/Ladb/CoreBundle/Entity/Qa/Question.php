@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\VotableParentInterface;
+use Ladb\CoreBundle\Model\VotableParentTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
@@ -35,10 +37,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractAuthoredPublication implements TitledInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
+class Question extends AbstractAuthoredPublication implements TitledInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, VotableParentInterface, ReportableInterface, ExplorableInterface {
 
 	use TitledTrait, BlockBodiedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, VotableParentTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Question';
 	const TYPE = 113;
@@ -121,13 +123,13 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	// Slug /////
 
+	public function getSlug() {
+		return $this->slug;
+	}
+
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
 	}
 
 	public function getSluggedId() {

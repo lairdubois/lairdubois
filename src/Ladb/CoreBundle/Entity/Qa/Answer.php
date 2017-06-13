@@ -16,6 +16,7 @@ use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\VotableInterface;
+use Ladb\CoreBundle\Model\VotableTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -41,7 +42,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface, CommentableInterface, VotableInterface {
 
 	use BlockBodiedTrait;
-	use CommentableTrait;
+	use CommentableTrait, VotableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Answer';
 	const TYPE = 114;
