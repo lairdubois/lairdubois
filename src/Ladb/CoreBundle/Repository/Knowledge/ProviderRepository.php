@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Knowledge;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
@@ -139,6 +140,24 @@ class ProviderRepository extends AbstractKnowledgeRepository {
 			->innerJoin('p.creations', 'c')
 			->where('c = :creation')
 			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByHowto(Howto $howto, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'mp', 'h' ))
+			->from($this->getEntityName(), 'p')
+			->leftJoin('p.mainPicture', 'mp')
+			->innerJoin('p.howtos', 'h')
+			->where('h = :howto')
+			->setParameter('howto', $howto)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

@@ -32,6 +32,11 @@ class HowtoManager extends AbstractPublicationManager {
 			$workshop->incrementHowtoCount(1);
 		}
 
+		// Providers counter update
+		foreach ($howto->getProviders() as $provider) {
+			$provider->incrementHowtoCount(1);
+		}
+
 		// Witness articles
 		$witnessManager = $this->get(WitnessManager::NAME);
 		foreach ($howto->getArticles() as $article) {
@@ -59,6 +64,11 @@ class HowtoManager extends AbstractPublicationManager {
 		// Workshops counter update
 		foreach ($howto->getWorkshops() as $workshop) {
 			$workshop->incrementHowtoCount(-1);
+		}
+
+		// Providers counter update
+		foreach ($howto->getProviders() as $provider) {
+			$provider->incrementHowtoCount(-1);
 		}
 
 		// Witness articles
@@ -91,9 +101,19 @@ class HowtoManager extends AbstractPublicationManager {
 			$creation->removeHowto($howto);
 		}
 
+		// Unlink plans
+		foreach ($howto->getPlans() as $plan) {
+			$howto->removePlan($plan);
+		}
+
 		// Unlink workshops
 		foreach ($howto->getWorkshops() as $workshop) {
 			$workshop->removeHowto($howto);
+		}
+
+		// Unlink providers
+		foreach ($howto->getProviders() as $provider) {
+			$howto->removeProvider($provider);
 		}
 
 		// Witness articles

@@ -1,0 +1,36 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set navSection = 'providers' %}
+
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Provider:_entity-header.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if creations.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            Aucune création n'est associée à ce fournisseur.
+        </div>
+    {% else %}
+        <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+            <div class="panel-body">
+                Liste des créations pour lesquelles leurs auteurs ont indiqué se fournir chez <a href="{{ ladb_entity_url_action(provider) }}">{{ provider.title }}</a> pour les réaliser.
+            </div>
+        </div>
+        {% embed 'LadbCoreBundle:Creation:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_provider_creations_filter' %}
+            {% set filterPathParameters = { 'id':provider.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ provider.creations.count }} {{ 'creation.choice.creations'|transchoice(provider.creations.count) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Creation:_list-n.part.html.twig' %}
+{% endblock %}

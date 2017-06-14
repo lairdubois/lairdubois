@@ -13,9 +13,14 @@
 {% block bodyContainerContent %}
     {% if providers.count == 0 %}
         <div class="alert alert-info">
-            Aucun pas à pas n'est associé à cette création.
+            Aucun fournisseur n'est associé à cette création.
         </div>
     {% else %}
+        <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+            <div class="panel-body">
+                Liste des fournisseurs recencés par <a href="{{ path('core_user_show', { 'username':creation.user.usernameCanonical }) }}">{{ creation.user.displayName }}</a> pour la réalisation de la création <a href="{{ ladb_entity_url_action(creation) }}">{{ creation.title }}</a>.
+            </div>
+        </div>
         {% embed 'LadbCoreBundle:Provider:_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_creation_providers_filter' %}
             {% set filterPathParameters = { 'id':creation.id } %}

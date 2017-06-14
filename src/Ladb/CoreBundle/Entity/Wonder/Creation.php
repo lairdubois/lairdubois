@@ -28,17 +28,20 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	 * @Assert\Count(min=1, max=5)
 	 */
 	protected $pictures;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_tag")
 	 * @Assert\Count(min=2)
 	 */
 	protected $tags;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
 	 */
 	protected $referrals;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
@@ -46,71 +49,86 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	 * @Assert\Count(min=1)
 	 */
 	private $bodyBlocks;
+
 	/**
 	 * @ORM\Column(type="integer", name="body_block_picture_count")
 	 */
 	private $bodyBlockPictureCount = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="body_block_video_count")
 	 */
 	private $bodyBlockVideoCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Input\Wood", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_wood")
 	 */
 	private $woods;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Input\Tool", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_tool")
 	 */
 	private $tools;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Input\Finish", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_finish")
 	 */
 	private $finishes;
+
 	/**
 	 * @ORM\Column(type="integer", name="plan_count")
 	 */
 	private $planCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="creations", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_plan")
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $plans;
+
 	/**
      * @ORM\Column(type="integer", name="howto_count")
      */
     private $howtoCount = 0;
+
     /**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", inversedBy="creations", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_howto")
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $howtos;
+
 	/**
 	 * @ORM\Column(type="integer", name="provider_count")
 	 */
 	private $providerCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Provider", inversedBy="creations", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_provider")
 	 * @Assert\Count(min=0, max=10)
 	 */
 	private $providers;
+
 	/**
      * @ORM\Column(type="integer", name="rebound_count")
      */
     private $reboundCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="inspirations")
 	 */
 	private $rebounds;
+
 	/**
 	 * @ORM\Column(type="integer", name="inspiration_count")
 	 */
 	private $inspirationCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", inversedBy="rebounds", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_inspiration",
@@ -120,6 +138,7 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $inspirations;
+
 	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Spotlight", cascade={"remove"})
 	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
@@ -279,7 +298,7 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 		return $this->providerCount;
 	}
 
-	// Howtos /////
+	// Providers /////
 
 	public function addProvider(\Ladb\CoreBundle\Entity\Knowledge\Provider $provider) {
         if (!$this->providers->contains($provider)) {

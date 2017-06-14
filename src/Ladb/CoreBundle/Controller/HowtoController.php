@@ -2,9 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller;
 
-use Ladb\CoreBundle\Manager\Howto\ArticleManager;
-use Ladb\CoreBundle\Manager\Howto\HowtoManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -15,6 +12,7 @@ use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Howto\Article;
+use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Form\Type\Howto\HowtoType;
 use Ladb\CoreBundle\Form\Type\Howto\HowtoArticleType;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
@@ -31,46 +29,11 @@ use Ladb\CoreBundle\Utils\EmbeddableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Manager\Howto\ArticleManager;
+use Ladb\CoreBundle\Manager\Howto\HowtoManager;
+use Ladb\CoreBundle\Manager\WitnessManager;
 
 class HowtoController extends Controller {
-
-	private function _updateHowtoBlockVideoCount($howto) {
-		$bodyBlockVideoCount = 0;
-		foreach ($howto->getArticles() as $article) {
-			if ($article->getIsDraft()) {
-				continue;
-			}
-			$bodyBlockVideoCount += $article->getBodyBlockVideoCount();
-		}
-		$howto->setBodyBlockVideoCount($bodyBlockVideoCount);
-	}
-
-	private function _computeShowParameters($howto, $referral = null) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
-
-		$explorableUtils = $this->get(ExplorableUtils::NAME);
-		$userHowtos = $explorableUtils->getPreviousAndNextPublishedUserExplorables($howto, $howtoRepository, $howto->getUser()->getPublishedHowtoCount());
-		$similarHowtos = $explorableUtils->getSimilarExplorables($howto, 'fos_elastica.index.ladb.howto', Howto::CLASS_NAME, $userHowtos);
-
-		$likableUtils = $this->get(LikableUtils::NAME);
-		$watchableUtils = $this->get(WatchableUtils::NAME);
-		$commentableUtils = $this->get(CommentableUtils::NAME);
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array(
-			'howto'           => $howto,
-			'userHowtos'      => $userHowtos,
-			'similarHowtos'   => $similarHowtos,
-			'likeContext'     => $likableUtils->getLikeContext($howto, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($howto, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($howto),
-			'followerContext' => $followerUtils->getFollowerContext($howto->getUser(), $this->getUser()),
-			'referral'        => $referral,
-		);
-	}
-
-	/////
 
 	/**
 	 * @Route("/pas-a-pas/new", name="core_howto_new")
@@ -131,6 +94,8 @@ class HowtoController extends Controller {
 			'hideWarning'  => true,
 		);
 	}
+
+	/////
 
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_howto_lock")
@@ -460,6 +425,17 @@ class HowtoController extends Controller {
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $article->getHowto()->getSluggedId() )).'#'.$article->getSluggedId());
 	}
 
+	private function _updateHowtoBlockVideoCount($howto) {
+		$bodyBlockVideoCount = 0;
+		foreach ($howto->getArticles() as $article) {
+			if ($article->getIsDraft()) {
+				continue;
+			}
+			$bodyBlockVideoCount += $article->getBodyBlockVideoCount();
+		}
+		$howto->setBodyBlockVideoCount($bodyBlockVideoCount);
+	}
+
 	/**
 	 * @Route("/pas-a-pas/article/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_article_unpublish")
 	 */
@@ -676,6 +652,31 @@ class HowtoController extends Controller {
 		));
 
 		return $parameters;
+	}
+
+	private function _computeShowParameters($howto, $referral = null) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$explorableUtils = $this->get(ExplorableUtils::NAME);
+		$userHowtos = $explorableUtils->getPreviousAndNextPublishedUserExplorables($howto, $howtoRepository, $howto->getUser()->getPublishedHowtoCount());
+		$similarHowtos = $explorableUtils->getSimilarExplorables($howto, 'fos_elastica.index.ladb.howto', Howto::CLASS_NAME, $userHowtos);
+
+		$likableUtils = $this->get(LikableUtils::NAME);
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array(
+			'howto'           => $howto,
+			'userHowtos'      => $userHowtos,
+			'similarHowtos'   => $similarHowtos,
+			'likeContext'     => $likableUtils->getLikeContext($howto, $this->getUser()),
+			'watchContext'    => $watchableUtils->getWatchContext($howto, $this->getUser()),
+			'commentContext'  => $commentableUtils->getCommentContext($howto),
+			'followerContext' => $followerUtils->getFollowerContext($howto->getUser(), $this->getUser()),
+			'referral'        => $referral,
+		);
 	}
 
 	/**
@@ -929,47 +930,6 @@ class HowtoController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/plans", requirements={"id" = "\d+"}, name="core_howto_plans")
-	 * @Route("/pas-a-pas/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_plans_filter")
-	 * @Route("/pas-a-pas/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_plans_filter_page")
-	 * @Template()
-	 */
-	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
-
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-
-		// Plans
-
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
-		$paginatorUtils = $this->get(PaginatorUtils::NAME);
-
-		$offset = $paginatorUtils->computePaginatorOffset($page);
-		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $planRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_plans_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
-
-		$parameters = array(
-			'filter'      => $filter,
-			'prevPageUrl' => $pageUrls->prev,
-			'nextPageUrl' => $pageUrls->next,
-			'plans'       => $paginator,
-		);
-
-		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Plan:list-xhr.html.twig', $parameters);
-		}
-
-		return array_merge($parameters, array(
-			'howto' => $howto,
-		));
-	}
-
-	/**
      * @Route("/pas-a-pas/{id}/creations", requirements={"id" = "\d+"}, name="core_howto_creations")
      * @Route("/pas-a-pas/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_creations_filter")
      * @Route("/pas-a-pas/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_creations_filter_page")
@@ -1050,6 +1010,88 @@ class HowtoController extends Controller {
 			'howto' => $howto,
 		));
     }
+
+	/**
+	 * @Route("/pas-a-pas/{id}/plans", requirements={"id" = "\d+"}, name="core_howto_plans")
+	 * @Route("/pas-a-pas/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_plans_filter")
+	 * @Route("/pas-a-pas/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_plans_filter_page")
+	 * @Template()
+	 */
+	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+
+		// Plans
+
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $planRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_plans_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'plans'       => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Plan:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'howto' => $howto,
+		));
+	}
+
+	/**
+	 * @Route("/pas-a-pas/{id}/fournisseurs", requirements={"id" = "\d+"}, name="core_howto_providers")
+	 * @Route("/pas-a-pas/{id}/fournisseurs/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_providers_filter")
+	 * @Route("/pas-a-pas/{id}/fournisseurs/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_providers_filter_page")
+	 * @Template()
+	 */
+	public function providersAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+
+		// Providers
+
+		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $providerRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_providers_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'providers'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Howto:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'howto' => $howto,
+		));
+	}
 
 	/**
 	 * @Route("/pas-a-pas/{id}.html", name="core_howto_show")

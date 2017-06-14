@@ -12,11 +12,6 @@
 
 {% block headOpenGraphMetas %}
     {{ parent() }}
-    {% if howto.planCount > 0 %}
-        {% for entity in howto.plans %}
-            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
-        {% endfor %}
-    {% endif %}
     {% if howto.creationCount > 0 %}
         {% for entity in howto.creations %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
@@ -24,6 +19,16 @@
     {% endif %}
     {% if howto.workshopCount > 0 %}
         {% for entity in howto.workshops %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if howto.planCount > 0 %}
+        {% for entity in howto.plans %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if howto.providerCount > 0 %}
+        {% for entity in howto.providers %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
@@ -318,7 +323,7 @@
     {% if not ownerUser %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% if howto.planCount > 0 or howto.creationCount > 0 or howto.workshopCount > 0 %}
+    {% if howto.planCount > 0 or howto.creationCount > 0 or howto.workshopCount > 0 or howto.providerCount > 0 %}
         {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
             {% block body %}
                 {% if howto.planCount > 0 %}
@@ -343,6 +348,14 @@
                         'picture':howto.workshops[0].mainPicture,
                         'icon':'ladb-icon-workshop',
                         'caption': howto.workshopCount~' '~('workshop.choice.workshops'|transchoice(howto.workshopCount))
+                    } %}
+                {% endif %}
+                {% if howto.providerCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':howto.providerCount == 1 ? path('core_provider_show', { 'id':howto.providers[0].sluggedId }) : path('core_howto_providers', { 'id':howto.id }),
+                        'picture':howto.providers[0].mainPicture,
+                        'icon':'ladb-icon-provider',
+                        'caption': howto.providerCount~' '~('knowledge.provider.choice.providers'|transchoice(howto.providerCount))
                     } %}
                 {% endif %}
             {% endblock %}
@@ -372,39 +385,46 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% if howto.planCount > 0 or howto.creationCount > 0 or howto.workshopCount > 0%}
+        <div class="ladb-meta{% if howto.planCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
             {% if howto.planCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-plan"></i>
-                    <a href="{{ howto.planCount == 1 ? path('core_plan_show', { 'id':howto.plans[0].sluggedId }) : path('core_howto_plans', { 'id':howto.id }) }}">
-                        <strong>{{ howto.planCount }}</strong>
-                        <small>{{ 'plan.choice.plans'|transchoice(howto.planCount) }}</small>
-                    </a>
-                </div>
+                <a href="{{ howto.planCount == 1 ? path('core_plan_show', { 'id':howto.plans[0].sluggedId }) : path('core_howto_plans', { 'id':howto.id }) }}">
             {% endif %}
-            {% if howto.creationCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-creation"></i>
-                    <a href="{{ howto.creationCount == 1 ? path('core_creation_show', { 'id':howto.creations[0].sluggedId }) : path('core_howto_creations', { 'id':howto.id }) }}">
-                        <strong>{{ howto.creationCount }}</strong>
-                        <small>{{ 'creation.choice.creations'|transchoice(howto.creationCount) }}</small>
-                    </a>
-                </div>
+            <strong>{{ howto.planCount }}</strong>
+            <small>{{ 'plan.choice.plans'|transchoice(howto.planCount) }}</small>
+            {% if howto.planCount > 0 %}
+                </a>
             {% endif %}
-            {% if howto.workshopCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-workshop"></i>
-                    <a href="{{ howto.workshopCount == 1 ? path('core_workshop_show', { 'id':howto.workshops[0].sluggedId }) : path('core_howto_workshops', { 'id':howto.id }) }}">
-                        <strong>{{ howto.workshopCount }}</strong>
-                        <small>{{ 'workshop.choice.workshops'|transchoice(howto.workshopCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-        {% else %}
+        </div>
+        {% if howto.creationCount > 0 %}
             <div class="ladb-meta">
-                <span class="ladb-translucent">{{ 'default.no_links'|trans() }}</span>
+                <i class="ladb-icon-creation"></i>
+                <a href="{{ howto.creationCount == 1 ? path('core_creation_show', { 'id':howto.creations[0].sluggedId }) : path('core_howto_creations', { 'id':howto.id }) }}">
+                    <strong>{{ howto.creationCount }}</strong>
+                    <small>{{ 'creation.choice.creations'|transchoice(howto.creationCount) }}</small>
+                </a>
             </div>
         {% endif %}
+        {% if howto.workshopCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-workshop"></i>
+                <a href="{{ howto.workshopCount == 1 ? path('core_workshop_show', { 'id':howto.workshops[0].sluggedId }) : path('core_howto_workshops', { 'id':howto.id }) }}">
+                    <strong>{{ howto.workshopCount }}</strong>
+                    <small>{{ 'workshop.choice.workshops'|transchoice(howto.workshopCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        <div class="ladb-meta{% if howto.providerCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-provider ladb-icon-fixed-center"></i>
+            {% if howto.providerCount > 0 %}
+            <a href="{{ howto.providerCount == 1 ? path('core_provider_show', { 'id':howto.providers[0].sluggedId }) : path('core_howto_providers', { 'id':howto.id }) }}">
+                {% endif %}
+                <strong>{{ howto.providerCount }}</strong>
+                <small>{{ 'knowledge.provider.choice.providers'|transchoice(howto.providerCount) }}</small>
+                {% if howto.providerCount > 0 %}
+            </a>
+            {% endif %}
+        </div>
     </div>
     {% include 'LadbCoreBundle:Tag:_metas.part.html.twig' with { 'tags':howto.tags, 'type':'howtos' } %}
     {% include 'LadbCoreBundle:License:_metas.part.html.twig' with { 'license':howto.license } %}

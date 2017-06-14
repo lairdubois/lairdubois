@@ -4,9 +4,9 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\LocalisableInterface;
+use Ladb\CoreBundle\Model\LocalisableTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Longtext;
@@ -289,6 +289,16 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	 */
 	private $creations;
 
+	/**
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="providers")
+	 */
+	private $howtos;
+
 	/////
 
 	public function __construct() {
@@ -306,6 +316,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->servicesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->woodsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -896,6 +907,27 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	public function getCreations() {
 		return $this->creations;
+	}
+
+	// HowtoCount /////
+
+	public function incrementHowtoCount($by = 1) {
+		return $this->howtoCount += intval($by);
+	}
+
+	public function getHowtoCount() {
+		return $this->howtoCount;
+	}
+
+	public function setHowtoCount($howtoCount) {
+		$this->howtoCount = $howtoCount;
+		return $this;
+	}
+
+	// Howtos /////
+
+	public function getHowtos() {
+		return $this->howtos;
 	}
 
 }
