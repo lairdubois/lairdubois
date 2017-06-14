@@ -356,7 +356,7 @@ class CreationController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $planRepository->findPaginedByCreation($creation, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_plans_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_plans_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -405,7 +405,7 @@ class CreationController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $howtoRepository->findPaginedByCreation($creation, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_howtos_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -446,7 +446,7 @@ class CreationController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $providerRepository->findPaginedByCreation($creation, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_providers_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_providers_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -486,7 +486,7 @@ class CreationController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $creationRepository->findPaginedByRebound($creation, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_inspirations_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'       => $filter,
@@ -526,7 +526,7 @@ class CreationController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $creationRepository->findPaginedByInspiration($creation, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_rebounds_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_rebounds_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,

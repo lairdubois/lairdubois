@@ -397,8 +397,6 @@ class ProviderController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
 
-		$id = intval($id);
-
 		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($provider)) {
 			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
@@ -412,7 +410,7 @@ class ProviderController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $creationRepository->findPaginedByProvider($provider, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_creations_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_provider_creations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -440,8 +438,6 @@ class ProviderController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
 
-		$id = intval($id);
-
 		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($provider)) {
 			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
@@ -455,7 +451,7 @@ class ProviderController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $howtoRepository->findPaginedByProvider($provider, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_howtos_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,

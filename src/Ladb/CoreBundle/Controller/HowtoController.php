@@ -952,7 +952,7 @@ class HowtoController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $creationRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_creations_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_creations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -993,7 +993,7 @@ class HowtoController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $workshopRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_workshops_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_workshops_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -1034,7 +1034,7 @@ class HowtoController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $planRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_plans_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_plans_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -1075,7 +1075,7 @@ class HowtoController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $providerRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_providers_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_providers_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
