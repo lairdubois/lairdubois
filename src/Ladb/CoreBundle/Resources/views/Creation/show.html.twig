@@ -142,7 +142,7 @@
 {% endblock %}
 
 {% block contentLinkedTo %}
-    {% if creation.inspirationCount > 0 or creation.reboundCount > 0 or creation.planCount > 0 or creation.howtoCount > 0 %}
+    {% if creation.inspirationCount > 0 or creation.reboundCount > 0 or creation.planCount > 0 or creation.howtoCount > 0 or creation.providerCount > 0 %}
         {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
             {% block body %}
                 {% if creation.inspirationCount > 0 %}
