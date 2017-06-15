@@ -116,20 +116,20 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		return $this->howto->getUser();
 	}
 
-    public function getSlug() {
-        return $this->slug;
-    }
+	public function getSlug() {
+		return $this->slug;
+	}
 
 	// User /////
 
-    public function setSlug($slug) {
-        $this->slug = $slug;
-        return $this;
-    }
+	public function setSlug($slug) {
+		$this->slug = $slug;
+		return $this;
+	}
 
     // Slug /////
 
-    public function getSluggedId() {
+	public function getSluggedId() {
         return $this->id.'-'.$this->slug;
     }
 
@@ -162,16 +162,16 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		return $this->getHowto()->getType();
 	}
 
-    public function getHowto() {
-        return $this->howto;
-    }
+	public function getHowto() {
+		return $this->howto;
+	}
 
 	// ParentEntityType /////
 
-    public function setHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto = null) {
-        $this->howto = $howto;
-        return $this;
-    }
+	public function setHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto = null) {
+		$this->howto = $howto;
+		return $this;
+	}
 
 	// ParentEntityId /////
 
