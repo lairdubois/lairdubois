@@ -239,74 +239,74 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 
 	// Type /////
 
-    public function getArticles() {
-        return $this->articles;
-    }
+	public function getArticles() {
+		return $this->articles;
+	}
 
-    // Slug /////
+	// Slug /////
 
-    public function getType() {
-        return Howto::TYPE;
-    }
+	public function getType() {
+		return Howto::TYPE;
+	}
 
     public function getSlug() {
         return $this->slug;
     }
+
+	// BodyBlockVideoCount /////
 
     public function setSlug($slug) {
         $this->slug = $slug;
         return $this;
     }
 
-	// BodyBlockVideoCount /////
-
     public function getSluggedId() {
         return $this->id.'-'.$this->slug;
     }
+
+	// BodyExtract /////
 
 	public function getBodyBlockVideoCount() {
 		return $this->bodyBlockVideoCount;
 	}
 
-	// BodyExtract /////
+	// WorkInProgress /////
 
 	public function setBodyBlockVideoCount($bodyBlockVideoCount) {
 		$this->bodyBlockVideoCount = $bodyBlockVideoCount;
 		return $this;
 	}
 
-	// WorkInProgress /////
-
 	public function getBodyExtract() {
 		return $this->getHtmlBody();
 	}
 
+	// DraftArticleCount /////
+
 	public function  getIsWorkInProgress() {
 		return $this->isWorkInProgress;
 	}
-
-	// DraftArticleCount /////
 
 	public function setIsWorkInProgress($isWorkInProgress) {
 		$this->isWorkInProgress = $isWorkInProgress;
 		return $this;
 	}
 
+	// PublishedArticleCount /////
+
 	public function incrementDraftArticleCount($by = 1) {
 		return $this->draftArticleCount += intval($by);
 	}
-
-	// PublishedArticleCount /////
 
 	public function getDraftArticleCount() {
 		return $this->draftArticleCount;
 	}
 
+	// Articles /////
+
 	public function incrementPublishedArticleCount($by = 1) {
 		return $this->publishedArticleCount += intval($by);
 	}
-
-	// Articles /////
 
 	public function getPublishedArticleCount() {
 		return $this->publishedArticleCount;
