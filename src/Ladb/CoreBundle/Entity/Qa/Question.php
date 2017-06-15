@@ -82,6 +82,12 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $bodyBlockVideoCount = 0;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Answer", mappedBy="question", cascade={"all"})
+	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 */
+	private $answers;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_qa_question_tag")
 	 * @Assert\Count(min=2)
@@ -127,6 +133,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	public function __construct() {
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->answers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -151,4 +158,23 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 		return $this->id.'-'.$this->slug;
 	}
 
+	// Answers /////
+
+	public function addAnswer(\Ladb\CoreBundle\Entity\Qa\Answer $answer) {
+		if (!$this->answers->contains($answer)) {
+			$this->answers[] = $answer;
+			$answer->setQuestion($this);
+		}
+		return $this;
+	}
+
+	public function removeArticle(\Ladb\CoreBundle\Entity\Qa\Answer $answer) {
+		if ($this->answers->removeElement($answer)) {
+			$answer->setQuestion(null);
+		}
+	}
+
+	public function getAnswers() {
+		return $this->answers;
+	}
 }
