@@ -91,9 +91,9 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	private $plans;
 
 	/**
-     * @ORM\Column(type="integer", name="howto_count")
-     */
-    private $howtoCount = 0;
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
 
     /**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", inversedBy="creations", cascade={"persist"})
@@ -185,9 +185,9 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	// Tools /////
 
 	public function addTool(\Ladb\CoreBundle\Entity\Input\Tool $tool) {
-        if (!$this->tools->contains($tool)) {
-    		$this->tools[] = $tool;
-        }
+		if (!$this->tools->contains($tool)) {
+			$this->tools[] = $tool;
+		}
 		return $this;
 	}
 
@@ -229,23 +229,23 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	// Plans /////
 
 	public function addPlan(\Ladb\CoreBundle\Entity\Wonder\Plan $plan) {
-        if (!$this->plans->contains($plan)) {
-            $this->plans[] = $plan;
-            $this->planCount = count($this->plans);
+		if (!$this->plans->contains($plan)) {
+			$this->plans[] = $plan;
+			$this->planCount = count($this->plans);
 			if (!$this->getIsDraft()) {
 				$plan->incrementCreationCount();
 			}
-        }
+		}
 		return $this;
 	}
 
 	public function removePlan(\Ladb\CoreBundle\Entity\Wonder\Plan $plan) {
 		if ($this->plans->removeElement($plan)) {
-            $this->planCount = count($this->plans);
+			$this->planCount = count($this->plans);
 			if (!$this->getIsDraft()) {
-	            $plan->incrementCreationCount(-1);
+				$plan->incrementCreationCount(-1);
 			}
-        }
+		}
 	}
 
 	public function getPlans() {
@@ -265,23 +265,23 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	// Howtos /////
 
 	public function addHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto) {
-        if (!$this->howtos->contains($howto)) {
-            $this->howtos[] = $howto;
-            $this->howtoCount = count($this->howtos);
+		if (!$this->howtos->contains($howto)) {
+			$this->howtos[] = $howto;
+			$this->howtoCount = count($this->howtos);
 			if (!$this->getIsDraft()) {
-	            $howto->incrementCreationCount();
+				$howto->incrementCreationCount();
 			}
-        }
+		}
 		return $this;
 	}
 
 	public function removeHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto) {
 		if ($this->howtos->removeElement($howto)) {
-            $this->howtoCount = count($this->howtos);
+			$this->howtoCount = count($this->howtos);
 			if (!$this->getIsDraft()) {
-	            $howto->incrementCreationCount(-1);
+				$howto->incrementCreationCount(-1);
 			}
-        }
+		}
 	}
 
 	public function getHowtos() {
@@ -301,23 +301,23 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	// Providers /////
 
 	public function addProvider(\Ladb\CoreBundle\Entity\Knowledge\Provider $provider) {
-        if (!$this->providers->contains($provider)) {
-            $this->providers[] = $provider;
-            $this->providerCount = count($this->providers);
+		if (!$this->providers->contains($provider)) {
+			$this->providers[] = $provider;
+			$this->providerCount = count($this->providers);
 			if (!$this->getIsDraft()) {
-	            $provider->incrementCreationCount();
+				$provider->incrementCreationCount();
 			}
-        }
+		}
 		return $this;
 	}
 
 	public function removeProvider(\Ladb\CoreBundle\Entity\Knowledge\Provider $provider) {
 		if ($this->providers->removeElement($provider)) {
-            $this->providerCount = count($this->providers);
+			$this->providerCount = count($this->providers);
 			if (!$this->getIsDraft()) {
-	            $provider->incrementCreationCount(-1);
+				$provider->incrementCreationCount(-1);
 			}
-        }
+		}
 	}
 
 	public function getProviders() {
@@ -343,13 +343,13 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	// InspirationCount /////
 
 	public function addInspiration(\Ladb\CoreBundle\Entity\Wonder\Creation $inspiration) {
-        if (!$this->inspirations->contains($inspiration)) {
-            $this->inspirations[] = $inspiration;
-            $this->inspirationCount = count($this->inspirations);
+		if (!$this->inspirations->contains($inspiration)) {
+			$this->inspirations[] = $inspiration;
+			$this->inspirationCount = count($this->inspirations);
 			if (!$this->getIsDraft()) {
 				$inspiration->incrementReboundCount();
 			}
-        }
+		}
 		return $this;
 	}
 
@@ -361,11 +361,11 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 
 	public function removeInspiration(\Ladb\CoreBundle\Entity\Wonder\Creation $inspiration) {
 		if ($this->inspirations->removeElement($inspiration)) {
-            $this->inspirationCount = count($this->inspirations);
+			$this->inspirationCount = count($this->inspirations);
 			if (!$this->getIsDraft()) {
 				$inspiration->incrementReboundCount(-1);
 			}
-        }
+		}
 	}
 
 	public function getInspirations() {
