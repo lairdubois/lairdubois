@@ -36,13 +36,13 @@ class WatchController extends Controller {
 	 */
 	public function createAction(Request $request, $entityType, $entityId) {
 
-        // Retrieve related entity
+		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
 
-        // Create the watch
-        $watchableUtils = $this->get(WatchableUtils::NAME);
-        $watchableUtils->createWatch($entity, $this->getUser());
+		// Create the watch
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$watchableUtils->createWatch($entity, $this->getUser());
 
 		// Flashbag
 		if (!$this->getUser()->getEmailConfirmed() && $this->getUser()->getNewWatchActivityEmailNotificationEnabled()) {

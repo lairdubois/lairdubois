@@ -41,8 +41,8 @@ class HowtoController extends Controller {
 	 */
 	public function newAction() {
 
-        $howto = new Howto();
-        $form = $this->createForm(HowtoType::class, $howto);
+		$howto = new Howto();
+		$form = $this->createForm(HowtoType::class, $howto);
 
 		$tagUtils = $this->get(TagUtils::NAME);
 
@@ -60,27 +60,27 @@ class HowtoController extends Controller {
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
 
-        $howto = new Howto();
-        $form = $this->createForm(HowtoType::class, $howto);
-        $form->handleRequest($request);
+		$howto = new Howto();
+		$form = $this->createForm(HowtoType::class, $howto);
+		$form->handleRequest($request);
 
-        if ($form->isValid()) {
+		if ($form->isValid()) {
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($howto);
 
 			$howto->setUser($this->getUser());
-            $this->getUser()->incrementDraftHowtoCount();
+			$this->getUser()->incrementDraftHowtoCount();
 
-            $om->persist($howto);
+			$om->persist($howto);
 			$om->flush();
 
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($howto));
 
-            return $this->redirect($this->generateUrl('core_howto_article_new', array( 'id' => $howto->getId()) ));
-        }
+			return $this->redirect($this->generateUrl('core_howto_article_new', array('id' => $howto->getId())));
+		}
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
@@ -137,13 +137,13 @@ class HowtoController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-        $howto = $howtoRepository->findOneById($id);
-        if (is_null($howto)) {
-            throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-        }
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-            throw $this->createNotFoundException('Not allowed (core_howto_publish)');
-        }
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_howto_publish)');
+		}
 		if ($howto->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_howto_publish)');
 		}
@@ -171,13 +171,13 @@ class HowtoController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-        $howto = $howtoRepository->findOneById($id);
-        if (is_null($howto)) {
-            throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-        }
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException('Not allowed (core_howto_unpublish)');
-        }
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_howto_unpublish)');
+		}
 		if ($howto->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_howto_unpublish)');
 		}
@@ -206,15 +206,15 @@ class HowtoController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-        $howto = $howtoRepository->findOneById($id);
-        if (is_null($howto)) {
-            throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-        }
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-            throw $this->createNotFoundException('Not allowed (core_howto_edit)');
-        }
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_howto_edit)');
+		}
 
-        $form = $this->createForm(HowtoType::class, $howto);
+		$form = $this->createForm(HowtoType::class, $howto);
 
 		$tagUtils = $this->get(TagUtils::NAME);
 
@@ -234,22 +234,22 @@ class HowtoController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-        $howto = $howtoRepository->findOneById($id);
-        if (is_null($howto)) {
-            throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-        }
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-            throw $this->createNotFoundException('Not allowed (core_howto_update)');
-        }
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_howto_update)');
+		}
 
 		$howto->resetArticles();	// Reset articles array to consider form articles order
 
 		$previouslyUsedTags = $howto->getTags()->toArray();	// Need to be an array to copy values
 
 		$form = $this->createForm(HowtoType::class, $howto);
-        $form->handleRequest($request);
+		$form->handleRequest($request);
 
-        if ($form->isValid()) {
+		if ($form->isValid()) {
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($howto);
@@ -289,20 +289,20 @@ class HowtoController extends Controller {
 		);
 	}
 
-    /**
-     * @Route("/pas-a-pas/{id}/delete", requirements={"id" = "\d+"}, name="core_howto_delete")
-     */
-    public function deleteAction($id) {
+	/**
+	 * @Route("/pas-a-pas/{id}/delete", requirements={"id" = "\d+"}, name="core_howto_delete")
+	 */
+	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-        $howto = $howtoRepository->findOneById($id);
-        if (is_null($howto)) {
-            throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-        }
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($howto->getIsDraft() === true && $howto->getUser()->getId() == $this->getUser()->getId())) {
-            throw $this->createNotFoundException('Not allowed (core_howto_delete)');
-        }
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($howto->getIsDraft() === true && $howto->getUser()->getId() == $this->getUser()->getId())) {
+			throw $this->createNotFoundException('Not allowed (core_howto_delete)');
+		}
 
 		// Delete
 		$howtoManager = $this->get(HowtoManager::NAME);
@@ -930,12 +930,12 @@ class HowtoController extends Controller {
 	}
 
 	/**
-     * @Route("/pas-a-pas/{id}/creations", requirements={"id" = "\d+"}, name="core_howto_creations")
-     * @Route("/pas-a-pas/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_creations_filter")
-     * @Route("/pas-a-pas/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_creations_filter_page")
-     * @Template()
-     */
-    public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
+	 * @Route("/pas-a-pas/{id}/creations", requirements={"id" = "\d+"}, name="core_howto_creations")
+	 * @Route("/pas-a-pas/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_creations_filter")
+	 * @Route("/pas-a-pas/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_creations_filter_page")
+	 * @Template()
+	 */
+	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
@@ -971,12 +971,12 @@ class HowtoController extends Controller {
     }
 
 	/**
-     * @Route("/pas-a-pas/{id}/ateliers", requirements={"id" = "\d+"}, name="core_howto_workshops")
-     * @Route("/pas-a-pas/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workshops_filter")
-     * @Route("/pas-a-pas/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workshops_filter_page")
-     * @Template()
-     */
-    public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
+	 * @Route("/pas-a-pas/{id}/ateliers", requirements={"id" = "\d+"}, name="core_howto_workshops")
+	 * @Route("/pas-a-pas/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workshops_filter")
+	 * @Route("/pas-a-pas/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workshops_filter_page")
+	 * @Template()
+	 */
+	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
@@ -1009,7 +1009,7 @@ class HowtoController extends Controller {
 		return array_merge($parameters, array(
 			'howto' => $howto,
 		));
-    }
+	}
 
 	/**
 	 * @Route("/pas-a-pas/{id}/plans", requirements={"id" = "\d+"}, name="core_howto_plans")

@@ -384,29 +384,29 @@ class PlanController extends Controller {
 		return $response;
 	}
 
-    /**
-     * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_plan_howtos")
-     * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_howtos_filter")
-     * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_howtos_filter_page")
-     * @Template()
-     */
-    public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
+	/**
+	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_plan_howtos")
+	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_howtos_filter")
+	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_howtos_filter_page")
+	 * @Template()
+	 */
+	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-        $plan = $planRepository->findOneByIdJoinedOnUser($id);
-        if (is_null($plan)) {
-            throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-        }
+		$plan = $planRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
 
-        // Howtos
+		// Howtos
 
-        $howtoRepository = $om->getRepository(Howto::CLASS_NAME);
-        $paginatorUtils = $this->get(PaginatorUtils::NAME);
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
-        $offset = $paginatorUtils->computePaginatorOffset($page);
-        $limit = $paginatorUtils->computePaginatorLimit($page);
-        $paginator = $howtoRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $howtoRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -423,31 +423,31 @@ class PlanController extends Controller {
 		return array_merge($parameters, array(
 			'plan' => $plan,
 		));
-    }
+	}
 
-    /**
-     * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_plan_creations")
-     * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_creations_filter")
-     * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_creations_filter_page")
-     * @Template()
-     */
-    public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
+	/**
+	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_plan_creations")
+	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_creations_filter")
+	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_creations_filter_page")
+	 * @Template()
+	 */
+	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-        $plan = $planRepository->findOneByIdJoinedOnUser($id);
-        if (is_null($plan)) {
-            throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-        }
+		$plan = $planRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
 
-        // Creations
+		// Creations
 
-        $creationRepository = $om->getRepository(Creation::CLASS_NAME);
-        $paginatorUtils = $this->get(PaginatorUtils::NAME);
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
-        $offset = $paginatorUtils->computePaginatorOffset($page);
-        $limit = $paginatorUtils->computePaginatorLimit($page);
-        $paginator = $creationRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $creationRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_creations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -466,29 +466,29 @@ class PlanController extends Controller {
 		));
     }
 
-    /**
-     * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_plan_workshops")
-     * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_workshops_filter")
-     * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_workshops_filter_page")
-     * @Template()
-     */
-    public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
+	/**
+	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_plan_workshops")
+	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_workshops_filter")
+	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_workshops_filter_page")
+	 * @Template()
+	 */
+	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
 		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-        if (is_null($plan)) {
-            throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-        }
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
 
-        // Workshops
+		// Workshops
 
-        $workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
-        $paginatorUtils = $this->get(PaginatorUtils::NAME);
+		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
-        $offset = $paginatorUtils->computePaginatorOffset($page);
-        $limit = $paginatorUtils->computePaginatorLimit($page);
-        $paginator = $workshopRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workshopRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_workshops_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
