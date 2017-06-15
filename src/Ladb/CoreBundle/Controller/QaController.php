@@ -163,6 +163,9 @@ class QaController extends Controller {
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_qa_question_edit)');
+		}
 
 		$form = $this->createForm(QuestionType::class, $question);
 
@@ -187,6 +190,9 @@ class QaController extends Controller {
 		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_qa_question_update)');
 		}
 
 		$originalBodyBlocks = $question->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -319,13 +325,99 @@ class QaController extends Controller {
 			$om->persist($answer);
 			$om->flush();
 
-			return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
+			$votableUtils = $this->get(VotableUtils::NAME);
+
+			return $this->render('LadbCoreBundle:Qa:_answer-row.part.html.twig', array(
+				'answer' => $answer,
+				'voteContext' => $votableUtils->getVoteContext($answer, $this->getUser()),
+			));
 		}
 
 		return array(
 			'question' => $question,
 			'form'     => $form->createView(),
 		);
+	}
+
+	/**
+	 * @Route("/answer/{id}/edit", requirements={"id" = "\d+"}, name="core_qa_answer_edit")
+	 * @Template("LadbCoreBundle:Qa:answer-edit.html.twig")
+	 */
+	public function editAnswerAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+
+		$answer = $answerRepository->findOneById($id);
+		if (is_null($answer)) {
+			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $answer->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_qa_answer_edit)');
+		}
+
+		$form = $this->createForm(AnswerType::class, $answer);
+
+		return array(
+			'answer' => $answer,
+			'form'   => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/answer/{id}/update", requirements={"id" = "\d+"}, name="core_qa_answer_update")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Qa:answer-edit.html.twig")
+	 */
+	public function updateAnswerAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+
+		$answer = $answerRepository->findOneById($id);
+		if (is_null($answer)) {
+			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $answer->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_qa_answer_edit)');
+		}
+
+		$originalBodyBlocks = $answer->getBodyBlocks()->toArray();	// Need to be an array to copy values
+
+		$answer->resetBodyBlocks(); // Reset bodyBlocks array to consider form bodyBlocks order
+
+		$form = $this->createForm(AnswerType::class, $answer);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$blockUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockUtils->preprocessBlocks($answer, $originalBodyBlocks);
+
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($answer);
+
+			$answer->setUpdatedAt(new \DateTime());
+
+			$om->flush();
+
+			$votableUtils = $this->get(VotableUtils::NAME);
+
+			return $this->render('LadbCoreBundle:Qa:_answer-row.part.html.twig', array(
+				'answer'      => $answer,
+				'voteContext' => $votableUtils->getVoteContext($answer, $this->getUser()),
+			));
+		}
+
+		return array(
+			'answer' => $answer,
+			'form'   => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/answer/{id}/delete", requirements={"id" = "\d+"}, name="core_qa_answer_delete")
+	 * @Template()
+	 */
+	public function deleteAnswerAction(Request $request, $id) {
 	}
 
 	/**

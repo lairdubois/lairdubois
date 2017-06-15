@@ -1,9 +1,12 @@
 {# set help (facultative) #}
 
 {% set classes = 'ladb-block-section' %}
+{% set hideFaqHelp = hideFaqHelp|default(false) %}
 
 {% if help is defined %}<p class="help-block"><i>{{ help }}</i></p><p class="help-block"><i>{{ 'block.form.help'|trans() }}</i></p>{% endif %}
 {{ form_errors(form.bodyBlocks) }}
 {{ form_widget(form.bodyBlocks) }}
-<hr>
-<p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-mettre-des-images-ou-videos-dans-les-textes-de-descriptif' }) }}" target="_blank">Comment mettre des images ou vidéos dans les textes de descriptif ?</a> </p>
+{% if not hideFaqHelp %}
+    <hr>
+    <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-mettre-des-images-ou-videos-dans-les-textes-de-descriptif' }) }}" target="_blank">Comment mettre des images ou vidéos dans les textes de descriptif ?</a> </p>
+{% endif %}

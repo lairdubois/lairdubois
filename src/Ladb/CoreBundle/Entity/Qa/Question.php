@@ -178,4 +178,10 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 		return $this->answers;
 	}
 
+	// License /////
+
+	public function getLicense() {
+		return new \Ladb\CoreBundle\Entity\License(true, true);
+	}
+
 }

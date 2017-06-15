@@ -8,63 +8,176 @@
         this.options = options;
         this.$element = $(element);
 
-        this.$btnAnswer = $('#ladb_answer_btn', this.$element);
+        this.$btnNewAnswer = $('#ladb_answer_btn', this.$element);
 
-        this.$modalAnswer = $('#answer_modal', this.$element);
-
+        this.$answers = $('.ladb-question-answers', this.$element);
+        this.$newAnswerBox = $('#ladb_answer_box', this.$element);
     };
 
     LadbQuestionPage.DEFAULTS = {
-        answerNewPath: null
+        answerNewPath: null,
+        answerEditPath: null
+    };
+
+    LadbQuestionPage.prototype.bindAnswerRow = function($row) {
+        var that = this;
+
+        // Bind buttons
+        $('.ladb-btn-edit', $row).on('click', function(e) {
+            e.preventDefault();
+            $(this).blur();
+
+            var editPath = $(this).attr('href');
+
+            // Load edit answer form
+            $.ajax(editPath, {
+                cache: false,
+                dataType: "html",
+                context: document.body,
+                success: function(data, textStatus, jqXHR) {
+                    that.bindEditAnswerBox($row, data);
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+
+        });
+
+    };
+
+    LadbQuestionPage.prototype.bindEditAnswerBox = function($row, data) {
+        var that = this;
+
+        $('.ladb-box', $row).append(data);
+        $('.ladb-box-inner', $row).hide();
+
+        // Bind collection
+        $("[data-form-widget=collection]", $row).each(function () {
+            new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
+        });
+
+        // Bind form
+        var $form = $('form', $row).first();
+        $form.ajaxForm({
+            cache: false,
+            dataType: "html",
+            context: document.body,
+            clearForm: true,
+            success: function(data, textStatus, jqXHR) {
+                if ($(data).hasClass('ladb-answer-row')) {
+                    var $newRow = $(data);
+                    $row.replaceWith($newRow);
+                    that.bindAnswerRow($newRow);
+                } else {
+                    that.bindEditAnswerBox($row, data);
+                }
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
+
+        // Bind buttons
+        $('.ladb-btn-cancel', $row).on('click', function() {
+            $('.ladb-box-inner', $row).show();
+            $('.ladb-answer-form', $row).remove();
+        });
+        $('.ladb-btn-submit', $row).on('click', function() {
+            $(this).button('loading');
+            $form.submit();
+        });
+
+        // Focus the first textarea
+        $('textarea', $form).first().focus();
+
+    };
+
+    LadbQuestionPage.prototype.bindNewAnswerBox = function(data) {
+        var that = this;
+
+        this.$newAnswerBox.empty();
+        this.$newAnswerBox.append(data);
+        this.$newAnswerBox.show();
+
+        this.$btnNewAnswer.hide();
+        this.$btnNewAnswer.button('reset');
+
+        // Bind collection
+        $("[data-form-widget=collection]", this.$newAnswerBox).each(function () {
+            new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
+        });
+
+        // Bind form
+        var $form = $('form', this.$newAnswerBox).first();
+        $form.ajaxForm({
+            cache: false,
+            dataType: "html",
+            context: document.body,
+            clearForm: true,
+            success: function(data, textStatus, jqXHR) {
+                if ($(data).hasClass('ladb-answer-row')) {
+                    that.$answers.append(data);
+                    that.$newAnswerBox.remove();
+                    that.bindAnswerRow($(data));
+                } else {
+                    that.bindNewAnswerBox(data);
+                }
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
+
+        // Bind buttons
+        $('.ladb-btn-cancel', this.$newAnswerBox).on('click', function() {
+            that.$newAnswerBox.empty();
+            that.$newAnswerBox.hide();
+            that.$btnNewAnswer.show();
+        });
+        $('.ladb-btn-submit', this.$newAnswerBox).on('click', function() {
+            $(this).button('loading');
+            $form.submit();
+        });
+
+        // ScrollTo box
+        this.$newAnswerBox.ladbScrollTo(null, {
+            onAfter: function() {
+
+                // Focus the first textarea
+                $('textarea', $form).first().focus();
+
+            }
+        });
+
     };
 
     LadbQuestionPage.prototype.bind = function() {
         var that = this;
 
-        // Bind buttons
-        this.$btnAnswer.on('click', function() {
-            that.$modalAnswer.modal({ remote:that.options.answerNewPath });
+        // Bind rows
+        $('.ladb-answer-row', this.$element).each(function(index, value) {
+            that.bindAnswerRow($(value));
         });
 
-        // Bind modal
-        that.$modalAnswer
-            .on('hidden.bs.modal', function () {
-                console.log('hidden');
-            })
-            .on('loaded.bs.modal', function () {
+        // Bind buttons
+        this.$btnNewAnswer.on('click', function() {
+            $(this).button('loading');
 
-                // Bind collections
-                $("[data-form-widget=collection]", that.$modalAnswer).each(function () {
-                    new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
-                });
+            // Load new answer form
+            $.ajax(that.options.answerNewPath, {
+                cache: false,
+                dataType: "html",
+                context: document.body,
+                success: function(data, textStatus, jqXHR) {
+                    that.bindNewAnswerBox(data);
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
 
-                // Bin form
-                var $form = $('form', this);
-                $form.ajaxForm({
-                    cache: false,
-                    dataType: "html",
-                    context: document.body,
-                    clearForm: true,
-                    beforeSubmit: function() {
-                        that.$element.find('input').prop('disabled', true);
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        console.log('success');
-                    },
-                    error: function() {
-                        console.log('error');
-                    }
-                });
-
-
-                // Bind buttons
-                $('.ladb-submit', this).on('click', function() {
-                    $form.submit();
-                });
-
-
-            })
-        ;
+        });
 
     };
 
