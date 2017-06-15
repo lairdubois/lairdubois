@@ -46,22 +46,23 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Answer';
 	const TYPE = 114;
-
 	/**
 	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
 	 */
 	protected $parentEntityType;
-
 	/**
 	 * @ORM\Column(name="parent_entity_id", type="integer", nullable=false)
 	 */
 	protected $parentEntityId;
-
 	/**
 	 * @ORM\Column(name="parent_entity_field", type="string", length=20, nullable=false)
 	 */
 	protected $parentEntityField;
-
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="answers")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $question;
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
@@ -100,6 +101,17 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 
 	public function getType() {
 		return Answer::TYPE;
+	}
+
+	// Question /////
+
+	public function getQuestion() {
+		return $this->question;
+	}
+
+	public function setQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		$this->question = $question;
+		return $this;
 	}
 
 }
