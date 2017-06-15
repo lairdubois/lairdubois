@@ -34,27 +34,27 @@ class MessageController extends Controller {
 	 * @Template()
 	 */
 	public function newThreadAction($recipientUsername, $announcement) {
-        if ($announcement && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException('Not allowed (core_message_thread_new_announcement)');
-        }
+		if ($announcement && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_message_thread_new_announcement)');
+		}
 
 		$newThreadMessage = $announcement ? new NewThreadAnnouncementMessage() : new NewThreadMessage();
 
 		if (!$announcement && !is_null($recipientUsername)) {
-            $userManager = $this->get('fos_user.user_manager');
-            $recipient = $userManager->findUserByUsername($recipientUsername);
-            if (is_null($recipient)) {
-                throw $this->createNotFoundException('User not found');
-            }
-            $newThreadMessage->setRecipient($recipient);
+			$userManager = $this->get('fos_user.user_manager');
+			$recipient = $userManager->findUserByUsername($recipientUsername);
+			if (is_null($recipient)) {
+				throw $this->createNotFoundException('User not found');
+			}
+			$newThreadMessage->setRecipient($recipient);
 		}
 
 		$form = $this->createForm($announcement ? NewThreadAnnouncementMessageType::class : NewThreadMessageType::class, $newThreadMessage);
 
 		return array(
-            'form'         => $form->createView(),
-            'announcement' => $announcement,
-        );
+			'form'         => $form->createView(),
+			'announcement' => $announcement,
+		);
 	}
 
 	/**
@@ -64,26 +64,26 @@ class MessageController extends Controller {
 	 */
 	public function createThreadAction(Request $request) {
 
-        $newThreadMessage = new NewThreadMessage();
+		$newThreadMessage = new NewThreadMessage();
 		$form = $this->createForm(NewThreadMessageType::class, $newThreadMessage);
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
 
 			$sender = $this->getUser();
-            $recipients = array( $newThreadMessage->getRecipient() );
+			$recipients = array( $newThreadMessage->getRecipient() );
 
 			$messageUtils = $this->get(MessageUtils::NAME);
-            $thread = $messageUtils->composeThread($sender, $recipients, $newThreadMessage->getSubject(), $newThreadMessage->getBody(), $newThreadMessage->getPictures());
+			$thread = $messageUtils->composeThread($sender, $recipients, $newThreadMessage->getSubject(), $newThreadMessage->getBody(), $newThreadMessage->getPictures());
 
 			// Flashbag
 			$recipientNames = '';
-            foreach ($recipients as $recipient) {
-                if (strlen($recipientNames) != 0) {
-                    $recipientNames .= ', ';
-                }
-                $recipientNames .= $recipient->getDisplayname();
-            }
+			foreach ($recipients as $recipient) {
+				if (strlen($recipientNames) != 0) {
+					$recipientNames .= ', ';
+				}
+				$recipientNames .= $recipient->getDisplayname();
+			}
 			$this->get('session')->getFlashBag()->add('success', 'Votre message a été envoyé à <strong>'.$recipientNames.'</strong>.');
 
 			if (!$sender->getEmailConfirmed() && $sender->getIncomingMessageEmailNotificationEnabled()) {
@@ -96,13 +96,13 @@ class MessageController extends Controller {
 				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
 			}
 
-            return $this->redirect($this->generateUrl('core_message_thread_show', array( 'threadId' => $thread->getId()) ));
+			return $this->redirect($this->generateUrl('core_message_thread_show', array( 'threadId' => $thread->getId())) );
 		}
 
 		return array(
-            'form'         => $form->createView(),
-            'announcement' => false,
-        );
+			'form'         => $form->createView(),
+			'announcement' => false,
+		);
 	}
 
 	/**
@@ -111,11 +111,11 @@ class MessageController extends Controller {
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
 	public function createThreadAnnouncementAction(Request $request) {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException('Not allowed (core_message_thread_create_announcement)');
-        }
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_message_thread_create_announcement)');
+		}
 
-        $newThreadAnnouncementMessage = new NewThreadAnnouncementMessage();
+		$newThreadAnnouncementMessage = new NewThreadAnnouncementMessage();
 		$form = $this->createForm(NewThreadAnnouncementMessageType::class, $newThreadAnnouncementMessage);
 		$form->handleRequest($request);
 
@@ -124,25 +124,25 @@ class MessageController extends Controller {
 			$sender = $this->getUser();
 
 			$om = $this->getDoctrine()->getManager();
-            $userRepository = $om->getRepository(User::CLASS_NAME);
-            $recipients = $userRepository->findAll();
+			$userRepository = $om->getRepository(User::CLASS_NAME);
+			$recipients = $userRepository->findAll();
 
 			$messageUtils = $this->get(MessageUtils::NAME);
-            $mailerUtils = $this->get(MailerUtils::NAME);
+			$mailerUtils = $this->get(MailerUtils::NAME);
 
-            foreach ($recipients as $recipient) {
+			foreach ($recipients as $recipient) {
 
-                if ($recipient->getId() == $sender->getId()) {
-                    continue;
-                }
+				if ($recipient->getId() == $sender->getId()) {
+					continue;
+				}
 
-                // Compose thread
-                $thread = $messageUtils->composeThread($sender, array( $recipient ), $newThreadAnnouncementMessage->getSubject(), $newThreadAnnouncementMessage->getBody(), null, true);
+				// Compose thread
+				$thread = $messageUtils->composeThread($sender, array( $recipient), $newThreadAnnouncementMessage->getSubject(), $newThreadAnnouncementMessage->getBody(), null, true );
 
-                // Email notification
-                $mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
+				// Email notification
+				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
 
-            }
+			}
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('success', 'Votre message a été envoyé à tout le monde');
@@ -151,9 +151,9 @@ class MessageController extends Controller {
 		}
 
 		return array(
-            'form'         => $form->createView(),
-            'announcement' => true,
-        );
+			'form'         => $form->createView(),
+			'announcement' => true,
+		);
 	}
 
 	/**

@@ -16,8 +16,8 @@ class DefaultController extends Controller {
 	 */
 	public function welcomeAction() {
 		$response = $this->forward('LadbCoreBundle:Creation:list', array(
-            'homepage'  => true,
-        ));
+			'homepage' => true,
+		));
 		return $response;
 	}
 
