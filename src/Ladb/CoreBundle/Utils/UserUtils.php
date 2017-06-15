@@ -85,7 +85,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		$now = new \DateTime();
 		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType);
 		if ($now < $refreshDate) {
-			return;
+			return false;
 		}
 		$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType);
 

@@ -2,9 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Manager\Knowledge\ProviderManager;
 use Ladb\CoreBundle\Manager\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -186,6 +189,13 @@ class ProviderController extends Controller {
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
+		$layout = $request->get('layout', 'view');
+
+		$routeParameters = array();
+		if ($layout != 'view') {
+			$routeParameters['layout'] = $layout;
+		}
+
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
@@ -324,7 +334,8 @@ class ProviderController extends Controller {
 			},
 			'fos_elastica.index.ladb.provider',
 			\Ladb\CoreBundle\Entity\Knowledge\Provider::CLASS_NAME,
-			'core_provider_list_page'
+			'core_provider_list_page',
+			$routeParameters
 		);
 
 		// Dispatch publication event
@@ -332,7 +343,9 @@ class ProviderController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
 
 		$parameters = array_merge($searchParameters, array(
-			'providers' => $searchParameters['entities'],
+			'providers'       => $searchParameters['entities'],
+			'layout'          => $layout,
+			'routeParameters' => $routeParameters,
 		));
 
 		if ($layout == 'geojson') {
@@ -360,10 +373,100 @@ class ProviderController extends Controller {
 		}
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Provider:list-xhr.html.twig', $parameters);
+			if ($layout == 'choice') {
+				return $this->render('LadbCoreBundle:Provider:list-choice-xhr.html.twig', $parameters);
+			} else {
+				return $this->render('LadbCoreBundle:Provider:list-xhr.html.twig', $parameters);
+			}
+		}
+
+		if ($layout == 'choice') {
+			return $this->render('LadbCoreBundle:Provider:list-choice.html.twig', $parameters);
 		}
 
 		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_provider_creations")
+	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_provider_creations_filter")
+	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_provider_creations_filter_page")
+	 * @Template()
+	 */
+	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+
+		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($provider)) {
+			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
+		}
+
+		// Creations
+
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $creationRepository->findPaginedByProvider($provider, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_provider_creations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'creations'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Creation:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'provider' => $provider,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_provider_howtos")
+	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_provider_howtos_filter")
+	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_provider_howtos_filter_page")
+	 * @Template()
+	 */
+	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+
+		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($provider)) {
+			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
+		}
+
+		// Howtos
+
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $howtoRepository->findPaginedByProvider($provider, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'howtos'      => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Creation:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'provider' => $provider,
+		));
 	}
 
 	/**
@@ -382,7 +485,7 @@ class ProviderController extends Controller {
 
 		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($provider)) {
-			throw $this->createNotFoundException('Unable to find Provider entity.');
+			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
 		}
 
 		return array(
@@ -406,7 +509,7 @@ class ProviderController extends Controller {
 			if ($response = $witnessManager->checkResponse(Provider::TYPE, $id)) {
 				return $response;
 			}
-			throw $this->createNotFoundException('Unable to find Provider entity.');
+			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
 		}
 
 		// Dispatch publication event

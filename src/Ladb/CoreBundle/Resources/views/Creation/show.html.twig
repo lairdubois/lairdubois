@@ -22,6 +22,11 @@
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
+    {% if creation.providerCount > 0 %}
+        {% for entity in creation.providers %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
     {% if creation.reboundCount > 0 %}
         {% for entity in creation.rebounds %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
@@ -113,6 +118,17 @@
                 </a>
             {% endif %}
         </div>
+        <div class="ladb-meta{% if creation.providerCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-provider ladb-icon-fixed-center"></i>
+            {% if creation.providerCount > 0 %}
+                <a href="{{ creation.providerCount == 1 ? path('core_provider_show', { 'id':creation.providers[0].sluggedId }) : path('core_creation_providers', { 'id':creation.id }) }}">
+            {% endif %}
+            <strong>{{ creation.providerCount }}</strong>
+            <small>{{ 'knowledge.provider.choice.providers'|transchoice(creation.providerCount) }}</small>
+            {% if creation.providerCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
         {% if creation.reboundCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-rebound ladb-icon-fixed-center"></i>
@@ -126,7 +142,7 @@
 {% endblock %}
 
 {% block contentLinkedTo %}
-    {% if creation.inspirationCount > 0 or creation.reboundCount > 0 or creation.planCount > 0 or creation.howtoCount > 0 %}
+    {% if creation.inspirationCount > 0 or creation.reboundCount > 0 or creation.planCount > 0 or creation.howtoCount > 0 or creation.providerCount > 0 %}
         {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
             {% block body %}
                 {% if creation.inspirationCount > 0 %}
@@ -151,6 +167,14 @@
                         'picture':creation.howtos[0].mainPicture,
                         'icon':'ladb-icon-howto',
                         'caption': creation.howtoCount~' '~('howto.choice.howtos'|transchoice(creation.howtoCount))
+                    } %}
+                {% endif %}
+                {% if creation.providerCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':creation.providerCount == 1 ? path('core_provider_show', { 'id':creation.providers[0].sluggedId }) : path('core_creation_providers', { 'id':creation.id }),
+                        'picture':creation.providers[0].mainPicture,
+                        'icon':'ladb-icon-provider',
+                        'caption': creation.providerCount~' '~('knowledge.provider.choice.providers'|transchoice(creation.providerCount))
                     } %}
                 {% endif %}
                 {% if creation.reboundCount > 0 %}

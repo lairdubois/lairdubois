@@ -1,8 +1,9 @@
 {% extends 'LadbCoreBundle:Search:_searchbox.part.html.twig' %}
 
-{% set placeholder = 'Recherche dans les fournisseurs' %}
-{% set searchPath = path('core_provider_list') %}
+{% set placeholder = 'search.in.providers'|trans() %}
+{% set searchPath = path('core_provider_list', routeParameters) %}
 {% set mapSearchPath = path('core_provider_list_geojson') %}
+{% set masonry = layout == 'view' %}
 
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="services" data-label="Services" data-editable="true" data-icon="provider-services" data-proposals="Formations,Affûtage,Découpe,Location d'atelier,Location d'établi,Réparations"><i class="ladb-icon-provider-services ladb-icon-fixed-center"></i> Type de services</a></li>

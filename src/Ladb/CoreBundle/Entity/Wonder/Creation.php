@@ -30,6 +30,19 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	protected $pictures;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_tag")
+	 * @Assert\Count(min=2)
+	 */
+	protected $tags;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 */
+	protected $referrals;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
@@ -90,6 +103,18 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	private $howtos;
 
 	/**
+	 * @ORM\Column(type="integer", name="provider_count")
+	 */
+	private $providerCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Provider", inversedBy="creations", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_provider")
+	 * @Assert\Count(min=0, max=10)
+	 */
+	private $providers;
+
+	/**
      * @ORM\Column(type="integer", name="rebound_count")
      */
     private $reboundCount = 0;
@@ -115,23 +140,10 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	private $inspirations;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_creation_tag")
-	 * @Assert\Count(min=2)
-	 */
-	protected $tags;
-
-	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Spotlight", cascade={"remove"})
 	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
 	 */
 	private $spotlight = null;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_creation_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 */
-	protected $referrals;
 
 	/////
 
@@ -143,6 +155,7 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 		$this->tools = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -275,29 +288,59 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 		return $this->howtos;
 	}
 
-	// ReboundCount /////
+	// ProviderCount /////
 
-	public function incrementReboundCount($by = 1) {
-		return $this->reboundCount += intval($by);
+	public function incrementProviderCount($by = 1) {
+		return $this->providerCount += intval($by);
 	}
+
+	public function getProviderCount() {
+		return $this->providerCount;
+	}
+
+	// Providers /////
+
+	public function addProvider(\Ladb\CoreBundle\Entity\Knowledge\Provider $provider) {
+        if (!$this->providers->contains($provider)) {
+            $this->providers[] = $provider;
+            $this->providerCount = count($this->providers);
+			if (!$this->getIsDraft()) {
+	            $provider->incrementCreationCount();
+			}
+        }
+		return $this;
+	}
+
+	public function removeProvider(\Ladb\CoreBundle\Entity\Knowledge\Provider $provider) {
+		if ($this->providers->removeElement($provider)) {
+            $this->providerCount = count($this->providers);
+			if (!$this->getIsDraft()) {
+	            $provider->incrementCreationCount(-1);
+			}
+        }
+	}
+
+	public function getProviders() {
+		return $this->providers;
+	}
+
+	// ReboundCount /////
 
 	public function getReboundCount() {
 		return $this->reboundCount;
 	}
 
-	// Rebounds /////
-
 	public function getRebounds() {
 		return $this->rebounds;
 	}
 
-	// InspirationCount /////
+	// Rebounds /////
 
 	public function getInspirationCount() {
 		return $this->inspirationCount;
 	}
 
-	// Inspirations /////
+	// InspirationCount /////
 
 	public function addInspiration(\Ladb\CoreBundle\Entity\Wonder\Creation $inspiration) {
         if (!$this->inspirations->contains($inspiration)) {
@@ -308,6 +351,12 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 			}
         }
 		return $this;
+	}
+
+	// Inspirations /////
+
+	public function incrementReboundCount($by = 1) {
+		return $this->reboundCount += intval($by);
 	}
 
 	public function removeInspiration(\Ladb\CoreBundle\Entity\Wonder\Creation $inspiration) {
@@ -325,13 +374,13 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 
 	// Spotlight /////
 
+	public function getSpotlight() {
+		return $this->spotlight;
+	}
+
 	public function setSpotlight(\Ladb\CoreBundle\Entity\Spotlight $spotlight = null) {
 		$this->spotlight = $spotlight;
 		return $this;
-	}
-
-	public function getSpotlight() {
-		return $this->spotlight;
 	}
 
 }

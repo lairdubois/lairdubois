@@ -36,6 +36,11 @@ class CreationManager extends AbstractWonderManager {
 			$howto->incrementCreationCount(1);
 		}
 
+		// Providers counter update
+		foreach ($creation->getProviders() as $provider) {
+			$provider->incrementCreationCount(1);
+		}
+
 		// Inspirations counter update
 		foreach ($creation->getInspirations() as $inspiration) {
 			$inspiration->incrementReboundCount(1);
@@ -59,6 +64,11 @@ class CreationManager extends AbstractWonderManager {
 			$howto->incrementCreationCount(-1);
 		}
 
+		// Providers counter update
+		foreach ($creation->getProviders() as $provider) {
+			$provider->incrementCreationCount(-1);
+		}
+
 		// Inspirations counter update
 		foreach ($creation->getInspirations() as $inspiration) {
 			$inspiration->incrementReboundCount(-1);
@@ -70,33 +80,6 @@ class CreationManager extends AbstractWonderManager {
 		}
 
 		parent::unpublishPublication($creation, $flush);
-	}
-
-	public function delete(Creation $creation, $withWitness = true, $flush = true) {
-
-		// Decrement user creation count
-		if ($creation->getIsDraft()) {
-			$creation->getUser()->incrementDraftCreationCount(-1);
-		} else {
-			$creation->getUser()->incrementPublishedCreationCount(-1);
-		}
-
-		// Unlink plans
-		foreach ($creation->getPlans() as $plan) {
-			$creation->removePlan($plan);
-		}
-
-		// Unlink howtos
-		foreach ($creation->getHowtos() as $howto) {
-			$creation->removeHowto($howto);
-		}
-
-		// Unlink inspirations
-		foreach ($creation->getInspirations() as $inspiration) {
-			$creation->removeInspiration($inspiration);
-		}
-
-		parent::deleteWonder($creation, $withWitness, $flush);
 	}
 
 	public function convertToWorkshop(Creation $creation, $flush = true) {
@@ -190,6 +173,38 @@ class CreationManager extends AbstractWonderManager {
 		}
 
 		return $workshop;
+	}
+
+	public function delete(Creation $creation, $withWitness = true, $flush = true) {
+
+		// Decrement user creation count
+		if ($creation->getIsDraft()) {
+			$creation->getUser()->incrementDraftCreationCount(-1);
+		} else {
+			$creation->getUser()->incrementPublishedCreationCount(-1);
+		}
+
+		// Unlink plans
+		foreach ($creation->getPlans() as $plan) {
+			$creation->removePlan($plan);
+		}
+
+		// Unlink howtos
+		foreach ($creation->getHowtos() as $howto) {
+			$creation->removeHowto($howto);
+		}
+
+		// Unlink providers
+		foreach ($creation->getProviders() as $provider) {
+			$creation->removeProvider($provider);
+		}
+
+		// Unlink inspirations
+		foreach ($creation->getInspirations() as $inspiration) {
+			$creation->removeInspiration($inspiration);
+		}
+
+		parent::deleteWonder($creation, $withWitness, $flush);
 	}
 
 	public function convertToHowto(Creation $creation, $flush = true) {

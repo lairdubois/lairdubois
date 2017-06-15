@@ -351,7 +351,7 @@ class WorkshopController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $planRepository->findPaginedByWorkshop($workshop, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workshop_plans_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workshop_plans_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -400,7 +400,7 @@ class WorkshopController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $howtoRepository->findPaginedByWorkshop($workshop, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workshop_howtos_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workshop_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,

@@ -45,7 +45,7 @@ class TagsToNamesTransformer implements DataTransformerInterface {
 
 		$tags = array();
 		$namesArray = preg_split("/[,;]+/", $labelsString);
-		$repository = $this->om->getRepository('LadbCoreBundle:Tag');
+		$repository = $this->om->getRepository(Tag::CLASS_NAME);
 		foreach ($namesArray as $name) {
 			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]{2,}$/", $name)) {
 				continue;

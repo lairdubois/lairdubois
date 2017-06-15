@@ -6,6 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Resource;
 
 class ResourceToIdTransformer implements DataTransformerInterface {
 
@@ -37,7 +38,7 @@ class ResourceToIdTransformer implements DataTransformerInterface {
 			throw new TransformationFailedException();
 		}
 		$resource = $this->om
-			->getRepository('LadbCoreBundle:Resource')
+			->getRepository(Resource::CLASS_NAME)
 			->find($id);
 		if (is_null($resource)) {
 			throw new TransformationFailedException();

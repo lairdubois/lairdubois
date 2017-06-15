@@ -2,18 +2,21 @@
 
 namespace Ladb\CoreBundle\Controller;
 
-use Ladb\CoreBundle\Model\WatchableInterface;
-use Ladb\CoreBundle\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Join;
+use Ladb\CoreBundle\Model\PublicationInterface;
+use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\JoinableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
@@ -72,15 +75,20 @@ class JoinController extends Controller {
 
 			$om->persist($join);
 
-			// Update index
-			if ($entity instanceof IndexableInterface) {
-				$searchUtils = $this->get(SearchUtils::NAME);
-				$searchUtils->replaceEntityInIndex($entity);
-			}
-
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
 			$activityUtils->createJoinActivity($join, false);
+
+			if ($entity instanceof PublicationInterface) {
+
+				// Set ChangedAt to now
+				$entity->setChangedAt(new \DateTime());
+
+				// Dispatch publication event
+				$dispatcher = $this->get('event_dispatcher');
+				$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($entity));
+
+			}
 
 			if ($entity instanceof WatchableInterface) {
 				$watchableUtils = $this->get(WatchableUtils::NAME);

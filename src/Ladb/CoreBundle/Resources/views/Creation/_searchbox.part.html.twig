@@ -1,6 +1,6 @@
 {% extends 'LadbCoreBundle:Search:_searchbox.part.html.twig' %}
 
-{% set placeholder = 'Recherche dans les créations' %}
+{% set placeholder = 'search.in.creations'|trans() %}
 {% set searchPath = path('core_creation_list', routeParameters) %}
 {% set noAjax = homepage|default(false) %}
 {% set masonry = layout == 'view' %}

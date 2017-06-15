@@ -407,7 +407,7 @@ class PlanController extends Controller {
         $offset = $paginatorUtils->computePaginatorOffset($page);
         $limit = $paginatorUtils->computePaginatorLimit($page);
         $paginator = $howtoRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_howtos_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -448,7 +448,7 @@ class PlanController extends Controller {
         $offset = $paginatorUtils->computePaginatorOffset($page);
         $limit = $paginatorUtils->computePaginatorLimit($page);
         $paginator = $creationRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_creations_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_creations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -489,7 +489,7 @@ class PlanController extends Controller {
         $offset = $paginatorUtils->computePaginatorOffset($page);
         $limit = $paginatorUtils->computePaginatorLimit($page);
         $paginator = $workshopRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_workshops_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_workshops_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -529,7 +529,7 @@ class PlanController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $planRepository->findPaginedByRebound($plan, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_inspirations_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'       => $filter,
@@ -569,7 +569,7 @@ class PlanController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $planRepository->findPaginedByInspiration($plan, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_rebounds_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_rebounds_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
