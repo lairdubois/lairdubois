@@ -1,0 +1,76 @@
+//
+// LADB Qa
+//
+
+/* LESS related */
+@import "../_variables.less";
+@import "../_mixins.less";
+
+.ladb-question {
+}
+
+.ladb-answer-row {
+  margin-bottom: @ladb-gutter;
+
+  > .ladb-box {
+    .list-box();
+    padding: 4px;
+
+    > .ladb-box-inner {
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .ladb-full-height {
+      color: #aaa;
+      background-color: #efefef;
+      padding: 5px;
+      font-size: 200%;
+      text-align: center;
+    }
+
+    .ladb-vote-widget, .ladb-full-height {
+      margin-bottom: -99999px;
+      padding-bottom: 99999px;
+      margin-left: -(@ladb-gutter / 2);
+      margin-right: -(@ladb-gutter / 2);
+
+      .ladb-vote-box {
+        padding: 5px;
+      }
+
+    }
+
+    .ladb-content-box {
+
+      .ladb-content {
+        margin-top: 5px;
+      }
+
+      .ladb-footer {
+        margin: 10px 0;
+        border-top: 1px solid @ladb-global-border;
+        padding: 5px 0 0 0;
+        color: @ladb-global-light-color;
+        font-size: 85%;
+
+        .author a {
+          font-weight: bold;
+        }
+
+        .ladb-age {
+          .age();
+        }
+
+        .ladb-minitools {
+          float: right;
+          font-size: 115%;
+        }
+
+      }
+
+    }
+
+  }
+
+}

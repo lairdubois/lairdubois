@@ -1,3 +1,39 @@
 <div class="ladb-answer-row">
-    {{ answer.htmltBody }}
+    <div class="ladb-box">
+        <div class="ladb-box-inner row">
+            <div class="col-sm-1 col-xs-12">
+                {% include 'LadbCoreBundle:Vote:_widget.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()) } %}
+            </div>
+            <div class="ladb-content-box col-sm-11 col-xs-12">
+                <div class="ladb-editable ">
+                    <div class="ladb-content">
+                        {% for block in answer.bodyBlocks %}
+                            {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}
+                        {% endfor %}
+                    </div>
+                    <div class="ladb-footer">
+                        <div class="ladb-minitools">
+                            {% if is_granted("ROLE_ADMIN") or answer.user == app.user %}
+                                <a href="#" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
+                            {% endif %}
+                            {% if is_granted("ROLE_ADMIN") or answer.user == app.user %}
+                                <a href="#delete_answer_{{ answer.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
+                                {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'delete_answer_'~answer.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+                                    {% block bodyInner %}
+                                        <p>La suppression de cette réponse entrainera la perte de toutes les informations qui lui sont relatives.</p>
+                                        <p>Confirmez l'action pour continuer.</p>
+                                    {% endblock %}
+                                    {% block footerInner %}
+                                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                        <a href="#" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                                    {% endblock %}
+                                {% endembed %}
+                            {% endif %}
+                        </div>
+                        {% include 'LadbCoreBundle:Common:_author.part.html.twig' %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-visible-desktop' } %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

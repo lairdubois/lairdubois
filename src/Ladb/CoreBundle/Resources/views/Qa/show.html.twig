@@ -8,6 +8,29 @@
 
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == question.user.id %}
 
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/qa.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.questionpage.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#container').ladbQuestionPage({
+                answerNewPath: '{{ path('core_qa_answer_new', { 'id':question.id }) }}'
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':question } %}
         {% block headerTools %}
@@ -67,10 +90,29 @@
     {% if not ownerUser %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' %}
-    {% for answer in question.answers %}
-        {% include 'LadbCoreBundle:Qa:_answer-row.part.html' %}
-    {% endfor %}
+    <div>
+        <div class="text-right">
+            <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#demo">{{ question.commentCount }} commentaires</a>
+        </div>
+        <div id="demo" class="collapse">
+            {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' with { 'headingHidden':true } %}
+        </div>
+    </div>
+    <h3>Réponses</h3>
+    <div class="ladb-question-answers">
+        {% for answer in question.answers %}
+            {% include 'LadbCoreBundle:Qa:_answer-row.part.html.twig' %}
+        {% endfor %}
+    </div>
+    <button id="ladb_answer_btn" class="btn btn-default">Répondre</button>
+    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'answer_modal', 'title':('qa.answer.create'|trans()), 'classes':'modal-wide' } %}
+        {% block headerInner %}
+            {{ 'default.loading'|trans() }}
+        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
+    {% endembed %}
+
 {% endblock %}
 
 {% block contentMetasPanel %}

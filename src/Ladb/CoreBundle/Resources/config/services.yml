@@ -304,6 +304,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_qa_answer:
+    class: Ladb\CoreBundle\Form\Type\Qa\AnswerType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_blog_post:
     class: Ladb\CoreBundle\Form\Type\Blog\PostType
     tags:

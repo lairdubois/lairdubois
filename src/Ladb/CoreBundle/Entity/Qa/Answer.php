@@ -46,23 +46,28 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Answer';
 	const TYPE = 114;
+
 	/**
 	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
 	 */
 	protected $parentEntityType;
+
 	/**
 	 * @ORM\Column(name="parent_entity_id", type="integer", nullable=false)
 	 */
 	protected $parentEntityId;
+
 	/**
 	 * @ORM\Column(name="parent_entity_field", type="string", length=20, nullable=false)
 	 */
 	protected $parentEntityField;
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="answers")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $question;
+
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
@@ -90,6 +95,26 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 	 * @ORM\Column(type="integer", name="comment_count")
 	 */
 	private $commentCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="positive_vote_score")
+	 */
+	private $positiveVoteScore = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="negative_vote_score")
+	 */
+	private $negativeVoteScore = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="vote_score")
+	 */
+	private $voteScore = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="vote_count")
+	 */
+	private $voteCount = 0;
 
 	/////
 

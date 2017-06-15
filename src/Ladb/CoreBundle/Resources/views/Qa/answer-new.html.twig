@@ -1,0 +1,8 @@
+{% extends 'LadbCoreBundle:Qa:_answer-form.html.twig' %}
+
+{% set formAction = path('core_qa_answer_create', { 'id':question.id }) %}
+
+{% block footerInner %}
+    {{ parent() }}
+    <button class="btn btn-primary ladb-submit">{{ 'default.save'|trans() }}</button>
+{% endblock %}

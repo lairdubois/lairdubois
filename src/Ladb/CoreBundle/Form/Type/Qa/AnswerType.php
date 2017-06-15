@@ -13,7 +13,7 @@ use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
 use Ladb\CoreBundle\Entity\Blog\Question;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 
-class AnwserType extends AbstractType {
+class AnswerType extends AbstractType {
 
 	private $om;
 

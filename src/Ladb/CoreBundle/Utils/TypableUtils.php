@@ -10,6 +10,86 @@ class TypableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
+	public static function getStrippedName(TypableInterface $typable, $long = false) {
+		return self::getStrippedNameByType($typable->getType(), $long);
+	}
+
+	public static function getStrippedNameByType($type, $long = false) {
+		switch ($type) {
+
+			// Creation
+			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
+				return 'creation';
+			// Workshop
+			case \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE:
+				return 'workshop';
+			// Find
+			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
+				return 'find';
+			// Plan
+			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
+				return 'plan';
+			// Howto
+			case \Ladb\CoreBundle\Entity\Howto\Howto::TYPE:
+				return 'howto';
+			// Article
+			case \Ladb\CoreBundle\Entity\Howto\Article::TYPE:
+				return $long ? 'howto.article' : 'article';
+			// Post
+			case \Ladb\CoreBundle\Entity\Blog\Post::TYPE:
+				return $long ? 'blog.post' : 'post';
+			// Wood
+			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
+				return $long ? 'knowledge.wood': 'wood';
+			// Question
+			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
+				return $long ? 'faq.question' : 'question';
+			// Provider
+			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
+				return $long ? 'knowledge.provider': 'provider';
+			// Question (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				return $long ? 'qa.question': 'question';
+			// Answer (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
+				return $long ? 'qa.answer': 'answer';
+
+		}
+		return '';
+	}
+
+	public function findTypable($type, $id) {
+		$repository = $this->getRepositoryByType($type);
+		if (is_null($repository)) {
+			throw new \Exception('Unknow Typable - Bad type (type='.$type.', id='.$id.').');
+		}
+		$typable = $repository->findOneById($id);
+		if (is_null($typable)) {
+			throw new \Exception('Unknow Typable - Bad id (type='.$type.', id='.$id.').');
+		}
+		return $typable;
+	}
+
+	public function getRepositoryByType($type) {
+		$className = $this->getClassNameByType($type);
+		if (!is_null($className)) {
+			$om = $this->get('doctrine.orm.entity_manager');
+			$repository = $om->getRepository($className);
+			return $repository;
+		}
+		return null;
+	}
+
+	/////
+
+	public static function getClassNameByType($type) {
+		$class = self::getClassByType($type);
+		if (!is_null($class)) {
+			return $class::CLASS_NAME;
+		}
+		return null;
+	}
+
 	public static function getClassByType($type) {
 		switch ($type) {
 
@@ -78,86 +158,12 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Question (Qa)
 			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
 				return '\Ladb\CoreBundle\Entity\Qa\Question';
+			// Answer (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
+				return '\Ladb\CoreBundle\Entity\Qa\Answer';
 
 		}
 		return null;
-	}
-
-	public static function getClassNameByType($type) {
-		$class = self::getClassByType($type);
-		if (!is_null($class)) {
-			return $class::CLASS_NAME;
-		}
-		return null;
-	}
-
-	public static function getStrippedName(TypableInterface $typable, $long = false) {
-		return self::getStrippedNameByType($typable->getType(), $long);
-	}
-
-	public static function getStrippedNameByType($type, $long = false) {
-		switch ($type) {
-
-			// Creation
-			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
-				return 'creation';
-			// Workshop
-			case \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE:
-				return 'workshop';
-			// Find
-			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
-				return 'find';
-			// Plan
-			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
-				return 'plan';
-			// Howto
-			case \Ladb\CoreBundle\Entity\Howto\Howto::TYPE:
-				return 'howto';
-			// Article
-			case \Ladb\CoreBundle\Entity\Howto\Article::TYPE:
-				return $long ? 'howto.article' : 'article';
-			// Post
-			case \Ladb\CoreBundle\Entity\Blog\Post::TYPE:
-				return $long ? 'blog.post' : 'post';
-			// Wood
-			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
-				return $long ? 'knowledge.wood': 'wood';
-			// Question
-			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
-				return $long ? 'faq.question' : 'question';
-			// Provider
-			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
-				return $long ? 'knowledge.provider': 'provider';
-			// Question (Qa)
-			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
-				return $long ? 'qa.question': 'question';
-
-		}
-		return '';
-	}
-
-	/////
-
-	public function getRepositoryByType($type) {
-		$className = $this->getClassNameByType($type);
-		if (!is_null($className)) {
-			$om = $this->get('doctrine.orm.entity_manager');
-			$repository = $om->getRepository($className);
-			return $repository;
-		}
-		return null;
-	}
-
-	public function findTypable($type, $id) {
-		$repository = $this->getRepositoryByType($type);
-		if (is_null($repository)) {
-			throw new \Exception('Unknow Typable - Bad type (type='.$type.', id='.$id.').');
-		}
-		$typable = $repository->findOneById($id);
-		if (is_null($typable)) {
-			throw new \Exception('Unknow Typable - Bad id (type='.$type.', id='.$id.').');
-		}
-		return $typable;
 	}
 
 	/////

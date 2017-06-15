@@ -83,7 +83,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Answer", mappedBy="question", cascade={"all"})
-	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 * @ORM\OrderBy({"voteScore" = "DESC"})
 	 */
 	private $answers;
 
@@ -177,4 +177,5 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	public function getAnswers() {
 		return $this->answers;
 	}
+
 }

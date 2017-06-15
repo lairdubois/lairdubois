@@ -2,13 +2,17 @@
 
 namespace Ladb\CoreBundle\Controller;
 
+use Ladb\CoreBundle\Model\VotableTrait;
+use Ladb\CoreBundle\Utils\VotableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Entity\Qa\Answer;
 use Ladb\CoreBundle\Form\Type\Qa\QuestionType;
+use Ladb\CoreBundle\Form\Type\Qa\AnswerType;
 use Ladb\CoreBundle\Utils\TagUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
@@ -258,6 +262,73 @@ class QaController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/answer/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
+	 * @Template("LadbCoreBundle:Qa:answer-new.html.twig")
+	 */
+	public function newAnswerAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneById($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		$answer = new Answer();
+		$answer->addBodyBlock(new \Ladb\CoreBundle\Entity\Block\Text());	// Add a default Text body block
+		$form = $this->createForm(AnswerType::class, $answer);
+
+		return array(
+			'question' => $question,
+			'form'     => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/{id}/answer/create", requirements={"id" = "\d+"}, name="core_qa_answer_create")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Qa:answer-new.html.twig")
+	 */
+	public function createAnswerAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneById($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		$answer = new Answer();
+		$form = $this->createForm(AnswerType::class, $answer);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$blockUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockUtils->preprocessBlocks($answer);
+
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($answer);
+
+			$answer->setUser($this->getUser());
+			$answer->setParentEntity($question);
+			$answer->setParentEntityField('bestAnswer');
+
+			$question->addAnswer($answer);
+
+			$om->persist($answer);
+			$om->flush();
+
+			return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
+		}
+
+		return array(
+			'question' => $question,
+			'form'     => $form->createView(),
+		);
+	}
+
+	/**
 	 * @Route("/", name="core_qa_question_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_qa_question_list_page")
 	 * @Template()
@@ -377,6 +448,7 @@ class QaController extends Controller {
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
+		$votableUtils = $this->get(VotableUtils::NAME);
 
 		return array(
 			'question'         => $question,
@@ -385,6 +457,7 @@ class QaController extends Controller {
 			'watchContext'     => $watchableUtils->getWatchContext($question, $this->getUser()),
 			'commentContext'   => $commentableUtils->getCommentContext($question),
 			'followerContext'  => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
+			'voteContexts'     => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
 		);
 	}
 

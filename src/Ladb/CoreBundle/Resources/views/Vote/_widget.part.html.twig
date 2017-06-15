@@ -34,8 +34,10 @@
             {% endif %}
         </div>
         <script>
-            bindAjaxVoteButton({{ voteContext.votable.id }}, "up", "{{ votedUp ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'+' } ) }}");
-            bindAjaxVoteButton({{ voteContext.votable.id }}, "down", "{{ votedDown ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'-' } ) }}");
+            $(document).ready(function () {
+                bindAjaxVoteButton({{ voteContext.votable.id }}, "up", "{{ votedUp ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'+' } ) }}");
+                bindAjaxVoteButton({{ voteContext.votable.id }}, "down", "{{ votedDown ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'-' } ) }}");
+            });
         </script>
     </div>
 </div>

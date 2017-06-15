@@ -1,5 +1,7 @@
 function bindAjaxVoteButton(id, direction, url) {
+    console.log('bind');
     $("#ladb_vote_widget_" + id + " .ladb-vote-" + direction + ".ladb-enabled").on("click", function(event) {
+        console.log('click');
         event.preventDefault();
         $('[data-tooltip=tooltip]').tooltip('hide');
         $(this).find("i").removeClass("ladb-icon-thumb-" + direction).addClass("ladb-icon-spinner");
