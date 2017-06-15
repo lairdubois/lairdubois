@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_show.html.twig' %}
 
 {% set entity = question %}
-{% set pageItemType = 'BlogQuestioning' %}
+{% set pageItemType = 'Question' %}
 
 {% set navSection = 'qa' %}
 {% set searchPath = path('core_qa_question_list') %}
@@ -68,6 +68,9 @@
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' %}
+    {% for answer in question.answers %}
+        {% include 'LadbCoreBundle:Qa:_answer-row.part.html' %}
+    {% endfor %}
 {% endblock %}
 
 {% block contentMetasPanel %}
