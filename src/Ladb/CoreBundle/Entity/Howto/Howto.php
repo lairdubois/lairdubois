@@ -48,11 +48,13 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
     const TYPE = 106;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_howto_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
 	 */
 	protected $referrals;
+
     /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
@@ -61,25 +63,30 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 	 * @ladbAssert\UpperCaseRatio()
      */
     private $title;
+
     /**
      * @Gedmo\Slug(fields={"title"}, separator="-")
      * @ORM\Column(type="string", length=100, unique=true)
      */
     private $slug;
+
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=2, max=2000)
 	 */
 	private $body;
+
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
 	private $htmlBody;
+
 	/**
 	 * @ORM\Column(type="integer", name="body_block_video_count")
 	 */
 	private $bodyBlockVideoCount = 0;
+
 	/**
      * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
      * @ORM\JoinColumn(name="main_picture_id", nullable=false)
@@ -87,97 +94,118 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
      * @Assert\NotBlank()
      */
     private $mainPicture;
+
 	/**
 	 * @ORM\Column(type="boolean", name="is_work_in_progress")
 	 */
 	private $isWorkInProgress = false;
+
 	/**
 	 * @ORM\Column(name="draft_article_count", type="integer")
 	 */
 	private $draftArticleCount = 0;
+
 	/**
 	 * @ORM\Column(name="published_article_count", type="integer")
 	 */
 	private $publishedArticleCount = 0;
+
 	/**
      * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Article", mappedBy="howto", cascade={"all"})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
      */
     private $articles;
+
 	/**
 	 * @ORM\Column(type="integer", name="creation_count")
 	 */
 	private $creationCount = 0;
+
 	/**
      * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="howtos")
      */
     private $creations;
+
 	/**
 	 * @ORM\Column(type="integer", name="workshop_count")
 	 */
 	private $workshopCount = 0;
+
 	/**
      * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Workshop", mappedBy="howtos")
      */
     private $workshops;
+
 	/**
 	 * @ORM\Column(type="integer", name="plan_count")
 	 */
 	private $planCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="howtos", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_howto_plan")
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $plans;
+
 	/**
 	 * @ORM\Column(type="integer", name="provider_count")
 	 */
 	private $providerCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Provider", inversedBy="howtos", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_howto_provider")
 	 * @Assert\Count(min=0, max=10)
 	 */
 	private $providers;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_howto_tag")
 	 * @Assert\Count(min=2)
 	 */
 	private $tags;
+
 	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\License", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(nullable=true, name="license_id")
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\License")
 	 */
 	private $license;
+
 	/**
      * @ORM\Column(type="integer", name="like_count")
      */
     private $likeCount = 0;
+
     /**
      * @ORM\Column(type="integer", name="watch_count")
      */
     private $watchCount = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="comment_count")
 	 */
 	private $commentCount = 0;
+
 	/**
      * @ORM\Column(type="integer", name="view_count")
      */
     private $viewCount = 0;
+
 	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Spotlight", cascade={"remove"})
 	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
 	 */
 	private $spotlight = null;
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
 	 */
 	private $sticker;
+
 	/**
 	 * @ORM\Column(type="integer", name="referral_count")
 	 */
