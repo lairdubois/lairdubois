@@ -759,6 +759,13 @@ class CreationController extends Controller {
 
 						break;
 
+					case 'content-providers':
+
+						$filter = new \Elastica\Query\Range('providerCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-videos':
 
 						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gte' => 1 ));
