@@ -358,6 +358,7 @@ fos_elastica:
                         bodyBlockVideoCount: { type: integer }
                         planCount: { type: integer }
                         howtoCount: { type: integer }
+                        providerCount: { type: integer }
                         user:
                             type: "object"
                             properties:
@@ -475,6 +476,7 @@ fos_elastica:
                         creationCount: { type: integer }
                         planCount: { type: integer }
                         workshopCount: { type: integer }
+                        providerCount: { type: integer }
                         isWorkInProgress: { type: boolean }
                         articles:
                             type: "object"
