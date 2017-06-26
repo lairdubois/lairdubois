@@ -172,6 +172,9 @@ services:
   ladb_core.qa_question_manager:
     class: Ladb\CoreBundle\Manager\Qa\QuestionManager
     arguments: ['@service_container']
+  ladb_core.qa_answer_manager:
+    class: Ladb\CoreBundle\Manager\Qa\AnswerManager
+    arguments: ['@service_container']
 
   # Validators
   ladb_core.valid_username_validator:

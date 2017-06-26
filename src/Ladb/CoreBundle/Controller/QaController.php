@@ -2,8 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller;
 
-use Ladb\CoreBundle\Model\VotableTrait;
-use Ladb\CoreBundle\Utils\VotableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,10 +20,12 @@ use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\ExplorableUtils;
+use Ladb\CoreBundle\Utils\VotableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Qa\QuestionManager;
+use Ladb\CoreBundle\Manager\Qa\AnswerManager;
 use Ladb\CoreBundle\Manager\WitnessManager;
 
 /**
@@ -321,6 +321,7 @@ class QaController extends Controller {
 			$answer->setParentEntityField('bestAnswer');
 
 			$question->addAnswer($answer);
+			$question->incrementAnswerCount();
 
 			$om->persist($answer);
 			$om->flush();
@@ -418,6 +419,33 @@ class QaController extends Controller {
 	 * @Template()
 	 */
 	public function deleteAnswerAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+
+		$answer = $answerRepository->findOneById($id);
+		if (is_null($answer)) {
+			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $answer->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_howto_article_delete)');
+		}
+
+		$question = $answer->getQuestion();
+
+		// Delete
+		$answerManager = $this->get(AnswerManager::NAME);
+		$answerManager->delete($answer, true, false);
+
+		$om->flush();
+
+		// Search index update
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->replaceEntityInIndex($question);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.answer.form.alert.delete_success'));
+
+		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
 	}
 
 	/**

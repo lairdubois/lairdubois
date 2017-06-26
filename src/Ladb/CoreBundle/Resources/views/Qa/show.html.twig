@@ -78,31 +78,40 @@
 
 {% block contentBody %}
     <div class="ladb-question">
-        <div class="ladb-body">
-            {% for block in question.bodyBlocks %}
-                {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}
-            {% endfor %}
+        <div class="ladb-box">
+            <div class="ladb-box-inner row">
+                <div class="col-sm-1 col-xs-12">
+                    <div class="ladb-full-height">?</div>
+                </div>
+                <div class="ladb-content-box col-sm-11 col-xs-12">
+                    {% for block in question.bodyBlocks %}
+                        {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}
+                    {% endfor %}
+                    {% if question.updatedAt > question.createdAt %}
+                        {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
+                    {% endif %}
+                    <div style="border-top: 1px solid #ddd; margin-top: 5px; padding-top: 5px;">
+                        <div class="text-right" style="font-size: 90%;">
+                            <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#demo" style="cursor: pointer;">{{ question.commentCount }} commentaires</a>
+                        </div>
+                        <div id="demo" class="collapse">
+                            {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' with { 'headingHidden':true } %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% if question.updatedAt > question.createdAt %}
-            {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
-        {% endif %}
     </div>
-    <div>
-        <div class="text-right">
-            <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#demo">{{ question.commentCount }} commentaires</a>
-        </div>
-        <div id="demo" class="collapse">
-            {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' with { 'headingHidden':true } %}
-        </div>
-    </div>
-    <h3>Réponses</h3>
+    {% if question.answers|length > 0 %}
+        <h3 style="margin-bottom: 20px;">Réponses</h3>
+    {% endif %}
     <div class="ladb-question-answers">
         {% for answer in question.answers %}
             {% include 'LadbCoreBundle:Qa:_answer-row.part.html.twig' with { 'voteContext':voteContexts[answer.id]} %}
         {% endfor %}
     </div>
     <div class="text-center">
-        <button id="ladb_answer_btn" class="btn btn-default btn-lg"><i class="ladb-icon-plus"></i> Ajouter ma réponse</button>
+        <button id="ladb_answer_btn" class="btn btn-primary btn-lg"><i class="ladb-icon-plus"></i> Ajouter ma réponse</button>
     </div>
     <div class="ladb-answer-row">
         <div id="ladb_answer_box" class="ladb-box" style="display: none;"></div>

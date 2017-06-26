@@ -82,6 +82,11 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $bodyBlockVideoCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="answer_count")
+	 */
+	private $answerCount = 0;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Answer", mappedBy="question", cascade={"all"})
 	 * @ORM\OrderBy({"voteScore" = "DESC"})
 	 */
@@ -156,6 +161,16 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	public function getSluggedId() {
 		return $this->id.'-'.$this->slug;
+	}
+
+	// AnswerCount /////
+
+	public function incrementAnswerCount($by = 1) {
+		return $this->answerCount += intval($by);
+	}
+
+	public function getAnswerCount() {
+		return $this->answerCount;
 	}
 
 	// Answers /////
