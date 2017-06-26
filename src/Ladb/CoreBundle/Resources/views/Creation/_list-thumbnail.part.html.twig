@@ -15,6 +15,9 @@
     {% if wonder.howtoCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_creation_howtos', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'creation.linked_to'|trans() }} {{ wonder.howtoCount }} {{ 'howto.choice.howtos'|transchoice(wonder.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
     {% endif %}
+    {% if wonder.providerCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_creation_providers', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'creation.linked_to'|trans() }} {{ wonder.providerCount }} {{ 'knowledge.provider.choice.providers'|transchoice(wonder.providerCount) }}"><i class="ladb-icon-provider"></i></a></li>
+    {% endif %}
     {{ parent() }}
 {% endblock %}
 
