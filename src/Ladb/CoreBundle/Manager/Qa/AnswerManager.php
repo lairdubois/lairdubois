@@ -4,6 +4,9 @@ namespace Ladb\CoreBundle\Manager\Qa;
 
 use Ladb\CoreBundle\Entity\Qa\Answer;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
+use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\VotableUtils;
 
 class AnswerManager extends AbstractPublicationManager {
 
@@ -20,7 +23,17 @@ class AnswerManager extends AbstractPublicationManager {
 	}
 
 	public function delete(Answer $answer, $withWitness = true, $flush = true) {
+		$votableUtils = $this->get(VotableUtils::NAME);
+
+		$question = $answer->getQuestion();
+		$question->incrementAnswerCount(-1);
+
+		// Delete votes
+		$votableUtils->deleteVotes($answer, $question, false);
+
 		parent::deletePublication($answer, $withWitness, $flush);
+
+		$question->removeAnswer($answer);
 	}
 
 }

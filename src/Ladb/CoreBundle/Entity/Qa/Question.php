@@ -183,7 +183,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 		return $this;
 	}
 
-	public function removeArticle(\Ladb\CoreBundle\Entity\Qa\Answer $answer) {
+	public function removeAnswer(\Ladb\CoreBundle\Entity\Qa\Answer $answer) {
 		if ($this->answers->removeElement($answer)) {
 			$answer->setQuestion(null);
 		}

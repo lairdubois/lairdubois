@@ -3,7 +3,7 @@
 
 <div style="margin-top: 5px; padding-top: 5px;">
     <div class="text-right" style="font-size: 90%; padding: 5px 0; color: #ccc;">
-        <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#ladb_comments_{{ entity.id }}" style="cursor: pointer; color: #ccc;">{{ entity.commentCount }} commentaires</a>
+        <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#ladb_comments_{{ entity.id }}" style="cursor: pointer; color: #ccc;">{{ entity.commentCount }} {{ 'comment.choice.comments'|transchoice(entity.commentCount) }}</a>
     </div>
     <div id="ladb_comments_{{ entity.id }}" class="collapse">
         {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' with { 'headingHidden':true } %}

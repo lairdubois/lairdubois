@@ -940,4 +940,10 @@ youtook:
       thumbnail: Définissez ici la miniature de votre Took.<br>La modification de cette image peut être intéressante pour avoir une miniature spécialement dédiée au partage sur Facebook.<br>Cette image ne sera visible que sur Facebook.
 
 qa:
-  nav: Questions
+  question:
+    new: Ajouter une question
+    edit: Edition de la question
+    list: Les questions
+    nav: Questions
+    choice:
+      answers: '[0,1]réponse|]1,Inf]réponses'

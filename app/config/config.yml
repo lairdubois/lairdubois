@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20170614"
+        version:    "20170627"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
     templating:
@@ -472,7 +472,7 @@ fos_elastica:
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
-                        commentCount: { type: integer }
+                        answerCount: { type: integer }
                         tags:
                             type: "object"
                             properties:

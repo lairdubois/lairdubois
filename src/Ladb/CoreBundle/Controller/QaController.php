@@ -106,8 +106,14 @@ class QaController extends Controller {
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_qa_question_publish)');
+		}
 		if ($question->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_qa_question_publish)');
+		}
+		if ($question->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_qa_question_publish)');
 		}
 
 		// Publish
@@ -131,6 +137,9 @@ class QaController extends Controller {
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_qa_question_unpublish)');
+		}
 		if ($question->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_qa_question_unpublish)');
 		}
@@ -140,7 +149,7 @@ class QaController extends Controller {
 		$questionManager->unpublish($question);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('blog.post.form.alert.unpublish_success', array( '%title%' => $question->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.question.form.alert.unpublish_success', array( '%title%' => $question->getTitle() )));
 
 		// Return to
 		$returnToUrl = $request->get('rtu');
@@ -319,6 +328,7 @@ class QaController extends Controller {
 			$answer->setUser($this->getUser());
 			$answer->setParentEntity($question);
 			$answer->setParentEntityField('bestAnswer');
+			$answer->setIsDraft(false);
 
 			$question->addAnswer($answer);
 			$question->incrementAnswerCount();
@@ -326,11 +336,13 @@ class QaController extends Controller {
 			$om->persist($answer);
 			$om->flush();
 
+			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
 
 			return $this->render('LadbCoreBundle:Qa:_answer-row.part.html.twig', array(
-				'answer' => $answer,
-				'voteContext' => $votableUtils->getVoteContext($answer, $this->getUser()),
+				'answer'         => $answer,
+				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser()),
+				'voteContext'    => $votableUtils->getVoteContext($answer, $this->getUser()),
 			));
 		}
 

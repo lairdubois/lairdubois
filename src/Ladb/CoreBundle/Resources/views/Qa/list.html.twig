@@ -13,13 +13,6 @@
     {% include 'LadbCoreBundle:Qa:_list-topbar.part.html.twig' %}
 {% endblock %}
 
-{% block bodyContainerContent %}
-    <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
-        <div class="panel-body">{{ 'qa.description'|trans() }}</div>
-    </div>
-    {{ parent() }}
-{% endblock %}
-
 {% block autopagerContainerInner %}
     {% include 'LadbCoreBundle:Qa:_list-n.part.html.twig' %}
 {% endblock %}
