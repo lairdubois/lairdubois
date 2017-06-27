@@ -103,9 +103,17 @@
             {% include 'LadbCoreBundle:Qa/Answer:_row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
         {% endfor %}
     </div>
-    <div class="text-center">
-        <button id="ladb_answer_btn" class="btn btn-primary btn-lg"><i class="ladb-icon-plus"></i> Ajouter ma réponse</button>
-    </div>
+    {% if not question.isDraft %}
+        <div class="text-center">
+            {% if userAnswer %}
+                <div class="alert alert-info">
+                    <p>Vous avez déjà répondu à cette question. <a href="" class="alert-link">(Editer ma réponse)</a></p>
+                </div>
+            {% else %}
+                <button id="ladb_answer_btn" class="btn btn-primary btn-lg"><i class="ladb-icon-plus"></i> Ajouter ma réponse</button>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block contentMetasPanel %}
@@ -125,12 +133,12 @@
     {% if similarQuestions is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('blog.question.similar')|trans() }}
+                {{ ('qa.question.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarQuestion in similarQuestions %}
                     <div class="col-xs-6">
-                        {% include 'LadbCoreBundle:Blog:_thumbnail-link.part.html.twig' with { 'question':similarQuestion, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                        {#{% include 'LadbCoreBundle:Qa\Question:_thumbnail-link.part.html.twig' with { 'question':similarQuestion, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}#}
                     </div>
                 {% endfor %}
             </div>

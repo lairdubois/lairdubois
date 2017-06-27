@@ -382,6 +382,15 @@ class QuestionController extends Controller {
 			}
 		}
 
+		$user = $this->getUser();
+		$userAnswer = null;
+		foreach ($question->getAnswers() as $answer) {
+			if ($answer->getUser()->getId() == $user->getId()) {
+				$userAnswer = $answer;
+				break;
+			}
+		}
+
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
 		$similarQuestions = $explorableUtils->getSimilarExplorables($question, 'fos_elastica.index.ladb.qa_question', Question::CLASS_NAME);
 
@@ -404,6 +413,7 @@ class QuestionController extends Controller {
 			'commentContexts'  => $commentableUtils->getCommentContexts($question->getAnswers()),
 			'followerContext'  => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
 			'voteContexts'     => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
+			'userAnswer'       => $userAnswer,
 		);
 	}
 
