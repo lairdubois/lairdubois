@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Manager;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
