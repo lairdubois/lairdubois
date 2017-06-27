@@ -6,10 +6,13 @@
 @import "../_variables.less";
 @import "../_mixins.less";
 
-.ladb-question {
+.ladb-answer-row {
+  .ladb-box .ladb-content-box .collapse {
+    margin-left: 42px;
+  }
 }
 
-.ladb-question, .ladb-answer-row {
+.ladb-qa-question, .ladb-answer-row {
   margin-bottom: @ladb-gutter;
 
   > .ladb-box {
@@ -42,14 +45,20 @@
     }
 
     .ladb-content-box {
+      padding-top: 10px;
+
+      .ladb-avatar {
+        float: left;
+      }
 
       .ladb-content {
         margin-top: 5px;
+        margin-left: 42px;
+        min-height: 50px;
       }
 
-      .ladb-footer {
-        padding: 5px 0 5px 0;
-        border-bottom: 1px solid @ladb-global-border;
+      > .ladb-heading {
+        margin-left: 42px;
         color: @ladb-global-light-color;
 
         .author a {
@@ -63,6 +72,16 @@
         .ladb-minitools {
           float: right;
           font-size: 115%;
+        }
+
+      }
+
+      .collapse {
+        border-top: 1px solid @ladb-global-border;
+        margin-bottom: 10px;
+
+        .ladb-comment-widget {
+          margin: 0;
         }
 
       }

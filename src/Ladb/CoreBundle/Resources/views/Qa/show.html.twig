@@ -77,27 +77,20 @@
 {% endblock %}
 
 {% block contentBody %}
-    <div class="ladb-question">
+    <div class="ladb-qa-question">
         <div class="ladb-box">
             <div class="ladb-box-inner row">
-                <div class="col-sm-1 col-xs-12">
-                    <div class="ladb-full-height">?</div>
-                </div>
-                <div class="ladb-content-box col-sm-11 col-xs-12">
+                <div class="ladb-content-box col-sm-11 col-xs-12" style="margin-top: 10px;">
                     {% for block in question.bodyBlocks %}
                         {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}
                     {% endfor %}
                     {% if question.updatedAt > question.createdAt %}
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
                     {% endif %}
-                    <div style="border-top: 1px solid #ddd; margin-top: 5px; padding-top: 5px;">
-                        <div class="text-right" style="font-size: 90%;">
-                            <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#demo" style="cursor: pointer;">{{ question.commentCount }} commentaires</a>
-                        </div>
-                        <div id="demo" class="collapse">
-                            {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' with { 'headingHidden':true } %}
-                        </div>
-                    </div>
+                    {% include 'LadbCoreBundle:Qa:_comments.part.html.twig' with { 'entity':question } %}
+                </div>
+                <div class="col-sm-1 col-xs-12">
+                    <div class="ladb-full-height">?</div>
                 </div>
             </div>
         </div>
