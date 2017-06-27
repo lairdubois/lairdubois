@@ -808,19 +808,19 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// ContributionCount /////
 
+	public function incrementContributionCount($by = 1) {
+		return $this->contributionCount += intval($by);
+	}
+
 	public function getContributionCount() {
 		return $this->contributionCount;
 	}
 
+	// CommentCount /////
+
 	public function incrementCommentCount($by = 1) {
 		$this->incrementContributionCount($by);
 		return $this->commentCount += intval($by);
-	}
-
-	// CommentCount /////
-
-	public function incrementContributionCount($by = 1) {
-		return $this->contributionCount += intval($by);
 	}
 
 	public function getCommentCount() {
