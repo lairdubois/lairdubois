@@ -77,6 +77,9 @@ services:
   ladb_core.plan_utils:
     class: Ladb\CoreBundle\Utils\PlanUtils
     arguments: ['@templating', '@router']
+  ladb_core.howto_utils:
+    class: Ladb\CoreBundle\Utils\HowtoUtils
+    arguments: ['@service_container']
   ladb_core.find_utils:
     class: Ladb\CoreBundle\Utils\FindUtils
     arguments: ['@service_container']
@@ -161,7 +164,7 @@ services:
     class: Ladb\CoreBundle\Manager\Knowledge\WoodManager
     arguments: ['@service_container']
   ladb_core.witness_manager:
-    class: Ladb\CoreBundle\Manager\WitnessManager
+    class: Ladb\CoreBundle\Manager\Core\WitnessManager
     arguments: ['@service_container']
   ladb_core.funding_manager:
     class: Ladb\CoreBundle\Manager\Funding\FundingManager

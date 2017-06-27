@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlockType extends AbstractType {
 
-	protected $dataClass = 'Ladb\CoreBundle\Entity\Block\AbstractBlock';
+	protected $dataClass = 'Ladb\CoreBundle\Entity\Core\Block\AbstractBlock';
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder

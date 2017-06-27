@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Picture;
+use Ladb\CoreBundle\Entity\Core\Picture;
 
 class WebScreenshotUtils {
 

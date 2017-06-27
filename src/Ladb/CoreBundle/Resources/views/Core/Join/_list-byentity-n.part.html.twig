@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set joins #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for join in joins %}
+        {% include 'LadbCoreBundle:Core/User:_list-row.part.html.twig' with { 'user':join.user } %}
+    {% endfor %}
+{% endblock %}

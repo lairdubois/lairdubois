@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20170627"
+        version:    "20170614"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
     templating:
@@ -119,7 +119,7 @@ stof_doctrine_extensions:
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: Ladb\CoreBundle\Entity\User
+    user_class: Ladb\CoreBundle\Entity\Core\User
     use_listener: false
     from_email:
         address:        noreply@lairdubois.fr
@@ -325,7 +325,7 @@ fos_elastica:
                                 min_gram: 3
                                 max_gram: 5
             types:
-                user:
+                core_user:
                     mappings:
                         displayname: { boost: 2, analyzer: name_analyzer }
                         fullname: { boost: 1, analyzer: name_analyzer }
@@ -342,12 +342,12 @@ fos_elastica:
                                 label:
                     persistence:
                         driver: orm
-                        model: Ladb\CoreBundle\Entity\User
+                        model: Ladb\CoreBundle\Entity\Core\User
                         provider:
                             query_builder_method: "createIsEnabledQueryBuilder"
                         listener:
                             update: false
-                creation:
+                wonder_creation:
                     mappings:
                         title: { boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -394,7 +394,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                workshop:
+                wonder_workshop:
                     mappings:
                         title: { boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -430,7 +430,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                plan:
+                wonder_plan:
                     mappings:
                         title: { boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -486,7 +486,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                howto:
+                howto_howto:
                     mappings:
                         title: { boost: 3, analyzer: title_analyzer }
                         changedAt: { type: date }
@@ -527,7 +527,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                find:
+                find_find:
                     mappings:
                         title: { boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -555,7 +555,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                post:
+                blog_post:
                     mappings:
                         title: { boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -576,7 +576,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                question:
+                faq_question:
                     mappings:
                         title: { boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -598,7 +598,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                wood:
+                knowledge_wood:
                     mappings:
                         title: { analyzer: exact_lowercase_analyzer }
                         name: { boost: 3, analyzer: name_analyzer }
@@ -622,7 +622,7 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                provider:
+                knowledge_provider:
                     mappings:
                         sign: { boost: 2, analyzer: name_analyzer }
                         signRejected: { type: boolean }
@@ -650,12 +650,12 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                tag:
+                core_tag:
                     mappings:
                         name: { analyzer: ngram_analyzer }
                     persistence:
                         driver: orm
-                        model: Ladb\CoreBundle\Entity\Tag
+                        model: Ladb\CoreBundle\Entity\Core\Tag
                         provider: ~
                         listener: ~
                 input_skill:

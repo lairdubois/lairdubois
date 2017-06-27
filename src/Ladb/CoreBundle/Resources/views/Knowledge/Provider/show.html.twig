@@ -1,0 +1,195 @@
+{% extends 'LadbCoreBundle:Knowledge:_show.html.twig' %}
+
+{% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
+
+{% set entity = provider %}
+{% set pageItemType = 'LocalBusiness' %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set navSection = 'providers' %}
+{% set searchPath = path('core_provider_list') %}
+
+{% set knowledge = provider %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block bodyMetas %}
+    {{ parent() }}
+    {% if provider.phone %}<meta itemprop="telephone" content="{{ provider.phone }}"/>{% endif %}
+    {% if provider.address %}<meta itemprop="address" content="{{ provider.address }}"/>{% endif %}
+    <meta itemprop="url" content="{{ provider.website ? provider.website : pageUrl }}"/>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Knowledge/Provider:_entity-header.part.html.twig' %}
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% if watchContext is not null and is_granted("ROLE_USER") %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                {% endif %}
+                &nbsp;
+                {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':provider.type, 'entityId':provider.id } %}
+                {% if is_granted("ROLE_ADMIN") %}
+                    &nbsp;
+                    <a href="#delete_wonder_modal" class="btn btn-danger" data-toggle="modal" ><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'delete_wonder_modal', 'title':('default.deletion'|trans()) } %}
+                        {% block bodyInner %}
+                            <p>La suppression du fournisseur <strong>{{ provider.title }}</strong> entrainera la perte de toutes les informations qui lui sont relatives.</p>
+                            <p>Confirmez l'action pour continuer.</p>
+                        {% endblock %}
+                        {% block footerInner %}
+                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                            <a href="{{ path('core_provider_delete', { 'id':provider.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    <div class="ladb-knowledge-showcase row">
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', provider), 'picture':provider.logo, 'values':provider.logoValues, 'itemProperty':'logo', 'pictureBoxClasses':(provider.logoRejected ? 'ladb-box-barred' : null) } %}
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_PHOTO', provider), 'picture':provider.photo, 'values':provider.photoValues, 'itemProperty':'photo' } %}
+    </div>
+    <div>
+        {% if searchableStoreCount > 1 %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Ce fournisseur est répertorié avec <a href="{{ path('core_provider_list', { 'q':'@brand:"'~provider.brand~'"'}) }}" rel="nofollow"><strong>{{ searchableStoreCount }}</strong> {{ 'knowledge.provider.choice.stores'|transchoice(searchableStoreCount) }}</a>.</span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Services et Produits</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_SERVICES', provider), 'data':provider.services, 'values':provider.servicesValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PRODUCTS', provider), 'data':provider.products, 'values':provider.productsValues } %}
+            {% if provider.woodsValues is not empty or 'Bois massifs' in provider.products %}
+                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_WOODS', provider), 'data':provider.woods, 'values':provider.woodsValues, 'disabled':not ('Bois massif' in provider.products), 'indented':true } %}
+            {% endif %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Point de vente</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_IN_STORE_SELLING', provider), 'data':provider.inStoreSelling, 'values':provider.inStoreSellingValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_MAIL_ORDER_SELLING', provider), 'data':provider.mailOrderSelling, 'values':provider.mailOrderSellingValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_SALE_TO_INDIVIDUALS', provider), 'data':provider.saleToIndividuals, 'values':provider.saleToIndividualsValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Contacts</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_SIGN', provider), 'data':provider.sign, 'values':provider.signValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_WEBSITE', provider), 'data':provider.website, 'values':provider.websiteValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', provider), 'data':provider.address, 'values':provider.addressValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', provider), 'data':provider.phone, 'values':provider.phoneValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', provider), 'data':provider.description, 'values':provider.descriptionValues } %}
+        </div>
+        <div class="panel panel-default ladb-margin-top">
+            <div class="panel-body">
+                Cette fiche est complétée et contrôllée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">apportez vos propositions</a> !
+            </div>
+        </div>
+        {% if provider.updatedAt > provider.createdAt %}
+            {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
+        {% endif %}
+        <div style="padding: 10px; text-align: center;">
+            {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+        </div>
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
+    </div>
+    {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}
+    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'proposals_modal', 'title':('knowledge.proposals'|trans()), 'classes':'modal-wide' } %}
+        {% block headerInner %}
+            {{ 'default.loading'|trans() }}
+        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' with { 'noMicrodata':true } %}
+        {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' with { 'noMicrodata':true } %}
+        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' with { 'noMicrodata':true }  %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-users ladb-icon-fixed-center"></i>
+            {% if provider.contributorCount > 0 %}
+                <a href="{{ path('core_knowledge_contributors', { 'entityType':provider.type, 'entityId':provider.id }) }}">
+            {% endif %}
+                <strong>{{ provider.contributorCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'user.choice.contributors'|transchoice(provider.contributorCount) }}</small>
+            {% if provider.contributorCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        <div class="ladb-meta{% if provider.voteCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-check ladb-icon-fixed-center"></i>
+            {% if provider.voteCount > 0 %}
+                <a href="{{ path('core_vote_list_parent_entity', { 'entityType':provider.type, 'entityId':provider.id }) }}">
+            {% endif %}
+            <strong>{{ provider.voteCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'vote.choice.votes'|transchoice(provider.voteCount) }}</small>
+            {% if provider.voteCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    {% set hasWoods = provider.woodsValues is not empty or 'Bois massif' in provider.products %}
+    {% if hasWoods or provider.creationCount > 0 or provider.howtoCount > 0 %}
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+            {% if hasWoods %}
+                <div class="ladb-meta{% if searchableWoodCount == 0 %} text-muted{% endif %}">
+                    <i class="ladb-icon-wood ladb-icon-fixed-center"></i>
+                    {% if searchableWoodCount > 0 %}
+                    <a href="{{ path('core_wood_list', { 'q':'@name:"'~provider.woods~'"'}) }}" rel="nofollow">
+                        {% endif %}
+                        <strong>{{ searchableWoodCount }}</strong>
+                        <small>{{ 'knowledge.wood.choice.woods'|transchoice(searchableWoodCount) }}</small>
+                        {% if searchableWoodCount > 0 %}
+                    </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% if provider.creationCount > 0 %}
+                <div class="ladb-meta">
+                    <i class="ladb-icon-creation"></i>
+                    <a href="{{ provider.creationCount == 1 ? path('core_creation_show', { 'id':provider.creations[0].sluggedId }) : path('core_provider_creations', { 'id':provider.id }) }}">
+                        <strong>{{ provider.creationCount }}</strong>
+                        <small>{{ 'creation.choice.creations'|transchoice(provider.creationCount) }}</small>
+                    </a>
+                </div>
+            {% endif %}
+            {% if provider.howtoCount > 0 %}
+                <div class="ladb-meta">
+                    <i class="ladb-icon-howto"></i>
+                    <a href="{{ provider.howtoCount == 1 ? path('core_howto_show', { 'id':provider.howtos[0].sluggedId }) : path('core_provider_howtos', { 'id':provider.id }) }}">
+                        <strong>{{ provider.howtoCount }}</strong>
+                        <small>{{ 'howto.choice.howtos'|transchoice(provider.howtoCount) }}</small>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if hasMap %}
+        <div class="ladb-metas">
+            <div class="ladb-meta">
+                {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'225px', 'markersUrl':path('core_provider_location', { 'id':provider.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
+            </div>
+        </div>
+    {% endif %}
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':provider.license, 'noMicrodata':true } %}
+{% endblock %}

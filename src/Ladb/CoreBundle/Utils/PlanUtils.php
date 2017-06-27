@@ -79,11 +79,6 @@ class PlanUtils {
 		$plan->setKinds($kinds);
 	}
 
-	public function getZipAbsolutePath(Plan $plan) {
-		$downloadAbsolutePath = __DIR__ . '/../../../../downloads/';
-		return $downloadAbsolutePath.'plan_'.$plan->getId().'.zip';
-	}
-
 	public function createZipArchive(Plan $plan) {
 		$zipAbsolutePath = $this->getZipAbsolutePath($plan);
 
@@ -99,7 +94,7 @@ class PlanUtils {
 			foreach ($plan->getResources() as $resource) {
 				$zip->addFile($resource->getAbsolutePath(), $resource->getFilename());
 			}
-			$zip->addFromString('LisezMoi.txt', $this->templating->render('LadbCoreBundle:Plan:readme.txt.twig', array( 'plan' => $plan )));
+			$zip->addFromString('LisezMoi.txt', $this->templating->render('LadbCoreBundle:Wonder/Plan:readme.txt.twig', array( 'plan' => $plan )));
 			$zip->close();
 			$plan->setZipArchiveSize(filesize($zipAbsolutePath));
 
@@ -110,6 +105,11 @@ class PlanUtils {
 
 			return false;
 		}
+	}
+
+	public function getZipAbsolutePath(Plan $plan) {
+		$downloadAbsolutePath = __DIR__ . '/../../../../downloads/';
+		return $downloadAbsolutePath.'plan_'.$plan->getId().'.zip';
 	}
 
 	public function deleteZipArchive(Plan $plan) {

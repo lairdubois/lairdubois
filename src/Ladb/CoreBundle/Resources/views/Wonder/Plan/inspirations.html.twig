@@ -1,0 +1,38 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set navSection = 'plans' %}
+
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':plan } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if inspirations.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            Ce plan n'a aucune inspiration
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' %}
+            {% set filterDefs = {
+                'recent':   { 'label':'Récents', 'path':path('core_plan_inspirations_filter', { 'id':plan.id, 'filter':'recent' }) },
+                'popular':  { 'label':'Populaires', 'path':null,
+                                'subFilterDefs': {
+                                    'popular-views':    { 'label':'Plus vus', 'icon':'eye', 'path':path('core_plan_inspirations_filter', { 'id':plan.id, 'filter':'popular-views' }) },
+                                    'popular-likes':    { 'label':'Préférés', 'icon':'like', 'path':path('core_plan_inspirations_filter', { 'id':plan.id, 'filter':'popular-likes' }) },
+                                }
+                            },
+            } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ plan.inspirationCount }} {{ 'default.choice.inspirations'|transchoice(plan.inspirationCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_list-n.part.html.twig' with { 'plans':inspirations } %}
+{% endblock %}

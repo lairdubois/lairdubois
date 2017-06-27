@@ -6,7 +6,7 @@ interface PicturedInterface {
 
 	// MainPicture /////
 
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture);
+	public function setMainPicture(\Ladb\CoreBundle\Entity\Core\Picture $mainPicture);
 
 	public function getMainPicture();
 

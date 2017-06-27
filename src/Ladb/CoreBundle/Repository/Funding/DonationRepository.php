@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Repository\Funding;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 
 class DonationRepository extends AbstractEntityRepository {
 
@@ -46,18 +46,6 @@ class DonationRepository extends AbstractEntityRepository {
 
 	/////
 
-	private function _applyCommonFilter(&$queryBuilder, $filter) {
-		if ('generous' == $filter) {
-			$queryBuilder
-				->addOrderBy('d.amount', 'DESC')
-			;
-		}
-
-		$queryBuilder
-			->addOrderBy('d.createdAt', 'DESC')
-		;
-	}
-
 	public function findPagined($offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -71,6 +59,18 @@ class DonationRepository extends AbstractEntityRepository {
 		$this->_applyCommonFilter($queryBuilder, $filter);
 
 		return new Paginator($queryBuilder->getQuery());
+	}
+
+	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		if ('generous' == $filter) {
+			$queryBuilder
+				->addOrderBy('d.amount', 'DESC')
+			;
+		}
+
+		$queryBuilder
+			->addOrderBy('d.createdAt', 'DESC')
+		;
 	}
 
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {

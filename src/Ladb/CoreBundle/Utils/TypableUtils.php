@@ -47,12 +47,6 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return $long ? 'knowledge.provider': 'provider';
-			// Question (Qa)
-			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
-				return $long ? 'qa.question': 'question';
-			// Answer (Qa)
-			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
-				return $long ? 'qa.answer': 'answer';
 
 		}
 		return '';
@@ -94,8 +88,8 @@ class TypableUtils extends AbstractContainerAwareUtils {
 		switch ($type) {
 
 			// Comment
-			case \Ladb\CoreBundle\Entity\Comment::TYPE:
-				return '\Ladb\CoreBundle\Entity\Comment';
+			case \Ladb\CoreBundle\Entity\Core\Comment::TYPE:
+				return '\Ladb\CoreBundle\Entity\Core\Comment';
 
 			// Text
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:
@@ -152,15 +146,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Provider';
-			// Took
+			// Video
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				return '\Ladb\CoreBundle\Entity\Youtook\Took';
-			// Question (Qa)
-			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
-				return '\Ladb\CoreBundle\Entity\Qa\Question';
-			// Answer (Qa)
-			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
-				return '\Ladb\CoreBundle\Entity\Qa\Answer';
 
 		}
 		return null;
@@ -214,9 +202,6 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				$url = $router->generate('core_youtook_'.$action, $params, $referenceType);
-				break;
-			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
-				$url = $router->generate('core_qa_question_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

@@ -1,0 +1,7 @@
+{% extends 'LadbCoreBundle:Core/Search:_search.html.twig' %}
+
+{% set masonry = true %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Knowledge/Provider:_list-n.part.html.twig' %}
+{% endblock %}

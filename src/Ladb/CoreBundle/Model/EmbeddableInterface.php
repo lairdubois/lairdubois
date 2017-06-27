@@ -6,9 +6,9 @@ interface EmbeddableInterface extends BasicEmbeddableInterface, LicensedInterfac
 
 	// Referrals /////
 
-	public function addReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral);
+	public function addReferral(\Ladb\CoreBundle\Entity\Core\Referer\Referral $referral);
 
-	public function removeReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral);
+	public function removeReferral(\Ladb\CoreBundle\Entity\Core\Referer\Referral $referral);
 
 	public function getReferrals();
 

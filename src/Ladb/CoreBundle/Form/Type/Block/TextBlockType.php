@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TextBlockType extends BlockType {
 
-	protected $dataClass = 'Ladb\CoreBundle\Entity\Block\Text';
+	protected $dataClass = 'Ladb\CoreBundle\Entity\Core\Block\Text';
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);

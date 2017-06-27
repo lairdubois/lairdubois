@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Form\Type;
 
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -73,7 +73,7 @@ class UserSettingsType extends AbstractType {
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Entity\User',
+			'data_class' => 'Ladb\CoreBundle\Entity\Core\User',
 			'constraints' => new Valid(),
 			'validation_groups' => array( 'Default', 'settings' ),
 		));

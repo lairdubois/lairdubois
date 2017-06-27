@@ -20,7 +20,7 @@
         {% else %}
             <p>{% block whatItIs %}{% endblock %} Cette action est définitive.</p>
             {% if license is not null %}
-                <blockquote>{% include 'LadbCoreBundle:License:_publish-modal.part.html.twig' with { 'license':license } %}</blockquote>
+                <blockquote>{% include 'LadbCoreBundle:Core/License:_publish-modal.part.html.twig' with { 'license':license } %}</blockquote>
             {% endif %}
             <p>Confirmez l'action pour continuer.</p>
         {% endif %}

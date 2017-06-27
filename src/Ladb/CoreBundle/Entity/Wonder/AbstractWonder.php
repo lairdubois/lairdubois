@@ -46,6 +46,19 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, EmbeddableTrait;
 
 	/**
+	 * @ORM\Column(type="text", nullable=false)
+	 */
+	protected $body;
+	/**
+	 */
+	protected $pictures;
+	/**
+	 */
+	protected $tags;
+	/**
+	 */
+	protected $referrals;
+	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
@@ -53,76 +66,49 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 	 * @ladbAssert\UpperCaseRatio()
 	 */
 	private $title;
-
 	/**
 	 * @Gedmo\Slug(fields={"title"}, separator="-")
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
 	private $slug;
-
 	/**
-	 * @ORM\Column(type="text", nullable=false)
-	 */
-	protected $body;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false, name="main_picture_id")
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */
 	private $mainPicture;
-
 	/**
-	 */
-	protected $pictures;
-
-	/**
-	 */
-	protected $tags;
-
-	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\License", cascade={"persist", "remove"})
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(nullable=true, name="license_id")
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\License")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
 	 */
 	private $license;
-
 	/**
 	 * @ORM\Column(type="integer", name="like_count")
 	 */
 	private $likeCount = 0;
-
 	/**
 	 * @ORM\Column(type="integer", name="watch_count")
 	 */
 	private $watchCount = 0;
-
 	/**
 	 * @ORM\Column(type="integer", name="comment_count")
 	 */
 	private $commentCount = 0;
-
 	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
-
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
 	 */
 	private $sticker;
-
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="strip_id", nullable=true)
 	 */
 	private $strip;
-
-	/**
-	 */
-	protected $referrals;
-
 	/**
 	 * @ORM\Column(type="integer", name="referral_count")
 	 */
@@ -146,13 +132,13 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 
 	// Slug /////
 
+	public function getSlug() {
+		return $this->slug;
+	}
+
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
 	}
 
 	public function getSluggedId() {
@@ -161,13 +147,13 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 
 	// Body /////
 
+	public function getBody() {
+		return $this->body;
+	}
+
 	public function setBody($body) {
 		$this->body = $body;
 		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
 	}
 
 	// Pictures /////
@@ -178,13 +164,13 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 
 	// Strip /////
 
-	public function setStrip(\Ladb\CoreBundle\Entity\Picture $strip = null) {
-		$this->strip = $strip;
-		return $this;
-	}
-
 	public function getStrip() {
 		return $this->strip;
+	}
+
+	public function setStrip(\Ladb\CoreBundle\Entity\Core\Picture $strip = null) {
+		$this->strip = $strip;
+		return $this;
 	}
 
 }

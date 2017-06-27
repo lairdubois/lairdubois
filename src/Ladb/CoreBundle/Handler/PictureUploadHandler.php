@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Ladb\CoreBundle\Entity\Picture;
+use Ladb\CoreBundle\Entity\Core\Picture;
 
 require_once('../vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php');
 

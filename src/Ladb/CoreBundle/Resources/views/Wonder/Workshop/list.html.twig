@@ -1,0 +1,36 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
+
+{% set pageDescription = 'workshop.description'|trans() %}
+{% set pageTitle = 'workshop.list'|trans() %}
+{% set pageImage = asset('banner-workshops-600x376.jpg') %}
+
+{% set masonry = true %}
+{% set topbarTranslucent = true %}
+{% set hideHeaderContainer = false %}
+
+{% set navSection = 'workshops' %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Wonder/Workshop:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Wonder/Workshop:_list-n.part.html.twig' %}
+{% endblock %}

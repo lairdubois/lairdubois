@@ -1,0 +1,43 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set items #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for item in items if item.likables is not empty %}
+        <div class="ladb-like-thumbnail">
+            <div class="ladb-box row">
+                <div class="ladb-content col-sm-6 col-xs-12">
+                    {% if item.user is not null %}
+                        <div class="ladb-image">
+                            {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':item.user, 'size':'64' } %}
+                        </div>
+                        <div class="ladb-heading">
+                            <h3><a href="#">{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':item.user } %}</a></h3>
+                        </div>
+                        <div class="ladb-subheading">
+                            {% include 'LadbCoreBundle:Core/User:_location-and-social.part.html.twig' with { 'user':item.user } %}
+                        </div>
+                    {% else %}
+                        <div class="ladb-heading">
+                            <h3><i class="ladb-icon-users ladb-icon-lg"></i> {{ 'default.collective_contents'|trans() }}</h3>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="ladb-likables col-sm-6 col-xs-12">
+                    {% for likable in item.likables %}
+                        <div class="ladb-likable">
+                            <div class="ladb-image">
+                                <img src="{{ (likable.mainPicture is defined and likable.mainPicture is not empty ? likable.mainPicture.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32">
+                            </div>
+                            <div class="ladb-heading">
+                                <a href="{{ ladb_entity_url_action(likable) }}">{{ likable.title }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+

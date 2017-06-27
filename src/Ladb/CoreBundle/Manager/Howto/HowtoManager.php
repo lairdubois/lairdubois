@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Manager\Howto;
 
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class HowtoManager extends AbstractPublicationManager {
 

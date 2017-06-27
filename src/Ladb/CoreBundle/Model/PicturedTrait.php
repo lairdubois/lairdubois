@@ -6,7 +6,7 @@ trait PicturedTrait {
 
 	// MainPicture /////
 
-	public function setMainPicture(\Ladb\CoreBundle\Entity\Picture $mainPicture = null) {
+	public function setMainPicture(\Ladb\CoreBundle\Entity\Core\Picture $mainPicture = null) {
 		$this->mainPicture = $mainPicture;
 		return $this;
 	}

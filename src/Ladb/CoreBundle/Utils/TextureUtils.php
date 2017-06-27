@@ -51,49 +51,6 @@ class TextureUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
-	public function updateTexture(Wood $wood, Picture $value, $flush = true) {
-		$om = $this->getDoctrine()->getManager();
-
-		$textureRepository = $om->getRepository(Texture::CLASS_NAME);
-		$texture = $textureRepository->findOneByWoodAndValue($wood, $value);
-		if (!is_null($texture)) {
-
-			// Generate pictures
-			$this->generatePictures($texture);
-
-			// Delete the Zip archive
-			$this->deleteZipArchive($texture);
-
-			if ($flush) {
-				$om->flush();
-			}
-
-		}
-	}
-
-	public function deleteTexture(Wood $wood, Picture $value, $flush = true) {
-		$om = $this->getDoctrine()->getManager();
-
-		$textureRepository = $om->getRepository(Texture::CLASS_NAME);
-		$texture = $textureRepository->findOneByWoodAndValue($wood, $value);
-		if (!is_null($texture)) {
-
-			$this->deleteZipArchive($texture);
-
-			$om->remove($texture); // Workaround to foreign key integrity
-
-			$wood->removeTexture($texture);
-			$wood->incrementTextureCount(-1);
-
-			if ($flush) {
-				$om->flush();
-			}
-
-		}
-	}
-
-	/////
-
 	public function generatePictures(Texture $texture) {
 		$valuePicture = $texture->getValue()->getData();
 		$width = $valuePicture->getWidth();
@@ -109,7 +66,7 @@ class TextureUtils extends AbstractContainerAwareUtils {
 		// Single picture /////
 
 		// Create single picture
-		$singlePicture = new \Ladb\CoreBundle\Entity\Picture();
+		$singlePicture = new \Ladb\CoreBundle\Entity\Core\Picture();
 		$singlePicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
 
 		$cropSize = 10;
@@ -136,7 +93,7 @@ class TextureUtils extends AbstractContainerAwareUtils {
 		$mosaicHeight = $singleHeight * 2;
 
 		// Create mosaic picture
-		$mosaicPicture = new \Ladb\CoreBundle\Entity\Picture();
+		$mosaicPicture = new \Ladb\CoreBundle\Entity\Core\Picture();
 		$mosaicPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
 
 		// Create mosaic image
@@ -158,17 +115,63 @@ class TextureUtils extends AbstractContainerAwareUtils {
 		// Save mosaic picture into texture
 		$texture->setMosaicPicture($mosaicPicture);
 	}
-	
+
+	public function updateTexture(Wood $wood, Picture $value, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$textureRepository = $om->getRepository(Texture::CLASS_NAME);
+		$texture = $textureRepository->findOneByWoodAndValue($wood, $value);
+		if (!is_null($texture)) {
+
+			// Generate pictures
+			$this->generatePictures($texture);
+
+			// Delete the Zip archive
+			$this->deleteZipArchive($texture);
+
+			if ($flush) {
+				$om->flush();
+			}
+
+		}
+	}
+
 	/////
 
-	public function getBaseFilename($texture) {
-		$translator = $this->get('translator');
-		return $texture->getWood()->getSlug().'_'.\Gedmo\Sluggable\Util\Urlizer::urlize($translator->trans('knowledge.wood.field.'.$texture->getValue()->getParentEntityField()), '_').'_'.$texture->getValue()->getId();
+	public function deleteZipArchive(Texture $texture) {
+		$zipAbsolutePath = $this->getZipAbsolutePath($texture);
+		try {
+			unlink($zipAbsolutePath);
+		} catch (\Exception $e) {
+		}
 	}
+	
+	/////
 
 	public function getZipAbsolutePath(Texture $texture) {
 		$downloadAbsolutePath = __DIR__ . '/../../../../downloads/';
 		return $downloadAbsolutePath.'texture_'.$texture->getId().'.zip';
+	}
+
+	public function deleteTexture(Wood $wood, Picture $value, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$textureRepository = $om->getRepository(Texture::CLASS_NAME);
+		$texture = $textureRepository->findOneByWoodAndValue($wood, $value);
+		if (!is_null($texture)) {
+
+			$this->deleteZipArchive($texture);
+
+			$om->remove($texture); // Workaround to foreign key integrity
+
+			$wood->removeTexture($texture);
+			$wood->incrementTextureCount(-1);
+
+			if ($flush) {
+				$om->flush();
+			}
+
+		}
 	}
 
 	public function createZipArchive(Texture $texture) {
@@ -189,7 +192,7 @@ class TextureUtils extends AbstractContainerAwareUtils {
 
 			$zip->addFile($texture->getSinglePicture()->getAbsolutePath(), $singleFilename);
 			$zip->addFile($texture->getMosaicPicture()->getAbsolutePath(), $mosaicFilename);
-			$zip->addFromString('LisezMoi.txt', $this->get('templating')->render('LadbCoreBundle:Wood:texture-readme.txt.twig', array( 'texture' => $texture, 'files' => array( $singleFilename, $mosaicFilename ) )));
+			$zip->addFromString('LisezMoi.txt', $this->get('templating')->render('LadbCoreBundle:Knowledge/Wood:texture-readme.txt.twig', array( 'texture' => $texture, 'files' => array( $singleFilename, $mosaicFilename ) )));
 			$zip->close();
 
 			return true;
@@ -198,12 +201,9 @@ class TextureUtils extends AbstractContainerAwareUtils {
 		return false;
 	}
 
-	public function deleteZipArchive(Texture $texture) {
-		$zipAbsolutePath = $this->getZipAbsolutePath($texture);
-		try {
-			unlink($zipAbsolutePath);
-		} catch (\Exception $e) {
-		}
+	public function getBaseFilename($texture) {
+		$translator = $this->get('translator');
+		return $texture->getWood()->getSlug().'_'.\Gedmo\Sluggable\Util\Urlizer::urlize($translator->trans('knowledge.wood.field.'.$texture->getValue()->getParentEntityField()), '_').'_'.$texture->getValue()->getId();
 	}
 	
 

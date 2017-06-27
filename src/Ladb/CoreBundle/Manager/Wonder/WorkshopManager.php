@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Manager\Wonder;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
@@ -57,28 +57,6 @@ class WorkshopManager extends AbstractWonderManager {
 		parent::unpublishPublication($workshop, $flush);
 	}
 
-	public function delete(Workshop $workshop, $withWitness = true, $flush = true) {
-
-		// Decrement user workshop count
-		if ($workshop->getIsDraft()) {
-			$workshop->getUser()->incrementDraftWorkshopCount(-1);
-		} else {
-			$workshop->getUser()->incrementPublishedWorkshopCount(-1);
-		}
-
-		// Unlink plans
-		foreach ($workshop->getPlans() as $plan) {
-			$workshop->removePlan($plan);
-		}
-
-		// Unlink howtos
-		foreach ($workshop->getHowtos() as $howto) {
-			$workshop->removeHowto($howto);
-		}
-
-		parent::deleteWonder($workshop, $withWitness, $flush);
-	}
-
 	public function convertToHowto(Workshop $workshop, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
@@ -90,12 +68,12 @@ class WorkshopManager extends AbstractWonderManager {
 
 		if ($workshop->getPictures()->count() > 1) {
 
-			$textBlock = new \Ladb\CoreBundle\Entity\Block\Text();
+			$textBlock = new \Ladb\CoreBundle\Entity\Core\Block\Text();
 			$textBlock->setBody('Images du projet');
 			$textBlock->setSortIndex(0);
 			$article->addBodyBlock($textBlock);
 
-			$galleryBlock = new \Ladb\CoreBundle\Entity\Block\Gallery();
+			$galleryBlock = new \Ladb\CoreBundle\Entity\Core\Block\Gallery();
 			foreach ($workshop->getPictures() as $picture) {
 				$galleryBlock->addPicture($picture);
 			}
@@ -116,7 +94,7 @@ class WorkshopManager extends AbstractWonderManager {
 		$howto->setUser($workshop->getUser());
 		$howto->setMainPicture($workshop->getMainPicture());
 		$howto->setBody('Projet d\'atelier'.($workshop->getArea() ? ' de '.$workshop->getArea().'m²' : '').($workshop->getLocation() ? ' à '.$workshop->getLocation() : '').'.');
-		$howto->setLicense(new \Ladb\CoreBundle\Entity\License($workshop->getLicense()->getAllowDerivs(), $workshop->getLicense()->getShareAlike(), $workshop->getLicense()->getAllowCommercial()));
+		$howto->setLicense(new \Ladb\CoreBundle\Entity\Core\License($workshop->getLicense()->getAllowDerivs(), $workshop->getLicense()->getShareAlike(), $workshop->getLicense()->getAllowCommercial()));
 
 		$article->setHowto($howto);		// Workaround to $howto->addArticle($article); because it generates a constraint violation on $this->delete($workshop, false, false);
 		if ($howto->getIsDraft()) {
@@ -192,6 +170,28 @@ class WorkshopManager extends AbstractWonderManager {
 		}
 
 		return $howto;
+	}
+
+	public function delete(Workshop $workshop, $withWitness = true, $flush = true) {
+
+		// Decrement user workshop count
+		if ($workshop->getIsDraft()) {
+			$workshop->getUser()->incrementDraftWorkshopCount(-1);
+		} else {
+			$workshop->getUser()->incrementPublishedWorkshopCount(-1);
+		}
+
+		// Unlink plans
+		foreach ($workshop->getPlans() as $plan) {
+			$workshop->removePlan($plan);
+		}
+
+		// Unlink howtos
+		foreach ($workshop->getHowtos() as $howto) {
+			$workshop->removeHowto($howto);
+		}
+
+		parent::deleteWonder($workshop, $withWitness, $flush);
 	}
 
 }

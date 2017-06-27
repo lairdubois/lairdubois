@@ -16,22 +16,9 @@ class ActivityUtils {
 
 	/////
 
-	private function _deleteActivities($activities, $flush = true) {
-		foreach ($activities as $activity) {
-			$this->om->remove($activity);
-		}
-		if ($flush) {
-			$this->om->flush();
-		}
-	}
+	public function createCommentActivity(\Ladb\CoreBundle\Entity\Core\Comment $comment, $flush = true) {
 
-	/////
-
-	// Create /////
-
-	public function createCommentActivity(\Ladb\CoreBundle\Entity\Comment $comment, $flush = true) {
-
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Comment();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Comment();
 		$activity->setUser($comment->getUser());
 		$activity->setComment($comment);
 
@@ -42,9 +29,13 @@ class ActivityUtils {
 		}
 	}
 
+	/////
+
+	// Create /////
+
 	public function createContributeActivity(\Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue $value, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Contribute();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Contribute();
 		$activity->setUser($value->getUser());
 		$activity->setValue($value);
 
@@ -55,9 +46,9 @@ class ActivityUtils {
 		}
 	}
 
-	public function createFollowActivity(\Ladb\CoreBundle\Entity\Follower $follower, $flush = true) {
+	public function createFollowActivity(\Ladb\CoreBundle\Entity\Core\Follower $follower, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Follow();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Follow();
 		$activity->setUser($follower->getUser());
 		$activity->setFollower($follower);
 
@@ -68,9 +59,9 @@ class ActivityUtils {
 		}
 	}
 
-	public function createLikeActivity(\Ladb\CoreBundle\Entity\Like $like, $flush = true) {
+	public function createLikeActivity(\Ladb\CoreBundle\Entity\Core\Like $like, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Like();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Like();
 		$activity->setUser($like->getUser());
 		$activity->setLike($like);
 
@@ -81,9 +72,9 @@ class ActivityUtils {
 		}
 	}
 
-	public function createMentionActivity(\Ladb\CoreBundle\Entity\User $user, $flush = true) {
+	public function createMentionActivity(\Ladb\CoreBundle\Entity\Core\User $user, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Mention();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Mention();
 		$activity->setUser($user);
 
 		$this->om->persist($activity);
@@ -93,9 +84,9 @@ class ActivityUtils {
 		}
 	}
 
-	public function createPublishActivity(\Ladb\CoreBundle\Entity\User $user, $entityType, $entityId, $flush = true) {
+	public function createPublishActivity(\Ladb\CoreBundle\Entity\Core\User $user, $entityType, $entityId, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Publish();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Publish();
 		$activity->setUser($user);
 		$activity->setEntityType($entityType);
 		$activity->setEntityId($entityId);
@@ -107,9 +98,9 @@ class ActivityUtils {
 		}
 	}
 
-	public function createVoteActivity(\Ladb\CoreBundle\Entity\Vote $vote, $flush = true) {
+	public function createVoteActivity(\Ladb\CoreBundle\Entity\Core\Vote $vote, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Vote();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Vote();
 		$activity->setUser($vote->getUser());
 		$activity->setVote($vote);
 
@@ -120,9 +111,9 @@ class ActivityUtils {
 		}
 	}
 
-	public function createJoinActivity(\Ladb\CoreBundle\Entity\Join $join, $flush = true) {
+	public function createJoinActivity(\Ladb\CoreBundle\Entity\Core\Join $join, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Join();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Join();
 		$activity->setUser($join->getUser());
 		$activity->setJoin($join);
 
@@ -135,7 +126,7 @@ class ActivityUtils {
 
 	public function createWriteActivity(\Ladb\CoreBundle\Entity\Message\Message $message, $flush = true) {
 
-		$activity = new \Ladb\CoreBundle\Entity\Activity\Write();
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Write();
 		$activity->setUser($message->getSender());
 		$activity->setMessage($message);
 
@@ -146,52 +137,61 @@ class ActivityUtils {
 		}
 	}
 
-	// Delete /////
-
-	public function deleteActivitiesByComment(\Ladb\CoreBundle\Entity\Comment $comment, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Comment::CLASS_NAME);
+	public function deleteActivitiesByComment(\Ladb\CoreBundle\Entity\Core\Comment $comment, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Comment::CLASS_NAME);
 		$activities = $activityRepository->findByComment($comment);
 		$this->_deleteActivities($activities, $flush);
 	}
 
+	// Delete /////
+
+	private function _deleteActivities($activities, $flush = true) {
+		foreach ($activities as $activity) {
+			$this->om->remove($activity);
+		}
+		if ($flush) {
+			$this->om->flush();
+		}
+	}
+
 	public function deleteActivitiesByValue(\Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue $value, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Contribute::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Contribute::CLASS_NAME);
 		$activities = $activityRepository->findByValue($value);
 		$this->_deleteActivities($activities, $flush);
 	}
 
-	public function deleteActivitiesByFollower(\Ladb\CoreBundle\Entity\Follower $follower, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Follow::CLASS_NAME);
+	public function deleteActivitiesByFollower(\Ladb\CoreBundle\Entity\Core\Follower $follower, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Follow::CLASS_NAME);
 		$activities = $activityRepository->findByFollower($follower);
 		$this->_deleteActivities($activities, $flush);
 	}
 
-	public function deleteActivitiesByLike(\Ladb\CoreBundle\Entity\Like $like, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Like::CLASS_NAME);
+	public function deleteActivitiesByLike(\Ladb\CoreBundle\Entity\Core\Like $like, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Like::CLASS_NAME);
 		$activities = $activityRepository->findByLike($like);
 		$this->_deleteActivities($activities, $flush);
 	}
 
-	public function deleteActivitiesByVote(\Ladb\CoreBundle\Entity\Vote $vote, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Vote::CLASS_NAME);
+	public function deleteActivitiesByVote(\Ladb\CoreBundle\Entity\Core\Vote $vote, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Vote::CLASS_NAME);
 		$activities = $activityRepository->findByVote($vote);
 		$this->_deleteActivities($activities, $flush);
 	}
 
-	public function deleteActivitiesByJoin(\Ladb\CoreBundle\Entity\Join $join, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Join::CLASS_NAME);
+	public function deleteActivitiesByJoin(\Ladb\CoreBundle\Entity\Core\Join $join, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Join::CLASS_NAME);
 		$activities = $activityRepository->findByJoin($join);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByMessage(\Ladb\CoreBundle\Entity\Message\Message $message, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Write::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Write::CLASS_NAME);
 		$activities = $activityRepository->findByMessage($message);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByEntityTypeAndEntityId($entityType, $entityId, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Publish::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Publish::CLASS_NAME);
 		$activities = $activityRepository->findByEntityTypeAndEntityId($entityType, $entityId);
 		$this->_deleteActivities($activities, $flush);
 	}
@@ -199,7 +199,7 @@ class ActivityUtils {
 	// Transfer /////
 
 	public function transferPublishActivities($entityTypeSrc, $entityIdSrc, $entityTypeDest, $entityIdDest, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Activity\Publish::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Publish::CLASS_NAME);
 		$activities = $activityRepository->findByEntityTypeAndEntityId($entityTypeSrc, $entityIdSrc);
 
 		foreach ($activities as $activity) {

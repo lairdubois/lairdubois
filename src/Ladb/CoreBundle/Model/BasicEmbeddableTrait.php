@@ -6,7 +6,7 @@ trait BasicEmbeddableTrait {
 
 	// Sticker /////
 
-	public function setSticker(\Ladb\CoreBundle\Entity\Picture $sticker = null) {
+	public function setSticker(\Ladb\CoreBundle\Entity\Core\Picture $sticker = null) {
 		$this->sticker = $sticker;
 		return $this;
 	}

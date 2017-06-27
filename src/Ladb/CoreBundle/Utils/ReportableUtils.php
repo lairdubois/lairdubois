@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Report;
+use Ladb\CoreBundle\Entity\Core\Report;
 use Ladb\CoreBundle\Model\ReportableInterface;
 
 class ReportableUtils extends AbstractContainerAwareUtils {

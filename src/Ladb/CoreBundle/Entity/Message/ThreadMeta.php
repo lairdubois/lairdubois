@@ -26,7 +26,7 @@ class ThreadMeta {
 	private $thread;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="participant_user_id", referencedColumnName="id")
 	 */
 	private $participant;
@@ -44,34 +44,34 @@ class ThreadMeta {
 
 	// Message /////
 
+	public function getThread() {
+		return $this->thread;
+	}
+
 	public function setThread(\Ladb\CoreBundle\Entity\Message\Thread $thread) {
 		$this->thread = $thread;
 		return $this;
 	}
 
-	public function getThread() {
-		return $this->thread;
-	}
-
 	// Participant /////
-
-	public function setParticipant(\Ladb\CoreBundle\Entity\User $participant) {
-		$this->participant = $participant;
-		return $this;
-	}
 
 	public function getParticipant() {
 		return $this->participant;
 	}
 
+	public function setParticipant(\Ladb\CoreBundle\Entity\Core\User $participant) {
+		$this->participant = $participant;
+		return $this;
+	}
+
 	// IsDeleted /////
+
+	public function getIsDeleted() {
+		return $this->isDeleted;
+	}
 
 	public function setIsDeleted($isDeleted) {
 		$this->isDeleted = $isDeleted;
 		return $this;
-	}
-
-	public function getIsDeleted() {
-		return $this->isDeleted;
 	}
 }

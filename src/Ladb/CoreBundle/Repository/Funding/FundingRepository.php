@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Repository\Funding;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 
 class FundingRepository extends AbstractEntityRepository {
 

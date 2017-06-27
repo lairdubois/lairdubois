@@ -24,7 +24,7 @@
             {{ parent() }}
             <li class="ladb-visible-mobile"><a href="#ladb_offcanvas_leftbar" data-uk-offcanvas><i class="ladb-icon-reorder ladb-icon-lg"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedCount' } %} <i class="ladb-icon-caret-right"></i></a></li>
             {% if searchPath is defined %}
-                <li>{% include 'LadbCoreBundle:Search:_widget.part.html.twig' with { 'searchFormClasses':'ladb-hidden-mobile' } %}</li>
+                <li>{% include 'LadbCoreBundle:Core/Search:_widget.part.html.twig' with { 'searchFormClasses':'ladb-hidden-mobile' } %}</li>
             {% endif %}
         {% endblock %}
         {% block topbarRightContent %}
@@ -74,7 +74,7 @@
                     <li><a href="{{ path('core_message_mailbox') }}">{% if app.user.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.unreadMessageCount }}</span>{% endif %}<i class="ladb-icon-message"></i> {{ 'message.nav'|trans() }}</a></li>
                     <li><a href="{{ path('core_user_settings') }}"><i class="ladb-icon-settings ladb-icon-fixed-center"></i> {{ 'user.settings'|trans() }}</a></li>
                     <li><a href="{{ path('core_funding_user_donation_list') }}"><i class="ladb-icon-funding ladb-icon-fixed-center"></i> Mes dons</a></li>
-                    <li><a href="{{ path('core_youtook_user_list') }}"><i class="ladb-icon-video ladb-icon-fixed-center"></i> {{ 'youtook.user_list'|trans() }} <span class="badge badge-danger">beta</span></a></li>
+                    <li><a href="{{ path('core_youtook_user_list') }}"><i class="ladb-icon-video ladb-icon-fixed-center"></i> {{ 'youtook.user_list'|trans() }}</a></li>
                     <li class="uk-nav-divider"></li>
                     <li><a href="{{ path('fos_user_security_logout') }}"><i class="ladb-icon-off ladb-icon-fixed-center"></i> {{ 'user.logout'|trans() }}</a></li>
                 </ul>
@@ -84,7 +84,7 @@
     <div id="ladb_offcanvas_leftbar" class="uk-offcanvas">
         <div class="uk-offcanvas-bar">
             <div class="uk-panel">
-                {% include 'LadbCoreBundle:Search:_widget.part.html.twig' with { 'searchFormClasses':'ladb-search-expended' } %}
+                {% include 'LadbCoreBundle:Core/Search:_widget.part.html.twig' with { 'searchFormClasses':'ladb-search-expended' } %}
             </div>
             <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
                 <li class="uk-nav-divider"></li>
@@ -114,7 +114,7 @@
         <a href="{{ path('core_user_list') }}" {% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'user.nav'|trans() }}</div></a>
     </nav>
     {{ parent() }}
-    {% if is_granted("ROLE_USER") %}{% include 'LadbCoreBundle:Notification:_modal.part.html.twig' %}{% endif %}
+    {% if is_granted("ROLE_USER") %}{% include 'LadbCoreBundle:Core/Notification:_modal.part.html.twig' %}{% endif %}
 {% endblock %}
 
 {% block bodyHeader %}

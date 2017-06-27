@@ -11,4 +11,4 @@
 {% set height = size|default('32') %}
 {% set imgClasses = 'img-rounded '~(imgClasses|default()) %}
 
-{% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'alt':title, 'noSizer':true } %}
+{% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'alt':title, 'noSizer':true } %}

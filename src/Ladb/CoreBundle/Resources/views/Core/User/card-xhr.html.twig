@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle:Common:_card-thumbnail.html.twig' %}
+
+{% set entity = user %}
+{% set picture = user.avatar %}
+{% set showUrl = url('core_user_show', { 'username':user.usernameCanonical }) %}
+
+{% block headingInner %}
+    {{ parent() }}{% if user.isFullnameDisplayble %} <small>(<span itemprop="additionalName">{{ user.fullname }}</span>)</small>{% endif %}
+{% endblock %}
+
+{% block subheadingInner %}
+    {% include 'LadbCoreBundle:Core/User:_location-and-social.part.html.twig' %}
+{% endblock %}

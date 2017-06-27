@@ -20,6 +20,6 @@
         {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
     {% endblock %}
     {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') %}
-        {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.data.vars.id, 'maxPictureCount':1, 'editable':true } %}
+        {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.data.vars.id, 'maxPictureCount':1, 'editable':true } %}
     {% endif %}
 </form>

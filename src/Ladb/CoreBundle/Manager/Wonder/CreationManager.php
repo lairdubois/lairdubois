@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Manager\Wonder;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
@@ -96,7 +96,7 @@ class CreationManager extends AbstractWonderManager {
 		$workshop->setUser($creation->getUser());
 		$workshop->setMainPicture($creation->getMainPicture());
 		$workshop->setBody($creation->getBody());
-		$workshop->setLicense(new \Ladb\CoreBundle\Entity\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
+		$workshop->setLicense(new \Ladb\CoreBundle\Entity\Core\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
 
 		foreach ($creation->getPictures() as $picture) {
 			$workshop->addPicture($picture);
@@ -218,12 +218,12 @@ class CreationManager extends AbstractWonderManager {
 
 		if ($creation->getPictures()->count() > 1) {
 
-			$textBlock = new \Ladb\CoreBundle\Entity\Block\Text();
+			$textBlock = new \Ladb\CoreBundle\Entity\Core\Block\Text();
 			$textBlock->setBody('Images du projet');
 			$textBlock->setSortIndex(0);
 			$article->addBodyBlock($textBlock);
 
-			$galleryBlock = new \Ladb\CoreBundle\Entity\Block\Gallery();
+			$galleryBlock = new \Ladb\CoreBundle\Entity\Core\Block\Gallery();
 			foreach ($creation->getPictures() as $picture) {
 				$galleryBlock->addPicture($picture);
 			}
@@ -244,7 +244,7 @@ class CreationManager extends AbstractWonderManager {
 		$howto->setUser($creation->getUser());
 		$howto->setMainPicture($creation->getMainPicture());
 		$howto->setBody('Projet de création.');
-		$howto->setLicense(new \Ladb\CoreBundle\Entity\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
+		$howto->setLicense(new \Ladb\CoreBundle\Entity\Core\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
 
 		$article->setHowto($howto);		// Workaround to $howto->addArticle($article); because it generates a constraint violation on $this->delete($creation, false, false);
 		if ($howto->getIsDraft()) {

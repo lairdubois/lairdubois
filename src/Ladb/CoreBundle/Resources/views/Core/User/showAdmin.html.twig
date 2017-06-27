@@ -1,0 +1,61 @@
+{% extends 'LadbCoreBundle:Core/User:show.html.twig' %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+
+{% block headerToolsInner %}
+    {{ parent() }}
+    &nbsp;
+    {% if user.enabled %}
+        <a href="{{ path('core_user_admin_deactivate', { 'username':user.usernameCanonical }) }}" class="btn btn-default"><i class="ladb-icon-lock"></i> Désactiver</a>
+    {% else %}
+        <a href="{{ path('core_user_admin_activate', { 'username':user.usernameCanonical }) }}" class="btn btn-default"><i class="ladb-icon-lock"></i> Activer</a>
+    {% endif %}
+    <a href="#empty_user_admin_modal" class="btn btn-danger" data-toggle="modal" ><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}</a>
+    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'empty_user_admin_modal', 'title':('default.emptying'|trans()) } %}
+        {% block bodyInner %}
+            <p>La vidange du compte <strong>{{ user.displayname }}</strong> effacera toutes ces publications.</p>
+            <p>Confirmez l'action pour continuer.</p>
+        {% endblock %}
+        {% block footerInner %}
+            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+            <a href="{{ path('core_user_admin_empty', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}</a>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="row">
+        <div class="col-lg-4 col-xs-12">
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="pull-right"><a href="mailto:{{ user.email }}">{{ user.email }}</a>&nbsp;<i class="ladb-icon-bullet ladb-color-{{ user.emailConfirmed ? 'positive' : 'negative' }}"></i></span>
+                    <span>Email</span>
+                </div>
+                <div class="ladb-meta">
+                    <span class="pull-right">{{ user.username }}</span>
+                    <span>username</span>
+                </div>
+                <div class="ladb-meta">
+                    <span class="pull-right">{{ user.displayname }}</span>
+                    <span>displayname</span>
+                </div>
+                {% if registration is not null %}
+                    <h4 class="ladb-heading">Inscription</h4>
+                    <div class="ladb-meta">
+                        <span class="pull-right">{{ registration.createdAt|date('d/m/Y H:i:s') }}</span>
+                        <span>createdAt</span>
+                    </div>
+                    <div class="ladb-meta">
+                        <span class="pull-right"></span>
+                        <span class="pull-right">{{ registration.clientIp4 }} | <a href="http://ip-api.com/#{{ registration.clientIp4 }}" target="_blank">GeoIP</a> | <a href="https://cleantalk.org/blacklists/{{ registration.clientIp4 }}" target="_blank">CleanTalk</a></span>
+                        <span>clientIp4</span>
+                    </div>
+                    <div class="ladb-meta">
+                        <span class="pull-right"><a href= "http://www.useragentstring.com/?uas={{ registration.clientUserAgent|url_encode }}&getText=all" target="_blank">{{ registration.clientUserAgent|truncate(30) }}</a></span>
+                        <span>userAgent</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

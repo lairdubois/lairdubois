@@ -6,7 +6,7 @@ interface StripableInterface extends TypableInterface, IdentifiableInterface {
 
 	// Strip /////
 
-	public function setStrip(\Ladb\CoreBundle\Entity\Picture $strip);
+	public function setStrip(\Ladb\CoreBundle\Entity\Core\Picture $strip);
 
 	public function getStrip();
 

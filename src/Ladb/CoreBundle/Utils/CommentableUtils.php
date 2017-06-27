@@ -4,9 +4,9 @@ namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\AbstractPublication;
-use Ladb\CoreBundle\Entity\Activity\AbstractActivity;
-use Ladb\CoreBundle\Entity\Comment;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity;
+use Ladb\CoreBundle\Entity\Core\Comment;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Form\Type\CommentType;
@@ -52,27 +52,6 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	private function _populateMentionStrategyWithUser(&$mentionStrategy, User $user) {
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
-		if (!isset($mentionStrategy[$user->getUsername()])) {
-			if (!is_null($user->getAvatar())) {
-				$avatar = $imagineCacheManager->getBrowserPath($user->getAvatar()->getWebPath(), '32x32o');
-			} else {
-				$avatar = $imagineCacheManager->getBrowserPath('avatar.png', '32x32o');
-			}
-			$mentionStrategy[strtolower($user->getUsername())] = array( 'displayname' => $user->getDisplayName(), 'avatar' => $avatar );
-		}
-	}
-
-	private function _getMentionStrategyFromComments($comments) {
-		$mentionStrategy = array();
-		foreach ($comments as $comment) {
-			$user = $comment->getUser();
-			$this->_populateMentionStrategyWithUser($mentionStrategy, $user);
-		}
-		return $mentionStrategy;
-	}
-
 	public function getMentionStrategy(CommentableInterface $commentable) {
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
@@ -85,7 +64,36 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		return json_encode($mentionStrategy);
 	}
 
+	private function _getMentionStrategyFromComments($comments) {
+		$mentionStrategy = array();
+		foreach ($comments as $comment) {
+			$user = $comment->getUser();
+			$this->_populateMentionStrategyWithUser($mentionStrategy, $user);
+		}
+		return $mentionStrategy;
+	}
+
+	private function _populateMentionStrategyWithUser(&$mentionStrategy, User $user) {
+		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
+		if (!isset($mentionStrategy[$user->getUsername()])) {
+			if (!is_null($user->getAvatar())) {
+				$avatar = $imagineCacheManager->getBrowserPath($user->getAvatar()->getWebPath(), '32x32o');
+			} else {
+				$avatar = $imagineCacheManager->getBrowserPath('avatar.png', '32x32o');
+			}
+			$mentionStrategy[strtolower($user->getUsername())] = array( 'displayname' => $user->getDisplayName(), 'avatar' => $avatar );
+		}
+	}
+
 	/////
+
+	public function getCommentContexts($commentables) {
+		$commentContexts = array();
+		foreach ($commentables as $commentable) {
+			$commentContexts[$commentable->getId()] = $this->getCommentContext($commentable);
+		}
+		return $commentContexts;
+	}
 
 	public function getCommentContext(CommentableInterface $commentable, $includeTimelineActivities = true) {
 		$om = $this->getDoctrine()->getManager();
@@ -124,14 +132,6 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			'isCommentable'   => $commentable instanceof ViewableInterface ? $commentable->getIsViewable() : true,
 			'mentionStrategy' => json_encode($mentionStrategy),
 		);
-	}
-
-	public function getCommentContexts($commentables) {
-		$commentContexts = array();
-		foreach ($commentables as $commentable) {
-			$commentContexts[$commentable->getId()] = $this->getCommentContext($commentable);
-		}
-		return $commentContexts;
 	}
 
 	/////

@@ -32,7 +32,7 @@ class Donation {
 	private $createdAt;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $user;
@@ -60,20 +60,19 @@ class Donation {
 
 	// Hashid /////
 
+	public function getHashid() {
+		return $this->hashid;
+	}
+
 	public function setHashid($hashid) {
 		$this->hashid = $hashid;
 		return $this;
 	}
 
-	public function getHashid() {
-		return $this->hashid;
-	}
-
 	// CreatedAt /////
 
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
+	public function getAge() {
+		return $this->getCreatedAt()->diff(new \DateTime());
 	}
 
 	public function getCreatedAt() {
@@ -82,60 +81,61 @@ class Donation {
 
 	// Age /////
 
-	public function getAge() {
-		return $this->getCreatedAt()->diff(new \DateTime());
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+		return $this;
 	}
 
 	// User /////
-
-	public function setUser(\Ladb\CoreBundle\Entity\User $user) {
-		$this->user = $user;
-		return $this;
-	}
 
 	public function getUser() {
 		return $this->user;
 	}
 
+	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
+		$this->user = $user;
+		return $this;
+	}
+
 	// Amount /////
 
-	public function setAmount($amount) {
-		$this->amount = $amount;
-		return $this;
+	public function getAmountEur() {
+		return $this->getAmount() / 100;
 	}
 
 	public function getAmount() {
 		return $this->amount;
 	}
 
-	public function getAmountEur() {
-		return $this->getAmount() / 100;
+	public function setAmount($amount) {
+		$this->amount = $amount;
+		return $this;
 	}
 
 	// Fee /////
 
-	public function setFee($fee) {
-		$this->fee = $fee;
-		return $this;
+	public function getFeeEur() {
+		return $this->getFee() / 100;
 	}
 
 	public function getFee() {
 		return $this->fee;
 	}
 
-	public function getFeeEur() {
-		return $this->getFee() / 100;
+	public function setFee($fee) {
+		$this->fee = $fee;
+		return $this;
 	}
 
 	// StripeChargeId /////
 
+	public function getStripeChargeId() {
+		return $this->stripeChargeId;
+	}
+
 	public function setStripeChargeId($stripeChargeId) {
 		$this->stripeChargeId = $stripeChargeId;
 		return $this;
-	}
-
-	public function getStripeChargeId() {
-		return $this->stripeChargeId;
 	}
 
 }

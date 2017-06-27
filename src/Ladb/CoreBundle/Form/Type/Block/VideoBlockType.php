@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class VideoBlockType extends BlockType {
 
-	protected $dataClass = 'Ladb\CoreBundle\Entity\Block\Video';
+	protected $dataClass = 'Ladb\CoreBundle\Entity\Core\Block\Video';
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);

@@ -22,7 +22,7 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	const TYPE = 100;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1, max=5)
@@ -30,20 +30,20 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	protected $pictures;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_tag")
 	 * @Assert\Count(min=2)
 	 */
 	protected $tags;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
 	 */
 	protected $referrals;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1)
@@ -140,7 +140,7 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 	private $inspirations;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Spotlight", cascade={"remove"})
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Spotlight", cascade={"remove"})
 	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
 	 */
 	private $spotlight = null;
@@ -378,7 +378,7 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 		return $this->spotlight;
 	}
 
-	public function setSpotlight(\Ladb\CoreBundle\Entity\Spotlight $spotlight = null) {
+	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
 		$this->spotlight = $spotlight;
 		return $this;
 	}

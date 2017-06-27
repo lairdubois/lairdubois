@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set workshops #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for workshop in workshops %}
+        {% include 'LadbCoreBundle:Wonder/Workshop:_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

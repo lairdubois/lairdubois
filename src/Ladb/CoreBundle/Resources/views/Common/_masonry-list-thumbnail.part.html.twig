@@ -21,7 +21,7 @@
                                 </div>
                             {% endif %}
                             <a href="{{ ladb_entity_url_action(entity) }}">
-                                {% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':pictureWidth, 'height':pictureHeight, 'filterMode':pictureFilterMode, 'alt':entity.title } %}
+                                {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':pictureWidth, 'height':pictureHeight, 'filterMode':pictureFilterMode, 'alt':entity.title } %}
                             </a>
                             {% if entity.bodyBlockVideoCount is defined and entity.bodyBlockVideoCount > 0 %}
                                 <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'default.choice.contains_videos'|transchoice(entity.bodyBlockVideoCount, { '%count%':entity.bodyBlockVideoCount }) }}"><i class="ladb-icon-video"></i></div>

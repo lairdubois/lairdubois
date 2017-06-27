@@ -6,8 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\VotableParentInterface;
 use Ladb\CoreBundle\Model\VotableInterface;
-use Ladb\CoreBundle\Entity\Vote;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\Vote;
+use Ladb\CoreBundle\Entity\Core\User;
 
 class VotableUtils extends AbstractContainerAwareUtils {
 
@@ -37,6 +37,14 @@ class VotableUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
+	public function getVoteContexts($votables, User $user = null) {
+		$voteContexts = array();
+		foreach ($votables as $votable) {
+			$voteContexts[$votable->getId()] = $this->getVoteContext($votable, $user);
+		}
+		return $voteContexts;
+	}
+
 	public function getVoteContext(VotableInterface $votable, User $user = null) {
 		$om = $this->getDoctrine()->getManager();
 		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
@@ -58,14 +66,6 @@ class VotableUtils extends AbstractContainerAwareUtils {
 			'entityType' => $votable->getType(),
 			'entityId'   => $votable->getId(),
 		);
-	}
-
-	public function getVoteContexts($votables, User $user = null) {
-		$voteContexts = array();
-		foreach ($votables as $votable) {
-			$voteContexts[$votable->getId()] = $this->getVoteContext($votable, $user);
-		}
-		return $voteContexts;
 	}
 
 	/////
