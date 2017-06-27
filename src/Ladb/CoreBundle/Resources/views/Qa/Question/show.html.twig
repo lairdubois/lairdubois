@@ -36,14 +36,14 @@
         {% block headerTools %}
             <div class="ladb-header-tools">
                 {% if not ownerUser %}
-                    {% include 'LadbCoreBundle:Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                    {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
                 {% endif %}
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
-                    {% include 'LadbCoreBundle:Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
                 {% if not ownerUser %}
                     &nbsp;
-                    {% include 'LadbCoreBundle:Report:_widget-button.part.html.twig' with { 'entityType':question.type, 'entityId':question.id } %}
+                    {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':question.type, 'entityId':question.id } %}
                 {% endif %}
                 {% if ownerUser or is_granted("ROLE_ADMIN") %}
                     &nbsp;
@@ -71,7 +71,7 @@
 
 {% block bodyContainerContent %}
     {% if question.isDraft %}
-        {% include 'LadbCoreBundle:Qa:_draft-alert.part.html.twig' %}
+        {% include 'LadbCoreBundle:Qa/Question:_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
 {% endblock %}
@@ -82,7 +82,7 @@
             <div class="ladb-box-inner row">
                 <div class="ladb-content-box col-sm-11 col-xs-12" style="margin-top: 10px;">
                     {% for block in question.bodyBlocks %}
-                        {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}
+                        {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
                     {% endfor %}
                     {% if question.updatedAt > question.createdAt %}
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
@@ -100,7 +100,7 @@
     {% endif %}
     <div class="ladb-question-answers">
         {% for answer in question.answers %}
-            {% include 'LadbCoreBundle:Qa:_answer-row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
+            {% include 'LadbCoreBundle:Qa/Answer:_row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
         {% endfor %}
     </div>
     <div class="text-center">
@@ -120,8 +120,8 @@
             <strong>{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'qa.question.choice.answers'|transchoice(question.answerCount) }}</small>
         </div>    </div>
-    {% include 'LadbCoreBundle:Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
-    {% include 'LadbCoreBundle:License:_metas.part.html.twig' with { 'license':question.license } %}
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':question.license } %}
 {% endblock %}
 
 {% block contentSuggests %}

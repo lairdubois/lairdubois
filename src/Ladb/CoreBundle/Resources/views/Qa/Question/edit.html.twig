@@ -1,4 +1,4 @@
-{% extends 'LadbCoreBundle:Qa:_form.html.twig' %}
+{% extends 'LadbCoreBundle:Qa/Question:_form.html.twig' %}
 
 {% set pageTitle = 'qa.question.edit'|trans() %}
 {% set formAction = path('core_qa_question_update', { 'id':question.id }) %}
@@ -14,7 +14,7 @@
 
 {% block sections %}
     {% if question.isDraft %}
-        {% include 'LadbCoreBundle:Qa:_draft-alert.part.html.twig' %}
+        {% include 'LadbCoreBundle:Qa/Question:_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
 {% endblock %}

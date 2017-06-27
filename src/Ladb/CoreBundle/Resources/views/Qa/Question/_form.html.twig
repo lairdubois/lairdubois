@@ -10,13 +10,13 @@
 {% block sidenav %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
-    {% include 'LadbCoreBundle:Block:_form-sidenav-body.part.html.twig' %}
-    {% include 'LadbCoreBundle:Tag:_form-sidenav.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Block:_form-sidenav-body.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
 {% endblock %}
 
 {% block sections %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('qa.question.form.help.title'|trans()) } %}
-    {% include 'LadbCoreBundle:Block:_form-section-body.part.html.twig' with { 'mandatory':true } %}
-    {% include 'LadbCoreBundle:Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre sujet.' } %}
+    {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true } %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre sujet.' } %}
 {% endblock %}

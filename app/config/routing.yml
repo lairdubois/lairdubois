@@ -146,7 +146,11 @@ ladb_core_youtook:
     resource: "Ladb\\CoreBundle\\Controller\\Extra\\YoutookController"
     type:     annotation
 
-ladb_core_qa:
-    resource: "Ladb\\CoreBundle\\Controller\\QaController"
+ladb_core_qa_question:
+    resource: "Ladb\\CoreBundle\\Controller\\Qa\\QuestionController"
+    type:     annotation
+
+ladb_core_qa_answer:
+    resource: "Ladb\\CoreBundle\\Controller\\Qa\\AnswerController"
     type:     annotation
 

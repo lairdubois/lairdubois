@@ -4,10 +4,10 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\VotableParentInterface;
-use Ladb\CoreBundle\Model\VotableParentTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\VotableParentInterface;
+use Ladb\CoreBundle\Model\VotableParentTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -64,7 +64,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $body;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_qa_question_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1)
@@ -93,7 +93,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $answers;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_qa_question_tag")
 	 * @Assert\Count(min=2)
 	 */
@@ -196,7 +196,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	// License /////
 
 	public function getLicense() {
-		return new \Ladb\CoreBundle\Entity\License(true, true);
+		return new \Ladb\CoreBundle\Entity\Core\License(true, true);
 	}
 
 }

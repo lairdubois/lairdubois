@@ -2,7 +2,7 @@
     <div class="ladb-box">
         <div class="ladb-box-inner row">
             <div class="ladb-content-box col-sm-11 col-xs-12">
-                {% include 'LadbCoreBundle:User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+                {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
                 <div class="ladb-heading">
                     <div class="ladb-minitools">
                         {% if is_granted("ROLE_ADMIN") or answer.user == app.user %}
@@ -26,13 +26,13 @@
                 </div>
                 <div class="ladb-content">
                     {% for block in answer.bodyBlocks %}
-                        {% include 'LadbCoreBundle:Block:_show-'~block.strippedName~'.part.html.twig' %}
+                        {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
                     {% endfor %}
                 </div>
                 {% include 'LadbCoreBundle:Qa:_comments.part.html.twig' with { 'entity':answer } %}
             </div>
             <div class="col-sm-1 col-xs-12">
-                {% include 'LadbCoreBundle:Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()) } %}
+                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()) } %}
             </div>
         </div>
     </div>
