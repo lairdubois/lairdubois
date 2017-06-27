@@ -136,7 +136,7 @@ class AnswerController extends Controller {
 			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
 		}
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $answer->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_qa_answer_edit)');
+			throw $this->createNotFoundException('Not allowed (core_qa_answer_update)');
 		}
 
 		$originalBodyBlocks = $answer->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -158,11 +158,13 @@ class AnswerController extends Controller {
 
 			$om->flush();
 
+			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
 
 			return $this->render('LadbCoreBundle:Qa/Answer:_row.part.html.twig', array(
-				'answer'      => $answer,
-				'voteContext' => $votableUtils->getVoteContext($answer, $this->getUser()),
+				'answer'         => $answer,
+				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser()),
+				'voteContext'    => $votableUtils->getVoteContext($answer, $this->getUser()),
 			));
 		}
 

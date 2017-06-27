@@ -2,14 +2,13 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
-use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 

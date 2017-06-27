@@ -23,12 +23,12 @@ class AnswerManager extends AbstractPublicationManager {
 	}
 
 	public function delete(Answer $answer, $withWitness = true, $flush = true) {
-		$votableUtils = $this->get(VotableUtils::NAME);
 
 		$question = $answer->getQuestion();
 		$question->incrementAnswerCount(-1);
 
 		// Delete votes
+		$votableUtils = $this->get(VotableUtils::NAME);
 		$votableUtils->deleteVotes($answer, $question, false);
 
 		parent::deletePublication($answer, $withWitness, $flush);

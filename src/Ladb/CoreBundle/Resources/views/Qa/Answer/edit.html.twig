@@ -2,6 +2,8 @@
 
 {% set formAction = path('core_qa_answer_update', { 'id':answer.id }) %}
 
+{% block title %}<i class="ladb-icon-edit"></i> Editer ma réponse{% endblock %}
+
 {% block footerInner %}
     {{ parent() }}
     <button class="btn btn-primary ladb-btn-submit">{{ 'default.save'|trans() }}</button>

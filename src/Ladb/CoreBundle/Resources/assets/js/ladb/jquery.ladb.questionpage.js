@@ -8,15 +8,32 @@
         this.options = options;
         this.$element = $(element);
 
+        this.$answers = $('.ladb-question-answers', this.$element);
+
         this.$btnNewAnswer = $('#ladb_answer_btn', this.$element);
 
-        this.$answers = $('.ladb-question-answers', this.$element);
-        this.$newAnswerBox = $('#ladb_answer_box', this.$element);
+        this.$hiddenRow = null;
+        this.$answerForm = null;
+
     };
 
     LadbQuestionPage.DEFAULTS = {
         answerNewPath: null,
         answerEditPath: null
+    };
+
+    LadbQuestionPage.prototype.removeAnswerForm = function() {
+        if (this.$answerForm) {
+            this.$answerForm.remove();
+            this.$answerForm = null;
+        }
+    };
+
+    LadbQuestionPage.prototype.revealHiddenRow = function() {
+        if (this.$hiddenRow) {
+            this.$hiddenRow.show();
+            this.$hiddenRow = null;
+        }
     };
 
     LadbQuestionPage.prototype.bindAnswerRow = function($row) {
@@ -49,25 +66,34 @@
     LadbQuestionPage.prototype.bindEditAnswerBox = function($row, data) {
         var that = this;
 
-        $('.ladb-box', $row).append(data);
-        $('.ladb-box-inner', $row).hide();
+        this.removeAnswerForm();
+        this.revealHiddenRow();
+        this.$btnNewAnswer.show();
+
+        this.$answerForm = $(data);
+
+        $row.hide();
+        $row.after(this.$answerForm);
+        this.$hiddenRow = $row;
 
         // Bind collection
-        $("[data-form-widget=collection]", $row).each(function () {
+        $("[data-form-widget=collection]", this.$answerForm).each(function () {
             new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
         });
 
         // Bind form
-        var $form = $('form', $row).first();
+        var $form = $('form', this.$answerForm).first();
         $form.ajaxForm({
             cache: false,
             dataType: "html",
             context: document.body,
             clearForm: true,
             success: function(data, textStatus, jqXHR) {
+                that.removeAnswerForm();
                 if ($(data).hasClass('ladb-answer-row')) {
                     var $newRow = $(data);
                     $row.replaceWith($newRow);
+                    that.$hiddenRow = null;
                     that.bindAnswerRow($newRow);
                 } else {
                     that.bindEditAnswerBox($row, data);
@@ -79,11 +105,11 @@
         });
 
         // Bind buttons
-        $('.ladb-btn-cancel', $row).on('click', function() {
-            $('.ladb-box-inner', $row).show();
-            $('.ladb-answer-form', $row).remove();
+        $('.ladb-btn-cancel', this.$answerForm).on('click', function() {
+            that.removeAnswerForm();
+            that.revealHiddenRow();
         });
-        $('.ladb-btn-submit', $row).on('click', function() {
+        $('.ladb-btn-submit', this.$answerForm).on('click', function() {
             $(this).button('loading');
             $form.submit();
         });
@@ -96,20 +122,22 @@
     LadbQuestionPage.prototype.bindNewAnswerBox = function(data) {
         var that = this;
 
-        this.$newAnswerBox.empty();
-        this.$newAnswerBox.append(data);
-        this.$newAnswerBox.show();
+        this.removeAnswerForm();
+        this.revealHiddenRow();
+
+        this.$answerForm = $(data);
 
         this.$btnNewAnswer.hide();
         this.$btnNewAnswer.button('reset');
+        this.$btnNewAnswer.parent().after(this.$answerForm);
 
         // Bind collection
-        $("[data-form-widget=collection]", this.$newAnswerBox).each(function () {
+        $("[data-form-widget=collection]", this.$answerForm).each(function () {
             new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
         });
 
         // Bind form
-        var $form = $('form', this.$newAnswerBox).first();
+        var $form = $('form', this.$answerForm).first();
         $form.ajaxForm({
             cache: false,
             dataType: "html",
@@ -118,7 +146,7 @@
             success: function(data, textStatus, jqXHR) {
                 if ($(data).hasClass('ladb-answer-row')) {
                     that.$answers.append(data);
-                    that.$newAnswerBox.remove();
+                    that.removeAnswerForm();
                     that.bindAnswerRow($(data));
                 } else {
                     that.bindNewAnswerBox(data);
@@ -130,18 +158,17 @@
         });
 
         // Bind buttons
-        $('.ladb-btn-cancel', this.$newAnswerBox).on('click', function() {
-            that.$newAnswerBox.empty();
-            that.$newAnswerBox.hide();
+        $('.ladb-btn-cancel', this.$answerForm).on('click', function() {
+            that.removeAnswerForm();
             that.$btnNewAnswer.show();
         });
-        $('.ladb-btn-submit', this.$newAnswerBox).on('click', function() {
+        $('.ladb-btn-submit', this.$answerForm).on('click', function() {
             $(this).button('loading');
             $form.submit();
         });
 
-        // ScrollTo box
-        this.$newAnswerBox.ladbScrollTo(null, {
+        // ScrollTo form
+        this.$answerForm.ladbScrollTo(null, {
             onAfter: function() {
 
                 // Focus the first textarea

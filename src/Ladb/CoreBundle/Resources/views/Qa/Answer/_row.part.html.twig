@@ -1,4 +1,4 @@
-<div class="ladb-answer-row">
+<div id="ladb_answer_row_{{ answer.id }}" class="ladb-answer-row">
     <div class="ladb-box">
         <div class="ladb-box-inner row">
             <div class="ladb-content-box col-sm-11 col-xs-12">
@@ -32,7 +32,7 @@
                 {% include 'LadbCoreBundle:Qa:_comments.part.html.twig' with { 'entity':answer } %}
             </div>
             <div class="col-sm-1 col-xs-12">
-                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()) } %}
+                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.tooltip.vote_up'|trans()), 'voteDownTooltip':('qa.tooltip.vote_down'|trans()) } %}
             </div>
         </div>
     </div>
