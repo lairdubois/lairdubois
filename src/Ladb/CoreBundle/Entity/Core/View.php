@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table("tbl_core_view")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\ViewRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\ViewRepository")
  */
 class View {
 

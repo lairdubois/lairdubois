@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_join")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\JoinRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\JoinRepository")
  */
 class Join {
 

@@ -93,7 +93,7 @@ class NotificationController extends Controller {
 		$activity = $notification->getActivity();
 		$returnToUrl = $request->headers->get('referer');
 
-		if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Comment) {
+		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Comment) {
 			$entity = $typableUtils->findTypable($activity->getComment()->getEntityType(), $activity->getComment()->getEntityId());
 			if ($entity instanceof WatchableChildInterface) {
 				$entity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
@@ -101,35 +101,35 @@ class NotificationController extends Controller {
 			$returnToUrl = $typableUtils->getUrlAction($entity).'#_comment_'.$activity->getComment()->getId();
 		}
 
-		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Contribute) {
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Contribute) {
 			// TODO
 		}
 
-		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Follow) {
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Follow) {
 			$user = $activity->getUser();
 			$returnToUrl = $this->generateUrl('core_user_show', array( 'username' => $user->getUsernameCanonical() ));
 		}
 
-		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Like) {
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Like) {
 			$entity = $typableUtils->findTypable($activity->getLike()->getEntityType(), $activity->getLike()->getEntityId());
 			$returnToUrl = $typableUtils->getUrlAction($entity);
 		}
 
-		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Mention) {
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Mention) {
 			// TODO
 		}
 
-		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Publish) {
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Publish) {
 			$entity = $typableUtils->findTypable($activity->getEntityType(), $activity->getEntityId());
 			$returnToUrl = $typableUtils->getUrlAction($entity);
 		}
 
-		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Vote) {
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Vote) {
 			$entity = $typableUtils->findTypable($activity->getVote()->getParentEntityType(), $activity->getVote()->getParentEntityId());
 			$returnToUrl = $typableUtils->getUrlAction($entity);
 		}
 
-		else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Join) {
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Join) {
 			$entity = $typableUtils->findTypable($activity->getJoin()->getEntityType(), $activity->getJoin()->getEntityId());
 			$returnToUrl = $typableUtils->getUrlAction($entity);
 		}

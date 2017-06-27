@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Faq;
 
 use Ladb\CoreBundle\Manager\Faq\QuestionManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -41,7 +41,7 @@ class QuestionController extends Controller {
 		}
 
 		$question = new Question();
-		$question->addBodyBlock(new \Ladb\CoreBundle\Entity\Block\Text());	// Add a default Text body block
+		$question->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(QuestionType::class, $question);
 
 		$tagUtils = $this->get(TagUtils::NAME);

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_notification")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\NotificationRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\NotificationRepository")
  */
 class Notification {
 
@@ -31,7 +31,7 @@ class Notification {
 	private $user;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Activity\AbstractActivity", inversedBy="notifications")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity", inversedBy="notifications")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $activity;
@@ -93,7 +93,7 @@ class Notification {
 		return $this->activity;
 	}
 
-	public function setActivity(\Ladb\CoreBundle\Entity\Activity\AbstractActivity $activity) {
+	public function setActivity(\Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity $activity) {
 		$this->activity = $activity;
 		return $this;
 	}

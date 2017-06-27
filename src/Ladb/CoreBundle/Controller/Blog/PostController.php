@@ -2,9 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Blog;
 
-use Ladb\CoreBundle\Entity\Faq\Question;
-use Ladb\CoreBundle\Manager\Blog\PostManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,15 +14,15 @@ use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
-use Ladb\CoreBundle\Utils\PublicationUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
-use Ladb\CoreBundle\Utils\ReportableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\ExplorableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Manager\Blog\PostManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 /**
  * @Route("/blog")
@@ -42,7 +39,7 @@ class PostController extends Controller {
 		}
 
 		$post = new Post();
-		$post->addBodyBlock(new \Ladb\CoreBundle\Entity\Block\Text());	// Add a default Text body block
+		$post->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(PostType::class, $post);
 
 		$tagUtils = $this->get(TagUtils::NAME);

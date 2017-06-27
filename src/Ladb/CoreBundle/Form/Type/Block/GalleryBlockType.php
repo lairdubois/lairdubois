@@ -8,7 +8,7 @@ use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 
 class GalleryBlockType extends BlockType {
 
-	protected $dataClass = 'Ladb\CoreBundle\Entity\Block\Gallery';
+	protected $dataClass = 'Ladb\CoreBundle\Entity\Core\Block\Gallery';
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);

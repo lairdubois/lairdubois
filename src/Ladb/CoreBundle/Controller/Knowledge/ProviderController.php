@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Manager\Knowledge\ProviderManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

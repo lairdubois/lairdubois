@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_follower")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\FollowerRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\FollowerRepository")
  */
 class Follower {
 

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_vote")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\VoteRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\VoteRepository")
  */
 class Vote {
 

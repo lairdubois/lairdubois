@@ -859,7 +859,7 @@ class UserController extends Controller {
 	 * @Template()
 	 */
 	public function showMeAction() {
-		$username = $this->getUser()->getUsername();
+		$username = $this->getUser()->getUsernameCanonical();
 
 		return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $username )));
 	}

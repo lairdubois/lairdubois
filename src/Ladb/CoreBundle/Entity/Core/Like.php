@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table("tbl_core_like")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\LikeRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\LikeRepository")
  */
 class Like {
 

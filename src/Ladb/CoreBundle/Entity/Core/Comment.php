@@ -14,7 +14,7 @@ use Ladb\CoreBundle\Model\MultiPicturedInterface;
 
 /**
  * @ORM\Table("tbl_core_comment")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\CommentRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\CommentRepository")
  */
 class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterface {
 

@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Manager\Wonder;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
@@ -218,12 +218,12 @@ class CreationManager extends AbstractWonderManager {
 
 		if ($creation->getPictures()->count() > 1) {
 
-			$textBlock = new \Ladb\CoreBundle\Entity\Block\Text();
+			$textBlock = new \Ladb\CoreBundle\Entity\Core\Block\Text();
 			$textBlock->setBody('Images du projet');
 			$textBlock->setSortIndex(0);
 			$article->addBodyBlock($textBlock);
 
-			$galleryBlock = new \Ladb\CoreBundle\Entity\Block\Gallery();
+			$galleryBlock = new \Ladb\CoreBundle\Entity\Core\Block\Gallery();
 			foreach ($creation->getPictures() as $picture) {
 				$galleryBlock->addPicture($picture);
 			}

@@ -37,15 +37,15 @@ EOT
 		$om = $this->getContainer()->get('doctrine')->getManager();
 		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
 
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Comment::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Contribute::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Follow::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Like::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Mention::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Publish::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Vote::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Join::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
-		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Activity\Write::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Comment::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Contribute::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Follow::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Like::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Mention::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Publish::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Vote::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Join::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
 	}
 
@@ -95,7 +95,7 @@ EOT
 				$row->actorUser = $activity->getUser();
 
 				// Comment
-				if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Comment::STRIPPED_NAME) {
+				if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Comment::STRIPPED_NAME) {
 
 					$comment = $activity->getComment();
 					$commentEntity = $typableUtils->findTypable($comment->getEntityType(), $comment->getEntityId());
@@ -112,14 +112,14 @@ EOT
 				}
 
 				// Contribute
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Contribute::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Contribute::STRIPPED_NAME) {
 
 					// TODO
 
 				}
 
 				// Follow
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Follow::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Follow::STRIPPED_NAME) {
 
 					$follower = $activity->getFollower();
 					$row->follower = $follower;
@@ -127,7 +127,7 @@ EOT
 				}
 
 				// Like
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Like::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Like::STRIPPED_NAME) {
 
 					$like = $activity->getLike();
 					$row->entity = $typableUtils->findTypable($like->getEntityType(), $like->getEntityId());
@@ -136,21 +136,21 @@ EOT
 				}
 
 				// Mention
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Mention::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Mention::STRIPPED_NAME) {
 
 					// TODO
 
 				}
 
 				// Publish
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Publish::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Publish::STRIPPED_NAME) {
 
 					$row->entity = $typableUtils->findTypable($activity->getEntityType(), $activity->getEntityId());
 
 				}
 
 				// Vote
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Vote::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Vote::STRIPPED_NAME) {
 
 					$vote = $activity->getVote();
 					$row->entity = $typableUtils->findTypable($vote->getParentEntityType(), $vote->getParentEntityId());
@@ -160,7 +160,7 @@ EOT
 				}
 
 				// Join
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Join::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Join::STRIPPED_NAME) {
 
 					$join = $activity->getJoin();
 					$row->entity = $typableUtils->findTypable($join->getEntityType(), $join->getEntityId());
@@ -169,7 +169,7 @@ EOT
 				}
 
 				// Write
-				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Write::STRIPPED_NAME) {
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME) {
 
 					$message = $activity->getMessage();
 
@@ -224,31 +224,31 @@ EOT
 	/////
 
 	private function _isNotificationEnabledByActivityStrippedName(User $recipientUser, $activityStrippedName) {
-		if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Comment::STRIPPED_NAME) {
+		if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Comment::STRIPPED_NAME) {
 			return $recipientUser->getNewWatchActivityEmailNotificationEnabled();
 		}
-		if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Contribute::STRIPPED_NAME) {
+		if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Contribute::STRIPPED_NAME) {
 			return true;	// TODO
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Follow::STRIPPED_NAME) {
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Follow::STRIPPED_NAME) {
 			return $recipientUser->getNewFollowerEmailNotificationEnabled();
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Like::STRIPPED_NAME) {
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Like::STRIPPED_NAME) {
 			return $recipientUser->getNewLikeEmailNotificationEnabled();
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Mention::STRIPPED_NAME) {
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Mention::STRIPPED_NAME) {
 			return true;	// TODO
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Publish::STRIPPED_NAME) {
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Publish::STRIPPED_NAME) {
 			return $recipientUser->getNewFollowingPostEmailNotificationEnabled();
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Vote::STRIPPED_NAME) {
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Vote::STRIPPED_NAME) {
 			return $recipientUser->getNewVoteEmailNotificationEnabled();
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Join::STRIPPED_NAME) {
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Join::STRIPPED_NAME) {
 			return $recipientUser->getNewWatchActivityEmailNotificationEnabled();
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Activity\Write::STRIPPED_NAME) {
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME) {
 			return $recipientUser->getIncomingMessageEmailNotificationEnabled();
 		}
 		return true;

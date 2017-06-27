@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table("tbl_core_witness")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\WitnessRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\WitnessRepository")
  */
 class Witness {
 

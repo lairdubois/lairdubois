@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Manager\Wonder\PlanManager;
 use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

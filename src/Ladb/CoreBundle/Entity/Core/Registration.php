@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_registration")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\RegistrationRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\RegistrationRepository")
  */
 class Registration {
 

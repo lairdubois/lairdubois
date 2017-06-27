@@ -164,7 +164,7 @@ services:
     class: Ladb\CoreBundle\Manager\Knowledge\WoodManager
     arguments: ['@service_container']
   ladb_core.witness_manager:
-    class: Ladb\CoreBundle\Manager\WitnessManager
+    class: Ladb\CoreBundle\Manager\Core\WitnessManager
     arguments: ['@service_container']
   ladb_core.funding_manager:
     class: Ladb\CoreBundle\Manager\Funding\FundingManager

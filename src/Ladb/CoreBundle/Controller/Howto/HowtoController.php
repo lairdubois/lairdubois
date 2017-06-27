@@ -32,7 +32,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Howto\ArticleManager;
 use Ladb\CoreBundle\Manager\Howto\HowtoManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class HowtoController extends Controller {
 

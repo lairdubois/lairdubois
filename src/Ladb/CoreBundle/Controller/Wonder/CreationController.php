@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Manager\Wonder\CreationManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Form\Type\Wonder\CreationType;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
@@ -47,7 +47,7 @@ class CreationController extends Controller {
 	public function newAction() {
 
 		$creation = new Creation();
-		$creation->addBodyBlock(new \Ladb\CoreBundle\Entity\Block\Text());	// Add a default Text body block
+		$creation->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(CreationType::class, $creation);
 
 		$tagUtils = $this->get(TagUtils::NAME);

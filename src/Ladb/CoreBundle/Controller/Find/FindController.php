@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Find;
 
 use Ladb\CoreBundle\Manager\Find\FindManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\JoinableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

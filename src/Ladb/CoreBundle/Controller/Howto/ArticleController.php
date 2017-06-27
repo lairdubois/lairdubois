@@ -32,7 +32,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Howto\ArticleManager;
 use Ladb\CoreBundle\Manager\Howto\HowtoManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class ArticleController extends Controller {
 
@@ -53,7 +53,7 @@ class ArticleController extends Controller {
 		}
 
 		$article = new Article();
-		$article->addBodyBlock(new \Ladb\CoreBundle\Entity\Block\Text());	// Add a default Text body block
+		$article->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(HowtoArticleType::class, $article);
 
 		return array(

@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Manager\Knowledge\WoodManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

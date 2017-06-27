@@ -10,7 +10,7 @@ use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractPublication;
-use Ladb\CoreBundle\Entity\Block\Gallery;
+use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
@@ -59,7 +59,7 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	private $body;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_howto_article_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1)

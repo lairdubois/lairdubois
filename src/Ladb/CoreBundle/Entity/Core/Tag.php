@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table("tbl_core_tag")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\TagRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\TagRepository")
  */
 class Tag {
 

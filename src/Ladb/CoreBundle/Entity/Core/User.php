@@ -16,7 +16,7 @@ use Ladb\CoreBundle\Model\SitemapableTrait;
 
 /**
  * @ORM\Table("tbl_core_user")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\UserRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("email")
  * @UniqueEntity("displayname")

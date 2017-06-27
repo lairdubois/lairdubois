@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_spotlight")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\SpotlightRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\SpotlightRepository")
  */
 class Spotlight {
 

@@ -17,7 +17,7 @@ fos_user_change_password:
 
 fos_user_profile_show:
     path:   /me
-    defaults:  { _controller: LadbCoreBundle:User:showMe }
+    defaults:  { _controller: LadbCoreBundle:Core/User:showMe }
 
 # Imagine Bundle
 

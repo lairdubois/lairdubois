@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
-use Ladb\CoreBundle\Entity\Activity\AbstractActivity;
+use Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\CommentableInterface;

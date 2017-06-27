@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
-use Ladb\CoreBundle\Entity\Block\Text;
+use Ladb\CoreBundle\Entity\Core\Block\Text;
 
 class BodyBlocksValidator extends ConstraintValidator {
 

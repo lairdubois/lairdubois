@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Ladb\CoreBundle\Entity\Block\Gallery;
+use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;

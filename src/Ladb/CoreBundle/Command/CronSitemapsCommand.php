@@ -223,14 +223,14 @@ EOT
 			}
 			if ($entity instanceof BlockBodiedInterface) {
 				foreach ($entity->getBodyBlocks() as $block) {
-					if ($block instanceof \Ladb\CoreBundle\Entity\Block\Video) {
+					if ($block instanceof \Ladb\CoreBundle\Entity\Core\Block\Video) {
 						$video = $videoHostingUtils->getVideoSitemapData($block->getKind(), $block->getEmbedIdentifier());
 						if (!is_null($video) && !$this->_isVideoAsExported($block->getKind(), $block->getEmbedIdentifier())) {
 							$videos[] = $video;
 							$this->_flagVideoAsExported($block->getKind(), $block->getEmbedIdentifier());
 						}
 					}
-					if ($block instanceof \Ladb\CoreBundle\Entity\Block\Gallery) {
+					if ($block instanceof \Ladb\CoreBundle\Entity\Core\Block\Gallery) {
 						foreach ($block->getPictures() as $picture) {
 							$image = $picturedUtils->getPictureSitemapData($picture);
 							if (!is_null($image)) {
@@ -252,14 +252,14 @@ EOT
 			if ($entity instanceof \Ladb\CoreBundle\Entity\Howto\Howto) {
 				foreach ($entity->getArticles() as $article) {
 					foreach ($article->getBodyBlocks() as $block) {
-						if ($block instanceof \Ladb\CoreBundle\Entity\Block\Video) {
+						if ($block instanceof \Ladb\CoreBundle\Entity\Core\Block\Video) {
 							$video = $videoHostingUtils->getVideoSitemapData($block->getKind(), $block->getEmbedIdentifier());
 							if (!is_null($video) && !$this->_isVideoAsExported($block->getKind(), $block->getEmbedIdentifier())) {
 								$videos[] = $video;
 								$this->_flagVideoAsExported($block->getKind(), $block->getEmbedIdentifier());
 							}
 						}
-						if ($block instanceof \Ladb\CoreBundle\Entity\Block\Gallery) {
+						if ($block instanceof \Ladb\CoreBundle\Entity\Core\Block\Gallery) {
 							foreach ($block->getPictures() as $picture) {
 								$image = $picturedUtils->getPictureSitemapData($picture);
 								if (!is_null($image)) {

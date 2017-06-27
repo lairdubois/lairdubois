@@ -27,7 +27,7 @@ use Ladb\CoreBundle\Utils\StripableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Manager\Wonder\WorkshopManager;
 
 /**
@@ -42,7 +42,7 @@ class WorkshopController extends Controller {
 	public function newAction() {
 
 		$workshop = new Workshop();
-		$workshop->addBodyBlock(new \Ladb\CoreBundle\Entity\Block\Text());	// Add a default Text body block
+		$workshop->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(WorkshopType::class, $workshop);
 
 		$tagUtils = $this->get(TagUtils::NAME);

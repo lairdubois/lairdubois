@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table("tbl_core_watch")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\WatchRepository")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\WatchRepository")
  */
 class Watch {
 
