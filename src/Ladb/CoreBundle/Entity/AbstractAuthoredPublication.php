@@ -12,7 +12,7 @@ use Ladb\CoreBundle\Model\AuthoredInterface;
 abstract class AbstractAuthoredPublication extends AbstractPublication implements AuthoredInterface {
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	protected $user;
@@ -21,13 +21,13 @@ abstract class AbstractAuthoredPublication extends AbstractPublication implement
 
 	// User /////
 
-	public function setUser(\Ladb\CoreBundle\Entity\User $user) {
-		$this->user = $user;
-		return $this;
-	}
-
 	public function getUser() {
 		return $this->user;
+	}
+
+	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
+		$this->user = $user;
+		return $this;
 	}
 
 }

@@ -1,0 +1,6 @@
+{% extends 'LadbCoreBundle:Core/Activity:_row.part.html.twig' %}
+
+{% set icon = 'edit' %}
+{% set entity = ladb_entity(activity.value.parentEntityType, activity.value.parentEntityId) %}
+
+{% block body %}a contribué au champ <em>{{ ('knowledge.'~entity.strippedName~'.field.'~activity.value.parentEntityField)|trans() }}</em> de "<strong>{{ entity.title|raw }}</strong>"{% endblock %}

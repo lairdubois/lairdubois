@@ -1,0 +1,22 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set providers #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for provider in providers %}
+        <div class="ladb-choice-row">
+            <div class="ladb-thumbnail">
+                <a href="{{ path('core_provider_show', { 'id':provider.sluggedId }) }}" class="thumbnail" target="_blank">
+                    <img src="{{ (provider.mainPicture is not null ? provider.mainPicture.webPath : 'avatar.png')|imagine_filter('80x60o') }}">
+                </a>
+            </div>
+            <div class="ladb-tools">
+                <a href="#" class="btn btn-default" onclick="window.parent.providerAdded('{% filter escape('js') %}{% include 'LadbCoreBundle:Knowledge/Provider:_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+            </div>
+            <div class="ladb-body">
+                <h4 class="ladb-heading">{{ provider.title }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}</h4>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

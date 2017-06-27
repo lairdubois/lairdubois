@@ -8,7 +8,7 @@ class CommentRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByComment(\Ladb\CoreBundle\Entity\Comment $comment) {
+	public function findByComment(\Ladb\CoreBundle\Entity\Core\Comment $comment) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))

@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Repository\Howto;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;

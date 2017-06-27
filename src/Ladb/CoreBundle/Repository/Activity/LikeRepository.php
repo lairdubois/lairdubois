@@ -8,7 +8,7 @@ class LikeRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByLike(\Ladb\CoreBundle\Entity\Like $like) {
+	public function findByLike(\Ladb\CoreBundle\Entity\Core\Like $like) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))

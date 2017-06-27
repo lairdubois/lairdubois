@@ -1,0 +1,7 @@
+{# set activity #}
+{# set icon (faciltative) #}
+
+<div id="ladb_activity_{{ activity.id }}" class="ladb-activity-row"{% if activitiesHidden is defined and activitiesHidden %} style="display: none;"{% endif %}>
+    <div class="ladb-icon">{% if icon is defined %}<i class="ladb-icon-{{ icon }}"></i>{% endif %}</div>
+    <div class="ladb-body">{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':activity.user, 'noBadge':true, 'noMicrodata':true } %} {% block body %}{% endblock %}.{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':activity, 'noMicrodata':true } %}</div>
+</div>

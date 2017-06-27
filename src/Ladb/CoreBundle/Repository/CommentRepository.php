@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository;
 
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Utils\TypableUtils;
 
@@ -39,37 +39,6 @@ class CommentRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByIds(array $ids, $orderBySort = null, $orderByOrder = null) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'c', 'u', 'ps', 'ua' ))
-			->from('LadbCoreBundle:comment', 'c')
-			->innerJoin('c.user', 'u')
-			->leftJoin('c.pictures', 'ps')
-			->leftJoin('u.avatar', 'ua')
-			->where($queryBuilder->expr()->in('c.id', $ids))
-		;
-
-		if (null !== $orderBySort) {
-			$queryBuilder
-				->addOrderBy($orderBySort, $orderByOrder);
-		}
-
-		try {
-			return $queryBuilder->getQuery()->getResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
-		}
-	}
-
-	/////
-
-	/*
-	 * [
-	 * 	[ 'entity' => ENTITY, 'comments' => COMMENTS ],
-	 *  ...,
-	 * ]
-	 */
 	public function findPaginedByUserGroupByEntityType(User $user, $offset, $limit) {
 
 		// Retrieve concat comment ids per entity
@@ -127,6 +96,38 @@ class CommentRepository extends AbstractEntityRepository {
 		}
 
 		return $items;
+	}
+
+	/////
+
+	/*
+	 * [
+	 * 	[ 'entity' => ENTITY, 'comments' => COMMENTS ],
+	 *  ...,
+	 * ]
+	 */
+
+	public function findByIds(array $ids, $orderBySort = null, $orderByOrder = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'u', 'ps', 'ua' ))
+			->from('LadbCoreBundle:comment', 'c')
+			->innerJoin('c.user', 'u')
+			->leftJoin('c.pictures', 'ps')
+			->leftJoin('u.avatar', 'ua')
+			->where($queryBuilder->expr()->in('c.id', $ids))
+		;
+
+		if (null !== $orderBySort) {
+			$queryBuilder
+				->addOrderBy($orderBySort, $orderByOrder);
+		}
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
 	}
 
 }

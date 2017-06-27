@@ -6,7 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Resource;
+use Ladb\CoreBundle\Entity\Core\Resource;
 
 class ResourcesToIdsTransformer implements DataTransformerInterface {
 

@@ -4,8 +4,8 @@ namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\Activity\AbstractActivity;
-use Ladb\CoreBundle\Entity\Comment;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\Comment;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Form\Type\CommentType;
@@ -18,6 +18,13 @@ class PropertyUtils {
 
 	/////
 
+	public function getValue($object, $propertyPath) {
+		$propertyMethod = $this->_getPropertyMethod('get', $propertyPath);
+		return $object->{ $propertyMethod }();
+	}
+
+	/////
+
 	private function _getPropertyMethod($accessor, $propertyPath) {
 		$terms = explode('_', $propertyPath);
 		$method = $accessor;
@@ -25,13 +32,6 @@ class PropertyUtils {
 			$method .= ucfirst($term);
 		}
 		return $method;
-	}
-
-	/////
-
-	public function getValue($object, $propertyPath) {
-		$propertyMethod = $this->_getPropertyMethod('get', $propertyPath);
-		return $object->{ $propertyMethod }();
 	}
 
 	public function setValue($object, $propertyPath, $value) {

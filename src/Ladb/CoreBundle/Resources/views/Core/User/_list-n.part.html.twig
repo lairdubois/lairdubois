@@ -1,0 +1,12 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
+
+{# set users #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for user in users %}
+        {% include 'LadbCoreBundle:Core/User:_list-row.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

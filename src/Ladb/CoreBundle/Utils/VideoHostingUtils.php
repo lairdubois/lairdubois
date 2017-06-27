@@ -69,27 +69,27 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 
 			case VideoHostingUtils::KIND_YOUTUBE:
 				$embedUrl = '//www.youtube.com/embed/'.$embedIdentifier.($autoplay ? '?autoplay=1' : '');
-				$playerTemplate = 'LadbCoreBundle:Video:_youtube-player.part.html.twig';
+				$playerTemplate = 'LadbCoreBundle:Core/Video:_youtube-player.part.html.twig';
 				break;
 
 			case VideoHostingUtils::KIND_YOUTUBEPLAYLIST:
 				$embedUrl = '//www.youtube.com/embed/videoseries?list='.$embedIdentifier.($autoplay ? '&autoplay=1' : '');
-				$playerTemplate = 'LadbCoreBundle:Video:_youtubeplaylist-player.part.html.twig';
+				$playerTemplate = 'LadbCoreBundle:Core/Video:_youtubeplaylist-player.part.html.twig';
 				break;
 
 			case VideoHostingUtils::KIND_DAILYMOTION:
 				$embedUrl = '//www.dailymotion.com/embed/video/'.$embedIdentifier.($autoplay ? '?autoplay=1' : '');
-				$playerTemplate = 'LadbCoreBundle:Video:_youtube-player.part.html.twig';
+				$playerTemplate = 'LadbCoreBundle:Core/Video:_youtube-player.part.html.twig';
 				break;
 
 			case VideoHostingUtils::KIND_VIMEO:
 				$embedUrl = '//player.vimeo.com/video/'.$embedIdentifier.'?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff'.($autoplay ? '&autoplay=1' : '');
-				$playerTemplate = 'LadbCoreBundle:Video:_vimeo-player.part.html.twig';
+				$playerTemplate = 'LadbCoreBundle:Core/Video:_vimeo-player.part.html.twig';
 				break;
 
 			case VideoHostingUtils::KIND_FACEBOOK:
 				$embedUrl = 'https://www.facebook.com/video.php?v='.$embedIdentifier;
-				$playerTemplate = 'LadbCoreBundle:Video:_facebook-player.part.html.twig';
+				$playerTemplate = 'LadbCoreBundle:Core/Video:_facebook-player.part.html.twig';
 				break;
 
 		}

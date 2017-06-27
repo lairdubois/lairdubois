@@ -15,7 +15,7 @@ class Vote extends AbstractActivity {
 	const STRIPPED_NAME = 'vote';
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Vote")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Vote")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $vote;
@@ -30,13 +30,13 @@ class Vote extends AbstractActivity {
 
 	// Vote /////
 
-	public function setVote(\Ladb\CoreBundle\Entity\Vote $vote) {
-		$this->vote = $vote;
-		return $this;
-	}
-
 	public function getVote() {
 		return $this->vote;
+	}
+
+	public function setVote(\Ladb\CoreBundle\Entity\Core\Vote $vote) {
+		$this->vote = $vote;
+		return $this;
 	}
 
 }

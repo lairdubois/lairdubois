@@ -97,13 +97,13 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	private $htmlBody;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=true, name="main_picture_id")
 	 */
 	private $mainPicture;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_find_tag")
 	 * @Assert\Count(min=2)
 	 */
@@ -160,24 +160,24 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	// DataType /////
 
+	public function getContentType() {
+		return $this->contentType;
+	}
+
 	public function setContentType($contentType) {
 		$this->contentType = $contentType;
 		return $this;
 	}
 
-	public function getContentType() {
-		return $this->contentType;
-	}
-
 	// Slug /////
+
+	public function getSlug() {
+		return $this->slug;
+	}
 
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
 	}
 
 	public function getSluggedId() {
@@ -186,38 +186,38 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	// Content /////
 
-	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
-		$this->content = $content;
-		return $this;
+	public function getKind() {
+		return $this->kind;
 	}
-
-	public function getContent() {
-		return $this->content;
-	}
-
-	// Kind /////
 
 	public function setKind($kind) {
 		$this->kind = $kind;
 		return $this;
 	}
 
-	public function getKind() {
-		return $this->kind;
-	}
-
-	// BodyExtract /////
+	// Kind /////
 
 	public function getBodyExtract() {
 		return $this->getHtmlBody();
 	}
 
-	// IsJoinable /////
-
 	public function getIsJoinable() {
 		return $this->getIsViewable()
 			&& $this->getContent() instanceof Event
 			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
+	}
+
+	// BodyExtract /////
+
+	public function getContent() {
+		return $this->content;
+	}
+
+	// IsJoinable /////
+
+	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
+		$this->content = $content;
+		return $this;
 	}
 
 	// JoinCount /////
@@ -226,12 +226,12 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 		return $this->joinCount += intval($by);
 	}
 
-	public function setJoinCount($joinCount) {
-		$this->joinCount = $joinCount;
-	}
-
 	public function getJoinCount() {
 		return $this->joinCount;
+	}
+
+	public function setJoinCount($joinCount) {
+		$this->joinCount = $joinCount;
 	}
 
 }

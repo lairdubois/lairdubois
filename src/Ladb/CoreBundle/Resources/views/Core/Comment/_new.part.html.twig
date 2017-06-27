@@ -1,0 +1,35 @@
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
+
+{# set form #}
+{# set entityType #}
+{# set entityId #}
+{# set mentionStrategy (facultative) #}
+
+{% set id = 'ladb_comment_'~entityType~'_'~entityId~'_new' %}
+{% set formSection = id %}
+{% set condenced = condenced is defined ? condenced : true %}
+
+<div id="{{ id }}" class="ladb-new">
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
+    {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
+    <div class="ladb-box">
+        {% embed 'LadbCoreBundle:Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_create', { 'entityType':entityType, 'entityId':entityId }), 'galleryClasses':condenced ? 'ladb-pseudo-hidden' : '' } %}
+            {% block buttons %}
+                {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'id':'new_comment_'~entityType~'_'~entityId~'_btn', 'text':('default.send'|trans()), 'classes':condenced ? 'ladb-pseudo-hidden btn-default' : 'btn-default' } %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    {% block script %}
+        <script>
+            $("#{{ form.body.vars.id }}")
+                    .bind("focus", function(e) {
+                        $("#{{ id }} .ladb-form-gallery").removeClass("ladb-pseudo-hidden");
+                        $("#new_comment_{{ entityType }}_{{ entityId }}_btn").removeClass("ladb-pseudo-hidden");
+                        $(this)
+                            .unbind('focus')
+                            .markdown({ autofocus:true })
+                            .ladbTextcompletify({ maxCount: 5{% if mentionStrategy is defined %}, mentionStrategy: {{ mentionStrategy|raw }}{% endif %} });
+                    })
+        </script>
+    {% endblock %}
+</div>

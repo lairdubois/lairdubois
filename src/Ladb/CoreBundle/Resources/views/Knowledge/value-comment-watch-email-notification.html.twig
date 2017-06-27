@@ -1,4 +1,4 @@
-{% extends 'LadbCoreBundle:Comment:watch-email-notification.html.twig' %}
+{% extends 'LadbCoreBundle:Core/Comment:watch-email-notification.html.twig' %}
 
 {% set fieldDef = entity.fieldDefs[childEntity.parentEntityField] %}
 {% set fieldType = fieldDef[constant('ATTRIB_TYPE', entity)] %}

@@ -4,10 +4,10 @@ namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\Funding\Donation;
 use Ladb\CoreBundle\Entity\Message\Message;
-use Ladb\CoreBundle\Entity\Spotlight;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\Spotlight;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Message\Thread;
-use Ladb\CoreBundle\Entity\Report;
+use Ladb\CoreBundle\Entity\Core\Report;
 
 class MailerUtils extends AbstractContainerAwareUtils {
 
@@ -21,10 +21,39 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Confirmation de votre adresse e-mail',
-				$this->_renderTemplate('LadbCoreBundle:User:email-confirmation.txt.twig', $parameters),
-				$this->_renderTemplate('LadbCoreBundle:User:email-confirmation.html.twig', $parameters)
+				$this->_renderTemplate('LadbCoreBundle:Core/User:email-confirmation.txt.twig', $parameters),
+				$this->_renderTemplate('LadbCoreBundle:Core/User:email-confirmation.html.twig', $parameters)
 			);
 		}
+	}
+
+	public function sendEmailMessage($toEmail, $subject, $body, $htmlBody = null) {
+		if (empty($toEmail)) {
+			return;	// Invalid email
+		}
+
+		// Create the DKIM signer
+		$privateKey = file_get_contents(__DIR__.'/../../../../keys/private.pem');
+		$domainName = 'lairdubois.fr';
+		$selector = 'dkim';		// For dkim._domainkey.lairdubois.fr
+		$signer = new \Swift_Signers_DKIMSigner($privateKey, $domainName, $selector);
+
+		// Create the message instance
+		$message = \Swift_Message::newInstance()
+			->attachSigner($signer)
+			->setFrom(array('noreply@lairdubois.fr' => 'L\'Air du Bois'))
+			->setTo($toEmail)
+			->setSubject($subject)
+			->setBody($body)
+		;
+		if (!is_null($htmlBody)) {
+			$message->addPart($htmlBody, 'text/html');
+		}
+		$this->get('mailer')->send($message);
+	}
+
+	private function _renderTemplate($name, array $parameters = array()) {
+		return $this->get('templating')->render($name, $parameters);
 	}
 
 	public function sendIncomingMessageNotificationEmailMessage(User $recipientUser, User $actorUser, Thread $thread, Message $message) {
@@ -55,7 +84,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de rapport d\'abus',
-			$this->_renderTemplate('LadbCoreBundle:Report:email-notification.txt.twig', array( 'actorUser' => $actorUser, 'report' => $report, 'entity' => $entity ))
+			$this->_renderTemplate('LadbCoreBundle:Core/Report:email-notification.txt.twig', array( 'actorUser' => $actorUser, 'report' => $report, 'entity' => $entity ))
 		);
 	}
 
@@ -63,7 +92,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de nouvel utilisateur',
-			$this->_renderTemplate('LadbCoreBundle:User:register-email-notification.txt.twig', array( 'actorUser' => $actorUser ))
+			$this->_renderTemplate('LadbCoreBundle:Core/User:register-email-notification.txt.twig', array( 'actorUser' => $actorUser ))
 		);
 	}
 
@@ -74,6 +103,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			$this->_renderTemplate('LadbCoreBundle:Funding:donation-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'donation' => $donation ))
 		);
 	}
+
+	/////
 
 	public function sendFundingPaymentReceiptEmailMessage(User $recipientUser, $donation) {
 		$parameters = array(
@@ -88,6 +119,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		);
 		unset($parameters);
 	}
+
+	/////
 
 	public function sendWeekNewsEmailMessage(User &$recipientUser, &$creations, &$plans, &$workshops, &$howtos, &$howtoArticles, &$finds, &$posts, &$woods, &$providers) {
 		if ($recipientUser->getWeekNewsEmailEnabled()) {
@@ -111,39 +144,6 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			);
 			unset($parameters);
 		}
-	}
-
-	/////
-
-	public function sendEmailMessage($toEmail, $subject, $body, $htmlBody = null) {
-		if (empty($toEmail)) {
-			return;	// Invalid email
-		}
-
-		// Create the DKIM signer
-		$privateKey = file_get_contents(__DIR__.'/../../../../keys/private.pem');
-		$domainName = 'lairdubois.fr';
-		$selector = 'dkim';		// For dkim._domainkey.lairdubois.fr
-		$signer = new \Swift_Signers_DKIMSigner($privateKey, $domainName, $selector);
-
-		// Create the message instance
-		$message = \Swift_Message::newInstance()
-			->attachSigner($signer)
-			->setFrom(array('noreply@lairdubois.fr' => 'L\'Air du Bois'))
-			->setTo($toEmail)
-			->setSubject($subject)
-			->setBody($body)
-		;
-		if (!is_null($htmlBody)) {
-			$message->addPart($htmlBody, 'text/html');
-		}
-		$this->get('mailer')->send($message);
-	}
-
-	/////
-
-	private function _renderTemplate($name, array $parameters = array()) {
-		return $this->get('templating')->render($name, $parameters);
 	}
 
 }

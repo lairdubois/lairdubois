@@ -1,0 +1,4 @@
+{% extends 'LadbCoreBundle:Core/Notification:_email.txt.twig' %}
+
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** s'est abonné à suivre vos publications.
+{% endblock %}

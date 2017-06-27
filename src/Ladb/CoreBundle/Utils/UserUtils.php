@@ -14,9 +14,9 @@ use Ladb\CoreBundle\Entity\Faq\Question;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Entity\Knowledge\Wood;
-use Ladb\CoreBundle\Entity\Picture;
-use Ladb\CoreBundle\Entity\User;
-use Ladb\CoreBundle\Entity\View;
+use Ladb\CoreBundle\Entity\Core\Picture;
+use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
@@ -27,34 +27,6 @@ class UserUtils extends AbstractContainerAwareUtils {
 	const NAME = 'ladb_core.user_utils';
 
 	/////
-
-	public function _getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType) {
-		return '_ladb_unlisted_counter_refresh_date_'.$entityType;
-	}
-
-	public function _getUnlistedCounterRefreshDateByEntityType($entityType) {
-		$globalUtils = $this->get(GlobalUtils::NAME);
-		$session = $globalUtils->getSession();
-		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
-		$refreshDate = $session->get($key);
-		if (is_null($refreshDate)) {
-			return new \DateTime();
-		}
-		return $refreshDate;
-	}
-
-	public function _setUnlistedCounterRefreshDateByEntityType($entityType, $refreshDate) {
-		$globalUtils = $this->get(GlobalUtils::NAME);
-		$session = $globalUtils->getSession();
-		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
-		$session->set($key, $refreshDate);
-	}
-
-	/////
-
-	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
-		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
-	}
 
 	public function computeUnlistedCounters(User $user) {
 
@@ -136,6 +108,34 @@ class UserUtils extends AbstractContainerAwareUtils {
 		}
 
 		return false;	// Returns updated
+	}
+
+	public function _getUnlistedCounterRefreshDateByEntityType($entityType) {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+		$session = $globalUtils->getSession();
+		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
+		$refreshDate = $session->get($key);
+		if (is_null($refreshDate)) {
+			return new \DateTime();
+		}
+		return $refreshDate;
+	}
+
+	/////
+
+	public function _getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType) {
+		return '_ladb_unlisted_counter_refresh_date_'.$entityType;
+	}
+
+	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
+		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
+	}
+
+	public function _setUnlistedCounterRefreshDateByEntityType($entityType, $refreshDate) {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+		$session = $globalUtils->getSession();
+		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
+		$session->set($key, $refreshDate);
 	}
 
 	public function createDefaultAvatar(User $user, $randomColor = true) {

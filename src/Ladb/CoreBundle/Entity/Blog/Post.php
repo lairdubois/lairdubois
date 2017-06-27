@@ -86,15 +86,15 @@ class Post extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	private $bodyBlockVideoCount = 0;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false, name="main_picture_id")
 	 * @Assert\NotBlank()
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */
 	private $mainPicture;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_blog_post_tag")
 	 * @Assert\Count(min=2)
 	 */
@@ -140,13 +140,13 @@ class Post extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	// Slug /////
 
+	public function getSlug() {
+		return $this->slug;
+	}
+
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
 	}
 
 	public function getSluggedId() {
@@ -155,13 +155,13 @@ class Post extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	// HighlightLevel
 
+	public function getHighlightLevel() {
+		return $this->highlightLevel;
+	}
+
 	public function setHighlightLevel($highlightLevel) {
 		$this->highlightLevel = $highlightLevel;
 		return $this;
-	}
-
-	public function getHighlightLevel() {
-		return $this->highlightLevel;
 	}
 
 }

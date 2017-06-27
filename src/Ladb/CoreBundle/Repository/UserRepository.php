@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class UserRepository extends AbstractEntityRepository {
@@ -49,6 +49,44 @@ class UserRepository extends AbstractEntityRepository {
 	}
 
 	/////
+
+	public function findDonorsPagined($offset, $limit) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'u', 'a' ))
+			->from($this->getEntityName(), 'u')
+			->leftJoin('u.avatar', 'a')
+			->leftJoin('u.meta', 'm')
+			->where('m.donationCount > 0')
+			->andWhere('u.enabled = 1')
+			->orderBy('u.displayname', 'ASC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPagined($offset, $limit, $filter = 'recent', $isAdmin = false) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'u', 'a' ))
+			->from($this->getEntityName(), 'u')
+			->leftJoin('u.avatar', 'a')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		if ($filter != 'admin-not-enabled') {
+			$queryBuilder
+				->andWhere('u.enabled = 1')
+			;
+		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter, $isAdmin);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
 
 	private function _applyCommonFilter(&$queryBuilder, $filter, $isAdmin) {
 		if ('contributors-all' == $filter) {
@@ -151,44 +189,6 @@ class UserRepository extends AbstractEntityRepository {
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		}
-	}
-
-	public function findDonorsPagined($offset, $limit) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'u', 'a' ))
-			->from($this->getEntityName(), 'u')
-			->leftJoin('u.avatar', 'a')
-			->leftJoin('u.meta', 'm')
-			->where('m.donationCount > 0')
-			->andWhere('u.enabled = 1')
-			->orderBy('u.displayname', 'ASC')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		return new Paginator($queryBuilder->getQuery());
-	}
-
-	public function findPagined($offset, $limit, $filter = 'recent', $isAdmin = false) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'u', 'a' ))
-			->from($this->getEntityName(), 'u')
-			->leftJoin('u.avatar', 'a')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		if ($filter != 'admin-not-enabled') {
-			$queryBuilder
-				->andWhere('u.enabled = 1')
-			;
-		}
-
-		$this->_applyCommonFilter($queryBuilder, $filter, $isAdmin);
-
-		return new Paginator($queryBuilder->getQuery());
 	}
 
 	public  function findGeocoded($filter = 'recent', $isAdmin = false) {

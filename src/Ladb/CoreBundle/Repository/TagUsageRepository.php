@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository;
 
-use Ladb\CoreBundle\Entity\Tag;
+use Ladb\CoreBundle\Entity\Core\Tag;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class TagUsageRepository extends AbstractEntityRepository {

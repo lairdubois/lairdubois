@@ -96,7 +96,7 @@ class CreationManager extends AbstractWonderManager {
 		$workshop->setUser($creation->getUser());
 		$workshop->setMainPicture($creation->getMainPicture());
 		$workshop->setBody($creation->getBody());
-		$workshop->setLicense(new \Ladb\CoreBundle\Entity\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
+		$workshop->setLicense(new \Ladb\CoreBundle\Entity\Core\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
 
 		foreach ($creation->getPictures() as $picture) {
 			$workshop->addPicture($picture);
@@ -244,7 +244,7 @@ class CreationManager extends AbstractWonderManager {
 		$howto->setUser($creation->getUser());
 		$howto->setMainPicture($creation->getMainPicture());
 		$howto->setBody('Projet de création.');
-		$howto->setLicense(new \Ladb\CoreBundle\Entity\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
+		$howto->setLicense(new \Ladb\CoreBundle\Entity\Core\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
 
 		$article->setHowto($howto);		// Workaround to $howto->addArticle($article); because it generates a constraint violation on $this->delete($creation, false, false);
 		if ($howto->getIsDraft()) {

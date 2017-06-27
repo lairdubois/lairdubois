@@ -1,0 +1,99 @@
+{% extends 'LadbCoreBundle:Common:_show.html.twig' %}
+
+{% set entity = post %}
+{% set pageItemType = 'BlogPosting' %}
+
+{% set navSection = 'blog' %}
+{% set searchPath = path('core_blog_post_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == post.user.id %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':post } %}
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% if not ownerUser %}
+                    {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% endif %}
+                {% if watchContext is not null and is_granted("ROLE_USER") %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                {% endif %}
+                {% if not ownerUser %}
+                    &nbsp;
+                    {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':post.type, 'entityId':post.id } %}
+                {% endif %}
+                {% if is_granted("ROLE_ADMIN") %}
+                    &nbsp;
+                    <a href="{{ path('core_blog_post_edit', { 'id':post.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
+                    {% if not post.isDraft %}
+                        <a href="#unpublish_post_modal" class="btn btn-default" data-toggle="modal" ><i class="ladb-icon-unpublish"></i><span class="ladb-visible-desktop"> {{ 'default.unpublish'|trans() }}</span></a>
+                        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_post_modal', 'title':('default.unpublishing'|trans()) } %}
+                            {% block bodyInner %}
+                                <p>La dépublication de <strong>{{ post.title }}</strong> le rendra invisible pour les autres utilisateurs.</p>
+                                <p>Confirmez l'action pour continuer.</p>
+                            {% endblock %}
+                            {% block footerInner %}
+                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                <a href="{{ path('core_blog_post_unpublish', { 'id':post.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                    <a href="#delete_post_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                    {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_post_modal', 'entityTitle':post.title, 'deletePath':path('core_blog_post_delete', { 'id':post.id }) } %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if post.isDraft %}
+        {% include 'LadbCoreBundle:Blog/Post:_draft-alert.part.html.twig' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block contentBody %}
+    <div class="ladb-post">
+        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title } %}
+        <div class="ladb-body" itemprop="articleBody">
+            {% for block in post.bodyBlocks %}
+                {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        </div>
+        {% if post.updatedAt > post.createdAt %}
+            {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':post } %}
+        {% endif %}
+    </div>
+    {% if not ownerUser %}
+        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+    </div>
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':post.tags, 'type':'posts' } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if similarPosts is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('blog.post.similar')|trans() }}
+            </div>
+            <div class="panel-body row">
+                {% for similarPost in similarPosts %}
+                    <div class="col-xs-6">
+                        {% include 'LadbCoreBundle:Blog/Post:_thumbnail-link.part.html.twig' with { 'post':similarPost, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

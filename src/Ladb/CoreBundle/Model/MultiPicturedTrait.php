@@ -6,14 +6,14 @@ trait MultiPicturedTrait {
 
 	// Pictures /////
 
-	public function addPicture(\Ladb\CoreBundle\Entity\Picture $picture) {
+	public function addPicture(\Ladb\CoreBundle\Entity\Core\Picture $picture) {
 		if (!$this->pictures->contains($picture)) {
 			$this->pictures[] = $picture;
 		}
 		return $this;
 	}
 
-	public function removePicture(\Ladb\CoreBundle\Entity\Picture $picture) {
+	public function removePicture(\Ladb\CoreBundle\Entity\Core\Picture $picture) {
 		$this->pictures->removeElement($picture);
 	}
 

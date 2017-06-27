@@ -25,7 +25,7 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 	const STATUS_COMPLETED = 3;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_find_content_event_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1, max=5, groups={"event"})
@@ -97,41 +97,65 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 
 	// StartAt /////
 
-	public function setStartAt($startAt) {
-		$this->startAt = $startAt;
-		return $this;
+	public function getStartDate() {
+		return $this->startDate;
 	}
-
-	public function getStartAt() {
-		return $this->startAt;
-	}
-
-	// StartDate /////
 
 	public function setStartDate($startDate) {
 		$this->startDate = $startDate;
 		return $this;
 	}
 
-	public function getStartDate() {
-		return $this->startDate;
-	}
+	// StartDate /////
 
-	// StartTime /////
+	public function getStartTime() {
+		return $this->startTime;
+	}
 
 	public function setStartTime($startTime) {
 		$this->startTime = $startTime;
 		return $this;
 	}
 
-	public function getStartTime() {
-		return $this->startTime;
+	// StartTime /////
+
+	public function getEndDate() {
+		return $this->endDate;
+	}
+
+	public function setEndDate($endDate) {
+		$this->endDate = $endDate;
+		return $this;
 	}
 
 	// EndAt /////
 
-	public function setEndAt($endAt) {
-		$this->endAt = $endAt;
+	public function getEndTime() {
+		return $this->endTime;
+	}
+
+	public function setEndTime($endTime) {
+		$this->endTime = $endTime;
+		return $this;
+	}
+
+	// EndDate /////
+
+	public function getDuration() {
+		if (!is_null($this->getStartAt()) && !is_null($this->getEndAt())) {
+			return $this->getStartAt()->diff($this->getEndAt());
+		}
+		return null;
+	}
+
+	public function getStartAt() {
+		return $this->startAt;
+	}
+
+	// EndTime /////
+
+	public function setStartAt($startAt) {
+		$this->startAt = $startAt;
 		return $this;
 	}
 
@@ -139,35 +163,11 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 		return $this->endAt;
 	}
 
-	// EndDate /////
-
-	public function setEndDate($endDate) {
-		$this->endDate = $endDate;
-		return $this;
-	}
-
-	public function getEndDate() {
-		return $this->endDate;
-	}
-
-	// EndTime /////
-
-	public function setEndTime($endTime) {
-		$this->endTime = $endTime;
-		return $this;
-	}
-
-	public function getEndTime() {
-		return $this->endTime;
-	}
-
 	// Duration /////
 
-	public function getDuration() {
-		if (!is_null($this->getStartAt()) && !is_null($this->getEndAt())) {
-			return $this->getStartAt()->diff($this->getEndAt());
-		}
-		return null;
+	public function setEndAt($endAt) {
+		$this->endAt = $endAt;
+		return $this;
 	}
 
 	// Status /////
@@ -186,13 +186,13 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 
 	// Url /////
 
+	public function getUrl() {
+		return $this->url;
+	}
+
 	public function setUrl($url) {
 		$this->url = $url;
 		return $this;
-	}
-
-	public function getUrl() {
-		return $this->url;
 	}
 
 }

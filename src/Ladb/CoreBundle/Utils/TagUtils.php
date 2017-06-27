@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Utils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
-use Ladb\CoreBundle\Entity\TagUsage;
+use Ladb\CoreBundle\Entity\Core\TagUsage;
 
 class TagUtils {
 

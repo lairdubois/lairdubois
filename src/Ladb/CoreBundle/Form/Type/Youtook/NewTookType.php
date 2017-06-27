@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Picture;
+use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 
 class NewTookType extends AbstractType {

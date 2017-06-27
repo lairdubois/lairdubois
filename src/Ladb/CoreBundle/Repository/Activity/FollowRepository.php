@@ -8,7 +8,7 @@ class FollowRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByFollower(\Ladb\CoreBundle\Entity\Follower $follower) {
+	public function findByFollower(\Ladb\CoreBundle\Entity\Core\Follower $follower) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))

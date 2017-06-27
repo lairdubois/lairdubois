@@ -26,7 +26,7 @@ class MessageMeta {
 	private $message;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="participant_user_id", referencedColumnName="id")
 	 */
 	private $participant;
@@ -44,35 +44,35 @@ class MessageMeta {
 
 	// Message /////
 
+	public function getMessage() {
+		return $this->message;
+	}
+
 	public function setMessage(\Ladb\CoreBundle\Entity\Message\Message $message) {
 		$this->message = $message;
 		return $this;
 	}
 
-	public function getMessage() {
-		return $this->message;
-	}
-
 	// Participant /////
-
-	public function setParticipant(\Ladb\CoreBundle\Entity\User $participant) {
-		$this->participant = $participant;
-		return $this;
-	}
 
 	public function getParticipant() {
 		return $this->participant;
 	}
 
+	public function setParticipant(\Ladb\CoreBundle\Entity\Core\User $participant) {
+		$this->participant = $participant;
+		return $this;
+	}
+
 	// IsRead /////
+
+	public function getIsRead() {
+		return $this->isRead;
+	}
 
 	public function setIsRead($isRead) {
 		$this->isRead = $isRead;
 		return $this;
-	}
-
-	public function getIsRead() {
-		return $this->isRead;
 	}
 
 }

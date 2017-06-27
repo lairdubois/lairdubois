@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Youtook;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class TookRepository extends AbstractEntityRepository {
@@ -50,12 +50,6 @@ class TookRepository extends AbstractEntityRepository {
 
 	/////
 
-	private function _applyCommonFilter(&$queryBuilder, $filter) {
-		$queryBuilder
-			->addOrderBy('t.changedAt', 'DESC')
-		;
-	}
-
 	public function findPagined($offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -70,6 +64,12 @@ class TookRepository extends AbstractEntityRepository {
 		$this->_applyCommonFilter($queryBuilder, $filter);
 
 		return new Paginator($queryBuilder->getQuery());
+	}
+
+	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		$queryBuilder
+			->addOrderBy('t.changedAt', 'DESC')
+		;
 	}
 
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {

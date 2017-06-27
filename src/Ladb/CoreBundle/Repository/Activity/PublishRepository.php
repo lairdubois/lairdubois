@@ -28,7 +28,7 @@ class PublishRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByUserAndEntityTypeAndEntityId(\Ladb\CoreBundle\Entity\User $user, $entityType, $entityId) {
+	public function findByUserAndEntityTypeAndEntityId(\Ladb\CoreBundle\Entity\Core\User $user, $entityType, $entityId) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))

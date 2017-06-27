@@ -7,7 +7,7 @@
 
 {% block bodyContainerContent %}
     <div id="message-reply" class="ladb-message">
-        {% include 'LadbCoreBundle:User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
+        {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
         <div class="ladb-box">
             <div class="ladb-body">
                 {{ form_start(form, { 'action':path(announcement ? 'core_message_thread_create_announcement' : 'core_message_thread_create'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
@@ -27,8 +27,8 @@
                         {{ form_label(form.body, 'Message') }}
                         {{ form_errors(form.body) }}
                         {{ form_widget(form.body, { 'attr': { 'rows':'10', 'class':'form-control ladb-autosize' } }) }}
-                        {% include 'LadbCoreBundle:Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
-                        {% include 'LadbCoreBundle:Picture:_form-gallery-collapse.part.html.twig' %}
+                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
+                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery-collapse.part.html.twig' %}
                         <script>
                             if (document.readyState == "complete") {
                                 $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();

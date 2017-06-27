@@ -1,0 +1,51 @@
+{% extends 'LadbCoreBundle:Common:_form.html.twig' %}
+
+{% set navSection = 'howtos' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.mainPicture.vars.id, 'maxPictureCount':1 } %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_form-gallery-script.part.html.twig' with { 'fieldId':form.plans.vars.id, 'maxPlanCount':4 } %}
+    {% include 'LadbCoreBundle:Knowledge/Provider:_form-gallery-script.part.html.twig' with { 'fieldId':form.providers.vars.id, 'maxProviderCount':10 } %}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'title':('default.picture'|trans()) } %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' with { 'title':'Introduction' } %}
+    <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
+    {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
+    {% block articlesSidenav %}{% endblock %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
+    {% include 'LadbCoreBundle:Knowledge/Provider:_form-sidenav-gallery.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/License:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'howto.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('howto.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('howto.form.help.main_picture'|trans()) } %}
+    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':'Introduction', 'help':('howto.form.help.body'|trans()) } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
+        {% block body %}
+            <p class="help-block"><i>{{ ('howto.form.help.wip'|trans())|raw }}</i></p>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.isWorkInProgress) }} En cours de réalisation ( <i class="ladb-icon-wip"></i> )
+                </label>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre pas à pas.' } %}
+    {% block articlesSection %}{% endblock %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('howto.form.help.plans'|trans()) } %}
+    {% include 'LadbCoreBundle:Knowledge/Provider:_form-section-gallery.part.html.twig' with { 'maxProviderCount':10, 'help':('howto.form.help.providers'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
+{% endblock %}

@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Repository\Wonder;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
@@ -167,6 +167,29 @@ class WorkshopRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findPagined($offset, $limit, $filter = 'recent', $filterParam = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'mp' ))
+			->from($this->getEntityName(), 'w')
+			->join('w.user', 'u')
+			->join('w.mainPicture', 'mp')
+			->where('w.isDraft = false')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		if ('followed' == $filter) {
+			$queryBuilder
+				->innerJoin('u.followers', 'f', 'WITH', 'f.user = :filterParam')
+				->setParameter('filterParam', $filterParam);
+		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder
@@ -238,29 +261,6 @@ class WorkshopRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->addOrderBy('w.changedAt', 'DESC')
 		;
-	}
-
-	public function findPagined($offset, $limit, $filter = 'recent', $filterParam = null) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'w', 'u', 'mp' ))
-			->from($this->getEntityName(), 'w')
-			->join('w.user', 'u')
-			->join('w.mainPicture', 'mp')
-			->where('w.isDraft = false')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		if ('followed' == $filter) {
-			$queryBuilder
-				->innerJoin('u.followers', 'f', 'WITH', 'f.user = :filterParam')
-				->setParameter('filterParam', $filterParam);
-		}
-
-		$this->_applyCommonFilter($queryBuilder, $filter);
-
-		return new Paginator($queryBuilder->getQuery());
 	}
 
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {

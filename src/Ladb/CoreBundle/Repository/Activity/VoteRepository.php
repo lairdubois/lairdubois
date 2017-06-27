@@ -8,7 +8,7 @@ class VoteRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByVote(\Ladb\CoreBundle\Entity\Vote $vote) {
+	public function findByVote(\Ladb\CoreBundle\Entity\Core\Vote $vote) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))

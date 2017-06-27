@@ -1,6 +1,0 @@
-{% extends 'LadbCoreBundle:Activity:_row.part.html.twig' %}
-
-{% set icon = 'join' %}
-{% set entity = ladb_entity(activity.join.entityType, activity.join.entityId) %}
-
-{% block body %}participe à "<strong>{{ entity.title }}</strong>"{% endblock %}

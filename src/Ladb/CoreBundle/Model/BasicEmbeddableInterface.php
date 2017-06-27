@@ -6,7 +6,7 @@ interface BasicEmbeddableInterface extends TypableInterface, IdentifiableInterfa
 
 	// Sticker /////
 
-	public function setSticker(\Ladb\CoreBundle\Entity\Picture $sticker);
+	public function setSticker(\Ladb\CoreBundle\Entity\Core\Picture $sticker);
 
 	public function getSticker();
 

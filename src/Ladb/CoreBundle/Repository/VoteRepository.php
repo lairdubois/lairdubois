@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository;
 
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\VotableParentInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;

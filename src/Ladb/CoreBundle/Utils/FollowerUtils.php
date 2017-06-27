@@ -3,10 +3,10 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Follower;
+use Ladb\CoreBundle\Entity\Core\Follower;
 use Ladb\CoreBundle\Model\TypableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 
 class FollowerUtils extends AbstractContainerAwareUtils {
 

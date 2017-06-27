@@ -15,7 +15,7 @@ class Like extends AbstractActivity {
 	const STRIPPED_NAME = 'like';
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Like")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Like")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $like;
@@ -30,13 +30,13 @@ class Like extends AbstractActivity {
 
 	// Like /////
 
-	public function setLike(\Ladb\CoreBundle\Entity\Like $like) {
-		$this->like = $like;
-		return $this;
-	}
-
 	public function getLike() {
 		return $this->like;
+	}
+
+	public function setLike(\Ladb\CoreBundle\Entity\Core\Like $like) {
+		$this->like = $like;
+		return $this;
 	}
 
 }

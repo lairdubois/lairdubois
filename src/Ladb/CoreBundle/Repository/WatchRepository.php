@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository;
 
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class WatchRepository extends AbstractEntityRepository {

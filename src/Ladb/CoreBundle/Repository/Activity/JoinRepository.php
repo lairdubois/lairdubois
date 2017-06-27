@@ -8,7 +8,7 @@ class JoinRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByJoin(\Ladb\CoreBundle\Entity\Join $join) {
+	public function findByJoin(\Ladb\CoreBundle\Entity\Core\Join $join) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))

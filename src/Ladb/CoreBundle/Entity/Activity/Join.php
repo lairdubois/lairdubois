@@ -15,7 +15,7 @@ class Join extends AbstractActivity {
 	const STRIPPED_NAME = 'join';
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Join")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Join")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $join;
@@ -30,13 +30,13 @@ class Join extends AbstractActivity {
 
 	// Join /////
 
-	public function setJoin(\Ladb\CoreBundle\Entity\Join $join) {
-		$this->join = $join;
-		return $this;
-	}
-
 	public function getJoin() {
 		return $this->join;
+	}
+
+	public function setJoin(\Ladb\CoreBundle\Entity\Core\Join $join) {
+		$this->join = $join;
+		return $this;
 	}
 
 }

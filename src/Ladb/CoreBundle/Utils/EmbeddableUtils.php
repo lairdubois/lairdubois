@@ -15,7 +15,7 @@ use Ladb\CoreBundle\Model\LicensedInterface;
 use Ladb\CoreBundle\Model\BasicEmbeddableInterface;
 use Ladb\CoreBundle\Model\EmbeddableInterface;
 use Ladb\CoreBundle\Entity\Block\Gallery;
-use Ladb\CoreBundle\Entity\Picture;
+use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Referer\Referer;
 use Ladb\CoreBundle\Entity\Referer\Referral;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;

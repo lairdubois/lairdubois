@@ -31,38 +31,163 @@ EOT
 
 	/////
 
-	private function _flagVideoAsExported($kind, $embedIdentifer) {
-		$this->exportedVideosIdentifiers[$kind.$embedIdentifer] = true;
+	protected function execute(InputInterface $input, OutputInterface $output) {
+
+		$forced = $input->getOption('force');
+		$verbose = $input->getOption('verbose');
+
+		$this->exportedVideosIdentifiers = array();
+
+		$defs = array(
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Wonder\Creation::CLASS_NAME,
+				'name'      => 'creation',
+				'section'   => 'creations',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Wonder\Plan::CLASS_NAME,
+				'name'      => 'plan',
+				'section'   => 'plans',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Wonder\Workshop::CLASS_NAME,
+				'name'      => 'workshop',
+				'section'   => 'workshops',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Howto\Howto::CLASS_NAME,
+				'name'      => 'howto',
+				'section'   => 'howtos',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Find\Find::CLASS_NAME,
+				'name'      => 'find',
+				'section'   => 'finds',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME,
+				'name'      => 'blog_post',
+				'section'   => 'posts',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Faq\Question::CLASS_NAME,
+				'name'      => 'faq_question',
+				'section'   => 'questions',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Knowledge\Wood::CLASS_NAME,
+				'name'      => 'wood',
+				'section'   => 'woods',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Knowledge\Provider::CLASS_NAME,
+				'name'      => 'provider',
+				'section'   => 'providers',
+				'slugged'   => true,
+			),
+			array(
+				'className' => \Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
+				'name'      => 'user',
+				'section'   => 'users',
+				'slugged'   => false,
+			),
+		);
+
+
+		/////
+
+		foreach ($defs as $def) {
+			$this->_createSitemapFile($def['className'], $def['name'], $def['section'], $forced, $verbose, $output, $def['slugged']);
+		}
+
+		/////
+
+		$templating = $this->getContainer()->get('templating');
+
+		if ($verbose) {
+			$output->write('<info>Building index sitemap...</info>');
+		}
+
+		$sitemaps = array();
+
+		foreach ($defs as $def) {
+			$sitemaps[] = $this->_getEntitySitemap($def['className'], $def['section']);
+		}
+
+		$data = $templating->render('LadbCoreBundle:Command:_cron-sitemap-index.xml.twig', array(
+			'sitemaps' => $sitemaps,
+		));
+
+		if ($forced) {
+
+			$filename = dirname(__FILE__).'/../../../../web/sitemap-index.xml';
+
+			if ($verbose) {
+				$output->write('<info> -> Wrinting '.$filename.' file...</info>');
+			}
+
+			$fp = fopen($filename, 'w');
+			fwrite($fp, $data);
+			fclose($fp);
+
+			if ($verbose) {
+				$output->writeln('<comment> [Done]</comment>');
+			}
+		} else {
+			if ($verbose) {
+				$output->writeln('<comment> [Fake]</comment>');
+			}
+		}
+
+
 	}
 
-	private function _isVideoAsExported($kind, $embedIdentifer) {
-		if (isset($this->exportedVideosIdentifiers[$kind.$embedIdentifer])) {
-			return $this->exportedVideosIdentifiers[$kind.$embedIdentifer];
+	private function _createSitemapFile($entityClassName, $entityName, $section, $forced, $verbose, OutputInterface $output, $slugged = true) {
+		$templating = $this->getContainer()->get('templating');
+
+		if ($verbose) {
+			$output->writeln('<info>Building '.$section.' sitemap...</info>');
 		}
-		return false;
+
+		$urls = $this->_getEntityUrls($entityClassName, $entityName, $forced, $verbose, $output, $slugged);
+		$data = $templating->render('LadbCoreBundle:Command:_cron-sitemap-entities.xml.twig', array(
+			'urls' => $urls,
+		));
+
+		unset($urls);
+
+		if ($forced) {
+
+			$filename = dirname(__FILE__).'/../../../../web/sitemap-'.$section.'.xml';
+
+			if ($verbose) {
+				$output->write('<info> -> Wrinting '.$filename.' file...</info>');
+			}
+
+			$fp = fopen($filename, 'w');
+			fwrite($fp, $data);
+			fclose($fp);
+
+			if ($verbose) {
+				$output->writeln('<comment> [Done]</comment>');
+			}
+		} else {
+			if ($verbose) {
+				$output->writeln('<comment> [Fake]</comment>');
+			}
+		}
+
 	}
 
 	/////
-
-	private function _getEntitySitemap($entityClassName, $section) {
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$entityRepository = $om->getRepository($entityClassName);
-		$lastCreatedEntity = $entityRepository->findLastCreated();
-		$lastUpdatedEntity = $entityRepository->findLastUpdated();
-		$createdAt = !is_null($lastCreatedEntity) ? $lastCreatedEntity->getCreatedAt() : null;
-		$updatedAt = !is_null($lastUpdatedEntity) ? $lastUpdatedEntity->getUpdatedAt() : null;
-		if (!is_null($createdAt) && $createdAt > $updatedAt) {
-			$lastmod = $createdAt->format('Y-m-d\TH:i:sP');
-		} else if (!is_null($updatedAt)) {
-			$lastmod = $updatedAt->format('Y-m-d\TH:i:sP');
-		} else {
-			$lastmod = date_format(new \DateTime(), 'Y-m-d\TH:i:sP');
-		}
-		return array(
-			'loc'     => $this->getContainer()->get('assets.packages')->getUrl('/sitemap-'.$section.'.xml'),
-			'lastmod' => $lastmod,
-		);
-	}
 
 	private function _getEntityUrls($entityClassName, $entityName, $forced, $verbose, OutputInterface $output, $slugged = true) {
 		$router = $this->getContainer()->get('router');
@@ -160,162 +285,37 @@ EOT
 		return $urls;
 	}
 
-	private function _createSitemapFile($entityClassName, $entityName, $section, $forced, $verbose, OutputInterface $output, $slugged = true) {
-		$templating = $this->getContainer()->get('templating');
-
-		if ($verbose) {
-			$output->writeln('<info>Building '.$section.' sitemap...</info>');
+	private function _isVideoAsExported($kind, $embedIdentifer) {
+		if (isset($this->exportedVideosIdentifiers[$kind.$embedIdentifer])) {
+			return $this->exportedVideosIdentifiers[$kind.$embedIdentifer];
 		}
+		return false;
+	}
 
-		$urls = $this->_getEntityUrls($entityClassName, $entityName, $forced, $verbose, $output, $slugged);
-		$data = $templating->render('LadbCoreBundle:Command:_cron-sitemap-entities.xml.twig', array(
-			'urls' => $urls,
-		));
-
-		unset($urls);
-
-		if ($forced) {
-
-			$filename = dirname(__FILE__).'/../../../../web/sitemap-'.$section.'.xml';
-
-			if ($verbose) {
-				$output->write('<info> -> Wrinting '.$filename.' file...</info>');
-			}
-
-			$fp = fopen($filename, 'w');
-			fwrite($fp, $data);
-			fclose($fp);
-
-			if ($verbose) {
-				$output->writeln('<comment> [Done]</comment>');
-			}
-		} else {
-			if ($verbose) {
-				$output->writeln('<comment> [Fake]</comment>');
-			}
-		}
-
+	private function _flagVideoAsExported($kind, $embedIdentifer) {
+		$this->exportedVideosIdentifiers[$kind.$embedIdentifer] = true;
 	}
 
 	/////
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-
-		$forced = $input->getOption('force');
-		$verbose = $input->getOption('verbose');
-
-		$this->exportedVideosIdentifiers = array();
-
-		$defs = array(
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Wonder\Creation::CLASS_NAME,
-				'name'      => 'creation',
-				'section'   => 'creations',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Wonder\Plan::CLASS_NAME,
-				'name'      => 'plan',
-				'section'   => 'plans',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Wonder\Workshop::CLASS_NAME,
-				'name'      => 'workshop',
-				'section'   => 'workshops',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Howto\Howto::CLASS_NAME,
-				'name'      => 'howto',
-				'section'   => 'howtos',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Find\Find::CLASS_NAME,
-				'name'      => 'find',
-				'section'   => 'finds',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME,
-				'name'      => 'blog_post',
-				'section'   => 'posts',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Faq\Question::CLASS_NAME,
-				'name'      => 'faq_question',
-				'section'   => 'questions',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Knowledge\Wood::CLASS_NAME,
-				'name'      => 'wood',
-				'section'   => 'woods',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\Knowledge\Provider::CLASS_NAME,
-				'name'      => 'provider',
-				'section'   => 'providers',
-				'slugged'   => true,
-			),
-			array(
-				'className' => \Ladb\CoreBundle\Entity\User::CLASS_NAME,
-				'name'      => 'user',
-				'section'   => 'users',
-				'slugged'   => false,
-			),
-		);
-
-
-		/////
-
-		foreach ($defs as $def) {
-			$this->_createSitemapFile($def['className'], $def['name'], $def['section'], $forced, $verbose, $output, $def['slugged']);
-		}
-
-		/////
-
-		$templating = $this->getContainer()->get('templating');
-
-		if ($verbose) {
-			$output->write('<info>Building index sitemap...</info>');
-		}
-
-		$sitemaps = array();
-
-		foreach ($defs as $def) {
-			$sitemaps[] = $this->_getEntitySitemap($def['className'], $def['section']);
-		}
-
-		$data = $templating->render('LadbCoreBundle:Command:_cron-sitemap-index.xml.twig', array(
-			'sitemaps' => $sitemaps,
-		));
-
-		if ($forced) {
-
-			$filename = dirname(__FILE__).'/../../../../web/sitemap-index.xml';
-
-			if ($verbose) {
-				$output->write('<info> -> Wrinting '.$filename.' file...</info>');
-			}
-
-			$fp = fopen($filename, 'w');
-			fwrite($fp, $data);
-			fclose($fp);
-
-			if ($verbose) {
-				$output->writeln('<comment> [Done]</comment>');
-			}
+	private function _getEntitySitemap($entityClassName, $section) {
+		$om = $this->getContainer()->get('doctrine')->getManager();
+		$entityRepository = $om->getRepository($entityClassName);
+		$lastCreatedEntity = $entityRepository->findLastCreated();
+		$lastUpdatedEntity = $entityRepository->findLastUpdated();
+		$createdAt = !is_null($lastCreatedEntity) ? $lastCreatedEntity->getCreatedAt() : null;
+		$updatedAt = !is_null($lastUpdatedEntity) ? $lastUpdatedEntity->getUpdatedAt() : null;
+		if (!is_null($createdAt) && $createdAt > $updatedAt) {
+			$lastmod = $createdAt->format('Y-m-d\TH:i:sP');
+		} else if (!is_null($updatedAt)) {
+			$lastmod = $updatedAt->format('Y-m-d\TH:i:sP');
 		} else {
-			if ($verbose) {
-				$output->writeln('<comment> [Fake]</comment>');
-			}
+			$lastmod = date_format(new \DateTime(), 'Y-m-d\TH:i:sP');
 		}
-
-
+		return array(
+			'loc'     => $this->getContainer()->get('assets.packages')->getUrl('/sitemap-'.$section.'.xml'),
+			'lastmod' => $lastmod,
+		);
 	}
 
 }

@@ -62,9 +62,9 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 	private $slug;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="main_picture_id", nullable=true)
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */
 	private $mainPicture;
 
@@ -154,7 +154,7 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 	// License /////
 
 	public function getLicense() {
-		return new \Ladb\CoreBundle\Entity\License(true, true);
+		return new \Ladb\CoreBundle\Entity\Core\License(true, true);
 	}
 
 	// ContributorCount /////

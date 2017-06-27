@@ -3,12 +3,10 @@
 namespace Ladb\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Ladb\CoreBundle\Entity\TagUsage;
+use Ladb\CoreBundle\Entity\Core\TagUsage;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;

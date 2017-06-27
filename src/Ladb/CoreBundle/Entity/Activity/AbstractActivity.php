@@ -25,7 +25,7 @@ abstract class AbstractActivity {
 	protected $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	protected $user;
@@ -44,7 +44,7 @@ abstract class AbstractActivity {
 	/////
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Notification", mappedBy="activity", cascade={"remove"})
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Notification", mappedBy="activity", cascade={"remove"})
 	 */
 	private $notifications;
 
@@ -62,35 +62,35 @@ abstract class AbstractActivity {
 
 	// User /////
 
-	public function setUser(\Ladb\CoreBundle\Entity\User $user) {
-		$this->user = $user;
-		return $this;
-	}
-
 	public function getUser() {
 		return $this->user;
 	}
 
+	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
+		$this->user = $user;
+		return $this;
+	}
+
 	// CreatedAt /////
+
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
 
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
 	// IsPendingNotifications /////
+
+	public function getIsPendingNotifications() {
+		return $this->isPendingNotifications;
+	}
 
 	public function setIsPendingNotifications($isPendingNotifications) {
 		$this->isPendingNotifications = $isPendingNotifications;
 		return $this;
-	}
-
-	public function getIsPendingNotifications() {
-		return $this->isPendingNotifications;
 	}
 
 

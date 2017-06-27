@@ -2,17 +2,15 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\Activity\AbstractActivity;
-use Ladb\CoreBundle\Entity\Follower;
-use Ladb\CoreBundle\Entity\Notification;
-use Ladb\CoreBundle\Entity\Watch;
+use Ladb\CoreBundle\Entity\Core\Follower;
+use Ladb\CoreBundle\Entity\Core\Notification;
+use Ladb\CoreBundle\Entity\Core\Watch;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
@@ -30,24 +28,6 @@ class CronNotificationPopulateCommand extends ContainerAwareCommand {
 The <info>ladb:cron:notification:populate</info> process activities to populate notifications
 EOT
 			);
-	}
-
-	/////
-
-	private function _createNotification($om, $user, $activity, &$notifiedUsers, &$freshNotificationCount) {
-
-		$notification = new Notification();
-		$notification->setUser($user);
-		$notification->setActivity($activity);
-
-		$notifiedUsers[$user->getId()] = $user;
-		if (isset($freshNotificationCount[$user->getId()])) {
-			$freshNotificationCount[$user->getId()]++;
-		} else {
-			$freshNotificationCount[$user->getId()] = 1;
-		}
-
-		$om->persist($notification);
 	}
 
 	/////
@@ -272,6 +252,24 @@ EOT
 			$om->flush();
 		}
 
+	}
+
+	/////
+
+	private function _createNotification($om, $user, $activity, &$notifiedUsers, &$freshNotificationCount) {
+
+		$notification = new Notification();
+		$notification->setUser($user);
+		$notification->setActivity($activity);
+
+		$notifiedUsers[$user->getId()] = $user;
+		if (isset($freshNotificationCount[$user->getId()])) {
+			$freshNotificationCount[$user->getId()]++;
+		} else {
+			$freshNotificationCount[$user->getId()] = 1;
+		}
+
+		$om->persist($notification);
 	}
 
 }

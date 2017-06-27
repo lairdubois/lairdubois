@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 use Ladb\CoreBundle\Utils\TypableUtils;
 

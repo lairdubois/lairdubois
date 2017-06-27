@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class NotificationRepository extends AbstractEntityRepository {
@@ -77,6 +77,25 @@ class NotificationRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'n', 'a', 'au' ))
+			->from($this->getEntityName(), 'n')
+			->innerJoin('n.activity', 'a')
+			->innerJoin('a.user', 'au')
+			->where('n.user = :user')
+			->setParameter('user', $user)
+			->orderBy('a.createdAt', 'DESC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('activity-like' == $filter) {
 			$queryBuilder
@@ -106,25 +125,6 @@ class NotificationRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->addOrderBy('a.createdAt', 'DESC')
 		;
-	}
-
-	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'n', 'a', 'au' ))
-			->from($this->getEntityName(), 'n')
-			->innerJoin('n.activity', 'a')
-			->innerJoin('a.user', 'au')
-			->where('n.user = :user')
-			->setParameter('user', $user)
-			->orderBy('a.createdAt', 'DESC')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		$this->_applyCommonFilter($queryBuilder, $filter);
-
-		return new Paginator($queryBuilder->getQuery());
 	}
 
 }

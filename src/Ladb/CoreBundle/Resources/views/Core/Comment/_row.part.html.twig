@@ -1,0 +1,36 @@
+<div id="ladb_comment_{{ comment.id }}" itemprop="comment" itemscope itemtype="http://schema.org/Comment" class="ladb-comment-row">
+    {% block minitools %}
+        <div class="ladb-minitools">
+            {% if not app.request.isxmlhttprequest %}
+                <a href="#" onclick="bootbox.dialog({ title:'{{ 'comment.get_link'|trans() }}', message:'<p>Lien direct vers le commentaire :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_comment_{{ comment.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'comment.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
+            {% endif %}
+            {% if is_granted("ROLE_ADMIN") or comment.user == app.user %}
+                <a href="#" onclick="editComment({{ comment.id }}, '{{ path('core_comment_edit', { 'id':comment.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
+            {% endif %}
+            {% if is_granted("ROLE_ADMIN") %}
+                <a href="#" onclick="deleteComment({{ comment.id }}, '{{ path('core_comment_delete', { 'id':comment.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
+            {% endif %}
+            {% if comment.user != app.user %}
+                {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':comment.type, 'entityId':comment.id } %}
+            {% endif %}
+        </div>
+    {% endblock %}
+    {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':comment.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+    <div class="ladb-box">
+        <div class="ladb-heading">
+            {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':comment, 'hideBy':true, 'itemprop':'creator' } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':comment, 'itemprop':'dateCreated' } %}
+        </div>
+        <div class="ladb-body">
+            <span itemprop="text">{{ comment.htmlBody|raw }}</span>
+            {% if comment.pictures is not empty %}
+                <div class="row">
+                    {% for picture in comment.pictures %}
+                        <div class="col-md-3 col-xs-6">
+                            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

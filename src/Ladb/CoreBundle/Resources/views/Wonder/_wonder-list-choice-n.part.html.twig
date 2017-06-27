@@ -17,7 +17,7 @@
             <div class="ladb-body">
                 <h4 class="ladb-heading">{{ wonder.title }}</h4>
                 <span class="ladb-subheading">
-                    {{ 'default.by'|trans() }} {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':wonder.user } %}<small class="ladb-age">{{ wonder.createdAt|time_diff() }}</small>
+                    {{ 'default.by'|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':wonder.user } %}<small class="ladb-age">{{ wonder.createdAt|time_diff() }}</small>
                 </span>
             </div>
         </div>

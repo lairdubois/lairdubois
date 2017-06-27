@@ -3,15 +3,12 @@
 namespace Ladb\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
+use Ladb\CoreBundle\Entity\Core\Spotlight;
 use Ladb\CoreBundle\Utils\MailerUtils;
-use Ladb\CoreBundle\Entity\Spotlight;
 use Ladb\CoreBundle\Utils\TypableUtils;
 
 class CronSpotlightCommand extends ContainerAwareCommand {
@@ -27,141 +24,6 @@ class CronSpotlightCommand extends ContainerAwareCommand {
 The <info>ladb:cron:spotlight</info> update spotlights
 EOT
 			);
-	}
-
-	/////
-
-	private function _publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output) {
-
-		$success = false;
-		$status = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-twitter-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
-		$mediaIds = '';
-		if ($verbose) {
-			$output->writeln('<info>Posting to Twitter (<fg=yellow>'.$status.'</fg=yellow>) ...</info>');
-		}
-
-		$consumerKey = $this->getContainer()->getParameter('twitter_consumer_key');
-		$consumerSecret = $this->getContainer()->getParameter('twitter_consumer_secret');
-		$accessToken = $this->getContainer()->getParameter('twitter_access_token');
-		$accessTokenSecret = $this->getContainer()->getParameter('twitter_access_secret');
-
-		// Setup CodeBird
-		\Codebird\Codebird::setConsumerKey($consumerKey, $consumerSecret);
-		$cb = \Codebird\Codebird::getInstance();
-		$cb->setToken($accessToken, $accessTokenSecret);
-
-		if ($forced || $forcedTwitter) {
-
-			// Upload media
-			$mainPicture = $entity->getMainPicture();
-			if (!is_null($mainPicture)) {
-				if ($verbose) {
-					$output->write('<info>Uploading ('.$mainPicture->getPath().') to Twitter...</info>');
-				}
-				// upload all media files
-				$reply = $cb->media_upload(array(
-					'media' => $mainPicture->getAbsolutePath(),
-				));
-				if (isset($reply->httpstatus) && $reply->httpstatus == 200 && isset($reply->media_id_string)) {
-					// and collect their IDs
-					$mediaIds = $reply->media_id_string;
-					if ($verbose) {
-						$output->writeln('<fg=cyan>[Done] (media_id_string='.$reply->media_id_string.')</fg=cyan>');
-					}
-				} else {
-					if ($verbose) {
-						$output->writeln('<fg=cyan>[Error] ('.(isset($reply->httpstatus) ? $reply->httpstatus : 'unknow').') '.((isset($reply->errors) && isset($reply->errors[0]) && isset($reply->errors[0]->message)) ? $reply->errors[0]->message : '').'</fg=cyan>');
-					}
-				}
-			}
-			$params = array(
-				'status'    => $status,
-				'media_ids' => $mediaIds,
-			);
-
-			$reply = $cb->statuses_update($params);
-			$success = isset($reply->httpstatus) && $reply->httpstatus == 200;
-			if ($verbose) {
-				if ($success) {
-					$output->writeln('<fg=cyan>[Done]</fg=cyan>');
-				} else {
-					$output->writeln('<fg=red>[Error] ('.(isset($reply->httpstatus) ? $reply->httpstatus : 'unknow').') '.((isset($reply->errors) && isset($reply->errors[0]) && isset($reply->errors[0]->message)) ? $reply->errors[0]->message : '').'</fg=red>');
-				}
-			}
-
-		} else {
-			if ($verbose) {
-				$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
-			}
-		}
-
-		return $success;
-	}
-
-	private function _publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output) {
-
-		$success = true;
-		$message = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
-		$link = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-facebook-link.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
-		if ($verbose) {
-			$output->writeln('<info>Posting to Facebook (<fg=yellow>'.$message.' '.$link.'</fg=yellow>) ...</info>');
-		}
-
-		$appId = $this->getContainer()->getParameter('facebook_app_id');
-		$appSecret = $this->getContainer()->getParameter('facebook_app_secret');
-		$pageId = $this->getContainer()->getParameter('facebook_page_id');
-		$accessToken = $this->getContainer()->getParameter('facebook_access_token');
-
-		// Setup Facebook SDK
-		$fb = new \Facebook\Facebook([
-			'app_id' => $appId,
-			'app_secret' => $appSecret,
-			'default_graph_version' => 'v2.8',
-			'default_access_token' => $accessToken,
-		]);
-
-		if ($forced || $forcedFacebook) {
-
-			$request = $fb->request(
-				'POST',
-				'/'. $pageId .'/feed',
-				array(
-					'message' => $message,
-					'link' => $link,
-				)
-			);
-
-			try {
-				$fb->getClient()->sendRequest($request);
-			} catch (\Facebook\Exceptions\FacebookResponseException $e) {
-
-				// When Graph returns an error
-				if ($verbose) {
-					$output->writeln('<fg=red>[Error] Graph returned an error: '.$e->getMessage().'</fg=red>');
-				}
-
-				$success = false;
-			} catch (\Facebook\Exceptions\FacebookSDKException $e) {
-
-				// When validation fails or other local issues
-				if ($verbose) {
-					$output->writeln('<fg=red>[Error] Facebook SDK returned an error: '.$e->getMessage().'</fg=red>');
-				}
-
-				$success = false;
-			}
-
-			if ($verbose && $success) {
-				$output->writeln('<fg=cyan>[Done]</fg=cyan>');
-			}
-
-		} else {
-			if ($verbose) {
-				$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
-			}
-		}
-
-		return $success;
 	}
 
 	/////
@@ -377,6 +239,141 @@ EOT
 
 		}
 
+	}
+
+	private function _publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output) {
+
+		$success = false;
+		$status = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-twitter-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$mediaIds = '';
+		if ($verbose) {
+			$output->writeln('<info>Posting to Twitter (<fg=yellow>'.$status.'</fg=yellow>) ...</info>');
+		}
+
+		$consumerKey = $this->getContainer()->getParameter('twitter_consumer_key');
+		$consumerSecret = $this->getContainer()->getParameter('twitter_consumer_secret');
+		$accessToken = $this->getContainer()->getParameter('twitter_access_token');
+		$accessTokenSecret = $this->getContainer()->getParameter('twitter_access_secret');
+
+		// Setup CodeBird
+		\Codebird\Codebird::setConsumerKey($consumerKey, $consumerSecret);
+		$cb = \Codebird\Codebird::getInstance();
+		$cb->setToken($accessToken, $accessTokenSecret);
+
+		if ($forced || $forcedTwitter) {
+
+			// Upload media
+			$mainPicture = $entity->getMainPicture();
+			if (!is_null($mainPicture)) {
+				if ($verbose) {
+					$output->write('<info>Uploading ('.$mainPicture->getPath().') to Twitter...</info>');
+				}
+				// upload all media files
+				$reply = $cb->media_upload(array(
+					'media' => $mainPicture->getAbsolutePath(),
+				));
+				if (isset($reply->httpstatus) && $reply->httpstatus == 200 && isset($reply->media_id_string)) {
+					// and collect their IDs
+					$mediaIds = $reply->media_id_string;
+					if ($verbose) {
+						$output->writeln('<fg=cyan>[Done] (media_id_string='.$reply->media_id_string.')</fg=cyan>');
+					}
+				} else {
+					if ($verbose) {
+						$output->writeln('<fg=cyan>[Error] ('.(isset($reply->httpstatus) ? $reply->httpstatus : 'unknow').') '.((isset($reply->errors) && isset($reply->errors[0]) && isset($reply->errors[0]->message)) ? $reply->errors[0]->message : '').'</fg=cyan>');
+					}
+				}
+			}
+			$params = array(
+				'status'    => $status,
+				'media_ids' => $mediaIds,
+			);
+
+			$reply = $cb->statuses_update($params);
+			$success = isset($reply->httpstatus) && $reply->httpstatus == 200;
+			if ($verbose) {
+				if ($success) {
+					$output->writeln('<fg=cyan>[Done]</fg=cyan>');
+				} else {
+					$output->writeln('<fg=red>[Error] ('.(isset($reply->httpstatus) ? $reply->httpstatus : 'unknow').') '.((isset($reply->errors) && isset($reply->errors[0]) && isset($reply->errors[0]->message)) ? $reply->errors[0]->message : '').'</fg=red>');
+				}
+			}
+
+		} else {
+			if ($verbose) {
+				$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
+			}
+		}
+
+		return $success;
+	}
+
+	/////
+
+	private function _publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output) {
+
+		$success = true;
+		$message = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$link = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-facebook-link.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		if ($verbose) {
+			$output->writeln('<info>Posting to Facebook (<fg=yellow>'.$message.' '.$link.'</fg=yellow>) ...</info>');
+		}
+
+		$appId = $this->getContainer()->getParameter('facebook_app_id');
+		$appSecret = $this->getContainer()->getParameter('facebook_app_secret');
+		$pageId = $this->getContainer()->getParameter('facebook_page_id');
+		$accessToken = $this->getContainer()->getParameter('facebook_access_token');
+
+		// Setup Facebook SDK
+		$fb = new \Facebook\Facebook([
+			'app_id' => $appId,
+			'app_secret' => $appSecret,
+			'default_graph_version' => 'v2.8',
+			'default_access_token' => $accessToken,
+		]);
+
+		if ($forced || $forcedFacebook) {
+
+			$request = $fb->request(
+				'POST',
+				'/'. $pageId .'/feed',
+				array(
+					'message' => $message,
+					'link' => $link,
+				)
+			);
+
+			try {
+				$fb->getClient()->sendRequest($request);
+			} catch (\Facebook\Exceptions\FacebookResponseException $e) {
+
+				// When Graph returns an error
+				if ($verbose) {
+					$output->writeln('<fg=red>[Error] Graph returned an error: '.$e->getMessage().'</fg=red>');
+				}
+
+				$success = false;
+			} catch (\Facebook\Exceptions\FacebookSDKException $e) {
+
+				// When validation fails or other local issues
+				if ($verbose) {
+					$output->writeln('<fg=red>[Error] Facebook SDK returned an error: '.$e->getMessage().'</fg=red>');
+				}
+
+				$success = false;
+			}
+
+			if ($verbose && $success) {
+				$output->writeln('<fg=cyan>[Done]</fg=cyan>');
+			}
+
+		} else {
+			if ($verbose) {
+				$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
+			}
+		}
+
+		return $success;
 	}
 
 }

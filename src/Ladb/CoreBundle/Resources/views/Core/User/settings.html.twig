@@ -1,0 +1,283 @@
+{% extends 'LadbCoreBundle:Common:_form.html.twig' %}
+
+{% set pageTitle = 'user.settings'|trans() %}
+{% set formAction = path('core_user_settings') %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'avatar', 'fieldId':form.avatar.vars.id, 'maxPictureCount':1 } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'banner', 'fieldId':form.banner.vars.id, 'maxPictureCount':1 } %}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.skills.vars.id, 'help':('skill.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_skills_json')|raw) } %}
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+{% endblock %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}
+{% endblock %}
+
+{% block sidenav %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'formSection':'avatar', 'title':('user.avatar'|trans()) } %}
+    <li><a href="#account"><i class="ladb-icon-user"></i> {{ 'user.account'|trans() }}</a></li>
+    {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'formSection':'banner', 'title':('user.banner'|trans()) } %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' with { 'formSection':'biography', 'title':('biography.biography'|trans()) } %}
+    <li><a href="#skills"><i class="ladb-icon-skills"></i> {{ 'skill.skills'|trans() }}</a></li>
+    <li><a href="#location"><i class="ladb-icon-location"></i> {{ 'user.location'|trans() }}</a></li>
+    <li><a href="#social"><i class="ladb-icon-social"></i> {{ 'user.social'|trans() }}</a></li>
+    <li><a href="#options"><i class="ladb-icon-list"></i> {{ 'user.options'|trans() }}</a></li>
+    <li><a href="#email_notifications"><i class="ladb-icon-notifications"></i> {{ 'user.email_notifications'|trans() }}</a></li>
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_user_show', { 'username' : user.usernameCanonical }) }}" class="btn btn-default btn-block">{{ 'default.cancel'|trans() }}</a>
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sections %}
+    {{ form_errors(form) }}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'formSection':'avatar', 'formPictures':form.avatar, 'pictures':(form.vars.data.avatar is null ? [] : [ form.vars.data.avatar ]), 'maxPictureCount':1, 'title':('user.avatar'|trans()), 'help':('user.avatar_help'|trans()), 'hideTextOverlayWarning':true } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'user', 'title':('user.account'|trans()), 'formSection':'account' } %}
+        {% block body %}
+            <div class="form-group">
+                {{ form_label(form.usernameCanonical, 'Nom d\'utilisateur') }}
+                {{ form_widget(form.usernameCanonical, { 'attr': { 'class':'form-control' } }) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.displayname, 'Nom affiché') }}
+                {{ form_errors(form.displayname) }}
+                {{ form_widget(form.displayname, { 'attr': { 'class':'form-control' } }) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.fullname, 'Nom complet') }}
+                {{ form_errors(form.fullname) }}
+                {{ form_widget(form.fullname, { 'attr': { 'class':'form-control' } }) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.email, 'Adresse e-mail') }}
+                {{ form_errors(form.email) }}
+                {{ form_widget(form.email, { 'attr': { 'class':'form-control' } }) }}
+                <p class="help-block"><em>Votre adresse e-mail ne sera jamais rendue publique.</em></p>
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <div>
+                    <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Changer le mot de passe</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Type de compte</label>
+                <span class="help-block"><em>Indiquez qui se cache derrière ce compte.</em></span>
+                {{ form_errors(form.accountType) }}
+                {{ form_widget(form.accountType) }}
+            </div>
+            <hr>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'quel-sont-les-differents-type-de-comptes' }) }}" target="_blank">Quel sont les différents type de comptes ?</a> </p>
+        {% endblock %}
+    {% endembed %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'formSection':'banner', 'formPictures':form.banner, 'pictures':(form.vars.data.banner is null ? [] : [ form.vars.data.banner ]), 'maxPictureCount':1, 'title':('user.banner'|trans()), 'help':('user.banner_help'|trans()), 'hideTextOverlayWarning':true } %}
+    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'form':form.biography, 'formSection':'biography', 'title':('biography.biography'|trans()), 'help':('biography.form.help'|trans()) } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'skills', 'title':('skill.skills'|trans()), 'formSection':'skills' } %}
+        {% block body %}
+            <span class="help-block">Indiquez les compétences qui vous correspondent. <i>Exemple : <strong>Tournage,Sculpture</strong></i></span>
+            {{ form_errors(form.skills) }}
+            {{ form_widget(form.skills) }}
+        {% endblock %}
+    {% endembed %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'location', 'title':('user.location'|trans()), 'formSection':'location' } %}
+        {% block body %}
+            <script>
+                function locateLocation(btn) {
+                    if (navigator.geolocation) {
+                        btn.button('loading');
+                        var optn = {
+                            enableHighAccuracy : true,
+                            timeout : Infinity,
+                            maximumAge : 0
+                        };
+                        navigator.geolocation.getCurrentPosition(
+                                function (position) {
+                                    var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                    var geocoder = new google.maps.Geocoder();
+                                    geocoder.geocode({'latLng': latlng}, function(results, status) {
+                                        if (status == google.maps.GeocoderStatus.OK) {
+                                            if (results[1]) {
+                                                $("#{{ form.location.vars.id }}").val(results[1].formatted_address);
+                                                markAsUnsaved();
+                                            } else {
+                                                notifyError("{{ 'default.geocode.position_unavailable'|trans() }}");
+                                            }
+                                        } else {
+                                            notifyError("{{ 'default.geocode.unkonw_error'|trans() }} (status=" + status + ")");
+                                        }
+                                        btn.button("reset");
+                                    });
+                                },
+                                function (error) {
+                                    switch(error.code) {
+                                        case error.PERMISSION_DENIED:
+                                            notifyError("{{ 'default.geocode.permission_denied'|trans() }}");
+                                            break;
+                                        case error.POSITION_UNAVAILABLE:
+                                            notifyError("{{ 'default.geocode.position_unavailable'|trans() }}");
+                                            break;
+                                        default:
+                                            notifyError("{{ 'default.geocode.unkonw_error'|trans() }}");
+                                            break;
+                                    }
+                                    btn.button("reset");
+                                },
+                                optn);
+                    } else {
+                        notifyError("{{ 'default.geocode.unsupported_browser'|trans() }}");
+                    }
+                }
+            </script>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.location_help'|trans() }}</span>
+                {{ form_errors(form.location) }}
+                {{ form_widget(form.location, { 'attr': { 'class':'form-control' } }) }}
+                <div class="">
+                    <a href="#" class="btn btn-default ladb-margin-top" onclick="locateLocation($(this)); return false;" data-loading-text="{{ 'default.geocode.loading'|trans() }}"><i class="ladb-icon-locate"></i> Utiliser ma position actuelle</a>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'share', 'title':('user.social'|trans()), 'formSection':'social' } %}
+        {% block body %}
+            <div class="form-group">
+                <span class="help-block">{{ 'user.website_help'|trans() }}</span>
+                {{ form_errors(form.website) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-globe ladb-icon-lg"></i></span>
+                    {{ form_widget(form.website, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.facebook_help'|trans()|raw }}</span>
+                {{ form_errors(form.facebook) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-facebook-square ladb-icon-lg"></i> https://www.facebook.com/</span>
+                    {{ form_widget(form.facebook, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.twitter_help'|trans()|raw }}</span>
+                {{ form_errors(form.twitter) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-twitter-square ladb-icon-lg"></i> https://twitter.com/</span>
+                    {{ form_widget(form.twitter, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.googleplus_help'|trans()|raw }}</span>
+                {{ form_errors(form.googleplus) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-google-plus-square ladb-icon-lg"></i> https://plus.google.com/</span>
+                    {{ form_widget(form.googleplus, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.youtube_help'|trans()|raw }}</span>
+                {{ form_errors(form.youtube) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-youtube-square ladb-icon-lg"></i> https://www.youtube.com/channel/</span>
+                    {{ form_widget(form.youtube, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.vimeo_help'|trans()|raw }}</span>
+                {{ form_errors(form.vimeo) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-vimeo-square ladb-icon-lg"></i> https://vimeo.com/</span>
+                    {{ form_widget(form.vimeo, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.dailymotion_help'|trans()|raw }}</span>
+                {{ form_errors(form.dailymotion) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-dailymotion-square ladb-icon-lg"></i> https://www.dailymotion.com/</span>
+                    {{ form_widget(form.dailymotion, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.pinterest_help'|trans()|raw }}</span>
+                {{ form_errors(form.pinterest) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-pinterest-square ladb-icon-lg"></i> http://pinterest.com/</span>
+                    {{ form_widget(form.pinterest, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="help-block">{{ 'user.instagram_help'|trans()|raw }}</span>
+                {{ form_errors(form.instagram) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-instagram-square ladb-icon-lg"></i> http://instagram.com/</span>
+                    {{ form_widget(form.instagram, { 'attr': { 'class':'form-control' } }) }}
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'list', 'title':('user.options'|trans()), 'formSection':'options' } %}
+        {% block body %}
+            <div class="checkbox">
+                <label class="checkbox">
+                    {{ form_widget(form.autoWatchEnabled) }}
+                    Surveiller automatiquement les publications auxquelles je contribue
+                </label>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'notifications', 'title':('user.email_notifications'|trans()), 'formSection':'email_notifications' } %}
+        {% block body %}
+            <span class="help-block">Envoyer un e-mail :</span>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.incomingMessageEmailNotificationEnabled) }}
+                    lorsque je reçois un message privé
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.newFollowerEmailNotificationEnabled) }}
+                    lorsqu'un j'ai un nouvel abonné
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.newLikeEmailNotificationEnabled) }}
+                    lorsqu'un utilisateur aime l'une de mes publications
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.newVoteEmailNotificationEnabled) }}
+                    lorsqu'un utilisateur vote pour l'une de mes publications
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.newFollowingPostEmailNotificationEnabled) }}
+                    lorsqu'un utilisateur auquel je suis abonné ajoute une nouvelle publication
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.newWatchActivityEmailNotificationEnabled) }}
+                    lorsqu'une activité est détectée sur une publication que je surveille
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.newSpotlightEmailNotificationEnabled) }}
+                    lorsque l'une de mes publications reçoit un coup de projecteur
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.weekNewsEmailEnabled) }}
+                    avec les nouveautés de chaque semaine
+                </label>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

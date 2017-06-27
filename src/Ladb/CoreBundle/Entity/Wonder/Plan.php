@@ -40,82 +40,78 @@ class Plan extends AbstractWonder implements BodiedInterface {
 	 * @Assert\Length(min=5, max=4000)
 	 */
 	protected $body;
-
 	/**
-	 * @ORM\Column(type="text", nullable=false)
-	 */
-	private $htmlBody;
-
-	/**
-	 * @ORM\Column(type="simple_array")
-	 */
-	private $kinds = array( Plan::KIND_UNKNOW );
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1, max=5)
 	 */
 	protected $pictures;
-
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Resource", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_plan_tag")
+	 * @Assert\Count(min=2)
+	 */
+	protected $tags;
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_plan_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 */
+	protected $referrals;
+	/**
+	 * @ORM\Column(type="text", nullable=false)
+	 */
+	private $htmlBody;
+	/**
+	 * @ORM\Column(type="simple_array")
+	 */
+	private $kinds = array( Plan::KIND_UNKNOW );
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_resource")
 	 * @Assert\Count(min=1, max=10)
 	 */
 	private $resources;
-
 	/**
 	 * @ORM\Column(type="integer", name="zip_archive_size")
 	 */
 	private $zipArchiveSize = 0;
-
 	/**
 	 * @ORM\Column(type="integer", name="creation_count")
 	 */
 	private $creationCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="plans")
 	 */
 	private $creations;
-
 	/**
 	 * @ORM\Column(type="integer", name="workshop_count")
 	 */
 	private $workshopCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Workshop", mappedBy="plans")
 	 */
 	private $workshops;
-
 	/**
 	 * @ORM\Column(type="integer", name="howto_count")
 	 */
 	private $howtoCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="plans")
 	 */
 	private $howtos;
-
 	/**
 	 * @ORM\Column(type="integer", name="rebound_count")
 	 */
 	private $reboundCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", mappedBy="inspirations")
 	 */
 	private $rebounds;
-
 	/**
 	 * @ORM\Column(type="integer", name="inspiration_count")
 	 */
 	private $inspirationCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="rebounds", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_inspiration",
@@ -125,24 +121,10 @@ class Plan extends AbstractWonder implements BodiedInterface {
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $inspirations;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_plan_tag")
-	 * @Assert\Count(min=2)
-	 */
-	protected $tags;
-
 	/**
 	 * @ORM\Column(type="integer", name="download_count")
 	 */
 	private $downloadCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_plan_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 */
-	protected $referrals;
 
 	/////
 
@@ -165,13 +147,13 @@ class Plan extends AbstractWonder implements BodiedInterface {
 
 	// Kind /////
 
+	public function getKinds() {
+		return $this->kinds;
+	}
+
 	public function setKinds($kind) {
 		$this->kinds = $kind;
 		return $this;
-	}
-
-	public function getKinds() {
-		return $this->kinds;
 	}
 
 	public function getKindStrippedNames() {
@@ -250,7 +232,7 @@ class Plan extends AbstractWonder implements BodiedInterface {
 
 	// Resource /////
 
-	public function setResource(\Ladb\CoreBundle\Entity\Resource $resource = null) {
+	public function setResource(\Ladb\CoreBundle\Entity\Core\Resource $resource = null) {
 		$this->resource = $resource;
 		return $this;
 	}
@@ -261,14 +243,14 @@ class Plan extends AbstractWonder implements BodiedInterface {
 
 	// Resources /////
 
-	public function addResource(\Ladb\CoreBundle\Entity\Resource $resource) {
+	public function addResource(\Ladb\CoreBundle\Entity\Core\Resource $resource) {
 		if (!$this->resources->contains($resource)) {
 			$this->resources[] = $resource;
 		}
 		return $this;
 	}
 
-	public function removeResource(\Ladb\CoreBundle\Entity\Resource $resource) {
+	public function removeResource(\Ladb\CoreBundle\Entity\Core\Resource $resource) {
 		$this->resources->removeElement($resource);
 	}
 
@@ -282,12 +264,12 @@ class Plan extends AbstractWonder implements BodiedInterface {
 
 	// ResourceSizeSum /////
 
-	public function setZipArchiveSize($zipArchiveSize) {
-		return $this->zipArchiveSize = $zipArchiveSize;
-	}
-
 	public function getZipArchiveSize() {
 		return $this->zipArchiveSize;
+	}
+
+	public function setZipArchiveSize($zipArchiveSize) {
+		return $this->zipArchiveSize = $zipArchiveSize;
 	}
 
 	// CreationCount /////
@@ -340,27 +322,21 @@ class Plan extends AbstractWonder implements BodiedInterface {
 
 	// ReboundCount /////
 
-	public function incrementReboundCount($by = 1) {
-		return $this->reboundCount += intval($by);
-	}
-
 	public function getReboundCount() {
 		return $this->reboundCount;
 	}
-
-	// Rebounds /////
 
 	public function getRebounds() {
 		return $this->rebounds;
 	}
 
-	// InspirationCount /////
+	// Rebounds /////
 
 	public function getInspirationCount() {
 		return $this->inspirationCount;
 	}
 
-	// Inspirations /////
+	// InspirationCount /////
 
 	public function addInspiration(\Ladb\CoreBundle\Entity\Wonder\Plan $inspiration) {
 		if (!$this->inspirations->contains($inspiration)) {
@@ -371,6 +347,12 @@ class Plan extends AbstractWonder implements BodiedInterface {
 			}
 		}
 		return $this;
+	}
+
+	// Inspirations /////
+
+	public function incrementReboundCount($by = 1) {
+		return $this->reboundCount += intval($by);
 	}
 
 	public function removeInspiration(\Ladb\CoreBundle\Entity\Wonder\Plan $inspiration) {
@@ -392,13 +374,13 @@ class Plan extends AbstractWonder implements BodiedInterface {
 		return $this->downloadCount += intval($by);
 	}
 
+	public function getDownloadCount() {
+		return $this->downloadCount;
+	}
+
 	public function setDownloadCount($downloadCount) {
 		$this->downloadCount = $downloadCount;
 		return $this;
-	}
-
-	public function getDownloadCount() {
-		return $this->downloadCount;
 	}
 
 }

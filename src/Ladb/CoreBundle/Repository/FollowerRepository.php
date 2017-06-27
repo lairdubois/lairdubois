@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class FollowerRepository extends AbstractEntityRepository {
@@ -13,7 +13,7 @@ class FollowerRepository extends AbstractEntityRepository {
 	public function findOneByFollowingUserIdAndUser($followingUserId, User $user) {
 		$query = $this->getEntityManager()
 			->createQuery('
-                SELECT f FROM LadbCoreBundle:Follower f
+                SELECT f FROM LadbCoreBundle:Core\Follower f
                 WHERE f.followingUserId = :followingUserId AND f.user = :user
             ')
 			->setParameter('followingUserId', $followingUserId)
@@ -47,7 +47,7 @@ class FollowerRepository extends AbstractEntityRepository {
 	public function existsByFollowingUserIdAndUser($followingUserId, User $user) {
 		$query = $this->getEntityManager()
 			->createQuery('
-                SELECT count(f.id) FROM LadbCoreBundle:Follower f
+                SELECT count(f.id) FROM LadbCoreBundle:Core\Follower f
                 WHERE f.followingUserId = :followingUserId AND f.user = :user
             ')
 			->setParameter('followingUserId', $followingUserId)
@@ -61,6 +61,23 @@ class FollowerRepository extends AbstractEntityRepository {
 	}
 
 	//////
+
+	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'f', 'u' ))
+			->from($this->getEntityName(), 'f')
+			->innerJoin('f.followingUser', 'u')
+			->where('f.user = :user')
+			->setParameter('user', $user)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
 
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('contributors-all' == $filter) {
@@ -111,23 +128,6 @@ class FollowerRepository extends AbstractEntityRepository {
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		}
-	}
-
-	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'f', 'u' ))
-			->from($this->getEntityName(), 'f')
-			->innerJoin('f.followingUser', 'u')
-			->where('f.user = :user')
-			->setParameter('user', $user)
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		$this->_applyCommonFilter($queryBuilder, $filter);
-
-		return new Paginator($queryBuilder->getQuery());
 	}
 
 	public function findPaginedByFollowingUser(User $followingUser, $offset, $limit, $filter = 'recent') {

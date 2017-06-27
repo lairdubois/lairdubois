@@ -26,7 +26,7 @@ use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
-use Ladb\CoreBundle\Entity\View;
+use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 
 class PublicationListener implements EventSubscriberInterface {
@@ -67,17 +67,30 @@ class PublicationListener implements EventSubscriberInterface {
 
 	/////
 
-	private function _scrapeOpenGraph(AbstractPublication $publication) {
-		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
-			return;
-		}
-		if (!($publication instanceof ScrapableInterface) || !$publication->getIsScrapable()) {
-			return;
+	public function onPublicationCreated(PublicationEvent $event) {
+		$publication = $event->getPublication();
+
+		if ($publication instanceof TaggableInterface) {
+
+			// Tags usage
+			$tagUtils = $this->container->get(TagUtils::NAME);
+			$tagUtils->useTaggableTags($publication);
+
 		}
 
-		// Scrape Open Graph URL (canonical)
-		$openGraphUtils = $this->container->get(OpenGraphUtils::NAME);
-		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', true, false));
+		if ($publication instanceof WatchableInterface) {
+
+			// Auto watch
+			$watchableUtils = $this->container->get(WatchableUtils::NAME);
+			$watchableUtils->autoCreateWatch($publication, $this->container->get(GlobalUtils::NAME)->getUser());
+
+		}
+
+		// Resolve main picture to avoid image url redirection
+		$this->_resolvePicturesPageImageFilter($publication);
+
+		// Scrape Open Graph URL
+		$this->_scrapeOpenGraph($publication);
 
 	}
 
@@ -115,30 +128,17 @@ class PublicationListener implements EventSubscriberInterface {
 
 	/////
 
-	public function onPublicationCreated(PublicationEvent $event) {
-		$publication = $event->getPublication();
-
-		if ($publication instanceof TaggableInterface) {
-
-			// Tags usage
-			$tagUtils = $this->container->get(TagUtils::NAME);
-			$tagUtils->useTaggableTags($publication);
-
+	private function _scrapeOpenGraph(AbstractPublication $publication) {
+		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
+			return;
+		}
+		if (!($publication instanceof ScrapableInterface) || !$publication->getIsScrapable()) {
+			return;
 		}
 
-		if ($publication instanceof WatchableInterface) {
-
-			// Auto watch
-			$watchableUtils = $this->container->get(WatchableUtils::NAME);
-			$watchableUtils->autoCreateWatch($publication, $this->container->get(GlobalUtils::NAME)->getUser());
-
-		}
-
-		// Resolve main picture to avoid image url redirection
-		$this->_resolvePicturesPageImageFilter($publication);
-
-		// Scrape Open Graph URL
-		$this->_scrapeOpenGraph($publication);
+		// Scrape Open Graph URL (canonical)
+		$openGraphUtils = $this->container->get(OpenGraphUtils::NAME);
+		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', true, false));
 
 	}
 

@@ -55,7 +55,7 @@ abstract class BaseValue implements WatchableChildInterface, CommentableInterfac
 	protected $parentEntityField;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="user_id", nullable=false)
 	 */
 	protected $user;
@@ -178,7 +178,7 @@ abstract class BaseValue implements WatchableChildInterface, CommentableInterfac
 		return $this->user;
 	}
 
-	public function setUser(\Ladb\CoreBundle\Entity\User $user) {
+	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
 		$this->user = $user;
 		return $this;
 	}

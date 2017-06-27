@@ -6,35 +6,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Ladb\CoreBundle\Entity\AbstractPublication;
-use Ladb\CoreBundle\Entity\Witness;
+use Ladb\CoreBundle\Entity\Core\Witness;
 use Ladb\CoreBundle\Utils\TypableUtils;
 
 class WitnessManager extends AbstractManager {
 
 	const NAME = 'ladb_core.witness_manager';
-
-	public function createByPublication(AbstractPublication $publication, $flush = true) {
-		$om = $this->getDoctrine()->getManager();
-		$witnessRepository = $om->getRepository(Witness::CLASS_NAME);
-
-		// Remove if it exists
-		$witness = $witnessRepository->findOneByEntityTypeAndEntityId($publication->getType(), $publication->getId());
-		if (!is_null($witness)) {
-			$om->remove($witness);
-		}
-
-		$witness = new Witness();
-		$witness->setEntityType($publication->getType());
-		$witness->setEntityId($publication->getId());
-
-		$om->persist($witness);
-
-		if ($flush) {
-			$om->flush();
-		}
-
-		return $witness;
-	}
 
 	public function deleteByPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
@@ -63,6 +40,29 @@ class WitnessManager extends AbstractManager {
 
 		if ($flush) {
 			$om = $this->getDoctrine()->getManager();
+			$om->flush();
+		}
+
+		return $witness;
+	}
+
+	public function createByPublication(AbstractPublication $publication, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+		$witnessRepository = $om->getRepository(Witness::CLASS_NAME);
+
+		// Remove if it exists
+		$witness = $witnessRepository->findOneByEntityTypeAndEntityId($publication->getType(), $publication->getId());
+		if (!is_null($witness)) {
+			$om->remove($witness);
+		}
+
+		$witness = new Witness();
+		$witness->setEntityType($publication->getType());
+		$witness->setEntityId($publication->getId());
+
+		$om->persist($witness);
+
+		if ($flush) {
 			$om->flush();
 		}
 

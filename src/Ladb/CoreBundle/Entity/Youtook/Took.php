@@ -76,9 +76,9 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	private $thumbnailUrl;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="main_picture_id", nullable=true)
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 * @Assert\NotBlank()
 	 */
 	private $mainPicture;
@@ -114,46 +114,46 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	// Url /////
 
+	public function getUrl() {
+		return $this->url;
+	}
+
 	public function setUrl($url) {
 		$this->url = $url;
 		return $this;
 	}
 
-	public function getUrl() {
-		return $this->url;
-	}
-
 	// Kind /////
+
+	public function getKind() {
+		return $this->kind;
+	}
 
 	public function setKind($kind) {
 		$this->kind = $kind;
 		return $this;
 	}
 
-	public function getKind() {
-		return $this->kind;
-	}
-
 	// EmbedIdentifier /////
+
+	public function getEmbedIdentifier() {
+		return $this->embedIdentifier;
+	}
 
 	public function setEmbedIdentifier($embedIdentifier) {
 		$this->embedIdentifier = $embedIdentifier;
 		return $this;
 	}
 
-	public function getEmbedIdentifier() {
-		return $this->embedIdentifier;
-	}
-
 	// Slug /////
+
+	public function getSlug() {
+		return $this->slug;
+	}
 
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
 	}
 
 	public function getSluggedId() {
@@ -162,46 +162,46 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	// ThumbnailUrl /////
 
+	public function getThumbnailUrl() {
+		return $this->thumbnailUrl;
+	}
+
 	public function setThumbnailUrl($thumbnailUrl) {
 		$this->thumbnailUrl = $thumbnailUrl;
 		return $this;
 	}
 
-	public function getThumbnailUrl() {
-		return $this->thumbnailUrl;
-	}
-
 	// ChannelId /////
+
+	public function getChannelId() {
+		return $this->channelId;
+	}
 
 	public function setChannelId($channelId) {
 		$this->channelId = $channelId;
 		return $this;
 	}
 
-	public function getChannelId() {
-		return $this->channelId;
-	}
-
 	// ChannelThumbnailUrl /////
+
+	public function getChannelThumbnailUrl() {
+		return $this->channelThumbnailUrl;
+	}
 
 	public function setChannelThumbnailUrl($channelThumbnailUrl) {
 		$this->channelThumbnailUrl = $channelThumbnailUrl;
 		return $this;
 	}
 
-	public function getChannelThumbnailUrl() {
-		return $this->channelThumbnailUrl;
-	}
-
 	// ChannelTitle /////
+
+	public function getChannelTitle() {
+		return $this->channelTitle;
+	}
 
 	public function setChannelTitle($channelTitle) {
 		$this->channelTitle = $channelTitle;
 		return $this;
-	}
-
-	public function getChannelTitle() {
-		return $this->channelTitle;
 	}
 
 }

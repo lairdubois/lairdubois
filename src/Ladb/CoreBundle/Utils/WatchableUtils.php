@@ -2,9 +2,9 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Ladb\CoreBundle\Entity\Watch;
+use Ladb\CoreBundle\Entity\Core\Watch;
 use Ladb\CoreBundle\Model\WatchableInterface;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 
 class WatchableUtils extends AbstractContainerAwareUtils {
 

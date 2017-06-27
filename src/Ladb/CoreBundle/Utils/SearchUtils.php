@@ -16,17 +16,6 @@ class SearchUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	private function _getObjectPersister($entity) {
-		$classname = strtolower(get_class($entity));
-		if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
-			$typeName = $matches[1];
-			return $this->get('fos_elastica.object_persister.ladb.'.$typeName);
-		}
-		return null;
-	}
-
-	/////
-
 	public function insertEntityToIndex(IndexableInterface $entity) {
 		if ($entity->isIndexable()) {
 			$objectPersister = $this->_getObjectPersister($entity);
@@ -37,6 +26,18 @@ class SearchUtils extends AbstractContainerAwareUtils {
 				}
 			}
 		}
+	}
+
+	/////
+
+	private function _getObjectPersister($entity) {
+		$classname = strtolower(get_class($entity));
+		if (preg_match('@\\\\([\w]+)\\\\([\w]+)$@', $classname, $matches)) {
+			$familyName = $matches[1];
+			$typeName = $matches[2];
+			return $this->get('fos_elastica.object_persister.ladb.'.$familyName.'_'.$typeName);
+		}
+		return null;
 	}
 
 	public function replaceEntityInIndex(IndexableInterface $entity) {
@@ -62,6 +63,24 @@ class SearchUtils extends AbstractContainerAwareUtils {
 	}
 
 	/////
+
+	public function searchEntitiesCount($filters, $sort, $typeName, $excludedIds = null) {
+
+		$elasticaQuery = $this->_buildElasticaQuery($filters, $sort, 0, 0, $excludedIds);
+		if (is_null($elasticaQuery)) {
+			return 0;
+		}
+
+		// Count
+		$type = $this->get($typeName);
+		try {
+			$count = $type->count($elasticaQuery);
+		} catch (\Exception $e) {
+			return 0;
+		}
+
+		return $count;
+	}
 
 	private function _buildElasticaQuery(&$filters, &$sort, $offset, $limit, $excludedIds = null) {
 		if (is_null($filters) && is_null($sort)) {
@@ -96,127 +115,6 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		}
 
 		return $elasticaQuery;
-	}
-
-	public function searchEntitiesCount($filters, $sort, $typeName, $excludedIds = null) {
-
-		$elasticaQuery = $this->_buildElasticaQuery($filters, $sort, 0, 0, $excludedIds);
-		if (is_null($elasticaQuery)) {
-			return 0;
-		}
-
-		// Count
-		$type = $this->get($typeName);
-		try {
-			$count = $type->count($elasticaQuery);
-		} catch (\Exception $e) {
-			return 0;
-		}
-
-		return $count;
-	}
-
-	public function searchEntities(&$filters, &$sort, $typeName, $entityClassName, $offset, $limit, $excludedIds = null) {
-
-		$result = new \stdClass();
-		$result->resultSet = null;
-		$result->entities = array();
-
-		$elasticaQuery = $this->_buildElasticaQuery($filters, $sort, $offset, $limit, $excludedIds);
-		if (is_null($elasticaQuery)) {
-			return $result;
-		}
-
-		// Search
-		$type = $this->get($typeName);
-		try {
-			$resultSet = $type->search($elasticaQuery);
-		} catch (\Exception $e) {
-			return $result;
-		}
-
-		// Extract Ids
-		$ids = array();
-		foreach ($resultSet->getResults() as $result) {
-			$ids[] = $result->getId();
-		}
-
-		// Retrieve entities
-		$entities = count($ids) == 0 ? array() : $this->getDoctrine()->getManager()->getRepository($entityClassName)->findByIds($ids);
-
-		// Reorder entities
-		$identifierPropertyPath = new PropertyPath('id');
-		$propertyAccessor = PropertyAccess::createPropertyAccessor();
-		$idPos = array_flip($ids);
-		usort($entities, function($a, $b) use ($idPos, $identifierPropertyPath, $propertyAccessor) {
-			return $idPos[$propertyAccessor->getValue($a, $identifierPropertyPath)] > $idPos[$propertyAccessor->getValue($b, $identifierPropertyPath)];
-		});
-
-		$result->resultSet = $resultSet;
-		$result->entities = $entities;
-
-		return $result;
-	}
-
-	/////
-
-	private function _parseQueryRequest(Request $request, $parseFacets = true) {
-		$q = $request->get('q', '');
-
-		// Parse facets
-		$facets = null;
-		if ($parseFacets) {
-
-			$facets = array();
-			preg_match_all('/(?:@([^\s]+):(?:\"([^\"]+)\"|([^\s]+))|@([^\s]+)|\"([^\"]+)\"|([^\s]+))/', $q, $matches);
-			for ($i = 0; $i < count($matches[0]); $i++) {
-
-				$facet = new \stdClass();
-				$facet->name = null;
-
-				if (!empty($matches[1][$i])) {
-					$facet->name = $matches[1][$i];
-					if (!empty($matches[2][$i])) {
-						$facet->value = $matches[2][$i];
-					} elseif (!empty($matches[3][$i])) {
-						$facet->value = $matches[3][$i];
-					} else {
-						continue;
-					}
-				} else if (!empty($matches[4][$i])) {
-					$facet->name = $matches[4][$i];
-				} else {
-					if (!empty($matches[5][$i])) {
-						$facet->value = $matches[5][$i];
-					} elseif (!empty($matches[6][$i])) {
-						$facet->value = $matches[6][$i];
-					} else {
-						continue;
-					}
-				}
-
-				$facets[] = $facet;
-			}
-
-		}
-
-		// Compute excluded IDs
-		$ex = $request->get('ex');
-		$excludedIds = array();
-		$strIds = explode(',', $ex);
-		foreach ($strIds as $strId) {
-			$intId = intval(trim($strId));
-			if ($intId > 0) {
-				$excludedIds[] = $intId;
-			}
-		}
-
-		return array(
-			'q'           => $q,
-			'facets'      => $facets,
-			'ex'          => $ex,
-			'excludedIds' => $excludedIds,
-		);
 	}
 
 	public function searchPaginedEntities(Request $request, $page, $queryCallback, $defaultsCallBack, $typeName, $entityClassName, $route, $parameters = array(), $excludedIds = null) {
@@ -282,6 +180,109 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			'resultSet'   => $searchResult->resultSet,
 			'entities'    => $searchResult->entities,
 		);
+	}
+
+	/////
+
+	private function _parseQueryRequest(Request $request, $parseFacets = true) {
+		$q = $request->get('q', '');
+
+		// Parse facets
+		$facets = null;
+		if ($parseFacets) {
+
+			$facets = array();
+			preg_match_all('/(?:@([^\s]+):(?:\"([^\"]+)\"|([^\s]+))|@([^\s]+)|\"([^\"]+)\"|([^\s]+))/', $q, $matches);
+			for ($i = 0; $i < count($matches[0]); $i++) {
+
+				$facet = new \stdClass();
+				$facet->name = null;
+
+				if (!empty($matches[1][$i])) {
+					$facet->name = $matches[1][$i];
+					if (!empty($matches[2][$i])) {
+						$facet->value = $matches[2][$i];
+					} elseif (!empty($matches[3][$i])) {
+						$facet->value = $matches[3][$i];
+					} else {
+						continue;
+					}
+				} else if (!empty($matches[4][$i])) {
+					$facet->name = $matches[4][$i];
+				} else {
+					if (!empty($matches[5][$i])) {
+						$facet->value = $matches[5][$i];
+					} elseif (!empty($matches[6][$i])) {
+						$facet->value = $matches[6][$i];
+					} else {
+						continue;
+					}
+				}
+
+				$facets[] = $facet;
+			}
+
+		}
+
+		// Compute excluded IDs
+		$ex = $request->get('ex');
+		$excludedIds = array();
+		$strIds = explode(',', $ex);
+		foreach ($strIds as $strId) {
+			$intId = intval(trim($strId));
+			if ($intId > 0) {
+				$excludedIds[] = $intId;
+			}
+		}
+
+		return array(
+			'q'           => $q,
+			'facets'      => $facets,
+			'ex'          => $ex,
+			'excludedIds' => $excludedIds,
+		);
+	}
+
+	public function searchEntities(&$filters, &$sort, $typeName, $entityClassName, $offset, $limit, $excludedIds = null) {
+
+		$result = new \stdClass();
+		$result->resultSet = null;
+		$result->entities = array();
+
+		$elasticaQuery = $this->_buildElasticaQuery($filters, $sort, $offset, $limit, $excludedIds);
+		if (is_null($elasticaQuery)) {
+			return $result;
+		}
+
+		// Search
+		$type = $this->get($typeName);
+		try {
+			$resultSet = $type->search($elasticaQuery);
+		} catch (\Exception $e) {
+			return $result;
+		}
+
+		// Extract Ids
+		$ids = array();
+		foreach ($resultSet->getResults() as $result) {
+			$ids[] = $result->getId();
+		}
+
+		// Retrieve entities
+		$entities = count($ids) == 0 ? array() : $this->getDoctrine()->getManager()->getRepository($entityClassName)->findByIds($ids);
+
+		// Reorder entities
+		$identifierPropertyPath = new PropertyPath('id');
+		$propertyAccessor = PropertyAccess::createPropertyAccessor();
+		$idPos = array_flip($ids);
+		usort($entities, function($a, $b) use ($idPos, $identifierPropertyPath, $propertyAccessor) {
+			return $idPos[$propertyAccessor->getValue($a, $identifierPropertyPath)] > $idPos[$propertyAccessor->getValue($b, $identifierPropertyPath)];
+		});
+
+		$result->resultSet = $resultSet;
+		$result->entities = $entities;
+
+		return $result;
 	}
 
 }

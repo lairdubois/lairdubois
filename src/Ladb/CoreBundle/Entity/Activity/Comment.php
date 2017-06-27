@@ -15,7 +15,7 @@ class Comment extends AbstractActivity {
 	const STRIPPED_NAME = 'comment';
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Comment")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Comment")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $comment;
@@ -30,13 +30,13 @@ class Comment extends AbstractActivity {
 
 	// Comment /////
 
-	public function setComment(\Ladb\CoreBundle\Entity\Comment $comment) {
-		$this->comment = $comment;
-		return $this;
-	}
-
 	public function getComment() {
 		return $this->comment;
+	}
+
+	public function setComment(\Ladb\CoreBundle\Entity\Core\Comment $comment) {
+		$this->comment = $comment;
+		return $this;
 	}
 
 }
