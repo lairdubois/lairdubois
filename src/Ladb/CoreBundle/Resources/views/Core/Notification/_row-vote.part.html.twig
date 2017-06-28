@@ -6,7 +6,7 @@
 {% set activityEntity = ladb_entity(vote.entityType, vote.entityId) %}
 
 {% block body %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a accordé une <strong class="ladb-color-{{ vote.score > 0 ? 'positive' : 'negative' }}">{{ (vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong>
+    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a accordé une <strong class="ladb-color-{{ vote.score > 0 ? 'positive' : 'negative' }}">{{ (vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong> à
     {% if activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
         or activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
         or activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
@@ -18,7 +18,7 @@
         {% set fieldDef = entity.fieldDefs[vote.parentEntityField] %}
         {% set fieldType = fieldDef[constant('ATTRIB_TYPE', entity)] %}
         {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', entity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', entity)] : null %}
-        à votre proposition pour le champ <em>{{ ('knowledge.'~entity.strippedName~'.field.'~activityEntity.parentEntityField)|trans() }}</em> de "<strong>{{ entity.title|raw }}</strong>".
+        votre proposition pour le champ <em>{{ ('knowledge.'~entity.strippedName~'.field.'~activityEntity.parentEntityField)|trans() }}</em> de "<strong>{{ entity.title|raw }}</strong>".
     {% else %}
         {{ ('notification.'~(entity.user is defined and entity.user.id == app.user.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
     {% endif %}
