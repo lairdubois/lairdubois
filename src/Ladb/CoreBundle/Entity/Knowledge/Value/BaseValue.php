@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge\Value;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\VotableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,8 +24,9 @@ use Ladb\CoreBundle\Model\WatchableChildInterface;
  * @LadbAssert\ValueSource()
  * @UniqueEntity(fields={"dataHash", "parentEntityType", "parentEntityId", "parentEntityField"})
  */
-abstract class BaseValue implements WatchableChildInterface, CommentableInterface, AuthoredInterface, VotableInterface {
+abstract class BaseValue implements AuthoredInterface, WatchableChildInterface, CommentableInterface, VotableInterface {
 
+	use AuthoredTrait;
 	use CommentableTrait, VotableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\BaseValue';
@@ -169,17 +171,6 @@ abstract class BaseValue implements WatchableChildInterface, CommentableInterfac
 
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
-		return $this;
-	}
-
-	// User /////
-
-	public function getUser() {
-		return $this->user;
-	}
-
-	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
-		$this->user = $user;
 		return $this;
 	}
 

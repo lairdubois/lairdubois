@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\MultiPicturedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,7 +19,7 @@ use Ladb\CoreBundle\Model\MultiPicturedInterface;
  */
 class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterface {
 
-	use BodiedTrait, MultiPicturedTrait;
+	use AuthoredTrait, BodiedTrait, MultiPicturedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Comment';
 	const TYPE = 1;
@@ -146,17 +147,6 @@ class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterfa
 
 	public function getUpdatedAt() {
 		return $this->updatedAt;
-	}
-
-	// User /////
-
-	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
-		$this->user = $user;
-		return $this;
-	}
-
-	public function getUser() {
-		return $this->user;
 	}
 
 }
