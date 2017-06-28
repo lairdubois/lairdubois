@@ -44,7 +44,7 @@
     {% if entity is defined %}
         <meta property="article:modified_time" content="{{ entity.updatedAt|date('c') }}" />
         <meta property="article:published_time" content="{{ entity.createdAt|date('c') }}" />
-        <meta property="article:section" content="{{ (ladb_entity_type_stripped_name(entity, true)~'.nav')|trans() }}" />
+        <meta property="article:section" content="{{ (ladb_entity_type_stripped_name(entity, '.')~'.nav')|trans() }}" />
         {% if entity.tags is defined %}
             {% for tag in entity.tags %}
                 <meta property="article:tag" content="{{ tag.name }}" />

@@ -11,7 +11,7 @@
 
 {% set formSection = 'plans' %}
 {% set icon = icon|default('plan') %}
-{% set title = title|default('plan.choice.plans'|transchoice(2)|capitalize) %}
+{% set title = title|default('wonder.plan.choice.plans'|transchoice(2)|capitalize) %}
 
 {% if formPlans is not defined %}
     {% set formPlans = form.plans %}
@@ -30,8 +30,8 @@
         {% endfor %}
     </ul>
     <div id="linkto_plan_buttons">
-        <a href="#linkto_plan_modal" data-toggle="modal" class="btn btn-success" onclick="updatePlanChoiceModal();"><i class="ladb-icon-link"></i> {{ 'plan.linkto'|trans() }}</a>
-        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'linkto_plan_modal', 'title':('plan.linkto'|trans()), 'embeddedBody':true } %}
+        <a href="#linkto_plan_modal" data-toggle="modal" class="btn btn-success" onclick="updatePlanChoiceModal();"><i class="ladb-icon-link"></i> {{ 'wonder.plan.linkto'|trans() }}</a>
+        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'linkto_plan_modal', 'title':('wonder.plan.linkto'|trans()), 'embeddedBody':true } %}
             {% block bodyInner %}
                 <iframe id="linkto_plan_modal_iframe" src="" frameborder="0" width="100%" height="380"></iframe>
             {% endblock %}
@@ -39,8 +39,8 @@
         {% endembed %}
         {% if not (addButtonHidden|default(false)) %}
             {{ 'default.or'|trans() }}
-            <a href="#new_plan_modal" data-toggle="modal" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'plan.create'|trans() }}</a>
-            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_plan_modal', 'title':('plan.create'|trans()) } %}
+            <a href="#new_plan_modal" data-toggle="modal" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'wonder.plan.create'|trans() }}</a>
+            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'new_plan_modal', 'title':('wonder.plan.create'|trans()) } %}
                 {% block bodyInner %}
                     <p>Vous allez être redirigé vers une nouvelle fenêtre pour <strong>créer un nouveau plan</strong>. Il est conseillé d'enregistrer vos modifications avant de continuer.</p>
                     <p>Le plan devra être publié avant de pouvoir être associé.</p>
@@ -48,14 +48,14 @@
                 {% endblock %}
                 {% block footerInner %}
                     <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                    <a href="{{ path('core_plan_new') }}" class="btn btn-primary" target="_blank" onclick="$('#new_plan_modal').find('button.close').click();"><i class="ladb-icon-plus"></i> {{ 'plan.create'|trans() }}</a>
+                    <a href="{{ path('core_plan_new') }}" class="btn btn-primary" target="_blank" onclick="$('#new_plan_modal').find('button.close').click();"><i class="ladb-icon-plus"></i> {{ 'wonder.plan.create'|trans() }}</a>
                 {% endblock %}
             {% endembed %}
         {% endif %}
     </div>
     {% if showInspirationWarning|default(false) %}
         <br>
-        <p class="help-block ladb-color-danger"><i class="ladb-icon-warning"></i>&nbsp;{{ 'plan.form.inspiration_warning'|trans() }}</p>
+        <p class="help-block ladb-color-danger"><i class="ladb-icon-warning"></i>&nbsp;{{ 'wonder.plan.form.inspiration_warning'|trans() }}</p>
     {% endif %}
 {% endblock %}
 

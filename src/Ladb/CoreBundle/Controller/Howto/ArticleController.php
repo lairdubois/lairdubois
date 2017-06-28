@@ -142,7 +142,7 @@ class ArticleController extends Controller {
 		$this->_updateHowtoBlockVideoCount($howto);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.article.form.alert.publish_success', array( '%title%' => $article->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.article.form.alert.publish_success', array( '%title%' => $article->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $article->getHowto()->getSluggedId() )).'#'.$article->getSluggedId());
 	}
@@ -181,7 +181,7 @@ class ArticleController extends Controller {
 		$articleManager->unpublish($article);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.article.form.alert.unpublish_success', array( '%title%' => $article->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.article.form.alert.unpublish_success', array( '%title%' => $article->getTitle() )));
 
 		// Return to
 		$returnToUrl = $request->get('rtu');
@@ -275,7 +275,7 @@ class ArticleController extends Controller {
 			$searchUtils->replaceEntityInIndex($howto);
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.article.form.alert.update_success', array( '%title%' => $article->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.article.form.alert.update_success', array( '%title%' => $article->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(HowtoArticleType::class, $article);
@@ -325,7 +325,7 @@ class ArticleController extends Controller {
 		$searchUtils->replaceEntityInIndex($howto);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.article.form.alert.delete_success', array( '%title%' => $article->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.article.form.alert.delete_success', array( '%title%' => $article->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_edit', array( 'id' => $howto->getId() )));
 	}

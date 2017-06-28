@@ -7,7 +7,7 @@
         <div class="alert alert-info ladb-margin-top">
             {% if is_granted("ROLE_USER") and user.id == app.user.id %}
                 <p>Vous n'avez pas encore publié de <strong>plan</strong> !</p>
-                <p><a href="{{ path('core_plan_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'plan.new'|trans() }}</a></p>
+                <p><a href="{{ path('core_plan_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'wonder.plan.new'|trans() }}</a></p>
             {% else %}
                 <strong>{{ user.username }}</strong> n'a pas encore publié de plan.
             {% endif %}
@@ -24,7 +24,7 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.draftPlanCount~' '~('default.choice.draft'|transchoice(user.draftPlanCount)) }}
                     {% else %}
-                        {{ user.publishedPlanCount }} {{ 'plan.choice.plans'|transchoice(user.publishedPlanCount) }}{% if isDraftVisible and user.draftPlanCount > 0 %} (+{{ user.draftPlanCount~' '~('default.choice.draft'|transchoice(user.draftPlanCount)) }}){% endif %}
+                        {{ user.publishedPlanCount }} {{ 'wonder.plan.choice.plans'|transchoice(user.publishedPlanCount) }}{% if isDraftVisible and user.draftPlanCount > 0 %} (+{{ user.draftPlanCount~' '~('default.choice.draft'|transchoice(user.draftPlanCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

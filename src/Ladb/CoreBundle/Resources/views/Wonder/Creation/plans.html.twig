@@ -19,7 +19,7 @@
             {% set filterPath = 'core_creation_plans_filter' %}
             {% set filterPathParameters = { 'id':creation.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ creation.planCount }} {{ 'plan.choice.plans'|transchoice(creation.planCount) }}</span>
+                <span class="ladb-heading">{{ creation.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(creation.planCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

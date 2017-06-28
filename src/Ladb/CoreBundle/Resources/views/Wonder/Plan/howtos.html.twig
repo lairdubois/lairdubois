@@ -20,7 +20,7 @@
             {% set filterPath = 'core_plan_howtos_filter' %}
             {% set filterPathParameters = { 'id':plan.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ plan.howtoCount }} {{ 'howto.choice.howtos'|transchoice(plan.howtoCount) }}</span>
+                <span class="ladb-heading">{{ plan.howtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(plan.howtoCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

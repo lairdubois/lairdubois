@@ -25,7 +25,7 @@
             {% set filterPath = 'core_provider_howtos_filter' %}
             {% set filterPathParameters = { 'id':provider.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ provider.howtos.count }} {{ 'howto.choice.howtos'|transchoice(provider.howtos.count) }}</span>
+                <span class="ladb-heading">{{ provider.howtos.count }} {{ 'howto.howto.choice.howtos'|transchoice(provider.howtos.count) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

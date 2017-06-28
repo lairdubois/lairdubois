@@ -3,18 +3,18 @@
 {% block counters %}
     {{ parent() }}
     {% if entity.inspirationCount > 0 %}
-        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_inspirations', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'creation.choice.inspiration'|transchoice(entity.reboundCount, { '%count%':entity.inspirationCount }) }}"><i class="ladb-icon-inspiration ladb-color-inspiration"></i></a></li>
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_inspirations', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.creation.choice.inspiration'|transchoice(entity.reboundCount, { '%count%':entity.inspirationCount }) }}"><i class="ladb-icon-inspiration ladb-color-inspiration"></i></a></li>
     {% endif %}
     {% if entity.reboundCount > 0 %}
-        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_rebounds', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'creation.choice.rebound'|transchoice(entity.reboundCount, { '%count%':entity.reboundCount }) }}"><i class="ladb-icon-rebound ladb-color-rebound"></i> <span class="ladb-color-rebound">{{ entity.reboundCount }}</span></a></li>
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_rebounds', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.creation.choice.rebound'|transchoice(entity.reboundCount, { '%count%':entity.reboundCount }) }}"><i class="ladb-icon-rebound ladb-color-rebound"></i> <span class="ladb-color-rebound">{{ entity.reboundCount }}</span></a></li>
     {% endif %}
     {% if entity.planCount > 0 %}
-        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_plans', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'creation.linked_to'|trans() }} {{ entity.planCount }} {{ 'plan.choice.plans'|transchoice(entity.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_plans', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.creation.linked_to'|trans() }} {{ entity.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(entity.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
     {% endif %}
     {% if entity.howtoCount > 0 %}
-        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_howtos', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'creation.linked_to'|trans() }} {{ entity.howtoCount }} {{ 'howto.choice.howtos'|transchoice(entity.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_howtos', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.creation.linked_to'|trans() }} {{ entity.howtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(entity.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
     {% endif %}
     {% if entity.providerCount > 0 %}
-        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_providers', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'creation.linked_to'|trans() }} {{ entity.providerCount }} {{ 'knowledge.provider.choice.providers'|transchoice(entity.providerCount) }}"><i class="ladb-icon-provider"></i></a></li>
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_creation_providers', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.creation.linked_to'|trans() }} {{ entity.providerCount }} {{ 'knowledge.provider.choice.providers'|transchoice(entity.providerCount) }}"><i class="ladb-icon-provider"></i></a></li>
     {% endif %}
 {% endblock %}

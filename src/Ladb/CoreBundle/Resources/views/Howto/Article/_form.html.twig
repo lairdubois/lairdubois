@@ -10,6 +10,6 @@
 {% block sections %}
     <div class="form-untitled-section">{% block sectionsHeader %}{% endblock %}</div>
     {{ parent() }}
-    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('howto.article.form.help.title'|trans()) } %}
-    {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('howto.article.form.help.body'|trans()) } %}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('howto.howto.article.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('howto.howto.article.form.help.body'|trans()) } %}
 {% endblock %}

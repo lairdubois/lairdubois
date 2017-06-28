@@ -1,10 +1,10 @@
 {% extends 'LadbCoreBundle:Wonder/Plan:_form.html.twig' %}
 
-{% set pageTitle = 'plan.edit'|trans() %}
+{% set pageTitle = 'wonder.plan.edit'|trans() %}
 {% set formAction = path('core_plan_update', { 'id':plan.id }) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-edit"></i> {{ 'plan.edit'|trans() }}
+    <i class="ladb-icon-edit"></i> {{ 'wonder.plan.edit'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}

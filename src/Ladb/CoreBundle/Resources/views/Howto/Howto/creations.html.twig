@@ -19,7 +19,7 @@
             {% set filterPath = 'core_howto_creations_filter' %}
             {% set filterPathParameters = { 'id':howto.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ howto.creations.count }} {{ 'creation.choice.creations'|transchoice(howto.creations.count) }}</span>
+                <span class="ladb-heading">{{ howto.creations.count }} {{ 'wonder.creation.choice.creations'|transchoice(howto.creations.count) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

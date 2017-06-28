@@ -1,11 +1,11 @@
 {% extends 'LadbCoreBundle:Find:_form.html.twig' %}
 
-{% set pageTitle = 'find.new'|trans() %}
+{% set pageTitle = 'find.find.new'|trans() %}
 {% set formAction = path('core_find_create') %}
 {% set hideWarning = hideWarning|default(false) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-plus"></i> {{ 'find.new'|trans() }}
+    <i class="ladb-icon-plus"></i> {{ 'find.find.new'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}
@@ -15,7 +15,7 @@
 {% block body %}
     {{ parent() }}
     {% if not hideWarning %}
-        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_find_modal', 'title':('find.new'|trans()), 'textTransKey':'find.new_warning', 'cancelPath':'core_find_list' } %}
+        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_find_modal', 'title':('find.find.new'|trans()), 'textTransKey':'find.find.new_warning', 'cancelPath':'core_find_list' } %}
     {% endif %}
 {% endblock %}
 

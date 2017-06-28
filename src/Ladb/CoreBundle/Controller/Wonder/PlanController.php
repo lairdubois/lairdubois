@@ -136,7 +136,7 @@ class PlanController extends Controller {
 		}
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('plan.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $plan->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.plan.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $plan->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_plan_show', array( 'id' => $plan->getSluggedId() )));
 	}
@@ -167,7 +167,7 @@ class PlanController extends Controller {
 		$planManager->publish($plan);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('plan.form.alert.publish_success', array( '%title%' => $plan->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.plan.form.alert.publish_success', array( '%title%' => $plan->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_plan_show', array( 'id' => $plan->getSluggedId() )));
 	}
@@ -195,7 +195,7 @@ class PlanController extends Controller {
 		$planManager->unpublish($plan);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('plan.form.alert.unpublish_success', array( '%title%' => $plan->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.plan.form.alert.unpublish_success', array( '%title%' => $plan->getTitle() )));
 
 		// Return to
 		$returnToUrl = $request->get('rtu');
@@ -285,7 +285,7 @@ class PlanController extends Controller {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($plan, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('plan.form.alert.update_success', array( '%title%' => $plan->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.plan.form.alert.update_success', array( '%title%' => $plan->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(PlanType::class, $plan);
@@ -327,7 +327,7 @@ class PlanController extends Controller {
 		$planManager->delete($plan);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('plan.form.alert.delete_success', array( '%title%' => $plan->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.plan.form.alert.delete_success', array( '%title%' => $plan->getTitle() )));
 
 		if ($plan->getIsDraft()) {
 			return $this->redirect($this->generateUrl('core_user_show_plans', array( 'username' => $this->getUser()->getUsernameCanonical() )));
@@ -817,7 +817,7 @@ class PlanController extends Controller {
 			$draftCount = $this->getUser()->getDraftPlanCount();
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('plan.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('wonder.plan.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
 
 		}
 

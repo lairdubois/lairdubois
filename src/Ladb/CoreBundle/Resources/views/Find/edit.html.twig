@@ -1,10 +1,10 @@
 {% extends 'LadbCoreBundle:Find:_form.html.twig' %}
 
-{% set pageTitle = 'find.edit'|trans() %}
+{% set pageTitle = 'find.find.edit'|trans() %}
 {% set formAction = path('core_find_update', { 'id':find.id }) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-edit"></i> {{ 'find.edit'|trans() }}
+    <i class="ladb-icon-edit"></i> {{ 'find.find.edit'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}

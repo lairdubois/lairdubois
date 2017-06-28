@@ -110,13 +110,13 @@
                                 {% endif %}
                                 {% if wonderType == 'creation' %}
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#admin_converttoworkshop_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-workshop"></i> {{ 'creation.converttoworkshop'|trans() }}</a></li>
-                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'creation.converttohowto'|trans() }}</a></li>
-                                    <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-globe"></i> {{ 'creation.converttofind'|trans() }}</a></li>
+                                    <li><a href="#admin_converttoworkshop_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-workshop"></i> {{ 'wonder.creation.converttoworkshop'|trans() }}</a></li>
+                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'wonder.creation.converttohowto'|trans() }}</a></li>
+                                    <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-globe"></i> {{ 'wonder.creation.converttofind'|trans() }}</a></li>
                                 {% endif %}
                                 {% if wonderType == 'workshop' %}
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'workshop.converttohowto'|trans() }}</a></li>
+                                    <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'wonder.workshop.converttohowto'|trans() }}</a></li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -133,7 +133,7 @@
                             {% endembed %}
                         {% endif %}
                         {% if wonderType == 'creation' %}
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttoworkshop_wonder_modal', 'title':('creation.converttoworkshop'|trans()) } %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttoworkshop_wonder_modal', 'title':('wonder.creation.converttoworkshop'|trans()) } %}
                                 {% block bodyInner %}
                                     <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en atelier.</p>
                                     <p>Confirmez l'action pour continuer.</p>
@@ -143,7 +143,7 @@
                                     <a href="{{ path('core_creation_admin_converttoworkshop', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
                                 {% endblock %}
                             {% endembed %}
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('creation.converttohowto'|trans()) } %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('wonder.creation.converttohowto'|trans()) } %}
                                 {% block bodyInner %}
                                     <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en pas à pas.</p>
                                     <p>Confirmez l'action pour continuer.</p>
@@ -153,7 +153,7 @@
                                     <a href="{{ path('core_creation_admin_converttohowto', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
                                 {% endblock %}
                             {% endembed %}
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttofind_wonder_modal', 'title':('creation.converttofind'|trans()) } %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttofind_wonder_modal', 'title':('wonder.creation.converttofind'|trans()) } %}
                                 {% block bodyInner %}
                                     <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en trouvaille.</p>
                                     <p>Confirmez l'action pour continuer.</p>
@@ -165,7 +165,7 @@
                             {% endembed %}
                         {% endif %}
                         {% if wonderType == 'workshop' %}
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('workshop.converttohowto'|trans()) } %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('wonder.workshop.converttohowto'|trans()) } %}
                                 {% block bodyInner %}
                                     <p>La convertion transformera l'atelier <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en pas à pas.</p>
                                     <p>Confirmez l'action pour continuer.</p>

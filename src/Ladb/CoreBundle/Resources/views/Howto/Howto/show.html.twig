@@ -198,7 +198,7 @@
             {{ howto.htmlBody|raw }}
         </div>
         {% if howto.articles.count > 1 %}
-            <h4>{{ 'howto.article.list'|trans() }}</h4>
+            <h4>{{ 'howto.howto.article.list'|trans() }}</h4>
             <ul>
                 {% for article in howto.articles if not article.isDraft or article.isDraft and showDraft %}
                     <li>
@@ -220,9 +220,9 @@
             <a id="{{ article.sluggedId }}" class="ladb-offsetted-anchor"></a>
             <div class="pull-right">
                 {% if not howto.isDraft and not article.isDraft %}
-                    <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
+                    <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
                     &nbsp;
-                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
+                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.howto.article.share'|trans()) } %}
                         {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
                         {% block bodyInner %}
                             <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -284,10 +284,10 @@
                     {% endembed %}
                 {% endif %}
                 {% if is_granted("ROLE_ADMIN") or ownerUser %}
-                    <a href="{{ path('core_howto_article_edit', { 'id':article.id }) }}" class="btn btn-default btn-sm" title="{{ 'howto.article.edit'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
+                    <a href="{{ path('core_howto_article_edit', { 'id':article.id }) }}" class="btn btn-default btn-sm" title="{{ 'howto.howto.article.edit'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
                 {% endif %}
                 {% if is_granted("ROLE_ADMIN") and not article.isDraft %}
-                    <a href="#unpublish_howto_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.unpublish'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                    <a href="#unpublish_howto_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.howto.article.unpublish'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
                     {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_howto_article_'~article.id~'_modal', 'title':('default.unpublishing'|trans()) } %}
                         {% block bodyInner %}
                             <p>La dépublication de l'article <strong>{{ article.title }}</strong> le rendra invisible des autres utilisateurs.</p>
@@ -331,7 +331,7 @@
                         'path':howto.planCount == 1 ? path('core_plan_show', { 'id':howto.plans[0].sluggedId }) : path('core_howto_plans', { 'id':howto.id }),
                         'picture':howto.plans[0].mainPicture,
                         'icon':'ladb-icon-plan',
-                        'caption': howto.planCount~' '~('plan.choice.plans'|transchoice(howto.planCount))
+                        'caption': howto.planCount~' '~('wonder.plan.choice.plans'|transchoice(howto.planCount))
                     } %}
                 {% endif %}
                 {% if howto.creationCount > 0 %}
@@ -339,7 +339,7 @@
                         'path':howto.creationCount == 1 ? path('core_creation_show', { 'id':howto.creations[0].sluggedId }) : path('core_howto_creations', { 'id':howto.id }),
                         'picture':howto.creations[0].mainPicture,
                         'icon':'ladb-icon-creation',
-                        'caption': howto.creationCount~' '~('creation.choice.creations'|transchoice(howto.creationCount))
+                        'caption': howto.creationCount~' '~('wonder.creation.choice.creations'|transchoice(howto.creationCount))
                     } %}
                 {% endif %}
                 {% if howto.workshopCount > 0 %}
@@ -347,7 +347,7 @@
                         'path':howto.workshopCount == 1 ? path('core_workshop_show', { 'id':howto.workshops[0].sluggedId }) : path('core_howto_workshops', { 'id':howto.id }),
                         'picture':howto.workshops[0].mainPicture,
                         'icon':'ladb-icon-workshop',
-                        'caption': howto.workshopCount~' '~('workshop.choice.workshops'|transchoice(howto.workshopCount))
+                        'caption': howto.workshopCount~' '~('wonder.workshop.choice.workshops'|transchoice(howto.workshopCount))
                     } %}
                 {% endif %}
                 {% if howto.providerCount > 0 %}
@@ -391,7 +391,7 @@
                 <a href="{{ howto.planCount == 1 ? path('core_plan_show', { 'id':howto.plans[0].sluggedId }) : path('core_howto_plans', { 'id':howto.id }) }}">
             {% endif %}
             <strong>{{ howto.planCount }}</strong>
-            <small>{{ 'plan.choice.plans'|transchoice(howto.planCount) }}</small>
+            <small>{{ 'wonder.plan.choice.plans'|transchoice(howto.planCount) }}</small>
             {% if howto.planCount > 0 %}
                 </a>
             {% endif %}
@@ -401,7 +401,7 @@
                 <i class="ladb-icon-creation"></i>
                 <a href="{{ howto.creationCount == 1 ? path('core_creation_show', { 'id':howto.creations[0].sluggedId }) : path('core_howto_creations', { 'id':howto.id }) }}">
                     <strong>{{ howto.creationCount }}</strong>
-                    <small>{{ 'creation.choice.creations'|transchoice(howto.creationCount) }}</small>
+                    <small>{{ 'wonder.creation.choice.creations'|transchoice(howto.creationCount) }}</small>
                 </a>
             </div>
         {% endif %}
@@ -410,7 +410,7 @@
                 <i class="ladb-icon-workshop"></i>
                 <a href="{{ howto.workshopCount == 1 ? path('core_workshop_show', { 'id':howto.workshops[0].sluggedId }) : path('core_howto_workshops', { 'id':howto.id }) }}">
                     <strong>{{ howto.workshopCount }}</strong>
-                    <small>{{ 'workshop.choice.workshops'|transchoice(howto.workshopCount) }}</small>
+                    <small>{{ 'wonder.workshop.choice.workshops'|transchoice(howto.workshopCount) }}</small>
                 </a>
             </div>
         {% endif %}
@@ -434,7 +434,7 @@
     {% if userHowtos is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('howto.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':howto.user, 'noMicrodata':true } %}
+                {{ ('howto.howto.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':howto.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userHowto in userHowtos %}
@@ -453,7 +453,7 @@
     {% if similarHowtos is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('howto.similar')|trans() }}
+                {{ ('howto.howto.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarHowto in similarHowtos %}

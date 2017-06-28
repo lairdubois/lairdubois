@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_list.html.twig' %}
 
-{% set pageTitle = 'howto.list'|trans() %}
-{% set pageDescription = 'howto.description'|trans() %}
+{% set pageTitle = 'howto.howto.list'|trans() %}
+{% set pageDescription = 'howto.howto.description'|trans() %}
 {% set pageImage = asset('banner-howtos-600x376.jpg') %}
 
 {% set navSection = 'howtos' %}
@@ -15,9 +15,9 @@
 
 {% block bodyContainerContent %}
     {#{% embed 'LadbCoreBundle:Howto/Howto:_list-filterbar.part.html.twig' %}#}
-        {#{% set heading = 'howto.list'|trans() %}#}
+        {#{% set heading = 'howto.howto.list'|trans() %}#}
         {#{% block filterbarRightContent%}#}
-            {#<a href="{{ path('core_howto_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'howto.new'|trans() }}</a>#}
+            {#<a href="{{ path('core_howto_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'howto.howto.new'|trans() }}</a>#}
         {#{% endblock %}#}
     {#{% endembed %}#}
     {{ parent() }}

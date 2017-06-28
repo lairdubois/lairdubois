@@ -133,7 +133,7 @@ class CreationController extends Controller {
 		}
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $creation->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $creation->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() )));
 	}
@@ -164,7 +164,7 @@ class CreationController extends Controller {
 		$creationManager->publish($creation);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.publish_success', array( '%title%' => $creation->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.publish_success', array( '%title%' => $creation->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() )));
 	}
@@ -192,7 +192,7 @@ class CreationController extends Controller {
 		$creationManager->unpublish($creation);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.unpublish_success', array( '%title%' => $creation->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.unpublish_success', array( '%title%' => $creation->getTitle() )));
 
 		// Return to
 		$returnToUrl = $request->get('rtu');
@@ -284,7 +284,7 @@ class CreationController extends Controller {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($creation, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.update_success', array( '%title%' => $creation->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.update_success', array( '%title%' => $creation->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(CreationType::class, $creation);
@@ -325,7 +325,7 @@ class CreationController extends Controller {
 		$creationManager->delete($creation);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.delete_success', array( '%title%' => $creation->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.delete_success', array( '%title%' => $creation->getTitle() )));
 
 		if ($creation->getIsDraft()) {
 			return $this->redirect($this->generateUrl('core_user_show_creations', array( 'username' => $this->getUser()->getUsernameCanonical() )));
@@ -855,7 +855,7 @@ class CreationController extends Controller {
 			$draftCount = $this->getUser()->getDraftCreationCount();
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('creation.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('wonder.creation.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
 
 		}
 
@@ -950,7 +950,7 @@ class CreationController extends Controller {
 		$workshop = $creationManager->convertToWorkshop($creation);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.admin.alert.converttoworkshop_success', array( '%title%' => $creation->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.admin.alert.converttoworkshop_success', array( '%title%' => $creation->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_workshop_show', array( 'id' => $workshop->getSluggedId() )));
 	}
@@ -977,7 +977,7 @@ class CreationController extends Controller {
 		$howto = $creationManager->convertToHowto($creation);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.admin.alert.converttohowto_success', array( '%title%' => $creation->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.admin.alert.converttohowto_success', array( '%title%' => $creation->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
 	}
@@ -1004,7 +1004,7 @@ class CreationController extends Controller {
 		$find = $creationManager->convertToWorkshop($creation);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.admin.alert.converttofind_success', array( '%title%' => $creation->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.admin.alert.converttofind_success', array( '%title%' => $creation->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_find_show', array( 'id' => $find->getSluggedId() )));
 	}

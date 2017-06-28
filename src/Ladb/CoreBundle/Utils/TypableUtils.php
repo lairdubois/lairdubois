@@ -10,43 +10,43 @@ class TypableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public static function getStrippedName(TypableInterface $typable, $long = false) {
-		return self::getStrippedNameByType($typable->getType(), $long);
+	public static function getStrippedName(TypableInterface $typable, $delimiter = '_') {
+		return self::getStrippedNameByType($typable->getType(), $delimiter);
 	}
 
-	public static function getStrippedNameByType($type, $long = false) {
+	public static function getStrippedNameByType($type, $delimiter = '_') {
 		switch ($type) {
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
-				return 'creation';
+				return implode($delimiter, array( 'wonder', 'creation' ));
 			// Workshop
 			case \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE:
-				return 'workshop';
+				return implode($delimiter, array( 'wonder', 'workshop' ));
 			// Find
 			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
-				return 'find';
+				return implode($delimiter, array( 'find', 'find' ));
 			// Plan
 			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
-				return 'plan';
+				return implode($delimiter, array( 'wonder', 'plan' ));
 			// Howto
 			case \Ladb\CoreBundle\Entity\Howto\Howto::TYPE:
-				return 'howto';
+				return implode($delimiter, array( 'howto', 'howto' ));
 			// Article
 			case \Ladb\CoreBundle\Entity\Howto\Article::TYPE:
-				return $long ? 'howto.article' : 'article';
+				return implode($delimiter, array( 'howto', 'article' ));
 			// Post
 			case \Ladb\CoreBundle\Entity\Blog\Post::TYPE:
-				return $long ? 'blog.post' : 'post';
+				return implode($delimiter, array( 'blog', 'post' ));
 			// Wood
 			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
-				return $long ? 'knowledge.wood': 'wood';
+				return implode($delimiter, array( 'knowledge', 'wood' ));
 			// Question (Faq)
 			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
-				return $long ? 'faq.question' : 'question';
+				return implode($delimiter, array( 'faq', 'question' ));
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
-				return $long ? 'knowledge.provider': 'provider';
+				return implode($delimiter, array( 'knowledge', 'provider' ));
 
 		}
 		return '';

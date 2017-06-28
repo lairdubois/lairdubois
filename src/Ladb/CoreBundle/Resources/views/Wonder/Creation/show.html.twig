@@ -102,7 +102,7 @@
                 <a href="{{ creation.planCount == 1 ? path('core_plan_show', { 'id':creation.plans[0].sluggedId }) : path('core_creation_plans', { 'id':creation.id }) }}">
             {% endif %}
             <strong>{{ creation.planCount }}</strong>
-            <small>{{ 'plan.choice.plans'|transchoice(creation.planCount) }}</small>
+            <small>{{ 'wonder.plan.choice.plans'|transchoice(creation.planCount) }}</small>
             {% if creation.planCount > 0 %}
                 </a>
             {% endif %}
@@ -113,7 +113,7 @@
                 <a href="{{ creation.howtoCount == 1 ? path('core_howto_show', { 'id':creation.howtos[0].sluggedId }) : path('core_creation_howtos', { 'id':creation.id }) }}">
             {% endif %}
             <strong>{{ creation.howtoCount }}</strong>
-            <small>{{ 'howto.choice.howtos'|transchoice(creation.howtoCount) }}</small>
+            <small>{{ 'howto.howto.choice.howtos'|transchoice(creation.howtoCount) }}</small>
             {% if creation.howtoCount > 0 %}
                 </a>
             {% endif %}
@@ -158,7 +158,7 @@
                         'path':creation.planCount == 1 ? path('core_plan_show', { 'id':creation.plans[0].sluggedId }) : path('core_creation_plans', { 'id':creation.id }),
                         'picture':creation.plans[0].mainPicture,
                         'icon':'ladb-icon-plan',
-                        'caption': creation.planCount~' '~('plan.choice.plans'|transchoice(creation.planCount))
+                        'caption': creation.planCount~' '~('wonder.plan.choice.plans'|transchoice(creation.planCount))
                     } %}
                 {% endif %}
                 {% if creation.howtoCount > 0 %}
@@ -166,7 +166,7 @@
                         'path':creation.howtoCount == 1 ? path('core_howto_show', { 'id':creation.howtos[0].sluggedId }) : path('core_creation_howtos', { 'id':creation.id }),
                         'picture':creation.howtos[0].mainPicture,
                         'icon':'ladb-icon-howto',
-                        'caption': creation.howtoCount~' '~('howto.choice.howtos'|transchoice(creation.howtoCount))
+                        'caption': creation.howtoCount~' '~('howto.howto.choice.howtos'|transchoice(creation.howtoCount))
                     } %}
                 {% endif %}
                 {% if creation.providerCount > 0 %}
