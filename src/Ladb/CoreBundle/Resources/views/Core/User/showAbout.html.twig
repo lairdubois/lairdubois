@@ -99,6 +99,18 @@
                         <small>{{ 'wonder.creation.choice.creations'|transchoice(user.publishedCreationCount) }}</small>
                     {% if user.publishedCreationCount > 0 %}</a>{% endif %}
                 </div>
+                <div class="ladb-meta{% if user.publishedQuestionCount == 0 %} text-muted{% endif %}">
+                    <i class="ladb-icon-question"></i>
+                    {% if user.publishedQuestionCount > 0 %}<a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{% endif %}
+                        <strong>{{ user.publishedQuestionCount|number_format(0, ',', ' ') }}</strong>
+                        <small>{{ 'qa.question.choice.questions'|transchoice(user.publishedQuestionCount) }}</small>
+                    {% if user.publishedQuestionCount > 0 %}</a>{% endif %}
+                </div>
+                <div class="ladb-meta{% if user.answerCount == 0 %} text-muted{% endif %}">
+                    <i class="ladb-icon-answer"></i>
+                    <strong>{{ user.answerCount|number_format(0, ',', ' ') }}</strong>
+                    <small>{{ 'qa.question.choice.answers'|transchoice(user.answerCount) }}</small>
+                </div>
                 <div class="ladb-meta{% if user.publishedPlanCount == 0 %} text-muted{% endif %}">
                     <i class="ladb-icon-plan"></i>
                     {% if user.publishedPlanCount > 0 %}<a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{% endif %}

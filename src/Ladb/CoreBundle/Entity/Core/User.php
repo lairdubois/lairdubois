@@ -39,35 +39,29 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
-
-	/**
-	 * @ORM\Column(name="created_at", type="datetime")
-	 * @Gedmo\Timestampable(on="create")
-	 */
-	private $createdAt;
-
-	/**
-	 * @ORM\Column(name="updated_at", type="datetime")
-	 * @Gedmo\Timestampable(on="update")
-	 */
-	private $updatedAt;
-
-	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="email_confirmed")
-	 */
-	private $emailConfirmed = false;
-
 	/**
 	 * @Assert\Length(min=3, max=25)
 	 */
 	protected $username;
-
 	/**
 	 * @Assert\NotBlank()
 	 * @Assert\Email(strict=true)
 	 */
 	protected $email;
-
+	/**
+	 * @ORM\Column(name="created_at", type="datetime")
+	 * @Gedmo\Timestampable(on="create")
+	 */
+	private $createdAt;
+	/**
+	 * @ORM\Column(name="updated_at", type="datetime")
+	 * @Gedmo\Timestampable(on="update")
+	 */
+	private $updatedAt;
+	/**
+	 * @ORM\Column(type="boolean", nullable=true, name="email_confirmed")
+	 */
+	private $emailConfirmed = false;
 	/**
 	 * @ORM\Column(type="string", length=25, unique=true)
 	 * @Assert\Length(min=3, max=25)
@@ -341,6 +335,22 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true, name="draft_question_count")
+	 */
+	private $draftQuestionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="published_question_count")
+	 */
+	private $publishedQuestionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="answer_count")
+	 */
+	private $answerCount = 0;
+
+
+	/**
 	 * @ORM\Column(type="integer", nullable=true, name="proposal_count")
 	 */
 	private $proposalCount = 0;
@@ -353,6 +363,13 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	/////
 
+	public function __construct() {
+		parent::__construct();
+		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	/////
+
 	/**
 	 * @ORM\PrePersist()
 	 */
@@ -360,13 +377,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		if (is_null($this->displayname)) {
 			$this->displayname = $this->username;
 		}
-	}
-
-	/////
-
-	public function __construct() {
-		parent::__construct();
-		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// ID /////
@@ -390,13 +400,13 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// EmailConfirmed /////
 
+	public function getEmailConfirmed() {
+		return $this->emailConfirmed;
+	}
+
 	public function setEmailConfirmed($emailConfirmed) {
 		$this->emailConfirmed = $emailConfirmed;
 		return $this;
-	}
-
-	public function getEmailConfirmed() {
-		return $this->emailConfirmed;
 	}
 
 	// Slug /////
@@ -412,50 +422,50 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// CreatedAt /////
 
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
+
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
 	// UpdatedAt /////
+
+	public function getUpdatedAt() {
+		return $this->updatedAt;
+	}
 
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
 		return $this;
 	}
 
-	public function getUpdatedAt() {
-		return $this->updatedAt;
-	}
-
 	// Displayname /////
 
-	public function setDisplayname($displayname) {
-		$this->displayname = $displayname;
-		return $this;
+	public function getTitle() {
+		return $this->getDisplayname();
 	}
 
 	public function getDisplayname() {
 		return $this->displayname;
 	}
 
-	public function getTitle() {
-		return $this->getDisplayname();
+	public function setDisplayname($displayname) {
+		$this->displayname = $displayname;
+		return $this;
 	}
 
 	// Fullname /////
 
+	public function getFullname() {
+		return $this->fullname;
+	}
+
 	public function setFullname($fullname) {
 		$this->fullname = $fullname;
 		return $this;
-	}
-
-	public function getFullname() {
-		return $this->fullname;
 	}
 
 	public function isFullnameDisplayble() {
@@ -464,129 +474,129 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// Avatar /////
 
-	public function setAvatar(\Ladb\CoreBundle\Entity\Core\Picture $avatar = null) {
-		$this->avatar = $avatar;
-		return $this;
+	public function getMainPicture() {
+		return $this->getAvatar();
 	}
 
 	public function getAvatar() {
 		return $this->avatar;
 	}
 
-	public function getMainPicture() {
-		return $this->getAvatar();
+	public function setAvatar(\Ladb\CoreBundle\Entity\Core\Picture $avatar = null) {
+		$this->avatar = $avatar;
+		return $this;
 	}
 
 	// AccountType /////
+
+	public function getAccountType() {
+		return $this->accountType;
+	}
 
 	public function setAccountType($accountType) {
 		$this->accountType = $accountType;
 		return $this;
 	}
 
-	public function getAccountType() {
-		return $this->accountType;
-	}
-
 	// Banner /////
+
+	public function getBanner() {
+		return $this->banner;
+	}
 
 	public function setBanner(\Ladb\CoreBundle\Entity\Core\Picture $banner = null) {
 		$this->banner = $banner;
 		return $this;
 	}
 
-	public function getBanner() {
-		return $this->banner;
-	}
-
 	// Website /////
-
-	public function setWebsite($website) {
-		$this->website = $website;
-	}
 
 	public function getWebsite() {
 		return $this->website;
 	}
 
-	// Facebook /////
-
-	public function setFacebook($facebook) {
-		$this->facebook = $facebook;
+	public function setWebsite($website) {
+		$this->website = $website;
 	}
+
+	// Facebook /////
 
 	public function getFacebook() {
 		return $this->facebook;
 	}
 
-	// Twitter /////
-
-	public function setTwitter($twitter) {
-		$this->twitter = $twitter;
+	public function setFacebook($facebook) {
+		$this->facebook = $facebook;
 	}
+
+	// Twitter /////
 
 	public function getTwitter() {
 		return $this->twitter;
 	}
 
-	// GooglePlus /////
-
-	public function setGoogleplus($googleplus) {
-		$this->googleplus = $googleplus;
+	public function setTwitter($twitter) {
+		$this->twitter = $twitter;
 	}
+
+	// GooglePlus /////
 
 	public function getGoogleplus() {
 		return $this->googleplus;
 	}
 
-	// YouTube /////
-
-	public function setYoutube($youtube) {
-		$this->youtube = $youtube;
+	public function setGoogleplus($googleplus) {
+		$this->googleplus = $googleplus;
 	}
+
+	// YouTube /////
 
 	public function getYoutube() {
 		return $this->youtube;
 	}
 
-	// Vimeo /////
-
-	public function setVimeo($vimeo) {
-		$this->vimeo = $vimeo;
+	public function setYoutube($youtube) {
+		$this->youtube = $youtube;
 	}
+
+	// Vimeo /////
 
 	public function getVimeo() {
 		return $this->vimeo;
 	}
 
-	// Dailymotion /////
-
-	public function setDailymotion($dailymotion) {
-		$this->dailymotion = $dailymotion;
+	public function setVimeo($vimeo) {
+		$this->vimeo = $vimeo;
 	}
+
+	// Dailymotion /////
 
 	public function getDailymotion() {
 		return $this->dailymotion;
 	}
 
-	// Pinterest /////
-
-	public function setPinterest($pinterest) {
-		$this->pinterest = $pinterest;
+	public function setDailymotion($dailymotion) {
+		$this->dailymotion = $dailymotion;
 	}
+
+	// Pinterest /////
 
 	public function getPinterest() {
 		return $this->pinterest;
 	}
 
-	// Instagram /////
-
-	public function setInstagram($instagram) {
-		$this->instagram = $instagram;
+	public function setPinterest($pinterest) {
+		$this->pinterest = $pinterest;
 	}
+
+	// Instagram /////
 
 	public function getInstagram() {
 		return $this->instagram;
+	}
+
+	public function setInstagram($instagram) {
+		$this->instagram = $instagram;
 	}
 
 	// MarkerIcon /////
@@ -620,111 +630,111 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// Biography /////
 
-	public function setBiography(\Ladb\CoreBundle\Entity\Core\Biography $biography = null) {
-		$this->biography = $biography;
-	}
-
 	public function getBiography() {
 		return $this->biography;
 	}
 
+	public function setBiography(\Ladb\CoreBundle\Entity\Core\Biography $biography = null) {
+		$this->biography = $biography;
+	}
+
 	// AutoWatchEnabled /////
+
+    public function getAutoWatchEnabled() {
+        return $this->autoWatchEnabled;
+    }
 
     public function setAutoWatchEnabled($autoWatchEnabled) {
         $this->autoWatchEnabled = $autoWatchEnabled;
 		return $this;
     }
 
-    public function getAutoWatchEnabled() {
-        return $this->autoWatchEnabled;
-    }
-
 	// IncomingMessageEmailNotificationEnabled /////
+
+	public function getIncomingMessageEmailNotificationEnabled() {
+		return $this->incomingMessageEmailNotificationEnabled;
+	}
 
 	public function setIncomingMessageEmailNotificationEnabled($incomingMessageEmailNotificationEnabled) {
 		$this->incomingMessageEmailNotificationEnabled = $incomingMessageEmailNotificationEnabled;
 		return $this;
 	}
 
-	public function getIncomingMessageEmailNotificationEnabled() {
-		return $this->incomingMessageEmailNotificationEnabled;
-	}
-
 	// NewFollowerEmailNotificationEnabled /////
+
+	public function getNewFollowerEmailNotificationEnabled() {
+		return $this->newFollowerEmailNotificationEnabled;
+	}
 
 	public function setNewFollowerEmailNotificationEnabled($newFollowerEmailNotificationEnabled) {
 		$this->newFollowerEmailNotificationEnabled = $newFollowerEmailNotificationEnabled;
 		return $this;
 	}
 
-	public function getNewFollowerEmailNotificationEnabled() {
-		return $this->newFollowerEmailNotificationEnabled;
-	}
-
 	// NewLikeEmailNotificationEnabled /////
+
+	public function getNewLikeEmailNotificationEnabled() {
+		return $this->newLikeEmailNotificationEnabled;
+	}
 
 	public function setNewLikeEmailNotificationEnabled($newLikeEmailNotificationEnabled) {
 		$this->newLikeEmailNotificationEnabled = $newLikeEmailNotificationEnabled;
 		return $this;
 	}
 
-	public function getNewLikeEmailNotificationEnabled() {
-		return $this->newLikeEmailNotificationEnabled;
-	}
-
 	// NewVoteEmailNotificationEnabled /////
+
+	public function getNewVoteEmailNotificationEnabled() {
+		return $this->newVoteEmailNotificationEnabled;
+	}
 
 	public function setNewVoteEmailNotificationEnabled($newVoteEmailNotificationEnabled) {
 		$this->newVoteEmailNotificationEnabled = $newVoteEmailNotificationEnabled;
 		return $this;
 	}
 
-	public function getNewVoteEmailNotificationEnabled() {
-		return $this->newVoteEmailNotificationEnabled;
-	}
-
 	// NewFollowingPostEmailNotificationEnabled /////
+
+	public function getNewFollowingPostEmailNotificationEnabled() {
+		return $this->newFollowingPostEmailNotificationEnabled;
+	}
 
 	public function setNewFollowingPostEmailNotificationEnabled($newPostEmailNotificationEnabled) {
 		$this->newFollowingPostEmailNotificationEnabled = $newPostEmailNotificationEnabled;
 		return $this;
 	}
 
-	public function getNewFollowingPostEmailNotificationEnabled() {
-		return $this->newFollowingPostEmailNotificationEnabled;
-	}
-
 	// NewWatchActivityEmailNotificationEnabled /////
+
+	public function getNewWatchActivityEmailNotificationEnabled() {
+		return $this->newWatchActivityEmailNotificationEnabled;
+	}
 
 	public function setNewWatchActivityEmailNotificationEnabled($newCommentEmailNotificationEnabled) {
 		$this->newWatchActivityEmailNotificationEnabled = $newCommentEmailNotificationEnabled;
 		return $this;
 	}
 
-	public function getNewWatchActivityEmailNotificationEnabled() {
-		return $this->newWatchActivityEmailNotificationEnabled;
-	}
-
 	// NewSpotlightEmailNotificationEnabled /////
+
+	public function getNewSpotlightEmailNotificationEnabled() {
+		return $this->newSpotlightEmailNotificationEnabled;
+	}
 
 	public function setNewSpotlightEmailNotificationEnabled($newSpotlightEmailNotificationEnabled) {
 		$this->newSpotlightEmailNotificationEnabled = $newSpotlightEmailNotificationEnabled;
 		return $this;
 	}
 
-	public function getNewSpotlightEmailNotificationEnabled() {
-		return $this->newSpotlightEmailNotificationEnabled;
-	}
-
 	// WeekNewsEmailNotificationEnabled /////
+
+	public function getWeekNewsEmailEnabled() {
+		return $this->weekNewsEmailEnabled;
+	}
 
 	public function setWeekNewsEmailEnabled($weekNewsEmailEnabled) {
 		$this->weekNewsEmailEnabled = $weekNewsEmailEnabled;
 		return $this;
-	}
-
-	public function getWeekNewsEmailEnabled() {
-		return $this->weekNewsEmailEnabled;
 	}
 
 	// FollowerCount /////
@@ -799,11 +809,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// FreshNotificationCount /////
 
-	public function setFreshNotificationCount($freshNotificationCount) {
-		$this->freshNotificationCount = $freshNotificationCount;
-		return $this;
-	}
-
 	public function incrementFreshNotificationCount($by = 1) {
 		return $this->freshNotificationCount += intval($by);
 	}
@@ -812,21 +817,26 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		return $this->freshNotificationCount;
 	}
 
-	// ContributionCount /////
-
-	public function incrementContributionCount($by = 1) {
-		return $this->contributionCount += intval($by);
+	public function setFreshNotificationCount($freshNotificationCount) {
+		$this->freshNotificationCount = $freshNotificationCount;
+		return $this;
 	}
+
+	// ContributionCount /////
 
 	public function getContributionCount() {
 		return $this->contributionCount;
 	}
 
-	// CommentCount /////
-
 	public function incrementCommentCount($by = 1) {
 		$this->incrementContributionCount($by);
 		return $this->commentCount += intval($by);
+	}
+
+	// CommentCount /////
+
+	public function incrementContributionCount($by = 1) {
+		return $this->contributionCount += intval($by);
 	}
 
 	public function getCommentCount() {
@@ -936,6 +946,38 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	public function getPublishedFindCount() {
 		return $this->publishedFindCount;
+	}
+
+	// DraftQuestionCount /////
+
+	public function incrementDraftQuestionCount($by = 1) {
+		return $this->draftQuestionCount += intval($by);
+	}
+
+	public function getDraftQuestionCount() {
+		return $this->draftQuestionCount;
+	}
+
+	// PublishedQuestionCount /////
+
+	public function incrementPublishedQuestionCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->publishedQuestionCount += intval($by);
+	}
+
+	public function getPublishedQuestionCount() {
+		return $this->publishedQuestionCount;
+	}
+
+	// AnswerCount /////
+
+	public function incrementAnswerCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->answerCount += intval($by);
+	}
+
+	public function getAnswerCount() {
+		return $this->answerCount;
 	}
 
 	// ProposalCount /////

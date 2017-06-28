@@ -13,22 +13,28 @@ class QuestionManager extends AbstractPublicationManager {
 	/////
 
 	public function publish(Question $question, $flush = true) {
+
+		$question->getUser()->incrementDraftQuestionCount(-1);
+		$question->getUser()->incrementPublishedQuestionCount();
+
 		parent::publishPublication($question, $flush);
 	}
 
 	public function unpublish(Question $question, $flush = true) {
+
+		$question->getUser()->incrementDraftQuestionCount(1);
+		$question->getUser()->incrementPublishedQuestionCount(-1);
+
 		parent::unpublishPublication($question, $flush);
 	}
 
 	public function delete(Question $question, $withWitness = true, $flush = true) {
 
-		// Delete answers
-		$answerManager = $this->get(AnswerManager::NAME);
-		foreach ($question->getAnswer() as $answer) {
-
-			// Delete Answer
-			$answerManager->delete($answer, $withWitness, $flush);
-
+		// Decrement user creation count
+		if ($question->getIsDraft()) {
+			$question->getUser()->incrementDraftQuestionCount(-1);
+		} else {
+			$question->getUser()->incrementPublishedQuestionCount(-1);
 		}
 
 		parent::deletePublication($question, $withWitness, $flush);

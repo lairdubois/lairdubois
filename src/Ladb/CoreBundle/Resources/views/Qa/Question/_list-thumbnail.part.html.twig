@@ -3,3 +3,8 @@
 {% set entity = question %}
 
 {% block imageOuter %}{% endblock %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    <li class="ladb-counter"><i class="ladb-icon-answer"></i> <span>{{ entity.answerCount|number_format(0, ',', ' ') }}</span></li>
+{% endblock %}

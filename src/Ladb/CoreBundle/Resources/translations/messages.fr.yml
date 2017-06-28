@@ -348,6 +348,27 @@ find:
       finds: '[0,1]trouvaille|]1,Inf]trouvailles'
       draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
 
+qa:
+  tooltip:
+    vote_up: Je valide cette réponse
+    vote_down: Je rejette cette réponse
+  question:
+    new: Ajouter une question
+    edit: Edition de la question
+    list: Les questions
+    nav: Questions
+    form:
+      alert:
+        lock_success: La question <strong>%title%</strong> a été vérrouillée.
+        lock_success: La question <strong>%title%</strong> a été dévérrouillée.
+        publish_success: La question <strong>%title%</strong> a été publiée.
+        unpublish_success: La question <strong>%title%</strong> a été dépubliée.
+        update_success: La question <strong>%title%</strong> a été mise à jour.
+        delete_success: La question <strong>%title%</strong> a été supprimée.
+    choice:
+      questions: '[0,1]question|]1,Inf]questions'
+      answers: '[0,1]réponse|]1,Inf]réponses'
+
 blog:
   title: Le blog
   description: Ce blog vous permet de rester informé et de réagir sur les nouveautés et futurs projets de L'Air du Bois.
@@ -947,12 +968,3 @@ youtook:
     help:
       title: Renseignez ici le titre de votre Took.
       thumbnail: Définissez ici la miniature de votre Took.<br>La modification de cette image peut être intéressante pour avoir une miniature spécialement dédiée au partage sur Facebook.<br>Cette image ne sera visible que sur Facebook.
-
-qa:
-  question:
-    new: Ajouter une question
-    edit: Edition de la question
-    list: Les questions
-    nav: Questions
-    choice:
-      answers: '[0,1]réponse|]1,Inf]réponses'

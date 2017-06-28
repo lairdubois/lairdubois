@@ -95,6 +95,9 @@
             </div>
         </div>
     </div>
+    {% if not ownerUser %}
+        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
+    {% endif %}
     {% if question.answers|length > 0 %}
         <h3 style="margin-bottom: 20px;">{{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.question.choice.answers'|transchoice(2) }}</h3>
     {% endif %}

@@ -80,8 +80,10 @@ class AnswerController extends Controller {
 			$answer->setParentEntityField('bestAnswer');
 
 			$question->addAnswer($answer);
-			$question->incrementAnswerCount();
 			$question->setChangedAt(new \DateTime());
+
+			$question->incrementAnswerCount();
+			$this->getUser()->incrementAnswerCount();
 
 			$om->persist($answer);
 
@@ -205,12 +207,25 @@ class AnswerController extends Controller {
 			throw $this->createNotFoundException('Not allowed (core_howto_article_delete)');
 		}
 
+		$answer->getUser()->incrementAnswerCount(-1);
+
 		$question = $answer->getQuestion();
+		$question->incrementAnswerCount(-1);
+		$question->removeAnswer($answer);
 
-		// Delete
-		$answerManager = $this->get(AnswerManager::NAME);
-		$answerManager->delete($answer, true, false);
+		// Delete votes
+		$votableUtils = $this->get(VotableUtils::NAME);
+		$votableUtils->deleteVotes($answer, $question, false);
 
+		// Delete comments
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$commentableUtils->deleteComments($answer, false);
+
+		// Delete activities
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->deleteActivitiesByAnswer($answer, false);
+
+		$om->remove($answer);
 		$om->flush();
 
 		// Search index update

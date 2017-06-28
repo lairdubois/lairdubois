@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Repository\Qa;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Blog\Question;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class QuestionRepository extends AbstractEntityRepository {
@@ -23,10 +24,10 @@ class QuestionRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnUser($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'u' ))
-			->from($this->getEntityName(), 'p')
-			->innerJoin('p.user', 'u')
-			->where('p.id = :id')
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where('q.id = :id')
 			->setParameter('id', $id)
 		;
 
@@ -40,11 +41,11 @@ class QuestionRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'u', 'bbs' ))
-			->from($this->getEntityName(), 'p')
-			->innerJoin('p.user', 'u')
-			->innerJoin('p.bodyBlocks', 'bbs')
-			->where('p.id = :id')
+			->select(array( 'q', 'u', 'bbs' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->innerJoin('q.bodyBlocks', 'bbs')
+			->where('q.id = :id')
 			->setParameter('id', $id)
 		;
 
@@ -57,42 +58,23 @@ class QuestionRepository extends AbstractEntityRepository {
 
 	/////
 
-	private function _applyCommonFilter(&$queryBuilder, $filter) {
-		if ('popular-views' == $filter) {
-			$queryBuilder
-				->addOrderBy('p.viewCount', 'DESC')
-			;
-		} else if ('popular-likes' == $filter) {
-			$queryBuilder
-				->addOrderBy('p.likeCount', 'DESC')
-			;
-		} else if ('popular-comments' == $filter) {
-			$queryBuilder
-				->addOrderBy('p.commentCount', 'DESC')
-			;
-		}
-		$queryBuilder
-			->addOrderBy('p.changedAt', 'DESC')
-		;
-	}
-
 	public function findPagined($offset, $limit, $filter = 'recent', $includeDrafts = false) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'u' ))
-			->from($this->getEntityName(), 'p')
-			->innerJoin('p.user', 'u')
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
 
 		if ('draft' == $filter && $includeDrafts) {
 			$queryBuilder
-				->andWhere('p.isDraft = true')
+				->andWhere('q.isDraft = true')
 			;
 		} else if (!$includeDrafts) {
 			$queryBuilder
-				->andWhere('p.isDraft = false')
+				->andWhere('q.isDraft = false')
 			;
 		}
 
@@ -100,5 +82,51 @@ class QuestionRepository extends AbstractEntityRepository {
 
 		return new Paginator($queryBuilder->getQuery());
 	}
-	
+
+	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		if ('popular-views' == $filter) {
+			$queryBuilder
+				->addOrderBy('q.viewCount', 'DESC')
+			;
+		} else if ('popular-likes' == $filter) {
+			$queryBuilder
+				->addOrderBy('q.likeCount', 'DESC')
+			;
+		} else if ('popular-comments' == $filter) {
+			$queryBuilder
+				->addOrderBy('q.commentCount', 'DESC')
+			;
+		}
+		$queryBuilder
+			->addOrderBy('q.changedAt', 'DESC')
+		;
+	}
+
+	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where('u = :user')
+			->setParameter('user', $user)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		if ('draft' == $filter && $includeDrafts) {
+			$queryBuilder
+				->andWhere('q.isDraft = true')
+			;
+		} else if (!$includeDrafts) {
+			$queryBuilder
+				->andWhere('q.isDraft = false')
+			;
+		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 }

@@ -69,6 +69,7 @@ class QuestionController extends Controller {
 			$fieldPreprocessorUtils->preprocessFields($question);
 
 			$question->setUser($this->getUser());
+			$this->getUser()->incrementDraftQuestionCount();
 
 			$om->persist($question);
 			$om->flush();
