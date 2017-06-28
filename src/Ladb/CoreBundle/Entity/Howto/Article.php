@@ -109,6 +109,17 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 
 	// Howto /////
 
+    public function setHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto = null) {
+        $this->howto = $howto;
+        return $this;
+    }
+
+    public function getHowto() {
+        return $this->howto;
+    }
+
+	// User /////
+
 	public function getUser() {
 		if (is_null($this->howto)) {
 			return null;
@@ -116,22 +127,22 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		return $this->howto->getUser();
 	}
 
-	public function getSlug() {
-		return $this->slug;
-	}
+    // Slug /////
 
-	// User /////
+    public function setSlug($slug) {
+        $this->slug = $slug;
+        return $this;
+    }
 
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
+    public function getSlug() {
+        return $this->slug;
+    }
 
-	// Slug /////
+    public function getSluggedId() {
+        return $this->id.'-'.$this->slug;
+    }
 
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
-	}
+	// MainPicture /////
 
 	public function getMainPicture() {
 		foreach ($this->getBodyBlocks() as $bodyBlock) {
@@ -145,32 +156,21 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		return null;
 	}
 
-	public function getSortIndex() {
-		return $this->sortIndex;
-	}
-
-	// MainPicture /////
+	// SortIndex /////
 
 	public function setSortIndex($sortIndex) {
 		$this->sortIndex = $sortIndex;
 		return $this;
 	}
 
-	// SortIndex /////
-
-	public function getParentEntityType() {
-		return $this->getHowto()->getType();
-	}
-
-	public function getHowto() {
-		return $this->howto;
+	public function getSortIndex() {
+		return $this->sortIndex;
 	}
 
 	// ParentEntityType /////
 
-	public function setHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto = null) {
-		$this->howto = $howto;
-		return $this;
+	public function getParentEntityType() {
+		return $this->getHowto()->getType();
 	}
 
 	// ParentEntityId /////
