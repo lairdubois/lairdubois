@@ -92,12 +92,6 @@
         <li{% if tab == 'finds' %} class="active"{% endif %}>
             <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{{ 'find.find.choice.finds'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedFindCount > 0 %} badge-black{% endif %}">{{ user.publishedFindCount }}</span>{% if isDraftVisible and user.draftFindCount > 0 %} <span class="badge badge-warning">+{{ user.draftFindCount }}</span>{% endif %}</a>
         </li>
-        <li{% if tab == 'following' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_following', { 'username':user.usernameCanonical }) }}">{{ 'follower.choice.following'|transchoice(2)|capitalize }} <span class="badge{% if user.followingCount > 0 %} badge-black{% endif %}">{{ user.followingCount }}</span></a>
-        </li>
-        <li{% if tab == 'followers' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}">{{ 'follower.choice.followers'|transchoice(2)|capitalize }} <span class="badge{% if user.followerCount > 0 %} badge-black{% endif %}">{{ user.followerCount }}</span></a>
-        </li>
         {% if is_granted('ROLE_ADMIN') %}
             <li{% if tab == 'admin' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_admin', { 'username':user.usernameCanonical }) }}" class="admin"><i class="ladb-icon-admin"></i>&nbsp;{{ 'user.admin.tab'|trans()|capitalize }}</a>
