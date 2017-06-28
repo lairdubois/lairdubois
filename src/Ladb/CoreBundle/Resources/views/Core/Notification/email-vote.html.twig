@@ -3,12 +3,6 @@
 {# set row #}
 
 {% block rowContent %}
-
-    {% set fieldDef = row.entity.fieldDefs[row.activityEntity.parentEntityField] %}
-    {% set fieldType = fieldDef[constant('ATTRIB_TYPE', row.entity)] %}
-    {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', row.entity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', row.entity)] : null %}
-    {% set fieldChoices = fieldDef[constant('ATTRIB_CHOICES', row.entity)] is defined ? fieldDef[constant('ATTRIB_CHOICES', row.entity)] : null %}
-
     <p style="margin: 5px 0 5px 0;">
         <strong>{{ row.actorUser.displayname }}</strong> a accordé une <strong style="color:#{{ row.vote.score > 0 ? '5cb85c' : 'd9534f' }};">{{ (row.vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong>
         {% if row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
