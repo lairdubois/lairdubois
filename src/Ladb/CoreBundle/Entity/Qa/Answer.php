@@ -135,12 +135,6 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 		return Answer::TYPE;
 	}
 
-	// Title /////
-
-	public function getTitle() {
-		return substr($this->getBody(), 0, 20);
-	}
-
 	// Question /////
 
 	public function getQuestion() {
