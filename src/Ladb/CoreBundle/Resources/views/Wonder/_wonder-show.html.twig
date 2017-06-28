@@ -270,7 +270,7 @@
     {% if userWonders is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ (transType~'.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':wonder.user, 'noMicrodata':true } %}
+                {{ ('wonder.'~transType~'.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':wonder.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userWonder in userWonders %}
@@ -289,7 +289,7 @@
     {% if similarWonders is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ (transType~'.similar')|trans() }}
+                {{ ('wonder.'~transType~'.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarWonder in similarWonders %}

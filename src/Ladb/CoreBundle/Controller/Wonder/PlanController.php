@@ -860,7 +860,7 @@ class PlanController extends Controller {
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
 		$userPlans = $explorableUtils->getPreviousAndNextPublishedUserExplorables($plan, $planRepository, $plan->getUser()->getPublishedPlanCount());
-		$similarPlans = $explorableUtils->getSimilarExplorables($plan, 'fos_elastica.index.ladb.plan', Plan::CLASS_NAME, $userPlans);
+		$similarPlans = $explorableUtils->getSimilarExplorables($plan, 'fos_elastica.index.ladb.wonder_plan', Plan::CLASS_NAME, $userPlans);
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);

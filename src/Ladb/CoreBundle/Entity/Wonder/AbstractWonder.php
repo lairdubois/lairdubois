@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\EmbeddableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -18,8 +20,6 @@ use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\EmbeddableInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
