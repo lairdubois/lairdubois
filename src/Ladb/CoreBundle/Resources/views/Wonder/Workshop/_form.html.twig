@@ -24,14 +24,14 @@
 {% block sections %}
     <div class="panel panel-info">
         <div class="panel-body">
-            <p>{{ 'workshop.new_warning'|trans()|raw }}</p>
+            <p>{{ 'wonder.workshop.new_warning'|trans()|raw }}</p>
             <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
         </div>
     </div>
     {{ parent() }}
-    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('workshop.form.help.title'|trans()) } %}
-    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('workshop.form.help.showcase'|trans()) } %}
-    {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('workshop.form.help.body'|trans()) } %}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('wonder.workshop.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('wonder.workshop.form.help.showcase'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('wonder.workshop.form.help.body'|trans()) } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
             <div class="form-group">
@@ -53,8 +53,8 @@
         {% endblock %}
     {% endembed %}
     {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre atelier.' } %}
-    {% include 'LadbCoreBundle:Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('workshop.form.help.plans'|trans()) } %}
-    {% include 'LadbCoreBundle:Howto/Howto:_form-section-gallery.part.html.twig' with { 'maxHowtoCount':4, 'help':('workshop.form.help.howtos'|trans()) } %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('wonder.workshop.form.help.plans'|trans()) } %}
+    {% include 'LadbCoreBundle:Howto/Howto:_form-section-gallery.part.html.twig' with { 'maxHowtoCount':4, 'help':('wonder.workshop.form.help.howtos'|trans()) } %}
     {% include 'LadbCoreBundle:Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
 {% endblock %}
 

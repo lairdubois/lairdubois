@@ -1,11 +1,11 @@
 {% extends 'LadbCoreBundle:Wonder/Plan:_form.html.twig' %}
 
-{% set pageTitle = 'plan.new'|trans() %}
+{% set pageTitle = 'wonder.plan.new'|trans() %}
 {% set formAction = path('core_plan_create') %}
 {% set hideWarning = hideWarning|default(false) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-plus"></i> {{ 'plan.new'|trans() }}
+    <i class="ladb-icon-plus"></i> {{ 'wonder.plan.new'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}
@@ -15,7 +15,7 @@
 {% block body %}
     {{ parent() }}
     {% if not hideWarning %}
-        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_plan_modal', 'title':('plan.new'|trans()), 'textTransKey':'plan.new_warning', 'cancelPath':'core_plan_list' } %}
+        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_plan_modal', 'title':('wonder.plan.new'|trans()), 'textTransKey':'wonder.plan.new_warning', 'cancelPath':'core_plan_list' } %}
     {% endif %}
 {% endblock %}
 

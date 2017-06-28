@@ -20,15 +20,15 @@
 {% block sections %}
     <div class="panel panel-info">
         <div class="panel-body">
-            <p>{{ 'find.new_warning'|trans()|raw }}</p>
+            <p>{{ 'find.find.new_warning'|trans()|raw }}</p>
             <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
         </div>
     </div>
     {{ parent() }}
-    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('find.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('find.find.form.help.title'|trans()) } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'globe', 'title':('default.content'|trans()), 'formSection':'content' } %}
         {% block body %}
-            <p class="help-block"><i>{{ 'find.form.help.data'|trans()|raw }}</i></p>
+            <p class="help-block"><i>{{ 'find.find.form.help.data'|trans()|raw }}</i></p>
             <div class="form-group">
                 {{ form_errors(form.contentType) }}
                 {{ form_widget(form.contentType, { 'attr': { 'class':'form-control' } }) }}
@@ -56,11 +56,11 @@
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') %} active{% endif %}">
                     <div class="form-group">
                         <label>Photos<span class="ladb-mandatory">*</span></label>
-                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_gallery', 'form':form.gallery, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.form.help.gallery_pictures'|trans()), 'hideTextOverlayWarning':true } %}
+                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_gallery', 'form':form.gallery, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.gallery_pictures'|trans()), 'hideTextOverlayWarning':true } %}
                     </div>
                     <div class="form-group">
                         {{ form_label(form.gallery.location, 'default.location') }}<span class="ladb-mandatory">*</span>
-                        <p class="help-block"><i>{{ 'find.form.help.gallery_location'|trans() }}</i></p>
+                        <p class="help-block"><i>{{ 'find.find.form.help.gallery_location'|trans() }}</i></p>
                         {{ form_errors(form.gallery.location) }}
                         <div class="input-group">
                             <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
@@ -71,7 +71,7 @@
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} active{% endif %}">
                     <div class="form-group">
                         <label>Images<span class="ladb-mandatory">*</span></label>
-                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_event', 'form':form.event, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.form.help.event_pictures'|trans()), 'hideTextOverlayWarning':true } %}
+                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_event', 'form':form.event, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.event_pictures'|trans()), 'hideTextOverlayWarning':true } %}
                     </div>
                     <div class="form-group row">
                         <div class="col-xs-6">
@@ -120,7 +120,7 @@
                     </div>
                     <div class="form-group">
                         {{ form_label(form.event.location, 'default.location') }}<span class="ladb-mandatory">*</span>
-                        <p class="help-block"><i>{{ 'find.form.help.event_location'|trans() }}</i></p>
+                        <p class="help-block"><i>{{ 'find.find.form.help.event_location'|trans() }}</i></p>
                         {{ form_errors(form.event.location) }}
                         <div class="input-group">
                             <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
@@ -129,7 +129,7 @@
                     </div>
                     <div class="form-group">
                         {{ form_label(form.event.url, 'default.link') }}
-                        <p class="help-block"><i>{{ 'find.form.help.event_url'|trans() }}</i></p>
+                        <p class="help-block"><i>{{ 'find.find.form.help.event_url'|trans() }}</i></p>
                         {{ form_errors(form.event.url) }}
                         <div class="input-group">
                             <span class="input-group-addon">{% if form.event.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-link"></i>{% endif %}</span>
@@ -214,6 +214,6 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('find.form.help.body'|trans()) } %}
+    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('find.find.form.help.body'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre trouvaille.' } %}
 {% endblock %}

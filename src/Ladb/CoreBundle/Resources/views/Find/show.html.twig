@@ -147,11 +147,11 @@
                             <span class="ladb-full-date">{% if endDate is not null and endDate > startDate %}<span class="ladb-link-word">du</span>{% else %}<span class="ladb-link-word">le</span>{% endif %} {{ startDate|localizeddate('full', 'none') }}{% if startTime is not null %}{% if endTime is not null and endTime > startTime and endDate == startDate %} <span class="ladb-link-word">de</span>{% else %} <span class="ladb-link-word">à</span>{% endif %} <span class="ladb-time">{{ startTime|date('G:i') }}</span>{% endif %}{% if endDate is not null and endDate > startDate %} <span class="ladb-link-word">au</span> {{ endDate|localizeddate('full', 'none') }}{% endif %}{% if endTime is not null %} <span class="ladb-link-word">à</span> <span class="ladb-time">{{ endTime|date('G:i') }}{% endif %}</span></span>
                         {% endif %}
                         {% if find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_SCHEDULED') %}
-                            <br><span class="label label-info">{{ 'find.content.event.scheduled'|trans() }}</span> <span class="ladb-duration"> {{ 'find.content.event.event_starts'|trans() }} {{ find.content.startAt|time_diff() }}.</span>
+                            <br><span class="label label-info">{{ 'find.find.content.event.scheduled'|trans() }}</span> <span class="ladb-duration"> {{ 'find.find.content.event.event_starts'|trans() }} {{ find.content.startAt|time_diff() }}.</span>
                         {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_RUNNING') %}
-                            <br><span class="label label-success">{{ 'find.content.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'find.content.event.event_ends'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
+                            <br><span class="label label-success">{{ 'find.find.content.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'find.find.content.event.event_ends'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
                         {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_COMPLETED') %}
-                            <br><span class="label label-danger">{{ 'find.content.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'find.content.event.event_was_completed'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
+                            <br><span class="label label-danger">{{ 'find.find.content.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'find.find.content.event.event_was_completed'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
                         {% endif %}
                     </div>
                 </div>
@@ -218,7 +218,7 @@
     {% if userFinds is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('find.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}
+                {{ ('find.find.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userFind in userFinds %}
@@ -237,7 +237,7 @@
     {% if similarFinds is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('find.similar')|trans() }}
+                {{ ('find.find.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarFind in similarFinds %}

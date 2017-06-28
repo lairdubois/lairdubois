@@ -126,7 +126,7 @@ class HowtoController extends Controller {
 		}
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $howto->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $howto->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
 	}
@@ -160,7 +160,7 @@ class HowtoController extends Controller {
 		$howtoManager->publish($howto);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.form.alert.publish_success', array( '%title%' => $howto->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.form.alert.publish_success', array( '%title%' => $howto->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
 	}
@@ -188,7 +188,7 @@ class HowtoController extends Controller {
 		$howtoManager->unpublish($howto);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.form.alert.unpublish_success', array( '%title%' => $howto->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.form.alert.unpublish_success', array( '%title%' => $howto->getTitle() )));
 
 		// Return to
 		$returnToUrl = $request->get('rtu');
@@ -269,7 +269,7 @@ class HowtoController extends Controller {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($howto, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.form.alert.update_success', array( '%title%' => $howto->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.form.alert.update_success', array( '%title%' => $howto->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(HowtoType::class, $howto);
@@ -310,7 +310,7 @@ class HowtoController extends Controller {
 		$howtoManager->delete($howto);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.form.alert.delete_success', array( '%title%' => $howto->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.form.alert.delete_success', array( '%title%' => $howto->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_list'));
     }
@@ -523,7 +523,7 @@ class HowtoController extends Controller {
 			$draftCount = $this->getUser()->getDraftHowtoCount();
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('howto.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('howto.howto.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
 
 		}
 

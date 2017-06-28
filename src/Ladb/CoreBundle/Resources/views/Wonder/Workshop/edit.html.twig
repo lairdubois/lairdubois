@@ -1,10 +1,10 @@
 {% extends 'LadbCoreBundle:Wonder/Workshop:_form.html.twig' %}
 
-{% set pageTitle = 'workshop.edit'|trans() %}
+{% set pageTitle = 'wonder.workshop.edit'|trans() %}
 {% set formAction = path('core_workshop_update', { 'id':workshop.id }) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-edit"></i> {{ 'workshop.edit'|trans() }}
+    <i class="ladb-icon-edit"></i> {{ 'wonder.workshop.edit'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}

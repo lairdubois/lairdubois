@@ -19,7 +19,7 @@
             {% set filterPath = 'core_howto_workshops_filter' %}
             {% set filterPathParameters = { 'id':howto.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ howto.workshops.count }} {{ 'workshop.choice.workshops'|transchoice(howto.workshops.count) }}</span>
+                <span class="ladb-heading">{{ howto.workshops.count }} {{ 'wonder.workshop.choice.workshops'|transchoice(howto.workshops.count) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

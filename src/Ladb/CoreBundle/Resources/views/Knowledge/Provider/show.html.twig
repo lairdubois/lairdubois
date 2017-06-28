@@ -169,7 +169,7 @@
                     <i class="ladb-icon-creation"></i>
                     <a href="{{ provider.creationCount == 1 ? path('core_creation_show', { 'id':provider.creations[0].sluggedId }) : path('core_provider_creations', { 'id':provider.id }) }}">
                         <strong>{{ provider.creationCount }}</strong>
-                        <small>{{ 'creation.choice.creations'|transchoice(provider.creationCount) }}</small>
+                        <small>{{ 'wonder.creation.choice.creations'|transchoice(provider.creationCount) }}</small>
                     </a>
                 </div>
             {% endif %}
@@ -178,7 +178,7 @@
                     <i class="ladb-icon-howto"></i>
                     <a href="{{ provider.howtoCount == 1 ? path('core_howto_show', { 'id':provider.howtos[0].sluggedId }) : path('core_provider_howtos', { 'id':provider.id }) }}">
                         <strong>{{ provider.howtoCount }}</strong>
-                        <small>{{ 'howto.choice.howtos'|transchoice(provider.howtoCount) }}</small>
+                        <small>{{ 'howto.howto.choice.howtos'|transchoice(provider.howtoCount) }}</small>
                     </a>
                 </div>
             {% endif %}

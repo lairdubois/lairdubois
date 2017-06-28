@@ -9,22 +9,22 @@
     {% if subfilter == 'creations' %}
         <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.publishedCreationCount }}</div>
-            <span class="ladb-subheading">{{ 'creation.choice.creations'|transchoice(user.publishedCreationCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'wonder.creation.choice.creations'|transchoice(user.publishedCreationCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'plans' %}
         <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.publishedPlanCount }}</div>
-            <span class="ladb-subheading">{{ 'plan.choice.plans'|transchoice(user.publishedPlanCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'wonder.plan.choice.plans'|transchoice(user.publishedPlanCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'howtos' %}
         <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.publishedHowtoCount }}</div>
-            <span class="ladb-subheading">{{ 'howto.choice.howtos'|transchoice(user.publishedHowtoCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'howto.howto.choice.howtos'|transchoice(user.publishedHowtoCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'workshops' %}
         <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.publishedWorkshopCount }}</div>
-            <span class="ladb-subheading">{{ 'workshop.choice.workshops'|transchoice(user.publishedWorkshopCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'wonder.workshop.choice.workshops'|transchoice(user.publishedWorkshopCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'comments' %}
         <div class="ladb-counter ladb-hidden-mobile">
@@ -34,7 +34,7 @@
     {% elseif subfilter == 'finds' %}
         <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.publishedFindCount }}</div>
-            <span class="ladb-subheading">{{ 'find.choice.finds'|transchoice(user.publishedFindCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'find.find.choice.finds'|transchoice(user.publishedFindCount)|capitalize }}</span>
         </a>
     {% else %}
         <div class="ladb-counter ladb-hidden-mobile">

@@ -10,7 +10,7 @@
         <div class="alert alert-info ladb-margin-top">
             {% if isOwner %}
                 <p>Vous n'avez pas encore publié de <strong>pas à pas</strong> !</p>
-                <p><a href="{{ path('core_howto_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'howto.new'|trans() }}</a></p>
+                <p><a href="{{ path('core_howto_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'howto.howto.new'|trans() }}</a></p>
             {% else %}
                 <strong>{{ user.username }}</strong> n'a pas encore publié de pas à pas.
             {% endif %}
@@ -27,7 +27,7 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.draftHowtoCount~' '~('default.choice.draft'|transchoice(user.draftHowtoCount)) }}
                     {% else %}
-                        {{ user.publishedHowtoCount }} {{ 'howto.choice.howtos'|transchoice(user.publishedHowtoCount) }}{% if isDraftVisible and user.draftHowtoCount > 0 %} (+{{ user.draftHowtoCount~' '~('default.choice.draft'|transchoice(user.draftHowtoCount)) }}){% endif %}
+                        {{ user.publishedHowtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(user.publishedHowtoCount) }}{% if isDraftVisible and user.draftHowtoCount > 0 %} (+{{ user.draftHowtoCount~' '~('default.choice.draft'|transchoice(user.draftHowtoCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

@@ -120,7 +120,7 @@ class FindController extends Controller {
 		}
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $find->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.find.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $find->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_find_show', array( 'id' => $find->getSluggedId() )));
 	}
@@ -151,7 +151,7 @@ class FindController extends Controller {
 		$findManager->publish($find);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.publish_success', array( '%title%' => $find->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.find.form.alert.publish_success', array( '%title%' => $find->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_find_show', array( 'id' => $find->getSluggedId() )));
 	}
@@ -179,7 +179,7 @@ class FindController extends Controller {
 		$findManager->unpublish($find);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.unpublish_success', array( '%title%' => $find->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.find.form.alert.unpublish_success', array( '%title%' => $find->getTitle() )));
 
 		// Return to
 		$returnToUrl = $request->get('rtu');
@@ -260,7 +260,7 @@ class FindController extends Controller {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($find, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.update_success', array( '%title%' => $find->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.find.form.alert.update_success', array( '%title%' => $find->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(FindType::class, $find);
@@ -301,7 +301,7 @@ class FindController extends Controller {
 		$findManager->delete($find);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.form.alert.delete_success', array( '%title%' => $find->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.find.form.alert.delete_success', array( '%title%' => $find->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_find_list'));
 	}
@@ -451,7 +451,7 @@ class FindController extends Controller {
 			$draftCount = $this->getUser()->getDraftFindCount();
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('find.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('find.find.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
 
 		}
 

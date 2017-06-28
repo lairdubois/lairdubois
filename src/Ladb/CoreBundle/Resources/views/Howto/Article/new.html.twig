@@ -1,14 +1,14 @@
 {% extends 'LadbCoreBundle:Howto/Article:_form.html.twig' %}
 
-{% set pageTitle = 'howto.article.new'|trans() %}
+{% set pageTitle = 'howto.howto.article.new'|trans() %}
 {% set formAction = path('core_howto_article_create', { 'id':howto.id }) %}
 
 {% block body %}
     {{ parent() }}
     {% if not form.vars.submitted and howto.articles|length == 0 %}
-        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'warning_article_modal', 'title':('howto.article.new'|trans()) } %}
+        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'warning_article_modal', 'title':('howto.howto.article.new'|trans()) } %}
             {% block bodyInner %}
-                <p>{{ 'howto.article.new_warning'|trans()|raw }}</p>
+                <p>{{ 'howto.howto.article.new_warning'|trans()|raw }}</p>
             {% endblock %}
             {% block footerInner %}
                 <a href="#" class="btn btn-primary" data-dismiss="modal">{{ 'default.continue'|trans() }}</a>
@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-plus"></i> {{ 'howto.article.new'|trans() }}
+    <i class="ladb-icon-plus"></i> {{ 'howto.howto.article.new'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}

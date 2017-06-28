@@ -128,7 +128,7 @@ class WorkshopController extends Controller {
 		}
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $workshop->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $workshop->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_workshop_show', array( 'id' => $workshop->getSluggedId() )));
 	}
@@ -159,7 +159,7 @@ class WorkshopController extends Controller {
 		$workshopManager->publish($workshop);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workshop.form.alert.publish_success', array( '%title%' => $workshop->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.form.alert.publish_success', array( '%title%' => $workshop->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_workshop_show', array( 'id' => $workshop->getSluggedId() )));
 	}
@@ -187,7 +187,7 @@ class WorkshopController extends Controller {
 		$workshopManager->unpublish($workshop);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workshop.form.alert.unpublish_success', array( '%title%' => $workshop->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.form.alert.unpublish_success', array( '%title%' => $workshop->getTitle() )));
 
 		// Return to
 		$returnToUrl = $request->get('rtu');
@@ -279,7 +279,7 @@ class WorkshopController extends Controller {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($workshop, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workshop.form.alert.update_success', array( '%title%' => $workshop->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.form.alert.update_success', array( '%title%' => $workshop->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(WorkshopType::class, $workshop);
@@ -320,7 +320,7 @@ class WorkshopController extends Controller {
 		$workshopManager->delete($workshop);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workshop.form.alert.delete_success', array( '%title%' => $workshop->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.form.alert.delete_success', array( '%title%' => $workshop->getTitle() )));
 
 		if ($workshop->getIsDraft()) {
 			return $this->redirect($this->generateUrl('core_user_show_workshops', array( 'username' => $this->getUser()->getUsernameCanonical() )));
@@ -700,7 +700,7 @@ class WorkshopController extends Controller {
 			$draftCount = $this->getUser()->getDraftWorkshopCount();
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('workshop.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('wonder.workshop.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
 
 		}
 
@@ -809,7 +809,7 @@ class WorkshopController extends Controller {
 		$howto = $workshopManager->convertToHowto($workshop);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workshop.admin.alert.converttohowto_success', array( '%title%' => $workshop->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.admin.alert.converttohowto_success', array( '%title%' => $workshop->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
 	}

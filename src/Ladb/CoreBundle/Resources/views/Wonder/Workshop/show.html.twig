@@ -67,7 +67,7 @@
             <a href="{{ workshop.planCount == 1 ? path('core_plan_show', { 'id':workshop.plans[0].sluggedId }) : path('core_workshop_plans', { 'id':workshop.id }) }}">
                 {% endif %}
                 <strong>{{ workshop.planCount }}</strong>
-                <small>{{ 'plan.choice.plans'|transchoice(workshop.planCount) }}</small>
+                <small>{{ 'wonder.plan.choice.plans'|transchoice(workshop.planCount) }}</small>
                 {% if workshop.planCount > 0 %}
             </a>
             {% endif %}
@@ -78,7 +78,7 @@
             <a href="{{ workshop.howtoCount == 1 ? path('core_howto_show', { 'id':workshop.howtos[0].sluggedId }) : path('core_workshop_howtos', { 'id':workshop.id }) }}">
                 {% endif %}
                 <strong>{{ workshop.howtoCount }}</strong>
-                <small>{{ 'howto.choice.howtos'|transchoice(workshop.howtoCount) }}</small>
+                <small>{{ 'howto.howto.choice.howtos'|transchoice(workshop.howtoCount) }}</small>
                 {% if workshop.planCount > 0 %}
             </a>
             {% endif %}
@@ -95,7 +95,7 @@
                         'path':workshop.planCount == 1 ? path('core_plan_show', { 'id':workshop.plans[0].sluggedId }) : path('core_workshop_plans', { 'id':workshop.id }),
                         'picture':workshop.plans[0].mainPicture,
                         'icon':'ladb-icon-plan',
-                        'caption': workshop.planCount~' '~('plan.choice.plans'|transchoice(workshop.planCount))
+                        'caption': workshop.planCount~' '~('wonder.plan.choice.plans'|transchoice(workshop.planCount))
                     } %}
                 {% endif %}
                 {% if workshop.howtoCount > 0 %}
@@ -103,7 +103,7 @@
                         'path':workshop.howtoCount == 1 ? path('core_howto_show', { 'id':workshop.howtos[0].sluggedId }) : path('core_workshop_howtos', { 'id':workshop.id }),
                         'picture':workshop.howtos[0].mainPicture,
                         'icon':'ladb-icon-howto',
-                        'caption': workshop.howtoCount~' '~('howto.choice.howtos'|transchoice(workshop.howtoCount))
+                        'caption': workshop.howtoCount~' '~('howto.howto.choice.howtos'|transchoice(workshop.howtoCount))
                     } %}
                 {% endif %}
             {% endblock %}

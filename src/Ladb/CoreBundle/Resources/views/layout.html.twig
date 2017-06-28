@@ -48,11 +48,11 @@
     {% embed '::_bottombar.part.html.twig' %}
         {% block bottomBarBlogPostNotificationBadge %}
             {{ parent() }}
-            {% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedPostCount' } %}
+            {% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedBlogPostCount' } %}
         {% endblock %}
         {% block bottomBarFaqQuestionNotificationBadge %}
             {{ parent() }}
-            {% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedQuestionCount' } %}
+            {% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFaqQuestionCount' } %}
         {% endblock %}
     {% endembed %}
     {% if is_granted("ROLE_USER") %}
@@ -62,12 +62,12 @@
                     <h3 class="uk-panel-title"><img src="{{ (app.user.avatar ? app.user.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32" class="img-rounded"> {{ app.user.displayname }}</h3>
                 </div>
                 <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
-                    <li><a href="{{ path('core_creation_new') }}"><i class="ladb-icon-plus"></i> {{ 'creation.new'|trans() }}</a></li>
-                    <li><a href="{{ path('core_plan_new') }}"><i class="ladb-icon-plus"></i> {{ 'plan.new'|trans() }}</a></li>
-                    <li><a href="{{ path('core_howto_new') }}"><i class="ladb-icon-plus"></i> {{ 'howto.new'|trans() }}</a></li>
-                    <li><a href="{{ path('core_workshop_new') }}"><i class="ladb-icon-plus"></i> {{ 'workshop.new'|trans() }}</a></li>
+                    <li><a href="{{ path('core_creation_new') }}"><i class="ladb-icon-plus"></i> {{ 'wonder.creation.new'|trans() }}</a></li>
+                    <li><a href="{{ path('core_plan_new') }}"><i class="ladb-icon-plus"></i> {{ 'wonder.plan.new'|trans() }}</a></li>
+                    <li><a href="{{ path('core_howto_new') }}"><i class="ladb-icon-plus"></i> {{ 'howto.howto.new'|trans() }}</a></li>
+                    <li><a href="{{ path('core_workshop_new') }}"><i class="ladb-icon-plus"></i> {{ 'wonder.workshop.new'|trans() }}</a></li>
                     <li class="uk-nav-divider"></li>
-                    <li><a href="{{ path('core_find_new') }}"><i class="ladb-icon-plus"></i> {{ 'find.new'|trans() }}</a></li>
+                    <li><a href="{{ path('core_find_new') }}"><i class="ladb-icon-plus"></i> {{ 'find.find.new'|trans() }}</a></li>
                     <li class="uk-nav-divider"></li>
                     <li><a href="{{ path('core_user_show_me') }}"><i class="ladb-icon-profile"></i> {{ 'user.home'|trans() }}</a></li>
                     <li><a role="button" onclick="$.UIkit.offcanvas.hide(false); $('#notifications_modal').modal({ remote:'{{ path('core_notification_list') }}' }); $('.ladb-notification-btn-badge').hide();">{% if app.user.freshNotificationCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.freshNotificationCount }}</span>{% endif %}<i class="ladb-icon-notifications"></i> {{ 'notification.nav'|trans() }}</a></li>
@@ -88,28 +88,28 @@
             </div>
             <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
                 <li class="uk-nav-divider"></li>
-                <li><a href="{{ path('core_creation_list') }}"><i class="ladb-icon-creation"></i> {{ 'creation.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedCreationCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_plan_list') }}"><i class="ladb-icon-plan"></i> {{ 'plan.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedPlanCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_howto_list') }}"><i class="ladb-icon-howto"></i> {{ 'howto.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedHowtoCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_workshop_list') }}"><i class="ladb-icon-workshop"></i> {{ 'workshop.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWorkshopCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_wood_list') }}"><i class="ladb-icon-wood"></i> {{ 'knowledge.wood.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWoodCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_provider_list') }}"><i class="ladb-icon-provider"></i> {{ 'knowledge.provider.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedProviderCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_find_list') }}"><i class="ladb-icon-globe"></i> {{ 'find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_creation_list') }}"><i class="ladb-icon-creation"></i> {{ 'wonder.creation.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderCreationCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_plan_list') }}"><i class="ladb-icon-plan"></i> {{ 'wonder.plan.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderPlanCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_howto_list') }}"><i class="ladb-icon-howto"></i> {{ 'howto.howto.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedHowtoHowtoCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_workshop_list') }}"><i class="ladb-icon-workshop"></i> {{ 'wonder.workshop.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderWorkshopCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_wood_list') }}"><i class="ladb-icon-wood"></i> {{ 'knowledge.wood.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeWoodCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_provider_list') }}"><i class="ladb-icon-provider"></i> {{ 'knowledge.provider.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_find_list') }}"><i class="ladb-icon-globe"></i> {{ 'find.find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindFindCount', 'classes':'pull-right' } %}</a></li>
                 <li><a href="{{ path('core_user_list') }}"><i class="ladb-icon-users"></i> {{ 'user.nav'|trans() }}</a></li>
                 <li class="uk-nav-divider"></li>
-                <li><a href="{{ path('core_blog_post_list') }}"><i class="ladb-icon-blog"></i> {{ 'blog.post.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedPostCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_faq_question_list') }}"><i class="ladb-icon-help"></i> {{ 'faq.question.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedQuestionCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_blog_post_list') }}"><i class="ladb-icon-blog"></i> {{ 'blog.post.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedBlogPostCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_faq_question_list') }}"><i class="ladb-icon-help"></i> {{ 'faq.question.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFaqQuestionCount', 'classes':'pull-right' } %}</a></li>
             </ul>
         </div>
     </div>
     <nav class="ladb-leftbar">
-        <a href="{{ path('core_creation_list') }}"{% if navSection is defined and navSection == 'creations' %} class="ladb-active"{% endif %}><i class="ladb-icon-creation"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedCreationCount' } %}<div>{{ 'creation.nav'|trans() }}</div></a>
-        <a href="{{ path('core_plan_list') }}" {% if navSection is defined and navSection == 'plans' %} class="ladb-active"{% endif %}><i class="ladb-icon-plan"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedPlanCount' } %}<div>{{ 'plan.nav'|trans() }}</div></a>
-        <a href="{{ path('core_howto_list') }}" {% if navSection is defined and navSection == 'howtos' %} class="ladb-active"{% endif %}><i class="ladb-icon-howto"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedHowtoCount' } %}<div>{{ 'howto.nav'|trans() }}</div></a>
-        <a href="{{ path('core_workshop_list') }}" {% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWorkshopCount' } %}<div>{{ 'workshop.nav'|trans() }}</div></a>
-        <a href="{{ path('core_wood_list') }}" {% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWoodCount' } %}<div>{{ 'knowledge.wood.nav'|trans() }}</div></a>
-        <a href="{{ path('core_provider_list') }}" {% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedProviderCount' } %}<div>{{ 'knowledge.provider.nav'|trans() }}</div></a>
-        <a href="{{ path('core_find_list') }}" {% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-globe"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindCount' } %}<div>{{ 'find.nav'|trans() }}</div></a>
+        <a href="{{ path('core_creation_list') }}"{% if navSection is defined and navSection == 'creations' %} class="ladb-active"{% endif %}><i class="ladb-icon-creation"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderCreationCount' } %}<div>{{ 'wonder.creation.nav'|trans() }}</div></a>
+        <a href="{{ path('core_plan_list') }}" {% if navSection is defined and navSection == 'plans' %} class="ladb-active"{% endif %}><i class="ladb-icon-plan"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderPlanCount' } %}<div>{{ 'wonder.plan.nav'|trans() }}</div></a>
+        <a href="{{ path('core_howto_list') }}" {% if navSection is defined and navSection == 'howtos' %} class="ladb-active"{% endif %}><i class="ladb-icon-howto"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedHowtoHowtoCount' } %}<div>{{ 'howto.howto.nav'|trans() }}</div></a>
+        <a href="{{ path('core_workshop_list') }}" {% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderWorkshopCount' } %}<div>{{ 'wonder.workshop.nav'|trans() }}</div></a>
+        <a href="{{ path('core_wood_list') }}" {% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeWoodCount' } %}<div>{{ 'knowledge.wood.nav'|trans() }}</div></a>
+        <a href="{{ path('core_provider_list') }}" {% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount' } %}<div>{{ 'knowledge.provider.nav'|trans() }}</div></a>
+        <a href="{{ path('core_find_list') }}" {% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-globe"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindFindCount' } %}<div>{{ 'find.find.nav'|trans() }}</div></a>
         <a href="{{ path('core_user_list') }}" {% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'user.nav'|trans() }}</div></a>
     </nav>
     {{ parent() }}

@@ -81,9 +81,12 @@ class UserUtils extends AbstractContainerAwareUtils {
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
 
 				// Update count value on user entity
-				if ($count != $meta->{'getUnlisted'.ucfirst($entityStrippedName).'Count'}()) {
+				$propertyPath = 'unlisted_'.ucfirst($entityStrippedName).'_count';
+				$propertyUtils = $this->get(PropertyUtils::NAME);
 
-					$meta->{'setUnlisted'.ucfirst($entityStrippedName).'Count'}($count);
+				if ($count != $propertyUtils->getValue($meta, $propertyPath)) {
+
+					$propertyUtils->setValue($meta, $propertyPath, $count);
 
 					if ($flush) {
 						$userManager = $this->get('fos_user.user_manager');

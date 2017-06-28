@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_list.html.twig' %}
 
-{% set pageTitle = 'find.list'|trans() %}
-{% set pageDescription = 'find.description'|trans() %}
+{% set pageTitle = 'find.find.list'|trans() %}
+{% set pageDescription = 'find.find.description'|trans() %}
 {% set pageImage = asset('banner-finds-600x376.jpg') %}
 
 {% set navSection = 'finds' %}
@@ -15,9 +15,9 @@
 
 {% block bodyContainerContent %}
     {#{% embed 'LadbCoreBundle:Find:_list-filterbar.part.html.twig' %}#}
-        {#{% set heading = 'find.list'|trans() %}#}
+        {#{% set heading = 'find.find.list'|trans() %}#}
         {#{% block filterbarRightContent%}#}
-            {#<a href="{{ path('core_find_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'find.new'|trans() }}</a>#}
+            {#<a href="{{ path('core_find_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'find.find.new'|trans() }}</a>#}
         {#{% endblock %}#}
     {#{% endembed %}#}
     {{ parent() }}

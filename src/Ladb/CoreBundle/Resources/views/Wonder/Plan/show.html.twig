@@ -54,9 +54,9 @@
             {% for kindStrippedName in kindStrippedNames %}
                 {% if not loop.first %}, {% endif %}
                 {% if kindExternUrls[loop.index0] is not empty %}
-                    <a href="http://{{ kindExternUrls[loop.index0] }}" target="_blank">{{ ('plan.kind.'~kindStrippedName)|trans() }}</a>
+                    <a href="http://{{ kindExternUrls[loop.index0] }}" target="_blank">{{ ('wonder.plan.kind.'~kindStrippedName)|trans() }}</a>
                 {% else %}
-                    {{ ('plan.kind.'~kindStrippedName)|trans() }}
+                    {{ ('wonder.plan.kind.'~kindStrippedName)|trans() }}
                 {% endif %}
             {% endfor %}
         </span>
@@ -70,7 +70,7 @@
         <span><i class="ladb-icon-file ladb-icon-fixed-center"></i>&nbsp;{{ plan.resources|length }} {{ 'default.choice.files'|transchoice(plan.resources|length) }}</span>
     </div>
     <div class="ladb-btn">
-        <a href="{{ path('core_plan_download', { 'id':plan.id }) }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-unpublish ladb-icon-lg"></i> {{ 'plan.download'|trans() }}</a>
+        <a href="{{ path('core_plan_download', { 'id':plan.id }) }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-unpublish ladb-icon-lg"></i> {{ 'wonder.plan.download'|trans() }}</a>
     </div>
 {% endblock %}
 
@@ -93,7 +93,7 @@
                     <i class="ladb-icon-howto"></i>
                     <a href="{{ plan.howtoCount == 1 ? path('core_howto_show', { 'id':plan.howtos[0].sluggedId }) : path('core_plan_howtos', { 'id':plan.id }) }}">
                         <strong>{{ plan.howtoCount }}</strong>
-                        <small>{{ 'howto.choice.howtos'|transchoice(plan.howtoCount) }}</small>
+                        <small>{{ 'howto.howto.choice.howtos'|transchoice(plan.howtoCount) }}</small>
                     </a>
                 </div>
             {% endif %}
@@ -102,7 +102,7 @@
                     <i class="ladb-icon-creation"></i>
                     <a href="{{ plan.creationCount == 1 ? path('core_creation_show', { 'id':plan.creations[0].sluggedId }) : path('core_plan_creations', { 'id':plan.id }) }}">
                         <strong>{{ plan.creationCount }}</strong>
-                        <small>{{ 'creation.choice.creations'|transchoice(plan.creationCount) }}</small>
+                        <small>{{ 'wonder.creation.choice.creations'|transchoice(plan.creationCount) }}</small>
                     </a>
                 </div>
             {% endif %}
@@ -111,7 +111,7 @@
                     <i class="ladb-icon-workshop"></i>
                     <a href="{{ plan.workshopCount == 1 ? path('core_workshop_show', { 'id':plan.workshops[0].sluggedId }) : path('core_plan_workshops', { 'id':plan.id }) }}">
                         <strong>{{ plan.workshopCount }}</strong>
-                        <small>{{ 'workshop.choice.workshops'|transchoice(plan.workshopCount) }}</small>
+                        <small>{{ 'wonder.workshop.choice.workshops'|transchoice(plan.workshopCount) }}</small>
                     </a>
                 </div>
             {% endif %}
@@ -149,7 +149,7 @@
                         'path':plan.howtoCount == 1 ? path('core_howto_show', { 'id':plan.howtos[0].sluggedId }) : path('core_plan_howtos', { 'id':plan.id }),
                         'picture':plan.howtos[0].mainPicture,
                         'icon':'ladb-icon-howto',
-                        'caption': plan.howtoCount~' '~('howto.choice.howtos'|transchoice(plan.howtoCount))
+                        'caption': plan.howtoCount~' '~('howto.howto.choice.howtos'|transchoice(plan.howtoCount))
                     } %}
                 {% endif %}
                 {% if plan.creationCount > 0 %}
@@ -157,7 +157,7 @@
                         'path':plan.creationCount == 1 ? path('core_creation_show', { 'id':plan.creations[0].sluggedId }) : path('core_plan_creations', { 'id':plan.id }),
                         'picture':plan.creations[0].mainPicture,
                         'icon':'ladb-icon-creation',
-                        'caption': plan.creationCount~' '~('creation.choice.creations'|transchoice(plan.creationCount))
+                        'caption': plan.creationCount~' '~('wonder.creation.choice.creations'|transchoice(plan.creationCount))
                     } %}
                 {% endif %}
                 {% if plan.workshopCount > 0 %}
@@ -165,7 +165,7 @@
                         'path':plan.workshopCount == 1 ? path('core_workshop_show', { 'id':plan.workshops[0].sluggedId }) : path('core_plan_workshops', { 'id':plan.id }),
                         'picture':plan.workshops[0].mainPicture,
                         'icon':'ladb-icon-workshop',
-                        'caption': plan.workshopCount~' '~('workshop.choice.workshops'|transchoice(plan.workshopCount))
+                        'caption': plan.workshopCount~' '~('wonder.workshop.choice.workshops'|transchoice(plan.workshopCount))
                     } %}
                 {% endif %}
                 {% if plan.reboundCount > 0 %}

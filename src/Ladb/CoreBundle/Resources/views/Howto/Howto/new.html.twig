@@ -1,11 +1,11 @@
 {% extends 'LadbCoreBundle:Howto/Howto:_form.html.twig' %}
 
-{% set pageTitle = 'howto.new'|trans() %}
+{% set pageTitle = 'howto.howto.new'|trans() %}
 {% set formAction = path('core_howto_create') %}
 {% set hideWarning = hideWarning|default(false) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-plus"></i> {{ 'howto.new'|trans() }}
+    <i class="ladb-icon-plus"></i> {{ 'howto.howto.new'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}
@@ -15,7 +15,7 @@
 {% block body %}
     {{ parent() }}
     {% if not hideWarning %}
-        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_howto_modal', 'title':('howto.new'|trans()), 'textTransKey':'howto.new_warning', 'cancelPath':'core_howto_list' } %}
+        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_howto_modal', 'title':('howto.howto.new'|trans()), 'textTransKey':'howto.howto.new_warning', 'cancelPath':'core_howto_list' } %}
     {% endif %}
 {% endblock %}
 

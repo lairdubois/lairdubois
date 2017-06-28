@@ -24,11 +24,11 @@
             <li class="ladb-counter"><i class="ladb-icon-users"></i> <span>{{ entity.joinCount|number_format(0, ',', ' ') }}</span></li>
         {% endif %}
         {% if find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_SCHEDULED') %}
-            <span class="label label-info">{{ 'find.content.event.scheduled'|trans() }}</span>
+            <span class="label label-info">{{ 'find.find.content.event.scheduled'|trans() }}</span>
         {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_RUNNING') %}
-            <span class="label label-success">{{ 'find.content.event.running'|trans() }}</span>
+            <span class="label label-success">{{ 'find.find.content.event.running'|trans() }}</span>
         {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_COMPLETED') %}
-            <span class="label label-danger">{{ 'find.content.event.completed'|trans() }}</span>
+            <span class="label label-danger">{{ 'find.find.content.event.completed'|trans() }}</span>
         {% endif %}
     {% endif %}
 {% endblock %}

@@ -1,11 +1,11 @@
 {% extends 'LadbCoreBundle:Wonder/Workshop:_form.html.twig' %}
 
-{% set pageTitle = 'workshop.new'|trans() %}
+{% set pageTitle = 'wonder.workshop.new'|trans() %}
 {% set formAction = path('core_workshop_create') %}
 {% set hideWarning = hideWarning|default(false) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-plus"></i> {{ 'workshop.new'|trans() }}
+    <i class="ladb-icon-plus"></i> {{ 'wonder.workshop.new'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}
@@ -15,7 +15,7 @@
 {% block body %}
     {{ parent() }}
     {% if not hideWarning %}
-        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_workshop_modal', 'title':('workshop.new'|trans()), 'textTransKey':'workshop.new_warning', 'cancelPath':'core_workshop_list' } %}
+        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_workshop_modal', 'title':('wonder.workshop.new'|trans()), 'textTransKey':'wonder.workshop.new_warning', 'cancelPath':'core_workshop_list' } %}
     {% endif %}
 {% endblock %}
 
