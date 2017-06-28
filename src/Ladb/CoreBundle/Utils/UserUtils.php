@@ -2,25 +2,14 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Imagine\Filter\Advanced\RelativeResize;
 use Imagine\Gd\Font;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use Imagine\Image\ImageInterface;
 use Imagine\Image\Point;
 use Imagine\Image\Palette\RGB;
-use Ladb\CoreBundle\Entity\Blog\Post;
-use Ladb\CoreBundle\Entity\Faq\Question;
-use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Knowledge\Provider;
-use Ladb\CoreBundle\Entity\Knowledge\Wood;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
-use Ladb\CoreBundle\Entity\Find\Find;
-use Ladb\CoreBundle\Entity\Wonder\Creation;
-use Ladb\CoreBundle\Entity\Wonder\Plan;
-use Ladb\CoreBundle\Entity\Wonder\Workshop;
 
 class UserUtils extends AbstractContainerAwareUtils {
 
@@ -31,15 +20,15 @@ class UserUtils extends AbstractContainerAwareUtils {
 	public function computeUnlistedCounters(User $user) {
 
 		$updated = false;
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Creation::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Plan::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Workshop::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Find::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Howto::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Wood::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Provider::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Post::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Question::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Find\Find::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Howto\Howto::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Blog\Post::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Faq\Question::TYPE, false);
 
 		if ($updated) {
 			$userManager = $this->get('fos_user.user_manager');
