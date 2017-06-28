@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\Activity\ActivityRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="integer")
- * @ORM\DiscriminatorMap({1 = "Comment", 2 = "Follow", 3 = "Like", 4 = "Publish", 5 = "Vote", 6 = "Write", 7 = "Contribute", 8 = "Mention", 9 = "Join"})
+ * @ORM\DiscriminatorMap({1 = "Comment", 2 = "Follow", 3 = "Like", 4 = "Publish", 5 = "Vote", 6 = "Write", 7 = "Contribute", 8 = "Mention", 9 = "Join", 10 = "Answer"})
  */
 abstract class AbstractActivity {
 

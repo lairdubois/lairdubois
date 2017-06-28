@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -14,6 +15,7 @@ use Ladb\CoreBundle\Model\SitemapableInterface;
 use Ladb\CoreBundle\Model\SitemapableTrait;
 use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
+use Ladb\CoreBundle\Model\TypableInterface;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\VotableInterface;
 use Ladb\CoreBundle\Model\VotableTrait;
@@ -40,13 +42,20 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\AnswerRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
+class Answer implements TypableInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
 
 	use BlockBodiedTrait;
 	use CommentableTrait, VotableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Answer';
 	const TYPE = 114;
+
+	/**
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
 	/**
 	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
@@ -123,16 +132,16 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
-	// NotificationStrategy /////
-
-	public function getNotificationStrategy() {
-		return self::NOTIFICATION_STRATEGY_WATCH;
-	}
-
 	// Type /////
 
 	public function getType() {
 		return Answer::TYPE;
+	}
+
+	// Id /////
+
+	public function getId() {
+		return $this->id;
 	}
 
 	// Question /////

@@ -232,6 +232,29 @@ EOT
 
 			}
 
+			// Answer /////
+
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Answer) {
+
+				$answer = $activity->getAnswer();
+				$question = $answer->getQuestion();
+
+				if ($question->getWatchCount() > 0) {
+
+					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($question->getType(), $question->getId(), $actorUser);
+					if (!is_null($watches)) {
+						foreach ($watches as $watch) {
+							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
+							if ($verbose) {
+								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new comment='.mb_strimwidth($comment->getBody(), 0, 50, '[...]').' on='.$watchable->getTitle().'</info>');
+							}
+						}
+					}
+
+				}
+
+			}
+
 			// Flag activity as notified
 			$activity->setIsPendingNotifications(false);
 

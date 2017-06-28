@@ -135,6 +135,19 @@ class ActivityUtils {
 		}
 	}
 
+	public function createAnswerActivity(\Ladb\CoreBundle\Entity\Qa\Answer $answer, $flush = true) {
+
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Answer();
+		$activity->setUser($answer->getUser());
+		$activity->setAnswer($answer);
+
+		$this->om->persist($activity);
+
+		if ($flush) {
+			$this->om->flush();
+		}
+	}
+
 	// Delete /////
 
 	private function _deleteActivities($activities, $flush = true) {
@@ -185,6 +198,12 @@ class ActivityUtils {
 	public function deleteActivitiesByMessage(\Ladb\CoreBundle\Entity\Message\Message $message, $flush = true) {
 		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Write::CLASS_NAME);
 		$activities = $activityRepository->findByMessage($message);
+		$this->_deleteActivities($activities, $flush);
+	}
+
+	public function deleteActivitiesByAnswer(\Ladb\CoreBundle\Entity\Qa\Answer $answer, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Answer::CLASS_NAME);
+		$activities = $activityRepository->findByAnswer($answer);
 		$this->_deleteActivities($activities, $flush);
 	}
 
