@@ -13,17 +13,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Notification {
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Notification';
-	/**
-	 * @ORM\Column(name="created_at", type="datetime")
-	 * @Gedmo\Timestampable(on="create")
-	 */
-	protected $createdAt;
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
+	/**
+	 * @ORM\Column(name="created_at", type="datetime")
+	 * @Gedmo\Timestampable(on="create")
+	 */
+	protected $createdAt;
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(nullable=false)
@@ -61,8 +64,9 @@ class Notification {
 
 	// CreatedAt /////
 
-	public function getAge() {
-		return $this->getCreatedAt()->diff(new \DateTime());
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+		return $this;
 	}
 
 	public function getCreatedAt() {
@@ -71,64 +75,63 @@ class Notification {
 
 	// Age /////
 
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
+	public function getAge() {
+		return $this->getCreatedAt()->diff(new \DateTime());
 	}
 
 	// User /////
-
-	public function getUser() {
-		return $this->user;
-	}
 
 	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
 		$this->user = $user;
 		return $this;
 	}
 
-	// Activity /////
-
-	public function getActivity() {
-		return $this->activity;
+	public function getUser() {
+		return $this->user;
 	}
+
+	// Activity /////
 
 	public function setActivity(\Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity $activity) {
 		$this->activity = $activity;
 		return $this;
 	}
 
-	// EmailedAt /////
-
-	public function getIsPendingEmail() {
-		return $this->isPendingEmail;
+	public function getActivity() {
+		return $this->activity;
 	}
+
+	// EmailedAt /////
 
 	public function setIsPendingEmail($isPendingEmail) {
 		$this->isPendingEmail = $isPendingEmail;
 		return $this;
 	}
 
-	// IsListed /////
-
-	public function getIsListed() {
-		return $this->isListed;
+	public function getIsPendingEmail() {
+		return $this->isPendingEmail;
 	}
+
+	// IsListed /////
 
 	public function setIsListed($isListed) {
 		$this->isListed = $isListed;
 		return $this;
 	}
 
-	// IsShown /////
-
-	public function getIsShown() {
-		return $this->isShown;
+	public function getIsListed() {
+		return $this->isListed;
 	}
+
+	// IsShown /////
 
 	public function setIsShown($isShown) {
 		$this->isShown = $isShown;
 		return $this;
+	}
+
+	public function getIsShown() {
+		return $this->isShown;
 	}
 
 }

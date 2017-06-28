@@ -39,29 +39,35 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
-	/**
-	 * @Assert\Length(min=3, max=25)
-	 */
-	protected $username;
-	/**
-	 * @Assert\NotBlank()
-	 * @Assert\Email(strict=true)
-	 */
-	protected $email;
+
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	private $createdAt;
+
 	/**
 	 * @ORM\Column(name="updated_at", type="datetime")
 	 * @Gedmo\Timestampable(on="update")
 	 */
 	private $updatedAt;
+
 	/**
 	 * @ORM\Column(type="boolean", nullable=true, name="email_confirmed")
 	 */
 	private $emailConfirmed = false;
+
+	/**
+	 * @Assert\Length(min=3, max=25)
+	 */
+	protected $username;
+
+	/**
+	 * @Assert\NotBlank()
+	 * @Assert\Email(strict=true)
+	 */
+	protected $email;
+
 	/**
 	 * @ORM\Column(type="string", length=25, unique=true)
 	 * @Assert\Length(min=3, max=25)
@@ -347,13 +353,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	/////
 
-	public function __construct() {
-		parent::__construct();
-		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
-	}
-
-	/////
-
 	/**
 	 * @ORM\PrePersist()
 	 */
@@ -361,6 +360,13 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		if (is_null($this->displayname)) {
 			$this->displayname = $this->username;
 		}
+	}
+
+	/////
+
+	public function __construct() {
+		parent::__construct();
+		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// ID /////
@@ -384,13 +390,13 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// EmailConfirmed /////
 
-	public function getEmailConfirmed() {
-		return $this->emailConfirmed;
-	}
-
 	public function setEmailConfirmed($emailConfirmed) {
 		$this->emailConfirmed = $emailConfirmed;
 		return $this;
+	}
+
+	public function getEmailConfirmed() {
+		return $this->emailConfirmed;
 	}
 
 	// Slug /////
@@ -406,50 +412,50 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// CreatedAt /////
 
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
-	// UpdatedAt /////
-
-	public function getUpdatedAt() {
-		return $this->updatedAt;
+	public function getCreatedAt() {
+		return $this->createdAt;
 	}
+
+	// UpdatedAt /////
 
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
 		return $this;
 	}
 
+	public function getUpdatedAt() {
+		return $this->updatedAt;
+	}
+
 	// Displayname /////
-
-	public function getTitle() {
-		return $this->getDisplayname();
-	}
-
-	public function getDisplayname() {
-		return $this->displayname;
-	}
 
 	public function setDisplayname($displayname) {
 		$this->displayname = $displayname;
 		return $this;
 	}
 
-	// Fullname /////
-
-	public function getFullname() {
-		return $this->fullname;
+	public function getDisplayname() {
+		return $this->displayname;
 	}
+
+	public function getTitle() {
+		return $this->getDisplayname();
+	}
+
+	// Fullname /////
 
 	public function setFullname($fullname) {
 		$this->fullname = $fullname;
 		return $this;
+	}
+
+	public function getFullname() {
+		return $this->fullname;
 	}
 
 	public function isFullnameDisplayble() {
@@ -458,129 +464,129 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// Avatar /////
 
-	public function getMainPicture() {
-		return $this->getAvatar();
+	public function setAvatar(\Ladb\CoreBundle\Entity\Core\Picture $avatar = null) {
+		$this->avatar = $avatar;
+		return $this;
 	}
 
 	public function getAvatar() {
 		return $this->avatar;
 	}
 
-	public function setAvatar(\Ladb\CoreBundle\Entity\Core\Picture $avatar = null) {
-		$this->avatar = $avatar;
-		return $this;
+	public function getMainPicture() {
+		return $this->getAvatar();
 	}
 
 	// AccountType /////
-
-	public function getAccountType() {
-		return $this->accountType;
-	}
 
 	public function setAccountType($accountType) {
 		$this->accountType = $accountType;
 		return $this;
 	}
 
-	// Banner /////
-
-	public function getBanner() {
-		return $this->banner;
+	public function getAccountType() {
+		return $this->accountType;
 	}
+
+	// Banner /////
 
 	public function setBanner(\Ladb\CoreBundle\Entity\Core\Picture $banner = null) {
 		$this->banner = $banner;
 		return $this;
 	}
 
-	// Website /////
-
-	public function getWebsite() {
-		return $this->website;
+	public function getBanner() {
+		return $this->banner;
 	}
+
+	// Website /////
 
 	public function setWebsite($website) {
 		$this->website = $website;
 	}
 
-	// Facebook /////
-
-	public function getFacebook() {
-		return $this->facebook;
+	public function getWebsite() {
+		return $this->website;
 	}
+
+	// Facebook /////
 
 	public function setFacebook($facebook) {
 		$this->facebook = $facebook;
 	}
 
-	// Twitter /////
-
-	public function getTwitter() {
-		return $this->twitter;
+	public function getFacebook() {
+		return $this->facebook;
 	}
+
+	// Twitter /////
 
 	public function setTwitter($twitter) {
 		$this->twitter = $twitter;
 	}
 
-	// GooglePlus /////
-
-	public function getGoogleplus() {
-		return $this->googleplus;
+	public function getTwitter() {
+		return $this->twitter;
 	}
+
+	// GooglePlus /////
 
 	public function setGoogleplus($googleplus) {
 		$this->googleplus = $googleplus;
 	}
 
-	// YouTube /////
-
-	public function getYoutube() {
-		return $this->youtube;
+	public function getGoogleplus() {
+		return $this->googleplus;
 	}
+
+	// YouTube /////
 
 	public function setYoutube($youtube) {
 		$this->youtube = $youtube;
 	}
 
-	// Vimeo /////
-
-	public function getVimeo() {
-		return $this->vimeo;
+	public function getYoutube() {
+		return $this->youtube;
 	}
+
+	// Vimeo /////
 
 	public function setVimeo($vimeo) {
 		$this->vimeo = $vimeo;
 	}
 
-	// Dailymotion /////
-
-	public function getDailymotion() {
-		return $this->dailymotion;
+	public function getVimeo() {
+		return $this->vimeo;
 	}
+
+	// Dailymotion /////
 
 	public function setDailymotion($dailymotion) {
 		$this->dailymotion = $dailymotion;
 	}
 
-	// Pinterest /////
-
-	public function getPinterest() {
-		return $this->pinterest;
+	public function getDailymotion() {
+		return $this->dailymotion;
 	}
+
+	// Pinterest /////
 
 	public function setPinterest($pinterest) {
 		$this->pinterest = $pinterest;
 	}
 
-	// Instagram /////
-
-	public function getInstagram() {
-		return $this->instagram;
+	public function getPinterest() {
+		return $this->pinterest;
 	}
+
+	// Instagram /////
 
 	public function setInstagram($instagram) {
 		$this->instagram = $instagram;
+	}
+
+	public function getInstagram() {
+		return $this->instagram;
 	}
 
 	// MarkerIcon /////
@@ -614,111 +620,111 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// Biography /////
 
-	public function getBiography() {
-		return $this->biography;
-	}
-
 	public function setBiography(\Ladb\CoreBundle\Entity\Core\Biography $biography = null) {
 		$this->biography = $biography;
 	}
 
-	// AutoWatchEnabled /////
+	public function getBiography() {
+		return $this->biography;
+	}
 
-    public function getAutoWatchEnabled() {
-        return $this->autoWatchEnabled;
-    }
+	// AutoWatchEnabled /////
 
     public function setAutoWatchEnabled($autoWatchEnabled) {
         $this->autoWatchEnabled = $autoWatchEnabled;
 		return $this;
     }
 
-	// IncomingMessageEmailNotificationEnabled /////
+    public function getAutoWatchEnabled() {
+        return $this->autoWatchEnabled;
+    }
 
-	public function getIncomingMessageEmailNotificationEnabled() {
-		return $this->incomingMessageEmailNotificationEnabled;
-	}
+	// IncomingMessageEmailNotificationEnabled /////
 
 	public function setIncomingMessageEmailNotificationEnabled($incomingMessageEmailNotificationEnabled) {
 		$this->incomingMessageEmailNotificationEnabled = $incomingMessageEmailNotificationEnabled;
 		return $this;
 	}
 
-	// NewFollowerEmailNotificationEnabled /////
-
-	public function getNewFollowerEmailNotificationEnabled() {
-		return $this->newFollowerEmailNotificationEnabled;
+	public function getIncomingMessageEmailNotificationEnabled() {
+		return $this->incomingMessageEmailNotificationEnabled;
 	}
+
+	// NewFollowerEmailNotificationEnabled /////
 
 	public function setNewFollowerEmailNotificationEnabled($newFollowerEmailNotificationEnabled) {
 		$this->newFollowerEmailNotificationEnabled = $newFollowerEmailNotificationEnabled;
 		return $this;
 	}
 
-	// NewLikeEmailNotificationEnabled /////
-
-	public function getNewLikeEmailNotificationEnabled() {
-		return $this->newLikeEmailNotificationEnabled;
+	public function getNewFollowerEmailNotificationEnabled() {
+		return $this->newFollowerEmailNotificationEnabled;
 	}
+
+	// NewLikeEmailNotificationEnabled /////
 
 	public function setNewLikeEmailNotificationEnabled($newLikeEmailNotificationEnabled) {
 		$this->newLikeEmailNotificationEnabled = $newLikeEmailNotificationEnabled;
 		return $this;
 	}
 
-	// NewVoteEmailNotificationEnabled /////
-
-	public function getNewVoteEmailNotificationEnabled() {
-		return $this->newVoteEmailNotificationEnabled;
+	public function getNewLikeEmailNotificationEnabled() {
+		return $this->newLikeEmailNotificationEnabled;
 	}
+
+	// NewVoteEmailNotificationEnabled /////
 
 	public function setNewVoteEmailNotificationEnabled($newVoteEmailNotificationEnabled) {
 		$this->newVoteEmailNotificationEnabled = $newVoteEmailNotificationEnabled;
 		return $this;
 	}
 
-	// NewFollowingPostEmailNotificationEnabled /////
-
-	public function getNewFollowingPostEmailNotificationEnabled() {
-		return $this->newFollowingPostEmailNotificationEnabled;
+	public function getNewVoteEmailNotificationEnabled() {
+		return $this->newVoteEmailNotificationEnabled;
 	}
+
+	// NewFollowingPostEmailNotificationEnabled /////
 
 	public function setNewFollowingPostEmailNotificationEnabled($newPostEmailNotificationEnabled) {
 		$this->newFollowingPostEmailNotificationEnabled = $newPostEmailNotificationEnabled;
 		return $this;
 	}
 
-	// NewWatchActivityEmailNotificationEnabled /////
-
-	public function getNewWatchActivityEmailNotificationEnabled() {
-		return $this->newWatchActivityEmailNotificationEnabled;
+	public function getNewFollowingPostEmailNotificationEnabled() {
+		return $this->newFollowingPostEmailNotificationEnabled;
 	}
+
+	// NewWatchActivityEmailNotificationEnabled /////
 
 	public function setNewWatchActivityEmailNotificationEnabled($newCommentEmailNotificationEnabled) {
 		$this->newWatchActivityEmailNotificationEnabled = $newCommentEmailNotificationEnabled;
 		return $this;
 	}
 
-	// NewSpotlightEmailNotificationEnabled /////
-
-	public function getNewSpotlightEmailNotificationEnabled() {
-		return $this->newSpotlightEmailNotificationEnabled;
+	public function getNewWatchActivityEmailNotificationEnabled() {
+		return $this->newWatchActivityEmailNotificationEnabled;
 	}
+
+	// NewSpotlightEmailNotificationEnabled /////
 
 	public function setNewSpotlightEmailNotificationEnabled($newSpotlightEmailNotificationEnabled) {
 		$this->newSpotlightEmailNotificationEnabled = $newSpotlightEmailNotificationEnabled;
 		return $this;
 	}
 
-	// WeekNewsEmailNotificationEnabled /////
-
-	public function getWeekNewsEmailEnabled() {
-		return $this->weekNewsEmailEnabled;
+	public function getNewSpotlightEmailNotificationEnabled() {
+		return $this->newSpotlightEmailNotificationEnabled;
 	}
+
+	// WeekNewsEmailNotificationEnabled /////
 
 	public function setWeekNewsEmailEnabled($weekNewsEmailEnabled) {
 		$this->weekNewsEmailEnabled = $weekNewsEmailEnabled;
 		return $this;
+	}
+
+	public function getWeekNewsEmailEnabled() {
+		return $this->weekNewsEmailEnabled;
 	}
 
 	// FollowerCount /////
@@ -793,17 +799,17 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	// FreshNotificationCount /////
 
+	public function setFreshNotificationCount($freshNotificationCount) {
+		$this->freshNotificationCount = $freshNotificationCount;
+		return $this;
+	}
+
 	public function incrementFreshNotificationCount($by = 1) {
 		return $this->freshNotificationCount += intval($by);
 	}
 
 	public function getFreshNotificationCount() {
 		return $this->freshNotificationCount;
-	}
-
-	public function setFreshNotificationCount($freshNotificationCount) {
-		$this->freshNotificationCount = $freshNotificationCount;
-		return $this;
 	}
 
 	// ContributionCount /////
