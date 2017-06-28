@@ -28,6 +28,9 @@
                     {% for block in answer.bodyBlocks %}
                         {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
                     {% endfor %}
+                    {% if question.updatedAt > question.createdAt %}
+                        {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
+                    {% endif %}
                 </div>
                 {% include 'LadbCoreBundle:Qa:_comments.part.html.twig' with { 'entity':answer } %}
             </div>

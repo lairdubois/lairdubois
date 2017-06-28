@@ -107,7 +107,7 @@
         <div class="text-center">
             {% if userAnswer %}
                 <div class="alert alert-info">
-                    <p>Vous avez déjà répondu à cette question. <a href="" class="alert-link">(Editer ma réponse)</a></p>
+                    <p>Vous avez déjà répondu à cette question. <a href="" class="alert-link">(Voir ma réponse)</a></p>
                 </div>
             {% elseif is_granted("ROLE_USER") %}
                 <button id="ladb_answer_btn" class="btn btn-primary btn-lg"><i class="ladb-icon-plus"></i> Ajouter ma réponse</button>

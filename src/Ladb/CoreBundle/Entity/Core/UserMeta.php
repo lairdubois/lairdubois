@@ -71,6 +71,11 @@ class UserMeta {
 	 */
 	private $unlistedFaqQuestionCount = 0;
 
+	/**
+	 * @ORM\Column(name="unlisted_qa_question_count", type="integer")
+	 */
+	private $unlistedQaQuestionCount = 0;
+
 
 	/**
 	 * @ORM\Column(name="donation_count", type="integer")
@@ -118,7 +123,8 @@ class UserMeta {
 			$this->getUnlistedKnowledgeProviderCount() +
 			$this->getUnlistedKnowledgeWoodCount() +
 			$this->getUnlistedBlogPostCount() +
-			$this->getUnlistedFaqQuestionCount()
+			$this->getUnlistedFaqQuestionCount() +
+			$this->getUnlistedQaQuestionCount()
 		;
 	}
 
@@ -218,6 +224,17 @@ class UserMeta {
 
 	public function setUnlistedFaqQuestionCount($unlistedFaqQuestionCount) {
 		$this->unlistedFaqQuestionCount = $unlistedFaqQuestionCount;
+		return $this;
+	}
+
+	// UnlistedQaQuestionCount /////
+
+	public function getUnlistedQaQuestionCount() {
+		return $this->unlistedQaQuestionCount;
+	}
+
+	public function setUnlistedQaQuestionCount($unlistedQaQuestionCount) {
+		$this->unlistedQaQuestionCount = $unlistedQaQuestionCount;
 		return $this;
 	}
 
