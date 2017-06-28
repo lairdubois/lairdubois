@@ -1,5 +1,7 @@
 {% extends 'LadbCoreBundle:Core/Notification:_email.html.twig' %}
 
+{# set row #}
+
 {% block rowContent %}
 
     {% set fieldDef = row.entity.fieldDefs[row.activityEntity.parentEntityField] %}
@@ -8,7 +10,22 @@
     {% set fieldChoices = fieldDef[constant('ATTRIB_CHOICES', row.entity)] is defined ? fieldDef[constant('ATTRIB_CHOICES', row.entity)] : null %}
 
     <p style="margin: 5px 0 5px 0;">
-        <strong>{{ row.actorUser.displayname }}</strong> a accordé un <strong style="color:#{{ row.vote.score > 0 ? '5cb85c' : 'd9534f' }};">{{ (row.vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong> à votre proposition pour le champ <em>{{ ('knowledge.'~row.entity.strippedName~'.field.'~row.activityEntity.parentEntityField)|trans() }}</em> de <em>{{ row.entity.title|raw }}</em>.
+        <strong>{{ row.actorUser.displayname }}</strong> a accordé une <strong style="color:#{{ row.vote.score > 0 ? '5cb85c' : 'd9534f' }};">{{ (row.vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong>
+        {% if row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
+            or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
+            or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
+            or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Url::TYPE')
+            or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Location::TYPE')
+            or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
+            or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE')
+        %}
+            {% set fieldDef = row.entity.fieldDefs[row.activityEntity.parentEntityField] %}
+            {% set fieldType = fieldDef[constant('ATTRIB_TYPE', row.entity)] %}
+            {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', row.entity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', row.entity)] : null %}
+            à votre proposition pour le champ <em>{{ ('knowledge.'~row.entity.strippedName~'.field.'~row.activityEntity.parentEntityField)|trans() }}</em> de <em>{{ row.entity.title|raw }}</em>.
+        {% else %}
+            {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == app.user.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} "<strong>{{ row.entity.title }}</strong>".
+        {% endif %}
     </p>
     <table cellspacing="10" cellpadding="0">
         <tbody>
@@ -22,9 +39,11 @@
                 <td width="120" valign="middle">
                     <strong>{{ ('knowledge.'~row.entity.strippedName~'.field.'~row.activityEntity.parentEntityField)|trans() }} :</strong>
                 </td>
-                <td>
-                    {% include 'LadbCoreBundle:Knowledge:_field-show-meta-'~fieldType~'.part.html.twig' with { 'knowledge':row.entity, 'value':row.activityEntity } %}{% if fieldSuffix is not null %}&nbsp;<em>{{ fieldSuffix|raw }}</em>{% endif %}
-                </td>
+                {% if fieldDef is defined %}
+                    <td>
+                        {% include 'LadbCoreBundle:Knowledge:_field-show-meta-'~fieldType~'.part.html.twig' with { 'knowledge':row.entity, 'value':row.activityEntity } %}{% if fieldSuffix is not null %}&nbsp;<em>{{ fieldSuffix|raw }}</em>{% endif %}
+                    </td>
+                {% endif %}
             </tr>
             </tbody>
         </table>
