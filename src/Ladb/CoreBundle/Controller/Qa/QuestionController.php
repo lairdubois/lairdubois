@@ -384,10 +384,12 @@ class QuestionController extends Controller {
 
 		$user = $this->getUser();
 		$userAnswer = null;
-		foreach ($question->getAnswers() as $answer) {
-			if ($answer->getUser()->getId() == $user->getId()) {
-				$userAnswer = $answer;
-				break;
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+			foreach ($question->getAnswers() as $answer) {
+				if ($answer->getUser()->getId() == $user->getId()) {
+					$userAnswer = $answer;
+					break;
+				}
 			}
 		}
 

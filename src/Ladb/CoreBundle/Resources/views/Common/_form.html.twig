@@ -67,7 +67,7 @@
         $("input[type=text]").first().focus();
         $(function () {
             $("[data-form-widget=collection]").each(function () {
-                new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
+                new window.infinite.Collection(this, $('[data-prototype]', $(this).next()));
             });
             $('.ladb-form-sidenav').sticky({
                 topSpacing: 70

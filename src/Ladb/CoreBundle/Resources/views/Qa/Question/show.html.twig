@@ -109,8 +109,10 @@
                 <div class="alert alert-info">
                     <p>Vous avez déjà répondu à cette question. <a href="" class="alert-link">(Editer ma réponse)</a></p>
                 </div>
-            {% else %}
+            {% elseif is_granted("ROLE_USER") %}
                 <button id="ladb_answer_btn" class="btn btn-primary btn-lg"><i class="ladb-icon-plus"></i> Ajouter ma réponse</button>
+            {% else %}
+                <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre réponse.
             {% endif %}
         </div>
     {% endif %}

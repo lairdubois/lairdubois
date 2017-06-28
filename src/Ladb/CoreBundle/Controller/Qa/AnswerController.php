@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -82,6 +84,14 @@ class AnswerController extends Controller {
 			$om->persist($answer);
 			$om->flush();
 
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($answer));
+
+			// Publish
+			$answerManager = $this->get(AnswerManager::NAME);
+			$answerManager->publish($answer);
+
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
 
@@ -157,6 +167,10 @@ class AnswerController extends Controller {
 			$answer->setUpdatedAt(new \DateTime());
 
 			$om->flush();
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($answer));
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);

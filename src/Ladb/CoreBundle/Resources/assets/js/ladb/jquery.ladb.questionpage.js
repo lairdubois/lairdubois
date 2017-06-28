@@ -78,7 +78,7 @@
 
         // Bind collection
         $("[data-form-widget=collection]", this.$answerForm).each(function () {
-            new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
+            new window.infinite.Collection(this, $('[data-prototype]', $(this).next()));
         });
 
         // Bind form
@@ -133,7 +133,7 @@
 
         // Bind collection
         $("[data-form-widget=collection]", this.$answerForm).each(function () {
-            new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
+            new window.infinite.Collection(this, $('[data-prototype]', $(this).next()));
         });
 
         // Bind form

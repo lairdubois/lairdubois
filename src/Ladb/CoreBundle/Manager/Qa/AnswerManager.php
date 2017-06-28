@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Manager\Qa;
 
 use Ladb\CoreBundle\Entity\Qa\Answer;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
@@ -15,7 +17,17 @@ class AnswerManager extends AbstractPublicationManager {
 	/////
 
 	public function publish(Answer $answer, $flush = true) {
+
+		$question = $answer->getQuestion();
+
+		$question->setChangedAt(new \DateTime());
+
 		parent::publishPublication($answer, $flush);
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($question));
+
 	}
 
 	public function unpublish(Answer $answer, $flush = true) {
