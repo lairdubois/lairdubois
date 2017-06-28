@@ -30,7 +30,6 @@ use Ladb\CoreBundle\Utils\TagUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\PicturedUtils;
 use Ladb\CoreBundle\Utils\EmbeddableUtils;
-use Ladb\CoreBundle\Utils\PublicationUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;

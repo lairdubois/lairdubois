@@ -128,9 +128,6 @@ services:
     class: Ladb\CoreBundle\Utils\PropertyUtils
   ladb_core.elastica_query_utils:
     class: Ladb\CoreBundle\Utils\ElasticaQueryUtils
-  ladb_core.publication_utils:
-    class: Ladb\CoreBundle\Utils\PublicationUtils
-    arguments: ['@service_container']
 
   # Managers
   ladb_core.creation_manager:
