@@ -86,10 +86,10 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function getCommentContexts($commentables) {
+	public function getCommentContexts($commentables, $includeTimelineActivities = true) {
 		$commentContexts = array();
 		foreach ($commentables as $commentable) {
-			$commentContexts[$commentable->getId()] = $this->getCommentContext($commentable);
+			$commentContexts[$commentable->getId()] = $this->getCommentContext($commentable, $includeTimelineActivities);
 		}
 		return $commentContexts;
 	}
