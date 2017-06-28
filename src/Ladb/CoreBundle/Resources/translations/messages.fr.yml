@@ -862,6 +862,7 @@ notification:
     vote: Notifications de vérification
     join: Notifications de participation
     write: Notifications de messages
+    answer: Notifications de réponses
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'

@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Controller\Qa;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\WatchableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -88,9 +89,13 @@ class AnswerController extends Controller {
 			$activityUtils = $this->get(ActivityUtils::NAME);
 			$activityUtils->createAnswerActivity($answer, false);
 
-			// Dispatch publication event on Question
+			// Dispatch publication event (on Question)
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($question));
+
+			// Auto watch
+			$watchableUtils = $this->container->get(WatchableUtils::NAME);
+			$watchableUtils->autoCreateWatch($question, $this->getUser());
 
 			$om->flush();
 
@@ -99,7 +104,7 @@ class AnswerController extends Controller {
 
 			return $this->render('LadbCoreBundle:Qa/Answer:_row.part.html.twig', array(
 				'answer'         => $answer,
-				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser()),
+				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),
 				'voteContext'    => $votableUtils->getVoteContext($answer, $this->getUser()),
 			));
 		}
@@ -173,7 +178,7 @@ class AnswerController extends Controller {
 
 			return $this->render('LadbCoreBundle:Qa/Answer:_row.part.html.twig', array(
 				'answer'         => $answer,
-				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser()),
+				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),
 				'voteContext'    => $votableUtils->getVoteContext($answer, $this->getUser()),
 			));
 		}
