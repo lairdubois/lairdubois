@@ -3,4 +3,4 @@
 {% set icon = 'plus' %}
 {% set entity = ladb_entity(activity.entityType, activity.entityId) %}
 
-{% block body %}a publié {{ ('notification.the.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>"{% endblock %}
+{% block body %}a publié {{ ('notification.one_new.'~ladb_entity_type_stripped_name(entity))|trans() }}{% if entity.title is defined %} "<strong>{{ entity.title }}</strong>"{% endif %}{% endblock %}
