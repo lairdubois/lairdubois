@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Entity\Qa;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -44,7 +45,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  */
 class Answer implements TypableInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
 
-	use BlockBodiedTrait;
+	use AuthoredTrait, BlockBodiedTrait;
 	use CommentableTrait, VotableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Answer';
@@ -56,6 +57,24 @@ class Answer implements TypableInterface, BlockBodiedInterface, CommentableInter
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $user;
+
+	/**
+	 * @ORM\Column(name="created_at", type="datetime")
+	 * @Gedmo\Timestampable(on="create")
+	 */
+	private $createdAt;
+
+	/**
+	 * @ORM\Column(name="updated_at", type="datetime")
+	 * @Gedmo\Timestampable(on="update")
+	 */
+	private $updatedAt;
 
 	/**
 	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
@@ -144,6 +163,34 @@ class Answer implements TypableInterface, BlockBodiedInterface, CommentableInter
 		return $this->id;
 	}
 
+	// CreatedAt /////
+
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+		return $this;
+	}
+
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
+
+	// Age /////
+
+	public function getAge() {
+		return $this->getCreatedAt()->diff(new \DateTime());
+	}
+
+	// UpdatedAt /////
+
+	public function setUpdatedAt($updatedAt) {
+		$this->updatedAt = $updatedAt;
+		return $this;
+	}
+
+	public function getUpdatedAt() {
+		return $this->updatedAt;
+	}
+
 	// Question /////
 
 	public function getQuestion() {
@@ -153,6 +200,12 @@ class Answer implements TypableInterface, BlockBodiedInterface, CommentableInter
 	public function setQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
 		$this->question = $question;
 		return $this;
+	}
+
+	// Title /////
+
+	public function getTitle() {
+		return mb_strimwidth($this->getBody(), 0, 50, '[...]');
 	}
 
 }

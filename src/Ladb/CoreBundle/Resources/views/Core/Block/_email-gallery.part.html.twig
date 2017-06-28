@@ -1,0 +1,3 @@
+{% for picture in block.pictures %}
+    <img src="{{ picture.webPath|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px; margin-right: 4px;" alt="{{ picture.legend|raw }}">
+{% endfor %}

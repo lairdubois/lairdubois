@@ -872,6 +872,7 @@ notification:
     vote: '[0,1]Notification de nouveau vote|]1,Inf]Notification de nouveaux votes'
     join: '[0,1]Notification de nouvelle participation|]1,Inf]Notification de nouvelles participations'
     write: '[0,1]Notification de nouveau message|]1,Inf]Notification de nouveaux messages'
+    answer: '[0,1]Notification de nouvelle réponse|]1,Inf]Notification de nouvelles réponses'
 
 share:
   social:

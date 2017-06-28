@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Qa;
 
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Utils\ActivityUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -76,21 +77,22 @@ class AnswerController extends Controller {
 			$answer->setUser($this->getUser());
 			$answer->setParentEntity($question);
 			$answer->setParentEntityField('bestAnswer');
-			$answer->setIsDraft(false);
 
 			$question->addAnswer($answer);
 			$question->incrementAnswerCount();
+			$question->setChangedAt(new \DateTime());
 
 			$om->persist($answer);
-			$om->flush();
 
-			// Dispatch publication event
+			// Create activity
+			$activityUtils = $this->get(ActivityUtils::NAME);
+			$activityUtils->createAnswerActivity($answer, false);
+
+			// Dispatch publication event on Question
 			$dispatcher = $this->get('event_dispatcher');
-			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($answer));
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($question));
 
-			// Publish
-			$answerManager = $this->get(AnswerManager::NAME);
-			$answerManager->publish($answer);
+			$om->flush();
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
@@ -164,13 +166,7 @@ class AnswerController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($answer);
 
-			$answer->setUpdatedAt(new \DateTime());
-
 			$om->flush();
-
-			// Dispatch publication event
-			$dispatcher = $this->get('event_dispatcher');
-			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($answer));
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);

@@ -44,6 +44,7 @@ EOT
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Vote::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Join::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
 	}
 
@@ -172,6 +173,16 @@ EOT
 					$message = $activity->getMessage();
 
 					// TODO
+
+				}
+
+				// Answer
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME) {
+
+					$answer = $activity->getAnswer();
+					$row->entity = $answer->getQuestion();
+					$row->childEntity = null;
+					$row->answer = $answer;
 
 				}
 

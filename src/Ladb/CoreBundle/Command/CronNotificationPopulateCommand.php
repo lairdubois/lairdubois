@@ -246,7 +246,7 @@ EOT
 						foreach ($watches as $watch) {
 							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
 							if ($verbose) {
-								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new comment='.mb_strimwidth($comment->getBody(), 0, 50, '[...]').' on='.$watchable->getTitle().'</info>');
+								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new answer='.mb_strimwidth($answer->getBody(), 0, 50, '[...]').' on='.$question->getTitle().'</info>');
 							}
 						}
 					}

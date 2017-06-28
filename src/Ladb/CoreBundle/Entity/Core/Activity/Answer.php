@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Answer extends AbstractActivity {
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Activity\Answer';
-	const STRIPPED_NAME = 'anwser';
+	const STRIPPED_NAME = 'answer';
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Qa\Answer")
@@ -34,7 +34,7 @@ class Answer extends AbstractActivity {
 		return $this->answer;
 	}
 
-	public function setAnswer(\Ladb\CoreBundle\Entity\Core\Answer $answer) {
+	public function setAnswer(\Ladb\CoreBundle\Entity\Qa\Answer $answer) {
 		$this->answer = $answer;
 		return $this;
 	}
