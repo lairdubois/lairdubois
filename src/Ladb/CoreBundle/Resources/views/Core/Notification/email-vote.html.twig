@@ -4,7 +4,7 @@
 
 {% block rowContent %}
     <p style="margin: 5px 0 5px 0;">
-        <strong>{{ row.actorUser.displayname }}</strong> a accordé une <strong style="color:#{{ row.vote.score > 0 ? '5cb85c' : 'd9534f' }};">{{ (row.vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong>
+        <strong>{{ row.actorUser.displayname }}</strong> a accordé une <strong style="color:#{{ row.vote.score > 0 ? '5cb85c' : 'd9534f' }};">{{ (row.vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong> à
         {% if row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
             or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
             or row.activityEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
@@ -16,9 +16,9 @@
             {% set fieldDef = row.entity.fieldDefs[row.activityEntity.parentEntityField] %}
             {% set fieldType = fieldDef[constant('ATTRIB_TYPE', row.entity)] %}
             {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', row.entity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', row.entity)] : null %}
-            à votre proposition pour le champ <em>{{ ('knowledge.'~row.entity.strippedName~'.field.'~row.activityEntity.parentEntityField)|trans() }}</em> de <em>{{ row.entity.title|raw }}</em>.
+            votre proposition pour le champ <em>{{ ('knowledge.'~row.entity.strippedName~'.field.'~row.activityEntity.parentEntityField)|trans() }}</em> de <em>{{ row.entity.title|raw }}</em>.
         {% else %}
-            {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == app.user.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} "<strong>{{ row.entity.title }}</strong>".
+            {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
         {% endif %}
     </p>
     <table cellspacing="10" cellpadding="0">
