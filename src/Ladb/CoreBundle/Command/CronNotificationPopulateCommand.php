@@ -163,13 +163,14 @@ EOT
 					// Watch strategy
 					if ($notificationStrategy & PublicationInterface::NOTIFICATION_STRATEGY_WATCH == PublicationInterface::NOTIFICATION_STRATEGY_WATCH) {
 
+						$watchable = null;
 						if ($publication instanceof WatchableInterface) {
 							$watchable = $publication;
 						} else if ($publication instanceof WatchableChildInterface) {
 							$watchable = $typableUtils->findTypable($publication->getParentEntityType(), $publication->getParentEntityId());
 						}
 
-						if ($watchable->getWatchCount() > 0 && $publication instanceof TitledInterface) {
+						if (!is_null($watchable) && $watchable->getWatchCount() > 0 && $publication instanceof TitledInterface) {
 
 							$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($watchable->getType(), $watchable->getId(), $actorUser);
 							if (!is_null($watches)) {
