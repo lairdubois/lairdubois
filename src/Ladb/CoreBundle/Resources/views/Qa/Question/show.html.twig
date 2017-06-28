@@ -87,7 +87,7 @@
                     {% if question.updatedAt > question.createdAt %}
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
                     {% endif %}
-                    {% include 'LadbCoreBundle:Qa:_comments.part.html.twig' with { 'entity':question } %}
+                    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapse':true } %}
                 </div>
                 <div class="col-sm-1 col-xs-12">
                     <div class="ladb-full-height">?</div>

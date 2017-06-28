@@ -3,12 +3,20 @@
 {# set notGuestTip (facultative) #}
 {# set activitiesHidden (facultative) #}
 
-{% set headingHidden = headingHidden|default(false) %}
+{% set collapse = collapse|default(false) %}
+{% set headingHidden = collapse or headingHidden|default(false) %}
 {% set notGuestTip = notGuestTip|default(false) %}
 {% set activitiesHidden = activitiesHidden|default(false) %}
 
 {% if commentContext is not null %}
+    {% set commentCount = commentContext.comments|length %}
     <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget" class="ladb-comment-widget" data-ladb-entity-type="{{ commentContext.entityType }}" data-ladb-entity-id="{{ commentContext.entityId }}"{% if activitiesHidden %} data-ladb-activities-hidden="{{ activitiesHidden ? 'true' : 'false' }}"{% endif %}>
+        {% if collapse %}
+            <div class="ladb-collapse-toggle{% if commentCount == 0 %} ladb-no-comment{% endif %}">
+                <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse">{{ commentCount }} {{ 'comment.choice.comments'|transchoice(commentCount) }}</a>
+            </div>
+            <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse" class="collapse">
+        {% endif %}
         <div class="ladb-comment-list">
             {% if not headingHidden %}
                 {% if commentContext.activities|length > 0 %}
@@ -44,6 +52,9 @@
                     <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter un commentaire.
                 </div>
             {% endif %}
+        {% endif %}
+        {% if collapse %}
+            </div>
         {% endif %}
     </div>
 {% endif %}

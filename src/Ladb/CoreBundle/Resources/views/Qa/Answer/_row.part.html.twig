@@ -32,7 +32,7 @@
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':answer } %}
                     {% endif %}
                 </div>
-                {% include 'LadbCoreBundle:Qa:_comments.part.html.twig' with { 'entity':answer } %}
+                {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapse':true } %}
             </div>
             <div class="col-sm-1 col-xs-12">
                 {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.tooltip.vote_up'|trans()), 'voteDownTooltip':('qa.tooltip.vote_down'|trans()) } %}

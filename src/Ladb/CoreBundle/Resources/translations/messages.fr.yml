@@ -365,6 +365,9 @@ qa:
         unpublish_success: La question <strong>%title%</strong> a été dépubliée.
         update_success: La question <strong>%title%</strong> a été mise à jour.
         delete_success: La question <strong>%title%</strong> a été supprimée.
+      help:
+        title: Renseignez ici le titre de votre question. Soyez succint et percutant.
+        body: Détaillez ici plus en profondeur votre question.
     choice:
       questions: '[0,1]question|]1,Inf]questions'
       answers: '[0,1]réponse|]1,Inf]réponses'

@@ -63,6 +63,13 @@ class AnswerController extends Controller {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
 
+		$user = $this->getUser();
+		foreach ($question->getAnswers() as $answer) {
+			if ($answer->getUser()->getId() == $user->getId()) {
+				throw $this->createNotFoundException('Only one answer allowed (id='.$id.').');
+			}
+		}
+
 		$answer = new Answer();
 		$form = $this->createForm(AnswerType::class, $answer);
 		$form->handleRequest($request);
