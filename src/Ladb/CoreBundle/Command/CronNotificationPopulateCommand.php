@@ -170,7 +170,7 @@ EOT
 							$watchable = $typableUtils->findTypable($publication->getParentEntityType(), $publication->getParentEntityId());
 						}
 
-						if (!is_null($watchable) && $watchable->getWatchCount() > 0 && $publication instanceof TitledInterface) {
+						if (!is_null($watchable) && $watchable->getWatchCount() > 0 /*&& $publication instanceof TitledInterface*/) {
 
 							$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($watchable->getType(), $watchable->getId(), $actorUser);
 							if (!is_null($watches)) {

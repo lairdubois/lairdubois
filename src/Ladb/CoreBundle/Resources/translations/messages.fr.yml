@@ -850,6 +850,7 @@ notification:
     howto_article: un nouvel article
     find_find: une nouvelle trouvaille
     qa_question: une nouvelle question
+    qa_answer: une nouvelle réponse
   tooltip:
     all: Toutes les notifications
     comment: Notifications de commentaires

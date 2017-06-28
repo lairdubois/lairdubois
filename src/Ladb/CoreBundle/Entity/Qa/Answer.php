@@ -17,6 +17,7 @@ use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\VotableInterface;
 use Ladb\CoreBundle\Model\VotableTrait;
+use Ladb\CoreBundle\Model\WatchableChildInterface;
 use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -39,7 +40,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\AnswerRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface, CommentableInterface, VotableInterface {
+class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
 
 	use BlockBodiedTrait;
 	use CommentableTrait, VotableTrait;
@@ -125,13 +126,19 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 	// NotificationStrategy /////
 
 	public function getNotificationStrategy() {
-		return self::NOTIFICATION_STRATEGY_FOLLOWER | self::NOTIFICATION_STRATEGY_WATCH;
+		return self::NOTIFICATION_STRATEGY_WATCH;
 	}
 
 	// Type /////
 
 	public function getType() {
 		return Answer::TYPE;
+	}
+
+	// Title /////
+
+	public function getTitle() {
+		return substr($this->getBody(), 0, 20);
 	}
 
 	// Question /////
