@@ -2,16 +2,14 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Utils\TypableUtils;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Ladb\CoreBundle\Entity\Core\User;
-use Ladb\CoreBundle\Utils\MailerUtils;
 use Ladb\CoreBundle\Entity\Core\Notification;
+use Ladb\CoreBundle\Utils\MailerUtils;
+use Ladb\CoreBundle\Utils\TypableUtils;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
 
 class CronNotificationEmailCommand extends ContainerAwareCommand {
@@ -54,7 +52,7 @@ EOT
 		$currentUser = null;
 		$currentNotifications = array();
 
-		$notifications = $notificationRepository->findByPendingEmailAndActivityInstanceOf('\\Ladb\\CoreBundle\\Entity\\Activity\\'.ucfirst($activityStrippedName));
+		$notifications = $notificationRepository->findByPendingEmailAndActivityInstanceOf('\\Ladb\\CoreBundle\\Entity\\Core\\Activity\\'.ucfirst($activityStrippedName));
 		if ($verbose) {
 			$output->writeln('<info>'.count($notifications).' notifications ('.$activityStrippedName.') to process...</info>');
 		}
