@@ -16,6 +16,8 @@ class ActivityUtils {
 
 	/////
 
+	// Create /////
+
 	public function createCommentActivity(\Ladb\CoreBundle\Entity\Core\Comment $comment, $flush = true) {
 
 		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Comment();
@@ -28,10 +30,6 @@ class ActivityUtils {
 			$this->om->flush();
 		}
 	}
-
-	/////
-
-	// Create /////
 
 	public function createContributeActivity(\Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue $value, $flush = true) {
 
@@ -137,12 +135,6 @@ class ActivityUtils {
 		}
 	}
 
-	public function deleteActivitiesByComment(\Ladb\CoreBundle\Entity\Core\Comment $comment, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Comment::CLASS_NAME);
-		$activities = $activityRepository->findByComment($comment);
-		$this->_deleteActivities($activities, $flush);
-	}
-
 	// Delete /////
 
 	private function _deleteActivities($activities, $flush = true) {
@@ -152,6 +144,12 @@ class ActivityUtils {
 		if ($flush) {
 			$this->om->flush();
 		}
+	}
+
+	public function deleteActivitiesByComment(\Ladb\CoreBundle\Entity\Core\Comment $comment, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Comment::CLASS_NAME);
+		$activities = $activityRepository->findByComment($comment);
+		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByValue(\Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue $value, $flush = true) {
