@@ -142,6 +142,12 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	// NotificationStrategy /////
+
+	public function getNotificationStrategy() {
+		return self::NOTIFICATION_STRATEGY_FOLLOWER;
+	}
+
 	// Type /////
 
 	public function getType() {

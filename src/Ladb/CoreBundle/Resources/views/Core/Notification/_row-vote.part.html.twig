@@ -20,6 +20,6 @@
         {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', entity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', entity)] : null %}
         votre proposition pour le champ <em>{{ ('knowledge.'~entity.strippedName~'.field.'~activityEntity.parentEntityField)|trans() }}</em> de "<strong>{{ entity.title|raw }}</strong>".
     {% else %}
-        {{ ('notification.'~(entity.user is defined and entity.user.id == app.user.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
+        {{ ('notification.your.'~ladb_entity_type_stripped_name(activityEntity))|trans() }} à {{ ('notification.the.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
     {% endif %}
 {% endblock %}

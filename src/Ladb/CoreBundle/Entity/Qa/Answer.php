@@ -122,6 +122,12 @@ class Answer extends AbstractAuthoredPublication implements BlockBodiedInterface
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	// NotificationStrategy /////
+
+	public function getNotificationStrategy() {
+		return self::NOTIFICATION_STRATEGY_FOLLOWER | self::NOTIFICATION_STRATEGY_WATCH;
+	}
+
 	// Type /////
 
 	public function getType() {

@@ -47,6 +47,12 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
 				return implode($delimiter, array( 'knowledge', 'provider' ));
+			// Question (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				return implode($delimiter, array( 'qa', 'question' ));
+			// Answer (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
+				return implode($delimiter, array( 'qa', 'answer' ));
 
 		}
 		return '';

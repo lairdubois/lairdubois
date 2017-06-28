@@ -827,6 +827,8 @@ notification:
     find_find: votre trouvaille
     blog_post: votre sujet
     faq_question: votre question
+    qa_question: votre question
+    qa_answer: votre réponse
   the:
     wonder_creation: la création
     wonder_workshop: l'atelier
@@ -838,6 +840,8 @@ notification:
     knowledge_provider: le fournisseur
     blog_post: le sujet
     faq_question: la question
+    qa_question: la question
+    qa_anwser: la réponse
   one_new:
     wonder_creation: une nouvelle création
     wonder_workshop: un nouvel atelier
@@ -845,6 +849,7 @@ notification:
     howto_howto: un nouveau pas à pas
     howto_article: un nouvel article
     find_find: une nouvelle trouvaille
+    qa_question: une nouvelle question
   tooltip:
     all: Toutes les notifications
     comment: Notifications de commentaires
