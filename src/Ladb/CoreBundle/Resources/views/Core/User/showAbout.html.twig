@@ -109,7 +109,7 @@
                 <div class="ladb-meta{% if user.answerCount == 0 %} text-muted{% endif %}">
                     <i class="ladb-icon-answer"></i>
                     <strong>{{ user.answerCount|number_format(0, ',', ' ') }}</strong>
-                    <small>{{ 'qa.question.choice.answers'|transchoice(user.answerCount) }}</small>
+                    <small>{{ 'qa.answer.choice.answers'|transchoice(user.answerCount) }}</small>
                 </div>
                 <div class="ladb-meta{% if user.publishedPlanCount == 0 %} text-muted{% endif %}">
                     <i class="ladb-icon-plan"></i>

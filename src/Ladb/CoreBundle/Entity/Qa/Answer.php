@@ -4,46 +4,25 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
-use Ladb\CoreBundle\Model\IndexableTrait;
-use Ladb\CoreBundle\Model\LikableTrait;
-use Ladb\CoreBundle\Model\PicturedTrait;
-use Ladb\CoreBundle\Model\ScrapableTrait;
-use Ladb\CoreBundle\Model\SitemapableInterface;
-use Ladb\CoreBundle\Model\SitemapableTrait;
-use Ladb\CoreBundle\Model\TaggableTrait;
-use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\TypableInterface;
-use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\VotableInterface;
 use Ladb\CoreBundle\Model\VotableTrait;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
-use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
-use Ladb\CoreBundle\Model\IndexableInterface;
-use Ladb\CoreBundle\Model\TitledInterface;
-use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
-use Ladb\CoreBundle\Model\ViewableInterface;
-use Ladb\CoreBundle\Model\LikableInterface;
-use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
-use Ladb\CoreBundle\Model\ReportableInterface;
-use Ladb\CoreBundle\Model\TaggableInterface;
-use Ladb\CoreBundle\Model\ExplorableInterface;
-use Ladb\CoreBundle\Model\ScrapableInterface;
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_qa_answer")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\AnswerRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Answer implements TypableInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
+class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
 
 	use AuthoredTrait, BlockBodiedTrait;
 	use CommentableTrait, VotableTrait;
@@ -72,7 +51,6 @@ class Answer implements TypableInterface, BlockBodiedInterface, CommentableInter
 
 	/**
 	 * @ORM\Column(name="updated_at", type="datetime")
-	 * @Gedmo\Timestampable(on="update")
 	 */
 	private $updatedAt;
 

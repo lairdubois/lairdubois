@@ -374,8 +374,15 @@ qa:
         tags: Indiquez les tags définissant votre question.
     choice:
       questions: '[0,1]question|]1,Inf]questions'
-      answers: '[0,1]réponse|]1,Inf]réponses'
       draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
+  answer:
+    new: Ajouter ma réponse
+    edit: Editer ma réponse
+    form:
+      alert:
+        delete_success: La réponse a été supprimée.
+    choice:
+      answers: '[0,1]réponse|]1,Inf]réponses'
 
 blog:
   title: Le blog

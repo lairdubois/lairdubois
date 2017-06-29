@@ -10,7 +10,7 @@
                 <p>Vous n'avez pas encore publié de <strong>trouvaille</strong> !</p>
                 <p><a href="{{ path('core_question_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'qa.question.new'|trans() }}</a></p>
             {% else %}
-                <strong>{{ user.username }}</strong> n'a pas encore publié de trouvaille.
+                <strong>{{ user.username }}</strong> n'a pas encore publié de question.
             {% endif %}
         </div>
     {% else %}

@@ -1,0 +1,7 @@
+{# set question #}
+
+<div class="ladb-qa-question-answers-header">
+    {% if question.answers|length > 0 %}
+        <h3 style="margin-bottom: 20px;">{{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</h3>
+    {% endif %}
+</div>

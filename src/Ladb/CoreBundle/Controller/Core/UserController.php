@@ -800,7 +800,7 @@ class UserController extends Controller {
 			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'questions'       => $paginator,
+			'questions'   => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {

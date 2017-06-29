@@ -2,7 +2,7 @@
 
 {% set formAction = path('core_qa_answer_create', { 'id':question.id }) %}
 
-{% block title %}<i class="ladb-icon-plus"></i> Ajouter ma réponse{% endblock %}
+{% block title %}<i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}{% endblock %}
 
 {% block footerInner %}
     {{ parent() }}

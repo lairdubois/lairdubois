@@ -2,6 +2,7 @@
 
 {% set entity = question %}
 {% set pageItemType = 'Question' %}
+{% set pageImage = asset('banner-questions-600x376.jpg') %}
 
 {% set navSection = 'qa' %}
 {% set searchPath = path('core_qa_question_list') %}
@@ -110,27 +111,14 @@
     {% if not ownerUser and question.answerCount > 0 %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% if question.answers|length > 0 %}
-        <h3 style="margin-bottom: 20px;">{{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.question.choice.answers'|transchoice(2) }}</h3>
-    {% endif %}
-    <div class="ladb-question-answers">
+    {% include 'LadbCoreBundle:Qa/Question:_answers-header.part.html.twig' %}
+    <div class="ladb-qa-question-answers">
         {% for answer in question.answers %}
             {% include 'LadbCoreBundle:Qa/Answer:_row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
         {% endfor %}
     </div>
-    {% if not question.isDraft %}
-        <div class="text-center">
-            {% if userAnswer %}
-                <div class="alert alert-info">
-                    <p>Vous avez déjà répondu à cette question. <a href="#ladb_answer_{{ userAnswer.id }}" class="alert-link">(Voir ma réponse)</a></p>
-                </div>
-            {% elseif is_granted("ROLE_USER") %}
-                <button id="ladb_answer_btn" class="btn btn-primary btn-lg"><i class="ladb-icon-plus"></i> Ajouter ma réponse</button>
-            {% else %}
-                <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre réponse.
-            {% endif %}
-        </div>
-    {% endif %}
+    {% include 'LadbCoreBundle:Qa/Question:_answers-footer.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
@@ -140,7 +128,7 @@
         <div class="ladb-meta">
             <i class="ladb-icon-answer ladb-icon-fixed-center"></i>
             <strong>{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
-            <small>{{ 'qa.question.choice.answers'|transchoice(question.answerCount) }}</small>
+            <small>{{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</small>
         </div>    </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':question.license } %}

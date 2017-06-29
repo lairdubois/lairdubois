@@ -1,0 +1,15 @@
+{# set question #}
+
+<div class="ladb-qa-question-answers-footer">
+    {% if not question.isDraft %}
+        {% if userAnswer %}
+            <div class="alert alert-info">
+                <p>Vous avez déjà répondu à cette question. <a onclick="$('#ladb_answer_{{ userAnswer.id }}').ladbScrollTo(); return false;" class="alert-link">(Voir ma réponse)</a></p>
+            </div>
+        {% elseif is_granted("ROLE_USER") %}
+            <button id="ladb_answer_btn" class="btn btn-primary btn-lg"><i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}</button>
+        {% else %}
+            <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre réponse.
+        {% endif %}
+    {% endif %}
+</div>

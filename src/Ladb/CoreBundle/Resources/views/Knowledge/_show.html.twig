@@ -30,3 +30,16 @@
     </script>
 {% endblock %}
 
+{% block contentBody %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}
+    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'proposals_modal', 'title':('knowledge.proposals'|trans()), 'classes':'modal-wide' } %}
+        {% block headerInner %}
+            {{ 'default.loading'|trans() }}
+        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
+    {% endembed %}
+{% endblock %}
+
+

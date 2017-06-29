@@ -85,6 +85,7 @@ class AnswerController extends Controller {
 			$answer->setUser($this->getUser());
 			$answer->setParentEntity($question);
 			$answer->setParentEntityField('bestAnswer');
+			$answer->setUpdatedAt(new \DateTime());
 
 			$question->addAnswer($answer);
 			$question->setChangedAt(new \DateTime());
@@ -111,7 +112,8 @@ class AnswerController extends Controller {
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
 
-			return $this->render('LadbCoreBundle:Qa/Answer:_row.part.html.twig', array(
+			return $this->render('LadbCoreBundle:Qa/Answer:create.html.twig', array(
+				'question'       => $question,
 				'answer'         => $answer,
 				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),
 				'voteContext'    => $votableUtils->getVoteContext($answer, $this->getUser()),
@@ -179,6 +181,8 @@ class AnswerController extends Controller {
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($answer);
+
+			$answer->setUpdatedAt(new \DateTime());
 
 			$om->flush();
 

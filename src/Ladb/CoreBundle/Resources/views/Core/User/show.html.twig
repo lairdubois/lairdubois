@@ -80,7 +80,7 @@
         <li{% if tab == 'creations' %} class="active"{% endif %}>
             <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'wonder.creation.choice.creations'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedCreationCount > 0 %} badge-black{% endif %}">{{ user.publishedCreationCount }}</span>{% if isDraftVisible and user.draftCreationCount > 0 %} <span class="badge badge-warning">+{{ user.draftCreationCount }}</span>{% endif %}</a>
         </li>
-        <li{% if tab == 'quesrions' %} class="active"{% endif %}>
+        <li{% if tab == 'questions' %} class="active"{% endif %}>
             <a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{{ 'qa.question.choice.questions'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedQuestionCount > 0 %} badge-black{% endif %}">{{ user.publishedQuestionCount }}</span>{% if isDraftVisible and user.draftQuestionCount > 0 %} <span class="badge badge-warning">+{{ user.draftQuestionCount }}</span>{% endif %}</a>
         </li>
         <li{% if tab == 'plans' %} class="active"{% endif %}>

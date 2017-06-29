@@ -6,6 +6,7 @@ use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
 use Ladb\CoreBundle\Manager\WitnessManager;
 use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\VotableUtils;
 
 class QuestionManager extends AbstractPublicationManager {
@@ -78,6 +79,32 @@ class QuestionManager extends AbstractPublicationManager {
 		}
 
 		parent::deletePublication($question, $withWitness, $flush);
+	}
+
+	public function computeAnswerCounters(Question $question) {
+
+		$positiveAnswerCount = 0;
+		$nullAnswerCount = 0;
+		$undeterminedAnswerCount = 0;
+		$negativeAnswerCount = 0;
+
+		foreach ($question->getAnswers() as $answer) {
+			if ($answer->getVoteScore() > 0) {
+				$positiveAnswerCount++;
+			} else if ($answer->getVoteScore() < 0) {
+				$negativeAnswerCount++;
+			} else if ($answer->getVoteScore() == 0 && $answer->getPositiveVoteScore() > 0) {
+				$undeterminedAnswerCount++;
+			} else {
+				$nullAnswerCount++;
+			}
+		}
+
+		$question->setPositiveAnswerCount($positiveAnswerCount);
+		$question->setNullAnswerCount($nullAnswerCount);
+		$question->setUndeterminedAnswerCount($undeterminedAnswerCount);
+		$question->setNegativeAnswerCount($negativeAnswerCount);
+
 	}
 
 }

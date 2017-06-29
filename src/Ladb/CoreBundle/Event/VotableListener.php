@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Manager\Qa\QuestionManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
@@ -64,27 +65,9 @@ class VotableListener implements EventSubscriberInterface {
 
 		} else if ($votableParent instanceof \Ladb\CoreBundle\Entity\Qa\Question) {
 
-			$positiveAnswerCount = 0;
-			$nullAnswerCount = 0;
-			$undeterminedAnswerCount = 0;
-			$negativeAnswerCount = 0;
-
-			foreach ($votableParent->getAnswers() as $answer) {
-				if ($answer->getVoteScore() > 0) {
-					$positiveAnswerCount++;
-				} else if ($answer->getVoteScore() < 0) {
-					$negativeAnswerCount++;
-				} else if ($answer->getVoteScore() == 0 && $answer->getPositiveVoteScore() > 0) {
-					$undeterminedAnswerCount++;
-				} else {
-					$nullAnswerCount++;
-				}
-			}
-
-			$votableParent->setPositiveAnswerCount($positiveAnswerCount);
-			$votableParent->setNullAnswerCount($nullAnswerCount);
-			$votableParent->setUndeterminedAnswerCount($undeterminedAnswerCount);
-			$votableParent->setNegativeAnswerCount($negativeAnswerCount);
+			// Compute answer counters
+			$questionManager = $this->container->get(QuestionManager::NAME);
+			$questionManager->computeAnswerCounters($votableParent);
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);

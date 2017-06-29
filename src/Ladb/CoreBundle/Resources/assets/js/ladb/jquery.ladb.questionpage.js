@@ -8,7 +8,7 @@
         this.options = options;
         this.$element = $(element);
 
-        this.$answers = $('.ladb-question-answers', this.$element);
+        this.$answers = $('.ladb-qa-question-answers', this.$element);
 
         this.$btnNewAnswer = $('#ladb_answer_btn', this.$element);
 
@@ -144,10 +144,15 @@
             context: document.body,
             clearForm: true,
             success: function(data, textStatus, jqXHR) {
-                if ($(data).hasClass('ladb-answer-row')) {
-                    that.$answers.append(data);
+                if ($(data).hasClass('ladb-success')) {
+                    var $row = $('.ladb-answer-row', data);
+                    var $header = $('.ladb-qa-question-answers-header', data);
+                    var $footer = $('.ladb-qa-question-answers-footer', data);
+                    that.$answers.append($row);
+                    $('.ladb-qa-question-answers-header', that.$element).replaceWith($header);
+                    $('.ladb-qa-question-answers-footer', that.$element).replaceWith($footer);
                     that.removeAnswerForm();
-                    that.bindAnswerRow($(data));
+                    that.bindAnswerRow($row);
                 } else {
                     that.bindNewAnswerBox(data);
                 }
@@ -212,6 +217,7 @@
         var that = this;
 
         this.bind();
+        setupPopovers();
 
     };
 

@@ -16,12 +16,25 @@ class AnswerManager extends AbstractManager {
 
 	public function delete(Answer $answer, $flush = true) {
 
-		if (!$answer->getQuestion()->getIsDraft()) {
+		// Question cleanup
+
+		$question = $answer->getQuestion();
+
+		// Drecrement question answer count
+		$question->incrementAnswerCount(-1);
+
+		if (!$question->getIsDraft()) {
 
 			// Decrement user answer count
 			$answer->getUser()->incrementAnswerCount(-1);
 
 		}
+
+		// Compute answer counters
+		$questionManager = $this->container->get(QuestionManager::NAME);
+		$questionManager->computeAnswerCounters($question);
+
+		/////
 
 		// Delete comments
 		$commentableUtils = $this->get(CommentableUtils::NAME);

@@ -508,9 +508,9 @@ class QuestionController extends Controller {
 			'likeContext'      => $likableUtils->getLikeContext($question, $this->getUser()),
 			'watchContext'     => $watchableUtils->getWatchContext($question, $this->getUser()),
 			'commentContext'   => $commentableUtils->getCommentContext($question, false),
-			'commentContexts'  => $commentableUtils->getCommentContexts($question->getAnswers(), false),
 			'followerContext'  => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
 			'voteContexts'     => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
+			'commentContexts'  => $commentableUtils->getCommentContexts($question->getAnswers(), false),
 			'userAnswer'       => $userAnswer,
 		);
 	}
