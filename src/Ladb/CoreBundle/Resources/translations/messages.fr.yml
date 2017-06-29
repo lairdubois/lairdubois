@@ -878,7 +878,7 @@ notification:
     blog_post: le sujet
     faq_question: la question
     qa_question: la question
-    qa_anwser: la réponse
+    qa_answer: la réponse
   one_new:
     wonder_creation: une nouvelle création
     wonder_workshop: un nouvel atelier
