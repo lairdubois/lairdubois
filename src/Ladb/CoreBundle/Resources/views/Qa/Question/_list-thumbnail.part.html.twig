@@ -7,12 +7,9 @@
 {% block imageOuter %}{% endblock %}
 
 {% block entityMetas %}
-    <div class="pull-left">
-        {% if entity.answerCount == 0 %}
-            <span class="label label-danger">Sans réponse</span>
-        {% else %}
-            <span class="label label-{% if entity.positiveVoteCount > entity.negativeVoteCount %}success{% elseif entity.positiveVoteCount < entity.negativeVoteCount %}danger{% else %}default{% endif %}">{{ entity.answerCount|number_format(0, ',', ' ') }} {{ 'qa.question.choice.answers'|transchoice(question.answerCount) }}</span>
-        {% endif %}
-    </div>
     {{ parent() }}
+    <li class="ladb-counter">
+        <span class="ladb-color-null"><span class="ladb-color-{% if entity.positiveAnswerCount > 0 %}positive{% elseif entity.undeterminedAnswerCount > 0 %}undetermined{% elseif entity.negativeAnswerCount > 0 %}negative{% else %}null{% endif %}"><i class="ladb-icon-answer"></i>  {{ entity.answerCount|number_format(0, ',', ' ') }} {{ 'qa.question.choice.answers'|transchoice(question.answerCount) }}</span></span>
+        |
+    </li>
 {% endblock %}

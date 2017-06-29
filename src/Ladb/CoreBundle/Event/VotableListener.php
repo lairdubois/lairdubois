@@ -40,7 +40,8 @@ class VotableListener implements EventSubscriberInterface {
 
 			if ($votableParent instanceof \Ladb\CoreBundle\Entity\Knowledge\Wood
 				&& ($votable->getParentEntityField() == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_GRAIN || $votable->getParentEntityField() == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_ENDGRAIN)
-				&& $votable instanceof BaseValue) {
+				&& $votable instanceof BaseValue
+			) {
 
 				$textureUtils = $this->container->get(TextureUtils::NAME);
 				if ($votable->getVoteScore() < 0) {
@@ -56,6 +57,34 @@ class VotableListener implements EventSubscriberInterface {
 				}
 
 			}
+
+			// Search index update
+			$searchUtils = $this->container->get(SearchUtils::NAME);
+			$searchUtils->replaceEntityInIndex($votableParent);
+
+		} else if ($votableParent instanceof \Ladb\CoreBundle\Entity\Qa\Question) {
+
+			$positiveAnswerCount = 0;
+			$nullAnswerCount = 0;
+			$undeterminedAnswerCount = 0;
+			$negativeAnswerCount = 0;
+
+			foreach ($votableParent->getAnswers() as $answer) {
+				if ($answer->getVoteScore() > 0) {
+					$positiveAnswerCount++;
+				} else if ($answer->getVoteScore() < 0) {
+					$negativeAnswerCount++;
+				} else if ($answer->getVoteScore() == 0 && $answer->getPositiveVoteScore() > 0) {
+					$undeterminedAnswerCount++;
+				} else {
+					$nullAnswerCount++;
+				}
+			}
+
+			$votableParent->setPositiveAnswerCount($positiveAnswerCount);
+			$votableParent->setNullAnswerCount($nullAnswerCount);
+			$votableParent->setUndeterminedAnswerCount($undeterminedAnswerCount);
+			$votableParent->setNegativeAnswerCount($negativeAnswerCount);
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);

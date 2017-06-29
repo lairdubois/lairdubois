@@ -329,7 +329,7 @@ find:
     form:
       alert:
         lock_success: La trouvaille <strong>%title%</strong> a été vérrouillée.
-        lock_success: La trouvaille <strong>%title%</strong> a été dévérrouillée.
+        unlock_success: La trouvaille <strong>%title%</strong> a été dévérrouillée.
         publish_success: La trouvaille <strong>%title%</strong> a été publiée.
         unpublish_success: La trouvaille <strong>%title%</strong> a été dépubliée.
         update_success: La trouvaille <strong>%title%</strong> a été mise à jour.
@@ -337,6 +337,7 @@ find:
       help:
         title: Renseignez ici le titre de votre trouvaille.
         body: Décrivez ici votre trouvaille.
+        tags: Indiquez les tags définissant votre trouvaille.
         data: Sélectionnez le type de votre trouvaille et renseignez son contenu (URL du site web, URL de la vidéo, liste de photos ou évènement).
         gallery_pictures: Ajoutez jusqu'à <strong>5 photos</strong> de votre trouvaille. La première photo sera utilisée comme miniature.<br/><p class="ladb-color-danger"><i class="ladb-icon-warning"></i> N'ajoutez que des photos qui vous appartiennent. Pour des raisons de droit, si les photos sont issuent d'un autre site, utilisez le type <strong>Lien</strong> pour pointer vers ce site.</p>
         gallery_location: Indiquez le lieu géographique de prise de vos photos.
@@ -357,10 +358,12 @@ qa:
     edit: Edition de la question
     list: Les questions
     nav: Questions
+    other_from: Autres questions de
+    similar: Voir aussi
     form:
       alert:
         lock_success: La question <strong>%title%</strong> a été vérrouillée.
-        lock_success: La question <strong>%title%</strong> a été dévérrouillée.
+        unlock_success: La question <strong>%title%</strong> a été dévérrouillée.
         publish_success: La question <strong>%title%</strong> a été publiée.
         unpublish_success: La question <strong>%title%</strong> a été dépubliée.
         update_success: La question <strong>%title%</strong> a été mise à jour.
@@ -368,6 +371,7 @@ qa:
       help:
         title: Renseignez ici le titre de votre question. Soyez succint et percutant.
         body: Détaillez ici plus en profondeur votre question.
+        tags: Indiquez les tags définissant votre question.
     choice:
       questions: '[0,1]question|]1,Inf]questions'
       answers: '[0,1]réponse|]1,Inf]réponses'
@@ -819,6 +823,7 @@ search:
     users: Recherche dans les boiseaux
     posts: Recherche dans le blog
     questions: Recherche dans la FAQ
+    qa_questions: Recherche dans les questions
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 

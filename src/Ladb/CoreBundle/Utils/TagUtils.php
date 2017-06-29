@@ -46,15 +46,18 @@ class TagUtils {
 
 			$tagUsage = $tagUsageRepository->findOneByTagAndEntityType($tag, $entityType);
 			if (is_null($tagUsage)) {
+
 				$tagUsage = new TagUsage();
 				$tagUsage->setTag($tag);
 				$tagUsage->setEntityType($entityType);
+
+				$this->om->persist($tagUsage);
 			}
 			$tagUsage->incrementScore();
 
-			$this->om->flush();
-
 		}
+
+		$this->om->flush();
 
 	}
 

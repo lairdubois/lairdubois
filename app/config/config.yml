@@ -473,6 +473,16 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         answerCount: { type: integer }
+                        positiveAnswerCount: { type: integer }
+                        nullAnswerCount: { type: integer }
+                        undeterminedAnswerCount: { type: integer }
+                        negativeAnswerCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
                         tags:
                             type: "object"
                             properties:

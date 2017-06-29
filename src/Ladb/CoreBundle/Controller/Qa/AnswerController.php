@@ -22,7 +22,7 @@ use Ladb\CoreBundle\Utils\VotableUtils;
 use Ladb\CoreBundle\Manager\Qa\AnswerManager;
 
 /**
- * @Route("/qa")
+ * @Route("/questions")
  */
 class AnswerController extends Controller {
 

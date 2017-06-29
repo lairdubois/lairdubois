@@ -104,20 +104,22 @@
 
 {% block bodyContainerContent %}
     <div class="row">
-        <div id="ladb_block_body" class="col-sm-8 col-xs-12">
+        <div id="ladb_block_body" class="col-md-8 col-xs-12">
             {% block contentBody %}{% endblock %}
         </div>
-        <div id="ladb_block_metas" class="col-sm-4 col-xs-12">
-            {% block contentMetas %}
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {% block contentMetasPanel %}{% endblock %}
+        <div class="col-md-4 col-xs-12">
+            <div id="ladb_block_metas">
+                {% block contentMetas %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% block contentMetasPanel %}{% endblock %}
+                    </div>
                 </div>
+                {% endblock %}
             </div>
-            {% endblock %}
-        </div>
-        <div id="ladb_block_suggest" class="col-sm-4 col-xs-12">
-            {% block contentSuggests %}{% endblock %}
+            <div id="ladb_block_suggest">
+                {% block contentSuggests %}{% endblock %}
+            </div>
         </div>
     </div>
     {% include 'LadbCoreBundle:Core/Report:_modal.part.html.twig' %}

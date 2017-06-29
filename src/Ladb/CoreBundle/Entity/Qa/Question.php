@@ -87,8 +87,28 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $answerCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="positive_answer_count")
+	 */
+	private $positiveAnswerCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="null_answer_count")
+	 */
+	private $nullAnswerCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="undetermined_answer_count")
+	 */
+	private $undeterminedAnswerCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="negative_answer_count")
+	 */
+	private $negativeAnswerCount = 0;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Answer", mappedBy="question", cascade={"all"})
-	 * @ORM\OrderBy({"voteScore" = "DESC"})
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $answers;
 
@@ -177,6 +197,50 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	public function getAnswerCount() {
 		return $this->answerCount;
+	}
+
+	// PositiveAnswerCount /////
+
+	public function setPositiveAnswerCount($positiveAnswerCount) {
+		$this->positiveAnswerCount = $positiveAnswerCount;
+		return $this;
+	}
+
+	public function getPositiveAnswerCount() {
+		return $this->positiveAnswerCount;
+	}
+
+	// NullAnswerCount /////
+
+	public function setNullAnswerCount($nullAnswerCount) {
+		$this->nullAnswerCount = $nullAnswerCount;
+		return $this;
+	}
+
+	public function getNullAnswerCount() {
+		return $this->nullAnswerCount;
+	}
+
+	// UndeterminedAnswerCount /////
+
+	public function setUndeterminedAnswerCount($undeterminedAnswerCount) {
+		$this->undeterminedAnswerCount = $undeterminedAnswerCount;
+		return $this;
+	}
+
+	public function getUndeterminedAnswerCount() {
+		return $this->undeterminedAnswerCount;
+	}
+
+	// NegativeAnswerCount /////
+
+	public function setNegativeAnswerCount($negativeAnswerCount) {
+		$this->negativeAnswerCount = $negativeAnswerCount;
+		return $this;
+	}
+
+	public function getNegativeAnswerCount() {
+		return $this->negativeAnswerCount;
 	}
 
 	// Answers /////

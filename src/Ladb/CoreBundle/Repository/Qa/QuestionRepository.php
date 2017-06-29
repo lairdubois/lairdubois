@@ -56,6 +56,86 @@ class QuestionRepository extends AbstractEntityRepository {
 		}
 	}
 
+	public function findOneFirstByUser(User $user) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where('q.isDraft = false')
+			->andWhere('q.user = :user')
+			->orderBy('q.id', 'ASC')
+			->setParameter('user', $user)
+			->setMaxResults(1);
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	public function findOneLastByUser(User $user) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where('q.isDraft = false')
+			->andWhere('q.user = :user')
+			->orderBy('q.id', 'DESC')
+			->setParameter('user', $user)
+			->setMaxResults(1);
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	public function findOnePreviousByUserAndId(User $user, $id) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where('q.isDraft = false')
+			->andWhere('q.user = :user')
+			->andWhere('q.id < :id')
+			->orderBy('q.id', 'DESC')
+			->setParameter('user', $user)
+			->setParameter('id', $id)
+			->setMaxResults(1);
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	public function findOneNextByUserAndId(User $user, $id) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where('q.isDraft = false')
+			->andWhere('q.user = :user')
+			->andWhere('q.id > :id')
+			->orderBy('q.id', 'ASC')
+			->setParameter('user', $user)
+			->setParameter('id', $id)
+			->setMaxResults(1);
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
 	/////
 
 	public function findPagined($offset, $limit, $filter = 'recent', $includeDrafts = false) {

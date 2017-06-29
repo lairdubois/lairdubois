@@ -26,7 +26,7 @@ use Ladb\CoreBundle\Manager\Qa\QuestionManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 /**
- * @Route("/qa")
+ * @Route("/questions")
  */
 class QuestionController extends Controller {
 
@@ -91,6 +91,39 @@ class QuestionController extends Controller {
 			'form'         => $form->createView(),
 			'tagProposals' => $tagUtils->getProposals($question),
 		);
+	}
+
+	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_qa_question_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_qa_question_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneById($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_qa_question_lock or core_qa_question_unlock)');
+		}
+		if ($question->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_qa_question_lock or core_qa_question_unlock)');
+		}
+
+		// Lock or Unlock
+		$questionManager = $this->get(QuestionManager::NAME);
+		if ($lock) {
+			$questionManager->lock($question);
+		} else {
+			$questionManager->unlock($question);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.question.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $question->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
 	}
 
 	/**
@@ -296,9 +329,52 @@ class QuestionController extends Controller {
 
 						break;
 
+					case 'author':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'user.displayname', 'user.fullname', 'user.username'  ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'no-answer':
 
 						$filter = new \Elastica\Query\Range('answerCount', array( 'lte' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'without-positive-answer':
+
+						$filter = new \Elastica\Query\Range('positiveAnswerCount', array( 'lte' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-positive-answer':
+
+						$filter = new \Elastica\Query\Range('positiveAnswerCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-null-answer':
+
+						$filter = new \Elastica\Query\Range('nullAnswerCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-undetermined-answer':
+
+						$filter = new \Elastica\Query\Range('undeterminedAnswerCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-negative-answer':
+
+						$filter = new \Elastica\Query\Range('negativeAnswerCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
@@ -412,7 +488,8 @@ class QuestionController extends Controller {
 		}
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
-		$similarQuestions = $explorableUtils->getSimilarExplorables($question, 'fos_elastica.index.ladb.qa_question', Question::CLASS_NAME);
+		$userQuestions = $explorableUtils->getPreviousAndNextPublishedUserExplorables($question, $questionRepository, $question->getUser()->getPublishedQuestionCount());
+		$similarQuestions = $explorableUtils->getSimilarExplorables($question, 'fos_elastica.index.ladb.qa_question', Question::CLASS_NAME, $userQuestions);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
@@ -426,6 +503,7 @@ class QuestionController extends Controller {
 
 		return array(
 			'question'         => $question,
+			'userQuestions'    => $userQuestions,
 			'similarQuestions' => $similarQuestions,
 			'likeContext'      => $likableUtils->getLikeContext($question, $this->getUser()),
 			'watchContext'     => $watchableUtils->getWatchContext($question, $this->getUser()),
