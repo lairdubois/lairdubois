@@ -13,6 +13,15 @@
     {% include 'LadbCoreBundle:Qa/Question:_list-topbar.part.html.twig' %}
 {% endblock %}
 
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+        <div class="panel-body">
+            Cette section vous permet de poser vos questions à la communauté.
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
 {% block autopagerContainerInner %}
     {% include 'LadbCoreBundle:Qa/Question:_list-n.part.html.twig' %}
 {% endblock %}

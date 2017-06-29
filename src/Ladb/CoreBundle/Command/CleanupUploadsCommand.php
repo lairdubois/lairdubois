@@ -34,7 +34,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'p' ))
-			->from('LadbCoreBundle:Picture', 'p')
+			->from('LadbCoreBundle:Core\Picture', 'p')
 		;
 
 		try {
@@ -48,7 +48,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'r' ))
-			->from('LadbCoreBundle:Resource', 'r')
+			->from('LadbCoreBundle:Core\Resource', 'r')
 		;
 
 		try {

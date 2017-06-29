@@ -298,7 +298,7 @@ EOT
 				->select(array( 'count(u.id)' ))
 				->where('u.enabled = true')
 				->andWhere('u.weekNewsEmailEnabled = true')
-				->from('LadbCoreBundle:User', 'u')
+				->from('LadbCoreBundle:Core\User', 'u')
 			;
 
 			try {
@@ -322,7 +322,7 @@ EOT
 					->select(array( 'u' ))
 					->where('u.enabled = true')
 					->andWhere('u.weekNewsEmailEnabled = true')
-					->from('LadbCoreBundle:User', 'u')
+					->from('LadbCoreBundle:Core\User', 'u')
 					->setFirstResult($batchIndex * $batchSize)
 					->setMaxResults($batchSize)
 				;

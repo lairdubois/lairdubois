@@ -31,7 +31,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'p' ))
-			->from('LadbCoreBundle:Picture', 'p')
+			->from('LadbCoreBundle:Core\Picture', 'p')
 		;
 
 		try {
@@ -52,7 +52,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'c', 'ps' ))
-			->from('LadbCoreBundle:Comment', 'c')
+			->from('LadbCoreBundle:Core\Comment', 'c')
 			->leftJoin('c.pictures', 'ps')
 		;
 
@@ -100,7 +100,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'u', 'a', 'b' ))
-			->from('LadbCoreBundle:User', 'u')
+			->from('LadbCoreBundle:Core\User', 'u')
 			->leftJoin('u.avatar', 'a')
 			->leftJoin('u.banner', 'b')
 		;
@@ -439,7 +439,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'g', 'ps' ))
-			->from('LadbCoreBundle:Block\Gallery', 'g')
+			->from('LadbCoreBundle:Core\Block\Gallery', 'g')
 			->leftJoin('g.pictures', 'ps')
 		;
 

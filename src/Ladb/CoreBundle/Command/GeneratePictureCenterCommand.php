@@ -35,7 +35,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(p.id)' ))
-			->from('LadbCoreBundle:Picture', 'p')
+			->from('LadbCoreBundle:Core\Picture', 'p')
 		;
 
 		try {
@@ -59,7 +59,7 @@ EOT
 			$queryBuilder = $om->createQueryBuilder();
 			$queryBuilder
 				->select(array( 'p' ))
-				->from('LadbCoreBundle:Picture', 'p')
+				->from('LadbCoreBundle:Core\Picture', 'p')
 				->setFirstResult($batchIndex * $batchSize)
 				->setMaxResults($batchSize)
 			;
