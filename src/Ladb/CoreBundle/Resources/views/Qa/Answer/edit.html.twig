@@ -4,7 +4,7 @@
 
 {% block title %}<i class="ladb-icon-edit"></i> {{ 'qa.answer.edit'|trans() }}{% endblock %}
 
-{% block footerInner %}
+{% block buttons %}
     {{ parent() }}
-    <button class="btn btn-primary ladb-btn-submit">{{ 'default.save'|trans() }}</button>
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
 {% endblock %}

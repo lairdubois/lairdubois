@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Qa;
 
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Manager\Qa\QuestionManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -94,6 +95,10 @@ class AnswerController extends Controller {
 			$this->getUser()->incrementAnswerCount();
 
 			$om->persist($answer);
+
+			// Compute answer counters
+			$questionManager = $this->get(QuestionManager::NAME);
+			$questionManager->computeAnswerCounters($question);
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
