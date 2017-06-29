@@ -214,26 +214,11 @@ class AnswerController extends Controller {
 			throw $this->createNotFoundException('Not allowed (core_howto_article_delete)');
 		}
 
-		$answer->getUser()->incrementAnswerCount(-1);
-
 		$question = $answer->getQuestion();
-		$question->incrementAnswerCount(-1);
-		$question->removeAnswer($answer);
 
-		// Delete votes
-		$votableUtils = $this->get(VotableUtils::NAME);
-		$votableUtils->deleteVotes($answer, $question, false);
-
-		// Delete comments
-		$commentableUtils = $this->get(CommentableUtils::NAME);
-		$commentableUtils->deleteComments($answer, false);
-
-		// Delete activities
-		$activityUtils = $this->get(ActivityUtils::NAME);
-		$activityUtils->deleteActivitiesByAnswer($answer, false);
-
-		$om->remove($answer);
-		$om->flush();
+		// Delete
+		$answerManager = $this->get(AnswerManager::NAME);
+		$answerManager->delete($answer);
 
 		// Search index update
 		$searchUtils = $this->get(SearchUtils::NAME);

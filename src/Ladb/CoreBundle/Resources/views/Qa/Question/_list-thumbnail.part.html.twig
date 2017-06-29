@@ -2,9 +2,17 @@
 
 {% set entity = question %}
 
+{% block title %}<i class="ladb-icon-question"></i>&nbsp;{{ parent() }}{% endblock %}
+
 {% block imageOuter %}{% endblock %}
 
 {% block entityMetas %}
+    <div class="pull-left">
+        {% if entity.answerCount == 0 %}
+            <span class="label label-danger">Sans réponse</span>
+        {% else %}
+            <span class="label label-{% if entity.positiveVoteCount > entity.negativeVoteCount %}success{% elseif entity.positiveVoteCount < entity.negativeVoteCount %}danger{% else %}default{% endif %}">{{ entity.answerCount|number_format(0, ',', ' ') }} {{ 'qa.question.choice.answers'|transchoice(question.answerCount) }}</span>
+        {% endif %}
+    </div>
     {{ parent() }}
-    <li class="ladb-counter"><i class="ladb-icon-answer"></i> <span>{{ entity.answerCount|number_format(0, ',', ' ') }}</span></li>
 {% endblock %}

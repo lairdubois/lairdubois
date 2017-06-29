@@ -5,6 +5,7 @@
 
 {% set licenseEntity = licenseEntity is defined ? licenseEntity : entity %}
 {% set license = licenseEntity.license is defined ? licenseEntity.license : null %}
+{% set lockedLicense = lockedLicense|default(false) %}
 
 {% block bodyInner %}
     {% if app.user.emailConfirmed %}
@@ -39,7 +40,7 @@
     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
     {% if app.user.emailConfirmed %}
         {% if not entity.isLocked %}
-            {% if license is not null %}
+            {% if not lockedLicense and license is not null %}
                 <a href="{{ ladb_entity_url_action(licenseEntity, 'edit', true, false) }}#license" class="btn btn-default">Modifier la licence</a>
             {% endif %}
             <a href="{{ ladb_entity_url_action(entity, 'publish', true, false) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a>

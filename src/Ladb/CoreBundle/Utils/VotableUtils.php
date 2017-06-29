@@ -37,6 +37,25 @@ class VotableUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
+	public function incrementUsersVoteCount(VotableInterface $votable, $by = 1, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+
+		$votes = $voteRepository->findByEntityTypeAndEntityId($votable->getType(), $votable->getId());
+		foreach ($votes as $vote) {
+			if ($vote->getScore() > 0) {
+				$vote->getUser()->incrementPositiveVoteCount($by);
+			} else {
+				$vote->getUser()->incrementNegativeVoteCount($by);
+			}
+		}
+		if ($flush) {
+			$om->flush();
+		}
+	}
+
+	/////
+
 	public function getVoteContexts($votables, User $user = null) {
 		$voteContexts = array();
 		foreach ($votables as $votable) {

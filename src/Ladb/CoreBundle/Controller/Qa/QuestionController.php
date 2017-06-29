@@ -296,6 +296,13 @@ class QuestionController extends Controller {
 
 						break;
 
+					case 'no-answer':
+
+						$filter = new \Elastica\Query\Range('answerCount', array( 'lte' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'sort':
 
 						switch ($facet->value) {
@@ -312,8 +319,8 @@ class QuestionController extends Controller {
 								$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
 								break;
 
-							case 'popular-comments':
-								$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+							case 'popular-answers':
+								$sort = array( 'answerCount' => array( 'order' => 'desc' ) );
 								break;
 
 						}
@@ -351,6 +358,16 @@ class QuestionController extends Controller {
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Qa/Question:list-xhr.html.twig', $parameters);
+		}
+
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getDraftQuestionCount() > 0) {
+
+			$draftPath = $this->generateUrl('core_user_show_questions_filter', array( 'username' => $this->getUser()->getUsernameCanonical(), 'filter' => 'draft' ));
+			$draftCount = $this->getUser()->getDraftQuestionCount();
+
+			// Flashbag
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('qa.question.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+
 		}
 
 		return $parameters;

@@ -371,6 +371,7 @@ qa:
     choice:
       questions: '[0,1]question|]1,Inf]questions'
       answers: '[0,1]réponse|]1,Inf]réponses'
+      draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
 
 blog:
   title: Le blog

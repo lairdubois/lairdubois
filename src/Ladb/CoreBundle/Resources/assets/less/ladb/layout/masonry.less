@@ -136,19 +136,19 @@
         height: 180px;
         border: 1px solid #ddd;
 
-        &+.ladb-body {
+        &+.ladb-body, &~.ladb-counters {
           padding-left: 180px + (@ladb-gutter / 2);
+        }
+
+        &+.ladb-body {
+          min-height: 160px;
         }
 
       }
 
       >.ladb-body {
         color: #555;
-        min-height: 160px;
-      }
-
-      >.ladb-counters {
-        padding-left: 190px;
+        min-height: 100px;
       }
 
     }
@@ -177,18 +177,14 @@
           width: 128px;
           height: 128px;
 
-          & + .ladb-body {
+          &+.ladb-body, &+.ladb-counters {
             padding-left: 128px + (@ladb-gutter / 2);
           }
 
-        }
+          &+.ladb-body {
+            min-height: 128px;
+          }
 
-        > .ladb-body {
-          min-height: 128px;
-        }
-
-        >.ladb-counters {
-          padding-left: 138px;
         }
 
       }

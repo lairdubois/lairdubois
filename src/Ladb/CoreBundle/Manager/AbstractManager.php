@@ -25,5 +25,17 @@ abstract class AbstractManager {
 		return $this->container->get('doctrine');
 	}
 
+	/////
+
+	public function deleteEntity($entity, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$om->remove($entity);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+	}
 
 }

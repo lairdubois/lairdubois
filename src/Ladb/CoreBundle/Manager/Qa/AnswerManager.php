@@ -3,49 +3,39 @@
 namespace Ladb\CoreBundle\Manager\Qa;
 
 use Ladb\CoreBundle\Entity\Qa\Answer;
-use Ladb\CoreBundle\Event\PublicationEvent;
-use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Manager\AbstractPublicationManager;
+use Ladb\CoreBundle\Manager\AbstractManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\VotableUtils;
 
-class AnswerManager extends AbstractPublicationManager {
+class AnswerManager extends AbstractManager {
 
 	const NAME = 'ladb_core.qa_answer_manager';
 
 	/////
 
-	public function publish(Answer $answer, $flush = true) {
+	public function delete(Answer $answer, $flush = true) {
 
-		$question = $answer->getQuestion();
+		if (!$answer->getQuestion()->getIsDraft()) {
 
-		$question->setChangedAt(new \DateTime());
+			// Decrement user answer count
+			$answer->getUser()->incrementAnswerCount(-1);
 
-		parent::publishPublication($answer, $flush);
+		}
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($question));
-
-	}
-
-	public function unpublish(Answer $answer, $flush = true) {
-		parent::unpublishPublication($answer, $flush);
-	}
-
-	public function delete(Answer $answer, $withWitness = true, $flush = true) {
-
-		$question = $answer->getQuestion();
-		$question->incrementAnswerCount(-1);
+		// Delete comments
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$commentableUtils->deleteComments($answer, false);
 
 		// Delete votes
 		$votableUtils = $this->get(VotableUtils::NAME);
-		$votableUtils->deleteVotes($answer, $question, false);
+		$votableUtils->deleteVotes($answer, $answer->getQuestion(), false);
 
-		parent::deletePublication($answer, $withWitness, $flush);
+		// Delete activities
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->deleteActivitiesByAnswer($answer, false);
 
-		$question->removeAnswer($answer);
+		parent::deleteEntity($answer, $flush);
 	}
 
 }
