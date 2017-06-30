@@ -185,7 +185,7 @@
 
 {% block bodyContainerContent %}
     {% if wonder.isDraft %}
-        {% include 'LadbCoreBundle:'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
+        {% include 'LadbCoreBundle:Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
     {% if referral is defined and referral is not null and referral.displayRedirectionWarning %}
