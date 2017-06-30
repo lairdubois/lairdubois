@@ -22,17 +22,21 @@
 
     &:hover {
       background-color: @ladb-brand-light;
-      color: @ladb-brand-dark;
+      color: @ladb-brand-dark !important;
     }
 
     &.ladb-active {
       background-color: @ladb-brand-primary;
-      color: #fff;
+      color: #fff !important;
 
       >.badge.badge-notification {
         background-color: @ladb-brand-dark;
       }
 
+    }
+
+    &.ladb-highlighted {
+      color: #f9a751;
     }
 
     >.badge.badge-notification {
