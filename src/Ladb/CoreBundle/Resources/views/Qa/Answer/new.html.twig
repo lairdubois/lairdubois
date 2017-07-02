@@ -4,6 +4,18 @@
 
 {% block title %}<i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}{% endblock %}
 
+{% block formOuter %}
+    {% if question.answerCount > 0 %}
+        <div class="alert alert-info">
+            <p>Merci de contribuer à une réponse !</p>
+            <p>S'il vous plait, soyez certain que votre réponse réponde à la question "<strong>{{ question.title }}</strong>".</p>
+            <p>Si vous souhaitez répondre à une des réponses ci-dessus, utilisez les <strong>commentaires</strong> qui lui sont associés.</p>
+            <p>Pour en savoir plus, lisez ce <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}" class="alert-link">sujet</a>.</p>
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
 {% block buttons %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
