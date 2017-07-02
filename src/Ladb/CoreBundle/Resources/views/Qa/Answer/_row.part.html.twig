@@ -8,6 +8,9 @@
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
                 <div class="ladb-heading">
                     <div class="ladb-minitools">
+                        {% if not app.request.isxmlhttprequest %}
+                            <a href="#" onclick="bootbox.dialog({ title:'{{ 'qa.answer.get_link'|trans() }}', message:'<p>Lien direct vers la réponse :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_answer_{{ answer.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'qa.answer.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
+                        {% endif %}
                         {% if is_granted("ROLE_ADMIN") or answer.user == app.user %}
                             <a href="{{ path('core_qa_answer_edit', { 'id':answer.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit"><i class="ladb-icon-edit"></i></a>
                         {% endif %}
@@ -23,6 +26,9 @@
                                     <a href="{{ path('core_qa_answer_delete', { 'id':answer.id }) }}" class="btn btn-danger ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
                                 {% endblock %}
                             {% endembed %}
+                        {% endif %}
+                        {% if answer.user != app.user %}
+                            {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':answer.type, 'entityId':answer.id } %}
                         {% endif %}
                     </div>
                     {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer, 'classes':'ladb-visible-desktop' } %}

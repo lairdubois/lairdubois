@@ -380,6 +380,7 @@ qa:
   answer:
     new: Ajouter ma réponse
     edit: Editer ma réponse
+    get_link: Obtenir le lien
     form:
       alert:
         delete_success: La réponse a été supprimée.
