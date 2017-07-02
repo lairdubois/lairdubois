@@ -9,7 +9,7 @@
 {% block entityMetas %}
     {{ parent() }}
     <li class="ladb-counter">
-        <span class="ladb-color-{% if entity.positiveAnswerCount > 0 %}positive{% elseif entity.undeterminedAnswerCount > 0 %}undetermined{% elseif entity.negativeAnswerCount > 0 %}negative{% else %}null{% endif %}"><i class="ladb-icon-answer"></i> {{ entity.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</span>
+        {% include 'LadbCoreBundle:Qa/Question:_answers-counter.part.html.twig' %}
         |
     </li>
 {% endblock %}

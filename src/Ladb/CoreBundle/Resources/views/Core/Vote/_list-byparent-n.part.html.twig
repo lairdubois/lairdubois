@@ -36,6 +36,9 @@
                                     or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
                                     or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE') %}
                                 {% include 'LadbCoreBundle:Knowledge:_value-votable-thumbnail.part.html.twig' with { 'knowledge':entity, 'value':votable } %}
+                            {% else %}
+                                {{ votable.title }}
+                                <small>{% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':votable } %}</small>
                             {% endif %}
                         </div>
                     {% endfor %}

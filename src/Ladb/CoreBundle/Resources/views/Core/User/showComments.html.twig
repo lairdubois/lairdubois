@@ -10,7 +10,7 @@
             {% endif %}
         </div>
     {% else %}
-        {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' %}
+        {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-margin-bottom' } %}
             {% set filterDefs = {} %}
             {% block filterbarRightContent%}
                 <span class="ladb-heading">{{ user.commentCount }} {{ 'comment.choice.comments'|transchoice(user.commentCount) }}</span>

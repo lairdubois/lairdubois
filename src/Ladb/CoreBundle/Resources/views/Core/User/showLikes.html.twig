@@ -3,7 +3,7 @@
 {% set sentFilter = filter == 'sent' %}
 
 {% block bodyContainerContent %}
-    {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' %}
+    {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-margin-bottom' } %}
         {% set filterDefs = {
             'sent':        { 'label':'Envoyés', 'path':path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'sent' }) },
             'recieved':    { 'label':'Reçus', 'path':path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'recieved' }) },

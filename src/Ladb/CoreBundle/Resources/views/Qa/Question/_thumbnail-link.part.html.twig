@@ -9,7 +9,10 @@
     <div>
         <i class="ladb-icon-question"></i> <a href="{{ path('core_qa_question_show', { 'id':question.sluggedId }) }}">{{ question.title }}</a>
     </div>
-    {% if not noAuthor %}
-        <small>{% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':question } %}</small>
-    {% endif %}
+    <small>
+        {% if not noAuthor %}
+            {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':question } %}&nbsp;&nbsp;|&nbsp;&nbsp;
+        {% endif %}
+        {% include 'LadbCoreBundle:Qa/Question:_answers-counter.part.html.twig' %}
+    </small>
 </div>

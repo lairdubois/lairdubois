@@ -2,6 +2,7 @@
 
 {% set entity = question %}
 {% set pageItemType = 'Question' %}
+{% set pageTitlePrefix = '[Question]' %}
 {% set pageImage = asset('banner-questions-600x376.jpg') %}
 
 {% set navSection = 'qa' %}
@@ -126,10 +127,13 @@
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         <div class="ladb-meta">
+            <a href="#" class="ladb-scrollto-btn" onclick="$('.ladb-qa-question-answers').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
             <i class="ladb-icon-answer ladb-icon-fixed-center"></i>
             <strong>{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</small>
-        </div>    </div>
+        </div>
+        {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':question } %}
+    </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':question.license } %}
 {% endblock %}

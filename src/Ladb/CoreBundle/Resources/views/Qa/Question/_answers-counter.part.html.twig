@@ -1,0 +1,3 @@
+{# set question #}
+
+<span class="ladb-color-{% if question.positiveAnswerCount > 0 %}positive{% elseif question.undeterminedAnswerCount > 0 %}undetermined{% elseif question.negativeAnswerCount > 0 %}negative{% else %}null{% endif %}"><i class="ladb-icon-answer"></i> {{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</span>

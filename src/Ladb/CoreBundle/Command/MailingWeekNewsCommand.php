@@ -62,6 +62,30 @@ EOT
 
 		$output->writeln('<comment> ['.count($creations).' creations]</comment>');
 
+		// Retrieve questions
+
+		$output->write('<info>Retrieving new questions...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from('LadbCoreBundle:Qa\Question', 'q')
+			->innerJoin('q.user', 'u')
+			->where('q.isDraft = false')
+			->andWhere('q.createdAt > :date')
+			->orderBy('q.likeCount', 'DESC')
+			->addOrderBy('q.answerCount', 'ASC')
+			->setParameter('date', $date)
+		;
+
+		try {
+			$questions = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$questions = array();
+		}
+
+		$output->writeln('<comment> ['.count($questions).' questions]</comment>');
+
 		// Retrieve plans
 
 		$output->write('<info>Retrieving new plans...</info>');
@@ -289,7 +313,7 @@ EOT
 
 		// Sending ...
 
-		if (count($creations) > 0 || count($plans) > 0 || count($workshops) > 0 || count($howtos) > 0 || count($howtoArticles) > 0 || count($finds) > 0 || count($posts) > 0 || count($woods) > 0 || count($providers) > 0) {
+		if (count($creations) > 0 || count($questions) > 0 || count($plans) > 0 || count($workshops) > 0 || count($howtos) > 0 || count($howtoArticles) > 0 || count($finds) > 0 || count($posts) > 0 || count($woods) > 0 || count($providers) > 0) {
 
 			// Count users /////
 
@@ -307,13 +331,15 @@ EOT
 				$userCount = 0;
 			}
 
+			$userCount = 1;
+
 			$progress = new ProgressBar($output, $userCount);
 			$progress->start();
 
-			$batchSize = 500;
-			$batchCount = $userCount / $batchSize;
+			$batchSize = 1;
+			$batchCount = ceil($userCount / $batchSize);
 
-			for ($batchIndex = 0; $batchIndex <= $batchCount; $batchIndex++) {
+			for ($batchIndex = 0; $batchIndex < $batchCount; $batchIndex++) {
 
 				// Extract users /////
 
@@ -340,7 +366,7 @@ EOT
 					}
 					if ($forced) {
 						try {
-							$mailerUtils->sendWeekNewsEmailMessage($user, $creations, $plans, $workshops, $howtos, $howtoArticles, $finds, $posts, $woods, $providers);
+							$mailerUtils->sendWeekNewsEmailMessage($user, $creations, $questions, $plans, $workshops, $howtos, $howtoArticles, $finds, $posts, $woods, $providers);
 						} catch (\Exception $e) {
 							$output->writeln('<error>'.$e->getMessage().'</error>');
 						}

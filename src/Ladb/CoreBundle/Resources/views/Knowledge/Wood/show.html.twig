@@ -107,17 +107,7 @@
                 </a>
             {% endif %}
         </div>
-        <div class="ladb-meta{% if wood.voteCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-check ladb-icon-fixed-center"></i>
-            {% if wood.voteCount > 0 %}
-                <a href="{{ path('core_vote_list_parent_entity', { 'entityType':wood.type, 'entityId':wood.id }) }}">
-            {% endif %}
-            <strong>{{ wood.voteCount|number_format(0, ',', ' ') }}</strong>
-            <small>{{ 'vote.choice.votes'|transchoice(wood.voteCount) }}</small>
-            {% if wood.voteCount > 0 %}
-                </a>
-            {% endif %}
-        </div>
+        {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':wood } %}
         <div class="ladb-meta{% if wood.textureCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-texture ladb-icon-fixed-center"></i>
             {% if wood.textureCount > 0 %}

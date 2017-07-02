@@ -198,7 +198,7 @@
             {{ howto.htmlBody|raw }}
         </div>
         {% if howto.articles.count > 1 %}
-            <h4>{{ 'howto.howto.article.list'|trans() }}</h4>
+            <h4>{{ 'howto.article.list'|trans() }}</h4>
             <ul>
                 {% for article in howto.articles if not article.isDraft or article.isDraft and showDraft %}
                     <li>
@@ -220,9 +220,9 @@
             <a id="{{ article.sluggedId }}" class="ladb-offsetted-anchor"></a>
             <div class="pull-right">
                 {% if not howto.isDraft and not article.isDraft %}
-                    <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
+                    <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
                     &nbsp;
-                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.howto.article.share'|trans()) } %}
+                    {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
                         {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
                         {% block bodyInner %}
                             <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -284,10 +284,10 @@
                     {% endembed %}
                 {% endif %}
                 {% if is_granted("ROLE_ADMIN") or ownerUser %}
-                    <a href="{{ path('core_howto_article_edit', { 'id':article.id }) }}" class="btn btn-default btn-sm" title="{{ 'howto.howto.article.edit'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
+                    <a href="{{ path('core_howto_article_edit', { 'id':article.id }) }}" class="btn btn-default btn-sm" title="{{ 'howto.article.edit'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
                 {% endif %}
                 {% if is_granted("ROLE_ADMIN") and not article.isDraft %}
-                    <a href="#unpublish_howto_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.howto.article.unpublish'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                    <a href="#unpublish_howto_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.unpublish'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
                     {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_howto_article_'~article.id~'_modal', 'title':('default.unpublishing'|trans()) } %}
                         {% block bodyInner %}
                             <p>La dépublication de l'article <strong>{{ article.title }}</strong> le rendra invisible des autres utilisateurs.</p>

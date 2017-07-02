@@ -27,4 +27,6 @@
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-answers" data-label="Plus de réponses" data-unique="true" data-icon="answer"><i class="ladb-icon-answer"></i> Plus de réponses</a></li>
 {% endblock %}
 
-{% block searchboxShortcutsOuter %}{% endblock %}
+{% block searchboxShortcuts %}
+    <li><a class="ladb-smartsearch-shortcut" data-query="@no-answer"><i class="ladb-icon-answer"></i> Sans réponse</a></li>
+{% endblock %}

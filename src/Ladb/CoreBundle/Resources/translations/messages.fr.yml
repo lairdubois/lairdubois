@@ -279,29 +279,30 @@ howto:
         plans: Associez jusqu'à <strong>4 plans</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces plans.
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre pas à pas.
         wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
-    article:
-      new: Ajouter un article
-      edit: Edition de l'article
-      unpublish: Dépublication de l'article
-      list: Liste des articles
-      share: Partage de l'article
-      new_warning: Votre <strong>pas à pas</strong> est enregistré.<br/>Vous pouvez maintenant ajouter son contenu dans ce premier <strong>article</strong>.
-      form:
-        alert:
-          publish_success: L'article <strong>%title%</strong> a été publié.
-          unpublish_success: L'article <strong>%title%</strong> a été dépublié.
-          update_success: L'article <strong>%title%</strong> a été mis à jour.
-          delete_success: L'article <strong>%title%</strong> a été supprimé.
-        help:
-          title: Renseignez ici le titre de votre article.
-          body: Renseigner ici le corps de votre article.
     choice:
       new_howtos: '[0,1]nouveau pas à pas|]1,Inf]nouveaux pas à pas'
       howtos: '[0,1]pas à pas|]1,Inf]pas à pas'
-      new_articles: '[0,1]nouvel article|]1,Inf]nouveaux articles'
-      articles: '[0,1]article|]1,Inf]articles'
       show_linked_to: '[0,1]Voir le pas à pas|]1,Inf]Voir les pas à pas'
       draft_alert: '[0,1]Vous avez 1 pas à pas en brouillon.|]1,Inf]Vous avez %count% pas à pas en brouillon.'
+  article:
+    new: Ajouter un article
+    edit: Edition de l'article
+    unpublish: Dépublication de l'article
+    list: Liste des articles
+    share: Partage de l'article
+    new_warning: Votre <strong>pas à pas</strong> est enregistré.<br/>Vous pouvez maintenant ajouter son contenu dans ce premier <strong>article</strong>.
+    form:
+      alert:
+        publish_success: L'article <strong>%title%</strong> a été publié.
+        unpublish_success: L'article <strong>%title%</strong> a été dépublié.
+        update_success: L'article <strong>%title%</strong> a été mis à jour.
+        delete_success: L'article <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre article.
+        body: Renseigner ici le corps de votre article.
+    choice:
+      new_articles: '[0,1]nouvel article|]1,Inf]nouveaux articles'
+      articles: '[0,1]article|]1,Inf]articles'
 
 find:
   find:
@@ -373,6 +374,7 @@ qa:
         body: Détaillez ici plus en profondeur votre question.
         tags: Indiquez les tags définissant votre question.
     choice:
+      new_questions: '[0,1]nouvelle question|]1,Inf]nouvelles questions'
       questions: '[0,1]question|]1,Inf]questions'
       draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
   answer:
@@ -402,8 +404,8 @@ blog:
       help:
         title: Renseignez ici le titre de votre sujet.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre sujet.
-  choice:
-    new_posts: '[0,1]nouveau sujet sur le blog|]1,Inf]nouveaux sujets sur le blog'
+    choice:
+      new_posts: '[0,1]nouveau sujet sur le blog|]1,Inf]nouveaux sujets sur le blog'
 
 faq:
   title: La foire aux questions

@@ -1,10 +1,10 @@
 {% extends 'LadbCoreBundle:Howto/Article:_form.html.twig' %}
 
-{% set pageTitle = 'howto.howto.article.edit'|trans() %}
+{% set pageTitle = 'howto.article.edit'|trans() %}
 {% set formAction = path('core_howto_article_update', { 'id':article.id, 'rtu':rtu }) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-edit"></i> {{ 'howto.howto.article.edit'|trans() }}
+    <i class="ladb-icon-edit"></i> {{ 'howto.article.edit'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}
