@@ -383,8 +383,8 @@ qa:
     edit: Editer ma réponse
     get_link: Obtenir le lien
     best: Meilleure réponse
-    set_as_best: Définir comme meilleure réponse
-    best_tooltip: L'auteur de la question a défini cette réponse comme étant la meilleure
+    set_as_best: Choisir comme meilleure réponse
+    best_tooltip: L'auteur de la question a choisi cette réponse comme étant la meilleure
     form:
       alert:
         delete_success: La réponse a été supprimée.
