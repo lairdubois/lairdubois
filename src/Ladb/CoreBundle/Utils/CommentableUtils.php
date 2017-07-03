@@ -25,7 +25,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
-			if ($commentable instanceof DraftableInterface && !$commentable->getIsDraft()) {
+			if (!($commentable instanceof DraftableInterface) || ($commentable instanceof DraftableInterface && !$commentable->getIsDraft())) {
 				$comment->getUser()->incrementCommentCount(-1);
 			}
 			$activityUtils->deleteActivitiesByComment($comment);

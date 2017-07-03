@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\PicturedInterface;
+use Ladb\CoreBundle\Model\PicturedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\VotableParentInterface;
@@ -37,9 +39,9 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractAuthoredPublication implements TitledInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, VotableParentInterface, ReportableInterface, ExplorableInterface {
+class Question extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, VotableParentInterface, ReportableInterface, ExplorableInterface {
 
-	use TitledTrait, BlockBodiedTrait;
+	use TitledTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, VotableParentTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Question';
@@ -49,6 +51,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
 	 */
 	private $title;
 
@@ -57,6 +60,13 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
 	private $slug;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\JoinColumn(nullable=true, name="main_picture_id")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
+	 */
+	private $mainPicture;
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)

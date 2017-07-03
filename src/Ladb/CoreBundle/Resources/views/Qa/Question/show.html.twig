@@ -3,7 +3,9 @@
 {% set entity = question %}
 {% set pageItemType = 'Question' %}
 {% set pageTitlePrefix = '[Question]' %}
-{% set pageImage = asset('banner-questions-600x376.jpg') %}
+{% if question.mainPicture is null %}
+    {% set pageImage = asset('banner-questions-600x376.jpg') %}
+{% endif %}
 
 {% set navSection = 'qa' %}
 {% set searchPath = path('core_qa_question_list') %}

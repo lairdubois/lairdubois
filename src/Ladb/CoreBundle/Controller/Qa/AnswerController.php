@@ -187,7 +187,9 @@ class AnswerController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($answer);
 
-			$answer->setUpdatedAt(new \DateTime());
+			if ($answer->getUser()->getId() == $this->getUser()->getId()) {
+				$answer->setUpdatedAt(new \DateTime());
+			}
 
 			$om->flush();
 

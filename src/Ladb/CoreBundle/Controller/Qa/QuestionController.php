@@ -68,6 +68,11 @@ class QuestionController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($question);
 
+			if ($question->getBodyBlockPictureCount() > 0) {
+				$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
+			}
+
 			$question->setUser($this->getUser());
 			$this->getUser()->incrementDraftQuestionCount();
 
@@ -251,7 +256,14 @@ class QuestionController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($question);
 
-			$question->setUpdatedAt(new \DateTime());
+			if ($question->getBodyBlockPictureCount() > 0) {
+				$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
+			}
+
+			if ($question->getUser()->getId() == $this->getUser()->getId()) {
+				$question->setUpdatedAt(new \DateTime());
+			}
 
 			$om->flush();
 

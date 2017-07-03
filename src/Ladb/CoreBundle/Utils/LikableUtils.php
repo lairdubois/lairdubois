@@ -20,7 +20,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 		$likes = $likeRepository->findByEntityTypeAndEntityId($likable->getType(), $likable->getId());
 		foreach ($likes as $like) {
-			if ($likable instanceof DraftableInterface && !$likable->getIsDraft()) {
+			if ((!$likable instanceof DraftableInterface) || ($likable instanceof DraftableInterface && !$likable->getIsDraft())) {
 				$like->getUser()->incrementSentLikeCount(-1);
 				if ($likable instanceof AuthoredInterface) {
 					$likable->getUser()->incrementRecievedLikeCount(-1);

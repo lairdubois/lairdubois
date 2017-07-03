@@ -8,7 +8,7 @@
     {% if question.answerCount > 0 %}
         <div class="alert alert-info">
             <p>Merci de contribuer à une réponse !</p>
-            <p>S'il vous plait, soyez certain que votre réponse réponde à la question "<strong>{{ question.title }}</strong>".</p>
+            <p>S'il vous plait, soyez certain que votre réponse apporte une <strong>nouveauté</strong> par rapport aux réponses précédentes et que vous répondiez bien à la question "<strong>{{ question.title }}</strong>".</p>
             <p>Si vous souhaitez répondre à une des réponses ci-dessus, utilisez les <strong>commentaires</strong> qui lui sont associés.</p>
             <p>Pour en savoir plus, lisez ce <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}" class="alert-link">sujet</a>.</p>
         </div>

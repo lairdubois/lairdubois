@@ -34,6 +34,11 @@ class AnswerManager extends AbstractManager {
 		$questionManager = $this->container->get(QuestionManager::NAME);
 		$questionManager->computeAnswerCounters($question);
 
+		// Clear best answer
+		if ($answer->getIsBestAnswer()) {
+			$question->setBestAnswer(null);
+		}
+
 		/////
 
 		// Delete comments
