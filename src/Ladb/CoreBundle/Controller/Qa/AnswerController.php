@@ -191,10 +191,15 @@ class AnswerController extends Controller {
 
 			$om->flush();
 
+			// Dispatch publication event (on Question)
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($answer->getQuestion()));
+
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
 
 			return $this->render('LadbCoreBundle:Qa/Answer:_row.part.html.twig', array(
+				'question'       => $answer->getQuestion(),
 				'answer'         => $answer,
 				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),
 				'voteContext'    => $votableUtils->getVoteContext($answer, $this->getUser()),
@@ -205,6 +210,44 @@ class AnswerController extends Controller {
 			'answer' => $answer,
 			'form'   => $form->createView(),
 		);
+	}
+
+	/**
+	 * @Route("/answer/{id}/best/create", requirements={"id" = "\d+"}, defaults={"action" = "create"}, name="core_qa_answer_best_create")
+	 * @Route("/answer/{id}/best/delete", requirements={"id" = "\d+"}, defaults={"action" = "delete"}, name="core_qa_answer_best_delete")
+	 */
+	public function bestToggleAction(Request $request, $id, $action) {
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+
+		$answer = $answerRepository->findOneById($id);
+		if (is_null($answer)) {
+			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
+		}
+
+		$question = $answer->getQuestion();
+
+		if ($question->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_qa_answer_best_create or core_qa_answer_best_delete)');
+		}
+
+		if ($action == 'delete') {
+			$oldBestAnswer = $question->getBestAnswer();
+			if (!is_null($oldBestAnswer) && $oldBestAnswer->getId() != $answer->getId()) {
+				throw $this->createNotFoundException('Not the best answer (core_qa_answer_best_delete)');
+			}
+			$question->setBestAnswer(null);
+		} else {
+			$question->setBestAnswer($answer);
+		}
+
+		$om->flush();
+
+		// Dispatch publication event (on Question)
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($question));
+
+		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )).'#_answer_'.$answer->getId());
 	}
 
 	/**

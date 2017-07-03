@@ -358,6 +358,14 @@ class QuestionController extends Controller {
 
 						break;
 
+					case 'with-best-answer':
+
+						$filter = new \Elastica\Query\QueryString('*');
+						$filter->setFields(array( 'bestAnswer.body' ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'with-null-answer':
 
 						$filter = new \Elastica\Query\Range('nullAnswerCount', array( 'gt' => 0 ));

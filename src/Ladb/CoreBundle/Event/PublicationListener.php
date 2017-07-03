@@ -196,7 +196,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication instanceof TaggableInterface) {
+		if ($publication instanceof TaggableInterface && array_key_exists('previouslyUsedTags', $event->getData())) {
 
 			// Tags usage
 			$tagUtils = $this->container->get(TagUtils::NAME);

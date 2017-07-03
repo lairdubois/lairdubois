@@ -319,7 +319,7 @@ EOT
 			$lastmod = date_format(new \DateTime(), 'Y-m-d\TH:i:sP');
 		}
 		return array(
-			'loc'     => $this->getContainer()->get('assets.packages')->getUrl('/sitemap-'.$section.'.xml'),
+			'loc'     => $this->getContainer()->get('assets.packages')->getUrl('/sitemap-'.$section.'.xml', 'sitemaps'),
 			'lastmod' => $lastmod,
 		);
 	}

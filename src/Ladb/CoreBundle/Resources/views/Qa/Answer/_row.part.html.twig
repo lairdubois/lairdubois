@@ -1,4 +1,4 @@
-<div id="ladb_answer_{{ answer.id }}" class="ladb-answer-row">
+<div id="ladb_answer_{{ answer.id }}" itemprop="{% if answer.isBestAnswer %}acceptedAnswer{% else %}suggestedAnswer{% endif %}" itemscope itemtype="http://schema.org/Answer" class="ladb-answer-row">
     <div class="ladb-box">
         <div class="ladb-box-inner row">
             <div class="ladb-side-bar col-sm-push-11 col-sm-1 col-xs-12">
@@ -6,6 +6,9 @@
             </div>
             <div class="ladb-content-box col-sm-pull-1 col-sm-11 col-xs-12">
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+                {% if answer.isBestAnswer %}
+                    <div class="ladb-best ladb-color-best-answer" data-tooltip="tooltip" title="{{ 'qa.answer.best_tooltip'|trans() }}"><i class="ladb-icon-favorite"></i></div>
+                {% endif %}
                 <div class="ladb-heading">
                     <div class="ladb-minitools">
                         {% if not app.request.isxmlhttprequest %}
@@ -39,6 +42,15 @@
                     {% endfor %}
                     {% if answer.updatedAt > answer.createdAt %}
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':answer } %}
+                    {% endif %}
+                    {% if is_granted("ROLE_USER") and question.user == app.user %}
+                        <div class="ladb-margin-top">
+                            {% if answer.isBestAnswer %}
+                                <a href="{{ path('core_qa_answer_best_delete', { 'id':answer.id }) }}" class="btn btn-default active"><i class="ladb-icon-check"></i> {{ 'qa.answer.best'|trans() }}</a>
+                            {% else %}
+                                <a href="{{ path('core_qa_answer_best_create', { 'id':answer.id }) }}" class="btn btn-default"><i class="ladb-icon-favorite"></i><span class="ladb-hidden-mobile"> {{ 'qa.answer.set_as_best'|trans() }}</span></a>
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
                 {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapse':true } %}

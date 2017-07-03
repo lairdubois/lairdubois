@@ -29,52 +29,47 @@ class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterfac
 
 	const CLASS_NAME = 'LadbCoreBundle:QA\Answer';
 	const TYPE = 114;
-
+	/**
+	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
+	 */
+	protected $parentEntityType;
+	/**
+	 * @ORM\Column(name="parent_entity_id", type="integer", nullable=false)
+	 */
+	protected $parentEntityId;
+	/**
+	 * @ORM\Column(name="parent_entity_field", type="string", length=20, nullable=false)
+	 */
+	protected $parentEntityField;
+	/**
+	 * @ORM\Column(name="is_best_answer", type="boolean")
+	 */
+	protected $isBestAnswer = false;
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $user;
-
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	private $createdAt;
-
 	/**
 	 * @ORM\Column(name="updated_at", type="datetime")
 	 */
 	private $updatedAt;
-
-	/**
-	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
-	 */
-	protected $parentEntityType;
-
-	/**
-	 * @ORM\Column(name="parent_entity_id", type="integer", nullable=false)
-	 */
-	protected $parentEntityId;
-
-	/**
-	 * @ORM\Column(name="parent_entity_field", type="string", length=20, nullable=false)
-	 */
-	protected $parentEntityField;
-
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="answers")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $question;
-
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
@@ -143,9 +138,8 @@ class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterfac
 
 	// CreatedAt /////
 
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
+	public function getAge() {
+		return $this->getCreatedAt()->diff(new \DateTime());
 	}
 
 	public function getCreatedAt() {
@@ -154,19 +148,20 @@ class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterfac
 
 	// Age /////
 
-	public function getAge() {
-		return $this->getCreatedAt()->diff(new \DateTime());
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+		return $this;
 	}
 
 	// UpdatedAt /////
 
+	public function getUpdatedAt() {
+		return $this->updatedAt;
+	}
+
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
 		return $this;
-	}
-
-	public function getUpdatedAt() {
-		return $this->updatedAt;
 	}
 
 	// Question /////
@@ -178,6 +173,16 @@ class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterfac
 	public function setQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
 		$this->question = $question;
 		return $this;
+	}
+
+	// IsBestAnswer /////
+
+	public function getIsBestAnswer() {
+		return $this->isBestAnswer;
+	}
+
+	public function setIsBestAnswer($isBestAnswer) {
+		$this->isBestAnswer = $isBestAnswer;
 	}
 
 	// Title /////

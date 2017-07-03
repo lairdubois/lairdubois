@@ -61,6 +61,9 @@
 
         });
 
+        setupTooltips();
+        setupPopovers();
+
     };
 
     LadbQuestionPage.prototype.bindEditAnswerBox = function($row, data) {

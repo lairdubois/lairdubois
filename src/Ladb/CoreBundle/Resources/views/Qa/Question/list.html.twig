@@ -9,6 +9,14 @@
 {% set masonryWide = true %}
 {% set hideHeaderContainer = false %}
 
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/qa.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block bodyHeaderContainerContent %}
     {% include 'LadbCoreBundle:Qa/Question:_list-topbar.part.html.twig' %}
 {% endblock %}

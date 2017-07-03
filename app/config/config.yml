@@ -12,9 +12,13 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20170701"
+        version:    "20170703"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
+        packages:
+             sitemaps:
+                version: 1
+                version_format: '%%s?v=%%s'
     templating:
         engines:    ['twig']
     default_locale:  "%locale%"
@@ -483,6 +487,14 @@ fos_elastica:
                                 username: { analyzer: name_analyzer }
                                 displayname: { analyzer: name_analyzer }
                                 fullname: { analyzer: name_analyzer }
+                        answers:
+                            type: "object"
+                            properties:
+                                body: { analyzer: body_analyzer }
+                        bestAnswer:
+                            type: "object"
+                            properties:
+                                body: { analyzer: body_analyzer }
                         tags:
                             type: "object"
                             properties:

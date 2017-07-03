@@ -7,9 +7,19 @@
 @import "../_mixins.less";
 
 .ladb-answer-row {
+
   .ladb-box .ladb-content-box .collapse {
     margin-left: 42px;
   }
+
+  .ladb-best {
+    position: absolute;
+    top: 52px;
+    width: 32px;
+    text-align: center;
+    font-size: 180%;
+  }
+
 }
 
 .ladb-answer-form {
@@ -109,6 +119,15 @@
 
     }
 
+  }
+
+}
+
+.ladb-masonry-column-wide {
+
+  .ladb-best, .ladb-answers-counter {
+    padding-right: 5px;
+    border-right: 1px solid @ladb-global-border;
   }
 
 }

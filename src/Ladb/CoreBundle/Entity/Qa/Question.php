@@ -107,8 +107,14 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $negativeAnswerCount = 0;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Qa\Answer")
+	 * @ORM\JoinColumn(nullable=true, name="best_answer_id")
+	 */
+	private $bestAnswer;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Answer", mappedBy="question", cascade={"all"})
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"isBestAnswer" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $answers;
 
@@ -201,46 +207,63 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	// PositiveAnswerCount /////
 
+	public function getPositiveAnswerCount() {
+		return $this->positiveAnswerCount;
+	}
+
 	public function setPositiveAnswerCount($positiveAnswerCount) {
 		$this->positiveAnswerCount = $positiveAnswerCount;
 		return $this;
 	}
 
-	public function getPositiveAnswerCount() {
-		return $this->positiveAnswerCount;
-	}
-
 	// NullAnswerCount /////
+
+	public function getNullAnswerCount() {
+		return $this->nullAnswerCount;
+	}
 
 	public function setNullAnswerCount($nullAnswerCount) {
 		$this->nullAnswerCount = $nullAnswerCount;
 		return $this;
 	}
 
-	public function getNullAnswerCount() {
-		return $this->nullAnswerCount;
-	}
-
 	// UndeterminedAnswerCount /////
+
+	public function getUndeterminedAnswerCount() {
+		return $this->undeterminedAnswerCount;
+	}
 
 	public function setUndeterminedAnswerCount($undeterminedAnswerCount) {
 		$this->undeterminedAnswerCount = $undeterminedAnswerCount;
 		return $this;
 	}
 
-	public function getUndeterminedAnswerCount() {
-		return $this->undeterminedAnswerCount;
-	}
-
 	// NegativeAnswerCount /////
+
+	public function getNegativeAnswerCount() {
+		return $this->negativeAnswerCount;
+	}
 
 	public function setNegativeAnswerCount($negativeAnswerCount) {
 		$this->negativeAnswerCount = $negativeAnswerCount;
 		return $this;
 	}
 
-	public function getNegativeAnswerCount() {
-		return $this->negativeAnswerCount;
+	// BestAnswer /////
+
+	public function getBestAnswer() {
+		return $this->bestAnswer;
+	}
+
+	public function setBestAnswer(\Ladb\CoreBundle\Entity\Qa\Answer $bestAnswer = null) {
+		if (!is_null($this->getBestAnswer())) {
+			$this->getBestAnswer()->setIsBestAnswer(false);
+		}
+		$this->bestAnswer = $bestAnswer;
+		if (!is_null($this->getBestAnswer())) {
+			$this->getBestAnswer()->setIsBestAnswer(true);
+		}
+		return $this;
 	}
 
 	// Answers /////

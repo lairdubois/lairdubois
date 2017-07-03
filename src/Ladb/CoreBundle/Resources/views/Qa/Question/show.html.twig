@@ -94,7 +94,7 @@
     <div class="ladb-qa-question">
         <div class="ladb-box">
             <div class="ladb-box-inner row">
-                <div class="ladb-content-box col-sm-11 col-xs-12" style="margin-top: 10px;">
+                <div class="ladb-content-box col-sm-11 col-xs-12">
                     {% for block in question.bodyBlocks %}
                         {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
                     {% endfor %}
@@ -129,7 +129,7 @@
         <div class="ladb-meta">
             <a href="#" class="ladb-scrollto-btn" onclick="$('.ladb-qa-question-answers').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
             <i class="ladb-icon-answer ladb-icon-fixed-center"></i>
-            <strong>{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
+            <strong itemprop="answerCount">{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</small>
         </div>
         {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':question } %}

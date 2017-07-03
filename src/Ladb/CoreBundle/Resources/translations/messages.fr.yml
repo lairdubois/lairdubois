@@ -355,6 +355,7 @@ qa:
     vote_up: Je valide cette réponse
     vote_down: Je rejette cette réponse
   question:
+    description: Retrouvez toutes les questions
     new: Ajouter une question
     edit: Edition de la question
     list: Les questions
@@ -381,6 +382,9 @@ qa:
     new: Ajouter ma réponse
     edit: Editer ma réponse
     get_link: Obtenir le lien
+    best: Meilleure réponse
+    set_as_best: Définir comme meilleure réponse
+    best_tooltip: L'auteur de la question a défini cette réponse comme étant la meilleure
     form:
       alert:
         delete_success: La réponse a été supprimée.
