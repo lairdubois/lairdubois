@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Entity\Wonder;
+namespace Ladb\CoreBundle\Entity\Core\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
