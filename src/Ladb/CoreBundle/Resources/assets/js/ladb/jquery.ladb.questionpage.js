@@ -61,6 +61,7 @@
 
         });
 
+        bindNewCommentAjaxForm();
         setupTooltips();
         setupPopovers();
 
