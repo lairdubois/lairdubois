@@ -6,17 +6,17 @@
 {% set pageTitleBy = 'trouvé par' %}
 {% set noMicrodataLocation = false %}
 {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') or find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}
-    {% set pageItemType = 'CreativeWork' %}
+    {% set pageContentItemType = 'CreativeWork' %}
     {% set noMicrodataLocation = true %}
 {% elseif find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
-    {% set pageItemType = 'Event' %}
+    {% set pageContentItemType = 'Event' %}
     {% set noMicrodataHeadline = true %}
     {% set noMicrodataAge = true %}
     {% set noMicrodataAuthor = true %}
     {% set noMicrodataTag = true %}
     {% set noMicrodataCommentCount = true %}
 {% else %}
-    {% set pageItemType = 'WebSite' %}
+    {% set pageContentItemType = 'WebSite' %}
 {% endif %}
 
 {% set navSection = 'finds' %}

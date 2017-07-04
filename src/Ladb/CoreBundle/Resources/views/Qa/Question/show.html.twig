@@ -1,7 +1,8 @@
 {% extends 'LadbCoreBundle:Common:_show.html.twig' %}
 
 {% set entity = question %}
-{% set pageItemType = 'Question' %}
+{% set pageItemType = 'QAPage' %}
+{% set pageContentItemType = 'Question' %}
 {% set pageTitlePrefix = '[Question]' %}
 {% if question.mainPicture is null %}
     {% set pageImage = asset('banner-questions-600x376.jpg') %}

@@ -1,6 +1,7 @@
 {% spaceless %}
 
 {# set pageItemType (facultative) #}
+{# set pageContentItemType (facultative) #}
 
 {% set pageUrl = pageUrl|default(app.request.uri) %}
 {% set pageType = pageType|default('website') %}
@@ -18,7 +19,7 @@
 
 {% endspaceless %}
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}"{% if pageItemType is defined %} itemscope itemtype="http://schema.org/{{ pageItemType }}"{% endif %}>
     <head prefix="{% block headPrefix %}og: http://ogp.me/ns#{% endblock %}">
         {% block head %}
             <title>{% if is_granted("ROLE_USER") and app.user.freshNotificationCount > 0 %}({{ app.user.freshNotificationCount }}) {% endif %}{% if pageTitlePrefix is defined %}{{ pageTitlePrefix }} {% endif %}{% block title %}{{ pageTitle }}{% if not titleSuffixHidden %} {{ ('default.on'|trans())~' '~('default.ladb'|trans()) }}{% endif %}{% endblock %}</title>
@@ -33,11 +34,11 @@
                     <meta property="og:site_name" content="L'Air du Bois" />
                     <meta property="og:url" content="{{ pageUrl }}" />
                     <meta property="og:type" content="{{ pageType }}" />
-                    <meta property="og:title" content="{{ pageTitle }}" />
-                    <meta property="og:description" content="{{ pageDescription }}" />
+                    <meta property="og:title" content="{{ pageTitle }}"{% if pageItemType is defined %} itemprop="name"{% endif %} />
+                    <meta property="og:description" content="{{ pageDescription }}"{% if pageItemType is defined %} itemprop="description"{% endif %} />
                     {% if pageImage is iterable %}
                         {% for image in pageImage %}
-                            <meta property="og:image" content="{{ image }}" />
+                            <meta property="og:image" content="{{ image }}"{% if pageItemType is defined %} itemprop="image"{% endif %} />
                             {% if pageImageWidth %}
                                 <meta property="og:image:width" content="{{ pageImageWidth }}" />
                             {% endif %}
@@ -46,7 +47,7 @@
                             {% endif %}
                         {% endfor %}
                     {% else %}
-                        <meta property="og:image" content="{{ pageImage }}" />
+                        <meta property="og:image" content="{{ pageImage }}"{% if pageItemType is defined %} itemprop="image"{% endif %} />
                         {% if pageImageWidth %}
                             <meta property="og:image:width" content="{{ pageImageWidth }}" />
                         {% endif %}
@@ -122,10 +123,10 @@
             {% endblock %}
         {% endblock %}
     </head>
-    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageItemType is defined %} itemscope itemtype="http://schema.org/{{ pageItemType }}"{% endif %}>
+    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageContentItemType is defined %} itemscope itemtype="http://schema.org/{{ pageContentItemType }}"{% endif %}>
         {% block bodyMetas %}
-            {% if pageItemType is defined %}
-                <meta itemprop="{{ pageItemType == 'Article' ? 'headline' : 'name' }}" content="{{ pageTitle }}" />
+            {% if pageContentItemType is defined %}
+                <meta itemprop="{{ pageContentItemType == 'Article' ? 'headline' : 'name' }}" content="{{ pageTitle }}" />
                 <meta itemprop="description" content="{{ pageDescription }}" />
                 {% if pageImage is iterable %}
                     <meta itemprop="image" content="{{ pageImage[0] }}" />
