@@ -3,7 +3,11 @@ $(document).ready(function(){
 });
 function bindNewCommentAjaxForm() {
     $(".ladb-comment-widget").each(function (index, value) {
-        $(value).find(".ladb-new").find("form").ajaxForm({
+        var $new = $(value).find(".ladb-new");
+        $new.find("textarea").on("focus", function() {
+            $new.find('.alert').show();
+        });
+        $new.find("form").ajaxForm({
             cache: false,
             dataType: "html",
             context: document.body,

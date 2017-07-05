@@ -362,6 +362,7 @@ qa:
     nav: Questions
     other_from: Autres questions de
     similar: Voir aussi
+    comment_alert: <p>Cette zone de commentaires vous permet d'échanger autour de la question.</p><p>N'apportez pas votre réponse ici.<br>Pour répondre à  la question, cliquez sur <strong>Ajouter ma réponse</strong> en bas de page.</p>
     form:
       alert:
         lock_success: La question <strong>%title%</strong> a été vérrouillée.

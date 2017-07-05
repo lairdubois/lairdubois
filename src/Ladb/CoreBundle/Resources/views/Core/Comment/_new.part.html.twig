@@ -4,12 +4,21 @@
 {# set entityType #}
 {# set entityId #}
 {# set mentionStrategy (facultative) #}
+{# set alert (facultative) #}
 
 {% set id = 'ladb_comment_'~entityType~'_'~entityId~'_new' %}
 {% set formSection = id %}
 {% set condenced = condenced is defined ? condenced : true %}
 
 <div id="{{ id }}" class="ladb-new">
+    {% if alert is defined %}
+    <div class="alert alert-info" style="display: none;">
+        <div class="media">
+            <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+            <div class="media-body">{{ alert|raw }}</div>
+        </div>
+    </div>
+    {% endif %}
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
     {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
     <div class="ladb-box">

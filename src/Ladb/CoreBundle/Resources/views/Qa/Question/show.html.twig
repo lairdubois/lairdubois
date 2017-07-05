@@ -104,7 +104,7 @@
                     {% if question.updatedAt > question.createdAt %}
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
                     {% endif %}
-                    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapse':true } %}
+                    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapse':true, 'alert':('qa.question.comment_alert'|trans) } %}
                 </div>
                 <div class="col-sm-1 col-xs-12 ladb-hidden-mobile">
                     <div class="ladb-full-height">?</div>
