@@ -66,7 +66,7 @@ EOT
 			array(
 				'className' => \Ladb\CoreBundle\Entity\Find\Find::CLASS_NAME,
 				'name'      => 'find',
-				'section'   => 'find_finds',
+				'section'   => 'find-finds',
 				'slugged'   => true,
 			),
 			array(
