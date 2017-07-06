@@ -276,6 +276,27 @@ EOT
 					}
 				}
 			}
+			if ($entity instanceof \Ladb\CoreBundle\Entity\Qa\Question) {
+				foreach ($entity->getAnswers() as $answer) {
+					foreach ($answer->getBodyBlocks() as $block) {
+						if ($block instanceof \Ladb\CoreBundle\Entity\Core\Block\Video) {
+							$video = $videoHostingUtils->getVideoSitemapData($block->getKind(), $block->getEmbedIdentifier());
+							if (!is_null($video) && !$this->_isVideoAsExported($block->getKind(), $block->getEmbedIdentifier())) {
+								$videos[] = $video;
+								$this->_flagVideoAsExported($block->getKind(), $block->getEmbedIdentifier());
+							}
+						}
+						if ($block instanceof \Ladb\CoreBundle\Entity\Core\Block\Gallery) {
+							foreach ($block->getPictures() as $picture) {
+								$image = $picturedUtils->getPictureSitemapData($picture);
+								if (!is_null($image)) {
+									$images[] = $image;
+								}
+							}
+						}
+					}
+				}
+			}
 
 			$urls[] = array(
 				'loc'        => $router->generate('core_'.$entityName.'_show', $slugged ? array('id' => $entity->getSluggedId()) : array( 'username' => $entity->getUsernameCanonical() ), UrlGeneratorInterface::ABSOLUTE_URL),

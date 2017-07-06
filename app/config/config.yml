@@ -17,8 +17,8 @@ framework:
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
              sitemaps:
-                version: 1
-                version_format: '%%s?v=%%s'
+                version:    ""
+                base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
     templating:
         engines:    ['twig']
     default_locale:  "%locale%"
