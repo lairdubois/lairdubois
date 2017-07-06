@@ -260,6 +260,9 @@ EOT
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME) {
 			return $recipientUser->getIncomingMessageEmailNotificationEnabled();
 		}
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME) {
+			return $recipientUser->getNewWatchActivityEmailNotificationEnabled();
+		}
 		return true;
 	}
 
