@@ -73,8 +73,8 @@ EOT
 			->innerJoin('q.user', 'u')
 			->where('q.isDraft = false')
 			->andWhere('q.createdAt > :date')
-			->orderBy('q.likeCount', 'DESC')
-			->addOrderBy('q.answerCount', 'ASC')
+			->orderBy('q.answerCount', 'ASC')
+			->addOrderBy('q.likeCount', 'DESC')
 			->setParameter('date', $date)
 		;
 
