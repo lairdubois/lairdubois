@@ -331,12 +331,10 @@ EOT
 				$userCount = 0;
 			}
 
-			$userCount = 1;
-
 			$progress = new ProgressBar($output, $userCount);
 			$progress->start();
 
-			$batchSize = 1;
+			$batchSize = 500;
 			$batchCount = ceil($userCount / $batchSize);
 
 			for ($batchIndex = 0; $batchIndex < $batchCount; $batchIndex++) {
