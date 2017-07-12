@@ -228,7 +228,7 @@ class ArticleController extends Controller {
 	/**
 	 * @Route("/pas-a-pas/article/{id}/update", requirements={"id" = "\d+"}, name="core_howto_article_update")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Howto/Howto:article-edit.html.twig")
+	 * @Template("LadbCoreBundle:Howto/Article:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
