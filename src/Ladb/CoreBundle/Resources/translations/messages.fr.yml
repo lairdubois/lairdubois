@@ -362,7 +362,7 @@ qa:
     nav: Questions
     other_from: Autres questions de
     similar: Voir aussi
-    comment_alert: <p>Cette zone de commentaires vous permet d'échanger autour de la question.</p><p>N'apportez pas votre réponse ici.<br>Pour répondre à  la question, cliquez sur <strong>Ajouter ma réponse</strong> en bas de page.</p>
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la question (demande de précisions, corrections, etc ...).</p><p>N'apportez pas votre réponse ici.<br>Pour répondre à  la question, cliquez sur <strong>Ajouter ma réponse</strong> en bas de page.</p>
     form:
       alert:
         lock_success: La question <strong>%title%</strong> a été vérrouillée.
@@ -386,6 +386,10 @@ qa:
     best: Meilleure réponse
     set_as_best: Choisir comme meilleure réponse
     best_tooltip: L'auteur de la question a choisi cette réponse comme étant la meilleure
+    sort: Tri des réponses
+    sort_score: Mieux notées
+    sort_recent: Plus récentes
+    sort_older: Plus anciennes
     form:
       alert:
         delete_success: La réponse a été supprimée.

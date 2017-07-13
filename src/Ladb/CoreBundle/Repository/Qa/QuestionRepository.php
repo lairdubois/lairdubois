@@ -138,6 +138,25 @@ class QuestionRepository extends AbstractEntityRepository {
 
 	/////
 
+	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		if ('popular-views' == $filter) {
+			$queryBuilder
+				->addOrderBy('q.viewCount', 'DESC')
+			;
+		} else if ('popular-likes' == $filter) {
+			$queryBuilder
+				->addOrderBy('q.likeCount', 'DESC')
+			;
+		} else if ('popular-comments' == $filter) {
+			$queryBuilder
+				->addOrderBy('q.commentCount', 'DESC')
+			;
+		}
+		$queryBuilder
+			->addOrderBy('q.changedAt', 'DESC')
+		;
+	}
+
 	public function findPagined($offset, $limit, $filter = 'recent', $includeDrafts = false) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -161,25 +180,6 @@ class QuestionRepository extends AbstractEntityRepository {
 		$this->_applyCommonFilter($queryBuilder, $filter);
 
 		return new Paginator($queryBuilder->getQuery());
-	}
-
-	private function _applyCommonFilter(&$queryBuilder, $filter) {
-		if ('popular-views' == $filter) {
-			$queryBuilder
-				->addOrderBy('q.viewCount', 'DESC')
-			;
-		} else if ('popular-likes' == $filter) {
-			$queryBuilder
-				->addOrderBy('q.likeCount', 'DESC')
-			;
-		} else if ('popular-comments' == $filter) {
-			$queryBuilder
-				->addOrderBy('q.commentCount', 'DESC')
-			;
-		}
-		$queryBuilder
-			->addOrderBy('q.changedAt', 'DESC')
-		;
 	}
 
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {

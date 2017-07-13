@@ -116,11 +116,7 @@
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% include 'LadbCoreBundle:Qa/Question:_answers-header.part.html.twig' %}
-    <div class="ladb-qa-question-answers">
-        {% for answer in question.answers %}
-            {% include 'LadbCoreBundle:Qa/Answer:_row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
-        {% endfor %}
-    </div>
+    {% include 'LadbCoreBundle:Qa/Answer:_list.part.html.twig' %}
     {% include 'LadbCoreBundle:Qa/Question:_answers-footer.part.html.twig' %}
     {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}
 {% endblock %}

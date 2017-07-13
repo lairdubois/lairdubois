@@ -29,7 +29,7 @@ class AnswerController extends Controller {
 
 	/**
 	 * @Route("/{id}/answer/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
 	 */
 	public function newAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -53,7 +53,7 @@ class AnswerController extends Controller {
 	/**
 	 * @Route("/{id}/answer/create", requirements={"id" = "\d+"}, name="core_qa_answer_create")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Qa/Answer:new.html.twig")
+	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -117,7 +117,7 @@ class AnswerController extends Controller {
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
 
-			return $this->render('LadbCoreBundle:Qa/Answer:create.html.twig', array(
+			return $this->render('LadbCoreBundle:Qa/Answer:create-xhr.html.twig', array(
 				'question'       => $question,
 				'answer'         => $answer,
 				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),
@@ -133,7 +133,7 @@ class AnswerController extends Controller {
 
 	/**
 	 * @Route("/answer/{id}/edit", requirements={"id" = "\d+"}, name="core_qa_answer_edit")
-	 * @Template("LadbCoreBundle:Qa/Answer:edit.html.twig")
+	 * @Template("LadbCoreBundle:Qa/Answer:edit-xhr.html.twig")
 	 */
 	public function editAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -158,7 +158,7 @@ class AnswerController extends Controller {
 	/**
 	 * @Route("/answer/{id}/update", requirements={"id" = "\d+"}, name="core_qa_answer_update")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Qa/Answer:edit.html.twig")
+	 * @Template("LadbCoreBundle:Qa/Answer:edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -254,7 +254,6 @@ class AnswerController extends Controller {
 
 	/**
 	 * @Route("/answer/{id}/delete", requirements={"id" = "\d+"}, name="core_qa_answer_delete")
-	 * @Template()
 	 */
 	public function deleteAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -282,6 +281,37 @@ class AnswerController extends Controller {
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.answer.form.alert.delete_success'));
 
 		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
+	}
+
+	/**
+	 * @Route("/{id}/answers", requirements={"id" = "\d+"}, name="core_qa_answer_list")
+	 * @Route("/{id}/answers/{sorter}", requirements={"id" = "\d+", "sorter" = "[a-z-]+"}, name="core_qa_answer_list_sorter")
+	 * @Template("LadbCoreBundle:Qa/Answer:list-xhr.html.twig")
+	 */
+	public function listAction(Request $request, $id, $sorter = 'score') {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
+		$answerRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Answer::CLASS_NAME);
+
+		$id = intval($id);
+
+		$question = $questionRepository->findOneById($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		$answers = $answerRepository->findByQuestion($question, $sorter);
+
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$votableUtils = $this->get(VotableUtils::NAME);
+
+		return array(
+			'sorter'          => $sorter,
+			'question'        => $question,
+			'answers'         => $answers,
+			'voteContexts'    => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
+			'commentContexts' => $commentableUtils->getCommentContexts($question->getAnswers(), false),
+		);
 	}
 
 }

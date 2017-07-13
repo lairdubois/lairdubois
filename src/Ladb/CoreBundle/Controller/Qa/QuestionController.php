@@ -476,6 +476,7 @@ class QuestionController extends Controller {
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
+		$answerRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Answer::CLASS_NAME);
 		$witnessManager = $this->get(WitnessManager::NAME);
 
 		$id = intval($id);
@@ -495,6 +496,9 @@ class QuestionController extends Controller {
 				throw $this->createNotFoundException('Not allowed (core_qa_question_show)');
 			}
 		}
+
+		$sorter = 'score';
+		$answers = $answerRepository->findByQuestion($question, $sorter);
 
 		$user = $this->getUser();
 		$userAnswer = null;
@@ -531,7 +535,9 @@ class QuestionController extends Controller {
 			'followerContext'  => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
 			'voteContexts'     => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
 			'commentContexts'  => $commentableUtils->getCommentContexts($question->getAnswers(), false),
+			'answers'          => $answers,
 			'userAnswer'       => $userAnswer,
+			'sorter'           => $sorter,
 		);
 	}
 

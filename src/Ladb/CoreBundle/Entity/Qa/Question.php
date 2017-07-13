@@ -44,7 +44,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, P
 	use TitledTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, VotableParentTrait;
 
-	const CLASS_NAME = 'LadbCoreBundle:QA\Question';
+	const CLASS_NAME = 'LadbCoreBundle:Qa\Question';
 	const TYPE = 113;
 
 	/**

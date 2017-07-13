@@ -157,6 +157,7 @@
                     $('.ladb-qa-question-answers-footer', that.$element).replaceWith($footer);
                     that.removeAnswerForm();
                     that.bindAnswerRow($row);
+                    that.bindSorters();
                 } else {
                     that.bindNewAnswerBox(data);
                 }
@@ -188,13 +189,56 @@
 
     };
 
-    LadbQuestionPage.prototype.bind = function() {
+    LadbQuestionPage.prototype.bindSorters = function() {
+        var that = this;
+
+        // Bind sorters
+        $('.ladb-sorter-item', this.$element).on('click', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr("href");
+
+            // Fake loading
+            $('.ladb-qa-question-answers').addClass('ladb-translucent');
+            $('.ladb-sorter-btn', that.$element).button('loading');
+
+            // Load answers list
+            $.ajax(url, {
+                cache: false,
+                dataType: "html",
+                context: document.body,
+                success: function(data, textStatus, jqXHR) {
+                    var $answers = $('.ladb-qa-question-answers', data);
+                    var $header = $('.ladb-qa-question-answers-header', data);
+                    $('.ladb-qa-question-answers', that.$element).replaceWith($answers);
+                    $('.ladb-qa-question-answers-header', that.$element).replaceWith($header);
+                    that.bindSorters();
+                    that.bindRows();
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+
+        });
+
+    };
+
+    LadbQuestionPage.prototype.bindRows = function() {
         var that = this;
 
         // Bind rows
         $('.ladb-answer-row', this.$element).each(function(index, value) {
             that.bindAnswerRow($(value));
         });
+
+    };
+
+    LadbQuestionPage.prototype.bind = function() {
+        var that = this;
+
+        this.bindSorters();
+        this.bindRows();
 
         // Bind buttons
         this.$btnNewAnswer.on('click', function() {

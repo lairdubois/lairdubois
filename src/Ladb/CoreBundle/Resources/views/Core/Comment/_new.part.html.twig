@@ -24,7 +24,7 @@
     <div class="ladb-box">
         {% embed 'LadbCoreBundle:Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_create', { 'entityType':entityType, 'entityId':entityId }), 'galleryClasses':condenced ? 'ladb-pseudo-hidden' : '' } %}
             {% block buttons %}
-                {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'id':'new_comment_'~entityType~'_'~entityId~'_btn', 'text':('default.send'|trans()), 'classes':condenced ? 'ladb-pseudo-hidden btn-default' : 'btn-default' } %}
+                {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'id':'new_comment_'~entityType~'_'~entityId~'_btn', 'text':('default.publish'|trans()), 'classes':condenced ? 'ladb-pseudo-hidden btn-default' : 'btn-default' } %}
             {% endblock %}
         {% endembed %}
     </div>

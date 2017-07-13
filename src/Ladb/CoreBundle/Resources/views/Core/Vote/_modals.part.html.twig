@@ -1,6 +1,6 @@
 {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'disallowed_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
     {% block bodyInner %}
-        <p>Vous n'êtes pas autorisé de valider ou rejetter vos propres contributions.</p>
+        <p>Vous n'êtes pas autorisé de valider ou rejeter vos propres contributions.</p>
     {% endblock %}
     {% block footerInner %}
         <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
@@ -8,7 +8,7 @@
 {% endembed %}
 {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'disabled_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
     {% block bodyInner %}
-        <p>Vous devez être connecté pour pouvoir valider ou rejetter.</p>
+        <p>Vous devez être connecté pour pouvoir valider ou rejeter.</p>
     {% endblock %}
     {% block footerInner %}
         <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>

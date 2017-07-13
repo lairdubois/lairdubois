@@ -1,7 +1,23 @@
 {# set question #}
 
 <div class="ladb-qa-question-answers-header">
-    {% if question.answers|length > 0 %}
-        <h3 style="margin-bottom: 20px;">{{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</h3>
+    {% if question.answerCount > 1 %}
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle ladb-sorter-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-loading-text="{{ 'default.loading'|trans() }}">
+                    <i class="ladb-icon-sort"></i> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="dropdown-header">{{ 'qa.answer.sort'|trans() }}</li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'score' }) }}" class="ladb-sorter-item">{% if sorter is defined and sorter == 'score' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_score'|trans() }}</a></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'recent' }) }}" class="ladb-sorter-item">{% if sorter is defined and sorter == 'recent' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_recent'|trans() }}</a></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'older' }) }}" class="ladb-sorter-item">{% if sorter is defined and sorter == 'older' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_older'|trans() }}</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+    {% if question.answerCount > 0 %}
+        <h2 class="ladb-margin-bottom">{{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</h2>
     {% endif %}
 </div>
