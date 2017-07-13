@@ -1,7 +1,10 @@
 {% extends 'LadbCoreBundle:Common:_show.html.twig' %}
 
 {% set entity = post %}
+
 {% set pageContentItemType = 'BlogPosting' %}
+{% set pageSectionUrl = url('core_blog_post_list') %}
+{% set pageSectionName = 'blog.post.list'|trans %}
 
 {% set navSection = 'blog' %}
 {% set searchPath = path('core_blog_post_list') %}

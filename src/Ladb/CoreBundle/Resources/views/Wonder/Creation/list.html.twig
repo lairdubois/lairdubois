@@ -9,6 +9,8 @@
     {% set pageDescription = 'wonder.creation.description'|trans() %}
     {% set pageImage = asset('banner-creations-600x376.jpg') %}
 {% endif %}
+{% set pageSectionUrl = url('core_creation_list') %}
+{% set pageSectionName = 'wonder.creation.list'|trans %}
 
 {% set navSection = 'creations' %}
 {% set masonry = true %}
@@ -23,6 +25,7 @@
            "@type": "WebSite",
            "name": "L'Air du Bois",
            "url": "https://www.lairdubois.fr/",
+           "logo": "https://www.lairdubois.fr/favicon-512x512.png"
            "potentialAction": {
              "@type": "SearchAction",
              "target": "http://www.lairdubois.fr/creations?q={query}",

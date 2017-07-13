@@ -15,6 +15,8 @@
 {% set pageVideo = pageVideo|default('') %}
 {% set pageVideoWidth = pageVideoWidth|default('') %}
 {% set pageVideoHeight = pageVideoHeight|default('') %}
+{% set pageSectionUrl = pageSectionUrl|default('') %}
+{% set pageSectionName = pageSectionName|default('') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
 
 {% endspaceless %}
@@ -109,6 +111,26 @@
                 {% endstylesheets %}
             {% endblock %}
             {% block headJavascripts %}
+                {% if pageSectionUrl and pageSectionName %}
+                    <script type="application/ld+json">
+                    {
+                        "@context": "http://schema.org",
+                        "@type": "BreadcrumbList",
+                        "itemListElement":
+                        [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "item":
+                                {
+                                    "@id": "{{ pageSectionUrl }}",
+                                    "name": "{{ pageSectionName }}"
+                                }
+                            }
+                        ]
+                    }
+                    </script>
+                {% endif %}
                 {% javascripts filter='?closure'
                     '../components/jquery/jquery.js' %}
                     <script type="text/javascript" src="{{ asset_url }}"></script>

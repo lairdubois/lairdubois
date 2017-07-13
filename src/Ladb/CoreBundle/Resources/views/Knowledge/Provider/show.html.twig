@@ -3,7 +3,10 @@
 {% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
 
 {% set entity = provider %}
+
 {% set pageContentItemType = 'LocalBusiness' %}
+{% set pageSectionUrl = url('core_provider_list') %}
+{% set pageSectionName = 'knowledge.provider.list'|trans %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set navSection = 'providers' %}

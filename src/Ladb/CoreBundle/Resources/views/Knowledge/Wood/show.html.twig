@@ -1,7 +1,10 @@
 {% extends 'LadbCoreBundle:Knowledge:_show.html.twig' %}
 
 {% set entity = wood %}
+
 {% set pageContentItemType = 'TechArticle' %}
+{% set pageSectionUrl = url('core_wood_list') %}
+{% set pageSectionName = 'knowledge.wood.list'|trans %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set navSection = 'woods' %}

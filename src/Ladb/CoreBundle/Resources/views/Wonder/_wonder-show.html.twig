@@ -7,6 +7,9 @@
 
 {% set entity = wonder %}
 
+{% set pageSectionUrl = url('core_'~wonderType~'_list') %}
+{% set pageSectionName = ('wonder.'~wonderType~'.list')|trans %}
+
 {% set navSection = wonderType~'s' %}
 {% set searchPath = path('core_'~wonderType~'_list') %}
 {% set transType = wonderType %}

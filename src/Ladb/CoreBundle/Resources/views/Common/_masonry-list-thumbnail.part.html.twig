@@ -28,7 +28,7 @@
                             {% endif %}
                         {% endblock %}
                     </div>
-                    <div class="ladb-overlay-caption">{% if entity.isLocked %}<span><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{{ entity.title }}</h2>{% endblock %}</div>
+                    <div class="ladb-overlay-caption">{% if entity.isLocked is defined and entity.isLocked %}<span><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{{ entity.title }}</h2>{% endblock %}</div>
                 {% endblock %}
             </div>
             {% block entityMetasOuter %}

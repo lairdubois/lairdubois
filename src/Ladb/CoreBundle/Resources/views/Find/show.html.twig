@@ -3,6 +3,7 @@
 {% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
 
 {% set entity = find %}
+
 {% set pageTitleBy = 'trouvé par' %}
 {% set noMicrodataLocation = false %}
 {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') or find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}
@@ -18,6 +19,8 @@
 {% else %}
     {% set pageContentItemType = 'WebSite' %}
 {% endif %}
+{% set pageSectionUrl = url('core_find_list') %}
+{% set pageSectionName = 'find.find.list'|trans %}
 
 {% set navSection = 'finds' %}
 {% set searchPath = path('core_find_list') %}

@@ -11,7 +11,7 @@
     </div>
     <small>
         {% if not noAuthor %}
-            {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':question } %}&nbsp;&nbsp;|&nbsp;&nbsp;
+            {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':question, 'noMicrodata':true } %}&nbsp;&nbsp;|&nbsp;&nbsp;
         {% endif %}
         {% include 'LadbCoreBundle:Qa/Question:_answers-counter.part.html.twig' %}
     </small>
