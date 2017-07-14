@@ -24,7 +24,7 @@
     {{ form_widget(formCreations) }}
     <ul id="creation_thumbnails" class="ladb-form-thumbnails">
         {% for creation in creations %}
-            {% include 'LadbCoreBundle:Wonder:_wonder-form-thumbnail.part.html.twig' with { 'wonder':creation } %}
+            {% include 'LadbCoreBundle:Wonder/Creation:_form-thumbnail.part.html.twig' with { 'wonder':creation } %}
         {% endfor %}
     </ul>
     <div id="linkto_creation_buttons">

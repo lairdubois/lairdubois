@@ -26,7 +26,7 @@
     {{ form_widget(formPlans) }}
     <ul id="plan_thumbnails" class="ladb-form-thumbnails">
         {% for plan in plans %}
-            {% include 'LadbCoreBundle:Wonder:_wonder-form-thumbnail.part.html.twig' with { 'wonder':plan } %}
+            {% include 'LadbCoreBundle:Wonder/Plan:_form-thumbnail.part.html.twig' with { 'wonder':plan } %}
         {% endfor %}
     </ul>
     <div id="linkto_plan_buttons">
