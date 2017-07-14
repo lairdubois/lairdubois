@@ -48,8 +48,8 @@
             {% if commentContext.form is not null %}
                 {% include 'LadbCoreBundle:Core/Comment:_new.part.html.twig' with { 'entityType':commentContext.entityType, 'entityId':commentContext.entityId, 'form':commentContext.form, 'mentionStrategy':commentContext.mentionStrategy } %}
             {% elseif not notGuestTip %}
-                <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_new" class="ladb-new">
-                    <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter un commentaire.
+                <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_new" class="ladb-new text-center">
+                    <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter un commentaire.
                 </div>
             {% endif %}
         {% endif %}

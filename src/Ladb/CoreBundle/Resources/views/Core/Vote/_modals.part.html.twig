@@ -12,6 +12,6 @@
     {% endblock %}
     {% block footerInner %}
         <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-        <a href="{{ path('core_smartlogin') }}" class="btn btn-primary">{{ 'security.login.submit'|trans() }}</a>
+        <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-primary">{{ 'security.login.submit'|trans() }}</a>
     {% endblock %}
 {% endembed %}

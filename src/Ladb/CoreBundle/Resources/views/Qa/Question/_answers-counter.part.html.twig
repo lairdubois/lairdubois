@@ -1,3 +1,4 @@
 {# set question #}
+{# set classes (facultative) #}
 
-<span class="ladb-color-{% if question.positiveAnswerCount > 0 %}positive{% elseif question.undeterminedAnswerCount > 0 %}undetermined{% elseif question.negativeAnswerCount > 0 %}negative{% else %}null{% endif %} ladb-answers-counter"><i class="ladb-icon-answer"></i> {{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</span>
+<span class="ladb-color-{% if question.positiveAnswerCount > 0 %}positive{% elseif question.undeterminedAnswerCount > 0 %}undetermined{% elseif question.negativeAnswerCount > 0 %}negative{% else %}null{% endif %} ladb-answers-counter{% if classes is defined %} {{ classes }}{% endif %}"><i class="ladb-icon-answer"></i> {{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</span>

@@ -10,9 +10,9 @@
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li class="dropdown-header">{{ 'qa.answer.sort'|trans() }}</li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'score' }) }}" class="ladb-sorter-item">{% if sorter is defined and sorter == 'score' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_score'|trans() }}</a></li>
-                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'recent' }) }}" class="ladb-sorter-item">{% if sorter is defined and sorter == 'recent' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_recent'|trans() }}</a></li>
-                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'older' }) }}" class="ladb-sorter-item">{% if sorter is defined and sorter == 'older' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_older'|trans() }}</a></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'score' }) }}" rel="nofollow" class="ladb-sorter-item">{% if sorter is defined and sorter == 'score' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_score'|trans() }}</a></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'recent' }) }}" rel="nofollow" class="ladb-sorter-item">{% if sorter is defined and sorter == 'recent' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_recent'|trans() }}</a></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'older' }) }}" rel="nofollow" class="ladb-sorter-item">{% if sorter is defined and sorter == 'older' %}<i class="ladb-icon-arrow-right"></i> {% endif %}{{ 'qa.answer.sort_older'|trans() }}</a></li>
                 </ul>
             </div>
         </div>

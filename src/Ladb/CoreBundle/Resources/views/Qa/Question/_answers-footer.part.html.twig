@@ -9,7 +9,7 @@
         {% elseif is_granted("ROLE_USER") %}
             <button id="ladb_answer_btn" class="btn btn-primary btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}</button>
         {% else %}
-            <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre réponse.
+            <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre réponse.
         {% endif %}
     {% endif %}
 </div>

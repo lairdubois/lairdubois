@@ -41,7 +41,7 @@
                 </li>
                 <li><a href="#ladb_offcanvas_logged_user_nav" data-uk-offcanvas><i class="ladb-icon-caret-left"></i> {% if app.user.unreadMessageCount > 0 or app.user.freshNotificationCount > 0 %}<span class="badge badge-notification badge-notification-important ladb-visible-mobile">{{ app.user.unreadMessageCount + app.user.freshNotificationCount }}</span>{% endif %}<span class="ladb-hidden-mobile"> {{ app.user.displayname }}</span> <img src="{{ (app.user.avatar ? app.user.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32" class="img-rounded"></a></li>
             {% else %}
-                <li><a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock ladb-icon-lg"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a></li>
+                <li><a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock ladb-icon-lg"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a></li>
             {% endif %}
         {% endblock %}
     {% endembed %}
@@ -117,10 +117,10 @@
             {% if not is_granted("ROLE_USER") %}
                 {% if not topbarTranslucent and not hideAboutAlert %}
                     <div class="alert alert-info">
-                        <p><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les passionnés et curieux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
+                        <p><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
                         <p>
-                            <a href="{{ path('fos_user_registration_register') }}" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
-                            <a href="{{ path('core_smartlogin') }}" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>
+                            <a href="{{ path('fos_user_registration_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
+                            <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>
                         </p>
                     </div>
                 {% endif %}
@@ -171,11 +171,12 @@
 {% block bodyFooter %}
     <footer>
         {% block bodyFooterContainer %}
-            <div class="ladb-footer">
+            <div class="ladb-footer" style="background: #fff; border-top: 1px solid #ddd;">
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12">
                             {% block bodyFooterContainerContent %}
+                                <p style="margin: 20px 0; color: #888; text-align: center;"><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
                                 <p class="ladb-footer-copyright">Découvrez, fabriquez, partagez.<br><a href="http://www.lairdubois.fr">www.lairdubois.fr</a></p>
                             {% endblock %}
                         </div>

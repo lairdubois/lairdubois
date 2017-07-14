@@ -10,8 +10,8 @@
     {{ parent() }}
     <li class="ladb-counter">
         {% if question.bestAnswer %}
-            <span class="ladb-best ladb-color-best-answer"><i class="ladb-icon-favorite"></i></span>
+            <span class="ladb-best ladb-color-best-answer ladb-horizontal-separator-right"><i class="ladb-icon-favorite"></i></span>
         {% endif %}
-        {% include 'LadbCoreBundle:Qa/Question:_answers-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Qa/Question:_answers-counter.part.html.twig' with { 'classes':'ladb-horizontal-separator-right' } %}
     </li>
 {% endblock %}
