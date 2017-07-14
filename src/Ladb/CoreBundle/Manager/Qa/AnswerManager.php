@@ -16,8 +16,6 @@ class AnswerManager extends AbstractManager {
 
 	public function delete(Answer $answer, $flush = true) {
 
-		// Question cleanup
-
 		$question = $answer->getQuestion();
 
 		// Drecrement question answer count
@@ -29,10 +27,6 @@ class AnswerManager extends AbstractManager {
 			$answer->getUser()->incrementAnswerCount(-1);
 
 		}
-
-		// Compute answer counters
-		$questionManager = $this->container->get(QuestionManager::NAME);
-		$questionManager->computeAnswerCounters($question);
 
 		// Clear best answer
 		if ($answer->getIsBestAnswer()) {
@@ -47,11 +41,15 @@ class AnswerManager extends AbstractManager {
 
 		// Delete votes
 		$votableUtils = $this->get(VotableUtils::NAME);
-		$votableUtils->deleteVotes($answer, $answer->getQuestion(), false);
+		$votableUtils->deleteVotes($answer, $question, false);
 
 		// Delete activities
 		$activityUtils = $this->get(ActivityUtils::NAME);
 		$activityUtils->deleteActivitiesByAnswer($answer, false);
+
+		// Compute answer counters
+		$questionManager = $this->container->get(QuestionManager::NAME);
+		$questionManager->computeAnswerCounters($question);
 
 		parent::deleteEntity($answer, $flush);
 	}

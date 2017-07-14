@@ -2,7 +2,7 @@
 
 {% set entity = howto %}
 
-{% set pageContentItemType = 'Course' %}
+{% set pageContentItemType = 'Article' %}
 {% set pageTitlePrefix = '[Pas à pas]' %}
 {% set pageSectionUrl = url('core_howto_list') %}
 {% set pageSectionName = 'howto.howto.list'|trans %}
@@ -240,7 +240,7 @@
                             {{ block('sharebuttonsInlineHorizontal') }}
                             <hr>
                             <h4>Partage par lien direct vers l'article</h4>
-                            <input type="text" class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();" value="{{ sbUrl }}" />
+                            <input type="text" class="form-control" style="font-family: courier;" onclick="$(this).focus(); $(this).select();" value="{{ sbUrl }}" />
                             {% if article.bodyBlockPictureCount > 0 %}
                                 <hr>
                                 <h4>{{ 'share.sticker.heading'|trans() }}</h4>
