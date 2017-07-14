@@ -176,7 +176,14 @@
                     <div class="row">
                         <div class="col-xs-12">
                             {% block bodyFooterContainerContent %}
-                                <p style="margin: 20px 0; color: #888; text-align: center;"><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
+                                <p class="ladb-footer-slogan"><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>.</p>
+                                <p class="text-center">
+                                    <small>
+                                        <a href="{{ path('core_faq_question_show', { 'id':'qu-est-ce-que-l-air-du-bois' }) }}" target="_blank" class="ladb-horizontal-separator-right">Qu'est-ce que L'Air du Bois ?</a>
+                                        <a href="{{ path('core_faq_question_show', { 'id':'qui-est-derriere-l-air-du-bois' }) }}" target="_blank" class="ladb-horizontal-separator-right">Qui est derrière L'Air du Bois ?</a>
+                                        <a href="{{ path('core_faq_question_show', { 'id':'comment-est-finance-l-air-du-bois' }) }}" target="_blank" >Comment est financé L'Air du Bois ?</a>
+                                    </small>
+                                </p>
                                 <p class="ladb-footer-copyright">Découvrez, fabriquez, partagez.<br><a href="http://www.lairdubois.fr">www.lairdubois.fr</a></p>
                             {% endblock %}
                         </div>
