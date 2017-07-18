@@ -107,6 +107,11 @@
                     {% if question.updatedAt > question.createdAt %}
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
                     {% endif %}
+                    {% if is_granted("ROLE_USER") and question.user == app.user and question.answerCount >= 2 %}
+                        <div class="ladb-margin-top">
+                            <button href="#" class="btn btn-default ladb-btn-thanks" data-thanks-msg="Merci pour vos réponses !"><i class="ladb-icon-comment"></i> Remercier tout le monde</button>
+                        </div>
+                    {% endif %}
                     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapse':true, 'alert':('qa.question.comment_alert'|trans) } %}
                 </div>
                 <div class="col-sm-1 col-xs-12 ladb-hidden-mobile">

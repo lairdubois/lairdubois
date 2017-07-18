@@ -60,6 +60,23 @@
             });
 
         });
+        $('.ladb-btn-thanks', $row).on('click', function(e) {
+            e.preventDefault();
+            $(this).blur();
+
+            var thanksMsg = $(this).data('thanks-msg');
+
+            // Open collapse comment area
+            var collapseSelector = $('[data-toggle=collapse]', $row).data('target');
+            var $collapse = $(collapseSelector);
+            $collapse.addClass('in');
+
+            var $textarea = $('textarea', $collapse);
+            $textarea.focus();
+            $textarea.val(thanksMsg);
+            $textarea.closest('.ladb-new').ladbScrollTo();
+
+        });
 
         bindNewCommentAjaxForm();
         setupTooltips();
@@ -256,6 +273,23 @@
                     console.log('error');
                 }
             });
+
+        });
+        $('.ladb-qa-question .ladb-btn-thanks', this.$element).on('click', function(e) {
+            e.preventDefault();
+            $(this).blur();
+
+            var thanksMsg = $(this).data('thanks-msg');
+
+            // Open collapse comment area
+            var collapseSelector = $('[data-toggle=collapse]', $('.ladb-qa-question')).data('target');
+            var $collapse = $(collapseSelector);
+            $collapse.addClass('in');
+
+            var $textarea = $('textarea', $collapse);
+            $textarea.focus();
+            $textarea.val(thanksMsg);
+            $textarea.closest('.ladb-new').ladbScrollTo();
 
         });
 
