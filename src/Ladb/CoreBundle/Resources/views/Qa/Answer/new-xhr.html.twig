@@ -12,8 +12,12 @@
                 <div class="media-body">
                     <h4>A lire avant de publier</h4>
                     <p>Merci de contribuer à une réponse !</p>
-                    <p>S'il vous plait, soyez certain que votre réponse apporte une <strong>nouveauté</strong> par rapport aux réponses précédentes et que vous répondiez bien à la question "<strong>{{ question.title }}</strong>".</p>
-                    <p>Si vous souhaitez répondre ou compléter une des réponses ci-dessus, utilisez les <strong>commentaires</strong> qui lui sont associés.</p>
+                    <ul>
+                        <li>S'il vous plait, soyez certain que votre réponse apporte une <strong>réponse directe</strong> à la question "<strong>{{ question.title }}</strong>".</li>
+                        <li>Vérifiez que votre réponse apporte une <strong>nouveauté</strong> par rapport aux réponses précédentes.</li>
+                        <li>Si vous souhaitez répondre ou compléter une des réponses ci-dessus, utilisez les <strong>commentaires</strong> qui lui sont associés.</li>
+                        <li>Si vous souhaitez <strong>remercier</strong> globalement les auteurs des réponses ci-dessus, utilisez les <strong>commentaires</strong> associés à la question.</li>
+                    </ul>
                     <p>Pour en savoir plus sur le fonctionnement de cette rubrique, lisez ce <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}" class="alert-link">sujet</a>.</p>
                 </div>
             </div>
