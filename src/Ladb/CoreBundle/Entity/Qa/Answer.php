@@ -21,6 +21,7 @@ use Ladb\CoreBundle\Model\CommentableInterface;
  * @ORM\Table("tbl_qa_answer")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\AnswerRepository")
  * @LadbAssert\BodyBlocks()
+ * @LadbAssert\ValidAnswer()
  */
 class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
 

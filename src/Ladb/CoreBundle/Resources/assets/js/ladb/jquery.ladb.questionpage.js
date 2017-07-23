@@ -72,9 +72,11 @@
             $collapse.addClass('in');
 
             var $textarea = $('textarea', $collapse);
-            $textarea.focus();
-            $textarea.val(thanksMsg);
-            $textarea.closest('.ladb-new').ladbScrollTo();
+            $textarea
+                .focus()
+                .val(thanksMsg)
+                .select()
+                .closest('.ladb-new').ladbScrollTo();
 
         });
 
@@ -275,7 +277,7 @@
             });
 
         });
-        $('.ladb-qa-question .ladb-btn-thanks', this.$element).on('click', function(e) {
+        $('.ladb-qa-question-answers-footer .ladb-btn-thanks', this.$element).on('click', function(e) {
             e.preventDefault();
             $(this).blur();
 
@@ -287,9 +289,11 @@
             $collapse.addClass('in');
 
             var $textarea = $('textarea', $collapse);
-            $textarea.focus();
-            $textarea.val(thanksMsg);
-            $textarea.closest('.ladb-new').ladbScrollTo();
+            $textarea
+                .focus()
+                .val(thanksMsg)
+                .select()
+                .closest('.ladb-new').ladbScrollTo();
 
         });
 

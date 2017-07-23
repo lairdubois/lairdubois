@@ -263,6 +263,10 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidHexColorValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_hex_color_validator }
+  ladb_core.valid_answer_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidAnswerValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_answer_validator }
 
   # Listeners
   ladb_core.kernel_listener:

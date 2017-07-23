@@ -72,6 +72,8 @@ class AnswerController extends Controller {
 		}
 
 		$answer = new Answer();
+		$answer->setQuestion($question);		// Used by validator
+		$answer->setUser($this->getUser());		// Used by validator
 		$form = $this->createForm(AnswerType::class, $answer);
 		$form->handleRequest($request);
 
