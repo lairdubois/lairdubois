@@ -1,0 +1,35 @@
+//
+// LADB Btnsbar
+//
+
+.ladb-btns-bar {
+  text-align: center;
+
+  .btn {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-btns-bar .btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+  }
+
+}
