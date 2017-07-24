@@ -416,7 +416,7 @@ class FindController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title', 'body', 'tags.name' ));
+							$filter->setFields(array( 'title^100', 'body', 'tags.name' ));
 							$filters[] = $filter;
 
 						}

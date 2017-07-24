@@ -315,7 +315,7 @@ class ProviderController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'sign', 'geographicalAreas', 'products', 'services', 'description' ));
+							$filter->setFields(array( 'sign^100', 'geographicalAreas^50', 'products', 'services', 'description' ));
 							$filters[] = $filter;
 
 						}

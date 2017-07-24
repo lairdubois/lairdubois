@@ -333,7 +333,7 @@ class WoodController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'name', 'scientificname', 'englishname' ));
+							$filter->setFields(array( 'name^100', 'scientificname', 'englishname' ));
 							$filters[] = $filter;
 
 						}
