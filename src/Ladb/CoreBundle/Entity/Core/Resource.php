@@ -16,7 +16,7 @@ class Resource {
 	const CLASS_NAME = 'LadbCoreBundle:Core\Resource';
 
 	const DEFAULT_ACCEPTED_FILE_TYPE = '/(\.|\/)(dwf|dwg|skp|pdf|ggb|svg|fcstd|stl|123dx|ods|xlsx|xlsm)$/i';
-	const DEFAULT_MAX_FILE_SIZE = 6291456;	// 6Mo
+	const DEFAULT_MAX_FILE_SIZE = 62914560;	// 60Mo
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
