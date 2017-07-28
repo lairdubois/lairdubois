@@ -2,7 +2,7 @@
 
 {% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
 
-{% set pageTitle = user.username %}
+{% set pageTitle = user.displayName %}
 {% set pageContentItemType = 'Person' %}
 {% if user.biography is not null and user.biography.htmlBody|length > 0 %}
     {% set pageDescription = user.biography.htmlBody|striptags|truncate(200, true, '...') %}
