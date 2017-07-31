@@ -117,7 +117,7 @@
             {% if not is_granted("ROLE_USER") %}
                 {% if not topbarTranslucent and not hideAboutAlert %}
                     <div class="alert alert-info">
-                        <p><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
+                        <p><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
                         <p>
                             <a href="{{ path('fos_user_registration_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
                             <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>
@@ -176,7 +176,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             {% block bodyFooterContainerContent %}
-                                <p class="ladb-footer-slogan"><strong>L'Air du Bois</strong> est une plateforme numérique <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>.</p>
+                                <p class="ladb-footer-slogan"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>.</p>
                                 <p class="text-center">
                                     <small>
                                         <a href="{{ path('core_faq_question_show', { 'id':'qu-est-ce-que-l-air-du-bois' }) }}" target="_blank" class="ladb-horizontal-separator-right">Qu'est-ce que L'Air du Bois ?</a>
