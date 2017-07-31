@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -39,9 +41,9 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Find\FindRepository")
  * @LadbAssert\UniqueFind()
  */
-class Find extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
+class Find extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
 
-	use TitledTrait, PicturedTrait, BodiedTrait;
+	use TitledTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
@@ -84,17 +86,30 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	private $kind = Find::KIND_NONE;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_find_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 * @Assert\Count(min=1)
+	 */
+	private $bodyBlocks;
+
+	/**
+	 * @ORM\Column(type="integer", name="body_block_picture_count")
+	 */
+	private $bodyBlockPictureCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="body_block_video_count")
+	 */
+	private $bodyBlockVideoCount = 0;
+
+	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=5, max=4000)
 	 * @LadbAssert\NoMediaLink()
 	 */
 	private $body;
-
-	/**
-	 * @ORM\Column(type="text", nullable=false)
-	 */
-	private $htmlBody;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
@@ -158,7 +173,7 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 		return Find::TYPE;
 	}
 
-	// DataType /////
+	// ContentType /////
 
 	public function getContentType() {
 		return $this->contentType;
@@ -184,7 +199,7 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 		return $this->id.'-'.$this->slug;
 	}
 
-	// Content /////
+	// Kind /////
 
 	public function getKind() {
 		return $this->kind;
@@ -195,29 +210,23 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 		return $this;
 	}
 
-	// Kind /////
-
-	public function getBodyExtract() {
-		return $this->getHtmlBody();
-	}
-
-	public function getIsJoinable() {
-		return $this->getIsViewable()
-			&& $this->getContent() instanceof Event
-			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
-	}
-
-	// BodyExtract /////
+	// Content /////
 
 	public function getContent() {
 		return $this->content;
 	}
 
-	// IsJoinable /////
-
 	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
 		$this->content = $content;
 		return $this;
+	}
+
+	// IsJoinable /////
+
+	public function getIsJoinable() {
+		return $this->getIsViewable()
+			&& $this->getContent() instanceof Event
+			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
 	}
 
 	// JoinCount /////

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Find;
 
 use Ladb\CoreBundle\Manager\Find\FindManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +63,9 @@ class FindController extends Controller {
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
+
+			$blockUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockUtils->preprocessBlocks($find);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($find);
@@ -239,12 +243,16 @@ class FindController extends Controller {
 			$picturedUtils->resetPictures($find->getContent()); // Reset pictures array to consider form pictures order
 		}
 
+		$originalBodyBlocks = $find->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $find->getTags()->toArray();	// Need to be an array to copy values
 
 		$form = $this->createForm(FindType::class, $find);
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
+
+			$blockUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockUtils->preprocessBlocks($find, $originalBodyBlocks);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($find);

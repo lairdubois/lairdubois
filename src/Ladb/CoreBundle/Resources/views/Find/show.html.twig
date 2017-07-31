@@ -186,7 +186,9 @@
         {% endif %}
         <hr>
         <div class="ladb-body">
-            {{ find.htmlBody|raw }}
+            {% for block in find.bodyBlocks %}
+                {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
         </div>
     </div>
     {% if find.updatedAt > find.createdAt %}
