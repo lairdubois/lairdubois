@@ -105,9 +105,6 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)
-	 * @Assert\NotBlank()
-	 * @Assert\Length(min=5, max=4000)
-	 * @LadbAssert\NoMediaLink()
 	 */
 	private $body;
 
@@ -156,6 +153,7 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	/////
 
 	public function __construct() {
+		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 

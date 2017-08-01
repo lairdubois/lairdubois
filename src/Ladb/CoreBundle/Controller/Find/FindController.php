@@ -40,6 +40,7 @@ class FindController extends Controller {
 	public function newAction() {
 
 		$find = new Find();
+		$find->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(FindType::class, $find);
 
 		$tagUtils = $this->get(TagUtils::NAME);
