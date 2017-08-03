@@ -350,7 +350,7 @@ services:
     class: Ladb\CoreBundle\Form\Type\Find\FindType
     tags:
       - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.find_utils', '@ladb_core.video_hosting_utils', '@ladb_core.localisable_utils']
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils', '@ladb_core.localisable_utils']
   ladb_find_content_event:
     class: Ladb\CoreBundle\Form\Type\Find\Content\EventType
     tags:

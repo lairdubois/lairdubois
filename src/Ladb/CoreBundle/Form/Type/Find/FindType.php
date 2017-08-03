@@ -17,19 +17,16 @@ use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Find\Content\Website;
 use Ladb\CoreBundle\Entity\Find\Content\Video;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
-use Ladb\CoreBundle\Utils\FindUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 
 class FindType extends AbstractType {
 
 	private $om;
-	private $findUtils;
 	private $videoHostingUtils;
 	private $localisableUtils;
 
-	public function __construct(ObjectManager $om, FindUtils $findUtils, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils) {
+	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
-		$this->findUtils = $findUtils;
 		$this->videoHostingUtils = $videoHostingUtils;
 		$this->localisableUtils = $localisableUtils;
 	}
@@ -177,14 +174,6 @@ class FindType extends AbstractType {
 			}
 		);
 
-		$builder->addEventListener(
-			FormEvents::POST_SUBMIT,
-			function(FormEvent $event) {
-				$find = $event->getForm()->getData();
-				$this->findUtils->generateMainPicture($find);
-			}
-		);
-
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
@@ -204,6 +193,7 @@ class FindType extends AbstractType {
 						return array('Default', 'event');
 
 				}
+				return array('Default');
 			},
 		));
 	}

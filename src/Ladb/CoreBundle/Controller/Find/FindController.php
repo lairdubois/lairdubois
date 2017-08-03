@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Controller\Find;
 use Ladb\CoreBundle\Manager\Find\FindManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
+use Ladb\CoreBundle\Utils\FindUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,6 +71,9 @@ class FindController extends Controller {
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($find);
+
+			$findUtils = $this->get(FindUtils::NAME);
+			$findUtils->generateMainPicture($find);
 
 			$find->setUser($this->getUser());
 			$this->getUser()->incrementDraftFindCount();
@@ -257,6 +261,9 @@ class FindController extends Controller {
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($find);
+
+			$findUtils = $this->get(FindUtils::NAME);
+			$findUtils->generateMainPicture($find);
 
 			if ($find->getUser()->getId() == $this->getUser()->getId()) {
 				$find->setUpdatedAt(new \DateTime());
