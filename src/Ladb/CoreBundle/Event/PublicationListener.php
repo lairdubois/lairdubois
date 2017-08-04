@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -194,6 +195,20 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($publication);
 
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
+
 		}
 
 		if ($publication instanceof TaggableInterface && array_key_exists('previouslyUsedTags', $event->getData())) {
@@ -220,6 +235,20 @@ class PublicationListener implements EventSubscriberInterface {
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->deleteEntityFromIndex($publication);
+
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
 
 		}
 
@@ -255,6 +284,20 @@ class PublicationListener implements EventSubscriberInterface {
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->insertEntityToIndex($publication);
+
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
 
 		}
 
@@ -298,6 +341,20 @@ class PublicationListener implements EventSubscriberInterface {
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->deleteEntityFromIndex($publication);
+
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
 
 		}
 

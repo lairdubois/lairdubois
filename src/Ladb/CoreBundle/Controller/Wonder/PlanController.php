@@ -739,6 +739,20 @@ class PlanController extends Controller {
 
 						break;
 
+					case 'with-inspiration':
+
+						$filter = new \Elastica\Query\Range('inspirationCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-rebound':
+
+						$filter = new \Elastica\Query\Range('reboundCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'sort':
 
 						switch ($facet->value) {

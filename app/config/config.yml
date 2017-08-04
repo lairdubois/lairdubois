@@ -3,7 +3,7 @@ imports:
 
 framework:
     #esi:             ~
-    translator:      { fallback: %locale% }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -22,7 +22,6 @@ framework:
     templating:
         engines:    ['twig']
     default_locale:  "%locale%"
-    trusted_proxies: ~
     session:
         save_path: "%kernel.root_dir%/sessions"
     fragments:       ~
@@ -363,6 +362,8 @@ fos_elastica:
                         planCount: { type: integer }
                         howtoCount: { type: integer }
                         providerCount: { type: integer }
+                        inspirationCount: { type: integer }
+                        reboundCount: { type: integer }
                         user:
                             type: "object"
                             properties:
@@ -446,6 +447,8 @@ fos_elastica:
                         creationCount: { type: integer }
                         howtoCount: { type: integer }
                         workshopCount: { type: integer }
+                        inspirationCount: { type: integer }
+                        reboundCount: { type: integer }
                         user:
                             type: "object"
                             properties:

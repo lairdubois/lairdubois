@@ -22,6 +22,27 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Workshop';
 	const TYPE = 101;
+
+	/**
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
+	private $location;
+
+	/**
+	 * @ORM\Column(type="float", nullable=true)
+	 */
+	private $latitude;
+
+	/**
+	 * @ORM\Column(type="float", nullable=true)
+	 */
+	private $longitude;
+
+	/**
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
+	private $area;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_picture")
@@ -29,33 +50,7 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	 * @Assert\Count(min=1, max=5)
 	 */
 	protected $pictures;
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_workshop_tag")
-	 * @Assert\Count(min=2)
-	 */
-	protected $tags;
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_workshop_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 */
-	protected $referrals;
-	/**
-	 * @ORM\Column(type="string", length=100, nullable=true)
-	 */
-	private $location;
-	/**
-	 * @ORM\Column(type="float", nullable=true)
-	 */
-	private $latitude;
-	/**
-	 * @ORM\Column(type="float", nullable=true)
-	 */
-	private $longitude;
-	/**
-	 * @ORM\Column(type="smallint", nullable=true)
-	 */
-	private $area;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
@@ -63,34 +58,53 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	 * @Assert\Count(min=1)
 	 */
 	private $bodyBlocks;
+
 	/**
 	 * @ORM\Column(type="integer", name="body_block_picture_count")
 	 */
 	private $bodyBlockPictureCount = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="body_block_video_count")
 	 */
 	private $bodyBlockVideoCount = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="plan_count")
 	 */
 	private $planCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="workshops", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_plan")
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $plans;
+
 	/**
 	 * @ORM\Column(type="integer", name="howto_count")
 	 */
 	private $howtoCount = 0;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", inversedBy="workshops", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_howto")
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $howtos;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_workshop_tag")
+	 * @Assert\Count(min=2)
+	 */
+	protected $tags;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_workshop_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 */
+	protected $referrals;
 
 	/////
 
@@ -109,13 +123,13 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 
 	// Area /////
 
-	public function getArea() {
-		return $this->area;
-	}
-
 	public function setArea($area) {
 		$this->area = $area;
 		return $this;
+	}
+
+	public function getArea() {
+		return $this->area;
 	}
 
 	// PlanCount /////

@@ -5,6 +5,8 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
+use Ladb\CoreBundle\Model\InspirableInterface;
+use Ladb\CoreBundle\Model\InspirableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
@@ -14,9 +16,10 @@ use Ladb\CoreBundle\Model\BlockBodiedInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Wonder\CreationRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Creation extends AbstractWonder implements BlockBodiedInterface {
+class Creation extends AbstractWonder implements BlockBodiedInterface, InspirableInterface {
 
 	use BlockBodiedTrait;
+	use InspirableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Creation';
 	const TYPE = 100;
@@ -322,54 +325,6 @@ class Creation extends AbstractWonder implements BlockBodiedInterface {
 
 	public function getProviders() {
 		return $this->providers;
-	}
-
-	// ReboundCount /////
-
-	public function getReboundCount() {
-		return $this->reboundCount;
-	}
-
-	public function getRebounds() {
-		return $this->rebounds;
-	}
-
-	// Rebounds /////
-
-	public function getInspirationCount() {
-		return $this->inspirationCount;
-	}
-
-	// InspirationCount /////
-
-	public function addInspiration(\Ladb\CoreBundle\Entity\Wonder\Creation $inspiration) {
-		if (!$this->inspirations->contains($inspiration)) {
-			$this->inspirations[] = $inspiration;
-			$this->inspirationCount = count($this->inspirations);
-			if (!$this->getIsDraft()) {
-				$inspiration->incrementReboundCount();
-			}
-		}
-		return $this;
-	}
-
-	// Inspirations /////
-
-	public function incrementReboundCount($by = 1) {
-		return $this->reboundCount += intval($by);
-	}
-
-	public function removeInspiration(\Ladb\CoreBundle\Entity\Wonder\Creation $inspiration) {
-		if ($this->inspirations->removeElement($inspiration)) {
-			$this->inspirationCount = count($this->inspirations);
-			if (!$this->getIsDraft()) {
-				$inspiration->incrementReboundCount(-1);
-			}
-		}
-	}
-
-	public function getInspirations() {
-		return $this->inspirations;
 	}
 
 	// Spotlight /////
