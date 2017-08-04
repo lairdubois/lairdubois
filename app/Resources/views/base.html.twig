@@ -131,7 +131,10 @@
                     }
                     </script>
                 {% endif %}
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                {% javascripts filter='?closure'
+                    '../components/jquery/jquery.js' %}
+                    <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endjavascripts %}
                 <!--[if lt IE 9]>
                     {% javascripts filter='?closure'
                         '../components/html5shiv/dist/html5shiv.js'
