@@ -227,6 +227,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.body_blocks_validator }
     arguments: ['@validator']
+  ladb_core.find_body_blocks_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\FindBodyBlocksValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.find_body_blocks_validator }
+    arguments: ['@validator']
   ladb_core.upper_case_ratio_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UpperCaseRatioValidator
     tags:

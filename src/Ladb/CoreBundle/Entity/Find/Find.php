@@ -39,6 +39,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Table("tbl_find")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Find\FindRepository")
  * @LadbAssert\UniqueFind()
+ * @LadbAssert\FindBodyBlocks()
  */
 class Find extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
 
@@ -210,21 +211,21 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	// Content /////
 
-	public function getContent() {
-		return $this->content;
-	}
-
-	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
-		$this->content = $content;
-		return $this;
-	}
-
-	// IsJoinable /////
-
 	public function getIsJoinable() {
 		return $this->getIsViewable()
 			&& $this->getContent() instanceof Event
 			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
+	}
+
+	public function getContent() {
+		return $this->content;
+	}
+
+	// IsJoinable /////
+
+	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
+		$this->content = $content;
+		return $this;
 	}
 
 	// JoinCount /////
