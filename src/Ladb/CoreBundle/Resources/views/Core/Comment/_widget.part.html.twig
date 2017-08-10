@@ -3,19 +3,20 @@
 {# set notGuestTip (facultative) #}
 {# set activitiesHidden (facultative) #}
 
-{% set collapse = collapse|default(false) %}
-{% set headingHidden = collapse or headingHidden|default(false) %}
+{% set collapsible = collapsible|default(false) %}
+{% set notCollapsed = notCollapsed|default(false) %}
+{% set headingHidden = collapsible or headingHidden|default(false) %}
 {% set notGuestTip = notGuestTip|default(false) %}
 {% set activitiesHidden = activitiesHidden|default(false) %}
 
 {% if commentContext is not null %}
     {% set commentCount = commentContext.comments|length %}
     <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget" class="ladb-comment-widget" data-ladb-entity-type="{{ commentContext.entityType }}" data-ladb-entity-id="{{ commentContext.entityId }}"{% if activitiesHidden %} data-ladb-activities-hidden="{{ activitiesHidden ? 'true' : 'false' }}"{% endif %}>
-        {% if collapse %}
+        {% if collapsible %}
             <div class="ladb-collapse-toggle{% if commentCount == 0 %} ladb-no-comment{% endif %}">
                 <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse">{{ commentCount }} {{ 'comment.choice.comments'|transchoice(commentCount) }}</a>
             </div>
-            <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse" class="collapse">
+            <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse" class="collapse{% if notCollapsed %} in{% endif %}">
         {% endif %}
         <div class="ladb-comment-list">
             {% if not headingHidden %}
@@ -53,7 +54,7 @@
                 </div>
             {% endif %}
         {% endif %}
-        {% if collapse %}
+        {% if collapsible %}
             </div>
         {% endif %}
     </div>
