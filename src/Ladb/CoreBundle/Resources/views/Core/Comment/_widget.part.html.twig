@@ -40,6 +40,11 @@
                     {% set activityIndex = activityIndex + 1 %}
                 {% endfor %}
                 {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' %}
+                <div id="ladb_comment_{{ comment.id }}_children_collapse" class="ladb-comment-children-collapse collapse">
+                    {% for child in comment.children %}
+                        {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'comment':child } %}
+                    {% endfor %}
+                </div>
             {% endfor %}
             {% for activity in commentContext.activities|slice(activityIndex) %}
                 {% include 'LadbCoreBundle:Core/Activity:_row-'~activity.strippedName~'.part.html.twig' %}

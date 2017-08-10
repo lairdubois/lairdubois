@@ -27,7 +27,7 @@
                 </div>
                 <div class="ladb-comments col-sm-6 col-xs-12">
                     {% for comment in item.comments %}
-                        {% embed 'LadbCoreBundle:Core/Comment:_row.part.html.twig' %}
+                        {% embed 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'noFooter':true } %}
                             {% block minitools %}{% endblock %}
                         {% endembed %}
                     {% endfor %}

@@ -28,11 +28,56 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 class CommentController extends Controller {
 
 	/**
-	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_comment_create")
+	 * @Route("/{entityType}/{entityId}/{parentId}/new", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, name="core_comment_new")
+	 * @Template("LadbCoreBundle:Core/Comment:new-xhr.html.twig")
+	 */
+	public function newAction(Request $request, $entityType, $entityId, $parentId = 0) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		// Retrieve related entity
+
+		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
+		if ($entity instanceof ViewableInterface && !$entity->getIsViewable()) {
+			throw $this->createNotFoundException('Hidden entity could not be commented.');
+		}
+
+		$comment = new Comment();
+		$form = $this->get('form.factory')->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$entityType.'_'.$entityId.'_'.$parentId, CommentType::class, $comment);
+
+		$commentUtils = $this->get(CommentableUtils::NAME);
+		$mentionStrategy = $commentUtils->getMentionStrategy($entity);
+
+		return array(
+			'entityType'      => $entityType,
+			'entityId'        => $entityId,
+			'parentId'        => $parentId,
+			'form'            => $form->createView(),
+			'mentionStrategy' => $mentionStrategy
+		);
+
+	}
+
+	private function _retrieveRelatedEntity($entityType, $entityId) {
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$entity = $typableUtils->findTypable($entityType, $entityId);
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException($e->getMessage());
+		}
+		if (!($entity instanceof CommentableInterface)) {
+			throw $this->createNotFoundException('Entity must implements CommentableInterface.');
+		}
+		return $entity;
+	}
+
+	/**
+	 * @Route("/{entityType}/{entityId}/{parentId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, name="core_comment_create")
 	 * @Method("POST")
 	 * @Template("LadbCoreBundle:Core/Comment:new-xhr.html.twig")
 	 */
-	public function createAction(Request $request, $entityType, $entityId) {
+	public function createAction(Request $request, $entityType, $entityId, $parentId = 0) {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
@@ -45,9 +90,10 @@ class CommentController extends Controller {
 		}
 
 		$om = $this->getDoctrine()->getManager();
+		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
 
 		$comment = new Comment();
-		$form = $this->get('form.factory')->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$entityType.'_'.$entityId, CommentType::class, $comment);
+		$form = $this->get('form.factory')->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$entityType.'_'.$entityId.'_'.$parentId, CommentType::class, $comment);
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
@@ -57,6 +103,19 @@ class CommentController extends Controller {
 			$comment->setEntityType($entityType);
 			$comment->setEntityId($entityId);
 			$comment->setUser($this->getUser());
+
+			// Retrieve parent
+
+			$parentId = intval($parentId);
+			if ($parentId > 0) {
+
+				$parent = $commentRepository->findOneByIdAndEntityTypeAndEntityId($parentId, $entityType, $entityId);
+				if (!is_null($parent)) {
+					$parent->addChild($comment);
+					$parent->incrementChildCount();
+				}
+
+			}
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessBodyField($comment);
@@ -106,7 +165,7 @@ class CommentController extends Controller {
 
 			}
 
-			return $this->render('LadbCoreBundle:Core/Comment:_row.part.html.twig', array( 'comment' => $comment ));
+			return $this->render('LadbCoreBundle:Core/Comment:create-xhr.html.twig', array( 'comment' => $comment ));
 		}
 
 		$commentUtils = $this->get(CommentableUtils::NAME);
@@ -115,22 +174,10 @@ class CommentController extends Controller {
 		return array(
 			'entityType'      => $entityType,
 			'entityId'        => $entityId,
+			'parentId'        => $parentId,
 			'form'            => $form->createView(),
 			'mentionStrategy' => $mentionStrategy
 		);
-	}
-
-	private function _retrieveRelatedEntity($entityType, $entityId) {
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entity = $typableUtils->findTypable($entityType, $entityId);
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException($e->getMessage());
-		}
-		if (!($entity instanceof CommentableInterface)) {
-			throw $this->createNotFoundException('Entity must implements CommentableInterface.');
-		}
-		return $entity;
 	}
 
 	/**
@@ -228,34 +275,27 @@ class CommentController extends Controller {
 
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$typableUtils = $this->get(TypableUtils::NAME);
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$commentableUtils = $this->get(CommentableUtils::NAME);
 
 		$comment = $commentRepository->findOneById($id);
 		if (is_null($comment)) {
 			throw $this->createNotFoundException('Unable to find Comment entity (id='.$id.').');
 		}
 
-		$comment->getUser()->incrementCommentCount(-1);
+		// Retrieve related entity
 
-		// Update related entity
+		$entity = $this->_retrieveRelatedEntity($comment->getEntityType(), $comment->getEntityId());
 
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entity = $typableUtils->findTypable($comment->getEntityType(), $comment->getEntityId());
-		} catch (\Exception $e) {
-		}
-		if ($entity instanceof CommentableInterface) {
-			$entity->incrementCommentCount(-1);
-		}
+		// Delete comment
 
-		// Delete activities
-		$activityUtils = $this->get(ActivityUtils::NAME);
-		$activityUtils->deleteActivitiesByComment($comment, false);
+		$commentableUtils->deleteComment($comment, $entity, $activityUtils, $om, false);
 
-		$om->remove($comment);
 		$om->flush();
 
 		// Update index
-		if ($entity instanceof IndexableInterface) {
+		if (isset($entity) && $entity instanceof IndexableInterface) {
 			$searchUtils = $this->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($entity);
 		}

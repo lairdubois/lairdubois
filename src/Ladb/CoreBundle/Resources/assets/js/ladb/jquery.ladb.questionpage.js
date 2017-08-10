@@ -80,7 +80,7 @@
 
         });
 
-        bindNewCommentAjaxForm();
+        // $('.ladb-comment-widget', $row).ladbCommentWidget();
         setupTooltips();
         setupPopovers();
 

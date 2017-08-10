@@ -25,15 +25,42 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
-			if (!($commentable instanceof DraftableInterface) || ($commentable instanceof DraftableInterface && !$commentable->getIsDraft())) {
-				$comment->getUser()->incrementCommentCount(-1);
-			}
-			$activityUtils->deleteActivitiesByComment($comment);
-			$om->remove($comment);
+			$this->deleteComment($comment, $commentable, $activityUtils, $om, false);
 		}
 		if ($flush) {
 			$om->flush();
 		}
+	}
+
+	public function deleteComment(Comment $comment, CommentableInterface $commentable, ActivityUtils $activityUtils, $om, $flush = false) {
+
+		// Remove children
+		if ($comment->getChildCount() > 0) {
+			$children = $comment->getChildren()->toArray();
+			$comment->resetChildren();
+			foreach ($children as $child) {
+				$this->deleteComment($child, $commentable, $activityUtils, $om, $flush);
+			}
+		}
+
+		// Update user comment count
+		if (!($commentable instanceof DraftableInterface) || ($commentable instanceof DraftableInterface && !$commentable->getIsDraft())) {
+			$comment->getUser()->incrementCommentCount(-1);
+		}
+
+		// Update commentable comment count
+		$commentable->incrementCommentCount(-1);
+
+		// Delete relative activities
+		$activityUtils->deleteActivitiesByComment($comment);
+
+		// Remove Comment from DB
+		$om->remove($comment);
+
+		if ($flush) {
+			$om->flush();
+		}
+
 	}
 
 	public function incrementUsersCommentCount(CommentableInterface $commentable, $by = 1, $flush = true) {
@@ -110,14 +137,17 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			$activities = $activityRepository->findByPublication($commentable);
 		}
 
-		// Define the mentionsStrategy
 		if ($authorizationChecker->isGranted('ROLE_USER')) {
+
 			$comment = new Comment();
-			$form = $formFactory->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$commentable->getType().'_'.$commentable->getId(), CommentType::class, $comment);
+			$form = $formFactory->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$commentable->getType().'_'.$commentable->getId().'_0', CommentType::class, $comment);
+
+			// Define the mentionsStrategy
 			$mentionStrategy = $this->_getMentionStrategyFromComments($comments);
 			if ($commentable instanceof AuthoredInterface) {
 				$this->_populateMentionStrategyWithUser($mentionStrategy, $commentable->getUser());
 			}
+
 		} else {
 			$mentionStrategy = null;
 		}

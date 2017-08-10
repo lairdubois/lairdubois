@@ -5,10 +5,10 @@
                 <a href="#" onclick="bootbox.dialog({ title:'{{ 'comment.get_link'|trans() }}', message:'<p>Lien direct vers le commentaire :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_comment_{{ comment.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'comment.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
             {% endif %}
             {% if is_granted("ROLE_ADMIN") or comment.user == app.user %}
-                <a href="#" onclick="editComment({{ comment.id }}, '{{ path('core_comment_edit', { 'id':comment.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
+                <a href="{{ path('core_comment_edit', { 'id':comment.id }) }}" class="ladb-comment-edit" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>
             {% endif %}
             {% if is_granted("ROLE_ADMIN") %}
-                <a href="#" onclick="deleteComment({{ comment.id }}, '{{ path('core_comment_delete', { 'id':comment.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
+                <a href="{{ path('core_comment_delete', { 'id':comment.id }) }}" class="ladb-comment-delete" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-minitool-danger" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-delete"></i></a>
             {% endif %}
             {% if comment.user != app.user %}
                 {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':comment.type, 'entityId':comment.id } %}
@@ -23,12 +23,25 @@
         <div class="ladb-body">
             <span itemprop="text">{{ comment.htmlBody|raw }}</span>
             {% if comment.pictures is not empty %}
-                <div class="row">
+                <div class="row" style="margin-bottom: 10px;">
                     {% for picture in comment.pictures %}
                         <div class="col-md-3 col-xs-6">
                             {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
                         </div>
                     {% endfor %}
+                </div>
+            {% endif %}
+            {% set noFooter = noFooter|default(false) %}
+            {% set canReply = is_granted('ROLE_USER') %}
+            {% if not noFooter and (canReply or comment.childCount > 0) %}
+                <div class="ladb-comment-footer">
+                    <i class="ladb-icon-reply"></i>
+                    {% if canReply %}
+                        <a class="ladb-comment-reply" data-ladb-children-collapse-selector="#ladb_comment_{{ comment.parent ? comment.parent.id : comment.id }}_children_collapse" data-ladb-mention="{% if comment.parent %}@{{ comment.user.usernameCanonical }} {% endif %}" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':(comment.parent ? comment.parent.id : comment.id) }) }}" data-loading-text="{{ 'default.loading'|trans }}">Répondre</a>
+                    {% endif %}
+                    {% if comment.childCount > 0 %}
+                        <a class="ladb-comment-children-collapse-btn{% if canReply %} ladb-horizontal-separator-left{% endif %}" data-toggle="collapse" data-target="#ladb_comment_{{ comment.id }}_children_collapse"><strong>{{ comment.childCount }}</strong> réponses <span class="caret"></span></a>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>

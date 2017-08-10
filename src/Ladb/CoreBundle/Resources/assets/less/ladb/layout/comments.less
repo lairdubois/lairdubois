@@ -32,20 +32,15 @@
 
   h2 {
     font-size: 25px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     padding-bottom: 10px;
-    border-bottom: 1px solid @ladb-global-border;
-  }
-  
-  .ladb-deleted {
-    color: @ladb-global-light-color;
-    text-decoration: line-through;
   }
   
   .ladb-new {
     padding-top: 10px;
     padding-bottom: 10px;
-    
+    border-top: 1px solid @ladb-global-border;
+
     .ladb-box {
       margin-left: @boxMarginLeft;
       min-height: @boxMinHeight;
@@ -55,7 +50,7 @@
 
   .ladb-activity-row {
     padding: 10px 0 10px 0;
-    border-bottom: 1px solid @ladb-global-border;
+    border-top: 1px solid @ladb-global-border;
     position: relative;
 
     .ladb-icon {
@@ -75,15 +70,23 @@
 
   }
 
+  .ladb-comment-children-collapse {
+    padding-left: @boxMarginLeft;
+  }
+
 }
 
 .ladb-comment-row {
   padding-top: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid @ladb-global-border;
+  border-top: 1px solid @ladb-global-border;
 
   form {
     margin: 0;
+  }
+
+  a {
+    cursor: pointer;
   }
 
   > .ladb-minitools {
@@ -111,6 +114,23 @@
       .age();
     }
 
+  }
+
+  .ladb-comment-footer {
+    color: #aaa;
+    font-size: 90%;
+  }
+
+  .ladb-comment-reply {
+    color: #aaa;
+
+    &:hover {
+      color: #666;
+    }
+  }
+
+  .ladb-comment-children-collapse-btn {
+    color: #666;
   }
 
 }

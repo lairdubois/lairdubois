@@ -17,19 +17,46 @@ class CommentRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByEntityTypeAndEntityId($entityType, $entityId) {
+	public function findOneByIdAndEntityTypeAndEntityId($id, $entityType, $entityId) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'c', 'u', 'ps' ))
+			->select(array( 'c' ))
+			->from($this->getEntityName(), 'c')
+			->where('c.id = :id')
+			->andWhere('c.entityType = :entityType')
+			->andWhere('c.entityId = :entityId')
+			->setParameter('id', $id)
+			->setParameter('entityType', $entityType)
+			->setParameter('entityId', $entityId)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	/////
+
+	public function findByEntityTypeAndEntityId($entityType, $entityId, $parentOnly = true) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'u', 'ps', 'ch' ))
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
 			->leftJoin('c.pictures', 'ps')
+			->leftJoin('c.children', 'ch')
 			->where('c.entityType = :entityType')
 			->andWhere('c.entityId = :entityId')
 			->setParameter('entityType', $entityType)
 			->setParameter('entityId', $entityId)
 			->orderBy('c.createdAt', 'ASC')
 		;
+
+		if ($parentOnly) {
+			$queryBuilder->andWhere('c.parent IS NULL');
+		}
 
 		try {
 			return $queryBuilder->getQuery()->getResult();

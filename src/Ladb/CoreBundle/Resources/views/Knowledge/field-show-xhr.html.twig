@@ -8,7 +8,7 @@
 {% block contentInner %}
     {{ parent() }}
     <script>
-        bindNewCommentAjaxForm();
+        $('.ladb-comment-widget').ladbCommentWidget();
         bindNewValueProposalAjaxForm();
         setupPopovers();
         setupTooltips();
