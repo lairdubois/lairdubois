@@ -80,7 +80,7 @@
 
         });
 
-        // $('.ladb-comment-widget', $row).ladbCommentWidget();
+        $('.ladb-comment-widget', $row).ladbCommentWidget();
         setupTooltips();
         setupPopovers();
 
