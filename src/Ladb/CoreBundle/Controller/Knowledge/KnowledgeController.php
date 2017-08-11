@@ -2,15 +2,13 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
-use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
-use Ladb\CoreBundle\Utils\ActivityUtils;
-use Ladb\CoreBundle\Utils\PropertyUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Knowledge\AbstractKnowledge;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\KnowledgeEvent;
@@ -22,8 +20,8 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
-use Ladb\CoreBundle\Entity\Knowledge\AbstractKnowledge;
-use Ladb\CoreBundle\Entity\Knowledge\Value\String;
+use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\PropertyUtils;
 
 /**
  * @Route("/knowledge")

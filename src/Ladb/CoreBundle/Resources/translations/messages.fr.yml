@@ -733,6 +733,7 @@ comment:
   get_link: Obtenir le lien
   choice:
     comments: '[0,1]commentaire|]1,Inf]commentaires'
+    children: '[0,1]réponse|]1,Inf]réponses'
 
 referer:
   list: On en parle ailleurs
