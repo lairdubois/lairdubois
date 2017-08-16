@@ -29,7 +29,8 @@ trait EmojiTrait {
 	}
 
 	protected function renderEmoji($block) {
-		return \Emojione\Emojione::toImage(':'.$this->renderAbsy($block[1]).':');
+		$client = new \Emojione\Client(new \Emojione\Ruleset());
+		return $client->toImage(':'.$this->renderAbsy($block[1]).':');
 	}
 
 }

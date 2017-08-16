@@ -1,9 +1,4 @@
 <?php
-/**
- * @copyright Copyright (c) 2014 Carsten Brandt
- * @license https://github.com/cebe/markdown/blob/master/LICENSE
- * @link https://github.com/cebe/markdown#readme
- */
 
 namespace Ladb\CoreBundle\Parser\Markdown\Inline;
 
@@ -17,7 +12,7 @@ trait MentionTrait {
 	 * @marker @
 	 */
 	protected function parseMention($markdown) {
-		if (preg_match('/^@([A-Za-z][A-Za-z0-9]+)/', $markdown, $matches)) {
+		if (preg_match('/@([A-Za-z0-9]{3,})/', $markdown, $matches)) {
 			return [
 				[
 					'mention', [['text', $matches[1]]]

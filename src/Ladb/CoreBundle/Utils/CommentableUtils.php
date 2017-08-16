@@ -155,6 +155,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		return array(
 			'entityType'      => $commentable->getType(),
 			'entityId'        => $commentable->getId(),
+			'commentCount'    => $commentable->getCommentCount(),
 			'comments'        => $comments,
 			'activities'      => $activities,
 			'form'            => isset($form) ? $form->createView() : null,
