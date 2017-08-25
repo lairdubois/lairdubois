@@ -234,6 +234,21 @@
         this.$hideActivities.on('click', function() {
             that.toggleActivities();
         });
+        $('.ladb-comment-new', this.$element).on('click', function() {
+
+            var collapseSelector = $(this).data('ladb-collapse-selector');
+
+            var $collapse = $(collapseSelector);
+            var $new = $('.ladb-new', $collapse);
+
+            if ($new.length > 0) {
+                $collapse.collapse('show');
+                $new.ladbScrollTo();
+                $('textarea', $new)
+                    .focus();
+            }
+
+        });
         this.layoutActivities();
 
         this.bindNew($('.ladb-new', this.$element).last());
@@ -253,11 +268,10 @@
 
             if (!data) {
                 $this.data('ladb.commentWidget', (data = new LadbCommentWidget(this, options)));
+                data.init();
             }
             if (typeof option == 'string') {
                 data[option]();
-            } else {
-                data.init();
             }
         })
     }

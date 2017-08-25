@@ -116,7 +116,7 @@
         </div>
     </div>
     {% if not ownerUser and question.answerCount > 0 %}
-        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
+        {#{% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}#}
     {% endif %}
     {% include 'LadbCoreBundle:Qa/Question:_answers-header.part.html.twig' %}
     {% include 'LadbCoreBundle:Qa/Answer:_list.part.html.twig' %}

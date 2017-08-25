@@ -13,6 +13,7 @@
     <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget" class="ladb-comment-widget" data-ladb-entity-type="{{ commentContext.entityType }}" data-ladb-entity-id="{{ commentContext.entityId }}"{% if activitiesHidden %} data-ladb-activities-hidden="{{ activitiesHidden ? 'true' : 'false' }}"{% endif %}>
         {% if collapsible %}
             <div class="ladb-collapse-toggle{% if commentContext.commentCount == 0 %} ladb-no-comment{% endif %}">
+                <span class="ladb-horizontal-separator-right" style="color: #aaa;"><i class="ladb-icon-reply"></i> <a class="ladb-comment-new" data-ladb-collapse-selector="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse" style="color: #aaa;">{{ 'comment.new'|trans }}</a></span>
                 <i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse">{{ commentContext.commentCount }} {{ 'comment.choice.comments'|transchoice(commentContext.commentCount) }} <span class="caret"></span></a>
             </div>
             <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse" class="collapse{% if notCollapsed %} in{% endif %}">
