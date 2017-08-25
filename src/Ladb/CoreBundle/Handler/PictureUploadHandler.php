@@ -79,4 +79,21 @@ class PictureUploadHandler extends \UploadHandler {
 		return $file;
 	}
 
+	protected function validate($uploaded_file, $file, $error, $index) {
+		if (parent::validate($uploaded_file, $file, $error, $index)) {
+
+			list($img_width, $img_height) = $this->get_image_size($uploaded_file);
+
+			// Check image ratio
+			$ratio = $img_width / $img_height;
+			if ($ratio > 3 || $ratio < 0.33) {
+				$file->error = "Les proportions de l'image sont incorrectes.<br>La plus petite dimension de l'image ne doit pas être inférieure au <strong>1/3</strong> de la plus grande.";
+				return false;
+			}
+
+			return true;
+		}
+		return false;
+	}
+
 }

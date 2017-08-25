@@ -44,7 +44,7 @@
         "twitter/bootstrap": "3.3.7",
         "uikit/uikit": "2.27.2",
         "afarkas/html5shiv": "3.7.3",
-        "blueimp/jquery-file-upload": "9.12.6",
+        "blueimp/jquery-file-upload": "9.18.0",
         "jublonet/codebird-php": "2.6.1",
         "facebook/graph-sdk": "~5.0",
         "jonnyw/php-phantomjs": "4.5.1",
