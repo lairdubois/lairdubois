@@ -307,35 +307,11 @@ class Wood extends AbstractKnowledge {
 
 	// Type /////
 
-	public function getNameRejected() {
-		return $this->nameRejected;
-	}
-
-	// Body /////
-
-	public function setNameRejected($nameRejected) {
-		$this->nameRejected = $nameRejected;
-		return $this;
-	}
-
-	// StrippedName /////
-
-	public function getGrainRejected() {
-		return $this->grainRejected;
-	}
-
-	// FieldDefs /////
-
-	public function setGrainRejected($grainRejected) {
-		$this->grainRejected = $grainRejected;
-		return $this;
-	}
-
-	// Name /////
-
 	public function getType() {
 		return Wood::TYPE;
 	}
+
+	// Body /////
 
 	public function getBody() {
 		$terms = array($this->getName());
@@ -348,11 +324,19 @@ class Wood extends AbstractKnowledge {
 		return implode($terms, ',');
 	}
 
-	// NameValues /////
+	// StrippedName /////
 
-	public function getName() {
-		return $this->name;
+	public function getStrippedName() {
+		return Wood::STRIPPED_NAME;
 	}
+
+	// FieldDefs /////
+
+	public function getFieldDefs() {
+		return Wood::$FIELD_DEFS;
+	}
+
+	// Name /////
 
 	public function setName($name) {
 		$this->name = $name;
@@ -364,37 +348,11 @@ class Wood extends AbstractKnowledge {
 		return $this;
 	}
 
-	public function getScientificname() {
-		return $this->scientificname;
+	public function getName() {
+		return $this->name;
 	}
 
-	public function setScientificname($name) {
-		$this->scientificname = ucfirst($name);
-		return $this;
-	}
-
-	// NameRejected /////
-
-	public function getEnglishname() {
-		return $this->englishname;
-	}
-
-	public function setEnglishname($name) {
-		$this->englishname = ucfirst($name);
-		return $this;
-	}
-
-	// Scientificname /////
-
-	public function getStrippedName() {
-		return Wood::STRIPPED_NAME;
-	}
-
-	public function getFieldDefs() {
-		return Wood::$FIELD_DEFS;
-	}
-
-	// ScientificnameValues /////
+	// NameValues /////
 
 	public function addNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $nameValue) {
 		if (!$this->nameValues->contains($nameValue)) {
@@ -407,15 +365,37 @@ class Wood extends AbstractKnowledge {
 		$this->nameValues->removeElement($nameValue);
 	}
 
-	public function getNameValues() {
-		return $this->nameValues;
-	}
-
 	public function setNameValues($nameValues) {
 		$this->nameValues = $nameValues;
 	}
 
-	// Englishname /////
+	public function getNameValues() {
+		return $this->nameValues;
+	}
+
+	// NameRejected /////
+
+	public function setNameRejected($nameRejected) {
+		$this->nameRejected = $nameRejected;
+		return $this;
+	}
+
+	public function getNameRejected() {
+		return $this->nameRejected;
+	}
+
+	// Scientificname /////
+
+	public function setScientificname($name) {
+		$this->scientificname = ucfirst($name);
+		return $this;
+	}
+
+	public function getScientificname() {
+		return $this->scientificname;
+	}
+
+	// ScientificnameValues /////
 
 	public function addScientificnameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $scientificnameValue) {
 		if (!$this->scientificnameValues->contains($scientificnameValue)) {
@@ -428,15 +408,26 @@ class Wood extends AbstractKnowledge {
 		$this->scientificnameValues->removeElement($scientificnameValue);
 	}
 
-	// EnglishnameValues /////
+	public function setScientificnameValues($scientificnameValues) {
+		$this->scientificnameValues = $scientificnameValues;
+	}
 
 	public function getScientificnameValues() {
 		return $this->scientificnameValues;
 	}
 
-	public function setScientificnameValues($scientificnameValues) {
-		$this->scientificnameValues = $scientificnameValues;
+	// Englishname /////
+
+	public function setEnglishname($name) {
+		$this->englishname = ucfirst($name);
+		return $this;
 	}
+
+	public function getEnglishname() {
+		return $this->englishname;
+	}
+
+	// EnglishnameValues /////
 
 	public function addEnglishnameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $englishnameValue) {
 		if (!$this->englishnameValues->contains($englishnameValue)) {
@@ -449,17 +440,15 @@ class Wood extends AbstractKnowledge {
 		$this->englishnameValues->removeElement($englishnameValue);
 	}
 
-	// Grain /////
+	public function setEnglishnameValues($englishnameValues) {
+		$this->englishnameValues = $englishnameValues;
+	}
 
 	public function getEnglishnameValues() {
 		return $this->englishnameValues;
 	}
 
-	public function setEnglishnameValues($englishnameValues) {
-		$this->englishnameValues = $englishnameValues;
-	}
-
-	// GrainValues /////
+	// Grain /////
 
 	public function setGrain($grain) {
 		return $this->setMainPicture($grain);
@@ -468,6 +457,8 @@ class Wood extends AbstractKnowledge {
 	public function getGrain() {
 		return $this->getMainPicture();
 	}
+
+	// GrainValues /////
 
 	public function addGrainValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $grainValue) {
 		if (!$this->grainValues->contains($grainValue)) {
@@ -480,25 +471,34 @@ class Wood extends AbstractKnowledge {
 		$this->grainValues->removeElement($grainValue);
 	}
 
-	// GrainRejected /////
+	public function setGrainValues($grainValues) {
+		$this->grainValues = $grainValues;
+	}
 
 	public function getGrainValues() {
 		return $this->grainValues;
 	}
 
-	public function setGrainValues($grainValues) {
-		$this->grainValues = $grainValues;
+	// GrainRejected /////
+
+	public function setGrainRejected($grainRejected) {
+		$this->grainRejected = $grainRejected;
+		return $this;
+	}
+
+	public function getGrainRejected() {
+		return $this->grainRejected;
 	}
 
 	// Endgrain /////
 
-	public function getEndgrain() {
-		return $this->endgrain;
-	}
-
 	public function setEndgrain($endgrain) {
 		$this->endgrain = $endgrain;
 		return $this;
+	}
+
+	public function getEndgrain() {
+		return $this->endgrain;
 	}
 
 	// EndgrainValues /////
@@ -514,23 +514,23 @@ class Wood extends AbstractKnowledge {
 		$this->endgrainValues->removeElement($endgrainValue);
 	}
 
-	public function getEndgrainValues() {
-		return $this->endgrainValues;
-	}
-
 	public function setEndgrainValues($endgrainValues) {
 		$this->endgrainValues = $endgrainValues;
 	}
 
-	// Lumber /////
-
-	public function getLumber() {
-		return $this->lumber;
+	public function getEndgrainValues() {
+		return $this->endgrainValues;
 	}
+
+	// Lumber /////
 
 	public function setLumber($lumber) {
 		$this->lumber = $lumber;
 		return $this;
+	}
+
+	public function getLumber() {
+		return $this->lumber;
 	}
 
 	// LumberValues /////
@@ -546,23 +546,23 @@ class Wood extends AbstractKnowledge {
 		$this->lumberValues->removeElement($lumberValue);
 	}
 
-	public function getLumberValues() {
-		return $this->lumberValues;
-	}
-
 	public function setLumberValues($lumberValues) {
 		$this->lumberValues = $lumberValues;
 	}
 
-	// Tree /////
-
-	public function getTree() {
-		return $this->tree;
+	public function getLumberValues() {
+		return $this->lumberValues;
 	}
+
+	// Tree /////
 
 	public function setTree($tree) {
 		$this->tree = $tree;
 		return $this;
+	}
+
+	public function getTree() {
+		return $this->tree;
 	}
 
 	// TreeValues /////
@@ -578,23 +578,23 @@ class Wood extends AbstractKnowledge {
 		$this->treeValues->removeElement($treeValue);
 	}
 
-	public function getTreeValues() {
-		return $this->treeValues;
-	}
-
 	public function setTreeValues($treeValues) {
 		$this->treeValues = $treeValues;
 	}
 
-	// Leaf /////
-
-	public function getLeaf() {
-		return $this->leaf;
+	public function getTreeValues() {
+		return $this->treeValues;
 	}
+
+	// Leaf /////
 
 	public function setLeaf($leaf) {
 		$this->leaf = $leaf;
 		return $this;
+	}
+
+	public function getLeaf() {
+		return $this->leaf;
 	}
 
 	// LeafValues /////
@@ -610,23 +610,23 @@ class Wood extends AbstractKnowledge {
 		$this->leafValues->removeElement($leafValue);
 	}
 
-	public function getLeafValues() {
-		return $this->leafValues;
-	}
-
 	public function setLeafValues($leafValues) {
 		$this->leafValues = $leafValues;
 	}
 
-	// Bark /////
-
-	public function getBark() {
-		return $this->bark;
+	public function getLeafValues() {
+		return $this->leafValues;
 	}
+
+	// Bark /////
 
 	public function setBark($bark) {
 		$this->bark = $bark;
 		return $this;
+	}
+
+	public function getBark() {
+		return $this->bark;
 	}
 
 	// BarkValues /////
@@ -642,23 +642,23 @@ class Wood extends AbstractKnowledge {
 		$this->barkValues->removeElement($barkValue);
 	}
 
-	public function getBarkValues() {
-		return $this->barkValues;
-	}
-
 	public function setBarkValues($barkValues) {
 		$this->barkValues = $barkValues;
 	}
 
-	// Family /////
-
-	public function getFamily() {
-		return $this->family;
+	public function getBarkValues() {
+		return $this->barkValues;
 	}
+
+	// Family /////
 
 	public function setFamily($family) {
 		$this->family = $family;
 		return $this;
+	}
+
+	public function getFamily() {
+		return $this->family;
 	}
 
 	// FamilyValues /////
@@ -674,23 +674,23 @@ class Wood extends AbstractKnowledge {
 		$this->familyValues->removeElement($familyValue);
 	}
 
-	public function getFamilyValues() {
-		return $this->familyValues;
-	}
-
 	public function setFamilyValues($familyValues) {
 		$this->familyValues = $familyValues;
 	}
 
-	// Density /////
-
-	public function getDensity() {
-		return $this->density;
+	public function getFamilyValues() {
+		return $this->familyValues;
 	}
+
+	// Density /////
 
 	public function setDensity($density) {
 		$this->density = $density;
 		return $this;
+	}
+
+	public function getDensity() {
+		return $this->density;
 	}
 
 	// DensityValues /////
@@ -706,23 +706,23 @@ class Wood extends AbstractKnowledge {
 		$this->densityValues->removeElement($densityValue);
 	}
 
-	public function getDensityValues() {
-		return $this->densityValues;
-	}
-
 	public function setDensityValues($densityValues) {
 		$this->densityValues = $densityValues;
 	}
 
-	// Availability /////
-
-	public function getAvailability() {
-		return $this->availability;
+	public function getDensityValues() {
+		return $this->densityValues;
 	}
+
+	// Availability /////
 
 	public function setAvailability($availability) {
 		$this->availability = $availability;
 		return $this;
+	}
+
+	public function getAvailability() {
+		return $this->availability;
 	}
 
 	// AvailabilityValues /////
@@ -738,23 +738,23 @@ class Wood extends AbstractKnowledge {
 		$this->availabilityValues->removeElement($availabilityValue);
 	}
 
-	public function getAvailabilityValues() {
-		return $this->availabilityValues;
-	}
-
 	public function setAvailabilityValues($availabilityValues) {
 		$this->availabilityValues = $availabilityValues;
 	}
 
-	// Price /////
-
-	public function getPrice() {
-		return $this->price;
+	public function getAvailabilityValues() {
+		return $this->availabilityValues;
 	}
+
+	// Price /////
 
 	public function setPrice($price) {
 		$this->price = $price;
 		return $this;
+	}
+
+	public function getPrice() {
+		return $this->price;
 	}
 
 	// PriceValues /////
@@ -770,23 +770,23 @@ class Wood extends AbstractKnowledge {
 		$this->priceValues->removeElement($priceValue);
 	}
 
-	public function getPriceValues() {
-		return $this->priceValues;
-	}
-
 	public function setPriceValues($priceValues) {
 		$this->priceValues = $priceValues;
 	}
 
-	// Origin /////
-
-	public function getOrigin() {
-		return $this->origin;
+	public function getPriceValues() {
+		return $this->priceValues;
 	}
+
+	// Origin /////
 
 	public function setOrigin($origin) {
 		$this->origin = $origin;
 		return $this;
+	}
+
+	public function getOrigin() {
+		return $this->origin;
 	}
 
 	// OriginValues /////
@@ -802,23 +802,23 @@ class Wood extends AbstractKnowledge {
 		$this->originValues->removeElement($originValue);
 	}
 
-	public function getOriginValues() {
-		return $this->originValues;
-	}
-
 	public function setOriginValues($originValues) {
 		$this->originValues = $originValues;
 	}
 
-	// Utilization /////
-
-	public function getUtilization() {
-		return $this->utilization;
+	public function getOriginValues() {
+		return $this->originValues;
 	}
+
+	// Utilization /////
 
 	public function setUtilization($utilization) {
 		$this->utilization = $utilization;
 		return $this;
+	}
+
+	public function getUtilization() {
+		return $this->utilization;
 	}
 
 	// UtilizationValues /////
@@ -834,12 +834,12 @@ class Wood extends AbstractKnowledge {
 		$this->utilizationValues->removeElement($utilizationValue);
 	}
 
-	public function getUtilizationValues() {
-		return $this->utilizationValues;
-	}
-
 	public function setUtilizationValues($utilizationValues) {
 		$this->utilizationValues = $utilizationValues;
+	}
+
+	public function getUtilizationValues() {
+		return $this->utilizationValues;
 	}
 
 	// TextureCount /////
@@ -848,13 +848,13 @@ class Wood extends AbstractKnowledge {
 		return $this->textureCount += intval($by);
 	}
 
-	public function getTextureCount() {
-		return $this->textureCount;
-	}
-
 	public function setTextureCount($textureCount) {
 		$this->textureCount = $textureCount;
 		return $this;
+	}
+
+	public function getTextureCount() {
+		return $this->textureCount;
 	}
 
 	// Textures /////

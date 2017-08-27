@@ -329,35 +329,11 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	// Type /////
 
-	public function getSignRejected() {
-		return $this->signRejected;
-	}
-
-	// Body /////
-
-	public function setSignRejected($signRejected) {
-		$this->signRejected = $signRejected;
-		return $this;
-	}
-
-	// StrippedName /////
-
-	public function getLogoRejected() {
-		return $this->logoRejected;
-	}
-
-	// FieldDefs /////
-
-	public function setLogoRejected($logoRejected) {
-		$this->logoRejected = $logoRejected;
-		return $this;
-	}
-
-	// Brand /////
-
 	public function getType() {
 		return Provider::TYPE;
 	}
+
+	// Body /////
 
 	public function getBody() {
 		if (!empty($this->getDescription())) {
@@ -376,22 +352,19 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return implode($terms, ',');
 	}
 
-	// IsAffiliate /////
+	// StrippedName /////
 
-	public function getDescription() {
-		return $this->description;
+	public function getStrippedName() {
+		return Provider::STRIPPED_NAME;
 	}
 
-	public function setDescription($description) {
-		$this->description = $description;
-		return $this;
+	// FieldDefs /////
+
+	public function getFieldDefs() {
+		return Provider::$FIELD_DEFS;
 	}
 
-	// Store /////
-
-	public function getBrand() {
-		return $this->brand;
-	}
+	// Brand /////
 
 	public function setBrand($brand) {
 		$this->brand = $brand;
@@ -399,68 +372,44 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return $this;
 	}
 
-	// Sign /////
-
-	public function getStore() {
-		return $this->store;
+	public function getBrand() {
+		return $this->brand;
 	}
 
-	public function setStore($store) {
-		$this->store = $store;
-		return $this;
-	}
-
-	// SignValues /////
-
-	public function getProducts() {
-		return $this->products;
-	}
-
-	public function setProducts($products) {
-		$this->products = $products;
-		return $this;
-	}
-
-	public function getServices() {
-		return $this->services;
-	}
-
-	public function setServices($services) {
-		$this->services = $services;
-		return $this;
-	}
-
-	// SignRejected /////
-
-	public function getStrippedName() {
-		return Provider::STRIPPED_NAME;
-	}
-
-	public function getFieldDefs() {
-		return Provider::$FIELD_DEFS;
-	}
-
-	// Logo /////
-
-	public function getIsAffiliate() {
-		return $this->isAffiliate;
-	}
+	// IsAffiliate /////
 
 	public function setIsAffiliate($isAffiliate) {
 		$this->isAffiliate = $isAffiliate;
 		return $this;
 	}
 
-	// LogoValues /////
-
-	public function getSign() {
-		return $this->sign;
+	public function getIsAffiliate() {
+		return $this->isAffiliate;
 	}
+
+	// Store /////
+
+	public function setStore($store) {
+		$this->store = $store;
+		return $this;
+	}
+
+	public function getStore() {
+		return $this->store;
+	}
+
+	// Sign /////
 
 	public function setSign($sign) {
 		$this->sign = $sign;
 		return $this;
 	}
+
+	public function getSign() {
+		return $this->sign;
+	}
+
+	// SignValues /////
 
 	public function addSignValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Sign $signValue) {
 		if (!$this->signValues->contains($signValue)) {
@@ -473,17 +422,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->signValues->removeElement($signValue);
 	}
 
-	// LogoRejected /////
+	public function setSignValues($signValues) {
+		$this->signValues = $signValues;
+	}
 
 	public function getSignValues() {
 		return $this->signValues;
 	}
 
-	public function setSignValues($signValues) {
-		$this->signValues = $signValues;
+	// SignRejected /////
+
+	public function setSignRejected($signRejected) {
+		$this->signRejected = $signRejected;
+		return $this;
 	}
 
-	// Photo /////
+	public function getSignRejected() {
+		return $this->signRejected;
+	}
+
+	// Logo /////
 
 	public function setLogo($logo) {
 		return $this->setMainPicture($logo);
@@ -493,7 +451,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return $this->getMainPicture();
 	}
 
-	// PhotoValues /////
+	// LogoValues /////
 
 	public function addLogoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $logoValue) {
 		if (!$this->logoValues->contains($logoValue)) {
@@ -506,25 +464,36 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->logoValues->removeElement($logoValue);
 	}
 
-	public function getLogoValues() {
-		return $this->logoValues;
-	}
-
 	public function setLogoValues($logoValues) {
 		$this->logoValues = $logoValues;
 	}
 
-	// Website /////
-
-	public function getPhoto() {
-		return $this->photo;
+	public function getLogoValues() {
+		return $this->logoValues;
 	}
+
+	// LogoRejected /////
+
+	public function setLogoRejected($logoRejected) {
+		$this->logoRejected = $logoRejected;
+		return $this;
+	}
+
+	public function getLogoRejected() {
+		return $this->logoRejected;
+	}
+
+	// Photo /////
 
 	public function setPhoto($photo) {
 		return $this->photo = $photo;
 	}
 
-	// WebsiteValues /////
+	public function getPhoto() {
+		return $this->photo;
+	}
+
+	// PhotoValues /////
 
 	public function addPhotoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $photoValue) {
 		if (!$this->photoValues->contains($photoValue)) {
@@ -537,26 +506,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->photoValues->removeElement($photoValue);
 	}
 
-	public function getPhotoValues() {
-		return $this->photoValues;
-	}
-
 	public function setPhotoValues($photoValues) {
 		$this->photoValues = $photoValues;
 	}
 
-	// Address /////
-
-	public function getWebsite() {
-		return $this->website;
+	public function getPhotoValues() {
+		return $this->photoValues;
 	}
+
+	// Website /////
 
 	public function setWebsite($website) {
 		$this->website = $website;
 		return $this;
 	}
 
-	// Location /////
+	public function getWebsite() {
+		return $this->website;
+	}
+
+	// WebsiteValues /////
 
 	public function addWebsiteValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $websiteValue) {
 		if (!$this->websiteValues->contains($websiteValue)) {
@@ -569,17 +538,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->websiteValues->removeElement($websiteValue);
 	}
 
-	// GeographicalAreas /////
+	public function setWebsiteValues($websiteValues) {
+		$this->websiteValues = $websiteValues;
+	}
 
 	public function getWebsiteValues() {
 		return $this->websiteValues;
 	}
 
-	public function setWebsiteValues($websiteValues) {
-		$this->websiteValues = $websiteValues;
+	// Address /////
+
+	public function setAddress($address) {
+		$this->address = $address;
+		return $this;
 	}
 
-	// PostalCode /////
+	public function getAddress() {
+		return $this->address;
+	}
+
+	// Location /////
 
 	public function setLocation($location) {
 		return $this->setAddress($location);
@@ -589,36 +567,32 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return $this->getAddress();
 	}
 
-	// Locality /////
-
-	public function getAddress() {
-		return $this->address;
-	}
-
-	public function setAddress($address) {
-		$this->address = $address;
-		return $this;
-	}
-
-	// Country /////
-
-	public function getGeographicalAreas() {
-		return $this->geographicalAreas;
-	}
+	// GeographicalAreas /////
 
 	public function setGeographicalAreas($geographicalAreas = null) {
 		$this->geographicalAreas = $geographicalAreas;
 		return $this;
 	}
 
-	// AddressValues /////
+	public function getGeographicalAreas() {
+		return $this->geographicalAreas;
+	}
+
+	// PostalCode /////
+
+	public function setPostalCode($postalCode = null) {
+		$this->postalCode = $postalCode;
+		return $this;
+	}
 
 	public function getPostalCode() {
 		return $this->postalCode;
 	}
 
-	public function setPostalCode($postalCode = null) {
-		$this->postalCode = $postalCode;
+	// Locality /////
+
+	public function setLocality($locality = null) {
+		$this->locality = $locality;
 		return $this;
 	}
 
@@ -626,23 +600,18 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return $this->locality;
 	}
 
-	public function setLocality($locality = null) {
-		$this->locality = $locality;
-		return $this;
-	}
-
-	// Phone /////
-
-	public function getCountry() {
-		return $this->country;
-	}
+	// Country /////
 
 	public function setCountry($country = null) {
 		$this->country = $country;
 		return $this;
 	}
 
-	// PhoneValues /////
+	public function getCountry() {
+		return $this->country;
+	}
+
+	// AddressValues /////
 
 	public function addAddressValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Location $addressValue) {
 		if (!$this->addressValues->contains($addressValue)) {
@@ -655,26 +624,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->addressValues->removeElement($addressValue);
 	}
 
-	public function getAddressValues() {
-		return $this->addressValues;
-	}
-
 	public function setAddressValues($addressValues) {
 		$this->addressValues = $addressValues;
 	}
 
-	// Description /////
-
-	public function getPhone() {
-		return $this->phone;
+	public function getAddressValues() {
+		return $this->addressValues;
 	}
+
+	// Phone /////
 
 	public function setPhone($phone) {
 		$this->phone = $phone;
 		return $this;
 	}
 
-	// DescriptionValues /////
+	public function getPhone() {
+		return $this->phone;
+	}
+
+	// PhoneValues /////
 
 	public function addPhoneValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Phone $phoneValue) {
 		if (!$this->phoneValues->contains($phoneValue)) {
@@ -687,15 +656,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->phoneValues->removeElement($phoneValue);
 	}
 
-	public function getPhoneValues() {
-		return $this->phoneValues;
-	}
-
 	public function setPhoneValues($phoneValues) {
 		$this->phoneValues = $phoneValues;
 	}
 
-	// InsStoreSelling /////
+	public function getPhoneValues() {
+		return $this->phoneValues;
+	}
+
+	// Description /////
+
+	public function setDescription($description) {
+		$this->description = $description;
+		return $this;
+	}
+
+	public function getDescription() {
+		return $this->description;
+	}
+
+	// DescriptionValues /////
 
 	public function addDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
 		if (!$this->descriptionValues->contains($descriptionValue)) {
@@ -708,26 +688,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->descriptionValues->removeElement($descriptionValue);
 	}
 
-	// InStoreSellingValues /////
+	public function setDescriptionValues($descriptionValues) {
+		$this->descriptionValues = $descriptionValues;
+	}
 
 	public function getDescriptionValues() {
 		return $this->descriptionValues;
 	}
 
-	public function setDescriptionValues($descriptionValues) {
-		$this->descriptionValues = $descriptionValues;
-	}
-
-	public function getInStoreSelling() {
-		return $this->inStoreSelling;
-	}
+	// InsStoreSelling /////
 
 	public function setInStoreSelling($inStoreSelling) {
 		$this->inStoreSelling = $inStoreSelling;
 		return $this;
 	}
 
-	// MailOrderSelling /////
+	public function getInStoreSelling() {
+		return $this->inStoreSelling;
+	}
+
+	// InStoreSellingValues /////
 
 	public function addInStoreSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $inStoreSellingValues) {
 		if (!$this->inStoreSellingValues->contains($inStoreSellingValues)) {
@@ -740,26 +720,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->inStoreSellingValues->removeElement($inStoreSellingValues);
 	}
 
-	// MailOrderSellingValues /////
+	public function setInStoreSellingValues($inStoreSellingValues) {
+		$this->inStoreSellingValues = $inStoreSellingValues;
+	}
 
 	public function getInStoreSellingValues() {
 		return $this->inStoreSellingValues;
 	}
 
-	public function setInStoreSellingValues($inStoreSellingValues) {
-		$this->inStoreSellingValues = $inStoreSellingValues;
-	}
-
-	public function getMailOrderSelling() {
-		return $this->mailOrderSelling;
-	}
+	// MailOrderSelling /////
 
 	public function setMailOrderSelling($mailOrderSelling) {
 		$this->mailOrderSelling = $mailOrderSelling;
 		return $this;
 	}
 
-	// SaleToIndividuals /////
+	public function getMailOrderSelling() {
+		return $this->mailOrderSelling;
+	}
+
+	// MailOrderSellingValues /////
 
 	public function addMailOrderSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $mailOrderSellingValues) {
 		if (!$this->mailOrderSellingValues->contains($mailOrderSellingValues)) {
@@ -772,26 +752,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->mailOrderSellingValues->removeElement($mailOrderSellingValues);
 	}
 
-	// SaleToIndividualsValues /////
+	public function setMailOrderSellingValues($mailOrderSellingValues) {
+		$this->mailOrderSellingValues = $mailOrderSellingValues;
+	}
 
 	public function getMailOrderSellingValues() {
 		return $this->mailOrderSellingValues;
 	}
 
-	public function setMailOrderSellingValues($mailOrderSellingValues) {
-		$this->mailOrderSellingValues = $mailOrderSellingValues;
-	}
-
-	public function getSaleToIndividuals() {
-		return $this->saleToIndividuals;
-	}
+	// SaleToIndividuals /////
 
 	public function setSaleToIndividuals($saleToIndividuals) {
 		$this->saleToIndividuals = $saleToIndividuals;
 		return $this;
 	}
 
-	// Products /////
+	public function getSaleToIndividuals() {
+		return $this->saleToIndividuals;
+	}
+
+	// SaleToIndividualsValues /////
 
 	public function addSaleToIndividualsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $saleToIndividualsValues) {
 		if (!$this->saleToIndividualsValues->contains($saleToIndividualsValues)) {
@@ -804,15 +784,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->saleToIndividualsValues->removeElement($saleToIndividualsValues);
 	}
 
-	// ProductsValues /////
+	public function setSaleToIndividualsValues($saleToIndividualsValues) {
+		$this->saleToIndividualsValues = $saleToIndividualsValues;
+	}
 
 	public function getSaleToIndividualsValues() {
 		return $this->saleToIndividualsValues;
 	}
 
-	public function setSaleToIndividualsValues($saleToIndividualsValues) {
-		$this->saleToIndividualsValues = $saleToIndividualsValues;
+	// Products /////
+
+	public function setProducts($products) {
+		$this->products = $products;
+		return $this;
 	}
+
+	public function getProducts() {
+		return $this->products;
+	}
+
+	// ProductsValues /////
 
 	public function addProductsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $productsValue) {
 		if (!$this->productsValues->contains($productsValue)) {
@@ -825,14 +816,23 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->productsValues->removeElement($productsValue);
 	}
 
-	// Services /////
+	public function setProductsValues($productsValues) {
+		$this->productsValues = $productsValues;
+	}
 
 	public function getProductsValues() {
 		return $this->productsValues;
 	}
 
-	public function setProductsValues($productsValues) {
-		$this->productsValues = $productsValues;
+	// Services /////
+
+	public function setServices($services) {
+		$this->services = $services;
+		return $this;
+	}
+
+	public function getServices() {
+		return $this->services;
 	}
 
 	// ServicesValues /////
@@ -848,23 +848,23 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->servicesValues->removeElement($servicesValue);
 	}
 
-	public function getServicesValues() {
-		return $this->servicesValues;
-	}
-
 	public function setServicesValues($servicesValues) {
 		$this->servicesValues = $servicesValues;
 	}
 
-	// Woods /////
-
-	public function getWoods() {
-		return $this->woods;
+	public function getServicesValues() {
+		return $this->servicesValues;
 	}
+
+	// Woods /////
 
 	public function setWoods($woods) {
 		$this->woods = $woods;
 		return $this;
+	}
+
+	public function getWoods() {
+		return $this->woods;
 	}
 
 	// WoodsValues /////
@@ -880,12 +880,12 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->woodsValues->removeElement($woodsValue);
 	}
 
-	public function getWoodsValues() {
-		return $this->woodsValues;
-	}
-
 	public function setWoodsValues($woodsValues) {
 		$this->woodsValues = $woodsValues;
+	}
+
+	public function getWoodsValues() {
+		return $this->woodsValues;
 	}
 
 	// CreationCount /////
