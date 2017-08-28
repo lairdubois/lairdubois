@@ -624,6 +624,32 @@ knowledge:
       new_providers: '[0,1]nouveau fournisseur|]1,Inf]nouveaux fournisseurs'
       providers: '[0,1]fournisseur|]1,Inf]fournisseurs'
       stores: '[0,1]agence ou boutique|]1,Inf]agences ou boutiques'
+  school:
+    description: Retrouvez toutes les écoles
+    new: Ajouter une école
+    create: Créer une nouvelle école
+    list: Les écoles
+    nav: Ecoles
+    field:
+      name: Nom
+      logo: Logo
+      photo: Photo
+      website: Site internet
+      address: Adresse
+      phone: Téléphone
+      description: Descriptif
+      public: Etablissement public
+      diplomas: Diplômes
+      training_types: Type de formation
+    help:
+      name: "L'**Nom** [TODO]."
+      logo: "Le **Logo** est une image représentant le logotype de l'école."
+      photo: "La **Photo** est une photo de l'école."
+      website: "Le **Site internet** est l'adresse du site web de l'école."
+      address: "L'**Adresse** est l'adresse postale de l'école."
+      phone: "Le **Téléphone** est le numéro de téléphone de l'école."
+      description: "Le **Descriptif** décrit succintement cette école."
+      diplomas: "Le **Diplôme** [TODO]."
   tool:
     list: Outils
     token:

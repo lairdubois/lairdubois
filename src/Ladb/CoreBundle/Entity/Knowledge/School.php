@@ -27,26 +27,32 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 	use LocalisableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\School';
-	const TYPE = 111;
+	const TYPE = 115;
 
 	const STRIPPED_NAME = 'school';
 
 	const FIELD_NAME = 'name';
 	const FIELD_LOGO = 'logo';
 	const FIELD_PHOTO = 'photo';
-	const FIELD_WEBSITE  = 'website';
-	const FIELD_ADDRESS  = 'address';
-	const FIELD_PHONE  = 'phone';
-	const FIELD_DESCRIPTION  = 'description';
+	const FIELD_WEBSITE = 'website';
+	const FIELD_ADDRESS = 'address';
+	const FIELD_PHONE = 'phone';
+	const FIELD_DESCRIPTION = 'description';
+	const FIELD_PUBLIC = 'public';
+	const FIELD_DIPLOMAS = 'diplomas';
+	const FIELD_TRAINING_TYPES  = 'training_types';
 
 	public static $FIELD_DEFS = array(
-		School::FIELD_NAME        => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_MANDATORY => true, School::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueWood', array('excludedId' => '@getId'))), School::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul Nom français par proposition.')))),
-		School::FIELD_LOGO        => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true),
-		School::FIELD_PHOTO       => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
-		School::FIELD_WEBSITE     => array(School::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
-		School::FIELD_ADDRESS     => array(School::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),
-		School::FIELD_PHONE       => array(School::ATTRIB_TYPE => Phone::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
-		School::FIELD_DESCRIPTION => array(School::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
+		School::FIELD_NAME           => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true, School::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueWood', array('excludedId' => '@getId'))), School::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul Nom français par proposition.')))),
+		School::FIELD_LOGO           => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true),
+		School::FIELD_PHOTO          => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
+		School::FIELD_WEBSITE        => array(School::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
+		School::FIELD_ADDRESS        => array(School::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),
+		School::FIELD_PHONE          => array(School::ATTRIB_TYPE => Phone::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
+		School::FIELD_DESCRIPTION    => array(School::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
+		School::FIELD_PUBLIC         => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
+		School::FIELD_DIPLOMAS       => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_FILTER_QUERY => '@diplomas:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul diplôme par proposition.')))),
+		School::FIELD_TRAINING_TYPES => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_CHOICES => array(0 => 'Continue', 1 => 'Alternance', 2 => 'Apprentissage', 4 => 'Professionnelle'), School::ATTRIB_USE_CHOICES_VALUE => true, School::ATTRIB_FILTER_QUERY => '@products:"%q%"'),
 	);
 
 	/**
@@ -69,7 +75,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_logo")
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_logo")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $logoValues;
@@ -89,7 +95,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_photo")
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_photo")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $photoValues;
@@ -102,7 +108,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_website")
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_website")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $websiteValues;
@@ -145,7 +151,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Location", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_address")
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_address")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $addressValues;
@@ -158,7 +164,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Phone", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_phone")
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_phone")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $phoneValues;
@@ -171,10 +177,49 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Longtext", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_description")
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_description")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $descriptionValues;
+
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=true)
+	 */
+	private $public;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_public")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $publicValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $diplomas;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_diplomas")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $diplomasValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $trainingTypes;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_training_types")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $trainingTypesValues;
 
 
 	/////
@@ -186,16 +231,12 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->websiteValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->addressValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->phoneValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->publicValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->diplomasValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->trainingTypesValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
-
-	// Type /////
-
-	public function getType() {
-		return School::TYPE;
-	}
 
 	// IsRejected /////
 
@@ -203,155 +244,83 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return $this->getNameRejected() || $this->getLogoRejected();
 	}
 
-	// SignRejected /////
+	// Type /////
 
-	public function getNameRejected() {
-		return $this->nameRejected;
+	public function getType() {
+		return School::TYPE;
 	}
 
-	public function getLogoRejected() {
-		return $this->logoRejected;
-	}
-
-	// LogoRejected /////
-
-	public function setLogoRejected($logoRejected) {
-		$this->logoRejected = $logoRejected;
-		return $this;
-	}
-
-	public function setSignRejected($signRejected) {
-		$this->signRejected = $signRejected;
-		return $this;
-	}
-
-	// FieldDefs /////
+	// Body /////
 
 	public function getBody() {
 		if (!empty($this->getDescription())) {
 			return $this->getDescription();
 		}
 		$terms = array($this->getName());
-		if (!empty($this->getStore())) {
-			$terms[] = $this->getStore();
-		}
-		if (!empty($this->getProducts())) {
-			$terms[] = $this->getProducts();
-		}
-		if (!empty($this->getServices())) {
-			$terms[] = $this->getServices();
-		}
 		return implode($terms, ',');
 	}
 
-	// IsAffiliate /////
-
-	public function getDescription() {
-		return $this->description;
-	}
-
-	public function setDescription($description) {
-		$this->description = $description;
-		return $this;
-	}
-
-	// Store /////
-
-	public function getName() {
-		return $this->name;
-	}
-
-	public function setName($name) {
-		$this->name = $name;
-		$this->setTitle($name);
-		return $this;
-	}
-
-	// Sign /////
-
-	public function getStore() {
-		return $this->store;
-	}
-
-	public function getProducts() {
-		return $this->products;
-	}
-
-	// SignValues /////
-
-	public function getServices() {
-		return $this->services;
-	}
-
-	public function setStore($store) {
-		$this->store = $store;
-		return $this;
-	}
-
-	public function setProducts($products) {
-		$this->products = $products;
-		return $this;
-	}
-
-	public function setServices($services) {
-		$this->services = $services;
-		return $this;
-	}
-
-	// SignRejected /////
+	// StrippedName /////
 
 	public function getStrippedName() {
 		return School::STRIPPED_NAME;
 	}
 
+	// FieldDefs /////
+
 	public function getFieldDefs() {
 		return School::$FIELD_DEFS;
 	}
 
-	// Logo /////
+	// Name /////
 
-	public function getIsAffiliate() {
-		return $this->isAffiliate;
-	}
-
-	public function setIsAffiliate($isAffiliate) {
-		$this->isAffiliate = $isAffiliate;
-		return $this;
-	}
-
-	// LogoValues /////
-
-	public function getSign() {
-		return $this->sign;
-	}
-
-	public function setSign($sign) {
-		$this->sign = $sign;
-		return $this;
-	}
-
-	public function addSignValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Sign $signValue) {
-		if (!$this->signValues->contains($signValue)) {
-			$this->signValues[] = $signValue;
+	public function setName($name) {
+		$this->name = $name;
+		if (!is_null($name)) {
+			$this->setTitle(explode(',', $name)[0]);
+		} else {
+			$this->setTitle(null);
 		}
 		return $this;
 	}
 
-	public function removeSignValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Sign $signValue) {
-		$this->signValues->removeElement($signValue);
+	public function getName() {
+		return $this->name;
 	}
 
-	// LogoRejected /////
+	// NameValues /////
 
-	public function getSignValues() {
-		return $this->signValues;
+	public function addNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $nameValue) {
+		if (!$this->nameValues->contains($nameValue)) {
+			$this->nameValues[] = $nameValue;
+		}
+		return $this;
 	}
 
-	public function setSignValues($signValues) {
-		$this->signValues = $signValues;
+	public function removeNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $nameValue) {
+		$this->nameValues->removeElement($nameValue);
 	}
 
-	// Photo /////
+	public function setNameValues($nameValues) {
+		$this->nameValues = $nameValues;
+	}
+
+	public function getNameValues() {
+		return $this->nameValues;
+	}
+
+	// NameRejected /////
+
+	public function setNameRejected($nameRejected) {
+		$this->nameRejected = $nameRejected;
+		return $this;
+	}
+
+	public function getNameRejected() {
+		return $this->nameRejected;
+	}
+
+	// Logo /////
 
 	public function setLogo($logo) {
 		return $this->setMainPicture($logo);
@@ -361,7 +330,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return $this->getMainPicture();
 	}
 
-	// PhotoValues /////
+	// LogoValues /////
 
 	public function addLogoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $logoValue) {
 		if (!$this->logoValues->contains($logoValue)) {
@@ -374,25 +343,36 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->logoValues->removeElement($logoValue);
 	}
 
-	public function getLogoValues() {
-		return $this->logoValues;
-	}
-
 	public function setLogoValues($logoValues) {
 		$this->logoValues = $logoValues;
 	}
 
-	// Website /////
-
-	public function getPhoto() {
-		return $this->photo;
+	public function getLogoValues() {
+		return $this->logoValues;
 	}
+
+	// LogoRejected /////
+
+	public function setLogoRejected($logoRejected) {
+		$this->logoRejected = $logoRejected;
+		return $this;
+	}
+
+	public function getLogoRejected() {
+		return $this->logoRejected;
+	}
+
+	// Photo /////
 
 	public function setPhoto($photo) {
 		return $this->photo = $photo;
 	}
 
-	// WebsiteValues /////
+	public function getPhoto() {
+		return $this->photo;
+	}
+
+	// PhotoValues /////
 
 	public function addPhotoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $photoValue) {
 		if (!$this->photoValues->contains($photoValue)) {
@@ -405,26 +385,26 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->photoValues->removeElement($photoValue);
 	}
 
-	public function getPhotoValues() {
-		return $this->photoValues;
-	}
-
 	public function setPhotoValues($photoValues) {
 		$this->photoValues = $photoValues;
 	}
 
-	// Address /////
-
-	public function getWebsite() {
-		return $this->website;
+	public function getPhotoValues() {
+		return $this->photoValues;
 	}
+
+	// Website /////
 
 	public function setWebsite($website) {
 		$this->website = $website;
 		return $this;
 	}
 
-	// Location /////
+	public function getWebsite() {
+		return $this->website;
+	}
+
+	// WebsiteValues /////
 
 	public function addWebsiteValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $websiteValue) {
 		if (!$this->websiteValues->contains($websiteValue)) {
@@ -437,17 +417,26 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->websiteValues->removeElement($websiteValue);
 	}
 
-	// GeographicalAreas /////
+	public function setWebsiteValues($websiteValues) {
+		$this->websiteValues = $websiteValues;
+	}
 
 	public function getWebsiteValues() {
 		return $this->websiteValues;
 	}
 
-	public function setWebsiteValues($websiteValues) {
-		$this->websiteValues = $websiteValues;
+	// Address /////
+
+	public function setAddress($address) {
+		$this->address = $address;
+		return $this;
 	}
 
-	// PostalCode /////
+	public function getAddress() {
+		return $this->address;
+	}
+
+	// Location /////
 
 	public function setLocation($location) {
 		return $this->setAddress($location);
@@ -457,36 +446,32 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return $this->getAddress();
 	}
 
-	// Locality /////
-
-	public function getAddress() {
-		return $this->address;
-	}
-
-	public function setAddress($address) {
-		$this->address = $address;
-		return $this;
-	}
-
-	// Country /////
-
-	public function getGeographicalAreas() {
-		return $this->geographicalAreas;
-	}
+	// GeographicalAreas /////
 
 	public function setGeographicalAreas($geographicalAreas = null) {
 		$this->geographicalAreas = $geographicalAreas;
 		return $this;
 	}
 
-	// AddressValues /////
+	public function getGeographicalAreas() {
+		return $this->geographicalAreas;
+	}
+
+	// PostalCode /////
+
+	public function setPostalCode($postalCode = null) {
+		$this->postalCode = $postalCode;
+		return $this;
+	}
 
 	public function getPostalCode() {
 		return $this->postalCode;
 	}
 
-	public function setPostalCode($postalCode = null) {
-		$this->postalCode = $postalCode;
+	// Locality /////
+
+	public function setLocality($locality = null) {
+		$this->locality = $locality;
 		return $this;
 	}
 
@@ -494,23 +479,18 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return $this->locality;
 	}
 
-	public function setLocality($locality = null) {
-		$this->locality = $locality;
-		return $this;
-	}
-
-	// Phone /////
-
-	public function getCountry() {
-		return $this->country;
-	}
+	// Country /////
 
 	public function setCountry($country = null) {
 		$this->country = $country;
 		return $this;
 	}
 
-	// PhoneValues /////
+	public function getCountry() {
+		return $this->country;
+	}
+
+	// AddressValues /////
 
 	public function addAddressValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Location $addressValue) {
 		if (!$this->addressValues->contains($addressValue)) {
@@ -523,26 +503,26 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->addressValues->removeElement($addressValue);
 	}
 
-	public function getAddressValues() {
-		return $this->addressValues;
-	}
-
 	public function setAddressValues($addressValues) {
 		$this->addressValues = $addressValues;
 	}
 
-	// Description /////
-
-	public function getPhone() {
-		return $this->phone;
+	public function getAddressValues() {
+		return $this->addressValues;
 	}
+
+	// Phone /////
 
 	public function setPhone($phone) {
 		$this->phone = $phone;
 		return $this;
 	}
 
-	// DescriptionValues /////
+	public function getPhone() {
+		return $this->phone;
+	}
+
+	// PhoneValues /////
 
 	public function addPhoneValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Phone $phoneValue) {
 		if (!$this->phoneValues->contains($phoneValue)) {
@@ -555,15 +535,26 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->phoneValues->removeElement($phoneValue);
 	}
 
-	public function getPhoneValues() {
-		return $this->phoneValues;
-	}
-
 	public function setPhoneValues($phoneValues) {
 		$this->phoneValues = $phoneValues;
 	}
 
-	// InsStoreSelling /////
+	public function getPhoneValues() {
+		return $this->phoneValues;
+	}
+
+	// Description /////
+
+	public function setDescription($description) {
+		$this->description = $description;
+		return $this;
+	}
+
+	public function getDescription() {
+		return $this->description;
+	}
+
+	// DescriptionValues /////
 
 	public function addDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
 		if (!$this->descriptionValues->contains($descriptionValue)) {
@@ -576,226 +567,108 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->descriptionValues->removeElement($descriptionValue);
 	}
 
-	// InStoreSellingValues /////
+	public function setDescriptionValues($descriptionValues) {
+		$this->descriptionValues = $descriptionValues;
+	}
 
 	public function getDescriptionValues() {
 		return $this->descriptionValues;
 	}
 
-	public function setDescriptionValues($descriptionValues) {
-		$this->descriptionValues = $descriptionValues;
-	}
+	// Public /////
 
-	public function getInStoreSelling() {
-		return $this->inStoreSelling;
-	}
-
-	public function setInStoreSelling($inStoreSelling) {
-		$this->inStoreSelling = $inStoreSelling;
+	public function setPublic($public) {
+		$this->public = $public;
 		return $this;
 	}
 
-	// MailOrderSelling /////
+	public function getPublic() {
+		return $this->public;
+	}
 
-	public function addInStoreSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $inStoreSellingValues) {
-		if (!$this->inStoreSellingValues->contains($inStoreSellingValues)) {
-			$this->inStoreSellingValues[] = $inStoreSellingValues;
+	// PublicValues /////
+
+	public function addPublicValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicValue) {
+		if (!$this->publicValues->contains($publicValue)) {
+			$this->publicValues[] = $publicValue;
 		}
 		return $this;
 	}
 
-	public function removeInStoreSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $inStoreSellingValues) {
-		$this->inStoreSellingValues->removeElement($inStoreSellingValues);
+	public function removePublicValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicValue) {
+		$this->publicValues->removeElement($publicValue);
 	}
 
-	// MailOrderSellingValues /////
-
-	public function getInStoreSellingValues() {
-		return $this->inStoreSellingValues;
+	public function setPublicValues($publicValues) {
+		$this->publicValues = $publicValues;
 	}
 
-	public function setInStoreSellingValues($inStoreSellingValues) {
-		$this->inStoreSellingValues = $inStoreSellingValues;
+	public function getPublicValues() {
+		return $this->publicValues;
 	}
 
-	public function getMailOrderSelling() {
-		return $this->mailOrderSelling;
-	}
+	// Diplomas /////
 
-	public function setMailOrderSelling($mailOrderSelling) {
-		$this->mailOrderSelling = $mailOrderSelling;
+	public function setDiplomas($diplomas) {
+		$this->diplomas = $diplomas;
 		return $this;
 	}
 
-	// SaleToIndividuals /////
+	public function getDiplomas() {
+		return $this->diplomas;
+	}
 
-	public function addMailOrderSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $mailOrderSellingValues) {
-		if (!$this->mailOrderSellingValues->contains($mailOrderSellingValues)) {
-			$this->mailOrderSellingValues[] = $mailOrderSellingValues;
+	// DiplomasValues /////
+
+	public function addDiplomasValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $diplomasValue) {
+		if (!$this->diplomasValues->contains($diplomasValue)) {
+			$this->diplomasValues[] = $diplomasValue;
 		}
 		return $this;
 	}
 
-	public function removeMailOrderSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $mailOrderSellingValues) {
-		$this->mailOrderSellingValues->removeElement($mailOrderSellingValues);
+	public function removeDiplomasValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $diplomasValue) {
+		$this->diplomasValues->removeElement($diplomasValue);
 	}
 
-	// SaleToIndividualsValues /////
-
-	public function getMailOrderSellingValues() {
-		return $this->mailOrderSellingValues;
+	public function setDiplomasValues($diplomasValues) {
+		$this->diplomasValues = $diplomasValues;
 	}
 
-	public function setMailOrderSellingValues($mailOrderSellingValues) {
-		$this->mailOrderSellingValues = $mailOrderSellingValues;
+	public function getDiplomasValues() {
+		return $this->diplomasValues;
 	}
 
-	public function getSaleToIndividuals() {
-		return $this->saleToIndividuals;
-	}
+	// TrainingTypes /////
 
-	public function setSaleToIndividuals($saleToIndividuals) {
-		$this->saleToIndividuals = $saleToIndividuals;
+	public function setTrainingTypes($trainingTypes) {
+		$this->trainingTypes = $trainingTypes;
 		return $this;
 	}
 
-	// Products /////
+	public function getTrainingTypes() {
+		return $this->trainingTypes;
+	}
 
-	public function addSaleToIndividualsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $saleToIndividualsValues) {
-		if (!$this->saleToIndividualsValues->contains($saleToIndividualsValues)) {
-			$this->saleToIndividualsValues[] = $saleToIndividualsValues;
+	// TrainingTypesValues /////
+
+	public function addTrainingTypesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $trainingTypesValue) {
+		if (!$this->trainingTypesValues->contains($trainingTypesValue)) {
+			$this->trainingTypesValues[] = $trainingTypesValue;
 		}
 		return $this;
 	}
 
-	public function removeSaleToIndividualsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $saleToIndividualsValues) {
-		$this->saleToIndividualsValues->removeElement($saleToIndividualsValues);
+	public function removeTrainingTypesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $trainingTypesValue) {
+		$this->trainingTypesValues->removeElement($trainingTypesValue);
 	}
 
-	// ProductsValues /////
-
-	public function getSaleToIndividualsValues() {
-		return $this->saleToIndividualsValues;
+	public function setTrainingTypesValues($trainingTypesValues) {
+		$this->trainingTypesValues = $trainingTypesValues;
 	}
 
-	public function setSaleToIndividualsValues($saleToIndividualsValues) {
-		$this->saleToIndividualsValues = $saleToIndividualsValues;
-	}
-
-	public function addProductsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $productsValue) {
-		if (!$this->productsValues->contains($productsValue)) {
-			$this->productsValues[] = $productsValue;
-		}
-		return $this;
-	}
-
-	public function removeProductsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $productsValue) {
-		$this->productsValues->removeElement($productsValue);
-	}
-
-	// Services /////
-
-	public function getProductsValues() {
-		return $this->productsValues;
-	}
-
-	public function setProductsValues($productsValues) {
-		$this->productsValues = $productsValues;
-	}
-
-	// ServicesValues /////
-
-	public function addServicesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $servicesValue) {
-		if (!$this->servicesValues->contains($servicesValue)) {
-			$this->servicesValues[] = $servicesValue;
-		}
-		return $this;
-	}
-
-	public function removeServicesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $servicesValue) {
-		$this->servicesValues->removeElement($servicesValue);
-	}
-
-	public function getServicesValues() {
-		return $this->servicesValues;
-	}
-
-	public function setServicesValues($servicesValues) {
-		$this->servicesValues = $servicesValues;
-	}
-
-	// Woods /////
-
-	public function getWoods() {
-		return $this->woods;
-	}
-
-	public function setWoods($woods) {
-		$this->woods = $woods;
-		return $this;
-	}
-
-	// WoodsValues /////
-
-	public function addWoodsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $woodsValue) {
-		if (!$this->woodsValues->contains($woodsValue)) {
-			$this->woodsValues[] = $woodsValue;
-		}
-		return $this;
-	}
-
-	public function removeWoodsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $woodsValue) {
-		$this->woodsValues->removeElement($woodsValue);
-	}
-
-	public function getWoodsValues() {
-		return $this->woodsValues;
-	}
-
-	public function setWoodsValues($woodsValues) {
-		$this->woodsValues = $woodsValues;
-	}
-
-	// CreationCount /////
-
-	public function incrementCreationCount($by = 1) {
-		return $this->creationCount += intval($by);
-	}
-
-	public function getCreationCount() {
-		return $this->creationCount;
-	}
-
-	public function setCreationCount($creationCount) {
-		$this->creationCount = $creationCount;
-		return $this;
-	}
-
-	// Creations /////
-
-	public function getCreations() {
-		return $this->creations;
-	}
-
-	// HowtoCount /////
-
-	public function incrementHowtoCount($by = 1) {
-		return $this->howtoCount += intval($by);
-	}
-
-	public function getHowtoCount() {
-		return $this->howtoCount;
-	}
-
-	public function setHowtoCount($howtoCount) {
-		$this->howtoCount = $howtoCount;
-		return $this;
-	}
-
-	// Howtos /////
-
-	public function getHowtos() {
-		return $this->howtos;
+	public function getTrainingTypesValues() {
+		return $this->trainingTypesValues;
 	}
 
 }

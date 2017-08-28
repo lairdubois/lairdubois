@@ -1,0 +1,9 @@
+{# set school #}
+
+<div class="ladb-knowledge-compact-infos">
+    {% if school.website %}<div><i class="ladb-icon-globe ladb-icon-fixed-center"></i> <a href="{{ school.website }}" target="_blank">{{ school.website|ladb_url_trim|truncate(30) }}</a></div>{% endif %}
+    {% if school.phone %}<div><i class="ladb-icon-phone ladb-icon-fixed-center"></i> <a href="tel:{{ school.phone }}">{{ school.phone }}</a></div>{% endif %}
+    {% if school.postalCode is not null and school.locality is not null or school.country is not null %}
+        <div><i class="ladb-icon-location ladb-icon-fixed-center"></i>{% if school.postalCode is not null %} {{ school.postalCode }}{% endif %}{% if school.locality is not null %} {{ school.locality }}{% endif %}{% if school.country is not null %} <small>({{ school.country }})</small>{% endif %}</div>
+    {% endif %}
+</div>

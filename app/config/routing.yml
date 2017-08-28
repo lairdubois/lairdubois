@@ -126,6 +126,10 @@ ladb_core_provider:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\ProviderController"
     type:     annotation
 
+ladb_core_school:
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\SchoolController"
+    type:     annotation
+
 ladb_core_knowledge:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\KnowledgeController"
     type:     annotation

@@ -1,0 +1,26 @@
+{% extends 'LadbCoreBundle:Core/Search:_searchbox.part.html.twig' %}
+
+{% set placeholder = 'search.in.schools'|trans() %}
+{% set searchPath = path('core_school_list', routeParameters) %}
+{% set mapSearchPath = path('core_school_list_geojson') %}
+{% set masonry = layout == 'view' %}
+
+{% block filtersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
+    {% if app.user %}
+        <li class="divider"></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block sortersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="recent" data-label="Récents" data-unique="true" data-icon="time"><i class="ladb-icon-time"></i> Récents</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-views" data-label="Plus vues" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus vus</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-likes" data-label="Préférés" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférés</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort" data-value="popular-comments" data-label="Plus commentés" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentés</a></li>
+{% endblock %}
+
+{% block searchboxShortcuts %}
+{% endblock %}

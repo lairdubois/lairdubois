@@ -1,0 +1,27 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{# set school #}
+
+{% set entity = school %}
+{% set headingClasses = school.nameRejected ? 'ladb-text-barred' : null %}
+{% set titleLinkClasses = school.nameRejected ? 'ladb-color-null' : null %}
+{% set imgClasses = school.nameRejected or school.logoRejected ? 'ladb-desaturate ladb-translucent' : null %}
+
+{% block image %}
+    {% if school.logoRejected %}
+        <div class="ladb-box-barred">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% include 'LadbCoreBundle:Knowledge/School:_compact-infos.part.html.twig' %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' with { 'entity':school } %}
+    {{ school.contributorCount }} <i class="ladb-icon-users"></i>{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}
+{% endblock %}

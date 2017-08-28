@@ -53,6 +53,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Answer (Qa)
 			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
 				return implode($delimiter, array( 'qa', 'answer' ));
+			// School
+			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
+				return implode($delimiter, array( 'knowledge', 'school' ));
 
 		}
 		return '';
@@ -161,6 +164,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Answer (Qa)
 			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
 				return '\Ladb\CoreBundle\Entity\Qa\Answer';
+			// School
+			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\School';
 
 		}
 		return null;
@@ -217,6 +223,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
 				$url = $router->generate('core_qa_question_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
+				$url = $router->generate('core_school_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

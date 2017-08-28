@@ -157,6 +157,9 @@ services:
   ladb_core.provider_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\ProviderManager
     arguments: ['@service_container']
+  ladb_core.school_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\SchoolManager
+    arguments: ['@service_container']
   ladb_core.wood_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\WoodManager
     arguments: ['@service_container']
@@ -195,6 +198,11 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\UniqueProviderValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.unique_provider_validator }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.unique_school_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueSchoolValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.unique_school_validator }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_core.unique_find_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UniqueFindValidator
@@ -393,6 +401,11 @@ services:
     arguments: ['@doctrine.orm.entity_manager']
   ladb_knowledge_newprovider:
     class: Ladb\CoreBundle\Form\Type\Knowledge\NewProviderType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_knowledge_newschool:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\NewSchoolType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
