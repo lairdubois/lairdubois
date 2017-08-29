@@ -222,6 +222,16 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 	private $trainingTypesValues;
 
 
+	/**
+	 * @ORM\Column(name="education_count", type="integer")
+	 */
+	private $educationCount = 0;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School\Education", mappedBy="school", cascade={"all"})
+	 */
+	private $educations;
+
 	/////
 
 	public function __construct() {
@@ -234,6 +244,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->publicValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->diplomasValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->trainingTypesValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->educations = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -246,11 +257,35 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	// Type /////
 
-	public function getType() {
-		return School::TYPE;
+	public function getNameRejected() {
+		return $this->nameRejected;
 	}
 
 	// Body /////
+
+	public function setNameRejected($nameRejected) {
+		$this->nameRejected = $nameRejected;
+		return $this;
+	}
+
+	// StrippedName /////
+
+	public function getLogoRejected() {
+		return $this->logoRejected;
+	}
+
+	// FieldDefs /////
+
+	public function setLogoRejected($logoRejected) {
+		$this->logoRejected = $logoRejected;
+		return $this;
+	}
+
+	// Name /////
+
+	public function getType() {
+		return School::TYPE;
+	}
 
 	public function getBody() {
 		if (!empty($this->getDescription())) {
@@ -260,19 +295,20 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return implode($terms, ',');
 	}
 
-	// StrippedName /////
+	// NameValues /////
 
-	public function getStrippedName() {
-		return School::STRIPPED_NAME;
+	public function getDescription() {
+		return $this->description;
 	}
 
-	// FieldDefs /////
-
-	public function getFieldDefs() {
-		return School::$FIELD_DEFS;
+	public function setDescription($description) {
+		$this->description = $description;
+		return $this;
 	}
 
-	// Name /////
+	public function getName() {
+		return $this->name;
+	}
 
 	public function setName($name) {
 		$this->name = $name;
@@ -284,11 +320,17 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return $this;
 	}
 
-	public function getName() {
-		return $this->name;
+	// NameRejected /////
+
+	public function getStrippedName() {
+		return School::STRIPPED_NAME;
 	}
 
-	// NameValues /////
+	public function getFieldDefs() {
+		return School::$FIELD_DEFS;
+	}
+
+	// Logo /////
 
 	public function addNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $nameValue) {
 		if (!$this->nameValues->contains($nameValue)) {
@@ -301,26 +343,15 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->nameValues->removeElement($nameValue);
 	}
 
-	public function setNameValues($nameValues) {
-		$this->nameValues = $nameValues;
-	}
+	// LogoValues /////
 
 	public function getNameValues() {
 		return $this->nameValues;
 	}
 
-	// NameRejected /////
-
-	public function setNameRejected($nameRejected) {
-		$this->nameRejected = $nameRejected;
-		return $this;
+	public function setNameValues($nameValues) {
+		$this->nameValues = $nameValues;
 	}
-
-	public function getNameRejected() {
-		return $this->nameRejected;
-	}
-
-	// Logo /////
 
 	public function setLogo($logo) {
 		return $this->setMainPicture($logo);
@@ -330,7 +361,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return $this->getMainPicture();
 	}
 
-	// LogoValues /////
+	// LogoRejected /////
 
 	public function addLogoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $logoValue) {
 		if (!$this->logoValues->contains($logoValue)) {
@@ -343,36 +374,25 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->logoValues->removeElement($logoValue);
 	}
 
-	public function setLogoValues($logoValues) {
-		$this->logoValues = $logoValues;
-	}
+	// Photo /////
 
 	public function getLogoValues() {
 		return $this->logoValues;
 	}
 
-	// LogoRejected /////
-
-	public function setLogoRejected($logoRejected) {
-		$this->logoRejected = $logoRejected;
-		return $this;
+	public function setLogoValues($logoValues) {
+		$this->logoValues = $logoValues;
 	}
 
-	public function getLogoRejected() {
-		return $this->logoRejected;
-	}
-
-	// Photo /////
-
-	public function setPhoto($photo) {
-		return $this->photo = $photo;
-	}
+	// PhotoValues /////
 
 	public function getPhoto() {
 		return $this->photo;
 	}
 
-	// PhotoValues /////
+	public function setPhoto($photo) {
+		return $this->photo = $photo;
+	}
 
 	public function addPhotoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $photoValue) {
 		if (!$this->photoValues->contains($photoValue)) {
@@ -385,26 +405,26 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->photoValues->removeElement($photoValue);
 	}
 
-	public function setPhotoValues($photoValues) {
-		$this->photoValues = $photoValues;
-	}
+	// Website /////
 
 	public function getPhotoValues() {
 		return $this->photoValues;
 	}
 
-	// Website /////
-
-	public function setWebsite($website) {
-		$this->website = $website;
-		return $this;
+	public function setPhotoValues($photoValues) {
+		$this->photoValues = $photoValues;
 	}
+
+	// WebsiteValues /////
 
 	public function getWebsite() {
 		return $this->website;
 	}
 
-	// WebsiteValues /////
+	public function setWebsite($website) {
+		$this->website = $website;
+		return $this;
+	}
 
 	public function addWebsiteValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $websiteValue) {
 		if (!$this->websiteValues->contains($websiteValue)) {
@@ -417,23 +437,14 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->websiteValues->removeElement($websiteValue);
 	}
 
-	public function setWebsiteValues($websiteValues) {
-		$this->websiteValues = $websiteValues;
-	}
+	// Address /////
 
 	public function getWebsiteValues() {
 		return $this->websiteValues;
 	}
 
-	// Address /////
-
-	public function setAddress($address) {
-		$this->address = $address;
-		return $this;
-	}
-
-	public function getAddress() {
-		return $this->address;
+	public function setWebsiteValues($websiteValues) {
+		$this->websiteValues = $websiteValues;
 	}
 
 	// Location /////
@@ -448,49 +459,58 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	// GeographicalAreas /////
 
-	public function setGeographicalAreas($geographicalAreas = null) {
-		$this->geographicalAreas = $geographicalAreas;
+	public function getAddress() {
+		return $this->address;
+	}
+
+	public function setAddress($address) {
+		$this->address = $address;
 		return $this;
 	}
+
+	// PostalCode /////
 
 	public function getGeographicalAreas() {
 		return $this->geographicalAreas;
 	}
 
-	// PostalCode /////
+	public function setGeographicalAreas($geographicalAreas = null) {
+		$this->geographicalAreas = $geographicalAreas;
+		return $this;
+	}
+
+	// Locality /////
+
+	public function getPostalCode() {
+		return $this->postalCode;
+	}
 
 	public function setPostalCode($postalCode = null) {
 		$this->postalCode = $postalCode;
 		return $this;
 	}
 
-	public function getPostalCode() {
-		return $this->postalCode;
-	}
+	// Country /////
 
-	// Locality /////
+	public function getLocality() {
+		return $this->locality;
+	}
 
 	public function setLocality($locality = null) {
 		$this->locality = $locality;
 		return $this;
 	}
 
-	public function getLocality() {
-		return $this->locality;
-	}
-
-	// Country /////
-
-	public function setCountry($country = null) {
-		$this->country = $country;
-		return $this;
-	}
+	// AddressValues /////
 
 	public function getCountry() {
 		return $this->country;
 	}
 
-	// AddressValues /////
+	public function setCountry($country = null) {
+		$this->country = $country;
+		return $this;
+	}
 
 	public function addAddressValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Location $addressValue) {
 		if (!$this->addressValues->contains($addressValue)) {
@@ -503,26 +523,26 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->addressValues->removeElement($addressValue);
 	}
 
-	public function setAddressValues($addressValues) {
-		$this->addressValues = $addressValues;
-	}
+	// Phone /////
 
 	public function getAddressValues() {
 		return $this->addressValues;
 	}
 
-	// Phone /////
-
-	public function setPhone($phone) {
-		$this->phone = $phone;
-		return $this;
+	public function setAddressValues($addressValues) {
+		$this->addressValues = $addressValues;
 	}
+
+	// PhoneValues /////
 
 	public function getPhone() {
 		return $this->phone;
 	}
 
-	// PhoneValues /////
+	public function setPhone($phone) {
+		$this->phone = $phone;
+		return $this;
+	}
 
 	public function addPhoneValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Phone $phoneValue) {
 		if (!$this->phoneValues->contains($phoneValue)) {
@@ -535,23 +555,14 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->phoneValues->removeElement($phoneValue);
 	}
 
-	public function setPhoneValues($phoneValues) {
-		$this->phoneValues = $phoneValues;
-	}
+	// Description /////
 
 	public function getPhoneValues() {
 		return $this->phoneValues;
 	}
 
-	// Description /////
-
-	public function setDescription($description) {
-		$this->description = $description;
-		return $this;
-	}
-
-	public function getDescription() {
-		return $this->description;
+	public function setPhoneValues($phoneValues) {
+		$this->phoneValues = $phoneValues;
 	}
 
 	// DescriptionValues /////
@@ -567,23 +578,23 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->descriptionValues->removeElement($descriptionValue);
 	}
 
-	public function setDescriptionValues($descriptionValues) {
-		$this->descriptionValues = $descriptionValues;
-	}
-
 	public function getDescriptionValues() {
 		return $this->descriptionValues;
 	}
 
+	public function setDescriptionValues($descriptionValues) {
+		$this->descriptionValues = $descriptionValues;
+	}
+
 	// Public /////
+
+	public function getPublic() {
+		return $this->public;
+	}
 
 	public function setPublic($public) {
 		$this->public = $public;
 		return $this;
-	}
-
-	public function getPublic() {
-		return $this->public;
 	}
 
 	// PublicValues /////
@@ -599,23 +610,23 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->publicValues->removeElement($publicValue);
 	}
 
-	public function setPublicValues($publicValues) {
-		$this->publicValues = $publicValues;
-	}
-
 	public function getPublicValues() {
 		return $this->publicValues;
 	}
 
+	public function setPublicValues($publicValues) {
+		$this->publicValues = $publicValues;
+	}
+
 	// Diplomas /////
+
+	public function getDiplomas() {
+		return $this->diplomas;
+	}
 
 	public function setDiplomas($diplomas) {
 		$this->diplomas = $diplomas;
 		return $this;
-	}
-
-	public function getDiplomas() {
-		return $this->diplomas;
 	}
 
 	// DiplomasValues /////
@@ -631,23 +642,23 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->diplomasValues->removeElement($diplomasValue);
 	}
 
-	public function setDiplomasValues($diplomasValues) {
-		$this->diplomasValues = $diplomasValues;
-	}
-
 	public function getDiplomasValues() {
 		return $this->diplomasValues;
 	}
 
+	public function setDiplomasValues($diplomasValues) {
+		$this->diplomasValues = $diplomasValues;
+	}
+
 	// TrainingTypes /////
+
+	public function getTrainingTypes() {
+		return $this->trainingTypes;
+	}
 
 	public function setTrainingTypes($trainingTypes) {
 		$this->trainingTypes = $trainingTypes;
 		return $this;
-	}
-
-	public function getTrainingTypes() {
-		return $this->trainingTypes;
 	}
 
 	// TrainingTypesValues /////
@@ -663,12 +674,44 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->trainingTypesValues->removeElement($trainingTypesValue);
 	}
 
+	public function getTrainingTypesValues() {
+		return $this->trainingTypesValues;
+	}
+
 	public function setTrainingTypesValues($trainingTypesValues) {
 		$this->trainingTypesValues = $trainingTypesValues;
 	}
 
-	public function getTrainingTypesValues() {
-		return $this->trainingTypesValues;
+	// EducationCount /////
+
+	public function incrementEducationCount($by = 1) {
+		return $this->educationCount += intval($by);
+	}
+
+	public function getEducationCount() {
+		return $this->educationCount;
+	}
+
+	public function setEducationCount($educationCount) {
+		$this->educationCount = $educationCount;
+		return $this;
+	}
+
+	// Educations /////
+
+	public function addEducation($education) {
+		if (!$this->educations->contains($education)) {
+			$this->educations[] = $education;
+		}
+		return $this;
+	}
+
+	public function removeEducation($education) {
+		$this->educations->removeElement($education);
+	}
+
+	public function getEducations() {
+		return $this->educations;
 	}
 
 }
