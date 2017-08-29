@@ -169,13 +169,13 @@ class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterfa
 
 	// Parent /////
 
-	public function getParent() {
-		return $this->parent;
-	}
-
 	public function setParent(\Ladb\CoreBundle\Entity\Core\Comment $parent = null) {
 		$this->parent = $parent;
 		return $this;
+	}
+
+	public function getParent() {
+		return $this->parent;
 	}
 
 	// Children /////
@@ -208,13 +208,13 @@ class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterfa
 		return $this->childCount += intval($by);
 	}
 
-	public function getChildCount() {
-		return $this->childCount;
-	}
-
 	public function setChildCount($childCount) {
 		$this->childCount = $childCount;
 		return $this;
+	}
+
+	public function getChildCount() {
+		return $this->childCount;
 	}
 
 }
