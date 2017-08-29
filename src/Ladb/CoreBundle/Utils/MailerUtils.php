@@ -68,9 +68,9 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
-	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess) {
+	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess) {
 		if ($recipientUser->getNewSpotlightEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
-			$parameters = array( 'recipientUser' => $recipientUser, 'entity' => $entity, 'twitterSuccess' => $twitterSuccess, 'facebookSuccess' => $facebookSuccess );
+			$parameters = array( 'recipientUser' => $recipientUser, 'entity' => $entity, 'twitterSuccess' => $twitterSuccess, 'facebookSuccess' => $facebookSuccess, 'pinterestSuccess' => $pinterestSuccess );
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Notification de nouveau coup de projecteur',

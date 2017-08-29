@@ -57,6 +57,7 @@
         "cebe/markdown": "1.1.1",
         "stripe/stripe-php": "4.1.1",
         "hashids/hashids": "^1.0",
+        "dirkgroenen/pinterest-api-php": "^0.2.11",
 
         "components/jquery": "1.12.1",
         "components/jqueryui": "1.11.4",

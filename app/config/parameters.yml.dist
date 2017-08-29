@@ -38,6 +38,10 @@ parameters:
     facebook_page_id:               YOUR_FACEBOOK_PAGE_ID
     facebook_access_token:          YOUR_FACEBOOK_ACCESS_TOKEN
 
+    pinterest_client_id:            YOUR_PINTEREST_CLIENT_ID
+    pinterest_client_secret:        YOUR_PINTEREST_CLIENT_SECRET
+    pinterest_access_token:         YOUR_PINTEREST_ACCESS_TOKEN
+
     stripe_secret_key:              YOUR_STRIPE_SECRET_KEY
     stripe_publishable_key:         YOUR_STRIPE_PUBLISHABLE_KEY
 

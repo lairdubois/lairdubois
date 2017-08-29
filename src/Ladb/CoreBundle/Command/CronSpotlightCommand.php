@@ -2,6 +2,10 @@
 
 namespace Ladb\CoreBundle\Command;
 
+use DirkGroenen\Pinterest\Pinterest;
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Model\StripableInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,6 +23,7 @@ class CronSpotlightCommand extends ContainerAwareCommand {
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force updating')
 			->addOption('force-twitter', null, InputOption::VALUE_NONE, 'Force posting on Twitter')
 			->addOption('force-facebook', null, InputOption::VALUE_NONE, 'Force posting on Facebook')
+			->addOption('force-pinterest', null, InputOption::VALUE_NONE, 'Force posting on Pinterest')
 			->setDescription('Update spotlights')
 			->setHelp(<<<EOT
 The <info>ladb:cron:spotlight</info> update spotlights
@@ -33,6 +38,7 @@ EOT
 		$forced = $input->getOption('force');
 		$forcedTwitter = $input->getOption('force-twitter');
 		$forcedFacebook = $input->getOption('force-facebook');
+		$forcedPinterest = $input->getOption('force-pinterest');
 		$verbose = $input->getOption('verbose');
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
@@ -65,6 +71,9 @@ EOT
 				}
 				if ($forcedFacebook) {
 					$this->_publishOnFacebook($currentSpotlight, $entity, $forced, $forcedFacebook, $verbose, $output);
+				}
+				if ($forcedPinterest) {
+					$this->_publishOnPinterest($currentSpotlight, $entity, $forced, $forcedPinterest, $verbose, $output);
 				}
 			}
 
@@ -214,6 +223,7 @@ EOT
 				// Publish on social networks
 				$twitterSuccess = $this->_publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output);
 				$facebookSuccess = $this->_publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output);
+				$pinterestSuccess = $this->_publishOnPinterest($spotlight, $entity, $forced, $forcedPinterest, $verbose, $output);
 
 				// Email notification
 				$mailerUtils = $this->getContainer()->get(MailerUtils::NAME);
@@ -221,7 +231,7 @@ EOT
 					$output->write('<info>Sending notification to '.$entity->getUser()->getDisplayname().'...</info>');
 				}
 				if ($forced) {
-					$mailerUtils->sendNewSpotlightNotificationEmailMessage($entity->getUser(), $spotlight, $entity, $twitterSuccess, $facebookSuccess);
+					$mailerUtils->sendNewSpotlightNotificationEmailMessage($entity->getUser(), $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess);
 					if ($verbose) {
 						$output->writeln('<fg=cyan>[Done]</fg=cyan>');
 					}
@@ -308,8 +318,6 @@ EOT
 		return $success;
 	}
 
-	/////
-
 	private function _publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output) {
 
 		$success = true;
@@ -370,6 +378,74 @@ EOT
 		} else {
 			if ($verbose) {
 				$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
+			}
+		}
+
+		return $success;
+	}
+
+	private function _publishOnPinterest($spotlight, $entity, $forced, $forcedPinterest, $verbose, $output) {
+
+		$success = false;
+
+		if (($entity instanceof Creation || $entity instanceof Howto) && !is_null($entity->getMainPicture())) {
+
+			$board = 'lairdubois/'.( $entity instanceof Creation ? 'les-créations' : ($entity instanceof Howto ? 'les-pas-à-pas' : '') );
+			$note = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-pinterest-note.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+			if ($verbose) {
+				$output->writeln('<info>Posting to Pinterest (<fg=yellow>on board='.$board.' note='.$note.'</fg=yellow>) ...</info>');
+			}
+
+			$clientId = $this->getContainer()->getParameter('pinterest_client_id');
+			$clientSecret = $this->getContainer()->getParameter('pinterest_client_secret');
+			$accessToken = $this->getContainer()->getParameter('pinterest_access_token');
+
+			$pinterest = new Pinterest($clientId, $clientSecret);
+			$pinterest->auth->setOAuthToken($accessToken);
+
+			if ($forced || $forcedPinterest) {
+
+				$typableUtils = $this->getContainer()->get(TypableUtils::NAME);
+
+				$imageUrl = $entity instanceof StripableInterface ? $typableUtils->getUrlAction($entity, 'strip', true, false) : $this->getContainer()->get('liip_imagine.cache.manager')->getBrowserPath($entity->getMainPicture()->getAbsolutePath(), '600x600i');;
+				$link = $typableUtils->getUrlAction($entity);
+
+				try {
+
+					$pin = $pinterest->pins->create(array(
+						'board'     => $board,
+						'image_url' => $imageUrl,
+						'note'      => $note,
+						'link'      => $link,
+					));
+
+					if ($pin) {
+						$success = true;
+					}
+
+				} catch (\Exception $e) {
+
+					// Pinterest error
+					if ($verbose) {
+						$output->writeln('<fg=red>[Error] Pinterest returned an error: '.$e->getMessage().'</fg=red>');
+					}
+
+					$success = false;
+				}
+
+				if ($verbose && $success) {
+					$output->writeln('<fg=cyan>[Done]</fg=cyan>');
+				}
+
+			} else {
+				if ($verbose) {
+					$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
+				}
+			}
+
+		} else {
+			if ($verbose) {
+				$output->writeln('<fg=red>[Error] Only Creation and Howto with not null main picture can be published on Pinterest.</fg=red>');
 			}
 		}
 

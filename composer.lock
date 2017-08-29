@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a16ebefd907a55e58addfdacf39b1501",
+    "content-hash": "08d2b8fb4ff0f21f719a7fe67d509afd",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -638,6 +638,53 @@
                 "zikula"
             ],
             "time": "2017-08-09T07:53:48+00:00"
+        },
+        {
+            "name": "dirkgroenen/pinterest-api-php",
+            "version": "0.2.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dirkgroenen/Pinterest-API-PHP.git",
+                "reference": "afd5e531059c09774e958e142b859d201aa00c79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dirkgroenen/Pinterest-API-PHP/zipball/afd5e531059c09774e958e142b859d201aa00c79",
+                "reference": "afd5e531059c09774e958e142b859d201aa00c79",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.7.*",
+                "vlucas/phpdotenv": "^2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DirkGroenen\\Pinterest\\": "src/Pinterest"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Dirk Groenen",
+                    "email": "dirk@bitlabs.nl",
+                    "homepage": "http://dirkgroenen.nl",
+                    "role": "Creator/Developer"
+                }
+            ],
+            "description": "PHP Wrapper for the official Pinterest API",
+            "keywords": [
+                "api",
+                "pinterest",
+                "wrapper"
+            ],
+            "time": "2016-05-10T15:36:53+00:00"
         },
         {
             "name": "doctrine/annotations",
