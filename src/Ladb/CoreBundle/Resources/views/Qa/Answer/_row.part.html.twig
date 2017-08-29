@@ -60,7 +60,7 @@
                         </div>
                     {% endif %}
                 </div>
-                {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true } %}
+                {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'notCollapsed':(is_granted("ROLE_USER") and (answer.user == app.user or question.user == app.user)) } %}
             </div>
         </div>
     </div>
