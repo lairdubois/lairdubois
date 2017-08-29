@@ -94,6 +94,13 @@
         {% endif %}
         <div style="padding: 10px; text-align: center;">
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+            <button class="btn btn-default"><i class="ladb-icon-plus"></i> Ajouter mon expérience</button>
+        </div>
+        <div class="ladb-comment-widget">
+            <h2 style="border-bottom: 1px solid #ddd; margin-bottom: 20px;">{{ school.educationCount }} retours expérience</h2>
+            {% for education in school.educations %}
+                {% include 'LadbCoreBundle:Knowledge/School:_education-row.part.html.twig' %}
+            {% endfor %}
         </div>
         {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
     </div>

@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="media">
+            <div class="media-left">
+                {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':education.user } %}
+            </div>
+            <div class="media-body">
+                {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':education.user } %} <small class="ladb-horizontal-separator-left ladb-color-null">{% if education.fromYear > 0 %}{{ education.fromYear }}{% endif %}{% if education.toYear > 0 %} - {{ education.toYear }}{% endif %}</small>
+                <div><small class="ladb-color-null">{{ education.diploma }}</small></div>
+                <div>
+                    {{ education.body|ladb_markdown|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -92,6 +92,13 @@ class UserMeta {
 	 */
 	private $donationFeeBalance = 0;
 
+
+	/**
+	 * @ORM\Column(name="education_count", type="integer")
+	 */
+	private $educationCount = 0;
+
+
 	/////
 
 	// Id /////
@@ -275,6 +282,17 @@ class UserMeta {
 
 	public function getDonationFeeBalance() {
 		return $this->donationFeeBalance;
+	}
+
+
+	// EducationCount /////
+
+	public function incrementEducationCount($by = 1) {
+		return $this->educationCount += intval($by);
+	}
+
+	public function getEducationCount() {
+		return $this->educationCount;
 	}
 
 }
