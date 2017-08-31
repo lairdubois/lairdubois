@@ -229,6 +229,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School\Education", mappedBy="school", cascade={"all"})
+	 * @ORM\OrderBy({"fromYear" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $educations;
 

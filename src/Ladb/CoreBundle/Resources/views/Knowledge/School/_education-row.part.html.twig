@@ -10,6 +10,8 @@
                 <div>
                     {{ education.body|ladb_markdown|raw }}
                 </div>
+                {#<button class="btn btn-default"><i class="ladb-icon-message"></i> Contacter {{ education.user.displayName }}</button>#}
+                {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'noMicrodata':false, 'activitiesHidden':true } %}
             </div>
         </div>
     </div>

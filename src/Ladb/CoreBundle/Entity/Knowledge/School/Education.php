@@ -19,14 +19,17 @@ class Education implements BodiedInterface {
 	use AuthoredTrait, BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\School\Education';
-
+	/**
+	 * @ORM\Column(name="created_at", type="datetime")
+	 * @Gedmo\Timestampable(on="create")
+	 */
+	protected $createdAt;
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="educations")
 	 * @ORM\JoinColumn(nullable=false)
@@ -74,48 +77,59 @@ class Education implements BodiedInterface {
 		return $this->id;
 	}
 
+	// CreatedAt /////
+
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
+
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+		return $this;
+	}
+
 	// School /////
+
+	public function getSchool() {
+		return $this->school;
+	}
 
 	public function setSchool(\Ladb\CoreBundle\Entity\Knowledge\School $school = null) {
 		$this->school = $school;
 		return $this;
 	}
 
-	public function getSchool() {
-		return $this->school;
-	}
-
 	// Diploma /////
+
+	public function getDiploma() {
+		return $this->diploma;
+	}
 
 	public function setDiploma($diploma) {
 		$this->diploma = $diploma;
 		return $this;
 	}
 
-	public function getDiploma() {
-		return $this->diploma;
-	}
-
 	// FromYear /////
+
+	public function getFromYear() {
+		return $this->fromYear;
+	}
 
 	public function setFromYear($fromYear) {
 		$this->fromYear = $fromYear;
 		return $this;
 	}
 
-	public function getFromYear() {
-		return $this->fromYear;
-	}
-
 	// ToYear /////
+
+	public function getToYear() {
+		return $this->toYear;
+	}
 
 	public function setToYear($toYear) {
 		$this->toYear = $toYear;
 		return $this;
-	}
-
-	public function getToYear() {
-		return $this->toYear;
 	}
 
 }
