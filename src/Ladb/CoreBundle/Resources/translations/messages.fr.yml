@@ -741,6 +741,7 @@ referer:
   list: On en parle ailleurs
   choice:
     referrals: '[0,1]référence|]1,Inf]références'
+    clicks_from: '[0,1]%count% clique depuis %from%|]1,Inf]%count% cliques depuis %from%'
   referral:
     alert:
       delete_success: La référence <strong>%title%</strong> a été supprimée.

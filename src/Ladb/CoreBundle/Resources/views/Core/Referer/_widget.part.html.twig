@@ -13,7 +13,7 @@
                 {% endif %}
                 <div class="ladb-image">{% if referral.referer.faviconUrl is not empty %}<img src="{{ referral.referer.faviconUrl }}" width="20" height="20" alt="{{ referral.referer.title|raw }}">{% else %}<i class="ladb-icon-referral"></i>{% endif %}</div>
                 <div class="ladb-box">
-                    <div class="ladb-heading"><a href="{{ referral.url }}" title="{{ referral.title|raw }}" target="_blank">{{ referral.title|raw }}</a></div>
+                    <div class="ladb-heading"><a href="{{ referral.url }}" title="{{ referral.title|raw }}" target="_blank">{{ referral.title|raw }}</a> <span class="ladb-horizontal-separator-left" style="color: #ccc;" title="{{ 'referer.choice.clicks_from'|transchoice(referral.accessCount, { '%from%':referral.referer.title }) }}" data-tooltip="tooltip"><i class="ladb-icon-mouse"></i> <span style="font-size: 80%;">{{ referral.accessCount }}</span></span></div>
                     <div class="ladb-subheading">sur <a href="{{ referral.referer.baseUrl }}" title="{{ referral.referer.title|raw }}" target="_blank">{{ referral.referer.title|raw }}</a></div>
                 </div>
             </li>
