@@ -47,7 +47,12 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
 	const TYPE = 106;
-
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_howto_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"accessCount" = "DESC"})
+	 */
+	protected $referrals;
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
@@ -56,30 +61,25 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 	 * @ladbAssert\UpperCaseRatio()
 	 */
 	private $title;
-
 	/**
 	 * @Gedmo\Slug(fields={"title"}, separator="-")
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
 	private $slug;
-
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=2, max=2000)
 	 */
 	private $body;
-
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
 	private $htmlBody;
-
 	/**
 	 * @ORM\Column(type="integer", name="body_block_video_count")
 	 */
 	private $bodyBlockVideoCount = 0;
-
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="main_picture_id", nullable=false)
@@ -87,128 +87,101 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 	 * @Assert\NotBlank()
 	 */
 	private $mainPicture;
-
 	/**
 	 * @ORM\Column(type="boolean", name="is_work_in_progress")
 	 */
 	private $isWorkInProgress = false;
-
 	/**
 	 * @ORM\Column(name="draft_article_count", type="integer")
 	 */
 	private $draftArticleCount = 0;
-
 	/**
 	 * @ORM\Column(name="published_article_count", type="integer")
 	 */
 	private $publishedArticleCount = 0;
-
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Article", mappedBy="howto", cascade={"all"})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 */
 	private $articles;
-
 	/**
 	 * @ORM\Column(type="integer", name="creation_count")
 	 */
 	private $creationCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="howtos")
 	 */
 	private $creations;
-
 	/**
 	 * @ORM\Column(type="integer", name="workshop_count")
 	 */
 	private $workshopCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Workshop", mappedBy="howtos")
 	 */
 	private $workshops;
-
 	/**
 	 * @ORM\Column(type="integer", name="plan_count")
 	 */
 	private $planCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="howtos", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_howto_plan")
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $plans;
-
 	/**
 	 * @ORM\Column(type="integer", name="provider_count")
 	 */
 	private $providerCount = 0;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Provider", inversedBy="howtos", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_howto_provider")
 	 * @Assert\Count(min=0, max=10)
 	 */
 	private $providers;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_howto_tag")
 	 * @Assert\Count(min=2)
 	 */
 	private $tags;
-
 	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(nullable=true, name="license_id")
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
 	 */
 	private $license;
-
 	/**
 	 * @ORM\Column(type="integer", name="like_count")
 	 */
 	private $likeCount = 0;
-
 	/**
 	 * @ORM\Column(type="integer", name="watch_count")
 	 */
 	private $watchCount = 0;
-
 	/**
 	 * @ORM\Column(type="integer", name="comment_count")
 	 */
 	private $commentCount = 0;
-
 	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
-
 	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Spotlight", cascade={"remove"})
 	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
 	 */
 	private $spotlight = null;
-
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
 	 */
 	private $sticker;
-
 	/**
 	 * @ORM\Column(type="integer", name="referral_count")
 	 */
 	private $referralCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_howto_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 */
-	protected $referrals;
 
 	/////
 
@@ -238,30 +211,29 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 
 	// Type /////
 
-    public function getType() {
-		return Howto::TYPE;
+	public function getArticles() {
+		return $this->articles;
 	}
 
     // Slug /////
 
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
+    public function getType() {
+		return Howto::TYPE;
 	}
 
 	public function getSlug() {
 		return $this->slug;
 	}
 
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
+	public function setSlug($slug) {
+		$this->slug = $slug;
+		return $this;
 	}
 
 	// BodyBlockVideoCount /////
 
-	public function setBodyBlockVideoCount($bodyBlockVideoCount) {
-		$this->bodyBlockVideoCount = $bodyBlockVideoCount;
-		return $this;
+	public function getSluggedId() {
+		return $this->id.'-'.$this->slug;
 	}
 
 	public function getBodyBlockVideoCount() {
@@ -270,15 +242,15 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 
 	// BodyExtract /////
 
-	public function getBodyExtract() {
-		return $this->getHtmlBody();
+	public function setBodyBlockVideoCount($bodyBlockVideoCount) {
+		$this->bodyBlockVideoCount = $bodyBlockVideoCount;
+		return $this;
 	}
 
 	// WorkInProgress /////
 
-	public function setIsWorkInProgress($isWorkInProgress) {
-		$this->isWorkInProgress = $isWorkInProgress;
-		return $this;
+	public function getBodyExtract() {
+		return $this->getHtmlBody();
 	}
 
 	public function  getIsWorkInProgress() {
@@ -287,25 +259,30 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 
 	// DraftArticleCount /////
 
+	public function setIsWorkInProgress($isWorkInProgress) {
+		$this->isWorkInProgress = $isWorkInProgress;
+		return $this;
+	}
+
 	public function incrementDraftArticleCount($by = 1) {
 		return $this->draftArticleCount += intval($by);
 	}
+
+	// PublishedArticleCount /////
 
 	public function getDraftArticleCount() {
 		return $this->draftArticleCount;
 	}
 
-	// PublishedArticleCount /////
-
 	public function incrementPublishedArticleCount($by = 1) {
 		return $this->publishedArticleCount += intval($by);
 	}
 
+	// Articles /////
+
 	public function getPublishedArticleCount() {
 		return $this->publishedArticleCount;
 	}
-
-	// Articles /////
 
 	public function addArticle(\Ladb\CoreBundle\Entity\Howto\Article $article) {
 		if (!$this->articles->contains($article)) {
@@ -321,10 +298,6 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 		}
 	}
 
-	public function getArticles() {
-		return $this->articles;
-	}
-
 	public function resetArticles() {
 		$this->articles = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -335,13 +308,13 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 		return $this->creationCount += intval($by);
 	}
 
+	public function getCreationCount() {
+		return $this->creationCount;
+	}
+
 	public function setCreationCount($creationCount) {
 		$this->creationCount = $creationCount;
 		return $this;
-	}
-
-	public function getCreationCount() {
-		return $this->creationCount;
 	}
 
 	// Creations /////
@@ -356,13 +329,13 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 		return $this->workshopCount += intval($by);
 	}
 
+	public function getWorkshopCount() {
+		return $this->workshopCount;
+	}
+
 	public function setWorkshopCount($workshopCount) {
 		$this->workshopCount = $workshopCount;
 		return $this;
-	}
-
-	public function getWorkshopCount() {
-		return $this->workshopCount;
 	}
 
 	// Workshops /////
@@ -445,13 +418,13 @@ class Howto extends AbstractAuthoredPublication implements TitledInterface, Pict
 
 	// Spotlight /////
 
+	public function getSpotlight() {
+		return $this->spotlight;
+	}
+
 	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
 		$this->spotlight = $spotlight;
 		return $this;
-	}
-
-	public function getSpotlight() {
-		return $this->spotlight;
 	}
 
 }
