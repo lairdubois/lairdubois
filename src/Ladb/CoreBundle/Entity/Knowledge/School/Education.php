@@ -19,17 +19,20 @@ class Education implements BodiedInterface {
 	use AuthoredTrait, BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\School\Education';
+
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	protected $createdAt;
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="educations")
 	 * @ORM\JoinColumn(nullable=false)

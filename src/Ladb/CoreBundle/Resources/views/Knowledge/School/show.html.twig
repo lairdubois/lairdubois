@@ -135,6 +135,21 @@
             {% endif %}
         </div>
     </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% set searchableStudentCount = 12 %}
+        <div class="ladb-meta{% if searchableStudentCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-user ladb-icon-fixed-center"></i>
+            {% if searchableStudentCount > 0 %}
+            <a href="{{ path('core_user_list', { 'q':'@school:"'~school.title~'"'}) }}" rel="nofollow">
+                {% endif %}
+                <strong>{{ searchableStudentCount }}</strong>
+                <small>{{ 'user.choice.users'|transchoice(searchableStudentCount) }}</small>
+                {% if searchableStudentCount > 0 %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
     {% if hasMap %}
         <div class="ladb-metas">
             <div class="ladb-meta">
