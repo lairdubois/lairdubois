@@ -47,14 +47,14 @@
                     {% if answer.updatedAt > answer.createdAt %}
                         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':answer } %}
                     {% endif %}
-                    {% if is_granted("ROLE_USER") and question.user == app.user %}
+                    {% if is_granted("ROLE_ADMIN") and answer.isBestAnswer or is_granted("ROLE_USER") and question.user == app.user %}
                         <div class="ladb-margin-top">
                             {% if answer.isBestAnswer %}
                                 <a href="{{ path('core_qa_answer_best_delete', { 'id':answer.id }) }}" class="btn btn-default active"><i class="ladb-icon-check"></i> {{ 'qa.answer.best'|trans() }}</a>
-                            {% else %}
+                            {% elseif answer.voteScore >= 0 %}
                                 <a href="{{ path('core_qa_answer_best_create', { 'id':answer.id }) }}" class="btn btn-default"><i class="ladb-icon-favorite"></i><span class="ladb-hidden-mobile"> {{ 'qa.answer.set_as_best'|trans() }}</span></a>
                             {% endif %}
-                            {% if answer.user != app.user %}
+                            {% if question.user == app.user and answer.user != app.user %}
                                 <button href="#" class="btn btn-default ladb-btn-thanks" data-thanks-msg="Merci @{{ answer.user.usernameCanonical }} !"><i class="ladb-icon-comment"></i> Remercier <strong>{{ answer.user.displayName }}</strong></button>
                             {% endif %}
                         </div>
