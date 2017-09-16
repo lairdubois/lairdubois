@@ -59,6 +59,52 @@
 
     };
 
+    // Reply /////
+
+    LadbCommentWidget.prototype.replyTo = function($btn, childrenCollapseSelector, mention, newPath) {
+        var that = this;
+
+        var $childrenCollapse = $(childrenCollapseSelector);
+        var $new = $('.ladb-new', $childrenCollapse);
+        var $fakeNew = $('.ladb-fake-new', $childrenCollapse);
+
+        if ($new.length > 0) {
+            $childrenCollapse.collapse('show');
+            $new.ladbScrollTo();
+            $('textarea', $new)
+                .val(mention)
+                .focus();
+            if ($btn) {
+                $btn.button('reset');
+            }
+        } else {
+            $.ajax(newPath, {
+                cache: false,
+                dataType: "html",
+                context: document.body,
+                success: function(data, textStatus, jqXHR) {
+                    $childrenCollapse.collapse('show');
+                    $childrenCollapse.append(data);
+                    $new = $('.ladb-new', $childrenCollapse).first();
+                    that.bindNew($new);
+                    $new.ladbScrollTo();
+                    $('textarea', $new)
+                        .val(mention);
+                    if ($btn) {
+                        $btn.button('reset');
+                    }
+                    $fakeNew.remove();
+                },
+                error: function () {
+                    if ($btn) {
+                        $btn.button('reset');
+                    }
+                }
+            });
+        }
+
+    };
+
     // Rows /////
 
     LadbCommentWidget.prototype.bindRows = function() {
@@ -66,6 +112,19 @@
 
         $('.ladb-comment-row', this.$element).each(function (index, value) {
             that.bindRow($(value));
+        });
+
+        // Bind children fake new textearea
+        $('.ladb-fake-new button', this.$element).on('click', function() {
+
+            var $btn = $(this);
+            $btn.blur();
+            $btn.button('loading');
+
+            var childrenCollapseSelector = $(this).data('ladb-children-collapse-selector');
+            var newPath = $(this).data('ladb-new-path');
+
+            that.replyTo($btn, childrenCollapseSelector, null, newPath);
         });
     };
 
@@ -123,7 +182,7 @@
 
             return false;
         });
-        $('.ladb-comment-reply', $row).on('click', function(e) {
+        $('.ladb-comment-reply', $row).on('click', function() {
 
             var $btn = $(this);
             $btn.blur();
@@ -133,36 +192,7 @@
             var mention = $(this).data('ladb-mention');
             var newPath = $(this).data('ladb-new-path');
 
-            var $childrenCollapse = $(childrenCollapseSelector);
-            var $new = $('.ladb-new', $childrenCollapse);
-
-            if ($new.length > 0) {
-                $childrenCollapse.collapse('show');
-                $new.ladbScrollTo();
-                $('textarea', $new)
-                    .val(mention)
-                    .focus();
-                $btn.button('reset');
-            } else {
-                $.ajax(newPath, {
-                    cache: false,
-                    dataType: "html",
-                    context: document.body,
-                    success: function(data, textStatus, jqXHR) {
-                        $childrenCollapse.collapse('show');
-                        $childrenCollapse.append(data);
-                        $new = $('.ladb-new', $childrenCollapse).first();
-                        that.bindNew($new);
-                        $new.ladbScrollTo();
-                        $('textarea', $new)
-                            .val(mention);
-                        $btn.button('reset');
-                    },
-                    error: function () {
-                        $btn.button('reset');
-                    }
-                });
-            }
+            that.replyTo($btn, childrenCollapseSelector, mention, newPath);
 
             return false;
         });
@@ -173,7 +203,7 @@
     LadbCommentWidget.prototype.bindNew = function($new) {
         var that = this;
 
-        $('textarea', $new).on("focus", function() {
+        $('textarea', $new).on('focus', function() {
             $('.alert', $new).show();
         });
         $('form', $new).ajaxForm({
