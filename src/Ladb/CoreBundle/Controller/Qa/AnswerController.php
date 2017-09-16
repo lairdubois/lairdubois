@@ -228,10 +228,13 @@ class AnswerController extends Controller {
 		if (is_null($answer)) {
 			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
 		}
+		if ($action == 'create' && $answer->getVoteScore() < 0) {
+			throw $this->createNotFoundException('Not allowed on negative voteScore answer.');
+		}
 
 		$question = $answer->getQuestion();
 
-		if ($question->getUser()->getId() != $this->getUser()->getId()) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_qa_answer_best_create or core_qa_answer_best_delete)');
 		}
 
