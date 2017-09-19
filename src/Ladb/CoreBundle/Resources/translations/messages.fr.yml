@@ -639,6 +639,7 @@ knowledge:
       phone: Téléphone
       description: Descriptif
       public: Etablissement public
+      birth_year: Année de création
       diplomas: Diplômes
       training_types: Type de formation
     help:
@@ -649,7 +650,10 @@ knowledge:
       address: "L'**Adresse** est l'adresse postale de l'école."
       phone: "Le **Téléphone** est le numéro de téléphone de l'école."
       description: "Le **Descriptif** décrit succintement cette école."
+      public: "Le **Public** [TODO]."
+      birth_year: "L'**Année de création** [TODO]."
       diplomas: "Le **Diplôme** [TODO]."
+      training_types: "Les **Type de formations** [TODO]."
   tool:
     list: Outils
     token:

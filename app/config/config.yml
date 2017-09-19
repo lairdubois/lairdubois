@@ -679,6 +679,8 @@ fos_elastica:
                     mappings:
                         name: { boost: 2, analyzer: name_analyzer }
                         nameRejected: { type: boolean }
+                        diplomas: { type: string }
+                        trainingTypes: { analyzer: body_analyzer }
                         address: { analyzer: body_analyzer }
                         geographicalAreas: { analyzer: body_analyzer }
                         description: { analyzer: body_analyzer }

@@ -39,6 +39,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 	const FIELD_PHONE = 'phone';
 	const FIELD_DESCRIPTION = 'description';
 	const FIELD_PUBLIC = 'public';
+	const FIELD_BIRTH_YEAR = 'birth_year';
 	const FIELD_DIPLOMAS = 'diplomas';
 	const FIELD_TRAINING_TYPES  = 'training_types';
 
@@ -51,8 +52,9 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		School::FIELD_PHONE          => array(School::ATTRIB_TYPE => Phone::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_DESCRIPTION    => array(School::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_PUBLIC         => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
+		School::FIELD_BIRTH_YEAR     => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_DIPLOMAS       => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_FILTER_QUERY => '@diplomas:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul diplôme par proposition.')))),
-		School::FIELD_TRAINING_TYPES => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_CHOICES => array(0 => 'Continue', 1 => 'Alternance', 2 => 'Apprentissage', 4 => 'Professionnelle'), School::ATTRIB_USE_CHOICES_VALUE => true, School::ATTRIB_FILTER_QUERY => '@products:"%q%"'),
+		School::FIELD_TRAINING_TYPES => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_CHOICES => array(0 => 'Continue', 1 => 'Alternance', 2 => 'Apprentissage', 4 => 'Professionnelle', 5 => 'Stage court'), School::ATTRIB_USE_CHOICES_VALUE => true, School::ATTRIB_FILTER_QUERY => '@training-types:"%q%"'),
 	);
 
 	/**
@@ -197,6 +199,19 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true)
+	 */
+	private $birthYear;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_birth_year")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $birthYearValues;
+
+
+	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $diplomas;
@@ -243,6 +258,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->addressValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->phoneValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->publicValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->birthYearValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->diplomasValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->trainingTypesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->educations = new \Doctrine\Common\Collections\ArrayCollection();
@@ -617,6 +633,38 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	public function setPublicValues($publicValues) {
 		$this->publicValues = $publicValues;
+	}
+
+	// BirthYear /////
+
+	public function getBirthYear() {
+		return $this->birthYear;
+	}
+
+	public function setBirthYear($birthYear) {
+		$this->birthYear = $birthYear;
+		return $this;
+	}
+
+	// BirthYearValues /////
+
+	public function addBirthYearValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $birthYearValue) {
+		if (!$this->birthYearValues->contains($birthYearValue)) {
+			$this->birthYearValues[] = $birthYearValue;
+		}
+		return $this;
+	}
+
+	public function removeBirthYearValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $birthYearValue) {
+		$this->birthYearValues->removeElement($birthYearValue);
+	}
+
+	public function getBirthYearValues() {
+		return $this->birthYearValues;
+	}
+
+	public function setBirthYearValues($birthYearValues) {
+		$this->birthYearValues = $birthYearValues;
 	}
 
 	// Diplomas /////

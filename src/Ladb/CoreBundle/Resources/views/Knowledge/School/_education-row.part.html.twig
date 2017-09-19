@@ -5,13 +5,13 @@
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':education.user } %}
             </div>
             <div class="media-body">
-                {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':education.user } %} <small class="ladb-horizontal-separator-left ladb-color-null">{% if education.fromYear > 0 %}{{ education.fromYear }}{% endif %}{% if education.toYear > 0 %} - {{ education.toYear }}{% endif %}</small>
+                <strong>{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':education.user } %}</strong> <small class="ladb-horizontal-separator-left ladb-color-null">{% if education.fromYear > 0 %}{{ education.fromYear }}{% endif %}{% if education.toYear > 0 %} - {{ education.toYear }}{% endif %}</small>
                 <div><small class="ladb-color-null">{{ education.diploma }}</small></div>
-                <div>
+                <div class="ladb-margin-top">
                     {{ education.body|ladb_markdown|raw }}
                 </div>
-                {#<button class="btn btn-default"><i class="ladb-icon-message"></i> Contacter {{ education.user.displayName }}</button>#}
-                {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'noMicrodata':false, 'activitiesHidden':true } %}
+                <button class="btn btn-default btn-sm pull-right"><i class="ladb-icon-message"></i> Contacter {{ education.user.displayName }}</button>
+                {#{% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'noMicrodata':false, 'activitiesHidden':true } %}#}
             </div>
         </div>
     </div>

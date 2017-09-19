@@ -79,6 +79,7 @@
             <h4 class="ladb-heading">Etablissement</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_NAME', school), 'data':school.name, 'values':school.nameValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PUBLIC', school), 'data':school.public, 'values':school.publicValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_BIRTH_YEAR', school), 'data':school.birthYear, 'values':school.birthYearValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_WEBSITE', school), 'data':school.website, 'values':school.websiteValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', school), 'data':school.address, 'values':school.addressValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', school), 'data':school.phone, 'values':school.phoneValues } %}

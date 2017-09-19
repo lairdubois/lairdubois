@@ -214,6 +214,21 @@ class SchoolController extends Controller {
 
 						break;
 
+					case 'diplomas':
+
+						$filter = new \Elastica\Query\MatchPhrase('diplomas', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
+					case 'training-types':
+
+						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
+						$filter->setFields(array( 'trainingTypes' ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\Range('nameRejected', array( 'gte' => 1 ));
