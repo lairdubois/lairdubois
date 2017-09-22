@@ -2,7 +2,7 @@
     {% block minitools %}
         <div class="ladb-minitools">
             {% if not app.request.isxmlhttprequest %}
-                <a href="#" onclick="bootbox.dialog({ title:'{{ 'comment.get_link'|trans() }}', message:'<p>Lien direct vers le commentaire :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_comment_{{ comment.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'comment.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
+                <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers le commentaire :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_comment_{{ comment.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
             {% endif %}
             {% if is_granted("ROLE_ADMIN") or comment.user == app.user %}
                 <a href="{{ path('core_comment_edit', { 'id':comment.id }) }}" class="ladb-comment-edit" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>

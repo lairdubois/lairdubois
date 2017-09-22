@@ -269,7 +269,7 @@ class AnswerController extends Controller {
 			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
 		}
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $answer->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_delete)');
+			throw $this->createNotFoundException('Not allowed (core_qa_answer_delete)');
 		}
 
 		$question = $answer->getQuestion();

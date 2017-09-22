@@ -62,6 +62,7 @@ default:
   see_more: Voir la suite...
   unviewed: Non vu
   thumbnail: Miniature
+  get_link: Obtenir le lien
   warning:
     be_owner: Vous devez avoir les droits sur ce que vous publiez.
     may_be_rejected: Les publications ne correspondant pas à ces critères pourront faire l'objet d'un rejet.
@@ -382,7 +383,6 @@ qa:
   answer:
     new: Répondre à la question
     edit: Editer ma réponse
-    get_link: Obtenir le lien
     best: Meilleure réponse
     set_as_best: Choisir comme meilleure réponse
     best_tooltip: L'auteur de la question a choisi cette réponse comme étant la meilleure
@@ -654,6 +654,11 @@ knowledge:
       birth_year: "L'**Année de création** [TODO]."
       diplomas: "Le **Diplôme** [TODO]."
       training_types: "Les **Type de formations** [TODO]."
+    testimonial:
+      new: Ajouter mon témoignage
+      edit: Editer mon témoignage
+    choice:
+      testimonials: '[0,1]témoignage|]1,Inf]témoignages'
   tool:
     list: Outils
     token:
@@ -760,7 +765,6 @@ follower:
 
 comment:
   list: On en parle ici
-  get_link: Obtenir le lien
   new: Commenter
   reply: Répondre
   choice:

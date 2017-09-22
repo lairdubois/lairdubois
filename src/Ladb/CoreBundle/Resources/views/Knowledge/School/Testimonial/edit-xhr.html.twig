@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Knowledge/School/Testimonial:_form.html.twig' %}
+
+{% set formAction = path('core_knowledge_school_testimonial_update', { 'id':testimonial.id }) %}
+
+{% block title %}<i class="ladb-icon-edit"></i> {{ 'knowledge.school.testimonial.edit'|trans() }}{% endblock %}
+
+{% block buttons %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
+{% endblock %}

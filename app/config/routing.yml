@@ -130,6 +130,10 @@ ladb_core_school:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\SchoolController"
     type:     annotation
 
+ladb_core_school_testimonial:
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\School\\TestimonialController"
+    type:     annotation
+
 ladb_core_knowledge:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\KnowledgeController"
     type:     annotation

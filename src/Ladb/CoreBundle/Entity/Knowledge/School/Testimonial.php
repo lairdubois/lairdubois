@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge\School;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\TypableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\AuthoredTrait;
@@ -11,20 +12,27 @@ use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\BodiedInterface;
 
 /**
- * @ORM\Table("tbl_knowledge2_school_education")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\School\EducationRepository")
+ * @ORM\Table("tbl_knowledge2_school_testimonial")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\School\TestimonialRepository")
  */
-class Education implements BodiedInterface {
+class Testimonial implements TypableInterface, BodiedInterface {
 
 	use AuthoredTrait, BodiedTrait;
 
-	const CLASS_NAME = 'LadbCoreBundle:Knowledge\School\Education';
+	const CLASS_NAME = 'LadbCoreBundle:Knowledge\School\Testimonial';
+	const TYPE = 116;
 
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	protected $createdAt;
+
+	/**
+	 * @ORM\Column(name="updated_at", type="datetime")
+	 * @Gedmo\Timestampable(on="update")
+	 */
+	private $updatedAt;
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
@@ -34,7 +42,7 @@ class Education implements BodiedInterface {
 	private $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="educations")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="testimonials")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $school;
@@ -46,6 +54,22 @@ class Education implements BodiedInterface {
 	private $user;
 
 	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $diploma;
+
+	/**
+	 * @ORM\Column(name="from_year", type="integer")
+	 * @Assert\GreaterThanOrEqual(1900)
+	 */
+	private $fromYear;
+
+	/**
+	 * @ORM\Column(name="to_year", type="integer", nullable=true)
+	 */
+	private $toYear;
+
+	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 * @Assert\Length(max=5000)
 	 * @LadbAssert\NoMediaLink()
@@ -53,24 +77,9 @@ class Education implements BodiedInterface {
 	private $body;
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(name="html_body", type="text", nullable=true)
 	 */
 	private $htmlBody;
-
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $diploma;
-
-	/**
-	 * @ORM\Column(type="integer")
-	 */
-	private $fromYear;
-
-	/**
-	 * @ORM\Column(type="integer")
-	 */
-	private $toYear;
 
 	/////
 
@@ -78,6 +87,12 @@ class Education implements BodiedInterface {
 
 	public function getId() {
 		return $this->id;
+	}
+
+	// Type /////
+
+	public function getType() {
+		return Testimonial::TYPE;
 	}
 
 	// CreatedAt /////
@@ -89,6 +104,17 @@ class Education implements BodiedInterface {
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
+	}
+
+	// UpdatedAt /////
+
+	public function setUpdatedAt($updatedAt) {
+		$this->updatedAt = $updatedAt;
+		return $this;
+	}
+
+	public function getUpdatedAt() {
+		return $this->updatedAt;
 	}
 
 	// School /////

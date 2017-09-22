@@ -238,15 +238,15 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 
 	/**
-	 * @ORM\Column(name="education_count", type="integer")
+	 * @ORM\Column(name="testimonial_count", type="integer")
 	 */
-	private $educationCount = 0;
+	private $testimonialCount = 0;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School\Education", mappedBy="school", cascade={"all"})
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School\Testimonial", mappedBy="school", cascade={"all"})
 	 * @ORM\OrderBy({"fromYear" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $educations;
+	private $testimonials;
 
 	/////
 
@@ -261,7 +261,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->birthYearValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->diplomasValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->trainingTypesValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->educations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->testimonials = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -731,36 +731,36 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->trainingTypesValues = $trainingTypesValues;
 	}
 
-	// EducationCount /////
+	// TestimonialCount /////
 
-	public function incrementEducationCount($by = 1) {
-		return $this->educationCount += intval($by);
+	public function incrementTestimonialCount($by = 1) {
+		return $this->testimonialCount += intval($by);
 	}
 
-	public function getEducationCount() {
-		return $this->educationCount;
+	public function getTestimonialCount() {
+		return $this->testimonialCount;
 	}
 
-	public function setEducationCount($educationCount) {
-		$this->educationCount = $educationCount;
+	public function setTestimonialCount($testimonialCount) {
+		$this->testimonialCount = $testimonialCount;
 		return $this;
 	}
 
-	// Educations /////
+	// Testimonials /////
 
-	public function addEducation($education) {
-		if (!$this->educations->contains($education)) {
-			$this->educations[] = $education;
+	public function addTestimonial($testimonial) {
+		if (!$this->testimonials->contains($testimonial)) {
+			$this->testimonials[] = $testimonial;
 		}
 		return $this;
 	}
 
-	public function removeEducation($education) {
-		$this->educations->removeElement($education);
+	public function removeTestimonial($testimonial) {
+		$this->testimonials->removeElement($testimonial);
 	}
 
-	public function getEducations() {
-		return $this->educations;
+	public function getTestimonials() {
+		return $this->testimonials;
 	}
 
 }

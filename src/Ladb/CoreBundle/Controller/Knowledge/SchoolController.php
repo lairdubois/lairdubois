@@ -458,22 +458,32 @@ class SchoolController extends Controller {
 			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
 		}
 
+		$user = $this->getUser();
+		$userTestimonial = null;
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+			foreach ($school->getTestimonials() as $testimonial) {
+				if ($testimonial->getUser()->getId() == $user->getId()) {
+					$userTestimonial = $testimonial;
+					break;
+				}
+			}
+		}
+
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($school));
-
-		$searchUtils = $this->get(SearchUtils::NAME);
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 
 		return array(
-			'school'         => $school,
-			'likeContext'    => $likableUtils->getLikeContext($school, $this->getUser()),
-			'watchContext'   => $watchableUtils->getWatchContext($school, $this->getUser()),
-			'commentContext' => $commentableUtils->getCommentContext($school),
-			'hasMap'         => !is_null($school->getLatitude()) && !is_null($school->getLongitude()),
+			'school'          => $school,
+			'likeContext'     => $likableUtils->getLikeContext($school, $this->getUser()),
+			'watchContext'    => $watchableUtils->getWatchContext($school, $this->getUser()),
+			'commentContext'  => $commentableUtils->getCommentContext($school),
+			'hasMap'          => !is_null($school->getLatitude()) && !is_null($school->getLongitude()),
+			'userTestimonial' => $userTestimonial,
 		);
 	}
 

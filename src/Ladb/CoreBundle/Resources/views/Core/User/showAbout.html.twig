@@ -60,53 +60,34 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong><i class="ladb-icon-school ladb-icon-lg"></i> Mes formations</strong>
-                </div>
-                <div class="panel-body">
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="/niouniou" itemprop="url" data-tooltip="tooltip" title=""
-                               data-original-title="Niouniou">
-                                <img src="http://dev.lairdubois.fr/media/cache/resolve/32x32o/611216a96a4ecb273e0fc6beee436b146ab2e874.jpg" alt="Niouniou" itemprop="image" class="img-rounded ">
-                            </a></div>
-                        <div class="media-body">
-                            <a href="/niouniou"><span itemprop="name">Ecole Boulle</span></a>
-                            <small class="ladb-horizontal-separator-left ladb-color-null">2016</small>
-                            <div>
-                                <small class="ladb-color-null">CAP Menuisier frabricant</small>
-                            </div>
-                            <div>
-                                <p>Je m’apprête à une reconversion professionnelle vers la menuiserie. Je vais donc
-                                    commencer par passer un CAP menuisier fabricant en formation continue pour
-                                    adultes.</p>
-
-                            </div>
-                        </div>
+            {% if testimonials is not empty %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong><i class="ladb-icon-student ladb-icon-lg"></i> Mes témoignages de formation</strong>
                     </div>
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="/niouniou" itemprop="url" data-tooltip="tooltip" title=""
-                               data-original-title="Niouniou">
-                                <img src="http://dev.lairdubois.fr/media/cache/resolve/32x32o/611216a96a4ecb273e0fc6beee436b146ab2e874.jpg" alt="Niouniou" itemprop="image" class="img-rounded ">
-                            </a></div>
-                        <div class="media-body">
-                            <a href="/niouniou"><span itemprop="name">Ecole Boulle</span></a>
-                            <small class="ladb-horizontal-separator-left ladb-color-null">2016</small>
-                            <div>
-                                <small class="ladb-color-null">CAP Menuisier frabricant</small>
+                    <div class="panel-body">
+                        {% for testimonial in testimonials %}
+                            <div class="media"{% if not loop.last %} style="border-bottom: 1px solid #eee"{% endif %}>
+                                <div class="media-left">
+                                    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':testimonial.school.mainPicture, 'width':64, 'height':64, 'alt':testimonial.school.title, 'noSizer':true, 'imgClasses':'img-rounded' } %}
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading" style="font-size: 120%; font-weight: bold;"><a href="{{ path('core_school_show', { 'id':testimonial.school.sluggedId }) }}">{{ testimonial.school.title }}</a></div>
+                                    <div style="margin: 10px 0; color: #000; font-size: 110%;">
+                                        <span style="font-weight: bold;">{% if testimonial.fromYear > 0 %}{{ testimonial.fromYear }}{% endif %}{% if testimonial.toYear > 0 %} - {{ testimonial.toYear }}{% endif %}</span>
+                                        {% if testimonial.diploma %}
+                                            <span{% if testimonial.fromYear > 0 %} class="ladb-horizontal-separator-left"{% endif %}>{{ testimonial.diploma }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        {{ testimonial.htmlBody|raw }}
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <p>Je m’apprête à une reconversion professionnelle vers la menuiserie. Je vais donc
-                                    commencer par passer un CAP menuisier fabricant en formation continue pour
-                                    adultes.</p>
-
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
         <div class="col-md-4 col-xs-12">
             <div id="ladb_block_metas">

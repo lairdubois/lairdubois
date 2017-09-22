@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -348,6 +349,7 @@ class UserController extends Controller {
 	 * @Template()
 	 */
 	public function showAboutAction($username) {
+		$om = $this->getDoctrine()->getManager();
 		$userManager = $this->get('fos_user.user_manager');
 
 		$user = $userManager->findUserByUsername($username);
@@ -358,6 +360,9 @@ class UserController extends Controller {
 			throw $this->createNotFoundException('User not enabled');
 		}
 
+		$testimonialRepository = $om->getRepository(Testimonial::CLASS_NAME);
+		$testimonials = $testimonialRepository->findByUser($user);
+
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
@@ -366,6 +371,7 @@ class UserController extends Controller {
 			'tab'             => 'about',
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 			'hasMap'          => !is_null($user->getLatitude()) && !is_null($user->getLongitude()),
+			'testimonials'    => $testimonials,
 		);
 	}
 

@@ -16,6 +16,10 @@
 
 {% block headStylesheets %}
     {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/school.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
     {{ block('mapAreaStylesheets') }}
 {% endblock %}
 
@@ -23,9 +27,17 @@
     {{ parent() }}
     {{ block('mapAreaJavascripts') }}
     {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.schoolpage.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#container').ladbSchoolPage({
+                testimonialNewPath: '{{ path('core_knowledge_school_testimonial_new', { 'id':school.id }) }}'
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block bodyMetas %}
@@ -93,15 +105,13 @@
         {% if school.updatedAt > school.createdAt %}
             {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
         {% endif %}
-        <div style="padding: 10px; text-align: center;">
+        <div style="padding: 10px 0 20px 0; text-align: center;">
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
-            <button class="btn btn-default"><i class="ladb-icon-plus"></i> Ajouter mon témoignage</button>
         </div>
-        <div class="ladb-comment-widget">
-            <h2 style="border-bottom: 1px solid #ddd; margin-bottom: 20px;">{{ school.educationCount }} témoignages</h2>
-            {% for education in school.educations %}
-                {% include 'LadbCoreBundle:Knowledge/School:_education-row.part.html.twig' %}
-            {% endfor %}
+        <div id="ladb_testimonial_list">
+            {% include 'LadbCoreBundle:Knowledge/School:_testimonials-header.part.html.twig' %}
+            {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_list.part.html.twig' with { 'testimonials':school.testimonials } %}
+            {% include 'LadbCoreBundle:Knowledge/School:_testimonials-footer.part.html.twig' %}
         </div>
         {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
     </div>
@@ -135,20 +145,11 @@
                 </a>
             {% endif %}
         </div>
-    </div>
-    <div class="ladb-metas">
-        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% set searchableStudentCount = 12 %}
-        <div class="ladb-meta{% if searchableStudentCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-user ladb-icon-fixed-center"></i>
-            {% if searchableStudentCount > 0 %}
-            <a href="{{ path('core_user_list', { 'q':'@school:"'~school.title~'"'}) }}" rel="nofollow">
-                {% endif %}
-                <strong>{{ searchableStudentCount }}</strong>
-                <small>{{ 'user.choice.users'|transchoice(searchableStudentCount) }}</small>
-                {% if searchableStudentCount > 0 %}
-            </a>
-            {% endif %}
+        <div class="ladb-meta{% if school.testimonialCount == 0 %} text-muted{% endif %}">
+            <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_testimonial_list').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+            <i class="ladb-icon-student ladb-icon-fixed-center"></i>
+            <strong>{{ school.testimonialCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'knowledge.school.choice.testimonials'|transchoice(entity.testimonialCount) }}</small>
         </div>
     </div>
     {% if hasMap %}

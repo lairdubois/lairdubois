@@ -1,0 +1,7 @@
+{# set school #}
+
+<div class="ladb-testimonials-header">
+    {% if school.testimonialCount > 0 %}
+        <h2 class="ladb-margin-bottom">{{ school.testimonialCount }} {{ 'knowledge.school.choice.testimonials'|transchoice(school.testimonialCount) }}</h2>
+    {% endif %}
+</div>

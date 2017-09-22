@@ -152,7 +152,7 @@
 
         this.$btnNewAnswer.hide();
         this.$btnNewAnswer.button('reset');
-        this.$btnNewAnswer.parent().after(this.$answerForm);
+        $('.ladb-answers-footer').append(this.$answerForm);
 
         // Bind collection
         $("[data-form-widget=collection]", this.$answerForm).each(function () {
@@ -169,11 +169,11 @@
             success: function(data, textStatus, jqXHR) {
                 if ($(data).hasClass('ladb-success')) {
                     var $row = $('.ladb-answer-row', data);
-                    var $header = $('.ladb-qa-question-answers-header', data);
-                    var $footer = $('.ladb-qa-question-answers-footer', data);
+                    var $header = $('.ladb-answers-header', data);
+                    var $footer = $('.ladb-answers-footer', data);
                     that.$answers.append($row);
-                    $('.ladb-qa-question-answers-header', that.$element).replaceWith($header);
-                    $('.ladb-qa-question-answers-footer', that.$element).replaceWith($footer);
+                    $('.ladb-answers-header', that.$element).replaceWith($header);
+                    $('.ladb-answers-footer', that.$element).replaceWith($footer);
                     that.removeAnswerForm();
                     that.bindAnswerRow($row);
                     that.bindSorters();
@@ -228,9 +228,9 @@
                 context: document.body,
                 success: function(data, textStatus, jqXHR) {
                     var $answers = $('.ladb-qa-question-answers', data);
-                    var $header = $('.ladb-qa-question-answers-header', data);
+                    var $header = $('.ladb-answers-header', data);
                     $('.ladb-qa-question-answers', that.$element).replaceWith($answers);
-                    $('.ladb-qa-question-answers-header', that.$element).replaceWith($header);
+                    $('.ladb-answers-header', that.$element).replaceWith($header);
                     that.bindSorters();
                     that.bindRows();
                 },
@@ -277,7 +277,7 @@
             });
 
         });
-        $('.ladb-qa-question-answers-footer .ladb-btn-thanks', this.$element).on('click', function(e) {
+        $('.ladb-answers-footer .ladb-btn-thanks', this.$element).on('click', function(e) {
             e.preventDefault();
             $(this).blur();
 
