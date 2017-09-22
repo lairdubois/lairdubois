@@ -319,4 +319,32 @@ class AnswerController extends Controller {
 		);
 	}
 
+	/**
+	 * @Route("/{id}/admin/converttocomment", requirements={"id" = "\d+"}, name="core_qa_answer_admin_converttocomment")
+	 * @Template()
+	 */
+	public function adminConvertToCommentAction($id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+
+		$answer = $answerRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($answer)) {
+			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
+		}
+		$question = $answer->getQuestion();
+
+		// Convert
+		$answerManager = $this->get(AnswerManager::NAME);
+		$find = $answerManager->convertToComment($answer, $question);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.answer.admin.alert.converttocomment_success', array( '%title%' => $answer->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
+	}
+
 }
