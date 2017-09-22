@@ -13,6 +13,14 @@
                 {% endif %}
                 <div class="ladb-heading">
                     <div class="ladb-minitools">
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="{{ path('core_qa_answer_admin_converttocomment', { 'id':answer.id }) }}"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} 'Commentaire'</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
                         {% if not app.request.isxmlhttprequest %}
                             <a href="#" onclick="bootbox.dialog({ title:'{{ 'qa.answer.get_link'|trans() }}', message:'<p>Lien direct vers la réponse :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_answer_{{ answer.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'qa.answer.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
                         {% endif %}

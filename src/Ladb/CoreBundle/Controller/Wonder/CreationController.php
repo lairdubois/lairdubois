@@ -1015,7 +1015,7 @@ class CreationController extends Controller {
 
 		// Convert
 		$creationManager = $this->get(CreationManager::NAME);
-		$find = $creationManager->convertToWorkshop($creation);
+		$find = $creationManager->convertToFind($creation);
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.admin.alert.converttofind_success', array( '%title%' => $creation->getTitle() )));
