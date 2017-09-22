@@ -62,6 +62,11 @@ class UserMeta {
 	private $unlistedKnowledgeProviderCount = 0;
 
 	/**
+	 * @ORM\Column(name="unlisted_knowledge_school_count", type="integer")
+	 */
+	private $unlistedKnowledgeSchoolCount = 0;
+
+	/**
 	 * @ORM\Column(name="unlisted_blog_post_count", type="integer")
 	 */
 	private $unlistedBlogPostCount = 0;
@@ -127,15 +132,25 @@ class UserMeta {
 			$this->getUnlistedWonderWorkshopCount() +
 			$this->getUnlistedFindFindCount() +
 			$this->getUnlistedHowtoHowtoCount() +
-			$this->getUnlistedKnowledgeProviderCount() +
 			$this->getUnlistedKnowledgeWoodCount() +
+			$this->getUnlistedKnowledgeProviderCount() +
+			$this->getUnlistedKnowledgeSchoolCount() +
 			$this->getUnlistedBlogPostCount() +
 			$this->getUnlistedFaqQuestionCount() +
 			$this->getUnlistedQaQuestionCount()
 		;
 	}
 
-	// UnlistedCreationCount /////
+	// UnlistedDirectoryCount /////
+
+	public function getUnlistedDirectoryCount() {
+		return
+			$this->getUnlistedKnowledgeProviderCount() +
+			$this->getUnlistedKnowledgeSchoolCount()
+		;
+	}
+
+	// UnlistedWonderCreationCount /////
 
 	public function getUnlistedWonderCreationCount() {
 		return $this->unlistedWonderCreationCount;
@@ -146,7 +161,7 @@ class UserMeta {
 		return $this;
 	}
 
-	// UnlistedPlanCount /////
+	// UnlistedWonderPlanCount /////
 
 	public function getUnlistedWonderPlanCount() {
 		return $this->unlistedWonderPlanCount;
@@ -157,7 +172,7 @@ class UserMeta {
 		return $this;
 	}
 
-	// UnlistedWorkshopCount /////
+	// UnlistedWonderWorkshopCount /////
 
 	public function getUnlistedWonderWorkshopCount() {
 		return $this->unlistedWonderWorkshopCount;
@@ -168,7 +183,7 @@ class UserMeta {
 		return $this;
 	}
 
-	// UnlistedFindCount /////
+	// UnlistedFindFindCount /////
 
 	public function getUnlistedFindFindCount() {
 		return $this->unlistedFindFindCount;
@@ -179,7 +194,7 @@ class UserMeta {
 		return $this;
 	}
 
-	// UnlistedHowtoCount /////
+	// UnlistedHowtoHowtoCount /////
 
 	public function getUnlistedHowtoHowtoCount() {
 		return $this->unlistedHowtoHowtoCount;
@@ -190,18 +205,7 @@ class UserMeta {
 		return $this;
 	}
 
-	// UnlistedWoodCount /////
-
-	public function getUnlistedKnowledgeProviderCount() {
-		return $this->unlistedKnowledgeProviderCount;
-	}
-
-	public function setUnlistedKnowledgeProviderCount($unlistedKnowledgeProviderCount) {
-		$this->unlistedKnowledgeProviderCount = $unlistedKnowledgeProviderCount;
-		return $this;
-	}
-
-	// UnlistedProviderCount /////
+	// UnlistedKnowledgeWoodCount /////
 
 	public function getUnlistedKnowledgeWoodCount() {
 		return $this->unlistedKnowledgeWoodCount;
@@ -212,7 +216,29 @@ class UserMeta {
 		return $this;
 	}
 
-	// UnlistedPostCount /////
+	// UnlistedKnowledgeProviderCount /////
+
+	public function getUnlistedKnowledgeProviderCount() {
+		return $this->unlistedKnowledgeProviderCount;
+	}
+
+	public function setUnlistedKnowledgeProviderCount($unlistedKnowledgeProviderCount) {
+		$this->unlistedKnowledgeProviderCount = $unlistedKnowledgeProviderCount;
+		return $this;
+	}
+
+	// UnlistedKnowledgeSchoolCount /////
+
+	public function getUnlistedKnowledgeSchoolCount() {
+		return $this->unlistedKnowledgeSchoolCount;
+	}
+
+	public function setUnlistedKnowledgeSchoolCount($unlistedKnowledgeSchoolCount) {
+		$this->unlistedKnowledgeSchoolCount = $unlistedKnowledgeSchoolCount;
+		return $this;
+	}
+
+	// UnlistedBlogPostCount /////
 
 	public function getUnlistedBlogPostCount() {
 		return $this->unlistedBlogPostCount;
@@ -223,7 +249,7 @@ class UserMeta {
 		return $this;
 	}
 
-	// UnlistedQuestionCount /////
+	// UnlistedFaqQuestionCount /////
 
 	public function getUnlistedFaqQuestionCount() {
 		return $this->unlistedFaqQuestionCount;
