@@ -88,6 +88,7 @@
                 <li><a href="{{ path('core_workshop_list') }}"><i class="ladb-icon-workshop"></i> {{ 'wonder.workshop.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderWorkshopCount', 'classes':'pull-right' } %}</a></li>
                 <li><a href="{{ path('core_wood_list') }}"><i class="ladb-icon-wood"></i> {{ 'knowledge.wood.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeWoodCount', 'classes':'pull-right' } %}</a></li>
                 <li><a href="{{ path('core_provider_list') }}"><i class="ladb-icon-provider"></i> {{ 'knowledge.provider.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_school_list') }}"><i class="ladb-icon-school"></i> {{ 'knowledge.school.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount', 'classes':'pull-right' } %}</a></li>
                 <li><a href="{{ path('core_find_list') }}"><i class="ladb-icon-globe"></i> {{ 'find.find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindFindCount', 'classes':'pull-right' } %}</a></li>
                 <li><a href="{{ path('core_user_list') }}"><i class="ladb-icon-users"></i> {{ 'user.nav'|trans() }}</a></li>
                 <li class="uk-nav-divider"></li>
@@ -103,8 +104,73 @@
         <a href="{{ path('core_howto_list') }}" {% if navSection is defined and navSection == 'howtos' %} class="ladb-active"{% endif %}><i class="ladb-icon-howto"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedHowtoHowtoCount' } %}<div>{{ 'howto.howto.nav'|trans() }}</div></a>
         <a href="{{ path('core_workshop_list') }}" {% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderWorkshopCount' } %}<div>{{ 'wonder.workshop.nav'|trans() }}</div></a>
         <a href="{{ path('core_wood_list') }}" {% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeWoodCount' } %}<div>{{ 'knowledge.wood.nav'|trans() }}</div></a>
-        <a href="{{ path('core_provider_list') }}" {% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount' } %}<div>{{ 'knowledge.provider.nav'|trans() }}</div></a>
-        <a href="{{ path('core_school_list') }}" {% if navSection is defined and navSection == 'schools' %} class="ladb-active"{% endif %}><i class="ladb-icon-school"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount' } %}<div>Ecoles</div></a>
+        <style>
+            .nav-panel {
+                display: none;
+                width: 180px;
+                height: 80px;
+                float: right;
+            }
+            .nav-panel a {
+                float: left;
+            }
+            .nav-hover {
+                height: 80px;
+                background-color: #3E3B33;
+            }
+
+            .nav-toggle {
+                border-left: 5px solid #D5D3CC;
+                width: 95px;
+                float: left;
+                /*background-color: #3E3B33;*/
+            }
+            .nav-toggle.ladb-nav-active {
+                border-left: 5px solid #ff7700;
+            }
+            .nav-toggle a {
+                width: 85px;
+            }
+
+            .nav-hover:hover {
+                width: 280px;
+            }
+            .nav-hover:hover .nav-toggle {
+                background-color: initial;
+            }
+            .nav-hover:hover .nav-toggle a {
+                background-color: #D5D3CC;
+                color: #3E3B33;
+            }
+            .nav-hover:hover .nav-arrow {
+                border-color: transparent transparent transparent #D5D3CC;
+            }
+            .nav-hover:hover .nav-panel {
+                display: block;
+                background-color: #3E3B33;
+            }
+            .nav-arrow {
+                float: left;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 40px 0 40px 5px;
+            }
+            .nav-arrow-right {
+                float: right;
+                border-color: transparent transparent transparent #3E3B33;
+            }
+        </style>
+        <div class="nav-hover">
+            <div class="nav-toggle{% if navSection is defined and (navSection == 'providers' or navSection == 'schools') %} ladb-nav-active{% endif %}">
+                <a style="float: left"><i class="ladb-icon-more"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderWorkshopCount' } %}<div>Annuaires</div></a>
+                <div class="nav-arrow nav-arrow-right"></div>
+            </div>
+            <div class="nav-panel">
+                <a href="{{ path('core_provider_list') }}" {% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount' } %}<div>{{ 'knowledge.provider.nav'|trans() }}</div></a>
+                <a href="{{ path('core_school_list') }}" {% if navSection is defined and navSection == 'schools' %} class="ladb-active"{% endif %}><i class="ladb-icon-school"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount' } %}<div>Ecoles</div></a>
+            </div>
+        </div>
         <a href="{{ path('core_find_list') }}" {% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-globe"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindFindCount' } %}<div>{{ 'find.find.nav'|trans() }}</div></a>
         <a href="{{ path('core_user_list') }}" {% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'user.nav'|trans() }}</div></a>
     </nav>
