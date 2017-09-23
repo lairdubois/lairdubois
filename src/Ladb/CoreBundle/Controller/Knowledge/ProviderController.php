@@ -3,31 +3,27 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Wonder\Creation;
-use Ladb\CoreBundle\Manager\Knowledge\ProviderManager;
-use Ladb\CoreBundle\Manager\Core\WitnessManager;
-use Ladb\CoreBundle\Utils\ActivityUtils;
-use Ladb\CoreBundle\Utils\LocalisableUtils;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ladb\CoreBundle\Form\Type\Knowledge\NewProviderType;
-use Ladb\CoreBundle\Form\Model\NewProvider;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
-use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\LikableUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
-use Ladb\CoreBundle\Utils\SearchUtils;
-use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
-use Ladb\CoreBundle\Utils\PropertyUtils;
-use Ladb\CoreBundle\Event\PublicationsEvent;
-use Ladb\CoreBundle\Event\PublicationEvent;
-use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Event\KnowledgeEvent;
 use Ladb\CoreBundle\Event\KnowledgeListener;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Form\Model\NewProvider;
+use Ladb\CoreBundle\Form\Type\Knowledge\NewProviderType;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Manager\Knowledge\ProviderManager;
+use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\LikableUtils;
+use Ladb\CoreBundle\Utils\LocalisableUtils;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Ladb\CoreBundle\Utils\PropertyUtils;
+use Ladb\CoreBundle\Utils\SearchUtils;
+use Ladb\CoreBundle\Utils\WatchableUtils;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/fournisseurs")
@@ -223,12 +219,11 @@ class ProviderController extends Controller {
 
 						break;
 
-					case 'woodsWorkaround':
+					case 'woods':
 
-						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
 						$query1 = new \Elastica\Query\QueryString('"Bois massif"');
 						$query1->setFields(array( 'products' ));
-						$query2 = $elasticaQueryUtils->createShouldMatchQuery('woods', $facet->value);
+						$query2 = new \Elastica\Query\Match('woodsWorkaround', $facet->value);
 						$filter = new \Elastica\Query\BoolQuery();
 						$filter->addMust($query1);
 						$filter->addMust($query2);
