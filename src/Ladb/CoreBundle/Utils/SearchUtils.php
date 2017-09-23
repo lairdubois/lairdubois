@@ -62,8 +62,9 @@ class SearchUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function searchEntitiesCount($filters, $sort, $typeName, $excludedIds = null) {
+	public function searchEntitiesCount($filters, $typeName, $excludedIds = null) {
 
+		$sort = null;
 		$elasticaQuery = $this->_buildElasticaQuery($filters, $sort, 0, 0, $excludedIds);
 		if (is_null($elasticaQuery)) {
 			return 0;
@@ -72,7 +73,8 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		// Count
 		$type = $this->get($typeName);
 		try {
-			$count = $type->count($elasticaQuery);
+			$resultSet = $type->search($elasticaQuery);
+			$count = $resultSet->getTotalHits();
 		} catch (\Exception $e) {
 			return 0;
 		}
@@ -80,7 +82,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		return $count;
 	}
 
-	private function _buildElasticaQuery(&$filters, &$sort, $offset, $limit, $excludedIds = null) {
+	private function _buildElasticaQuery(&$filters, &$sort, $offset, $size, $excludedIds = null) {
 		if (is_null($filters) && is_null($sort)) {
 			return null;
 		}
@@ -107,8 +109,8 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			$elasticaQuery->addSort($sort);
 		}
 		$elasticaQuery->setFrom($offset);
-		if ($limit > 0) {
-			$elasticaQuery->setSize($limit);
+		if ($size > 0) {
+			$elasticaQuery->setSize($size);
 		}
 
 		return $elasticaQuery;

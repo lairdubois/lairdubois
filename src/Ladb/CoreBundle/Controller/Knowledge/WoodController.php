@@ -392,8 +392,8 @@ class WoodController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($wood));
 
 		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchableCreationCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('woods.label', $wood->getName())), null, 'fos_elastica.index.ladb.wonder_creation');
-		$searchableProviderCount = $searchUtils->searchEntitiesCount(array( $this->get(ElasticaQueryUtils::NAME)->createShouldMatchQuery('woods', $wood->getName()) ), null, 'fos_elastica.index.ladb.knowledge_provider');
+		$searchableCreationCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('woods.label', $wood->getName()) ), 'fos_elastica.index.ladb.wonder_creation');
+		$searchableProviderCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('woodsWorkaround', $wood->getName()) ), 'fos_elastica.index.ladb.knowledge_provider');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);

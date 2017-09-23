@@ -311,6 +311,12 @@ class Wood extends AbstractKnowledge {
 		return Wood::TYPE;
 	}
 
+	// Title /////
+
+	public function getTitleWorkaround() {
+		return $this->getTitle();
+	}
+
 	// Body /////
 
 	public function getBody() {

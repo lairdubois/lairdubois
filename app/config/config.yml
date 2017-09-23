@@ -625,7 +625,8 @@ fos_elastica:
                             delete: false
                 knowledge_wood:
                     mappings:
-                        title: { type: text, boost: 3, analyzer: title_analyzer } # { analyzer: exact_lowercase_analyzer }
+                        titleWorkaround: { analyzer: exact_lowercase_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         name: { type: text, boost: 3, analyzer: name_analyzer }
                         nameRejected: { type: boolean }
                         grainRejected: { type: boolean }
@@ -657,7 +658,7 @@ fos_elastica:
                         description: { analyzer: body_analyzer }
                         products: { analyzer: body_analyzer }
                         services: { analyzer: body_analyzer }
-#                        woods: { analyzer: body_analyzer }
+                        woodsWorkaround: { analyzer: body_analyzer }
                         geoPoint: { type: geo_point }
                         changedAt: { type: date }
                         viewCount: { type: integer }

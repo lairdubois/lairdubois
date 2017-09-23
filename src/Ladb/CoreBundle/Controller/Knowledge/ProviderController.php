@@ -223,7 +223,7 @@ class ProviderController extends Controller {
 
 						break;
 
-					case 'woods':
+					case 'woodsWorkaround':
 
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
 						$query1 = new \Elastica\Query\QueryString('"Bois massif"');
@@ -523,8 +523,8 @@ class ProviderController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($provider));
 
 		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchableStoreCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('brand', $provider->getBrand()) ), null, 'fos_elastica.index.ladb.knowledge_provider');
-		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( $this->get(ElasticaQueryUtils::NAME)->createShouldMatchQuery('name', $provider->getWoods()) ), null, 'fos_elastica.index.ladb.knowledge_wood');
+		$searchableStoreCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('brand', $provider->getBrand()) ), 'fos_elastica.index.ladb.knowledge_provider');
+		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('name', $provider->getWoods()) ), 'fos_elastica.index.ladb.knowledge_wood');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);

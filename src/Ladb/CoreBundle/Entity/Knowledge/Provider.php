@@ -867,6 +867,10 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return $this->woods;
 	}
 
+	public function getWoodsWorkaround() {
+		return $this->getWoods();
+	}
+
 	// WoodsValues /////
 
 	public function addWoodsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $woodsValue) {
