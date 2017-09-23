@@ -125,6 +125,10 @@ class NotificationRepository extends AbstractEntityRepository {
 			$queryBuilder
 				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Answer')
 			;
+		} elseif ('activity-testify' == $filter) {
+			$queryBuilder
+				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Testify')
+			;
 		}
 		$queryBuilder
 			->addOrderBy('a.createdAt', 'DESC')

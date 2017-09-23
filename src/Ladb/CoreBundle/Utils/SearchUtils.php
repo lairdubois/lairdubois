@@ -6,8 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Elastica\Query;
-use Elastica\Filter\BoolNot;
-use Elastica\Filter\Ids;
 use Ladb\CoreBundle\Model\IndexableInterface;
 
 class SearchUtils extends AbstractContainerAwareUtils {
@@ -97,6 +95,13 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			}
 		}
 
+		if (!is_null($excludedIds) && is_array($excludedIds) && !empty($excludedIds)) {
+			$wrapperQuery = new \Elastica\Query\BoolQuery();
+			$wrapperQuery->addMustNot(new \Elastica\Query\Ids(null, $excludedIds));
+			$wrapperQuery->addMust($query);
+			$query = $wrapperQuery;
+		}
+
 		$elasticaQuery = Query::create($query);
 		if (!is_null($sort)) {
 			$elasticaQuery->addSort($sort);
@@ -104,14 +109,6 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		$elasticaQuery->setFrom($offset);
 		if ($limit > 0) {
 			$elasticaQuery->setSize($limit);
-		}
-
-		if (!is_null($excludedIds) && is_array($excludedIds) && !empty($excludedIds)) {
-			$ids = new Ids();
-			foreach ($excludedIds as $excludedId) {
-				$ids->addId($excludedId);
-			}
-			$elasticaQuery->setPostFilter(new BoolNot($ids));
 		}
 
 		return $elasticaQuery;

@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge\School;
 
-use Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,8 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
+use Ladb\CoreBundle\Utils\WatchableUtils;
+use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Form\Type\Knowledge\School\TestimonialType;
+use Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager;
 
 /**
  * @Route("/ecoles")
@@ -70,9 +72,18 @@ class TestimonialController extends Controller {
 			$school->addTestimonial($testimonial);
 
 			$school->incrementTestimonialCount();
-//			$this->getUser()->incrementTestimonialCount();
+			$this->getUser()->incrementTestimonialCount();
 
 			$om->persist($testimonial);
+
+			// Create activity
+			$activityUtils = $this->get(ActivityUtils::NAME);
+			$activityUtils->createTestifyActivity($testimonial, false);
+
+			// Auto watch
+			$watchableUtils = $this->container->get(WatchableUtils::NAME);
+			$watchableUtils->autoCreateWatch($school, $this->getUser());
+
 			$om->flush();
 
 			return $this->render('LadbCoreBundle:Knowledge/School/Testimonial:create-xhr.html.twig', array(

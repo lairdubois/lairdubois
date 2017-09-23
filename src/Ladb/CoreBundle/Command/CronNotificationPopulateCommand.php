@@ -255,6 +255,29 @@ EOT
 
 			}
 
+			// Testify /////
+
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Testify) {
+
+				$testimonial = $activity->getTestimonial();
+				$school = $testimonial->getSchool();
+
+				if ($school->getWatchCount() > 0) {
+
+					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($school->getType(), $school->getId(), $actorUser);
+					if (!is_null($watches)) {
+						foreach ($watches as $watch) {
+							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
+							if ($verbose) {
+								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new testimonial='.mb_strimwidth($testimonial->getBody(), 0, 50, '[...]').' on='.$school->getTitle().'</info>');
+							}
+						}
+					}
+
+				}
+
+			}
+
 			// Flag activity as notified
 			$activity->setIsPendingNotifications(false);
 

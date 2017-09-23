@@ -139,6 +139,11 @@ class NotificationController extends Controller {
 			$returnToUrl = $typableUtils->getUrlAction($entity).'#_answer_'.$activity->getAnswer()->getId();
 		}
 
+		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Testify) {
+			$entity = $activity->getTestimonial()->getSchool();
+			$returnToUrl = $typableUtils->getUrlAction($entity).'#_testimonial_'.$activity->getTestimonial()->getId();
+		}
+
 		return $this->redirect($returnToUrl);
 	}
 

@@ -45,6 +45,7 @@ EOT
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Join::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Testify::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
 	}
 
@@ -183,6 +184,16 @@ EOT
 					$row->entity = $answer->getQuestion();
 					$row->childEntity = null;
 					$row->answer = $answer;
+
+				}
+
+				// Testify
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Testify::STRIPPED_NAME) {
+
+					$testimonial = $activity->getTestimonial();
+					$row->entity = $testimonial->getSchool();
+					$row->childEntity = null;
+					$row->testimonial = $testimonial;
 
 				}
 

@@ -100,6 +100,12 @@ EOT
 				'slugged'   => true,
 			),
 			array(
+				'className' => \Ladb\CoreBundle\Entity\Knowledge\School::CLASS_NAME,
+				'name'      => 'school',
+				'section'   => 'knowledge-schools',
+				'slugged'   => true,
+			),
+			array(
 				'className' => \Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
 				'name'      => 'user',
 				'section'   => 'core-users',

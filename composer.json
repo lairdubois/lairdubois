@@ -40,7 +40,6 @@
         "stof/doctrine-extensions-bundle": "*",
         "liip/imagine-bundle": "~1.7",
 
-        "google/apiclient": "^2.2",
         "facebook/graph-sdk": "~5.0",
         "willdurand/geocoder": "~3.0",
         "commerceguys/addressing": "0.8.4",

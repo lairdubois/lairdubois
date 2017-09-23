@@ -26,6 +26,9 @@
     {% if providers is not empty %}
         {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':providers, 'type':'provider', 'transPrefix':'knowledge.provider' } %}
     {% endif %}
+    {% if schools is not empty %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':schools, 'type':'school', 'transPrefix':'knowledge.school' } %}
+    {% endif %}
     {% if workshops is not empty %}
         {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':workshops, 'type':'workshop', 'transPrefix':'wonder.workshop' } %}
     {% endif %}

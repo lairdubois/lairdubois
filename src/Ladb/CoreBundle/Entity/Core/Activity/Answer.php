@@ -3,7 +3,6 @@
 namespace Ladb\CoreBundle\Entity\Core\Activity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_activity_answer")
@@ -30,13 +29,13 @@ class Answer extends AbstractActivity {
 
 	// Answer /////
 
-	public function getAnswer() {
-		return $this->answer;
-	}
-
 	public function setAnswer(\Ladb\CoreBundle\Entity\Qa\Answer $answer) {
 		$this->answer = $answer;
 		return $this;
+	}
+
+	public function getAnswer() {
+		return $this->answer;
 	}
 
 }

@@ -148,6 +148,19 @@ class ActivityUtils {
 		}
 	}
 
+	public function createTestifyActivity(\Ladb\CoreBundle\Entity\Knowledge\School\Testimonial $testimonial, $flush = true) {
+
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Testify();
+		$activity->setUser($testimonial->getUser());
+		$activity->setTestimonial($testimonial);
+
+		$this->om->persist($activity);
+
+		if ($flush) {
+			$this->om->flush();
+		}
+	}
+
 	// Delete /////
 
 	private function _deleteActivities($activities, $flush = true) {
@@ -204,6 +217,12 @@ class ActivityUtils {
 	public function deleteActivitiesByAnswer(\Ladb\CoreBundle\Entity\Qa\Answer $answer, $flush = true) {
 		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Answer::CLASS_NAME);
 		$activities = $activityRepository->findByAnswer($answer);
+		$this->_deleteActivities($activities, $flush);
+	}
+
+	public function deleteActivitiesByTestimonial(\Ladb\CoreBundle\Entity\Knowledge\School\Testimonial $testimonial, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Testify::CLASS_NAME);
+		$activities = $activityRepository->findByTestimonial($testimonial);
 		$this->_deleteActivities($activities, $flush);
 	}
 

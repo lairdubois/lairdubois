@@ -362,6 +362,11 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	private $proposalCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true, name="testimonial_count")
+	 */
+	private $testimonialCount = 0;
+
+	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\UserMeta", mappedBy="user", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(nullable=true, name="meta_id")
 	 */
@@ -995,6 +1000,17 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	public function getProposalCount() {
 		return $this->proposalCount;
+	}
+
+	// TestimonialCount /////
+
+	public function incrementTestimonialCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->testimonialCount += intval($by);
+	}
+
+	public function getTestimonialCount() {
+		return $this->testimonialCount;
 	}
 
 	// Meta /////

@@ -34,6 +34,10 @@ Voici les nouveautés L'Air du Bois de la semaine.
 
 {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.txt.twig' with { 'entities':providers, 'type':'provider', 'transPrefix':'knowledge.provider' } %}
 {% endif %}
+{% if schools is not empty %}
+
+{% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.txt.twig' with { 'entities':schools, 'type':'school', 'transPrefix':'knowledge.school' } %}
+{% endif %}
 {% if workshops is not empty %}
 
 {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.txt.twig' with { 'entities':workshops, 'type':'workshop', 'transPrefix':'wonder.workshop' } %}

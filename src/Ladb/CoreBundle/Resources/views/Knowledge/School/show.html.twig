@@ -114,7 +114,6 @@
             {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_list.part.html.twig' with { 'testimonials':school.testimonials } %}
             {% include 'LadbCoreBundle:Knowledge/School:_testimonials-footer.part.html.twig' %}
         </div>
-        <hr class="ladb-divider">
         {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
     </div>
     {{ parent() }}

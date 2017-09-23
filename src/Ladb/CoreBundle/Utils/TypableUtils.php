@@ -56,6 +56,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// School
 			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
 				return implode($delimiter, array( 'knowledge', 'school' ));
+			// Testimonial (School)
+			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
+				return implode($delimiter, array( 'knowledge', 'testimonial' ));
 
 		}
 		return '';
@@ -167,6 +170,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// School
 			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\School';
+			// Testimonial (School)
+			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\School\Testimonial';
 
 		}
 		return null;
