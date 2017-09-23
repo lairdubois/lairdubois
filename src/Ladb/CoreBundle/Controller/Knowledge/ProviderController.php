@@ -2,6 +2,11 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
@@ -22,8 +27,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+
 
 /**
  * @Route("/fournisseurs")
