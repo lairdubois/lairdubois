@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -559,7 +560,7 @@ class WorkshopController extends Controller {
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);
-						$filter->setFields(array( 'tags.name' ));
+						$filter->setFields(array( 'tags.label' ));
 						$filters[] = $filter;
 
 						break;
@@ -609,6 +610,25 @@ class WorkshopController extends Controller {
 
 						break;
 
+					case 'geocoded':
+
+						$filter = new \Elastica\Query\Exists('geoPoint');
+						$filters[] = $filter;
+
+						break;
+
+					case 'location':
+
+						$localisableUtils = $this->get(LocalisableUtils::NAME);
+						$bounds = $localisableUtils->getTopLeftBottomRightBounds($facet->value);
+
+						if (!is_null($bounds)) {
+							$filter = new \Elastica\Query\GeoBoundingBox('geoPoint', $bounds);
+							$filters[] = $filter;
+						}
+
+						break;
+
 					case 'sort':
 
 						switch ($facet->value) {
@@ -641,7 +661,7 @@ class WorkshopController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100', 'body', 'tags.name' ));
+							$filter->setFields(array( 'title^100', 'body', 'tags.label' ));
 							$filters[] = $filter;
 
 						}
@@ -670,9 +690,6 @@ class WorkshopController extends Controller {
 
 			$features = array();
 			foreach ($searchParameters['entities'] as $workshop) {
-				if (is_null($workshop->getLongitude()) || is_null($workshop->getLatitude())) {
-					continue;
-				}
 				$properties = array(
 					'type'    => 0,
 					'cardUrl' => $this->generateUrl('core_workshop_card', array( 'id' => $workshop->getId() )),

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -197,11 +198,22 @@ class SchoolController extends Controller {
 			function($facet, &$filters, &$sort) {
 				switch ($facet->name) {
 
+					case 'geocoded':
+
+						$filter = new \Elastica\Query\Exists('geoPoint');
+						$filters[] = $filter;
+
+						break;
+
 					case 'location':
 
-						$filter = new \Elastica\Query\QueryString($facet->value);
-						$filter->setFields(array( 'address', 'geographicalAreas' ));
-						$filters[] = $filter;
+						$localisableUtils = $this->get(LocalisableUtils::NAME);
+						$bounds = $localisableUtils->getTopLeftBottomRightBounds($facet->value);
+
+						if (!is_null($bounds)) {
+							$filter = new \Elastica\Query\GeoBoundingBox('geoPoint', $bounds);
+							$filters[] = $filter;
+						}
 
 						break;
 
@@ -225,6 +237,20 @@ class SchoolController extends Controller {
 
 						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
 						$filter->setFields(array( 'trainingTypes' ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-diploma':
+
+						$filter = new \Elastica\Query\Exists('diplomas');
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-testimonial':
+
+						$filter = new \Elastica\Query\Range('testimonialCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
@@ -298,9 +324,6 @@ class SchoolController extends Controller {
 
 			$features = array();
 			foreach ($searchParameters['entities'] as $school) {
-				if (is_null($school->getLongitude()) || is_null($school->getLatitude())) {
-					continue;
-				}
 				$properties = array(
 					'type'    => 0,
 					'cardUrl' => $this->generateUrl('core_school_card', array( 'id' => $school->getId() )),

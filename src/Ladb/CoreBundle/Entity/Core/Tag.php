@@ -23,10 +23,10 @@ class Tag {
 	/**
 	 * @ORM\Column(type="string", length=40)
 	 */
-	private $name;
+	private $label;
 
 	/**
-	 * @Gedmo\Slug(fields={"name"}, updatable=false)
+	 * @Gedmo\Slug(fields={"label"}, updatable=false)
 	 * @ORM\Column(type="string", length=40, unique=true)
 	 */
 	private $slug;
@@ -45,14 +45,14 @@ class Tag {
 		return $this->id;
 	}
 
-	// Name /////
+	// Label /////
 
-	public function getName() {
-		return $this->name;
+	public function getLabel() {
+		return $this->label;
 	}
 
-	public function setName($name) {
-		$this->name = $name;
+	public function setLabel($label) {
+		$this->label = $label;
 		return $this;
 	}
 

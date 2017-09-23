@@ -611,6 +611,11 @@ knowledge:
         description: |
           Ce champ peut être utilisé pour définir plus précisément un fournisseur.
           *(ex : Boutique en ligne de roulettes)*
+
+          **Ce descriptif doit rester purement encyclopédique.**
+          - pas de d'avis personnels
+          - pas de formulations publicitaires
+          - pas de tarifs, prix, etc...
         in_store_selling:
         mail_order_selling:
         sale_to_individuals:
@@ -630,6 +635,7 @@ knowledge:
     create: Créer une nouvelle école
     list: Les écoles
     nav: Ecoles
+    new_warning: Une <strong>école</strong> est un <strong>établissement physique</strong> qui propose des formations diplômantes ou non <strong>autour du travail du bois</strong>.
     field:
       name: Nom
       logo: Logo
@@ -643,17 +649,40 @@ knowledge:
       diplomas: Diplômes
       training_types: Type de formation
     help:
-      name: "L'**Nom** [TODO]."
+      name: "Le **Nom** est le nom attribué à l'établissement."
       logo: "Le **Logo** est une image représentant le logotype de l'école."
       photo: "La **Photo** est une photo de l'école."
       website: "Le **Site internet** est l'adresse du site web de l'école."
       address: "L'**Adresse** est l'adresse postale de l'école."
       phone: "Le **Téléphone** est le numéro de téléphone de l'école."
       description: "Le **Descriptif** décrit succintement cette école."
-      public: "Le **Public** [TODO]."
-      birth_year: "L'**Année de création** [TODO]."
-      diplomas: "Le **Diplôme** [TODO]."
-      training_types: "Les **Type de formations** [TODO]."
+      public: "**Etablissement public** indique si cette école est publique."
+      birth_year: "L'**Année de création** est l'année de création de l'école."
+      diplomas: "**Diplômes** permet de lister les diplômes délivrés par cet école."
+      training_types: "**Type de formations** permet de lister les différents type de formation proposés par cette école."
+    form:
+      alert:
+        delete_success: L'école <strong>%title%</strong> a été supprimée.
+      help:
+        legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
+        source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        logo: |
+          - Préférez les images carrées.
+        photo:
+        name: |
+          Dans le cas d'une structure possédant plusieurs établissements, indiquez bien ici le nom de l'établissement que vous souhaitez référence.
+          *(ex : Compagnons du tour de France Lyon)*
+        website:
+        address:
+        phone: |
+          Le **Pays** permet un formatage automatique du numéro.
+        description: |
+          Ce champ peut être utilisé pour définir plus précisément l'école.
+
+          **Ce descriptif doit rester purement encyclopédique.**
+          - pas de d'avis personnels
+          - pas de formulations publicitaires
+          - pas de tarifs, prix, etc...
     testimonial:
       new: Ajouter mon témoignage
       edit: Editer mon témoignage
@@ -876,6 +905,7 @@ search:
     howtos: Recherche dans les pas à pas
     woods: Recherche dans les essences
     providers: Recherche dans les fournisseurs
+    schools: Recherche dans les écoles
     finds: Recherche dans les trouvailles
     users: Recherche dans les boiseaux
     posts: Recherche dans le blog

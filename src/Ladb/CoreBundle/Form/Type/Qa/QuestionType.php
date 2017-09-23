@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 use Ladb\CoreBundle\Entity\Blog\Question;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 
@@ -40,7 +40,7 @@ class QuestionType extends AbstractType {
 			))
 			->add($builder
 					->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-					->addModelTransformer(new TagsToNamesTransformer($this->om))
+					->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 		;
 	}

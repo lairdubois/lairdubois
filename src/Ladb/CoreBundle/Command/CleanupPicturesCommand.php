@@ -377,7 +377,7 @@ EOT
 		}
 		unset($woods);
 
-		// Check Woods /////
+		// Check Providers /////
 
 		$output->writeln('<info>Checking Providers...</info>');
 
@@ -406,6 +406,36 @@ EOT
 			}
 		}
 		unset($providers);
+
+		// Check Schools /////
+
+		$output->writeln('<info>Checking Schools...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'mp', 'ph' ))
+			->from('LadbCoreBundle:Knowledge\School', 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->leftJoin('s.photo', 'ph')
+		;
+
+		try {
+			$schools = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$schools = array();
+		}
+
+		foreach ($schools as $school) {
+			$mainPicture = $school->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+			$photo = $school->getPhoto();
+			if (!is_null($photo)) {
+				$pictureCounters[$photo->getId()][1]++;
+			}
+		}
+		unset($schools);
 
 		// Check Knowledge/Value/Pictures /////
 

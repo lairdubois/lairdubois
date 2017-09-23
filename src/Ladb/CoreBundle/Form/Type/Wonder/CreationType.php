@@ -15,7 +15,7 @@ use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\HowtosToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\CreationsToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\ProvidersToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
@@ -63,7 +63,7 @@ class CreationType extends AbstractType {
 			)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-				->addModelTransformer(new TagsToNamesTransformer($this->om))
+				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 			->add($builder
 				->create('plans', HiddenType::class, array( 'required' => false ))

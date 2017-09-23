@@ -208,7 +208,7 @@ EOT
 			if ($counter == 0) {
 				$unusedTagCount++;
 				if ($verbose) {
-					$output->writeln('<info> -> "'.$tag->getName().'" is unused</info>');
+					$output->writeln('<info> -> "'.$tag->getLabel().'" is unused</info>');
 				}
 				if ($forced) {
 					$om->remove($tag);
@@ -220,7 +220,7 @@ EOT
 						if (!is_null($tagUsage)) {
 							$unusedTagUsageCount++;
 							if ($verbose) {
-								$output->writeln('<info> -> "'.$tag->getName().'" is unused for entityType='.$entityType.'</info>');
+								$output->writeln('<info> -> "'.$tag->getLabel().'" is unused for entityType='.$entityType.'</info>');
 							}
 							if ($forced) {
 								$om->remove($tagUsage);

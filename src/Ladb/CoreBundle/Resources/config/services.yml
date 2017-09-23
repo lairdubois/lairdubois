@@ -221,15 +221,15 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.value_source_validator }
     arguments: ['@validator']
-  ladb_core.ladb_core.valid_phone_value_validator:
+  ladb_core.valid_phone_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidPhoneValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_phone_value_validator }
-  ladb_core.ladb_core.valid_location_value_validator:
+  ladb_core.valid_location_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidLocationValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_location_value_validator }
-  ladb_core.ladb_core.valid_sign_value_validator:
+  ladb_core.valid_sign_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidSignValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_sign_value_validator }
@@ -283,6 +283,10 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidAnswerValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_answer_validator }
+  ladb_core.school_testimonial_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\SchoolTestimonialValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.school_testimonial_validator }
 
   # Listeners
   ladb_core.kernel_listener:

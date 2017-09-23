@@ -68,7 +68,7 @@ class TagUtils {
 		$tagUsages = $tagUsageRepository->findByEntityType($taggable->getType(), $maxResults);
 		if (!is_null($tagUsages)) {
 			foreach ($tagUsages as $tagUsage) {
-				$proposals[] = array( $tagUsage->getTag()->getName(), $tagUsage->getHighlighted() );
+				$proposals[] = array( $tagUsage->getTag()->getLabel(), $tagUsage->getHighlighted() );
 			}
 		}
 

@@ -49,7 +49,7 @@
         <meta property="article:section" content="{{ (ladb_entity_type_stripped_name(entity, '.')~'.nav')|trans() }}" />
         {% if entity.tags is defined %}
             {% for tag in entity.tags %}
-                <meta property="article:tag" content="{{ tag.name }}" />
+                <meta property="article:tag" content="{{ tag.label }}" />
             {% endfor %}
         {% endif %}
     {% endif %}

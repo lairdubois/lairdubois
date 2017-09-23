@@ -108,11 +108,13 @@
         <div style="padding: 10px 0 20px 0; text-align: center;">
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
+        <hr class="ladb-divider">
         <div id="ladb_testimonial_list">
             {% include 'LadbCoreBundle:Knowledge/School:_testimonials-header.part.html.twig' %}
             {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_list.part.html.twig' with { 'testimonials':school.testimonials } %}
             {% include 'LadbCoreBundle:Knowledge/School:_testimonials-footer.part.html.twig' %}
         </div>
+        <hr class="ladb-divider">
         {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
     </div>
     {{ parent() }}

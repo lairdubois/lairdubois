@@ -130,60 +130,24 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 		return false;
 	}
 
-	public function getMap($localisables, $zoom = 4, $autoCenterMap = true, $infoWindowTemplate = null) {
-		if (is_null($localisables)) {
-			return null;
+	/////
+
+	public function getTopLeftBottomRightBounds($address) {
+
+		$googleApiKey = $this->getParameter('google_api_key');
+		$hash = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=='.$address.'&key='.$googleApiKey), true);
+
+		if ($hash && isset($hash['results']) && isset($hash['results'][0]) && isset($hash['results'][0]['geometry']) && isset($hash['results'][0]['geometry']['bounds'])) {
+			$bounds = $hash['results'][0]['geometry']['bounds'];
+
+			// Returns an Elasticsearch ready bounds array [ top_left, bottom_right ]
+			return array(
+				$bounds['northeast']['lat'].','.$bounds['southwest']['lng'],
+				$bounds['southwest']['lat'].','.$bounds['northeast']['lng'],
+			);
 		}
-		if ($localisables instanceof LocalisableInterface) {
-			if (is_null($localisables->getLatitude()) || is_null($localisables->getLongitude())) {
-				return null;
-			}
-			$localisables = array( $localisables );
-		}
-		$map = null;
-		if (is_array($localisables)) {
 
-			$map = $this->get('ivory_google_map.map');
-			$map->setMapOption('zoom', $zoom);
-
-			foreach ($localisables as $localisable) {
-
-				if ($localisable instanceof LocalisableInterface) {
-
-					$markerIcon = method_exists($localisable, 'getMarkerIcon') && !is_null($localisable->getMarkerIcon()) ? $localisable->getMarkerIcon() : 'default';
-
-					// Create the marker
-					$marker = $this->get('ivory_google_map.marker');
-					$marker->setIcon('/bundles/ladbcore/ladb/images/markers/'.$markerIcon.'.png');
-					$marker->setPosition(new \Ivory\GoogleMap\Base\Coordinate($localisable->getLatitude(), $localisable->getLongitude()));
-					if ($autoCenterMap) {
-						$map->setCenter($localisable->getLatitude(), $localisable->getLongitude(), true);
-					} else {
-						$map->setCenter(30, 1.7, true);
-					}
-					$map->addMarker($marker);
-
-					if (!is_null($infoWindowTemplate)) {
-						$infoWindow = new InfoWindow();
-						$infoWindow->setPrefixJavascriptVariable('info_window_');
-						$infoWindow->setContent($this->get('templating')->render($infoWindowTemplate, array( 'localisable' => $localisable )));
-						$infoWindow->setOpen(false);
-						$infoWindow->setAutoOpen(true);
-						$infoWindow->setOpenEvent(MouseEvent::CLICK);
-						$infoWindow->setAutoClose(true);
-						$infoWindow->setOptions(array(
-							'maxWidth' => 350,
-							'zIndex'   => 10,
-						));
-						$marker->setInfoWindow($infoWindow);
-					}
-
-				}
-
-			}
-
-		}
-		return $map;
+		return null;
 	}
 
 }

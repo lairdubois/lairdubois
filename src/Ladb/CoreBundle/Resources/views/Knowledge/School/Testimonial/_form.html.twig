@@ -8,21 +8,33 @@
                 {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
                     {{ form_errors(form) }}
                     <div class="row">
-                        <div class="form-group col-xs-6">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label>Année d'entrée</label>
                             {{ form_errors(form.fromYear) }}
-                            {{ form_widget(form.fromYear, { 'attr':{ 'class':'form-control ladb-input-year' } }) }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                {{ form_widget(form.fromYear, { 'attr':{ 'class':'form-control ladb-input-year' } }) }}
+                            </div>
                         </div>
-                        <div class="form-group col-xs-6">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label>Année de sortie</label> <small>(facultatif)</small>
                             {{ form_errors(form.toYear) }}
-                            {{ form_widget(form.toYear, { 'attr':{ 'class':'form-control ladb-input-year' } }) }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                {{ form_widget(form.toYear, { 'attr':{ 'class':'form-control ladb-input-year' } }) }}
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="$('#{{ form.toYear.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Diplôme(s) obtenu(s)</label> <small>(facultatif)</small>
                         {{ form_errors(form.diploma) }}
-                        {{ form_widget(form.diploma) }}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ladb-icon-diploma"></i></span>
+                            {{ form_widget(form.diploma) }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Votre témoignage</label>

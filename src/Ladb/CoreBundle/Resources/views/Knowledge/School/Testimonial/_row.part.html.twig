@@ -10,8 +10,6 @@
                         {% endif %}
                         {% if is_granted("ROLE_ADMIN") or testimonial.user == app.user %}
                             <a href="{{ path('core_knowledge_school_testimonial_edit', { 'id':testimonial.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit"><i class="ladb-icon-edit"></i></a>
-                        {% endif %}
-                        {% if is_granted("ROLE_ADMIN") %}
                             <a href="#delete_testimonial_{{ testimonial.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete"><i class="ladb-icon-delete"></i></a>
                             {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'delete_testimonial_'~testimonial.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
                                 {% block bodyInner %}
@@ -30,9 +28,9 @@
                     </div>
                     {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':testimonial, 'hideBy':true } %}
                     <div style="margin: 10px 0; color: #000; font-size: 110%;">
-                        <span style="font-weight: bold;">{% if testimonial.fromYear > 0 %}{{ testimonial.fromYear }}{% endif %}{% if testimonial.toYear > 0 %} - {{ testimonial.toYear }}{% endif %}</span>
+                        {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_period.part.html.twig' %}
                         {% if testimonial.diploma %}
-                            <span{% if testimonial.fromYear > 0 %} class="ladb-horizontal-separator-left"{% endif %}>{{ testimonial.diploma }}</span>
+                            <span{% if testimonial.fromYear > 0 %} class="ladb-horizontal-separator-left"{% endif %} style="color: #888;">{{ testimonial.diploma }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -45,7 +43,7 @@
                         <span class="ladb-horizontal-separator-left">{% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':testimonial } %}</span>
                     {% endif %}
                     <div class="text-right">
-                        <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':testimonial.user.usernameCanonical }) }}" class="btn btn-default btn-sm" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':testimonial.user.displayName }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ testimonial.user.displayName }}</a>
+                        <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':testimonial.user.usernameCanonical }) }}" target="_blank" class="btn btn-default btn-sm" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':testimonial.user.displayName }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ testimonial.user.displayName }}</a>
                     </div>
                 </div>
             </div>

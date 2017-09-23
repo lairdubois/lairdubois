@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Elastica\Query\Exists;
 use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Symfony\Component\HttpFoundation\Request;
@@ -146,17 +147,20 @@ class UserController extends Controller {
 
 					case 'geocoded':
 
-						$filter = new \Elastica\Query\Filtered();
-						$filter->setFilter(new \Elastica\Filter\Exists('geoPoint'));
+						$filter = new \Elastica\Query\Exists('geoPoint');
 						$filters[] = $filter;
 
 						break;
 
 					case 'location':
 
-						$filter = new \Elastica\Query\QueryString($facet->value);
-						$filter->setFields(array( 'location' ));
-						$filters[] = $filter;
+						$localisableUtils = $this->get(LocalisableUtils::NAME);
+						$bounds = $localisableUtils->getTopLeftBottomRightBounds($facet->value);
+
+						if (!is_null($bounds)) {
+							$filter = new \Elastica\Query\GeoBoundingBox('geoPoint', $bounds);
+							$filters[] = $filter;
+						}
 
 						break;
 
@@ -209,12 +213,9 @@ class UserController extends Controller {
 
 			$features = array();
 			foreach ($searchParameters['entities'] as $user) {
-				if (is_null($user->getLongitude()) || is_null($user->getLatitude())) {
-					continue;
-				}
 				$properties = array(
 					'type' => $user->getAccountType(),
-					'cardUrl' => $this->generateUrl('core_user_card', array( 'username' => $user->getUsername() )),
+					'cardUrl' => $this->generateUrl('core_user_card', array( 'username' => $user->getUsernameCanonical() )),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($user->getGeoPoint());
 				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);

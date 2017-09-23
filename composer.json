@@ -40,6 +40,8 @@
         "stof/doctrine-extensions-bundle": "*",
         "liip/imagine-bundle": "~1.7",
 
+        "google/apiclient": "^2.2",
+        "facebook/graph-sdk": "~5.0",
         "willdurand/geocoder": "~3.0",
         "commerceguys/addressing": "0.8.4",
         "twitter/bootstrap": "3.3.7",
@@ -47,7 +49,6 @@
         "afarkas/html5shiv": "3.7.3",
         "blueimp/jquery-file-upload": "9.18.0",
         "jublonet/codebird-php": "2.6.1",
-        "facebook/graph-sdk": "~5.0",
         "jonnyw/php-phantomjs": "4.5.1",
         "emojione/emojione": "2.2.7",
         "eonasdan/bootstrap-datetimepicker": "4.17.37",

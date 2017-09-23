@@ -7,6 +7,7 @@ use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Manager\Knowledge\ProviderManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -206,23 +207,6 @@ class ProviderController extends Controller {
 
 						break;
 
-					case 'location':
-
-						$filter = new \Elastica\Query\QueryString($facet->value);
-						$filter->setFields(array( 'address', 'geographicalAreas' ));
-						$filters[] = $filter;
-
-						break;
-
-					case 'around':
-
-						if (isset($facet->value)) {
-							$filter = new \Elastica\Query\Filtered(null, new \Elastica\Filter\GeoDistance('geoPoint', $facet->value, '100km'));
-							$filters[] = $filter;
-						}
-
-						break;
-
 					case 'products':
 
 						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
@@ -277,6 +261,34 @@ class ProviderController extends Controller {
 
 						$filter = new \Elastica\Query\Range('saleToIndividuals', array( 'lt' => 1 ));
 						$filters[] = $filter;
+
+						break;
+
+					case 'geocoded':
+
+						$filter = new \Elastica\Query\Exists('geoPoint');
+						$filters[] = $filter;
+
+						break;
+
+					case 'location':
+
+						$localisableUtils = $this->get(LocalisableUtils::NAME);
+						$bounds = $localisableUtils->getTopLeftBottomRightBounds($facet->value);
+
+						if (!is_null($bounds)) {
+							$filter = new \Elastica\Query\GeoBoundingBox('geoPoint', $bounds);
+							$filters[] = $filter;
+						}
+
+						break;
+
+					case 'around':
+
+						if (isset($facet->value)) {
+							$filter = new \Elastica\Query\Filtered(null, new \Elastica\Filter\GeoDistance('geoPoint', $facet->value, '100km'));
+							$filters[] = $filter;
+						}
 
 						break;
 
@@ -349,9 +361,6 @@ class ProviderController extends Controller {
 
 			$features = array();
 			foreach ($searchParameters['entities'] as $provider) {
-				if (is_null($provider->getLongitude()) || is_null($provider->getLatitude())) {
-					continue;
-				}
 				$properties = array(
 					'type'    => 0,
 					'cardUrl' => $this->generateUrl('core_provider_card', array( 'id' => $provider->getId() )),

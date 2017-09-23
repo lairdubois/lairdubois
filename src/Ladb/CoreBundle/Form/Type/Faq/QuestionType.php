@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 
 class QuestionType extends AbstractType {
 
@@ -39,7 +39,7 @@ class QuestionType extends AbstractType {
 			->add('weight')
 			->add($builder
 					->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-					->addModelTransformer(new TagsToNamesTransformer($this->om))
+					->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 		;
 	}

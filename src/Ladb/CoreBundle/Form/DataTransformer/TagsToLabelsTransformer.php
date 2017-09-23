@@ -7,7 +7,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Entity\Core\Tag;
 
-class TagsToNamesTransformer implements DataTransformerInterface {
+class TagsToLabelsTransformer implements DataTransformerInterface {
 
 	private $om;
 
@@ -16,7 +16,7 @@ class TagsToNamesTransformer implements DataTransformerInterface {
 	}
 
 	/**
-	 * Transforms an object (tag) to a string (name).
+	 * Transforms an object (tag) to a string (label).
 	 */
 	public function transform($tags) {
 		if (null === $tags) {
@@ -27,15 +27,15 @@ class TagsToNamesTransformer implements DataTransformerInterface {
 			throw new UnexpectedTypeException($tags, '\Doctrine\Common\Collections\Collection');
 		}
 
-		$namesArray = array();
+		$labelsArray = array();
 		foreach ($tags as $tag) {
-			$namesArray[] = $tag->getName();
+			$labelsArray[] = $tag->getLabel();
 		}
-		return implode(',', $namesArray);
+		return implode(',', $labelsArray);
 	}
 
 	/**
-	 * Transforms a string (name) to an object (tag).
+	 * Transforms a string (label) to an object (tag).
 	 */
 	public function reverseTransform($labelsString) {
 		if (!$labelsString) {
@@ -44,20 +44,20 @@ class TagsToNamesTransformer implements DataTransformerInterface {
 		$labelsString = htmlspecialchars_decode($labelsString, ENT_QUOTES);
 
 		$tags = array();
-		$namesArray = preg_split("/[,;]+/", $labelsString);
+		$labelsArray = preg_split("/[,;]+/", $labelsString);
 		$repository = $this->om->getRepository(Tag::CLASS_NAME);
-		foreach ($namesArray as $name) {
-			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]{2,}$/", $name)) {
+		foreach ($labelsArray as $label) {
+			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]{2,}$/", $label)) {
 				continue;
 			}
-			$name = \Gedmo\Sluggable\Util\Urlizer::urlize($name);
-			if (strlen($name) == 0) {
+			$label = \Gedmo\Sluggable\Util\Urlizer::urlize($label);
+			if (strlen($label) == 0) {
 				continue;
 			}
-			$tag = $repository->findOneByName($name);
+			$tag = $repository->findOneByLabel($label);
 			if (is_null($tag)) {
 				$tag = new Tag();
-				$tag->setName($name);
+				$tag->setLabel($label);
 			} elseif (in_array($tag, $tags)) {
 				continue;
 			}

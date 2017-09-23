@@ -698,7 +698,7 @@ class PlanController extends Controller {
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);
-						$filter->setFields(array( 'tags.name' ));
+						$filter->setFields(array( 'tags.label' ));
 						$filters[] = $filter;
 
 						break;
@@ -785,7 +785,7 @@ class PlanController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100', 'body', 'tags.name' ));
+							$filter->setFields(array( 'title^100', 'body', 'tags.label' ));
 							$filters[] = $filter;
 
 						}

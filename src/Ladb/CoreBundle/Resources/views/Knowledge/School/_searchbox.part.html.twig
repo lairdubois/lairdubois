@@ -8,8 +8,12 @@
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
+    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="diplomas" data-label="Diplômes" data-editable="true" data-icon="diploma"><i class="ladb-icon-diploma ladb-icon-fixed-center"></i> Diplômes</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="training-types" data-label="Type de formation" data-editable="true" data-icon="provider-products" data-proposals="Continue,Alternance,Apprentissage,Professionnelle,Stage court"><i class="ladb-icon-provider-products ladb-icon-fixed-center"></i> Type de formation</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-diploma" data-label="Avec diplôme" data-editable="false" data-icon="filter"><i class="ladb-icon-filter"></i> Avec diplôme</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-testimonial" data-label="Avec témoignage" data-editable="false" data-icon="student"><i class="ladb-icon-student"></i> Avec témoignage</a></li>
     {% if app.user %}
         <li class="divider"></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetées" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetées</a></li>
@@ -25,4 +29,5 @@
 {% endblock %}
 
 {% block searchboxShortcuts %}
+    <li><a class="ladb-smartsearch-shortcut" data-query="@with-testimonial"><i class="ladb-icon-student"></i> Avec témoignage</a></li>
 {% endblock %}

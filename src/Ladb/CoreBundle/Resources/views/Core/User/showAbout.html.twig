@@ -72,14 +72,14 @@
                                     {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':testimonial.school.mainPicture, 'width':64, 'height':64, 'alt':testimonial.school.title, 'noSizer':true, 'imgClasses':'img-rounded' } %}
                                 </div>
                                 <div class="media-body">
-                                    <div class="media-heading" style="font-size: 120%; font-weight: bold;"><a href="{{ path('core_school_show', { 'id':testimonial.school.sluggedId }) }}">{{ testimonial.school.title }}</a></div>
-                                    <div style="margin: 10px 0; color: #000; font-size: 110%;">
-                                        <span style="font-weight: bold;">{% if testimonial.fromYear > 0 %}{{ testimonial.fromYear }}{% endif %}{% if testimonial.toYear > 0 %} - {{ testimonial.toYear }}{% endif %}</span>
-                                        {% if testimonial.diploma %}
-                                            <span{% if testimonial.fromYear > 0 %} class="ladb-horizontal-separator-left"{% endif %}>{{ testimonial.diploma }}</span>
-                                        {% endif %}
+                                    <div class="media-heading" style="font-size: 120%; font-weight: bold;">
+                                        {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_period.part.html.twig' %}
+                                        <a href="{{ path('core_school_show', { 'id':testimonial.school.sluggedId }) }}" class="ladb-horizontal-separator-left">{{ testimonial.school.title }}</a>
                                     </div>
-                                    <div>
+                                    {% if testimonial.diploma %}
+                                        <div style="margin: 5px 0; font-size: 110%; color: #888;">{{ testimonial.diploma }}</div>
+                                    {% endif %}
+                                    <div style="margin: 10px 0;">
                                         {{ testimonial.htmlBody|raw }}
                                     </div>
                                 </div>
