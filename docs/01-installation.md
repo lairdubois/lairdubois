@@ -2,7 +2,7 @@ Setting up L'Air du Bois
 ========================
 
 The following installation instruction suppose that your server is running under a Linux Operating System.
-To write this documentation the [Debian 8 "Jessie"](https://www.debian.org) distribution is used.
+To write this documentation the [Debian 9 "Stretch"](https://www.debian.org) distribution is used.
 Else you need to adapt it to your configuration.
 
 ## Step 0 - Install required softwares
@@ -24,7 +24,14 @@ L'Air du Bois uses some important tools you need to install first.
 ### Install [PHP](http://www.php.net/) - *The scripting language*
 
 ``` bash
-    $ sudo apt-get install php5 php5-cli php5-curl php5-intl php5-gd php5-imagick php-apc php5-mysql php5-fpm
+    $ sudo apt-get install apt-transport-https
+    $ sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+    $ sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+    $ sudo apt update
+```
+
+``` bash
+    $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.0-mbstring php7.1-xml php7.1-zip
 ```
 
 ### Install [Git](https://git-scm.com/) - *The version control system*
@@ -44,12 +51,14 @@ L'Air du Bois uses some important tools you need to install first.
 ``` bash
     $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
     $ sudo apt-get install -y nodejs
-    $ npm install -g less
+    $ sudo npm install -g less
 ```
 
-### Install *Java* - *Used to run Elesticsearch*
+### Install *Java8* - *Used to run Elesticsearch*
 
 ``` bash
+    $ apt-get install default-jre
+
     $ echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/webupd8team-java.list
     $ echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list.d/webupd8team-java.list
     $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
@@ -70,8 +79,8 @@ L'Air du Bois uses some important tools you need to install first.
 Configure Elasticsearch to automatically start during bootup.
 
 ``` bash
-    sudo /bin/systemctl daemon-reload
-    sudo /bin/systemctl enable elasticsearch.service
+    $ sudo /bin/systemctl daemon-reload
+    $ sudo /bin/systemctl enable elasticsearch.service
 ```
 
 ### Install [ImageMagick](http://www.imagemagick.org/) - *The image manipulation library*
@@ -94,7 +103,7 @@ Now you are ready to setup the website itself !
 > If you are on the **PROD** server :
 
 ``` bash
-    $ mkdir /var/www/www.lairdubois.fr
+    $ sudo mkdir /var/www/www.lairdubois.fr
     $ cd /var/www/www.lairdubois.fr
 ```
 
@@ -108,14 +117,14 @@ Now you are ready to setup the website itself !
 ## Step 2 - Setup the GIT repository
 
 ``` bash
-    $ git init
-    $ git remote add origin https://github.com/lairdubois/lairdubois.git
+    $ sudo git init
+    $ sudo git remote add origin https://github.com/lairdubois/lairdubois.git
 ```
 
 ## Step 3 - Clone repository
 
 ``` bash
-    $ git pull origin master
+    $ sudo git pull origin master
 ```
 
 ## Step 4 - Run composer to retrieve vendor dependencies
@@ -123,7 +132,7 @@ Now you are ready to setup the website itself !
 L'Air du Bois uses a lot of external libs and bundles. This step permits to automaticaly download them.
 
 ``` bash
-    $ composer install
+    $ sudo composer install
 ```
 
 At the end of the download process, you will be invite to enter configuration parameters (like database server, etc ...).
