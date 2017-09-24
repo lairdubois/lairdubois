@@ -61,8 +61,8 @@ L'Air du Bois uses some important tools you need to install first.
 ### Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The search engine*
 
 ``` bash
-    $ wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-    $ echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-1.7.list
+    $ sudo apt-get install apt-transport-https
+    $ echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
     $ sudo apt-get update
     $ sudo apt-get install elasticsearch
 ```

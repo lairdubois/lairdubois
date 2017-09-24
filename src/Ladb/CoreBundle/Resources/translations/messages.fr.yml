@@ -670,7 +670,7 @@ knowledge:
           - Préférez les images carrées.
         photo:
         name: |
-          Dans le cas d'une structure possédant plusieurs établissements, indiquez bien ici le nom de l'établissement que vous souhaitez référence.
+          Dans le cas d'une structure possédant plusieurs établissements, indiquez bien ici le nom de l'établissement que vous souhaitez référencer.
           *(ex : Compagnons du tour de France Lyon)*
         website:
         address:

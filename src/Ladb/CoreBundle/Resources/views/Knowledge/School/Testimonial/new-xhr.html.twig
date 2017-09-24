@@ -4,7 +4,7 @@
 
 {% block title %}<i class="ladb-icon-plus"></i> {{ 'knowledge.school.testimonial.new'|trans() }}{% endblock %}
 
-{% block formOuter %}
+{% block buttons %}
     <div class="alert alert-info">
         <div class="media">
             <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
@@ -15,10 +15,6 @@
             </div>
         </div>
     </div>
-    {{ parent() }}
-{% endblock %}
-
-{% block buttons %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.publish'|trans()), 'classes':'btn-primary' } %}
 {% endblock %}
