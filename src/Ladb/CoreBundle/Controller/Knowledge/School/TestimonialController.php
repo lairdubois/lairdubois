@@ -14,6 +14,8 @@ use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Form\Type\Knowledge\School\TestimonialType;
 use Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
 
 /**
  * @Route("/ecoles")
@@ -79,6 +81,10 @@ class TestimonialController extends Controller {
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
 			$activityUtils->createTestifyActivity($testimonial, false);
+
+			// Dispatch publication event (on School)
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($school));
 
 			// Auto watch
 			$watchableUtils = $this->container->get(WatchableUtils::NAME);
