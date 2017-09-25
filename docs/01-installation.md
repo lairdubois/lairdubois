@@ -13,6 +13,7 @@ L'Air du Bois uses some important tools you need to install first.
 
 ``` bash
     $ sudo apt-get install mysql-server mysql-client
+    $ sudo apt-get install mariadb-server mariadb-client
 ```
 
 ### Install [Ningx](https://nginx.org/) - *The webserver*
