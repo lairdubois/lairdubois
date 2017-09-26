@@ -6,4 +6,9 @@
     {% if school.postalCode is not null and school.locality is not null or school.country is not null %}
         <div><i class="ladb-icon-location ladb-icon-fixed-center"></i>{% if school.postalCode is not null %} {{ school.postalCode }}{% endif %}{% if school.locality is not null %} {{ school.locality }}{% endif %}{% if school.country is not null %} <small>({{ school.country }})</small>{% endif %}</div>
     {% endif %}
+    {% if school.public is not null %}
+        <div class="ladb-knowledge-badges">
+            <span class="ladb-knowledge-badge" data-tooltip="tooltip" title="{% if school.public %}Etablissement public{% else %}Etablissement privé{% endif %}">{% if school.public %}Public{% else %}Privé{% endif %}</span>
+        </div>
+    {% endif %}
 </div>

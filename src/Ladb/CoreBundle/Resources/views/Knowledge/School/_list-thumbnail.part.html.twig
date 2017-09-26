@@ -25,7 +25,7 @@
     {{ parent() }}
     {% if school.testimonialCount > 0 %}
         <li class="ladb-counter">
-            <span class="ladb-horizontal-separator-right"><i class="ladb-icon-student"></i> {{ school.testimonialCount|number_format(0, ',', ' ') }}</span>
+            <span class="ladb-horizontal-separator-right" style="color: #888;"><i class="ladb-icon-student"></i> {{ school.testimonialCount|number_format(0, ',', ' ') }} {{ 'knowledge.school.choice.testimonials'|transchoice(school.testimonialCount) }}</span>
         </li>
     {% endif %}
 {% endblock %}
