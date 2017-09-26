@@ -1,1 +1,1 @@
-<span style="font-weight: bold;">{% if testimonial.fromYear > 0 %}{{ testimonial.fromYear }}{% endif %}{% if testimonial.toYear > 0 %} - {{ testimonial.toYear }}{% endif %}</span>
+<span style="font-weight: bold;">{% if testimonial.fromYear > 0 %}{{ testimonial.fromYear }}{% endif %}{% if testimonial.toYear > testimonial.fromYear  %} - {{ testimonial.toYear }}{% endif %}</span>

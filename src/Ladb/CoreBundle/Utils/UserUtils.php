@@ -17,6 +17,34 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 	/////
 
+	public function _getUnlistedCounterRefreshDateByEntityType($entityType) {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+		$session = $globalUtils->getSession();
+		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
+		$refreshDate = $session->get($key);
+		if (is_null($refreshDate)) {
+			return new \DateTime();
+		}
+		return $refreshDate;
+	}
+
+	public function _getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType) {
+		return '_ladb_unlisted_counter_refresh_date_'.$entityType;
+	}
+
+	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
+		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
+	}
+
+	public function _setUnlistedCounterRefreshDateByEntityType($entityType, $refreshDate) {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+		$session = $globalUtils->getSession();
+		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
+		$session->set($key, $refreshDate);
+	}
+
+	/////
+
 	public function computeUnlistedCounters(User $user) {
 
 		$updated = false;
@@ -83,7 +111,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
 
 				// Update count value on user entity
-				$propertyPath = 'unlisted_'.ucfirst($entityStrippedName).'_count';
+				$propertyPath = 'unlisted_'.$entityStrippedName.'_count';
 				$propertyUtils = $this->get(PropertyUtils::NAME);
 
 				if ($count != $propertyUtils->getValue($meta, $propertyPath)) {
@@ -102,34 +130,6 @@ class UserUtils extends AbstractContainerAwareUtils {
 		}
 
 		return false;	// Returns updated
-	}
-
-	public function _getUnlistedCounterRefreshDateByEntityType($entityType) {
-		$globalUtils = $this->get(GlobalUtils::NAME);
-		$session = $globalUtils->getSession();
-		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
-		$refreshDate = $session->get($key);
-		if (is_null($refreshDate)) {
-			return new \DateTime();
-		}
-		return $refreshDate;
-	}
-
-	/////
-
-	public function _getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType) {
-		return '_ladb_unlisted_counter_refresh_date_'.$entityType;
-	}
-
-	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
-		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
-	}
-
-	public function _setUnlistedCounterRefreshDateByEntityType($entityType, $refreshDate) {
-		$globalUtils = $this->get(GlobalUtils::NAME);
-		$session = $globalUtils->getSession();
-		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
-		$session->set($key, $refreshDate);
 	}
 
 	public function createDefaultAvatar(User $user, $randomColor = true) {

@@ -20,7 +20,7 @@
             var scrollPosition = $win.scrollTop();
             var visibleArea = $win.scrollTop() + $win.height();
             var objEndPos = (target.offset().top + target.outerHeight());
-            return visibleArea >= objEndPos && scrollPosition <= objEndPos ? true : false
+            return (visibleArea >= objEndPos && scrollPosition <= objEndPos) ? true : false
         };
 
         var targetTop = target.offset().top;
