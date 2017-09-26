@@ -24,7 +24,9 @@
 {% block entityMetas %}
     {{ parent() }}
     {% if school.testimonialCount > 0 %}
-        <li class="ladb-counter"><i class="ladb-icon-student"></i> <span>{{ school.testimonialCount|number_format(0, ',', ' ') }}</span></li>
+        <li class="ladb-counter">
+            <span class="ladb-horizontal-separator-right"><i class="ladb-icon-student"></i> {{ school.testimonialCount|number_format(0, ',', ' ') }}</span>
+        </li>
     {% endif %}
 {% endblock %}
 
