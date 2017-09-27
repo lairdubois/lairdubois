@@ -220,7 +220,7 @@ class SchoolController extends Controller {
 					case 'around':
 
 						if (isset($facet->value)) {
-							$filter = new \Elastica\Query\Filtered(null, new \Elastica\Filter\GeoDistance('geoPoint', $facet->value, '100km'));
+							$filter = new \Elastica\Filter\GeoDistance('geoPoint', $facet->value, '100km');
 							$filters[] = $filter;
 						}
 

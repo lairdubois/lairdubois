@@ -80,6 +80,29 @@ Be sure you activate the following parameters (by uncomment or replace) :
 
 ```
 
+Now configure the process management. You need to adapt this to the available RAM on your server.
+
+``` bash
+    $ sudo nano /etc/php/7.1/fpm/pool.d/www.conf
+```
+
+```
+# /etc/php/7.1/fpm/pool.d/www.conf
+
+pm = dynamic
+pm.max_children = 100       # The hard-limit total number of processes allowed
+pm.start_servers = 20       # When php-fpm starts, have this many processes waiting for requests
+pm.min_spare_servers = 10   # Number spare processes php-fpm will create
+pm.max_spare_servers = 20   # Max number of spare (waiting for connections) processes allowed to be created
+
+```
+
+Restart PHP FPM.
+
+``` bash
+    $ sudo service php7.1-fpm restart
+```
+
 
 ### Install [Git](https://git-scm.com/) - *The version control system*
 
