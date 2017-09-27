@@ -18,7 +18,6 @@ L'Air du Bois uses some important tools you need to install first.
 ### Install [MySQL](https://www.mysql.com/) - *The database*
 
 ``` bash
-    $ sudo apt-get install mysql-server mysql-client
     $ sudo apt-get install mariadb-server mariadb-client
 ```
 
@@ -26,6 +25,28 @@ L'Air du Bois uses some important tools you need to install first.
 
 ``` bash
     $ sudo apt-get install nginx
+```
+
+You can now configure NGINX.
+
+``` bash
+    $ sudo nano /etc/nginx/nginx.conf
+```
+
+Be sure you activate the following parameters (by uncomment or replace) :
+
+```
+    # /etc/nginx/nginx.conf
+
+    server_tokens off;
+
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;
+
 ```
 
 ### Install [PHP](http://www.php.net/) - *The scripting language*
@@ -39,6 +60,26 @@ L'Air du Bois uses some important tools you need to install first.
 ``` bash
     $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.1-mbstring php7.1-xml php7.1-zip
 ```
+
+You can now configure PHP.
+
+``` bash
+    $ sudo nano /etc/php/7.1/fpm/php.ini
+```
+
+Be sure you activate the following parameters (by uncomment or replace) :
+
+```
+    # /etc/php/7.1/fpm/php.ini
+
+    date.timezone = Europe/Paris
+    upload_max_filesize = 60M
+    post_max_size = 60M
+    memory_limit = 256M
+    cgi.fix_pathinfo=0
+
+```
+
 
 ### Install [Git](https://git-scm.com/) - *The version control system*
 
@@ -174,13 +215,19 @@ First you need to install certbot.
 Before generate the certificates, you need to stop NGINX.
 
 ``` bash
-    $ sudo service ngnx stop
+    $ sudo service nginx stop
 ```
 
 You can now generate certificates.
 
 ``` bash
     $ certbot certonly --standalone --email contact@lairdubois.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com
+```
+
+Restart NGINX.
+
+``` bash
+    $ sudo service nginx start
 ```
 
 ## Step 7 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
@@ -240,7 +287,7 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
 ## Step 11 - Activate cron commands (Not necessary on the **DEV** server)
 
 ``` bash
-    $ crontab -e
+    $ sudo crontab -e
 ```
 
 And add the following lines
