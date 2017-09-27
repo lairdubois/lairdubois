@@ -189,6 +189,7 @@ Now you are ready to configure Nginx to access to the webroot directory.
 > If you are on the **PROD** server :
 
 ``` bash
+    $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr-maintenance.conf /etc/nginx/sites-available/www.lairdubois.fr-maintenance.conf
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr.conf /etc/nginx/sites-available/www.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/www.lairdubois.fr.conf /etc/nginx/sites-enabled/www.lairdubois.fr.conf
     $ service nginx restart
