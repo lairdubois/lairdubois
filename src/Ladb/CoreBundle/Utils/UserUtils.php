@@ -17,23 +17,8 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function _getUnlistedCounterRefreshDateByEntityType($entityType) {
-		$globalUtils = $this->get(GlobalUtils::NAME);
-		$session = $globalUtils->getSession();
-		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
-		$refreshDate = $session->get($key);
-		if (is_null($refreshDate)) {
-			return new \DateTime();
-		}
-		return $refreshDate;
-	}
-
 	public function _getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType) {
 		return '_ladb_unlisted_counter_refresh_date_'.$entityType;
-	}
-
-	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
-		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
 	}
 
 	public function _setUnlistedCounterRefreshDateByEntityType($entityType, $refreshDate) {
@@ -41,6 +26,17 @@ class UserUtils extends AbstractContainerAwareUtils {
 		$session = $globalUtils->getSession();
 		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
 		$session->set($key, $refreshDate);
+	}
+
+	public function _getUnlistedCounterRefreshDateByEntityType($entityType, $now) {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+		$session = $globalUtils->getSession();
+		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
+		$refreshDate = $session->get($key);
+		if (is_null($refreshDate)) {
+			return $now;
+		}
+		return $refreshDate;
 	}
 
 	/////
@@ -60,6 +56,8 @@ class UserUtils extends AbstractContainerAwareUtils {
 		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Faq\Question::TYPE, false);
 		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Qa\Question::TYPE, false);
 
+		echo '$updated = '.$updated;
+
 		if ($updated) {
 			$userManager = $this->get('fos_user.user_manager');
 			$userManager->updateUser($user);
@@ -74,7 +72,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 		// Check refresh date
 		$now = new \DateTime();
-		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType);
+		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType, $now);
 		if ($now < $refreshDate) {
 			return false;
 		}
@@ -131,6 +129,12 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 		return false;	// Returns updated
 	}
+
+	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
+		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
+	}
+
+	/////
 
 	public function createDefaultAvatar(User $user, $randomColor = true) {
 
