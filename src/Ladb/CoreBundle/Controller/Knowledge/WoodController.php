@@ -306,7 +306,7 @@ class WoodController extends Controller {
 								break;
 
 							case 'alphabetical':
-								$sort = array( 'title' => array( 'order' => 'asc' ) );
+								$sort = array( 'titleWorkaround' => array( 'order' => 'asc' ) );
 								break;
 
 							case 'popular-views':

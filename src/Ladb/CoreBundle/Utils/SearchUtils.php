@@ -247,11 +247,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 
 		// Search
 		$type = $this->get($typeName);
-		try {
-			$resultSet = $type->search($elasticaQuery);
-		} catch (\Exception $e) {
-			return $result;
-		}
+		$resultSet = $type->search($elasticaQuery);
 
 		// Extract Ids
 		$ids = array();

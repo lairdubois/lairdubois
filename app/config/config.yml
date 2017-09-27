@@ -625,7 +625,7 @@ fos_elastica:
                             delete: false
                 knowledge_wood:
                     mappings:
-                        titleWorkaround: { analyzer: exact_lowercase_analyzer }
+                        titleWorkaround: { type: keyword }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         name: { type: text, boost: 3, analyzer: name_analyzer }
                         nameRejected: { type: boolean }
