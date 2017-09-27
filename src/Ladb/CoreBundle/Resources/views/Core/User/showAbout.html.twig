@@ -23,7 +23,7 @@
 {% block bodyContainerContent %}
     <div class="row">
         <div class="col-md-8 col-xs-12">
-            {% if not isOwner and not hasBiography and not hasMap %}
+            {% if not isOwner and not hasBiography and not hasMap and testimonials is empty %}
                 <div style="font-size: 200px; text-align: center; color: #ddd;">
                     <i class="ladb-icon-user"></i>
                 </div>
