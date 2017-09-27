@@ -9,10 +9,17 @@ Else you need to adapt it to your configuration.
 
 L'Air du Bois uses some important tools you need to install first.
 
+### Install Useful Tools
+
+``` bash
+    $ sudo apt-get install curl apt-transport-https
+```
+
 ### Install [MySQL](https://www.mysql.com/) - *The database*
 
 ``` bash
     $ sudo apt-get install mysql-server mysql-client
+    $ sudo apt-get install mariadb-server mariadb-client
 ```
 
 ### Install [Ningx](https://nginx.org/) - *The webserver*
@@ -24,14 +31,13 @@ L'Air du Bois uses some important tools you need to install first.
 ### Install [PHP](http://www.php.net/) - *The scripting language*
 
 ``` bash
-    $ sudo apt-get install apt-transport-https
     $ sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     $ sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
     $ sudo apt update
 ```
 
 ``` bash
-    $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.0-mbstring php7.1-xml php7.1-zip
+    $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.1-mbstring php7.1-xml php7.1-zip
 ```
 
 ### Install [Git](https://git-scm.com/) - *The version control system*
@@ -48,24 +54,28 @@ L'Air du Bois uses some important tools you need to install first.
 
 ### Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package** - *The CSS pre-processor*
 
+As root :
+
 ``` bash
     $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-    $ sudo apt-get install -y nodejs
-    $ sudo npm install -g less
+    $ apt-get install -y nodejs
+    $ npm install -g less
 ```
 
 ### Install *Java8* - *Used to run Elesticsearch*
 
 ``` bash
-    $ apt-get install default-jre
+    $ sudo apt-get install default-jre
 ```
 
 ### Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The search engine*
 
 ``` bash
-    $ sudo apt-get install apt-transport-https
     $ echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
     $ sudo apt-get update
+```
+
+``` bash
     $ sudo apt-get install elasticsearch
 ```
 
@@ -153,7 +163,27 @@ Not that the given DEV config is configured for running on MacOS.
     $ service nginx restart
 ```
 
-## Step 6 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
+## Step 6 - Generate HTTPS certificates (Not necessary on the **DEV** server)
+
+First you need to install certbot.
+
+``` bash
+    $ sudo apt-get install certbot
+```
+
+Before generate the certificates, you need to stop NGINX.
+
+``` bash
+    $ sudo service ngnx stop
+```
+
+You can now generate certificates.
+
+``` bash
+    $ certbot certonly --standalone --email contact@lairdubois.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com
+```
+
+## Step 7 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
 
 Emails sended by L'Air du Bois uses DKIM (DomainKeys Identified Mail) email authentication method.
 But as you need to add parameter on the DNS record, it may be usefull only on **PROD** server.
@@ -177,7 +207,7 @@ prefix  = dkim._domainkey               // dkim is facutative
 value   = k=rsa; p=[PUBLIC KEY HERE]
 ```
 
-## Step 7 - Setup the database
+## Step 8 - Setup the database
 
 ### Create the database
 
@@ -191,7 +221,7 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
     $ bin/console doctrine:schema:update --force
 ```
 
-## Step 8 - Compile and Minimize CSS and JS
+## Step 9 - Compile and Minimize CSS and JS
 
 This step will create `web/js` and `web/css` folders and fill them with compiled and minimized assets. 
 
@@ -199,7 +229,7 @@ This step will create `web/js` and `web/css` folders and fill them with compiled
     $ bin/console assetic:dump
 ```
 
-## Step 9 - Install bundle's assets
+## Step 10 - Install bundle's assets
 
 This step will install base assets (fonts, base images, ...) in `web/bundles` folder.
 
@@ -207,7 +237,7 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
     $ bin/console assets:install
 ```
 
-## Step 10 - Activate cron commands (Not necessary on the **DEV** server)
+## Step 11 - Activate cron commands (Not necessary on the **DEV** server)
 
 ``` bash
     $ crontab -e
