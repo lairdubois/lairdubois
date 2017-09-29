@@ -39,6 +39,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Table("tbl_find")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Find\FindRepository")
  * @LadbAssert\UniqueFind()
+ * @LadbAssert\BodyBlocks()
  */
 class Find extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
 
