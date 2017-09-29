@@ -1,0 +1,12 @@
+IMPORTANT:
+----------
+
+Le contenu original de cette archive a été publié par *{{ graphic.user.displayName }}*{% if graphic.user.fullName %} ({{ graphic.user.fullName }}){% endif %} dans le graphic *{{ graphic.title }}* ({{ ladb_entity_url_action(graphic) }}).
+
+Cette archive contient {{ graphic.resources|length }} {{ 'default.choice.files'|transchoice(graphic.resources|length) }} :
+{% for resource in graphic.resources %}
+ - {{ resource.fileName }}
+{% endfor %}
+
+L'Air du Bois - Découvrez, fabriquez, partagez.
+http://www.lairdubois.fr

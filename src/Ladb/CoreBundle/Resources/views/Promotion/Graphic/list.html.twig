@@ -1,0 +1,32 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set pageTitle = 'promotion.graphic.list'|trans() %}
+{% set pageDescription = 'promotion.graphic.description'|trans() %}
+{% set pageImage = asset('banner-promotion-600x376.jpg') %}
+{% set pageSectionUrl = url('core_graphic_list') %}
+{% set pageSectionName = 'promotion.graphic.list'|trans %}
+
+{% set navSection = 'promotion' %}
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Wonder/Graphic:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {#{% embed 'LadbCoreBundle:Wonder/Graphic:_list-filterbar.part.html.twig' %}#}
+        {#{% set heading = 'Les graphics' %}#}
+        {#{% set customFilterDefs = {#}
+            {#'followed':         { 'label':'Suivis', 'path':path('core_graphic_list_filter', { 'filter':'followed' }), 'hidden':(not is_granted("ROLE_USER") or app.user.followingCount == 0) },#}
+        {#} %}#}
+        {#{% block filterbarRightContent%}#}
+            {#<a href="{{ path('core_graphic_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'promotion.graphic.new'|trans() }}</a>#}
+        {#{% endblock %}#}
+    {#{% endembed %}#}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Wonder/Graphic:_list-n.part.html.twig' %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'LadbCoreBundle:Wonder:_promotion-form.html.twig' %}
+
+{% set navSection = 'graphics' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Resource:_form-gallery-script.part.html.twig' with { 'fieldId':form.resources.vars.id, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources' } %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_form-gallery-script.part.html.twig' with { 'fieldId':form.inspirations.vars.id, 'maxPlanCount':4, 'excludedId':(graphic is defined ? graphic.id : null) } %}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Resource:_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.files'|transchoice(2)|capitalize) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.inspirations'|transchoice(2)|capitalize), 'icon':'ladb-icon-inspiration' } %}
+    {% include 'LadbCoreBundle:Core/License:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            Un <strong>graphic</strong> est un ensemble de <strong>fichiers numériques</strong> (modélisation 3D ou dessin technique 2D) permettant une réalisation majoritairement constituée de <strong>bois</strong>.<br>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('promotion.graphic.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Resource:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formResources':form.resources, 'resources':form.vars.data.resources, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources', 'title':('default.choice.files'|transchoice(2)|capitalize), 'help':('promotion.graphic.form.help.resource'|trans()) } %}
+    {% embed 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('promotion.graphic.form.help.showcase'|trans()) } %}
+        {% block body %}
+            {{ parent() }}
+            <hr>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-exporter-une-capture-d-un-graphic-sketchup' }) }}" target="_blank">Comment exporter une capture d'un graphic Sketchup ?</a> </p>
+        {% endblock %}
+    {% endembed %}
+    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('promotion.graphic.form.help.body'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre graphic.' } %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'title':('default.choice.inspirations'|transchoice(2)|capitalize), 'help':('promotion.graphic.form.help.inspirations'|trans()), 'icon':'ladb-icon-inspiration', 'addButtonHidden':true, 'formPlans':form.inspirations, 'graphics':form.vars.data.inspirations, 'showInspirationWarning':true } %}
+    {% include 'LadbCoreBundle:Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
+{% endblock %}

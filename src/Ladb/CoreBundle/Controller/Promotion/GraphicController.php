@@ -1,0 +1,550 @@
+<?php
+
+namespace Ladb\CoreBundle\Controller\Promotion;
+
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Manager\Promotion\GraphicManager;
+use Ladb\CoreBundle\Utils\StripableUtils;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ladb\CoreBundle\Entity\Promotion\Workshop;
+use Ladb\CoreBundle\Entity\Promotion\Graphic;
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Promotion\Creation;
+use Ladb\CoreBundle\Form\Type\Promotion\GraphicType;
+use Ladb\CoreBundle\Utils\SearchUtils;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Ladb\CoreBundle\Utils\LikableUtils;
+use Ladb\CoreBundle\Utils\WatchableUtils;
+use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\FollowerUtils;
+use Ladb\CoreBundle\Utils\ReportableUtils;
+use Ladb\CoreBundle\Utils\GraphicUtils;
+use Ladb\CoreBundle\Utils\ExplorableUtils;
+use Ladb\CoreBundle\Utils\TagUtils;
+use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
+use Ladb\CoreBundle\Utils\PicturedUtils;
+use Ladb\CoreBundle\Utils\EmbeddableUtils;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Event\PublicationsEvent;
+
+/**
+ * @Route("/graphics")
+ */
+class GraphicController extends Controller {
+
+	/**
+	 * @Route("/new", name="core_promotion_graphic_new")
+	 * @Template()
+	 */
+	public function newAction() {
+
+		$graphic = new Graphic();
+		$form = $this->createForm(GraphicType::class, $graphic);
+
+		$tagUtils = $this->get(TagUtils::NAME);
+
+		return array(
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($graphic),
+		);
+	}
+
+	/**
+	 * @Route("/create", name="core_promotion_graphic_create")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Promotion/Graphic:new.html.twig")
+	 */
+	public function createAction(Request $request) {
+		$om = $this->getDoctrine()->getManager();
+
+		$graphic = new Graphic();
+		$form = $this->createForm(GraphicType::class, $graphic);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($graphic);
+
+			$graphic->setUser($this->getUser());
+			$this->getUser()->incrementDraftGraphicCount();
+
+			$graphicUtils = $this->get(GraphicUtils::NAME);
+			$graphicUtils->generateKinds($graphic);
+
+			$om->persist($graphic);
+			$om->flush();
+
+			// Create zip archive after inserting graphic into database to be sure we have an ID
+			$graphicUtils->createZipArchive($graphic);
+
+			$om->flush();	// Resave to store file size
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($graphic));
+
+			return $this->redirect($this->generateUrl('core_promotion_graphic_show', array('id' => $graphic->getSluggedId())));
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
+
+		$tagUtils = $this->get(TagUtils::NAME);
+
+		return array(
+			'graphic'         => $graphic,
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($graphic),
+			'hideWarning'  => true,
+		);
+	}
+
+	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_promotion_graphic_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_promotion_graphic_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+
+		$graphic = $graphicRepository->findOneById($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_lock or core_promotion_graphic_unlock)');
+		}
+		if ($graphic->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_promotion_graphic_lock or core_promotion_graphic_unlock)');
+		}
+
+		// Lock or Unlock
+		$graphicManager = $this->get(GraphicManager::NAME);
+		if ($lock) {
+			$graphicManager->lock($graphic);
+		} else {
+			$graphicManager->unlock($graphic);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('promotion.graphic.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $graphic->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_promotion_graphic_show', array( 'id' => $graphic->getSluggedId() )));
+	}
+
+	/**
+	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_promotion_graphic_publish")
+	 */
+	public function publishAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+
+		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $graphic->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_publish)');
+		}
+		if ($graphic->getIsDraft() === false) {
+			throw $this->createNotFoundException('Already published (core_promotion_graphic_publish)');
+		}
+		if ($graphic->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_promotion_graphic_publish)');
+		}
+
+		// Publish
+		$graphicManager = $this->get(GraphicManager::NAME);
+		$graphicManager->publish($graphic);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('promotion.graphic.form.alert.publish_success', array( '%title%' => $graphic->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_promotion_graphic_show', array( 'id' => $graphic->getSluggedId() )));
+	}
+
+	/**
+	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_promotion_graphic_unpublish")
+	 */
+	public function unpublishAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+
+		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_unpublish)');
+		}
+		if ($graphic->getIsDraft() === true) {
+			throw $this->createNotFoundException('Already draft (core_promotion_graphic_unpublish)');
+		}
+
+		// Unpublish
+		$graphicManager = $this->get(GraphicManager::NAME);
+		$graphicManager->unpublish($graphic);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('promotion.graphic.form.alert.unpublish_success', array( '%title%' => $graphic->getTitle() )));
+
+		// Return to
+		$returnToUrl = $request->get('rtu');
+		if (is_null($returnToUrl)) {
+			$returnToUrl = $request->headers->get('referer');
+		}
+
+		return $this->redirect($returnToUrl);
+	}
+
+	/**
+	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_promotion_graphic_edit")
+	 * @Template()
+	 */
+	public function editAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+
+		$graphic = $graphicRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $graphic->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_edit)');
+		}
+
+		$form = $this->createForm(GraphicType::class, $graphic);
+
+		$tagUtils = $this->get(TagUtils::NAME);
+
+		return array(
+			'graphic'         => $graphic,
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($graphic),
+		);
+	}
+
+	/**
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_promotion_graphic_update")
+	 * @Method("POST")
+	 * @Template("LadbCoreBundle:Promotion/Graphic:edit.html.twig")
+	 */
+	public function updateAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+
+		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $graphic->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_update)');
+		}
+
+		$picturedUtils = $this->get(PicturedUtils::NAME);
+		$picturedUtils->resetPictures($graphic); // Reset pictures array to consider form pictures order
+
+		$previouslyUsedTags = $graphic->getTags()->toArray();	// Need to be an array to copy values
+
+		$form = $this->createForm(GraphicType::class, $graphic);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($graphic);
+
+			$graphicUtils = $this->get(GraphicUtils::NAME);
+			$graphicUtils->generateKinds($graphic);
+			$graphicUtils->createZipArchive($graphic);
+
+			if ($graphic->getUser()->getId() == $this->getUser()->getId()) {
+				$graphic->setUpdatedAt(new \DateTime());
+			}
+
+			$om->flush();
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($graphic, array( 'previouslyUsedTags' => $previouslyUsedTags )));
+
+			// Flashbag
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('promotion.graphic.form.alert.update_success', array( '%title%' => $graphic->getTitle() )));
+
+			// Regenerate the form
+			$form = $this->createForm(GraphicType::class, $graphic);
+
+		} else {
+
+			// Flashbag
+			$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
+
+		}
+
+		$tagUtils = $this->get(TagUtils::NAME);
+
+		return array(
+			'graphic'         => $graphic,
+			'form'         => $form->createView(),
+			'tagProposals' => $tagUtils->getProposals($graphic),
+		);
+	}
+
+	/**
+	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_promotion_graphic_delete")
+	 */
+	public function deleteAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+		$graphicUtils = $this->get(GraphicUtils::NAME);
+
+		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($graphic->getIsDraft() === true && $graphic->getUser()->getId() == $this->getUser()->getId())) {
+			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_delete)');
+		}
+
+		// Delete
+		$graphicManager = $this->get(GraphicManager::NAME);
+		$graphicManager->delete($graphic);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('promotion.graphic.form.alert.delete_success', array( '%title%' => $graphic->getTitle() )));
+
+		if ($graphic->getIsDraft()) {
+			return $this->redirect($this->generateUrl('core_user_show_graphics', array( 'username' => $this->getUser()->getUsernameCanonical() )));
+		}
+		return $this->redirect($this->generateUrl('core_promotion_graphic_list'));
+	}
+
+	/**
+	 * @Route("/{id}/download", requirements={"id" = "\d+"}, name="core_promotion_graphic_download")
+	 */
+	public function downloadAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+
+		$graphic = $graphicRepository->findOneById($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if ($graphic->getIsDraft() === true) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $graphic->getUser()->getId() != $this->getUser()->getId())) {
+				throw $this->createNotFoundException('Not allowed (core_promotion_graphic_download)');
+			}
+		}
+
+		$graphicUtils = $this->get(GraphicUtils::NAME);
+		$zipAbsolutePath = $graphicUtils->getZipAbsolutePath($graphic);
+		if (!file_exists($zipAbsolutePath)) {
+			if (!$graphicUtils->createZipArchive($graphic)) {
+				throw $this->createNotFoundException('Zip archive not found (core_promotion_graphic_download)');
+			}
+		}
+
+		$graphic->incrementDownloadCount(1);
+
+		$om->flush();
+
+		// Update index
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->replaceEntityInIndex($graphic);
+
+		$content = file_get_contents($zipAbsolutePath);
+
+		$response = new Response();
+		$response->headers->set('Content-Type', 'mime/type');
+		$response->headers->set('Content-Length', filesize($zipAbsolutePath));
+		$response->headers->set('Content-Disposition', 'attachment;filename="lairdubois_'.$graphic->getUser()->getUsernameCanonical().'_'.$graphic->getSlug().'.zip"');
+		$response->headers->set('Expires', 0);
+		$response->headers->set('Cache-Control', 'no-cache, must-revalidate');
+		$response->headers->set('Pragma', 'no-cache');
+
+		$response->setContent($content);
+
+		return $response;
+	}
+
+	/**
+	 * @Route("/", name="core_promotion_graphic_list")
+	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_promotion_graphic_list_page")
+	 * @Template()
+	 */
+	public function listAction(Request $request, $page = 0) {
+		$searchUtils = $this->get(SearchUtils::NAME);
+
+		$layout = $request->get('layout', 'view');
+
+		$routeParameters = array();
+		if ($layout != 'view') {
+			$routeParameters['layout'] = $layout;
+		}
+
+		$searchParameters = $searchUtils->searchPaginedEntities(
+			$request,
+			$page,
+			function($facet, &$filters, &$sort) {
+				switch ($facet->name) {
+
+					case 'tag':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'tags.label' ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'author':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'user.displayname', 'user.fullname', 'user.username'  ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'license':
+
+						$filter = new \Elastica\Query\MatchPhrase('license.strippedname', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
+					case 'sort':
+
+						switch ($facet->value) {
+
+							case 'recent':
+								$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+								break;
+
+							case 'popular-views':
+								$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
+								break;
+
+							case 'popular-likes':
+								$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
+								break;
+
+							case 'popular-comments':
+								$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+								break;
+
+							case 'popular-downloads':
+								$sort = array( 'downloadCount' => array( 'order' => 'desc' ) );
+								break;
+
+						}
+
+						break;
+
+					default:
+						if (is_null($facet->name)) {
+
+							$filter = new \Elastica\Query\QueryString($facet->value);
+							$filter->setFields(array( 'title^100', 'body', 'tags.label' ));
+							$filters[] = $filter;
+
+						}
+
+				}
+			},
+			function(&$filters, &$sort) {
+
+				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+			},
+			'fos_elastica.index.ladb.promotion_graphic',
+			\Ladb\CoreBundle\Entity\Promotion\Graphic::CLASS_NAME,
+			'core_promotion_graphic_list_page',
+			$routeParameters
+		);
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+
+		$parameters = array_merge($searchParameters, array(
+			'graphics'           => $searchParameters['entities'],
+			'layout'          => $layout,
+			'routeParameters' => $routeParameters
+		));
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Promotion/Graphic:list-xhr.html.twig', $parameters);
+		}
+
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getDraftGraphicCount() > 0) {
+
+			$draftPath = $this->generateUrl('core_user_show_graphics_filter', array( 'username' => $this->getUser()->getUsernameCanonical(), 'filter' => 'draft' ));
+			$draftCount = $this->getUser()->getDraftGraphicCount();
+
+			// Flashbag
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('promotion.graphic.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+
+		}
+
+		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}.html", name="core_promotion_graphic_show")
+	 * @Template()
+	 */
+	public function showAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+		$witnessManager = $this->get(WitnessManager::NAME);
+
+		$id = intval($id);
+
+		$graphic = $graphicRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($graphic)) {
+			if ($response = $witnessManager->checkResponse(Graphic::TYPE, $id)) {
+				return $response;
+			}
+			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
+		}
+		if ($graphic->getIsDraft() === true) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $graphic->getUser()->getId() != $this->getUser()->getId())) {
+				if ($response = $witnessManager->checkResponse(Graphic::TYPE, $id)) {
+					return $response;
+				}
+				throw $this->createNotFoundException('Not allowed (core_promotion_graphic_show)');
+			}
+		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($graphic));
+
+		$explorableUtils = $this->get(ExplorableUtils::NAME);
+		$userGraphics = $explorableUtils->getPreviousAndNextPublishedUserExplorables($graphic, $graphicRepository, $graphic->getUser()->getPublishedGraphicCount());
+		$similarGraphics = $explorableUtils->getSimilarExplorables($graphic, 'fos_elastica.index.ladb.promotion_graphic', Graphic::CLASS_NAME, $userGraphics);
+
+		$likableUtils = $this->get(LikableUtils::NAME);
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array(
+			'graphic'         => $graphic,
+			'userGraphics'    => $userGraphics,
+			'similarGraphics' => $similarGraphics,
+			'likeContext'     => $likableUtils->getLikeContext($graphic, $this->getUser()),
+			'watchContext'    => $watchableUtils->getWatchContext($graphic, $this->getUser()),
+			'commentContext'  => $commentableUtils->getCommentContext($graphic),
+			'followerContext' => $followerUtils->getFollowerContext($graphic->getUser(), $this->getUser()),
+		);
+	}
+
+}
