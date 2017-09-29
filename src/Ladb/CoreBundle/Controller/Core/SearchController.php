@@ -36,7 +36,7 @@ class SearchController extends Controller {
 			$request,
 			$page,
 			function($facet, &$filters, &$sort) {
-				$filters[] = new \Elastica\Query\Match('name', $facet->value);
+				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
 			'fos_elastica.index.ladb.core_tag',
