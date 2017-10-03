@@ -120,9 +120,9 @@ class ResourceUploadHandler extends \UploadHandler {
 
 				// Convert
 				$imagick = new \Imagick($resource->getAbsolutePath().'[0]');
-//				$imagick->setBackgroundColor('#ffffff');
-//				$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
-//				$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
+				$imagick->setBackgroundColor('#ffffff');
+				$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
+				$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
 				$imagick->thumbnailImage(1024, 1024, true, false);
 				if ($kind == Resource::KIND_SVG) {
 					$imagick->borderImage('#ffffff', 50, 50);
