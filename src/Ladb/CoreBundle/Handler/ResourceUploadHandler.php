@@ -120,6 +120,8 @@ class ResourceUploadHandler extends \UploadHandler {
 
 				// Convert
 				$imagick = new \Imagick($resource->getAbsolutePath().'[0]');
+				$imagick->setCompression(\Imagick::COMPRESSION_JPEG);
+				$imagick->setCompressionQuality(100);
 				$imagick->setBackgroundColor('#ffffff');
 				$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
 				$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
