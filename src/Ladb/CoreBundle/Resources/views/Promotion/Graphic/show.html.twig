@@ -93,7 +93,6 @@
             <meta itemprop="interactionCount" content="UserDownloads:{{ graphic.downloadCount }}"/>
         </div>
     </div>
-    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':graphic.tags, 'type':'graphics' } %}
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
         <div class="ladb-meta">
@@ -110,6 +109,7 @@
             <a href="{{ path('core_promotion_graphic_download', { 'id':graphic.id }) }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-unpublish ladb-icon-lg"></i> {{ 'promotion.graphic.download'|trans() }}</a>
         </div>
     </div>
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':graphic.tags, 'type':'graphics' } %}
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':graphic.license } %}
 {% endblock %}
 
