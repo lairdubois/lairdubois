@@ -81,6 +81,11 @@ class UserMeta {
 	 */
 	private $unlistedQaQuestionCount = 0;
 
+	/**
+	 * @ORM\Column(name="unlisted_promotion_graphic_count", type="integer")
+	 */
+	private $unlistedPromotionGraphicCount = 0;
+
 
 	/**
 	 * @ORM\Column(name="donation_count", type="integer")
@@ -268,6 +273,17 @@ class UserMeta {
 
 	public function setUnlistedQaQuestionCount($unlistedQaQuestionCount) {
 		$this->unlistedQaQuestionCount = $unlistedQaQuestionCount;
+		return $this;
+	}
+
+	// UnlistedPromotionGraphicCount /////
+
+	public function getUnlistedPromotionGraphicCount() {
+		return $this->unlistedPromotionGraphicCount;
+	}
+
+	public function setUnlistedPromotionGraphicCount($unlistedPromotionGraphicCount) {
+		$this->unlistedPromotionGraphicCount = $unlistedPromotionGraphicCount;
 		return $this;
 	}
 

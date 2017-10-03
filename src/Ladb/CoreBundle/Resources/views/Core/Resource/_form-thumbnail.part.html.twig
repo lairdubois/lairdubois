@@ -13,7 +13,7 @@
     </div>
     <div class="ladb-box">
         {% if resource is defined %}
-            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':resource.thumbnail, 'width':64, 'height':64, 'filter':'o', 'noSizer': true, 'imgClasses':'pull-left' } %}
+            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':resource.thumbnail, 'width':64, 'height':64, 'filterMode':'i', 'noSizer': true, 'imgClasses':'pull-left' } %}
         {% else %}
             <i class="ladb-icon-file ladb-icon-lg ladb-icon"></i>
         {% endif %}

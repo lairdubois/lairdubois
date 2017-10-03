@@ -238,6 +238,11 @@ liip_imagine:
 
         # Inset
 
+        64x64i:
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
         240x300i:
             filters:
                 thumbnail: { size: [240, 300], mode: inset }

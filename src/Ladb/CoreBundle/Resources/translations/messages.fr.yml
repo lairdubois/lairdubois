@@ -386,11 +386,11 @@ qa:
       answers: '[0,1]réponse|]1,Inf]réponses'
 
 blog:
+  nav: Le blog
   title: Le blog
   description: Ce blog vous permet de rester informé et de réagir sur les nouveautés et futurs projets de L'Air du Bois.
   post:
     list: Les sujets
-    nav: Le blog
     new: Ajouter un sujet
     edit: Edition du sujet
     similar: Voir aussi
@@ -407,11 +407,11 @@ blog:
       new_posts: '[0,1]nouveau sujet sur le blog|]1,Inf]nouveaux sujets sur le blog'
 
 faq:
+  nav: FAQ
   title: La foire aux questions
   description: Retrouvez ici toute les réponses à vos questions sur L'Air du Bois.
   question:
     list: Les questions
-    nav: FAQ
     new: Ajouter une question
     edit: Edition de la question
     icon: Icone
@@ -1056,7 +1056,6 @@ promotion:
   description: Cette rubrique vous permet de retrouver et partager les documents graphiques destinés à promouvoir L'Air du Bois.
   graphic:
     list: Les graphismes
-    nav: Le blog
     new: Ajouter un graphisme
     edit: Edition du graphisme
     similar: Voir aussi

@@ -30,6 +30,7 @@ class Version20171003083843 extends AbstractMigration
         $this->addSql('ALTER TABLE tbl_core_resource ADD CONSTRAINT FK_1AC1E7BEFDFF2E92 FOREIGN KEY (thumbnail_id) REFERENCES tbl_core_picture (id)');
         $this->addSql('CREATE INDEX IDX_1AC1E7BEFDFF2E92 ON tbl_core_resource (thumbnail_id)');
         $this->addSql('ALTER TABLE tbl_core_user ADD draft_graphic_count INT DEFAULT NULL, ADD published_graphic_count INT DEFAULT NULL');
+		$this->addSql('ALTER TABLE tbl_core_user_meta ADD unlisted_promotion_graphic_count INT NOT NULL');
     }
 
     /**
@@ -47,5 +48,6 @@ class Version20171003083843 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_1AC1E7BEFDFF2E92 ON tbl_core_resource');
         $this->addSql('ALTER TABLE tbl_core_resource DROP thumbnail_id, DROP kind');
         $this->addSql('ALTER TABLE tbl_core_user DROP draft_graphic_count, DROP published_graphic_count');
+		$this->addSql('ALTER TABLE tbl_core_user_meta DROP unlisted_promotion_graphic_count');
     }
 }

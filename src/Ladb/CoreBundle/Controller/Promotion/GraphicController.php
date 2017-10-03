@@ -473,7 +473,7 @@ class GraphicController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
 
 		$parameters = array_merge($searchParameters, array(
-			'graphics'           => $searchParameters['entities'],
+			'graphics'        => $searchParameters['entities'],
 			'layout'          => $layout,
 			'routeParameters' => $routeParameters
 		));

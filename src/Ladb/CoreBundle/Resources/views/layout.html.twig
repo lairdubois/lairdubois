@@ -46,6 +46,10 @@
         {% endblock %}
     {% endembed %}
     {% embed '::_bottombar.part.html.twig' %}
+        {% block bottomBarPromotionGraphicNotificationBadge %}
+            {{ parent() }}
+            {% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedPromotionGraphicCount' } %}
+        {% endblock %}
         {% block bottomBarBlogPostNotificationBadge %}
             {{ parent() }}
             {% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedBlogPostCount' } %}
@@ -92,8 +96,9 @@
                 <li><a href="{{ path('core_find_list') }}"><i class="ladb-icon-globe"></i> {{ 'find.find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindFindCount', 'classes':'pull-right' } %}</a></li>
                 <li><a href="{{ path('core_user_list') }}"><i class="ladb-icon-users"></i> {{ 'user.nav'|trans() }}</a></li>
                 <li class="uk-nav-divider"></li>
-                <li><a href="{{ path('core_blog_post_list') }}"><i class="ladb-icon-blog"></i> {{ 'blog.post.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedBlogPostCount', 'classes':'pull-right' } %}</a></li>
-                <li><a href="{{ path('core_faq_question_list') }}"><i class="ladb-icon-help"></i> {{ 'faq.question.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFaqQuestionCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_blog_post_list') }}"><i class="ladb-icon-blog"></i> {{ 'blog.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedBlogPostCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_faq_question_list') }}"><i class="ladb-icon-help"></i> {{ 'faq.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFaqQuestionCount', 'classes':'pull-right' } %}</a></li>
+                <li><a href="{{ path('core_promotion_graphic_list') }}"><i class="ladb-icon-promote"></i> {{ 'promotion.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedPromotionGraphicCount', 'classes':'pull-right' } %}</a></li>
             </ul>
         </div>
     </div>
