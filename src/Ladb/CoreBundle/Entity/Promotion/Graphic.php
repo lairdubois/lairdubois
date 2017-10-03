@@ -46,6 +46,8 @@ class Graphic extends AbstractAuthoredPublication implements TitledInterface, Pi
 	const CLASS_NAME = 'LadbCoreBundle:Promotion\Graphic';
 	const TYPE = 117;
 
+	const ACCEPTED_FILE_TYPE = '/(\.|\/)(pdf|svg)$/i';
+
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()

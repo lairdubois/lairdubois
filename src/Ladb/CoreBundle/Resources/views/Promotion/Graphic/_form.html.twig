@@ -4,7 +4,7 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {% include 'LadbCoreBundle:Core/Resource:_form-gallery-script.part.html.twig' with { 'fieldId':form.resource.vars.id, 'maxResourceCount':1, 'formSection':'resource' } %}
+    {% include 'LadbCoreBundle:Core/Resource:_form-gallery-script.part.html.twig' with { 'fieldId':form.resource.vars.id, 'maxResourceCount':1, 'formSection':'resource', 'acceptedFileTypes':constant('\\Ladb\\CoreBundle\\Entity\\Promotion\\Graphic::ACCEPTED_FILE_TYPE'), 'acceptedFileTypesMessage':'Type de fichier non accepté (PDF et SVG seulement)' } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
 {% endblock %}
 
