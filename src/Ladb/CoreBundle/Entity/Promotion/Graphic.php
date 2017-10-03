@@ -90,6 +90,7 @@ class Graphic extends AbstractAuthoredPublication implements TitledInterface, Pi
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false, name="resource_id")
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Resource")
+	 * @Assert\NotNull()
 	 */
 	private $resource;
 

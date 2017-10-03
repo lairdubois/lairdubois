@@ -45,6 +45,31 @@ EOT
 			$pictureCounters[$picture->getId()] = array( $picture, 0 );
 		}
 
+		// Check Resources /////
+
+		$output->writeln('<info>Checking resources...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'th' ))
+			->from('LadbCoreBundle:Core\Resource', 'r')
+			->leftJoin('s.thumbnail', 'th')
+		;
+
+		try {
+			$resources = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$resources = array();
+		}
+
+		foreach ($resources as $resource) {
+			$thumbnail = $resource->getThumbnail();
+			if (!is_null($thumbnail)) {
+				$pictureCounters[$thumbnail->getId()][1]++;
+			}
+		}
+		unset($resources);
+
 		// Check Comments /////
 
 		$output->writeln('<info>Checking comments...</info>');
@@ -326,6 +351,31 @@ EOT
 			}
 		}
 		unset($posts);
+
+		// Check promotion graphics /////
+
+		$output->writeln('<info>Checking promotion graphics...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'g', 'mp' ))
+			->from('LadbCoreBundle:Promotion\Graphic', 'g')
+			->leftJoin('g.mainPicture', 'mp')
+		;
+
+		try {
+			$graphics = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$graphics = array();
+		}
+
+		foreach ($graphics as $graphic) {
+			$mainPicture = $graphic->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($graphics);
 
 		// Check Woods /////
 
