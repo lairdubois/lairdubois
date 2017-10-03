@@ -21,7 +21,7 @@
             idsValue += value.id.substring(9); {# 9 = "resource_" length #}
             idsCount++;
         });
-        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        $("#{{ fieldId }}").attr("value", idsValue).trigger('change');
         if (idsCount >= {{ maxResourceCount }}) {
             $("#{{ formSection }}_fileupload").hide();
         } else {

@@ -182,17 +182,6 @@ wonder:
     linkto: Associer un plan déjà publié
     linked_to: Ce plan est associé à
     new_warning: Un <strong>plan</strong> est un ensemble de <strong>fichiers numériques</strong> (modélisation 3D ou dessin technique 2D) permettant une réalisation majoritairement constituée de <strong>bois</strong>.
-    kind:
-      unknow: Inconnu
-      autocad: AutoCAD
-      sketchup: Sketchup
-      pdf: PDF
-      geogebra: GeoGebra
-      svg: SVG
-      freecad: FreeCAD
-      stl: STL
-      123ddesign: 123D Design
-      libreoffice: LibreOffice/Excel
     form:
       inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
       alert:
@@ -893,6 +882,17 @@ picture:
 resource:
   add_one: Télécharger un fichier
   add_multiple: Télécharger des fichiers
+  kind:
+    unknow: Inconnu
+    autocad: AutoCAD
+    sketchup: Sketchup
+    pdf: PDF
+    geogebra: GeoGebra
+    svg: SVG
+    freecad: FreeCAD
+    stl: STL
+    123ddesign: 123D Design
+    libreoffice: LibreOffice/Excel
   form:
     choice:
       mandatory: "[0,1]Ce fichier est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins un fichier."
@@ -911,6 +911,7 @@ search:
     posts: Recherche dans le blog
     questions: Recherche dans la FAQ
     qa_questions: Recherche dans les questions
+    promotion_graphic: Recherche dans les graphismes
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 
@@ -946,6 +947,7 @@ notification:
     faq_question: votre question
     qa_question: votre question
     qa_answer: votre réponse
+    promotion_graphic: votre graphisme
   the:
     wonder_creation: la création
     wonder_workshop: l'atelier
@@ -960,6 +962,7 @@ notification:
     faq_question: la question
     qa_question: la question
     qa_answer: la réponse
+    promotion_graphic: le graphisme
   one_new:
     wonder_creation: une nouvelle création
     wonder_workshop: un nouvel atelier
@@ -969,6 +972,7 @@ notification:
     find_find: une nouvelle trouvaille
     qa_question: une nouvelle question
     qa_answer: une nouvelle réponse
+    promotion_graphic: un nouveau graphisme
   tooltip:
     all: Toutes les notifications
     comment: Notifications de commentaires
@@ -1046,6 +1050,33 @@ funding:
     donations: '[0,1]don|]1,Inf]dons'
     donors: '[0,1]donateur|]1,Inf]donateurs'
     transactions: '[0,1]transaction|]1,Inf]transactions'
+
+promotion:
+  nav: Promouvoir
+  description: Cette rubrique vous permet de retrouver et partager les documents graphiques destinés à promouvoir L'Air du Bois.
+  graphic:
+    list: Les graphismes
+    nav: Le blog
+    new: Ajouter un graphisme
+    edit: Edition du graphisme
+    similar: Voir aussi
+    download: Télécharger le graphisme
+    new_warning: Un <strong>graphisme</strong> est un <strong>fichier numérique</strong> permettant de promouvoir <em>L'Air du Bois</em> (affiche, flyer, ...) ou correspondant à l'identité visuelle de la plateforme.
+    form:
+      alert:
+        lock_success: Le graphisme <strong>%title%</strong> a été vérrouillé.
+        unlock_success: Le graphisme <strong>%title%</strong> a été dévérrouillé.
+        publish_success: Le graphisme <strong>%title%</strong> a été publié.
+        unpublish_success: Le graphisme <strong>%title%</strong> a été dépublié.
+        update_success: Le graphisme <strong>%title%</strong> a été mis à jour.
+        delete_success: Le graphisme <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre graphisme.
+        resource: "Ajoutez ici votre fichier graphique.<br><em>Les formats autorisés sont : PDF, SVG</em>."
+        body: Décrivez ici votre graphisme.
+    choice:
+      graphics: '[0,1]graphisme|]1,Inf]graphismes'
+      draft_alert: '[0,1]Vous avez 1 graphisme en brouillon.|]1,Inf]Vous avez %count% graphismes en brouillon.'
 
 youtook:
   new: Ajouter un took

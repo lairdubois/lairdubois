@@ -8,8 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Form\DataTransformer\ResourcesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\ResourceToIdTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 
 class GraphicType extends AbstractType {
@@ -24,8 +24,8 @@ class GraphicType extends AbstractType {
 		$builder
 			->add('title')
 			->add($builder
-				->create('resources', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-				->addModelTransformer(new ResourcesToIdsTransformer($this->om))
+				->create('resource', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
+				->addModelTransformer(new ResourceToIdTransformer($this->om))
 			)
 			->add('body', TextareaType::class)
 			->add($builder

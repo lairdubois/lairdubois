@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Core;
 
 use Elastica\Query\Exists;
 use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
+use Ladb\CoreBundle\Entity\Promotion\Graphic;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -819,6 +820,64 @@ class UserController extends Controller {
 		return array_merge($parameters, array(
 			'user'            => $user,
 			'tab'             => 'questions',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
+	 * @Route("/{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_graphics")
+	 * @Route("/{username}/graphismes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_graphics_filter")
+	 * @Route("/{username}/graphismes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_graphics_filter_page")
+	 * @Template()
+	 */
+	public function showGraphicsAction(Request $request, $username, $filter = null, $page = 0) {
+		$userManager = $this->get('fos_user.user_manager');
+
+		$user = $userManager->findUserByUsername($username);
+		if (is_null($user)) {
+			throw $this->createNotFoundException('User not found');
+		}
+		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('User not enabled');
+		}
+
+		// Default filter
+
+		if (is_null($filter)) {
+			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+				$filter = 'recent';
+			} else {
+				$filter = 'popular-likes';
+			}
+		}
+
+		// Graphics
+
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $graphicRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_graphics_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'graphics'    => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Promotion/Graphic:list-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => 'graphics',
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 		));
 	}

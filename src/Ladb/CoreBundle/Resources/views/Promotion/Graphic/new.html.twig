@@ -15,7 +15,7 @@
 {% block body %}
     {{ parent() }}
     {% if not hideWarning %}
-        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_graphic_modal', 'title':('promotion.graphic.new'|trans()), 'textTransKey':'promotion.graphic.new_warning', 'cancelPath':'core_graphic_list' } %}
+        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_graphic_modal', 'title':('promotion.graphic.new'|trans()), 'textTransKey':'promotion.graphic.new_warning', 'cancelPath':'core_promotion_graphic_list' } %}
     {% endif %}
 {% endblock %}
 

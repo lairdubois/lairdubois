@@ -18,6 +18,17 @@ class Resource {
 	const DEFAULT_ACCEPTED_FILE_TYPE = '/(\.|\/)(dwf|dwg|skp|pdf|ggb|svg|fcstd|stl|123dx|ods|xlsx|xlsm)$/i';
 	const DEFAULT_MAX_FILE_SIZE = 62914560;	// 60Mo
 
+	const KIND_UNKNOW = 0;
+	const KIND_AUTOCAD = 1;
+	const KIND_SKETCHUP = 2;
+	const KIND_PDF = 3;
+	const KIND_GEOGEBRA = 4;
+	const KIND_SVG = 5;
+	const KIND_FREECAD = 6;
+	const KIND_STL = 7;
+	const KIND_123DESIGN = 8;
+	const KIND_LIBREOFFICE = 9;
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
@@ -56,6 +67,17 @@ class Resource {
 	 * @ORM\Column(name="file_size", type="integer")
 	 */
 	private $fileSize = 0;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $kind = array( Resource::KIND_UNKNOW );
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"all"})
+	 * @ORM\JoinColumn(nullable=true)
+	 */
+	private $thumbnail;
 
 	/////
 
@@ -163,6 +185,28 @@ class Resource {
 	public function setFileSize($fileSize) {
 		$this->fileSize = $fileSize;
 		return $this;
+	}
+
+	// Kind /////
+
+	public function setKind($kind) {
+		$this->kind = $kind;
+		return $this;
+	}
+
+	public function getKind() {
+		return $this->kind;
+	}
+
+	// Thumbnail /////
+
+	public function setThumbnail(\Ladb\CoreBundle\Entity\Core\Picture $thumbnail = null) {
+		$this->thumbnail = $thumbnail;
+		return $this;
+	}
+
+	public function getThumbnail() {
+		return $this->thumbnail;
 	}
 
 }

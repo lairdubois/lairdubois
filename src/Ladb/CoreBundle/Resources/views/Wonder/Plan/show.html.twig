@@ -49,15 +49,8 @@
 {% block characteristicsMetas %}
     <div class="ladb-meta">
         <span class="pull-right">
-            {% set kindStrippedNames = plan.kindStrippedNames  %}
-            {% set kindExternUrls = plan.kindExternUrls  %}
-            {% for kindStrippedName in kindStrippedNames %}
-                {% if not loop.first %}, {% endif %}
-                {% if kindExternUrls[loop.index0] is not empty %}
-                    <a href="http://{{ kindExternUrls[loop.index0] }}" target="_blank">{{ ('wonder.plan.kind.'~kindStrippedName)|trans() }}</a>
-                {% else %}
-                    {{ ('wonder.plan.kind.'~kindStrippedName)|trans() }}
-                {% endif %}
+            {% for kind in plan.kinds %}
+                {% include 'LadbCoreBundle:Core/Resource:_meta-kind-'~kind~'.part.html.twig' %}{% if not loop.last %}, {% endif %}
             {% endfor %}
         </span>
         <span><i class="ladb-icon-info ladb-icon-fixed-center"></i>&nbsp;Format</span>

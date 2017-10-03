@@ -219,6 +219,13 @@
                                     <strong>{{ user.proposalCount|number_format(0, ',', ' ') }}</strong>
                                     <small>{{ 'default.choice.proposals'|transchoice(user.proposalCount) }}</small>
                                 </div>
+                                <div class="ladb-meta{% if user.publishedGraphicCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-promote"></i>
+                                    {% if user.publishedGraphicCount > 0 %}<a href="{{ path('core_user_show_graphics', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.publishedGraphicCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'promotion.graphic.choice.graphics'|transchoice(user.publishedGraphicCount) }}</small>
+                                        {% if user.publishedGraphicCount > 0 %}</a>{% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -59,6 +59,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Testimonial (School)
 			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
 				return implode($delimiter, array( 'knowledge', 'testimonial' ));
+			// Graphic (School)
+			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
+				return implode($delimiter, array( 'promotion', 'graphic' ));
 
 		}
 		return '';
@@ -173,6 +176,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Testimonial (School)
 			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\School\Testimonial';
+			// Graphic (School)
+			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
+				return '\Ladb\CoreBundle\Entity\Promotion\Graphic';
 
 		}
 		return null;
@@ -232,6 +238,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
 				$url = $router->generate('core_school_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
+				$url = $router->generate('core_promotion_graphic_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

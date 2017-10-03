@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\Resource;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -55,6 +56,87 @@ class ResourceUploadHandler extends \UploadHandler {
 			$resource->setFileName($name);
 			$resource->setFileExtension($fileExtension);
 			$resource->setFileSize(filesize($resourceAbsolutePath));
+
+			// Extract kind
+			$kind = Resource::KIND_UNKNOW;
+			if (!is_null($fileExtension)) {
+
+				// AutoCAD
+				if ($fileExtension == 'dwf' || $fileExtension == 'dwg') {
+					$kind = Resource::KIND_AUTOCAD;
+				}
+
+				// Sketchup
+				if ($fileExtension == 'skp') {
+					$kind = Resource::KIND_SKETCHUP;
+				}
+
+				// PDF
+				if ($fileExtension == 'pdf') {
+					$kind = Resource::KIND_PDF;
+				}
+
+				// GeoGebra
+				if ($fileExtension == 'ggb') {
+					$kind = Resource::KIND_GEOGEBRA;
+				}
+
+				// SVG
+				if ($fileExtension == 'svg') {
+					$kind = Resource::KIND_SVG;
+				}
+
+				// FreeCAD
+				if ($fileExtension == 'fcstd') {
+					$kind = Resource::KIND_FREECAD;
+				}
+
+				// STL
+				if ($fileExtension == 'stl') {
+					$kind = Resource::KIND_STL;
+				}
+
+				// 123 Design
+				if ($fileExtension == '123dx') {
+					$kind = Resource::KIND_123DESIGN;
+				}
+
+				// libreOffice
+				if ($fileExtension == 'xlsx' || $fileExtension == 'xlsm' || $fileExtension == 'ods') {
+					$kind = Resource::KIND_LIBREOFFICE;
+				}
+
+			}
+			$resource->setKind($kind);
+
+			if ($kind == Resource::KIND_PDF || $kind == Resource::KIND_SVG) {
+
+				// ImageMagick Workaround : https://stackoverflow.com/questions/10455985/issue-with-imagick-and-also-with-phmagick-postscript-delegate-failed-no-such
+				putenv( 'PATH=' . getenv('PATH') . ':/usr/local/bin' );
+
+				// Create thumbnail
+				$thumbnail = new Picture();
+				$thumbnail->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
+
+				// Convert
+				$imagick = new \Imagick($resource->getAbsolutePath().'[0]');
+//				$imagick->setBackgroundColor('#ffffff');
+//				$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
+//				$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
+				$imagick->thumbnailImage(1024, 1024, true, false);
+				if ($kind == Resource::KIND_SVG) {
+					$imagick->borderImage('#ffffff', 50, 50);
+				}
+				$imagick->writeImage($thumbnail->getAbsoluteMasterPath());
+
+				list($width, $height) = $this->get_image_size($thumbnail->getAbsoluteMasterPath());
+				$thumbnail->setWidth($width);
+				$thumbnail->setHeight($height);
+				$thumbnail->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
+
+				$resource->setThumbnail($thumbnail);
+
+			}
 
 			$this->om->persist($resource);
 			$this->om->flush();

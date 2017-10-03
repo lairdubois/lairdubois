@@ -35,7 +35,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 
 /**
- * @Route("/graphics")
+ * @Route("/promouvoir")
  */
 class GraphicController extends Controller {
 
@@ -74,15 +74,14 @@ class GraphicController extends Controller {
 			$fieldPreprocessorUtils->preprocessFields($graphic);
 
 			$graphic->setUser($this->getUser());
+			$graphic->setMainPicture($graphic->getResource()->getThumbnail());
 			$this->getUser()->incrementDraftGraphicCount();
-
-			$graphicUtils = $this->get(GraphicUtils::NAME);
-			$graphicUtils->generateKinds($graphic);
 
 			$om->persist($graphic);
 			$om->flush();
 
 			// Create zip archive after inserting graphic into database to be sure we have an ID
+			$graphicUtils = $this->get(GraphicUtils::NAME);
 			$graphicUtils->createZipArchive($graphic);
 
 			$om->flush();	// Resave to store file size
@@ -263,9 +262,9 @@ class GraphicController extends Controller {
 			$fieldPreprocessorUtils->preprocessFields($graphic);
 
 			$graphicUtils = $this->get(GraphicUtils::NAME);
-			$graphicUtils->generateKinds($graphic);
 			$graphicUtils->createZipArchive($graphic);
 
+			$graphic->setMainPicture($graphic->getResource()->getThumbnail());
 			if ($graphic->getUser()->getId() == $this->getUser()->getId()) {
 				$graphic->setUpdatedAt(new \DateTime());
 			}

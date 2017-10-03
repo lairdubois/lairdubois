@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\LicensedTrait;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\PicturedInterface;
@@ -39,15 +40,11 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  */
 class Graphic extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
 
-	use TitledTrait, PicturedTrait, BodiedTrait;
+	use TitledTrait, PicturedTrait, BodiedTrait, LicensedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Promotion\Graphic';
-	const TYPE = 113;
-
-	const KIND_UNKNOW = 0;
-	const KIND_PDF = 1;
-	const KIND_SVG = 2;
+	const TYPE = 117;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -76,11 +73,40 @@ class Graphic extends AbstractAuthoredPublication implements TitledInterface, Pi
 	private $body;
 
 	/**
+	 * @ORM\Column(type="text", nullable=false)
+	 */
+	private $htmlBody;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_promotion_graphic_tag")
 	 * @Assert\Count(min=2)
 	 */
 	private $tags;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
+	 * @ORM\JoinColumn(nullable=false, name="resource_id")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Resource")
+	 */
+	private $resource;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
+	 * @ORM\JoinColumn(nullable=true, name="license_id")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
+	 */
+	private $license;
+
+	/**
+	 * @ORM\Column(type="integer", name="zip_archive_size")
+	 */
+	private $zipArchiveSize = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="download_count")
+	 */
+	private $downloadCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="like_count")
@@ -105,7 +131,6 @@ class Graphic extends AbstractAuthoredPublication implements TitledInterface, Pi
 	/////
 
 	public function __construct() {
-		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -136,10 +161,40 @@ class Graphic extends AbstractAuthoredPublication implements TitledInterface, Pi
 		return $this->id.'-'.$this->slug;
 	}
 
-	// License /////
+	// Resources /////
 
-	public function getLicense() {
-		return new \Ladb\CoreBundle\Entity\Core\License(true, true, true);
+	public function setResource(\Ladb\CoreBundle\Entity\Core\Resource $resource) {
+		$this->resource = $resource;
+		return $this;
+	}
+
+	public function getResource() {
+		return $this->resource;
+	}
+
+	// ResourceSizeSum /////
+
+	public function setZipArchiveSize($zipArchiveSize) {
+		return $this->zipArchiveSize = $zipArchiveSize;
+	}
+
+	public function getZipArchiveSize() {
+		return $this->zipArchiveSize;
+	}
+
+	// DownloadCount /////
+
+	public function incrementDownloadCount($by = 1) {
+		return $this->downloadCount += intval($by);
+	}
+
+	public function setDownloadCount($downloadCount) {
+		$this->downloadCount = $downloadCount;
+		return $this;
+	}
+
+	public function getDownloadCount() {
+		return $this->downloadCount;
 	}
 
 }

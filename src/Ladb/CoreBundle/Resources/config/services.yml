@@ -77,6 +77,9 @@ services:
   ladb_core.plan_utils:
     class: Ladb\CoreBundle\Utils\PlanUtils
     arguments: ['@templating', '@router']
+  ladb_core.graphic_utils:
+    class: Ladb\CoreBundle\Utils\GraphicUtils
+    arguments: ['@service_container']
   ladb_core.howto_utils:
     class: Ladb\CoreBundle\Utils\HowtoUtils
     arguments: ['@service_container']
@@ -180,6 +183,9 @@ services:
     arguments: ['@service_container']
   ladb_core.qa_answer_manager:
     class: Ladb\CoreBundle\Manager\Qa\AnswerManager
+    arguments: ['@service_container']
+  ladb_core.graphic_manager:
+    class: Ladb\CoreBundle\Manager\Promotion\GraphicManager
     arguments: ['@service_container']
 
   # Validators
@@ -388,6 +394,11 @@ services:
     arguments: ['@doctrine.orm.entity_manager']
   ladb_faq_question:
     class: Ladb\CoreBundle\Form\Type\Faq\QuestionType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_promotion_graphic:
+    class: Ladb\CoreBundle\Form\Type\Promotion\GraphicType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']

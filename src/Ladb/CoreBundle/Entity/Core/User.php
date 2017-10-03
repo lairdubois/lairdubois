@@ -357,6 +357,17 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true, name="draft_graphic_count")
+	 */
+	private $draftGraphicCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="published_graphic_count")
+	 */
+	private $publishedGraphicCount = 0;
+
+
+	/**
 	 * @ORM\Column(type="integer", nullable=true, name="proposal_count")
 	 */
 	private $proposalCount = 0;
@@ -989,6 +1000,27 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	public function getAnswerCount() {
 		return $this->answerCount;
+	}
+
+	// DraftGraphicCount /////
+
+	public function incrementDraftGraphicCount($by = 1) {
+		return $this->draftGraphicCount += intval($by);
+	}
+
+	public function getDraftGraphicCount() {
+		return $this->draftGraphicCount;
+	}
+
+	// PublishedGraphicCount /////
+
+	public function incrementPublishedGraphicCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->publishedGraphicCount += intval($by);
+	}
+
+	public function getPublishedGraphicCount() {
+		return $this->publishedGraphicCount;
 	}
 
 	// ProposalCount /////

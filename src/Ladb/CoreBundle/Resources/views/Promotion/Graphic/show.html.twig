@@ -1,153 +1,136 @@
-{% extends 'LadbCoreBundle:Promotion:_promotion-show.html.twig' %}
+{% extends 'LadbCoreBundle:Common:_show.html.twig' %}
 
-{% set pageTitlePrefix = '[Graphic]' %}
+{% set entity = graphic %}
 
-{% set promotionType = 'graphic' %}
-{% set promotion = graphic %}
-{% set userPromotions = userGraphics %}
-{% set similarPromotions = similarGraphics %}
+{% set pageSectionUrl = url('core_promotion_graphic_list') %}
+{% set pageSectionName = 'promotion.graphic.list'|trans %}
 
-{% block baseMetas %}
-    {{ parent() }}
-    <div class="ladb-meta{% if graphic.downloadCount == 0 %} text-muted{% endif %}">
-        <i class="ladb-icon-unpublish ladb-icon-fixed-center"></i>
-        <strong>{{ graphic.downloadCount|number_format(0, ',', ' ') }}</strong>
-        <small>{{ 'default.choice.downloads'|transchoice(graphic.downloadCount) }}</small>
-        <meta itemprop="interactionCount" content="UserDownloads:{{ graphic.downloadCount }}"/>
-    </div>
-{% endblock %}
+{% set navSection = 'promotion' %}
+{% set searchPath = path('core_promotion_graphic_list') %}
 
-{% block characteristicsMetas %}
-    <div class="ladb-meta">
-        <span class="pull-right">
-            {% set kindStrippedNames = graphic.kindStrippedNames  %}
-            {% set kindExternUrls = graphic.kindExternUrls  %}
-            {% for kindStrippedName in kindStrippedNames %}
-                {% if not loop.first %}, {% endif %}
-                {% if kindExternUrls[loop.index0] is not empty %}
-                    <a href="http://{{ kindExternUrls[loop.index0] }}" target="_blank">{{ ('promotion.graphic.kind.'~kindStrippedName)|trans() }}</a>
-                {% else %}
-                    {{ ('promotion.graphic.kind.'~kindStrippedName)|trans() }}
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == graphic.user.id %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':graphic } %}
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% if not ownerUser %}
+                    {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
                 {% endif %}
-            {% endfor %}
-        </span>
-        <span><i class="ladb-icon-info ladb-icon-fixed-center"></i>&nbsp;Format</span>
-    </div>
-    <div class="ladb-meta">
-        <span class="pull-right">{{ graphic.zipArchiveSize|ladb_file_size_format }}</span>
-        <span><i class="ladb-icon-weight ladb-icon-fixed-center"></i>&nbsp;Taille</span>
-    </div>
-    <div class="ladb-meta">
-        <span><i class="ladb-icon-file ladb-icon-fixed-center"></i>&nbsp;{{ graphic.resources|length }} {{ 'default.choice.files'|transchoice(graphic.resources|length) }}</span>
-    </div>
-    <div class="ladb-btn">
-        <a href="{{ path('core_graphic_download', { 'id':graphic.id }) }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-unpublish ladb-icon-lg"></i> {{ 'promotion.graphic.download'|trans() }}</a>
-    </div>
+                {% if watchContext is not null and is_granted("ROLE_USER") %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                {% endif %}
+                {% if not ownerUser %}
+                    &nbsp;
+                    {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':graphic.type, 'entityId':graphic.id } %}
+                {% endif %}
+                {% if ownerUser or is_granted("ROLE_ADMIN") %}
+                    &nbsp;
+                    <a href="{{ path('core_promotion_graphic_edit', { 'id':graphic.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
+                    {% if is_granted("ROLE_ADMIN") or (ownerUser and graphic.isDraft) %}
+                        <a href="#delete_graphic_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_graphic_modal', 'entityTitle':graphic.title, 'deletePath':path('core_promotion_graphic_delete', { 'id':graphic.id }) } %}
+                    {% endif %}
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="ladb-icon-admin"></i> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ ladb_entity_url_action(graphic, graphic.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if graphic.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (graphic.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
+                                {% if not graphic.isDraft %}
+                                    <li><a href="#unpublish_graphic_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% if not graphic.isDraft %}
+                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_graphic_modal', 'title':('default.unpublishing'|trans()) } %}
+                                {% block bodyInner %}
+                                    <p>La dépublication de <strong>{{ graphic.title }}</strong> le rendra invisible pour les autres utilisateurs.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_promotion_graphic_unpublish', { 'id':graphic.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
-{% block promotionMetas %}
+{% block bodyContainerContent %}
+    {% if graphic.isDraft %}
+        {% include 'LadbCoreBundle:Promotion/Graphic:_draft-alert.part.html.twig' %}
+    {% endif %}
     {{ parent() }}
-    <div class="ladb-metas">
-        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% if graphic.inspirationCount > 0 or graphic.reboundCount > 0 or graphic.howtoCount > 0 or graphic.creationCount > 0 or graphic.workshopCount > 0 %}
-            {% if graphic.inspirationCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-inspiration ladb-icon-fixed-center"></i>
-                    <a href="{{ graphic.inspirationCount == 1 ? path('core_graphic_show', { 'id':graphic.inspirations[0].sluggedId }) : path('core_graphic_inspirations', { 'id':graphic.id }) }}">
-                        <strong>{{ graphic.inspirationCount }}</strong>
-                        <small>{{ 'default.choice.inspirations'|transchoice(graphic.inspirationCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-            {% if graphic.howtoCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-howto"></i>
-                    <a href="{{ graphic.howtoCount == 1 ? path('core_howto_show', { 'id':graphic.howtos[0].sluggedId }) : path('core_graphic_howtos', { 'id':graphic.id }) }}">
-                        <strong>{{ graphic.howtoCount }}</strong>
-                        <small>{{ 'howto.howto.choice.howtos'|transchoice(graphic.howtoCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-            {% if graphic.creationCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-creation"></i>
-                    <a href="{{ graphic.creationCount == 1 ? path('core_creation_show', { 'id':graphic.creations[0].sluggedId }) : path('core_graphic_creations', { 'id':graphic.id }) }}">
-                        <strong>{{ graphic.creationCount }}</strong>
-                        <small>{{ 'promotion.creation.choice.creations'|transchoice(graphic.creationCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-            {% if graphic.workshopCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-workshop"></i>
-                    <a href="{{ graphic.workshopCount == 1 ? path('core_workshop_show', { 'id':graphic.workshops[0].sluggedId }) : path('core_graphic_workshops', { 'id':graphic.id }) }}">
-                        <strong>{{ graphic.workshopCount }}</strong>
-                        <small>{{ 'promotion.workshop.choice.workshops'|transchoice(graphic.workshopCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-            {% if graphic.reboundCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-rebound ladb-icon-fixed-center"></i>
-                    <a href="{{ graphic.reboundCount == 1 ? path('core_graphic_show', { 'id':graphic.rebounds[0].sluggedId }) : path('core_graphic_rebounds', { 'id':graphic.id }) }}">
-                        <strong>{{ graphic.reboundCount }}</strong>
-                        <small>{{ 'default.choice.rebounds'|transchoice(graphic.reboundCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-        {% else %}
-            <div class="ladb-meta">
-                <small class="text-muted">{{ 'default.no_links'|trans() }}</small>
-            </div>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="ladb-graphic">
+        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':graphic.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':graphic.title } %}
+        <div class="ladb-body ladb-margin-top" itemprop="articleBody">
+            {{ graphic.htmlBody|raw }}
+        </div>
+        {% if graphic.updatedAt > graphic.createdAt %}
+            {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':graphic } %}
         {% endif %}
     </div>
+    {% if not ownerUser %}
+        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
 {% endblock %}
 
-{% block contentLinkedTo %}
-    {% if graphic.inspirationCount > 0 or graphic.reboundCount > 0 or graphic.howtoCount > 0 or graphic.creationCount > 0 or graphic.workshopCount > 0 %}
-        {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
-            {% block body %}
-                {% if graphic.inspirationCount > 0 %}
-                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
-                        'path':graphic.inspirationCount == 1 ? path('core_graphic_show', { 'id':graphic.inspirations[0].sluggedId }) : path('core_graphic_inspirations', { 'id':graphic.id }),
-                        'picture':graphic.inspirations[0].mainPicture,
-                        'icon':'ladb-icon-inspiration',
-                        'caption': graphic.inspirationCount~' '~('default.choice.inspirations'|transchoice(graphic.inspirationCount))
-                    } %}
-                {% endif %}
-                {% if graphic.howtoCount > 0 %}
-                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
-                        'path':graphic.howtoCount == 1 ? path('core_howto_show', { 'id':graphic.howtos[0].sluggedId }) : path('core_graphic_howtos', { 'id':graphic.id }),
-                        'picture':graphic.howtos[0].mainPicture,
-                        'icon':'ladb-icon-howto',
-                        'caption': graphic.howtoCount~' '~('howto.howto.choice.howtos'|transchoice(graphic.howtoCount))
-                    } %}
-                {% endif %}
-                {% if graphic.creationCount > 0 %}
-                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
-                        'path':graphic.creationCount == 1 ? path('core_creation_show', { 'id':graphic.creations[0].sluggedId }) : path('core_graphic_creations', { 'id':graphic.id }),
-                        'picture':graphic.creations[0].mainPicture,
-                        'icon':'ladb-icon-creation',
-                        'caption': graphic.creationCount~' '~('promotion.creation.choice.creations'|transchoice(graphic.creationCount))
-                    } %}
-                {% endif %}
-                {% if graphic.workshopCount > 0 %}
-                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
-                        'path':graphic.workshopCount == 1 ? path('core_workshop_show', { 'id':graphic.workshops[0].sluggedId }) : path('core_graphic_workshops', { 'id':graphic.id }),
-                        'picture':graphic.workshops[0].mainPicture,
-                        'icon':'ladb-icon-workshop',
-                        'caption': graphic.workshopCount~' '~('promotion.workshop.choice.workshops'|transchoice(graphic.workshopCount))
-                    } %}
-                {% endif %}
-                {% if graphic.reboundCount > 0 %}
-                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
-                        'path':graphic.reboundCount == 1 ? path('core_graphic_show', { 'id':graphic.rebounds[0].sluggedId }) : path('core_graphic_rebounds', { 'id':graphic.id }),
-                        'picture':graphic.rebounds[0].mainPicture,
-                        'icon':'ladb-icon-rebound',
-                        'caption': graphic.reboundCount~' '~('default.choice.rebounds'|transchoice(graphic.reboundCount))
-                    } %}
-                {% endif %}
-            {% endblock %}
-        {% endembed %}
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+        <div class="ladb-meta{% if graphic.downloadCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-unpublish ladb-icon-fixed-center"></i>
+            <strong>{{ graphic.downloadCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'default.choice.downloads'|transchoice(graphic.downloadCount) }}</small>
+            <meta itemprop="interactionCount" content="UserDownloads:{{ graphic.downloadCount }}"/>
+        </div>
+    </div>
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':graphic.tags, 'type':'graphics' } %}
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+        <div class="ladb-meta">
+            <span class="pull-right">
+                {% include 'LadbCoreBundle:Core/Resource:_meta-kind-'~graphic.resource.kind~'.part.html.twig' %}
+            </span>
+            <span><i class="ladb-icon-info ladb-icon-fixed-center"></i>&nbsp;Format</span>
+        </div>
+        <div class="ladb-meta">
+            <span class="pull-right">{{ graphic.zipArchiveSize|ladb_file_size_format }}</span>
+            <span><i class="ladb-icon-weight ladb-icon-fixed-center"></i>&nbsp;Taille</span>
+        </div>
+        <div class="ladb-btn">
+            <a href="{{ path('core_promotion_graphic_download', { 'id':graphic.id }) }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-unpublish ladb-icon-lg"></i> {{ 'promotion.graphic.download'|trans() }}</a>
+        </div>
+    </div>
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':graphic.license } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if similarGraphics is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('promotion.graphic.similar')|trans() }}
+            </div>
+            <div class="panel-body row">
+                {% for similarGraphic in similarGraphics %}
+                    <div class="col-xs-6">
+                        {% include 'LadbCoreBundle:Promotion/Graphic:_thumbnail-link.part.html.twig' with { 'graphic':similarGraphic, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
+

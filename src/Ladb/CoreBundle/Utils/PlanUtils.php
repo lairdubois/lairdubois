@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Ladb\CoreBundle\Entity\Core\Resource;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
@@ -21,58 +22,8 @@ class PlanUtils {
 	public function generateKinds(Plan $plan) {
 		$kinds = array();
 		foreach ($plan->getResources() as $resource) {
-			$kind = Plan::KIND_UNKNOW;
-			$fileExtension = $resource->getFileExtension();
-			if (!is_null($fileExtension)) {
-				$fileExtension = strtolower($fileExtension);
-
-				// AutoCAD
-				if ($fileExtension == 'dwf' || $fileExtension == 'dwg') {
-					$kind = Plan::KIND_AUTOCAD;
-				}
-
-				// Sketchup
-				if ($fileExtension == 'skp') {
-					$kind = Plan::KIND_SKETCHUP;
-				}
-
-				// PDF
-				if ($fileExtension == 'pdf') {
-					$kind = Plan::KIND_PDF;
-				}
-
-				// GeoGebra
-				if ($fileExtension == 'ggb') {
-					$kind = Plan::KIND_GEOGEBRA;
-				}
-
-				// SVG
-				if ($fileExtension == 'svg') {
-					$kind = Plan::KIND_SVG;
-				}
-
-				// FreeCAD
-				if ($fileExtension == 'fcstd') {
-					$kind = Plan::KIND_FREECAD;
-				}
-
-				// STL
-				if ($fileExtension == 'stl') {
-					$kind = Plan::KIND_STL;
-				}
-
-				// 123 Design
-				if ($fileExtension == '123dx') {
-					$kind = Plan::KIND_123DESIGN;
-				}
-
-				// libreOffice
-				if ($fileExtension == 'xlsx' || $fileExtension == 'xlsm' || $fileExtension == 'ods') {
-					$kind = Plan::KIND_LIBREOFFICE;
-				}
-
-			}
-			if ($kind != Plan::KIND_UNKNOW && !in_array($kind, $kinds)) {
+			$kind = $resource->getKind();
+			if ($kind != Resource::KIND_UNKNOW && !in_array($kind, $kinds)) {
 				$kinds[] = $kind;
 			}
 		}

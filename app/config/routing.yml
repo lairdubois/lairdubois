@@ -150,6 +150,10 @@ ladb_core_funding:
     resource: "Ladb\\CoreBundle\\Controller\\Funding\\FundingController"
     type:     annotation
 
+ladb_core_promotion:
+    resource: "Ladb\\CoreBundle\\Controller\\Promotion\\GraphicController"
+    type:     annotation
+
 ladb_core_youtook:
     resource: "Ladb\\CoreBundle\\Controller\\Extra\\YoutookController"
     type:     annotation

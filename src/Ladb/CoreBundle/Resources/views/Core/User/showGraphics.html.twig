@@ -1,0 +1,41 @@
+{% extends 'LadbCoreBundle:Core/User:_show-list.html.twig' %}
+
+{% set masonry = true %}
+{% set masonryWide = false %}
+
+{% block bodyContainerContent %}
+    {% if graphics.count == 0 and filter != 'draft' %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                <p>Vous n'avez pas encore publié de <strong>trouvaille</strong> !</p>
+                <p><a href="{{ path('core_promotion_graphic_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'promotion.graphic.new'|trans() }}</a></p>
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas encore publié de graphisme.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Promotion/Graphic:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_user_show_graphics_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% set customFilterDefs = {
+                'draft':    { 'label':('default.choice.draft'|transchoice(2)|capitalize), 'path':path('core_user_show_graphics_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
+            } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">
+                    {% if filter == 'draft' and isDraftVisible %}
+                        {{ user.draftGraphicCount~' '~('default.choice.draft'|transchoice(user.draftGraphicCount)) }}
+                    {% elseif filter|slice(0,4) == 'type' %}
+                        {{ graphics.count~' '~('promotion.graphic.choice.graphics'|transchoice(graphics.count)) }}
+                    {% else %}
+                        {{ user.publishedGraphicCount }} {{ 'promotion.graphic.choice.graphics'|transchoice(user.publishedGraphicCount) }}{% if isDraftVisible and user.draftGraphicCount > 0 %} (+{{ user.draftGraphicCount~' '~('default.choice.draft'|transchoice(user.draftGraphicCount)) }}){% endif %}
+                    {% endif %}
+                </span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Promotion/Graphic:_list-n.part.html.twig' %}
+{% endblock %}

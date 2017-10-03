@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Core\Resource;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\InspirableTrait;
@@ -52,7 +53,7 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	/**
 	 * @ORM\Column(type="simple_array")
 	 */
-	private $kinds = array( Plan::KIND_UNKNOW );
+	private $kinds = array( Resource::KIND_UNKNOW );
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
@@ -176,80 +177,6 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 
 	public function getKinds() {
 		return $this->kinds;
-	}
-
-	public function getKindStrippedNames() {
-		$kindStrippedNames = array();
-		foreach ($this->kinds as $kind) {
-			switch ($kind) {
-				case Plan::KIND_AUTOCAD:
-					$kindStrippedNames[] = 'autocad';
-					break;
-				case Plan::KIND_SKETCHUP:
-					$kindStrippedNames[] = 'sketchup';
-					break;
-				case Plan::KIND_PDF:
-					$kindStrippedNames[] = 'pdf';
-					break;
-				case Plan::KIND_GEOGEBRA:
-					$kindStrippedNames[] = 'geogebra';
-					break;
-				case Plan::KIND_SVG:
-					$kindStrippedNames[] = 'svg';
-					break;
-				case Plan::KIND_FREECAD:
-					$kindStrippedNames[] = 'freecad';
-					break;
-				case Plan::KIND_STL:
-					$kindStrippedNames[] = 'stl';
-					break;
-				case Plan::KIND_123DESIGN:
-					$kindStrippedNames[] = '123ddesign';
-					break;
-				case Plan::KIND_LIBREOFFICE:
-					$kindStrippedNames[] = 'libreoffice';
-					break;
-				default:
-					$kindStrippedNames[] = '';
-			}
-		}
-		return $kindStrippedNames;
-	}
-
-	public function getKindExternUrls() {
-		$kindExternUrls = array();
-		foreach ($this->kinds as $kind) {
-			switch ($kind) {
-				case Plan::KIND_AUTOCAD:
-					$kindExternUrls[] = 'www.freecadweb.org';
-					break;
-				case Plan::KIND_SKETCHUP:
-					$kindExternUrls[] = 'www.sketchup.com';
-					break;
-				case Plan::KIND_PDF:
-					$kindExternUrls[] = 'get.adobe.com/fr/reader/';
-					break;
-				case Plan::KIND_GEOGEBRA:
-					$kindExternUrls[] = 'www.geogebra.org';
-					break;
-				case Plan::KIND_SVG:
-					$kindExternUrls[] = 'fr.wikipedia.org/wiki/Scalable_Vector_Graphics';
-					break;
-				case Plan::KIND_FREECAD:
-					$kindExternUrls[] = 'www.freecadweb.org';
-					break;
-				case Plan::KIND_STL:
-				case Plan::KIND_123DESIGN:
-					$kindExternUrls[] = 'www.123dapp.com/design';
-					break;
-				case Plan::KIND_LIBREOFFICE:
-					$kindExternUrls[] = 'fr.libreoffice.org';
-					break;
-				default:
-					$kindExternUrls[] = '';
-			}
-		}
-		return $kindExternUrls;
 	}
 
 	// Resources /////
