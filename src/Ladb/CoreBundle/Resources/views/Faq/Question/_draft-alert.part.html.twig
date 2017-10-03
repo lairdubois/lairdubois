@@ -1,10 +1,5 @@
+{% extends 'LadbCoreBundle:Common:_draft-alert.part.html.twig' %}
 
-{# set question #}
-
-<div class="alert alert-info">
-    <p><i class="ladb-icon-warning"></i> Cette question est un brouillon. Elle n'est visible que par vous. Pour la rendre publique, vous devez la publier.</p>
-    <p class="text-right"><a href="#publish_question_modal" data-toggle="modal" class="btn btn-primary"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></p>
-</div>
-{% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_question_modal', 'title':('default.publishing'|trans()), 'entity':question } %}
-    {% block whatItIs %}La publication de la question <strong>{{ question.title }}</strong> la rendra publique.{% endblock %}
-{% endembed %}
+{% set entity = question %}
+{% set alertMessage = 'Ce graphisme est un brouillon. Il n\'est visible que par vous. Pour la rendre publique, vous devez la publier.' %}
+{% set modalMessage = 'La publication de la question <strong>'~question.title~'</strong> la rendra publique.' %}

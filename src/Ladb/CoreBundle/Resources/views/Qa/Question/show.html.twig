@@ -89,10 +89,6 @@
     {% endembed %}
 {% endblock %}
 
-{% block bodyContainerContent %}
-    {{ parent() }}
-{% endblock %}
-
 {% block contentBody %}
     {% if question.isDraft %}
         {% include 'LadbCoreBundle:Qa/Question:_draft-alert.part.html.twig' %}

@@ -179,9 +179,6 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    {% if howto.isDraft %}
-        {% include 'LadbCoreBundle:Howto/Howto:_draft-alert.part.html.twig' %}
-    {% endif %}
     {{ parent() }}
     {% if referral is defined and referral is not null and referral.displayRedirectionWarning %}
         {% include 'LadbCoreBundle:Core/Referer:_referral-modal.part.html.twig' %}
@@ -194,6 +191,9 @@
 {% endblock %}
 
 {% block contentBody %}
+    {% if howto.isDraft %}
+        {% include 'LadbCoreBundle:Howto/Howto:_draft-alert.part.html.twig' %}
+    {% endif %}
     {% include 'LadbCoreBundle:Howto/Howto:_wip-alert.part.html.twig' %}
     <div class="ladb-howto">
         {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':howto.mainPicture, 'width':'594', 'height':'294', 'alt':howto.title, 'noMicrodata':true } %}

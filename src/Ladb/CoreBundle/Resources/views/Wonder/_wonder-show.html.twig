@@ -187,9 +187,6 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    {% if wonder.isDraft %}
-        {% include 'LadbCoreBundle:Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
-    {% endif %}
     {{ parent() }}
     {% if referral is defined and referral is not null and referral.displayRedirectionWarning %}
         {% include 'LadbCoreBundle:Core/Referer:_referral-modal.part.html.twig' %}
@@ -202,6 +199,9 @@
 {% endblock %}
 
 {% block contentBody %}
+    {% if wonder.isDraft %}
+        {% include 'LadbCoreBundle:Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
+    {% endif %}
     {% block wonderShowcase %}
         <div class="ladb-wonder-showcase row">
             <div class="col-xs-12">

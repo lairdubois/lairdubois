@@ -49,14 +49,10 @@
     {% endembed %}
 {% endblock %}
 
-{% block bodyContainerContent %}
+{% block contentBody %}
     {% if post.isDraft %}
         {% include 'LadbCoreBundle:Blog/Post:_draft-alert.part.html.twig' %}
     {% endif %}
-    {{ parent() }}
-{% endblock %}
-
-{% block contentBody %}
     <div class="ladb-post">
         {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title } %}
         <div class="ladb-body" itemprop="articleBody">

@@ -93,14 +93,10 @@
     {% endembed %}
 {% endblock %}
 
-{% block bodyContainerContent %}
+{% block contentBody %}
     {% if find.isDraft %}
         {% include 'LadbCoreBundle:Find:_draft-alert.part.html.twig' %}
     {% endif %}
-    {{ parent() }}
-{% endblock %}
-
-{% block contentBody %}
     <div class="ladb-find">
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') %}
             <div class="ladb-thumb">

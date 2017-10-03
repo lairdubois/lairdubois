@@ -62,14 +62,10 @@
     {% endembed %}
 {% endblock %}
 
-{% block bodyContainerContent %}
+{% block contentBody %}
     {% if graphic.isDraft %}
         {% include 'LadbCoreBundle:Promotion/Graphic:_draft-alert.part.html.twig' %}
     {% endif %}
-    {{ parent() }}
-{% endblock %}
-
-{% block contentBody %}
     <div class="ladb-graphic">
         {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':graphic.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':graphic.title } %}
         <div class="ladb-body ladb-margin-top" itemprop="articleBody">

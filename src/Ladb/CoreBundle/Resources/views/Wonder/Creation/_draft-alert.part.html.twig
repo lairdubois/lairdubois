@@ -1,10 +1,6 @@
+{% extends 'LadbCoreBundle:Common:_draft-alert.part.html.twig' %}
 
-{# set creation #}
+{% set entity = creation %}
+{% set alertMessage = 'Cette création est un brouillon. Elle n\'est visible que par vous, depuis votre <a href="'~path('core_user_show_creations', { 'username':app.user.usernameCanonical })~'" target="_blank" class="alert-link">liste des creations</a>. Pour la rendre publique, vous devez la publier.' %}
+{% set modalMessage = 'La publication de la création <strong>'~creation.title~'</strong> la rendra publique.' %}
 
-<div class="alert alert-info">
-    <p><i class="ladb-icon-warning"></i> Cette creation est un brouillon. Elle n'est visible que par vous, depuis votre <a href="{{ path('core_user_show_creations', { 'username':app.user.usernameCanonical }) }}" target="_blank" class="alert-link">liste des créations</a>. Pour la rendre publique, vous devez la publier.</p>
-    <p class="text-right"><a href="#publish_creation_modal" data-toggle="modal" class="btn btn-primary"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></p>
-</div>
-{% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_creation_modal', 'title':('default.publishing'|trans()), 'entity':creation } %}
-    {% block whatItIs %}La publication de la création <strong>{{ creation.title }}</strong> la rendra publique.{% endblock %}
-{% endembed %}

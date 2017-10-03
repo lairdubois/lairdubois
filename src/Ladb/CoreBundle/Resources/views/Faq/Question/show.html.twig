@@ -48,14 +48,10 @@
     {% endembed %}
 {% endblock %}
 
-{% block bodyContainerContent %}
+{% block contentBody %}
     {% if question.isDraft %}
         {% include 'LadbCoreBundle:Faq/Question:_draft-alert.part.html.twig' %}
     {% endif %}
-    {{ parent() }}
-{% endblock %}
-
-{% block contentBody %}
     <div class="ladb-question">
         <div class="ladb-body" itemprop="articleBody">
             {% for block in question.bodyBlocks %}
