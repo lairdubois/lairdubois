@@ -39,22 +39,22 @@ class TagUsage {
 
 	// Tag /////
 
-	public function getTag() {
-		return $this->tag;
-	}
-
 	public function setTag(\Ladb\CoreBundle\Entity\Core\Tag $tag) {
 		$this->tag = $tag;
 	}
 
-	// EntityType /////
-
-	public function getEntityType() {
-		return $this->entityType;
+	public function getTag() {
+		return $this->tag;
 	}
+
+	// EntityType /////
 
 	public function setEntityType($entityType) {
 		$this->entityType = $entityType;
+	}
+
+	public function getEntityType() {
+		return $this->entityType;
 	}
 
 	// Score /////
@@ -68,6 +68,11 @@ class TagUsage {
 	}
 
 	// Highlighted /////
+
+	public function setHighlighted($highlighted) {
+		$this->highlighted = $highlighted;
+		return $this;
+	}
 
 	public function getHighlighted() {
 		return $this->highlighted;

@@ -110,6 +110,10 @@ ladb_core_report:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\ReportController"
     type:     annotation
 
+ladb_core_tag:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\TagController"
+    type:     annotation
+
 ladb_core_picture:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\PictureController"
     type:     annotation
