@@ -265,6 +265,8 @@ class WoodController extends Controller {
 			function($facet, &$filters, &$sort) {
 				switch ($facet->name) {
 
+					// Filters /////
+
 					case 'name':
 
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
@@ -297,37 +299,37 @@ class WoodController extends Controller {
 
 						break;
 
-					case 'sort':
+					// Sorters /////
 
-						switch ($facet->value) {
-
-							case 'recent':
-								$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
-								break;
-
-							case 'alphabetical':
-								$sort = array( 'titleWorkaround' => array( 'order' => 'asc' ) );
-								break;
-
-							case 'popular-views':
-								$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
-								break;
-
-							case 'popular-likes':
-								$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
-								break;
-
-							case 'popular-comments':
-								$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
-								break;
-
-							case 'density':
-								$sort = array( 'density' => array( 'order' => 'desc' ) );
-								break;
-
-						}
-
+					case 'sort-recent':
+						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 						break;
+
+					case 'sort-popular-views':
+						$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-likes':
+						$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-comments':
+						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-random':
+						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
+						break;
+
+					case 'sort-density':
+						$sort = array( 'density' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-alphabetical':
+						$sort = array( 'titleWorkaround' => array( 'order' => 'asc' ) );
+						break;
+
+					/////
 
 					default:
 						if (is_null($facet->name)) {

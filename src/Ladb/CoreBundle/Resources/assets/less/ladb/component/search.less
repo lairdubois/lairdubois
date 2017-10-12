@@ -110,16 +110,28 @@
 
         }
 
-        .ladb-remove {
+        .ladb-remove, .ladb-repeat {
           color: #fff;
           margin-left: 5px;
-          font-size: 90%;
 
           &:hover {
             color: @ladb-brand-primary;
             text-decoration: none;
           }
 
+          &:focus {
+            color: #fff;
+          }
+
+        }
+
+        .ladb-remove {
+          font-size: 90%;
+        }
+
+        .ladb-repeat {
+          padding: 0 5px;
+          font-size: 110%;
         }
 
       }

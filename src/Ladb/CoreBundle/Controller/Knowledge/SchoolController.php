@@ -196,7 +196,10 @@ class SchoolController extends Controller {
 			$request,
 			$page,
 			function($facet, &$filters, &$sort) {
+
 				switch ($facet->name) {
+
+					// Filters /////
 
 					case 'geocoded':
 
@@ -262,29 +265,29 @@ class SchoolController extends Controller {
 
 						break;
 
-					case 'sort':
+					// Sorters /////
 
-						switch ($facet->value) {
-
-							case 'recent':
-								$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
-								break;
-
-							case 'popular-views':
-								$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
-								break;
-
-							case 'popular-likes':
-								$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
-								break;
-
-							case 'popular-comments':
-								$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
-								break;
-
-						}
-
+					case 'sort-recent':
+						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 						break;
+
+					case 'sort-popular-views':
+						$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-likes':
+						$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-comments':
+						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-random':
+						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
+						break;
+
+					/////
 
 					default:
 						if (is_null($facet->name)) {

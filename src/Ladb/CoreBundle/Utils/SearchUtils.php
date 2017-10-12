@@ -97,6 +97,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			}
 		}
 
+		// Excluded Ids wrapper query
 		if (!is_null($excludedIds) && is_array($excludedIds) && !empty($excludedIds)) {
 			$wrapperQuery = new \Elastica\Query\BoolQuery();
 			$wrapperQuery->addMustNot(new \Elastica\Query\Ids(null, $excludedIds));
@@ -104,8 +105,18 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			$query = $wrapperQuery;
 		}
 
+		// Random sort wrapper query
+		if (!is_null($sort) && isset($sort['randomSeed'])) {
+			$wrapperQuery = new \Elastica\Query\FunctionScore();
+			$wrapperQuery->setQuery($query);
+			if (!empty($sort['randomSeed'])) {
+				$wrapperQuery->setRandomScore($sort['randomSeed']);
+			}
+			$query = $wrapperQuery;
+		}
+
 		$elasticaQuery = Query::create($query);
-		if (!is_null($sort)) {
+		if (!is_null($sort) && !isset($sort['randomSeed'])) {
 			$elasticaQuery->addSort($sort);
 		}
 		$elasticaQuery->setFrom($offset);
