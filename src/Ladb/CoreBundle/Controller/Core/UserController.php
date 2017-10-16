@@ -170,7 +170,7 @@ class UserController extends Controller {
 					// Sorters /////
 
 					case 'sort-recent':
-						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+						$sort = array( 'createdAt' => array( 'order' => 'desc' ) );
 						break;
 
 					case 'sort-popular-followers':
