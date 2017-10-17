@@ -22,8 +22,9 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 	public function geocodeLocation(LocalisableInterface $localisable) {
 		if (!is_null($localisable->getLocation())) {
 
+			$googleApiKey = $this->getParameter('google_api_key');
 			$adapter  = new \Ivory\HttpAdapter\CurlHttpAdapter();
-			$geocoder = new \Geocoder\Provider\GoogleMaps($adapter);
+			$geocoder = new \Geocoder\Provider\GoogleMaps($adapter, null, null, true, $googleApiKey);
 			$geocoder->setLocale('fr_FR');
 
 			$response = $geocoder->geocode($localisable->getLocation());
@@ -135,7 +136,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 	public function getTopLeftBottomRightBounds($address) {
 
 		$googleApiKey = $this->getParameter('google_api_key');
-		$hash = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=='.$address.'&key='.$googleApiKey), true);
+		$hash = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$googleApiKey), true);
 
 		if ($hash && isset($hash['results']) && isset($hash['results'][0]) && isset($hash['results'][0]['geometry']) && isset($hash['results'][0]['geometry']['bounds'])) {
 			$bounds = $hash['results'][0]['geometry']['bounds'];
