@@ -20,7 +20,8 @@ class PictureUploadHandler extends \UploadHandler {
 		$this->tokenStorage = $tokenStorage;
 	}
 
-	public function handle($acceptFileTypes = Picture::DEFAULT_ACCEPTED_FILE_TYPE,
+	public function handle($postProcessor = null,
+						   $acceptFileTypes = Picture::DEFAULT_ACCEPTED_FILE_TYPE,
 						   $maxFileSize = Picture::DEFAULT_MAX_FILE_SIZE,
 						   $imageMaxWidth = Picture::DEFAULT_IMAGE_MAX_WIDTH,
 						   $imageMaxHeight = Picture::DEFAULT_IMAGE_MAX_HEIGHT) {
@@ -42,6 +43,7 @@ class PictureUploadHandler extends \UploadHandler {
 					'max_height'  => $imageMaxHeight,
 				),
 			),
+			'post_processor' => $postProcessor,
 		));
 	}
 
@@ -56,10 +58,30 @@ class PictureUploadHandler extends \UploadHandler {
 			$fileExtension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
 			$resourceAbsolutePath = $this->options['upload_dir'].$resourcePath;
-			list($width, $height) = $this->get_image_size($fileAbsolutePath);
 
 			// Rename uploaded file to generated uniqid
 			rename($fileAbsolutePath, $resourceAbsolutePath);
+
+			// Post-processors
+			switch ($this->options['post_processor']) {
+
+				case Picture::POST_PROCESSOR_SQUARE:
+
+					$imagick = new \Imagick($resourceAbsolutePath.'[0]');
+					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);								// Convert to JPG
+					$imagick->setCompressionQuality(100);												// Set max quality
+					$imagick->setBackgroundColor('#ffffff');											// Set background color to white
+					$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
+					$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);				// Merge layers
+					$imagick->thumbnailImage(1024, 1024, true, true);			// Rescale to 1024x1024 fill
+					$imagick->writeImage($resourceAbsolutePath);
+
+					break;
+
+			}
+
+			// Compute image size
+			list($width, $height) = $this->get_image_size($resourceAbsolutePath);
 
 			// Create the new picture
 			$picture = new Picture();

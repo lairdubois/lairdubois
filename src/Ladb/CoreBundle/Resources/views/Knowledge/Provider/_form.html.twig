@@ -49,7 +49,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.provider.field.logo'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'logo', 'form':form.logoValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_LOGO') } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'logo', 'form':form.logoValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_LOGO'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

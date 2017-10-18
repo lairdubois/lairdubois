@@ -23,6 +23,8 @@ class Picture {
 	const DEFAULT_IMAGE_MAX_WIDTH = 1024;
 	const DEFAULT_IMAGE_MAX_HEIGHT = 1024;
 
+	const POST_PROCESSOR_SQUARE = 'square';
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

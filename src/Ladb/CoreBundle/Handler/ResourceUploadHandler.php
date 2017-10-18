@@ -3,9 +3,9 @@
 namespace Ladb\CoreBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\Resource;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 require_once('../vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php');
 
@@ -118,7 +118,6 @@ class ResourceUploadHandler extends \UploadHandler {
 				$thumbnail = new Picture();
 				$thumbnail->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
 
-				// Convert
 				$imagick = new \Imagick($resource->getAbsolutePath().'[0]');
 				$imagick->setCompression(\Imagick::COMPRESSION_JPEG);
 				$imagick->setCompressionQuality(100);

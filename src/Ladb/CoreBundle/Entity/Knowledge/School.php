@@ -45,7 +45,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	public static $FIELD_DEFS = array(
 		School::FIELD_NAME           => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true, School::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueSchool', array('excludedId' => '@getId')))),
-		School::FIELD_LOGO           => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true),
+		School::FIELD_LOGO           => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true, School::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		School::FIELD_PHOTO          => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_WEBSITE        => array(School::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_ADDRESS        => array(School::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),

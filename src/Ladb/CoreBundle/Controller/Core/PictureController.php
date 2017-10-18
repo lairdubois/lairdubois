@@ -22,9 +22,9 @@ class PictureController extends Controller {
 	 * @Route("/upload", name="core_picture_upload")
 	 * @Template()
 	 */
-	public function uploadAction() {
+	public function uploadAction(Request $request) {
 		$uploadHandler = $this->get(PictureUploadHandler::NAME);
-		$uploadHandler->handle();
+		$uploadHandler->handle($request->get('post-processor'));
 		exit(0);
 	}
 
