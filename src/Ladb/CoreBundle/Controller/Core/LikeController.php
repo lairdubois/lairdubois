@@ -12,6 +12,8 @@ use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
+use Ladb\CoreBundle\Model\WatchableInterface;
+use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
@@ -70,6 +72,12 @@ class LikeController extends Controller {
 				// Create activity
 				$activityUtils = $this->get(ActivityUtils::NAME);
 				$activityUtils->createLikeActivity($like, false);
+
+				// Auto watch
+				if ($entity instanceof WatchableInterface) {
+					$watchableUtils = $this->get(WatchableUtils::NAME);
+					$watchableUtils->autoCreateWatch($entity, $this->getUser());
+				}
 
 				$om->flush();
 

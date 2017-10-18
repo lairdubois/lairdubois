@@ -77,12 +77,10 @@ class JoinController extends Controller {
 
 			}
 
+			// Auto watch
 			if ($entity instanceof WatchableInterface) {
 				$watchableUtils = $this->get(WatchableUtils::NAME);
-
-				// Auto watch
 				$watchableUtils->autoCreateWatch($entity, $this->getUser());
-
 			}
 
 			$om->flush();
