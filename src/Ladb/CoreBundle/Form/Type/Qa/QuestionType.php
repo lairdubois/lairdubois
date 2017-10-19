@@ -3,14 +3,11 @@
 namespace Ladb\CoreBundle\Form\Type\Qa;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
-use Ladb\CoreBundle\Entity\Blog\Question;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 
 class QuestionType extends AbstractType {

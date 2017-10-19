@@ -109,7 +109,7 @@
         <a href="{{ path('core_howto_list') }}" {% if navSection is defined and navSection == 'howtos' %} class="ladb-active"{% endif %}><i class="ladb-icon-howto"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedHowtoHowtoCount' } %}<div>{{ 'howto.howto.nav'|trans() }}</div></a>
         <a href="{{ path('core_workshop_list') }}" {% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderWorkshopCount' } %}<div>{{ 'wonder.workshop.nav'|trans() }}</div></a>
         <a href="{{ path('core_wood_list') }}" {% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeWoodCount' } %}<div>{{ 'knowledge.wood.nav'|trans() }}</div></a>
-        <div class="ladb-leftbar-subbar ladb-leftbar-subbar-2">
+        <div class="ladb-leftbar-subbar ladb-leftbar-subbar-3">
             <div class="ladb-subbar-toggle{% if navSection is defined and (navSection == 'providers' or navSection == 'schools') %} ladb-nav-active{% endif %}">
                 <span class="ladb-toggle-handle"><i class="ladb-icon-more"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedDirectoryCount' } %}<div>Annuaires</div></span>
                 <span class="ladb-toggle-arrow"></span>
@@ -117,10 +117,11 @@
             <div class="ladb-subbar-panel">
                 <a href="{{ path('core_provider_list') }}" {% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeProviderCount' } %}<div>{{ 'knowledge.provider.nav'|trans() }}</div></a>
                 <a href="{{ path('core_school_list') }}" {% if navSection is defined and navSection == 'schools' %} class="ladb-active"{% endif %}><i class="ladb-icon-school"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeSchoolCount' } %}<div>Ecoles</div></a>
+                <a href="{{ path('core_user_list') }}" {% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'user.nav'|trans() }}</div></a>
             </div>
         </div>
         <a href="{{ path('core_find_list') }}" {% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-globe"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindFindCount' } %}<div>{{ 'find.find.nav'|trans() }}</div></a>
-        <a href="{{ path('core_user_list') }}" {% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'user.nav'|trans() }}</div></a>
+        <a href="{{ path('core_workflow_list') }}" {% if navSection is defined and navSection == 'workflow' %} class="ladb-active"{% endif %}><i class="ladb-icon-workflow"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedFindFindCount' } %}<div>{{ 'workflow.nav'|trans() }}</div></a>
     </nav>
     {{ parent() }}
     {% if is_granted("ROLE_USER") %}{% include 'LadbCoreBundle:Core/Notification:_modal.part.html.twig' %}{% endif %}
@@ -147,7 +148,7 @@
                         <a href="{{ path('core_user_email_check') }}" class="alert-link">{{ 'user.email_confirmation.check.action'|trans() }}</a> {{ 'default.or'|trans }} <a href="#email_check_modal" class="alert-link" data-toggle="modal">{{ 'user.email_confirmation.check.modal_action'|trans() }}</a>
                     </p>
                 </div>
-                {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
+                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
                     {% block bodyInner %}
                         {{ 'user.email_confirmation.check.modal_body'|trans()|ladb_markdown|raw }}
                     {% endblock %}

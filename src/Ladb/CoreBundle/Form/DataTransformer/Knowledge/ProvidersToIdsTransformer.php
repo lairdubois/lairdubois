@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\DataTransformer;
+namespace Ladb\CoreBundle\Form\DataTransformer\Knowledge;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -26,8 +26,8 @@ class ProvidersToIdsTransformer implements DataTransformerInterface {
 		}
 
 		$idsArray = array();
-		foreach ($providers as $providers) {
-			$idsArray[] = $providers->getId();
+		foreach ($providers as $provider) {
+			$idsArray[] = $provider->getId();
 		}
 		return implode(',', $idsArray);
 	}

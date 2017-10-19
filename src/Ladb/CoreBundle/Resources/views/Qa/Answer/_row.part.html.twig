@@ -29,7 +29,7 @@
                         {% endif %}
                         {% if is_granted("ROLE_ADMIN") %}
                             <a href="#delete_answer_{{ answer.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete"><i class="ladb-icon-delete"></i></a>
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'delete_answer_'~answer.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+                            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_answer_'~answer.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
                                 {% block bodyInner %}
                                     <p>La suppression de cette réponse entrainera la perte de toutes les informations qui lui sont relatives.</p>
                                     <p>Confirmez l'action pour continuer.</p>

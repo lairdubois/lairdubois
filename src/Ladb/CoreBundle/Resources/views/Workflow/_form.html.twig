@@ -9,13 +9,13 @@
 
 {% block sidenav %}
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
-    {% include 'LadbCoreBundle:Tag:_form-sidenav.part.html.twig' %}
-    {% include 'LadbCoreBundle:License:_form-sidenav.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/License:_form-sidenav.part.html.twig' %}
 {% endblock %}
 
 {% block sections %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('workflow.form.help.title'|trans()) } %}
-    {% include 'LadbCoreBundle:Tag:_form-section.part.html.twig' with { 'mandatory':false, 'help':'Indiquez les tags définissant votre processus.' } %}
-    {% include 'LadbCoreBundle:License:_form-section.part.html.twig' with { 'form':form.license } %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':false, 'help':'Indiquez les tags définissant votre processus.' } %}
+    {% include 'LadbCoreBundle:Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
 {% endblock %}

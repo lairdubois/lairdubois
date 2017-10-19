@@ -2,12 +2,10 @@
 
 namespace Ladb\CoreBundle\Form\Type\Knowledge\School;
 
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class TestimonialType extends AbstractType {
 

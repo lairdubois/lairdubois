@@ -171,6 +171,6 @@ ladb_core_qa_answer:
     type:     annotation
 
 ladb_core_workflow:
-    resource: "Ladb\\CoreBundle\\Controller\\WorkflowController"
+    resource: "Ladb\\CoreBundle\\Controller\\Workflow\\WorkflowController"
     type:     annotation
 

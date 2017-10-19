@@ -1,11 +1,7 @@
 <?php
 
-namespace Ladb\CoreBundle\Controller;
+namespace Ladb\CoreBundle\Controller\Workflow;
 
-use Ladb\CoreBundle\Entity\Workflow\Label;
-use Ladb\CoreBundle\Form\Type\Workflow\LabelType;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
-use Ladb\CoreBundle\Utils\TagUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,6 +16,10 @@ use Ladb\CoreBundle\Form\Type\Workflow\WorkflowType;
 use Ladb\CoreBundle\Form\Type\Workflow\TaskType;
 use Ladb\CoreBundle\Manager\Workflow\WorkflowManager;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
+use Ladb\CoreBundle\Entity\Workflow\Label;
+use Ladb\CoreBundle\Form\Type\Workflow\LabelType;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Ladb\CoreBundle\Utils\TagUtils;
 
 /**
  * @Route("/processus")
@@ -162,7 +162,7 @@ class WorkflowController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_workflow_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Workflow:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -227,7 +227,7 @@ class WorkflowController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Workflow:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -338,7 +338,7 @@ class WorkflowController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_workflow_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Workflow:show.html.twig")
 	 */
 	public function showAction($id) {
 
@@ -355,7 +355,7 @@ class WorkflowController extends Controller {
 	 * @Route("/", name="core_workflow_list")
 	 * @Route("/{filter}", requirements={"filter" = "\w+"}, name="core_workflow_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_workflow_list_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Workflow:list.html.twig")
 	 */
 	public function listAction(Request $request, $filter = 'all', $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -389,7 +389,7 @@ class WorkflowController extends Controller {
 	 * @Route("/mes-processus", name="core_workflow_user_list")
 	 * @Route("/mes-processus/{filter}", requirements={"filter" = "\w+"}, name="core_workflow_user_list_filter")
 	 * @Route("/mes-processus/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_workflow_user_list_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Workflow:userlist.html.twig")
 	 */
 	public function userListAction(Request $request, $filter = 'all', $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {

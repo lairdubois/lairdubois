@@ -12,11 +12,11 @@ use Ladb\CoreBundle\Form\DataTransformer\Input\WoodsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\FinishesToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\ToolsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\PlansToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\HowtosToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\CreationsToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\ProvidersToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Wonder\CreationsToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Howto\HowtosToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Knowledge\ProvidersToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 

@@ -44,7 +44,7 @@
                             </ul>
                         </div>
                         {% if not graphic.isDraft %}
-                            {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_graphic_modal', 'title':('default.unpublishing'|trans()) } %}
+                            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_graphic_modal', 'title':('default.unpublishing'|trans()) } %}
                                 {% block bodyInner %}
                                     <p>La dépublication de <strong>{{ graphic.title }}</strong> le rendra invisible pour les autres utilisateurs.</p>
                                     <p>Confirmez l'action pour continuer.</p>

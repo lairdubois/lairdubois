@@ -26,8 +26,8 @@ class ArticlesToIdsTransformer implements DataTransformerInterface {
 		}
 
 		$idsArray = array();
-		foreach ($articles as $articles) {
-			$idsArray[] = $articles->getId();
+		foreach ($articles as $article) {
+			$idsArray[] = $article->getId();
 		}
 		return implode(',', $idsArray);
 	}

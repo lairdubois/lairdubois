@@ -179,6 +179,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Graphic (School)
 			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
 				return '\Ladb\CoreBundle\Entity\Promotion\Graphic';
+			// Workflow
+			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
+				return '\Ladb\CoreBundle\Entity\Workflow\Workflow';
 
 		}
 		return null;
@@ -241,6 +244,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
 				$url = $router->generate('core_promotion_graphic_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
+				$url = $router->generate('core_workflow_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

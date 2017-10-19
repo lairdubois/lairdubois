@@ -4,19 +4,24 @@ namespace Ladb\CoreBundle\Entity\Workflow;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\TaggableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
+use Ladb\CoreBundle\Model\TaggableInterface;
+use Ladb\CoreBundle\Model\TaggableTrait;
+use Ladb\CoreBundle\Model\LicensedInterface;
+use Ladb\CoreBundle\Model\LicensedTrait;
 
 /**
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication implements TaggableInterface {
+class Workflow extends AbstractAuthoredPublication implements TaggableInterface, LicensedInterface {
+
+	use TaggableTrait, LicensedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
-	const TYPE = 113;
+	const TYPE = 200;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -55,15 +60,15 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface 
 	protected $labels;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_workflow_tag")
 	 */
 	private $tags;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\License", cascade={"persist", "remove"})
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(nullable=true, name="license_id")
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\License")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
 	 */
 	private $license;
 
@@ -183,34 +188,6 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface 
 
 	public function resetLabels() {
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
-	}
-
-	// Tags /////
-
-	public function addTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags[] = $tag;
-		return $this;
-	}
-
-	public function removeTag(\Ladb\CoreBundle\Entity\Tag $tag) {
-		$this->tags->removeElement($tag);
-	}
-
-	public function getTags() {
-		return $this->tags;
-	}
-
-	// License /////
-
-	public function setLicense($license) {
-		$this->license = $license;
-	}
-
-	public function getLicense() {
-		if (is_null($this->license)) {
-			return new \Ladb\CoreBundle\Entity\License();
-		}
-		return $this->license;
 	}
 
 }
