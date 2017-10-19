@@ -49,7 +49,7 @@
         "afarkas/html5shiv": "3.7.3",
         "blueimp/jquery-file-upload": "9.18.0",
         "jublonet/codebird-php": "2.6.1",
-        "jonnyw/php-phantomjs": "4.5.1",
+        "jonnyw/php-phantomjs": "4.6.0",
         "emojione/emojione": "2.2.7",
         "eonasdan/bootstrap-datetimepicker": "4.17.37",
         "ps/image-optimizer": "1.0.6",
