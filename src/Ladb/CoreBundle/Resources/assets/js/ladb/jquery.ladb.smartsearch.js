@@ -383,7 +383,7 @@
                 random: random,
                 needValue: geolocation || editable
             };
-            that.facetDefs[that.generateFacetDefId(name, null/*value*/)] = facetDef;
+            that.facetDefs[that.generateFacetDefId(name, value)] = facetDef;
 
             $facetItem.on('click', function() {
 
