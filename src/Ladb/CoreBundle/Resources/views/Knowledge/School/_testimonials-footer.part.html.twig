@@ -1,0 +1,22 @@
+{# set school #}
+
+<div class="ladb-testimonials-footer">
+    {% if userTestimonial %}
+        <div class="alert alert-info text-center">
+            <p>Vous avez déjà apporté votre témoignage. <a onclick="$('#ladb_testimonial_{{ userTestimonial.id }}').ladbScrollTo(); return false;" class="alert-link">(Voir mon témoignage)</a></p>
+        </div>
+    {% else %}
+        {% if school.testimonialCount == 0 %}
+            <div class="panel panel-info text-center">
+                <div class="panel-body">Cette école ne possède pour l'instant aucun témoignage d'ancien élève.<br>Soyez le premier à ajouter le votre !</div>
+            </div>
+        {% endif %}
+        <div class="ladb-btns-bar">
+            {% if is_granted("ROLE_USER") %}
+                <button id="ladb_testimonial_btn" class="btn btn-primary btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ 'knowledge.school.testimonial.new'|trans() }}</button>
+            {% else %}
+                <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre témoignage.
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

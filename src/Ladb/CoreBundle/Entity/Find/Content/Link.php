@@ -18,32 +18,32 @@ class Link extends AbstractContent {
 	private $url;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="thumbnail_id", nullable=true)
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */
 	private $thumbnail;
 
 	// Url /////
+
+	public function getUrl() {
+		return $this->url;
+	}
 
 	public function setUrl($url) {
 		$this->url = $url;
 		return $this;
 	}
 
-	public function getUrl() {
-		return $this->url;
-	}
-
 	// Thumbnail /////
-
-	public function setThumbnail(\Ladb\CoreBundle\Entity\Picture $thumbnail = null) {
-		$this->thumbnail = $thumbnail;
-		return $this;
-	}
 
 	public function getThumbnail() {
 		return $this->thumbnail;
+	}
+
+	public function setThumbnail(\Ladb\CoreBundle\Entity\Core\Picture $thumbnail = null) {
+		$this->thumbnail = $thumbnail;
+		return $this;
 	}
 
 }

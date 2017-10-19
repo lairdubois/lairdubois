@@ -3,11 +3,13 @@
 namespace Ladb\CoreBundle\Repository\Knowledge;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Repository\Knowledge\Value\BaseValueRepository;
 
 class ProviderRepository extends AbstractKnowledgeRepository {
@@ -86,6 +88,22 @@ class ProviderRepository extends AbstractKnowledgeRepository {
 
 	/////
 
+	public function findPagined($offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'mp' ))
+			->from($this->getEntityName(), 'p')
+			->innerJoin('p.mainPicture', 'mp')
+			->where('p.isDraft = false')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder
@@ -113,13 +131,33 @@ class ProviderRepository extends AbstractKnowledgeRepository {
 		;
 	}
 
-	public function findPagined($offset, $limit, $filter = 'recent') {
+	public function findPaginedByCreation(Creation $creation, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'mp' ))
+			->select(array( 'p', 'mp', 'c' ))
 			->from($this->getEntityName(), 'p')
-			->innerJoin('p.mainPicture', 'mp')
-			->where('p.isDraft = false')
+			->leftJoin('p.mainPicture', 'mp')
+			->innerJoin('p.creations', 'c')
+			->where('c = :creation')
+			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByHowto(Howto $howto, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'mp', 'h' ))
+			->from($this->getEntityName(), 'p')
+			->leftJoin('p.mainPicture', 'mp')
+			->innerJoin('p.howtos', 'h')
+			->where('h = :howto')
+			->setParameter('howto', $howto)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

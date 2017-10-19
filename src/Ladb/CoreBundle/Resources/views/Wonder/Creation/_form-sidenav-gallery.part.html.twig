@@ -1,0 +1,5 @@
+
+{# set title (falcultative) #}
+{# set icon (falcultative) #}
+
+<li><a href="#creations"><i class="{{ icon|default('ladb-icon-creation') }}"></i> {{ title is defined ? title : ('wonder.creation.choice.creations'|transchoice(2)|capitalize) }}</a></li>

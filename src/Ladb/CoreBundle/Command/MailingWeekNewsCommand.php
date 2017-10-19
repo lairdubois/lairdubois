@@ -62,6 +62,30 @@ EOT
 
 		$output->writeln('<comment> ['.count($creations).' creations]</comment>');
 
+		// Retrieve questions
+
+		$output->write('<info>Retrieving new questions...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from('LadbCoreBundle:Qa\Question', 'q')
+			->innerJoin('q.user', 'u')
+			->where('q.isDraft = false')
+			->andWhere('q.createdAt > :date')
+			->orderBy('q.answerCount', 'ASC')
+			->addOrderBy('q.likeCount', 'DESC')
+			->setParameter('date', $date)
+		;
+
+		try {
+			$questions = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$questions = array();
+		}
+
+		$output->writeln('<comment> ['.count($questions).' questions]</comment>');
+
 		// Retrieve plans
 
 		$output->write('<info>Retrieving new plans...</info>');
@@ -287,9 +311,36 @@ EOT
 
 		$output->writeln('<comment> ['.count($providers).' providers]</comment>');
 
+		// Retrieve schools
+
+		$output->write('<info>Retrieving new schools...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'mp' ))
+			->from('LadbCoreBundle:Knowledge\School', 's')
+			->innerJoin('s.mainPicture', 'mp')
+			->where('s.nameRejected = false')
+			->andWhere('s.logoRejected = false')
+			->andWhere('s.createdAt > :date')
+			->orderBy('s.likeCount', 'DESC')
+			->addOrderBy('s.commentCount', 'DESC')
+			->addOrderBy('s.viewCount', 'DESC')
+			->addOrderBy('s.createdAt', 'DESC')
+			->setParameter('date', $date)
+		;
+
+		try {
+			$schools = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$schools = array();
+		}
+
+		$output->writeln('<comment> ['.count($schools).' schools]</comment>');
+
 		// Sending ...
 
-		if (count($creations) > 0 || count($plans) > 0 || count($workshops) > 0 || count($howtos) > 0 || count($howtoArticles) > 0 || count($finds) > 0 || count($posts) > 0 || count($woods) > 0 || count($providers) > 0) {
+		if (count($creations) > 0 || count($questions) > 0 || count($plans) > 0 || count($workshops) > 0 || count($howtos) > 0 || count($howtoArticles) > 0 || count($finds) > 0 || count($posts) > 0 || count($woods) > 0 || count($providers) > 0 || count($schools) > 0) {
 
 			// Count users /////
 
@@ -298,7 +349,7 @@ EOT
 				->select(array( 'count(u.id)' ))
 				->where('u.enabled = true')
 				->andWhere('u.weekNewsEmailEnabled = true')
-				->from('LadbCoreBundle:User', 'u')
+				->from('LadbCoreBundle:Core\User', 'u')
 			;
 
 			try {
@@ -311,9 +362,9 @@ EOT
 			$progress->start();
 
 			$batchSize = 500;
-			$batchCount = $userCount / $batchSize;
+			$batchCount = ceil($userCount / $batchSize);
 
-			for ($batchIndex = 0; $batchIndex <= $batchCount; $batchIndex++) {
+			for ($batchIndex = 0; $batchIndex < $batchCount; $batchIndex++) {
 
 				// Extract users /////
 
@@ -322,7 +373,7 @@ EOT
 					->select(array( 'u' ))
 					->where('u.enabled = true')
 					->andWhere('u.weekNewsEmailEnabled = true')
-					->from('LadbCoreBundle:User', 'u')
+					->from('LadbCoreBundle:Core\User', 'u')
 					->setFirstResult($batchIndex * $batchSize)
 					->setMaxResults($batchSize)
 				;
@@ -340,7 +391,7 @@ EOT
 					}
 					if ($forced) {
 						try {
-							$mailerUtils->sendWeekNewsEmailMessage($user, $creations, $plans, $workshops, $howtos, $howtoArticles, $finds, $posts, $woods, $providers);
+							$mailerUtils->sendWeekNewsEmailMessage($user, $creations, $questions, $plans, $workshops, $howtos, $howtoArticles, $finds, $posts, $woods, $providers, $schools);
 						} catch (\Exception $e) {
 							$output->writeln('<error>'.$e->getMessage().'</error>');
 						}

@@ -2,12 +2,12 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Ladb\CoreBundle\Entity\Like;
+use Ladb\CoreBundle\Entity\Core\Like;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 
 class LikableUtils extends AbstractContainerAwareUtils {
 
@@ -20,7 +20,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 		$likes = $likeRepository->findByEntityTypeAndEntityId($likable->getType(), $likable->getId());
 		foreach ($likes as $like) {
-			if ($likable instanceof DraftableInterface && !$likable->getIsDraft()) {
+			if ((!$likable instanceof DraftableInterface) || ($likable instanceof DraftableInterface && !$likable->getIsDraft())) {
 				$like->getUser()->incrementSentLikeCount(-1);
 				if ($likable instanceof AuthoredInterface) {
 					$likable->getUser()->incrementRecievedLikeCount(-1);

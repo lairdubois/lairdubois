@@ -1,0 +1,41 @@
+{% extends 'LadbCoreBundle:Core/User:_show-list.html.twig' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+
+{% block bodyContainerContent %}
+    {% if questions.count == 0 and filter != 'draft' %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                <p>Vous n'avez pas encore publié de <strong>trouvaille</strong> !</p>
+                <p><a href="{{ path('core_question_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'qa.question.new'|trans() }}</a></p>
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas encore publié de question.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Qa/Question:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_user_show_questions_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% set customFilterDefs = {
+                'draft':    { 'label':('default.choice.draft'|transchoice(2)|capitalize), 'path':path('core_user_show_questions_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
+            } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">
+                    {% if filter == 'draft' and isDraftVisible %}
+                        {{ user.draftQuestionCount~' '~('default.choice.draft'|transchoice(user.draftQuestionCount)) }}
+                    {% elseif filter|slice(0,4) == 'type' %}
+                        {{ questions.count~' '~('qa.question.choice.questions'|transchoice(questions.count)) }}
+                    {% else %}
+                        {{ user.publishedQuestionCount }} {{ 'qa.question.choice.questions'|transchoice(user.publishedQuestionCount) }}{% if isDraftVisible and user.draftQuestionCount > 0 %} (+{{ user.draftQuestionCount~' '~('default.choice.draft'|transchoice(user.draftQuestionCount)) }}){% endif %}
+                    {% endif %}
+                </span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Qa/Question:_list-n.part.html.twig' %}
+{% endblock %}

@@ -4,9 +4,9 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\LocalisableInterface;
+use Ladb\CoreBundle\Model\LocalisableTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Longtext;
@@ -47,7 +47,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	public static $FIELD_DEFS = array(
 		Provider::FIELD_SIGN                => array(Provider::ATTRIB_TYPE => Sign::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true, Provider::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueProvider', array('excludedId' => '@getId'))), Provider::ATTRIB_LINKED_FIELDS => array('brand', 'isAffiliate', 'store')),
-		Provider::FIELD_LOGO                => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true),
+		Provider::FIELD_LOGO                => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true, School::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Provider::FIELD_PHOTO               => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_WEBSITE             => array(Provider::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_ADDRESS             => array(Provider::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),
@@ -108,9 +108,9 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="photo_id", nullable=true)
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */
 	private $photo;
 
@@ -279,6 +279,26 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	 */
 	private $woodsValues;
 
+	/**
+	 * @ORM\Column(type="integer", name="creation_count")
+	 */
+	private $creationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="providers")
+	 */
+	private $creations;
+
+	/**
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="providers")
+	 */
+	private $howtos;
+
 	/////
 
 	public function __construct() {
@@ -295,6 +315,8 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->productsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->servicesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->woodsValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -845,6 +867,10 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		return $this->woods;
 	}
 
+	public function getWoodsWorkaround() {
+		return $this->getWoods();
+	}
+
 	// WoodsValues /////
 
 	public function addWoodsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $woodsValue) {
@@ -864,6 +890,48 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	public function getWoodsValues() {
 		return $this->woodsValues;
+	}
+
+	// CreationCount /////
+
+	public function incrementCreationCount($by = 1) {
+		return $this->creationCount += intval($by);
+	}
+
+	public function getCreationCount() {
+		return $this->creationCount;
+	}
+
+	public function setCreationCount($creationCount) {
+		$this->creationCount = $creationCount;
+		return $this;
+	}
+
+	// Creations /////
+
+	public function getCreations() {
+		return $this->creations;
+	}
+
+	// HowtoCount /////
+
+	public function incrementHowtoCount($by = 1) {
+		return $this->howtoCount += intval($by);
+	}
+
+	public function getHowtoCount() {
+		return $this->howtoCount;
+	}
+
+	public function setHowtoCount($howtoCount) {
+		$this->howtoCount = $howtoCount;
+		return $this;
+	}
+
+	// Howtos /////
+
+	public function getHowtos() {
+		return $this->howtos;
 	}
 
 }

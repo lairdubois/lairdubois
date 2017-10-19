@@ -8,7 +8,7 @@ trait EmbeddableTrait {
 
 	// Referrals /////
 
-	public function addReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral) {
+	public function addReferral(\Ladb\CoreBundle\Entity\Core\Referer\Referral $referral) {
 		if (!$this->referrals->contains($referral)) {
 			$this->referrals[] = $referral;
 			$this->referralCount = count($this->referrals);
@@ -18,7 +18,7 @@ trait EmbeddableTrait {
 		return $this;
 	}
 
-	public function removeReferral(\Ladb\CoreBundle\Entity\Referer\Referral $referral) {
+	public function removeReferral(\Ladb\CoreBundle\Entity\Core\Referer\Referral $referral) {
 		$this->referrals->removeElement($referral);
 		$referral->setEntityType(null);
 		$referral->setEntityId(null);

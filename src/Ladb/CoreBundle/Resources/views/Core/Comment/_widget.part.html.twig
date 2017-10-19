@@ -1,0 +1,75 @@
+{# set commentContext { 'entityType', 'entityId', 'commentCount', 'comments', 'activities', 'form', 'isCommentable', 'mentionStrategy' } #}
+{# set headingHidden (facultative) #}
+{# set notGuestTip (facultative) #}
+{# set activitiesHidden (facultative) #}
+
+{% set collapsible = collapsible|default(false) %}
+{% set notCollapsed = notCollapsed|default(false) %}
+{% set headingHidden = collapsible or headingHidden|default(false) %}
+{% set notGuestTip = notGuestTip|default(false) %}
+{% set activitiesHidden = activitiesHidden|default(false) %}
+
+{% if commentContext is not null %}
+    <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget" class="ladb-comment-widget" data-ladb-entity-type="{{ commentContext.entityType }}" data-ladb-entity-id="{{ commentContext.entityId }}"{% if activitiesHidden %} data-ladb-activities-hidden="{{ activitiesHidden ? 'true' : 'false' }}"{% endif %}>
+        {% if collapsible %}
+            <div class="ladb-collapse-toggle">
+                <i class="ladb-icon-reply"></i> <a class="ladb-comment-new" data-ladb-collapse-selector="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse" style="color: #aaa;">{{ 'comment.new'|trans }}</a>
+                <span class="ladb-horizontal-separator-left{% if commentContext.commentCount > 0 %} ladb-with-comments{% endif %}"><i class="ladb-icon-comment"></i> <a data-toggle="collapse" data-target="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse">{{ commentContext.commentCount }} {{ 'comment.choice.comments'|transchoice(commentContext.commentCount) }} <span class="caret"></span></a></span>
+            </div>
+            <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget_collapse" class="collapse{% if notCollapsed %} in{% endif %}">
+        {% endif %}
+        <div class="ladb-comment-list">
+            {% if not headingHidden %}
+                <hr class="ladb-divider">
+                {% if commentContext.activities|length > 0 %}
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-settings"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a id="ladb_comment_settings_show_activities">Afficher l'activité</a></li>
+                            <li><a id="ladb_comment_settings_hide_activities">Masquer l'activité</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+                <h2>{{ 'comment.list'|trans() }}</h2>
+            {% endif %}
+            {% set activityIndex = 0 %}
+            {% for comment in commentContext.comments %}
+                {% for activity in commentContext.activities|slice(activityIndex) if activity.createdAt <= comment.createdAt %}
+                    {% include 'LadbCoreBundle:Core/Activity:_row-'~activity.strippedName~'.part.html.twig' %}
+                    {% set activityIndex = activityIndex + 1 %}
+                {% endfor %}
+                {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' %}
+                <div id="ladb_comment_{{ comment.id }}_children_collapse" class="ladb-comment-children-collapse collapse">
+                    {% for child in comment.children %}
+                        {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'comment':child } %}
+                    {% endfor %}
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="ladb-fake-new">
+                            {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
+                            <div class="ladb-box">
+                                <button class="btn btn-default btn-block" data-ladb-children-collapse-selector="#ladb_comment_{{ comment.id }}_children_collapse" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':comment.id }) }}" data-loading-text="{{ 'default.loading'|trans }}">&nbsp;</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% for activity in commentContext.activities|slice(activityIndex) %}
+                {% include 'LadbCoreBundle:Core/Activity:_row-'~activity.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        </div>
+        {% if commentContext.isCommentable %}
+            {% if commentContext.form is not null %}
+                {% include 'LadbCoreBundle:Core/Comment:_new.part.html.twig' with { 'entityType':commentContext.entityType, 'entityId':commentContext.entityId, 'form':commentContext.form, 'mentionStrategy':commentContext.mentionStrategy } %}
+            {% elseif not notGuestTip %}
+                <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_new" class="ladb-new text-center">
+                    <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter un commentaire.
+                </div>
+            {% endif %}
+        {% endif %}
+        {% if collapsible %}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

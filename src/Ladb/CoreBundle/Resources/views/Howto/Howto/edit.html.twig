@@ -1,0 +1,82 @@
+{% extends 'LadbCoreBundle:Howto/Howto:_form.html.twig' %}
+
+{% set pageTitle = 'howto.howto.edit'|trans() %}
+{% set formAction = path('core_howto_update', { 'id':howto.id }) %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $(".ladb-form-article-list").sortable({
+                handle: '.ladb-sortable-handle',
+                update: function(event, ui) {
+                    var idsValue = "";
+                    var idsCount = 0;
+                    $(".ladb-form-article-list").find("div.ladb-form-article-row").each(function(index, value) {
+                        if (idsValue.length > 0) {
+                            idsValue += ",";
+                        }
+                        idsValue += value.id.substring(13); {# 13 = "ladb_article_" length #}
+                        idsCount++;
+                    });
+                    $("#{{ form.articles.vars.id }}").attr("value", idsValue).trigger('change');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'howto.howto.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_howto_show', { 'id':howto.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.back'|trans() }}</a>
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sections %}
+    {% if howto.isDraft %}
+        {% include 'LadbCoreBundle:Howto/Howto:_draft-alert.part.html.twig' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block articlesSidenav %}
+    <li><a href="#articles"><i class="ladb-icon-characteristics"></i> Articles</a></li>
+{% endblock %}
+
+{% block articlesSection %}
+    <section id="articles_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-characteristics"></i> Articles</p>
+            <p class="help-block">Un pas à pas est constitué d'une série d'articles qui vous permettent d'organiser votre contenu. Un article peut détailler une étape ou un point précis.<br>Les articles gardent la souplesse d'être réordonnés et edités indépendamment. Vous pouvez aussi en ajouter au fur et à mesure que vous souhaitez compléter votre pas à pas.</p>
+            {{ form_errors(form.articles) }}
+            {{ form_widget(form.articles) }}
+            <div class="ladb-form-article-list">
+                {% for article in howto.articles %}
+                    <div id="ladb_article_{{ article.id }}" class="ladb-form-article-row ladb-sortable">
+                        <div class="pull-right">
+                            <a href="{{ path('core_howto_article_edit', { 'id':article.id }) }}" class="btn btn-default btn-sm"><i class="ladb-icon-edit"></i><span class="ladb-hidden-mobile"> {{ 'default.edit'|trans() }}</span></a>
+                            <a href="#delete_article_{{ article.id }}_modal" data-toggle="modal" class="btn btn-danger btn-sm"><i class="ladb-icon-delete"></i><span class="ladb-hidden-mobile"> {{ 'default.delete'|trans() }}</span></a>
+                            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_article_'~article.id~'_modal', 'title':('default.deletion'|trans()) } %}
+                                {% block bodyInner %}
+                                    <p>La suppression de l'article <strong>{{ article.title }}</strong> entrainera la perte de toutes les informations qui lui sont relatives.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_howto_article_delete', { 'id':article.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                        </div>
+                        <span class="ladb-sortable-handle"><i class="ladb-icon-move"></i></span>
+                        <span>{{ article.title }}</span>
+                        {% if article.isDraft %}<small class="ladb-translucent"> ({{ 'default.choice.draft'|transchoice(1) }})</small>{% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <a href="{{ path('core_howto_article_new', { 'id':howto.id }) }}" role="button" class="btn btn-success"><i class="ladb-icon-plus"></i> {{ 'howto.article.new'|trans() }}</a>
+        </div>
+    </section>
+{% endblock %}

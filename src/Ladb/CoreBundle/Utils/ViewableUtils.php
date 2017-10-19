@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Ladb\CoreBundle\Entity\View;
+use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;

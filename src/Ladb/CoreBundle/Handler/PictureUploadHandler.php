@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Ladb\CoreBundle\Entity\Picture;
+use Ladb\CoreBundle\Entity\Core\Picture;
 
 require_once('../vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php');
 
@@ -20,7 +20,8 @@ class PictureUploadHandler extends \UploadHandler {
 		$this->tokenStorage = $tokenStorage;
 	}
 
-	public function handle($acceptFileTypes = Picture::DEFAULT_ACCEPTED_FILE_TYPE,
+	public function handle($postProcessor = null,
+						   $acceptFileTypes = Picture::DEFAULT_ACCEPTED_FILE_TYPE,
 						   $maxFileSize = Picture::DEFAULT_MAX_FILE_SIZE,
 						   $imageMaxWidth = Picture::DEFAULT_IMAGE_MAX_WIDTH,
 						   $imageMaxHeight = Picture::DEFAULT_IMAGE_MAX_HEIGHT) {
@@ -42,6 +43,7 @@ class PictureUploadHandler extends \UploadHandler {
 					'max_height'  => $imageMaxHeight,
 				),
 			),
+			'post_processor' => $postProcessor,
 		));
 	}
 
@@ -56,10 +58,30 @@ class PictureUploadHandler extends \UploadHandler {
 			$fileExtension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
 			$resourceAbsolutePath = $this->options['upload_dir'].$resourcePath;
-			list($width, $height) = $this->get_image_size($fileAbsolutePath);
 
 			// Rename uploaded file to generated uniqid
 			rename($fileAbsolutePath, $resourceAbsolutePath);
+
+			// Post-processors
+			switch ($this->options['post_processor']) {
+
+				case Picture::POST_PROCESSOR_SQUARE:
+
+					$imagick = new \Imagick($resourceAbsolutePath.'[0]');
+					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);								// Convert to JPG
+					$imagick->setCompressionQuality(100);												// Set max quality
+					$imagick->setBackgroundColor('#ffffff');											// Set background color to white
+					$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
+					$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);				// Merge layers
+					$imagick->thumbnailImage(1024, 1024, true, true);			// Rescale to 1024x1024 fill
+					$imagick->writeImage($resourceAbsolutePath);
+
+					break;
+
+			}
+
+			// Compute image size
+			list($width, $height) = $this->get_image_size($resourceAbsolutePath);
 
 			// Create the new picture
 			$picture = new Picture();
@@ -77,6 +99,23 @@ class PictureUploadHandler extends \UploadHandler {
 
 		}
 		return $file;
+	}
+
+	protected function validate($uploaded_file, $file, $error, $index) {
+		if (parent::validate($uploaded_file, $file, $error, $index)) {
+
+			list($img_width, $img_height) = $this->get_image_size($uploaded_file);
+
+			// Check image ratio
+			$ratio = $img_width / $img_height;
+			if ($ratio > 3 || $ratio < 0.33) {
+				$file->error = "Les proportions de l'image sont incorrectes.<br>La plus petite dimension de l'image ne doit pas être inférieure au <strong>1/3</strong> de la plus grande.";
+				return false;
+			}
+
+			return true;
+		}
+		return false;
 	}
 
 }

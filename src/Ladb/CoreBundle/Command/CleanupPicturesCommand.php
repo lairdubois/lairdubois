@@ -31,7 +31,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'p' ))
-			->from('LadbCoreBundle:Picture', 'p')
+			->from('LadbCoreBundle:Core\Picture', 'p')
 		;
 
 		try {
@@ -45,6 +45,31 @@ EOT
 			$pictureCounters[$picture->getId()] = array( $picture, 0 );
 		}
 
+		// Check Resources /////
+
+		$output->writeln('<info>Checking resources...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'th' ))
+			->from('LadbCoreBundle:Core\Resource', 'r')
+			->leftJoin('s.thumbnail', 'th')
+		;
+
+		try {
+			$resources = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$resources = array();
+		}
+
+		foreach ($resources as $resource) {
+			$thumbnail = $resource->getThumbnail();
+			if (!is_null($thumbnail)) {
+				$pictureCounters[$thumbnail->getId()][1]++;
+			}
+		}
+		unset($resources);
+
 		// Check Comments /////
 
 		$output->writeln('<info>Checking comments...</info>');
@@ -52,7 +77,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'c', 'ps' ))
-			->from('LadbCoreBundle:Comment', 'c')
+			->from('LadbCoreBundle:Core\Comment', 'c')
 			->leftJoin('c.pictures', 'ps')
 		;
 
@@ -100,7 +125,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'u', 'a', 'b' ))
-			->from('LadbCoreBundle:User', 'u')
+			->from('LadbCoreBundle:Core\User', 'u')
 			->leftJoin('u.avatar', 'a')
 			->leftJoin('u.banner', 'b')
 		;
@@ -327,6 +352,31 @@ EOT
 		}
 		unset($posts);
 
+		// Check promotion graphics /////
+
+		$output->writeln('<info>Checking promotion graphics...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'g', 'mp' ))
+			->from('LadbCoreBundle:Promotion\Graphic', 'g')
+			->leftJoin('g.mainPicture', 'mp')
+		;
+
+		try {
+			$graphics = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$graphics = array();
+		}
+
+		foreach ($graphics as $graphic) {
+			$mainPicture = $graphic->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($graphics);
+
 		// Check Woods /////
 
 		$output->writeln('<info>Checking woods...</info>');
@@ -377,7 +427,7 @@ EOT
 		}
 		unset($woods);
 
-		// Check Woods /////
+		// Check Providers /////
 
 		$output->writeln('<info>Checking Providers...</info>');
 
@@ -406,6 +456,36 @@ EOT
 			}
 		}
 		unset($providers);
+
+		// Check Schools /////
+
+		$output->writeln('<info>Checking Schools...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'mp', 'ph' ))
+			->from('LadbCoreBundle:Knowledge\School', 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->leftJoin('s.photo', 'ph')
+		;
+
+		try {
+			$schools = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$schools = array();
+		}
+
+		foreach ($schools as $school) {
+			$mainPicture = $school->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+			$photo = $school->getPhoto();
+			if (!is_null($photo)) {
+				$pictureCounters[$photo->getId()][1]++;
+			}
+		}
+		unset($schools);
 
 		// Check Knowledge/Value/Pictures /////
 
@@ -439,7 +519,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'g', 'ps' ))
-			->from('LadbCoreBundle:Block\Gallery', 'g')
+			->from('LadbCoreBundle:Core\Block\Gallery', 'g')
 			->leftJoin('g.pictures', 'ps')
 		;
 

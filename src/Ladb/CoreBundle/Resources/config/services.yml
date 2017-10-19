@@ -77,6 +77,12 @@ services:
   ladb_core.plan_utils:
     class: Ladb\CoreBundle\Utils\PlanUtils
     arguments: ['@templating', '@router']
+  ladb_core.graphic_utils:
+    class: Ladb\CoreBundle\Utils\GraphicUtils
+    arguments: ['@service_container']
+  ladb_core.howto_utils:
+    class: Ladb\CoreBundle\Utils\HowtoUtils
+    arguments: ['@service_container']
   ladb_core.find_utils:
     class: Ladb\CoreBundle\Utils\FindUtils
     arguments: ['@service_container']
@@ -125,9 +131,6 @@ services:
     class: Ladb\CoreBundle\Utils\PropertyUtils
   ladb_core.elastica_query_utils:
     class: Ladb\CoreBundle\Utils\ElasticaQueryUtils
-  ladb_core.publication_utils:
-    class: Ladb\CoreBundle\Utils\PublicationUtils
-    arguments: ['@service_container']
 
   # Managers
   ladb_core.creation_manager:
@@ -157,6 +160,12 @@ services:
   ladb_core.provider_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\ProviderManager
     arguments: ['@service_container']
+  ladb_core.school_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\SchoolManager
+    arguments: ['@service_container']
+  ladb_core.knowledge_school_testimonial_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager
+    arguments: ['@service_container']
   ladb_core.wood_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\WoodManager
     arguments: ['@service_container']
@@ -164,13 +173,22 @@ services:
     class: Ladb\CoreBundle\Manager\Workflow\WorkflowManager
     arguments: ['@service_container']
   ladb_core.witness_manager:
-    class: Ladb\CoreBundle\Manager\WitnessManager
+    class: Ladb\CoreBundle\Manager\Core\WitnessManager
     arguments: ['@service_container']
   ladb_core.funding_manager:
     class: Ladb\CoreBundle\Manager\Funding\FundingManager
     arguments: ['@service_container']
   ladb_core.took_manager:
     class: Ladb\CoreBundle\Manager\Youtook\TookManager
+    arguments: ['@service_container']
+  ladb_core.qa_question_manager:
+    class: Ladb\CoreBundle\Manager\Qa\QuestionManager
+    arguments: ['@service_container']
+  ladb_core.qa_answer_manager:
+    class: Ladb\CoreBundle\Manager\Qa\AnswerManager
+    arguments: ['@service_container']
+  ladb_core.graphic_manager:
+    class: Ladb\CoreBundle\Manager\Promotion\GraphicManager
     arguments: ['@service_container']
 
   # Validators
@@ -193,6 +211,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.unique_provider_validator }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.unique_school_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueSchoolValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.unique_school_validator }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_core.unique_find_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UniqueFindValidator
     tags:
@@ -207,15 +230,15 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.value_source_validator }
     arguments: ['@validator']
-  ladb_core.ladb_core.valid_phone_value_validator:
+  ladb_core.valid_phone_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidPhoneValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_phone_value_validator }
-  ladb_core.ladb_core.valid_location_value_validator:
+  ladb_core.valid_location_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidLocationValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_location_value_validator }
-  ladb_core.ladb_core.valid_sign_value_validator:
+  ladb_core.valid_sign_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidSignValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_sign_value_validator }
@@ -223,6 +246,11 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\BodyBlocksValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.body_blocks_validator }
+    arguments: ['@validator']
+  ladb_core.find_body_blocks_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\FindBodyBlocksValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.find_body_blocks_validator }
     arguments: ['@validator']
   ladb_core.upper_case_ratio_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UpperCaseRatioValidator
@@ -260,6 +288,14 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidHexColorValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_hex_color_validator }
+  ladb_core.valid_answer_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidAnswerValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_answer_validator }
+  ladb_core.school_testimonial_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\SchoolTestimonialValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.school_testimonial_validator }
 
   # Listeners
   ladb_core.kernel_listener:
@@ -299,6 +335,16 @@ services:
     arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
 
   # Types
+  ladb_qa_question:
+    class: Ladb\CoreBundle\Form\Type\Qa\QuestionType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_qa_answer:
+    class: Ladb\CoreBundle\Form\Type\Qa\AnswerType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_blog_post:
     class: Ladb\CoreBundle\Form\Type\Blog\PostType
     tags:
@@ -343,7 +389,7 @@ services:
     class: Ladb\CoreBundle\Form\Type\Find\FindType
     tags:
       - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.find_utils', '@ladb_core.video_hosting_utils', '@ladb_core.localisable_utils']
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils', '@ladb_core.localisable_utils']
   ladb_find_content_event:
     class: Ladb\CoreBundle\Form\Type\Find\Content\EventType
     tags:
@@ -364,6 +410,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_promotion_graphic:
+    class: Ladb\CoreBundle\Form\Type\Promotion\GraphicType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_knowledge_value_picture:
     class: Ladb\CoreBundle\Form\Type\Knowledge\Value\PictureValueType
     tags:
@@ -381,6 +432,11 @@ services:
     arguments: ['@doctrine.orm.entity_manager']
   ladb_knowledge_newprovider:
     class: Ladb\CoreBundle\Form\Type\Knowledge\NewProviderType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_knowledge_newschool:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\NewSchoolType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']

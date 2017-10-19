@@ -28,7 +28,7 @@ class Thread {
 	private $createdAt;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="created_by_user_id", referencedColumnName="id")
 	 */
 	private $createdBy;
@@ -84,46 +84,46 @@ class Thread {
 
 	// CreatedAt /////
 
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
+
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
 	// CreatedBy /////
-
-	public function setCreatedBy(\Ladb\CoreBundle\Entity\User $createdBy) {
-		$this->createdBy = $createdBy;
-		return $this;
-	}
 
 	public function getCreatedBy() {
 		return $this->createdBy;
 	}
 
+	public function setCreatedBy(\Ladb\CoreBundle\Entity\Core\User $createdBy) {
+		$this->createdBy = $createdBy;
+		return $this;
+	}
+
 	// Subject /////
+
+	public function getSubject() {
+		return $this->subject;
+	}
 
 	public function setSubject($subject) {
 		$this->subject = $subject;
 		return $this;
 	}
 
-	public function getSubject() {
-		return $this->subject;
-	}
-
 	// Annoucement /////
+
+	public function getAnnouncement() {
+		return $this->announcement;
+	}
 
 	public function setAnnouncement($announcement) {
 		$this->announcement = $announcement;
 		return $this;
-	}
-
-	public function getAnnouncement() {
-		return $this->announcement;
 	}
 
 	// Messages /////
@@ -156,13 +156,13 @@ class Thread {
 
 	// LastMessageDate /////
 
+	public function getLastMessageDate() {
+		return $this->lastMessageDate;
+	}
+
 	public function setLastMessageDate(\DateTime $lastMessageDate) {
 		$this->lastMessageDate = $lastMessageDate;
 		return $this;
-	}
-
-	public function getLastMessageDate() {
-		return $this->lastMessageDate;
 	}
 
 	// LastMessageAge /////
@@ -207,13 +207,13 @@ class Thread {
 
 	// UnreadMessageCount /////
 
+	public function getUnreadMessageCount() {
+		return $this->unreadMessageCount;
+	}
+
 	public function setUnreadMessageCount($unreadMessageCount) {
 		$this->unreadMessageCount = $unreadMessageCount;
 		return $this;
-	}
-
-	public function getUnreadMessageCount() {
-		return $this->unreadMessageCount;
 	}
 
 }

@@ -12,7 +12,7 @@ trait LicensedTrait {
 
 	public function getLicense() {
 		if (is_null($this->license)) {
-			return new \Ladb\CoreBundle\Entity\License();
+			return new \Ladb\CoreBundle\Entity\Core\License();
 		}
 		return $this->license;
 	}

@@ -2,16 +2,14 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Entity\Comment;
+use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Knowledge\Value\IntegerOld;
 use Ladb\CoreBundle\Entity\Knowledge\Value\PictureOld;
 use Ladb\CoreBundle\Entity\Knowledge\Value\StringOld;
 use Ladb\CoreBundle\Entity\Knowledge\WoodOld;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateWoodsCommand extends ContainerAwareCommand {

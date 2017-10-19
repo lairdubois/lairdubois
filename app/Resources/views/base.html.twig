@@ -1,12 +1,13 @@
 {% spaceless %}
 
 {# set pageItemType (facultative) #}
+{# set pageContentItemType (facultative) #}
 
 {% set pageUrl = pageUrl|default(app.request.uri) %}
 {% set pageType = pageType|default('website') %}
 {% set pageCard = pageCard|default('summary_large_image') %}
 {% set pageTitle = pageTitle|default('default.slogan'|trans()) %}
-{% set pageDescription = pageDescription|default('L\'Air du Bois est un espace de partage collaboratif ouvert à tous les amateurs et curieux du travail du bois') %}
+{% set pageDescription = pageDescription|default('L\'Air du Bois est une plateforme Open Source de partage collaboratif ouvert à tous les amoureux du travail du bois') %}
 {% set pageAuthor = pageAuthor|default('L\'Air du Bois') %}
 {% set pageImage = pageImage|default(asset('banner-600x376.jpg')) %}
 {% set pageImageWidth = pageImageWidth|default('') %}
@@ -14,11 +15,13 @@
 {% set pageVideo = pageVideo|default('') %}
 {% set pageVideoWidth = pageVideoWidth|default('') %}
 {% set pageVideoHeight = pageVideoHeight|default('') %}
+{% set pageSectionUrl = pageSectionUrl|default('') %}
+{% set pageSectionName = pageSectionName|default('') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
 
 {% endspaceless %}
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}"{% if pageItemType is defined %} itemscope itemtype="http://schema.org/{{ pageItemType }}"{% endif %}>
     <head prefix="{% block headPrefix %}og: http://ogp.me/ns#{% endblock %}">
         {% block head %}
             <title>{% if is_granted("ROLE_USER") and app.user.freshNotificationCount > 0 %}({{ app.user.freshNotificationCount }}) {% endif %}{% if pageTitlePrefix is defined %}{{ pageTitlePrefix }} {% endif %}{% block title %}{{ pageTitle }}{% if not titleSuffixHidden %} {{ ('default.on'|trans())~' '~('default.ladb'|trans()) }}{% endif %}{% endblock %}</title>
@@ -33,11 +36,11 @@
                     <meta property="og:site_name" content="L'Air du Bois" />
                     <meta property="og:url" content="{{ pageUrl }}" />
                     <meta property="og:type" content="{{ pageType }}" />
-                    <meta property="og:title" content="{{ pageTitle }}" />
-                    <meta property="og:description" content="{{ pageDescription }}" />
+                    <meta property="og:title" content="{{ pageTitle }}"{% if pageItemType is defined %} itemprop="name"{% endif %} />
+                    <meta property="og:description" content="{{ pageDescription }}"{% if pageItemType is defined %} itemprop="description"{% endif %} />
                     {% if pageImage is iterable %}
                         {% for image in pageImage %}
-                            <meta property="og:image" content="{{ image }}" />
+                            <meta property="og:image" content="{{ image }}"{% if pageItemType is defined %} itemprop="image"{% endif %} />
                             {% if pageImageWidth %}
                                 <meta property="og:image:width" content="{{ pageImageWidth }}" />
                             {% endif %}
@@ -46,7 +49,7 @@
                             {% endif %}
                         {% endfor %}
                     {% else %}
-                        <meta property="og:image" content="{{ pageImage }}" />
+                        <meta property="og:image" content="{{ pageImage }}"{% if pageItemType is defined %} itemprop="image"{% endif %} />
                         {% if pageImageWidth %}
                             <meta property="og:image:width" content="{{ pageImageWidth }}" />
                         {% endif %}
@@ -108,7 +111,30 @@
                 {% endstylesheets %}
             {% endblock %}
             {% block headJavascripts %}
-                <script src="https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js"></script>
+                {% if pageSectionUrl and pageSectionName %}
+                    <script type="application/ld+json">
+                    {
+                        "@context": "http://schema.org",
+                        "@type": "BreadcrumbList",
+                        "itemListElement":
+                        [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "item":
+                                {
+                                    "@id": "{{ pageSectionUrl }}",
+                                    "name": "{{ pageSectionName }}"
+                                }
+                            }
+                        ]
+                    }
+                    </script>
+                {% endif %}
+                {% javascripts filter='?closure'
+                    '../components/jquery/jquery.js' %}
+                    <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endjavascripts %}
                 <!--[if lt IE 9]>
                     {% javascripts filter='?closure'
                         '../components/html5shiv/dist/html5shiv.js'
@@ -119,10 +145,10 @@
             {% endblock %}
         {% endblock %}
     </head>
-    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageItemType is defined %} itemscope itemtype="http://schema.org/{{ pageItemType }}"{% endif %}>
+    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageContentItemType is defined %} itemscope itemtype="http://schema.org/{{ pageContentItemType }}"{% endif %}>
         {% block bodyMetas %}
-            {% if pageItemType is defined %}
-                <meta itemprop="{{ pageItemType == 'Article' ? 'headline' : 'name' }}" content="{{ pageTitle }}" />
+            {% if pageContentItemType is defined %}
+                <meta itemprop="{{ pageContentItemType == 'Article' ? 'headline' : 'name' }}" content="{{ pageTitle }}" />
                 <meta itemprop="description" content="{{ pageDescription }}" />
                 {% if pageImage is iterable %}
                     <meta itemprop="image" content="{{ pageImage[0] }}" />
@@ -199,7 +225,6 @@
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.boxlinkclick.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-common.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-reports.js'
-                '@LadbCoreBundle/Resources/assets/js/ladb/ladb-comments.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-votes.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-pictures.js' %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>

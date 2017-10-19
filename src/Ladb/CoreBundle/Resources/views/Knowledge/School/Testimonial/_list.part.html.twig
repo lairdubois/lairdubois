@@ -1,0 +1,7 @@
+{# set testimonials #}
+
+<div class="ladb-knowledge-school-testimonials">
+    {% for testimonial in testimonials %}
+        {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_row.part.html.twig' %}
+    {% endfor %}
+</div>

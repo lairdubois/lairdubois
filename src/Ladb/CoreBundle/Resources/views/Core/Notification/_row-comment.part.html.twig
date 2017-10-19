@@ -1,0 +1,25 @@
+{% extends 'LadbCoreBundle:Core/Notification:_row.part.html.twig' %}
+
+{% set icon = 'comment' %}
+{% set entity = ladb_entity(notification.activity.comment.entityType, notification.activity.comment.entityId) %}
+
+{% block body %}
+    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a commenté
+    {% if entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
+        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
+        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
+        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Url::TYPE')
+        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Location::TYPE')
+        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
+        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE')
+    %}
+        {% set childEntity = entity %}
+        {% set parentEntity = ladb_entity(childEntity.parentEntityType, childEntity.parentEntityId) %}
+        {% set fieldDef = parentEntity.fieldDefs[childEntity.parentEntityField] %}
+        {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
+        {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}
+        {% if childEntity.user is defined and childEntity.user.id == app.user.id %}votre{% else %}la{% endif %} proposition pour le champ <em>{{ ('knowledge.'~parentEntity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(parentEntity))|trans() }} "<strong>{{ parentEntity.title|raw }}</strong>".
+    {% else %}
+        {{ ('notification.'~(entity.user is defined and entity.user.id == app.user.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
+    {% endif %}
+{% endblock %}

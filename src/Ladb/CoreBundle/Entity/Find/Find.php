@@ -4,7 +4,10 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\BodiedTrait;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
 use Ladb\CoreBundle\Model\LikableTrait;
@@ -16,8 +19,6 @@ use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\JoinableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
@@ -38,10 +39,11 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Table("tbl_find")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Find\FindRepository")
  * @LadbAssert\UniqueFind()
+ * @LadbAssert\BodyBlocks()
  */
-class Find extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
+class Find extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
 
-	use TitledTrait, PicturedTrait, BodiedTrait;
+	use TitledTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
@@ -75,6 +77,7 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Find\Content\AbstractContent", orphanRemoval=true, cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(name="content_id", nullable=false)
+	 * @Assert\Valid
 	 */
 	private $content;
 
@@ -84,26 +87,36 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	private $kind = Find::KIND_NONE;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_find_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 * @Assert\Count(min=1)
+	 */
+	private $bodyBlocks;
+
+	/**
+	 * @ORM\Column(type="integer", name="body_block_picture_count")
+	 */
+	private $bodyBlockPictureCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="body_block_video_count")
+	 */
+	private $bodyBlockVideoCount = 0;
+
+	/**
 	 * @ORM\Column(type="text", nullable=false)
-	 * @Assert\NotBlank()
-	 * @Assert\Length(min=5, max=4000)
-	 * @LadbAssert\NoMediaLink()
 	 */
 	private $body;
 
 	/**
-	 * @ORM\Column(type="text", nullable=false)
-	 */
-	private $htmlBody;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=true, name="main_picture_id")
 	 */
 	private $mainPicture;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_find_tag")
 	 * @Assert\Count(min=2)
 	 */
@@ -141,6 +154,7 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	/////
 
 	public function __construct() {
+		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -158,66 +172,60 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 		return Find::TYPE;
 	}
 
-	// DataType /////
+	// ContentType /////
+
+	public function getContentType() {
+		return $this->contentType;
+	}
 
 	public function setContentType($contentType) {
 		$this->contentType = $contentType;
 		return $this;
 	}
 
-	public function getContentType() {
-		return $this->contentType;
-	}
-
 	// Slug /////
+
+	public function getSlug() {
+		return $this->slug;
+	}
 
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
 	}
 
-	public function getSlug() {
-		return $this->slug;
-	}
-
 	public function getSluggedId() {
 		return $this->id.'-'.$this->slug;
 	}
 
-	// Content /////
-
-	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
-		$this->content = $content;
-		return $this;
-	}
-
-	public function getContent() {
-		return $this->content;
-	}
-
 	// Kind /////
+
+	public function getKind() {
+		return $this->kind;
+	}
 
 	public function setKind($kind) {
 		$this->kind = $kind;
 		return $this;
 	}
 
-	public function getKind() {
-		return $this->kind;
-	}
-
-	// BodyExtract /////
-
-	public function getBodyExtract() {
-		return $this->getHtmlBody();
-	}
-
-	// IsJoinable /////
+	// Content /////
 
 	public function getIsJoinable() {
 		return $this->getIsViewable()
 			&& $this->getContent() instanceof Event
 			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
+	}
+
+	public function getContent() {
+		return $this->content;
+	}
+
+	// IsJoinable /////
+
+	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
+		$this->content = $content;
+		return $this;
 	}
 
 	// JoinCount /////
@@ -226,12 +234,12 @@ class Find extends AbstractAuthoredPublication implements TitledInterface, Pictu
 		return $this->joinCount += intval($by);
 	}
 
-	public function setJoinCount($joinCount) {
-		$this->joinCount = $joinCount;
-	}
-
 	public function getJoinCount() {
 		return $this->joinCount;
+	}
+
+	public function setJoinCount($joinCount) {
+		$this->joinCount = $joinCount;
 	}
 
 }

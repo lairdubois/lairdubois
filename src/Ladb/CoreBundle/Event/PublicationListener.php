@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,13 +21,12 @@ use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
-use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
-use Ladb\CoreBundle\Entity\View;
+use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 
 class PublicationListener implements EventSubscriberInterface {
@@ -67,17 +67,30 @@ class PublicationListener implements EventSubscriberInterface {
 
 	/////
 
-	private function _scrapeOpenGraph(AbstractPublication $publication) {
-		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
-			return;
-		}
-		if (!($publication instanceof ScrapableInterface) || !$publication->getIsScrapable()) {
-			return;
+	public function onPublicationCreated(PublicationEvent $event) {
+		$publication = $event->getPublication();
+
+		if ($publication instanceof TaggableInterface) {
+
+			// Tags usage
+			$tagUtils = $this->container->get(TagUtils::NAME);
+			$tagUtils->useTaggableTags($publication);
+
 		}
 
-		// Scrape Open Graph URL (canonical)
-		$openGraphUtils = $this->container->get(OpenGraphUtils::NAME);
-		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', true, false));
+		if ($publication instanceof WatchableInterface) {
+
+			// Auto watch
+			$watchableUtils = $this->container->get(WatchableUtils::NAME);
+			$watchableUtils->autoCreateWatch($publication, $this->container->get(GlobalUtils::NAME)->getUser());
+
+		}
+
+		// Resolve main picture to avoid image url redirection
+		$this->_resolvePicturesPageImageFilter($publication);
+
+		// Scrape Open Graph URL
+		//$this->_scrapeOpenGraph($publication);
 
 	}
 
@@ -115,30 +128,17 @@ class PublicationListener implements EventSubscriberInterface {
 
 	/////
 
-	public function onPublicationCreated(PublicationEvent $event) {
-		$publication = $event->getPublication();
-
-		if ($publication instanceof TaggableInterface) {
-
-			// Tags usage
-			$tagUtils = $this->container->get(TagUtils::NAME);
-			$tagUtils->useTaggableTags($publication);
-
+	private function _scrapeOpenGraph(AbstractPublication $publication) {
+		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
+			return;
+		}
+		if (!($publication instanceof ScrapableInterface) || !$publication->getIsScrapable()) {
+			return;
 		}
 
-		if ($publication instanceof WatchableInterface) {
-
-			// Auto watch
-			$watchableUtils = $this->container->get(WatchableUtils::NAME);
-			$watchableUtils->autoCreateWatch($publication, $this->container->get(GlobalUtils::NAME)->getUser());
-
-		}
-
-		// Resolve main picture to avoid image url redirection
-		$this->_resolvePicturesPageImageFilter($publication);
-
-		// Scrape Open Graph URL
-		$this->_scrapeOpenGraph($publication);
+		// Scrape Open Graph URL (canonical)
+		$openGraphUtils = $this->container->get(OpenGraphUtils::NAME);
+		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', true, false));
 
 	}
 
@@ -195,9 +195,23 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($publication);
 
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
+
 		}
 
-		if ($publication instanceof TaggableInterface) {
+		if ($publication instanceof TaggableInterface && array_key_exists('previouslyUsedTags', $event->getData())) {
 
 			// Tags usage
 			$tagUtils = $this->container->get(TagUtils::NAME);
@@ -221,6 +235,20 @@ class PublicationListener implements EventSubscriberInterface {
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->deleteEntityFromIndex($publication);
+
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
 
 		}
 
@@ -257,6 +285,20 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->insertEntityToIndex($publication);
 
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
+
 		}
 
 		if ($publication instanceof CommentableInterface) {
@@ -287,7 +329,7 @@ class PublicationListener implements EventSubscriberInterface {
 		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
-		$this->_scrapeOpenGraph($publication);
+		//$this->_scrapeOpenGraph($publication);
 
 	}
 
@@ -299,6 +341,20 @@ class PublicationListener implements EventSubscriberInterface {
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->deleteEntityFromIndex($publication);
+
+			// Inspirations update
+			if ($publication instanceof InspirableInterface) {
+
+				foreach ($publication->getInspirations() as $inspiration) {
+					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+
+						// Search index update
+						$searchUtils->replaceEntityInIndex($inspiration);
+
+					}
+				}
+
+			}
 
 		}
 

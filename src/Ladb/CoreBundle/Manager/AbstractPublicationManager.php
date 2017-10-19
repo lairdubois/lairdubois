@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Manager;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
@@ -91,7 +92,6 @@ abstract class AbstractPublicationManager extends AbstractManager {
 	}
 
 	protected function deletePublication(AbstractPublication $publication, $withWitness = true, $flush = true) {
-		$om = $this->getDoctrine()->getManager();
 
 		if ($publication instanceof WatchableInterface) {
 			// Delete watches
@@ -129,12 +129,7 @@ abstract class AbstractPublicationManager extends AbstractManager {
 
 		}
 
-		$om->remove($publication);
-
-		if ($flush) {
-			$om->flush();
-		}
-
+		parent::deleteEntity($publication, $flush);
 	}
 
 }

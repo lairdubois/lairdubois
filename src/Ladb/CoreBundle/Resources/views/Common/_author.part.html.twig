@@ -11,5 +11,5 @@
 {% set noMicrodataAuthor = noMicrodata or noMicrodataAuthor|default(false) %}
 {% set itemprop = itemprop|default('author') %}
 
-<span{% if not noMicrodataAuthor %} itemprop="{{ itemprop }}" itemscope itemtype="http://schema.org/Person"{% endif %} class="author">{% if not hideBy %}{{ 'default.by'|trans() }} {% endif %}{% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':entity.user } %}</span>
+<span{% if not noMicrodataAuthor %} itemprop="{{ itemprop }}" itemscope itemtype="http://schema.org/Person"{% endif %} class="author">{% if not hideBy %}{{ 'default.by'|trans() }} {% endif %}{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':entity.user } %}</span>
 {% endspaceless %}

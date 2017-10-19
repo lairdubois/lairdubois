@@ -2,7 +2,7 @@
 
 {# set formAction #}
 
-{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' 'LadbCoreBundle:Block:_form-theme.html.twig' %}
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' 'LadbCoreBundle:Core/Block:_form-theme.html.twig' %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 
@@ -67,7 +67,7 @@
         $("input[type=text]").first().focus();
         $(function () {
             $("[data-form-widget=collection]").each(function () {
-                new window.infinite.Collection(this, $(this).siblings("[data-prototype]"));
+                new window.infinite.Collection(this, $('[data-prototype]', $(this).next()));
             });
             $('.ladb-form-sidenav').sticky({
                 topSpacing: 70

@@ -62,6 +62,7 @@ default:
   see_more: Voir la suite...
   unviewed: Non vu
   thumbnail: Miniature
+  get_link: Obtenir le lien
   warning:
     be_owner: Vous devez avoir les droits sur ce que vous publiez.
     may_be_rejected: Les publications ne correspondant pas à ces critères pourront faire l'objet d'un rejet.
@@ -124,159 +125,155 @@ change_password:
     heading: Modifier le mot de passe
     submit: Envoyer
 
-creation:
-  description: Retrouvez toutes les créations
-  new: Ajouter une création
-  edit: Edition de la création
-  list: Les créations
-  nav: Créations
-  other_from: Autres créations de
-  similar: Voir aussi
-  linkto: Associer une création déjà publiée
-  linked_to: Cette création est associée à
-  new_warning: Une <strong>création</strong> est une réalisation <strong>personnelle</strong> achevée, majoritairement constituée de <strong>bois</strong> ou conçue pour le <strong>travail du bois</strong> et ne doit représenter qu'<strong>un seul projet</strong>.
-  converttoworkshop: Convertir en atelier
-  converttohowto: Convertir en pas à pas
-  converttofind: Convertir en trouvaille
-  form:
-    inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
-    alert:
-      lock_success: La création <strong>%title%</strong> a été vérrouillée.
-      unlock_success: La création <strong>%title%</strong> a été déverrouillée.
-      publish_success: La création <strong>%title%</strong> a été publiée.
-      unpublish_success: La création <strong>%title%</strong> a été dépubliée.
-      update_success: La création <strong>%title%</strong> a été mise à jour.
-      delete_success: La création <strong>%title%</strong> a été supprimée.
-    help:
-      title: Renseignez ici le titre de votre création.
-      showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre création. La première photo sera utilisée comme miniature.
-      body: Décrivez ici votre création.
-      plans: Associez jusqu'à <strong>4 plans</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces plans.
-      howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces pas à pas.
-      inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
-  choice:
-    new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles creations'
-    creations: '[0,1]création|]1,Inf]creations'
-    show_linked_to: '[0,1]Voir la création|]1,Inf]Voir les créations'
-    draft_alert: '[0,1]Vous avez 1 creation en brouillon.|]1,Inf]Vous avez %count% creations en brouillon.'
-    inspiration: '[0,1]Cette création est un rebond pour une autre création|]1,Inf]Cette création est un rebond pour %count% autres créations'
-    rebound: '[0,1]Cette création est une inspiration pour une autre création|]1,Inf]Cette création est une inspiration pour %count% autres créations'
-  admin:
-    alert:
-      converttoworkshop_success: La création %title% a été converti en atelier avec succès.
-      converttohowto_success: La création %title% a été converti en pas à pas avec succès.
-      converttofind_success: La création %title% a été converti en trouvaille avec succès.
-
-plan:
-  description: Retrouvez tous les plans
-  new: Ajouter un plan
-  create: Créer un nouveau plan
-  edit: Edition du plan
-  list: Les plans
-  nav: Plans
-  other_from: Autres plans de
-  similar: Voir aussi
-  download: Télécharger le plan
-  linkto: Associer un plan déjà publié
-  linked_to: Ce plan est associé à
-  new_warning: Un <strong>plan</strong> est un ensemble de <strong>fichiers numériques</strong> (modélisation 3D ou dessin technique 2D) permettant une réalisation majoritairement constituée de <strong>bois</strong>.
-  kind:
-    unknow: Inconnu
-    autocad: AutoCAD
-    sketchup: Sketchup
-    pdf: PDF
-    geogebra: GeoGebra
-    svg: SVG
-    freecad: FreeCAD
-    stl: STL
-    123ddesign: 123D Design
-    libreoffice: LibreOffice/Excel
-  form:
-    inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
-    alert:
-      lock_success: Le plan <strong>%title%</strong> a été vérrouillé.
-      unlock_success: Le plan <strong>%title%</strong> a été dévérrouillé.
-      publish_success: Le plan <strong>%title%</strong> a été publié.
-      unpublish_success: Le plan <strong>%title%</strong> a été dépublié.
-      update_success: Le plan <strong>%title%</strong> a été mis à jour.
-      delete_success: Le plan <strong>%title%</strong> a été supprimé.
-    help:
-      title: Renseignez ici le titre de votre plan.
-      body: Décrivez ici votre plan.
-      resource: "Ajoutez ici jusqu'à <strong>10 fichiers</strong> issues de votre logiciel de <abbr title=\"Dessin Assisté par Ordinateur\">DAO</abbr>.<br><em>Les formats autorisés sont : AutoCAD (DWF, DWG), Sketchup (SKP), PDF, SVG, STL, 123D Design (123DX), Geogebra (GGB), FreeCAD (FCSTD), LibreOffice/Excel (ODS, XLSX, XLSM)</em>."
-      showcase: Ajoutez jusqu'à <strong>5 images</strong> d'aperçu de votre plan. La première image sera utilisée comme miniature.
-      inspirations: Associez jusqu'à <strong>4 plans</strong> qui ont été la source d'inspiration de votre plan. Vous n'êtes pas obligé d'être l'auteur de ces plans.<br>Cette association est intéressante si, par exemple, vous avez fait une précédente version de votre plan ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
-  choice:
-    new_plans: '[0,1]nouveau plan|]1,Inf]nouveaux plans'
-    plans: '[0,1]plan|]1,Inf]plans'
-    show_linked_to: '[0,1]Voir le plan|]1,Inf]Voir les plans'
-    draft_alert: '[0,1]Vous avez 1 plan en brouillon.|]1,Inf]Vous avez %count% plans en brouillon.'
-    inspiration: '[0,1]Ce plan est le rebond pour un autre plan|]1,Inf]Ce plan un rebond pour %count% autres plans'
-    rebound: '[0,1]Ce plan est une inspiration pour un autre plan|]1,Inf]Ce plan est une inspiration pour %count% autres plans'
-
-workshop:
-  description: Retrouvez tous les ateliers
-  new: Ajouter un atelier
-  edit: Edition de l'atelier
-  list: Les ateliers
-  nav: Ateliers
-  other_from: Autres ateliers de
-  similar: Voir aussi
-  linked_to: Cet atelier est associé à
-  new_warning: Un <strong>atelier</strong> est un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>.
-  converttohowto: Convertir en pas à pas
-  form:
-    alert:
-      lock_success: L'atelier <strong>%title%</strong> a été vérrouillé.
-      unlock_success: L'atelier <strong>%title%</strong> a été dévérrouillé.
-      publish_success: L'atelier <strong>%title%</strong> a été publié.
-      unpublish_success: L'atelier <strong>%title%</strong> a été dépublié.
-      update_success: L'atelier <strong>%title%</strong> a été mis à jour.
-      delete_success: L'atelier <strong>%title%</strong> a été supprimé.
-    help:
-      title: Renseignez ici le titre de votre atelier.
-      showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre atelier. La première photo sera utilisée comme miniature.
-      body: Décrivez ici votre atelier.
-      plans: Associez jusqu'à <strong>4 plans</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces plans.
-      howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces pas à pas.
-  choice:
-    new_workshops: '[0,1]nouvel atelier|]1,Inf]nouveaux ateliers'
-    workshops: '[0,1]atelier|]1,Inf]ateliers'
-    show_linked_to: "[0,1]Voir l'atelier|]1,Inf]Voir les ateliers"
-    draft_alert: '[0,1]Vous avez 1 atelier en brouillon.|]1,Inf]Vous avez %count% ateliers en brouillon.'
-  admin:
-    alert:
-      converttohowto_success: L'atelier %title% a été converti en pas à pas avec succès.
+wonder:
+  creation:
+    description: Retrouvez toutes les créations
+    new: Ajouter une création
+    edit: Edition de la création
+    list: Les créations
+    nav: Créations
+    other_from: Autres créations de
+    similar: Voir aussi
+    linkto: Associer une création déjà publiée
+    linked_to: Cette création est associée à
+    new_warning: Une <strong>création</strong> est une réalisation <strong>personnelle</strong> achevée, majoritairement constituée de <strong>bois</strong> ou conçue pour le <strong>travail du bois</strong> et ne doit représenter qu'<strong>un seul projet</strong>.
+    converttoworkshop: Convertir en atelier
+    converttohowto: Convertir en pas à pas
+    converttofind: Convertir en trouvaille
+    form:
+      inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
+      alert:
+        lock_success: La création <strong>%title%</strong> a été vérrouillée.
+        unlock_success: La création <strong>%title%</strong> a été déverrouillée.
+        publish_success: La création <strong>%title%</strong> a été publiée.
+        unpublish_success: La création <strong>%title%</strong> a été dépubliée.
+        update_success: La création <strong>%title%</strong> a été mise à jour.
+        delete_success: La création <strong>%title%</strong> a été supprimée.
+      help:
+        title: Renseignez ici le titre de votre création.
+        showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre création. La première photo sera utilisée comme miniature.
+        body: Décrivez ici votre création.
+        plans: Associez jusqu'à <strong>4 plans</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces plans.
+        howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces pas à pas.
+        providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre création.
+        inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
+    choice:
+      new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles creations'
+      creations: '[0,1]création|]1,Inf]creations'
+      show_linked_to: '[0,1]Voir la création|]1,Inf]Voir les créations'
+      draft_alert: '[0,1]Vous avez 1 creation en brouillon.|]1,Inf]Vous avez %count% creations en brouillon.'
+      inspiration: '[0,1]Cette création est un rebond pour une autre création|]1,Inf]Cette création est un rebond pour %count% autres créations'
+      rebound: '[0,1]Cette création est une inspiration pour une autre création|]1,Inf]Cette création est une inspiration pour %count% autres créations'
+    admin:
+      alert:
+        converttoworkshop_success: La création %title% a été converti en atelier avec succès.
+        converttohowto_success: La création %title% a été converti en pas à pas avec succès.
+        converttofind_success: La création %title% a été converti en trouvaille avec succès.
+  plan:
+    description: Retrouvez tous les plans
+    new: Ajouter un plan
+    create: Créer un nouveau plan
+    edit: Edition du plan
+    list: Les plans
+    nav: Plans
+    other_from: Autres plans de
+    similar: Voir aussi
+    download: Télécharger le plan
+    linkto: Associer un plan déjà publié
+    linked_to: Ce plan est associé à
+    new_warning: Un <strong>plan</strong> est un ensemble de <strong>fichiers numériques</strong> (modélisation 3D ou dessin technique 2D) permettant une réalisation majoritairement constituée de <strong>bois</strong>.
+    form:
+      inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
+      alert:
+        lock_success: Le plan <strong>%title%</strong> a été vérrouillé.
+        unlock_success: Le plan <strong>%title%</strong> a été dévérrouillé.
+        publish_success: Le plan <strong>%title%</strong> a été publié.
+        unpublish_success: Le plan <strong>%title%</strong> a été dépublié.
+        update_success: Le plan <strong>%title%</strong> a été mis à jour.
+        delete_success: Le plan <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre plan.
+        body: Décrivez ici votre plan.
+        resource: "Ajoutez ici jusqu'à <strong>10 fichiers</strong> issues de votre logiciel de <abbr title=\"Dessin Assisté par Ordinateur\">DAO</abbr>.<br><em>Les formats autorisés sont : AutoCAD (DWF, DWG), Sketchup (SKP), PDF, SVG, STL, 123D Design (123DX), Geogebra (GGB), FreeCAD (FCSTD), LibreOffice/Excel (ODS, XLSX, XLSM)</em>."
+        showcase: Ajoutez jusqu'à <strong>5 images</strong> d'aperçu de votre plan. La première image sera utilisée comme miniature.
+        inspirations: Associez jusqu'à <strong>4 plans</strong> qui ont été la source d'inspiration de votre plan. Vous n'êtes pas obligé d'être l'auteur de ces plans.<br>Cette association est intéressante si, par exemple, vous avez fait une précédente version de votre plan ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
+    choice:
+      new_plans: '[0,1]nouveau plan|]1,Inf]nouveaux plans'
+      plans: '[0,1]plan|]1,Inf]plans'
+      show_linked_to: '[0,1]Voir le plan|]1,Inf]Voir les plans'
+      draft_alert: '[0,1]Vous avez 1 plan en brouillon.|]1,Inf]Vous avez %count% plans en brouillon.'
+      inspiration: '[0,1]Ce plan est le rebond pour un autre plan|]1,Inf]Ce plan un rebond pour %count% autres plans'
+      rebound: '[0,1]Ce plan est une inspiration pour un autre plan|]1,Inf]Ce plan est une inspiration pour %count% autres plans'
+  workshop:
+    description: Retrouvez tous les ateliers
+    new: Ajouter un atelier
+    edit: Edition de l'atelier
+    list: Les ateliers
+    nav: Ateliers
+    other_from: Autres ateliers de
+    similar: Voir aussi
+    linked_to: Cet atelier est associé à
+    new_warning: Un <strong>atelier</strong> est un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>.
+    converttohowto: Convertir en pas à pas
+    form:
+      alert:
+        lock_success: L'atelier <strong>%title%</strong> a été vérrouillé.
+        unlock_success: L'atelier <strong>%title%</strong> a été dévérrouillé.
+        publish_success: L'atelier <strong>%title%</strong> a été publié.
+        unpublish_success: L'atelier <strong>%title%</strong> a été dépublié.
+        update_success: L'atelier <strong>%title%</strong> a été mis à jour.
+        delete_success: L'atelier <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre atelier.
+        showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre atelier. La première photo sera utilisée comme miniature.
+        body: Décrivez ici votre atelier.
+        plans: Associez jusqu'à <strong>4 plans</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces plans.
+        howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces pas à pas.
+    choice:
+      new_workshops: '[0,1]nouvel atelier|]1,Inf]nouveaux ateliers'
+      workshops: '[0,1]atelier|]1,Inf]ateliers'
+      show_linked_to: "[0,1]Voir l'atelier|]1,Inf]Voir les ateliers"
+      draft_alert: '[0,1]Vous avez 1 atelier en brouillon.|]1,Inf]Vous avez %count% ateliers en brouillon.'
+    admin:
+      alert:
+        converttohowto_success: L'atelier %title% a été converti en pas à pas avec succès.
 
 howto:
-  description: Retrouvez tous les pas à pas
-  new: Ajouter un pas à pas
-  create: Créer un nouveau pas à pas
-  edit: Edition du pas à pas
-  unpublish: Dépublication du pas à pas
-  list: Les pas à pas
-  nav: Pas à pas
-  other_from: Autres pas à pas de
-  similar: Voir aussi
-  linkto: Associer un pas à pas déjà publié
-  linked_to: Ce pas à pas est associé à
-  new_warning: Un <strong>pas à pas</strong> présente une méthode ou des étapes de fabrication ou d'aménagement directement liées au travail du <strong>bois</strong>.
-  wip_tooltip: Ce pas à pas présente un projet en cours de réalisation
-  wip_warning: Ce pas à pas présente un projet <strong>en cours de réalisation</strong>.
-  form:
-    alert:
-      lock_success: Le pas à pas <strong>%title%</strong> a été vérrouillé.
-      unlock_success: Le pas à pas <strong>%title%</strong> a été dévérrouillé.
-      publish_success: Le pas à pas <strong>%title%</strong> a été publié.
-      unpublish_success: Le pas à pas <strong>%title%</strong> a été dépublié.
-      update_success: Le pas à pas <strong>%title%</strong> a été mis à jour.
-      delete_success: Le pas à pas <strong>%title%</strong> a été supprimé.
-    help:
-      title: Renseignez ici le titre de votre pas à pas.
-      main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre pas à pas.
-      body: Renseignez ici un petit texte introductif qui présente votre pas à pas. Le contenu de votre pas à pas sera détaillé dans les articles.
-      plans: Associez jusqu'à <strong>4 plans</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces plans.
-      wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
+  howto:
+    description: Retrouvez tous les pas à pas
+    new: Ajouter un pas à pas
+    create: Créer un nouveau pas à pas
+    edit: Edition du pas à pas
+    unpublish: Dépublication du pas à pas
+    list: Les pas à pas
+    nav: Pas à pas
+    other_from: Autres pas à pas de
+    similar: Voir aussi
+    linkto: Associer un pas à pas déjà publié
+    linked_to: Ce pas à pas est associé à
+    new_warning: Un <strong>pas à pas</strong> présente une méthode ou des étapes de fabrication ou d'aménagement directement liées au travail du <strong>bois</strong>.
+    wip_tooltip: Ce pas à pas présente un projet en cours de réalisation
+    wip_warning: Ce pas à pas présente un projet <strong>en cours de réalisation</strong>.
+    form:
+      alert:
+        lock_success: Le pas à pas <strong>%title%</strong> a été vérrouillé.
+        unlock_success: Le pas à pas <strong>%title%</strong> a été dévérrouillé.
+        publish_success: Le pas à pas <strong>%title%</strong> a été publié.
+        unpublish_success: Le pas à pas <strong>%title%</strong> a été dépublié.
+        update_success: Le pas à pas <strong>%title%</strong> a été mis à jour.
+        delete_success: Le pas à pas <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre pas à pas.
+        main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre pas à pas.
+        body: Renseignez ici un petit texte introductif qui présente votre pas à pas. Le contenu de votre pas à pas sera détaillé dans les articles.
+        plans: Associez jusqu'à <strong>4 plans</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces plans.
+        providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre pas à pas.
+        wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
+    choice:
+      new_howtos: '[0,1]nouveau pas à pas|]1,Inf]nouveaux pas à pas'
+      howtos: '[0,1]pas à pas|]1,Inf]pas à pas'
+      show_linked_to: '[0,1]Voir le pas à pas|]1,Inf]Voir les pas à pas'
+      draft_alert: '[0,1]Vous avez 1 pas à pas en brouillon.|]1,Inf]Vous avez %count% pas à pas en brouillon.'
   article:
     new: Ajouter un article
     edit: Edition de l'article
@@ -293,57 +290,100 @@ howto:
       help:
         title: Renseignez ici le titre de votre article.
         body: Renseigner ici le corps de votre article.
-  choice:
-    new_howtos: '[0,1]nouveau pas à pas|]1,Inf]nouveaux pas à pas'
-    howtos: '[0,1]pas à pas|]1,Inf]pas à pas'
-    new_articles: '[0,1]nouvel article|]1,Inf]nouveaux articles'
-    articles: '[0,1]article|]1,Inf]articles'
-    show_linked_to: '[0,1]Voir le pas à pas|]1,Inf]Voir les pas à pas'
-    draft_alert: '[0,1]Vous avez 1 pas à pas en brouillon.|]1,Inf]Vous avez %count% pas à pas en brouillon.'
+    choice:
+      new_articles: '[0,1]nouvel article|]1,Inf]nouveaux articles'
+      articles: '[0,1]article|]1,Inf]articles'
 
 find:
-  description: Retrouvez toutes les trouvailles
-  new: Ajouter une trouvaille
-  edit: Edition de la trouvaille
-  list: Les trouvailles
-  nav: Trouvailles
-  other_from: Autres trouvailles de
-  similar: Voir aussi
-  new_warning: Une <strong>trouvaille</strong> est un <strong>lien</strong> vers un <strong>site web</strong> (blog, forum, ...) ou une <strong>vidéo</strong> ou des <strong>photos</strong> ou un <strong>évènement</strong> ayant rapport avec le <strong>bois</strong>.
-  content:
-    link:
-      name: Lien
-    gallery:
-      name: Photos
-    event:
-      name: Evènement
-      scheduled: Prochainement
-      running: En ce moment
-      completed: Terminé
-      event_starts: L'évènement commence
-      event_ends: L'évènement se termine
-      event_was_completed: L'évènement s'est terminé
-  form:
-    alert:
-      lock_success: La trouvaille <strong>%title%</strong> a été vérrouillée.
-      lock_success: La trouvaille <strong>%title%</strong> a été dévérrouillée.
-      publish_success: La trouvaille <strong>%title%</strong> a été publiée.
-      unpublish_success: La trouvaille <strong>%title%</strong> a été dépubliée.
-      update_success: La trouvaille <strong>%title%</strong> a été mise à jour.
-      delete_success: La trouvaille <strong>%title%</strong> a été supprimée.
-    help:
-      title: Renseignez ici le titre de votre trouvaille.
-      body: Décrivez ici votre trouvaille.
-      data: Sélectionnez le type de votre trouvaille et renseignez son contenu (URL du site web, URL de la vidéo, liste de photos ou évènement).
-      gallery_pictures: Ajoutez jusqu'à <strong>5 photos</strong> de votre trouvaille. La première photo sera utilisée comme miniature.<br/><p class="ladb-color-danger"><i class="ladb-icon-warning"></i> N'ajoutez que des photos qui vous appartiennent. Pour des raisons de droit, si les photos sont issuent d'un autre site, utilisez le type <strong>Lien</strong> pour pointer vers ce site.</p>
-      gallery_location: Indiquez le lieu géographique de prise de vos photos.
-      event_pictures: Ajoutez jusqu'à <strong>5 images</strong> de l'évènement. La première image sera utilisée comme miniature.
-      event_location: Indiquez le lieu géographique de l'évènement.
-      event_url: Indiquez, le cas échéant, le site web de l'évènement.
-  choice:
-    new_finds: '[0,1]nouvelle trouvaille|]1,Inf]nouvelles trouvailles'
-    finds: '[0,1]trouvaille|]1,Inf]trouvailles'
-    draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
+  find:
+    description: Retrouvez toutes les trouvailles
+    new: Ajouter une trouvaille
+    edit: Edition de la trouvaille
+    list: Les trouvailles
+    nav: Trouvailles
+    other_from: Autres trouvailles de
+    similar: Voir aussi
+    new_warning: Une <strong>trouvaille</strong> est un <strong>lien</strong> vers un <strong>site web</strong> (blog, forum, ...) ou une <strong>vidéo</strong> ou des <strong>photos</strong> ou un <strong>évènement</strong> ayant rapport avec le <strong>bois</strong>.
+    content:
+      link:
+        name: Lien
+      gallery:
+        name: Photos
+      event:
+        name: Evènement
+        scheduled: Prochainement
+        running: En ce moment
+        completed: Terminé
+        event_starts: L'évènement commence
+        event_ends: L'évènement se termine
+        event_was_completed: L'évènement s'est terminé
+    form:
+      alert:
+        lock_success: La trouvaille <strong>%title%</strong> a été vérrouillée.
+        unlock_success: La trouvaille <strong>%title%</strong> a été dévérrouillée.
+        publish_success: La trouvaille <strong>%title%</strong> a été publiée.
+        unpublish_success: La trouvaille <strong>%title%</strong> a été dépubliée.
+        update_success: La trouvaille <strong>%title%</strong> a été mise à jour.
+        delete_success: La trouvaille <strong>%title%</strong> a été supprimée.
+      help:
+        title: Renseignez ici le titre de votre trouvaille.
+        body: Décrivez ici votre trouvaille.
+        tags: Indiquez les tags définissant votre trouvaille.
+        data: Sélectionnez le type de votre trouvaille et renseignez son contenu (URL du site web, URL de la vidéo, liste de photos ou évènement).
+        gallery_pictures: Ajoutez jusqu'à <strong>5 photos</strong> de votre trouvaille. La première photo sera utilisée comme miniature.<br/><p class="ladb-color-danger"><i class="ladb-icon-warning"></i> N'ajoutez que des photos qui vous appartiennent. Pour des raisons de droit, si les photos sont issuent d'un autre site, utilisez le type <strong>Lien</strong> pour pointer vers ce site.</p>
+        gallery_location: Indiquez le lieu géographique de prise de vos photos.
+        event_pictures: Ajoutez jusqu'à <strong>5 images</strong> de l'évènement. La première image sera utilisée comme miniature.
+        event_location: Indiquez le lieu géographique de l'évènement.
+        event_url: Indiquez, le cas échéant, le site web de l'évènement.
+    choice:
+      new_finds: '[0,1]nouvelle trouvaille|]1,Inf]nouvelles trouvailles'
+      finds: '[0,1]trouvaille|]1,Inf]trouvailles'
+      draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
+
+qa:
+  tooltip:
+    vote_up: Je valide cette réponse
+    vote_down: Je rejette cette réponse
+  question:
+    description: Retrouvez toutes les questions
+    new: Ajouter une question
+    edit: Edition de la question
+    list: Les questions
+    nav: Questions
+    other_from: Autres questions de
+    similar: Voir aussi
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la question (remerciements, demande de précisions, corrections, etc ...).</p><p>N'apportez pas votre réponse ici.<br>Pour répondre à  la question, cliquez sur <strong>Répondre à la question</strong> en bas de page.</p>
+    form:
+      alert:
+        lock_success: La question <strong>%title%</strong> a été vérrouillée.
+        unlock_success: La question <strong>%title%</strong> a été dévérrouillée.
+        publish_success: La question <strong>%title%</strong> a été publiée.
+        unpublish_success: La question <strong>%title%</strong> a été dépubliée.
+        update_success: La question <strong>%title%</strong> a été mise à jour.
+        delete_success: La question <strong>%title%</strong> a été supprimée.
+      help:
+        title: Renseignez ici le titre de votre question.<br>Essayez au maximum de le formuler comme une question (...?). Ce titre est <strong>très important</strong> pour la visibilité de votre question.<br>Ecrivez le avec les mêmes termes que ceux que vous utiliseriez si vous recherchiez votre question.
+        body: Détaillez ici plus en profondeur votre question.
+        tags: Indiquez les tags définissant votre question.
+    choice:
+      new_questions: '[0,1]nouvelle question|]1,Inf]nouvelles questions'
+      questions: '[0,1]question|]1,Inf]questions'
+      draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
+  answer:
+    new: Répondre à la question
+    edit: Editer ma réponse
+    best: Meilleure réponse
+    set_as_best: Choisir comme meilleure réponse
+    best_tooltip: L'auteur de la question a choisi cette réponse comme étant la meilleure
+    sort: Tri des réponses
+    sort_score: Mieux notées
+    sort_recent: Plus récentes
+    sort_older: Plus anciennes
+    form:
+      alert:
+        delete_success: La réponse a été supprimée.
+    choice:
+      answers: '[0,1]réponse|]1,Inf]réponses'
 
 workflow:
   description: Retrouvez tous les processus
@@ -380,11 +420,11 @@ workflow:
     empty: Aucune étiquette
 
 blog:
+  nav: Le blog
   title: Le blog
   description: Ce blog vous permet de rester informé et de réagir sur les nouveautés et futurs projets de L'Air du Bois.
   post:
     list: Les sujets
-    nav: Le blog
     new: Ajouter un sujet
     edit: Edition du sujet
     similar: Voir aussi
@@ -397,15 +437,15 @@ blog:
       help:
         title: Renseignez ici le titre de votre sujet.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre sujet.
-  choice:
-    new_posts: '[0,1]nouveau sujet sur le blog|]1,Inf]nouveaux sujets sur le blog'
+    choice:
+      new_posts: '[0,1]nouveau sujet sur le blog|]1,Inf]nouveaux sujets sur le blog'
 
 faq:
+  nav: FAQ
   title: La foire aux questions
   description: Retrouvez ici toute les réponses à vos questions sur L'Air du Bois.
   question:
     list: Les questions
-    nav: FAQ
     new: Ajouter une question
     edit: Edition de la question
     icon: Icone
@@ -420,160 +460,6 @@ faq:
       help:
         title: Renseignez ici le titre de votre question.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre question.
-
-message:
-  list: Messagerie
-  nav: Messagerie
-  mailbox: Boîte aux lettres
-  sendTo: Envoyer un message à %NAME%
-  contact: Contacter
-  thread:
-    announcement:
-      new: Nouvelle annonce
-    new: Nouveau message
-
-user:
-  description: Retrouvez tous les boiseux
-  list: Les boiseux
-  nav: Boiseux
-  home: Ma page
-  settings: Paramètres
-  register: Rejoindre l'Air du Bois
-  login: Se connecter
-  logout: Se déconnecter
-  about: A propos
-  avatar: Photo de profil
-  avatar_help: Votre photo de profil permet de vous reconnaitre plus facilement et sera présente sur toutes vos contributions.
-  account: Compte
-  banner: Bannière
-  banner_help: Votre bannière est affichée en en-tête de votre page.
-  location: Lieu
-  location_help: Indiquez la ville ou la région dans laquelle vous résidez.
-  social: Réseaux sociaux
-  website_help: Indiquez l'adresse de votre blog ou site personnel.
-  facebook_help: Indiquez votre <strong>nom d'utilisateur</strong> Facebook en complétant l'adresse ci dessous.
-  twitter_help: Indiquez votre <strong>nom d'utilisateur</strong> Twitter en complétant l'adresse ci dessous.
-  googleplus_help: Indiquez votre <strong>Google+ ID</strong> en complétant l'adresse ci dessous.
-  youtube_help: Indiquez votre <strong>YouTube ID</strong> en complétant l'adresse ci dessous.
-  vimeo_help: Indiquez votre <strong>nom d'utilisateur</strong> Vimeo en complétant l'adresse ci dessous.
-  dailymotion_help: Indiquez votre <strong>nom de châine</strong> Dailymotion en complétant l'adresse ci dessous.
-  pinterest_help: Indiquez votre <strong>nom d'utilisateur</strong> Pinterest en complétant l'adresse ci dessous.
-  instagram_help: Indiquez votre <strong>nom d'utilisateur</strong> Instagram en complétant l'adresse ci dessous.
-  options: Options
-  email_notifications: Notifications par e-mail
-  add_banner: Ajoutez votre bannière
-  add_biography: Ajoutez votre biographie
-  add_location: Ajoutez votre localisation
-  email_confirmation:
-    title: Confirmation de votre adresse e-mail
-    body: N'oubliez pas de confirmer votre adresse e-mail pour accéder à toutes les fonctionnalités.
-    check:
-      action: Demander la confirmation maintenant
-      body: |
-        Un e-mail a été envoyé à l'adresse **%email%**.
-        Il contient un lien sur lequel il vous faudra cliquer afin de confirmer votre adresse.
-
-         - Si cet e-mail tarde à vous arriver, vérifiez bien qu'il n'est pas dans votre spam.
-         - Si l'adresse e-mail *%email%* n'est pas correcte, [modifiez-la](%path%) ici.
-      modal_action: Découvrir pourquoi ?
-      modal_body: |
-        La confirmation de votre adresse e-mail vous permet :
-
-         - Publier des contenus
-         - Recevoir les informations de réinitialisation en cas de perte de vos informations de connexion
-         - Recevoir les notifications par e-mail
-         - Recevoir les messages privés par e-mail
-         - Faire des dons
-
-        Pour autant, votre adresse e-mail **ne** sera **jamais** rendue publique, ni communiquée à un autre organisme.
-    confirm:
-      invalid_token: La clé de confirmation de votre adresse e-mail n'est pas valide
-      invalid_user: L'utilisateur ne correspond pas à la clé de confirmation de l'adresse e-mail.
-      success: Votre adresse e-mail <strong>%email%</strong> a bien été confirmée.
-  admin:
-    tab: Admin
-    alert:
-      activate_success: Le compte <strong>%displayname%</strong> a été activé avec succès.
-      deactivate_success: Le compte <strong>%displayname%</strong> a été désactivé avec succès.
-      empty_success: Le compte <strong>%displayname%</strong> a été vidé avec succès.
-  form:
-    alert:
-      settings_success: Vos paramètres ont été enregistrés.
-  choice:
-    users: '[0,1]boiseu|]1,Inf]boiseux'
-    contributors: '[0,1]contributeur|]1,Inf]contributeurs'
-
-follower:
-  follow: S'abonner
-  follow_tooltip: Suivre l'activité de %name%
-  following: Abonné
-  following_tooltip: Se désabonner
-  choice:
-    followers: '[0,1]abonné|]1,Inf]abonnés'
-    following: '[0,1]abonnement|]1,Inf]abonnements'
-
-comment:
-  list: On en parle ici
-  get_link: Obtenir le lien
-  choice:
-    comments: '[0,1]commentaire|]1,Inf]commentaires'
-
-referer:
-  list: On en parle ailleurs
-  choice:
-    referrals: '[0,1]référence|]1,Inf]références'
-  referral:
-    alert:
-      delete_success: La référence <strong>%title%</strong> a été supprimée.
-
-like:
-  create: Ajouter mon coup de coeur
-  delete: Retirer mon coup de coeur
-  like: J'aime
-  liked: Coup de coeur
-  choice:
-    likes: '[0,1]coup de coeur|]1,Inf]coups de coeur'
-    recieved_likes: '[0,1]coup de coeur reçu|]1,Inf]coups de coeur reçus'
-    sent_likes: '[0,1]coup de coeur envoyé|]1,Inf]coups de coeur envoyés'
-
-watch:
-  watch: Surveiller
-  watched: Surveillé
-  create: Surveiller l'activité de cette contribution
-  delete: Ne plus surveiller cette contribution
-  choice:
-    watches: '[0,1]boiseu surveille cette contribution|]1,Inf]boiseux surveillent cette contribution'
-
-vote:
-  vote: Vérification
-  tooltip:
-    vote_up: Je valide
-    vote_down: Je rejette
-  choice:
-    votes: '[-Inf,1]vérification|]1,Inf]vérifications'
-    positive_votes: '[-Inf,1]vérification favorable|]1,Inf]vérifications favorables'
-    negative_votes: '[-Inf,1]vérification défavorable|]1,Inf]vérifications défavorables'
-
-join:
-  create: Ajouter ma participation
-  delete: Retirer ma participation
-  join: J'y participe
-  joined: J'y participe
-  choice:
-    joins: '[0,1]participant|]1,Inf]participants'
-
-report:
-  report: Signaler
-  create: Signaler un abus ou un problème
-  created: Votre rapport a été enregistré
-  reasons: Pourquoi signalez vous ce contenu ?
-  reason1: Nudité ou pornographie
-  reason2: Violence
-  reason3: Propos ou symboles haineux
-  reason4: Droits d'auteur
-  reason5: Spam
-  reason6: Contenu manquant
-  reason7: Contenu hors sujet
 
 knowledge:
   show_proposals: Voir les propositions
@@ -694,8 +580,10 @@ knowledge:
   provider:
     description: Retrouvez tous les fournisseurs
     new: Ajouter un fournisseur
+    create: Créer un nouveau fournisseur
     list: Les fournisseurs
     nav: Fournisseurs
+    linkto: Associer un fournisseur déjà publié
     new_warning: Un <strong>fournisseur</strong> est une entreprise, une association ou un organisme qui vend des produits ou services <strong>pour le travail du bois</strong>.
     field:
       sign: Enseigne
@@ -746,6 +634,11 @@ knowledge:
         description: |
           Ce champ peut être utilisé pour définir plus précisément un fournisseur.
           *(ex : Boutique en ligne de roulettes)*
+
+          **Ce descriptif doit rester purement encyclopédique.**
+          - pas de d'avis personnels
+          - pas de formulations publicitaires
+          - pas de tarifs, prix, etc...
         in_store_selling:
         mail_order_selling:
         sale_to_individuals:
@@ -759,6 +652,65 @@ knowledge:
       new_providers: '[0,1]nouveau fournisseur|]1,Inf]nouveaux fournisseurs'
       providers: '[0,1]fournisseur|]1,Inf]fournisseurs'
       stores: '[0,1]agence ou boutique|]1,Inf]agences ou boutiques'
+  school:
+    description: Retrouvez toutes les écoles
+    new: Ajouter une école
+    create: Créer une nouvelle école
+    list: Les écoles
+    nav: Ecoles
+    new_warning: Une <strong>école</strong> est un <strong>établissement physique</strong> qui propose des formations diplômantes ou non <strong>autour du travail du bois</strong>.
+    field:
+      name: Nom
+      logo: Logo
+      photo: Photo
+      website: Site internet
+      address: Adresse
+      phone: Téléphone
+      description: Descriptif
+      public: Etablissement public
+      birth_year: Année de création
+      diplomas: Diplômes
+      training_types: Type de formation
+    help:
+      name: "Le **Nom** est le nom attribué à l'établissement."
+      logo: "Le **Logo** est une image représentant le logotype de l'école."
+      photo: "La **Photo** est une photo de l'école."
+      website: "Le **Site internet** est l'adresse du site web de l'école."
+      address: "L'**Adresse** est l'adresse postale de l'école."
+      phone: "Le **Téléphone** est le numéro de téléphone de l'école."
+      description: "Le **Descriptif** décrit succintement cette école."
+      public: "**Etablissement public** indique si cette école est publique."
+      birth_year: "L'**Année de création** est l'année de création de l'école."
+      diplomas: "**Diplômes** permet de lister les diplômes délivrés par cet école."
+      training_types: "**Type de formations** permet de lister les différents type de formation proposés par cette école."
+    form:
+      alert:
+        delete_success: L'école <strong>%title%</strong> a été supprimée.
+      help:
+        legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
+        source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        logo: |
+          - Préférez les images carrées.
+        photo:
+        name: |
+          Dans le cas d'une structure possédant plusieurs établissements, indiquez bien ici le nom de l'établissement que vous souhaitez référencer.
+          *(ex : Compagnons du tour de France Lyon)*
+        website:
+        address:
+        phone: |
+          Le **Pays** permet un formatage automatique du numéro.
+        description: |
+          Ce champ peut être utilisé pour définir plus précisément l'école.
+
+          **Ce descriptif doit rester purement encyclopédique.**
+          - pas de d'avis personnels
+          - pas de formulations publicitaires
+          - pas de tarifs, prix, etc...
+    testimonial:
+      new: Ajouter mon témoignage
+      edit: Editer mon témoignage
+    choice:
+      testimonials: '[0,1]témoignage|]1,Inf]témoignages'
   tool:
     list: Outils
     token:
@@ -771,6 +723,163 @@ knowledge:
       help: Saisissez une finition et cliquez sur la flèche pour l'ajouter
     choice:
       finishes: '[0,1]finition|]1,Inf]finitions'
+
+message:
+  list: Messagerie
+  nav: Messagerie
+  mailbox: Boîte aux lettres
+  sendTo: Envoyer un message à %NAME%
+  contact: Contacter
+  thread:
+    announcement:
+      new: Nouvelle annonce
+    new: Nouveau message
+
+user:
+  description: Retrouvez tous les boiseux
+  list: Les boiseux
+  nav: Boiseux
+  home: Ma page
+  settings: Paramètres
+  register: Rejoindre l'Air du Bois
+  login: Se connecter
+  logout: Se déconnecter
+  about: A propos
+  avatar: Photo de profil
+  avatar_help: Votre photo de profil permet de vous reconnaitre plus facilement et sera présente sur toutes vos contributions.
+  account: Compte
+  banner: Bannière
+  banner_help: Votre bannière est affichée en en-tête de votre page.
+  location: Lieu
+  location_help: Indiquez la ville ou la région dans laquelle vous résidez.
+  social: Réseaux sociaux
+  website_help: Indiquez l'adresse de votre blog ou site personnel.
+  facebook_help: Indiquez votre <strong>nom d'utilisateur</strong> Facebook en complétant l'adresse ci dessous.
+  twitter_help: Indiquez votre <strong>nom d'utilisateur</strong> Twitter en complétant l'adresse ci dessous.
+  googleplus_help: Indiquez votre <strong>Google+ ID</strong> en complétant l'adresse ci dessous.
+  youtube_help: Indiquez votre <strong>YouTube ID</strong> en complétant l'adresse ci dessous.
+  vimeo_help: Indiquez votre <strong>nom d'utilisateur</strong> Vimeo en complétant l'adresse ci dessous.
+  dailymotion_help: Indiquez votre <strong>nom de châine</strong> Dailymotion en complétant l'adresse ci dessous.
+  pinterest_help: Indiquez votre <strong>nom d'utilisateur</strong> Pinterest en complétant l'adresse ci dessous.
+  instagram_help: Indiquez votre <strong>nom d'utilisateur</strong> Instagram en complétant l'adresse ci dessous.
+  options: Options
+  email_notifications: Notifications par e-mail
+  add_banner: Ajoutez votre bannière
+  add_biography: Ajoutez votre biographie
+  add_location: Ajoutez votre localisation
+  email_confirmation:
+    title: Confirmation de votre adresse e-mail
+    body: N'oubliez pas de confirmer votre adresse e-mail pour accéder à toutes les fonctionnalités.
+    check:
+      action: Demander la confirmation maintenant
+      body: |
+        Un e-mail a été envoyé à l'adresse **%email%**.
+        Il contient un lien sur lequel il vous faudra cliquer afin de confirmer votre adresse.
+
+         - Si cet e-mail tarde à vous arriver, vérifiez bien qu'il n'est pas dans votre spam.
+         - Si l'adresse e-mail *%email%* n'est pas correcte, [modifiez-la](%path%) ici.
+      modal_action: Découvrir pourquoi ?
+      modal_body: |
+        La confirmation de votre adresse e-mail vous permet :
+
+         - Publier des contenus
+         - Recevoir les informations de réinitialisation en cas de perte de vos informations de connexion
+         - Recevoir les notifications par e-mail
+         - Recevoir les messages privés par e-mail
+         - Faire des dons
+
+        Pour autant, votre adresse e-mail **ne** sera **jamais** rendue publique, ni communiquée à un autre organisme.
+    confirm:
+      invalid_token: La clé de confirmation de votre adresse e-mail n'est pas valide
+      invalid_user: L'utilisateur ne correspond pas à la clé de confirmation de l'adresse e-mail.
+      success: Votre adresse e-mail <strong>%email%</strong> a bien été confirmée.
+  admin:
+    tab: Admin
+    alert:
+      activate_success: Le compte <strong>%displayname%</strong> a été activé avec succès.
+      deactivate_success: Le compte <strong>%displayname%</strong> a été désactivé avec succès.
+      empty_success: Le compte <strong>%displayname%</strong> a été vidé avec succès.
+  form:
+    alert:
+      settings_success: Vos paramètres ont été enregistrés.
+  choice:
+    users: '[0,1]boiseu|]1,Inf]boiseux'
+    contributors: '[0,1]contributeur|]1,Inf]contributeurs'
+
+follower:
+  follow: S'abonner
+  follow_tooltip: Suivre l'activité de %name%
+  following: Abonné
+  following_tooltip: Se désabonner
+  choice:
+    followers: '[0,1]abonné|]1,Inf]abonnés'
+    following: '[0,1]abonnement|]1,Inf]abonnements'
+
+comment:
+  list: On en parle ici
+  new: Commenter
+  reply: Répondre
+  choice:
+    comments: '[0,1]commentaire|]1,Inf]commentaires'
+    children: '[0,1]réponse|]1,Inf]réponses'
+
+referer:
+  list: On en parle ailleurs
+  choice:
+    referrals: '[0,1]référence|]1,Inf]références'
+    clicks_from: '[0,1]%count% clique depuis %from%|]1,Inf]%count% cliques depuis %from%'
+  referral:
+    alert:
+      delete_success: La référence <strong>%title%</strong> a été supprimée.
+
+like:
+  create: Ajouter mon coup de coeur
+  delete: Retirer mon coup de coeur
+  like: J'aime
+  liked: Coup de coeur
+  choice:
+    likes: '[0,1]coup de coeur|]1,Inf]coups de coeur'
+    recieved_likes: '[0,1]coup de coeur reçu|]1,Inf]coups de coeur reçus'
+    sent_likes: '[0,1]coup de coeur envoyé|]1,Inf]coups de coeur envoyés'
+
+watch:
+  watch: Surveiller
+  watched: Surveillé
+  create: Surveiller l'activité de cette contribution
+  delete: Ne plus surveiller cette contribution
+  choice:
+    watches: '[0,1]boiseu surveille cette contribution|]1,Inf]boiseux surveillent cette contribution'
+
+vote:
+  vote: Vérification
+  tooltip:
+    vote_up: Je valide
+    vote_down: Je rejette
+  choice:
+    votes: '[-Inf,1]vérification|]1,Inf]vérifications'
+    positive_votes: '[-Inf,1]vérification favorable|]1,Inf]vérifications favorables'
+    negative_votes: '[-Inf,1]vérification défavorable|]1,Inf]vérifications défavorables'
+
+join:
+  create: Ajouter ma participation
+  delete: Retirer ma participation
+  join: J'y participe
+  joined: J'y participe
+  choice:
+    joins: '[0,1]participant|]1,Inf]participants'
+
+report:
+  report: Signaler
+  create: Signaler un abus ou un problème
+  created: Votre rapport a été enregistré
+  reasons: Pourquoi signalez vous ce contenu ?
+  reason1: Nudité ou pornographie
+  reason2: Violence
+  reason3: Propos ou symboles haineux
+  reason4: Droits d'auteur
+  reason5: Spam
+  reason6: Contenu manquant
+  reason7: Contenu hors sujet
 
 skill:
   skills: Compétences
@@ -807,6 +916,17 @@ picture:
 resource:
   add_one: Télécharger un fichier
   add_multiple: Télécharger des fichiers
+  kind:
+    unknow: Inconnu
+    autocad: AutoCAD
+    sketchup: Sketchup
+    pdf: PDF
+    geogebra: GeoGebra
+    svg: SVG
+    freecad: FreeCAD
+    stl: STL
+    123ddesign: 123D Design
+    libreoffice: LibreOffice/Excel
   form:
     choice:
       mandatory: "[0,1]Ce fichier est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins un fichier."
@@ -817,11 +937,15 @@ search:
     workshops: Recherche dans les ateliers
     plans: Recherche dans les plans
     howtos: Recherche dans les pas à pas
+    woods: Recherche dans les essences
+    providers: Recherche dans les fournisseurs
+    schools: Recherche dans les écoles
     finds: Recherche dans les trouvailles
     users: Recherche dans les boiseaux
     posts: Recherche dans le blog
-    woods: Recherche dans les essences
     questions: Recherche dans la FAQ
+    qa_questions: Recherche dans les questions
+    promotion_graphic: Recherche dans les graphismes
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 
@@ -847,32 +971,42 @@ notification:
   list: Notifications
   nav: Notifications
   your:
-    creation: votre création
-    workshop: votre atelier
-    plan: votre plan
-    howto: votre pas à pas
-    article: votre article
-    find: votre trouvaille
-    post: votre sujet
-    question: votre question
+    wonder_creation: votre création
+    wonder_workshop: votre atelier
+    wonder_plan: votre plan
+    howto_howto: votre pas à pas
+    howto_article: votre article
+    find_find: votre trouvaille
+    blog_post: votre sujet
+    faq_question: votre question
+    qa_question: votre question
+    qa_answer: votre réponse
+    promotion_graphic: votre graphisme
   the:
-    creation: la création
-    workshop: l'atelier
-    plan: le plan
-    howto: le pas à pas
-    article: l'article
-    find: la trouvaille
-    wood: l'essence
-    provider: le fournisseur
-    post: le sujet
-    question: la question
+    wonder_creation: la création
+    wonder_workshop: l'atelier
+    wonder_plan: le plan
+    howto_howto: le pas à pas
+    howto_article: l'article
+    find_find: la trouvaille
+    knowledge_wood: l'essence
+    knowledge_provider: le fournisseur
+    knowledge_school: l'école
+    blog_post: le sujet
+    faq_question: la question
+    qa_question: la question
+    qa_answer: la réponse
+    promotion_graphic: le graphisme
   one_new:
-    creation: une nouvelle création
-    workshop: un nouvel atelier
-    plan: un nouveau plan
-    howto: un nouveau pas à pas
-    article: un nouvel article
-    find: une nouvelle trouvaille
+    wonder_creation: une nouvelle création
+    wonder_workshop: un nouvel atelier
+    wonder_plan: un nouveau plan
+    howto_howto: un nouveau pas à pas
+    howto_article: un nouvel article
+    find_find: une nouvelle trouvaille
+    qa_question: une nouvelle question
+    qa_answer: une nouvelle réponse
+    promotion_graphic: un nouveau graphisme
   tooltip:
     all: Toutes les notifications
     comment: Notifications de commentaires
@@ -884,6 +1018,8 @@ notification:
     vote: Notifications de vérification
     join: Notifications de participation
     write: Notifications de messages
+    answer: Notifications de réponses
+    testify: Notifications de témoignages
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
@@ -894,6 +1030,8 @@ notification:
     vote: '[0,1]Notification de nouveau vote|]1,Inf]Notification de nouveaux votes'
     join: '[0,1]Notification de nouvelle participation|]1,Inf]Notification de nouvelles participations'
     write: '[0,1]Notification de nouveau message|]1,Inf]Notification de nouveaux messages'
+    answer: '[0,1]Notification de nouvelle réponse|]1,Inf]Notification de nouvelles réponses'
+    testify: '[0,1]Notification de nouveau témoignage|]1,Inf]Notification de nouveaux témoignages'
 
 share:
   social:
@@ -908,10 +1046,10 @@ share:
       article: Le partage par vignette vous permet d'afficher cet article sur d'autres sites, comme les <strong>forums</strong> ou les <strong>blogs</strong> par exemple.
       common: Choisissez le format approprié et Copiez / Collez le code ci-dessous.
     title_suffix:
-      creation: Création
-      plan: Plan
-      workshop: Atelier
-      howto: Pas à pas
+      wonder_creation: Création
+      wonder_plan: Plan
+      wonder_workshop: Atelier
+      howto_howto: Pas à pas
 
 funding:
   funding: Financement
@@ -946,6 +1084,32 @@ funding:
     donations: '[0,1]don|]1,Inf]dons'
     donors: '[0,1]donateur|]1,Inf]donateurs'
     transactions: '[0,1]transaction|]1,Inf]transactions'
+
+promotion:
+  nav: Promouvoir
+  description: Cette rubrique vous permet de retrouver et partager les documents graphiques destinés à promouvoir L'Air du Bois.
+  graphic:
+    list: Les graphismes
+    new: Ajouter un graphisme
+    edit: Edition du graphisme
+    similar: Voir aussi
+    download: Télécharger le graphisme
+    new_warning: Un <strong>graphisme</strong> est un <strong>fichier numérique</strong> permettant de promouvoir <em>L'Air du Bois</em> (affiche, flyer, ...) ou correspondant à l'identité visuelle de la plateforme.
+    form:
+      alert:
+        lock_success: Le graphisme <strong>%title%</strong> a été vérrouillé.
+        unlock_success: Le graphisme <strong>%title%</strong> a été dévérrouillé.
+        publish_success: Le graphisme <strong>%title%</strong> a été publié.
+        unpublish_success: Le graphisme <strong>%title%</strong> a été dépublié.
+        update_success: Le graphisme <strong>%title%</strong> a été mis à jour.
+        delete_success: Le graphisme <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre graphisme.
+        resource: "Ajoutez ici votre fichier graphique.<br><em>Les formats autorisés sont : PDF, SVG</em>."
+        body: Décrivez ici votre graphisme.
+    choice:
+      graphics: '[0,1]graphisme|]1,Inf]graphismes'
+      draft_alert: '[0,1]Vous avez 1 graphisme en brouillon.|]1,Inf]Vous avez %count% graphismes en brouillon.'
 
 youtook:
   new: Ajouter un took

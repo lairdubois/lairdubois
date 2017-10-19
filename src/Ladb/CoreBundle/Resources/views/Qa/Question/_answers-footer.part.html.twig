@@ -1,0 +1,27 @@
+{# set question #}
+
+<div class="ladb-answers-footer">
+    {% if not question.isDraft %}
+        {% if userAnswer %}
+            <div class="alert alert-info">
+                <p>Vous avez déjà répondu à cette question. <a onclick="$('#ladb_answer_{{ userAnswer.id }}').ladbScrollTo(); return false;" class="alert-link">(Voir ma réponse)</a></p>
+            </div>
+        {% else %}
+            {% if question.answerCount == 0 %}
+                <div class="panel panel-info">
+                    <div class="panel-body text-center">Cette question ne possède pour l'instant aucune réponse.<br>Soyez le premier proposer la votre !</div>
+                </div>
+            {% endif %}
+            <div class="ladb-btns-bar">
+                {% if is_granted("ROLE_USER") %}
+                    {% if question.user == app.user and question.answerCount >= 1 %}
+                        <button href="#" class="btn btn-primary btn-lg ladb-btn-thanks" data-thanks-msg="Merci à tous pour vos réponses !"><i class="ladb-icon-comment"></i> Remercier</button>
+                    {% endif %}
+                    <button id="ladb_answer_btn" class="btn btn-{% if question.user == app.user %}default{% else %}primary{% endif %} btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}</button>
+                {% else %}
+                    <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre réponse.
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+</div>

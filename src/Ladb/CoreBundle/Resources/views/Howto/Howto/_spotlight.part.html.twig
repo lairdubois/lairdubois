@@ -1,0 +1,17 @@
+{% extends 'LadbCoreBundle:Core/Spotlight:_spotlight.part.html.twig' %}
+
+{% block counters %}
+    {{ parent() }}
+    {% if entity.planCount > 0 %}
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_howto_plans', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ entity.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(entity.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+    {% endif %}
+    {% if entity.creationCount > 0 %}
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_howto_creations', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ entity.creationCount }} {{ 'wonder.creation.choice.creations'|transchoice(entity.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
+    {% endif %}
+    {% if entity.workshopCount > 0 %}
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_howto_workshops', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ entity.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(entity.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
+    {% endif %}
+    {% if entity.providerCount > 0 %}
+        <li class="ladb-linkto ladb-hidden-mobile"><a href="{{ path('core_howto_providers', { 'id':entity.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ entity.providerCount }} {{ 'knowledge.provider.choice.providers'|transchoice(entity.providerCount) }}"><i class="ladb-icon-provider"></i></a></li>
+    {% endif %}
+{% endblock %}

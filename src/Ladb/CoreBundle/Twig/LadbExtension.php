@@ -144,10 +144,10 @@ class LadbExtension extends \Twig_Extension {
 		return $url;
 	}
 
-    public function entityTypeStrippedNameFunction($entity, $long = false) {
+    public function entityTypeStrippedNameFunction($entity, $delimiter = '_') {
         if ($entity instanceof \Ladb\CoreBundle\Model\TypableInterface) {
 			$typableUtils = $this->container->get(TypableUtils::NAME);
-			return $typableUtils->getStrippedName($entity, $long);
+			return $typableUtils->getStrippedName($entity, $delimiter);
         }
         return '';
     }

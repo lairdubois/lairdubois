@@ -13,7 +13,7 @@ use Imagine\Image\Point;
 use Imagine\Image\Palette\RGB;
 use Ladb\CoreBundle\Model\ChildInterface;
 use Ladb\CoreBundle\Model\LicensedInterface;
-use Ladb\CoreBundle\Entity\Picture;
+use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
 

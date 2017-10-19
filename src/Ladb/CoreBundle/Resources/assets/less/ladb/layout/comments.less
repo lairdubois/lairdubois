@@ -3,27 +3,45 @@
 //
 
 @boxMarginLeft: 42px;
+@boxChildMarginLeft: 32px;
 @boxMinHeight: 32px;
 
 .ladb-comment-widget {
   margin-top: 20px;
-  
+
+  .ladb-collapse-toggle {
+    text-align: right;
+    font-size: 90%;
+    padding: 5px 0;
+    color: #aaa;
+
+    a {
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    > .ladb-with-comments {
+      color: #666;
+
+      a {
+        color: #666;
+      }
+
+    }
+
+  }
+
   h2 {
     font-size: 25px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     padding-bottom: 10px;
-    border-bottom: 1px solid @ladb-global-border;
   }
   
-  .ladb-deleted {
-    color: @ladb-global-light-color;
-    text-decoration: line-through;
-  }
-  
-  .ladb-new {
+  .ladb-new, .ladb-fake-new {
     padding-top: 10px;
     padding-bottom: 10px;
-    
+    border-top: 1px solid @ladb-global-line;
+
     .ladb-box {
       margin-left: @boxMarginLeft;
       min-height: @boxMinHeight;
@@ -31,9 +49,19 @@
     
   }
 
+  .ladb-fake-new button {
+    text-align: left;
+    cursor: text;
+
+    &:hover {
+      background-color: #fff;
+      border-color: #66afe9;
+    }
+  }
+
   .ladb-activity-row {
     padding: 10px 0 10px 0;
-    border-bottom: 1px solid @ladb-global-border;
+    border-top: 1px solid @ladb-global-line;
     position: relative;
 
     .ladb-icon {
@@ -53,15 +81,39 @@
 
   }
 
+  .ladb-comment-children-collapse {
+    margin-left: 30px;
+    border-left: 4px solid @ladb-global-line;
+    padding-left: 12px;
+    margin-bottom: 10px;
+
+    .ladb-comment-row, .ladb-new, .ladb-fake-new {
+
+      > a > img {
+        width: 22px;
+      }
+
+      .ladb-box {
+        margin-left: @boxChildMarginLeft;
+      }
+
+    }
+
+  }
+
 }
 
 .ladb-comment-row {
   padding-top: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid @ladb-global-border;
+  border-top: 1px solid #eee;
 
   form {
     margin: 0;
+  }
+
+  a {
+    cursor: pointer;
   }
 
   > .ladb-minitools {
@@ -89,6 +141,23 @@
       .age();
     }
 
+  }
+
+  .ladb-comment-footer {
+    color: #aaa;
+    font-size: 90%;
+  }
+
+  .ladb-comment-reply {
+    color: #aaa;
+
+    &:hover {
+      color: #666;
+    }
+  }
+
+  .ladb-comment-children-collapse-btn {
+    color: #666;
   }
 
 }

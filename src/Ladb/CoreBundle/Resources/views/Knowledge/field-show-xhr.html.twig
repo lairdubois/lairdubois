@@ -8,7 +8,7 @@
 {% block contentInner %}
     {{ parent() }}
     <script>
-        bindNewCommentAjaxForm();
+        $('.ladb-comment-widget').ladbCommentWidget();
         bindNewValueProposalAjaxForm();
         setupPopovers();
         setupTooltips();
@@ -49,7 +49,7 @@
                 </div>
             {% else %}
                 <div style="padding: 20px;">
-                    <a href="{{ path('core_smartlogin') }}"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter une proposition.
+                    <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter une proposition.
                 </div>
             {% endif %}
         </div>

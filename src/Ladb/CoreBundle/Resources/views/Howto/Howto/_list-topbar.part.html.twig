@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
+
+{% set heading = 'howto.howto.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'LadbCoreBundle:Howto/Howto:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{{ path('core_howto_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'howto.howto.new'|trans() }}</span></a>
+{% endblock %}

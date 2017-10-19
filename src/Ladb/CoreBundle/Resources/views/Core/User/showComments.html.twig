@@ -1,0 +1,25 @@
+{% extends 'LadbCoreBundle:Core/User:_show-list.html.twig' %}
+
+{% block bodyContainerContent %}
+    {% if items|length == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                <p>Vous n'avez pas encore publié de <strong>commentaire</strong> !</p>
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas encore publié de commentaire.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-margin-bottom' } %}
+            {% set filterDefs = {} %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ user.commentCount }} {{ 'comment.choice.comments'|transchoice(user.commentCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Core/Comment:_list-byuser-n.part.html.twig' %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'LadbCoreBundle:Core/Comment:_new.part.html.twig' %}
+
+{# set comment #}
+{# set mentionStrategy #}
+
+{% set condenced = false %}
+
+{% block script %}
+    <script>
+        setupTextareas();
+        $("#{{ form.body.vars.id }}")
+            .markdown({ autofocus:true })
+            .ladbTextcompletify({ maxCount: 5{% if mentionStrategy is defined %}, mentionStrategy: {{ mentionStrategy|raw }}{% endif %} });
+    </script>
+{% endblock %}

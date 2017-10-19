@@ -3,5 +3,5 @@
 {# set classes (facultative) #}
 
 <a href="{{ path('core_find_show', { 'id':find.sluggedId }) }}" class="thumbnail{% if classes is defined %} {{ classes }}{% endif %}" data-tooltip="tooltip" title="{{ find.title }} {{ 'default.by'|trans() }} {{ find.user.displayname }}">
-    {% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'128', 'height':'128', 'filterMode':'o', 'alt':find.title, 'attributes':'nopin="nopin"', 'noMicrodata':true } %}
+    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'128', 'height':'128', 'filterMode':'o', 'alt':find.title, 'attributes':'nopin="nopin"', 'noMicrodata':true } %}
 </a>

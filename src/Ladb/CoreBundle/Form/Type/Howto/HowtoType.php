@@ -9,9 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\Howto\ArticlesToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\ArticlesToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\PlansToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\ProvidersToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 
 class HowtoType extends AbstractType {
@@ -37,11 +38,15 @@ class HowtoType extends AbstractType {
 			)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-				->addModelTransformer(new TagsToNamesTransformer($this->om))
+				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 			->add($builder
 				->create('plans', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new PlansToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('providers', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new ProvidersToIdsTransformer($this->om))
 			)
 			->add('license', LicenseType::class)
 		;

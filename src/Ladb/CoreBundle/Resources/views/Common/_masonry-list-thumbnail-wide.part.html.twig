@@ -19,13 +19,13 @@
             {% block contentInner %}
                 <div class="ladb-heading">
                     {% block headingInner %}
-                        <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% block title %}<a href="{{ ladb_entity_url_action(entity) }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
+                        <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% if entity.isLocked is defined and entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<a href="{{ ladb_entity_url_action(entity) }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
                     {% endblock %}
                 </div>
                 {% block imageOuter %}
                     <div class="ladb-image">
                         {% block image %}
-                            {% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':'180', 'height':'180', 'alt':entity.title } %}
+                            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':'180', 'height':'180', 'alt':entity.title } %}
                         {% endblock %}
                         {% if entity.bodyBlockVideoCount is defined and entity.bodyBlockVideoCount > 0 %}
                             <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'default.choice.contains_videos'|transchoice(entity.bodyBlockVideoCount, { '%count%':entity.bodyBlockVideoCount }) }}"><i class="ladb-icon-video"></i></div>

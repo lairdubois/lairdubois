@@ -1,0 +1,7 @@
+{% extends 'LadbCoreBundle:Core/Notification:_row.part.html.twig' %}
+
+{% set icon = 'follow' %}
+
+{% block body %}
+    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} s'est abonné à votre compte.
+{% endblock %}

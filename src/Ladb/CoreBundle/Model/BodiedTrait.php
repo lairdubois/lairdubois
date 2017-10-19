@@ -26,4 +26,10 @@ trait BodiedTrait {
 		return $this->htmlBody;
 	}
 
+	// BodyExtract /////
+
+	public function getBodyExtract() {
+		return $this->getHtmlBody();
+	}
+
 }

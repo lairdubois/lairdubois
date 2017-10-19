@@ -3,7 +3,8 @@
 namespace Ladb\CoreBundle\Repository\Howto;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Knowledge\Provider;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
@@ -150,6 +151,30 @@ class HowtoRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findPagined($offset, $limit, $filter = 'recent', $filterParam = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'h', 'u', 'mp', 't' ))
+			->from($this->getEntityName(), 'h')
+			->innerJoin('h.user', 'u')
+			->leftJoin('h.mainPicture', 'mp')
+			->leftJoin('h.tags', 't')
+			->where('h.isDraft = false')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		if ('followed' == $filter) {
+			$queryBuilder
+				->innerJoin('u.followers', 'f', 'WITH', 'f.user = :filterParam:')
+				->setParameter('filterParam', $filterParam);
+		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder
@@ -236,30 +261,6 @@ class HowtoRepository extends AbstractEntityRepository {
 			->addOrderBy('h.changedAt', 'DESC');
 	}
 
-	public function findPagined($offset, $limit, $filter = 'recent', $filterParam = null) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 't' ))
-			->from($this->getEntityName(), 'h')
-			->innerJoin('h.user', 'u')
-			->leftJoin('h.mainPicture', 'mp')
-			->leftJoin('h.tags', 't')
-			->where('h.isDraft = false')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		if ('followed' == $filter) {
-			$queryBuilder
-				->innerJoin('u.followers', 'f', 'WITH', 'f.user = :filterParam:')
-				->setParameter('filterParam', $filterParam);
-		}
-
-		$this->_applyCommonFilter($queryBuilder, $filter);
-
-		return new Paginator($queryBuilder->getQuery());
-	}
-
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -343,6 +344,27 @@ class HowtoRepository extends AbstractEntityRepository {
 			->where('h.isDraft = false')
 			->andWhere('w = :workshop')
 			->setParameter('workshop', $workshop)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByProvider(Provider $provider, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'h', 'u', 'mp', 't', 'p' ))
+			->from($this->getEntityName(), 'h')
+			->innerJoin('h.user', 'u')
+			->leftJoin('h.mainPicture', 'mp')
+			->leftJoin('h.tags', 't')
+			->innerJoin('h.providers', 'p')
+			->where('h.isDraft = false')
+			->andWhere('p = :provider')
+			->setParameter('provider', $provider)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

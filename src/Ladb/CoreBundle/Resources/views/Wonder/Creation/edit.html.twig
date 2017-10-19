@@ -1,0 +1,21 @@
+{% extends 'LadbCoreBundle:Wonder/Creation:_form.html.twig' %}
+
+{% set pageTitle = 'wonder.creation.edit'|trans() %}
+{% set formAction = path('core_creation_update', { 'id':creation.id }) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'wonder.creation.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_creation_show', { 'id':creation.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.back'|trans() }}</a>
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sections %}
+    {% if creation.isDraft %}
+        {% include 'LadbCoreBundle:Wonder/Creation:_draft-alert.part.html.twig' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+

@@ -25,7 +25,7 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 	const STATUS_COMPLETED = 3;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_find_content_event_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1, max=5, groups={"event"})
@@ -164,10 +164,10 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 	// Duration /////
 
 	public function getDuration() {
-		if (!is_null($this->getStartAt()) && !is_null($this->getEndAt())) {
-			return $this->getStartAt()->diff($this->getEndAt());
+		if (is_null($this->getStartAt()) || is_null($this->getEndAt())) {
+			return null;
 		}
-		return null;
+		return $this->getStartAt()->diff($this->getEndAt());
 	}
 
 	// Status /////

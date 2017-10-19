@@ -1,11 +1,11 @@
 {% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
 
-{% set heading = 'find.list'|trans() %}
+{% set heading = 'find.find.list'|trans() %}
 
 {% block listTopbarMiddleInner %}
     {% include 'LadbCoreBundle:Find:_searchbox.part.html.twig' %}
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_find_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'find.new'|trans() }}</span></a>
+    <a href="{{ path('core_find_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'find.find.new'|trans() }}</span></a>
 {% endblock %}

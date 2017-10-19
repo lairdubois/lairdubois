@@ -10,7 +10,7 @@ use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractPublication;
-use Ladb\CoreBundle\Entity\Block\Gallery;
+use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
@@ -33,33 +33,33 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	const TYPE = 107;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", inversedBy="articles")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $howto;
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", inversedBy="articles")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $howto;
 
 	/**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+	 * @ORM\Column(type="string", length=100)
+	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
 	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
 	 * @ladbAssert\UpperCaseRatio()
-     */
-    private $title;
-
-    /**
-     * @Gedmo\Slug(fields={"title"}, separator="-")
-     * @ORM\Column(type="string", length=100, unique=true)
-     */
-    private $slug;
-
-    /**
-     * @ORM\Column(type="text", nullable=false)
-     */
-    private $body;
+	 */
+	private $title;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @Gedmo\Slug(fields={"title"}, separator="-")
+	 * @ORM\Column(type="string", length=100, unique=true)
+	 */
+	private $slug;
+
+	/**
+	 * @ORM\Column(type="text", nullable=false)
+	 */
+	private $body;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_howto_article_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1)
@@ -82,7 +82,7 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	private $sortIndex = 0;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
 	 */
 	private $sticker;
@@ -109,6 +109,17 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 
 	// Howto /////
 
+    public function setHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto = null) {
+        $this->howto = $howto;
+        return $this;
+    }
+
+    public function getHowto() {
+        return $this->howto;
+    }
+
+	// User /////
+
 	public function getUser() {
 		if (is_null($this->howto)) {
 			return null;
@@ -116,22 +127,22 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		return $this->howto->getUser();
 	}
 
-    public function getSlug() {
-        return $this->slug;
-    }
-
-	// User /////
+    // Slug /////
 
     public function setSlug($slug) {
         $this->slug = $slug;
         return $this;
     }
 
-    // Slug /////
+    public function getSlug() {
+        return $this->slug;
+    }
 
     public function getSluggedId() {
         return $this->id.'-'.$this->slug;
     }
+
+	// MainPicture /////
 
 	public function getMainPicture() {
 		foreach ($this->getBodyBlocks() as $bodyBlock) {
@@ -145,33 +156,22 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		return null;
 	}
 
-	public function getSortIndex() {
-		return $this->sortIndex;
-	}
-
-	// MainPicture /////
+	// SortIndex /////
 
 	public function setSortIndex($sortIndex) {
 		$this->sortIndex = $sortIndex;
 		return $this;
 	}
 
-	// SortIndex /////
+	public function getSortIndex() {
+		return $this->sortIndex;
+	}
+
+	// ParentEntityType /////
 
 	public function getParentEntityType() {
 		return $this->getHowto()->getType();
 	}
-
-    public function getHowto() {
-        return $this->howto;
-    }
-
-	// ParentEntityType /////
-
-    public function setHowto(\Ladb\CoreBundle\Entity\Howto\Howto $howto = null) {
-        $this->howto = $howto;
-        return $this;
-    }
 
 	// ParentEntityId /////
 

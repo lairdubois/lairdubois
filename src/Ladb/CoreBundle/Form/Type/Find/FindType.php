@@ -4,7 +4,6 @@ namespace Ladb\CoreBundle\Form\Type\Find;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -12,24 +11,22 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
+use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Find\Content\Website;
 use Ladb\CoreBundle\Entity\Find\Content\Video;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
-use Ladb\CoreBundle\Utils\FindUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 
 class FindType extends AbstractType {
 
 	private $om;
-	private $findUtils;
 	private $videoHostingUtils;
 	private $localisableUtils;
 
-	public function __construct(ObjectManager $om, FindUtils $findUtils, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils) {
+	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
-		$this->findUtils = $findUtils;
 		$this->videoHostingUtils = $videoHostingUtils;
 		$this->localisableUtils = $localisableUtils;
 	}
@@ -37,9 +34,22 @@ class FindType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('title')
-			->add('body', TextareaType::class)
+			->add('bodyBlocks', PolyCollectionType::class, array(
+				'types'        => array(
+					\Ladb\CoreBundle\Form\Type\Block\TextBlockType::class,
+					\Ladb\CoreBundle\Form\Type\Block\GalleryBlockType::class,
+					\Ladb\CoreBundle\Form\Type\Block\VideoBlockType::class,
+				),
+				'allow_add'    => true,
+				'allow_delete' => true,
+				'by_reference' => false,
+				'options'      => array(
+					'em' => $this->om,
+				),
+				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
+			))
 			->add('contentType', ChoiceType::class, array(
-				'choices'     => array_flip(array(Find::CONTENT_TYPE_LINK => 'find.content.link.name', Find::CONTENT_TYPE_GALLERY => 'find.content.gallery.name', Find::CONTENT_TYPE_EVENT => 'find.content.event.name')),
+				'choices'     => array_flip(array(Find::CONTENT_TYPE_LINK => 'find.find.content.link.name', Find::CONTENT_TYPE_GALLERY => 'find.find.content.gallery.name', Find::CONTENT_TYPE_EVENT => 'find.find.content.event.name')),
 			))
 			->add('link', Content\LinkType::class, array(
 				'mapped'      => false,
@@ -55,7 +65,7 @@ class FindType extends AbstractType {
 			))
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-				->addModelTransformer(new TagsToNamesTransformer($this->om))
+				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 		;
 
@@ -164,14 +174,6 @@ class FindType extends AbstractType {
 			}
 		);
 
-		$builder->addEventListener(
-			FormEvents::POST_SUBMIT,
-			function(FormEvent $event) {
-				$find = $event->getForm()->getData();
-				$this->findUtils->generateMainPicture($find);
-			}
-		);
-
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
@@ -191,6 +193,7 @@ class FindType extends AbstractType {
 						return array('Default', 'event');
 
 				}
+				return array('Default');
 			},
 		));
 	}

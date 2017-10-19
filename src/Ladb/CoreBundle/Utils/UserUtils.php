@@ -2,25 +2,14 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Imagine\Filter\Advanced\RelativeResize;
 use Imagine\Gd\Font;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use Imagine\Image\ImageInterface;
 use Imagine\Image\Point;
 use Imagine\Image\Palette\RGB;
-use Ladb\CoreBundle\Entity\Blog\Post;
-use Ladb\CoreBundle\Entity\Faq\Question;
-use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Knowledge\Provider;
-use Ladb\CoreBundle\Entity\Knowledge\Wood;
-use Ladb\CoreBundle\Entity\Picture;
-use Ladb\CoreBundle\Entity\User;
-use Ladb\CoreBundle\Entity\View;
-use Ladb\CoreBundle\Entity\Find\Find;
-use Ladb\CoreBundle\Entity\Wonder\Creation;
-use Ladb\CoreBundle\Entity\Wonder\Plan;
-use Ladb\CoreBundle\Entity\Wonder\Workshop;
+use Ladb\CoreBundle\Entity\Core\Picture;
+use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Core\View;
 
 class UserUtils extends AbstractContainerAwareUtils {
 
@@ -32,17 +21,6 @@ class UserUtils extends AbstractContainerAwareUtils {
 		return '_ladb_unlisted_counter_refresh_date_'.$entityType;
 	}
 
-	public function _getUnlistedCounterRefreshDateByEntityType($entityType) {
-		$globalUtils = $this->get(GlobalUtils::NAME);
-		$session = $globalUtils->getSession();
-		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
-		$refreshDate = $session->get($key);
-		if (is_null($refreshDate)) {
-			return new \DateTime();
-		}
-		return $refreshDate;
-	}
-
 	public function _setUnlistedCounterRefreshDateByEntityType($entityType, $refreshDate) {
 		$globalUtils = $this->get(GlobalUtils::NAME);
 		$session = $globalUtils->getSession();
@@ -50,24 +28,34 @@ class UserUtils extends AbstractContainerAwareUtils {
 		$session->set($key, $refreshDate);
 	}
 
-	/////
-
-	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
-		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
+	public function _getUnlistedCounterRefreshDateByEntityType($entityType, $now) {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+		$session = $globalUtils->getSession();
+		$key = $this->_getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType);
+		$refreshDate = $session->get($key);
+		if (is_null($refreshDate)) {
+			return $now;
+		}
+		return $refreshDate;
 	}
+
+	/////
 
 	public function computeUnlistedCounters(User $user) {
 
 		$updated = false;
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Creation::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Plan::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Workshop::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Find::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Howto::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Wood::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Provider::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Post::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, Question::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Find\Find::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Howto\Howto::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\School::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Blog\Post::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Faq\Question::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Qa\Question::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE, false);
 
 		if ($updated) {
 			$userManager = $this->get('fos_user.user_manager');
@@ -83,9 +71,9 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 		// Check refresh date
 		$now = new \DateTime();
-		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType);
+		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType, $now);
 		if ($now < $refreshDate) {
-			return;
+			return false;
 		}
 		$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType);
 
@@ -120,9 +108,12 @@ class UserUtils extends AbstractContainerAwareUtils {
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
 
 				// Update count value on user entity
-				if ($count != $meta->{'getUnlisted'.ucfirst($entityStrippedName).'Count'}()) {
+				$propertyPath = 'unlisted_'.$entityStrippedName.'_count';
+				$propertyUtils = $this->get(PropertyUtils::NAME);
 
-					$meta->{'setUnlisted'.ucfirst($entityStrippedName).'Count'}($count);
+				if ($count != $propertyUtils->getValue($meta, $propertyPath)) {
+
+					$propertyUtils->setValue($meta, $propertyPath, $count);
 
 					if ($flush) {
 						$userManager = $this->get('fos_user.user_manager');
@@ -137,6 +128,12 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 		return false;	// Returns updated
 	}
+
+	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
+		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
+	}
+
+	/////
 
 	public function createDefaultAvatar(User $user, $randomColor = true) {
 

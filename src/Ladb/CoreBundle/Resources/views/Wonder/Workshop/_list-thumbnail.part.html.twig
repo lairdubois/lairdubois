@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle:Wonder:_wonder-list-thumbnail.part.html.twig' %}
+
+{% set wonder = workshop %}
+
+{% block entityMetas %}
+    {% if wonder.planCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_workshop_plans', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(wonder.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+    {% endif %}
+    {% if wonder.howtoCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_workshop_howtos', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.howtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(wonder.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

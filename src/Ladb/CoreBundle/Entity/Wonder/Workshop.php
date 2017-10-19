@@ -44,7 +44,7 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	private $area;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1, max=5)
@@ -52,7 +52,7 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	protected $pictures;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1)
@@ -94,15 +94,16 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	private $howtos;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_tag")
 	 * @Assert\Count(min=2)
 	 */
 	protected $tags;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"accessCount" = "DESC"})
 	 */
 	protected $referrals;
 

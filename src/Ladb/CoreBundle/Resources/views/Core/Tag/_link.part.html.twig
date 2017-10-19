@@ -1,0 +1,9 @@
+
+{# set searchType #}
+{# set noMicrodata (falcultative) #}
+{# set noMicrodataTag (falcultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+{% set noMicrodataTag = noMicrodata or noMicrodataTag|default(false) %}
+
+<a href="{% if entity is defined %}{{ ladb_entity_url_action(entity, 'list', true, true, { 'q':'@tag:"'~tag.label~'"' }) }}{% else %}#{% endif %}" class="ladb-tag" rel="tag nofollow">{% if not noMicrodataTag %}<span itemprop="keywords">{% endif %}{{ tag.label }}{% if not noMicrodataTag %}</span>{% endif %}</a>

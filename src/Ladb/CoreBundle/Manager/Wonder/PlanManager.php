@@ -85,6 +85,11 @@ class PlanManager extends AbstractWonderManager {
 			$workshop->removePlan($plan);
 		}
 
+		// Unlink howtos
+		foreach ($plan->getHowtos() as $howto) {
+			$howto->removePlan($plan);
+		}
+
 		// Unlink inspirations
 		foreach ($plan->getInspirations() as $inspiration) {
 			$plan->removeInspiration($inspiration);

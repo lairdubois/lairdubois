@@ -6,6 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Howto\Article;
 
 class ArticlesToIdsTransformer implements DataTransformerInterface {
 
@@ -38,7 +39,7 @@ class ArticlesToIdsTransformer implements DataTransformerInterface {
 
 		$articles = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository('LadbCoreBundle:Howto\Article');
+		$repository = $this->om->getRepository(Article::CLASS_NAME);
 		$sortIndex = 0;
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);

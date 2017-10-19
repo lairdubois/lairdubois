@@ -1,0 +1,6 @@
+{% extends 'LadbCoreBundle:Common:_draft-alert.part.html.twig' %}
+
+{% set entity = creation %}
+{% set alertMessage = 'Cette création est un brouillon. Elle n\'est visible que par vous, depuis votre <a href="'~path('core_user_show_creations', { 'username':app.user.usernameCanonical })~'" target="_blank" class="alert-link">liste des creations</a>. Pour la rendre publique, vous devez la publier.' %}
+{% set modalMessage = 'La publication de la création <strong>'~creation.title~'</strong> la rendra publique.' %}
+

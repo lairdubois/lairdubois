@@ -35,7 +35,7 @@ EOT
 		$queryBuilder = $em->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'u' ))
-			->from('LadbCoreBundle:User', 'u')
+			->from('LadbCoreBundle:Core\User', 'u')
 		;
 
 		try {

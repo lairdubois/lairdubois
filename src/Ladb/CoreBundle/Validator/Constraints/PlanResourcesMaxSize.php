@@ -9,8 +9,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class PlanResourcesMaxSize extends Constraint {
 
-	public $maxSize = 10485760;	// 10 Mo
-	public $message = 'La taille cumulée des fichiers ne doit pas dépasser 10Mo.';
+	public $maxSize = 62914560;	// 60 Mo
+	public $message = 'La taille cumulée des fichiers ne doit pas dépasser 60Mo.';
 
 	public function validatedBy() {
 		return 'ladb_core.plan_resources_max_size_validator';

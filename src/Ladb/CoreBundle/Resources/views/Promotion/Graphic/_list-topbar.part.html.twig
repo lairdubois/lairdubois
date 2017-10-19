@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
+
+{% set heading = 'promotion.graphic.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'LadbCoreBundle:Promotion/Graphic:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{{ path('core_promotion_graphic_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'promotion.graphic.new'|trans() }}</span></a>
+{% endblock %}

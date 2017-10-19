@@ -3,12 +3,10 @@
 namespace Ladb\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Ladb\CoreBundle\Entity\TagUsage;
+use Ladb\CoreBundle\Entity\Core\TagUsage;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
@@ -210,7 +208,7 @@ EOT
 			if ($counter == 0) {
 				$unusedTagCount++;
 				if ($verbose) {
-					$output->writeln('<info> -> "'.$tag->getName().'" is unused</info>');
+					$output->writeln('<info> -> "'.$tag->getLabel().'" is unused</info>');
 				}
 				if ($forced) {
 					$om->remove($tag);
@@ -222,7 +220,7 @@ EOT
 						if (!is_null($tagUsage)) {
 							$unusedTagUsageCount++;
 							if ($verbose) {
-								$output->writeln('<info> -> "'.$tag->getName().'" is unused for entityType='.$entityType.'</info>');
+								$output->writeln('<info> -> "'.$tag->getLabel().'" is unused for entityType='.$entityType.'</info>');
 							}
 							if ($forced) {
 								$om->remove($tagUsage);

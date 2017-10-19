@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Entity\TagUsage;
+use Ladb\CoreBundle\Entity\Core\TagUsage;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

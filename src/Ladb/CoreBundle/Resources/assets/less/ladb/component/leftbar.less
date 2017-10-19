@@ -13,7 +13,7 @@
   padding: 0;
   background: @ladb-brand-dark;
 
-  a {
+  a, .ladb-toggle-handle {
     display: block;
     text-align: center;
     text-decoration: none;
@@ -22,12 +22,12 @@
 
     &:hover {
       background-color: @ladb-brand-light;
-      color: @ladb-brand-dark;
+      color: @ladb-brand-dark !important;
     }
 
     &.ladb-active {
       background-color: @ladb-brand-primary;
-      color: #fff;
+      color: #fff !important;
 
       >.badge.badge-notification {
         background-color: @ladb-brand-dark;
@@ -35,7 +35,11 @@
 
     }
 
-    >.badge.badge-notification {
+    &.ladb-highlighted {
+      color: #f9a751;
+    }
+
+    > .badge.badge-notification {
       position: absolute;
       top: 5px;
       right: 5px;
@@ -43,7 +47,68 @@
 
   }
 
+  .ladb-leftbar-subbar {
+    background-color: @ladb-brand-dark;
+
+    &:hover {
+
+      .ladb-subbar-toggle {
+        background-color: initial;
+
+        .ladb-toggle-handle {
+          background-color: @ladb-brand-light;
+          color: @ladb-brand-dark;
+        }
+
+        .ladb-toggle-arrow {
+          border-left-color: @ladb-brand-light;
+        }
+
+      }
+
+      .ladb-subbar-panel {
+        display: block;
+        background-color: @ladb-brand-dark;
+      }
+
+    }
+
+    .ladb-subbar-toggle {
+      border-left: 5px solid @ladb-brand-light;
+      float: left;
+
+      &.ladb-nav-active {
+        border-left: 5px solid @ladb-brand-primary;
+      }
+
+      .ladb-toggle-handle {
+        float: left;
+      }
+
+      .ladb-toggle-arrow {
+        float: right;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-color: transparent transparent transparent @ladb-brand-dark;
+      }
+
+    }
+
+    .ladb-subbar-panel {
+      float: right;
+      display: none;
+
+      a {
+        float: left;
+      }
+
+    }
+
+  }
+
 }
+
 
 // phone
 @media screen and (max-width: @ladb-screen-phone-max) {
@@ -63,7 +128,7 @@
   .ladb-leftbar {
     width: @ladb-leftbar-width-tablet;
 
-    a {
+    a, .ladb-toggle-handle {
       padding-top: 12px;
       width: @ladb-leftbar-width-tablet;
       height: @ladb-leftbar-height-tablet;
@@ -79,6 +144,35 @@
 
     }
 
+    .ladb-leftbar-subbar {
+      height: @ladb-leftbar-height-tablet;
+
+      &.ladb-leftbar-subbar-2:hover {
+        width: @ladb-leftbar-width-tablet + 10px + @ladb-leftbar-width-tablet * 2;
+      }
+      &.ladb-leftbar-subbar-3:hover {
+        width: @ladb-leftbar-width-tablet + 10px + @ladb-leftbar-width-tablet * 3;
+      }
+
+      .ladb-subbar-toggle {
+        width: @ladb-leftbar-width-tablet + 5px;
+
+        .ladb-toggle-handle {
+          width: @ladb-leftbar-width-tablet - 5px;
+        }
+
+        .ladb-toggle-arrow {
+          border-width: (@ladb-leftbar-height-tablet / 2) 0 (@ladb-leftbar-height-tablet / 2) 5px;
+        }
+
+      }
+
+      .ladb-subbar-panel {
+        height: @ladb-leftbar-height-tablet;
+      }
+
+    }
+
   }
 }
 
@@ -90,7 +184,7 @@
   .ladb-leftbar {
     width: @ladb-leftbar-width-desktop;
 
-    a {
+    a, .ladb-toggle-handle {
       padding-top: 15px;
       width: @ladb-leftbar-width-desktop;
       height: @ladb-leftbar-height-desktop;
@@ -106,5 +200,33 @@
 
     }
 
+    .ladb-leftbar-subbar {
+      height: @ladb-leftbar-height-desktop;
+
+      &.ladb-leftbar-subbar-2:hover {
+        width: @ladb-leftbar-width-desktop + 10px + @ladb-leftbar-width-desktop * 2;
+      }
+      &.ladb-leftbar-subbar-3:hover {
+        width: @ladb-leftbar-width-desktop + 10px + @ladb-leftbar-width-desktop * 3;
+      }
+
+      .ladb-subbar-toggle {
+        width: @ladb-leftbar-width-desktop + 5px;
+
+        .ladb-toggle-handle {
+          width: @ladb-leftbar-width-desktop - 5px;
+        }
+
+        .ladb-toggle-arrow {
+          border-width: (@ladb-leftbar-height-desktop / 2) 0 (@ladb-leftbar-height-desktop / 2) 5px;
+        }
+
+      }
+
+      .ladb-subbar-panel {
+        height: @ladb-leftbar-height-desktop;
+      }
+
+    }
   }
 }

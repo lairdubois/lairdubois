@@ -1,0 +1,30 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{# set howto #}
+
+{% set entity = howto %}
+{% set itemType = 'Article' %}
+
+{% block headingInner %}{% if howto.isWorkInProgress %}<span class="pull-right" title="{{ 'howto.howto.wip_tooltip'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-wip" style="color: #ddd;"></i></span>{% endif %}{{ parent() }}{% endblock %}
+
+{% block entityMetas %}
+    {% if howto.planCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_howto_plans', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(howto.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+    {% endif %}
+    {% if howto.creationCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_howto_creations', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.creationCount }} {{ 'wonder.creation.choice.creations'|transchoice(howto.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
+    {% endif %}
+    {% if howto.workshopCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_howto_workshops', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(howto.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
+    {% endif %}
+    {% if howto.providerCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_howto_providers', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.providerCount }} {{ 'knowledge.provider.choice.providers'|transchoice(howto.providerCount) }}"><i class="ladb-icon-provider"></i></a></li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Spotlight:_spotlight-star.part.html.twig' %}
+{% endblock %}
+

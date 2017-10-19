@@ -3,21 +3,24 @@
 {% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
 
 {% set entity = find %}
+
 {% set pageTitleBy = 'trouvé par' %}
 {% set noMicrodataLocation = false %}
 {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') or find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}
-    {% set pageItemType = 'CreativeWork' %}
+    {% set pageContentItemType = 'CreativeWork' %}
     {% set noMicrodataLocation = true %}
 {% elseif find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
-    {% set pageItemType = 'Event' %}
+    {% set pageContentItemType = 'Event' %}
     {% set noMicrodataHeadline = true %}
     {% set noMicrodataAge = true %}
     {% set noMicrodataAuthor = true %}
     {% set noMicrodataTag = true %}
     {% set noMicrodataCommentCount = true %}
 {% else %}
-    {% set pageItemType = 'WebSite' %}
+    {% set pageContentItemType = 'WebSite' %}
 {% endif %}
+{% set pageSectionUrl = url('core_find_list') %}
+{% set pageSectionName = 'find.find.list'|trans %}
 
 {% set navSection = 'finds' %}
 {% set searchPath = path('core_find_list') %}
@@ -43,14 +46,14 @@
         {% block headerTools %}
             <div class="ladb-header-tools">
                 {% if not ownerUser %}
-                    {% include 'LadbCoreBundle:Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                    {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
                 {% endif %}
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
-                    {% include 'LadbCoreBundle:Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
                 {% if not ownerUser %}
                     &nbsp;
-                    {% include 'LadbCoreBundle:Report:_widget-button.part.html.twig' with { 'entityType':find.type, 'entityId':find.id } %}
+                    {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':find.type, 'entityId':find.id } %}
                 {% endif %}
                 {% if ownerUser or is_granted("ROLE_ADMIN") %}
                     &nbsp;
@@ -90,19 +93,15 @@
     {% endembed %}
 {% endblock %}
 
-{% block bodyContainerContent %}
+{% block contentBody %}
     {% if find.isDraft %}
         {% include 'LadbCoreBundle:Find:_draft-alert.part.html.twig' %}
     {% endif %}
-    {{ parent() }}
-{% endblock %}
-
-{% block contentBody %}
     <div class="ladb-find">
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') %}
             <div class="ladb-thumb">
                 <a href="{{ find.content.url }}" target="_blank" class="thumbnail">
-                    {% include 'LadbCoreBundle:Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'nopin="nopin"' } %}
+                    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'nopin="nopin"' } %}
                 </a>
             </div>
         {% endif %}
@@ -112,7 +111,7 @@
         {% if find.content.pictures is defined %}
             <div class="row">
                 <div class="col-xs-12">
-                    {% include 'LadbCoreBundle:Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[0], 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'aClasses':(find.content.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
+                    {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[0], 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'aClasses':(find.content.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
                     {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
                         {% include 'LadbCoreBundle:Find:_event-calendar.part.html.twig' with { 'event':find.content, 'topRight':true } %}
                     {% endif %}
@@ -121,7 +120,7 @@
                     {% for index in 1..4 %}
                         <div class="col-xs-3">
                             {% if index < find.content.pictures.count %}
-                                {% include 'LadbCoreBundle:Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[index], 'width':'128', 'height':'128', 'alt':find.title, 'attributes':'nopin="nopin"' } %}
+                                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[index], 'width':'128', 'height':'128', 'alt':find.title, 'attributes':'nopin="nopin"' } %}
                             {% else %}
                                 <span class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" nopin="nopin"></span>
                             {% endif %}
@@ -143,15 +142,13 @@
                     <div class="media-body ladb-event">
                         <meta itemprop="startDate" content="{{ startDate|date('Y-m-dTH:i:s') }}">
                         {% if endDate is not null and endDate > startDate %}<meta itemprop="endDate" content="{{ endDate|date('Y-m-dTH:i:s') }}">{% endif %}
-                        {% if endDate is not null and endDate > startDate or startTime is not null or endTime is not null %}
-                            <span class="ladb-full-date">{% if endDate is not null and endDate > startDate %}<span class="ladb-link-word">du</span>{% else %}<span class="ladb-link-word">le</span>{% endif %} {{ startDate|localizeddate('full', 'none') }}{% if startTime is not null %}{% if endTime is not null and endTime > startTime and endDate == startDate %} <span class="ladb-link-word">de</span>{% else %} <span class="ladb-link-word">à</span>{% endif %} <span class="ladb-time">{{ startTime|date('G:i') }}</span>{% endif %}{% if endDate is not null and endDate > startDate %} <span class="ladb-link-word">au</span> {{ endDate|localizeddate('full', 'none') }}{% endif %}{% if endTime is not null %} <span class="ladb-link-word">à</span> <span class="ladb-time">{{ endTime|date('G:i') }}{% endif %}</span></span>
-                        {% endif %}
+                        <span class="ladb-full-date">{% if endDate is not null and endDate > startDate %}<span class="ladb-link-word">du</span>{% else %}<span class="ladb-link-word">le</span>{% endif %} {{ startDate|localizeddate('full', 'none') }}{% if startTime is not null %}{% if endTime is not null and endTime > startTime and (endDate == startDate or endDate is null) %} <span class="ladb-link-word">de</span>{% else %} <span class="ladb-link-word">à</span>{% endif %} <span class="ladb-time">{{ startTime|date('G:i') }}</span>{% endif %}{% if endDate is not null and endDate > startDate %} <span class="ladb-link-word">au</span> {{ endDate|localizeddate('full', 'none') }}{% endif %}{% if endTime is not null %} <span class="ladb-link-word">à</span> <span class="ladb-time">{{ endTime|date('G:i') }}{% endif %}</span></span>
                         {% if find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_SCHEDULED') %}
-                            <br><span class="label label-info">{{ 'find.content.event.scheduled'|trans() }}</span> <span class="ladb-duration"> {{ 'find.content.event.event_starts'|trans() }} {{ find.content.startAt|time_diff() }}.</span>
+                            <br><span class="label label-info">{{ 'find.find.content.event.scheduled'|trans() }}</span> <span class="ladb-duration"> {{ 'find.find.content.event.event_starts'|trans() }} {{ find.content.startAt|time_diff() }}.</span>
                         {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_RUNNING') %}
-                            <br><span class="label label-success">{{ 'find.content.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'find.content.event.event_ends'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
+                            <br><span class="label label-success">{{ 'find.find.content.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'find.find.content.event.event_ends'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
                         {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_COMPLETED') %}
-                            <br><span class="label label-danger">{{ 'find.content.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'find.content.event.event_was_completed'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
+                            <br><span class="label label-danger">{{ 'find.find.content.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'find.find.content.event.event_was_completed'|trans() }} {{ find.content.endAt|time_diff() }}.</span>
                         {% endif %}
                     </div>
                 </div>
@@ -178,12 +175,14 @@
         {% endif %}
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') and not find.isDraft and joinContext.isJoinable %}
             <div class="ladb-join-row">
-                {% include 'LadbCoreBundle:Join:_widget.part.html.twig' %}
+                {% include 'LadbCoreBundle:Core/Join:_widget.part.html.twig' %}
             </div>
         {% endif %}
         <hr>
         <div class="ladb-body">
-            {{ find.htmlBody|raw }}
+            {% for block in find.bodyBlocks %}
+                {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
         </div>
     </div>
     {% if find.updatedAt > find.createdAt %}
@@ -192,7 +191,7 @@
     {% if not ownerUser %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% include 'LadbCoreBundle:Comment:_widget.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
@@ -211,14 +210,14 @@
             </div>
         {% endif %}
     </div>
-    {% include 'LadbCoreBundle:Tag:_metas.part.html.twig' with { 'tags':find.tags, 'type':'finds' } %}
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':find.tags, 'type':'finds' } %}
 {% endblock %}
 
 {% block contentSuggests %}
     {% if userFinds is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('find.other_from')|trans() }} {% include 'LadbCoreBundle:User:_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}
+                {{ ('find.find.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userFind in userFinds %}
@@ -237,7 +236,7 @@
     {% if similarFinds is not null %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('find.similar')|trans() }}
+                {{ ('find.find.similar')|trans() }}
             </div>
             <div class="panel-body row">
                 {% for similarFind in similarFinds %}

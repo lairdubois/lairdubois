@@ -6,6 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Core\Picture;
 
 class PictureToIdTransformer implements DataTransformerInterface {
 
@@ -20,8 +21,8 @@ class PictureToIdTransformer implements DataTransformerInterface {
 			return '';
 		}
 
-		if (!$picture instanceof \Ladb\CoreBundle\Entity\Picture) {
-			throw new UnexpectedTypeException($picture, '\Ladb\CoreBundle\Entity\Picture');
+		if (!$picture instanceof \Ladb\CoreBundle\Entity\Core\Picture) {
+			throw new UnexpectedTypeException($picture, '\Ladb\CoreBundle\Entity\Core\Picture');
 		}
 
 		return $picture->getId();
@@ -37,7 +38,7 @@ class PictureToIdTransformer implements DataTransformerInterface {
 			throw new TransformationFailedException();
 		}
 		$picture = $this->om
-			->getRepository('LadbCoreBundle:Picture')
+			->getRepository(Picture::CLASS_NAME)
 			->find($id);
 		if (is_null($picture)) {
 			throw new TransformationFailedException();

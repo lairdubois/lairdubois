@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge\Value;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\VotableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,8 +24,9 @@ use Ladb\CoreBundle\Model\WatchableChildInterface;
  * @LadbAssert\ValueSource()
  * @UniqueEntity(fields={"dataHash", "parentEntityType", "parentEntityId", "parentEntityField"})
  */
-abstract class BaseValue implements WatchableChildInterface, CommentableInterface, AuthoredInterface, VotableInterface {
+abstract class BaseValue implements AuthoredInterface, WatchableChildInterface, CommentableInterface, VotableInterface {
 
+	use AuthoredTrait;
 	use CommentableTrait, VotableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\BaseValue';
@@ -38,53 +40,65 @@ abstract class BaseValue implements WatchableChildInterface, CommentableInterfac
 		self::SOURCE_TYPE_WEBSITE => 'Site web',
 		self::SOURCE_TYPE_OTHER => 'Autre',
 	);
+
 	/**
 	 * @ORM\Column(name="parent_entity_type", type="smallint", nullable=false)
 	 */
 	protected $parentEntityType;
+
 	/**
 	 * @ORM\Column(name="parent_entity_id", type="integer", nullable=false)
 	 */
 	protected $parentEntityId;
+
 	/**
 	 * @ORM\Column(name="parent_entity_field", type="string", length=20, nullable=false)
 	 */
 	protected $parentEntityField;
+
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="user_id", nullable=false)
 	 */
 	protected $user;
+
 	protected $data;
+
 	/**
 	 * @ORM\Column(type="string", name="data_hash", length=32)
 	 */
 	protected $dataHash;
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	private $createdAt;
+
 	/**
 	 * @ORM\Column(name="updated_at", type="datetime")
 	 * @Gedmo\Timestampable(on="update")
 	 */
 	private $updatedAt;
+
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 * @Assert\Length(max=255)
 	 */
 	private $legend;
+
 	/**
 	 * @ORM\Column(type="smallint", name="source_type", nullable=true)
 	 */
 	private $sourceType;
+
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 * @Assert\NotBlank(groups={"website", "other"})
@@ -92,26 +106,27 @@ abstract class BaseValue implements WatchableChildInterface, CommentableInterfac
 	 * @Assert\Url(groups={"website"})
 	 */
 	private $source;
+
 	/**
 	 * @ORM\Column(type="integer", name="positive_vote_score")
 	 */
 	private $positiveVoteScore = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="negative_vote_score")
 	 */
 	private $negativeVoteScore = 0;
 
-	/*
-	 * Abstract
-	 */
 	/**
 	 * @ORM\Column(type="integer", name="vote_score")
 	 */
 	private $voteScore = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="vote_count")
 	 */
 	private $voteCount = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="comment_count")
 	 */
@@ -156,17 +171,6 @@ abstract class BaseValue implements WatchableChildInterface, CommentableInterfac
 
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
-		return $this;
-	}
-
-	// User /////
-
-	public function getUser() {
-		return $this->user;
-	}
-
-	public function setUser(\Ladb\CoreBundle\Entity\User $user) {
-		$this->user = $user;
 		return $this;
 	}
 

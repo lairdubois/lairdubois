@@ -7,8 +7,8 @@
     {% if entity.user is defined %}
         {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.by'|trans()))~' '~entity.user.displayname %}
     {% endif %}
-    {% if pageDescription is not defined and entity.body is defined and entity.body is not empty %}
-        {% set pageDescription = entity.body|striptags|truncate(200, true, '...') %}
+    {% if pageDescription is not defined and entity.bodyExtract is defined and entity.bodyExtract is not empty %}
+        {% set pageDescription = entity.bodyExtract|striptags|truncate(200, true, '...') %}
     {% endif %}
     {% if entity.user is defined %}
         {% set pageAuthor = entity.user.displayname %}
@@ -27,7 +27,7 @@
             {% set pageImageHeight = '275' %}
         {% endif %}
     {% endif %}
-    {% set pageItemType = pageItemType|default('CreativeWork') %}
+    {% set pageContentItemType = pageContentItemType|default('CreativeWork') %}
 {% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
@@ -42,12 +42,14 @@
     {{ parent() }}
     {# OpenGraph metas #}
     {% if entity is defined %}
+        <meta property="article:author" content="{{ pageAuthor }}" />
+        <meta property="article:publisher" content="LAirDuBois" />
         <meta property="article:modified_time" content="{{ entity.updatedAt|date('c') }}" />
         <meta property="article:published_time" content="{{ entity.createdAt|date('c') }}" />
-        <meta property="article:section" content="{{ (ladb_entity_type_stripped_name(entity, true)~'.nav')|trans() }}" />
+        <meta property="article:section" content="{{ (ladb_entity_type_stripped_name(entity, '.')~'.nav')|trans() }}" />
         {% if entity.tags is defined %}
             {% for tag in entity.tags %}
-                <meta property="article:tag" content="{{ tag.name }}" />
+                <meta property="article:tag" content="{{ tag.label }}" />
             {% endfor %}
         {% endif %}
     {% endif %}
@@ -77,12 +79,13 @@
                 setTimeout(function() {
                     var selector = window.location.hash.replace('#', '#ladb');   {# Change to a valid element ID like #ladb_XXX #}
                     var $target = $(selector);
+                    $target.parents('.collapse').addClass('in');
                     $target.ladbScrollTo(null, {
                         onAfter: function() {
                             $target.effect('highlight', {}, 1500);
                         }
                     });
-                }, 500);
+                }, 1000);
             }
 
         });
@@ -103,21 +106,23 @@
 
 {% block bodyContainerContent %}
     <div class="row">
-        <div id="ladb_block_body" class="col-sm-8 col-xs-12">
+        <div id="ladb_block_body" class="col-md-8 col-xs-12">
             {% block contentBody %}{% endblock %}
         </div>
-        <div id="ladb_block_metas" class="col-sm-4 col-xs-12">
-            {% block contentMetas %}
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {% block contentMetasPanel %}{% endblock %}
+        <div class="col-md-4 col-xs-12">
+            <div id="ladb_block_metas">
+                {% block contentMetas %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% block contentMetasPanel %}{% endblock %}
+                    </div>
                 </div>
+                {% endblock %}
             </div>
-            {% endblock %}
-        </div>
-        <div id="ladb_block_suggest" class="col-sm-4 col-xs-12">
-            {% block contentSuggests %}{% endblock %}
+            <div id="ladb_block_suggest">
+                {% block contentSuggests %}{% endblock %}
+            </div>
         </div>
     </div>
-    {% include 'LadbCoreBundle:Report:_modal.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Report:_modal.part.html.twig' %}
 {% endblock %}

@@ -1,0 +1,170 @@
+{% extends 'LadbCoreBundle:Common:_show.html.twig' %}
+
+{% set entity = question %}
+
+{% set pageItemType = 'QAPage' %}
+{% set pageContentItemType = 'Question' %}
+{% set pageTitlePrefix = '[Question]' %}
+{% if question.mainPicture is null %}
+    {% set pageImage = asset('banner-questions-600x376.jpg') %}
+{% endif %}
+{% set pageSectionUrl = url('core_qa_question_list') %}
+{% set pageSectionName = 'qa.question.list'|trans %}
+
+{% set navSection = 'qa' %}
+{% set searchPath = path('core_qa_question_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == question.user.id %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/qa.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.questionpage.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#container').ladbQuestionPage({
+                answerNewPath: '{{ path('core_qa_answer_new', { 'id':question.id }) }}'
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':question } %}
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% if not ownerUser %}
+                    {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% endif %}
+                {% if watchContext is not null and is_granted("ROLE_USER") %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                {% endif %}
+                {% if not ownerUser %}
+                    &nbsp;
+                    {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':question.type, 'entityId':question.id } %}
+                {% endif %}
+                {% if ownerUser or is_granted("ROLE_ADMIN") %}
+                    &nbsp;
+                    <a href="{{ path('core_qa_question_edit', { 'id':question.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
+                    <a href="#delete_question_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                    {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_question_modal', 'entityTitle':question.title, 'deletePath':path('core_qa_question_delete', { 'id':question.id }) } %}
+                {% endif %}
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-admin"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ ladb_entity_url_action(question, question.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if question.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (question.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
+                            {% if not question.isDraft %}
+                                <li><a href="#unpublish_question_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% if not question.isDraft %}
+                        {% embed 'LadbCoreBundle:Common:_modal.part.html.twig' with { 'id':'unpublish_question_modal', 'title':('default.unpublishing'|trans()) } %}
+                            {% block bodyInner %}
+                                <p>La dépublication de <strong>{{ question.title }}</strong> la rendra invisible pour les autres utilisateurs.</p>
+                                <p>Confirmez l'action pour continuer.</p>
+                            {% endblock %}
+                            {% block footerInner %}
+                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                <a href="{{ path('core_qa_question_unpublish', { 'id':question.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if question.isDraft %}
+        {% include 'LadbCoreBundle:Qa/Question:_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-qa-question">
+        <div class="ladb-box">
+            <div class="ladb-box-inner row">
+                <div class="ladb-content-box col-sm-11 col-xs-12">
+                    {% for block in question.bodyBlocks %}
+                        {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                    {% endfor %}
+                    {% if question.updatedAt > question.createdAt %}
+                        {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':question } %}
+                    {% endif %}
+                    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'alert':(ownerUser ? '' : ('qa.question.comment_alert'|trans)) } %}
+                </div>
+                <div class="col-sm-1 col-xs-12 ladb-hidden-mobile">
+                    <div class="ladb-full-height">?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#{% if not ownerUser and question.answerCount > 0 %}#}
+        {#{% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}#}
+    {#{% endif %}#}
+    {% include 'LadbCoreBundle:Qa/Question:_answers-header.part.html.twig' %}
+    {% include 'LadbCoreBundle:Qa/Answer:_list.part.html.twig' %}
+    {% include 'LadbCoreBundle:Qa/Question:_answers-footer.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <a href="#" class="ladb-scrollto-btn" onclick="$('.ladb-qa-question-answers').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+            <i class="ladb-icon-answer ladb-icon-fixed-center"></i>
+            <strong itemprop="answerCount">{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</small>
+        </div>
+        {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':question } %}
+    </div>
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':question.license } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if userQuestions is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('qa.question.other_from')|trans() }} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':question.user, 'noMicrodata':true } %}
+            </div>
+            <div class="panel-body">
+                {% for userQuestion in userQuestions %}
+                    {% include 'LadbCoreBundle:Qa/Question:_thumbnail-link.part.html.twig' with { 'question':userQuestion, 'noAuthor':true } %}
+                {% endfor %}
+                {% if question.user.publishedQuestionCount > 2 %}
+                    <div class="ladb-margin-top">
+                        <a href="{{ path('core_user_show_questions', { 'username':question.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if similarQuestions is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('qa.question.similar')|trans() }}
+            </div>
+            <div class="panel-body">
+                {% for similarQuestion in similarQuestions %}
+                    {% include 'LadbCoreBundle:Qa/Question:_thumbnail-link.part.html.twig' with { 'question':similarQuestion, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

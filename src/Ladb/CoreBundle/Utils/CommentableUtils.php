@@ -2,14 +2,13 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\AbstractPublication;
-use Ladb\CoreBundle\Entity\Activity\AbstractActivity;
-use Ladb\CoreBundle\Entity\Comment;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity;
+use Ladb\CoreBundle\Entity\Core\Comment;
+use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
-use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 
@@ -26,15 +25,42 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
-			if ($commentable instanceof DraftableInterface && !$commentable->getIsDraft()) {
-				$comment->getUser()->incrementCommentCount(-1);
-			}
-			$activityUtils->deleteActivitiesByComment($comment);
-			$om->remove($comment);
+			$this->deleteComment($comment, $commentable, $activityUtils, $om, false);
 		}
 		if ($flush) {
 			$om->flush();
 		}
+	}
+
+	public function deleteComment(Comment $comment, CommentableInterface $commentable, ActivityUtils $activityUtils, $om, $flush = false) {
+
+		// Remove children
+		if ($comment->getChildCount() > 0) {
+			$children = $comment->getChildren()->toArray();
+			$comment->resetChildren();
+			foreach ($children as $child) {
+				$this->deleteComment($child, $commentable, $activityUtils, $om, $flush);
+			}
+		}
+
+		// Update user comment count
+		if (!($commentable instanceof DraftableInterface) || ($commentable instanceof DraftableInterface && !$commentable->getIsDraft())) {
+			$comment->getUser()->incrementCommentCount(-1);
+		}
+
+		// Update commentable comment count
+		$commentable->incrementCommentCount(-1);
+
+		// Delete relative activities
+		$activityUtils->deleteActivitiesByComment($comment);
+
+		// Remove Comment from DB
+		$om->remove($comment);
+
+		if ($flush) {
+			$om->flush();
+		}
+
 	}
 
 	public function incrementUsersCommentCount(CommentableInterface $commentable, $by = 1, $flush = true) {
@@ -52,27 +78,6 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	private function _populateMentionStrategyWithUser(&$mentionStrategy, User $user) {
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
-		if (!isset($mentionStrategy[$user->getUsername()])) {
-			if (!is_null($user->getAvatar())) {
-				$avatar = $imagineCacheManager->getBrowserPath($user->getAvatar()->getWebPath(), '32x32o');
-			} else {
-				$avatar = $imagineCacheManager->getBrowserPath('avatar.png', '32x32o');
-			}
-			$mentionStrategy[strtolower($user->getUsername())] = array( 'displayname' => $user->getDisplayName(), 'avatar' => $avatar );
-		}
-	}
-
-	private function _getMentionStrategyFromComments($comments) {
-		$mentionStrategy = array();
-		foreach ($comments as $comment) {
-			$user = $comment->getUser();
-			$this->_populateMentionStrategyWithUser($mentionStrategy, $user);
-		}
-		return $mentionStrategy;
-	}
-
 	public function getMentionStrategy(CommentableInterface $commentable) {
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
@@ -85,7 +90,36 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		return json_encode($mentionStrategy);
 	}
 
+	private function _getMentionStrategyFromComments($comments) {
+		$mentionStrategy = array();
+		foreach ($comments as $comment) {
+			$user = $comment->getUser();
+			$this->_populateMentionStrategyWithUser($mentionStrategy, $user);
+		}
+		return $mentionStrategy;
+	}
+
+	private function _populateMentionStrategyWithUser(&$mentionStrategy, User $user) {
+		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
+		if (!isset($mentionStrategy[$user->getUsername()])) {
+			if (!is_null($user->getAvatar())) {
+				$avatar = $imagineCacheManager->getBrowserPath($user->getAvatar()->getWebPath(), '32x32o');
+			} else {
+				$avatar = $imagineCacheManager->getBrowserPath('avatar.png', '32x32o');
+			}
+			$mentionStrategy[strtolower($user->getUsername())] = array( 'displayname' => $user->getDisplayName(), 'avatar' => $avatar );
+		}
+	}
+
 	/////
+
+	public function getCommentContexts($commentables, $includeTimelineActivities = true) {
+		$commentContexts = array();
+		foreach ($commentables as $commentable) {
+			$commentContexts[$commentable->getId()] = $this->getCommentContext($commentable, $includeTimelineActivities);
+		}
+		return $commentContexts;
+	}
 
 	public function getCommentContext(CommentableInterface $commentable, $includeTimelineActivities = true) {
 		$om = $this->getDoctrine()->getManager();
@@ -103,14 +137,17 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			$activities = $activityRepository->findByPublication($commentable);
 		}
 
-		// Define the mentionsStrategy
 		if ($authorizationChecker->isGranted('ROLE_USER')) {
+
 			$comment = new Comment();
-			$form = $formFactory->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$commentable->getType().'_'.$commentable->getId(), CommentType::class, $comment);
+			$form = $formFactory->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$commentable->getType().'_'.$commentable->getId().'_0', CommentType::class, $comment);
+
+			// Define the mentionsStrategy
 			$mentionStrategy = $this->_getMentionStrategyFromComments($comments);
 			if ($commentable instanceof AuthoredInterface) {
 				$this->_populateMentionStrategyWithUser($mentionStrategy, $commentable->getUser());
 			}
+
 		} else {
 			$mentionStrategy = null;
 		}
@@ -118,20 +155,13 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		return array(
 			'entityType'      => $commentable->getType(),
 			'entityId'        => $commentable->getId(),
+			'commentCount'    => $commentable->getCommentCount(),
 			'comments'        => $comments,
 			'activities'      => $activities,
 			'form'            => isset($form) ? $form->createView() : null,
 			'isCommentable'   => $commentable instanceof ViewableInterface ? $commentable->getIsViewable() : true,
 			'mentionStrategy' => json_encode($mentionStrategy),
 		);
-	}
-
-	public function getCommentContexts($commentables) {
-		$commentContexts = array();
-		foreach ($commentables as $commentable) {
-			$commentContexts[$commentable->getId()] = $this->getCommentContext($commentable);
-		}
-		return $commentContexts;
 	}
 
 	/////

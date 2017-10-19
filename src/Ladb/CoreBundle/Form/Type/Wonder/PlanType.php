@@ -11,8 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\ResourcesToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 
 class PlanType extends AbstractType {
@@ -37,7 +37,7 @@ class PlanType extends AbstractType {
 			->add('body', TextareaType::class)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-				->addModelTransformer(new TagsToNamesTransformer($this->om))
+				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 			->add($builder
 				->create('inspirations', HiddenType::class, array( 'required' => false ))

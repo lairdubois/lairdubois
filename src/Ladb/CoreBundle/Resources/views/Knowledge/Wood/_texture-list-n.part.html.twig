@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set textures #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for texture in textures %}
+        {% include 'LadbCoreBundle:Knowledge/Wood:_texture-list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

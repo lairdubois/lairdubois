@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\EmbeddableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -18,8 +20,6 @@ use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\EmbeddableInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
@@ -66,9 +66,9 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 	protected $body;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false, name="main_picture_id")
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Picture")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */
 	private $mainPicture;
 
@@ -81,9 +81,9 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 	protected $tags;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\License", cascade={"persist", "remove"})
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(nullable=true, name="license_id")
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\License")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
 	 */
 	private $license;
 
@@ -108,13 +108,13 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 	private $viewCount = 0;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
 	 */
 	private $sticker;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="strip_id", nullable=true)
 	 */
 	private $strip;
@@ -178,7 +178,7 @@ abstract class AbstractWonder extends AbstractAuthoredPublication implements Tit
 
 	// Strip /////
 
-	public function setStrip(\Ladb\CoreBundle\Entity\Picture $strip = null) {
+	public function setStrip(\Ladb\CoreBundle\Entity\Core\Picture $strip = null) {
 		$this->strip = $strip;
 		return $this;
 	}

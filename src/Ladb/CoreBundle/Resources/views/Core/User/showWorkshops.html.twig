@@ -1,0 +1,38 @@
+{% extends 'LadbCoreBundle:Core/User:_show-list.html.twig' %}
+
+{% set masonry = true %}
+
+{% block bodyContainerContent %}
+    {% if workshops.count == 0 and filter != 'draft' %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                <p>Vous n'avez pas encore publié d'<strong>atelier</strong> !</p>
+                <p><a href="{{ path('core_workshop_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'wonder.workshop.new'|trans() }}</a></p>
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas encore publié d'atelier.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'LadbCoreBundle:Wonder/Workshop:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_user_show_workshops_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% set customFilterDefs = {
+                'draft':    { 'label':('default.choice.draft'|transchoice(2)|capitalize), 'path':path('core_user_show_workshops_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
+            } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">
+                    {% if filter == 'draft' and isDraftVisible %}
+                        {{ user.draftWorkshopCount~' '~('default.choice.draft'|transchoice(user.draftWorkshopCount)) }}
+                    {% else %}
+                        {{ user.publishedWorkshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(user.publishedWorkshopCount) }}{% if isDraftVisible and user.draftWorkshopCount > 0 %} (+{{ user.draftWorkshopCount~' '~('default.choice.draft'|transchoice(user.draftWorkshopCount)) }}){% endif %}
+                    {% endif %}
+                </span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Wonder/Workshop:_list-n.part.html.twig' %}
+{% endblock %}

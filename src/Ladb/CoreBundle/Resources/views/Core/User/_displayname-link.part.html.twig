@@ -1,0 +1,9 @@
+
+{# set me (facultative) #}
+{# set noMicrodata (facultative) #}
+{# set noBadge (facultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+{% set noBadge = noBadge|default(false) %}
+
+<a href="{{ path('core_user_show', { 'username':user.usernameCanonical }) }}"{% if linkClasses is defined %} class="{{ linkClasses }}"{% endif %}{% if not noMicrodata %} itemprop="url"{% endif %}><span{% if not noMicrodata %} itemprop="name"{% endif %}>{% include 'LadbCoreBundle:Core/User:_displayname.part.html.twig' %}</span></a>{% if not noBadge %}{% include 'LadbCoreBundle:Core/User:_account-type.part.html.twig' %}{% endif %}

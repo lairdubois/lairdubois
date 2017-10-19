@@ -1,0 +1,21 @@
+{# set question #}
+
+<div class="ladb-answers-header">
+    {% if question.answerCount > 1 %}
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle ladb-sorter-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-loading-text="{{ 'default.loading'|trans() }}">
+                    <i class="ladb-icon-sort"></i><span class="hidden-mobile"> {{ 'qa.answer.sort'|trans() }}</span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'score' }) }}" rel="nofollow" class="ladb-sorter-item">{% if sorter is defined and sorter == 'score' %}<span class="pull-left"><i class="ladb-icon-arrow-right"></i></span>{% endif %}<div class="ladb-indent">{{ 'qa.answer.sort_score'|trans() }}</div></a></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'recent' }) }}" rel="nofollow" class="ladb-sorter-item">{% if sorter is defined and sorter == 'recent' %}<span class="pull-left"><i class="ladb-icon-arrow-right"></i></span>{% endif %}<div class="ladb-indent">{{ 'qa.answer.sort_recent'|trans() }}</div></a></li>
+                    <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'older' }) }}" rel="nofollow" class="ladb-sorter-item">{% if sorter is defined and sorter == 'older' %}<span class="pull-left"><i class="ladb-icon-arrow-right"></i></span>{% endif %}<div class="ladb-indent">{{ 'qa.answer.sort_older'|trans() }}</div></a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+    {% if question.answerCount > 0 %}
+        <h2 class="ladb-margin-bottom">{{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.answers'|transchoice(question.answerCount) }}</h2>
+    {% endif %}
+</div>

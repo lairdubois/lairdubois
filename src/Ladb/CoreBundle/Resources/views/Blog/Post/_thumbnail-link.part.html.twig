@@ -1,0 +1,7 @@
+
+{# set post #}
+{# set classes (facultative) #}
+
+<a href="{{ path('core_blog_post_show', { 'id':post.sluggedId }) }}" class="thumbnail{% if classes is defined %} {{ classes }}{% endif %}" data-tooltip="tooltip" title="{{ post.title }} {{ 'default.by'|trans() }} {{ post.user.displayname }}">
+    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':post.mainPicture, 'width':'128', 'height':'128', 'alt':post.title, 'attributes':'nopin="nopin"', 'noMicrodata':true } %}
+</a>

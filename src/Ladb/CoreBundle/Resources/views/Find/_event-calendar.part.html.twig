@@ -9,7 +9,7 @@
         <div class="ladb-month">{{ (('month.short.'~(event.startDate|date('M')|lower))|trans({}, 'date'))|upper }}</div>
         <div class="ladb-year">{{ event.startDate|date('Y') }}</div>
     </div>
-    {% if event.endDate is not null and event.startDate|date('d') != event.endDate|date('d') or event.duration.d >= 1 %}
+    {% if event.endDate is not null and (event.startDate|date('d') != event.endDate|date('d') or event.duration.d >= 1) %}
         <span class="ladb-arrow">></span>
         <div class="pull-right">
             <div class="ladb-day">{{ event.endDate|date('d') }}</div>

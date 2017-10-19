@@ -3,10 +3,12 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Block\Text;
-use Ladb\CoreBundle\Entity\Block\Video;
-use Ladb\CoreBundle\Entity\Block\Gallery;
+use Ladb\CoreBundle\Entity\Core\Block\Text;
+use Ladb\CoreBundle\Entity\Core\Block\Video;
+use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\MultiPicturedInterface;
+use Ladb\CoreBundle\Model\PicturedInterface;
 
 class BlockBodiedUtils {
 
@@ -114,6 +116,18 @@ class BlockBodiedUtils {
 		}
 		$entity->setBody($body);
 
+	}
+
+	public function getFirstPicture(BlockBodiedInterface $entity) {
+		foreach ($entity->getBodyBlocks() as $block) {
+
+			// Check gallery blocks
+			if ($block instanceof Gallery) {
+				return $block->getPictures()->first();
+			}
+
+		}
+		return null;
 	}
 
 }

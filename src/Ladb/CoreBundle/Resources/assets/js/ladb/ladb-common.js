@@ -1,5 +1,8 @@
 function notifyError(error) {
-    $.UIkit.notify("<i class='ladb-icon-warning'></i> " + error, { status:'danger' });
+    $.UIkit.notify("<i class='ladb-icon-warning'></i> " + error, {
+        status:'danger',
+        timeout: 7000
+    });
 }
 function notifyFileError(fileName, error) {
     notifyError("Erreur sur le fichier <strong>" + fileName + "</strong><br><em>" + error + "</em>");

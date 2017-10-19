@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Entity\Message\Message;
 use Ladb\CoreBundle\Entity\Message\MessageMeta;
 use Ladb\CoreBundle\Entity\Message\Thread;
 use Ladb\CoreBundle\Entity\Message\ThreadMeta;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 
 class MessageUtils {
 

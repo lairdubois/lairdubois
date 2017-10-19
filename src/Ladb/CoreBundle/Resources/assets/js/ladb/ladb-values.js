@@ -12,7 +12,7 @@ function bindNewValueProposalAjaxForm() {
                     bindNewValueProposalAjaxForm();
                 } else if ($(data)[i].tagName == "DIV") {
                     $(".ladb-page").replaceWith($(data)[i]);
-                    bindNewCommentAjaxForm();
+                    $('.ladb-comment-widget').ladbCommentWidget();
                     setupTooltips();
                     setupPopovers();
                     $(document).trigger("updated.ladb");
@@ -35,7 +35,7 @@ function bindEditValueProposalAjaxForm(id) {
                 bindEditValueProposalAjaxForm(id);
             } else {
                 $("#ladb_value_proposal_" + id).replaceWith(data);
-                bindNewCommentAjaxForm();
+                $('.ladb-comment-widget').ladbCommentWidget();
                 setupTooltips();
                 setupPopovers();
                 $(document).trigger("updated.ladb");
@@ -70,7 +70,8 @@ function deleteValueProposal(id, url) {
         success: function(data, textStatus, jqXHR) {
             $("#delete_value_proposal_" + id +"_modal").modal("hide");
             $(".ladb-page").replaceWith($(data));
-            bindNewCommentAjaxForm();
+            $('.ladb-comment-widget').ladbCommentWidget();
+            //bindNewCommentAjaxForm();
             setupTooltips();
             setupPopovers();
             $(document).trigger("updated.ladb");
@@ -86,7 +87,7 @@ function moveValueProposal(id, url) {
         context: document.body,
         success: function(data, textStatus, jqXHR) {
             $(".ladb-page").replaceWith($(data));
-            bindNewCommentAjaxForm();
+            $('.ladb-comment-widget').ladbCommentWidget();
             setupTooltips();
             setupPopovers();
             $(document).trigger("updated.ladb");

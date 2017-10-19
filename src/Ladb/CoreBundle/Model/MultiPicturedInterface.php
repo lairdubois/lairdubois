@@ -6,9 +6,9 @@ interface MultiPicturedInterface {
 
 	// Pictures /////
 
-	public function addPicture(\Ladb\CoreBundle\Entity\Picture $picture);
+	public function addPicture(\Ladb\CoreBundle\Entity\Core\Picture $picture);
 
-	public function removePicture(\Ladb\CoreBundle\Entity\Picture $picture);
+	public function removePicture(\Ladb\CoreBundle\Entity\Core\Picture $picture);
 
 	public function getPictures();
 

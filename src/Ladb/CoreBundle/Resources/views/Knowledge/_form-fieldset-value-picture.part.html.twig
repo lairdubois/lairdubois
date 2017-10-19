@@ -1,5 +1,5 @@
 {% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
 
 {% block dataFormGroup %}
-    {% include 'LadbCoreBundle:Picture:_form-gallery.part.html.twig' with { 'formPictures':form.data, 'pictures':(form.vars.data is null or form.vars.data.data is null ? [] : [ form.vars.data.data ]), 'maxPictureCount':1, 'editable':true, 'hideTextOverlayWarning':true } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formPictures':form.data, 'pictures':(form.vars.data is null or form.vars.data.data is null ? [] : [ form.vars.data.data ]), 'maxPictureCount':1, 'editable':true, 'hideTextOverlayWarning':true } %}
 {% endblock %}

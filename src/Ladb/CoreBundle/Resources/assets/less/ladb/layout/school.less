@@ -1,0 +1,72 @@
+//
+// LADB School
+//
+
+/* LESS related */
+@import "../_variables.less";
+@import "../_mixins.less";
+
+.ladb-testimonial-row {
+
+  .ladb-box .ladb-content-box .ladb-comment-widget {
+    margin-left: 42px;
+  }
+
+}
+
+.ladb-testimonial-form {
+  > .ladb-box > .ladb-box-inner {
+    padding: 10px;
+
+    h4 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+  }
+}
+
+.ladb-testimonial-row, .ladb-testimonial-form {
+  margin-bottom: @ladb-gutter;
+
+  > .ladb-box {
+    .list-box();
+    padding: 4px;
+
+    .ladb-content-box {
+      padding: 10px;
+
+      .ladb-avatar {
+        float: left;
+      }
+
+      .ladb-content {
+        margin-top: 5px;
+        margin-left: 42px;
+        min-height: 50px;
+      }
+
+      > .ladb-heading {
+        margin-left: 42px;
+        color: @ladb-global-light-color;
+
+        .author a {
+          font-weight: bold;
+        }
+
+        .ladb-age {
+          .age();
+        }
+
+        .ladb-minitools {
+          float: right;
+          font-size: 115%;
+        }
+
+      }
+
+    }
+
+  }
+
+}

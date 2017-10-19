@@ -1,0 +1,17 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{% set entity = question %}
+
+{% block title %}<i class="ladb-icon-question"></i>&nbsp;{{ parent() }}{% endblock %}
+
+{% block imageOuter %}{% endblock %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    <li class="ladb-counter">
+        {% if question.bestAnswer %}
+            <span class="ladb-best ladb-color-best-answer ladb-horizontal-separator-right"><i class="ladb-icon-favorite"></i></span>
+        {% endif %}
+        {% include 'LadbCoreBundle:Qa/Question:_answers-counter.part.html.twig' with { 'classes':'ladb-horizontal-separator-right' } %}
+    </li>
+{% endblock %}

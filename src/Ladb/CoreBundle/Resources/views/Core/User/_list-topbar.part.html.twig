@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
+
+{% set heading = 'user.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'LadbCoreBundle:Core/User:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% if not is_granted("ROLE_USER") %}
+        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
+    {% endif %}
+{% endblock %}

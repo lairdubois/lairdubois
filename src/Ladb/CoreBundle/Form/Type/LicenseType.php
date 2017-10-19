@@ -18,7 +18,7 @@ class LicenseType extends AbstractType {
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Entity\License'
+			'data_class' => 'Ladb\CoreBundle\Entity\Core\License'
 		));
 	}
 

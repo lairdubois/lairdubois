@@ -19,7 +19,7 @@ trait BlockBodiedTrait {
 
 	public function getBodyExtract() {
 		$firstBlock = $this->bodyBlocks->first();
-		if ($firstBlock instanceof \Ladb\CoreBundle\Entity\Block\Text) {
+		if ($firstBlock instanceof \Ladb\CoreBundle\Entity\Core\Block\Text) {
 			return $firstBlock->getHtmlBody();
 		}
 		return '';
@@ -27,14 +27,14 @@ trait BlockBodiedTrait {
 
 	// BodyBlocks /////
 
-	public function addBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
+	public function addBodyBlock(\Ladb\CoreBundle\Entity\Core\Block\AbstractBlock $bodyBlock) {
 		if (!$this->bodyBlocks->contains($bodyBlock)) {
 			$this->bodyBlocks[] = $bodyBlock;
 		}
 		return $this;
 	}
 
-	public function removeBodyBlock(\Ladb\CoreBundle\Entity\Block\AbstractBlock $bodyBlock) {
+	public function removeBodyBlock(\Ladb\CoreBundle\Entity\Core\Block\AbstractBlock $bodyBlock) {
 		$this->bodyBlocks->removeElement($bodyBlock);
 	}
 

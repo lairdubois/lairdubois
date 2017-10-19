@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\FOSUserEvents;
-use Ladb\CoreBundle\Entity\Registration;
+use Ladb\CoreBundle\Entity\Core\Registration;
 use Ladb\CoreBundle\Utils\MessageUtils;
 use Ladb\CoreBundle\Utils\MailerUtils;
 use Ladb\CoreBundle\Utils\UserUtils;
@@ -60,7 +60,7 @@ class UserListener implements EventSubscriberInterface {
 		$adminUsername = $this->container->getParameter('admin_username');
 		$sender = $userManager->findUserByUsername($adminUsername);
 		if (!is_null($sender)) {
-			$messageUtils->composeThread($sender, array( $user ), 'Bienvenue !', $templating->render('LadbCoreBundle:User:message-welcome.md.twig', array( 'recipientUser' => $user )), null, true);
+			$messageUtils->composeThread($sender, array( $user ), 'Bienvenue !', $templating->render('LadbCoreBundle:Core/User:message-welcome.md.twig', array( 'recipientUser' => $user )), null, true);
 		}
 
 		// Send admin email notification

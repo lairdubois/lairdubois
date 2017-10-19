@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Message;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class ThreadRepository extends AbstractEntityRepository {

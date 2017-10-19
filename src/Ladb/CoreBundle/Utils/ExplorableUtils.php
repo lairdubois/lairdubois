@@ -45,7 +45,7 @@ class ExplorableUtils {
 			// Implode tag's names in string
 			$tagsString = '';
 			foreach ($tags as $tag) {
-				$tagsString .= ' '.$tag->getName();
+				$tagsString .= ' '.$tag->getLabel();
 			}
 			$tagsString = trim($tagsString);
 
@@ -57,7 +57,7 @@ class ExplorableUtils {
 				}
 			}
 
-			$filters = array( new \Elastica\Query\Match('tags.name', $tagsString) );
+			$filters = array( new \Elastica\Query\Match('tags.label', $tagsString) );
 			$sort = null;
 			$searchResult = $this->searchUtils->searchEntities($filters, $sort, $typeName, $entityClassName, 0, $limit, $excludedIds);
 

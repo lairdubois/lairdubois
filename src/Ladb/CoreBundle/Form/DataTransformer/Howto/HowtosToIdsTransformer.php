@@ -44,7 +44,7 @@ class HowtosToIdsTransformer implements DataTransformerInterface {
 			if ($id == 0) {
 				continue;
 			}
-			$howto =$repository->find($id);
+			$howto = $repository->find($id);
 			if (is_null($howto)) {
 				throw new TransformationFailedException();
 			}

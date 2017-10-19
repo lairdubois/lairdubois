@@ -4,7 +4,10 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Core\Resource;
 use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\InspirableInterface;
+use Ladb\CoreBundle\Model\InspirableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\EmbeddableInterface;
@@ -15,9 +18,10 @@ use Ladb\CoreBundle\Model\BodiedInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Wonder\PlanRepository")
  * @LadbAssert\PlanResourcesMaxSize()
  */
-class Plan extends AbstractWonder implements BodiedInterface {
+class Plan extends AbstractWonder implements BodiedInterface, InspirableInterface {
 
 	use BodiedTrait;
+	use InspirableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Plan';
 	const STRIPPED_NAME = 'plan';
@@ -49,10 +53,10 @@ class Plan extends AbstractWonder implements BodiedInterface {
 	/**
 	 * @ORM\Column(type="simple_array")
 	 */
-	private $kinds = array( Plan::KIND_UNKNOW );
+	private $kinds = array( Resource::KIND_UNKNOW );
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1, max=5)
@@ -60,7 +64,7 @@ class Plan extends AbstractWonder implements BodiedInterface {
 	protected $pictures;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Resource", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_resource")
 	 * @Assert\Count(min=1, max=10)
 	 */
@@ -127,7 +131,7 @@ class Plan extends AbstractWonder implements BodiedInterface {
 	private $inspirations;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_tag")
 	 * @Assert\Count(min=2)
 	 */
@@ -139,8 +143,9 @@ class Plan extends AbstractWonder implements BodiedInterface {
 	private $downloadCount = 0;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"accessCount" = "DESC"})
 	 */
 	protected $referrals;
 
@@ -174,101 +179,16 @@ class Plan extends AbstractWonder implements BodiedInterface {
 		return $this->kinds;
 	}
 
-	public function getKindStrippedNames() {
-		$kindStrippedNames = array();
-		foreach ($this->kinds as $kind) {
-			switch ($kind) {
-				case Plan::KIND_AUTOCAD:
-					$kindStrippedNames[] = 'autocad';
-					break;
-				case Plan::KIND_SKETCHUP:
-					$kindStrippedNames[] = 'sketchup';
-					break;
-				case Plan::KIND_PDF:
-					$kindStrippedNames[] = 'pdf';
-					break;
-				case Plan::KIND_GEOGEBRA:
-					$kindStrippedNames[] = 'geogebra';
-					break;
-				case Plan::KIND_SVG:
-					$kindStrippedNames[] = 'svg';
-					break;
-				case Plan::KIND_FREECAD:
-					$kindStrippedNames[] = 'freecad';
-					break;
-				case Plan::KIND_STL:
-					$kindStrippedNames[] = 'stl';
-					break;
-				case Plan::KIND_123DESIGN:
-					$kindStrippedNames[] = '123ddesign';
-					break;
-				case Plan::KIND_LIBREOFFICE:
-					$kindStrippedNames[] = 'libreoffice';
-					break;
-				default:
-					$kindStrippedNames[] = '';
-			}
-		}
-		return $kindStrippedNames;
-	}
-
-	public function getKindExternUrls() {
-		$kindExternUrls = array();
-		foreach ($this->kinds as $kind) {
-			switch ($kind) {
-				case Plan::KIND_AUTOCAD:
-					$kindExternUrls[] = 'www.freecadweb.org';
-					break;
-				case Plan::KIND_SKETCHUP:
-					$kindExternUrls[] = 'www.sketchup.com';
-					break;
-				case Plan::KIND_PDF:
-					$kindExternUrls[] = 'get.adobe.com/fr/reader/';
-					break;
-				case Plan::KIND_GEOGEBRA:
-					$kindExternUrls[] = 'www.geogebra.org';
-					break;
-				case Plan::KIND_SVG:
-					$kindExternUrls[] = 'fr.wikipedia.org/wiki/Scalable_Vector_Graphics';
-					break;
-				case Plan::KIND_FREECAD:
-					$kindExternUrls[] = 'www.freecadweb.org';
-					break;
-				case Plan::KIND_STL:
-				case Plan::KIND_123DESIGN:
-					$kindExternUrls[] = 'www.123dapp.com/design';
-					break;
-				case Plan::KIND_LIBREOFFICE:
-					$kindExternUrls[] = 'fr.libreoffice.org';
-					break;
-				default:
-					$kindExternUrls[] = '';
-			}
-		}
-		return $kindExternUrls;
-	}
-
-	// Resource /////
-
-	public function setResource(\Ladb\CoreBundle\Entity\Resource $resource = null) {
-		$this->resource = $resource;
-		return $this;
-	}
-
-	public function getResource() {
-		return $this->resource;
-	}
-
 	// Resources /////
 
-	public function addResource(\Ladb\CoreBundle\Entity\Resource $resource) {
+	public function addResource(\Ladb\CoreBundle\Entity\Core\Resource $resource) {
 		if (!$this->resources->contains($resource)) {
 			$this->resources[] = $resource;
 		}
 		return $this;
 	}
 
-	public function removeResource(\Ladb\CoreBundle\Entity\Resource $resource) {
+	public function removeResource(\Ladb\CoreBundle\Entity\Core\Resource $resource) {
 		$this->resources->removeElement($resource);
 	}
 
@@ -336,54 +256,6 @@ class Plan extends AbstractWonder implements BodiedInterface {
 
 	public function getHowtos() {
 		return $this->howtos;
-	}
-
-	// ReboundCount /////
-
-	public function incrementReboundCount($by = 1) {
-		return $this->reboundCount += intval($by);
-	}
-
-	public function getReboundCount() {
-		return $this->reboundCount;
-	}
-
-	// Rebounds /////
-
-	public function getRebounds() {
-		return $this->rebounds;
-	}
-
-	// InspirationCount /////
-
-	public function getInspirationCount() {
-		return $this->inspirationCount;
-	}
-
-	// Inspirations /////
-
-	public function addInspiration(\Ladb\CoreBundle\Entity\Wonder\Plan $inspiration) {
-		if (!$this->inspirations->contains($inspiration)) {
-			$this->inspirations[] = $inspiration;
-			$this->inspirationCount = count($this->inspirations);
-			if (!$this->getIsDraft()) {
-				$inspiration->incrementReboundCount();
-			}
-		}
-		return $this;
-	}
-
-	public function removeInspiration(\Ladb\CoreBundle\Entity\Wonder\Plan $inspiration) {
-		if ($this->inspirations->removeElement($inspiration)) {
-			$this->inspirationCount = count($this->inspirations);
-			if (!$this->getIsDraft()) {
-				$inspiration->incrementReboundCount(-1);
-			}
-		}
-	}
-
-	public function getInspirations() {
-		return $this->inspirations;
 	}
 
 	// DownloadCount /////

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Manager\Qa\QuestionManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
@@ -40,7 +41,8 @@ class VotableListener implements EventSubscriberInterface {
 
 			if ($votableParent instanceof \Ladb\CoreBundle\Entity\Knowledge\Wood
 				&& ($votable->getParentEntityField() == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_GRAIN || $votable->getParentEntityField() == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_ENDGRAIN)
-				&& $votable instanceof BaseValue) {
+				&& $votable instanceof BaseValue
+			) {
 
 				$textureUtils = $this->container->get(TextureUtils::NAME);
 				if ($votable->getVoteScore() < 0) {
@@ -56,6 +58,16 @@ class VotableListener implements EventSubscriberInterface {
 				}
 
 			}
+
+			// Search index update
+			$searchUtils = $this->container->get(SearchUtils::NAME);
+			$searchUtils->replaceEntityInIndex($votableParent);
+
+		} else if ($votableParent instanceof \Ladb\CoreBundle\Entity\Qa\Question) {
+
+			// Compute answer counters
+			$questionManager = $this->container->get(QuestionManager::NAME);
+			$questionManager->computeAnswerCounters($votableParent);
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);

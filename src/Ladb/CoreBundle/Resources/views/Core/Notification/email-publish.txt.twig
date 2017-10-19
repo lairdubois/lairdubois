@@ -1,0 +1,4 @@
+{% extends 'LadbCoreBundle:Core/Notification:_email.txt.twig' %}
+
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** a publié {{ ('notification.one_new.'~ladb_entity_type_stripped_name(row.entity))|trans() }}{% if entity.title is defined %} "{{ row.entity.title|raw }}"{% endif %}.
+{% endblock %}

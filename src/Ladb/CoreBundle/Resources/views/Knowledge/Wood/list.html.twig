@@ -1,0 +1,34 @@
+{% extends 'LadbCoreBundle:Common:_list.html.twig' %}
+
+{% set pageTitle = 'knowledge.wood.list'|trans() %}
+{% set pageDescription = 'knowledge.wood.description'|trans() %}
+{% set pageImage = asset('banner-woods-600x376.jpg') %}
+{% set pageSectionUrl = url('core_wood_list') %}
+{% set pageSectionName = 'knowledge.wood.list'|trans %}
+
+{% set navSection = 'woods' %}
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Knowledge/Wood:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+        <div class="panel-body">
+            Cette <a href="{{ path('core_faq_question_show', { 'id':'qu-est-ce-que-la-xylotheque' }) }}" target="_blank">xylothèque</a> est complétée et contrôlée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">apportez vos propositions</a> !
+        </div>
+    </div>
+    {#{% embed 'LadbCoreBundle:Knowledge/Wood:_list-filterbar.part.html.twig' %}#}
+        {#{% set heading = 'knowledge.wood.list'|trans() %}#}
+        {#{% block filterbarRightContent%}#}
+            {#<a href="{{ path('core_wood_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'knowledge.wood.new'|trans() }}</a>#}
+        {#{% endblock %}#}
+    {#{% endembed %}#}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Knowledge/Wood:_list-n.part.html.twig' %}
+{% endblock %}

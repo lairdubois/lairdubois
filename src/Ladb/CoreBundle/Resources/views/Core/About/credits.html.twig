@@ -1,0 +1,27 @@
+{% extends 'LadbCoreBundle:Core/About:_layout.html.twig' %}
+
+{% set pageTitle = ('default.ladb'|trans())~' - '~('default.credits'|trans()) %}
+{% set titleSuffixHidden = true %}
+
+{% set navSection = 'legals' %}
+{% set tab = 'credits' %}
+
+{% block bodyContainerContent %}
+    <h3>Crédits techniques</h3>
+    <p><em>L'Air du Bois</em> a son coeur applicatif qui lui est propre, développé par <a href="/zeloko" target="_blank">Boris Beaulant</a> et disponible en Open Source sous lience <a href="https://github.com/lairdubois/lairdubois/blob/master/LICENSE" target="_blank">GNU AGPLv3</a> sur son <a href="https://github.com/lairdubois/lairdubois" target="_blank">dépôt GitHub</a>.</p>
+    <p>Mais l'aventure ne serait pas possible sans le travail des auteurs des briques logiciels <a href="https://fr.wikipedia.org/wiki/Open_source" target="_blank">Open Source</a> suivantes :</p>
+    <ul>
+        {% for credit in credits %}
+            <li>
+                <a href="{{ credit['url'] }}" target="_blank">{{ credit['name'] }}</a>
+                {% if credit['desc'] is defined %} <small>({{ credit['desc'] }})</small>{% endif %}
+                {% if credit['labels'] is defined %}
+                    {% for label in credit['labels'] %}
+                        <span class="label label-default">{{ label }}</span>
+                    {% endfor %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <p>Un remerciement particulier à <a href=https://www.jetbrains.com/">JetBrains</a> pour leur soutien à ce projet par leur <a href="https://www.jetbrains.com/buy/opensource/">Licence spéciale pour les projets Open Source</a>.</p>
+{% endblock %}

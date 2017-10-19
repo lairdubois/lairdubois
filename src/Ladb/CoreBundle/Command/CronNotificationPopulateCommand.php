@@ -2,17 +2,15 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Ladb\CoreBundle\Entity\Activity\AbstractActivity;
-use Ladb\CoreBundle\Entity\Follower;
-use Ladb\CoreBundle\Entity\Notification;
-use Ladb\CoreBundle\Entity\Watch;
+use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
+use Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity;
+use Ladb\CoreBundle\Entity\Core\Follower;
+use Ladb\CoreBundle\Entity\Core\Notification;
+use Ladb\CoreBundle\Entity\Core\Watch;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
@@ -30,24 +28,6 @@ class CronNotificationPopulateCommand extends ContainerAwareCommand {
 The <info>ladb:cron:notification:populate</info> process activities to populate notifications
 EOT
 			);
-	}
-
-	/////
-
-	private function _createNotification($om, $user, $activity, &$notifiedUsers, &$freshNotificationCount) {
-
-		$notification = new Notification();
-		$notification->setUser($user);
-		$notification->setActivity($activity);
-
-		$notifiedUsers[$user->getId()] = $user;
-		if (isset($freshNotificationCount[$user->getId()])) {
-			$freshNotificationCount[$user->getId()]++;
-		} else {
-			$freshNotificationCount[$user->getId()] = 1;
-		}
-
-		$om->persist($notification);
 	}
 
 	/////
@@ -74,7 +54,7 @@ EOT
 
 			// Comment /////
 
-			if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Comment) {
+			if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Comment) {
 
 				$comment = $activity->getComment();
 				$publication = $typableUtils->findTypable($comment->getEntityType(), $comment->getEntityId());
@@ -106,7 +86,7 @@ EOT
 
 			// Contribute /////
 
-			else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Contribute) {
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Contribute) {
 
 				// No Notification
 
@@ -114,7 +94,7 @@ EOT
 
 			// Follow /////
 
-			else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Follow) {
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Follow) {
 
 				$follower = $activity->getFollower();
 
@@ -128,7 +108,7 @@ EOT
 
 			// Like /////
 
-			else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Like) {
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Like) {
 
 				$like = $activity->getLike();
 				$publication = $typableUtils->findTypable($like->getEntityType(), $like->getEntityId());
@@ -143,7 +123,7 @@ EOT
 
 			// Mention /////
 
-			else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Mention) {
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Mention) {
 
 				// TODO
 
@@ -151,7 +131,7 @@ EOT
 
 			// Publish /////
 
-			else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Publish) {
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Publish) {
 
 				$publication = $typableUtils->findTypable($activity->getEntityType(), $activity->getEntityId());
 				if (!is_null($publication)) {
@@ -183,13 +163,14 @@ EOT
 					// Watch strategy
 					if ($notificationStrategy & PublicationInterface::NOTIFICATION_STRATEGY_WATCH == PublicationInterface::NOTIFICATION_STRATEGY_WATCH) {
 
+						$watchable = null;
 						if ($publication instanceof WatchableInterface) {
 							$watchable = $publication;
 						} else if ($publication instanceof WatchableChildInterface) {
 							$watchable = $typableUtils->findTypable($publication->getParentEntityType(), $publication->getParentEntityId());
 						}
 
-						if ($watchable->getWatchCount() > 0 && $publication instanceof TitledInterface) {
+						if (!is_null($watchable) && $watchable->getWatchCount() > 0 && $publication instanceof TitledInterface) {
 
 							$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($watchable->getType(), $watchable->getId(), $actorUser);
 							if (!is_null($watches)) {
@@ -214,7 +195,7 @@ EOT
 
 			// Vote /////
 
-			else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Vote) {
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Vote) {
 
 				$vote = $activity->getVote();
 				$voteEntity = $typableUtils->findTypable($vote->getEntityType(), $vote->getEntityId());
@@ -227,7 +208,7 @@ EOT
 
 			// Join /////
 
-			else if ($activity instanceof \Ladb\CoreBundle\Entity\Activity\Join) {
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Join) {
 
 				$join = $activity->getJoin();
 				$joinEntity = $typableUtils->findTypable($join->getEntityType(), $join->getEntityId());
@@ -243,6 +224,52 @@ EOT
 							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
 							if ($verbose) {
 								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new join from=@'.$actorUser->getUsername().'</info>');
+							}
+						}
+					}
+
+				}
+
+			}
+
+			// Answer /////
+
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Answer) {
+
+				$answer = $activity->getAnswer();
+				$question = $answer->getQuestion();
+
+				if ($question->getWatchCount() > 0) {
+
+					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($question->getType(), $question->getId(), $actorUser);
+					if (!is_null($watches)) {
+						foreach ($watches as $watch) {
+							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
+							if ($verbose) {
+								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new answer='.mb_strimwidth($answer->getBody(), 0, 50, '[...]').' on='.$question->getTitle().'</info>');
+							}
+						}
+					}
+
+				}
+
+			}
+
+			// Testify /////
+
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Testify) {
+
+				$testimonial = $activity->getTestimonial();
+				$school = $testimonial->getSchool();
+
+				if ($school->getWatchCount() > 0) {
+
+					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($school->getType(), $school->getId(), $actorUser);
+					if (!is_null($watches)) {
+						foreach ($watches as $watch) {
+							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
+							if ($verbose) {
+								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new testimonial='.mb_strimwidth($testimonial->getBody(), 0, 50, '[...]').' on='.$school->getTitle().'</info>');
 							}
 						}
 					}
@@ -272,6 +299,24 @@ EOT
 			$om->flush();
 		}
 
+	}
+
+	/////
+
+	private function _createNotification($om, $user, $activity, &$notifiedUsers, &$freshNotificationCount) {
+
+		$notification = new Notification();
+		$notification->setUser($user);
+		$notification->setActivity($activity);
+
+		$notifiedUsers[$user->getId()] = $user;
+		if (isset($freshNotificationCount[$user->getId()])) {
+			$freshNotificationCount[$user->getId()]++;
+		} else {
+			$freshNotificationCount[$user->getId()] = 1;
+		}
+
+		$om->persist($notification);
 	}
 
 }

@@ -33,13 +33,13 @@ class Texture {
 	private $value;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="single_picture_id", nullable=false)
 	 */
 	private $singlePicture;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="mosaic_picture_id", nullable=false)
 	 */
 	private $mosaicPicture;
@@ -59,46 +59,46 @@ class Texture {
 
 	// Wood /////
 
+	public function getWood() {
+		return $this->wood;
+	}
+
 	public function setWood(\Ladb\CoreBundle\Entity\Knowledge\Wood $wood = null) {
 		$this->wood = $wood;
 		return $this;
 	}
 
-	public function getWood() {
-		return $this->wood;
-	}
-
 	// Value /////
+
+	public function getValue() {
+		return $this->value;
+	}
 
 	public function setValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Picture $value) {
 		$this->value = $value;
 		return $this;
 	}
 
-	public function getValue() {
-		return $this->value;
-	}
-
 	// SinglePicture /////
-
-	public function setSinglePicture(\Ladb\CoreBundle\Entity\Picture $singlePicture = null) {
-		$this->singlePicture = $singlePicture;
-		return $this;
-	}
 
 	public function getSinglePicture() {
 		return $this->singlePicture;
 	}
 
-	// MosaicPicture /////
-
-	public function setMosaicPicture(\Ladb\CoreBundle\Entity\Picture $mosaicPicture = null) {
-		$this->mosaicPicture = $mosaicPicture;
+	public function setSinglePicture(\Ladb\CoreBundle\Entity\Core\Picture $singlePicture = null) {
+		$this->singlePicture = $singlePicture;
 		return $this;
 	}
 
+	// MosaicPicture /////
+
 	public function getMosaicPicture() {
 		return $this->mosaicPicture;
+	}
+
+	public function setMosaicPicture(\Ladb\CoreBundle\Entity\Core\Picture $mosaicPicture = null) {
+		$this->mosaicPicture = $mosaicPicture;
+		return $this;
 	}
 
 	// DownloadCount /////
@@ -107,13 +107,13 @@ class Texture {
 		return $this->downloadCount += intval($by);
 	}
 
+	public function getDownloadCount() {
+		return $this->downloadCount;
+	}
+
 	public function setDownloadCount($downloadCount) {
 		$this->downloadCount = $downloadCount;
 		return $this;
-	}
-
-	public function getDownloadCount() {
-		return $this->downloadCount;
 	}
 
 }

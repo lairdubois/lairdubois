@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Validator\Constraints;
 
-use Ladb\CoreBundle\Entity\Block\Text;
+use Ladb\CoreBundle\Entity\Core\Block\Text;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Ladb\CoreBundle\Entity\Howto\Article;

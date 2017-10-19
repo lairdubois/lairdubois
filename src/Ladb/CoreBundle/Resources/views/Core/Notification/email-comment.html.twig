@@ -1,0 +1,59 @@
+{% extends 'LadbCoreBundle:Core/Notification:_email.html.twig' %}
+
+{# set row #}
+
+{% block rowContent %}
+    <p style="margin: 15px 0 5px 0;">
+        <strong>{{ row.actorUser.displayname }}</strong> a commenté
+        {% if row.childEntity is not null %}
+            {% if (row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
+                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
+                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
+                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Url::TYPE')
+                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Location::TYPE')
+                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
+                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE'))
+            %}
+                {% set childEntity = row.childEntity %}
+                {% set parentEntity = ladb_entity(childEntity.parentEntityType, childEntity.parentEntityId) %}
+                {% set fieldDef = parentEntity.fieldDefs[childEntity.parentEntityField] %}
+                {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
+                {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}
+                {% if childEntity.user is defined and childEntity.user.id == recipientUser.id %}votre{% else %}la{% endif %} proposition pour le champ <em>{{ ('knowledge.'~parentEntity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(parentEntity))|trans() }} <em>{{ parentEntity.title|raw }}</em>.
+            {% else %}
+                {{ ('notification.'~(row.childEntity.user is defined and row.childEntity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.childEntity))|trans() }} <em>{{ row.childEntity.title|raw }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
+            {% endif %}
+        {% else %}
+            {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
+        {% endif %}
+    </p>
+    <table cellspacing="10" cellpadding="0">
+        <tbody>
+        {% include 'LadbCoreBundle:Common:_entity-email-row.part.html.twig' with { 'entity':row.entity } %}
+        </tbody>
+    </table>
+    <p style="margin: 5px 0 5px 0;">
+        <table cellpadding="0" cellspacing="10" border="0" width="100%">
+            <tbody>
+            <tr>
+                <td width="32" valign="top">
+                    <img src="{{ (row.actorUser.avatar ? row.actorUser.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32">
+                </td>
+                <td>
+                    <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none; font-weight: bold;" target="_blank">{{ row.actorUser.displayname }}</a>
+                    <p style="margin: 5px 0 0 0; padding: 0;">
+                        {{ row.comment.htmlBody|raw }}
+                        {% for picture in row.comment.pictures %}
+                            <img src="{{ picture.webPath|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px; margin-right: 4px;" alt="{{ picture.legend|raw }}">
+                        {% endfor %}
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td height="30"><a href="{{ ladb_entity_url_action(row.entity) }}#_comment_{{ row.comment.id }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;" target="_blank">Répondre</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+{% endblock %}

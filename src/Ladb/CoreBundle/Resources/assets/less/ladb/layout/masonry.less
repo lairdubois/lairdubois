@@ -117,6 +117,7 @@
 
     >.ladb-content {
       padding: 6px 6px 10px 6px;
+      min-height: 157px;
 
       >.ladb-heading {
 
@@ -135,8 +136,11 @@
         height: 180px;
         border: 1px solid #ddd;
 
-        &+.ladb-body {
+        &+.ladb-body, &~.ladb-counters {
           padding-left: 180px + (@ladb-gutter / 2);
+        }
+
+        &+.ladb-body {
           min-height: 160px;
         }
 
@@ -144,10 +148,7 @@
 
       >.ladb-body {
         color: #555;
-      }
-
-      >.ladb-counters {
-        padding-left: 190px;
+        min-height: 100px;
       }
 
     }
@@ -168,7 +169,7 @@
   .ladb-masonry-column-wide {
     width: 100%;
 
-    > .ladb-box {
+    >.ladb-box {
 
       > .ladb-content {
 
@@ -176,15 +177,14 @@
           width: 128px;
           height: 128px;
 
-          & + .ladb-body {
+          &+.ladb-body, &~.ladb-counters {
             padding-left: 128px + (@ladb-gutter / 2);
+          }
+
+          &+.ladb-body {
             min-height: 128px;
           }
 
-        }
-
-        > .ladb-counters {
-          padding-left: 138px;
         }
 
       }

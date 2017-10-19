@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Repository\Wonder;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
@@ -169,6 +169,23 @@ class PlanRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findPagined($offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'u', 'mp' ))
+			->from($this->getEntityName(), 'p')
+			->innerJoin('p.user', 'u')
+			->innerJoin('p.mainPicture', 'mp')
+			->where('p.isDraft = false')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder
@@ -252,23 +269,6 @@ class PlanRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->addOrderBy('p.changedAt', 'DESC')
 		;
-	}
-
-	public function findPagined($offset, $limit, $filter = 'recent') {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'p', 'u', 'mp' ))
-			->from($this->getEntityName(), 'p')
-			->innerJoin('p.user', 'u')
-			->innerJoin('p.mainPicture', 'mp')
-			->where('p.isDraft = false')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		$this->_applyCommonFilter($queryBuilder, $filter);
-
-		return new Paginator($queryBuilder->getQuery());
 	}
 
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {

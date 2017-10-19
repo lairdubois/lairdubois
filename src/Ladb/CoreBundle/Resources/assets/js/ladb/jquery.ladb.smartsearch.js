@@ -20,7 +20,7 @@
 
         this.facetDefs = {};
         this.isFirstSearch = true;
-        this.hasMap = this.options.mapSearchPath != null;
+        this.hasMap = this.options.mapSearchPath !== null;
 
     };
 
@@ -51,19 +51,19 @@
 
                 var name = null;
                 var value = null;
-                if (m[1] != undefined) {
+                if (m[1] !== undefined) {
                     name = m[1];
-                    if (m[2] != undefined) {
+                    if (m[2] !== undefined) {
                         value = m[2];
-                    } else if (m[3] != undefined) {
+                    } else if (m[3] !== undefined) {
                         value = m[3];
                     }
-                } else if (m[4] != undefined) {
+                } else if (m[4] !== undefined) {
                     name = m[4];
                 } else {
-                    if (m[5] != undefined) {
+                    if (m[5] !== undefined) {
                         value = m[5];
-                    } else if (m[6] != undefined) {
+                    } else if (m[6] !== undefined) {
                         value = m[6];
                     }
                 }
@@ -75,7 +75,7 @@
                     }
                     if (facetDef) {
                         if (facetDef.unique) {
-                            this.removeFacetNamed(name);
+                            this.removeFacetByGroup(facetDef.group);
                         }
                         if (facetDef.needValue && !value) {
                             continue;
@@ -105,7 +105,7 @@
             var $input = $('<input/>', {
                 type: 'text'
             }).on('keyup', function(event) {
-                if (event.keyCode == 13 && $(event.target).val().length > 0) {
+                if (event.keyCode === 13 && $(event.target).val().length > 0) {
                     that.search();
                     $(event.target).blur();
                 }
@@ -140,10 +140,22 @@
                 });
             }
         }
+        if (facetDef.random) {
+            var $repeat = $('<a/>', {
+                'class': 'ladb-repeat'
+            })
+                .append('<i class="ladb-icon-repeat"></i>')
+                .on('click', function() {
+                    that.randomizeFacetValue($(this).parent());
+                    that.search();
+                })
+            ;
+        }
         return $('<span/>', {
             'class': 'ladb-facet ladb-' + facetDef.type
         })
             .data('name', facetDef.name)
+            .data('group', facetDef.group)
             .data('value', facetDef.value)
             .data('facetDef', facetDef)
             .append($('<a/>', {
@@ -152,11 +164,12 @@
                 .append('<i class="ladb-icon-remove"></i>')
                 .on('click', function() {
                     that.removeFacet($(this).parent());
-                    if (that.countFacets() == 0) {
+                    if (that.countFacets() === 0) {
                         that.$shortcuts.show(); // No more facet => display shortcuts
                     }
                     that.search();
                 }))
+            .prepend($repeat)
             .prepend($input)
             .prepend('<i class="ladb-icon-' + facetDef.icon + '"></i> <span class="ladb-facet-name">' + facetDef.label + (facetDef.editable ? ' : ' : '') + '</span>')
     };
@@ -172,14 +185,18 @@
         $facet.remove();
     };
 
-    LadbSmartSearch.prototype.removeFacetNamed = function(name) {
+    LadbSmartSearch.prototype.removeFacetByGroup = function(group) {
         var that = this;
         this.$boxBottomLeft.find('.ladb-facet').each(function(i, v) {
             var $facet = $(v);
-            if ($facet.data('name') == name) {
+            if ($facet.data('group') === group) {
                 that.removeFacet($facet);
             }
         });
+    };
+
+    LadbSmartSearch.prototype.randomizeFacetValue = function($facet) {
+        $facet.data('value', Math.random().toString(36).substring(2, 15));
     };
 
     LadbSmartSearch.prototype.countFacets = function() {
@@ -193,15 +210,16 @@
             var $facet = $(v);
             var facetQuery = ' @' + $facet.data('name');
             var $input = $facet.find('input');
+            var value;
             if ($input.length > 0) {
-                var value = $($input).val();
+                value = $($input).val();
                 if (!value) {
                     that.removeFacet($facet);
                     return;
                 }
                 facetQuery += ':"' + value + '"';
             } else {
-                var value = $facet.data('value');
+                value = $facet.data('value');
                 if (value) {
                     facetQuery += ':' + value;
                 } else {
@@ -234,7 +252,7 @@
     LadbSmartSearch.prototype.search = function(noPushState) {
         var that = this;
         var query = this.generateQuery();
-        var url = this.options.searchPath + (query.length > 0 ? ((this.options.searchPath.indexOf('?') == -1 ? '?' : '&') + 'q=' + query) : '');
+        var url = this.options.searchPath + (query.length > 0 ? ((this.options.searchPath.indexOf('?') === -1 ? '?' : '&') + 'q=' + query) : '');
         this.markLoading();
         if (this.options.noAjax) {
             window.location.href = url;
@@ -318,7 +336,7 @@
 
         // bind text input key
         this.$textInput.on('keyup', function(event) {
-            if (event.keyCode == 13) {
+            if (event.keyCode === 13) {
                 that.search();
                 $(event.target).blur();
             }
@@ -337,6 +355,7 @@
 
             var $facetItem = $(v);
 
+            var type = $facetItem.data('type');
             var name = $facetItem.data('name');
             var value = $facetItem.data('value');
             var label = $facetItem.data('label');
@@ -346,9 +365,12 @@
             var proposals = $facetItem.data('proposals');
             var proposalsUrl = $facetItem.data('proposals-url');
             var geolocation = $facetItem.data('geolocation');
+            var random = $facetItem.data('random');
 
             var facetDef = {
-                type: name == 'sort' ? 'sorter' : 'filter',
+                type: type,
+                // type: name == 'sort' ? 'sorter' : 'filter',
+                group: type === 'sorter' ? 'sort' : name,
                 name: name,
                 value: value,
                 label: label,
@@ -358,9 +380,10 @@
                 proposals: proposals,
                 proposalsUrl: proposalsUrl,
                 geolocation: geolocation,
+                random: random,
                 needValue: geolocation || editable
             };
-            that.facetDefs[that.generateFacetDefId(name, value)] = facetDef;
+            that.facetDefs[that.generateFacetDefId(name, null/*value*/)] = facetDef;
 
             $facetItem.on('click', function() {
 
@@ -369,7 +392,7 @@
                 var $facet = that.createFacet(facetDef);
 
                 if (unique) {
-                    that.removeFacetNamed(name);
+                    that.removeFacetByGroup(facetDef.group);
                 }
                 that.appendFacet($facet);
                 if (editable) {
@@ -411,6 +434,9 @@
                             .addClass('ladb-disabled');
                         $name.text(facetDef.label);
                     }
+                } else if (random) {
+                    that.randomizeFacetValue($facet);
+                    that.search();
                 } else {
                     that.search();
                 }
@@ -465,7 +491,7 @@
     LadbSmartSearch.prototype.init = function() {
         this.bind();
         this.parseQuery(this.options.query);
-        if (this.countFacets() == 0) {
+        if (this.countFacets() === 0) {
             this.$shortcuts.show();
         }
     };
@@ -478,12 +504,12 @@
         return this.each(function () {
             var $this   = $(this);
             var data    = $this.data('ladb.smartsearch');
-            var options = $.extend({}, LadbSmartSearch.DEFAULTS, $this.data(), typeof option == 'object' && option);
+            var options = $.extend({}, LadbSmartSearch.DEFAULTS, $this.data(), typeof option === 'object' && option);
 
             if (!data) {
                 $this.data('ladb.smartsearch', (data = new LadbSmartSearch(this, options)));
             }
-            if (typeof option == 'string') {
+            if (typeof option === 'string') {
                 data[option]();
             } else {
                 data.init();

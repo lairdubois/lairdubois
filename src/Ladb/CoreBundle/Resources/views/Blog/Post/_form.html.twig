@@ -1,0 +1,35 @@
+{% extends 'LadbCoreBundle:Common:_form.html.twig' %}
+
+{% set navSection = 'blog' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'mainPicture', 'fieldId':form.mainPicture.vars.id, 'maxPictureCount':1 } %}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'formSection':'mainPicture', 'title':('default.picture'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Block:_form-sidenav-body.part.html.twig' %}
+    <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
+    {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('blog.post.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formSection':'mainPicture', 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('blog.post.form.help.main_picture'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
+        {% block body %}
+            <div class="form-group">
+                <label>Niveau de mise en avant</label>
+                {{ form_errors(form.highlightLevel) }}
+                {{ form_widget(form.highlightLevel) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre sujet.' } %}
+{% endblock %}

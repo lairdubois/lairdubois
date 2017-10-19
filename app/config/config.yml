@@ -3,7 +3,7 @@ imports:
 
 framework:
     #esi:             ~
-    translator:      { fallback: %locale% }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -12,13 +12,16 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20170612"
+        version:    "20171013"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
+        packages:
+             sitemaps:
+                version:    ""
+                base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
     templating:
         engines:    ['twig']
     default_locale:  "%locale%"
-    trusted_proxies: ~
     session:
         handler_id: session.handler.pdo
         save_path: "%kernel.root_dir%/sessions"
@@ -135,7 +138,7 @@ stof_doctrine_extensions:
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: Ladb\CoreBundle\Entity\User
+    user_class: Ladb\CoreBundle\Entity\Core\User
     use_listener: false
     from_email:
         address:        noreply@lairdubois.fr
@@ -251,6 +254,11 @@ liip_imagine:
 
         # Inset
 
+        64x64i:
+            filters:
+                thumbnail: { size: [64, 64], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
         240x300i:
             filters:
                 thumbnail: { size: [240, 300], mode: inset }
@@ -341,10 +349,10 @@ fos_elastica:
                                 min_gram: 3
                                 max_gram: 5
             types:
-                user:
+                core_user:
                     mappings:
-                        displayname: { boost: 2, analyzer: name_analyzer }
-                        fullname: { boost: 1, analyzer: name_analyzer }
+                        displayname: { type: text, boost: 2, analyzer: name_analyzer }
+                        fullname: { type: text, boost: 1, analyzer: name_analyzer }
                         username: { analyzer: name_analyzer }
                         createdAt: { type: date }
                         followerCount: { type: integer }
@@ -358,14 +366,14 @@ fos_elastica:
                                 label:
                     persistence:
                         driver: orm
-                        model: Ladb\CoreBundle\Entity\User
+                        model: Ladb\CoreBundle\Entity\Core\User
                         provider:
                             query_builder_method: "createIsEnabledQueryBuilder"
                         listener:
                             update: false
-                creation:
+                wonder_creation:
                     mappings:
-                        title: { boost: 3, analyzer: title_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
@@ -374,6 +382,9 @@ fos_elastica:
                         bodyBlockVideoCount: { type: integer }
                         planCount: { type: integer }
                         howtoCount: { type: integer }
+                        providerCount: { type: integer }
+                        inspirationCount: { type: integer }
+                        reboundCount: { type: integer }
                         user:
                             type: "object"
                             properties:
@@ -383,7 +394,7 @@ fos_elastica:
                         tags:
                             type: "object"
                             properties:
-                                name: { boost: 2 }
+                                label: { type: text, boost: 2 }
                         woods:
                             type: "object"
                             properties:
@@ -409,9 +420,9 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                workshop:
+                wonder_workshop:
                     mappings:
-                        title: { boost: 3, analyzer: title_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
@@ -431,7 +442,7 @@ fos_elastica:
                         tags:
                             type: "object"
                             properties:
-                                name: { boost: 2 }
+                                label: { type: text, boost: 2 }
                         license:
                             type: "object"
                             properties:
@@ -445,9 +456,9 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                plan:
+                wonder_plan:
                     mappings:
-                        title: { boost: 3, analyzer: title_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
@@ -457,6 +468,8 @@ fos_elastica:
                         creationCount: { type: integer }
                         howtoCount: { type: integer }
                         workshopCount: { type: integer }
+                        inspirationCount: { type: integer }
+                        reboundCount: { type: integer }
                         user:
                             type: "object"
                             properties:
@@ -466,7 +479,7 @@ fos_elastica:
                         tags:
                             type: "object"
                             properties:
-                                name: { boost: 2 }
+                                label: { type: text, boost: 2 }
                         license:
                             type: "object"
                             properties:
@@ -480,9 +493,48 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                howto:
+                qa_question:
                     mappings:
-                        title: { boost: 3, analyzer: title_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        answerCount: { type: integer }
+                        positiveAnswerCount: { type: integer }
+                        nullAnswerCount: { type: integer }
+                        undeterminedAnswerCount: { type: integer }
+                        negativeAnswerCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        answers:
+                            type: "object"
+                            properties:
+                                body: { analyzer: body_analyzer }
+                        bestAnswer:
+                            type: "object"
+                            properties:
+                                body: { analyzer: body_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                label: { type: text, boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Qa\Question
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                howto_howto:
+                    mappings:
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -491,11 +543,12 @@ fos_elastica:
                         creationCount: { type: integer }
                         planCount: { type: integer }
                         workshopCount: { type: integer }
+                        providerCount: { type: integer }
                         isWorkInProgress: { type: boolean }
                         articles:
                             type: "object"
                             properties:
-                                title: { boost: 3, analyzer: title_analyzer }
+                                title: { type: text, boost: 3, analyzer: title_analyzer }
                                 body: { analyzer: body_analyzer }
                         user:
                             type: "object"
@@ -506,7 +559,7 @@ fos_elastica:
                         tags:
                             type: "object"
                             properties:
-                                name: { boost: 2 }
+                                label: { type: text, boost: 2 }
                         license:
                             type: "object"
                             properties:
@@ -520,9 +573,9 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                find:
+                find_find:
                     mappings:
-                        title: { boost: 3, analyzer: title_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
@@ -538,7 +591,7 @@ fos_elastica:
                         tags:
                             type: "object"
                             properties:
-                                name: { boost: 2 }
+                                label: { type: text, boost: 2 }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Find\Find
@@ -548,9 +601,9 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                post:
+                promotion_graphic:
                     mappings:
-                        title: { boost: 3, analyzer: title_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
@@ -559,7 +612,28 @@ fos_elastica:
                         tags:
                             type: "object"
                             properties:
-                                name: { boost: 2 }
+                                label: { type: text, boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Promotion\Graphic
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                blog_post:
+                    mappings:
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        tags:
+                            type: "object"
+                            properties:
+                                label: { type: text, boost: 2 }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Blog\Post
@@ -569,9 +643,9 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                question:
+                faq_question:
                     mappings:
-                        title: { boost: 3, analyzer: title_analyzer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
@@ -581,7 +655,7 @@ fos_elastica:
                         tags:
                             type: "object"
                             properties:
-                                name: { boost: 2 }
+                                label: { type: text, boost: 2 }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Faq\Question
@@ -591,10 +665,11 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                wood:
+                knowledge_wood:
                     mappings:
-                        title: { analyzer: exact_lowercase_analyzer }
-                        name: { boost: 3, analyzer: name_analyzer }
+                        titleWorkaround: { type: keyword }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        name: { type: text, boost: 3, analyzer: name_analyzer }
                         nameRejected: { type: boolean }
                         grainRejected: { type: boolean }
                         scientificname: { analyzer: name_analyzer }
@@ -615,17 +690,17 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                provider:
+                knowledge_provider:
                     mappings:
-                        sign: { boost: 2, analyzer: name_analyzer }
+                        sign: { type: text, boost: 2, analyzer: name_analyzer }
                         signRejected: { type: boolean }
-                        brand: { type: string, analyzer: exact_lowercase_analyzer }
+                        brand: { type: text, analyzer: exact_lowercase_analyzer }
                         address: { analyzer: body_analyzer }
                         geographicalAreas: { analyzer: body_analyzer }
                         description: { analyzer: body_analyzer }
                         products: { analyzer: body_analyzer }
                         services: { analyzer: body_analyzer }
-                        woods: { analyzer: body_analyzer }
+                        woodsWorkaround: { analyzer: body_analyzer }
                         geoPoint: { type: geo_point }
                         changedAt: { type: date }
                         viewCount: { type: integer }
@@ -643,12 +718,36 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
-                tag:
+                knowledge_school:
                     mappings:
-                        name: { analyzer: ngram_analyzer }
+                        name: { type: text, boost: 3, analyzer: name_analyzer }
+                        nameRejected: { type: boolean }
+                        diplomas: { type: text, analyzer: name_analyzer }
+                        trainingTypes: { analyzer: body_analyzer }
+                        address: { analyzer: body_analyzer }
+                        geographicalAreas: { analyzer: body_analyzer }
+                        description: { analyzer: body_analyzer }
+                        geoPoint: { type: geo_point }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        testimonialCount: { type: integer }
                     persistence:
                         driver: orm
-                        model: Ladb\CoreBundle\Entity\Tag
+                        model: Ladb\CoreBundle\Entity\Knowledge\School
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                core_tag:
+                    mappings:
+                        label: { analyzer: ngram_analyzer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Core\Tag
                         provider: ~
                         listener: ~
                 input_skill:

@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Utils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
-use Ladb\CoreBundle\Entity\TagUsage;
+use Ladb\CoreBundle\Entity\Core\TagUsage;
 
 class TagUtils {
 
@@ -46,15 +46,18 @@ class TagUtils {
 
 			$tagUsage = $tagUsageRepository->findOneByTagAndEntityType($tag, $entityType);
 			if (is_null($tagUsage)) {
+
 				$tagUsage = new TagUsage();
 				$tagUsage->setTag($tag);
 				$tagUsage->setEntityType($entityType);
+
+				$this->om->persist($tagUsage);
 			}
 			$tagUsage->incrementScore();
 
-			$this->om->flush();
-
 		}
+
+		$this->om->flush();
 
 	}
 
@@ -65,7 +68,7 @@ class TagUtils {
 		$tagUsages = $tagUsageRepository->findByEntityType($taggable->getType(), $maxResults);
 		if (!is_null($tagUsages)) {
 			foreach ($tagUsages as $tagUsage) {
-				$proposals[] = array( $tagUsage->getTag()->getName(), $tagUsage->getHighlighted() );
+				$proposals[] = array( $tagUsage->getTag()->getLabel(), $tagUsage->getHighlighted() );
 			}
 		}
 

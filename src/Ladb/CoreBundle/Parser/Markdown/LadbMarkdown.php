@@ -55,6 +55,8 @@ class LadbMarkdown extends Parser {
 	 */
 	public $headingLevelOffset = 2;
 
+	private $html5 = true;
+
 	/////
 
 	private function _truncateUrl($value, $length = 30, $preserve = false, $separator = '...', $charset = 'UTF-8') {

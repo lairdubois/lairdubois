@@ -1,0 +1,50 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set likes #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for item in items %}
+        <div class="ladb-vote-thumbnail">
+            <div class="ladb-box row">
+                <div class="ladb-content col-md-6 col-xs-12">
+                    {% if item.user is not null %}
+                        <div class="ladb-image">
+                            {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':item.user, 'size':'64' } %}
+                        </div>
+                        <div class="ladb-heading">
+                            <h3><a href="#">{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':item.user } %}</a></h3>
+                        </div>
+                        <div class="ladb-subheading">
+                            {% include 'LadbCoreBundle:Core/User:_location-and-social.part.html.twig' with { 'user':item.user } %}
+                        </div>
+                    {% else %}
+                        <div class="ladb-heading">
+                            <h3><i class="ladb-icon-users ladb-icon-lg"></i> {{ 'default.collective_contents'|trans() }}</h3>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="ladb-votables col-md-6 col-xs-12">
+                    {% for votable in item.votables %}
+                        <div class="ladb-votable row">
+                            <div class="col-xs-1 text-center"><i class="ladb-icon-arrow-{% if filter == 'negative' %}down ladb-color-negative{% else %}up ladb-color-positive{% endif %}"></i></div>
+                            {% if votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
+                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
+                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
+                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Url::TYPE')
+                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Location::TYPE')
+                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
+                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE') %}
+                                {% include 'LadbCoreBundle:Knowledge:_value-votable-thumbnail.part.html.twig' with { 'knowledge':entity, 'value':votable } %}
+                            {% else %}
+                                {{ votable.title }}
+                                <small>{% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':votable } %}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+

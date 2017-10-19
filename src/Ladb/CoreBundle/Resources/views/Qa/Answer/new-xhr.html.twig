@@ -1,0 +1,28 @@
+{% extends 'LadbCoreBundle:Qa/Answer:_form.html.twig' %}
+
+{% set formAction = path('core_qa_answer_create', { 'id':question.id }) %}
+
+{% block title %}<i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}{% endblock %}
+
+{% block buttons %}
+    <div class="alert alert-info">
+        <div class="media">
+            <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+            <div class="media-body">
+                <h4>A lire avant de publier</h4>
+                <p>Merci de contribuer à une réponse !</p>
+                <ul>
+                    <li>S'il vous plait, soyez certain que votre réponse apporte une <strong>réponse directe</strong> à la question "<strong>{{ question.title }}</strong>".</li>
+                    {% if question.answerCount > 0 %}
+                        <li>Vérifiez que votre réponse apporte une <strong>nouveauté</strong> par rapport aux réponses précédentes.</li>
+                        <li>Si vous souhaitez répondre ou compléter une des réponses ci-dessus, utilisez les <strong>commentaires</strong> qui lui sont associés.</li>
+                    {% endif %}
+                    <li>Si vous souhaitez <strong>réagir</strong> ou <strong>émettre un avis</strong> sur la question{% if question.answerCount > 0 %} ou <strong>remercier</strong> les auteurs des réponses ci-dessus{% endif %}, utilisez les <strong>commentaires</strong> associés à la question.</li>
+                </ul>
+                <p>Pour en savoir plus sur le fonctionnement de cette rubrique, lisez ce <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}" class="alert-link">sujet</a>.</p>
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.publish'|trans()), 'classes':'btn-primary' } %}
+{% endblock %}

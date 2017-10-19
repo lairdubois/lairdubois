@@ -10,12 +10,101 @@ class TypableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
+	public static function getStrippedName(TypableInterface $typable, $delimiter = '_') {
+		return self::getStrippedNameByType($typable->getType(), $delimiter);
+	}
+
+	public static function getStrippedNameByType($type, $delimiter = '_') {
+		switch ($type) {
+
+			// Creation
+			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
+				return implode($delimiter, array( 'wonder', 'creation' ));
+			// Workshop
+			case \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE:
+				return implode($delimiter, array( 'wonder', 'workshop' ));
+			// Find
+			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
+				return implode($delimiter, array( 'find', 'find' ));
+			// Plan
+			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
+				return implode($delimiter, array( 'wonder', 'plan' ));
+			// Howto
+			case \Ladb\CoreBundle\Entity\Howto\Howto::TYPE:
+				return implode($delimiter, array( 'howto', 'howto' ));
+			// Article
+			case \Ladb\CoreBundle\Entity\Howto\Article::TYPE:
+				return implode($delimiter, array( 'howto', 'article' ));
+			// Post
+			case \Ladb\CoreBundle\Entity\Blog\Post::TYPE:
+				return implode($delimiter, array( 'blog', 'post' ));
+			// Wood
+			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
+				return implode($delimiter, array( 'knowledge', 'wood' ));
+			// Question (Faq)
+			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
+				return implode($delimiter, array( 'faq', 'question' ));
+			// Provider
+			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
+				return implode($delimiter, array( 'knowledge', 'provider' ));
+			// Question (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				return implode($delimiter, array( 'qa', 'question' ));
+			// Answer (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
+				return implode($delimiter, array( 'qa', 'answer' ));
+			// School
+			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
+				return implode($delimiter, array( 'knowledge', 'school' ));
+			// Testimonial (School)
+			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
+				return implode($delimiter, array( 'knowledge', 'testimonial' ));
+			// Graphic (School)
+			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
+				return implode($delimiter, array( 'promotion', 'graphic' ));
+
+		}
+		return '';
+	}
+
+	public function findTypable($type, $id) {
+		$repository = $this->getRepositoryByType($type);
+		if (is_null($repository)) {
+			throw new \Exception('Unknow Typable - Bad type (type='.$type.', id='.$id.').');
+		}
+		$typable = $repository->findOneById($id);
+		if (is_null($typable)) {
+			throw new \Exception('Unknow Typable - Bad id (type='.$type.', id='.$id.').');
+		}
+		return $typable;
+	}
+
+	public function getRepositoryByType($type) {
+		$className = $this->getClassNameByType($type);
+		if (!is_null($className)) {
+			$om = $this->get('doctrine.orm.entity_manager');
+			$repository = $om->getRepository($className);
+			return $repository;
+		}
+		return null;
+	}
+
+	/////
+
+	public static function getClassNameByType($type) {
+		$class = self::getClassByType($type);
+		if (!is_null($class)) {
+			return $class::CLASS_NAME;
+		}
+		return null;
+	}
+
 	public static function getClassByType($type) {
 		switch ($type) {
 
 			// Comment
-			case \Ladb\CoreBundle\Entity\Comment::TYPE:
-				return '\Ladb\CoreBundle\Entity\Comment';
+			case \Ladb\CoreBundle\Entity\Core\Comment::TYPE:
+				return '\Ladb\CoreBundle\Entity\Core\Comment';
 
 			// Text
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:
@@ -66,7 +155,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Wood
 			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Wood';
-			// Question
+			// Question (Faq)
 			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
 				return '\Ladb\CoreBundle\Entity\Faq\Question';
 			// Provider
@@ -75,89 +164,24 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Took
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				return '\Ladb\CoreBundle\Entity\Youtook\Took';
-			// Workflow
-			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
-				return '\Ladb\CoreBundle\Entity\Workflow\Workflow';
+			// Question (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				return '\Ladb\CoreBundle\Entity\Qa\Question';
+			// Answer (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
+				return '\Ladb\CoreBundle\Entity\Qa\Answer';
+			// School
+			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\School';
+			// Testimonial (School)
+			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\School\Testimonial';
+			// Graphic (School)
+			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
+				return '\Ladb\CoreBundle\Entity\Promotion\Graphic';
 
 		}
 		return null;
-	}
-
-	public static function getClassNameByType($type) {
-		$class = self::getClassByType($type);
-		if (!is_null($class)) {
-			return $class::CLASS_NAME;
-		}
-		return null;
-	}
-
-	public static function getStrippedName(TypableInterface $typable, $long = false) {
-		return self::getStrippedNameByType($typable->getType(), $long);
-	}
-
-	public static function getStrippedNameByType($type, $long = false) {
-		switch ($type) {
-
-			// Creation
-			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
-				return 'creation';
-			// Workshop
-			case \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE:
-				return 'workshop';
-			// Find
-			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
-				return 'find';
-			// Plan
-			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
-				return 'plan';
-			// Howto
-			case \Ladb\CoreBundle\Entity\Howto\Howto::TYPE:
-				return 'howto';
-			// Article
-			case \Ladb\CoreBundle\Entity\Howto\Article::TYPE:
-				return $long ? 'howto.article' : 'article';
-			// Post
-			case \Ladb\CoreBundle\Entity\Blog\Post::TYPE:
-				return $long ? 'blog.post' : 'post';
-			// Wood
-			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
-				return $long ? 'knowledge.wood': 'wood';
-			// Question
-			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
-				return $long ? 'faq.question' : 'question';
-			// Provider
-			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
-				return $long ? 'knowledge.provider': 'provider';
-			// Workflow
-			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
-				return 'workflow';
-
-		}
-		return '';
-	}
-
-	/////
-
-	public function getRepositoryByType($type) {
-		$className = $this->getClassNameByType($type);
-		if (!is_null($className)) {
-			$om = $this->get('doctrine.orm.entity_manager');
-			$repository = $om->getRepository($className);
-			return $repository;
-		}
-		return null;
-	}
-
-	public function findTypable($type, $id) {
-		$repository = $this->getRepositoryByType($type);
-		if (is_null($repository)) {
-			throw new \Exception('Unknow Typable - Bad type (type='.$type.', id='.$id.').');
-		}
-		$typable = $repository->findOneById($id);
-		if (is_null($typable)) {
-			throw new \Exception('Unknow Typable - Bad id (type='.$type.', id='.$id.').');
-		}
-		return $typable;
 	}
 
 	/////
@@ -209,8 +233,14 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Youtook\Took::TYPE:
 				$url = $router->generate('core_youtook_'.$action, $params, $referenceType);
 				break;
-			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
-				$url = $router->generate('core_workflow_'.$action, $params, $referenceType);
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				$url = $router->generate('core_qa_question_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
+				$url = $router->generate('core_school_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
+				$url = $router->generate('core_promotion_graphic_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

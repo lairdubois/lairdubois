@@ -14,6 +14,11 @@ body {
   }
 }
 
+// A
+a:focus {
+  text-decoration: none;
+}
+
 // Textarea
 textarea {
   resize: none;
@@ -41,10 +46,26 @@ address.author {
   margin: 0;
 }
 
-// blockquote
+// Blockquote
 blockquote {
   margin: 0 0 10px;
   font-size: 100%;
   border-left: 5px solid #eee;
   background-color: lighten(@ladb-global-bg, 5%);
+  color: lighten(@ladb-global-color, 30%)
+}
+
+// P
+p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: justify;
+}
+
+// HR
+hr.ladb-divider {
+  height: 6px;
+  background: url('/bundles/ladbcore/ladb/images/hr-divider.png') repeat-x 0 0;
+  border: 0;
 }

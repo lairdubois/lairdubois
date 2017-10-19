@@ -5,6 +5,7 @@
 
 {% set noMicrodata = noMicrodata|default(false) %}
 {% set noMicrodataHeadline = noMicrodata or noMicrodataHeadline|default(false) %}
+{% set noMicrodataAuthor = noMicrodata or noMicrodataAuthor|default(false) %}
 
 <div class="ladb-avatar-header">
     {% block headerTools %}
@@ -12,12 +13,12 @@
             <a href="{{ ladb_entity_url_action(entity) }}" class="btn btn-default">{{ 'default.back'|trans() }}</a>
         </div>
     {% endblock %}
-    {% include 'LadbCoreBundle:User:_avatar-link.part.html.twig' with { 'user':entity.user, 'size':'64', 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+    {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':entity.user, 'size':'64', 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
     <div class="ladb-body">
         <h1 class="ladb-heading"{# {% if not noMicrodata %} itemprop="name{% if not noMicrodataHeadline %} headline{% endif %}"{% endif %} #}>{% if entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{{ entity.title|raw }}</h1>
         <span class="ladb-subheading">
-            {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'noMicrodata':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
+            {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'noMicrodata':noMicrodataAuthor } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
         </span>
-        {% if followerContext is defined and followerContext is not null %}<span style="padding-left: 10px;" class="ladb-hidden-mobile">{% include 'LadbCoreBundle:Follower:_widget.part.html.twig' with { 'followerContext':followerContext, 'tiny':true } %}</span>{% endif %}
+        {% if followerContext is defined and followerContext is not null %}<span style="padding-left: 10px;" class="ladb-hidden-mobile">{% include 'LadbCoreBundle:Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext, 'tiny':true } %}</span>{% endif %}
     </div>
 </div>

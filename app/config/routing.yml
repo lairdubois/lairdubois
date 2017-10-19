@@ -17,7 +17,7 @@ fos_user_change_password:
 
 fos_user_profile_show:
     path:   /me
-    defaults:  { _controller: LadbCoreBundle:User:showMe }
+    defaults:  { _controller: LadbCoreBundle:Core/User:showMe }
 
 # Imagine Bundle
 
@@ -27,119 +27,147 @@ _liip_imagine:
 # Ladb Bundles
 
 ladb_core:
-    resource: "Ladb\\CoreBundle\\Controller\\DefaultController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\DefaultController"
     type:     annotation
 
 ladb_core_api:
-    resource: "Ladb\\CoreBundle\\Controller\\ApiController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\ApiController"
     type:     annotation
 
-ladb_core_creation:
-    resource: "Ladb\\CoreBundle\\Controller\\CreationController"
+ladb_core_wonder_creation:
+    resource: "Ladb\\CoreBundle\\Controller\\Wonder\\CreationController"
     type:     annotation
 
-ladb_core_workshop:
-    resource: "Ladb\\CoreBundle\\Controller\\WorkshopController"
+ladb_core_wonder_workshop:
+    resource: "Ladb\\CoreBundle\\Controller\\Wonder\\WorkshopController"
     type:     annotation
 
-ladb_core_plan:
-    resource: "Ladb\\CoreBundle\\Controller\\PlanController"
+ladb_core_wonder_plan:
+    resource: "Ladb\\CoreBundle\\Controller\\Wonder\\PlanController"
     type:     annotation
 
 ladb_core_howto:
-    resource: "Ladb\\CoreBundle\\Controller\\HowtoController"
+    resource: "Ladb\\CoreBundle\\Controller\\Howto\\HowtoController"
+    type:     annotation
+
+ladb_core_howto_article:
+    resource: "Ladb\\CoreBundle\\Controller\\Howto\\ArticleController"
     type:     annotation
 
 ladb_core_find:
-    resource: "Ladb\\CoreBundle\\Controller\\FindController"
+    resource: "Ladb\\CoreBundle\\Controller\\Find\\FindController"
     type:     annotation
 
 ladb_core_blog:
-    resource: "Ladb\\CoreBundle\\Controller\\BlogController"
+    resource: "Ladb\\CoreBundle\\Controller\\Blog\\PostController"
     type:     annotation
 
 ladb_core_about:
-    resource: "Ladb\\CoreBundle\\Controller\\AboutController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\AboutController"
     type:     annotation
 
-ladb_core_faq:
-    resource: "Ladb\\CoreBundle\\Controller\\FaqController"
+ladb_core_faq_question:
+    resource: "Ladb\\CoreBundle\\Controller\\Faq\\QuestionController"
     type:     annotation
 
 ladb_core_message:
-    resource: "Ladb\\CoreBundle\\Controller\\MessageController"
+    resource: "Ladb\\CoreBundle\\Controller\\Message\\MessageController"
     type:     annotation
 
 ladb_core_notification:
-    resource: "Ladb\\CoreBundle\\Controller\\NotificationController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\NotificationController"
     type:     annotation
 
 ladb_core_search:
-    resource: "Ladb\\CoreBundle\\Controller\\SearchController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\SearchController"
     type:     annotation
 
 ladb_core_comment:
-    resource: "Ladb\\CoreBundle\\Controller\\CommentController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\CommentController"
     type:     annotation
 
 ladb_core_follower:
-    resource: "Ladb\\CoreBundle\\Controller\\FollowerController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\FollowerController"
     type:     annotation
 
 ladb_core_like:
-    resource: "Ladb\\CoreBundle\\Controller\\LikeController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\LikeController"
     type:     annotation
 
 ladb_core_watch:
-    resource: "Ladb\\CoreBundle\\Controller\\WatchController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\WatchController"
     type:     annotation
 
 ladb_core_vote:
-    resource: "Ladb\\CoreBundle\\Controller\\VoteController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\VoteController"
     type:     annotation
 
 ladb_core_join:
-    resource: "Ladb\\CoreBundle\\Controller\\JoinController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\JoinController"
     type:     annotation
 
 ladb_core_report:
-    resource: "Ladb\\CoreBundle\\Controller\\ReportController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\ReportController"
+    type:     annotation
+
+ladb_core_tag:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\TagController"
     type:     annotation
 
 ladb_core_picture:
-    resource: "Ladb\\CoreBundle\\Controller\\PictureController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\PictureController"
     type:     annotation
 
 ladb_core_resource:
-    resource: "Ladb\\CoreBundle\\Controller\\ResourceController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\ResourceController"
     type:     annotation
 
 ladb_core_wood:
-    resource: "Ladb\\CoreBundle\\Controller\\WoodController"
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\WoodController"
     type:     annotation
 
 ladb_core_provider:
-    resource: "Ladb\\CoreBundle\\Controller\\ProviderController"
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\ProviderController"
+    type:     annotation
+
+ladb_core_school:
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\SchoolController"
+    type:     annotation
+
+ladb_core_school_testimonial:
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\School\\TestimonialController"
     type:     annotation
 
 ladb_core_knowledge:
-    resource: "Ladb\\CoreBundle\\Controller\\KnowledgeController"
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\KnowledgeController"
     type:     annotation
 
 ladb_core_user:
-    resource: "Ladb\\CoreBundle\\Controller\\UserController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\UserController"
     type:     annotation
 
 ladb_core_referer:
-    resource: "Ladb\\CoreBundle\\Controller\\RefererController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\RefererController"
     type:     annotation
 
 ladb_core_funding:
-    resource: "Ladb\\CoreBundle\\Controller\\FundingController"
+    resource: "Ladb\\CoreBundle\\Controller\\Funding\\FundingController"
+    type:     annotation
+
+ladb_core_promotion:
+    resource: "Ladb\\CoreBundle\\Controller\\Promotion\\GraphicController"
     type:     annotation
 
 ladb_core_youtook:
-    resource: "Ladb\\CoreBundle\\Controller\\YoutookController"
+    resource: "Ladb\\CoreBundle\\Controller\\Extra\\YoutookController"
+    type:     annotation
+
+ladb_core_qa_question:
+    resource: "Ladb\\CoreBundle\\Controller\\Qa\\QuestionController"
+    type:     annotation
+
+ladb_core_qa_answer:
+    resource: "Ladb\\CoreBundle\\Controller\\Qa\\AnswerController"
     type:     annotation
 
 ladb_core_workflow:

@@ -2,13 +2,11 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Entity\Picture;
-use Ladb\CoreBundle\Entity\Resource;
+use Ladb\CoreBundle\Entity\Core\Picture;
+use Ladb\CoreBundle\Entity\Core\Resource;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanupUploadsCommand extends ContainerAwareCommand {
@@ -36,7 +34,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'p' ))
-			->from('LadbCoreBundle:Picture', 'p')
+			->from('LadbCoreBundle:Core\Picture', 'p')
 		;
 
 		try {
@@ -50,7 +48,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'r' ))
-			->from('LadbCoreBundle:Resource', 'r')
+			->from('LadbCoreBundle:Core\Resource', 'r')
 		;
 
 		try {

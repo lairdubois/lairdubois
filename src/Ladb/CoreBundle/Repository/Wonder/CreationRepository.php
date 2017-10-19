@@ -4,7 +4,8 @@ namespace Ladb\CoreBundle\Repository\Wonder;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Knowledge\Provider;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
@@ -179,6 +180,36 @@ class CreationRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findPagined($offset, $limit, $filter = 'recent', $filterParam = null, $excludedIds = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'u', 'mp', 'sp' ))
+			->from($this->getEntityName(), 'c')
+			->innerJoin('c.user', 'u')
+			->innerJoin('c.mainPicture', 'mp')
+			->leftJoin('c.spotlight', 'sp')
+			->where('c.isDraft = false')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		if (!is_null($excludedIds)) {
+			$queryBuilder
+				->andWhere('c.id NOT IN ('.implode(',', $excludedIds).')')
+			;
+		}
+
+		if ('followed' == $filter) {
+			$queryBuilder
+				->innerJoin('u.followers', 'f', 'WITH', 'f.user = :filterParam')
+				->setParameter('filterParam', $filterParam);
+		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder
@@ -266,36 +297,6 @@ class CreationRepository extends AbstractEntityRepository {
 		;
 	}
 
-	public function findPagined($offset, $limit, $filter = 'recent', $filterParam = null, $excludedIds = null) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'c', 'u', 'mp', 'sp' ))
-			->from($this->getEntityName(), 'c')
-			->innerJoin('c.user', 'u')
-			->innerJoin('c.mainPicture', 'mp')
-			->leftJoin('c.spotlight', 'sp')
-			->where('c.isDraft = false')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		if (!is_null($excludedIds)) {
-			$queryBuilder
-				->andWhere('c.id NOT IN ('.implode(',', $excludedIds).')')
-			;
-		}
-
-		if ('followed' == $filter) {
-			$queryBuilder
-				->innerJoin('u.followers', 'f', 'WITH', 'f.user = :filterParam')
-				->setParameter('filterParam', $filterParam);
-		}
-
-		$this->_applyCommonFilter($queryBuilder, $filter);
-
-		return new Paginator($queryBuilder->getQuery());
-	}
-
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -355,6 +356,26 @@ class CreationRepository extends AbstractEntityRepository {
 			->where('c.isDraft = false')
 			->andWhere('h = :howto')
 			->setParameter('howto', $howto)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByProvider(Provider $provider, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'u', 'mp', 'p' ))
+			->from($this->getEntityName(), 'c')
+			->innerJoin('c.user', 'u')
+			->innerJoin('c.mainPicture', 'mp')
+			->innerJoin('c.providers', 'p')
+			->where('c.isDraft = false')
+			->andWhere('p = :provider')
+			->setParameter('provider', $provider)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

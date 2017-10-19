@@ -12,10 +12,11 @@ use Ladb\CoreBundle\Form\DataTransformer\Input\WoodsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\FinishesToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\ToolsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\Howto\HowtosToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\Wonder\CreationsToIdsTransformer;
-use Ladb\CoreBundle\Form\DataTransformer\TagsToNamesTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\PlansToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\HowtosToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\CreationsToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\ProvidersToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 
@@ -62,7 +63,7 @@ class CreationType extends AbstractType {
 			)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-				->addModelTransformer(new TagsToNamesTransformer($this->om))
+				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 			->add($builder
 				->create('plans', HiddenType::class, array( 'required' => false ))
@@ -71,6 +72,10 @@ class CreationType extends AbstractType {
 			->add($builder
 				->create('howtos', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new HowtosToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('providers', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new ProvidersToIdsTransformer($this->om))
 			)
 			->add($builder
 				->create('inspirations', HiddenType::class, array( 'required' => false ))

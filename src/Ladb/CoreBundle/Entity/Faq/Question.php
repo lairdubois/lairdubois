@@ -73,7 +73,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $body;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_faq_question_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
 	 * @Assert\Count(min=1)
@@ -91,7 +91,7 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 	private $bodyBlockVideoCount = 0;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Tag", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_faq_question_tag")
 	 * @Assert\Count(min=1)
 	 */
@@ -132,24 +132,24 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	// Weight /////
 
+	public function getWeight() {
+		return $this->weight;
+	}
+
 	public function setWeight($weight) {
 		$this->weight = $weight;
 		return $this;
 	}
 
-	public function getWeight() {
-		return $this->weight;
-	}
-
 	// Slug /////
+
+	public function getSlug() {
+		return $this->slug;
+	}
 
 	public function setSlug($slug) {
 		$this->slug = $slug;
 		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
 	}
 
 	public function getSluggedId() {
@@ -158,13 +158,13 @@ class Question extends AbstractAuthoredPublication implements TitledInterface, B
 
 	// Icon /////
 
+	public function getIcon() {
+		return $this->icon;
+	}
+
 	public function setIcon($icon) {
 		$this->icon = $icon;
 		return $this;
-	}
-
-	public function getIcon() {
-		return $this->icon;
 	}
 
 }
