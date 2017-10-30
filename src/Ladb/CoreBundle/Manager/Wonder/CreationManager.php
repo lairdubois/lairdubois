@@ -328,7 +328,6 @@ class CreationManager extends AbstractWonderManager {
 		// Create a new find and its content
 
 		$findContent = new \Ladb\CoreBundle\Entity\Find\Content\Gallery();
-		$findContent->setLocation('');
 		foreach ($creation->getPictures() as $picture) {
 			$findContent->addPicture($picture);
 		}
@@ -344,7 +343,9 @@ class CreationManager extends AbstractWonderManager {
 		$find->setContentType(\Ladb\CoreBundle\Entity\Find\Find::CONTENT_TYPE_GALLERY);
 		$find->setContent($findContent);
 		$find->setMainPicture($creation->getMainPicture());
-		$find->setBody($creation->getBody());
+
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+		$blockBodiedUtils->copyBlocksTo($creation, $find);
 
 		foreach ($creation->getTags() as $tag) {
 			$find->addTag($tag);
