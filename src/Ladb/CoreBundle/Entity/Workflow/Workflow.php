@@ -4,8 +4,20 @@ namespace Ladb\CoreBundle\Entity\Workflow;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CommentableInterface;
+use Ladb\CoreBundle\Model\LikableInterface;
+use Ladb\CoreBundle\Model\ViewableInterface;
+use Ladb\CoreBundle\Model\ViewableTrait;
+use Ladb\CoreBundle\Model\WatchableInterface;
+use Ladb\CoreBundle\Model\WatchableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Model\IndexableInterface;
+use Ladb\CoreBundle\Model\IndexableTrait;
+use Ladb\CoreBundle\Model\LikableTrait;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\TaggableTrait;
@@ -16,9 +28,9 @@ use Ladb\CoreBundle\Model\LicensedTrait;
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication implements TaggableInterface, LicensedInterface {
+class Workflow extends AbstractAuthoredPublication implements IndexableInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface {
 
-	use TaggableTrait, LicensedTrait;
+	use IndexableTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
 	const TYPE = 200;
@@ -39,6 +51,17 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface,
 	private $slug;
 
 	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 * @Assert\Length(max=4000)
+	 */
+	private $body;
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $htmlBody;
+
+	/**
 	 * @ORM\Column(type="integer", name="estimated_duration")
 	 */
 	private $estimatedDuration = 0;
@@ -53,6 +76,21 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface,
 	 * @ORM\OrderBy({"positionTop" = "ASC"})
 	 */
 	protected $tasks;
+
+	/**
+	 * @ORM\Column(type="integer", name="task_count")
+	 */
+	private $taskCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="running_task_count")
+	 */
+	private $runningTaskCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="done_task_count")
+	 */
+	private $doneTaskCount = 0;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Label", mappedBy="workflow", cascade={"all"})
@@ -71,6 +109,26 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface,
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
 	 */
 	private $license;
+
+	/**
+	 * @ORM\Column(type="integer", name="like_count")
+	 */
+	private $likeCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="watch_count")
+	 */
+	private $watchCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="comment_count")
+	 */
+	private $commentCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="view_count")
+	 */
+	private $viewCount = 0;
 
 	/////
 
@@ -164,6 +222,36 @@ class Workflow extends AbstractAuthoredPublication implements TaggableInterface,
 
 	public function resetTasks() {
 		$this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	// TaskCount /////
+
+	public function incrementTaskCount($by = 1) {
+		return $this->taskCount += intval($by);
+	}
+
+	public function getTaskCount() {
+		return $this->taskCount;
+	}
+
+	// RunningTaskCount /////
+
+	public function incrementRunningTaskCount($by = 1) {
+		return $this->runningTaskCount += intval($by);
+	}
+
+	public function getRunningTaskCount() {
+		return $this->runningTaskCount;
+	}
+
+	// DoneTaskCount /////
+
+	public function incrementDoneTaskCount($by = 1) {
+		return $this->doneTaskCount += intval($by);
+	}
+
+	public function getDoneTaskCount() {
+		return $this->doneTaskCount;
 	}
 
 	// Labels /////

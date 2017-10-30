@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba2111f4e9bdcbc8849beecb69c0d95c",
+    "content-hash": "f9e7f1ebe447ab73c50a9402409e6c12",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -3071,23 +3071,32 @@
         },
         {
             "name": "jakoch/phantomjs-installer",
-            "version": "2.1.1",
+            "version": "2.1.1-p08",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jakoch/phantomjs-installer.git",
-                "reference": "b8ee2aac9b95f9a9ee30a05a4df4a0984a8a8b85"
+                "reference": "7775820cf5eae8962cf68ab44757238e4d3136cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jakoch/phantomjs-installer/zipball/b8ee2aac9b95f9a9ee30a05a4df4a0984a8a8b85",
-                "reference": "b8ee2aac9b95f9a9ee30a05a4df4a0984a8a8b85",
+                "url": "https://api.github.com/repos/jakoch/phantomjs-installer/zipball/7775820cf5eae8962cf68ab44757238e4d3136cc",
+                "reference": "7775820cf5eae8962cf68ab44757238e4d3136cc",
                 "shasum": ""
             },
             "require": {
-                "ext-openssl": "*"
+                "ext-bz2": "*",
+                "ext-openssl": "*",
+                "php": ">5.3"
+            },
+            "require-dev": {
+                "composer/composer": "^1.2",
+                "phpunit/phpunit": "^4.8"
             },
             "type": "custom-installer",
             "autoload": {
+                "psr-4": {
+                    "PhantomInstaller\\Test\\": "tests/"
+                },
                 "psr-0": {
                     "PhantomInstaller\\": "src/"
                 }
@@ -3108,7 +3117,7 @@
                 "headless",
                 "phantomjs"
             ],
-            "time": "2016-01-25T16:30:30+00:00"
+            "time": "2017-01-10T09:56:38+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -3215,20 +3224,20 @@
         },
         {
             "name": "jonnyw/php-phantomjs",
-            "version": "v4.5.1",
+            "version": "v4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jonnnnyw/php-phantomjs.git",
-                "reference": "cf8d9a221f4c624aa1537c55a2e181f4b50367d7"
+                "reference": "b3c3e20857caf9a36eb90fb1a7cf1e1f1ec4b672"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonnnnyw/php-phantomjs/zipball/cf8d9a221f4c624aa1537c55a2e181f4b50367d7",
-                "reference": "cf8d9a221f4c624aa1537c55a2e181f4b50367d7",
+                "url": "https://api.github.com/repos/jonnnnyw/php-phantomjs/zipball/b3c3e20857caf9a36eb90fb1a7cf1e1f1ec4b672",
+                "reference": "b3c3e20857caf9a36eb90fb1a7cf1e1f1ec4b672",
                 "shasum": ""
             },
             "require": {
-                "jakoch/phantomjs-installer": "2.1.1",
+                "jakoch/phantomjs-installer": "2.1.1-p08",
                 "php": ">=5.3.0",
                 "symfony/config": "~2.3|~3.0",
                 "symfony/dependency-injection": "~2.3|~3.0",
@@ -3267,7 +3276,7 @@
                 "phantomjs",
                 "testing"
             ],
-            "time": "2016-06-28T16:00:15+00:00"
+            "time": "2017-04-22T21:24:02+00:00"
         },
         {
             "name": "jublonet/codebird-php",

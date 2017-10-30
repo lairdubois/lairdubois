@@ -12,11 +12,15 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    <div class="ladb-header-tools pull-right">
-        <a href="{{ path('core_workflow_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'workflow.new'|trans() }}</span></a>
-    </div>
-    <h1 class="ladb-heading"><i class="ladb-icon-workflow"></i> {{ 'workflow.list'|trans() }}</h1>
+    {% include 'LadbCoreBundle:Workflow:_list-topbar.part.html.twig' %}
 {% endblock %}
+
+{#{% block bodyHeaderContainerContent %}#}
+    {#<div class="ladb-header-tools pull-right">#}
+        {#<a href="{{ path('core_workflow_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'workflow.new'|trans() }}</span></a>#}
+    {#</div>#}
+    {#<h1 class="ladb-heading"><i class="ladb-icon-workflow"></i> {{ 'workflow.list'|trans() }}</h1>#}
+{#{% endblock %}#}
 
 {% block bodyContainerContent %}
     <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">

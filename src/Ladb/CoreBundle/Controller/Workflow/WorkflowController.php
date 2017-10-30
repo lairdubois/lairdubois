@@ -2,6 +2,9 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
+use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\SearchUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -202,6 +205,7 @@ class WorkflowController extends Controller {
 			$task->setTitle('Tâche 1 : Changer le monde');
 			$task->setStatus(Task::STATUS_WORKABLE);
 			$workflow->addTask($task);
+			$workflow->incrementTaskCount();
 
 			$om->persist($workflow);
 			$om->flush();
@@ -345,43 +349,125 @@ class WorkflowController extends Controller {
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
 
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($workflow));
+
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+
 		return array(
-			'workflow' => $workflow,
-			'readOnly' => false,
+			'workflow'       => $workflow,
+			'readOnly'       => false,
+			'commentContext' => $commentableUtils->getCommentContext($workflow),
 		);
 	}
 
 	/**
 	 * @Route("/", name="core_workflow_list")
-	 * @Route("/{filter}", requirements={"filter" = "\w+"}, name="core_workflow_list_filter")
-	 * @Route("/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_workflow_list_filter_page")
+	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_workflow_list_page")
 	 * @Template("LadbCoreBundle:Workflow:list.html.twig")
 	 */
-	public function listAction(Request $request, $filter = 'all', $page = 0) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
+	public function listAction(Request $request, $page = 0) {
+		$searchUtils = $this->get(SearchUtils::NAME);
+
+		$layout = $request->get('layout', 'view');
+
+		$routeParameters = array();
+		if ($layout != 'view') {
+			$routeParameters['layout'] = $layout;
 		}
 
-		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
-		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+		$searchParameters = $searchUtils->searchPaginedEntities(
+			$request,
+			$page,
+			function($facet, &$filters, &$sort) {
+				switch ($facet->name) {
 
-		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
-		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
-		$paginator = $workflowRepository->findPagined($offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
+					// Filters /////
 
-		$parameters = array(
-			'filter'        => $filter,
-			'prevPageUrl'   => $pageUrls->prev,
-			'nextPageUrl'   => $pageUrls->next,
-			'workflows'     => $paginator,
-			'workflowCount' => $paginator->count(),
+					case 'tag':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'tags.label' ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'author':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'user.displayname', 'user.fullname', 'user.username'  ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'license':
+
+						$filter = new \Elastica\Query\MatchPhrase('license.strippedname', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
+					// Sorters /////
+
+					case 'sort-recent':
+						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-views':
+						$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-likes':
+						$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-comments':
+						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-random':
+						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
+						break;
+
+					/////
+
+					default:
+						if (is_null($facet->name)) {
+
+							$filter = new \Elastica\Query\QueryString($facet->value);
+							$filter->setFields(array( 'title^100', 'body', 'tags.label' ));
+							$filters[] = $filter;
+
+						}
+
+				}
+			},
+			function(&$filters, &$sort) {
+
+				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+			},
+			'fos_elastica.index.ladb.workflow_workflow',
+			\Ladb\CoreBundle\Entity\Workflow\Workflow::CLASS_NAME,
+			'core_workflow_list_page',
+			$routeParameters
 		);
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+
+		$parameters = array_merge($searchParameters, array(
+			'workflows'          => $searchParameters['entities'],
+			'layout'          => $layout,
+			'routeParameters' => $routeParameters,
+		));
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
 		}
+
 		return $parameters;
 	}
 
@@ -459,6 +545,7 @@ class WorkflowController extends Controller {
 
 			$task->setStatus(Task::STATUS_WORKABLE);
 			$workflow->addTask($task);
+			$workflow->incrementTaskCount();
 
 			// Link to source task if defined
 			$sourceTask = $this->_retrieveTaskFromTaskIdParam($request, 'sourceTaskId', false);
@@ -724,7 +811,17 @@ class WorkflowController extends Controller {
 
 			}
 
+			if ($task->getStatus() == Task::STATUS_DONE) {
+				$workflow->incrementDoneTaskCount(-1);
+			} else if ($task->getStatus() == Task::STATUS_RUNNING) {
+				$workflow->incrementRunningTaskCount(-1);
+			}
 			$task->setStatus($newStatus);
+			if ($task->getStatus() == Task::STATUS_DONE) {
+				$workflow->incrementDoneTaskCount();
+			} else if ($task->getStatus() == Task::STATUS_RUNNING) {
+				$workflow->incrementRunningTaskCount();
+			}
 			$statusChanged = true;
 
 		}
@@ -771,6 +868,13 @@ class WorkflowController extends Controller {
 		// Decrement task durations on workflow
 		$workflow->incrementEstimatedDuration(-$task->getEstimatedDuration());
 		$workflow->incrementDuration(-$task->getDuration());
+
+		$workflow->incrementTaskCount(-1);
+		if ($task->getStatus() == Task::STATUS_DONE) {
+			$workflow->incrementDoneTaskCount(-1);
+		} else if ($task->getStatus() == Task::STATUS_RUNNING) {
+			$workflow->incrementRunningTaskCount(-1);
+		}
 
 		// Remove the task
 		$om->remove($task);

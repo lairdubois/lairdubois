@@ -601,6 +601,33 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
+                workflow_workflow:
+                    mappings:
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                label: { type: text, boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Workflow\Workflow
+                        provider:
+                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
                 promotion_graphic:
                     mappings:
                         title: { type: text, boost: 3, analyzer: title_analyzer }

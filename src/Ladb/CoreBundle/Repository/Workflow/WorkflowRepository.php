@@ -3,10 +3,14 @@
 namespace Ladb\CoreBundle\Repository\Workflow;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\User;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class WorkflowRepository extends AbstractEntityRepository {
+
+	public function createIsNotDraftQueryBuilder() {
+		return $this->createQueryBuilder('a')->where('a.isDraft = false');	// FOSElasticaBundle bug -> use 'a'
+	}
 
 	/////
 

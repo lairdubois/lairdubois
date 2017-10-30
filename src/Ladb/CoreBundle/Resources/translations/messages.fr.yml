@@ -399,6 +399,7 @@ workflow:
       delete_success: Le processus <strong>%title%</strong> a été supprimé.
     help:
       title: Renseignez ici le titre de votre processus.
+      body: Renseignez ici le descriptif de votre processus.
   task:
     title: Titre
     labels: Etiquettes

@@ -7,7 +7,7 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" media="screen" />
     {#<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.css" media="screen" />#}
     {#<link rel="stylesheet" href="https://cdn.jsdelivr.net/intro.js/2.5.0/introjs.min.css">#}
     {% stylesheets filter='less,?yui_css'
@@ -20,11 +20,12 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/js/jsplumb.min.js"></script>#}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.min.js"></script>#}
     {#<script src="https://cdn.jsdelivr.net/intro.js/2.5.0/intro.min.js"></script>#}
     {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
@@ -91,6 +92,21 @@
             </div>
             <div class="ladb-panel-buttons">
                 <button class="btn btn-default btn-sm pull-right ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-left"></i></button>
+            </div>
+            <div class="panel-group ladb-left-panel">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="ladb-metas">
+                            {% set entity = workflow %}
+                            {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+                            {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
+                            {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+                        </div>
+                        {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':workflow.tags } %}
+                        {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':workflow.license } %}
+                        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext } %}
+                    </div>
+                </div>
             </div>
             <div class="panel-group ladb-right-panel">
                 <div class="panel panel-default">
