@@ -25,6 +25,7 @@ security:
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~ # Defaults to the current domain from $_SERVER
+            switch_user: { role: ROLE_ADMIN, parameter: _switch_to }
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/

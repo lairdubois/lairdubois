@@ -59,7 +59,7 @@
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_gallery', 'form':form.gallery, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.gallery_pictures'|trans()), 'hideTextOverlayWarning':true } %}
                     </div>
                     <div class="form-group">
-                        {{ form_label(form.gallery.location, 'default.location') }}<span class="ladb-mandatory">*</span>
+                        {{ form_label(form.gallery.location, 'default.location') }}
                         <p class="help-block"><i>{{ 'find.find.form.help.gallery_location'|trans() }}</i></p>
                         {{ form_errors(form.gallery.location) }}
                         <div class="input-group">

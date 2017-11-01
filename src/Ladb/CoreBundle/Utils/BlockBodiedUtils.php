@@ -4,11 +4,9 @@ namespace Ladb\CoreBundle\Utils;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Entity\Core\Block\Text;
-use Ladb\CoreBundle\Entity\Core\Block\Video;
 use Ladb\CoreBundle\Entity\Core\Block\Gallery;
+use Ladb\CoreBundle\Entity\Core\Block\Video;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
-use Ladb\CoreBundle\Model\MultiPicturedInterface;
-use Ladb\CoreBundle\Model\PicturedInterface;
 
 class BlockBodiedUtils {
 

@@ -26,8 +26,7 @@ class Gallery extends AbstractContent implements MultiPicturedInterface, Localis
 	private $pictures;
 
 	/**
-	 * @ORM\Column(type="string", length=100, nullable=false)
-	 * @Assert\NotBlank(groups={"gallery"})
+	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $location;
 

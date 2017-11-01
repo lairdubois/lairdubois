@@ -82,6 +82,38 @@ class CreationManager extends AbstractWonderManager {
 		parent::unpublishPublication($creation, $flush);
 	}
 
+	public function delete(Creation $creation, $withWitness = true, $flush = true) {
+
+		// Decrement user creation count
+		if ($creation->getIsDraft()) {
+			$creation->getUser()->incrementDraftCreationCount(-1);
+		} else {
+			$creation->getUser()->incrementPublishedCreationCount(-1);
+		}
+
+		// Unlink plans
+		foreach ($creation->getPlans() as $plan) {
+			$creation->removePlan($plan);
+		}
+
+		// Unlink howtos
+		foreach ($creation->getHowtos() as $howto) {
+			$creation->removeHowto($howto);
+		}
+
+		// Unlink providers
+		foreach ($creation->getProviders() as $provider) {
+			$creation->removeProvider($provider);
+		}
+
+		// Unlink inspirations
+		foreach ($creation->getInspirations() as $inspiration) {
+			$creation->removeInspiration($inspiration);
+		}
+
+		parent::deleteWonder($creation, $withWitness, $flush);
+	}
+
 	public function convertToWorkshop(Creation $creation, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
@@ -95,8 +127,10 @@ class CreationManager extends AbstractWonderManager {
 		$workshop->setTitle($creation->getTitle());
 		$workshop->setUser($creation->getUser());
 		$workshop->setMainPicture($creation->getMainPicture());
-		$workshop->setBody($creation->getBody());
 		$workshop->setLicense(new \Ladb\CoreBundle\Entity\Core\License($creation->getLicense()->getAllowDerivs(), $creation->getLicense()->getShareAlike(), $creation->getLicense()->getAllowCommercial()));
+
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+		$blockBodiedUtils->copyBlocksTo($creation, $workshop);
 
 		foreach ($creation->getPictures() as $picture) {
 			$workshop->addPicture($picture);
@@ -173,38 +207,6 @@ class CreationManager extends AbstractWonderManager {
 		}
 
 		return $workshop;
-	}
-
-	public function delete(Creation $creation, $withWitness = true, $flush = true) {
-
-		// Decrement user creation count
-		if ($creation->getIsDraft()) {
-			$creation->getUser()->incrementDraftCreationCount(-1);
-		} else {
-			$creation->getUser()->incrementPublishedCreationCount(-1);
-		}
-
-		// Unlink plans
-		foreach ($creation->getPlans() as $plan) {
-			$creation->removePlan($plan);
-		}
-
-		// Unlink howtos
-		foreach ($creation->getHowtos() as $howto) {
-			$creation->removeHowto($howto);
-		}
-
-		// Unlink providers
-		foreach ($creation->getProviders() as $provider) {
-			$creation->removeProvider($provider);
-		}
-
-		// Unlink inspirations
-		foreach ($creation->getInspirations() as $inspiration) {
-			$creation->removeInspiration($inspiration);
-		}
-
-		parent::deleteWonder($creation, $withWitness, $flush);
 	}
 
 	public function convertToHowto(Creation $creation, $flush = true) {
@@ -328,7 +330,6 @@ class CreationManager extends AbstractWonderManager {
 		// Create a new find and its content
 
 		$findContent = new \Ladb\CoreBundle\Entity\Find\Content\Gallery();
-		$findContent->setLocation('');
 		foreach ($creation->getPictures() as $picture) {
 			$findContent->addPicture($picture);
 		}
@@ -344,7 +345,9 @@ class CreationManager extends AbstractWonderManager {
 		$find->setContentType(\Ladb\CoreBundle\Entity\Find\Find::CONTENT_TYPE_GALLERY);
 		$find->setContent($findContent);
 		$find->setMainPicture($creation->getMainPicture());
-		$find->setBody($creation->getBody());
+
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+		$blockBodiedUtils->copyBlocksTo($creation, $find);
 
 		foreach ($creation->getTags() as $tag) {
 			$find->addTag($tag);
