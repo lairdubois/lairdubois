@@ -171,7 +171,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
 
 		// Retrieve comments
-		$comments = $commentRepository->findByEntityTypeAndEntityId($commentableSrc->getType(), $commentableSrc->getId());
+		$comments = $commentRepository->findByEntityTypeAndEntityId($commentableSrc->getType(), $commentableSrc->getId(), false);
 
 		// Transfer comments
 		foreach ($comments as $comment) {
