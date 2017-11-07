@@ -1,1 +1,2 @@
 {{ entity.body|striptags }}
+#lairdubois{% if entity.tags is defined %} {% for tag in entity.tags %}#{{ tag.label }} {% endfor %}{% endif %}
