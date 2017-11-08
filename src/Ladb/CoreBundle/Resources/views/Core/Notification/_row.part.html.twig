@@ -7,6 +7,7 @@
     <div class="ladb-box">
         <div>{% block body %}{% endblock %}</div>
         <div>
+            {% if isYour is defined and isYour %}<span class="pull-right"><i class="ladb-icon-user"></i></span>{% endif %}
             {% if not notification.isShown %}<span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}"><i class="ladb-icon-bullet ladb-icon-lg" style="color: #f77f00;"></i></span>{% endif %}
             {% if icon is defined %}<i class="ladb-icon-{{ icon }}"></i>{% endif %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':notification } %}
         </div>
