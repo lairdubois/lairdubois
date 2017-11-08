@@ -352,7 +352,7 @@ qa:
     nav: Questions
     other_from: Autres questions de
     similar: Voir aussi
-    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la question (remerciements, demande de précisions, corrections, etc ...).</p><p>N'apportez pas votre réponse ici.<br>Pour répondre à  la question, cliquez sur <strong>Répondre à la question</strong> en bas de page.</p>
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la question (remerciements, demande de précisions, corrections, etc ...).</p><p><u>N'apportez pas votre réponse ici.</u></p><p>Pour répondre à  la question, cliquez sur <strong>Répondre à la question</strong> en bas de page.</p>
     form:
       alert:
         lock_success: La question <strong>%title%</strong> a été vérrouillée.
