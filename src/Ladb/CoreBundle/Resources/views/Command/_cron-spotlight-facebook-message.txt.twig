@@ -1,1 +1,2 @@
 {{ (entity.title|raw|truncate(80))~' '~('default.by'|trans())~' '~(entity.user.displayname|raw) }}
+#lairdubois{% if entity.tags is defined %} {% include 'LadbCoreBundle:Core/Tag:_hashtags.part.html.twig' with { 'tags':entity.tags } %}{% endif %}
