@@ -1,0 +1,157 @@
+{% extends 'LadbCoreBundle::layout.html.twig' %}
+
+{% set bodyContainerFluid = true %}
+{% set navSection = 'workflow' %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" media="screen" />
+    {#<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.css" media="screen" />#}
+    {#<link rel="stylesheet" href="https://cdn.jsdelivr.net/intro.js/2.5.0/introjs.min.css">#}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/component/inputcolor.less'
+        '@LadbCoreBundle/Resources/assets/less/ladb/component/inputduration.less'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/workflow.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/js/jsplumb.min.js"></script>#}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chardin.js/0.1.3/chardinjs.min.js"></script>#}
+    {#<script src="https://cdn.jsdelivr.net/intro.js/2.5.0/intro.min.js"></script>#}
+    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>#}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
+        '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputcolor.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.inputduration.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.remotemodal.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.workflowworkspace.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {{ ws_client() }}
+    <script>
+        $(document).ready(function() {
+            $('.ladb-workflow-workspace').ladbWorkflowWorkspace({
+                readOnly: {{ readOnly ? 'true' : 'false' }},
+                wsUri: '{{ websocket_uri }}',
+                wsChannel: 'workflow/{{ workflow.id }}',
+                listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}',
+                newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
+                createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
+                editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
+                updateTaskPath: '{{ path('core_workflow_task_update', { 'id':workflow.id }) }}',
+                positionUpdateTaskPath: '{{ path('core_workflow_task_position_update', { 'id':workflow.id }) }}',
+                statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
+                createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
+                deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
+                listPartPath: '{{ path('core_workflow_part_list', { 'id':workflow.id }) }}',
+                listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}',
+                statisticsPath: '{{ path('core_workflow_statistics', { 'id':workflow.id }) }}'
+            });
+
+            {# Setup Comment Widget #}
+            $('.ladb-comment-widget').ladbCommentWidget();
+
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+{% endblock %}
+
+{% block bodyWrapperInner %}
+    <div class="ladb-workflow-workspace">
+        <header>
+            {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow } %}
+                {% block headerTools %}
+                    <div class="ladb-header-tools">
+                        {% if ownerUser or is_granted("ROLE_ADMIN") %}
+                            <button id="ladb_add_task_btn" class="btn btn-success"><i class="ladb-icon-plus"></i><span class="ladb-visible-desktop">  {{ 'workflow.task.new'|trans() }}</span></button>
+                            &nbsp;
+                            <button id="ladb_list_parts_btn" class="btn btn-default"><i class="ladb-icon-plan"></i><span class="ladb-visible-desktop">  {{ 'workflow.part.list'|trans() }}</span></button>
+                            <button id="ladb_list_labels_btn" class="btn btn-default"><i class="ladb-icon-bullet"></i><span class="ladb-visible-desktop">  {{ 'workflow.label.list'|trans() }}</span></button>
+                            <button id="ladb_statistics_btn" class="btn btn-default"><i class="ladb-icon-statistics"></i><span class="ladb-visible-desktop">  {{ 'workflow.workflow.statistics'|trans() }}</span></button>
+                            &nbsp;
+                            <a id="ladb_layout_page_btn" class="btn btn-info" href="{{ ladb_entity_url_action(workflow) }}"><i class="ladb-icon-arrow-left"></i><span class="ladb-visible-desktop">  Quitter le mode travail</span></a>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </header>
+        <div class="ladb-workflow-board">
+            <div class="ladb-workflow-task-diagram ladb-with-right-panel">
+                <div class="ladb-panzoom">
+                    <div class="ladb-jtk-canvas"></div>
+                </div>
+            </div>
+            <div class="ladb-panel-buttons">
+                <button class="btn btn-default btn-sm pull-right ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-left"></i></button>
+                <button class="btn btn-default btn-sm pull-left ladb-show-all-btn"><i class="ladb-icon-fullscreen"></i></button>
+            </div>
+            <div class="panel-group ladb-right-panel">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <button class="btn btn-default btn-sm pull-left ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-right"></i></button>
+                        <span class="ladb-heading">{{ 'workflow.task.list'|trans() }}</span>
+                    </div>
+                    {% include 'LadbCoreBundle:Workflow:_workflow-status.part.html.twig' %}
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>
+                            {{ 'workflow.task.status_3'|trans() }}
+                        </h4>
+                    </div>
+                    <div id="panel_body_status_3" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span id="panel_heading_badge_status_2" class="badge badge-default pull-right">0</span>
+                            {{ 'workflow.task.status_2'|trans() }}
+                        </h4>
+                    </div>
+                    <div id="panel_body_status_2" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span id="panel_heading_badge_status_1" class="badge badge-default pull-right">0</span>
+                            {{ 'workflow.task.status_1'|trans() }}
+                        </h4>
+                    </div>
+                    <div id="panel_body_status_1" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span id="panel_heading_badge_status_4" class="badge badge-warning pull-right">0</span>
+                            {{ 'workflow.task.status_4'|trans() }}
+                        </h4>
+                    </div>
+                    <div id="panel_body_status_4" class="panel-body">
+                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                    </div>
+                </div>
+            </div>
+            {% embed 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}
+                {% block inner %}
+                    {{ parent() }}
+                    <div class="ladb-loading-status">Connexion en cours...</div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+        {% include 'LadbCoreBundle:Common:Modal/_modal-empty-loading.part.html.twig' with { 'id':'workflow_modal' } %}
+    </div>
+{% endblock %}
+
+{% block bodyFooter %}{% endblock %}

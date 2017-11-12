@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\Workflow\LabelsToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Workflow\PartsToIdsTransformer;
 
 class TaskType extends AbstractType {
 
@@ -26,6 +27,10 @@ class TaskType extends AbstractType {
 			->add($builder
 				->create('labels', TextType::class, array( 'label' => 'workflow.task.labels', 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new LabelsToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('parts', TextType::class, array( 'label' => 'workflow.task.parts', 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
+				->addModelTransformer(new PartsToIdsTransformer($this->om))
 			)
 			->add('estimatedDuration', TextType::class, array( 'label' => 'workflow.task.estimated_duration', 'attr' => array( 'data-type' => 'duration' ) ))
 			->add('duration', TextType::class, array( 'label' => 'workflow.task.duration', 'attr' => array( 'data-type' => 'duration' ) ))

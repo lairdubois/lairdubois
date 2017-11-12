@@ -95,6 +95,13 @@ class Task {
 	protected $labels;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Part", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_workflow_task_part")
+	 * @ORM\OrderBy({"name" = "ASC"})
+	 */
+	protected $parts;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Task", mappedBy="targetTasks")
 	 */
 	private $sourceTasks;
@@ -113,6 +120,7 @@ class Task {
 
 	public function __construct() {
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->parts = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->sourceTasks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->targetTasks = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -270,6 +278,26 @@ class Task {
 
 	public function getLabels() {
 		return $this->labels;
+	}
+
+	// Parts /////
+
+	public function addPart(\Ladb\CoreBundle\Entity\Workflow\Part $part) {
+		if (!$this->parts->contains($part) && (is_null($part->getWorkflow()) || $part->getWorkflow()->getId() == $this->getWorkflow()->getId())) {
+			$this->parts[] = $part;
+			if (!is_null($this->getWorkflow()) && is_null($part->getWorkflow())) {
+				$this->getWorkflow()->addPart($part);
+			}
+		}
+		return $this;
+	}
+
+	public function removePart(\Ladb\CoreBundle\Entity\Workflow\Part $part) {
+		$this->parts->removeElement($part);
+	}
+
+	public function getParts() {
+		return $this->parts;
 	}
 
 	// SourceTasks /////

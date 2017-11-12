@@ -93,6 +93,11 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	private $doneTaskCount = 0;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Part", mappedBy="workflow", cascade={"all"})
+	 */
+	protected $parts;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Label", mappedBy="workflow", cascade={"all"})
 	 */
 	protected $labels;
@@ -134,6 +139,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	public function __construct() {
 		$this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->parts = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -252,6 +258,30 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	public function getDoneTaskCount() {
 		return $this->doneTaskCount;
+	}
+
+	// Parts /////
+
+	public function addPart(\Ladb\CoreBundle\Entity\Workflow\Part $part) {
+		if (!$this->parts->contains($part)) {
+			$this->parts[] = $part;
+			$part->setWorkflow($this);
+		}
+		return $this;
+	}
+
+	public function removePart(\Ladb\CoreBundle\Entity\Workflow\Part $part) {
+		if ($this->parts->removeElement($part)) {
+			$part->setWorkflow(null);
+		}
+	}
+
+	public function getParts() {
+		return $this->parts;
+	}
+
+	public function resetParts() {
+		$this->parts = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// Labels /////

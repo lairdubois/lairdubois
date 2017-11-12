@@ -19,8 +19,21 @@
         {% if task.labels is not empty %}
             <div class="ladb-labels">
                 {% for label in task.labels %}
-                    {% include 'LadbCoreBundle:Workflow:_label-bullet.part.html.twig' %}
+                    {% include 'LadbCoreBundle:Workflow:Label/_bullet.part.html.twig' %}
                 {% endfor %}
+            </div>
+        {% endif %}
+        {% if task.parts is not empty %}
+            {% set collapseId = 'task_parts_collapse'~random() %}
+            <div class="ladb-parts">
+                <a title="{{ task.parts|length }} pièces" data-toggle="collapse" href="#{{ collapseId }}"><i class="ladb-icon-plan" data-container="body"></i> <span style="font-size: 95%;">{{ task.parts|length }} pièces</span><span class="caret"></span> </a>
+                <div id="{{ collapseId }}" class="collapse">
+                    <ul>
+                        {% for part in task.parts %}
+                            <li>{{ part.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         {% endif %}
     </div>

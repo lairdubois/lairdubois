@@ -27,6 +27,7 @@
         this.$modal = $('#workflow_modal', this.$element);
 
         this.$btnAddTask = $('#ladb_add_task_btn', this.$element);
+        this.$btnListParts = $('#ladb_list_parts_btn', this.$element);
         this.$btnListLabels = $('#ladb_list_labels_btn', this.$element);
         this.$btnStatistics = $('#ladb_statistics_btn', this.$element);
     };
@@ -47,12 +48,16 @@
         statusUpdateTaskPath: null,
         createTaskConnectionPath: null,
         deleteTaskConnectionPath: null,
+        listPartPath: null,
         listLabelPath: null,
         statisticsPath: null
     };
 
     LadbWorkflowWorkspace.prototype._uiDiagramShowAll = function() {
         if (this.$panzoom) {
+
+            this.$panzoom.panzoom('zoom', 1);
+            this.$panzoom.panzoom('pan', 0, 0, { relative: false });
 
             var areaPadding = 30;
 
@@ -133,6 +138,7 @@
         this.$loadingPanel.show();
         this.$loadingStatus.html(status ? status : '');
         this.$btnAddTask.prop('disabled', true);
+        this.$btnListParts.prop('disabled', true);
         this.$btnListLabels.prop('disabled', true);
         this.$btnStatistics.prop('disabled', true);
     };
@@ -140,6 +146,7 @@
     LadbWorkflowWorkspace.prototype._uiUnmarkLoading = function() {
         this.$loadingPanel.hide();
         this.$btnAddTask.prop('disabled', false);
+        this.$btnListParts.prop('disabled', false);
         this.$btnListLabels.prop('disabled', false);
         this.$btnStatistics.prop('disabled', false);
     };
@@ -354,6 +361,7 @@
         }
 
         setupTooltips();
+        setupPopovers();
 
     };
 
@@ -625,7 +633,6 @@
         that.$modal.ladbRemoteModal('loadContent', {
             url: that.options.listLabelPath,
             onSuccess: function($content) {
-                // that.$modal.ladbWorkflowLabels();
 
                 var $alertEmpty = $('.ladb-label-empty-alert', $content);
                 var $table = $('.ladb-label-table', $content);
@@ -819,6 +826,206 @@
 
     };
 
+    LadbWorkflowWorkspace.prototype.loadModalListParts = function() {
+        var that = this;
+
+        // Load modal
+        that.$modal.ladbRemoteModal('loadContent', {
+            url: that.options.listPartPath,
+            onSuccess: function($content) {
+
+                var $alertEmpty = $('.ladb-part-empty-alert', $content);
+                var $table = $('.ladb-part-table', $content);
+                var $newBtn = $('.ladb-part-new-btn', $content);
+
+                // Functions /////
+
+                function checkEmpty() {
+                    if ($('.ladb-workflow-part-row, .ladb-workflow-part-row-form', $table).length == 0) {
+                        $alertEmpty.show();
+                        $table.hide();
+                    } else {
+                        $alertEmpty.hide();
+                        $table.show();
+                    }
+                }
+
+                function bindRowForm($rowForm, $row) {
+
+                    var $form = $('form', $rowForm);
+                    var $loadingPanel = $('.ladb-loading-panel', $rowForm);
+                    var $cancelBtn = $('.ladb-part-cancel-btn', $rowForm);
+                    var $saveBtn = $('.ladb-part-save-btn', $rowForm);
+                    var $inputColor = $('.ladb-input-color', $form);
+                    var $inputName = $('.ladb-input-name', $form);
+
+                    // Bind form
+                    $form.ajaxForm({
+                        cache: false,
+                        dataType: "html",
+                        context: document.body,
+                        clearForm: true,
+                        success: function(data, textStatus, jqXHR) {
+
+                            $cancelBtn.unbind('click');
+                            $saveBtn.unbind('click');
+
+                            var $data = $(data);
+                            $rowForm.replaceWith($data);
+
+                            if ($data.hasClass('ladb-workflow-part-row')) {
+                                if ($row) { $row.remove(); }
+                                bindRows($data);
+                                $alertEmpty.hide();
+                            } else {
+                                bindRowForm($data, $row);
+                            }
+
+                        },
+                        error: function() {
+                            $loadingPanel.hide();
+                        }
+                    });
+
+                    // Bind buttons
+                    $cancelBtn.on('click', function(e) {
+                        if ($row) { $row.show(); }
+                        $cancelBtn.unbind('click');
+                        $saveBtn.unbind('click');
+                        $rowForm.remove();
+                        checkEmpty();
+                    });
+                    $saveBtn.on('click', function(e) {
+                        $loadingPanel.show();
+                        $form.submit();
+                    });
+
+                    // Bind input color
+                    $inputColor.ladbInputColor();
+
+                    // Focus name input
+                    $inputName.focus();
+
+                }
+
+                function bindRows($rows) {
+
+                    $rows.each(function(index, value) {
+
+                        var $row = $(value);
+                        var $loadingPanel = $('.ladb-loading-panel', $row);
+                        var $editBtn = $('.ladb-part-edit-btn', $row);
+                        var $deleteBtn = $('.ladb-part-delete-btn', $row);
+
+                        $editBtn.on('click', function(e) {
+                            e.preventDefault();
+
+                            $loadingPanel.show();
+
+                            // Hide previously edited row
+                            $('.ladb-workflow-part-row').show();
+                            $('.ladb-workflow-part-row-form').remove();
+
+                            $.ajax($(this).attr('href'), {
+                                cache: false,
+                                dataType: "html",
+                                context: document.body,
+                                success: function(data, textStatus, jqXHR) {
+
+                                    var $rowForm = $(data);
+
+                                    // Hide old row
+                                    $row.hide();
+
+                                    // Append row form
+                                    $row.after($rowForm);
+
+                                    bindRowForm($rowForm, $row);
+
+                                    $loadingPanel.hide();
+                                },
+                                error: function () {
+                                    $loadingPanel.hide();
+                                }
+                            });
+
+                        });
+
+                        $deleteBtn.on('click', function(e) {
+                            e.preventDefault();
+
+                            $loadingPanel.show();
+
+                            $.ajax($(this).attr('href'), {
+                                cache: false,
+                                dataType: "html",
+                                context: document.body,
+                                success: function (data, textStatus, jqXHR) {
+                                    $row.remove();
+                                    checkEmpty();
+                                },
+                                error: function () {
+                                    $loadingPanel.hide();
+                                }
+                            });
+
+                        });
+
+                    });
+
+                }
+
+                // Binds /////
+
+                // Bind New buttons
+                $newBtn.on('click', function(e) {
+                    e.preventDefault();
+
+                    // Hide previously edited row
+                    $('.ladb-workflow-part-row', $content).show();
+                    $('.ladb-workflow-part-row-form', $content).remove();
+
+                    var url = $newBtn.attr('href');
+
+                    // Loading button
+                    $newBtn.button('loading');
+
+                    $.ajax(url, {
+                        cache: false,
+                        dataType: "html",
+                        context: document.body,
+                        success: function(data, textStatus, jqXHR) {
+
+                            var $tbody = $('tbody', $table);
+                            var $rowForm = $(data);
+
+                            // Reset loading
+                            $newBtn.button('reset');
+
+                            // Append row form
+                            $tbody.append($rowForm);
+
+                            checkEmpty();
+                            bindRowForm($rowForm, null);
+                        },
+                        error: function () {
+                            // Reset loading
+                            $newBtn.button('reset');
+                        }
+                    });
+
+                });
+
+                // Bind Rows
+                bindRows($('.ladb-workflow-part-row', $content));
+
+            },
+            onError: function() {
+            }
+        });
+
+    };
+
     LadbWorkflowWorkspace.prototype.loadModalStatistics = function() {
         var that = this;
 
@@ -889,31 +1096,36 @@
 
         });
 
-        // Fake Labels select
-        var $select = $('.ladb-workflow-label-fake-select', $modal);
-        if ($select.length > 0) {
-            var $mappedInput = $($select.data('ladb-mapped-input'), $modal);
-            var currentValue = $mappedInput.val();
-            $select.selectpicker({
-                noneSelectedText: 'Aucune étiquette',
-                iconBase: '',
-                tickIcon: 'ladb-icon-check'
-            });
-            if (currentValue) {
-                $select.selectpicker('val', currentValue.split(','));
+        // Fake selects
+        function bindFakeSelect(id, noneSelectedText) {
+            var $select = $(id, $modal);
+            if ($select.length > 0) {
+                var $mappedInput = $($select.data('ladb-mapped-input'), $modal);
+                var currentValue = $mappedInput.val();
+                $select.selectpicker({
+                    noneSelectedText: noneSelectedText,
+                    iconBase: '',
+                    tickIcon: 'ladb-icon-check'
+                });
+                if (currentValue) {
+                    $select.selectpicker('val', currentValue.split(','));
+                }
+                $select.on('changed.bs.select', function (e) {
+                    var selectValue = $(this).val();
+                    var fieldValue = selectValue ? selectValue.join(',') : '';
+                    $mappedInput.val(fieldValue);
+                });
+                $select.on('show.bs.select', function (e) {
+                    $modal.ladbRemoteModal('setHiddable', false);
+                });
+                $select.on('hidden.bs.select', function (e) {
+                    $modal.ladbRemoteModal('setHiddable', true);
+                });
             }
-            $select.on('changed.bs.select', function (e) {
-                var selectValue = $(this).val();
-                var fieldValue = selectValue ? selectValue.join(',') : '';
-                $mappedInput.val(fieldValue);
-            });
-            $select.on('show.bs.select', function (e) {
-                $modal.ladbRemoteModal('setHiddable', false);
-            });
-            $select.on('hidden.bs.select', function (e) {
-                $modal.ladbRemoteModal('setHiddable', true);
-            });
         }
+
+        bindFakeSelect('.ladb-workflow-label-fake-select', 'Aucune étiquette');
+        bindFakeSelect('.ladb-workflow-part-fake-select', 'Aucune pièce');
 
     };
 
@@ -941,6 +1153,9 @@
 
             that.loadModalNewTask(positionLeft, positionTop);
         });
+        this.$btnListParts.on('click', function() {
+            that.loadModalListParts();
+        });
         this.$btnListLabels.on('click', function() {
             that.loadModalListLabels();
         });
@@ -949,6 +1164,9 @@
         });
         $('.ladb-toggle-right-panel-btn', this.$element).on('click', function() {
             that._uiToggleRightPanel();
+        });
+        $('.ladb-show-all-btn', this.$element).on('click', function() {
+            that._uiDiagramShowAll();
         });
 
     };

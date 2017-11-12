@@ -174,3 +174,15 @@ ladb_core_workflow:
     resource: "Ladb\\CoreBundle\\Controller\\Workflow\\WorkflowController"
     type:     annotation
 
+ladb_core_workflow_task:
+    resource: "Ladb\\CoreBundle\\Controller\\Workflow\\TaskController"
+    type:     annotation
+
+ladb_core_workflow_part:
+    resource: "Ladb\\CoreBundle\\Controller\\Workflow\\PartController"
+    type:     annotation
+
+ladb_core_workflow_label:
+    resource: "Ladb\\CoreBundle\\Controller\\Workflow\\LabelController"
+    type:     annotation
+

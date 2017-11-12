@@ -19,7 +19,9 @@
 @bg-readonly: #eee;
 
 @task-widget-box-width: 340px;
-@label-bullet-size: 18px;
+@label-bullet-width: 30px;
+@label-bullet-height: 10px;
+
 
 .ladb-workflow-workspace {
   position: absolute;
@@ -38,6 +40,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    overflow: hidden;
 
     .ladb-panel-buttons {
       position: absolute;
@@ -61,6 +64,37 @@
     right: 0;
   }
 
+  .ladb-bottom-panel {
+    position: absolute;
+    height: 400px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding: 0 !important;
+
+    .panel {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      border-right: none;
+
+      .panel-body {
+        padding: 0;
+
+        &:first-child {
+          padding: 10px;
+        }
+
+        .ladb-no-task {
+          padding: 10px;
+        }
+
+      }
+
+    }
+
+  }
+
   .ladb-left-panel, .ladb-right-panel {
     position: absolute;
     height: 100%;
@@ -80,11 +114,11 @@
         &:first-child {
           padding: 10px;
 
-          span {
-            display: block;
-            text-align: center;
-            font-size: 150%;
-          }
+          //.ladb-heading {
+          //  display: block;
+          //  text-align: center;
+          //  font-size: 150%;
+          //}
 
         }
 
@@ -334,9 +368,18 @@
       margin-top: 4px;
     }
 
+    .ladb-parts {
+      margin-top: 4px;
+
+      a {
+        color: #555;
+      }
+    }
+
   }
 
   .ladb-box {
+    position: relative;
 
     .ladb-minitools-btn {
       width: 28px;
@@ -383,7 +426,7 @@
 
 }
 
-.ladb-workflow-label-row {
+.ladb-workflow-label-row, .ladb-workflow-part-row {
 
   td {
     position: relative;
@@ -396,7 +439,7 @@
 
 }
 
-.ladb-workflow-label-row-form {
+.ladb-workflow-label-row-form, .ladb-workflow-part-row-form {
 
   td {
     position: relative;
@@ -406,18 +449,17 @@
 
 .ladb-workflow-label-bullet {
   display: inline-block;
-  width: @label-bullet-size;
-  height: @label-bullet-size;
-  border: 2px solid #fff;
-  border-radius: @label-bullet-size / 2;
+  width: @label-bullet-width;
+  height: @label-bullet-height;
+  border-radius: @label-bullet-height / 2;
   vertical-align: middle;
 }
 
-.ladb-workflow-label-span {
-  line-height: @label-bullet-size;
+.ladb-workflow-label-span, .ladb-workflow-part-span {
+  line-height: @label-bullet-height;
 }
 
-.ladb-workflow-label-fake-select {
+.ladb-workflow-label-fake-select, .ladb-workflow-part-fake-select {
 
   .dropdown-menu {
     min-width: inherit !important;

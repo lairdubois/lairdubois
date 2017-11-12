@@ -30,7 +30,17 @@
             {{ form_widget(form.labels) }}
             <select class="ladb-workflow-label-fake-select form-control" data-ladb-mapped-input="#{{ form.labels.vars.id }}" multiple>
                 {% for label in workflow.labels %}
-                    <option data-content="{% spaceless %}{% filter escape %}{% include 'LadbCoreBundle:Workflow:_label-span.part.html.twig' %}{% endfilter %}{% endspaceless %}" value="{{ label.id }}">{{ label.name }}</option>
+                    <option data-content="{% spaceless %}{% filter escape %}{% include 'LadbCoreBundle:Workflow:Label/_span.part.html.twig' %}{% endfilter %}{% endspaceless %}" value="{{ label.id }}">{{ label.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.parts) }}
+            {{ form_errors(form.parts) }}
+            {{ form_widget(form.parts) }}
+            <select class="ladb-workflow-part-fake-select form-control" data-ladb-mapped-input="#{{ form.parts.vars.id }}" multiple>
+                {% for part in workflow.parts %}
+                    <option data-content="{% spaceless %}{% filter escape %}{% include 'LadbCoreBundle:Workflow:Part/_span.part.html.twig' %}{% endfilter %}{% endspaceless %}" value="{{ part.id }}">{{ part.name }}</option>
                 {% endfor %}
             </select>
         </div>

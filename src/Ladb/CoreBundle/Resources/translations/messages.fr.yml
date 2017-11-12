@@ -386,23 +386,26 @@ qa:
       answers: '[0,1]réponse|]1,Inf]réponses'
 
 workflow:
-  description: Retrouvez tous les processus
-  new: Ajouter un processus
-  edit: Edition du processus
-  list: Les processus
-  user_list: Mes processus
   nav: Processus
-  statistics: Statistiques
-  form:
-    alert:
-      update_success: Le processus <strong>%title%</strong> a été mis à jour.
-      delete_success: Le processus <strong>%title%</strong> a été supprimé.
-    help:
-      title: Renseignez ici le titre de votre processus.
-      body: Renseignez ici le descriptif de votre processus.
+  description: Retrouvez tous les processus
+  workflow:
+    new: Ajouter un processus
+    edit: Edition du processus
+    list: Les processus
+    user_list: Mes processus
+    statistics: Statistiques
+    form:
+      alert:
+        update_success: Le processus <strong>%title%</strong> a été mis à jour.
+        delete_success: Le processus <strong>%title%</strong> a été supprimé.
+      help:
+        title: Renseignez ici le titre de votre processus.
+        body: Renseignez ici le descriptif de votre processus.
+        tags: Indiquez les tags définissant votre processus.
   task:
     title: Titre
     labels: Etiquettes
+    parts: Pièces
     estimated_duration: Durée (Prévue)
     duration: Durée (Réelle)
     new: Ajouter une tâche
@@ -413,6 +416,11 @@ workflow:
     status_2: Tâches à effectuer
     status_3: Tâches en cours
     status_4: Tâches effectuées
+  part:
+    name: Libellé
+    list: Pièces
+    add: Ajouter une pièce
+    empty: Aucune pièce
   label:
     color: Couleur
     name: Libellé
@@ -947,6 +955,7 @@ search:
     questions: Recherche dans la FAQ
     qa_questions: Recherche dans les questions
     promotion_graphic: Recherche dans les graphismes
+    workflows: Recherche dans les processus
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 
