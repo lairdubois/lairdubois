@@ -34,7 +34,7 @@
 {% block contentBody %}
     <div class="ladb-workflow">
         <div class="thumbnail" style="height: 400px;" onclick="window.location = '{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}'">
-
+            <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info">Ouvrir en mode travail</a>
         </div>
         <hr>
         <div class="ladb-body">
