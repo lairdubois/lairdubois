@@ -366,11 +366,18 @@
     };
 
     LadbWorkflowWorkspace.prototype.bindTaskBox = function(taskId, $taskBox) {
+        var that = this;
+
+        // Bind collapse anchror
+        var $x = $('[data-toggle=collapse]', $taskBox);
+        $('[data-toggle=collapse]', $taskBox).on('click', function(e) {
+            e.stopPropagation();
+            $(this).next('.collapse').toggleClass('in');
+        });
+
         if (this.options.readOnly) {
             return;
         }
-
-        var that = this;
 
         // Bind done and run button
         $('.ladb-status-update-btn', $taskBox).on('click', function (e) {
@@ -400,13 +407,6 @@
             e.stopPropagation();
             that.loadModalEditTask(taskId);
         });
-
-        // Bind collapse anchror
-        var $x = $('[data-toggle=collapse]', $taskBox);
-        $('[data-toggle=collapse]', $taskBox).on('click', function(e) {
-            e.stopPropagation();
-            $(this).next('.collapse').toggleClass('in');
-        })
 
     };
 
