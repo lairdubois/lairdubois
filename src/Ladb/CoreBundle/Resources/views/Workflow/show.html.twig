@@ -33,8 +33,10 @@
 
 {% block contentBody %}
     <div class="ladb-workflow">
-        <div class="thumbnail" style="height: 400px;" onclick="window.location = '{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}'">
-            <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info">Ouvrir en mode travail</a>
+        <div class="thumbnail" style="height: 300px; position: relative;" onclick="window.location = '{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}'">
+            <div style="position: absolute; top: 50%; margin-top: -17px; text-align: center; width: 100%;">
+                <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info"><i class="ladb-icon-workflow"></i> Ouvrir en mode travail</a>
+            </div>
         </div>
         <hr>
         <div class="ladb-body">
