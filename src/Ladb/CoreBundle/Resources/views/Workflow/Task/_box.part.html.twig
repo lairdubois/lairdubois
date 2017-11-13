@@ -24,13 +24,12 @@
             </div>
         {% endif %}
         {% if task.parts is not empty %}
-            {% set collapseId = 'task_parts_collapse'~random() %}
             <div class="ladb-parts">
-                <a title="{{ task.parts|length }} pièces" data-toggle="collapse" href="#{{ collapseId }}"><i class="ladb-icon-plan" data-container="body"></i> <span style="font-size: 95%;">{{ task.parts|length }} pièces</span><span class="caret"></span> </a>
-                <div id="{{ collapseId }}" class="collapse">
-                    <ul>
+                <a title="{{ task.parts|length }} pièces" data-toggle="collapse"><i class="ladb-icon-plan" data-container="body"></i> <span style="font-size: 95%;">{{ task.parts|length }} pièces</span><span class="caret"></span> </a>
+                <div class="collapse">
+                    <ul style="list-style: none; padding-left: 20px;">
                         {% for part in task.parts %}
-                            <li>{{ part.name }}</li>
+                            <li style="font-size: 90%; line-height: 20px;">{% include 'LadbCoreBundle:Workflow:Part/_span.part.html.twig' %}</li>
                         {% endfor %}
                     </ul>
                 </div>

@@ -401,6 +401,13 @@
             that.loadModalEditTask(taskId);
         });
 
+        // Bind collapse anchror
+        var $x = $('[data-toggle=collapse]', $taskBox);
+        $('[data-toggle=collapse]', $taskBox).on('click', function(e) {
+            e.stopPropagation();
+            $(this).next('.collapse').toggleClass('in');
+        })
+
     };
 
     LadbWorkflowWorkspace.prototype.initTaskRow = function($taskRow) {
