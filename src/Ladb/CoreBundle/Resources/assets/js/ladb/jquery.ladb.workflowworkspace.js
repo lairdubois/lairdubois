@@ -450,13 +450,13 @@
             allowLoopback: false
         });
 
+        // Bind box
+
+        this.bindTaskBox(taskId, $('.ladb-box', $taskWidget));
+
         if (this.options.readOnly) {
             return;
         }
-
-        // Bind box buttons
-
-        this.bindTaskBox(taskId, $('.ladb-box', $taskWidget));
 
         // Bind ep button
 
