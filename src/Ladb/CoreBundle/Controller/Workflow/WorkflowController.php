@@ -229,7 +229,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		$parameters = array(
 			'workflow'        => $workflow,
-			'readOnly'        => false,
+			'readOnly'        => $workflow->getUser() != $this->getUser(),
 			'likeContext'     => $likableUtils->getLikeContext($workflow, $this->getUser()),
 			'watchContext'    => $watchableUtils->getWatchContext($workflow, $this->getUser()),
 			'commentContext'  => $commentableUtils->getCommentContext($workflow),

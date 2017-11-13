@@ -551,13 +551,13 @@
 
     };
 
-    LadbWorkflowWorkspace.prototype.loadTasks = function() {
+    LadbWorkflowWorkspace.prototype.loadTasks = function(readOnly) {
         var that = this;
 
         // Loading
         this._uiMarkLoading('Chargement des tâches...');
 
-        $.ajax(that.options.listTaskPath, {
+        $.ajax(that.options.listTaskPath + (readOnly ? '?readOnly=1' : ''), {
             cache: false,
             dataType: "html",
             context: document.body,
@@ -1178,71 +1178,80 @@
         if (!Modernizr.touchevents) {}
         if (!Modernizr.websockets) {}
 
-        // Loading
-        this._uiMarkLoading('Connexion...');
-
-        // Connect WebSocket
-        var ws = WS.connect(this.options.wsUri);
-        ws.on('socket/connect', function(session) {
-
-            // Keep ws session
-            that.session = session;
-
-            // Subscribe to the channel
-            try {
-
-                session.subscribe(that.options.wsChannel, function (uri, payload) {
-                    try {
-                        that.updateBoardFromJsonData(payload);
-                    } catch(error) {
-                        console.log("Error updating diagram", error);
-                    }
-                });
-
-            } catch(error) {
-                console.log("Subscription failed", error);
-            }
+        if (this.options.readOnly) {
 
             // Load tasks
-            that.loadTasks();
+            this.loadTasks(true);
 
-        });
-        ws.on('socket/disconnect', function(error){
+        } else {
 
-            // Reset ws session
-            that.session = null;
+            // Loading
+            this._uiMarkLoading('Connexion...');
 
-            switch (error.code) {
+            // Connect WebSocket
+            var ws = WS.connect(this.options.wsUri);
+            ws.on('socket/connect', function (session) {
 
-                case 2: // Connection max retry
-                    that._uiMarkLoading('Re-Connexion impossible avec le serveur :(');
-                    break;
+                // Keep ws session
+                that.session = session;
 
-                case 3: // Connection could not be established
-                    that._uiMarkLoading('Connexion impossible avec le serveur :(');
+                // Subscribe to the channel
+                try {
 
-                    // Load tasks
-                    that.loadTasks();
+                    session.subscribe(that.options.wsChannel, function (uri, payload) {
+                        try {
+                            that.updateBoardFromJsonData(payload);
+                        } catch (error) {
+                            console.log("Error updating diagram", error);
+                        }
+                    });
 
-                    break;
+                } catch (error) {
+                    console.log("Subscription failed", error);
+                }
 
-                case 5: // Connection unreachable
-                    that._uiMarkLoading('Connexion impossible : Nouvel essai');
-                    break;
+                // Load tasks
+                that.loadTasks();
 
-                case 6: // Connection lost
-                    that._uiMarkLoading('Connexion perdue avec le serveur');
-                    break;
+            });
+            ws.on('socket/disconnect', function (error) {
 
-                default:
-                    that._uiMarkLoading('Déconecté :(');
-                    break;
+                // Reset ws session
+                that.session = null;
 
-            }
+                switch (error.code) {
 
-            notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
+                    case 2: // Connection max retry
+                        that._uiMarkLoading('Re-Connexion impossible avec le serveur :(');
+                        break;
 
-        });
+                    case 3: // Connection could not be established
+                        that._uiMarkLoading('Connexion impossible avec le serveur :(');
+
+                        // Load tasks
+                        that.loadTasks(true);
+
+                        break;
+
+                    case 5: // Connection unreachable
+                        that._uiMarkLoading('Connexion impossible : Nouvel essai');
+                        break;
+
+                    case 6: // Connection lost
+                        that._uiMarkLoading('Connexion perdue avec le serveur');
+                        break;
+
+                    default:
+                        that._uiMarkLoading('Déconecté :(');
+                        break;
+
+                }
+
+                notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
+
+            });
+
+        }
 
         if (this.$canvas.is(':visible')) {
 

@@ -474,10 +474,13 @@ class TaskController extends AbstractWorkflowBasedController {
 	/**
 	 * @Route("/{id}/tasks", requirements={"id" = "\d+"}, name="core_workflow_task_list")
 	 */
-	public function taskListAction(Request $request, $id) {
+	public function listAction(Request $request, $id) {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+
+		// Retrieve readOnly parameter
+		$readOnly = $request->get('readOnly', false);
 
 		$connections = array();
 		foreach ($workflow->getTasks() as $sourceTask) {
@@ -492,7 +495,7 @@ class TaskController extends AbstractWorkflowBasedController {
 		return new JsonResponse(array(
 			'success'       => true,
 			'workflowInfos' => $this->_generateWorkflowInfos($workflow),
-			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET),
+			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET, $readOnly),
 			'connections'   => $connections
 		));
 	}
