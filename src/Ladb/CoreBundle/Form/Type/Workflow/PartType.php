@@ -12,7 +12,9 @@ class PartType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
+			->add('number', TextType::class, array( 'label' => 'workflow.part.number' ))
 			->add('name', TextType::class, array( 'label' => 'workflow.part.name' ))
+			->add('count', TextType::class, array( 'label' => 'workflow.part.count' ))
 		;
 	}
 

@@ -23,10 +23,20 @@ class Part {
 	private $id;
 
 	/**
+	 * @ORM\Column(type="string", length=10)
+	 */
+	private $number;
+
+	/**
 	 * @ORM\Column(type="string", length=40)
 	 * @Assert\NotBlank()
 	 */
 	private $name;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $count;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="labels")
@@ -42,6 +52,17 @@ class Part {
 		return $this->id;
 	}
 
+	// Number /////
+
+	public function setNumber($number) {
+		$this->number = $number;
+		return $this;
+	}
+
+	public function getNumber() {
+		return $this->number;
+	}
+
 	// Name /////
 
 	public function setName($name) {
@@ -51,6 +72,17 @@ class Part {
 
 	public function getName() {
 		return $this->name;
+	}
+
+	// Count /////
+
+	public function setCount($count) {
+		$this->count = $count;
+		return $this;
+	}
+
+	public function getCount() {
+		return $this->count;
 	}
 
 	// Workflow /////

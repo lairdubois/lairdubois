@@ -229,7 +229,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		$parameters = array(
 			'workflow'        => $workflow,
-			'readOnly'        => $workflow->getUser() != $this->getUser(),
+			'readOnly'        => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
 			'likeContext'     => $likableUtils->getLikeContext($workflow, $this->getUser()),
 			'watchContext'    => $watchableUtils->getWatchContext($workflow, $this->getUser()),
 			'commentContext'  => $commentableUtils->getCommentContext($workflow),

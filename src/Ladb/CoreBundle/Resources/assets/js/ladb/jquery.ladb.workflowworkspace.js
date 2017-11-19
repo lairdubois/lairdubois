@@ -369,7 +369,6 @@
         var that = this;
 
         // Bind collapse anchror
-        var $x = $('[data-toggle=collapse]', $taskBox);
         $('[data-toggle=collapse]', $taskBox).on('click', function(e) {
             e.stopPropagation();
             $(this).next('.collapse').toggleClass('in');
@@ -451,6 +450,12 @@
         });
 
         // Bind box
+
+        // TODO
+        $('[data-toggle=collapse]', $taskWidget).on('click', function(e) {
+            $taskWidget.css('z-index', $(this).next('.collapse').hasClass('in') ? 99999 : 1);
+        });
+        // TODO
 
         this.bindTaskBox(taskId, $('.ladb-box', $taskWidget));
 
@@ -863,7 +868,7 @@
                     var $loadingPanel = $('.ladb-loading-panel', $rowForm);
                     var $cancelBtn = $('.ladb-part-cancel-btn', $rowForm);
                     var $saveBtn = $('.ladb-part-save-btn', $rowForm);
-                    var $inputColor = $('.ladb-input-color', $form);
+                    var $inputNumber = $('.ladb-input-number', $form);
                     var $inputName = $('.ladb-input-name', $form);
 
                     // Bind form
@@ -907,11 +912,8 @@
                         $form.submit();
                     });
 
-                    // Bind input color
-                    $inputColor.ladbInputColor();
-
                     // Focus name input
-                    $inputName.focus();
+                    $inputNumber.focus();
 
                 }
 
