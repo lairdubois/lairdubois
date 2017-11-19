@@ -235,7 +235,7 @@
                 }
 
                 $taskRow = $(taskInfos.row);
-                $('#panel_body_status_' + taskInfos.status).append($taskRow);
+                $(that.options.readOnly ? '#panel_body_hidden_status' : '#panel_body_status_' + taskInfos.status).append($taskRow);
                 that.initTaskRow($taskRow);
 
             }
@@ -425,6 +425,7 @@
         var that = this;
 
         var taskId = $taskWidget.attr('id').substring(TASK_WIDGET_PREFIX.length);
+        var $taskBox = $('.ladb-box', $taskWidget);
 
         // Setup as plumb source and target
 
@@ -451,13 +452,17 @@
 
         // Bind box
 
-        // TODO
         $('[data-toggle=collapse]', $taskWidget).on('click', function(e) {
-            $taskWidget.css('z-index', $(this).next('.collapse').hasClass('in') ? 99999 : 1);
+            $taskWidget.css('z-index', $(this).next('.collapse').hasClass('in') ? 1 : 999);
         });
-        // TODO
 
-        this.bindTaskBox(taskId, $('.ladb-box', $taskWidget));
+        this.bindTaskBox(taskId, $taskBox);
+
+        // Bind task box dblclick
+        $taskBox.on('dblclick', function(e) {
+            e.stopPropagation();
+            that._uiDiagramPanToTaskWidget(taskId);
+        });
 
         if (this.options.readOnly) {
             return;
@@ -1149,6 +1154,14 @@
             e.stopImmediatePropagation();
         });
 
+        // Bind buttons
+        $('.ladb-toggle-right-panel-btn', this.$element).on('click', function() {
+            that._uiToggleRightPanel();
+        });
+        $('.ladb-show-all-btn', this.$element).on('click', function() {
+            that._uiDiagramShowAll();
+        });
+
         if (this.options.readOnly) {
             return;
         }
@@ -1170,12 +1183,6 @@
         });
         this.$btnStatistics.on('click', function() {
             that.loadModalStatistics();
-        });
-        $('.ladb-toggle-right-panel-btn', this.$element).on('click', function() {
-            that._uiToggleRightPanel();
-        });
-        $('.ladb-show-all-btn', this.$element).on('click', function() {
-            that._uiDiagramShowAll();
         });
 
     };

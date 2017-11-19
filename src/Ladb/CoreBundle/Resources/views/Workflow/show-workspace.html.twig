@@ -104,43 +104,48 @@
                         <button class="btn btn-default btn-sm pull-left ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-right"></i></button>
                         <span class="ladb-heading">{{ 'workflow.task.list'|trans() }}</span>
                     </div>
-                    {% include 'LadbCoreBundle:Workflow:_workflow-status.part.html.twig' %}
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>
-                            {{ 'workflow.task.status_3'|trans() }}
-                        </h4>
-                    </div>
-                    <div id="panel_body_status_3" class="panel-body">
-                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
-                    </div>
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <span id="panel_heading_badge_status_2" class="badge badge-default pull-right">0</span>
-                            {{ 'workflow.task.status_2'|trans() }}
-                        </h4>
-                    </div>
-                    <div id="panel_body_status_2" class="panel-body">
-                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
-                    </div>
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <span id="panel_heading_badge_status_1" class="badge badge-default pull-right">0</span>
-                            {{ 'workflow.task.status_1'|trans() }}
-                        </h4>
-                    </div>
-                    <div id="panel_body_status_1" class="panel-body">
-                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
-                    </div>
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <span id="panel_heading_badge_status_4" class="badge badge-warning pull-right">0</span>
-                            {{ 'workflow.task.status_4'|trans() }}
-                        </h4>
-                    </div>
-                    <div id="panel_body_status_4" class="panel-body">
-                        <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
-                    </div>
+                    {% if readOnly %}
+                        <div id="panel_body_hidden_status" class="panel-body" style="border-top: 1px solid #ddd;">
+                        </div>
+                    {% else %}
+                        {% include 'LadbCoreBundle:Workflow:_workflow-status.part.html.twig' %}
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>
+                                {{ 'workflow.task.status_3'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_3" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_2" class="badge badge-default pull-right">0</span>
+                                {{ 'workflow.task.status_2'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_2" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_1" class="badge badge-default pull-right">0</span>
+                                {{ 'workflow.task.status_1'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_1" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_4" class="badge badge-warning pull-right">0</span>
+                                {{ 'workflow.task.status_4'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_4" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             {% embed 'LadbCoreBundle:Common:_loading-panel.part.html.twig' with { 'noHidden':true } %}

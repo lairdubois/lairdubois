@@ -23,4 +23,8 @@
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
 {% endblock %}
 
-{% block searchboxShortcutsOuter %}{% endblock %}
+{% block searchboxShortcuts %}
+    {% if is_granted("ROLE_USER") %}
+        <li><a class="ladb-smartsearch-shortcut" data-query="@author:{{ app.user.usernameCanonical }}"><i class="ladb-icon-user"></i> Mes processus</a></li>
+    {% endif %}
+{% endblock %}
