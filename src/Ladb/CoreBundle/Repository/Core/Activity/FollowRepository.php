@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Repository\Activity;
+namespace Ladb\CoreBundle\Repository\Core\Activity;
 
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 

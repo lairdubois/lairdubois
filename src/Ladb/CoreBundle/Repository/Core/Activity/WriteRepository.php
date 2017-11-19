@@ -8,7 +8,7 @@ class WriteRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByMessage(\Ladb\CoreBundle\Entity\Message $message) {
+	public function findByMessage(\Ladb\CoreBundle\Entity\Message\Message $message) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))
