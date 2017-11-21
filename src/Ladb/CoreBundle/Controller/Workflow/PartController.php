@@ -164,6 +164,17 @@ class PartController extends AbstractWorkflowBasedController {
 		$om->remove($part);
 		$om->flush();
 
+		// Compute parts count
+		foreach ($tasks as $tmpTask) {
+			$partCount = 0;
+			foreach ($tmpTask->getParts() as $tmpPart) {
+				$partCount += $tmpPart->getCount();
+			}
+			$tmpTask->setPartCount($partCount);
+		}
+
+		$om->flush();
+
 		// Push changes
 		if (is_array($tasks) && count($tasks)) {
 			$this->_push($workflow, array(
