@@ -417,7 +417,7 @@ workflow:
     status_3: Tâches en cours
     status_4: Tâches effectuées
   part:
-    number: Numéro de pièce
+    number: N° de pièce
     name: Libellé
     count: Nombre
     list: Pièces

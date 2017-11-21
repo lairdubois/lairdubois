@@ -102,6 +102,11 @@ class Task {
 	protected $parts;
 
 	/**
+	 * @ORM\Column(type="integer", name="part_count")
+	 */
+	private $partCount = 0;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Task", mappedBy="targetTasks")
 	 */
 	private $sourceTasks;
@@ -298,6 +303,17 @@ class Task {
 
 	public function getParts() {
 		return $this->parts;
+	}
+
+	// PartCount /////
+
+	public function setPartCount($partCount) {
+		$this->partCount = $partCount;
+		return $this;
+	}
+
+	public function getPartCount() {
+		return $this->partCount;
 	}
 
 	// SourceTasks /////

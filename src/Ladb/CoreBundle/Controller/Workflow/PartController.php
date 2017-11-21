@@ -111,6 +111,17 @@ class PartController extends AbstractWorkflowBasedController {
 			$taskRepository = $om->getRepository(Task::CLASS_NAME);
 			$tasks = $taskRepository->findByPart($part);
 
+			// Compute parts count
+			foreach ($tasks as $task) {
+				$partCount = 0;
+				foreach ($task->getParts() as $part) {
+					$partCount += $part->getCount();
+				}
+				$task->setPartCount($partCount);
+			}
+
+			$om->flush();
+
 			// Push changes
 			if (is_array($tasks) && count($tasks)) {
 				$this->_push($part->getWorkflow(), array(

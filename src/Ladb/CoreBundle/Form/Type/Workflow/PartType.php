@@ -3,10 +3,10 @@
 namespace Ladb\CoreBundle\Form\Type\Workflow;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Ladb\CoreBundle\Form\DataTransformer\Workflow\LabelsToNamesAndColorsTransformer;
 
 class PartType extends AbstractType {
 
@@ -14,7 +14,7 @@ class PartType extends AbstractType {
 		$builder
 			->add('number', TextType::class, array( 'label' => 'workflow.part.number' ))
 			->add('name', TextType::class, array( 'label' => 'workflow.part.name' ))
-			->add('count', TextType::class, array( 'label' => 'workflow.part.count' ))
+			->add('count', IntegerType::class, array( 'label' => 'workflow.part.count' ))
 		;
 	}
 

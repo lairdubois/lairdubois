@@ -35,8 +35,9 @@ class Part {
 
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Assert\GreaterThan(0)
 	 */
-	private $count;
+	private $count = 1;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="labels")

@@ -253,6 +253,13 @@ class TaskController extends AbstractWorkflowBasedController {
 
 			}
 
+			// Compute parts count
+			$partCount = 0;
+			foreach ($task->getParts() as $part) {
+				$partCount += $part->getCount();
+			}
+			$task->setPartCount($partCount);
+
 			$om->flush();
 
 			if ($newEstimatedDuration != $previousEstimatedDuration || $newDuration != $previousDuration) {
