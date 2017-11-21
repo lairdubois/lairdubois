@@ -255,8 +255,8 @@ class TaskController extends AbstractWorkflowBasedController {
 
 			// Compute parts count
 			$partCount = 0;
-			foreach ($task->getParts() as $part) {
-				$partCount += $part->getCount();
+			foreach ($task->getParts() as $tmpPart) {
+				$partCount += $tmpPart->getCount();
 			}
 			$task->setPartCount($partCount);
 

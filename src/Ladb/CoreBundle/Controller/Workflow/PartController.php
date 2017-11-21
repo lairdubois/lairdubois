@@ -112,12 +112,12 @@ class PartController extends AbstractWorkflowBasedController {
 			$tasks = $taskRepository->findByPart($part);
 
 			// Compute parts count
-			foreach ($tasks as $task) {
+			foreach ($tasks as $tmpTask) {
 				$partCount = 0;
-				foreach ($task->getParts() as $part) {
-					$partCount += $part->getCount();
+				foreach ($tmpTask->getParts() as $tmpPart) {
+					$partCount += $tmpPart->getCount();
 				}
-				$task->setPartCount($partCount);
+				$tmpTask->setPartCount($partCount);
 			}
 
 			$om->flush();
@@ -135,7 +135,7 @@ class PartController extends AbstractWorkflowBasedController {
 		}
 
 		return array(
-			'form'  => $form->createView(),
+			'form' => $form->createView(),
 			'part' => $part,
 		);
 	}
