@@ -419,7 +419,7 @@ workflow:
   part:
     number: N° de pièce
     name: Libellé
-    count: Nombre
+    count: Quantité
     list: Pièces
     add: Ajouter une pièce
     empty: Aucune pièce
