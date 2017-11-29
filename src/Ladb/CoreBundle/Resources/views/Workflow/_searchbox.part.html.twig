@@ -11,6 +11,8 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
+    {# Hidden filters #}
+    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes processus" data-unique="true" data-icon="user"><i class="ladb-icon-cc"></i> Mes processus</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}
@@ -25,6 +27,6 @@
 
 {% block searchboxShortcuts %}
     {% if is_granted("ROLE_USER") %}
-        <li><a class="ladb-smartsearch-shortcut" data-query="@author:{{ app.user.usernameCanonical }}"><i class="ladb-icon-user"></i> Mes processus</a></li>
+        <li><a class="ladb-smartsearch-shortcut" data-query="@mine"><i class="ladb-icon-user"></i> Mes processus</a></li>
     {% endif %}
 {% endblock %}

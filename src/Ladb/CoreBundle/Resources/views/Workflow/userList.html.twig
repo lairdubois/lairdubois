@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_list.html.twig' %}
 
-{% set pageTitle = 'workflow.user_list'|trans() %}
-{% set pageDescription = 'workflow.description'|trans() %}
+{% set pageTitle = 'workflow.workflow.user_list'|trans() %}
+{% set pageDescription = 'workflow.workflow.description'|trans() %}
 
 {% set navSection = 'workflow' %}
 {% set masonry = true %}
@@ -10,9 +10,9 @@
 
 {% block bodyHeaderContainerContent %}
     <div class="ladb-header-tools pull-right">
-        <a href="{{ path('core_workflow_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'workflow.new'|trans() }}</span></a>
+        <a href="{{ path('core_workflow_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'workflow.workflow.new'|trans() }}</span></a>
     </div>
-    <h1 class="ladb-heading"><i class="ladb-icon-workflow"></i> {{ 'workflow.user_list'|trans() }}</h1>
+    <h1 class="ladb-heading"><i class="ladb-icon-workflow"></i> {{ 'workflow.workflow.user_list'|trans() }}</h1>
 {% endblock %}
 
 {% block bodyContainerContent %}

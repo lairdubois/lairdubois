@@ -59,4 +59,5 @@
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
     </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':workflow.license } %}
 {% endblock %}

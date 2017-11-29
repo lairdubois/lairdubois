@@ -282,6 +282,15 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 						break;
 
+					case 'mine':
+
+						$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+						$filters[] = $filter;
+
+						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						break;
+
 					case 'license':
 
 						$filter = new \Elastica\Query\MatchPhrase('license.strippedname', $facet->value);

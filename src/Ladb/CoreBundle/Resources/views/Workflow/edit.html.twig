@@ -1,10 +1,10 @@
 {% extends 'LadbCoreBundle:Workflow:_form.html.twig' %}
 
-{% set pageTitle = 'workflow.edit'|trans() %}
+{% set pageTitle = 'workflow.workflow.edit'|trans() %}
 {% set formAction = path('core_workflow_update', { 'id':workflow.id }) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-edit"></i> {{ 'workflow.edit'|trans() }}
+    <i class="ladb-icon-edit"></i> {{ 'workflow.workflow.edit'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}

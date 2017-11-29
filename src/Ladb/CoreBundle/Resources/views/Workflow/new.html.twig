@@ -1,11 +1,11 @@
 {% extends 'LadbCoreBundle:Workflow:_form.html.twig' %}
 
-{% set pageTitle = 'workflow.new'|trans() %}
+{% set pageTitle = 'workflow.workflow.new'|trans() %}
 {% set formAction = path('core_workflow_create') %}
 {% set hideWarning = hideWarning|default(false) %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-plus"></i> {{ 'workflow.new'|trans() }}
+    <i class="ladb-icon-plus"></i> {{ 'workflow.workflow.new'|trans() }}
 {% endblock %}
 
 {% block form_buttons %}
