@@ -5,6 +5,7 @@
 {% set entity = school %}
 
 {% set pageContentItemType = 'School' %}
+{% set pageType = 'business.business' %}
 {% set pageSectionUrl = url('core_school_list') %}
 {% set pageSectionName = 'knowledge.school.list'|trans %}
 
@@ -13,6 +14,38 @@
 {% set searchPath = path('core_school_list') %}
 
 {% set knowledge = school %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    {% if true %}
+        {% if school.phone %}
+            <meta property="business:contact_data:phone_number" content="{{ school.phone }}" />
+        {% endif %}
+        {% if school.address %}
+            <meta property="business:contact_data:street_address" content="{{ school.address }}" />
+        {% endif %}
+        {% if school.locality %}
+            <meta property="business:contact_data:locality" content="{{ school.locality }}" />
+        {% endif %}
+        {% if school.postalCode %}
+            <meta property="business:contact_data:postal_code" content="{{ school.postalCode }}" />
+        {% endif %}
+        {% if school.country %}
+            <meta property="business:contact_data:country_name" content="{{ school.country }}" />
+        {% endif %}
+        {% if school.website %}
+            <meta property="business:contact_data:website" content="{{ school.website }}" />
+        {% endif %}
+        {% if school.latitude %}
+            <meta property="place:location:latitude" content="{{ school.latitude }}" />
+        {% endif %}
+        {% if school.longitude %}
+            <meta property="place:location:longitude" content="{{ school.longitude }}" />
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block headOpenGraphArticleMetas %}{% endblock %}
 
 {% block headStylesheets %}
     {{ parent() }}
