@@ -8,6 +8,9 @@
 {% set pageType = 'business.business' %}
 {% set pageSectionUrl = url('core_school_list') %}
 {% set pageSectionName = 'knowledge.school.list'|trans %}
+{% if school.description %}
+    {% set pageDescription = school.description|striptags|truncate(200, true, '...') %}
+{% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set navSection = 'schools' %}

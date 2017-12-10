@@ -8,6 +8,9 @@
 {% set pageType = 'business.business' %}
 {% set pageSectionUrl = url('core_provider_list') %}
 {% set pageSectionName = 'knowledge.provider.list'|trans %}
+{% if provider.description %}
+    {% set pageDescription = provider.description|striptags|truncate(200, true, '...') %}
+{% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set navSection = 'providers' %}
