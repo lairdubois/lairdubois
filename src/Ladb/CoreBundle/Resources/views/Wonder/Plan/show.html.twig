@@ -78,17 +78,22 @@
         </style>
         <div id="ladb_3dwarehouse_viewer" class="thumbnail">
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe src="https://3dwarehouse.sketchup.com/embed.html?mid={{ plan.sketchup3DWarehouseEmbedIdentifier }}&width=695&height=390" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
+                <iframe src="" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
             </div>
             <div class="tip"><small>Cliquez sur l'image pour un affichage en 3D</small></div>
         </div>
         <script>
             var loadCount = 0;
-            $('#ladb_3dwarehouse_viewer iframe').on('load', function(e) {
-                loadCount++;
-                if (loadCount > 1) {
-                    $('#ladb_3dwarehouse_viewer .tip').remove();
-                }
+            $(document).ready(function() {
+                var $viewer = $('#ladb_3dwarehouse_viewer');
+                var $iframe = $('#ladb_3dwarehouse_viewer iframe');
+                $iframe.on('load', function(e) {
+                    loadCount++;
+                    if (loadCount > 1) {
+                        $('#ladb_3dwarehouse_viewer .tip').remove();
+                    }
+                });
+                $iframe.attr('src', 'https://3dwarehouse.sketchup.com/embed.html?mid={{ plan.sketchup3DWarehouseEmbedIdentifier }}&width=' + Math.ceil($viewer.width()) + '&height=' + Math.ceil($viewer.height()));
             });
         </script>
         <div class="ladb-wonder-showcase row">
