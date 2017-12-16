@@ -7,6 +7,22 @@
 {% set userWonders = userPlans %}
 {% set similarWonders = similarPlans %}
 
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.planpage.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#container').ladbPlanPage({
+                embedIdentifier: '{{ plan.sketchup3DWarehouseEmbedIdentifier }}'
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block headOpenGraphMetas %}
     {{ parent() }}
     {% if plan.inspirationCount > 0 %}
@@ -70,7 +86,7 @@
 {% block wonderShowcase %}
     {% if plan.sketchup3DWarehouseEmbedIdentifier is not null %}
         <style>
-            #ladb_3dwarehouse_viewer .tip {
+            #ladb_3dwarehouse_viewer .ladb-tip {
                 margin-top: 2px;
                 text-align: center;
                 color: #999;
@@ -80,22 +96,9 @@
             <div class="embed-responsive embed-responsive-16by9">
                 <iframe src="" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
             </div>
-            <div class="tip"><small>Cliquez sur l'image pour un affichage en 3D</small></div>
+            <div class="ladb-tip ladb-tip-webgl" style="display: none;"><small>Cliquez sur l'image pour un affichage en 3D</small></div>
+            <div class="ladb-tip ladb-tip-no-webgl ladb-color-danger" style="display: none;"><small><i class="ladb-icon-warning"></i> Votre navigateur ne supporte pas l'affichage en 3D</small></div>
         </div>
-        <script>
-            var loadCount = 0;
-            $(document).ready(function() {
-                var $viewer = $('#ladb_3dwarehouse_viewer');
-                var $iframe = $('#ladb_3dwarehouse_viewer iframe');
-                $iframe.on('load', function(e) {
-                    loadCount++;
-                    if (loadCount > 1) {
-                        $('#ladb_3dwarehouse_viewer .tip').remove();
-                    }
-                });
-                $iframe.attr('src', 'https://3dwarehouse.sketchup.com/embed.html?mid={{ plan.sketchup3DWarehouseEmbedIdentifier }}&width=' + Math.ceil($viewer.width()) + '&height=' + Math.ceil($viewer.height()));
-            });
-        </script>
         <div class="ladb-wonder-showcase row">
             {% for index in 0..5 %}
                 <div class="col-xs-6 col-md-2">
