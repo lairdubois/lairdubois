@@ -297,16 +297,15 @@ class QuestionController extends Controller {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_qa_question_delete")
 	 */
 	public function deleteAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_delete)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
 		$question = $questionRepository->findOneById($id);
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($question->getIsDraft() === true && $question->getUser()->getId() == $this->getUser()->getId())) {
+			throw $this->createNotFoundException('Not allowed (core_qa_question_delete)');
 		}
 
 		// Delete

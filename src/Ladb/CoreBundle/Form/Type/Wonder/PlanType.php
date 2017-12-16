@@ -34,6 +34,7 @@ class PlanType extends AbstractType {
 				->create('pictures', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new PicturesToIdsTransformer($this->om))
 			)
+			->add('sketchup3DWarehouseUrl', TextType::class)
 			->add('body', TextareaType::class)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))

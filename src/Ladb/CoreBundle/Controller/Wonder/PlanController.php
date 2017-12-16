@@ -79,6 +79,7 @@ class PlanController extends Controller {
 
 			$planUtils = $this->get(PlanUtils::NAME);
 			$planUtils->generateKinds($plan);
+			$planUtils->processSketchup3DWarehouseUrl($plan);
 
 			$om->persist($plan);
 			$om->flush();
@@ -271,6 +272,7 @@ class PlanController extends Controller {
 
 			$planUtils = $this->get(PlanUtils::NAME);
 			$planUtils->generateKinds($plan);
+			$planUtils->processSketchup3DWarehouseUrl($plan);
 			$planUtils->createZipArchive($plan);
 
 			$plan->setMainPicture($plan->getPictures()->first());

@@ -71,6 +71,17 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	private $resources;
 
 	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @Assert\Url()
+	 */
+	private $sketchup3DWarehouseUrl = null;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $sketchup3DWarehouseEmbedIdentifier = null;
+
+	/**
 	 * @ORM\Column(type="integer", name="zip_archive_size")
 	 */
 	private $zipArchiveSize = 0;
@@ -200,7 +211,27 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 		return 10;
 	}
 
-	// ResourceSizeSum /////
+	// Sketchup3DWarehouseUrl /////
+
+	public function setSketchup3DWarehouseUrl($sketchup3DWarehouseUrl) {
+		return $this->sketchup3DWarehouseUrl = $sketchup3DWarehouseUrl;
+	}
+
+	public function getSketchup3DWarehouseUrl() {
+		return $this->sketchup3DWarehouseUrl;
+	}
+
+	// Sketchup3DWarehouseIdentifier /////
+
+	public function setSketchup3DWarehouseEmbedIdentifier($sketchup3DWarehouseEmbedIdentifier) {
+		return $this->sketchup3DWarehouseEmbedIdentifier = $sketchup3DWarehouseEmbedIdentifier;
+	}
+
+	public function getSketchup3DWarehouseEmbedIdentifier() {
+		return $this->sketchup3DWarehouseEmbedIdentifier;
+	}
+
+	// ZipArchiveSize /////
 
 	public function setZipArchiveSize($zipArchiveSize) {
 		return $this->zipArchiveSize = $zipArchiveSize;

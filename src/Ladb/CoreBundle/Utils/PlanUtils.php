@@ -30,6 +30,18 @@ class PlanUtils {
 		$plan->setKinds($kinds);
 	}
 
+	public function processSketchup3DWarehouseUrl(Plan $plan) {
+		$embedIdentifier = null;
+		if (!is_null($plan->getSketchup3DWarehouseUrl())) {
+
+			if (preg_match('~(?:http|https|)(?::\/\/|)(3dwarehouse\.sketchup\.com/(?:model\.html\?id=|model/)([\w\-]{36,}))[a-z0-9;:@#?&%=+\/\$_.-]*~i', $plan->getSketchup3DWarehouseUrl(), $match)) {
+				$embedIdentifier = $match[2];
+			}
+
+		}
+		$plan->setSketchup3DWarehouseEmbedIdentifier($embedIdentifier);
+	}
+
 	public function createZipArchive(Plan $plan) {
 		$zipAbsolutePath = $this->getZipAbsolutePath($plan);
 

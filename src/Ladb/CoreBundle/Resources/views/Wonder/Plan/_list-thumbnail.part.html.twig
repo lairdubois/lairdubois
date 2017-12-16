@@ -2,6 +2,13 @@
 
 {% set wonder = plan %}
 
+{% block image %}
+    {{ parent() }}
+    {% if plan.sketchup3DWarehouseEmbedIdentifier %}
+        <div class="ladb-image-overlay" data-tooltip="tooltip" title="Visualisation 3D"><i class="ladb-icon-3d ladb-icon-lg"></i></div>
+    {% endif %}
+{% endblock %}
+
 {% block entityMetas %}
     {% if wonder.inspirationCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_plan_inspirations', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.choice.inspiration'|transchoice(wonder.reboundCount, { '%count%':wonder.inspirationCount }) }}"><i class="ladb-icon-inspiration ladb-color-inspiration"></i></a></li>

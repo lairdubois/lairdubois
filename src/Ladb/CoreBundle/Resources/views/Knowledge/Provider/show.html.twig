@@ -5,14 +5,52 @@
 {% set entity = provider %}
 
 {% set pageContentItemType = 'LocalBusiness' %}
+{% set pageType = 'business.business' %}
 {% set pageSectionUrl = url('core_provider_list') %}
 {% set pageSectionName = 'knowledge.provider.list'|trans %}
+{% if provider.description %}
+    {% set pageDescription = provider.description|striptags|truncate(200, true, '...') %}
+{% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set navSection = 'providers' %}
 {% set searchPath = path('core_provider_list') %}
 
 {% set knowledge = provider %}
+
+{% block headPrefix %}{{ parent() }} fb: http://ogp.me/ns/fb# business: http://ogp.me/ns/business#{% endblock %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    {% if true %}
+        {% if provider.phone %}
+            <meta property="business:contact_data:phone_number" content="{{ provider.phone }}" />
+        {% endif %}
+        {% if provider.address %}
+            <meta property="business:contact_data:street_address" content="{{ provider.address }}" />
+        {% endif %}
+        {% if provider.locality %}
+            <meta property="business:contact_data:locality" content="{{ provider.locality }}" />
+        {% endif %}
+        {% if provider.postalCode %}
+            <meta property="business:contact_data:postal_code" content="{{ provider.postalCode }}" />
+        {% endif %}
+        {% if provider.country %}
+            <meta property="business:contact_data:country_name" content="{{ provider.country }}" />
+        {% endif %}
+        {% if provider.website %}
+            <meta property="business:contact_data:website" content="{{ provider.website }}" />
+        {% endif %}
+        {% if provider.latitude %}
+            <meta property="place:location:latitude" content="{{ provider.latitude }}" />
+        {% endif %}
+        {% if provider.longitude %}
+            <meta property="place:location:longitude" content="{{ provider.longitude }}" />
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block headOpenGraphArticleMetas %}{% endblock %}
 
 {% block headStylesheets %}
     {{ parent() }}
