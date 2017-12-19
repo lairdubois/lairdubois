@@ -829,6 +829,7 @@ class CreationController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.wonder_creation',
 			\Ladb\CoreBundle\Entity\Wonder\Creation::CLASS_NAME,
 			'core_creation_list_page',

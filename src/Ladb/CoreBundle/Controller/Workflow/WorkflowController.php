@@ -7,21 +7,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Ladb\CoreBundle\Entity\Workflow\Workflow;
-use Ladb\CoreBundle\Entity\Workflow\Task;
-use Ladb\CoreBundle\Event\PublicationEvent;
-use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Form\Type\Workflow\WorkflowType;
-use Ladb\CoreBundle\Manager\Workflow\WorkflowManager;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
-use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
+use Ladb\CoreBundle\Entity\AbstractPublication;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
+use Ladb\CoreBundle\Entity\Workflow\Task;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Manager\Workflow\WorkflowManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 /**
  * @Route("/processus")
@@ -77,6 +78,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$om->persist($workflow);
 			$om->flush();
 
+			// Search index update
+			$searchUtils = $this->container->get(SearchUtils::NAME);
+			$searchUtils->insertEntityToIndex($workflow);
+
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($workflow));
@@ -97,17 +102,103 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_qa_question_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_qa_question_unlock")
+	 */
+	public function lockUnlockAction($id, $lock) {
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_qa_question_lock or core_qa_question_unlock)');
+		}
+		if ($workflow->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_qa_question_lock or core_qa_question_unlock)');
+		}
+
+		// Lock or Unlock
+		$workflowManager = $this->get(WorkflowManager::NAME);
+		if ($lock) {
+			$workflowManager->lock($workflow);
+		} else {
+			$workflowManager->unlock($workflow);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $question->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $workflow->getSluggedId() )));
+	}
+
+	/**
+	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_workflow_publish")
+	 */
+	public function publishAction($id) {
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_workflow_publish)');
+		}
+		if ($workflow->getVisibility() === AbstractPublication::VISIBILITY_PUBLIC) {
+			throw $this->createNotFoundException('Already published (core_workflow_publish)');
+		}
+		if ($workflow->getIsLocked() === true) {
+			throw $this->createNotFoundException('Locked (core_workflow_publish)');
+		}
+
+		// Publish
+		$workflowManager = $this->get(WorkflowManager::NAME);
+		$workflowManager->publish($workflow);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.publish_success', array( '%title%' => $workflow->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $workflow->getSluggedId() )));
+	}
+
+	/**
+	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_workflow_unpublish")
+	 */
+	public function unpublishAction(Request $request, $id) {
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_workflow_unpublish)');
+		}
+		if ($workflow->getVisibility() === AbstractPublication::VISIBILITY_PUBLIC) {
+			throw $this->createNotFoundException('Already private (core_workflow_publish)');
+		}
+
+		// Unpublish
+		$workflowManager = $this->get(WorkflowManager::NAME);
+		$workflowManager->unpublish($workflow);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.unpublish_success', array( '%title%' => $workflow->getTitle() )));
+
+		// Return to
+		$returnToUrl = $request->get('rtu');
+		if (is_null($returnToUrl)) {
+			$returnToUrl = $request->headers->get('referer');
+		}
+
+		return $this->redirect($returnToUrl);
+	}
+
+	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_edit")
 	 * @Template("LadbCoreBundle:Workflow:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 
-		$workflow = $workflowRepository->findOneById($id);
-		if (is_null($workflow)) {
-			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
-		}
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_workflow_edit)');
 		}
@@ -130,12 +221,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 
-		$workflow = $workflowRepository->findOneById($id);
-		if (is_null($workflow)) {
-			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
-		}
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_find_update)');
 		}
@@ -187,12 +276,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 
-		$workflow = $workflowRepository->findOneById($id);
-		if (is_null($workflow)) {
-			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
-		}
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_workflow_delete)');
 		}
@@ -208,15 +295,39 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/diagram", name="core_workflow_diagram")
+	 * @Template("LadbCoreBundle:Workflow:diagram.html.twig")
+	 */
+	public function diagramAction(Request $request, $id) {
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		return array(
+			'workflow' => $workflow,
+		);
+	}
+
+	/**
 	 * @Route("/{id}.html", name="core_workflow_show")
 	 * @Template("LadbCoreBundle:Workflow:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
+		$witnessManager = $this->get(WitnessManager::NAME);
 
 		$layout = $request->get('layout', 'page');
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
+
+		if ($workflow->getVisibility() === AbstractPublication::VISIBILITY_PRIVATE) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workflow->getUser()->getId() != $this->getUser()->getId())) {
+				if ($response = $witnessManager->checkResponse(Workflow::TYPE, $id)) {
+					return $response;
+				}
+				throw $this->createNotFoundException('Not allowed (core_workflow_show)');
+			}
+		}
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
@@ -338,6 +449,29 @@ class WorkflowController extends AbstractWorkflowBasedController {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			function(&$filters) {
+
+				$user = $this->getUser();
+				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => AbstractPublication::VISIBILITY_PUBLIC ));
+				if (!is_null($user)) {
+
+					$filter = new \Elastica\Query\BoolQuery();
+					$filter->addShould(
+						$publicVisibilityFilter
+					);
+					$filter->addShould(
+						(new \Elastica\Query\BoolQuery())
+							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => AbstractPublication::VISIBILITY_PRIVATE )))
+					);
+
+				} else {
+					$filter = $publicVisibilityFilter;
+				}
+				$filters[] = $filter;
+
+
+			},
 			'fos_elastica.index.ladb.workflow_workflow',
 			\Ladb\CoreBundle\Entity\Workflow\Workflow::CLASS_NAME,
 			'core_workflow_list_page',
@@ -358,40 +492,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
 		}
 
-		return $parameters;
-	}
-
-	/**
-	 * @Route("/mes-processus", name="core_workflow_user_list")
-	 * @Route("/mes-processus/{filter}", requirements={"filter" = "\w+"}, name="core_workflow_user_list_filter")
-	 * @Route("/mes-processus/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_workflow_user_list_filter_page")
-	 * @Template("LadbCoreBundle:Workflow:userlist.html.twig")
-	 */
-	public function userListAction(Request $request, $filter = 'all', $page = 0) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-			throw $this->createNotFoundException('Access denied');
-		}
-
-		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
-		$paginatorUtils = $this->get(PaginatorUtils::NAME);
-
-		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
-		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
-		$paginator = $workflowRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
-
-		$parameters = array(
-			'filter'        => $filter,
-			'prevPageUrl'   => $pageUrls->prev,
-			'nextPageUrl'   => $pageUrls->next,
-			'workflows'     => $paginator,
-			'workflowCount' => $paginator->count(),
-		);
-
-		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
-		}
 		return $parameters;
 	}
 

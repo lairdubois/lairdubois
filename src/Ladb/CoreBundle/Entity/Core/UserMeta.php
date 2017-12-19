@@ -86,6 +86,11 @@ class UserMeta {
 	 */
 	private $unlistedPromotionGraphicCount = 0;
 
+	/**
+	 * @ORM\Column(name="unlisted_workflow_workflow_count", type="integer")
+	 */
+	private $unlistedWorkflowWorkflowCount = 0;
+
 
 	/**
 	 * @ORM\Column(name="donation_count", type="integer")
@@ -142,7 +147,9 @@ class UserMeta {
 			$this->getUnlistedKnowledgeSchoolCount() +
 			$this->getUnlistedBlogPostCount() +
 			$this->getUnlistedFaqQuestionCount() +
-			$this->getUnlistedQaQuestionCount()
+			$this->getUnlistedQaQuestionCount() +
+			$this->getUnlistedPromotionGraphicCount() +
+			$this->getUnlistedWorkflowWorkflowCount()
 		;
 	}
 
@@ -284,6 +291,17 @@ class UserMeta {
 
 	public function setUnlistedPromotionGraphicCount($unlistedPromotionGraphicCount) {
 		$this->unlistedPromotionGraphicCount = $unlistedPromotionGraphicCount;
+		return $this;
+	}
+
+	// UnlistedWorkflowWorkflowCount /////
+
+	public function getUnlistedWorkflowWorkflowCount() {
+		return $this->unlistedWorkflowWorkflowCount;
+	}
+
+	public function setUnlistedWorkflowWorkflowCount($unlistedWorkflowWorkflowCount) {
+		$this->unlistedWorkflowWorkflowCount = $unlistedWorkflowWorkflowCount;
 		return $this;
 	}
 

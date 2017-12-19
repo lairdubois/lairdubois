@@ -353,6 +353,7 @@ class PostController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.blog_post',
 			\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME,
 			'core_blog_post_list_page'

@@ -18,7 +18,7 @@
 {% set filter = width~'x'~height~filterMode %}
 {% set noMicrodata = (noMicrodata|default(false)) or picture is empty %}
 {% set noSizer = noSizer|default(picture is not null and picture.width == 0) %}
-{% set autoSizer = autoSizer is defined ? autoSizer : (filterMode == 'i' or picture is not empty and (picture.width < width or picture.height < height)) %}
+{% set autoSizer = autoSizer is defined ? autoSizer : (filterMode == 'i' or picture is not null and (picture.width < width or picture.height < height)) %}
 
 {% block img %}
     {% if not noSizer %}<div class="ladb-img-sizer{% if not autoSizer %} ladb-img-sizer-{{ filter }}{% endif %}"{% if autoSizer %} style="padding-top:{{ filterMode != 'i' and (picture.width < width or picture.height < height) ? min(picture.height, height) / min(picture.width, width) * 100 : picture.heightRatio100 }}%;"{% endif %}>{% endif %}

@@ -127,7 +127,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		return $elasticaQuery;
 	}
 
-	public function searchPaginedEntities(Request $request, $page, $queryCallback, $defaultsCallBack, $typeName, $entityClassName, $route, $parameters = array(), $excludedIds = null) {
+	public function searchPaginedEntities(Request $request, $page, $queryCallback, $defaultsCallBack, $globalFiltersCallBack, $typeName, $entityClassName, $route, $parameters = array(), $excludedIds = null) {
 
 		// Parse request
 		$queryParameters = $this->_parseQueryRequest($request);
@@ -154,6 +154,10 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			$sort = $defaultSort;
 		} else {
 			$defaults = false;
+		}
+
+		if (!is_null($globalFiltersCallBack)) {
+			$globalFiltersCallBack($filters);
 		}
 
 		// Setup pagination

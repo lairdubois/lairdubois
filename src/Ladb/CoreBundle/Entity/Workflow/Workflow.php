@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
+use Ladb\CoreBundle\Model\PicturedInterface;
+use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableInterface;
@@ -28,9 +30,9 @@ use Ladb\CoreBundle\Model\LicensedTrait;
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication implements IndexableInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface {
+class Workflow extends AbstractAuthoredPublication implements IndexableInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface {
 
-	use IndexableTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait;
+	use IndexableTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
 	const TYPE = 200;
@@ -51,13 +53,19 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	private $slug;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\JoinColumn(name="main_picture_id", nullable=true)
+	 */
+	private $mainPicture;
+
+	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 * @Assert\Length(max=4000)
 	 */
 	private $body;
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="text", name="html_body", nullable=true)
 	 */
 	private $htmlBody;
 

@@ -40,7 +40,7 @@ class Part {
 	private $count = 1;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="labels")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="parts")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $workflow;

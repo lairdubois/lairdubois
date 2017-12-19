@@ -491,6 +491,7 @@ class HowtoController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.howto_howto',
 			\Ladb\CoreBundle\Entity\Howto\Howto::CLASS_NAME,
 			'core_howto_list_page',

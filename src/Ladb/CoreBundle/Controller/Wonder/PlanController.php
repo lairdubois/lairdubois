@@ -801,6 +801,7 @@ class PlanController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.wonder_plan',
 			\Ladb\CoreBundle\Entity\Wonder\Plan::CLASS_NAME,
 			'core_plan_list_page',

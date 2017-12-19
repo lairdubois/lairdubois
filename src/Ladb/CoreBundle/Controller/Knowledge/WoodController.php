@@ -350,6 +350,7 @@ class WoodController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.knowledge_wood',
 			\Ladb\CoreBundle\Entity\Knowledge\Wood::CLASS_NAME,
 			'core_wood_list_page'

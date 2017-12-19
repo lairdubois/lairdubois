@@ -54,6 +54,7 @@ class WebScreenshotUtils {
 		$client->getEngine()->addOption('--load-images=true');
 		$client->getEngine()->addOption('--ignore-ssl-errors=true');
 		$client->getEngine()->addOption('--ssl-protocol=any');
+		$client->getEngine()->addOption('--max-disk-cache-size=0');
 
 		$request  = $client->getMessageFactory()->createCaptureRequest($url);
 		$response = $client->getMessageFactory()->createResponse();

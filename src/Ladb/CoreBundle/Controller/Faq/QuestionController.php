@@ -357,6 +357,7 @@ class QuestionController extends Controller {
 				$sort = array( 'weight' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.faq_question',
 			\Ladb\CoreBundle\Entity\Faq\Question::CLASS_NAME,
 			'core_faq_question_list_page'

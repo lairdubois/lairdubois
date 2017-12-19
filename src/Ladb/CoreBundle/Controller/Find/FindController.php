@@ -446,6 +446,7 @@ class FindController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.find_find',
 			\Ladb\CoreBundle\Entity\Find\Find::CLASS_NAME,
 			'core_find_list_page'

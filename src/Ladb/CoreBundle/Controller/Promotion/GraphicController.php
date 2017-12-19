@@ -464,6 +464,7 @@ class GraphicController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.promotion_graphic',
 			\Ladb\CoreBundle\Entity\Promotion\Graphic::CLASS_NAME,
 			'core_promotion_graphic_list_page',

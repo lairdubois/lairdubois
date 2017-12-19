@@ -342,6 +342,7 @@ class ProviderController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.knowledge_provider',
 			\Ladb\CoreBundle\Entity\Knowledge\Provider::CLASS_NAME,
 			'core_provider_list_page',

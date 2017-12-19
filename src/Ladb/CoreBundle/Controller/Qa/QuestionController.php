@@ -440,6 +440,7 @@ class QuestionController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.qa_question',
 			\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME,
 			'core_qa_question_list_page'

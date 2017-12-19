@@ -307,6 +307,7 @@ class SchoolController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.knowledge_school',
 			\Ladb\CoreBundle\Entity\Knowledge\School::CLASS_NAME,
 			'core_school_list_page',

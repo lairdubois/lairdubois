@@ -2,29 +2,6 @@
 
 {% set entity = workflow %}
 
-{% block headingInner %}{% if true %}<span class="pull-right" title="{{ 'workflow.workflow.private_tooltip'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-lock ladb-icon-lg" style="color: #ddd;"></i></span>{% endif %}{{ parent() }}{% endblock %}
+{% block headingInner %}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' %}{{ parent() }}{% endblock %}
 
 {% block title %}<i class="ladb-icon-workflow"></i> {{ parent() }}{% endblock %}
-
-{% block body %}
-    {{ parent() }}
-    {#<hr>#}
-    {#<div>#}
-        {#<div style="text-align: center; float: left; width: 128px;">#}
-            {#<span style="padding: 5px 10px; background-color: #555; color: #fff; border-radius: 4px; font-size: 20px;">{{ workflow.doneTaskCount }} / {{ workflow.taskCount }}</span>#}
-        {#</div>#}
-        {#<div style="padding: 4px 0;">#}
-            {#<div class="progress">#}
-                {#<div class="progress-bar progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ workflow.doneTaskCount }}" aria-valuemin="0" aria-valuemax="{{ workflow.taskCount }}" style="width:{{ workflow.taskCount > 0 ? (workflow.doneTaskCount / workflow.taskCount) * 100 : 0 }}%"></div>#}
-                {#{% if workflow.runningTaskCount > 0 %}#}
-                    {#<div class="progress-bar progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ workflow.runningTaskCount }}" aria-valuemin="0" aria-valuemax="{{ workflow.taskCount }}" style="width:{{ workflow.taskCount > 0 ? (workflow.runningTaskCount / workflow.taskCount) * 100 : 0 }}%"></div>#}
-                {#{% endif %}#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-    <div style="position: absolute; bottom: 60px; left: 20px; background-color: #eee; color: #aaa; padding: 2px 10px; border-radius: 2px;">
-    <small><i class="ladb-icon-user"></i> Vous seul pouvez voir ce processus.</small>
-    </div>
-{% endblock %}
-
-{% block imageOuter %}{% endblock %}

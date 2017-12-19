@@ -2,6 +2,9 @@
 
 {% set entity = workflow %}
 
+{% set navSection = 'workflows' %}
+{% set searchPath = path('core_workflow_list') %}
+
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
 
 {% block bodyHeaderContainerContent %}
@@ -32,11 +35,23 @@
 {% endblock %}
 
 {% block contentBody %}
+    {% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}
+        {% include 'LadbCoreBundle:Workflow:_draft-alert.part.html.twig' %}
+    {% endif %}
     <div class="ladb-workflow">
-        <div class="thumbnail" style="height: 300px; position: relative;" onclick="window.location = '{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}'">
-            <div style="position: absolute; top: 50%; margin-top: -17px; text-align: center; width: 100%;">
-                <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info"><i class="ladb-icon-workflow"></i> Ouvrir en mode travail</a>
-            </div>
+        <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
+            {% if workflow.mainPicture %}
+                {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':workflow.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top' } %}
+            {% else %}
+                <div style="height: 400px;">
+                    <div style="background-color: #f6f6f6; line-height: 400px; text-align: center; font-size: 150px; color: #ddd;">
+                        <i class="ladb-icon-workflow"></i>
+                    </div>
+                </div>
+            {% endif %}
+        </a>
+        <div class="text-center ladb-margin-top">
+            <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
         </div>
         <hr>
         <div class="ladb-body">

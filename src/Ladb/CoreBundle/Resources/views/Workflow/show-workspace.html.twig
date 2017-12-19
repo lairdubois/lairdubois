@@ -58,10 +58,6 @@
                 listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}',
                 statisticsPath: '{{ path('core_workflow_statistics', { 'id':workflow.id }) }}'
             });
-
-            {# Setup Comment Widget #}
-            $('.ladb-comment-widget').ladbCommentWidget();
-
         });
     </script>
 {% endblock %}

@@ -675,6 +675,7 @@ class WorkshopController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.wonder_workshop',
 			\Ladb\CoreBundle\Entity\Wonder\Workshop::CLASS_NAME,
 			'core_workshop_list_page'

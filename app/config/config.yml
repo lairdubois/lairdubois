@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20171121"
+        version:    "20171217"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -603,6 +603,7 @@ fos_elastica:
                             delete: false
                 workflow_workflow:
                     mappings:
+                        visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
@@ -612,6 +613,7 @@ fos_elastica:
                         user:
                             type: "object"
                             properties:
+                                id: { type: integer }
                                 username: { analyzer: name_analyzer }
                                 displayname: { analyzer: name_analyzer }
                                 fullname: { analyzer: name_analyzer }

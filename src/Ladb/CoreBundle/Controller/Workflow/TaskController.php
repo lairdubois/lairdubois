@@ -79,6 +79,14 @@ class TaskController extends AbstractWorkflowBasedController {
 		return $labelChoices;
 	}
 
+	private function _computePartCount(Task $task) {
+		$partCount = 0;
+		foreach ($task->getParts() as $tmpPart) {
+			$partCount += $tmpPart->getCount();
+		}
+		$task->setPartCount($partCount);
+	}
+
 	/////
 
 	/**
@@ -123,6 +131,9 @@ class TaskController extends AbstractWorkflowBasedController {
 			$workflow->addTask($task);
 			$workflow->incrementTaskCount();
 
+			// Flag workflow as updated
+			$workflow->setUpdatedAt(new \DateTime());
+
 			// Link to source task if defined
 			$sourceTask = $this->_retrieveTaskFromTaskIdParam($request, 'sourceTaskId', false);
 			if (!is_null($sourceTask) && !$this->_assertValidWorkflow($sourceTask, $workflow, false)) {
@@ -148,6 +159,9 @@ class TaskController extends AbstractWorkflowBasedController {
 				$workflow->incrementDuration($task->getDuration());
 
 			}
+
+			// Compute parts count
+			$this->_computePartCount($task);
 
 			$om->persist($task);
 			$om->flush();
@@ -233,6 +247,9 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		if ($form->isValid()) {
 
+			// Flag workflow as updated
+			$workflow->setUpdatedAt(new \DateTime());
+
 			$parameters = array();
 
 			$newEstimatedDuration = $task->getEstimatedDuration();
@@ -254,11 +271,7 @@ class TaskController extends AbstractWorkflowBasedController {
 			}
 
 			// Compute parts count
-			$partCount = 0;
-			foreach ($task->getParts() as $tmpPart) {
-				$partCount += $tmpPart->getCount();
-			}
-			$task->setPartCount($partCount);
+			$this->_computePartCount($task);
 
 			$om->flush();
 
@@ -310,6 +323,9 @@ class TaskController extends AbstractWorkflowBasedController {
 			$positionTop = intval($request->request->get('positionTop'));
 			$task->setPositionTop($positionTop);
 		}
+
+		// Flag workflow as updated
+		$workflow->setUpdatedAt(new \DateTime());
 
 		$om->flush();
 
@@ -459,6 +475,9 @@ class TaskController extends AbstractWorkflowBasedController {
 			$workflow->incrementRunningTaskCount(-1);
 		}
 
+		// Flag workflow as updated
+		$workflow->setUpdatedAt(new \DateTime());
+
 		// Remove the task
 		$om->remove($task);
 		$om->flush();
@@ -527,6 +546,9 @@ class TaskController extends AbstractWorkflowBasedController {
 		// Check if connection exists
 		if (!$sourceTask->getTargetTasks()->contains($targetTask)) {
 
+			// Flag workflow as updated
+			$workflow->setUpdatedAt(new \DateTime());
+
 			// Link tasks
 			$sourceTask->addTargetTask($targetTask);
 			$om->flush();
@@ -577,6 +599,9 @@ class TaskController extends AbstractWorkflowBasedController {
 				'to'   => $targetTask->getId(),
 			)
 		);
+
+		// Flag workflow as updated
+		$workflow->setUpdatedAt(new \DateTime());
 
 		// Unlink tasks
 		$sourceTask->removeTargetTask($targetTask);

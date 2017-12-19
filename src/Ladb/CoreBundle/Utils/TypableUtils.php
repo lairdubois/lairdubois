@@ -59,9 +59,12 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Testimonial (School)
 			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
 				return implode($delimiter, array( 'knowledge', 'testimonial' ));
-			// Graphic (School)
+			// Graphic
 			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
 				return implode($delimiter, array( 'promotion', 'graphic' ));
+			// Workflow
+			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
+				return implode($delimiter, array( 'workflow', 'workflow' ));
 
 		}
 		return '';

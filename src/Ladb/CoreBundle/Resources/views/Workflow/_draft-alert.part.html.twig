@@ -1,0 +1,6 @@
+{% extends 'LadbCoreBundle:Common:_draft-alert.part.html.twig' %}
+
+{% set entity = workflow %}
+{% set alertMessage = 'Ce processus est privé. Pour le rendre publique, vous devez la publier.' %}
+{% set modalMessage = 'La publication du processus <strong>'~workflow.title~'</strong> le rendra public.' %}
+
