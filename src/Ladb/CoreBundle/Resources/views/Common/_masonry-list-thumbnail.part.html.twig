@@ -1,14 +1,16 @@
 
 {# set entity #}
 {# set headingClasses (facultative) #}
+{# set showPathAdditionalParams (facultative) #}
 
 {% set noMicrodata = true %}
+{% set showPath = showPathAdditionalParams is defined ? ladb_entity_url_action(entity, 'show', true, true, showPathAdditionalParams) : ladb_entity_url_action(entity) %}
 {% set pictureWidth = pictureWidth|default('300') %}
 {% set pictureHeight = pictureHeight|default('550') %}
 {% set pictureFilterMode = pictureFilterMode|default('i') %}
 
 <div class="ladb-masonry-item ladb-masonry-column">
-    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'}){% endblock %}"{% endblock %}>
+    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
         <div class="ladb-content">
             <div class="uk-overlay">
                 {% block imageOuter %}
@@ -20,7 +22,7 @@
                                     <div class="ladb-minitools"><a href="#delete_post_modal_{{ entity.id }}" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a></div>
                                 </div>
                             {% endif %}
-                            <a href="{{ ladb_entity_url_action(entity) }}">
+                            <a href="{{ showPath }}">
                                 {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':pictureWidth, 'height':pictureHeight, 'filterMode':pictureFilterMode, 'alt':entity.title } %}
                             </a>
                             {% if entity.bodyBlockVideoCount is defined and entity.bodyBlockVideoCount > 0 %}

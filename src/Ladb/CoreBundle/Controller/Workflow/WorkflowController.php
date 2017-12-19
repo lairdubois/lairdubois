@@ -86,7 +86,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($workflow));
 
-			return $this->redirect($this->generateUrl('core_workflow_show', array('id' => $workflow->getSluggedId())));
+			return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $workflow->getSluggedId(), 'layout' => 'workspace' )));
 		}
 
 		// Flashbag
@@ -328,6 +328,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 				throw $this->createNotFoundException('Not allowed (core_workflow_show)');
 			}
 		}
+
+		// TODO switch layout from workspace to page if referrer is not LADB server
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

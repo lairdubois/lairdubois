@@ -2,11 +2,13 @@
 {# set entity #}
 {# set headingClasses (facultative) #}
 {# set titleLinkClasses (facultative) #}
+{# set showPathAdditionalParams (facultative) #}
 
 {% set noMicrodata = true %}
+{% set showPath = showPathAdditionalParams is defined ? ladb_entity_url_action(entity, 'show', true, true, showPathAdditionalParams) : ladb_entity_url_action(entity) %}
 
 <div class="ladb-masonry-item ladb-masonry-column-wide">
-    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'}){% endblock %}"{% endblock %}>
+    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
         {% if entity.isDraft %}
             <div class="ladb-draft-badge">
                 {{ 'default.choice.draft'|transchoice(1)|capitalize }}
@@ -19,7 +21,7 @@
             {% block contentInner %}
                 <div class="ladb-heading">
                     {% block headingInner %}
-                        <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% if entity.isLocked is defined and entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<a href="{{ ladb_entity_url_action(entity) }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
+                        <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% if entity.isLocked is defined and entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<a href="{{ showPath }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
                     {% endblock %}
                 </div>
                 {% block imageOuter %}

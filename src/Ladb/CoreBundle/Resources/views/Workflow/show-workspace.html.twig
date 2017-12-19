@@ -1,7 +1,8 @@
 {% extends 'LadbCoreBundle::layout.html.twig' %}
 
 {% set bodyContainerFluid = true %}
-{% set navSection = 'workflow' %}
+{% set navSection = 'workflows' %}
+{% set searchPath = path('core_workflow_list') %}
 
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
 
@@ -78,7 +79,16 @@
                             <button id="ladb_list_labels_btn" class="btn btn-default"><i class="ladb-icon-bullet"></i><span class="ladb-visible-desktop">  {{ 'workflow.label.list'|trans() }}</span></button>
                             <button id="ladb_statistics_btn" class="btn btn-default"><i class="ladb-icon-statistics"></i><span class="ladb-visible-desktop">  {{ 'workflow.workflow.statistics'|trans() }}</span></button>
                             &nbsp;
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ladb-icon-more"></i> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
+                                </ul>
+                            </div>
                         {% endif %}
+                        &nbsp;
                         <a id="ladb_layout_page_btn" class="btn btn-info" href="{{ ladb_entity_url_action(workflow) }}"><i class="ladb-icon-arrow-left"></i><span class="ladb-visible-desktop">  Quitter le mode travail</span></a>
                     </div>
                 {% endblock %}

@@ -21,7 +21,7 @@
 {% set autoSizer = autoSizer is defined ? autoSizer : (filterMode == 'i' or picture is not null and (picture.width < width or picture.height < height)) %}
 
 {% block img %}
-    {% if not noSizer %}<div class="ladb-img-sizer{% if not autoSizer %} ladb-img-sizer-{{ filter }}{% endif %}"{% if autoSizer %} style="padding-top:{{ filterMode != 'i' and (picture.width < width or picture.height < height) ? min(picture.height, height) / min(picture.width, width) * 100 : picture.heightRatio100 }}%;"{% endif %}>{% endif %}
+    {% if not noSizer %}<div class="ladb-img-sizer{% if not autoSizer %} ladb-img-sizer-{{ filter }}{% endif %}"{% if autoSizer %} style="padding-top:{{ filterMode != 'i' and (picture.width < width or picture.height < height) ? min(picture.height, height) / min(picture.width, width) * 100 : (picture ? picture.heightRatio100 : 100) }}%;"{% endif %}>{% endif %}
         <img src="{{ webPath|imagine_filter(filter) }}" alt="{{ alt }}"{% if attributes is defined %} {{ attributes|raw }}{% endif %}{% if not noMicrodata %} itemprop="{{ itemProperty|default('image') }}"{% endif %}{% if imgClasses is defined %} class="{{ imgClasses }}"{% endif %}>
     {% if not noSizer %}</div>{% endif %}
 {% endblock %}

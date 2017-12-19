@@ -31,28 +31,18 @@
                 {% endif %}
             </div>
         {% endblock %}
+        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'ladb-horizontal-separator-left' } %}{% endblock %}
     {% endembed %}
 {% endblock %}
 
 {% block contentBody %}
-    {% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}
-        {% include 'LadbCoreBundle:Workflow:_draft-alert.part.html.twig' %}
-    {% endif %}
+    {#{% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}#}
+        {#{% include 'LadbCoreBundle:Workflow:_draft-alert.part.html.twig' %}#}
+    {#{% endif %}#}
     <div class="ladb-workflow">
         <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
-            {% if workflow.mainPicture %}
-                {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':workflow.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top' } %}
-            {% else %}
-                <div style="height: 400px;">
-                    <div style="background-color: #f6f6f6; line-height: 400px; text-align: center; font-size: 150px; color: #ddd;">
-                        <i class="ladb-icon-workflow"></i>
-                    </div>
-                </div>
-            {% endif %}
+            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':workflow.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top', 'emptyWebPath':'empty_workflow.png' } %}
         </a>
-        <div class="text-center ladb-margin-top">
-            <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
-        </div>
         <hr>
         <div class="ladb-body">
             {{ workflow.htmlBody|raw }}
@@ -72,6 +62,9 @@
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+        <div class="ladb-btn">
+            <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
+        </div>
     </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':workflow.license } %}

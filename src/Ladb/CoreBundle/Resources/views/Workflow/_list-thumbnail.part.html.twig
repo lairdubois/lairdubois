@@ -1,7 +1,11 @@
 {% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
 
 {% set entity = workflow %}
+{% set emptyWebPath = 'empty_workflow.png' %}
+{% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}
+    {% set showPathAdditionalParams = { 'layout':'workspace' } %}
+{% endif %}
 
-{% block headingInner %}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' %}{{ parent() }}{% endblock %}
+{% block headingInner %}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'pull-right' } %}{{ parent() }}{% endblock %}
 
 {% block title %}<i class="ladb-icon-workflow"></i> {{ parent() }}{% endblock %}

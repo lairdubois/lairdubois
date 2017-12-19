@@ -203,6 +203,7 @@ class UserController extends Controller {
 				$sort = array( 'followerCount' => array( 'order' => 'desc' ) );
 
 			},
+			null,
 			'fos_elastica.index.ladb.core_user',
 			\Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
 			'core_user_list_page'
