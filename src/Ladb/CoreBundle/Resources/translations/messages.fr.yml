@@ -10,6 +10,7 @@ default:
   exchange: Echanger
   cancel: Annuler
   edit: Editer
+  copy: Copier
   unpublish: Dépublier
   unpublishing: Dépublication
   publish: Publier

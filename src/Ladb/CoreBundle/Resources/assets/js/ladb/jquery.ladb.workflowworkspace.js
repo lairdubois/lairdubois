@@ -53,7 +53,7 @@
         statisticsPath: null
     };
 
-    LadbWorkflowWorkspace.prototype._uiDiagramShowAll = function() {
+    LadbWorkflowWorkspace.prototype._uiDiagramZoomAll = function() {
         if (this.$panzoom) {
 
             this.$panzoom.panzoom('zoom', 1);
@@ -103,6 +103,22 @@
         }
     };
 
+    LadbWorkflowWorkspace.prototype._uiDiagramZoomIn = function() {
+        if (this.$panzoom) {
+            var scale = this._uiDiagramGetCurrentScale() + 0.1;
+            this.$panzoom.panzoom('zoom', scale);
+            this.plumb.setZoom(scale);
+        }
+    };
+
+    LadbWorkflowWorkspace.prototype._uiDiagramZoomOut = function() {
+        if (this.$panzoom) {
+            var scale = this._uiDiagramGetCurrentScale() - 0.1;
+            this.$panzoom.panzoom('zoom', scale);
+            this.plumb.setZoom(scale);
+        }
+    };
+
     LadbWorkflowWorkspace.prototype._uiDiagramPanToTaskWidget = function(taskId) {
         if (this.$panzoom) {
 
@@ -129,7 +145,7 @@
 
     LadbWorkflowWorkspace.prototype._uiDiagramGetCurrentScale = function() {
         if (this.$panzoom) {
-            return this.$panzoom.panzoom('getMatrix')[0];
+            return parseFloat(this.$panzoom.panzoom('getMatrix')[0]);
         }
         return 1;
     };
@@ -587,7 +603,7 @@
                 that.updateBoardFromJsonData(data);
 
                 // Center origin
-                that._uiDiagramShowAll();
+                that._uiDiagramZoomAll();
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -1158,8 +1174,17 @@
         $('.ladb-toggle-right-panel-btn', this.$element).on('click', function() {
             that._uiToggleRightPanel();
         });
-        $('.ladb-show-all-btn', this.$element).on('click', function() {
-            that._uiDiagramShowAll();
+        $('.ladb-zoom-all-btn', this.$element).on('click', function() {
+            that._uiDiagramZoomAll();
+            this.blur();
+        });
+        $('.ladb-zoom-in-btn', this.$element).on('click', function() {
+            that._uiDiagramZoomIn();
+            this.blur();
+        });
+        $('.ladb-zoom-out-btn', this.$element).on('click', function() {
+            that._uiDiagramZoomOut();
+            this.blur();
         });
 
         if (this.options.readOnly) {

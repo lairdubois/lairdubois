@@ -268,7 +268,7 @@ class Task {
 	// Labels /////
 
 	public function addLabel(\Ladb\CoreBundle\Entity\Workflow\Label $label) {
-		if (!$this->labels->contains($label) && (is_null($label->getWorkflow()) || $label->getWorkflow()->getId() == $this->getWorkflow()->getId())) {
+		if (!$this->labels->contains($label) && (is_null($label->getWorkflow()) || $label->getWorkflow() === $this->getWorkflow())) {
 			$this->labels[] = $label;
 			if (!is_null($this->getWorkflow()) && is_null($label->getWorkflow())) {
 				$this->getWorkflow()->addLabel($label);
@@ -288,7 +288,7 @@ class Task {
 	// Parts /////
 
 	public function addPart(\Ladb\CoreBundle\Entity\Workflow\Part $part) {
-		if (!$this->parts->contains($part) && (is_null($part->getWorkflow()) || $part->getWorkflow()->getId() == $this->getWorkflow()->getId())) {
+		if (!$this->parts->contains($part) && (is_null($part->getWorkflow()) || $part->getWorkflow() === $this->getWorkflow())) {
 			$this->parts[] = $part;
 			if (!is_null($this->getWorkflow()) && is_null($part->getWorkflow())) {
 				$this->getWorkflow()->addPart($part);

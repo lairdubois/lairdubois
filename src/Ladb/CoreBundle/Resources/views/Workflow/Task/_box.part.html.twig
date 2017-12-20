@@ -5,12 +5,12 @@
     {% if not readOnly %}
         <div class="ladb-minitools pull-right">
             {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %}
-                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn " data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-play ladb-icon-lg"></i></button>
+                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-play ladb-icon-lg"></i></button>
             {% endif %}
             {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') %}
-                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn " data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-pause ladb-icon-lg"></i></button>
+                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-pause ladb-icon-lg"></i></button>
             {% endif %}
-            <button class="ladb-minitools-btn ladb-btn-edit"><i class="ladb-icon-edit ladb-icon-lg"></i></button>
+            <button class="ladb-minitools-btn ladb-btn-edit ladb-unselectable"><i class="ladb-icon-edit ladb-icon-lg"></i></button>
         </div>
     {% endif %}
     <div class="ladb-body">

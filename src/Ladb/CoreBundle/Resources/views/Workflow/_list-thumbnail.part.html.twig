@@ -9,3 +9,15 @@
 {% block headingInner %}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'pull-right' } %}{{ parent() }}{% endblock %}
 
 {% block title %}<i class="ladb-icon-workflow"></i> {{ parent() }}{% endblock %}
+
+{% block entityMetas %}
+    {% if workflow.inspirationCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_creation_inspirations', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.choice.inspiration'|transchoice(workflow.reboundCount, { '%count%':workflow.inspirationCount }) }}"><i class="ladb-icon-inspiration ladb-color-inspiration"></i></a></li>
+    {% endif %}
+    {% if workflow.reboundCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_creation_rebounds', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.choice.rebound'|transchoice(workflow.reboundCount, { '%count%':workflow.reboundCount }) }}"><i class="ladb-icon-rebound ladb-color-rebound"></i> <span class="ladb-color-rebound">{{ workflow.reboundCount }}</span></a></li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+

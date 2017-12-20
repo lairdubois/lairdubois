@@ -295,6 +295,25 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/copy", requirements={"id" = "\d+"}, name="core_workflow_copy")
+	 */
+	public function copyAction($id) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		// Copy
+		$workflowManager = $this->get(WorkflowManager::NAME);
+		$newWorkflow = $workflowManager->copy($workflow, $this->getUser());
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.form.alert.copy_success', array( '%title%' => $workflow->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $newWorkflow->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/diagram", name="core_workflow_diagram")
 	 * @Template("LadbCoreBundle:Workflow:diagram.html.twig")
 	 */

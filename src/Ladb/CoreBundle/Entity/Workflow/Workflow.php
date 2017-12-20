@@ -5,6 +5,8 @@ namespace Ladb\CoreBundle\Entity\Workflow;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\CommentableInterface;
+use Ladb\CoreBundle\Model\InspirableInterface;
+use Ladb\CoreBundle\Model\InspirableTrait;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
@@ -30,9 +32,9 @@ use Ladb\CoreBundle\Model\LicensedTrait;
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication implements IndexableInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface {
+class Workflow extends AbstractAuthoredPublication implements IndexableInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface, InspirableInterface {
 
-	use IndexableTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait;
+	use IndexableTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait, InspirableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
 	const TYPE = 200;
@@ -111,6 +113,30 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	protected $labels;
 
 	/**
+	 * @ORM\Column(type="integer", name="rebound_count")
+	 */
+	private $reboundCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", mappedBy="inspirations")
+	 */
+	private $rebounds;
+
+	/**
+	 * @ORM\Column(type="integer", name="inspiration_count")
+	 */
+	private $inspirationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="rebounds", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_workflow_workflow_inspiration",
+	 *      	joinColumns={ @ORM\JoinColumn(name="workflow_id", referencedColumnName="id") },
+	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_workflow_id", referencedColumnName="id") }
+	 *      )
+	 */
+	private $inspirations;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_workflow_tag")
 	 */
@@ -149,6 +175,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 		$this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->parts = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 

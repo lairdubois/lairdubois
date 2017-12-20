@@ -60,9 +60,21 @@
 
     .ladb-panel-buttons {
       position: absolute;
-      top: 0;
-      width: 100%;
-      padding: 5px;
+      top: 10px;
+      right: 10px;
+    }
+
+    .ladb-toolbar {
+      position: absolute;
+      top : 10px;
+      left: 10px;
+      width: 35px;
+
+      .btn {
+        margin-bottom: 5px;
+        padding: 6px;
+      }
+
     }
 
     .ladb-loading-panel {
@@ -70,14 +82,6 @@
       opacity: 1;
     }
 
-  }
-
-  .ladb-left-panel {
-    left: 0;
-  }
-
-  .ladb-right-panel {
-    right: 0;
   }
 
   .ladb-bottom-panel {
@@ -111,11 +115,12 @@
 
   }
 
-  .ladb-left-panel, .ladb-right-panel {
+  .ladb-right-panel {
     position: absolute;
     height: 100%;
     width: 400px;
     top: 0;
+    right: 0;
     padding: 0 !important;
 
     .panel {
@@ -533,11 +538,12 @@ html.touchevents {
 
       .ladb-right-panel {
         width: 95%;
+        .box-shadow(-20px 0 0 rgba(0,0,0,0.3));
       }
 
     }
 
-    .ladb-workflow-task-diagram {
+    .ladb-workflow-task-diagram, .ladb-panel-buttons {
 
       &.ladb-with-right-panel {
         right: 95%;

@@ -1,7 +1,7 @@
 {# set workflow #}
 {# set classes (facultative) #}
 
-<span{% if classes is defined %} class="{{ classes }}"{% endif %} title="{{ 'workflow.workflow.private_tooltip'|trans() }}" data-tooltip="tooltip" style="background-color: #eee; color: #777; padding: 1px 6px; border-radius: 4px;">
+<span{% if classes is defined %} class="{{ classes }}"{% endif %} title="{{ 'workflow.workflow.private_tooltip'|trans() }}" data-tooltip="tooltip" style="display: inline-block; background-color: #eee; color: #777; padding: 2px 6px; border-radius: 4px;">
     {% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}
         <i class="ladb-icon-user"></i> <span style="font-size: 90%;">Privé</span>
     {% elseif workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PROTECTED') %}

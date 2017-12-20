@@ -17,6 +17,8 @@
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
+                &nbsp;
+                <a href="{{ path('core_workflow_copy', { 'id':workflow.id }) }}" class="btn btn-default"><i class="ladb-icon-rebound"></i><span class="ladb-visible-desktop">  {{ 'default.copy'|trans() }}</span></a>
                 {% if not ownerUser %}
                     &nbsp;
                     {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':workflow.type, 'entityId':workflow.id } %}
@@ -31,7 +33,7 @@
                 {% endif %}
             </div>
         {% endblock %}
-        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'ladb-horizontal-separator-left' } %}{% endblock %}
+        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}
     {% endembed %}
 {% endblock %}
 
