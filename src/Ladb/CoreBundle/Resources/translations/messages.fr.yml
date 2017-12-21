@@ -11,6 +11,9 @@ default:
   cancel: Annuler
   edit: Editer
   copy: Copier
+  copying: Copie
+  duplicate: Dupliquer
+  duplicating: Duplication
   unpublish: Dépublier
   unpublishing: Dépublication
   publish: Publier

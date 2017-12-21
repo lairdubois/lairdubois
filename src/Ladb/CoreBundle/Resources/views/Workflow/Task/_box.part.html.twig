@@ -1,4 +1,4 @@
-<div class="ladb-box ladb-status-{{ task.status }}">
+<div class="ladb-box ladb-status-{{ readOnly ? '0' : task.status }}">
     <button class="ladb-btn-done ladb-status-update-btn"{% if not readOnly %} data-action-status="{{ task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') ? constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') : constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE')}}" data-loading-text="<i class='ladb-icon-spinner'></i>"{% endif %}{% if readOnly or task.status < constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %} disabled{% endif %}>
         {% if not readOnly and task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') %}<i class="ladb-icon-check"></i>{% endif %}
     </button>
@@ -15,7 +15,9 @@
     {% endif %}
     <div class="ladb-body">
         <div class="ladb-title ladb-unselectable">{{ task.title }}</div>
-        {% include 'LadbCoreBundle:Workflow:_durations.part.html.twig' with { 'entity':task } %}
+        {% if not readOnly %}
+            {% include 'LadbCoreBundle:Workflow:_durations.part.html.twig' with { 'entity':task } %}
+        {% endif %}
         {% if task.labels is not empty %}
             <div class="ladb-labels">
                 {% for label in task.labels %}

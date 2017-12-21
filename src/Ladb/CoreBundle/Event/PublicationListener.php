@@ -86,6 +86,10 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
+		// Search index update
+		$searchUtils = $this->container->get(SearchUtils::NAME);
+		$searchUtils->insertEntityToIndex($publication);
+
 		// Resolve main picture to avoid image url redirection
 		$this->_resolvePicturesPageImageFilter($publication);
 
@@ -282,8 +286,8 @@ class PublicationListener implements EventSubscriberInterface {
 		if ($publication instanceof IndexableInterface) {
 
 			// Search index update
-			$searchUtils = $this->container->get(SearchUtils::NAME);
-			$searchUtils->insertEntityToIndex($publication);
+//			$searchUtils = $this->container->get(SearchUtils::NAME);
+//			$searchUtils->insertEntityToIndex($publication);
 
 			// Inspirations update
 			if ($publication instanceof InspirableInterface) {
@@ -340,7 +344,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
-			$searchUtils->deleteEntityFromIndex($publication);
+//			$searchUtils->deleteEntityFromIndex($publication);
 
 			// Inspirations update
 			if ($publication instanceof InspirableInterface) {

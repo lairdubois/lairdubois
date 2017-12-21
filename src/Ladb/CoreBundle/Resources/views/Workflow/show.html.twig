@@ -18,7 +18,12 @@
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
                 &nbsp;
-                <a href="{{ path('core_workflow_copy', { 'id':workflow.id }) }}" class="btn btn-default"><i class="ladb-icon-rebound"></i><span class="ladb-visible-desktop">  {{ 'default.copy'|trans() }}</span></a>
+                {% if ownerUser and not workflow.isPublic %}
+                    <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-duplicate"></i><span class="ladb-visible-desktop">  {{ 'default.duplicate'|trans() }}</span></a>
+                {% else %}
+                    <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-rebound"></i><span class="ladb-visible-desktop">  {{ 'default.copy'|trans() }}</span></a>
+                {% endif %}
+                {% include 'LadbCoreBundle:Workflow:_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
                 {% if not ownerUser %}
                     &nbsp;
                     {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':workflow.type, 'entityId':workflow.id } %}
@@ -26,7 +31,7 @@
                 {% if ownerUser or is_granted("ROLE_ADMIN") %}
                     &nbsp;
                     <a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
-                    {% if is_granted("ROLE_ADMIN") or (ownerUser and workflow.isDraft) %}
+                    {% if is_granted("ROLE_ADMIN") or (ownerUser and not workflow.isPublic) %}
                         <a href="#delete_workflow_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
                         {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_workflow_modal', 'entityTitle':workflow.title, 'deletePath':path('core_workflow_delete', { 'id':workflow.id }) } %}
                     {% endif %}
@@ -38,9 +43,17 @@
 {% endblock %}
 
 {% block contentBody %}
-    {#{% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}#}
-        {#{% include 'LadbCoreBundle:Workflow:_draft-alert.part.html.twig' %}#}
-    {#{% endif %}#}
+    {% if workflow.inspirationCount > 0 %}
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                {% set inspiration = workflow.inspirations.first %}
+                <i class="ladb-icon-inspiration ladb-color-inspiration ladb-icon-lg"></i>&nbsp;&nbsp;Inpiré de <a href="{{ ladb_entity_url_action(inspiration) }}" style="font-weight: bold;">{{ inspiration.title }}</a> {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':inspiration, 'noMicrodata':true } %}
+            </div>
+        </div>
+    {% endif %}
+    {% if not workflow.isPublic %}
+        {% include 'LadbCoreBundle:Workflow:_draft-alert.part.html.twig' %}
+    {% endif %}
     <div class="ladb-workflow">
         <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
             {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':workflow.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top', 'emptyWebPath':'empty_workflow.png' } %}

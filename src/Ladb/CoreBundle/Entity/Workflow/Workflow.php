@@ -83,7 +83,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Task", mappedBy="workflow", cascade={"all"})
-	 * @ORM\OrderBy({"positionTop" = "ASC"})
+	 * @ORM\OrderBy({"positionTop" = "ASC", "positionLeft" = "ASC"})
 	 */
 	protected $tasks;
 

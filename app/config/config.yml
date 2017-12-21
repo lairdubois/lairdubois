@@ -373,6 +373,7 @@ fos_elastica:
                             update: false
                 wonder_creation:
                     mappings:
+                        visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }

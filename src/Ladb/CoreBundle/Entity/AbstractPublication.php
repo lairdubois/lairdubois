@@ -112,6 +112,18 @@ abstract class AbstractPublication implements PublicationInterface {
 		return $this->visibility;
 	}
 
+	public function getIsPrivate() {
+		return $this->getVisibility() == AbstractPublication::VISIBILITY_PRIVATE;
+	}
+
+	public function getIsProtected() {
+		return $this->getVisibility() == AbstractPublication::VISIBILITY_PROTECTED;
+	}
+
+	public function getIsPublic() {
+		return $this->getVisibility() == AbstractPublication::VISIBILITY_PUBLIC;
+	}
+
 	// IsDraft /////
 
 	public function setIsDraft($isDraft) {

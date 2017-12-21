@@ -36,6 +36,12 @@ class WorkflowManager extends AbstractPublicationManager {
 	}
 
 	public function delete(Workflow $workflow, $withWitness = true, $flush = true) {
+
+		// Unlink inspirations
+		foreach ($workflow->getInspirations() as $inspiration) {
+			$workflow->removeInspiration($inspiration);
+		}
+
 		parent::deletePublication($workflow, $withWitness, $flush);
 	}
 
@@ -44,6 +50,7 @@ class WorkflowManager extends AbstractPublicationManager {
 
 		$newWorkflow = new Workflow();
 		$newWorkflow->setIsDraft(false);
+		$newWorkflow->setVisibility(Workflow::VISIBILITY_PRIVATE);
 		$newWorkflow->setUser($user);
 		$newWorkflow->setTitle($workflow->getTitle().' (copie)');
 		$newWorkflow->setMainPicture($workflow->getMainPicture());
@@ -96,7 +103,11 @@ class WorkflowManager extends AbstractPublicationManager {
 			$newTask->setTitle($task->getTitle());
 			$newTask->setPositionLeft($task->getPositionLeft());
 			$newTask->setPositionTop($task->getPositionTop());
-			$newTask->setStatus(Task::STATUS_WORKABLE);
+			if ($task->getSourceTasks()->isEmpty()) {
+				$newTask->setStatus(Task::STATUS_WORKABLE);
+			} else {
+				$newTask->setStatus(Task::STATUS_PENDING);
+			}
 			$newTask->setPartCount($task->getPartCount());
 
 			foreach ($task->getParts() as $part) {
@@ -132,7 +143,16 @@ class WorkflowManager extends AbstractPublicationManager {
 		}
 
 		// Inspiration
-		$newWorkflow->addInspiration($workflow);
+		if ($workflow->getUser()->getId() === $user->getId() && $workflow->getVisibility() < Workflow::VISIBILITY_PUBLIC) {
+
+			// Workflow is owned and private -> juste transfert inspirations
+			foreach ($workflow->getInspirations() as $inspiration) {
+				$newWorkflow->addInspiration($inspiration);
+			}
+
+		} else {
+			$newWorkflow->addInspiration($workflow);
+		}
 
 		$om->persist($newWorkflow);
 		if ($flush) {
