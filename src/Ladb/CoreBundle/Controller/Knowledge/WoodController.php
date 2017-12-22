@@ -103,7 +103,6 @@ class WoodController extends Controller {
 			// Dispatch publication event
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($wood));
 
-			$wood->setIsDraft(false);
 			$om->flush();
 
 			// Dispatch publication event

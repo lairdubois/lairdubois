@@ -16,7 +16,7 @@
                 {% block imageOuter %}
                     <div class="ladb-image">
                         {% block image %}
-                            {% if entity.isDraft %}
+                            {% if entity.isDraft is defined and entity.isDraft %}
                                 <div class="ladb-draft-badge">
                                     {{ 'default.choice.draft'|transchoice(1)|capitalize }}
                                     <div class="ladb-minitools"><a href="#delete_post_modal_{{ entity.id }}" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a></div>

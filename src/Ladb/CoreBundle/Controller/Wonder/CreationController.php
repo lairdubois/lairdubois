@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Entity\AbstractPublication;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -701,6 +702,19 @@ class CreationController extends Controller {
 
 					// Filters /////
 
+					case 'mine':
+
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							$filters[] = $filter;
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						}
+
+						break;
+
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);
@@ -830,7 +844,29 @@ class CreationController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$user = $this->getUser();
+				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
+				if (!is_null($user)) {
+
+					$filter = new \Elastica\Query\BoolQuery();
+					$filter->addShould(
+						$publicVisibilityFilter
+					);
+					$filter->addShould(
+						(new \Elastica\Query\BoolQuery())
+							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+					);
+
+				} else {
+					$filter = $publicVisibilityFilter;
+				}
+				$filters[] = $filter;
+
+
+			},
 			'fos_elastica.index.ladb.wonder_creation',
 			\Ladb\CoreBundle\Entity\Wonder\Creation::CLASS_NAME,
 			'core_creation_list_page',

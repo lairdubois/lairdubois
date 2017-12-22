@@ -121,14 +121,14 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 
 	// IsRejected /////
 
-	public function getIsSitemapable() {
-		return !$this->getIsRejected() && $this->getIsSitemapableTrait();
+	public function getIsRejected() {
+		return false;
 	}
 
 	// IsSitemapable /////
 
-	public function getIsRejected() {
-		return false;
+	public function getIsSitemapable() {
+		return !$this->getIsRejected() && $this->getIsSitemapableTrait();
 	}
 
 	/////

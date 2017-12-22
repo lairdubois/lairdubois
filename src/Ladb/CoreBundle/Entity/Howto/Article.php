@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\BasicEmbeddableTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
+use Ladb\CoreBundle\Model\DraftableInterface;
+use Ladb\CoreBundle\Model\DraftableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -24,10 +26,10 @@ use Ladb\CoreBundle\Model\ChildInterface;
  * @LadbAssert\ArticleBody()
  * @LadbAssert\BodyBlocks()
  */
-class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, BlockBodiedInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface {
+class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, BlockBodiedInterface, DraftableInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface {
 
 	use TitledTrait, BlockBodiedTrait;
-	use BasicEmbeddableTrait;
+	use DraftableTrait, BasicEmbeddableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Article';
 	const TYPE = 107;
@@ -75,6 +77,11 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	 * @ORM\Column(type="integer", name="body_block_video_count")
 	 */
 	private $bodyBlockVideoCount = 0;
+
+	/**
+	 * @ORM\Column(name="is_draft", type="boolean")
+	 */
+	protected $isDraft = true;
 
 	/**
 	 * @ORM\Column(type="integer")

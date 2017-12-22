@@ -11,10 +11,6 @@ use Ladb\CoreBundle\Model\PublicationInterface;
  */
 abstract class AbstractPublication implements PublicationInterface {
 
-	const VISIBILITY_PRIVATE = 0;
-	const VISIBILITY_PROTECTED = 1;
-	const VISIBILITY_PUBLIC = 2;
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
@@ -38,16 +34,6 @@ abstract class AbstractPublication implements PublicationInterface {
 	 * @ORM\Column(name="updated_at", type="datetime", nullable=true)
 	 */
 	protected $updatedAt;
-
-	/**
-	 * @ORM\Column(name="visibility", type="integer")
-	 */
-	protected $visibility = self::VISIBILITY_PRIVATE;
-
-	/**
-	 * @ORM\Column(name="is_draft", type="boolean")
-	 */
-	protected $isDraft = true;
 
 	/**
 	 * @ORM\Column(name="is_locked", type="boolean")
@@ -99,39 +85,6 @@ abstract class AbstractPublication implements PublicationInterface {
 
 	public function getChangedAt() {
 		return $this->changedAt;
-	}
-
-	// Visibility /////
-
-	public function setVisibility($visibility) {
-		$this->visibility = $visibility;
-		return $this;
-	}
-
-	public function getVisibility() {
-		return $this->visibility;
-	}
-
-	public function getIsPrivate() {
-		return $this->getVisibility() == AbstractPublication::VISIBILITY_PRIVATE;
-	}
-
-	public function getIsProtected() {
-		return $this->getVisibility() == AbstractPublication::VISIBILITY_PROTECTED;
-	}
-
-	public function getIsPublic() {
-		return $this->getVisibility() == AbstractPublication::VISIBILITY_PUBLIC;
-	}
-
-	// IsDraft /////
-
-	public function setIsDraft($isDraft) {
-		$this->isDraft = $isDraft;
-	}
-
-	public function getIsDraft() {
-		return $this->isDraft;
 	}
 
 	// IsLocked /////

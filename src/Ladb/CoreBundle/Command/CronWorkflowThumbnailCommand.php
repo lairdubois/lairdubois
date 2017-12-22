@@ -44,7 +44,9 @@ EOT
 
 		// Retrieve workflows
 
-		$output->write('<info>Retriving workflows...</info>');
+		if ($verbose) {
+			$output->write('<info>Retriving workflows...</info>');
+		}
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder

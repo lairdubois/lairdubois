@@ -101,7 +101,6 @@ class ProviderController extends Controller {
 			// Dispatch publication event
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($provider));
 
-			$provider->setIsDraft(false);
 			$om->flush();
 
 			// Dispatch publication event

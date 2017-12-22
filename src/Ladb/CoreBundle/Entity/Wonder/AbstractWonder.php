@@ -35,12 +35,12 @@ use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\StripableInterface;
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
+use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractWonder extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
+abstract class AbstractWonder extends AbstractDraftableAuthoredPublication implements TitledInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
 
 	use TitledTrait, PicturedTrait, MultiPicturedTrait, LicensedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, EmbeddableTrait;

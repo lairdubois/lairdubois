@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\HowtoUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -491,7 +492,29 @@ class HowtoController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$user = $this->getUser();
+				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
+				if (!is_null($user)) {
+
+					$filter = new \Elastica\Query\BoolQuery();
+					$filter->addShould(
+						$publicVisibilityFilter
+					);
+					$filter->addShould(
+						(new \Elastica\Query\BoolQuery())
+							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+					);
+
+				} else {
+					$filter = $publicVisibilityFilter;
+				}
+				$filters[] = $filter;
+
+
+			},
 			'fos_elastica.index.ladb.howto_howto',
 			\Ladb\CoreBundle\Entity\Howto\Howto::CLASS_NAME,
 			'core_howto_list_page',

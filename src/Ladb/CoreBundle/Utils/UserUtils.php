@@ -7,9 +7,11 @@ use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Imagine\Image\Palette\RGB;
+use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
+use Ladb\CoreBundle\Model\HiddableInterface;
 
 class UserUtils extends AbstractContainerAwareUtils {
 
@@ -96,16 +98,17 @@ class UserUtils extends AbstractContainerAwareUtils {
 				$entityClass = $typableUtils->getClassByType($entityType);
 				$andWheres = array();
 				$parameters = array();
-				if (is_subclass_of($entityClass, '\Ladb\CoreBundle\Model\DraftableInterface')) {
-					$andWheres[] = 'e.isDraft = false';
+				if (is_subclass_of($entityClass, '\Ladb\CoreBundle\Model\HiddableInterface')) {
+					$andWheres[] = 'e.visibility = '.HiddableInterface::VISIBILITY_PUBLIC;
 				}
 				if (is_subclass_of($entityClass, '\Ladb\CoreBundle\Model\AuthoredInterface')) {
 					$andWheres[] = 'e.user != :user';
 					$parameters = array_merge($parameters, array( 'user' => $user ));
 				}
-				if (is_subclass_of($entityClass, '\Ladb\CoreBundle\Entity\AbstractKnowledge')) {
-					$andWheres[] = 'e.isRejected = false';
-				}
+				// TODO
+//				if (is_subclass_of($entityClass, '\Ladb\CoreBundle\Entity\Knowledge\AbstractKnowledge')) {
+//					$andWheres[] = 'e.isRejected = false';
+//				}
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
 
 				// Update count value on user entity

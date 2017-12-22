@@ -2,7 +2,7 @@
 
 {% set entity = workflow %}
 {% set emptyWebPath = 'empty_workflow.png' %}
-{% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}
+{% if not workflow.isPublic %}
     {% set showPathAdditionalParams = { 'layout':'workspace' } %}
 {% endif %}
 

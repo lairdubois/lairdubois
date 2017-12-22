@@ -2,9 +2,9 @@
 {# set classes (facultative) #}
 
 <span{% if classes is defined %} class="{{ classes }}"{% endif %} title="{{ 'workflow.workflow.private_tooltip'|trans() }}" data-tooltip="tooltip" style="display: inline-block; background-color: #eee; color: #777; padding: 2px 6px; border-radius: 4px;">
-    {% if workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PRIVATE') %}
+    {% if workflow.isPrivate %}
         <i class="ladb-icon-user"></i> <span style="font-size: 90%;">Privé</span>
-    {% elseif workflow.visibility == constant('\\Ladb\\CoreBundle\\Entity\\AbstractPublication::VISIBILITY_PROTECTED') %}
+    {% elseif workflow.isProtected %}
         <i class="ladb-icon-users"></i> <span style="font-size: 90%;">Equipe</span>
     {% else %}
         <i class="ladb-icon-globe"></i> <span style="font-size: 90%;">Public</span>

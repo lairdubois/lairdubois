@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -65,7 +66,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($workflow);
 
-			$workflow->setIsDraft(false);
 			$workflow->setUser($this->getUser());
 
 			// Append a default root task
@@ -142,7 +142,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_workflow_publish)');
 		}
-		if ($workflow->getVisibility() === AbstractPublication::VISIBILITY_PUBLIC) {
+		if ($workflow->getIsPublic()) {
 			throw $this->createNotFoundException('Already published (core_workflow_publish)');
 		}
 		if ($workflow->getIsLocked() === true) {
@@ -170,8 +170,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('Not allowed (core_workflow_unpublish)');
 		}
-		if ($workflow->getVisibility() === AbstractPublication::VISIBILITY_PUBLIC) {
-			throw $this->createNotFoundException('Already private (core_workflow_publish)');
+		if (!$workflow->getIsPublic()) {
+			throw $this->createNotFoundException('Already unpublished (core_workflow_publish)');
 		}
 
 		// Unpublish
@@ -339,7 +339,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
 
-		if ($workflow->getVisibility() === AbstractPublication::VISIBILITY_PRIVATE) {
+		if (!$workflow->getIsPublic()) {
 			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workflow->getUser()->getId() != $this->getUser()->getId())) {
 				if ($response = $witnessManager->checkResponse(Workflow::TYPE, $id)) {
 					return $response;
@@ -416,10 +416,14 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 					case 'mine':
 
-						$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
-						$filters[] = $filter;
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
-						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							$filters[] = $filter;
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						}
 
 						break;
 
@@ -473,7 +477,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			function(&$filters) {
 
 				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => AbstractPublication::VISIBILITY_PUBLIC ));
+				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
 				if (!is_null($user)) {
 
 					$filter = new \Elastica\Query\BoolQuery();
@@ -483,7 +487,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 					$filter->addShould(
 						(new \Elastica\Query\BoolQuery())
 							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => AbstractPublication::VISIBILITY_PRIVATE )))
+							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
 					);
 
 				} else {

@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Model;
 
-interface PublicationInterface extends IdentifiableInterface, TypableInterface, DraftableInterface {
+interface PublicationInterface extends IdentifiableInterface, TypableInterface {
 
 	const NOTIFICATION_STRATEGY_NONE 		= 0;
 	const NOTIFICATION_STRATEGY_FOLLOWER 	= 1;	// 0x01

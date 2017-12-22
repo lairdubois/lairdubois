@@ -165,7 +165,7 @@ class PublicationListener implements EventSubscriberInterface {
 		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
-		$this->_scrapeOpenGraph($publication);
+//		$this->_scrapeOpenGraph($publication);
 
 	}
 
@@ -286,7 +286,7 @@ class PublicationListener implements EventSubscriberInterface {
 		if ($publication instanceof IndexableInterface) {
 
 			// Search index update
-//			$searchUtils = $this->container->get(SearchUtils::NAME);
+			$searchUtils = $this->container->get(SearchUtils::NAME);
 //			$searchUtils->insertEntityToIndex($publication);
 
 			// Inspirations update

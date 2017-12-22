@@ -7,6 +7,8 @@ use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Model\CommentableInterface;
+use Ladb\CoreBundle\Model\DraftableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
@@ -54,9 +56,16 @@ abstract class AbstractPublicationManager extends AbstractManager {
 	protected function publishPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		$publication->setIsDraft(false);
 		$publication->setCreatedAt(new \DateTime());
 		$publication->setChangedAt(new \DateTime());
+
+		if ($publication instanceof HiddableInterface) {
+			$publication->setVisibility(HiddableInterface::VISIBILITY_PUBLIC);
+		}
+
+		if ($publication instanceof DraftableInterface) {
+			$publication->setIsDraft(false);
+		}
 
 		// Delete the witness (if it exists)
 		$witnessManager = $this->get(WitnessManager::NAME);
@@ -75,7 +84,13 @@ abstract class AbstractPublicationManager extends AbstractManager {
 	protected function unpublishPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		$publication->setIsDraft(true);
+		if ($publication instanceof HiddableInterface) {
+			$publication->setVisibility(HiddableInterface::VISIBILITY_PRIVATE);
+		}
+
+		if ($publication instanceof DraftableInterface) {
+			$publication->setIsDraft(true);
+		}
 
 		// Create the witness
 		$witnessManager = $this->get(WitnessManager::NAME);

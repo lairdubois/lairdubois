@@ -22,16 +22,10 @@ class WorkflowManager extends AbstractPublicationManager {
 	/////
 
 	public function publish(Workflow $workflow, $flush = true) {
-
-		$workflow->setVisibility(AbstractPublication::VISIBILITY_PUBLIC);
-
 		parent::publishPublication($workflow, $flush);
 	}
 
 	public function unpublish(Workflow $workflow, $flush = true) {
-
-		$workflow->setVisibility(AbstractPublication::VISIBILITY_PRIVATE);
-
 		parent::unpublishPublication($workflow, $flush);
 	}
 
@@ -49,7 +43,6 @@ class WorkflowManager extends AbstractPublicationManager {
 		$om = $this->getDoctrine()->getManager();
 
 		$newWorkflow = new Workflow();
-		$newWorkflow->setIsDraft(false);
 		$newWorkflow->setVisibility(Workflow::VISIBILITY_PRIVATE);
 		$newWorkflow->setUser($user);
 		$newWorkflow->setTitle($workflow->getTitle().' (copie)');

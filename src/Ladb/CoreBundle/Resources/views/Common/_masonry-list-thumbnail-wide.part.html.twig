@@ -9,7 +9,7 @@
 
 <div class="ladb-masonry-item ladb-masonry-column-wide">
     <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
-        {% if entity.isDraft %}
+        {% if entity.isDraft is defined and entity.isDraft %}
             <div class="ladb-draft-badge">
                 {{ 'default.choice.draft'|transchoice(1)|capitalize }}
                 <div class="ladb-minitools">
@@ -57,7 +57,7 @@
             {% endblock %}
         </div>
     </div>
-    {% if entity.isDraft %}
+    {% if entity.isDraft is defined and entity.isDraft %}
         {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':('delete_post_modal_'~entity.id), 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', true, false) } %}
     {% endif %}
 </div>
