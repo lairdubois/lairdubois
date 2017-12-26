@@ -16,7 +16,8 @@
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes plans" data-unique="true" data-icon="plan"><i class="ladb-icon-plan"></i> Mes plans</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes plans" data-unique="true" data-icon="plan"><i class="ladb-icon-plan"></i> Mes plans</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>

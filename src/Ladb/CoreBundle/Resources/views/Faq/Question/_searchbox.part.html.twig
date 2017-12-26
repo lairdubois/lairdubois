@@ -7,6 +7,11 @@
 
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
+    {% if is_granted("ROLE_USER") %}
+        <li class="divider"></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes questions" data-unique="true" data-icon="help"><i class="ladb-icon-help"></i> Mes questions</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block sortersDropdown %}

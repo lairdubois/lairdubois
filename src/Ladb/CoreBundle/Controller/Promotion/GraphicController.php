@@ -402,7 +402,18 @@ class GraphicController extends Controller {
 
 						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
-							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							if ($facet->value == 'draft') {
+
+								$filter = (new \Elastica\Query\BoolQuery())
+									->addMust(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
+									->addMust(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
+								;
+
+							} else {
+
+								$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							}
+
 							$filters[] = $filter;
 
 							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
@@ -523,7 +534,7 @@ class GraphicController extends Controller {
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getDraftGraphicCount() > 0) {
 
-			$draftPath = $this->generateUrl('core_user_show_graphics_filter', array( 'username' => $this->getUser()->getUsernameCanonical(), 'filter' => 'draft' ));
+			$draftPath = $this->generateUrl('core_promotion_graphic_list', array( 'q' => '@mine:draft' ));
 			$draftCount = $this->getUser()->getDraftGraphicCount();
 
 			// Flashbag

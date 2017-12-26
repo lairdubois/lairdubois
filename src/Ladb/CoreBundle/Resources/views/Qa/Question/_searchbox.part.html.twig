@@ -19,8 +19,8 @@
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes questions" data-unique="true" data-icon="question"><i class="ladb-icon-question"></i> Mes questions</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine-private" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes questions" data-unique="true" data-icon="question"><i class="ladb-icon-question"></i> Mes questions</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
 {% endblock %}
 
@@ -37,7 +37,7 @@
 {% block searchboxShortcuts %}
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-shortcut" data-query="@mine"><i class="ladb-icon-user"></i> Mes questions</a></li>
-        <li><a class="ladb-smartsearch-shortcut" data-query="@mine-private"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
+        <li><a class="ladb-smartsearch-shortcut" data-query="@mine:draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
     <li><a class="ladb-smartsearch-shortcut" data-query="@no-answer"><i class="ladb-icon-answer"></i> Sans réponse</a></li>
 {% endblock %}

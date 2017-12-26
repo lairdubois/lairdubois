@@ -5,7 +5,7 @@
 {% set entity = find %}
 
 {% block title %}
-    <i class="ladb-icon-{% if find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}video{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}camera{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}date{% else %}globe{% endif %} text-muted"></i> {{ parent() }}
+    <i class="ladb-icon-{% if find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}video{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}camera{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}date{% else %}globe{% endif %}"></i> {{ parent() }}
 {% endblock %}
 
 {% block image %}

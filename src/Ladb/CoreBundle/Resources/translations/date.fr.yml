@@ -1,14 +1,14 @@
 diff:
   ago:
     year: '[0,1]il y a %count% an|]1,Inf]il y a %count% ans'
-    month: il y a %count% mois
+    month: 'il y a %count% mois'
     day: '[0,1]il y a %count% jour|]1,Inf]il y a %count% jours'
     hour: '[0,1]il y a %count% heure|]1,Inf]il y a %count% heures'
     minute: '[0,1]il y a %count% minute|]1,Inf]il y a %count% minutes'
     second: A l'instant
   in:
     year: '[0,1]dans %count% an|]1,Inf]dans %count% ans'
-    month: dans %count% mois
+    month: 'dans %count% mois'
     day: '[0,1]dans %count% jour|]1,Inf]dans %count% jours'
     hour: '[0,1]dans %count% heure|]1,Inf]dans %count% heures'
     minute: '[0,1]dans %count% minute|]1,Inf]dans %count% minutes'
@@ -17,14 +17,14 @@ diff:
 interval:
   short:
     year: '[0,1]%count% an|]1,Inf]%count% ans'
-    month: %count% mois
-    day: %count% j
-    hour: %count% h
-    minute: %count% min
-    second: %count% sec
+    month: '%count% mois'
+    day: '%count% j'
+    hour: '%count% h'
+    minute: '%count% min'
+    second: '%count% sec'
   long:
     year: '[0,1]%count% an|]1,Inf]%count% ans'
-    month: %count% mois
+    month: '%count% mois'
     day: '[0,1]%count% jour|]1,Inf]%count% jours'
     hour: '[0,1]%count% heure|]1,Inf]%count% heures'
     minute: '[0,1]%count% minute|]1,Inf]%count% minutes'

@@ -306,6 +306,30 @@ class PostController extends Controller {
 
 					// Filters /////
 
+					case 'mine':
+
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+							if ($facet->value == 'draft') {
+
+								$filter = (new \Elastica\Query\BoolQuery())
+									->addMust(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
+									->addMust(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
+								;
+
+							} else {
+
+								$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							}
+
+							$filters[] = $filter;
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						}
+
+						break;
+
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);

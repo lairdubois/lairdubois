@@ -1,5 +1,8 @@
 services:
 
+  # this makes public all the services defined in this file
+  _defaults: { public: true }
+
   # Twig extensions
   twig.extension.text:
     class: Twig_Extensions_Extension_Text

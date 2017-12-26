@@ -564,23 +564,18 @@ class WorkshopController extends Controller {
 
 						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
-							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
-							$filters[] = $filter;
+							if ($facet->value == 'draft') {
 
-							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+								$filter = (new \Elastica\Query\BoolQuery())
+									->addMust(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
+									->addMust(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
+								;
 
-						}
+							} else {
 
-						break;
+								$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							}
 
-					case 'mine-private':
-
-						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-
-							$filter = (new \Elastica\Query\BoolQuery())
-								->addMust(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
-								->addMust(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
-							;
 							$filters[] = $filter;
 
 							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
@@ -768,7 +763,7 @@ class WorkshopController extends Controller {
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getDraftWorkshopCount() > 0) {
 
-			$draftPath = $this->generateUrl('core_user_show_workshops_filter', array( 'username' => $this->getUser()->getUsernameCanonical(), 'filter' => 'draft' ));
+			$draftPath = $this->generateUrl('core_workshop_list', array( 'q' => '@mine:draft' ));
 			$draftCount = $this->getUser()->getDraftWorkshopCount();
 
 			// Flashbag
