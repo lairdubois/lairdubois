@@ -39,6 +39,7 @@ class SearchController extends Controller {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
+			null,
 			'fos_elastica.index.ladb.core_tag',
 			\Ladb\CoreBundle\Entity\Core\Tag::CLASS_NAME,
 			null
@@ -63,6 +64,7 @@ class SearchController extends Controller {
 			function($facet, &$filters, &$sort) {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
+			null,
 			null,
 			'fos_elastica.index.ladb.input_skill',
 			\Ladb\CoreBundle\Entity\Input\Skill::CLASS_NAME,
@@ -89,6 +91,7 @@ class SearchController extends Controller {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
+			null,
 			'fos_elastica.index.ladb.input_wood',
 			\Ladb\CoreBundle\Entity\Input\Wood::CLASS_NAME,
 			null
@@ -114,6 +117,7 @@ class SearchController extends Controller {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
+			null,
 			'fos_elastica.index.ladb.input_tool',
 			\Ladb\CoreBundle\Entity\Input\Tool::CLASS_NAME,
 			null
@@ -138,6 +142,7 @@ class SearchController extends Controller {
 			function($facet, &$filters, &$sort) {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
+			null,
 			null,
 			'fos_elastica.index.ladb.input_finish',
 			\Ladb\CoreBundle\Entity\Input\Finish::CLASS_NAME,

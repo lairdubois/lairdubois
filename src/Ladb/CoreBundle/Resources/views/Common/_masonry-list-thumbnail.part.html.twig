@@ -16,12 +16,6 @@
                 {% block imageOuter %}
                     <div class="ladb-image">
                         {% block image %}
-                            {% if entity.isDraft is defined and entity.isDraft %}
-                                <div class="ladb-draft-badge">
-                                    {{ 'default.choice.draft'|transchoice(1)|capitalize }}
-                                    <div class="ladb-minitools"><a href="#delete_post_modal_{{ entity.id }}" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a></div>
-                                </div>
-                            {% endif %}
                             <a href="{{ showPath }}">
                                 {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':pictureWidth, 'height':pictureHeight, 'filterMode':pictureFilterMode, 'alt':entity.title } %}
                             </a>
@@ -29,6 +23,11 @@
                                 <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'default.choice.contains_videos'|transchoice(entity.bodyBlockVideoCount, { '%count%':entity.bodyBlockVideoCount }) }}"><i class="ladb-icon-video"></i></div>
                             {% endif %}
                         {% endblock %}
+                        {% if entity.isDraft is defined and entity.isDraft %}
+                            <div class="ladb-draft-badge" style="position: absolute; top: 10px; left: 10px; font-size: 90%; border-radius: 4px;">
+                                <i class="ladb-icon-draft"></i> {{ 'default.choice.draft'|transchoice(1)|capitalize }}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="ladb-overlay-caption">{% if entity.isLocked is defined and entity.isLocked %}<span><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{{ entity.title }}</h2>{% endblock %}</div>
                 {% endblock %}
@@ -56,7 +55,4 @@
             </div>
         {% endblock %}
     </div>
-    {% if entity.isDraft is defined and entity.isDraft %}
-        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':('delete_post_modal_'~entity.id), 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', '', false) } %}
-    {% endif %}
 </div>

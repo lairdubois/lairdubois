@@ -9,20 +9,21 @@
 
 <div class="ladb-masonry-item ladb-masonry-column-wide">
     <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
-        {% if entity.isDraft is defined and entity.isDraft %}
-            <div class="ladb-draft-badge">
-                {{ 'default.choice.draft'|transchoice(1)|capitalize }}
-                <div class="ladb-minitools">
-                    <a href="#delete_post_modal_{{ entity.id }}" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
-                </div>
-            </div>
-        {% endif %}
         <div class="ladb-content">
             {% block contentInner %}
                 <div class="ladb-heading">
                     {% block headingInner %}
                         <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% if entity.isLocked is defined and entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<a href="{{ showPath }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
                     {% endblock %}
+                    {% if entity.isDraft is defined and entity.isDraft or entity.visibility is defined and entity.isPrivate %}
+                        <div class="ladb-draft-badge" style="float: right; font-size: 90%; border-radius: 4px;">
+                            {% if entity.isDraft is defined %}
+                                <i class="ladb-icon-draft"></i> {{ 'default.choice.draft'|transchoice(1)|capitalize }}
+                            {% else %}
+                                <i class="ladb-icon-key"></i> {{ 'default.private'|trans }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
                 {% block imageOuter %}
                     <div class="ladb-image">
@@ -57,7 +58,4 @@
             {% endblock %}
         </div>
     </div>
-    {% if entity.isDraft is defined and entity.isDraft %}
-        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':('delete_post_modal_'~entity.id), 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', true, false) } %}
-    {% endif %}
 </div>

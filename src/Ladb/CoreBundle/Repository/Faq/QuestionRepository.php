@@ -7,10 +7,6 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class QuestionRepository extends AbstractEntityRepository {
 
-	public function createIsNotDraftQueryBuilder() {
-		return $this->createQueryBuilder('a')->where('a.isDraft = false');	// FOSElasticaBundle bug -> use 'a'
-	}
-
 	/////
 
 	public function getDefaultJoinOptions() {

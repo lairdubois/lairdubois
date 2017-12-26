@@ -106,7 +106,7 @@
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="ladb-icon-admin"></i> <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="{{ ladb_entity_url_action(wonder, wonder.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if wonder.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (wonder.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
                                 {% if not wonder.isDraft %}
                                     <li><a href="#unpublish_wonder_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>

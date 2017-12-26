@@ -102,8 +102,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
-	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_qa_question_lock")
-	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_qa_question_unlock")
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_workflow_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_workflow_unlock")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -111,10 +111,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$workflow = $this->_retrieveWorkflow($id);
 
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_lock or core_qa_question_unlock)');
+			throw $this->createNotFoundException('Not allowed (core_workflow_lock or core_workflow_unlock)');
 		}
 		if ($workflow->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_qa_question_lock or core_qa_question_unlock)');
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_workflow_lock or core_workflow_unlock)');
 		}
 
 		// Lock or Unlock
@@ -126,7 +126,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		}
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $question->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $workflow->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $workflow->getSluggedId() )));
 	}
@@ -226,7 +226,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$workflow = $this->_retrieveWorkflow($id);
 
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_find_update)');
+			throw $this->createNotFoundException('Not allowed (core_workflow_update)');
 		}
 
 		$previouslyUsedTags = $workflow->getTags()->toArray();	// Need to be an array to copy values
@@ -275,7 +275,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_workflow_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
@@ -289,7 +288,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$workflowManager->delete($workflow);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.form.alert.delete_success', array( '%title%' => $workflow->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.delete_success', array( '%title%' => $workflow->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_workflow_list'));
 	}
@@ -298,7 +297,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/copy", requirements={"id" = "\d+"}, name="core_workflow_copy")
 	 */
 	public function copyAction($id) {
-		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
@@ -308,7 +306,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$newWorkflow = $workflowManager->copy($workflow, $this->getUser());
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.form.alert.copy_success', array( '%title%' => $workflow->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.copy_success', array( '%title%' => $workflow->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $newWorkflow->getSluggedId() )));
 	}
@@ -317,7 +315,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/diagram", name="core_workflow_diagram")
 	 * @Template("LadbCoreBundle:Workflow:diagram.html.twig")
 	 */
-	public function diagramAction(Request $request, $id) {
+	public function diagramAction($id) {
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);

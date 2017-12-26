@@ -348,6 +348,22 @@ class QuestionController extends Controller {
 
 						break;
 
+					case 'mine-private':
+
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+							$filter = (new \Elastica\Query\BoolQuery())
+								->addMust(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
+								->addMust(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
+							;
+							$filters[] = $filter;
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						}
+
+						break;
+
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);

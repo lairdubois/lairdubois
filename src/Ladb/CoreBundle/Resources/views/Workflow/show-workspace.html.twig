@@ -194,11 +194,11 @@
         {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'readonly_modal', 'title':workflow.title } %}
             {% block bodyInner %}
                 Ce processus vous est accessible en <strong>lecteur seule</strong>. Vous pouvez donc le consulter librement.<br>
-                En revanche, pour l'utiliser, vous devrez le copier sur votre compte.
+                En revanche, pour l'utiliser ou le modifier, vous devrez le <em>copier</em> sur votre compte.
             {% endblock %}
             {% block footerInner %}
-                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
                 <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal" data-dismiss="modal"><i class="ladb-icon-rebound"></i><span class="ladb-visible-desktop">  {{ 'default.copy'|trans() }}</span></a>
+                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
             {% endblock %}
         {% endembed %}
     {% endif %}

@@ -2,7 +2,7 @@
 {# set howto #}
 
 <div class="alert alert-info">
-    <p><i class="ladb-icon-warning"></i> Ce pas à pas est un brouillon. Il n'est visible que par vous, depuis votre <a href="{{ path('core_user_show_howtos', { 'username':app.user.usernameCanonical }) }}" target="_blank" class="alert-link">liste de pas à pas</a>. Pour le rendre public, vous devez le publier.</p>
+    <p><i class="ladb-icon-warning"></i> Ce pas à pas est un brouillon. Il n'est visible que par vous. Pour le rendre public, vous devez le publier.</p>
     <p class="text-right"><a href="#publish_howto_modal" class="btn btn-primary" data-toggle="modal"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></p>
 </div>
 {% if howto.publishedArticleCount > 0 %}

@@ -67,6 +67,9 @@ default:
   unviewed: Non vu
   thumbnail: Miniature
   get_link: Obtenir le lien
+  private: Privé
+  protected: Equipe
+  public: Public
   warning:
     be_owner: Vous devez avoir les droits sur ce que vous publiez.
     may_be_rejected: Les publications ne correspondant pas à ces critères pourront faire l'objet d'un rejet.
@@ -400,8 +403,13 @@ workflow:
     statistics: Statistiques
     form:
       alert:
+        lock_success: Le processus <strong>%title%</strong> a été vérrouillé.
+        unlock_success: Le processus <strong>%title%</strong> a été dévérrouillé.
+        publish_success: Le processus <strong>%title%</strong> a été publié.
+        unpublish_success: La trouvaille <strong>%title%</strong> a été dépublié.
         update_success: Le processus <strong>%title%</strong> a été mis à jour.
         delete_success: Le processus <strong>%title%</strong> a été supprimé.
+        copy_success: Le processus <strong>%title%</strong> a été copié.
       help:
         title: Renseignez ici le titre de votre processus.
         body: Renseignez ici le descriptif de votre processus.
@@ -998,6 +1006,7 @@ notification:
     qa_question: votre question
     qa_answer: votre réponse
     promotion_graphic: votre graphisme
+    workflow_workflow: votre processus
   the:
     wonder_creation: la création
     wonder_workshop: l'atelier
@@ -1013,6 +1022,7 @@ notification:
     qa_question: la question
     qa_answer: la réponse
     promotion_graphic: le graphisme
+    workflow_workflow: le processus
   one_new:
     wonder_creation: une nouvelle création
     wonder_workshop: un nouvel atelier
@@ -1023,6 +1033,7 @@ notification:
     qa_question: une nouvelle question
     qa_answer: une nouvelle réponse
     promotion_graphic: un nouveau graphisme
+    workflow_workflow: un nouveau processus
   tooltip:
     all: Toutes les notifications
     comment: Notifications de commentaires

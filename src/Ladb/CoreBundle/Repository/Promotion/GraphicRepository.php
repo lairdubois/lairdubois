@@ -9,10 +9,6 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class GraphicRepository extends AbstractEntityRepository {
 
-	public function createIsNotDraftQueryBuilder() {
-		return $this->createQueryBuilder('a')->where('a.isDraft = false');	// FOSElasticaBundle bug -> use 'a'
-	}
-
 	/////
 
 	public function findOneByIdJoinedOnUser($id) {

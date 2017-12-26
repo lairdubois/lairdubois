@@ -8,10 +8,6 @@ use Ladb\CoreBundle\Entity\Knowledge\Wood;
 
 class WoodRepository extends AbstractKnowledgeRepository {
 
-	public function createIsNotDraftQueryBuilder() {
-		return $this->createQueryBuilder('a')->where('a.isDraft = false');	// FOSElasticaBundle bug -> use 'a'
-	}
-
 	/////
 
 	public function findUserIdsById($id) {

@@ -179,6 +179,12 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	// NotificationStrategy /////
+
+	public function getNotificationStrategy() {
+		return self::NOTIFICATION_STRATEGY_FOLLOWER;
+	}
+
 	// Type /////
 
 	public function getType() {

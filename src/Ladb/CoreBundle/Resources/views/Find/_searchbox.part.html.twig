@@ -18,6 +18,7 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes trouvailles" data-unique="true" data-icon="globe"><i class="ladb-icon-globe"></i> Mes trouvailles</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine-private" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
 {% endblock %}
 
@@ -37,5 +38,6 @@
     <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') }}"><i class="ladb-icon-camera"></i> Photos</a></li>
     <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') }}"><i class="ladb-icon-date"></i> Evènements</a></li>
 {% endblock %}
+
 
 

@@ -31,3 +31,9 @@
         <li><a class="ladb-smartsearch-shortcut" data-query="@mine"><i class="ladb-icon-user"></i> Mes processus</a></li>
     {% endif %}
 {% endblock %}
+
+{% block searchboxShortcutsOuter %}
+    {% if is_granted("ROLE_USER") %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

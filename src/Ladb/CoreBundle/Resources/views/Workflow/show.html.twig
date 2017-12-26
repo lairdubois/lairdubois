@@ -36,6 +36,31 @@
                         {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_workflow_modal', 'entityTitle':workflow.title, 'deletePath':path('core_workflow_delete', { 'id':workflow.id }) } %}
                     {% endif %}
                 {% endif %}
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-admin"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="{{ ladb_entity_url_action(workflow, workflow.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if workflow.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (workflow.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
+                            {% if workflow.isPublic %}
+                                <li><a href="#unpublish_workflow_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% if workflow.isPublic %}
+                        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_workflow_modal', 'title':('default.unpublishing'|trans()) } %}
+                            {% block bodyInner %}
+                                <p>La dépublication de <strong>{{ workflow.title }}</strong> le rendra invisible pour les autres utilisateurs.</p>
+                                <p>Confirmez l'action pour continuer.</p>
+                            {% endblock %}
+                            {% block footerInner %}
+                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                <a href="{{ path('core_workflow_unpublish', { 'id':workflow.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                {% endif %}
             </div>
         {% endblock %}
         {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}

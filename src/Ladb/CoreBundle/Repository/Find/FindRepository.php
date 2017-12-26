@@ -9,10 +9,6 @@ use Ladb\CoreBundle\Entity\Core\User;
 
 class FindRepository extends AbstractEntityRepository {
 
-	public function createIsNotDraftQueryBuilder() {
-		return $this->createQueryBuilder('a')->where('a.isDraft = false');	// FOSElasticaBundle bug -> use 'a'
-	}
-
 	/////
 
 	public function getDefaultJoinOptions() {

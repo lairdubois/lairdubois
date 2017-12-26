@@ -67,7 +67,7 @@
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="ladb-icon-admin"></i> <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="{{ ladb_entity_url_action(find, find.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if find.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (find.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
                                 {% if not find.isDraft %}
                                     <li><a href="#unpublish_find_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>

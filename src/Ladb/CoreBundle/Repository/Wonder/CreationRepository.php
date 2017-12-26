@@ -13,10 +13,6 @@ use Ladb\CoreBundle\Utils\SearchUtils;
 
 class CreationRepository extends AbstractEntityRepository {
 
-	public function createIsNotDraftQueryBuilder() {
-		return $this->createQueryBuilder('a')->where('a.isDraft = false');	// FOSElasticaBundle bug -> use 'a'
-	}
-
 	/////
 
 	public function getDefaultJoinOptions() {

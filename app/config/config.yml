@@ -596,8 +596,7 @@ fos_elastica:
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Find\Find
-                        provider:
-                            query_builder_method: "createIsNotDraftQueryBuilder"
+                        provider: ~
                         listener:
                             insert: false
                             update: false

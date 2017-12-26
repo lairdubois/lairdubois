@@ -14,10 +14,6 @@ use Ladb\CoreBundle\Repository\Knowledge\Value\BaseValueRepository;
 
 class SchoolRepository extends AbstractKnowledgeRepository {
 
-	public function createIsNotDraftQueryBuilder() {
-		return $this->createQueryBuilder('a')->where('a.isDraft = false');	// FOSElasticaBundle bug -> use 'a'
-	}
-
 	/////
 
 	public function findUserIdsById($id) {
