@@ -9,10 +9,11 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
+    {% if is_granted("ROLE_USER") %}
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes processus" data-unique="true" data-icon="workflow"><i class="ladb-icon-workflow"></i> Mes processus</a></li>
+    {% endif %}
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
-    {# Hidden filters #}
-    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes processus" data-unique="true" data-icon="user"><i class="ladb-icon-cc"></i> Mes processus</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}

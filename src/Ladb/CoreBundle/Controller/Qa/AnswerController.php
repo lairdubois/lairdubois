@@ -97,6 +97,7 @@ class AnswerController extends Controller {
 			$this->getUser()->incrementAnswerCount();
 
 			$om->persist($answer);
+			$om->flush();
 
 			// Compute answer counters
 			$questionManager = $this->get(QuestionManager::NAME);
@@ -113,8 +114,6 @@ class AnswerController extends Controller {
 			// Auto watch
 			$watchableUtils = $this->container->get(WatchableUtils::NAME);
 			$watchableUtils->autoCreateWatch($question, $this->getUser());
-
-			$om->flush();
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);

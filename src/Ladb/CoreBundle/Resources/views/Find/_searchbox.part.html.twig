@@ -14,6 +14,11 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') }}" data-label="Vidéos" data-editable="false" data-unique="true" data-icon="video"><i class="ladb-icon-video"></i> Vidéos</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') }}" data-label="Photos" data-editable="false" data-unique="true" data-icon="camera"><i class="ladb-icon-camera"></i> Photos</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') }}" data-label="Evènements" data-editable="false" data-unique="true" data-icon="date"><i class="ladb-icon-date"></i> Evènements</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
+    {% if is_granted("ROLE_USER") %}
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes trouvailles" data-unique="true" data-icon="globe"><i class="ladb-icon-globe"></i> Mes trouvailles</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block sortersDropdown %}

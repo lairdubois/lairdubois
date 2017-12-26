@@ -17,6 +17,9 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="wip" data-label="En cours de réalisation" data-unique="true" data-icon="wip"><i class="ladb-icon-wip"></i> En cours de réalisation</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
+    {% if is_granted("ROLE_USER") %}
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes pas à pas" data-unique="true" data-icon="howto"><i class="ladb-icon-howto"></i> Mes pas à pas</a></li>
+    {% endif %}
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
 {% endblock %}

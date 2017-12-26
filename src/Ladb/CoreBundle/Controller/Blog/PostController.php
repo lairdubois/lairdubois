@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Blog;
 
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -353,7 +354,29 @@ class PostController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$user = $this->getUser();
+				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
+				if (!is_null($user)) {
+
+					$filter = new \Elastica\Query\BoolQuery();
+					$filter->addShould(
+						$publicVisibilityFilter
+					);
+					$filter->addShould(
+						(new \Elastica\Query\BoolQuery())
+							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+					);
+
+				} else {
+					$filter = $publicVisibilityFilter;
+				}
+				$filters[] = $filter;
+
+
+			},
 			'fos_elastica.index.ladb.blog_post',
 			\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME,
 			'core_blog_post_list_page'

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Faq;
 
 use Ladb\CoreBundle\Manager\Faq\QuestionManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -357,7 +358,29 @@ class QuestionController extends Controller {
 				$sort = array( 'weight' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$user = $this->getUser();
+				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
+				if (!is_null($user)) {
+
+					$filter = new \Elastica\Query\BoolQuery();
+					$filter->addShould(
+						$publicVisibilityFilter
+					);
+					$filter->addShould(
+						(new \Elastica\Query\BoolQuery())
+							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+					);
+
+				} else {
+					$filter = $publicVisibilityFilter;
+				}
+				$filters[] = $filter;
+
+
+			},
 			'fos_elastica.index.ladb.faq_question',
 			\Ladb\CoreBundle\Entity\Faq\Question::CLASS_NAME,
 			'core_faq_question_list_page'

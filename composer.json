@@ -35,10 +35,10 @@
         "twig/extensions": "~1.0",
         "symfony/assetic-bundle": "dev-master",
 
-        "friendsofsymfony/user-bundle": "dev-master",
+        "friendsofsymfony/user-bundle": "*",
         "friendsofsymfony/elastica-bundle": "*",
         "stof/doctrine-extensions-bundle": "*",
-        "liip/imagine-bundle": "~1.7",
+        "liip/imagine-bundle": "~1.9",
         "gos/web-socket-bundle": "^1.8",
 
         "facebook/graph-sdk": "~5.0",

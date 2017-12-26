@@ -387,6 +387,19 @@ class HowtoController extends Controller {
 
 					// Filters /////
 
+					case 'mine':
+
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							$filters[] = $filter;
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						}
+
+						break;
+
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);

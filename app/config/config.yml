@@ -350,7 +350,7 @@ fos_elastica:
                                 max_gram: 5
             types:
                 core_user:
-                    mappings:
+                    properties:
                         displayname: { type: text, boost: 2, analyzer: name_analyzer }
                         fullname: { type: text, boost: 1, analyzer: name_analyzer }
                         username: { analyzer: name_analyzer }
@@ -372,7 +372,7 @@ fos_elastica:
                         listener:
                             update: false
                 wonder_creation:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -421,7 +421,7 @@ fos_elastica:
                             update: false
                             delete: false
                 wonder_workshop:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -457,7 +457,7 @@ fos_elastica:
                             update: false
                             delete: false
                 wonder_plan:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -494,7 +494,7 @@ fos_elastica:
                             update: false
                             delete: false
                 qa_question:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -533,7 +533,7 @@ fos_elastica:
                             update: false
                             delete: false
                 howto_howto:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         changedAt: { type: date }
@@ -574,7 +574,7 @@ fos_elastica:
                             update: false
                             delete: false
                 find_find:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -603,7 +603,7 @@ fos_elastica:
                             update: false
                             delete: false
                 workflow_workflow:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -614,7 +614,6 @@ fos_elastica:
                         user:
                             type: "object"
                             properties:
-                                id: { type: integer }
                                 username: { analyzer: name_analyzer }
                                 displayname: { analyzer: name_analyzer }
                                 fullname: { analyzer: name_analyzer }
@@ -631,7 +630,7 @@ fos_elastica:
                             update: false
                             delete: false
                 promotion_graphic:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -639,6 +638,12 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
                         tags:
                             type: "object"
                             properties:
@@ -652,7 +657,7 @@ fos_elastica:
                             update: false
                             delete: false
                 blog_post:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -660,6 +665,12 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
                         tags:
                             type: "object"
                             properties:
@@ -673,7 +684,7 @@ fos_elastica:
                             update: false
                             delete: false
                 faq_question:
-                    mappings:
+                    properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
@@ -682,6 +693,12 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         weight: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
                         tags:
                             type: "object"
                             properties:
@@ -695,7 +712,7 @@ fos_elastica:
                             update: false
                             delete: false
                 knowledge_wood:
-                    mappings:
+                    properties:
                         titleWorkaround: { type: keyword }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         name: { type: text, boost: 3, analyzer: name_analyzer }
@@ -719,7 +736,7 @@ fos_elastica:
                             update: false
                             delete: false
                 knowledge_provider:
-                    mappings:
+                    properties:
                         sign: { type: text, boost: 2, analyzer: name_analyzer }
                         signRejected: { type: boolean }
                         brand: { type: text, analyzer: exact_lowercase_analyzer }
@@ -746,7 +763,7 @@ fos_elastica:
                             update: false
                             delete: false
                 knowledge_school:
-                    mappings:
+                    properties:
                         name: { type: text, boost: 3, analyzer: name_analyzer }
                         nameRejected: { type: boolean }
                         diplomas: { type: text, analyzer: name_analyzer }
@@ -769,7 +786,7 @@ fos_elastica:
                             update: false
                             delete: false
                 core_tag:
-                    mappings:
+                    properties:
                         label: { analyzer: ngram_analyzer }
                     persistence:
                         driver: orm
@@ -777,7 +794,7 @@ fos_elastica:
                         provider: ~
                         listener: ~
                 input_skill:
-                    mappings:
+                    properties:
                         label: { analyzer: ngram_analyzer }
                     persistence:
                         driver: orm
@@ -785,7 +802,7 @@ fos_elastica:
                         provider: ~
                         listener: ~
                 input_wood:
-                    mappings:
+                    properties:
                         label: { analyzer: ngram_analyzer }
                     persistence:
                         driver: orm
@@ -793,7 +810,7 @@ fos_elastica:
                         provider: ~
                         listener: ~
                 input_tool:
-                    mappings:
+                    properties:
                         label: { analyzer: ngram_analyzer }
                     persistence:
                         driver: orm
@@ -801,7 +818,7 @@ fos_elastica:
                         provider: ~
                         listener: ~
                 input_finish:
-                    mappings:
+                    properties:
                         label: { analyzer: ngram_analyzer }
                     persistence:
                         driver: orm

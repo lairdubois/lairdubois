@@ -398,6 +398,19 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 					// Filters /////
 
+					case 'mine':
+
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							$filters[] = $filter;
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						}
+
+						break;
+
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);
@@ -411,19 +424,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 						$filter = new \Elastica\Query\QueryString($facet->value);
 						$filter->setFields(array( 'user.displayname', 'user.fullname', 'user.username'  ));
 						$filters[] = $filter;
-
-						break;
-
-					case 'mine':
-
-						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-
-							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
-							$filters[] = $filter;
-
-							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
-
-						}
 
 						break;
 

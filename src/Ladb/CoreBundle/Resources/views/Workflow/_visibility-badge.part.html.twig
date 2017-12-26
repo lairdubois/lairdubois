@@ -3,7 +3,7 @@
 
 <span{% if classes is defined %} class="{{ classes }}"{% endif %} title="{{ 'workflow.workflow.private_tooltip'|trans() }}" data-tooltip="tooltip" style="display: inline-block; background-color: #eee; color: #777; padding: 2px 6px; border-radius: 4px;">
     {% if workflow.isPrivate %}
-        <i class="ladb-icon-user"></i> <span style="font-size: 90%;">Privé</span>
+        <i class="ladb-icon-key"></i> <span style="font-size: 90%;">Privé</span>
     {% elseif workflow.isProtected %}
         <i class="ladb-icon-users"></i> <span style="font-size: 90%;">Equipe</span>
     {% else %}

@@ -100,7 +100,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		// Excluded Ids wrapper query
 		if (!is_null($excludedIds) && is_array($excludedIds) && !empty($excludedIds)) {
 			$wrapperQuery = new \Elastica\Query\BoolQuery();
-			$wrapperQuery->addMustNot(new \Elastica\Query\Ids(null, $excludedIds));
+			$wrapperQuery->addMustNot(new \Elastica\Query\Ids($excludedIds));
 			$wrapperQuery->addMust($query);
 			$query = $wrapperQuery;
 		}

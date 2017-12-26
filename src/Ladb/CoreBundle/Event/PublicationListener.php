@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Elastica\Index;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -67,37 +68,6 @@ class PublicationListener implements EventSubscriberInterface {
 
 	/////
 
-	public function onPublicationCreated(PublicationEvent $event) {
-		$publication = $event->getPublication();
-
-		if ($publication instanceof TaggableInterface) {
-
-			// Tags usage
-			$tagUtils = $this->container->get(TagUtils::NAME);
-			$tagUtils->useTaggableTags($publication);
-
-		}
-
-		if ($publication instanceof WatchableInterface) {
-
-			// Auto watch
-			$watchableUtils = $this->container->get(WatchableUtils::NAME);
-			$watchableUtils->autoCreateWatch($publication, $this->container->get(GlobalUtils::NAME)->getUser());
-
-		}
-
-		// Search index update
-		$searchUtils = $this->container->get(SearchUtils::NAME);
-		$searchUtils->insertEntityToIndex($publication);
-
-		// Resolve main picture to avoid image url redirection
-		$this->_resolvePicturesPageImageFilter($publication);
-
-		// Scrape Open Graph URL
-		//$this->_scrapeOpenGraph($publication);
-
-	}
-
 	private function _resolvePicturesPageImageFilter(AbstractPublication $publication) {
 
 		$filter = '470x275o';
@@ -130,8 +100,6 @@ class PublicationListener implements EventSubscriberInterface {
 
 	}
 
-	/////
-
 	private function _scrapeOpenGraph(AbstractPublication $publication) {
 		if ($this->container->get(GlobalUtils::NAME)->getDebug()) {
 			return;
@@ -143,6 +111,43 @@ class PublicationListener implements EventSubscriberInterface {
 		// Scrape Open Graph URL (canonical)
 		$openGraphUtils = $this->container->get(OpenGraphUtils::NAME);
 		$openGraphUtils->scrape($this->container->get(TypableUtils::NAME)->getUrlAction($publication, 'show', true, false));
+
+	}
+
+	/////
+
+	public function onPublicationCreated(PublicationEvent $event) {
+		$publication = $event->getPublication();
+
+		if ($publication instanceof TaggableInterface) {
+
+			// Tags usage
+			$tagUtils = $this->container->get(TagUtils::NAME);
+			$tagUtils->useTaggableTags($publication);
+
+		}
+
+		if ($publication instanceof WatchableInterface) {
+
+			// Auto watch
+			$watchableUtils = $this->container->get(WatchableUtils::NAME);
+			$watchableUtils->autoCreateWatch($publication, $this->container->get(GlobalUtils::NAME)->getUser());
+
+		}
+
+		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
+
+			// Search index update
+			$searchUtils = $this->container->get(SearchUtils::NAME);
+			$searchUtils->insertEntityToIndex($publication);
+
+		}
+
+		// Resolve main picture to avoid image url redirection
+		$this->_resolvePicturesPageImageFilter($publication);
+
+		// Scrape Open Graph URL
+		//$this->_scrapeOpenGraph($publication);
 
 	}
 
@@ -162,7 +167,7 @@ class PublicationListener implements EventSubscriberInterface {
 		$searchUtils->insertEntityToIndex($publication);
 
 		// Resolve main picture to avoid image url redirection
-		$this->_resolvePicturesPageImageFilter($publication);
+//		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
 //		$this->_scrapeOpenGraph($publication);
@@ -180,7 +185,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication instanceof IndexableInterface) {
+		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
@@ -193,7 +198,7 @@ class PublicationListener implements EventSubscriberInterface {
 	public function onPublicationUpdated(PublicationEvent $event) {
 		$publication = $event->getPublication();
 
-		if ($publication instanceof IndexableInterface) {
+		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
@@ -224,7 +229,7 @@ class PublicationListener implements EventSubscriberInterface {
 		}
 
 		// Resolve pictures
-		$this->_resolvePicturesPageImageFilter($publication);
+//		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
 		$this->_scrapeOpenGraph($publication);
@@ -234,7 +239,7 @@ class PublicationListener implements EventSubscriberInterface {
 	public function onPublicationDeleted(PublicationEvent $event) {
 		$publication = $event->getPublication();
 
-		if ($publication instanceof IndexableInterface) {
+		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
@@ -283,11 +288,11 @@ class PublicationListener implements EventSubscriberInterface {
 	public function onPublicationPublished(PublicationEvent $event) {
 		$publication = $event->getPublication();
 
-		if ($publication instanceof IndexableInterface) {
+		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
-//			$searchUtils->insertEntityToIndex($publication);
+			$searchUtils->replaceEntityInIndex($publication);
 
 			// Inspirations update
 			if ($publication instanceof InspirableInterface) {
@@ -330,7 +335,7 @@ class PublicationListener implements EventSubscriberInterface {
 		}
 
 		// Resolve main picture to avoid image url redirection
-		$this->_resolvePicturesPageImageFilter($publication);
+//		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
 		//$this->_scrapeOpenGraph($publication);
@@ -340,11 +345,11 @@ class PublicationListener implements EventSubscriberInterface {
 	public function onPublicationUnpublished(PublicationEvent $event) {
 		$publication = $event->getPublication();
 
-		if ($publication instanceof IndexableInterface) {
+		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);
-//			$searchUtils->deleteEntityFromIndex($publication);
+			$searchUtils->replaceEntityInIndex($publication);
 
 			// Inspirations update
 			if ($publication instanceof InspirableInterface) {

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Find;
 
 use Ladb\CoreBundle\Manager\Find\FindManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\FindUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
@@ -383,6 +384,19 @@ class FindController extends Controller {
 
 					// Filters /////
 
+					case 'mine':
+
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
+							$filters[] = $filter;
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+						}
+
+						break;
+
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);
@@ -446,7 +460,29 @@ class FindController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$user = $this->getUser();
+				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
+				if (!is_null($user)) {
+
+					$filter = new \Elastica\Query\BoolQuery();
+					$filter->addShould(
+						$publicVisibilityFilter
+					);
+					$filter->addShould(
+						(new \Elastica\Query\BoolQuery())
+							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+					);
+
+				} else {
+					$filter = $publicVisibilityFilter;
+				}
+				$filters[] = $filter;
+
+
+			},
 			'fos_elastica.index.ladb.find_find',
 			\Ladb\CoreBundle\Entity\Find\Find::CLASS_NAME,
 			'core_find_list_page'
