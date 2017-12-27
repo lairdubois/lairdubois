@@ -8,12 +8,6 @@ trait ViewableTrait {
 
 	/////
 
-	// IsViewable /////
-
-	public function getIsViewable() {
-		return $this instanceof DraftableInterface ? $this->getIsDraft() !== true : true;
-	}
-
 	// ViewCount /////
 
 	public function incrementViewCount($by = 1) {

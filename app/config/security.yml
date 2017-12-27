@@ -19,7 +19,6 @@ security:
                 use_referer: true
             logout:
                 success_handler: ladb_core.authentification_handler
-            logout_on_user_change: true
             anonymous: true
             remember_me:
                 secret:   "%secret%"

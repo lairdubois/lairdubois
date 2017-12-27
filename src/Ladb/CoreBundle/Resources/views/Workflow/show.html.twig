@@ -102,6 +102,12 @@
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+        <div class="ladb-meta">
+            <span><i class="ladb-icon-workflow ladb-icon-fixed-center"></i>&nbsp;{{ workflow.taskCount }} {{ 'workflow.task.choice.tasks'|transchoice(workflow.taskCount) }}</span>
+        </div>
         <div class="ladb-btn">
             <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
         </div>

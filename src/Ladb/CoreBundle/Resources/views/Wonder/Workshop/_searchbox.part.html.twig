@@ -14,13 +14,13 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-howtos" data-label="Avec pas à pas" data-unique="true" data-icon="howto"><i class="ladb-icon-howto"></i> Avec pas à pas</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-videos" data-label="Avec vidéo" data-unique="true" data-icon="video"><i class="ladb-icon-video"></i> Avec vidéo</a></li>
     <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
+    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes ateliers" data-unique="true" data-icon="workshop"><i class="ladb-icon-workshop"></i> Mes ateliers</a></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
-    <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}

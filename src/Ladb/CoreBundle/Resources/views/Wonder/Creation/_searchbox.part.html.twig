@@ -19,13 +19,13 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-inspiration" data-label="Avec inspiration" data-unique="true" data-icon="inspiration"><i class="ladb-icon-inspiration"></i> Avec inspiration</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-rebound" data-label="Avec rebond" data-unique="true" data-icon="rebound"><i class="ladb-icon-rebound"></i> Avec rebond</a></li>
     <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
+    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes créations" data-unique="true" data-icon="creation"><i class="ladb-icon-creation"></i> Mes créations</a></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
-    <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -42,7 +43,7 @@ class JoinController extends Controller {
 		} else if (!$entity->getIsJoinable()) {
 			throw $this->createNotFoundException('Entity could not be joined.');
 		}
-		if ($entity instanceof ViewableInterface && !$entity->getIsViewable()) {
+		if ($entity instanceof HiddableInterface && !$entity->getIsPublic()) {
 			throw $this->createNotFoundException('Hidden entity could not be joined.');
 		}
 
@@ -137,7 +138,7 @@ class JoinController extends Controller {
 		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($join->getEntityType(), $join->getEntityId());
-		if ($entity instanceof ViewableInterface && !$entity->getIsViewable()) {
+		if ($entity instanceof HiddableInterface && !$entity->getIsPublic()) {
 			throw $this->createNotFoundException('Hidden entity could not be unjoind.');
 		}
 

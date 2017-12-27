@@ -7,7 +7,7 @@ trait ScrapableTrait {
 	// IsScrapable /////
 
 	public function getIsScrapable() {
-		return $this instanceof ViewableInterface ? $this->getIsViewable() : true;
+		return $this instanceof HiddableInterface ? $this->getIsPublic() : true;
 	}
 
 }

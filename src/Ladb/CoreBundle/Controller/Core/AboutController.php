@@ -106,7 +106,6 @@ class AboutController extends Controller {
 	 * @Route("/blog", name="core_about_blog")
 	 * @Route("/blog/", name="core_about_blog_slash")
 	 * @Route("/blog/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_about_blog_filter")
-	 * @Template()
 	 */
 	public function blogListAction($filter = 'recent') {
 		return $this->redirect($this->generateUrl('core_blog_post_list_filter', array( 'filter' => $filter )));
@@ -114,7 +113,6 @@ class AboutController extends Controller {
 
 	/**
 	 * @Route("/blog/{id}.html", name="core_about_blog_post_show")
-	 * @Template()
 	 */
 	public function blogShowAction($id) {
 		return $this->redirect($this->generateUrl('core_blog_post_show', array( 'id' => $id )));

@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Model\ExplorableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class ExplorableUtils {
@@ -57,7 +58,19 @@ class ExplorableUtils {
 				}
 			}
 
-			$filters = array( new \Elastica\Query\Match('tags.label', $tagsString) );
+			$filters = array();
+			$similarFilter = new \Elastica\Query\Match('tags.label', $tagsString);
+			if ($explorable instanceof HiddableInterface) {
+
+				$filter = (new \Elastica\Query\BoolQuery())
+					->addMust($similarFilter)
+					->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC )))
+				;
+				$filters[] = $filter;
+
+			} else {
+				$filters[] = $similarFilter;
+			}
 			$sort = null;
 			$searchResult = $this->searchUtils->searchEntities($filters, $sort, $typeName, $entityClassName, 0, $limit, $excludedIds);
 

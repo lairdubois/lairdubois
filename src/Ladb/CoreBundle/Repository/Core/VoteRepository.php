@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Core;
 
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\VotableParentInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
@@ -132,7 +133,7 @@ class VoteRepository extends AbstractEntityRepository {
 				if (is_null($votable)) {
 					continue;
 				}
-				if ($votable instanceof ViewableInterface && !$votable->getIsViewable()) {
+				if ($votable instanceof HiddableInterface && !$votable->getIsPublic()) {
 					continue;
 				}
 

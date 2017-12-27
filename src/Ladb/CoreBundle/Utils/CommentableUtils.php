@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
@@ -159,7 +160,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			'comments'        => $comments,
 			'activities'      => $activities,
 			'form'            => isset($form) ? $form->createView() : null,
-			'isCommentable'   => $commentable instanceof ViewableInterface ? $commentable->getIsViewable() : true,
+			'isCommentable'   => $commentable instanceof HiddableInterface ? $commentable->getIsPublic() : true,
 			'mentionStrategy' => json_encode($mentionStrategy),
 		);
 	}

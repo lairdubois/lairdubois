@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Repository\Core;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 use Ladb\CoreBundle\Utils\TypableUtils;
 
@@ -167,7 +168,7 @@ class LikeRepository extends AbstractEntityRepository {
 				if (is_null($likable)) {
 					continue;
 				}
-				if ($likable instanceof ViewableInterface && !$likable->getIsViewable()) {
+				if ($likable instanceof HiddableInterface && !$likable->getIsPublic()) {
 					continue;
 				}
 

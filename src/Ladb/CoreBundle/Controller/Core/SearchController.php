@@ -27,7 +27,7 @@ class SearchController extends Controller {
 
 	/**
 	 * @Route("/typeahead/tags.json", defaults={"_format" = "json"}, name="core_search_typeahead_tags_json")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadTags.json.twig")
 	 */
 	public function searchTypeaheadTagsAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -53,7 +53,7 @@ class SearchController extends Controller {
 
 	/**
 	 * @Route("/typeahead/input-skills.json", defaults={"_format" = "json"}, name="core_search_typeahead_input_skills_json")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadInputSkills.json.twig")
 	 */
 	public function searchTypeaheadInputSkillsAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -79,7 +79,7 @@ class SearchController extends Controller {
 
 	/**
 	 * @Route("/typeahead/input-woods.json", defaults={"_format" = "json"}, name="core_search_typeahead_input_woods_json")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadInputWoods.json.twig")
 	 */
 	public function searchTypeaheadInputWoodsAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -105,7 +105,7 @@ class SearchController extends Controller {
 
 	/**
 	 * @Route("/typeahead/input-tools.json", defaults={"_format" = "json"}, name="core_search_typeahead_input_tools_json")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadInputTools.json.twig")
 	 */
 	public function searchTypeaheadInputToolsAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -131,7 +131,7 @@ class SearchController extends Controller {
 
 	/**
 	 * @Route("/typeahead/input-finishes.json", defaults={"_format" = "json"}, name="core_search_typeahead_input_finishes_json")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadInputFinishes.json.twig")
 	 */
 	public function searchTypeaheadInputFinishesAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);

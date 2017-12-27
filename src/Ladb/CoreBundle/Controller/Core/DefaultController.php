@@ -23,7 +23,6 @@ class DefaultController extends Controller {
 
 	/**
 	 * @Route("/connexion", name="core_smartlogin")
-	 * @Template()
 	 */
 	public function smartLoginAction(Request $request) {
 		$request->getSession()->set('_security.main.target_path', $request->headers->get('referer'));

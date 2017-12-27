@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Core;
 
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 use Ladb\CoreBundle\Utils\TypableUtils;
@@ -103,7 +104,7 @@ class CommentRepository extends AbstractEntityRepository {
 			if (is_null($entity)) {
 				continue;
 			}
-			if ($entity instanceof ViewableInterface && !$entity->getIsViewable()) {
+			if ($entity instanceof HiddableInterface && !$entity->getIsPublic()) {
 				continue;
 			}
 

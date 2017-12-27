@@ -18,15 +18,6 @@
     <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
         <div class="panel-body">{{ 'promotion.description'|trans() }}</div>
     </div>
-    {#{% embed 'LadbCoreBundle:Promotion/Graphic:_list-filterbar.part.html.twig' %}#}
-        {#{% set heading = 'Les graphics' %}#}
-        {#{% set customFilterDefs = {#}
-            {#'followed':         { 'label':'Suivis', 'path':path('core_promotion_graphic_list_filter', { 'filter':'followed' }), 'hidden':(not is_granted("ROLE_USER") or app.user.followingCount == 0) },#}
-        {#} %}#}
-        {#{% block filterbarRightContent%}#}
-            {#<a href="{{ path('core_graphic_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'promotion.graphic.new'|trans() }}</a>#}
-        {#{% endblock %}#}
-    {#{% endembed %}#}
     {{ parent() }}
 {% endblock %}
 

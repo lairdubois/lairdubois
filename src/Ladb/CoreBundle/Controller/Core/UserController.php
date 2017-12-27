@@ -351,7 +351,7 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/{username}/a-propos", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_about")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showAbout.html.twig")
 	 */
 	public function showAboutAction($username) {
 		$om = $this->getDoctrine()->getManager();
@@ -384,7 +384,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/coups-de-coeur", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_likes")
 	 * @Route("/{username}/coups-de-coeur/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "sent|recieved"}, name="core_user_show_likes_filter")
 	 * @Route("/{username}/coups-de-coeur/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_likes_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showLikes.html.twig")
 	 */
 	public function showLikesAction(Request $request, $username, $filter = "sent", $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -430,7 +430,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/commentaires", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_comments")
 	 * @Route("/{username}/commentaires/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_comments_filter")
 	 * @Route("/{username}/commentaires/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_comments_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showComments.html.twig")
 	 */
 	public function showCommentsAction(Request $request, $username, $filter = "recent", $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -476,7 +476,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/creations", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_creations")
 	 * @Route("/{username}/creations/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_creations_filter")
 	 * @Route("/{username}/creations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_creations_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showCreations.html.twig")
 	 */
 	public function showCreationsAction(Request $request, $username, $filter = null, $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -534,7 +534,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/ateliers", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workshops")
 	 * @Route("/{username}/ateliers/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workshops_filter")
 	 * @Route("/{username}/ateliers/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workshops_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showWorkshops.html.twig")
 	 */
 	public function showWorkshopsAction(Request $request, $username, $filter = null, $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -592,7 +592,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/plans", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_plans")
 	 * @Route("/{username}/plans/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_plans_filter")
 	 * @Route("/{username}/plans/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_plans_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showPlans.html.twig")
 	 */
 	public function showPlansAction(Request $request, $username, $filter = null, $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -657,7 +657,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/pas-a-pas", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_howtos")
 	 * @Route("/{username}/pas-a-pas/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_howtos_filter")
 	 * @Route("/{username}/pas-a-pas/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_howtos_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showHowtos.html.twig")
 	 */
 	public function showHowtosAction(Request $request, $username, $filter = null, $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -715,7 +715,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/trouvailles", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_finds")
 	 * @Route("/{username}/trouvailles/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_finds_filter")
 	 * @Route("/{username}/trouvailles/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_finds_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showFinds.html.twig")
 	 */
 	public function showFindsAction(Request $request, $username, $filter = null, $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -773,7 +773,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/questions", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_questions")
 	 * @Route("/{username}/questions/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_questions_filter")
 	 * @Route("/{username}/questions/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_questions_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showQuestions.html.twig")
 	 */
 	public function showQuestionsAction(Request $request, $username, $filter = null, $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -831,7 +831,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_graphics")
 	 * @Route("/{username}/graphismes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_graphics_filter")
 	 * @Route("/{username}/graphismes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_graphics_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showGraphics.html.twig")
 	 */
 	public function showGraphicsAction(Request $request, $username, $filter = null, $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -889,7 +889,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/abonnements", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_following")
 	 * @Route("/{username}/abonnements/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_following_filter")
 	 * @Route("/{username}/abonnements/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_following_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showFollowing.html.twig")
 	 */
 	public function showFollowingAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -937,7 +937,7 @@ class UserController extends Controller {
 	 * @Route("/{username}/abonnes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_followers")
 	 * @Route("/{username}/abonnes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_followers_filter")
 	 * @Route("/{username}/abonnes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_followers_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:showFollowers.html.twig")
 	 */
 	public function showFollowersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$userManager = $this->get('fos_user.user_manager');
@@ -984,7 +984,6 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/me", name="core_user_show_me")
-	 * @Template()
 	 */
 	public function showMeAction() {
 		$username = $this->getUser()->getUsernameCanonical();
@@ -1061,7 +1060,6 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/{username}/admin/activate", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_activate")
-	 * @Template()
 	 */
 	public function adminActivateAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1086,7 +1084,6 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/{username}/admin/deactivate", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_deactivate")
-	 * @Template()
 	 */
 	public function adminDeactivateAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1111,7 +1108,6 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/{username}/admin/empty", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_empty")
-	 * @Template()
 	 */
 	public function adminEmptyAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {

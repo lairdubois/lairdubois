@@ -4,10 +4,6 @@ namespace Ladb\CoreBundle\Model;
 
 interface ViewableInterface extends IdentifiableInterface, TypableInterface {
 
-	// IsViewable /////
-
-	public function getIsViewable();
-
 	// ViewCount /////
 
 	public function incrementViewCount($by = 1);

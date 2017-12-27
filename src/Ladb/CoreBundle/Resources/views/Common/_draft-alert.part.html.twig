@@ -1,15 +1,18 @@
 
 {# set alertMessage #}
 {# set modalMessage #}
+{# set icon (facultative) #}
 
 <div class="alert alert-info">
     <div class="media">
         <div class="media-left">
-            <i class="ladb-icon-warning ladb-icon-lg"></i>
+            <i class="ladb-icon-{{ icon|default('draft') }} ladb-icon-lg"></i>
         </div>
         <div class="media-body">
             <p>{{ alertMessage|raw }}</p>
-            <div class="pull-right"><a href="#publish_modal" data-toggle="modal" class="btn btn-primary"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></div>
+        </div>
+        <div class="media-right">
+            <a href="#publish_modal" data-toggle="modal" class="btn btn-primary"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a>
         </div>
     </div>
 </div>

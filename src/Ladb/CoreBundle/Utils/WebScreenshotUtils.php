@@ -63,7 +63,7 @@ class WebScreenshotUtils {
 		$request->setViewportSize($width, $height);
 		$request->setCaptureDimensions($clipWidth, $clipHeight, 0, 0);
 		$request->setTimeout(10000);	// 10 seconds
-		$request->setDelay(5);	// 5 seconds
+		$request->setDelay(5);			// 5 seconds
 
 		$client->send($request, $response);
 

@@ -116,6 +116,7 @@ class WorkflowManager extends AbstractPublicationManager {
 			}
 
 			$newWorkflow->addTask($newTask);
+			$newWorkflow->incrementTaskCount();
 
 			// Add the newly created task to a temporary array indexed on the original task id.
 			$newTasks[$task->getId()] = $newTask;

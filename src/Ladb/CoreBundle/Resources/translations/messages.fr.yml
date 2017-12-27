@@ -428,6 +428,8 @@ workflow:
     status_2: Tâches à effectuer
     status_3: Tâches en cours
     status_4: Tâches effectuées
+    choice:
+      tasks: '[0,1]tâche|]1,Inf]tâches'
   part:
     number: N° de pièce
     name: Libellé
@@ -868,10 +870,10 @@ like:
 watch:
   watch: Surveiller
   watched: Surveillé
-  create: Surveiller l'activité de cette contribution
-  delete: Ne plus surveiller cette contribution
+  create: Surveiller l'activité de cette publication
+  delete: Ne plus surveiller cette publication
   choice:
-    watches: '[0,1]boiseu surveille cette contribution|]1,Inf]boiseux surveillent cette contribution'
+    watches: '[0,1]boiseu surveille cette publication|]1,Inf]boiseux surveillent cette publication'
 
 vote:
   vote: Vérification
@@ -1114,7 +1116,7 @@ funding:
 
 promotion:
   nav: Promouvoir
-  description: Cette rubrique vous permet de retrouver et partager les documents graphiques destinés à promouvoir L'Air du Bois.
+  description: Cette rubrique vous permet de retrouver et partager des documents graphiques destinés à promouvoir L'Air du Bois.
   graphic:
     list: Les graphismes
     new: Ajouter un graphisme

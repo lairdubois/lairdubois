@@ -213,7 +213,7 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	// Content /////
 
 	public function getIsJoinable() {
-		return $this->getIsViewable()
+		return $this->getIsPublic()
 			&& $this->getContent() instanceof Event
 			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
 	}

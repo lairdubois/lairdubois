@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -39,7 +40,7 @@ class CommentController extends Controller {
 		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
-		if ($entity instanceof ViewableInterface && !$entity->getIsViewable()) {
+		if ($entity instanceof HiddableInterface && $entity->getIsPrivate()) {
 			throw $this->createNotFoundException('Hidden entity could not be commented.');
 		}
 
@@ -85,7 +86,7 @@ class CommentController extends Controller {
 		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
-		if ($entity instanceof ViewableInterface && !$entity->getIsViewable()) {
+		if ($entity instanceof HiddableInterface && $entity->getIsPrivate()) {
 			throw $this->createNotFoundException('Hidden entity could not be commented.');
 		}
 

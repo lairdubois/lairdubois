@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\Core\Like;
 use Ladb\CoreBundle\Model\DraftableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
@@ -83,7 +84,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 			'id'         => is_null($like) ? null : $like->getId(),
 			'entityType' => $likable->getType(),
 			'entityId'   => $likable->getId(),
-			'isLikable'  => $likable instanceof ViewableInterface ? $likable->getIsViewable() : true,
+			'isLikable'  => $likable instanceof HiddableInterface ? $likable->getIsPublic() : true,
 		);
 	}
 
