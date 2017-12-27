@@ -75,16 +75,22 @@ class AboutController extends Controller {
 			array( 'name' => 'jquery-sticky', 'url' => 'http://stickyjs.com/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-readmorejs', 'url' => 'http://jedfoster.com/Readmore.js/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-payment', 'url' => 'https://github.com/stripe/jquery.payment', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'jquery-panzoom', 'url' => 'http://timmywil.github.io/jquery.panzoom/', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'jquery-mousewheel', 'url' => 'https://github.com/jquery/jquery-mousewheel', 'labels' => array( 'JS' ) ),
 
 			array( 'name' => 'Bootstrap', 'url' => 'http://getbootstrap.com/', 'labels' => array( 'HTML', 'CSS', 'JS' ) ),
 			array( 'name' => 'bootstrap-datetimepicker', 'url' => 'https://github.com/Eonasdan/bootstrap-datetimepicker', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'bootstrap-markdown', 'url' => 'http://github.com/toopay/bootstrap-markdown', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'bootstrap-select', 'url' => 'https://silviomoreto.github.io/bootstrap-select/', 'labels' => array( 'JS', 'CSS' ) ),
 
 			array( 'name' => 'UIKit', 'url' => 'http://getuikit.com/', 'labels' => array( 'HTML', 'CSS', 'JS' ) ),
 
 			array( 'name' => 'masonry', 'url' => 'http://masonry.desandro.com', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'moment.js', 'url' => 'http://momentjs.com', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'blueimp-gallery', 'url' => 'https://github.com/blueimp/Gallery', 'labels' => array( 'HTML', 'CSS', 'JS' ) ),
+			array( 'name' => 'Chart.js', 'url' => 'http://www.chartjs.org/', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'jsPlumb', 'url' => 'https://jsplumbtoolkit.com', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'Lodash', 'url' => 'https://lodash.com/', 'labels' => array( 'JS' ) ),
 
 			array( 'name' => 'EmojiOne', 'url' => 'http://emojione.com/', 'labels' => array( 'PHP', 'CSS', 'JS' ) ),
 

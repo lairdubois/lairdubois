@@ -100,12 +100,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Pictu
 
 	/////
 
-	public function __construct() {
-		$this->setIsDraft(false);
-	}
-
-	/////
-
 	// Type /////
 
 	public function getType() {

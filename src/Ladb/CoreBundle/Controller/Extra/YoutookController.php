@@ -215,7 +215,7 @@ class YoutookController extends Controller {
 	 * @Route("/mes-tooks", name="core_youtook_user_list")
 	 * @Route("/mes-tooks/{filter}", requirements={"filter" = "\w+"}, name="core_youtook_user_list_filter")
 	 * @Route("/mes-tooks/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_youtook_user_list_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Extra/Youtook:userList.html.twig")
 	 */
 	public function userListAction(Request $request, $filter = 'all', $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
