@@ -363,10 +363,10 @@ fos_elastica:
                             properties:
                                 followerCount: { type: integer }
                                 recievedLikeCount: { type: integer }
-                        skills:
-                            type: "object"
-                            properties:
-                                label:
+                                skills:
+                                    type: "object"
+                                    properties:
+                                        label:
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Core\User
