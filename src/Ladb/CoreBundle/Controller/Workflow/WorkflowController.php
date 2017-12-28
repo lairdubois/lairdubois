@@ -314,13 +314,13 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function diagramAction($id) {
 
-		// Localhost access only
-		if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
-			'127.0.0.1',
-			'::1',
-		))) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_diagram) REMOTE_ADDR='.$_SERVER['REMOTE_ADDR']);
-		}
+		// Localhost access only TODO
+//		if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
+//			'127.0.0.1',
+//			'::1',
+//		))) {
+//			throw $this->createNotFoundException('Not allowed (core_workflow_diagram) REMOTE_ADDR='.$_SERVER['REMOTE_ADDR']);
+//		}
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
