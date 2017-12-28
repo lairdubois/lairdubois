@@ -636,7 +636,7 @@ class CreationController extends Controller {
 	/**
 	 * @Route("/", name="core_creation_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_creation_list_page")
-	 * @Template
+	 * @Template("LadbCoreBundle:Wonder/Creation:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
