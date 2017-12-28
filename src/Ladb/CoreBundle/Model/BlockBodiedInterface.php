@@ -10,6 +10,12 @@ interface BlockBodiedInterface {
 
 	public function getBody();
 
+	// BodyExtract /////
+
+	public function setBodyExtract($bodyExtract);
+
+	public function getBodyExtract();
+
 	// BodyBlocks /////
 
 	public function addBodyBlock(\Ladb\CoreBundle\Entity\Core\Block\AbstractBlock $bodyBlock);

@@ -32,7 +32,7 @@ class WatchController extends Controller {
 		$watchableUtils->createWatch($entity, $this->getUser());
 
 		// Flashbag
-		if (!$this->getUser()->getEmailConfirmed() && $this->getUser()->getNewWatchActivityEmailNotificationEnabled()) {
+		if (!$this->getUser()->getEmailConfirmed() && $this->getUser()->getMeta()->getNewWatchActivityEmailNotificationEnabled()) {
 			$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.alert.email_not_confirmed_error'));
 		}
 

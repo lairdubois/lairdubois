@@ -14,8 +14,8 @@ class HowtoManager extends AbstractPublicationManager {
 
 	public function publish(Howto $howto, $flush = true) {
 
-		$howto->getUser()->incrementDraftHowtoCount(-1);
-		$howto->getUser()->incrementPublishedHowtoCount();
+		$howto->getUser()->getMeta()->incrementPrivateHowtoCount(-1);
+		$howto->getUser()->getMeta()->incrementPublicHowtoCount();
 
 		// Creations counter update
 		foreach ($howto->getCreations() as $creation) {
@@ -48,8 +48,8 @@ class HowtoManager extends AbstractPublicationManager {
 
 	public function unpublish(Howto $howto, $flush = true) {
 
-		$howto->getUser()->incrementDraftHowtoCount(1);
-		$howto->getUser()->incrementPublishedHowtoCount(-1);
+		$howto->getUser()->getMeta()->incrementPrivateHowtoCount(1);
+		$howto->getUser()->getMeta()->incrementPublicHowtoCount(-1);
 
 		// Creations counter update
 		foreach ($howto->getCreations() as $creation) {
@@ -91,9 +91,9 @@ class HowtoManager extends AbstractPublicationManager {
 
 		// Decrement user howto count
 		if ($howto->getIsDraft() === true) {
-			$howto->getUser()->incrementDraftHowtoCount(-1);
+			$howto->getUser()->getMeta()->incrementPrivateHowtoCount(-1);
 		} else {
-			$howto->getUser()->incrementPublishedHowtoCount(-1);
+			$howto->getUser()->getMeta()->incrementPublicHowtoCount(-1);
 		}
 
 		// Unlink creations

@@ -83,8 +83,9 @@ class WoodRepository extends AbstractKnowledgeRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'w' ))
+			->select(array( 'w', 'mp' ))
 			->from($this->getEntityName(), 'w')
+			->leftJoin('w.mainPicture', 'mp')
 			->where($queryBuilder->expr()->in('w.id', $ids))
 		;
 

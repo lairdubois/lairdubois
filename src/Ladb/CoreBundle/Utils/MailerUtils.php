@@ -57,7 +57,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 	}
 
 	public function sendIncomingMessageNotificationEmailMessage(User $recipientUser, User $actorUser, Thread $thread, Message $message) {
-		if ($recipientUser->getIncomingMessageEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
+		if ($recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
 			$parameters = array( 'recipientUser' => $recipientUser, 'actorUser' => $actorUser, 'thread' => $thread, 'message' => $message );
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
@@ -69,7 +69,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 	}
 
 	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess) {
-		if ($recipientUser->getNewSpotlightEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
+		if ($recipientUser->getMeta()->getNewSpotlightEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
 			$parameters = array( 'recipientUser' => $recipientUser, 'entity' => $entity, 'twitterSuccess' => $twitterSuccess, 'facebookSuccess' => $facebookSuccess, 'pinterestSuccess' => $pinterestSuccess );
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
@@ -123,7 +123,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 	/////
 
 	public function sendWeekNewsEmailMessage(User &$recipientUser, &$creations, &$questions, &$plans, &$workshops, &$howtos, &$howtoArticles, &$finds, &$posts, &$woods, &$providers) {
-		if ($recipientUser->getWeekNewsEmailEnabled()) {
+		if ($recipientUser->getMeta()->getWeekNewsEmailEnabled()) {
 			$parameters = array(
 				'recipientUser' => $recipientUser,
 				'creations'     => $creations,

@@ -41,15 +41,21 @@ class CreationRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'c', 'u', 'mp', 'sp', 'ps', 'bbs', 'pls', 'hws', 'l' ))
+			->select(array( 'c', 'u', 'uav', 'mp', 'sp', 'ps', 'bbs', 'wds', 'tls', 'fhs', 'pls', 'hws', 'pds', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
+			->innerJoin('u.avatar', 'uav')
 			->innerJoin('c.mainPicture', 'mp')
 			->leftJoin('c.spotlight', 'sp')
 			->leftJoin('c.pictures', 'ps')
 			->leftJoin('c.bodyBlocks', 'bbs')
+			->leftJoin('c.woods', 'wds')
+			->leftJoin('c.tools', 'tls')
+			->leftJoin('c.finishes', 'fhs')
 			->leftJoin('c.plans', 'pls')
 			->leftJoin('c.howtos', 'hws')
+			->leftJoin('c.providers', 'pds')
+			->leftJoin('c.tags', 'tgs')
 			->leftJoin('c.license', 'l')
 			->where('c.id = :id')
 			->setParameter('id', $id)
@@ -69,7 +75,7 @@ class CreationRepository extends AbstractEntityRepository {
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
 			->innerJoin('c.mainPicture', 'mp')
-			->leftJoin('c.spotlight', 'sp')		// To avoid extra request due to OneToOne relation
+			->leftJoin('c.spotlight', 'sp')
 			->where('c.isDraft = false')
 			->andWhere('c.user = :user')
 			->orderBy('c.id', 'ASC')
@@ -91,7 +97,7 @@ class CreationRepository extends AbstractEntityRepository {
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
 			->innerJoin('c.mainPicture', 'mp')
-			->leftJoin('c.spotlight', 'sp')		// To avoid extra request due to OneToOne relation
+			->leftJoin('c.spotlight', 'sp')
 			->where('c.isDraft = false')
 			->andWhere('c.user = :user')
 			->orderBy('c.id', 'DESC')
@@ -113,7 +119,7 @@ class CreationRepository extends AbstractEntityRepository {
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
 			->innerJoin('c.mainPicture', 'mp')
-			->leftJoin('c.spotlight', 'sp')		// To avoid extra request due to OneToOne relation
+			->leftJoin('c.spotlight', 'sp')
 			->where('c.isDraft = false')
 			->andWhere('c.user = :user')
 			->andWhere('c.id < :id')
@@ -137,7 +143,7 @@ class CreationRepository extends AbstractEntityRepository {
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
 			->innerJoin('c.mainPicture', 'mp')
-			->leftJoin('c.spotlight', 'sp')		// To avoid extra request due to OneToOne relation
+			->leftJoin('c.spotlight', 'sp')
 			->where('c.isDraft = false')
 			->andWhere('c.user = :user')
 			->andWhere('c.id > :id')
@@ -163,7 +169,7 @@ class CreationRepository extends AbstractEntityRepository {
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
 			->innerJoin('c.mainPicture', 'mp')
-			->leftJoin('c.spotlight', 'sp')		// To avoid extra request due to OneToOne relation
+			->leftJoin('c.spotlight', 'sp')
 			->where($queryBuilder->expr()->in('c.id', $ids))
 		;
 

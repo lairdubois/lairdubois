@@ -86,7 +86,7 @@ class MessageController extends Controller {
 			}
 			$this->get('session')->getFlashBag()->add('success', 'Votre message a été envoyé à <strong>'.$recipientNames.'</strong>.');
 
-			if (!$sender->getEmailConfirmed() && $sender->getIncomingMessageEmailNotificationEnabled()) {
+			if (!$sender->getEmailConfirmed() && $sender->getMeta()->getIncomingMessageEmailNotificationEnabled()) {
 				$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.alert.email_not_confirmed_error'));
 			}
 
@@ -263,7 +263,7 @@ class MessageController extends Controller {
 			}
 			$this->get('session')->getFlashBag()->add('success', 'Votre message a été envoyé à <strong>'.$recipientNames.'</strong>.');
 
-			if (!$sender->getEmailConfirmed() && $sender->getIncomingMessageEmailNotificationEnabled()) {
+			if (!$sender->getEmailConfirmed() && $sender->getMeta()->getIncomingMessageEmailNotificationEnabled()) {
 				$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.alert.email_not_confirmed_error'));
 			}
 

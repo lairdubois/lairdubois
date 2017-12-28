@@ -17,12 +17,13 @@ trait BlockBodiedTrait {
 
 	// BodyExtract /////
 
+	public function setBodyExtract($bodyExtract) {
+		$this->bodyExtract = $bodyExtract;
+		return $this;
+	}
+
 	public function getBodyExtract() {
-		$firstBlock = $this->bodyBlocks->first();
-		if ($firstBlock instanceof \Ladb\CoreBundle\Entity\Core\Block\Text) {
-			return $firstBlock->getHtmlBody();
-		}
-		return '';
+		return $this->bodyExtract;
 	}
 
 	// BodyBlocks /////

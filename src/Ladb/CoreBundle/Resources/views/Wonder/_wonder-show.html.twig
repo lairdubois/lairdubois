@@ -281,7 +281,7 @@
                         {% include 'LadbCoreBundle:Wonder:_wonder-thumbnail-link.part.html.twig' with { 'wonder':userWonder } %}
                     </div>
                 {% endfor %}
-                {% if attribute(wonder.user, 'published'~(wonderType|capitalize)~'Count') > 2 %}
+                {% if attribute(wonder.user.meta, 'public'~(wonderType|capitalize)~'Count') > 2 %}
                     <div class="col-xs-12 ladb-margin-top">
                         <a href="{{ path('core_user_show_'~wonderType~'s', { 'username':wonder.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
                     </div>

@@ -414,6 +414,8 @@ workflow:
         title: Renseignez ici le titre de votre processus.
         body: Renseignez ici le descriptif de votre processus.
         tags: Indiquez les tags définissant votre processus.
+    choice:
+      workflows: '[0,Inf]processus'
   task:
     title: Titre
     labels: Etiquettes

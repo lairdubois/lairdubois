@@ -40,14 +40,16 @@ class PlanRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'u', 'mp', 'ps', 'cts', 'wks', 'hws', 'l' ))
+			->select(array( 'p', 'u', 'uav', 'mp', 'ps', 'cts', 'wks', 'hws', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'p')
 			->innerJoin('p.user', 'u')
+			->innerJoin('u.avatar', 'uav')
 			->innerJoin('p.mainPicture', 'mp')
 			->leftJoin('p.pictures', 'ps')
 			->leftJoin('p.creations', 'cts')
 			->leftJoin('p.workshops', 'wks')
 			->leftJoin('p.howtos', 'hws')
+			->leftJoin('p.tags', 'tgs')
 			->leftJoin('p.license', 'l')
 			->where('p.id = :id')
 			->setParameter('id', $id)

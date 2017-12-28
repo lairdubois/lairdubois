@@ -16,7 +16,7 @@ class HowtoUtils extends AbstractContainerAwareUtils {
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
-		$userHowtos = $explorableUtils->getPreviousAndNextPublishedUserExplorables($howto, $howtoRepository, $howto->getUser()->getPublishedHowtoCount());
+		$userHowtos = $explorableUtils->getPreviousAndNextPublishedUserExplorables($howto, $howtoRepository, $howto->getUser()->getMeta()->getPublicHowtoCount());
 		$similarHowtos = $explorableUtils->getSimilarExplorables($howto, 'fos_elastica.index.ladb.howto_howto', Howto::CLASS_NAME, $userHowtos);
 
 		$globalUtils = $this->get(GlobalUtils::NAME);

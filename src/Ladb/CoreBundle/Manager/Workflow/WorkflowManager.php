@@ -22,14 +22,29 @@ class WorkflowManager extends AbstractPublicationManager {
 	/////
 
 	public function publish(Workflow $workflow, $flush = true) {
+
+		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(-1);
+		$workflow->getUser()->getMeta()->incrementPublicWorkflowCount();
+
 		parent::publishPublication($workflow, $flush);
 	}
 
 	public function unpublish(Workflow $workflow, $flush = true) {
+
+		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(1);
+		$workflow->getUser()->getMeta()->incrementPublicWorkflowCount(-1);
+
 		parent::unpublishPublication($workflow, $flush);
 	}
 
 	public function delete(Workflow $workflow, $withWitness = true, $flush = true) {
+
+		// Decrement user workflow count
+		if ($workflow->getIsPrivate()) {
+			$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(-1);
+		} else {
+			$workflow->getUser()->getMeta()->incrementPublicWorkflowCount(-1);
+		}
 
 		// Unlink inspirations
 		foreach ($workflow->getInspirations() as $inspiration) {
@@ -137,9 +152,9 @@ class WorkflowManager extends AbstractPublicationManager {
 		}
 
 		// Inspiration
-		if ($workflow->getUser()->getId() === $user->getId() && $workflow->getVisibility() < Workflow::VISIBILITY_PUBLIC) {
+		if ($workflow->getUser()->getId() === $user->getId() && !$workflow->getIsPublic()) {
 
-			// Workflow is owned and private -> juste transfert inspirations
+			// Workflow is owned and private -> just transfert inspirations
 			foreach ($workflow->getInspirations() as $inspiration) {
 				$newWorkflow->addInspiration($inspiration);
 			}
@@ -147,6 +162,9 @@ class WorkflowManager extends AbstractPublicationManager {
 		} else {
 			$newWorkflow->addInspiration($workflow);
 		}
+
+		// Increment user workflow count
+		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount();
 
 		$om->persist($newWorkflow);
 		if ($flush) {

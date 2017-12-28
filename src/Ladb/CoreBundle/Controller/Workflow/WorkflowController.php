@@ -67,6 +67,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$fieldPreprocessorUtils->preprocessFields($workflow);
 
 			$workflow->setUser($this->getUser());
+			$this->getUser()->getMeta()->incrementPrivateWorkflowCount();
 
 			// Append a default root task
 			$task = new Task();
@@ -77,10 +78,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 			$om->persist($workflow);
 			$om->flush();
-
-			// Search index update
-			$searchUtils = $this->container->get(SearchUtils::NAME);
-			$searchUtils->insertEntityToIndex($workflow);
 
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');

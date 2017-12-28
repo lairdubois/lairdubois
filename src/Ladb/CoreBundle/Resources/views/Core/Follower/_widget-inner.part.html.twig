@@ -7,6 +7,6 @@
         <i class="ladb-icon-check-square"></i> {{ 'follower.following'|trans() }}
     </a>
 {% endif %}
-{% if followerContext.followingUser.followerCount > 0 %}
-    <a href="{{ path('core_user_show_followers', { 'username':followerContext.followingUser.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ followerContext.followingUser.followerCount }}&nbsp;{{ 'follower.choice.followers'|transchoice(followerContext.followingUser.followerCount) }}">{{ followerContext.followingUser.followerCount }}</a>
+{% if followerContext.followingUser.meta.followerCount > 0 %}
+    <a href="{{ path('core_user_show_followers', { 'username':followerContext.followingUser.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ followerContext.followingUser.meta.followerCount }}&nbsp;{{ 'follower.choice.followers'|transchoice(followerContext.followingUser.meta.followerCount) }}">{{ followerContext.followingUser.meta.followerCount }}</a>
 {% endif %}

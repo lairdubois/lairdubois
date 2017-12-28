@@ -148,7 +148,7 @@
                 {% for userQuestion in userQuestions %}
                     {% include 'LadbCoreBundle:Qa/Question:_thumbnail-link.part.html.twig' with { 'question':userQuestion, 'noAuthor':true } %}
                 {% endfor %}
-                {% if question.user.publishedQuestionCount > 2 %}
+                {% if question.user.meta.publicQuestionCount > 2 %}
                     <div class="ladb-margin-top">
                         <a href="{{ path('core_user_show_questions', { 'username':question.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
                     </div>

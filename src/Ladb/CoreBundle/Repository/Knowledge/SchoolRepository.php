@@ -70,9 +70,10 @@ class SchoolRepository extends AbstractKnowledgeRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p' ))
-			->from($this->getEntityName(), 'p')
-			->where($queryBuilder->expr()->in('p.id', $ids))
+			->select(array( 's', 'mp' ))
+			->from($this->getEntityName(), 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->where($queryBuilder->expr()->in('s.id', $ids))
 		;
 
 		try {

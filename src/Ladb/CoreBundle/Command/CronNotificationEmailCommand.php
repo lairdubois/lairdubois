@@ -245,34 +245,34 @@ EOT
 
 	private function _isNotificationEnabledByActivityStrippedName(User $recipientUser, $activityStrippedName) {
 		if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Comment::STRIPPED_NAME) {
-			return $recipientUser->getNewWatchActivityEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
 		}
 		if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Contribute::STRIPPED_NAME) {
 			return true;	// TODO
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Follow::STRIPPED_NAME) {
-			return $recipientUser->getNewFollowerEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getNewFollowerEmailNotificationEnabled();
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Like::STRIPPED_NAME) {
-			return $recipientUser->getNewLikeEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getNewLikeEmailNotificationEnabled();
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Mention::STRIPPED_NAME) {
 			return true;	// TODO
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Publish::STRIPPED_NAME) {
-			return $recipientUser->getNewFollowingPostEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getNewFollowingPostEmailNotificationEnabled();
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Vote::STRIPPED_NAME) {
-			return $recipientUser->getNewVoteEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getNewVoteEmailNotificationEnabled();
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Join::STRIPPED_NAME) {
-			return $recipientUser->getNewWatchActivityEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME) {
-			return $recipientUser->getIncomingMessageEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled();
 		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME) {
-			return $recipientUser->getNewWatchActivityEmailNotificationEnabled();
+			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
 		}
 		return true;
 	}

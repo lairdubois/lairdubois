@@ -24,7 +24,7 @@
 <html lang="{{ app.request.locale }}"{% if pageItemType is defined %} itemscope itemtype="http://schema.org/{{ pageItemType }}"{% endif %}>
     <head prefix="{% block headPrefix %}og: http://ogp.me/ns#{% endblock %}">
         {% block head %}
-            <title>{% if is_granted("ROLE_USER") and app.user.freshNotificationCount > 0 %}({{ app.user.freshNotificationCount }}) {% endif %}{% if pageTitlePrefix is defined %}{{ pageTitlePrefix }} {% endif %}{% block title %}{{ pageTitle }}{% if not titleSuffixHidden %} {{ ('default.on'|trans())~' '~('default.ladb'|trans()) }}{% endif %}{% endblock %}</title>
+            <title>{% if is_granted("ROLE_USER") and app.user.meta.freshNotificationCount > 0 %}({{ app.user.meta.freshNotificationCount }}) {% endif %}{% if pageTitlePrefix is defined %}{{ pageTitlePrefix }} {% endif %}{% block title %}{{ pageTitle }}{% if not titleSuffixHidden %} {{ ('default.on'|trans())~' '~('default.ladb'|trans()) }}{% endif %}{% endblock %}</title>
             {% block headMetas %}
                 <meta charset="UTF-8" />
                 <meta name="description" content="{{ pageDescription }}" />

@@ -85,6 +85,28 @@ class FindRepository extends AbstractEntityRepository {
 		}
 	}
 
+	public function findOneByIdJoinedOnOptimized($id) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'f', 'u', 'uav', 'mp', 'bbs', 'ct', 'tgs' ))
+			->from($this->getEntityName(), 'f')
+			->innerJoin('f.user', 'u')
+			->innerJoin('u.avatar', 'uav')
+			->innerJoin('f.mainPicture', 'mp')
+			->leftJoin('f.bodyBlocks', 'bbs')
+			->leftJoin('f.content', 'ct')
+			->leftJoin('f.tags', 'tgs')
+			->where('f.id = :id')
+			->setParameter('id', $id)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
 	public function findOneFirstByUser(User $user) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -174,10 +196,11 @@ class FindRepository extends AbstractEntityRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'f', 'u', 'mp' ))
+			->select(array( 'f', 'u', 'mp', 'ct' ))
 			->from($this->getEntityName(), 'f')
 			->innerJoin('f.user', 'u')
 			->innerJoin('f.mainPicture', 'mp')
+			->leftJoin('f.content', 'ct')
 			->where($queryBuilder->expr()->in('f.id', $ids))
 		;
 

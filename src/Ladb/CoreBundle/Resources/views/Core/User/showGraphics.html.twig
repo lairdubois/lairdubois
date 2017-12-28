@@ -7,7 +7,7 @@
     {% if graphics.count == 0 and filter != 'draft' %}
         <div class="alert alert-info ladb-margin-top">
             {% if is_granted("ROLE_USER") and user.id == app.user.id %}
-                <p>Vous n'avez pas encore publié de <strong>trouvaille</strong> !</p>
+                <p>Vous n'avez pas encore publié de <strong>graphique</strong> !</p>
                 <p><a href="{{ path('core_promotion_graphic_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'promotion.graphic.new'|trans() }}</a></p>
             {% else %}
                 <strong>{{ user.username }}</strong> n'a pas encore publié de graphisme.
@@ -23,11 +23,11 @@
             {% block filterbarRightContent%}
                 <span class="ladb-heading">
                     {% if filter == 'draft' and isDraftVisible %}
-                        {{ user.draftGraphicCount~' '~('default.choice.draft'|transchoice(user.draftGraphicCount)) }}
+                        {{ user.meta.privateGraphicCount~' '~('default.choice.draft'|transchoice(user.meta.privateGraphicCount)) }}
                     {% elseif filter|slice(0,4) == 'type' %}
                         {{ graphics.count~' '~('promotion.graphic.choice.graphics'|transchoice(graphics.count)) }}
                     {% else %}
-                        {{ user.publishedGraphicCount }} {{ 'promotion.graphic.choice.graphics'|transchoice(user.publishedGraphicCount) }}{% if isDraftVisible and user.draftGraphicCount > 0 %} (+{{ user.draftGraphicCount~' '~('default.choice.draft'|transchoice(user.draftGraphicCount)) }}){% endif %}
+                        {{ user.meta.publicGraphicCount }} {{ 'promotion.graphic.choice.graphics'|transchoice(user.meta.publicGraphicCount) }}{% if isDraftVisible and user.meta.privateGraphicCount > 0 %} (+{{ user.meta.privateGraphicCount~' '~('default.choice.draft'|transchoice(user.meta.privateGraphicCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

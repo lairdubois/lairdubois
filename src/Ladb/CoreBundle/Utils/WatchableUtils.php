@@ -11,7 +11,7 @@ class WatchableUtils extends AbstractContainerAwareUtils {
 	const NAME = 'ladb_core.watchable_utils';
 
     public function autoCreateWatch(WatchableInterface $watchable, User $user) {
-        if ($user->getAutoWatchEnabled()) {
+        if ($user->getMeta()->getAutoWatchEnabled()) {
             return $this->createWatch($watchable, $user);
         }
         return false;

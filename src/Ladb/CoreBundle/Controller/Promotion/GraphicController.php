@@ -76,7 +76,7 @@ class GraphicController extends Controller {
 
 			$graphic->setUser($this->getUser());
 			$graphic->setMainPicture($graphic->getResource()->getThumbnail());
-			$this->getUser()->incrementDraftGraphicCount();
+			$this->getUser()->getMeta()->incrementPrivateGraphicCount();
 
 			$om->persist($graphic);
 			$om->flush();
@@ -532,10 +532,10 @@ class GraphicController extends Controller {
 			return $this->render('LadbCoreBundle:Promotion/Graphic:list-xhr.html.twig', $parameters);
 		}
 
-		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getDraftGraphicCount() > 0) {
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateGraphicCount() > 0) {
 
 			$draftPath = $this->generateUrl('core_promotion_graphic_list', array( 'q' => '@mine:draft' ));
-			$draftCount = $this->getUser()->getDraftGraphicCount();
+			$draftCount = $this->getUser()->getMeta()->getPrivateGraphicCount();
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('promotion.graphic.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
@@ -577,7 +577,7 @@ class GraphicController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($graphic));
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
-		$userGraphics = $explorableUtils->getPreviousAndNextPublishedUserExplorables($graphic, $graphicRepository, $graphic->getUser()->getPublishedGraphicCount());
+		$userGraphics = $explorableUtils->getPreviousAndNextPublishedUserExplorables($graphic, $graphicRepository, $graphic->getUser()->getMeta()->getPublicGraphicCount());
 		$similarGraphics = $explorableUtils->getSimilarExplorables($graphic, 'fos_elastica.index.ladb.promotion_graphic', Graphic::CLASS_NAME, $userGraphics);
 
 		$likableUtils = $this->get(LikableUtils::NAME);

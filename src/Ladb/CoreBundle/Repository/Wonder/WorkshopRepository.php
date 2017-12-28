@@ -38,14 +38,16 @@ class WorkshopRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'w', 'u', 'mp', 'ps', 'bbs', 'pls', 'hws', 'l' ))
+			->select(array( 'w', 'u', 'uav', 'mp', 'ps', 'bbs', 'pls', 'hws', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'w')
 			->innerJoin('w.user', 'u')
+			->innerJoin('u.avatar', 'uav')
 			->innerJoin('w.mainPicture', 'mp')
 			->leftJoin('w.pictures', 'ps')
 			->leftJoin('w.bodyBlocks', 'bbs')
 			->leftJoin('w.plans', 'pls')
 			->leftJoin('w.howtos', 'hws')
+			->leftJoin('w.tags', 'tgs')
 			->leftJoin('w.license', 'l')
 			->where('w.id = :id')
 			->setParameter('id', $id)

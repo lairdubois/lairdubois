@@ -22,9 +22,9 @@
             {% block filterbarRightContent%}
                 <span class="ladb-heading">
                     {% if filter == 'draft' and isDraftVisible %}
-                        {{ user.draftWorkshopCount~' '~('default.choice.draft'|transchoice(user.draftWorkshopCount)) }}
+                        {{ user.meta.privateWorkshopCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkshopCount)) }}
                     {% else %}
-                        {{ user.publishedWorkshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(user.publishedWorkshopCount) }}{% if isDraftVisible and user.draftWorkshopCount > 0 %} (+{{ user.draftWorkshopCount~' '~('default.choice.draft'|transchoice(user.draftWorkshopCount)) }}){% endif %}
+                        {{ user.meta.publicWorkshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(user.meta.publicWorkshopCount) }}{% if isDraftVisible and user.meta.privateWorkshopCount > 0 %} (+{{ user.meta.privateWorkshopCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkshopCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

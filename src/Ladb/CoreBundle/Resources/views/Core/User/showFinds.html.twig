@@ -23,11 +23,11 @@
             {% block filterbarRightContent%}
                 <span class="ladb-heading">
                     {% if filter == 'draft' and isDraftVisible %}
-                        {{ user.draftFindCount~' '~('default.choice.draft'|transchoice(user.draftFindCount)) }}
+                        {{ user.meta.privateFindCount~' '~('default.choice.draft'|transchoice(user.meta.privateFindCount)) }}
                     {% elseif filter|slice(0,4) == 'type' %}
                         {{ finds.count~' '~('find.find.choice.finds'|transchoice(finds.count)) }}
                     {% else %}
-                        {{ user.publishedFindCount }} {{ 'find.find.choice.finds'|transchoice(user.publishedFindCount) }}{% if isDraftVisible and user.draftFindCount > 0 %} (+{{ user.draftFindCount~' '~('default.choice.draft'|transchoice(user.draftFindCount)) }}){% endif %}
+                        {{ user.meta.publicFindCount }} {{ 'find.find.choice.finds'|transchoice(user.meta.publicFindCount) }}{% if isDraftVisible and user.meta.privateFindCount > 0 %} (+{{ user.meta.privateFindCount~' '~('default.choice.draft'|transchoice(user.meta.privateFindCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

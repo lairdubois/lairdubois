@@ -29,7 +29,7 @@ trait BodiedTrait {
 	// BodyExtract /////
 
 	public function getBodyExtract() {
-		return $this->getHtmlBody();
+		return strip_tags(mb_strimwidth($this->getHtmlBody(), 0, 250, '[...]'));
 	}
 
 }

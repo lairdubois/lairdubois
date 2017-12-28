@@ -22,9 +22,9 @@
             {% block filterbarRightContent%}
                 <span class="ladb-heading">
                     {% if filter == 'draft' and isDraftVisible %}
-                        {{ user.draftCreationCount~' '~('default.choice.draft'|transchoice(user.draftCreationCount)) }}
+                        {{ user.meta.privateCreationCount~' '~('default.choice.draft'|transchoice(user.meta.privateCreationCount)) }}
                     {% else %}
-                        {{ user.publishedCreationCount }} {{ 'wonder.creation.choice.creations'|transchoice(user.publishedCreationCount) }}{% if isDraftVisible and user.draftCreationCount > 0 %} (+{{ user.draftCreationCount~' '~('default.choice.draft'|transchoice(user.draftCreationCount)) }}){% endif %}
+                        {{ user.meta.publicCreationCount }} {{ 'wonder.creation.choice.creations'|transchoice(user.meta.publicCreationCount) }}{% if isDraftVisible and user.meta.privateCreationCount > 0 %} (+{{ user.meta.privateCreationCount~' '~('default.choice.draft'|transchoice(user.meta.privateCreationCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

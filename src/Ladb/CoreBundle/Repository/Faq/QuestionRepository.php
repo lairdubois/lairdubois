@@ -35,10 +35,12 @@ class QuestionRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'q', 'u', 'bbs' ))
+			->select(array( 'q', 'u', 'uav', 'bbs', 'tgs' ))
 			->from($this->getEntityName(), 'q')
 			->innerJoin('q.user', 'u')
+			->innerJoin('u.avatar', 'uav')
 			->innerJoin('q.bodyBlocks', 'bbs')
+			->innerJoin('q.tags', 'tgs')
 			->where('q.id = :id')
 			->setParameter('id', $id)
 		;
@@ -63,6 +65,24 @@ class QuestionRepository extends AbstractEntityRepository {
 
 		try {
 			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	/////
+
+	public function findByIds(array $ids) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where($queryBuilder->expr()->in('q.id', $ids))
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}

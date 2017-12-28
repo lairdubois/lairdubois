@@ -142,7 +142,7 @@ EOT
 					// Follower strategy
 					if ($notificationStrategy & PublicationInterface::NOTIFICATION_STRATEGY_FOLLOWER == PublicationInterface::NOTIFICATION_STRATEGY_FOLLOWER) {
 
-						if ($actorUser->getFollowerCount() >= 0 && $publication instanceof TitledInterface) {
+						if ($actorUser->getMeta()->getFollowerCount() >= 0 && $publication instanceof TitledInterface) {
 
 							$followerRepository = $om->getRepository(Follower::CLASS_NAME);
 							$followers = $followerRepository->findByFollowingUser($actorUser);
@@ -289,9 +289,9 @@ EOT
 
 		// Update fresh notification counters
 		foreach ($notifiedUsers as $userId => $user) {
-			$user->incrementFreshNotificationCount($freshNotificationCounters[$userId]);
+			$user->getMeta()->incrementFreshNotificationCount($freshNotificationCounters[$userId]);
 			if ($verbose) {
-				$output->writeln('<info>'.$user->getDisplayname().' <fg=yellow>['.$user->getFreshNotificationCount().' fresh ('.$freshNotificationCounters[$userId].' new)]</fg=yellow></info>');
+				$output->writeln('<info>'.$user->getDisplayname().' <fg=yellow>['.$user->getMeta()->getFreshNotificationCount().' fresh ('.$freshNotificationCounters[$userId].' new)]</fg=yellow></info>');
 			}
 		}
 

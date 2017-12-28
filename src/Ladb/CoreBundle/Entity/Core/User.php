@@ -377,9 +377,10 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	 */
 	private $testimonialCount = 0;
 
+
 	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\UserMeta", mappedBy="user", cascade={"persist", "remove"})
-	 * @ORM\JoinColumn(nullable=true, name="meta_id")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\UserMeta", cascade={"persist", "remove"})
+	 * @ORM\JoinColumn(name="meta_id", nullable=true)
 	 */
 	private $meta = null;
 
@@ -520,107 +521,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		return $this->accountType;
 	}
 
-	// Banner /////
-
-	public function setBanner(\Ladb\CoreBundle\Entity\Core\Picture $banner = null) {
-		$this->banner = $banner;
-		return $this;
-	}
-
-	public function getBanner() {
-		return $this->banner;
-	}
-
-	// Website /////
-
-	public function setWebsite($website) {
-		$this->website = $website;
-	}
-
-	public function getWebsite() {
-		return $this->website;
-	}
-
-	// Facebook /////
-
-	public function setFacebook($facebook) {
-		$this->facebook = $facebook;
-	}
-
-	public function getFacebook() {
-		return $this->facebook;
-	}
-
-	// Twitter /////
-
-	public function setTwitter($twitter) {
-		$this->twitter = $twitter;
-	}
-
-	public function getTwitter() {
-		return $this->twitter;
-	}
-
-	// GooglePlus /////
-
-	public function setGoogleplus($googleplus) {
-		$this->googleplus = $googleplus;
-	}
-
-	public function getGoogleplus() {
-		return $this->googleplus;
-	}
-
-	// YouTube /////
-
-	public function setYoutube($youtube) {
-		$this->youtube = $youtube;
-	}
-
-	public function getYoutube() {
-		return $this->youtube;
-	}
-
-	// Vimeo /////
-
-	public function setVimeo($vimeo) {
-		$this->vimeo = $vimeo;
-	}
-
-	public function getVimeo() {
-		return $this->vimeo;
-	}
-
-	// Dailymotion /////
-
-	public function setDailymotion($dailymotion) {
-		$this->dailymotion = $dailymotion;
-	}
-
-	public function getDailymotion() {
-		return $this->dailymotion;
-	}
-
-	// Pinterest /////
-
-	public function setPinterest($pinterest) {
-		$this->pinterest = $pinterest;
-	}
-
-	public function getPinterest() {
-		return $this->pinterest;
-	}
-
-	// Instagram /////
-
-	public function setInstagram($instagram) {
-		$this->instagram = $instagram;
-	}
-
-	public function getInstagram() {
-		return $this->instagram;
-	}
-
 	// MarkerIcon /////
 
 	public function getMarkerIcon() {
@@ -635,422 +535,301 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		return 'none';
 	}
 
+	// DEPRECATED /////
+
+	// Banner /////
+
+	public function getDeprecatedBanner() {
+		return $this->banner;
+	}
+
+	// Website /////
+
+	public function getDeprecatedWebsite() {
+		return $this->website;
+	}
+
+	// Facebook /////
+
+	public function getDeprecatedFacebook() {
+		return $this->facebook;
+	}
+
+	// Twitter /////
+
+	public function getDeprecatedTwitter() {
+		return $this->twitter;
+	}
+
+	// GooglePlus /////
+
+	public function getDeprecatedGoogleplus() {
+		return $this->googleplus;
+	}
+
+	// YouTube /////
+
+	public function getDeprecatedYoutube() {
+		return $this->youtube;
+	}
+
+	// Vimeo /////
+
+	public function getDeprecatedVimeo() {
+		return $this->vimeo;
+	}
+
+	// Dailymotion /////
+
+	public function getDeprecatedDailymotion() {
+		return $this->dailymotion;
+	}
+
+	// Pinterest /////
+
+	public function getDeprecatedPinterest() {
+		return $this->pinterest;
+	}
+
+	// Instagram /////
+
+	public function getDeprecatedInstagram() {
+		return $this->instagram;
+	}
+
 	// Skills /////
 
-	public function addSkill(\Ladb\CoreBundle\Entity\Input\Skill $skill) {
-		$this->skills[] = $skill;
-		return $this;
-	}
-
-	public function removeSkill(\Ladb\CoreBundle\Entity\Input\Skill $skill) {
-		$this->skills->removeElement($skill);
-	}
-
-	public function getSkills() {
+	public function getDeprecatedSkills() {
 		return $this->skills;
 	}
 
 	// Biography /////
 
-	public function setBiography(\Ladb\CoreBundle\Entity\Core\Biography $biography = null) {
-		$this->biography = $biography;
-	}
-
-	public function getBiography() {
+	public function getDeprecatedBiography() {
 		return $this->biography;
 	}
 
 	// AutoWatchEnabled /////
 
-    public function setAutoWatchEnabled($autoWatchEnabled) {
-        $this->autoWatchEnabled = $autoWatchEnabled;
-		return $this;
-    }
-
-    public function getAutoWatchEnabled() {
+    public function getDeprecatedAutoWatchEnabled() {
         return $this->autoWatchEnabled;
     }
 
 	// IncomingMessageEmailNotificationEnabled /////
 
-	public function setIncomingMessageEmailNotificationEnabled($incomingMessageEmailNotificationEnabled) {
-		$this->incomingMessageEmailNotificationEnabled = $incomingMessageEmailNotificationEnabled;
-		return $this;
-	}
-
-	public function getIncomingMessageEmailNotificationEnabled() {
+	public function getDeprecatedIncomingMessageEmailNotificationEnabled() {
 		return $this->incomingMessageEmailNotificationEnabled;
 	}
 
 	// NewFollowerEmailNotificationEnabled /////
 
-	public function setNewFollowerEmailNotificationEnabled($newFollowerEmailNotificationEnabled) {
-		$this->newFollowerEmailNotificationEnabled = $newFollowerEmailNotificationEnabled;
-		return $this;
-	}
-
-	public function getNewFollowerEmailNotificationEnabled() {
+	public function getDeprecatedNewFollowerEmailNotificationEnabled() {
 		return $this->newFollowerEmailNotificationEnabled;
 	}
 
 	// NewLikeEmailNotificationEnabled /////
 
-	public function setNewLikeEmailNotificationEnabled($newLikeEmailNotificationEnabled) {
-		$this->newLikeEmailNotificationEnabled = $newLikeEmailNotificationEnabled;
-		return $this;
-	}
-
-	public function getNewLikeEmailNotificationEnabled() {
+	public function getDeprecatedNewLikeEmailNotificationEnabled() {
 		return $this->newLikeEmailNotificationEnabled;
 	}
 
 	// NewVoteEmailNotificationEnabled /////
 
-	public function setNewVoteEmailNotificationEnabled($newVoteEmailNotificationEnabled) {
-		$this->newVoteEmailNotificationEnabled = $newVoteEmailNotificationEnabled;
-		return $this;
-	}
-
-	public function getNewVoteEmailNotificationEnabled() {
+	public function getDeprecatedNewVoteEmailNotificationEnabled() {
 		return $this->newVoteEmailNotificationEnabled;
 	}
 
 	// NewFollowingPostEmailNotificationEnabled /////
 
-	public function setNewFollowingPostEmailNotificationEnabled($newPostEmailNotificationEnabled) {
-		$this->newFollowingPostEmailNotificationEnabled = $newPostEmailNotificationEnabled;
-		return $this;
-	}
-
-	public function getNewFollowingPostEmailNotificationEnabled() {
+	public function getDeprecatedNewFollowingPostEmailNotificationEnabled() {
 		return $this->newFollowingPostEmailNotificationEnabled;
 	}
 
 	// NewWatchActivityEmailNotificationEnabled /////
 
-	public function setNewWatchActivityEmailNotificationEnabled($newCommentEmailNotificationEnabled) {
-		$this->newWatchActivityEmailNotificationEnabled = $newCommentEmailNotificationEnabled;
-		return $this;
-	}
-
-	public function getNewWatchActivityEmailNotificationEnabled() {
+	public function getDeprecatedNewWatchActivityEmailNotificationEnabled() {
 		return $this->newWatchActivityEmailNotificationEnabled;
 	}
 
 	// NewSpotlightEmailNotificationEnabled /////
 
-	public function setNewSpotlightEmailNotificationEnabled($newSpotlightEmailNotificationEnabled) {
-		$this->newSpotlightEmailNotificationEnabled = $newSpotlightEmailNotificationEnabled;
-		return $this;
-	}
-
-	public function getNewSpotlightEmailNotificationEnabled() {
+	public function getDeprecatedNewSpotlightEmailNotificationEnabled() {
 		return $this->newSpotlightEmailNotificationEnabled;
 	}
 
 	// WeekNewsEmailNotificationEnabled /////
 
-	public function setWeekNewsEmailEnabled($weekNewsEmailEnabled) {
-		$this->weekNewsEmailEnabled = $weekNewsEmailEnabled;
-		return $this;
-	}
-
-	public function getWeekNewsEmailEnabled() {
+	public function getDeprecatedWeekNewsEmailEnabled() {
 		return $this->weekNewsEmailEnabled;
 	}
 
 	// FollowerCount /////
 
-	public function incrementFollowerCount($by = 1) {
-		return $this->followerCount += intval($by);
-	}
-
-	public function getFollowerCount() {
+	public function getDeprecatedFollowerCount() {
 		return $this->followerCount;
 	}
 
 	// FollowingCount /////
 
-	public function incrementFollowingCount($by = 1) {
-		return $this->followingCount += intval($by);
-	}
-
-	public function getFollowingCount() {
+	public function getDeprecatedFollowingCount() {
 		return $this->followingCount;
 	}
 
 	// RecievedLikeCount /////
 
-	public function incrementRecievedLikeCount($by = 1) {
-		return $this->recievedLikeCount += intval($by);
-	}
-
-	public function getRecievedLikeCount() {
+	public function getDeprecatedRecievedLikeCount() {
 		return $this->recievedLikeCount;
 	}
 
 	// SentLikeCount /////
 
-	public function incrementSentLikeCount($by = 1) {
-		return $this->sentLikeCount += intval($by);
-	}
-
-	public function getSentLikeCount() {
+	public function getDeprecatedSentLikeCount() {
 		return $this->sentLikeCount;
 	}
 
 	// PositiveVoteCount /////
 
-	public function incrementPositiveVoteCount($by = 1) {
-		return $this->positiveVoteCount += intval($by);
-	}
-
-	public function getPositiveVoteCount() {
+	public function getDeprecatedPositiveVoteCount() {
 		return $this->positiveVoteCount;
 	}
 
 	// NegativeVoteCount /////
 
-	public function incrementNegativeVoteCount($by = 1) {
-		return $this->negativeVoteCount += intval($by);
-	}
-
-	public function getNegativeVoteCount() {
+	public function getDeprecatedNegativeVoteCount() {
 		return $this->negativeVoteCount;
 	}
 
 	// UnreadMessageCount /////
 
-	public function incrementUnreadMessageCount($by = 1) {
-		return $this->unreadMessageCount += intval($by);
-	}
-
-	public function getUnreadMessageCount() {
+	public function getDeprecatedUnreadMessageCount() {
 		return $this->unreadMessageCount;
 	}
 
 	// FreshNotificationCount /////
 
-	public function setFreshNotificationCount($freshNotificationCount) {
-		$this->freshNotificationCount = $freshNotificationCount;
-		return $this;
-	}
-
-	public function incrementFreshNotificationCount($by = 1) {
-		return $this->freshNotificationCount += intval($by);
-	}
-
-	public function getFreshNotificationCount() {
+	public function getDeprecatedFreshNotificationCount() {
 		return $this->freshNotificationCount;
 	}
 
 	// ContributionCount /////
 
-	public function incrementContributionCount($by = 1) {
-		return $this->contributionCount += intval($by);
-	}
-
-	public function getContributionCount() {
+	public function getDeprecatedContributionCount() {
 		return $this->contributionCount;
 	}
 
 	// CommentCount /////
 
-	public function incrementCommentCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->commentCount += intval($by);
-	}
-
-	public function getCommentCount() {
+	public function getDeprecatedCommentCount() {
 		return $this->commentCount;
 	}
 
 	// DraftCreationCount /////
 
-	public function incrementDraftCreationCount($by = 1) {
-		return $this->draftCreationCount += intval($by);
-	}
-
-	public function getDraftCreationCount() {
+	public function getDeprecatedDraftCreationCount() {
 		return $this->draftCreationCount;
 	}
 
 	// PublishedCreationCount /////
 
-	public function incrementPublishedCreationCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->publishedCreationCount += intval($by);
-	}
-
-	public function getPublishedCreationCount() {
+	public function getDeprecatedPublishedCreationCount() {
 		return $this->publishedCreationCount;
 	}
 
     // DraftPlanCount /////
 
-    public function incrementDraftPlanCount($by = 1) {
-        return $this->draftPlanCount += intval($by);
-    }
-
-    public function getDraftPlanCount() {
+    public function getDeprecatedDraftPlanCount() {
         return $this->draftPlanCount;
     }
 
     // PublishedPlanCount /////
 
-    public function incrementPublishedPlanCount($by = 1) {
-        $this->incrementContributionCount($by);
-        return $this->publishedPlanCount += intval($by);
-    }
-
-    public function getPublishedPlanCount() {
+    public function getDeprecatedPublishedPlanCount() {
         return $this->publishedPlanCount;
     }
 
     // DraftHowtoCount /////
 
-	public function incrementDraftHowtoCount($by = 1) {
-		return $this->draftHowtoCount += intval($by);
-	}
-
-	public function getDraftHowtoCount() {
+	public function getDeprecatedDraftHowtoCount() {
 		return $this->draftHowtoCount;
 	}
 
     // PublishedHowtoCount /////
 
-	public function incrementPublishedHowtoCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->publishedHowtoCount += intval($by);
-	}
-
-	public function getPublishedHowtoCount() {
+	public function getDeprecatedPublishedHowtoCount() {
 		return $this->publishedHowtoCount;
 	}
 
 	// DraftWorkshopCount /////
 
-	public function incrementDraftWorkshopCount($by = 1) {
-		return $this->draftWorkshopCount += intval($by);
-	}
-
-	public function getDraftWorkshopCount() {
+	public function getDeprecatedDraftWorkshopCount() {
 		return $this->draftWorkshopCount;
 	}
 
 	// PublishedWorkshopCount /////
 
-	public function incrementPublishedWorkshopCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->publishedWorkshopCount += intval($by);
-	}
-
-	public function getPublishedWorkshopCount() {
+	public function getDeprecatedPublishedWorkshopCount() {
 		return $this->publishedWorkshopCount;
 	}
 
 	// DraftFindCount /////
 
-	public function incrementDraftFindCount($by = 1) {
-		return $this->draftFindCount += intval($by);
-	}
-
-	public function getDraftFindCount() {
+	public function getDeprecatedDraftFindCount() {
 		return $this->draftFindCount;
 	}
 
 	// PublishedFindCount /////
 
-	public function incrementPublishedFindCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->publishedFindCount += intval($by);
-	}
-
-	public function getPublishedFindCount() {
+	public function getDeprecatedPublishedFindCount() {
 		return $this->publishedFindCount;
 	}
 
 	// DraftQuestionCount /////
 
-	public function incrementDraftQuestionCount($by = 1) {
-		return $this->draftQuestionCount += intval($by);
-	}
-
-	public function getDraftQuestionCount() {
+	public function getDeprecatedDraftQuestionCount() {
 		return $this->draftQuestionCount;
 	}
 
 	// PublishedQuestionCount /////
 
-	public function incrementPublishedQuestionCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->publishedQuestionCount += intval($by);
-	}
-
-	public function getPublishedQuestionCount() {
+	public function getDeprecatedPublishedQuestionCount() {
 		return $this->publishedQuestionCount;
 	}
 
 	// AnswerCount /////
 
-	public function incrementAnswerCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->answerCount += intval($by);
-	}
-
-	public function getAnswerCount() {
+	public function getDeprecatedAnswerCount() {
 		return $this->answerCount;
 	}
 
 	// DraftGraphicCount /////
 
-	public function incrementDraftGraphicCount($by = 1) {
-		return $this->draftGraphicCount += intval($by);
-	}
-
-	public function getDraftGraphicCount() {
+	public function getDeprecatedDraftGraphicCount() {
 		return $this->draftGraphicCount;
 	}
 
 	// PublishedGraphicCount /////
 
-	public function incrementPublishedGraphicCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->publishedGraphicCount += intval($by);
-	}
-
-	public function getPublishedGraphicCount() {
+	public function getDeprecatedPublishedGraphicCount() {
 		return $this->publishedGraphicCount;
 	}
 
 	// ProposalCount /////
 
-	public function incrementProposalCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->proposalCount += intval($by);
-	}
-
-	public function getProposalCount() {
+	public function getDeprecatedProposalCount() {
 		return $this->proposalCount;
 	}
 
 	// TestimonialCount /////
 
-	public function incrementTestimonialCount($by = 1) {
-		$this->incrementContributionCount($by);
-		return $this->testimonialCount += intval($by);
-	}
-
-	public function getTestimonialCount() {
+	public function getDeprecatedTestimonialCount() {
 		return $this->testimonialCount;
 	}
 
 	// Meta /////
 
 	public function getMeta() {
-		if ($this->meta === null) {
+		if (is_null($this->meta)) {
 			$this->meta = new UserMeta();
-			$this->meta->setUser($this);
 		}
 		return $this->meta;
 	}

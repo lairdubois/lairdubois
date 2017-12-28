@@ -12,8 +12,8 @@ class PlanManager extends AbstractWonderManager {
 
 	public function publish(Plan $plan, $flush = true) {
 
-		$plan->getUser()->incrementDraftPlanCount(-1);
-		$plan->getUser()->incrementPublishedPlanCount();
+		$plan->getUser()->getMeta()->incrementPrivatePlanCount(-1);
+		$plan->getUser()->getMeta()->incrementPublicPlanCount();
 
 		// Creations counter update
 		foreach ($plan->getCreations() as $creation) {
@@ -40,8 +40,8 @@ class PlanManager extends AbstractWonderManager {
 
 	public function unpublish(Plan $plan, $flush = true) {
 
-		$plan->getUser()->incrementDraftPlanCount(1);
-		$plan->getUser()->incrementPublishedPlanCount(-1);
+		$plan->getUser()->getMeta()->incrementPrivatePlanCount(1);
+		$plan->getUser()->getMeta()->incrementPublicPlanCount(-1);
 
 		// Creations counter update
 		foreach ($plan->getCreations() as $creation) {
@@ -70,9 +70,9 @@ class PlanManager extends AbstractWonderManager {
 
 		// Decrement user plan count
 		if ($plan->getIsDraft()) {
-			$plan->getUser()->incrementDraftPlanCount(-1);
+			$plan->getUser()->getMeta()->incrementPrivatePlanCount(-1);
 		} else {
-			$plan->getUser()->incrementPublishedPlanCount(-1);
+			$plan->getUser()->getMeta()->incrementPublicPlanCount(-1);
 		}
 
 		// Unlink creations

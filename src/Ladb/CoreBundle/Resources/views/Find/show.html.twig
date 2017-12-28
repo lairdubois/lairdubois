@@ -225,7 +225,7 @@
                         {% include 'LadbCoreBundle:Find:_thumbnail-link.part.html.twig' with { 'find':userFind } %}
                     </div>
                 {% endfor %}
-                {% if find.user.publishedFindCount > 2 %}
+                {% if find.user.meta.publicFindCount > 2 %}
                     <div class="col-xs-12 ladb-margin-top">
                         <a href="{{ path('core_user_show_finds', { 'username':find.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
                     </div>

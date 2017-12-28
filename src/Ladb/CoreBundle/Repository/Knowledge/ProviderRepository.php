@@ -70,8 +70,9 @@ class ProviderRepository extends AbstractKnowledgeRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p' ))
+			->select(array( 'p', 'mp' ))
 			->from($this->getEntityName(), 'p')
+			->leftJoin('p.mainPicture', 'mp')
 			->where($queryBuilder->expr()->in('p.id', $ids))
 		;
 

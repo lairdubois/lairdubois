@@ -74,6 +74,11 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	private $body;
 
 	/**
+	 * @ORM\Column(type="string", length=255, nullable=false)
+	 */
+	private $bodyExtract;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_faq_question_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})

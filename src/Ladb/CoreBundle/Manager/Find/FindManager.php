@@ -14,16 +14,16 @@ class FindManager extends AbstractPublicationManager {
 
 	public function publish(Find $find, $flush = true) {
 
-		$find->getUser()->incrementDraftFindCount(-1);
-		$find->getUser()->incrementPublishedFindCount();
+		$find->getUser()->getMeta()->incrementPrivateFindCount(-1);
+		$find->getUser()->getMeta()->incrementPublicFindCount();
 
 		parent::publishPublication($find, $flush);
 	}
 
 	public function unpublish(Find $find, $flush = true) {
 
-		$find->getUser()->incrementDraftFindCount(1);
-		$find->getUser()->incrementPublishedFindCount(-1);
+		$find->getUser()->getMeta()->incrementPrivateFindCount(1);
+		$find->getUser()->getMeta()->incrementPublicFindCount(-1);
 
 		parent::unpublishPublication($find, $flush);
 	}
@@ -32,9 +32,9 @@ class FindManager extends AbstractPublicationManager {
 
 		// Decrement user find count
 		if ($find->getIsDraft()) {
-			$find->getUser()->incrementDraftFindCount(-1);
+			$find->getUser()->getMeta()->incrementPrivateFindCount(-1);
 		} else {
-			$find->getUser()->incrementPublishedFindCount(-1);
+			$find->getUser()->getMeta()->incrementPublicFindCount(-1);
 		}
 
 		// Delete joins

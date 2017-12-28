@@ -23,8 +23,8 @@ class CreationManager extends AbstractWonderManager {
 
 	public function publish(Creation $creation, $flush = true) {
 
-		$creation->getUser()->incrementDraftCreationCount(-1);
-		$creation->getUser()->incrementPublishedCreationCount();
+		$creation->getUser()->getMeta()->incrementPrivateCreationCount(-1);
+		$creation->getUser()->getMeta()->incrementPublicCreationCount();
 
 		// Plans counter update
 		foreach ($creation->getPlans() as $plan) {
@@ -51,8 +51,8 @@ class CreationManager extends AbstractWonderManager {
 
 	public function unpublish(Creation $creation, $flush = true) {
 
-		$creation->getUser()->incrementDraftCreationCount(1);
-		$creation->getUser()->incrementPublishedCreationCount(-1);
+		$creation->getUser()->getMeta()->incrementPrivateCreationCount(1);
+		$creation->getUser()->getMeta()->incrementPublicCreationCount(-1);
 
 		// Plans counter update
 		foreach ($creation->getPlans() as $plan) {
@@ -86,9 +86,9 @@ class CreationManager extends AbstractWonderManager {
 
 		// Decrement user creation count
 		if ($creation->getIsDraft()) {
-			$creation->getUser()->incrementDraftCreationCount(-1);
+			$creation->getUser()->getMeta()->incrementPrivateCreationCount(-1);
 		} else {
-			$creation->getUser()->incrementPublishedCreationCount(-1);
+			$creation->getUser()->getMeta()->incrementPublicCreationCount(-1);
 		}
 
 		// Unlink plans
@@ -166,7 +166,7 @@ class CreationManager extends AbstractWonderManager {
 
 		// User counter
 		if ($workshop->getIsDraft()) {
-			$workshop->getUser()->incrementDraftWorkshopCount(1);
+			$workshop->getUser()->getMeta()->incrementPrivateWorkshopCount(1);
 		} else {
 			$workshop->getUser()->incrementPublishedWorkshopCount(1);
 		}
@@ -281,9 +281,9 @@ class CreationManager extends AbstractWonderManager {
 
 		// User counter
 		if ($howto->getIsDraft()) {
-			$howto->getUser()->incrementDraftHowtoCount(1);
+			$howto->getUser()->getMeta()->incrementPrivateHowtoCount(1);
 		} else {
-			$howto->getUser()->incrementPublishedHowtoCount(1);
+			$howto->getUser()->getMeta()->incrementPublicHowtoCount(1);
 		}
 
 		// Transfer views
@@ -367,9 +367,9 @@ class CreationManager extends AbstractWonderManager {
 
 		// User counter
 		if ($find->getIsDraft()) {
-			$find->getUser()->incrementDraftFindCount(1);
+			$find->getUser()->getMeta()->incrementPrivateFindCount(1);
 		} else {
-			$find->getUser()->incrementPublishedFindCount(1);
+			$find->getUser()->getMeta()->incrementPublicFindCount(1);
 		}
 
 		// Transfer views

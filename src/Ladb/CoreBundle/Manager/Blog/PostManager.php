@@ -12,14 +12,10 @@ class PostManager extends AbstractPublicationManager {
 	/////
 
 	public function publish(Post $post, $flush = true) {
-
-
 		parent::publishPublication($post, $flush);
 	}
 
 	public function unpublish(Post $post, $flush = true) {
-
-
 		parent::unpublishPublication($post, $flush);
 	}
 

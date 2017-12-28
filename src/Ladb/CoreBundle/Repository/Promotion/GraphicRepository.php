@@ -32,10 +32,13 @@ class GraphicRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'g', 'u', 'mp' ))
+			->select(array( 'g', 'u', 'uav', 'mp', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'g')
 			->innerJoin('g.user', 'u')
+			->innerJoin('u.avatar', 'uav')
 			->innerJoin('g.mainPicture', 'mp')
+			->innerJoin('g.tags', 'tgs')
+			->innerJoin('g.license', 'l')
 			->where('g.id = :id')
 			->setParameter('id', $id)
 		;
@@ -126,6 +129,25 @@ class GraphicRepository extends AbstractEntityRepository {
 
 		try {
 			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	/////
+
+	public function findByIds(array $ids) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'g', 'u', 'mp' ))
+			->from($this->getEntityName(), 'g')
+			->innerJoin('g.user', 'u')
+			->innerJoin('g.mainPicture', 'mp')
+			->where($queryBuilder->expr()->in('g.id', $ids))
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}

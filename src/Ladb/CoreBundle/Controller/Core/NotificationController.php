@@ -47,7 +47,7 @@ class NotificationController extends Controller {
 
 		// Reset user fresh notification count (only for default route)
 		if ($page == 0 && $filter == "recent") {
-			$this->getUser()->setFreshNotificationCount(0);
+			$this->getUser()->getMeta()->setFreshNotificationCount(0);
 		}
 
 		$om->flush();

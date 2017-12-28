@@ -4,9 +4,9 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
@@ -88,6 +88,16 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	private $kind = Find::KIND_NONE;
 
 	/**
+	 * @ORM\Column(type="text", nullable=false)
+	 */
+	private $body;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=false)
+	 */
+	private $bodyExtract;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_find_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
@@ -104,11 +114,6 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	 * @ORM\Column(type="integer", name="body_block_video_count")
 	 */
 	private $bodyBlockVideoCount = 0;
-
-	/**
-	 * @ORM\Column(type="text", nullable=false)
-	 */
-	private $body;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})

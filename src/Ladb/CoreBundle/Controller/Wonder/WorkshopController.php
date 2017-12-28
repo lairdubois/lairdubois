@@ -77,7 +77,7 @@ class WorkshopController extends Controller {
 
 			$workshop->setUser($this->getUser());
 			$workshop->setMainPicture($workshop->getPictures()->first());
-			$this->getUser()->incrementDraftWorkshopCount();
+			$this->getUser()->getMeta()->incrementPrivateWorkshopCount();
 
 			$om->persist($workshop);
 			$om->flush();
@@ -761,10 +761,10 @@ class WorkshopController extends Controller {
 			return $this->render('LadbCoreBundle:Wonder/Workshop:list-xhr.html.twig', $parameters);
 		}
 
-		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getDraftWorkshopCount() > 0) {
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateWorkshopCount() > 0) {
 
 			$draftPath = $this->generateUrl('core_workshop_list', array( 'q' => '@mine:draft' ));
-			$draftCount = $this->getUser()->getDraftWorkshopCount();
+			$draftCount = $this->getUser()->getMeta()->getPrivateWorkshopCount();
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('wonder.workshop.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
@@ -833,7 +833,7 @@ class WorkshopController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($workshop));
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
-		$userWorkshops = $explorableUtils->getPreviousAndNextPublishedUserExplorables($workshop, $workshopRepository, $workshop->getUser()->getPublishedWorkshopCount());
+		$userWorkshops = $explorableUtils->getPreviousAndNextPublishedUserExplorables($workshop, $workshopRepository, $workshop->getUser()->getMeta()->getPublicWorkshopCount());
 		$similarWorkshops = $explorableUtils->getSimilarExplorables($workshop, 'fos_elastica.index.ladb.wonder_workshop', Workshop::CLASS_NAME, $userWorkshops);
 
 		$likableUtils = $this->get(LikableUtils::NAME);

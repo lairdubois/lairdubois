@@ -6,6 +6,7 @@ use Elastica\Query\Exists;
 use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
 use Ladb\CoreBundle\Entity\Promotion\Graphic;
 use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -257,7 +258,7 @@ class UserController extends Controller {
 			if ($form->isValid()) {
 
 				$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
-				$fieldPreprocessorUtils->preprocessFields($user->getBiography());
+				$fieldPreprocessorUtils->preprocessFields($user->getMeta()->getBiography());
 
 				// Geocode location
 				$localisableUtils = $this->get(LocalisableUtils::NAME);
@@ -372,7 +373,6 @@ class UserController extends Controller {
 
 		return array(
 			'user'            => $user,
-			'biography'       => $user->getBiography(),
 			'tab'             => 'about',
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 			'hasMap'          => !is_null($user->getLatitude()) && !is_null($user->getLongitude()),
@@ -404,7 +404,7 @@ class UserController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$items = $likeRepository->findPaginedByUser($user, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_likes_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $filter == 'recieved' ? $user->getRecievedLikeCount() : $user->getSentLikeCount());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_likes_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $filter == 'recieved' ? $user->getMeta()->getRecievedLikeCount() : $user->getMeta()->getSentLikeCount());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -886,6 +886,64 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * @Route("/{username}/processus", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workflows")
+	 * @Route("/{username}/processus/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workflows_filter")
+	 * @Route("/{username}/processus/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workflows_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showWorkflows.html.twig")
+	 */
+	public function showWorkflowsAction(Request $request, $username, $filter = null, $page = 0) {
+		$userManager = $this->get('fos_user.user_manager');
+
+		$user = $userManager->findUserByUsername($username);
+		if (is_null($user)) {
+			throw $this->createNotFoundException('User not found');
+		}
+		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('User not enabled');
+		}
+
+		// Default filter
+
+		if (is_null($filter)) {
+			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+				$filter = 'recent';
+			} else {
+				$filter = 'popular-likes';
+			}
+		}
+
+		// Workflows
+
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workflowRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_workflows_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'workflows'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => 'workflows',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
 	 * @Route("/{username}/abonnements", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_following")
 	 * @Route("/{username}/abonnements/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_following_filter")
 	 * @Route("/{username}/abonnements/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_following_filter_page")
@@ -1006,15 +1064,15 @@ class UserController extends Controller {
 			throw $this->createNotFoundException('User not enabled');
 		}
 
-		if ($user->getPublishedCreationCount() > 0) {
+		if ($user->getMeta()->getPublicCreationCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showCreations';
-		} else if ($user->getPublishedPlanCount() > 0) {
+		} else if ($user->getMeta()->getPublicPlanCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showPlans';
-		} else if ($user->getPublishedHowtoCount() > 0) {
+		} else if ($user->getMeta()->getPublicHowtoCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showHowtos';
-		} else if ($user->getPublishedWorkshopCount() > 0) {
+		} else if ($user->getMeta()->getPublicWorkshopCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showWorkshops';
-		} else if ($user->getPublishedFindCount() > 0) {
+		} else if ($user->getMeta()->getPublicFindCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showFinds';
 		} else {
 			$forwardController = 'LadbCoreBundle:Core/User:showAbout';

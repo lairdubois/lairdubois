@@ -30,7 +30,7 @@ class AnswerManager extends AbstractManager {
 		if (!$question->getIsDraft()) {
 
 			// Decrement user answer count
-			$answer->getUser()->incrementAnswerCount(-1);
+			$answer->getUser()->getMeta()->incrementAnswerCount(-1);
 
 		}
 
@@ -93,7 +93,7 @@ class AnswerManager extends AbstractManager {
 		// Comment counters
 
 		$question->incrementCommentCount();
-		$answer->getUser()->incrementCommentCount();
+		$answer->getUser()->getMeta()->incrementCommentCount();
 
 		$om->persist($comment);
 

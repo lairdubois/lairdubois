@@ -23,8 +23,8 @@ class WorkshopManager extends AbstractWonderManager {
 
 	public function publish(Workshop $workshop, $flush = true) {
 
-		$workshop->getUser()->incrementDraftWorkshopCount(-1);
-		$workshop->getUser()->incrementPublishedWorkshopCount();
+		$workshop->getUser()->getMeta()->incrementPrivateWorkshopCount(-1);
+		$workshop->getUser()->getMeta()->incrementPublicWorkshopCount();
 
 		// Plan counter update
 		foreach ($workshop->getPlans() as $plan) {
@@ -41,8 +41,8 @@ class WorkshopManager extends AbstractWonderManager {
 
 	public function unpublish(Workshop $workshop, $flush = true) {
 
-		$workshop->getUser()->incrementDraftWorkshopCount(1);
-		$workshop->getUser()->incrementPublishedWorkshopCount(-1);
+		$workshop->getUser()->getMeta()->incrementPrivateWorkshopCount(1);
+		$workshop->getUser()->getMeta()->incrementPublicWorkshopCount(-1);
 
 		// Plan counter update
 		foreach ($workshop->getPlans() as $plan) {
@@ -129,9 +129,9 @@ class WorkshopManager extends AbstractWonderManager {
 
 		// User counter
 		if ($howto->getIsDraft()) {
-			$howto->getUser()->incrementDraftHowtoCount(1);
+			$howto->getUser()->getMeta()->incrementPrivateHowtoCount(1);
 		} else {
-			$howto->getUser()->incrementPublishedHowtoCount(1);
+			$howto->getUser()->getMeta()->incrementPublicHowtoCount(1);
 		}
 
 		// Transfer views
@@ -176,9 +176,9 @@ class WorkshopManager extends AbstractWonderManager {
 
 		// Decrement user workshop count
 		if ($workshop->getIsDraft()) {
-			$workshop->getUser()->incrementDraftWorkshopCount(-1);
+			$workshop->getUser()->getMeta()->incrementPrivateWorkshopCount(-1);
 		} else {
-			$workshop->getUser()->incrementPublishedWorkshopCount(-1);
+			$workshop->getUser()->getMeta()->incrementPublicWorkshopCount(-1);
 		}
 
 		// Unlink plans

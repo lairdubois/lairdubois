@@ -23,11 +23,12 @@ class HowtoRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 'ars', 'pls', 'cts', 'wks' ))
+			->select(array( 'h', 'u', 'mp', 'ats', 'abbs', 'pls', 'cts', 'wks' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->innerJoin('h.mainPicture', 'mp')
-			->leftJoin('h.articles', 'ars')
+			->leftJoin('h.articles', 'ats')
+			->leftJoin('ats.bodyBlocks', 'abbs')
 			->leftJoin('h.plans', 'pls')
 			->leftJoin('h.creations', 'cts')
 			->leftJoin('h.workshops', 'wks')
@@ -131,10 +132,11 @@ class HowtoRepository extends AbstractEntityRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 't' ))
+			->select(array( 'h', 'u', 'mp', 'sp' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
-			->leftJoin('h.tags', 't')
+			->leftJoin('h.mainPicture', 'mp')
+			->leftJoin('h.spotlight', 'sp')
 			->where($queryBuilder->expr()->in('h.id', $ids))
 		;
 

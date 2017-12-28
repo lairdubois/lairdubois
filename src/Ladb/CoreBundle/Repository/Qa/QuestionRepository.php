@@ -134,6 +134,24 @@ class QuestionRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findByIds(array $ids) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->where($queryBuilder->expr()->in('q.id', $ids))
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	/////
+
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder

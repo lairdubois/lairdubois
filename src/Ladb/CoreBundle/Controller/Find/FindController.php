@@ -77,7 +77,7 @@ class FindController extends Controller {
 			$findUtils->generateMainPicture($find);
 
 			$find->setUser($this->getUser());
-			$this->getUser()->incrementDraftFindCount();
+			$this->getUser()->getMeta()->incrementPrivateFindCount();
 
 			$om->persist($find);
 			$om->flush();
@@ -511,10 +511,10 @@ class FindController extends Controller {
 			return $this->render('LadbCoreBundle:Find:list-xhr.html.twig', $parameters);
 		}
 
-		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getDraftFindCount() > 0) {
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateFindCount() > 0) {
 
 			$draftPath = $this->generateUrl('core_find_list', array( 'q' => '@mine:draft' ));
-			$draftCount = $this->getUser()->getDraftFindCount();
+			$draftCount = $this->getUser()->getMeta()->getPrivateFindCount();
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->transchoice('find.find.choice.draft_alert', $draftCount, array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
@@ -535,7 +535,7 @@ class FindController extends Controller {
 
 		$id = intval($id);
 
-		$find = $findRepository->findOneById($id);
+		$find = $findRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($find)) {
 			if ($response = $witnessManager->checkResponse(Find::TYPE, $id)) {
 				return $response;
@@ -556,7 +556,7 @@ class FindController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($find));
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
-		$userFinds = $explorableUtils->getPreviousAndNextPublishedUserExplorables($find, $findRepository, $find->getUser()->getPublishedFindCount());
+		$userFinds = $explorableUtils->getPreviousAndNextPublishedUserExplorables($find, $findRepository, $find->getUser()->getMeta()->getPublicFindCount());
 		$similarFinds = $explorableUtils->getSimilarExplorables($find, 'fos_elastica.index.ladb.find_find', Find::CLASS_NAME, $userFinds);
 
 		$likableUtils = $this->get(LikableUtils::NAME);

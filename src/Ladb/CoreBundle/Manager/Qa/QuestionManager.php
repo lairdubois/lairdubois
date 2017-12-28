@@ -17,8 +17,8 @@ class QuestionManager extends AbstractPublicationManager {
 
 	public function publish(Question $question, $flush = true) {
 
-		$question->getUser()->incrementDraftQuestionCount(-1);
-		$question->getUser()->incrementPublishedQuestionCount();
+		$question->getUser()->getMeta()->incrementPrivateQuestionCount(-1);
+		$question->getUser()->getMeta()->incrementPublicQuestionCount();
 
 		foreach ($question->getAnswers() as $answer) {
 
@@ -40,8 +40,8 @@ class QuestionManager extends AbstractPublicationManager {
 
 	public function unpublish(Question $question, $flush = true) {
 
-		$question->getUser()->incrementDraftQuestionCount(1);
-		$question->getUser()->incrementPublishedQuestionCount(-1);
+		$question->getUser()->getMeta()->incrementPrivateQuestionCount(1);
+		$question->getUser()->getMeta()->incrementPublicQuestionCount(-1);
 
 		foreach ($question->getAnswers() as $answer) {
 
@@ -65,9 +65,9 @@ class QuestionManager extends AbstractPublicationManager {
 
 		// Decrement user creation count
 		if ($question->getIsDraft()) {
-			$question->getUser()->incrementDraftQuestionCount(-1);
+			$question->getUser()->getMeta()->incrementPrivateQuestionCount(-1);
 		} else {
-			$question->getUser()->incrementPublishedQuestionCount(-1);
+			$question->getUser()->getMeta()->incrementPublicQuestionCount(-1);
 		}
 
 		$answerManager = $this->get(AnswerManager::NAME);

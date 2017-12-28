@@ -13,16 +13,16 @@ class GraphicManager extends AbstractPublicationManager {
 
 	public function publish(Graphic $graphic, $flush = true) {
 
-		$graphic->getUser()->incrementDraftGraphicCount(-1);
-		$graphic->getUser()->incrementPublishedGraphicCount();
+		$graphic->getUser()->getMeta()->incrementPrivateGraphicCount(-1);
+		$graphic->getUser()->getMeta()->incrementPublicGraphicCount();
 
 		parent::publishPublication($graphic, $flush);
 	}
 
 	public function unpublish(Graphic $graphic, $flush = true) {
 
-		$graphic->getUser()->incrementDraftGraphicCount(1);
-		$graphic->getUser()->incrementPublishedGraphicCount(-1);
+		$graphic->getUser()->getMeta()->incrementPrivateGraphicCount(1);
+		$graphic->getUser()->getMeta()->incrementPublicGraphicCount(-1);
 
 		parent::unpublishPublication($graphic, $flush);
 	}
@@ -31,9 +31,9 @@ class GraphicManager extends AbstractPublicationManager {
 
 		// Decrement user graphic count
 		if ($graphic->getIsDraft()) {
-			$graphic->getUser()->incrementDraftGraphicCount(-1);
+			$graphic->getUser()->getMeta()->incrementPrivateGraphicCount(-1);
 		} else {
-			$graphic->getUser()->incrementPublishedGraphicCount(-1);
+			$graphic->getUser()->getMeta()->incrementPublicGraphicCount(-1);
 		}
 
 		parent::deletePublication($graphic, $withWitness, $flush);

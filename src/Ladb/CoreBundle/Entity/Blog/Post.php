@@ -69,6 +69,11 @@ class Post extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	private $body;
 
 	/**
+	 * @ORM\Column(type="string", length=255, nullable=false)
+	 */
+	private $bodyExtract;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
 	 * @ORM\JoinTable(name="tbl_blog_post_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true)})
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})

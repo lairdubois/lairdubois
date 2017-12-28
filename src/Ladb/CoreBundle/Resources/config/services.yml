@@ -468,6 +468,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_usermetasettings:
+    class: Ladb\CoreBundle\Form\Type\UserMetaSettingsType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_youtook_new_took:
     class: Ladb\CoreBundle\Form\Type\Youtook\NewTookType
     tags:

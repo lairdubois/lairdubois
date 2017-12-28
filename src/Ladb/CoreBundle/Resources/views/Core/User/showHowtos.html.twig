@@ -25,9 +25,9 @@
             {% block filterbarRightContent%}
                 <span class="ladb-heading">
                     {% if filter == 'draft' and isDraftVisible %}
-                        {{ user.draftHowtoCount~' '~('default.choice.draft'|transchoice(user.draftHowtoCount)) }}
+                        {{ user.meta.privateHowtoCount~' '~('default.choice.draft'|transchoice(user.meta.privateHowtoCount)) }}
                     {% else %}
-                        {{ user.publishedHowtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(user.publishedHowtoCount) }}{% if isDraftVisible and user.draftHowtoCount > 0 %} (+{{ user.draftHowtoCount~' '~('default.choice.draft'|transchoice(user.draftHowtoCount)) }}){% endif %}
+                        {{ user.meta.publicHowtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(user.meta.publicHowtoCount) }}{% if isDraftVisible and user.meta.privateHowtoCount > 0 %} (+{{ user.meta.privateHowtoCount~' '~('default.choice.draft'|transchoice(user.meta.privateHowtoCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

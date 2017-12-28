@@ -35,7 +35,7 @@
                         {% endif %}
                     </div>
                 {% endblock %}
-                <div class="ladb-body">{% block body %}{{ entity.bodyExtract|striptags|ladb_truncate_at|truncate(180, true, ' [...]') }}{% endblock %}</div>
+                <div class="ladb-body">{% block body %}{{ entity.bodyExtract }}{% endblock %}</div>
                 <ul class="ladb-counters">
                     {% block entityMetas %}
                         {% if entity.viewCount is defined and entity.viewCount > 0 %}

@@ -8,7 +8,7 @@
         {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.by'|trans()))~' '~entity.user.displayname %}
     {% endif %}
     {% if pageDescription is not defined and entity.bodyExtract is defined and entity.bodyExtract is not empty %}
-        {% set pageDescription = entity.bodyExtract|striptags|truncate(200, true, '...') %}
+        {% set pageDescription = entity.bodyExtract %}
     {% endif %}
     {% if entity.user is defined %}
         {% set pageAuthor = entity.user.displayname %}

@@ -445,7 +445,7 @@
                         {% include 'LadbCoreBundle:Howto/Howto:_thumbnail-link.part.html.twig' with { 'howto':userHowto } %}
                     </div>
                 {% endfor %}
-                {% if howto.user.publishedHowtoCount > 2 %}
+                {% if howto.user.meta.publicHowtoCount > 2 %}
                     <div class="col-xs-12 ladb-margin-top">
                         <a href="{{ path('core_user_show_howtos', { 'username':howto.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
                     </div>

@@ -75,7 +75,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 		if (is_null($repository)) {
 			throw new \Exception('Unknow Typable - Bad type (type='.$type.', id='.$id.').');
 		}
-		$typable = $repository->findOneById($id);
+		$typable = $repository->findOneByIdJoinedOn($id, $repository->getDefaultJoinOptions());
 		if (is_null($typable)) {
 			throw new \Exception('Unknow Typable - Bad id (type='.$type.', id='.$id.').');
 		}

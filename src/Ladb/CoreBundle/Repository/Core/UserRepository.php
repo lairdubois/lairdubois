@@ -36,8 +36,10 @@ class UserRepository extends AbstractEntityRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'u' ))
+			->select(array( 'u', 'av', 'm' ))
 			->from($this->getEntityName(), 'u')
+			->innerJoin('u.avatar', 'av')
+			->leftJoin('u.meta', 'm')
 			->where($queryBuilder->expr()->in('u.id', $ids))
 		;
 

@@ -4,8 +4,8 @@
 
 {% set pageTitle = user.displayName %}
 {% set pageContentItemType = 'Person' %}
-{% if user.biography is not null and user.biography.htmlBody|length > 0 %}
-    {% set pageDescription = user.biography.htmlBody|striptags|truncate(200, true, '...') %}
+{% if user.meta.biography is not null and user.meta.biography.htmlBody|length > 0 %}
+    {% set pageDescription = user.meta.biography.htmlBody|striptags|truncate(200, true, '...') %}
 {% endif %}
 {% if user.avatar is not null %}
     {% set pageImage = 'http://www.lairdubois.fr'~(user.avatar.webPath|imagine_filter('400x400o')) %}
@@ -17,7 +17,7 @@
 {% set searchPath = path('core_user_list') %}
 {% set isOwner = is_granted("ROLE_USER") and app.user.id == user.id %}
 {% set isDraftVisible = is_granted("ROLE_ADMIN") or isOwner %}
-{% set hasBanner = user.banner is not null %}
+{% set hasBanner = user.meta.banner is not null %}
 {% set topbarTranslucent = hasBanner %}
 {% set noStickyHeader = true %}
 
@@ -42,8 +42,8 @@
 {% endblock %}
 
 {% block bodyHeaderContainer %}
-    {% if user.banner is not null %}
-        <div class="ladb-user-banner" style="background-image: url({{ user.banner.webPath|imagine_filter('800x800i') }}); background-position: {{ user.banner.centerX100 }}% {{ user.banner.centerY100 }}%;"></div>
+    {% if user.meta.banner is not null %}
+        <div class="ladb-user-banner" style="background-image: url({{ user.meta.banner.webPath|imagine_filter('800x800i') }}); background-position: {{ user.meta.banner.centerX100 }}% {{ user.meta.banner.centerY100 }}%;"></div>
     {% endif %}
     {{ parent() }}
 {% endblock %}
@@ -78,22 +78,22 @@
             <a href="{{ path('core_user_show_about', { 'username':user.usernameCanonical }) }}">{{ 'user.about'|trans() }}</a>
         </li>
         <li{% if tab == 'creations' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'wonder.creation.choice.creations'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedCreationCount > 0 %} badge-black{% endif %}">{{ user.publishedCreationCount }}</span>{% if isDraftVisible and user.draftCreationCount > 0 %} <span class="badge badge-warning">+{{ user.draftCreationCount }}</span>{% endif %}</a>
+            <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'wonder.creation.choice.creations'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicCreationCount > 0 %} badge-black{% endif %}">{{ user.meta.publicCreationCount }}</span>{% if isDraftVisible and user.meta.privateCreationCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateCreationCount }}</span>{% endif %}</a>
         </li>
         <li{% if tab == 'questions' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{{ 'qa.question.choice.questions'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedQuestionCount > 0 %} badge-black{% endif %}">{{ user.publishedQuestionCount }}</span>{% if isDraftVisible and user.draftQuestionCount > 0 %} <span class="badge badge-warning">+{{ user.draftQuestionCount }}</span>{% endif %}</a>
+            <a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{{ 'qa.question.choice.questions'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicQuestionCount > 0 %} badge-black{% endif %}">{{ user.meta.publicQuestionCount }}</span>{% if isDraftVisible and user.meta.privateQuestionCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateQuestionCount }}</span>{% endif %}</a>
         </li>
         <li{% if tab == 'plans' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{{ 'wonder.plan.choice.plans'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedPlanCount > 0 %} badge-black{% endif %}">{{ user.publishedPlanCount }}</span>{% if isDraftVisible and user.draftPlanCount > 0 %} <span class="badge badge-warning">+{{ user.draftPlanCount }}</span>{% endif %}</a>
+            <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{{ 'wonder.plan.choice.plans'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicPlanCount > 0 %} badge-black{% endif %}">{{ user.meta.publicPlanCount }}</span>{% if isDraftVisible and user.meta.privatePlanCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privatePlanCount }}</span>{% endif %}</a>
         </li>
         <li{% if tab == 'howtos' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{{ 'howto.howto.choice.howtos'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedHowtoCount > 0 %} badge-black{% endif %}">{{ user.publishedHowtoCount }}</span>{% if isDraftVisible and user.draftHowtoCount > 0 %} <span class="badge badge-warning">+{{ user.draftHowtoCount }}</span>{% endif %}</a>
+            <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{{ 'howto.howto.choice.howtos'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicHowtoCount > 0 %} badge-black{% endif %}">{{ user.meta.publicHowtoCount }}</span>{% if isDraftVisible and user.meta.privateHowtoCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateHowtoCount }}</span>{% endif %}</a>
         </li>
         <li{% if tab == 'workshops' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{{ 'wonder.workshop.choice.workshops'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedWorkshopCount > 0 %} badge-black{% endif %}">{{ user.publishedWorkshopCount }}</span>{% if isDraftVisible and user.draftWorkshopCount > 0 %} <span class="badge badge-warning">+{{ user.draftWorkshopCount }}</span>{% endif %}</a>
+            <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{{ 'wonder.workshop.choice.workshops'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicWorkshopCount > 0 %} badge-black{% endif %}">{{ user.meta.publicWorkshopCount }}</span>{% if isDraftVisible and user.meta.privateWorkshopCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateWorkshopCount }}</span>{% endif %}</a>
         </li>
         <li{% if tab == 'finds' %} class="active"{% endif %}>
-            <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{{ 'find.find.choice.finds'|transchoice(2)|capitalize }} <span class="badge{% if user.publishedFindCount > 0 %} badge-black{% endif %}">{{ user.publishedFindCount }}</span>{% if isDraftVisible and user.draftFindCount > 0 %} <span class="badge badge-warning">+{{ user.draftFindCount }}</span>{% endif %}</a>
+            <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{{ 'find.find.choice.finds'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicFindCount > 0 %} badge-black{% endif %}">{{ user.meta.publicFindCount }}</span>{% if isDraftVisible and user.meta.privateFindCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateFindCount }}</span>{% endif %}</a>
         </li>
         {% if is_granted('ROLE_ADMIN') %}
             <li{% if tab == 'admin' %} class="active"{% endif %}>

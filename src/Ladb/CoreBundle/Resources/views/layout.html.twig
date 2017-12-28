@@ -31,15 +31,15 @@
             {% if is_granted("ROLE_USER") %}
                 <li class="ladb-hidden-mobile">
                     <a id="ladb_notification_btn" role="button" onclick="$('#notifications_modal').modal({ remote:'{{ path('core_notification_list') }}' }); $('#ladb_notification_badge').hide();">
-                        <i class="ladb-icon-notifications ladb-icon-lg"></i>{% if app.user.freshNotificationCount > 0 %} <span id="ladb_notification_badge" class="badge badge-notification badge-notification-important ladb-notification-btn-badge">{{ app.user.freshNotificationCount }}</span>{% endif %}
+                        <i class="ladb-icon-notifications ladb-icon-lg"></i>{% if app.user.meta.freshNotificationCount > 0 %} <span id="ladb_notification_badge" class="badge badge-notification badge-notification-important ladb-notification-btn-badge">{{ app.user.meta.freshNotificationCount }}</span>{% endif %}
                     </a>
                 </li>
                 <li class="ladb-hidden-mobile">
                     <a href="{{ path('core_message_mailbox') }}"{% if navSection is defined and navSection == 'messages' %} class="ladb-active"{% endif %}>
-                        <i class="ladb-icon-message ladb-icon-lg"></i>{% if app.user.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important ladb-notification-btn-badge">{{ app.user.unreadMessageCount }}</span>{% endif %}
+                        <i class="ladb-icon-message ladb-icon-lg"></i>{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important ladb-notification-btn-badge">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}
                     </a>
                 </li>
-                <li><a href="#ladb_offcanvas_logged_user_nav" data-uk-offcanvas><i class="ladb-icon-caret-left"></i> {% if app.user.unreadMessageCount > 0 or app.user.freshNotificationCount > 0 %}<span class="badge badge-notification badge-notification-important ladb-visible-mobile">{{ app.user.unreadMessageCount + app.user.freshNotificationCount }}</span>{% endif %}<span class="ladb-hidden-mobile"> {{ app.user.displayname }}</span> <img src="{{ (app.user.avatar ? app.user.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32" class="img-rounded"></a></li>
+                <li><a href="#ladb_offcanvas_logged_user_nav" data-uk-offcanvas><i class="ladb-icon-caret-left"></i> {% if app.user.meta.unreadMessageCount > 0 or app.user.meta.freshNotificationCount > 0 %}<span class="badge badge-notification badge-notification-important ladb-visible-mobile">{{ app.user.meta.unreadMessageCount + app.user.meta.freshNotificationCount }}</span>{% endif %}<span class="ladb-hidden-mobile"> {{ app.user.displayname }}</span> <img src="{{ (app.user.avatar ? app.user.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32" class="img-rounded"></a></li>
             {% else %}
                 <li><a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock ladb-icon-lg"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a></li>
             {% endif %}
@@ -67,8 +67,8 @@
                 </div>
                 <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
                     <li><a href="{{ path('core_user_show_me') }}"><i class="ladb-icon-profile"></i> {{ 'user.home'|trans() }}</a></li>
-                    <li><a role="button" onclick="$.UIkit.offcanvas.hide(false); $('#notifications_modal').modal({ remote:'{{ path('core_notification_list') }}' }); $('.ladb-notification-btn-badge').hide();">{% if app.user.freshNotificationCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.freshNotificationCount }}</span>{% endif %}<i class="ladb-icon-notifications"></i> {{ 'notification.nav'|trans() }}</a></li>
-                    <li><a href="{{ path('core_message_mailbox') }}">{% if app.user.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.unreadMessageCount }}</span>{% endif %}<i class="ladb-icon-message"></i> {{ 'message.nav'|trans() }}</a></li>
+                    <li><a role="button" onclick="$.UIkit.offcanvas.hide(false); $('#notifications_modal').modal({ remote:'{{ path('core_notification_list') }}' }); $('.ladb-notification-btn-badge').hide();">{% if app.user.meta.freshNotificationCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.freshNotificationCount }}</span>{% endif %}<i class="ladb-icon-notifications"></i> {{ 'notification.nav'|trans() }}</a></li>
+                    <li><a href="{{ path('core_message_mailbox') }}">{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}<i class="ladb-icon-message"></i> {{ 'message.nav'|trans() }}</a></li>
                     <li><a href="{{ path('core_user_settings') }}"><i class="ladb-icon-settings ladb-icon-fixed-center"></i> {{ 'user.settings'|trans() }}</a></li>
                     <li><a href="{{ path('core_funding_user_donation_list') }}"><i class="ladb-icon-funding ladb-icon-fixed-center"></i> Mes dons</a></li>
                     <li><a href="{{ path('core_youtook_user_list') }}"><i class="ladb-icon-video ladb-icon-fixed-center"></i> {{ 'youtook.user_list'|trans() }}</a></li>

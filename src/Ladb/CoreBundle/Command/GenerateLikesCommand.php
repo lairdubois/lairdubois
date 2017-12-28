@@ -49,8 +49,8 @@ EOT
 		$output->writeln('<comment> ['.count($users).' users]</comment>');
 
 		foreach ($users as $user) {
-			$user->incrementRecievedLikeCount(-$user->getRecievedLikeCount());
-			$user->incrementSentLikeCount(-$user->getSentLikeCount());
+			$user->incrementRecievedLikeCount(-$user->getMeta()->getRecievedLikeCount());
+			$user->incrementSentLikeCount(-$user->getMeta()->getSentLikeCount());
 		}
 
 		// Retrive likes /////

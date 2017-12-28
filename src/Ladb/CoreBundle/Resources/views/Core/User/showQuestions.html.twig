@@ -23,11 +23,11 @@
             {% block filterbarRightContent%}
                 <span class="ladb-heading">
                     {% if filter == 'draft' and isDraftVisible %}
-                        {{ user.draftQuestionCount~' '~('default.choice.draft'|transchoice(user.draftQuestionCount)) }}
+                        {{ user.meta.privateQuestionCount~' '~('default.choice.draft'|transchoice(user.meta.privateQuestionCount)) }}
                     {% elseif filter|slice(0,4) == 'type' %}
                         {{ questions.count~' '~('qa.question.choice.questions'|transchoice(questions.count)) }}
                     {% else %}
-                        {{ user.publishedQuestionCount }} {{ 'qa.question.choice.questions'|transchoice(user.publishedQuestionCount) }}{% if isDraftVisible and user.draftQuestionCount > 0 %} (+{{ user.draftQuestionCount~' '~('default.choice.draft'|transchoice(user.draftQuestionCount)) }}){% endif %}
+                        {{ user.meta.publicQuestionCount }} {{ 'qa.question.choice.questions'|transchoice(user.meta.publicQuestionCount) }}{% if isDraftVisible and user.meta.privateQuestionCount > 0 %} (+{{ user.meta.privateQuestionCount~' '~('default.choice.draft'|transchoice(user.meta.privateQuestionCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

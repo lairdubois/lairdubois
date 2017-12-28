@@ -141,7 +141,7 @@ EOT
 			if (!is_null($avatar)) {
 				$pictureCounters[$avatar->getId()][1]++;
 			}
-			$banner = $user->getBanner();
+			$banner = $user->getMeta()->getBanner();
 			if (!is_null($banner)) {
 				$pictureCounters[$banner->getId()][1]++;
 			}

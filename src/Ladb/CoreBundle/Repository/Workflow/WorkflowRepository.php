@@ -10,6 +10,32 @@ class WorkflowRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function getDefaultJoinOptions() {
+		return array( array( 'inner', 'user', 'u' ), array( 'inner', 'mainPicture', 'mp' ) );
+	}
+
+	/////
+
+	public function findByIds(array $ids) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'uav', 'mp' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('u.avatar', 'uav')
+			->leftJoin('w.mainPicture', 'mp')
+			->where($queryBuilder->expr()->in('w.id', $ids))
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	/////
+
 	public function findPagined($offset, $limit, $filter = 'all') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
