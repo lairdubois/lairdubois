@@ -17,7 +17,6 @@ class SearchController extends Controller {
 	/**
 	 * @Route("/", name="core_search")
 	 * @Route("/creations", name="core_search_creations")
-	 * @Template()
 	 */
 	public function searchAction(Request $request) {
 		return $this->redirect($this->generateUrl('core_creation_list', array(

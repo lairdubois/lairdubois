@@ -42,7 +42,7 @@ class PlanController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_plan_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -210,7 +210,7 @@ class PlanController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_plan_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -390,7 +390,7 @@ class PlanController extends Controller {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_plan_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_howtos_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:howtos.html.twig")
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -431,7 +431,7 @@ class PlanController extends Controller {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_plan_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_creations_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:creations.html.twig")
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -472,7 +472,7 @@ class PlanController extends Controller {
 	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_plan_workshops")
 	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_workshops_filter")
 	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_workshops_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:workshops.html.twig")
 	 */
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -513,7 +513,7 @@ class PlanController extends Controller {
 	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_plan_inspirations")
 	 * @Route("/{id}/inspirations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_inspirations_filter")
 	 * @Route("/{id}/inspirations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_inspirations_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:inspirations.html.twig")
 	 */
 	public function inspirationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -553,7 +553,7 @@ class PlanController extends Controller {
 	 * @Route("/{id}/rebonds", requirements={"id" = "\d+"}, name="core_plan_rebounds")
 	 * @Route("/{id}/rebonds/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_rebounds_filter")
 	 * @Route("/{id}/rebonds/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_rebounds_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:rebounds.html.twig")
 	 */
 	public function reboundsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -679,7 +679,7 @@ class PlanController extends Controller {
 	/**
 	 * @Route("/", name="core_plan_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_plan_list_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -891,7 +891,7 @@ class PlanController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_plan_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Plan:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

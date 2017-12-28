@@ -422,7 +422,7 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_blog_post_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Blog/Post:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

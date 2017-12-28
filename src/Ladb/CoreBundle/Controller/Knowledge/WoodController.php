@@ -35,7 +35,7 @@ class WoodController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_wood_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Wood:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -252,7 +252,7 @@ class WoodController extends Controller {
 	/**
 	 * @Route("/", name="core_wood_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_wood_list_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Wood:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -371,7 +371,7 @@ class WoodController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_wood_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Wood:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

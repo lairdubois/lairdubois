@@ -18,7 +18,6 @@ class ReportController extends Controller {
 
 	/**
 	 * @Route("/create", name="core_report_create")
-	 * @Template()
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();

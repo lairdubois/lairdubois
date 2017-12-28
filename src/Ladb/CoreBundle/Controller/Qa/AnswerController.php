@@ -320,7 +320,6 @@ class AnswerController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttocomment", requirements={"id" = "\d+"}, name="core_qa_answer_admin_converttocomment")
-	 * @Template()
 	 */
 	public function adminConvertToCommentAction($id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {

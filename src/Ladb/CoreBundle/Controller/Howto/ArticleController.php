@@ -38,7 +38,7 @@ class ArticleController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/{id}/article/new", requirements={"id" = "\d+"}, name="core_howto_article_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
 	 */
 	public function newAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -194,7 +194,7 @@ class ArticleController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/article/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_article_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Article:edit.html.twig")
 	 */
 	public function editAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -332,7 +332,7 @@ class ArticleController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/article/{id}.html", name="core_howto_article_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Article:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

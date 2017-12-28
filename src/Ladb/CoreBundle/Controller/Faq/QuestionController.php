@@ -32,7 +32,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_faq_question_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
 	 */
 	public function newAction() {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -165,7 +165,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_faq_question_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Faq/Question:edit.html.twig")
 	 */
 	public function editAction($id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -292,7 +292,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/", name="core_faq_question_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_faq_question_list_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Faq/Question:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -426,7 +426,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", requirements={"slug" = "[a-z-]+"}, name="core_faq_question_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Faq/Question:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

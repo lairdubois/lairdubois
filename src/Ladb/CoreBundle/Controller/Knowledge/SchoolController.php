@@ -36,7 +36,7 @@ class SchoolController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_school_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/School:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -179,7 +179,7 @@ class SchoolController extends Controller {
 	 * @Route("/", name="core_school_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_school_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_school_list_geojson")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/School:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -363,7 +363,7 @@ class SchoolController extends Controller {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_school_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_school_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_school_creations_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/School:creations.html.twig")
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -404,7 +404,7 @@ class SchoolController extends Controller {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_school_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_school_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_school_howtos_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/School:howtos.html.twig")
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -467,7 +467,7 @@ class SchoolController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_school_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/School:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

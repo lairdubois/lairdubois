@@ -33,7 +33,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_qa_question_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Qa/Question:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -199,7 +199,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_qa_question_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Qa/Question:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -322,7 +322,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/", name="core_qa_question_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_qa_question_list_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Qa/Question:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -520,7 +520,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_qa_question_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Qa/Question:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

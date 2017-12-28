@@ -44,7 +44,7 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_creation_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -207,7 +207,7 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_creation_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -339,7 +339,7 @@ class CreationController extends Controller {
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_creation_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_plans_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:plans.html.twig")
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -378,7 +378,6 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/projets", requirements={"id" = "\d+"}, name="core_creation_projects")
-	 * @Template()
 	 */
 	public function projectsAction($id) {
 		return $this->redirect($this->generateUrl('core_creation_howtos', array( 'id' => $id )));
@@ -388,7 +387,7 @@ class CreationController extends Controller {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_creation_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_howtos_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:howtos.html.twig")
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -429,7 +428,7 @@ class CreationController extends Controller {
 	 * @Route("/{id}/fournisseurs", requirements={"id" = "\d+"}, name="core_creation_providers")
 	 * @Route("/{id}/fournisseurs/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_providers_filter")
 	 * @Route("/{id}/fournisseurs/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_providers_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:providers.html.twig")
 	 */
 	public function providersAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -470,7 +469,7 @@ class CreationController extends Controller {
 	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_creation_inspirations")
 	 * @Route("/{id}/inspirations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_inspirations_filter")
 	 * @Route("/{id}/inspirations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_inspirations_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:inspiration.html.twig")
 	 */
 	public function inspirationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -510,7 +509,7 @@ class CreationController extends Controller {
 	 * @Route("/{id}/rebonds", requirements={"id" = "\d+"}, name="core_creation_rebounds")
 	 * @Route("/{id}/rebonds/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_rebounds_filter")
 	 * @Route("/{id}/rebonds/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_rebounds_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:rebounds.html.twig")
 	 */
 	public function reboundsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -928,7 +927,7 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_creation_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Creation:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -994,7 +993,6 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttoworkshop", requirements={"id" = "\d+"}, name="core_creation_admin_converttoworkshop")
-	 * @Template()
 	 */
 	public function adminConvertToWorkshopAction($id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1021,7 +1019,6 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttohowto", requirements={"id" = "\d+"}, name="core_creation_admin_converttohowto")
-	 * @Template()
 	 */
 	public function adminConvertToHowtoAction($id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1048,7 +1045,6 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttofind", requirements={"id" = "\d+"}, name="core_creation_admin_converttofind")
-	 * @Template()
 	 */
 	public function adminConvertToFindAction($id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {

@@ -13,7 +13,6 @@ class AboutController extends Controller {
 
 	/**
 	 * @Route("/", name="core_about")
-	 * @Template()
 	 */
 	public function aboutAction() {
 		$response = $this->forward('LadbCoreBundle:Core/About:faq');
@@ -22,7 +21,6 @@ class AboutController extends Controller {
 
 	/**
 	 * @Route("/faq.html", name="core_about_faq")
-	 * @Template()
 	 */
 	public function faqAction() {
 		return $this->redirect($this->generateUrl('core_faq_question_list'));
@@ -30,7 +28,7 @@ class AboutController extends Controller {
 
 	/**
 	 * @Route("/mentions-legales.html", name="core_about_legals")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/About:legals.html.twig")
 	 */
 	public function legalsAction() {
 		return array();
@@ -38,7 +36,7 @@ class AboutController extends Controller {
 
 	/**
 	 * @Route("/credits.html", name="core_about_credits")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/About:credits.html.twig")
 	 */
 	public function creditsAction() {
 		$credits = array(

@@ -69,7 +69,6 @@ class NotificationController extends Controller {
 
 	/**
 	 * @Route("/{id}", requirements={"id" = "\d+"}, name="core_notification_show")
-	 * @Template()
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

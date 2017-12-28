@@ -39,7 +39,7 @@ class HowtoController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/new", name="core_howto_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -202,7 +202,7 @@ class HowtoController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -366,7 +366,7 @@ class HowtoController extends Controller {
 	/**
 	 * @Route("/pas-a-pas/", name="core_howto_list")
 	 * @Route("/pas-a-pas/{page}", requirements={"page" = "\d+"}, name="core_howto_list_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -583,7 +583,7 @@ class HowtoController extends Controller {
 	 * @Route("/pas-a-pas/{id}/creations", requirements={"id" = "\d+"}, name="core_howto_creations")
 	 * @Route("/pas-a-pas/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_creations_filter")
 	 * @Route("/pas-a-pas/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_creations_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:creations.html.twig")
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -624,7 +624,7 @@ class HowtoController extends Controller {
 	 * @Route("/pas-a-pas/{id}/ateliers", requirements={"id" = "\d+"}, name="core_howto_workshops")
 	 * @Route("/pas-a-pas/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workshops_filter")
 	 * @Route("/pas-a-pas/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workshops_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:workshop.html.twig")
 	 */
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -665,7 +665,7 @@ class HowtoController extends Controller {
 	 * @Route("/pas-a-pas/{id}/plans", requirements={"id" = "\d+"}, name="core_howto_plans")
 	 * @Route("/pas-a-pas/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_plans_filter")
 	 * @Route("/pas-a-pas/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_plans_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:plans.html.twig")
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -706,7 +706,7 @@ class HowtoController extends Controller {
 	 * @Route("/pas-a-pas/{id}/fournisseurs", requirements={"id" = "\d+"}, name="core_howto_providers")
 	 * @Route("/pas-a-pas/{id}/fournisseurs/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_providers_filter")
 	 * @Route("/pas-a-pas/{id}/fournisseurs/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_providers_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:providers.html.twig")
 	 */
 	public function providersAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -745,7 +745,7 @@ class HowtoController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/{id}.html", name="core_howto_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Howto/Howto:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

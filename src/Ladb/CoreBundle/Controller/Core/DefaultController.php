@@ -12,7 +12,6 @@ class DefaultController extends Controller {
 
 	/**
 	 * @Route("/", name="core_welcome")
-	 * @Template()
 	 */
 	public function welcomeAction() {
 		$response = $this->forward('LadbCoreBundle:Wonder/Creation:list', array(

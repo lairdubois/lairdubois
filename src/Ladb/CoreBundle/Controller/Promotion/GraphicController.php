@@ -42,7 +42,7 @@ class GraphicController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_promotion_graphic_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Promotion/Graphic:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -207,7 +207,7 @@ class GraphicController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_promotion_graphic_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Promotion/Graphic:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -378,7 +378,7 @@ class GraphicController extends Controller {
 	/**
 	 * @Route("/", name="core_promotion_graphic_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_promotion_graphic_list_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Promotion/Graphic:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -547,7 +547,7 @@ class GraphicController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_promotion_graphic_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Promotion/Graphic:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

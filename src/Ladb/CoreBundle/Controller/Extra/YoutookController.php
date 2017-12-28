@@ -76,7 +76,7 @@ class YoutookController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_youtook_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Extra/Youtook:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -181,7 +181,7 @@ class YoutookController extends Controller {
 	 * @Route("/", name="core_youtook_list")
 	 * @Route("/{filter}", requirements={"filter" = "\w+"}, name="core_youtook_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_youtook_list_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Extra/Youtook:list.html.twig")
 	 */
 	public function listAction(Request $request, $filter = 'all', $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -251,7 +251,7 @@ class YoutookController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_youtook_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Extra/Youtook:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

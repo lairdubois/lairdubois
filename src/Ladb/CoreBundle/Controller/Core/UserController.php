@@ -40,7 +40,7 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/email/check", name="core_user_email_check")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:emailCheck.html.twig")
 	 */
 	public function emailCheckAction() {
 		$userManager = $this->container->get('fos_user.user_manager');
@@ -65,7 +65,7 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/email/confirm/{token}", name="core_user_email_confirm")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:emailConfirm.html.twig")
 	 */
 	public function emailConfirmAction($token) {
 		$userManager = $this->container->get('fos_user.user_manager');
@@ -111,7 +111,7 @@ class UserController extends Controller {
 	 * @Route("/boiseux", name="core_user_list")
 	 * @Route("/boiseux/{page}", requirements={"page" = "\d+"}, name="core_user_list_page")
 	 * @Route("/boiseux.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_user_list_geojson")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -243,7 +243,7 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/parametres", name="core_user_settings")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Core/User:settings.html.twig")
 	 */
 	public function settingsAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -1050,7 +1050,6 @@ class UserController extends Controller {
 
 	/**
 	 * @Route("/{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show")
-	 * @Template()
 	 */
 	public function showAction($username) {
 		$userManager = $this->get('fos_user.user_manager');

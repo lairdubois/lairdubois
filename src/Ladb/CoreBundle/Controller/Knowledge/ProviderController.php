@@ -36,7 +36,7 @@ class ProviderController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_provider_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Provider:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -181,7 +181,7 @@ class ProviderController extends Controller {
 	 * @Route("/", name="core_provider_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_provider_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_provider_list_geojson")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Provider:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -398,7 +398,7 @@ class ProviderController extends Controller {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_provider_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_provider_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_provider_creations_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Provider:creations.html.twig")
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -439,7 +439,7 @@ class ProviderController extends Controller {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_provider_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_provider_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_provider_howtos_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Provider:howtos.html.twig")
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -502,7 +502,7 @@ class ProviderController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_provider_show")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Knowledge/Provider:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

@@ -25,7 +25,6 @@ class VoteController extends Controller {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{sign}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "sign" = "[+-]"}, name="core_vote_create")
-	 * @Template()
 	 */
 	public function createAction(Request $request, $entityType, $entityId, $sign) {
 
@@ -198,7 +197,6 @@ class VoteController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_vote_delete")
-	 * @Template()
 	 */
 	public function deleteAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

@@ -39,7 +39,7 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_workshop_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Workshop:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -202,7 +202,7 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_workshop_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Workshop:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -334,7 +334,7 @@ class WorkshopController extends Controller {
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_workshop_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workshop_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workshop_plans_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Workshop:plans.html.twig")
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -373,7 +373,6 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/{id}/projets", requirements={"id" = "\d+"}, name="core_workshop_projects")
-	 * @Template()
 	 */
 	public function projectsAction($id) {
 		return $this->redirect($this->generateUrl('core_workshop_howtos', array( 'id' => $id )));
@@ -383,7 +382,7 @@ class WorkshopController extends Controller {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_workshop_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workshop_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workshop_howtos_filter_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Workshop:howtos.html.twig")
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -546,7 +545,7 @@ class WorkshopController extends Controller {
 	 * @Route("/", name="core_workshop_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_workshop_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_workshop_list_geojson")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Wonder/Workshop:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -799,7 +798,7 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_workshop_show")
-	 * @Template()
+	 * "LadbCoreBundle:Wonder/Workshop:show.html.twig"
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -855,7 +854,6 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttohowto", requirements={"id" = "\d+"}, name="core_workshop_admin_converttohowto")
-	 * @Template()
 	 */
 	public function adminConvertToHowtoAction($id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
