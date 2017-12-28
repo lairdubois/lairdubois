@@ -628,7 +628,6 @@ class CreationController extends Controller {
 	/**
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_creation_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_list_filter_page")
-	 * @Template()
 	 */
 	public function goneListAction(Request $request, $filter, $page = 0) {
 		throw new \Symfony\Component\HttpKernel\Exception\GoneHttpException();
@@ -637,7 +636,7 @@ class CreationController extends Controller {
 	/**
 	 * @Route("/", name="core_creation_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_creation_list_page")
-	 * @Template()
+	 * @Template
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$om = $this->getDoctrine()->getManager();

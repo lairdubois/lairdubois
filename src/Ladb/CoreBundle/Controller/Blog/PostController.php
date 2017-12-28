@@ -32,7 +32,7 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_blog_post_new")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
 	 */
 	public function newAction() {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -165,7 +165,7 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_blog_post_edit")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
 	 */
 	public function editAction($id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -284,7 +284,6 @@ class PostController extends Controller {
 	/**
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_blog_post_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_blog_post_list_filter_page")
-	 * @Template()
 	 */
 	public function goneListAction(Request $request, $filter, $page = 0) {
 		throw new \Symfony\Component\HttpKernel\Exception\GoneHttpException();
@@ -293,7 +292,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/", name="core_blog_post_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_blog_post_list_page")
-	 * @Template()
+	 * @Template("LadbCoreBundle:Blog/Post:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
