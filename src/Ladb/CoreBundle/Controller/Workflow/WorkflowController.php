@@ -319,7 +319,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			'127.0.0.1',
 			'::1',
 		))) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_diagram)');
+			throw $this->createNotFoundException('Not allowed (core_workflow_diagram) REMOTE_ADDR='.$_SERVER['REMOTE_ADDR']);
 		}
 
 		// Retrieve workflow
