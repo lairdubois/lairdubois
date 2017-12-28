@@ -355,11 +355,14 @@ fos_elastica:
                         fullname: { type: text, boost: 1, analyzer: name_analyzer }
                         username: { analyzer: name_analyzer }
                         createdAt: { type: date }
-                        followerCount: { type: integer }
-                        recievedLikeCount: { type: integer }
                         accountType: { type: short }
                         location:
                         geoPoint: { type: geo_point }
+                        meta:
+                            type: "object"
+                            properties:
+                                followerCount: { type: integer }
+                                recievedLikeCount: { type: integer }
                         skills:
                             type: "object"
                             properties:
