@@ -94,7 +94,7 @@ class AnswerController extends Controller {
 			$question->setChangedAt(new \DateTime());
 
 			$question->incrementAnswerCount();
-			$this->getUser()->incrementAnswerCount();
+			$this->getUser()->getMeta()->incrementAnswerCount();
 
 			$om->persist($answer);
 			$om->flush();
