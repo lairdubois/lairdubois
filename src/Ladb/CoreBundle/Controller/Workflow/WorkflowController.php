@@ -403,22 +403,26 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($workflow));
 
 		$likableUtils = $this->get(LikableUtils::NAME);
-		$watchableUtils = $this->get(WatchableUtils::NAME);
-		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		$parameters = array(
 			'workflow'        => $workflow,
 			'readOnly'        => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
 			'likeContext'     => $likableUtils->getLikeContext($workflow, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($workflow, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($workflow),
 			'followerContext' => $followerUtils->getFollowerContext($workflow->getUser(), $this->getUser()),
 		);
 
 		if ($layout == 'workspace') {
 			return $this->render('LadbCoreBundle:Workflow:show-workspace.html.twig', $parameters);
 		}
+
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+
+		$parameters = array_merge($parameters, array(
+			'watchContext'    => $watchableUtils->getWatchContext($workflow, $this->getUser()),
+			'commentContext'  => $commentableUtils->getCommentContext($workflow),
+		));
 
 		return $parameters;
 	}

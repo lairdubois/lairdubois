@@ -56,10 +56,10 @@ class LikeController extends Controller {
 				$like->setEntityId($entityId);
 				$like->setUser($this->getUser());
 
-				$this->getUser()->incrementSentLikeCount();
+				$this->getUser()->getMeta()->incrementSentLikeCount();
 				if ($entity instanceof AuthoredInterface) {
 					$like->setEntityUser($entity->getUser());
-					$entity->getUser()->incrementRecievedLikeCount();
+					$entity->getUser()->getMeta()->incrementRecievedLikeCount();
 				}
 
 				$om->persist($like);
@@ -145,11 +145,11 @@ class LikeController extends Controller {
 
 		// Decrement recieved like count on entity author
 		if ($entity instanceof AuthoredInterface) {
-			$entity->getUser()->incrementRecievedLikeCount(-1);
+			$entity->getUser()->getMeta()->incrementRecievedLikeCount(-1);
 		}
 
 		// Decrement sent like count on like user
-		$like->getUser()->incrementSentLikeCount(-1);
+		$like->getUser()->getMeta()->incrementSentLikeCount(-1);
 
 		// Delete activities
 		$activityUtils = $this->get(ActivityUtils::NAME);
