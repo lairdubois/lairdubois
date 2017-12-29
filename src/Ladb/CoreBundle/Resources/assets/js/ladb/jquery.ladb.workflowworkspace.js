@@ -27,9 +27,10 @@
         this.$modal = $('#workflow_modal', this.$element);
 
         this.$btnAddTask = $('#ladb_add_task_btn', this.$element);
-        this.$btnListParts = $('#ladb_list_parts_btn', this.$element);
-        this.$btnListLabels = $('#ladb_list_labels_btn', this.$element);
-        this.$btnStatistics = $('#ladb_statistics_btn', this.$element);
+        this.$btnListParts = $('.ladb-list-parts-btn', this.$element);
+        this.$btnListLabels = $('.ladb-list-labels-btn', this.$element);
+        this.$btnStatistics = $('.ladb-statistics-btn', this.$element);
+        this.$btnRestart = $('.ladb-restart-btn', this.$element);
     };
 
     LadbWorkflowWorkspace.DEFAULTS = {
@@ -50,7 +51,9 @@
         deleteTaskConnectionPath: null,
         listPartPath: null,
         listLabelPath: null,
-        statisticsPath: null
+        statisticsPath: null,
+        restartConfirmPath: null,
+        restartPath: null
     };
 
     LadbWorkflowWorkspace.prototype._uiDiagramZoomAll = function() {
@@ -157,6 +160,7 @@
         this.$btnListParts.prop('disabled', true);
         this.$btnListLabels.prop('disabled', true);
         this.$btnStatistics.prop('disabled', true);
+        this.$btnRestart.prop('disabled', true);
     };
 
     LadbWorkflowWorkspace.prototype._uiUnmarkLoading = function() {
@@ -165,6 +169,7 @@
         this.$btnListParts.prop('disabled', false);
         this.$btnListLabels.prop('disabled', false);
         this.$btnStatistics.prop('disabled', false);
+        this.$btnRestart.prop('disabled', false);
     };
 
     LadbWorkflowWorkspace.prototype._uiAppendToAnimate = function(element, newParent) {
@@ -1068,6 +1073,37 @@
 
     };
 
+    LadbWorkflowWorkspace.prototype.loadModalRestart = function() {
+        var that = this;
+
+        // Load modal
+        that.$modal.ladbRemoteModal('loadContent', {
+            url: that.options.restartConfirmPath,
+            onSuccess: function ($content) {
+                var $btn = $('#ladb_restart_btn', $content);
+                $btn.on('click', function() {
+                    $(this).button('loading');
+                    $.ajax(that.options.restartPath, {
+                        type: 'GET',
+                        cache: false,
+                        dataType: 'html',
+                        context: document.body,
+                        success: function() {
+                            $btn.button('reset');
+                            that.$modal.modal('hide');
+                        },
+                        error: function () {
+                            $btn.button('reset');
+                            that.$modal.modal('hide');
+                            console.log('ERROR');
+                        }
+                    });
+                })
+            }
+        });
+
+    };
+
     LadbWorkflowWorkspace.prototype.bindNewAndEditModalContent = function($modal) {
         var that = this;
 
@@ -1208,6 +1244,9 @@
         });
         this.$btnStatistics.on('click', function() {
             that.loadModalStatistics();
+        });
+        this.$btnRestart.on('click', function() {
+            that.loadModalRestart();
         });
 
     };

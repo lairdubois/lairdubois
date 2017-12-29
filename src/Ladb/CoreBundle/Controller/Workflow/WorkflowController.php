@@ -24,6 +24,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Workflow\WorkflowManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/processus")
@@ -288,6 +289,50 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.delete_success', array( '%title%' => $workflow->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_workflow_list'));
+	}
+
+	/**
+	 * @Route("/{id}/restart_confirm", requirements={"id" = "\d+"}, name="core_workflow_restart_confirm")
+	 * @Template("LadbCoreBundle:Workflow:restart-confirm-xhr.html.twig")
+	 */
+	public function RestartConfirmAction(Request $request, $id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied (core_workflow_restart_confirm)');
+		}
+
+		// Retrieve Workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		return array(
+			'workflow' => $workflow,
+		);
+	}
+
+	/**
+	 * @Route("/{id}/restart", requirements={"id" = "\d+"}, name="core_workflow_restart")
+	 */
+	public function restartAction($id) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied (core_workflow_restart)');
+		}
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (core_workflow_restart)');
+		}
+
+		// Restart
+		$workflowManager = $this->get(WorkflowManager::NAME);
+		$workflowManager->restart($workflow, $this->getUser());
+
+		$this->_push($workflow, array(
+			'workflowInfos'    => $this->_generateWorkflowInfos($workflow),
+			'updatedTaskInfos' => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_BOX),
+		));
+
+		return new Response();
 	}
 
 	/**

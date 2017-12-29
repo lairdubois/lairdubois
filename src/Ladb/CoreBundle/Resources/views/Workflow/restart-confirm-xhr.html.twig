@@ -1,0 +1,16 @@
+{% extends 'LadbCoreBundle:Common:Modal/_modal-content.part.html.twig' %}
+
+{% set id = 'ladb_restart_modal' %}
+{% set title = 'default.restart'|trans() %}
+
+{# set workflow #}
+
+{% block bodyInner %}
+    <p>Le redémarrage du processus <strong>{{ workflow.title }}</strong> réinitialisera l'état de toutes les tâches et changera la durée estimée de chaque tâche par la durée mesurée si elle existe.</p>
+    <p>Confirmez l'action pour continuer.</p>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    <button id="ladb_restart_btn" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-repeat"></i> {{ 'default.restart'|trans() }}</button>
+{% endblock %}

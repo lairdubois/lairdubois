@@ -18,7 +18,7 @@
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
                 &nbsp;
-                {% if ownerUser and not workflow.isPublic %}
+                {% if ownerUser %}
                     <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-duplicate"></i><span class="ladb-visible-desktop">  {{ 'default.duplicate'|trans() }}</span></a>
                 {% else %}
                     <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-rebound"></i><span class="ladb-visible-desktop">  {{ 'default.copy'|trans() }}</span></a>

@@ -57,6 +57,8 @@ class WorkflowManager extends AbstractPublicationManager {
 	public function copy(Workflow $workflow, User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
+		$duplicate = $workflow->getUser()->getId() === $user->getId();
+
 		$newWorkflow = new Workflow();
 		$newWorkflow->setVisibility(Workflow::VISIBILITY_PRIVATE);
 		$newWorkflow->setUser($user);
@@ -111,10 +113,19 @@ class WorkflowManager extends AbstractPublicationManager {
 			$newTask->setTitle($task->getTitle());
 			$newTask->setPositionLeft($task->getPositionLeft());
 			$newTask->setPositionTop($task->getPositionTop());
-			if ($task->getSourceTasks()->isEmpty()) {
-				$newTask->setStatus(Task::STATUS_WORKABLE);
+			if ($duplicate) {
+				$newTask->setStatus($task->getStatus());
+				$newTask->setStartedAt($task->getStartedAt());
+				$newTask->setLastRunningAt($task->getLastRunningAt());
+				$newTask->setFinishedAt($task->getFinishedAt());
+				$newTask->setEstimatedDuration($task->getEstimatedDuration());
+				$newTask->setDuration($task->getDuration());
 			} else {
-				$newTask->setStatus(Task::STATUS_PENDING);
+				if ($task->getSourceTasks()->isEmpty()) {
+					$newTask->setStatus(Task::STATUS_WORKABLE);
+				} else {
+					$newTask->setStatus(Task::STATUS_PENDING);
+				}
 			}
 			$newTask->setPartCount($task->getPartCount());
 
@@ -152,9 +163,9 @@ class WorkflowManager extends AbstractPublicationManager {
 		}
 
 		// Inspiration
-		if ($workflow->getUser()->getId() === $user->getId() && !$workflow->getIsPublic()) {
+		if ($duplicate) {
 
-			// Workflow is owned and private -> just transfert inspirations
+			// Workflow is owned -> just transfert inspirations
 			foreach ($workflow->getInspirations() as $inspiration) {
 				$newWorkflow->addInspiration($inspiration);
 			}
@@ -176,6 +187,43 @@ class WorkflowManager extends AbstractPublicationManager {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($newWorkflow));
 
 		return $newWorkflow;
+	}
+
+	public function restart(Workflow $workflow, User $user, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$estimatedDuration = 0;
+
+		foreach ($workflow->getTasks() as $task) {		// 1st loop to generate all tasks
+
+			if ($task->getSourceTasks()->isEmpty()) {
+				$task->setStatus(Task::STATUS_WORKABLE);
+			} else {
+				$task->setStatus(Task::STATUS_PENDING);
+			}
+
+			// Reset timers
+			$task->setStartedAt(null);
+			$task->setLastRunningAt(null);
+			$task->setFinishedAt(null);
+
+			// Swap task duration to estimated
+			if ($task->getDuration() > 0) {
+				$task->setEstimatedDuration($task->getDuration());
+			}
+			$task->setDuration(0);
+
+			$estimatedDuration += $task->getEstimatedDuration();
+		}
+
+		// Swap workflow duration to estimated
+		$workflow->setEstimatedDuration($estimatedDuration);
+		$workflow->setDuration(0);
+
+		if ($flush) {
+			$om->flush();
+		}
+
 	}
 
 }

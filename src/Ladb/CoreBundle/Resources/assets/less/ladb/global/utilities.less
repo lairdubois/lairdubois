@@ -207,6 +207,7 @@ a.ladb-strikethrough:hover {
 
   .ladb-visible-tablet { display: none !important; }
   .ladb-visible-desktop { display: none !important; }
+  .ladb-visible-large-desktop { display: none !important; }
   .ladb-hidden-mobile { display: none !important; }
 
 }
@@ -216,14 +217,26 @@ a.ladb-strikethrough:hover {
 
   .ladb-visible-mobile { display: none !important; }
   .ladb-visible-desktop { display: none !important; }
+  .ladb-visible-large-desktop { display: none !important; }
   .ladb-hidden-tablet { display: none !important; }
 
 }
+
 // desktop
 @media screen and (min-width: @ladb-screen-desktop) {
 
   .ladb-visible-mobile { display: none !important; }
   .ladb-visible-tablet { display: none !important; }
+  .ladb-visible-large-desktop { display: none !important; }
   .ladb-hidden-desktop { display: none !important; }
+
+}
+
+// large-desktop
+@media screen and (min-width: @ladb-screen-large-desktop) {
+
+  .ladb-visible-mobile { display: none !important; }
+  .ladb-visible-tablet { display: none !important; }
+  .ladb-hidden-large-desktop { display: none !important; }
 
 }

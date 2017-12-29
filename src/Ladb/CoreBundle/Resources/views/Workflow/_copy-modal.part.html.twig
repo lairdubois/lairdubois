@@ -1,6 +1,6 @@
 {% extends 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' %}
 
-{% set duplicate = is_granted("ROLE_USER") and app.user.id == workflow.user.id and not workflow.isPublic %}
+{% set duplicate = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
 
 {% set title = ('default.'~(duplicate ? 'duplicating' : 'copying'))|trans() %}
 
@@ -10,7 +10,7 @@
 {% block bodyInner %}
     {% if duplicate %}
         <p>La duplication du processus <strong>{{ workflow.title }}</strong> créera un nouveau processus privé en répliquant toutes les tâches, les étiquettes et les pièces.</p>
-        <p>Les états des tâches ne seront pas copiés.</p>
+        <p>Les états et les durées des tâches seront copiés.</p>
     {% else %}
         <p>La copie du processus <strong>{{ workflow.title }}</strong> créera un nouveau processus privé associé à votre compte en répliquant toutes les tâches, les étiquettes et les pièces.</p>
     {% endif %}

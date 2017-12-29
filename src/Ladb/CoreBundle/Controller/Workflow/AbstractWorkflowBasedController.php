@@ -7,13 +7,13 @@ use Ladb\CoreBundle\Entity\Workflow\Workflow;
 
 abstract class AbstractWorkflowBasedController extends Controller {
 
-	const TASKINFO_NONE 			= 0;
-	const TASKINFO_STATUS 			= 1 << 0;
-	const TASKINFO_POSITION_LEFT 	= 1 << 1;
-	const TASKINFO_POSITION_TOP 	= 1 << 2;
-	const TASKINFO_ROW 				= 1 << 3;
-	const TASKINFO_WIDGET 			= 1 << 4;
-	const TASKINFO_BOX 				= 1 << 5;
+	const TASKINFO_NONE 			= 0b000000;
+	const TASKINFO_STATUS 			= 0b000001;
+	const TASKINFO_POSITION_LEFT 	= 0b000010;
+	const TASKINFO_POSITION_TOP 	= 0b000100;
+	const TASKINFO_ROW 				= 0b001000;
+	const TASKINFO_WIDGET 			= 0b010000;
+	const TASKINFO_BOX 				= 0b100000;
 
 	/////
 

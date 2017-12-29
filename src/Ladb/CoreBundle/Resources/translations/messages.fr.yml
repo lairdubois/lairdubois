@@ -12,6 +12,8 @@ default:
   edit: Editer
   copy: Copier
   copying: Copie
+  restart: Recommencer
+  restarting: Redémarrage
   duplicate: Dupliquer
   duplicating: Duplication
   unpublish: Dépublier
