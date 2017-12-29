@@ -2,7 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Entity\Wonder\Plan;
+use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -292,10 +297,162 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_workflow_howtos")
+	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_howtos_filter")
+	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_howtos_filter_page")
+	 * @Template("LadbCoreBundle:Workflow:howtos.html.twig")
+	 */
+	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		// Howtos
+
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $howtoRepository->findPaginedByWorkflow($workflow, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'howtos'      => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'workflow' => $workflow,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_workflow_creations")
+	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_creations_filter")
+	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_creations_filter_page")
+	 * @Template("LadbCoreBundle:Workflow:creations.html.twig")
+	 */
+	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		// Creations
+
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $creationRepository->findPaginedByWorkflow($workflow, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_creations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'creations'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Wonder/Creation:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'workflow' => $workflow,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_workflow_plans")
+	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_plans_filter")
+	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_plans_filter_page")
+	 * @Template("LadbCoreBundle:Workflow:plans.html.twig")
+	 */
+	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		// Plans
+
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $planRepository->findPaginedByWorkflow($workflow, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_plans_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'plans'       => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Wonder/Plan:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'workflow' => $workflow,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_workflow_workshops")
+	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_workshops_filter")
+	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_workshops_filter_page")
+	 * @Template("LadbCoreBundle:Workflow:workshops.html.twig")
+	 */
+	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		// Workshops
+
+		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workshopRepository->findPaginedByWorkflow($workflow, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_workshops_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'workshops'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Wonder/Workshop:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'workflow' => $workflow,
+		));
+	}
+
+	/**
 	 * @Route("/{id}/restart_confirm", requirements={"id" = "\d+"}, name="core_workflow_restart_confirm")
 	 * @Template("LadbCoreBundle:Workflow:restart-confirm-xhr.html.twig")
 	 */
-	public function RestartConfirmAction(Request $request, $id) {
+	public function restartConfirmAction(Request $request, $id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('Access denied (core_workflow_restart_confirm)');
 		}
@@ -372,6 +529,37 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		return array(
 			'workflow' => $workflow,
+		);
+	}
+
+	/**
+	 * @Route("/{id}/statistics", requirements={"id" = "\d+"}, name="core_workflow_statistics")
+	 * @Template("LadbCoreBundle:Workflow:statistics-xhr.html.twig")
+	 */
+	public function statisticsAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+
+		// Retrieve Workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		$dataDurationsPerLabel = array();
+		foreach ($workflow->getLabels() as $label) {
+			$tasks = $taskRepository->findByLabel($label);
+			$duration = 0;
+			foreach ($tasks as $task) {
+				$duration += $task->getDuration();
+			}
+			$dataDurationsPerLabel[] = array(
+				'name'     => $label->getName(),
+				'color'    => $label->getColor(),
+				'duration' => floor($duration / 60),
+			);
+		}
+
+		return array(
+			'workflow'              => $workflow,
+			'dataDurationsPerLabel' => $dataDurationsPerLabel,
 		);
 	}
 
@@ -486,6 +674,34 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 						break;
 
+					case 'content-creations':
+
+						$filter = new \Elastica\Query\Range('creationCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-plans':
+
+						$filter = new \Elastica\Query\Range('planCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-workshops':
+
+						$filter = new \Elastica\Query\Range('workshopCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-howtos':
+
+						$filter = new \Elastica\Query\Range('howtoCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
 					// Sorters /////
 
 					case 'sort-recent':
@@ -526,11 +742,11 @@ class WorkflowController extends AbstractWorkflowBasedController {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			function(&$filters) {
+			function(&$filters) use ($layout) {
 
 				$user = $this->getUser();
 				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
+				if (!is_null($user) && $layout != 'choice') {
 
 					$filter = new \Elastica\Query\BoolQuery();
 					$filter->addShould(
@@ -566,41 +782,18 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+			if ($layout == 'choice') {
+				return $this->render('LadbCoreBundle:Workflow:list-choice-xhr.html.twig', $parameters);
+			} else {
+				return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+			}
+		}
+
+		if ($layout == 'choice') {
+			return $this->render('LadbCoreBundle:Workflow:list-choice.html.twig', $parameters);
 		}
 
 		return $parameters;
-	}
-
-	/**
-	 * @Route("/{id}/statistics", requirements={"id" = "\d+"}, name="core_workflow_statistics")
-	 * @Template("LadbCoreBundle:Workflow:statistics-xhr.html.twig")
-	 */
-	public function statisticsAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$taskRepository = $om->getRepository(Task::CLASS_NAME);
-
-		// Retrieve Workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		$dataDurationsPerLabel = array();
-		foreach ($workflow->getLabels() as $label) {
-			$tasks = $taskRepository->findByLabel($label);
-			$duration = 0;
-			foreach ($tasks as $task) {
-				$duration += $task->getDuration();
-			}
-			$dataDurationsPerLabel[] = array(
-				'name'     => $label->getName(),
-				'color'    => $label->getColor(),
-				'duration' => floor($duration / 60),
-			);
-		}
-
-		return array(
-			'workflow'              => $workflow,
-			'dataDurationsPerLabel' => $dataDurationsPerLabel,
-		);
 	}
 
 }

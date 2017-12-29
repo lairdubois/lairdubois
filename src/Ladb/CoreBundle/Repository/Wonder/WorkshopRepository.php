@@ -6,6 +6,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class WorkshopRepository extends AbstractEntityRepository {
@@ -38,7 +39,7 @@ class WorkshopRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'w', 'u', 'uav', 'mp', 'ps', 'bbs', 'pls', 'hws', 'tgs', 'l' ))
+			->select(array( 'w', 'u', 'uav', 'mp', 'ps', 'bbs', 'pls', 'hws', 'wfs', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'w')
 			->innerJoin('w.user', 'u')
 			->innerJoin('u.avatar', 'uav')
@@ -47,6 +48,7 @@ class WorkshopRepository extends AbstractEntityRepository {
 			->leftJoin('w.bodyBlocks', 'bbs')
 			->leftJoin('w.plans', 'pls')
 			->leftJoin('w.howtos', 'hws')
+			->leftJoin('w.workflows', 'wfs')
 			->leftJoin('w.tags', 'tgs')
 			->leftJoin('w.license', 'l')
 			->where('w.id = :id')
@@ -312,14 +314,34 @@ class WorkshopRepository extends AbstractEntityRepository {
 	public function findPaginedByHowto(Howto $howto, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'w', 'u', 'mp', 'p' ))
+			->select(array( 'w', 'u', 'mp', 'h' ))
 			->from($this->getEntityName(), 'w')
 			->innerJoin('w.user', 'u')
 			->innerJoin('w.mainPicture', 'mp')
-			->innerJoin('w.howtos', 'p')
+			->innerJoin('w.howtos', 'h')
 			->where('w.isDraft = false')
-			->andWhere('p = :howto')
+			->andWhere('h = :howto')
 			->setParameter('howto', $howto)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByWorkflow(Workflow $workflow, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'mp', 'wkf' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('w.mainPicture', 'mp')
+			->innerJoin('w.workflows', 'wkf')
+			->where('w.isDraft = false')
+			->andWhere('wkf = :workflow')
+			->setParameter('workflow', $workflow)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

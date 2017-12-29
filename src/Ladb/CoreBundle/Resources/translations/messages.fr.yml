@@ -164,6 +164,7 @@ wonder:
         body: Décrivez ici votre création.
         plans: Associez jusqu'à <strong>4 plans</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces plans.
         howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces pas à pas.
+        workflows: Associez jusqu'à <strong>4 processus</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces processus.
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre création.
         inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
     choice:
@@ -238,6 +239,7 @@ wonder:
         body: Décrivez ici votre atelier.
         plans: Associez jusqu'à <strong>4 plans</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces plans.
         howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces pas à pas.
+        workflows: Associez jusqu'à <strong>4 processus</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces processus.
     choice:
       new_workshops: '[0,1]nouvel atelier|]1,Inf]nouveaux ateliers'
       workshops: '[0,1]atelier|]1,Inf]ateliers'
@@ -276,6 +278,7 @@ howto:
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre pas à pas.
         body: Renseignez ici un petit texte introductif qui présente votre pas à pas. Le contenu de votre pas à pas sera détaillé dans les articles.
         plans: Associez jusqu'à <strong>4 plans</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces plans.
+        processus: Associez jusqu'à <strong>4 processus</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces processus.
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre pas à pas.
         wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
     choice:
@@ -400,8 +403,11 @@ workflow:
   workflow:
     new: Ajouter un processus
     edit: Edition du processus
+    create: Créer un nouveau processus
     list: Les processus
     user_list: Mes processus
+    linkto: Associer un processus déjà publié
+    linked_to: Ce processus est associé à
     statistics: Statistiques
     form:
       alert:
@@ -416,6 +422,7 @@ workflow:
         title: Renseignez ici le titre de votre processus.
         body: Renseignez ici le descriptif de votre processus.
         tags: Indiquez les tags définissant votre processus.
+        plans: Associez jusqu'à <strong>4 plans</strong> à votre processus. Vous n'êtes pas obligé d'être l'auteur des ces plans.
     choice:
       workflows: '[0,Inf]processus'
   task:

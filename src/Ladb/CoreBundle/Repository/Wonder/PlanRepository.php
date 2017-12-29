@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class PlanRepository extends AbstractEntityRepository {
@@ -40,7 +41,7 @@ class PlanRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'u', 'uav', 'mp', 'ps', 'cts', 'wks', 'hws', 'tgs', 'l' ))
+			->select(array( 'p', 'u', 'uav', 'mp', 'ps', 'cts', 'wks', 'hws', 'wfs', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'p')
 			->innerJoin('p.user', 'u')
 			->innerJoin('u.avatar', 'uav')
@@ -49,6 +50,7 @@ class PlanRepository extends AbstractEntityRepository {
 			->leftJoin('p.creations', 'cts')
 			->leftJoin('p.workshops', 'wks')
 			->leftJoin('p.howtos', 'hws')
+			->leftJoin('p.workflows', 'wfs')
 			->leftJoin('p.tags', 'tgs')
 			->leftJoin('p.license', 'l')
 			->where('p.id = :id')
@@ -167,23 +169,6 @@ class PlanRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findPagined($offset, $limit, $filter = 'recent') {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'p', 'u', 'mp' ))
-			->from($this->getEntityName(), 'p')
-			->innerJoin('p.user', 'u')
-			->innerJoin('p.mainPicture', 'mp')
-			->where('p.isDraft = false')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		$this->_applyCommonFilter($queryBuilder, $filter);
-
-		return new Paginator($queryBuilder->getQuery());
-	}
-
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder
@@ -269,6 +254,23 @@ class PlanRepository extends AbstractEntityRepository {
 		;
 	}
 
+	public function findPagined($offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'u', 'mp' ))
+			->from($this->getEntityName(), 'p')
+			->innerJoin('p.user', 'u')
+			->innerJoin('p.mainPicture', 'mp')
+			->where('p.isDraft = false')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -308,6 +310,26 @@ class PlanRepository extends AbstractEntityRepository {
 			->where('p.isDraft = false')
 			->andWhere('c = :creation')
 			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByWorkflow(Workflow $workflow, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'u', 'mp', 'w' ))
+			->from($this->getEntityName(), 'p')
+			->innerJoin('p.user', 'u')
+			->innerJoin('p.mainPicture', 'mp')
+			->innerJoin('p.workflows', 'w')
+			->where('p.isDraft = false')
+			->andWhere('w = :workflow')
+			->setParameter('workflow', $workflow)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

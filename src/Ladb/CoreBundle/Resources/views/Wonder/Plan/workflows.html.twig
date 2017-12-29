@@ -3,6 +3,7 @@
 {% set navSection = 'plans' %}
 
 {% set masonry = true %}
+{% set masonryWide = true %}
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
@@ -10,16 +11,16 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    {% if workshops.count == 0 %}
+    {% if workflows.count == 0 %}
         <div class="alert alert-info">
-            Aucun atelier n'est associé à ce plan.
+            Aucune création n'est associé à ce plan.
         </div>
     {% else %}
-        {% embed 'LadbCoreBundle:Wonder/Workshop:_list-filterbar.part.html.twig' %}
-            {% set filterPath = 'core_plan_workshops_filter' %}
+        {% embed 'LadbCoreBundle:Workflow:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_plan_workflows_filter' %}
             {% set filterPathParameters = { 'id':plan.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ plan.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(plan.workshopCount) }}</span>
+                <span class="ladb-heading">{{ plan.workflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(plan.workflowCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}
@@ -27,5 +28,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Wonder/Workshop:_list-n.part.html.twig' %}
+    {% include 'LadbCoreBundle:Workflow:_list-n.part.html.twig' %}
 {% endblock %}

@@ -21,6 +21,11 @@
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
+    {% if workshop.workflowCount > 0 %}
+        {% for entity in workshop.workflows %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
     {% if workshop.latitude is not empty and workshop.longitude is not empty %}
         <meta property="place:location:latitude" content="{{ workshop.latitude }}" />
         <meta property="place:location:longitude" content="{{ workshop.longitude }}" />
@@ -64,30 +69,41 @@
         <div class="ladb-meta{% if workshop.planCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
             {% if workshop.planCount > 0 %}
-            <a href="{{ workshop.planCount == 1 ? path('core_plan_show', { 'id':workshop.plans[0].sluggedId }) : path('core_workshop_plans', { 'id':workshop.id }) }}">
-                {% endif %}
-                <strong>{{ workshop.planCount }}</strong>
-                <small>{{ 'wonder.plan.choice.plans'|transchoice(workshop.planCount) }}</small>
-                {% if workshop.planCount > 0 %}
-            </a>
+                <a href="{{ workshop.planCount == 1 ? path('core_plan_show', { 'id':workshop.plans[0].sluggedId }) : path('core_workshop_plans', { 'id':workshop.id }) }}">
+            {% endif %}
+            <strong>{{ workshop.planCount }}</strong>
+            <small>{{ 'wonder.plan.choice.plans'|transchoice(workshop.planCount) }}</small>
+            {% if workshop.planCount > 0 %}
+                </a>
             {% endif %}
         </div>
         <div class="ladb-meta{% if workshop.howtoCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-howto ladb-icon-fixed-center"></i>
             {% if workshop.howtoCount > 0 %}
-            <a href="{{ workshop.howtoCount == 1 ? path('core_howto_show', { 'id':workshop.howtos[0].sluggedId }) : path('core_workshop_howtos', { 'id':workshop.id }) }}">
-                {% endif %}
-                <strong>{{ workshop.howtoCount }}</strong>
-                <small>{{ 'howto.howto.choice.howtos'|transchoice(workshop.howtoCount) }}</small>
-                {% if workshop.planCount > 0 %}
-            </a>
+                <a href="{{ workshop.howtoCount == 1 ? path('core_howto_show', { 'id':workshop.howtos[0].sluggedId }) : path('core_workshop_howtos', { 'id':workshop.id }) }}">
+            {% endif %}
+            <strong>{{ workshop.howtoCount }}</strong>
+            <small>{{ 'howto.howto.choice.howtos'|transchoice(workshop.howtoCount) }}</small>
+            {% if workshop.planCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        <div class="ladb-meta{% if workshop.workflowCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-workflow ladb-icon-fixed-center"></i>
+            {% if workshop.workflowCount > 0 %}
+                <a href="{{ workshop.workflowCount == 1 ? path('core_workflow_show', { 'id':workshop.workflows[0].sluggedId }) : path('core_workshop_workflows', { 'id':workshop.id }) }}">
+            {% endif %}
+            <strong>{{ workshop.workflowCount }}</strong>
+            <small>{{ 'workflow.workflow.choice.workflows'|transchoice(workshop.workflowCount) }}</small>
+            {% if workshop.workflowCount > 0 %}
+                </a>
             {% endif %}
         </div>
     </div>
 {% endblock %}
 
 {% block contentLinkedTo %}
-    {% if workshop.planCount > 0 or workshop.howtoCount > 0 %}
+    {% if workshop.planCount > 0 or workshop.howtoCount > 0 or workshop.workflowCount > 0 %}
         {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
             {% block body %}
                 {% if workshop.planCount > 0 %}
@@ -104,6 +120,14 @@
                         'picture':workshop.howtos[0].mainPicture,
                         'icon':'ladb-icon-howto',
                         'caption': workshop.howtoCount~' '~('howto.howto.choice.howtos'|transchoice(workshop.howtoCount))
+                    } %}
+                {% endif %}
+                {% if workshop.workflowCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':workshop.workflowCount == 1 ? path('core_workflow_show', { 'id':workshop.workflows[0].sluggedId }) : path('core_workshop_workflows', { 'id':workshop.id }),
+                        'picture':workshop.workflows[0].mainPicture,
+                        'icon':'ladb-icon-workflow',
+                        'caption': workshop.workflowCount~' '~('workflow.workflow.choice.workflows'|transchoice(workshop.workflowCount))
                     } %}
                 {% endif %}
             {% endblock %}

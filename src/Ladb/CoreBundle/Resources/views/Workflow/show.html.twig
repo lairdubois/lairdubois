@@ -7,6 +7,40 @@
 
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
 
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    {% if workflow.inspirationCount > 0 %}
+        {% for entity in workflow.inspirations %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.howtoCount > 0 %}
+        {% for entity in workflow.howtos %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.creationCount > 0 %}
+        {% for entity in workflow.creations %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.planCount > 0 %}
+        {% for entity in workflow.plans %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.workshopCount > 0 %}
+        {% for entity in workflow.workshops %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.reboundCount > 0 %}
+        {% for entity in workflow.rebounds %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':workflow } %}
         {% block headerTools %}
@@ -111,6 +145,47 @@
         <div class="ladb-btn">
             <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
         </div>
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% if workflow.creationCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-creation"></i>
+                <a href="{{ workflow.creationCount == 1 ? path('core_creation_show', { 'id':workflow.creations[0].sluggedId }) : path('core_workflow_creations', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.creationCount }}</strong>
+                    <small>{{ 'wonder.creation.choice.creations'|transchoice(workflow.creationCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        <div class="ladb-meta{% if workflow.planCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
+            {% if workflow.planCount > 0 %}
+            <a href="{{ workflow.planCount == 1 ? path('core_plan_show', { 'id':workflow.plans[0].sluggedId }) : path('core_workflow_plans', { 'id':workflow.id }) }}">
+                {% endif %}
+                <strong>{{ workflow.planCount }}</strong>
+                <small>{{ 'wonder.plan.choice.plans'|transchoice(workflow.planCount) }}</small>
+                {% if workflow.planCount > 0 %}
+            </a>
+            {% endif %}
+        </div>
+        {% if workflow.howtoCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-howto"></i>
+                <a href="{{ workflow.howtoCount == 1 ? path('core_howto_show', { 'id':workflow.howtos[0].sluggedId }) : path('core_workflow_hotos', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.howtoCount }}</strong>
+                    <small>{{ 'howto.howto.choice.howtos'|transchoice(workflow.howtoCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if workflow.workshopCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-workshop"></i>
+                <a href="{{ workflow.workshopCount == 1 ? path('core_workshop_show', { 'id':workflow.workshops[0].sluggedId }) : path('core_workflow_workshops', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.workshopCount }}</strong>
+                    <small>{{ 'wonder.workshop.choice.workshops'|transchoice(workflow.workshopCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
     </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':workflow.license } %}

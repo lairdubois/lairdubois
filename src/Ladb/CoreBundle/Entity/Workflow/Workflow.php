@@ -113,6 +113,48 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	protected $labels;
 
 	/**
+	 * @ORM\Column(type="integer", name="creation_count")
+	 */
+	private $creationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="workflows")
+	 */
+	private $creations;
+
+	/**
+	 * @ORM\Column(type="integer", name="plan_count")
+	 */
+	private $planCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="workflows", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_workflow_plan")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $plans;
+
+	/**
+	 * @ORM\Column(type="integer", name="workshop_count")
+	 */
+	private $workshopCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Workshop", mappedBy="workflows")
+	 */
+	private $workshops;
+
+	/**
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="workflows")
+	 */
+	private $howtos;
+
+	/**
 	 * @ORM\Column(type="integer", name="rebound_count")
 	 */
 	private $reboundCount = 0;
@@ -347,6 +389,90 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	public function resetLabels() {
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	// CreationCount /////
+
+	public function incrementCreationCount($by = 1) {
+		return $this->creationCount += intval($by);
+	}
+
+	public function getCreationCount() {
+		return $this->creationCount;
+	}
+
+	// Creations /////
+
+	public function getCreations() {
+		return $this->creations;
+	}
+
+	// PlanCount /////
+
+	public function incrementPlanCount($by = 1) {
+		return $this->planCount += intval($by);
+	}
+
+	public function getPlanCount() {
+		return $this->planCount;
+	}
+
+	// Plans /////
+
+	public function addPlan(\Ladb\CoreBundle\Entity\Wonder\Plan $plan) {
+		if (!$this->plans->contains($plan)) {
+			$this->plans[] = $plan;
+			$this->planCount = count($this->plans);
+			if ($this->getIsPublic()) {
+				$plan->incrementPlanCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removePlan(\Ladb\CoreBundle\Entity\Wonder\Plan $plan) {
+		if ($this->plans->removeElement($plan)) {
+			$this->planCount = count($this->plans);
+			if ($this->getIsPublic()) {
+				$plan->incrementPlanCount(-1);
+			}
+		}
+	}
+
+	public function getPlans() {
+		return $this->plans;
+	}
+
+	// WorkshopCount /////
+
+	public function incrementWorkshopCount($by = 1) {
+		return $this->workshopCount += intval($by);
+	}
+
+	public function getWorkshopCount() {
+		return $this->workshopCount;
+	}
+
+	// Workshops /////
+
+	public function getWorkshops() {
+		return $this->workshops;
+	}
+
+	// HowtoCount /////
+
+	public function incrementHowtoCount($by = 1) {
+		return $this->howtoCount += intval($by);
+	}
+
+	public function getHowtoCount() {
+		return $this->howtoCount;
+	}
+
+	// Howtos /////
+
+	public function getHowtos() {
+		return $this->howtos;
 	}
 
 }

@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class HowtoRepository extends AbstractEntityRepository {
@@ -23,7 +24,7 @@ class HowtoRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 'ats', 'abbs', 'pls', 'cts', 'wks' ))
+			->select(array( 'h', 'u', 'mp', 'ats', 'abbs', 'pls', 'cts', 'wfs', 'wks' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->innerJoin('h.mainPicture', 'mp')
@@ -31,6 +32,7 @@ class HowtoRepository extends AbstractEntityRepository {
 			->leftJoin('ats.bodyBlocks', 'abbs')
 			->leftJoin('h.plans', 'pls')
 			->leftJoin('h.creations', 'cts')
+			->leftJoin('h.workflows', 'wfs')
 			->leftJoin('h.workshops', 'wks')
 			->where('h.id = :id')
 			->setParameter('id', $id)
@@ -321,6 +323,27 @@ class HowtoRepository extends AbstractEntityRepository {
 			->where('h.isDraft = false')
 			->andWhere('c = :creation')
 			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByWorkflow(Workflow $workflow, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'h', 'u', 'mp', 't', 'w' ))
+			->from($this->getEntityName(), 'h')
+			->innerJoin('h.user', 'u')
+			->leftJoin('h.mainPicture', 'mp')
+			->leftJoin('h.tags', 't')
+			->innerJoin('h.workflows', 'w')
+			->where('h.isDraft = false')
+			->andWhere('w = :workflow')
+			->setParameter('workflow', $workflow)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

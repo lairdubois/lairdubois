@@ -14,6 +14,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Howto\HowtosToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
@@ -62,6 +63,10 @@ class WorkshopType extends AbstractType {
 			->add($builder
 				->create('howtos', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new HowtosToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('workflows', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new WorkflowsToIdsTransformer($this->om))
 			)
 			->add('license', LicenseType::class)
 		;

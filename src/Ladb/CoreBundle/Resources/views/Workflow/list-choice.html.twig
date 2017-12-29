@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Common:_list-choice.html.twig' %}
+
+{% block body %}
+    {% include 'LadbCoreBundle:Workflow:_searchbox.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Workflow:_list-choice-n.part.html.twig' %}
+{% endblock %}

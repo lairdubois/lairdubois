@@ -3,12 +3,14 @@
 namespace Ladb\CoreBundle\Form\Type\Workflow;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\Type\LicenseType;
 
 class WorkflowType extends AbstractType {
@@ -26,6 +28,10 @@ class WorkflowType extends AbstractType {
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new TagsToLabelsTransformer($this->om))
+			)
+			->add($builder
+				->create('plans', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new PlansToIdsTransformer($this->om))
 			)
 			->add('license', LicenseType::class)
 		;

@@ -98,6 +98,18 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	private $howtos;
 
 	/**
+	 * @ORM\Column(type="integer", name="workflow_count")
+	 */
+	private $workflowCount = 0;
+
+    /**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="creations", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_workflow")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $workflows;
+
+	/**
 	 * @ORM\Column(type="integer", name="provider_count")
 	 */
 	private $providerCount = 0;
@@ -164,6 +176,7 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 		$this->tools = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -295,6 +308,42 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getHowtos() {
 		return $this->howtos;
+	}
+
+	// WorkflowCount /////
+
+	public function incrementWorkflowCount($by = 1) {
+		return $this->workflowCount += intval($by);
+	}
+
+	public function getWorkflowCount() {
+		return $this->workflowCount;
+	}
+
+	// Workflows /////
+
+	public function addWorkflow(\Ladb\CoreBundle\Entity\Workflow\Workflow $workflow) {
+		if (!$this->workflows->contains($workflow)) {
+			$this->workflows[] = $workflow;
+			$this->workflowCount = count($this->workflows);
+			if (!$this->getIsDraft()) {
+				$workflow->incrementCreationCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeWorkflow(\Ladb\CoreBundle\Entity\Workflow\Workflow $workflow) {
+		if ($this->workflows->removeElement($workflow)) {
+			$this->workflowCount = count($this->workflows);
+			if (!$this->getIsDraft()) {
+				$workflow->incrementCreationCount(-1);
+			}
+		}
+	}
+
+	public function getWorkflows() {
+		return $this->workflows;
 	}
 
 	// ProviderCount /////

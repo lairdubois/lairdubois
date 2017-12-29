@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Manager\Wonder\PlanManager;
 use Ladb\CoreBundle\Model\HiddableInterface;
@@ -469,6 +470,47 @@ class PlanController extends Controller {
     }
 
 	/**
+	 * @Route("/{id}/processus", requirements={"id" = "\d+"}, name="core_plan_workflows")
+	 * @Route("/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_workflows_filter")
+	 * @Route("/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_workflows_filter_page")
+	 * @Template("LadbCoreBundle:Wonder/Plan:workflows.html.twig")
+	 */
+	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+
+		$plan = $planRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
+
+		// Workflows
+
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workflowRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_workflows_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'workflows'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'plan' => $plan,
+		));
+	}
+
+	/**
 	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_plan_workshops")
 	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_workshops_filter")
 	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_workshops_filter_page")
@@ -753,6 +795,13 @@ class PlanController extends Controller {
 
 						break;
 
+					case 'content-workflows':
+
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-workshops':
 
 						$filter = new \Elastica\Query\Range('workshopCount', array( 'gte' => 1 ));
@@ -825,11 +874,11 @@ class PlanController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			function(&$filters) {
+			function(&$filters) use ($layout) {
 
 				$user = $this->getUser();
 				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
+				if (!is_null($user) && $layout != 'choice') {
 
 					$filter = new \Elastica\Query\BoolQuery();
 					$filter->addShould(

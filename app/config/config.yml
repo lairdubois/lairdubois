@@ -386,6 +386,7 @@ fos_elastica:
                         bodyBlockVideoCount: { type: integer }
                         planCount: { type: integer }
                         howtoCount: { type: integer }
+                        workflowCount: { type: integer }
                         providerCount: { type: integer }
                         inspirationCount: { type: integer }
                         reboundCount: { type: integer }
@@ -435,6 +436,7 @@ fos_elastica:
                         bodyBlockVideoCount: { type: integer }
                         planCount: { type: integer }
                         howtoCount: { type: integer }
+                        workflowCount: { type: integer }
                         area: { type: integer }
                         geoPoint: { type: geo_point }
                         user:
@@ -471,6 +473,7 @@ fos_elastica:
                         downloadCount: { type: integer }
                         creationCount: { type: integer }
                         howtoCount: { type: integer }
+                        workflowCount: { type: integer }
                         workshopCount: { type: integer }
                         inspirationCount: { type: integer }
                         reboundCount: { type: integer }
@@ -546,6 +549,7 @@ fos_elastica:
                         bodyBlockVideoCount: { type: integer }
                         creationCount: { type: integer }
                         planCount: { type: integer }
+                        workflowCount: { type: integer }
                         workshopCount: { type: integer }
                         providerCount: { type: integer }
                         isWorkInProgress: { type: boolean }
@@ -613,6 +617,10 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        creationCount: { type: integer }
+                        planCount: { type: integer }
+                        howtoCount: { type: integer }
+                        workshopCount: { type: integer }
                         user:
                             type: "object"
                             properties:

@@ -3,7 +3,7 @@
 {% set filterPath = filterPath|default('core_workflow_list_filter') %}
 {% set filterPathParameters = filterPathParameters|default({}) %}
 {% set baseFilterDefs = {
-    'recent':   { 'label':'Récentes', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'recent' }))) },
+    'recent':   { 'label':'Récents', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'recent' }))) },
 } %}
 {% set filterDefs = customFilterDefs is defined ? baseFilterDefs|merge(customFilterDefs) : baseFilterDefs %}
 

@@ -4,6 +4,11 @@ namespace Ladb\CoreBundle\Repository\Workflow;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Entity\Wonder\Plan;
+use Ladb\CoreBundle\Entity\Wonder\Workshop;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class WorkflowRepository extends AbstractEntityRepository {
@@ -19,11 +24,15 @@ class WorkflowRepository extends AbstractEntityRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'w', 'u', 'uav', 'mp' ))
+			->select(array( 'w', 'u', 'uav', 'mp', 'cts', 'pls', 'wks', 'hws' ))
 			->from($this->getEntityName(), 'w')
 			->innerJoin('w.user', 'u')
 			->innerJoin('u.avatar', 'uav')
 			->leftJoin('w.mainPicture', 'mp')
+			->leftJoin('w.creations', 'cts')
+			->leftJoin('w.plans', 'pls')
+			->leftJoin('w.howtos', 'hws')
+			->leftJoin('w.workshops', 'wks')
 			->where($queryBuilder->expr()->in('w.id', $ids))
 		;
 
@@ -36,6 +45,24 @@ class WorkflowRepository extends AbstractEntityRepository {
 
 	/////
 
+	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		if ('popular-views' == $filter) {
+			$queryBuilder
+				->addOrderBy('w.viewCount', 'DESC')
+			;
+		} else if ('popular-likes' == $filter) {
+			$queryBuilder
+				->addOrderBy('w.likeCount', 'DESC')
+			;
+		} else if ('popular-comments' == $filter) {
+			$queryBuilder
+				->addOrderBy('w.commentCount', 'DESC');
+		}
+		$queryBuilder
+			->addOrderBy('w.changedAt', 'DESC')
+		;
+	}
+
 	public function findPagined($offset, $limit, $filter = 'all') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -45,8 +72,7 @@ class WorkflowRepository extends AbstractEntityRepository {
 			->setMaxResults($limit)
 		;
 
-		$queryBuilder
-			->addOrderBy('w.createdAt', 'DESC');
+		$this->_applyCommonFilter($queryBuilder, $filter);
 
 		return new Paginator($queryBuilder->getQuery());
 	}
@@ -62,8 +88,87 @@ class WorkflowRepository extends AbstractEntityRepository {
 			->setMaxResults($limit)
 		;
 
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByCreation(Creation $creation, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->addOrderBy('w.createdAt', 'DESC');
+			->select(array( 'w', 'u', 'mp', 'c' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('w.mainPicture', 'mp')
+			->innerJoin('w.creations', 'c')
+			->where('w.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
+			->andWhere('c = :creation')
+			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByPlan(Plan $plan, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'mp', 'p' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('w.mainPicture', 'mp')
+			->innerJoin('w.plans', 'p')
+			->where('w.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
+			->andWhere('p = :plan')
+			->setParameter('plan', $plan)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByWorkshop(Workshop $workshop, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'mp', 'wks' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('w.mainPicture', 'mp')
+			->innerJoin('w.workshops', 'wks')
+			->where('w.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
+			->andWhere('wks = :workshop')
+			->setParameter('workshop', $workshop)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByHowto(Howto $howto, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'mp', 'h' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('w.mainPicture', 'mp')
+			->innerJoin('w.howtos', 'h')
+			->where('w.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
+			->andWhere('h = :howto')
+			->setParameter('howto', $howto)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
 
 		return new Paginator($queryBuilder->getQuery());
 	}

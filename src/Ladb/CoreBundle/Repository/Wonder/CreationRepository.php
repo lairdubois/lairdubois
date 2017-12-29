@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 use Ladb\CoreBundle\Utils\SearchUtils;
 
@@ -41,7 +42,7 @@ class CreationRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'c', 'u', 'uav', 'mp', 'sp', 'ps', 'bbs', 'wds', 'tls', 'fhs', 'pls', 'hws', 'pds', 'tgs', 'l' ))
+			->select(array( 'c', 'u', 'uav', 'mp', 'sp', 'ps', 'bbs', 'wds', 'tls', 'fhs', 'pls', 'hws', 'wfs', 'pds', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
 			->innerJoin('u.avatar', 'uav')
@@ -54,6 +55,7 @@ class CreationRepository extends AbstractEntityRepository {
 			->leftJoin('c.finishes', 'fhs')
 			->leftJoin('c.plans', 'pls')
 			->leftJoin('c.howtos', 'hws')
+			->leftJoin('c.workflows', 'wfs')
 			->leftJoin('c.providers', 'pds')
 			->leftJoin('c.tags', 'tgs')
 			->leftJoin('c.license', 'l')
@@ -358,6 +360,26 @@ class CreationRepository extends AbstractEntityRepository {
 			->where('c.isDraft = false')
 			->andWhere('h = :howto')
 			->setParameter('howto', $howto)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByWorkflow(Workflow $workflow, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'u', 'mp', 'w' ))
+			->from($this->getEntityName(), 'c')
+			->innerJoin('c.user', 'u')
+			->innerJoin('c.mainPicture', 'mp')
+			->innerJoin('c.workflows', 'w')
+			->where('c.isDraft = false')
+			->andWhere('w = :workflow')
+			->setParameter('workflow', $workflow)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

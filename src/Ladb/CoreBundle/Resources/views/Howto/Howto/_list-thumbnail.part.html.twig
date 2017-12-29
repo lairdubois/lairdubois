@@ -17,6 +17,9 @@
     {% if howto.workshopCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_howto_workshops', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(howto.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
     {% endif %}
+    {% if howto.workflowCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_howto_workflows', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.workflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(howto.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
+    {% endif %}
     {% if howto.providerCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_howto_providers', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.providerCount }} {{ 'knowledge.provider.choice.providers'|transchoice(howto.providerCount) }}"><i class="ladb-icon-provider"></i></a></li>
     {% endif %}

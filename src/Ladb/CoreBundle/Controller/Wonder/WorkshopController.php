@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -420,6 +421,47 @@ class WorkshopController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/processus", requirements={"id" = "\d+"}, name="core_workshop_workflows")
+	 * @Route("/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workshop_workflows_filter")
+	 * @Route("/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workshop_workflows_filter_page")
+	 * @Template("LadbCoreBundle:Wonder/Workshop:workflows.html.twig")
+	 */
+	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+
+		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
+		if (is_null($workshop)) {
+			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
+		}
+
+		// Howtos
+
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workflowRepository->findPaginedByWorkshop($workshop, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workshop_workflows_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'workflows'      => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Wonder/Plan:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'workshop' => $workshop,
+		));
+	}
+
+	/**
 	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_workshop_sticker_png")
 	 * @Route("/{id}/sticker", requirements={"id" = "\d+"}, name="core_workshop_sticker")
 	 */
@@ -619,6 +661,13 @@ class WorkshopController extends Controller {
 
 						break;
 
+					case 'content-workflows':
+
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-videos':
 
 						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gte' => 1 ));
@@ -698,11 +747,11 @@ class WorkshopController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			function(&$filters) {
+			function(&$filters) use ($layout) {
 
 				$user = $this->getUser();
 				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
+				if (!is_null($user) && $layout != 'choice') {
 
 					$filter = new \Elastica\Query\BoolQuery();
 					$filter->addShould(
@@ -798,7 +847,7 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_workshop_show")
-	 * "LadbCoreBundle:Wonder/Workshop:show.html.twig"
+	 * @Template("LadbCoreBundle:Wonder/Workshop:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

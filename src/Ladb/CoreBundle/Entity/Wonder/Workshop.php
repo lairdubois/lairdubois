@@ -99,6 +99,18 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	private $howtos;
 
 	/**
+	 * @ORM\Column(type="integer", name="workflow_count")
+	 */
+	private $workflowCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="workshops", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_workshop_workflow")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $workflows;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_tag")
 	 * @Assert\Count(min=2)
@@ -119,6 +131,7 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// Type /////
@@ -200,6 +213,42 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 
 	public function getHowtos() {
 		return $this->howtos;
+	}
+
+	// WorkflowCount /////
+
+	public function incrementWorkflowCount($by = 1) {
+		return $this->workflowCount += intval($by);
+	}
+
+	public function getWorkflowCount() {
+		return $this->workflowCount;
+	}
+
+	// Workflows /////
+
+	public function addWorkflow(\Ladb\CoreBundle\Entity\Workflow\Workflow $workflow) {
+		if (!$this->workflows->contains($workflow)) {
+			$this->workflows[] = $workflow;
+			$this->workflowCount = count($this->workflows);
+			if (!$this->getIsDraft()) {
+				$workflow->incrementWorkshopCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeWorkflow(\Ladb\CoreBundle\Entity\Workflow\Workflow $workflow) {
+		if ($this->workflows->removeElement($workflow)) {
+			$this->workflowCount = count($this->workflows);
+			if (!$this->getIsDraft()) {
+				$workflow->incrementWorkshopCount(-1);
+			}
+		}
+	}
+
+	public function getWorkflows() {
+		return $this->workflows;
 	}
 
 }

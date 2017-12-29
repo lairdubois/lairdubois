@@ -30,6 +30,11 @@
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
+    {% if plan.reboundCount > 0 %}
+        {% for entity in plan.rebounds %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
     {% if plan.howtoCount > 0 %}
         {% for entity in plan.howtos %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
@@ -42,11 +47,6 @@
     {% endif %}
     {% if plan.workshopCount > 0 %}
         {% for entity in plan.workshops %}
-            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
-        {% endfor %}
-    {% endif %}
-    {% if plan.reboundCount > 0 %}
-        {% for entity in plan.rebounds %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
@@ -120,7 +120,7 @@
     {{ parent() }}
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% if plan.inspirationCount > 0 or plan.reboundCount > 0 or plan.howtoCount > 0 or plan.creationCount > 0 or plan.workshopCount > 0 %}
+        {% if plan.inspirationCount > 0 or plan.reboundCount > 0 or plan.howtoCount > 0 or plan.creationCount > 0 or plan.workflowCount > 0 or plan.workshopCount > 0 %}
             {% if plan.inspirationCount > 0 %}
                 <div class="ladb-meta">
                     <i class="ladb-icon-inspiration ladb-icon-fixed-center"></i>
@@ -145,6 +145,15 @@
                     <a href="{{ plan.creationCount == 1 ? path('core_creation_show', { 'id':plan.creations[0].sluggedId }) : path('core_plan_creations', { 'id':plan.id }) }}">
                         <strong>{{ plan.creationCount }}</strong>
                         <small>{{ 'wonder.creation.choice.creations'|transchoice(plan.creationCount) }}</small>
+                    </a>
+                </div>
+            {% endif %}
+            {% if plan.workflowCount > 0 %}
+                <div class="ladb-meta">
+                    <i class="ladb-icon-workflow"></i>
+                    <a href="{{ plan.workflowCount == 1 ? path('core_workflow_show', { 'id':plan.workflows[0].sluggedId }) : path('core_plan_workflows', { 'id':plan.id }) }}">
+                        <strong>{{ plan.workflowCount }}</strong>
+                        <small>{{ 'workflow.workflow.choice.workflows'|transchoice(plan.workflowCount) }}</small>
                     </a>
                 </div>
             {% endif %}
@@ -175,7 +184,7 @@
 {% endblock %}
 
 {% block contentLinkedTo %}
-    {% if plan.inspirationCount > 0 or plan.reboundCount > 0 or plan.howtoCount > 0 or plan.creationCount > 0 or plan.workshopCount > 0 %}
+    {% if plan.inspirationCount > 0 or plan.reboundCount > 0 or plan.howtoCount > 0 or plan.creationCount > 0 or plan.workflowCount > 0 or plan.workshopCount > 0 %}
         {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
             {% block body %}
                 {% if plan.inspirationCount > 0 %}
@@ -202,12 +211,20 @@
                         'caption': plan.creationCount~' '~('wonder.creation.choice.creations'|transchoice(plan.creationCount))
                     } %}
                 {% endif %}
+                {% if plan.workflowCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':plan.workflowCount == 1 ? path('core_workflow_show', { 'id':plan.workflows[0].sluggedId }) : path('core_plan_workflows', { 'id':plan.id }),
+                        'picture':plan.workflows[0].mainPicture,
+                        'icon':'ladb-icon-workflow',
+                        'caption': plan.workflowCount~' '~('workflow.workflow.choice.workflows'|transchoice(plan.workflowCount))
+                    } %}
+                {% endif %}
                 {% if plan.workshopCount > 0 %}
                     {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
                         'path':plan.workshopCount == 1 ? path('core_workshop_show', { 'id':plan.workshops[0].sluggedId }) : path('core_plan_workshops', { 'id':plan.id }),
                         'picture':plan.workshops[0].mainPicture,
                         'icon':'ladb-icon-workshop',
-                        'caption': plan.workshopCount~' '~('wonder.workshop.choice.workshops'|transchoice(plan.workshopCount))
+                        'caption': plan.workshopCount~' '~('workshop.workshop.choice.workshops'|transchoice(plan.workshopCount))
                     } %}
                 {% endif %}
                 {% if plan.reboundCount > 0 %}

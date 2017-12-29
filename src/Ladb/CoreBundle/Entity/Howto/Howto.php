@@ -143,6 +143,18 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $plans;
 
 	/**
+	 * @ORM\Column(type="integer", name="workflow_count")
+	 */
+	private $workflowCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="workflows", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_howto_workflow")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $workflows;
+
+	/**
 	 * @ORM\Column(type="integer", name="provider_count")
 	 */
 	private $providerCount = 0;
@@ -220,6 +232,7 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workshops = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->referrals = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -401,6 +414,42 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getPlans() {
 		return $this->plans;
+	}
+
+	// WorkflowCount /////
+
+	public function incrementWorkflowCount($by = 1) {
+		return $this->workflowCount += intval($by);
+	}
+
+	public function getWorkflowCount() {
+		return $this->workflowCount;
+	}
+
+	// Workflows /////
+
+	public function addWorkflow(\Ladb\CoreBundle\Entity\Workflow\Workflow $workflow) {
+		if (!$this->workflows->contains($workflow)) {
+			$this->workflows[] = $workflow;
+			$this->workflowCount = count($this->workflows);
+			if (!$this->getIsDraft()) {
+				$workflow->incrementHowtoCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeWorkflow(\Ladb\CoreBundle\Entity\Workflow\Workflow $workflow) {
+		if ($this->workflows->removeElement($workflow)) {
+			$this->workflowCount = count($this->workflows);
+			if (!$this->getIsDraft()) {
+				$workflow->incrementHowtoCount(-1);
+			}
+		}
+	}
+
+	public function getWorkflows() {
+		return $this->workflows;
 	}
 
 	// ProviderCount /////

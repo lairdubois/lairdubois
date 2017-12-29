@@ -117,6 +117,16 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	private $howtos;
 
 	/**
+	 * @ORM\Column(type="integer", name="workflow_count")
+	 */
+	private $workflowCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", mappedBy="plans")
+	 */
+	private $workflows;
+
+	/**
 	 * @ORM\Column(type="integer", name="rebound_count")
 	 */
 	private $reboundCount = 0;
@@ -168,6 +178,7 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workshops = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -287,6 +298,22 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 
 	public function getHowtos() {
 		return $this->howtos;
+	}
+
+	// WorkflowCount /////
+
+	public function incrementWorkflowCount($by = 1) {
+		return $this->workflowCount += intval($by);
+	}
+
+	public function getWorkflowCount() {
+		return $this->workflowCount;
+	}
+
+	// Workflows /////
+
+	public function getWorkflows() {
+		return $this->workflows;
 	}
 
 	// DownloadCount /////

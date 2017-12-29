@@ -1,0 +1,25 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set workflows #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for workflow in workflows %}
+        <div class="ladb-choice-row">
+            <div class="ladb-thumbnail">
+                <a href="{{ path('core_workflow_show', { 'id':workflow.sluggedId }) }}" class="thumbnail" target="_blank">
+                    <img src="{{ (workflow.mainPicture is not null ? workflow.mainPicture.webPath : 'avatar.png')|imagine_filter('80x60o') }}">
+                </a>
+            </div>
+            <div class="ladb-tools">
+                <a href="#" class="btn btn-default" onclick="window.parent.workflowAdded('{% filter escape('js') %}{% include 'LadbCoreBundle:Workflow:_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+            </div>
+            <div class="ladb-body">
+                <h4 class="ladb-heading">{{ workflow.title }}</h4>
+                <span class="ladb-subheading">
+                    par {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':workflow.user } %}<small class="ladb-age">{{ workflow.createdAt|time_diff() }}</small>
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

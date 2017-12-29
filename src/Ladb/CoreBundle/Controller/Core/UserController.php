@@ -174,11 +174,11 @@ class UserController extends Controller {
 						break;
 
 					case 'sort-popular-followers':
-						$sort = array( 'followerCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'meta.followerCount' => array( 'order' => 'desc' ) );
 						break;
 
 					case 'sort-popular-likes':
-						$sort = array( 'recievedLikeCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'meta.recievedLikeCount' => array( 'order' => 'desc' ) );
 						break;
 
 					case 'sort-random':
@@ -200,7 +200,7 @@ class UserController extends Controller {
 			},
 			function(&$filters, &$sort) {
 
-				$sort = array( 'followerCount' => array( 'order' => 'desc' ) );
+				$sort = array( 'meta.followerCount' => array( 'order' => 'desc' ) );
 
 			},
 			null,

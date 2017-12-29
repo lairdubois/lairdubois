@@ -1,0 +1,36 @@
+
+{# set fieldId #}
+{# set maxWorkflowCount #}
+{# set excludedId (facultative) #}
+
+<script>
+    function updateWorkflowsForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#workflow_thumbnails").find("li.ladb-workflow").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(9); {# 9 = "workflow_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount == {{ maxWorkflowCount }}) {
+            $("#linkto_workflow_buttons").hide();
+        } else {
+            $("#linkto_workflow_buttons").show();
+        }
+    }
+    function workflowAdded(data) {
+        $("#workflow_thumbnails").append(data);
+        updateWorkflowsForm();
+        $("#linkto_workflow_modal_iframe").attr("src", "");
+        $("#linkto_workflow_modal").find("button.close").click();
+    }
+    function workflowRemoved() {
+        updateWorkflowsForm();
+    }
+    function updateWorkflowChoiceModal() {
+        $('#linkto_workflow_modal_iframe').attr('src', '{{ path('core_workflow_list', { 'layout':'choice' }) }}&ex=' + $("#{{ fieldId }}").val(){% if excludedId is defined and excludedId is not empty %}+',{{ excludedId }}'{% endif %});
+    }
+</script>

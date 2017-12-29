@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\HowtoUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -454,6 +455,13 @@ class HowtoController extends Controller {
 
 						break;
 
+					case 'content-workflows':
+
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gte' => 1 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-providers':
 
 						$filter = new \Elastica\Query\Range('providerCount', array( 'gte' => 1 ));
@@ -515,11 +523,11 @@ class HowtoController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			function(&$filters) {
+			function(&$filters) use ($layout) {
 
 				$user = $this->getUser();
 				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
+				if (!is_null($user) && $layout != 'choice') {
 
 					$filter = new \Elastica\Query\BoolQuery();
 					$filter->addShould(
@@ -695,6 +703,47 @@ class HowtoController extends Controller {
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Wonder/Plan:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'howto' => $howto,
+		));
+	}
+
+	/**
+	 * @Route("/pas-a-pas/{id}/processus", requirements={"id" = "\d+"}, name="core_howto_workflows")
+	 * @Route("/pas-a-pas/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workflows_filter")
+	 * @Route("/pas-a-pas/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workflows_filter_page")
+	 * @Template("LadbCoreBundle:Howto/Howto:workflows.html.twig")
+	 */
+	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+
+		// Providers
+
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workflowRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_workflows_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'workflows'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
