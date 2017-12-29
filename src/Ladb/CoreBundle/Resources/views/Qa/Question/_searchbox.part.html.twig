@@ -37,7 +37,6 @@
 {% block searchboxShortcuts %}
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-shortcut" data-query="@mine"><i class="ladb-icon-user"></i> Mes questions</a></li>
-        <li><a class="ladb-smartsearch-shortcut" data-query="@mine:draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
     <li><a class="ladb-smartsearch-shortcut" data-query="@no-answer"><i class="ladb-icon-answer"></i> Sans réponse</a></li>
 {% endblock %}
