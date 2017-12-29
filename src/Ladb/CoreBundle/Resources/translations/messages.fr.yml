@@ -425,6 +425,8 @@ workflow:
         plans: Associez jusqu'à <strong>4 plans</strong> à votre processus. Vous n'êtes pas obligé d'être l'auteur des ces plans.
     choice:
       workflows: '[0,Inf]processus'
+      inspiration: '[0,1]Ce processus est un rebond pour un autre processus|]1,Inf]Ce processus est un rebond pour %count% autres processus'
+      rebound: '[0,1]Ce processus est une inspiration pour un autre processus|]1,Inf]Ce processus est une inspiration pour %count% autres processus'
   task:
     title: Titre
     labels: Etiquettes

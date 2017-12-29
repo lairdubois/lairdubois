@@ -26,6 +26,31 @@ class WorkflowManager extends AbstractPublicationManager {
 		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(-1);
 		$workflow->getUser()->getMeta()->incrementPublicWorkflowCount();
 
+		// Creations counter update
+		foreach ($workflow->getCreations() as $creation) {
+			$creation->incrementWorkflowCount(1);
+		}
+
+		// Plans counter update
+		foreach ($workflow->getPlans() as $plan) {
+			$plan->incrementWorkflowCount(1);
+		}
+
+		// Workshops counter update
+		foreach ($workflow->getWorkshops() as $workshop) {
+			$workshop->incrementWorkflowCount(1);
+		}
+
+		// Howtos counter update
+		foreach ($workflow->getHowtos() as $howto) {
+			$howto->incrementWorkflowCount(1);
+		}
+
+		// Inspirations counter update
+		foreach ($workflow->getInspirations() as $inspiration) {
+			$inspiration->incrementReboundCount(1);
+		}
+
 		parent::publishPublication($workflow, $flush);
 	}
 
@@ -33,6 +58,31 @@ class WorkflowManager extends AbstractPublicationManager {
 
 		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(1);
 		$workflow->getUser()->getMeta()->incrementPublicWorkflowCount(-1);
+
+		// Creations counter update
+		foreach ($workflow->getCreations() as $creation) {
+			$creation->incrementWorkflowCount(-1);
+		}
+
+		// Plans counter update
+		foreach ($workflow->getPlans() as $plan) {
+			$plan->incrementWorkflowCount(-1);
+		}
+
+		// Workshops counter update
+		foreach ($workflow->getWorkshops() as $workshop) {
+			$workshop->incrementWorkflowCount(-1);
+		}
+
+		// Howtos counter update
+		foreach ($workflow->getHowtos() as $howto) {
+			$howto->incrementWorkflowCount(-1);
+		}
+
+		// Inspirations counter update
+		foreach ($workflow->getInspirations() as $inspiration) {
+			$inspiration->incrementReboundCount(-1);
+		}
 
 		parent::unpublishPublication($workflow, $flush);
 	}
@@ -44,6 +94,26 @@ class WorkflowManager extends AbstractPublicationManager {
 			$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(-1);
 		} else {
 			$workflow->getUser()->getMeta()->incrementPublicWorkflowCount(-1);
+		}
+
+		// Unlink creations
+		foreach ($workflow->getCreations() as $creation) {
+			$creation->removeWorkflow($workflow);
+		}
+
+		// Unlink plans
+		foreach ($workflow->getPlans() as $plan) {
+			$plan->removeWorkflow($workflow);
+		}
+
+		// Unlink workshops
+		foreach ($workflow->getWorkshops() as $workshop) {
+			$workshop->removeWorkflow($workflow);
+		}
+
+		// Unlink howtos
+		foreach ($workflow->getHowtos() as $howto) {
+			$howto->removeWorkflow($workflow);
 		}
 
 		// Unlink inspirations

@@ -449,6 +449,86 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_workflow_inspirations")
+	 * @Route("/{id}/inspirations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_inspirations_filter")
+	 * @Route("/{id}/inspirations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_inspirations_filter_page")
+	 * @Template("LadbCoreBundle:Workflow:inspirations.html.twig")
+	 */
+	public function inspirationsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+
+		$workflow = $workflowRepository->findOneById($id);
+		if (is_null($workflow)) {
+			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
+		}
+
+		// Inspirations
+
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workflowRepository->findPaginedByRebound($workflow, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'       => $filter,
+			'prevPageUrl'  => $pageUrls->prev,
+			'nextPageUrl'  => $pageUrls->next,
+			'inspirations' => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'workflow' => $workflow,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/rebonds", requirements={"id" = "\d+"}, name="core_workflow_rebounds")
+	 * @Route("/{id}/rebonds/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_rebounds_filter")
+	 * @Route("/{id}/rebonds/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_rebounds_filter_page")
+	 * @Template("LadbCoreBundle:Workflow:rebounds.html.twig")
+	 */
+	public function reboundsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+
+		$workflow = $workflowRepository->findOneById($id);
+		if (is_null($workflow)) {
+			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
+		}
+
+		// Rebounds
+
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $workflowRepository->findPaginedByInspiration($workflow, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_rebounds_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'rebounds'    => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'workflow' => $workflow,
+		));
+	}
+
+	/**
 	 * @Route("/{id}/restart_confirm", requirements={"id" = "\d+"}, name="core_workflow_restart_confirm")
 	 * @Template("LadbCoreBundle:Workflow:restart-confirm-xhr.html.twig")
 	 */

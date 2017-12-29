@@ -33,7 +33,7 @@ trait InspirableTrait {
 		if (!$this->inspirations->contains($inspiration)) {
 			$this->inspirations[] = $inspiration;
 			$this->inspirationCount = count($this->inspirations);
-			if (!$this->getIsPublic()) {
+			if ($this->getIsPublic()) {
 				$inspiration->incrementReboundCount();
 			}
 		}
@@ -43,7 +43,7 @@ trait InspirableTrait {
 	public function removeInspiration(InspirableInterface $inspiration) {
 		if ($this->inspirations->removeElement($inspiration)) {
 			$this->inspirationCount = count($this->inspirations);
-			if (!$this->getIsPublic()) {
+			if ($this->getIsPublic()) {
 				$inspiration->incrementReboundCount(-1);
 			}
 		}

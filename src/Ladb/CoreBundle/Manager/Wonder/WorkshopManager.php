@@ -113,6 +113,11 @@ class WorkshopManager extends AbstractWonderManager {
 			$howto->addPlan($plan);
 		}
 
+		// Transfer workflows
+		foreach ($workshop->getWorkflows() as $workflow) {
+			$howto->addWorkflow($workflow);
+		}
+
 		// Setup howto's and article's htmlBody
 		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 		$fieldPreprocessorUtils->preprocessFields($howto);

@@ -30,11 +30,6 @@
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
-    {% if plan.reboundCount > 0 %}
-        {% for entity in plan.rebounds %}
-            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
-        {% endfor %}
-    {% endif %}
     {% if plan.howtoCount > 0 %}
         {% for entity in plan.howtos %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
@@ -47,6 +42,11 @@
     {% endif %}
     {% if plan.workshopCount > 0 %}
         {% for entity in plan.workshops %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if plan.reboundCount > 0 %}
+        {% for entity in plan.rebounds %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}

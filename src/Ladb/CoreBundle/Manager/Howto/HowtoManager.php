@@ -27,6 +27,11 @@ class HowtoManager extends AbstractPublicationManager {
 			$plan->incrementHowtoCount(1);
 		}
 
+		// Workflows counter update
+		foreach ($howto->getWorkflows() as $workflow) {
+			$workflow->incrementHowtoCount(1);
+		}
+
 		// Workshops counter update
 		foreach ($howto->getWorkshops() as $workshop) {
 			$workshop->incrementHowtoCount(1);
@@ -59,6 +64,11 @@ class HowtoManager extends AbstractPublicationManager {
 		// Plans counter update
 		foreach ($howto->getPlans() as $plan) {
 			$plan->incrementHowtoCount(-1);
+		}
+
+		// Workflows counter update
+		foreach ($howto->getWorkflows() as $workflow) {
+			$workflow->incrementHowtoCount(-1);
 		}
 
 		// Workshops counter update

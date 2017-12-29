@@ -10,7 +10,7 @@
         <li class="ladb-linkto"><a href="{{ path('core_workshop_howtos', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.howtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(wonder.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
     {% endif %}
     {% if wonder.workflowCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_workshop_workflows', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.howtoCount }} {{ 'workflow.workflow.choice.howtos'|transchoice(wonder.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_workshop_workflows', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.workflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(wonder.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
     {% endif %}
     {{ parent() }}
 {% endblock %}

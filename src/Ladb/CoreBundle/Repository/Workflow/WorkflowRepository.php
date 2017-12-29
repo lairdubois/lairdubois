@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
@@ -164,6 +165,46 @@ class WorkflowRepository extends AbstractEntityRepository {
 			->where('w.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
 			->andWhere('h = :howto')
 			->setParameter('howto', $howto)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByInspiration(Workflow $inspiration, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'mp', 'i' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('w.mainPicture', 'mp')
+			->innerJoin('w.inspirations', 'i')
+			->where('w.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
+			->andWhere('i = :inspiration')
+			->setParameter('inspiration', $inspiration)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByRebound(Workflow $rebound, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u', 'mp', 'r' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->innerJoin('w.mainPicture', 'mp')
+			->innerJoin('w.rebounds', 'r')
+			->where('w.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
+			->andWhere('r = :rebound')
+			->setParameter('rebound', $rebound)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

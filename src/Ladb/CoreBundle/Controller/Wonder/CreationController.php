@@ -511,7 +511,7 @@ class CreationController extends Controller {
 	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_creation_inspirations")
 	 * @Route("/{id}/inspirations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_inspirations_filter")
 	 * @Route("/{id}/inspirations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_inspirations_filter_page")
-	 * @Template("LadbCoreBundle:Wonder/Creation:inspiration.html.twig")
+	 * @Template("LadbCoreBundle:Wonder/Creation:inspirations.html.twig")
 	 */
 	public function inspirationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();

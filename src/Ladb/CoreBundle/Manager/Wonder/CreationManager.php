@@ -36,6 +36,11 @@ class CreationManager extends AbstractWonderManager {
 			$howto->incrementCreationCount(1);
 		}
 
+		// Workflow counter update
+		foreach ($creation->getWorkflows() as $workflow) {
+			$workflow->incrementCreationCount(1);
+		}
+
 		// Providers counter update
 		foreach ($creation->getProviders() as $provider) {
 			$provider->incrementCreationCount(1);
@@ -62,6 +67,11 @@ class CreationManager extends AbstractWonderManager {
 		// Howtos counter update
 		foreach ($creation->getHowtos() as $howto) {
 			$howto->incrementCreationCount(-1);
+		}
+
+		// Workflows counter update
+		foreach ($creation->getWorkflows() as $workflow) {
+			$workflow->incrementCreationCount(-1);
 		}
 
 		// Providers counter update
@@ -99,6 +109,11 @@ class CreationManager extends AbstractWonderManager {
 		// Unlink howtos
 		foreach ($creation->getHowtos() as $howto) {
 			$creation->removeHowto($howto);
+		}
+
+		// Unlink workflows
+		foreach ($creation->getWorkflows() as $workflow) {
+			$creation->removeWorkflow($workflow);
 		}
 
 		// Unlink providers
@@ -143,13 +158,16 @@ class CreationManager extends AbstractWonderManager {
 		// transfer plans
 		foreach ($creation->getPlans() as $plan) {
 			$workshop->addPlan($plan);
-			$creation->removePlan($plan);
 		}
 
 		// transfer howtos
 		foreach ($creation->getHowtos() as $howto) {
 			$workshop->addHowto($howto);
-			$creation->removeHowto($howto);
+		}
+
+		// transfer workflows
+		foreach ($creation->getWorkflows() as $workflow) {
+			$workshop->addWorkflow($workflow);
 		}
 
 		// Setup workshop's htmlBody
@@ -263,6 +281,16 @@ class CreationManager extends AbstractWonderManager {
 		// Transfer plans
 		foreach ($creation->getPlans() as $plan) {
 			$howto->addPlan($plan);
+		}
+
+		// transfer workflows
+		foreach ($creation->getWorkflows() as $workflow) {
+			$howto->addWorkflow($workflow);
+		}
+
+		// transfer providers
+		foreach ($creation->getProviders() as $provider) {
+			$howto->addProvider($provider);
 		}
 
 		// Setup howto's and article's htmlBody
