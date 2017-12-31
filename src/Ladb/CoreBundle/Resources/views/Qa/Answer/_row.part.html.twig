@@ -4,7 +4,7 @@
     <div class="ladb-box">
         <div class="ladb-box-inner row">
             <div class="ladb-side-bar col-sm-push-11 col-sm-1 col-xs-12">
-                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.tooltip.vote_up'|trans()), 'voteDownTooltip':('qa.tooltip.vote_down'|trans()), 'popoverPlacement':'left' } %}
+                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.vote_up_tooltip'|trans()), 'voteDownTooltip':('qa.vote_down_tooltip'|trans()), 'popoverPlacement':'left' } %}
             </div>
             <div class="ladb-content-box col-sm-pull-1 col-sm-11 col-xs-12">
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}

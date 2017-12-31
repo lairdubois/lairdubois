@@ -171,7 +171,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="rebounds", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_workflow_workflow_inspiration",
+	 * @ORM\JoinTable(name="tbl_workflow_inspiration",
 	 *      	joinColumns={ @ORM\JoinColumn(name="workflow_id", referencedColumnName="id") },
 	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_workflow_id", referencedColumnName="id") }
 	 *      )

@@ -1,12 +1,12 @@
 {# set workflow #}
 {# set classes (facultative) #}
 
-<span{% if classes is defined %} class="{{ classes }}"{% endif %} title="{{ 'workflow.workflow.private_tooltip'|trans() }}" data-tooltip="tooltip" style="display: inline-block; background-color: #eee; color: #777; padding: 2px 6px; border-radius: 4px;">
+<span{% if classes is defined %} class="ladb-visibility-badge {{ classes }}"{% endif %} title="{{ ('workflow.workflow.'~(workflow.isPublic ? 'public' : 'private')~'_tooltip')|trans() }}" data-tooltip="tooltip">
     {% if workflow.isPrivate %}
-        <i class="ladb-icon-key"></i> <span style="font-size: 90%;">Privé</span>
+        <i class="ladb-icon-key"></i> <span>{{ 'default.private'|trans }}</span>
     {% elseif workflow.isProtected %}
-        <i class="ladb-icon-users"></i> <span style="font-size: 90%;">Equipe</span>
+        <i class="ladb-icon-users"></i> <span>{{ 'default.protected'|trans }}</span>
     {% else %}
-        <i class="ladb-icon-globe"></i> <span style="font-size: 90%;">Public</span>
+        <i class="ladb-icon-globe"></i> <span>{{ 'default.public'|trans }}</span>
     {% endif %}
 </span>

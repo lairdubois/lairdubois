@@ -64,6 +64,12 @@ EOT
 				'slugged'   => true,
 			),
 			array(
+				'className' => \Ladb\CoreBundle\Entity\Workflow\Workflow::CLASS_NAME,
+				'name'      => 'workflow',
+				'section'   => 'workflow-workflows',
+				'slugged'   => true,
+			),
+			array(
 				'className' => \Ladb\CoreBundle\Entity\Find\Find::CLASS_NAME,
 				'name'      => 'find',
 				'section'   => 'find-finds',

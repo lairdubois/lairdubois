@@ -353,9 +353,6 @@ find:
       draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
 
 qa:
-  tooltip:
-    vote_up: Je valide cette réponse
-    vote_down: Je rejette cette réponse
   question:
     description: Retrouvez toutes les questions
     new: Ajouter une question
@@ -387,6 +384,8 @@ qa:
     best: Meilleure réponse
     set_as_best: Choisir comme meilleure réponse
     best_tooltip: L'auteur de la question a choisi cette réponse comme étant la meilleure
+    vote_up_tooltip: Je valide cette réponse
+    vote_down_tooltip: Je rejette cette réponse
     sort: Tri des réponses
     sort_score: Mieux notées
     sort_recent: Plus récentes
@@ -409,6 +408,8 @@ workflow:
     linkto: Associer un processus déjà publié
     linked_to: Ce processus est associé à
     statistics: Statistiques
+    private_tooltip: Ce processus est Privé
+    public_tooltip: Ce processus est Public
     form:
       alert:
         lock_success: Le processus <strong>%title%</strong> a été vérrouillé.
