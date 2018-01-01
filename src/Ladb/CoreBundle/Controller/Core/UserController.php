@@ -449,7 +449,7 @@ class UserController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$items = $commentRepository->findPaginedByUserGroupByEntityType($user, $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_comments_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $user->getCommentCount());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_comments_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $user->getMeta()->getCommentCount());
 
 		$parameters = array(
 			'filter'      => $filter,

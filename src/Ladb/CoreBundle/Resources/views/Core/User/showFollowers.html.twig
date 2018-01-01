@@ -14,7 +14,7 @@
             {% set filterPath = 'core_user_show_followers_filter' %}
             {% set filterPathParameters = { 'username':user.usernameCanonical } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ user.followerCount }} {{ 'follower.choice.followers'|transchoice(user.followerCount) }}</span>
+                <span class="ladb-heading">{{ user.meta.followerCount }} {{ 'follower.choice.followers'|transchoice(user.meta.followerCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}
