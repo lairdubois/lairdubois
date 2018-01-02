@@ -93,12 +93,12 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 {% if not readOnly %}
-                                    <li class="ladb-hidden-large-desktop"><a href="#" class="ladb-list-parts-btn"><i class="ladb-icon-plan"></i> {{ 'workflow.part.list'|trans() }}</a></li>
-                                    <li class="ladb-hidden-large-desktop"><a href="#" class="ladb-list-labels-btn"><i class="ladb-icon-bullet"></i> {{ 'workflow.label.list'|trans() }}</a></li>
-                                    <li class="ladb-hidden-large-desktop"><a href="#" class="ladb-statistics-btn"><i class="ladb-icon-statistics"></i> {{ 'workflow.workflow.statistics'|trans() }}</a></li>
-                                    <li role="separator" class="divider ladb-hidden-large-desktop"></li>
-                                    <li class="ladb-hidden-large-desktop"><a href="#" class="ladb-restart-btn"><i class="ladb-icon-repeat"></i> {{ 'default.restart'|trans() }}</a></li>
-                                    <li role="separator" class="divider ladb-hidden-large-desktop"></li>
+                                    <li class="ladb-hidden-desktop"><a href="#" class="ladb-list-parts-btn"><i class="ladb-icon-plan"></i> {{ 'workflow.part.list'|trans() }}</a></li>
+                                    <li class="ladb-hidden-desktop"><a href="#" class="ladb-list-labels-btn"><i class="ladb-icon-bullet"></i> {{ 'workflow.label.list'|trans() }}</a></li>
+                                    <li class="ladb-hidden-desktop"><a href="#" class="ladb-statistics-btn"><i class="ladb-icon-statistics"></i> {{ 'workflow.workflow.statistics'|trans() }}</a></li>
+                                    <li role="separator" class="divider ladb-hidden-desktop"></li>
+                                    <li class="ladb-hidden-desktop"><a href="#" class="ladb-restart-btn"><i class="ladb-icon-repeat"></i> {{ 'default.restart'|trans() }}</a></li>
+                                    <li role="separator" class="divider ladb-hidden-desktop"></li>
                                 {% endif %}
                                 {% if ownerUser %}
                                     <li><a href="#copy_workflow_modal" data-toggle="modal"><i class="ladb-icon-duplicate"></i>  {{ 'default.duplicate'|trans() }}</a></li>
