@@ -27,7 +27,7 @@ class PictureUploadHandler extends \UploadHandler {
 						   $imageMaxHeight = Picture::DEFAULT_IMAGE_MAX_HEIGHT) {
 		parent::__construct(array(
 			'script_url'                   => '',
-			'upload_dir'                   => __DIR__.'/../../../../uploads/',
+			'upload_dir'                   => sys_get_temp_dir(),
 			'upload_url'                   => '',
 			'access_control_allow_methods' => array(
 				'POST',
@@ -57,7 +57,7 @@ class PictureUploadHandler extends \UploadHandler {
 			$fileAbsolutePath = $this->options['upload_dir'].$name;
 			$fileExtension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
-			$resourceAbsolutePath = $this->options['upload_dir'].$resourcePath;
+			$resourceAbsolutePath = __DIR__.'/../../../../uploads/'.$resourcePath;
 
 			// Rename uploaded file to generated uniqid
 			rename($fileAbsolutePath, $resourceAbsolutePath);

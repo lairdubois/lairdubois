@@ -24,7 +24,7 @@ class ResourceUploadHandler extends \UploadHandler {
 	public function handle($acceptedFileTypes = Resource::DEFAULT_ACCEPTED_FILE_TYPE, $maxFileSize = Resource::DEFAULT_MAX_FILE_SIZE) {
 		parent::__construct(array(
 			'script_url'                   => '',
-			'upload_dir'                   => __DIR__ . '/../../../../uploads/',
+			'upload_dir'                   => sys_get_temp_dir(),
 			'upload_url'                   => '',
 			'access_control_allow_methods' => array(
 				'POST',
@@ -44,7 +44,7 @@ class ResourceUploadHandler extends \UploadHandler {
 			$fileAbsolutePath = $this->options['upload_dir'].$name;
 			$fileExtension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
-			$resourceAbsolutePath = $this->options['upload_dir'].$resourcePath;
+			$resourceAbsolutePath = __DIR__.'/../../../../uploads/'.$resourcePath;
 
 			// Rename uploaded file to generated uniqid
 			rename($fileAbsolutePath, $resourceAbsolutePath);
