@@ -59,7 +59,7 @@ class PictureUploadHandler extends \UploadHandler {
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
 			$resourceAbsolutePath = __DIR__.'/../../../../uploads/'.$resourcePath;
 
-			// Rename uploaded file to generated uniqid
+			// Rename uploaded file to generated uniqid and move it from tmp to uploads folder
 			rename($fileAbsolutePath, $resourceAbsolutePath);
 
 			// Post-processors

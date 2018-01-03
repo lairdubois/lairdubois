@@ -33,6 +33,7 @@ class AboutController extends Controller {
 	 * @Template()
 	 */
 	public function legalsAction() {
+		echo sys_get_temp_dir();
 		return array();
 	}
 
