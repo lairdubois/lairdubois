@@ -76,7 +76,7 @@
                         {% endif %}
                         &nbsp;
                         {% if not readOnly %}
-                            <button id="ladb_add_task_btn" class="btn btn-success"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile ladb-hidden-tablet">  {{ 'workflow.task.new'|trans() }}</span></button>
+                            <button class="btn btn-success ladb-add-task-btn ladb-visible-desktop"><i class="ladb-icon-plus"></i> {{ 'workflow.task.new'|trans() }}</button>
                             &nbsp;
                             <button class="btn btn-default ladb-list-parts-btn ladb-visible-desktop"><i class="ladb-icon-plan"></i>  {{ 'workflow.part.list'|trans() }}</button>
                             <button class="btn btn-default ladb-list-labels-btn ladb-visible-desktop"><i class="ladb-icon-bullet"></i>  {{ 'workflow.label.list'|trans() }}</button>
@@ -93,6 +93,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 {% if not readOnly %}
+                                    <li class="ladb-hidden-desktop"><a href="#" class="ladb-add-task-btn"><i class="ladb-icon-plus"></i> {{ 'workflow.task.new'|trans() }}</a></li>
+                                    <li role="separator" class="divider ladb-hidden-desktop"></li>
                                     <li class="ladb-hidden-desktop"><a href="#" class="ladb-list-parts-btn"><i class="ladb-icon-plan"></i> {{ 'workflow.part.list'|trans() }}</a></li>
                                     <li class="ladb-hidden-desktop"><a href="#" class="ladb-list-labels-btn"><i class="ladb-icon-bullet"></i> {{ 'workflow.label.list'|trans() }}</a></li>
                                     <li class="ladb-hidden-desktop"><a href="#" class="ladb-statistics-btn"><i class="ladb-icon-statistics"></i> {{ 'workflow.workflow.statistics'|trans() }}</a></li>

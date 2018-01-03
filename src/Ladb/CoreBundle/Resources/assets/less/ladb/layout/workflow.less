@@ -48,7 +48,7 @@
   background-color: #f4f4f4;
 
   header {
-    margin: 0 15px;
+    padding: 0 15px;
   }
 
   .ladb-workflow-board {
@@ -58,6 +58,9 @@
     left: 0;
     right: 0;
     overflow: hidden;
+    border-top: 1px solid @ladb-global-border;
+    background-image: url('/bundles/ladbcore/ladb/images/paper.jpg');
+    background-size: 400px 400px;
 
     .ladb-panel-buttons {
       position: absolute;
@@ -79,39 +82,9 @@
     }
 
     .ladb-loading-panel {
-      background-color: @ladb-global-bg;
+      background-image: url('/bundles/ladbcore/ladb/images/paper.jpg');
+      background-size: 400px 400px;
       opacity: 1;
-    }
-
-  }
-
-  .ladb-bottom-panel {
-    position: absolute;
-    height: 400px;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    padding: 0 !important;
-
-    .panel {
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: scroll;
-      border-right: none;
-
-      .panel-body {
-        padding: 0;
-
-        &:first-child {
-          padding: 10px;
-        }
-
-        .ladb-no-task {
-          padding: 10px;
-        }
-
-      }
-
     }
 
   }
@@ -129,6 +102,7 @@
       overflow-x: hidden;
       overflow-y: scroll;
       border-right: none;
+      border-top: none;
 
       .panel-body {
         padding: 0;
@@ -151,7 +125,6 @@
       }
 
       .panel-heading {
-        border-top: 1px solid @ladb-global-border;
         border-bottom: 1px solid @ladb-global-border;
 
         .badge.ladb-null {
@@ -196,12 +169,6 @@
     bottom: 0;
     left: 0;
     padding: 0;
-    border-top: 1px solid @ladb-global-border;
-    background-color: #fff;
-    //background-image: linear-gradient(0deg, transparent 24%, @color-grid 25%, @color-grid 26%, transparent 27%, transparent 74%, @color-grid 75%, @color-grid 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, @color-grid 25%, @color-grid 26%, transparent 27%, transparent 74%, @color-grid 75%, @color-grid 76%, transparent 77%, transparent);
-    //background-size: 50px 50px;
-    background-image: url('/bundles/ladbcore/ladb/images/paper.jpg');
-    background-size: 400px 400px;
     overflow: hidden;
 
     &.ladb-with-right-panel {
@@ -531,7 +498,8 @@ html.touchevents {
     header .ladb-avatar-header {
 
       .ladb-header-tools {
-        display: none;
+        float: right;
+        margin: 0;
       }
 
     }
@@ -541,15 +509,34 @@ html.touchevents {
 
       .ladb-right-panel {
         width: 95%;
-        .box-shadow(-20px 0 0 rgba(0,0,0,0.3));
+        .box-shadow(-40px 0 0 rgba(0,0,0,0.3));
       }
 
     }
 
-    .ladb-workflow-task-diagram, .ladb-panel-buttons {
+    .ladb-workflow-task-diagram {
 
       &.ladb-with-right-panel {
-        right: 95%;
+        right: 0;
+      }
+
+    }
+
+  }
+
+}
+
+// tablet
+@media screen and (max-width: @ladb-screen-tablet-max) {
+
+  .ladb-workflow-workspace {
+    left: 0;
+
+    header .ladb-avatar-header {
+
+      .ladb-header-tools {
+        float: right;
+        margin: 0;
       }
 
     }

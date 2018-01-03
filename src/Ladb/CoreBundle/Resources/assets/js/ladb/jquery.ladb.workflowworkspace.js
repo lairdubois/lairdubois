@@ -26,7 +26,7 @@
 
         this.$modal = $('#workflow_modal', this.$element);
 
-        this.$btnAddTask = $('#ladb_add_task_btn', this.$element);
+        this.$btnAddTask = $('.ladb-add-task-btn', this.$element);
         this.$btnListParts = $('.ladb-list-parts-btn', this.$element);
         this.$btnListLabels = $('.ladb-list-labels-btn', this.$element);
         this.$btnStatistics = $('.ladb-statistics-btn', this.$element);
