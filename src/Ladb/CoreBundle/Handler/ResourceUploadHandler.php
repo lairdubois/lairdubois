@@ -24,7 +24,7 @@ class ResourceUploadHandler extends \UploadHandler {
 	public function handle($acceptedFileTypes = Resource::DEFAULT_ACCEPTED_FILE_TYPE, $maxFileSize = Resource::DEFAULT_MAX_FILE_SIZE) {
 		parent::__construct(array(
 			'script_url'                   => '',
-			'upload_dir'                   => sys_get_temp_dir(),
+			'upload_dir'                   => sys_get_temp_dir().DIRECTORY_SEPARATOR,
 			'upload_url'                   => '',
 			'access_control_allow_methods' => array(
 				'POST',
