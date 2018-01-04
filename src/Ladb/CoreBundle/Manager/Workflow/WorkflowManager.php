@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Workflow\Label;
 use Ladb\CoreBundle\Entity\Workflow\Part;
+use Ladb\CoreBundle\Entity\Workflow\Run;
 use Ladb\CoreBundle\Entity\Workflow\Task;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Event\PublicationEvent;
@@ -186,10 +187,15 @@ class WorkflowManager extends AbstractPublicationManager {
 			if ($duplicate) {
 				$newTask->setStatus($task->getStatus());
 				$newTask->setStartedAt($task->getStartedAt());
-				$newTask->setLastRunningAt($task->getLastRunningAt());
 				$newTask->setFinishedAt($task->getFinishedAt());
 				$newTask->setEstimatedDuration($task->getEstimatedDuration());
 				$newTask->setDuration($task->getDuration());
+				foreach ($task->getRuns() as $run) {
+					$newRun = new Run();
+					$newRun->setStartedAt($run->getStartedAt());
+					$newRun->setFinishedAt($run->getFinishedAt());
+					$newTask->addRun($newRun);
+				}
 			} else {
 				if ($task->getSourceTasks()->isEmpty()) {
 					$newTask->setStatus(Task::STATUS_WORKABLE);
@@ -262,7 +268,7 @@ class WorkflowManager extends AbstractPublicationManager {
 	public function restart(Workflow $workflow, User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		$estimatedDuration = 0;
+		$totalEstimatedDuration = 0;
 
 		foreach ($workflow->getTasks() as $task) {		// 1st loop to generate all tasks
 
@@ -274,8 +280,10 @@ class WorkflowManager extends AbstractPublicationManager {
 
 			// Reset timers
 			$task->setStartedAt(null);
-			$task->setLastRunningAt(null);
 			$task->setFinishedAt(null);
+
+			// Clear runs
+			$task->resetRuns();
 
 			// Swap task duration to estimated
 			if ($task->getDuration() > 0) {
@@ -283,11 +291,11 @@ class WorkflowManager extends AbstractPublicationManager {
 			}
 			$task->setDuration(0);
 
-			$estimatedDuration += $task->getEstimatedDuration();
+			$totalEstimatedDuration += $task->getEstimatedDuration();
 		}
 
 		// Swap workflow duration to estimated
-		$workflow->setEstimatedDuration($estimatedDuration);
+		$workflow->setEstimatedDuration($totalEstimatedDuration);
 		$workflow->setDuration(0);
 
 		if ($flush) {

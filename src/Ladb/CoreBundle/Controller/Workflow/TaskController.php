@@ -63,6 +63,9 @@ class TaskController extends AbstractWorkflowBasedController {
 
 			$newStatus = $isWorkable ? Task::STATUS_WORKABLE : Task::STATUS_PENDING;
 			if ($task->getStatus() != $newStatus) {
+				if ($task->getStatus() == Task::STATUS_RUNNING) {
+					$this->_finishTaskCurrentRun($task, $task->getWorkflow(), new \DateTime());
+				}
 				$task->setStatus($newStatus);
 				$updatedTask[] = $task;
 			}
@@ -85,6 +88,30 @@ class TaskController extends AbstractWorkflowBasedController {
 			$partCount += $tmpPart->getCount();
 		}
 		$task->setPartCount($partCount);
+	}
+
+	private function _finishTaskCurrentRun(Task $task, Workflow $workflow, $now) {
+
+		$currentRun = $task->getRuns()->last();
+		if (!is_null($currentRun)) {
+
+			// Finish the run
+			$currentRun->setFinishedAt($now);
+
+			// Compute run duration in minutes
+			$currentRunDuration = $now->getTimestamp() - $currentRun->getStartedAt()->getTimestamp();
+			$currentRunDuration = floor($currentRunDuration / 60) * 60; // Sample to minutes
+
+			if ($currentRunDuration > 0) { // only if it is more than a minute
+
+				// Increment duration
+				$task->incrementDuration($currentRunDuration);
+				$workflow->incrementDuration($currentRunDuration);
+
+			}
+
+		}
+
 	}
 
 	/////
@@ -364,22 +391,14 @@ class TaskController extends AbstractWorkflowBasedController {
 
 			$now = new \DateTime();
 
-			// The task is running -> increment duration
+			// The task was running -> increment duration
 			if ($previousStatus == Task::STATUS_RUNNING) {
 
-				$lastRunDuration = $now->getTimestamp() - $task->getLastRunningAt()->getTimestamp();
-				$lastRunDuration = floor($lastRunDuration / 60) * 60; // Sample to minutes
-
-				// Increment duration only if it is more than a minute
-				if ($lastRunDuration > 0) {
-					$task->incrementDuration($lastRunDuration);
-					$workflow->incrementDuration($lastRunDuration);
-					$task->setLastRunningAt(null);
-				}
+				$this->_finishTaskCurrentRun($task, $workflow, $now);
 
 			}
 
-			// The task is done -> unset finishedAt
+			// The task was done -> unset finishedAt
 			if ($previousStatus == Task::STATUS_DONE) {
 
 				if ($task->getDuration() == 0) {
@@ -389,24 +408,26 @@ class TaskController extends AbstractWorkflowBasedController {
 
 			}
 
-			// The task will run -> set start dates
+			// The task will run -> create a run
 			if ($newStatus == Task::STATUS_RUNNING) {
 
 				if ($task->getDuration() == 0) {
 					$task->setStartedAt($now);
 				}
-				$task->setLastRunningAt($now);
+
+				$run = new \ladb\CoreBundle\Entity\Workflow\Run();
+				$run->setStartedAt($now);
+				$task->addRun($run);
 
 			}
 
-			// The task done -> set finishedAt
+			// The task will be done -> set finishedAt
 			if ($newStatus == Task::STATUS_DONE) {
 
 				if (is_null($task->getStartedAt())) {
 					$task->setStartedAt($now);
 				}
 				$task->setFinishedAt($now);
-				$task->setLastRunningAt(null);
 
 			}
 

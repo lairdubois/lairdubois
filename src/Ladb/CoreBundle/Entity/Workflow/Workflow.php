@@ -185,7 +185,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	private $tags;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"all"})
 	 * @ORM\JoinColumn(nullable=true, name="license_id")
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
 	 */

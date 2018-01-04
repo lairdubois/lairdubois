@@ -66,11 +66,6 @@ class Task {
 	private $startedAt;
 
 	/**
-	 * @ORM\Column(name="last_running_at", type="datetime", nullable=true)
-	 */
-	private $lastRunningAt;
-
-	/**
 	 * @ORM\Column(name="finished_at", type="datetime", nullable=true)
 	 */
 	private $finishedAt;
@@ -92,14 +87,14 @@ class Task {
 	 * @ORM\JoinTable(name="tbl_workflow_task_label")
 	 * @ORM\OrderBy({"id" = "ASC"})
 	 */
-	protected $labels;
+	private $labels;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Part", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_workflow_task_part")
 	 * @ORM\OrderBy({"name" = "ASC"})
 	 */
-	protected $parts;
+	private $parts;
 
 	/**
 	 * @ORM\Column(type="integer", name="part_count")
@@ -121,6 +116,11 @@ class Task {
 	 */
 	private $targetTasks;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Run", orphanRemoval=true, mappedBy="task", cascade={"all"})
+	 */
+	private $runs;
+
 	/////
 
 	public function __construct() {
@@ -128,6 +128,7 @@ class Task {
 		$this->parts = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->sourceTasks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->targetTasks = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->runs = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// Id /////
@@ -211,17 +212,6 @@ class Task {
 
 	public function getStartedAt() {
 		return $this->startedAt;
-	}
-
-	// LastRunningAt /////
-
-	public function setLastRunningAt($lastRunningAt) {
-		$this->lastRunningAt = $lastRunningAt;
-		return $this;
-	}
-
-	public function getLastRunningAt() {
-		return $this->lastRunningAt;
 	}
 
 	// FinishedAt /////
@@ -337,6 +327,29 @@ class Task {
 
 	public function getTargetTasks() {
 		return $this->targetTasks;
+	}
+
+	// Runs /////
+
+	public function addRun(\Ladb\CoreBundle\Entity\Workflow\Run $run = null) {
+		if (!$this->runs->contains($run)) {
+			$this->runs[] = $run;
+			$run->setTask($this);
+		}
+		return $this;
+	}
+
+	public function removeRun(\Ladb\CoreBundle\Entity\Workflow\Run $run) {
+		$this->runs->removeElement($run);
+		$run->setTask(null);
+	}
+
+	public function getRuns() {
+		return $this->runs;
+	}
+
+	public function resetRuns() {
+		$this->runs->clear();
 	}
 
 }
