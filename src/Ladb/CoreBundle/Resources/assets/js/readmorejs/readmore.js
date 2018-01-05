@@ -312,7 +312,7 @@
 
   $.fn.readmore = function(options) {
     var args = arguments,
-        selector = this.selector;
+        selector = this.selector || '';   // jQuery 3 Fix. https://github.com/jedfoster/Readmore.js/pull/206/commits/22707f52cbf59f67d79c80bf3b9f4424ccccc4bb
 
     options = options || {};
 
