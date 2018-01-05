@@ -40,7 +40,7 @@
         $(document).ready(function() {
             $('.ladb-workflow-workspace').ladbWorkflowWorkspace({
                 readOnly: {{ readOnly ? 'true' : 'false' }},
-                durationsVisible: {{ ownerUser ? 'true' : 'false' }},
+                durationsHidden: {{ durationsHidden ? 'true' : 'false' }},
                 wsUri: '{{ websocket_uri }}',
                 wsChannel: 'workflow/{{ workflow.id }}',
                 listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}',
@@ -139,6 +139,7 @@
                 <button class="btn btn-default ladb-zoom-all-btn"><i class="ladb-icon-zoom-all ladb-icon-lg"></i></button>
                 <button class="btn btn-default ladb-zoom-in-btn"><i class="ladb-icon-zoomin ladb-icon-lg"></i></button>
                 <button class="btn btn-default ladb-zoom-out-btn"><i class="ladb-icon-zoomout ladb-icon-lg"></i></button>
+                <button class="btn btn-default ladb-zoom-one-btn"><i class="ladb-icon-zoom-one ladb-icon-lg"></i></button>
             </div>
             <div class="ladb-right-panel">
                 <div class="panel panel-default">
@@ -146,7 +147,10 @@
                         <button class="btn btn-default btn-sm pull-left ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-right"></i></button>
                         <span class="ladb-heading">{{ 'workflow.task.list'|trans() }}</span>
                     </div>
-                    {% if ownerUser %}
+                    {% if durationsHidden %}
+                        <div id="panel_body_hidden_status" class="panel-body" style="border-top: 1px solid #ddd;">
+                        </div>
+                    {% else %}
                         {% include 'LadbCoreBundle:Workflow:_workflow-status.part.html.twig' %}
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -183,9 +187,6 @@
                         </div>
                         <div id="panel_body_status_4" class="panel-body">
                             <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
-                        </div>
-                    {% else %}
-                        <div id="panel_body_hidden_status" class="panel-body" style="border-top: 1px solid #ddd;">
                         </div>
                     {% endif %}
                 </div>

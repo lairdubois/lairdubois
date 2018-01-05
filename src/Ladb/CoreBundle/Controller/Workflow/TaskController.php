@@ -124,6 +124,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		$task = new Task();
 		$task->setPositionLeft(intval($request->get('positionLeft', 0)));
@@ -146,6 +147,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		$task = new Task();
 		$task->setWorkflow($workflow);
@@ -238,6 +240,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		// Retieve Task
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
@@ -261,6 +264,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		// Retieve Task
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
@@ -334,6 +338,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		// Retieve Task
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
@@ -373,6 +378,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		// Retieve Task
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
@@ -476,6 +482,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		// Retieve Task
 		$task = $this->_retrieveTaskFromTaskIdParam($request);
@@ -529,8 +536,8 @@ class TaskController extends AbstractWorkflowBasedController {
 		// Retrieve readOnly parameter
 		$readOnly = $request->get('readOnly', false);
 
-		// Compute owner parameter
-		$owner = $this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser() == $workflow->getUser();
+		// Compute durationHidden parameter
+		$durationsHidden = !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $this->getUser() != $workflow->getUser();
 
 		$connections = array();
 		foreach ($workflow->getTasks() as $sourceTask) {
@@ -545,7 +552,7 @@ class TaskController extends AbstractWorkflowBasedController {
 		return new JsonResponse(array(
 			'success'       => true,
 			'workflowInfos' => $this->_generateWorkflowInfos($workflow),
-			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET, $readOnly, $owner),
+			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET, $readOnly, $durationsHidden),
 			'connections'   => $connections
 		));
 	}
@@ -558,6 +565,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		// Retieve source Task
 		$sourceTask = $this->_retrieveTaskFromTaskIdParam($request, 'sourceTaskId');
@@ -608,6 +616,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		// Retieve source Task
 		$sourceTask = $this->_retrieveTaskFromTaskIdParam($request, 'sourceTaskId');

@@ -23,6 +23,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		$label = new Label();
 		$label->setColor(Label::COLOR_SEQUENCE[count($workflow->getLabels()) % count(Label::COLOR_SEQUENCE)]);
@@ -44,6 +45,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		$label = new Label();
 		$form = $this->createForm(LabelType::class, $label);
@@ -78,6 +80,7 @@ class LabelController extends AbstractWorkflowBasedController {
 		if (is_null($label)) {
 			throw $this->createNotFoundException('Unable to find Label entity (id='.$id.').');
 		}
+		$this->_assertAuthorizedWorkflow($label->getWorkflow());
 
 		$form = $this->createForm(LabelType::class, $label);
 
@@ -100,6 +103,7 @@ class LabelController extends AbstractWorkflowBasedController {
 		if (is_null($label)) {
 			throw $this->createNotFoundException('Unable to find Label entity (id='.$id.').');
 		}
+		$this->_assertAuthorizedWorkflow($label->getWorkflow());
 
 		$form = $this->createForm(LabelType::class, $label);
 		$form->handleRequest($request);
@@ -142,6 +146,7 @@ class LabelController extends AbstractWorkflowBasedController {
 		if (is_null($label)) {
 			throw $this->createNotFoundException('Unable to find Label entity (id='.$id.').');
 		}
+		$this->_assertAuthorizedWorkflow($label->getWorkflow());
 
 		// Update funding balance
 		$workflow = $label->getWorkflow();
@@ -172,6 +177,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		return array(
 			'workflow' => $workflow,

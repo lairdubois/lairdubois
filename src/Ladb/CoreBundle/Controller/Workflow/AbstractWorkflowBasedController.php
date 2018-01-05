@@ -18,7 +18,7 @@ abstract class AbstractWorkflowBasedController extends Controller {
 
 	/////
 
-	protected function _retrieveWorkflow($id) {
+	protected function _retrieveWorkflow($id, $assertIsOwner = true) {
 		$om = $this->getDoctrine()->getManager();
 		$workshopRepository = $om->getRepository(Workflow::CLASS_NAME);
 
@@ -32,7 +32,13 @@ abstract class AbstractWorkflowBasedController extends Controller {
 		return $workflow;
 	}
 
-	protected function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE, $readOnly = false, $owner = true) {
+	protected function _assertAuthorizedWorkflow(Workflow $workflow) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser()) {
+			throw $this->createNotFoundException('Not allowed');
+		}
+	}
+
+	protected function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE, $readOnly = false, $durationsHidden = false) {
 		$templating = $this->get('templating');
 
 		if (!is_array($tasks) && !$tasks instanceof \Traversable) {
@@ -56,13 +62,13 @@ abstract class AbstractWorkflowBasedController extends Controller {
 				$taskInfo['sortIndex'] = $task->getPositionTop();
 			}
 			if (($fieldsStrategy & self::TASKINFO_ROW) == self::TASKINFO_ROW) {
-				$taskInfo['row'] = $templating->render('LadbCoreBundle:Workflow:Task/_row.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'owner' => $owner ));
+				$taskInfo['row'] = $templating->render('LadbCoreBundle:Workflow:Task/_row.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_WIDGET) == self::TASKINFO_WIDGET) {
-				$taskInfo['widget'] = $templating->render('LadbCoreBundle:Workflow:Task/_widget.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'owner' => $owner ));
+				$taskInfo['widget'] = $templating->render('LadbCoreBundle:Workflow:Task/_widget.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_BOX) == self::TASKINFO_BOX) {
-				$taskInfo['box'] = $templating->render('LadbCoreBundle:Workflow:Task/_box.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'owner' => $owner ));
+				$taskInfo['box'] = $templating->render('LadbCoreBundle:Workflow:Task/_box.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
 			}
 			$taskInfos[] = $taskInfo;
 		}

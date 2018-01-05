@@ -656,7 +656,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$workflow = $this->_retrieveWorkflow($id);
 
 		if (!$workflow->getIsPublic()) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workflow->getUser()->getId() != $this->getUser()->getId())) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workflow->getUser() != $this->getUser())) {
 				if ($response = $witnessManager->checkResponse(Workflow::TYPE, $id)) {
 					return $response;
 				}
@@ -676,6 +676,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$parameters = array(
 			'workflow'        => $workflow,
 			'readOnly'        => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
+			'durationsHidden' => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
 			'likeContext'     => $likableUtils->getLikeContext($workflow, $this->getUser()),
 			'followerContext' => $followerUtils->getFollowerContext($workflow->getUser(), $this->getUser()),
 		);
@@ -856,7 +857,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
 
 		$parameters = array_merge($searchParameters, array(
-			'workflows'          => $searchParameters['entities'],
+			'workflows'       => $searchParameters['entities'],
 			'layout'          => $layout,
 			'routeParameters' => $routeParameters,
 		));

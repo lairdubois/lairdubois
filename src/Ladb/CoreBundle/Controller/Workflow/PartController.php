@@ -23,6 +23,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		$part = new Part();
 		$form = $this->createForm(PartType::class, $part);
@@ -43,6 +44,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		$part = new Part();
 		$form = $this->createForm(PartType::class, $part);
@@ -77,6 +79,7 @@ class PartController extends AbstractWorkflowBasedController {
 		if (is_null($part)) {
 			throw $this->createNotFoundException('Unable to find Part entity (id='.$id.').');
 		}
+		$this->_assertAuthorizedWorkflow($part->getWorkflow());
 
 		$form = $this->createForm(PartType::class, $part);
 
@@ -99,6 +102,7 @@ class PartController extends AbstractWorkflowBasedController {
 		if (is_null($part)) {
 			throw $this->createNotFoundException('Unable to find Part entity (id='.$id.').');
 		}
+		$this->_assertAuthorizedWorkflow($part->getWorkflow());
 
 		$form = $this->createForm(PartType::class, $part);
 		$form->handleRequest($request);
@@ -152,6 +156,7 @@ class PartController extends AbstractWorkflowBasedController {
 		if (is_null($part)) {
 			throw $this->createNotFoundException('Unable to find Part entity (id='.$id.').');
 		}
+		$this->_assertAuthorizedWorkflow($part->getWorkflow());
 
 		// Update funding balance
 		$workflow = $part->getWorkflow();
@@ -193,6 +198,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
+		$this->_assertAuthorizedWorkflow($workflow);
 
 		return array(
 			'workflow' => $workflow,

@@ -35,7 +35,7 @@
 
     LadbWorkflowWorkspace.DEFAULTS = {
         readOnly: false,
-        durationsVisible: true,
+        durationsHidden: false,
         wsUri: 'ws://127.0.0.1:8080',
         wsChannel: '',
         minScale: 0.2,
@@ -120,6 +120,13 @@
             var scale = this._uiDiagramGetCurrentScale() - 0.1;
             this.$panzoom.panzoom('zoom', scale);
             this.plumb.setZoom(scale);
+        }
+    };
+
+    LadbWorkflowWorkspace.prototype._uiDiagramZoomOne = function() {
+        if (this.$panzoom) {
+            this.$panzoom.panzoom('zoom', 1.0);
+            this.plumb.setZoom(1.0);
         }
     };
 
@@ -277,7 +284,7 @@
                 }
 
                 $taskRow = $(taskInfos.row);
-                $(that.options.durationsVisible ? '#panel_body_status_' + taskInfos.status : '#panel_body_hidden_status').append($taskRow);
+                $(that.options.durationsHidden ? '#panel_body_hidden_status' : '#panel_body_status_' + taskInfos.status).append($taskRow);
                 that.initTaskRow($taskRow);
 
             }
@@ -318,7 +325,9 @@
                 $taskRow.data('sort-index', taskInfos.sortIndex);
                 that._uiAppendTaskRowToParent($taskRow, $taskRow.parent());
 
-                that.plumb.repaint($taskWidget, { left:taskInfos.positionLeft, top:taskInfos.positionTop });
+                if (that.plumb) {
+                    that.plumb.repaint($taskWidget, { left:taskInfos.positionLeft, top:taskInfos.positionTop });
+                }
 
             }
         }
@@ -1259,6 +1268,10 @@
         });
         $('.ladb-zoom-out-btn', this.$element).on('click', function() {
             that._uiDiagramZoomOut();
+            this.blur();
+        });
+        $('.ladb-zoom-one-btn', this.$element).on('click', function() {
+            that._uiDiagramZoomOne();
             this.blur();
         });
 
