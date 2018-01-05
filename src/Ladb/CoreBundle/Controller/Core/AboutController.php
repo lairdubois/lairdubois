@@ -41,8 +41,10 @@ class AboutController extends Controller {
 	public function creditsAction() {
 		$credits = array(
 			array( 'name' => 'Symfony', 'url' => 'http://www.symfony.com', 'labels' => array( 'PHP' ) ),
+
 			array( 'name' => 'FOSUserBundle', 'url' => 'https://github.com/FriendsOfSymfony/FOSUserBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'FOSElasticaBundle', 'url' => 'https://github.com/FriendsOfSymfony/FOSElasticaBundle', 'labels' => array( 'PHP' ) ),
+			array( 'name' => 'GOSWebSocketBundle', 'url' => 'https://github.com/GeniusesOfSymfony/WebSocketBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'StofDoctrineExtensionsBundle', 'url' => 'https://github.com/stof/StofDoctrineExtensionsBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'LiipImagineBundle', 'url' => 'https://github.com/liip/LiipImagineBundle', 'labels' => array( 'PHP' ) ),
 
