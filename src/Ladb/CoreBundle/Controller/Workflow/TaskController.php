@@ -357,7 +357,7 @@ class TaskController extends AbstractWorkflowBasedController {
 		$om->flush();
 
 		$this->_push($workflow, array(
-			'movedTaskInfos' => $this->_generateTaskInfos($task, self::TASKINFO_POSITION_LEFT | self::TASKINFO_POSITION_TOP),
+			'movedTaskInfos' => $this->_generateTaskInfos($task, self::TASKINFO_POSITION_LEFT | self::TASKINFO_POSITION_TOP | self::TASKINFO_SORT_INDEX),
 		));
 
 		return new JsonResponse(array(
@@ -529,6 +529,9 @@ class TaskController extends AbstractWorkflowBasedController {
 		// Retrieve readOnly parameter
 		$readOnly = $request->get('readOnly', false);
 
+		// Compute owner parameter
+		$owner = $this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser() == $workflow->getUser();
+
 		$connections = array();
 		foreach ($workflow->getTasks() as $sourceTask) {
 			foreach ($sourceTask->getTargetTasks() as $targetTask) {
@@ -542,7 +545,7 @@ class TaskController extends AbstractWorkflowBasedController {
 		return new JsonResponse(array(
 			'success'       => true,
 			'workflowInfos' => $this->_generateWorkflowInfos($workflow),
-			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET, $readOnly),
+			'taskInfos'     => $this->_generateTaskInfos($workflow->getTasks(), self::TASKINFO_STATUS | self::TASKINFO_ROW | self::TASKINFO_WIDGET, $readOnly, $owner),
 			'connections'   => $connections
 		));
 	}

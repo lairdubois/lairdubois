@@ -9,6 +9,7 @@
 {% block headStylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" media="screen" />
     {% stylesheets filter='less,?yui_css'
         '@LadbCoreBundle/Resources/assets/less/ladb/component/inputcolor.less'
         '@LadbCoreBundle/Resources/assets/less/ladb/component/inputduration.less'
@@ -24,6 +25,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-panzoom/jquery.panzoom.min.js'
         '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
@@ -38,6 +40,7 @@
         $(document).ready(function() {
             $('.ladb-workflow-workspace').ladbWorkflowWorkspace({
                 readOnly: {{ readOnly ? 'true' : 'false' }},
+                durationsVisible: {{ ownerUser ? 'true' : 'false' }},
                 wsUri: '{{ websocket_uri }}',
                 wsChannel: 'workflow/{{ workflow.id }}',
                 listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}',
@@ -143,10 +146,7 @@
                         <button class="btn btn-default btn-sm pull-left ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-right"></i></button>
                         <span class="ladb-heading">{{ 'workflow.task.list'|trans() }}</span>
                     </div>
-                    {% if readOnly %}
-                        <div id="panel_body_hidden_status" class="panel-body" style="border-top: 1px solid #ddd;">
-                        </div>
-                    {% else %}
+                    {% if ownerUser %}
                         {% include 'LadbCoreBundle:Workflow:_workflow-status.part.html.twig' %}
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -183,6 +183,9 @@
                         </div>
                         <div id="panel_body_status_4" class="panel-body">
                             <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                    {% else %}
+                        <div id="panel_body_hidden_status" class="panel-body" style="border-top: 1px solid #ddd;">
                         </div>
                     {% endif %}
                 </div>

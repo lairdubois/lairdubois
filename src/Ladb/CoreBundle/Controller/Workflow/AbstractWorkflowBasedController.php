@@ -7,13 +7,14 @@ use Ladb\CoreBundle\Entity\Workflow\Workflow;
 
 abstract class AbstractWorkflowBasedController extends Controller {
 
-	const TASKINFO_NONE 			= 0b000000;
-	const TASKINFO_STATUS 			= 0b000001;
-	const TASKINFO_POSITION_LEFT 	= 0b000010;
-	const TASKINFO_POSITION_TOP 	= 0b000100;
-	const TASKINFO_ROW 				= 0b001000;
-	const TASKINFO_WIDGET 			= 0b010000;
-	const TASKINFO_BOX 				= 0b100000;
+	const TASKINFO_NONE 			= 0b0000000;
+	const TASKINFO_STATUS 			= 0b0000001;
+	const TASKINFO_POSITION_LEFT 	= 0b0000010;
+	const TASKINFO_POSITION_TOP 	= 0b0000100;
+	const TASKINFO_SORT_INDEX	 	= 0b0001000;
+	const TASKINFO_ROW 				= 0b0010000;
+	const TASKINFO_WIDGET 			= 0b0100000;
+	const TASKINFO_BOX 				= 0b1000000;
 
 	/////
 
@@ -31,7 +32,7 @@ abstract class AbstractWorkflowBasedController extends Controller {
 		return $workflow;
 	}
 
-	protected function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE, $readOnly = false) {
+	protected function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE, $readOnly = false, $owner = true) {
 		$templating = $this->get('templating');
 
 		if (!is_array($tasks) && !$tasks instanceof \Traversable) {
@@ -51,14 +52,17 @@ abstract class AbstractWorkflowBasedController extends Controller {
 			if (($fieldsStrategy & self::TASKINFO_POSITION_TOP) == self::TASKINFO_POSITION_TOP) {
 				$taskInfo['positionTop'] = $task->getPositionTop();
 			}
+			if (($fieldsStrategy & self::TASKINFO_SORT_INDEX) == self::TASKINFO_SORT_INDEX) {
+				$taskInfo['sortIndex'] = $task->getPositionTop();
+			}
 			if (($fieldsStrategy & self::TASKINFO_ROW) == self::TASKINFO_ROW) {
-				$taskInfo['row'] = $templating->render('LadbCoreBundle:Workflow:Task/_row.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly ));
+				$taskInfo['row'] = $templating->render('LadbCoreBundle:Workflow:Task/_row.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'owner' => $owner ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_WIDGET) == self::TASKINFO_WIDGET) {
-				$taskInfo['widget'] = $templating->render('LadbCoreBundle:Workflow:Task/_widget.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly ));
+				$taskInfo['widget'] = $templating->render('LadbCoreBundle:Workflow:Task/_widget.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'owner' => $owner ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_BOX) == self::TASKINFO_BOX) {
-				$taskInfo['box'] = $templating->render('LadbCoreBundle:Workflow:Task/_box.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly ));
+				$taskInfo['box'] = $templating->render('LadbCoreBundle:Workflow:Task/_box.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'owner' => $owner ));
 			}
 			$taskInfos[] = $taskInfo;
 		}

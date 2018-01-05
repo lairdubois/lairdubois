@@ -35,6 +35,7 @@
 
     LadbWorkflowWorkspace.DEFAULTS = {
         readOnly: false,
+        durationsVisible: true,
         wsUri: 'ws://127.0.0.1:8080',
         wsChannel: '',
         minScale: 0.2,
@@ -172,6 +173,26 @@
         this.$btnRestart.prop('disabled', false);
     };
 
+    LadbWorkflowWorkspace.prototype._uiAppendTaskRowToParent = function($taskRow, $parent) {
+
+        var taskRowSortIndex = $taskRow.data('sort-index');
+
+        // Insert taskRow by keeping sort order
+        var inserted = false;
+        $('.ladb-workflow-task-row', $parent).each(function() {
+            var $row = $(this);
+            if (taskRowSortIndex < $row.data('sort-index')) {
+                $taskRow.insertBefore($row);
+                inserted = true;
+                return false;
+            }
+        });
+        if (!inserted) {
+            $taskRow.appendTo($parent);
+        }
+
+    };
+
     LadbWorkflowWorkspace.prototype._uiAppendToAnimate = function(element, newParent) {
 
         var $panel = $('.panel', this.$rightPanel);
@@ -181,7 +202,7 @@
 
         var rightPanelOffset = $panel.offset();
         var oldOffset = $taskRow.offset();
-        $taskRow.appendTo($newParent);
+        this._uiAppendTaskRowToParent($taskRow, $newParent);
         var newOffset = $taskRow.offset();
 
         var $tmpTaskRow = $taskRow.clone().appendTo($panel);
@@ -256,7 +277,7 @@
                 }
 
                 $taskRow = $(taskInfos.row);
-                $(that.options.readOnly ? '#panel_body_hidden_status' : '#panel_body_status_' + taskInfos.status).append($taskRow);
+                $(that.options.durationsVisible ? '#panel_body_status_' + taskInfos.status : '#panel_body_hidden_status').append($taskRow);
                 that.initTaskRow($taskRow);
 
             }
@@ -276,7 +297,7 @@
                 }
 
                 $taskRow = $(taskInfos.row);
-                $('#panel_body_status_' + taskInfos.status).append($taskRow);
+                this._uiAppendTaskRowToParent($taskRow, $('#panel_body_status_' + taskInfos.status));
                 that.initTaskRow($taskRow);
                 $('.ladb-box', $taskRow).effect('highlight', {}, 500);
 
@@ -292,6 +313,10 @@
                 $taskWidget = $('#' + TASK_WIDGET_PREFIX + taskInfos.id, that.$canvas);
                 $taskWidget.css('left', taskInfos.positionLeft);
                 $taskWidget.css('top', taskInfos.positionTop);
+
+                $taskRow = $('#' + TASK_ROW_PREFIX + taskInfos.id);
+                $taskRow.data('sort-index', taskInfos.sortIndex);
+                that._uiAppendTaskRowToParent($taskRow, $taskRow.parent());
 
                 that.plumb.repaint($taskWidget, { left:taskInfos.positionLeft, top:taskInfos.positionTop });
 
@@ -1195,6 +1220,20 @@
 
     };
 
+    LadbWorkflowWorkspace.prototype.switchToReadOnly = function() {
+
+        this.options.readOnly = true;
+
+        // Unbind plump
+        this.plumb.unbind('connection');
+        this.plumb.unbind('connectionAborted');
+        this.plumb.unbind('click');
+
+        // Unbind Panzoom
+        this.$panzoom.parent().off('dblclick');
+
+    };
+
     LadbWorkflowWorkspace.prototype.bind = function() {
         var that = this;
 
@@ -1308,13 +1347,20 @@
                     case 3: // Connection could not be established
                         that._uiMarkLoading('Connexion impossible avec le serveur :(');
 
-                        // Load tasks
-                        that.loadTasks(true);
+                        bootbox.alert({
+                            title: 'Aie !',
+                            message: '<div class="media"><div class="media-left"><i class="ladb-icon-bug ladb-icon-xl"></i></div><div class="media-body">La connexion avec le serveur temps réel est impossible pour le moment.<br>En attendant de retirer les copeaux du serveur le processus sera ouvert en <strong>lecture seule</strong>.</div></div>',
+                            callback: function () {
+                                that.switchToReadOnly();
+                                that.loadTasks(true);
+                            }
+                        });
 
                         break;
 
                     case 5: // Connection unreachable
-                        that._uiMarkLoading('Connexion impossible : Nouvel essai');
+                        that._uiMarkLoading('Connexion impossible : Nouvel essai ...');
+                        notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
                         break;
 
                     case 6: // Connection lost
@@ -1322,12 +1368,10 @@
                         break;
 
                     default:
-                        that._uiMarkLoading('Déconecté :(');
+                        that._uiMarkLoading('Vous avez été déconecté :(');
                         break;
 
                 }
-
-                notifyError('Disconnected for ' + error.reason + ' with code ' + error.code);
 
             });
 
