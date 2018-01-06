@@ -37,7 +37,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	use IndexableTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait, InspirableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
-	const TYPE = 200;
+	const TYPE = 118;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -218,6 +218,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 		$this->parts = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 

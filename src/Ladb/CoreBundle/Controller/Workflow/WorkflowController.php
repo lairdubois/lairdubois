@@ -253,7 +253,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($workflow, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.form.alert.update_success', array( '%title%' => $workflow->getTitle() )));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.update_success', array( '%title%' => $workflow->getTitle() )));
 
 			// Regenerate the form
 			$form = $this->createForm(WorkflowType::class, $workflow);

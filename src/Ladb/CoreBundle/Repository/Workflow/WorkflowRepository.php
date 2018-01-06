@@ -17,7 +17,7 @@ class WorkflowRepository extends AbstractEntityRepository {
 	/////
 
 	public function getDefaultJoinOptions() {
-		return array( array( 'inner', 'user', 'u' ), array( 'inner', 'mainPicture', 'mp' ) );
+		return array( array( 'inner', 'user', 'u' ), array( 'left', 'mainPicture', 'mp' ) );
 	}
 
 	/////

@@ -415,7 +415,7 @@ workflow:
         lock_success: Le processus <strong>%title%</strong> a été vérrouillé.
         unlock_success: Le processus <strong>%title%</strong> a été dévérrouillé.
         publish_success: Le processus <strong>%title%</strong> a été publié.
-        unpublish_success: La trouvaille <strong>%title%</strong> a été dépublié.
+        unpublish_success: Le processus <strong>%title%</strong> a été dépublié.
         update_success: Le processus <strong>%title%</strong> a été mis à jour.
         delete_success: Le processus <strong>%title%</strong> a été supprimé.
         copy_success: Le processus <strong>%title%</strong> a été copié.
