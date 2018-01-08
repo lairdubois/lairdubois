@@ -79,7 +79,7 @@ abstract class AbstractWorkflowBasedController extends Controller {
 		$templating = $this->get('templating');
 
 		return array(
-			'statusPanel' => $templating->render('LadbCoreBundle:Workflow:_workflow-status.part.html.twig', array( 'workflow' => $workflow )),
+			'statusPanel' => $templating->render('LadbCoreBundle:Workflow:Workflow/_workflow-status.part.html.twig', array( 'workflow' => $workflow )),
 		);
 	}
 

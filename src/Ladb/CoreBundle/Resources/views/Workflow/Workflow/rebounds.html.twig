@@ -16,7 +16,7 @@
             Ce processus n'a aucun rebond
         </div>
     {% else %}
-        {% embed 'LadbCoreBundle:Workflow:_list-filterbar.part.html.twig' %}
+        {% embed 'LadbCoreBundle:Workflow:Workflow/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_workflow_rebounds_filter' %}
             {% set filterPathParameters = { 'id':workflow.id } %}
             {% block filterbarRightContent%}
@@ -28,5 +28,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Workflow:_list-n.part.html.twig' with { 'workflows':rebounds } %}
+    {% include 'LadbCoreBundle:Workflow:Workflow/_list-n.part.html.twig' with { 'workflows':rebounds } %}
 {% endblock %}

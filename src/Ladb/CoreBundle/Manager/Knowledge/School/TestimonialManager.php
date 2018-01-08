@@ -26,7 +26,7 @@ class TestimonialManager extends AbstractManager {
 		$school = $testimonial->getSchool();
 
 		// Decrement user testimonial count
-		$testimonial->getUser()->incrementTestimonialCount(-1);
+		$testimonial->getUser()->getMeta()->incrementTestimonialCount(-1);
 
 		// Drecrement school testimonial count
 		$school->incrementTestimonialCount(-1);

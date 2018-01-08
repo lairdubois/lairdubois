@@ -57,7 +57,7 @@
                 {% else %}
                     <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-rebound"></i><span class="ladb-visible-desktop">  {{ 'default.copy'|trans() }}</span></a>
                 {% endif %}
-                {% include 'LadbCoreBundle:Workflow:_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
+                {% include 'LadbCoreBundle:Workflow:Workflow/_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
                 {% if not ownerUser %}
                     &nbsp;
                     {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':workflow.type, 'entityId':workflow.id } %}
@@ -97,7 +97,7 @@
                 {% endif %}
             </div>
         {% endblock %}
-        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}
+        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:Workflow/_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}
     {% endembed %}
 {% endblock %}
 
@@ -111,10 +111,10 @@
         </div>
     {% endif %}
     {% if not workflow.isPublic %}
-        {% include 'LadbCoreBundle:Workflow:_draft-alert.part.html.twig' %}
+        {% include 'LadbCoreBundle:Workflow:Workflow/_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-workflow">
-        <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
+        <a href="{{ path('core_workflow_show', { 'id':workflow.sluggedId, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
             {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'450', 'filterMode':'o', 'alt':workflow.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top', 'emptyWebPath':'empty_workflow.png' } %}
         </a>
         <hr>
@@ -180,7 +180,7 @@
             <span><i class="ladb-icon-workflow ladb-icon-fixed-center"></i>&nbsp;{{ workflow.taskCount }} {{ 'workflow.task.choice.tasks'|transchoice(workflow.taskCount) }}</span>
         </div>
         <div class="ladb-btn">
-            <a href="{{ path('core_workflow_show', { 'id':workflow.id, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
+            <a href="{{ path('core_workflow_show', { 'id':workflow.sluggedId, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
         </div>
     </div>
     <div class="ladb-metas">

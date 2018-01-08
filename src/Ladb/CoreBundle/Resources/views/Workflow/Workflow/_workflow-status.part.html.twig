@@ -1,5 +1,5 @@
 <div id="ladb_workflow_status" class="ladb-workflow-status">
-    {% include 'LadbCoreBundle:Workflow:_durations.part.html.twig' with { 'entity':workflow } %}
+    {% include 'LadbCoreBundle:Workflow:Workflow/_durations.part.html.twig' with { 'entity':workflow } %}
     {% if workflow.estimatedDuration > 0 and workflow.duration > 0 %}
         <div class="progress">
             {% if workflow.duration <= workflow.estimatedDuration %}

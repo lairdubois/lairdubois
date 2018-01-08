@@ -131,7 +131,7 @@ class KnowledgeController extends Controller {
 
 			$value->setCreatedAt(new \DateTime());	// Force createdAt to be able to sort values on this field
 			$value->setUser($user);
-			$user->incrementProposalCount();
+			$user->getMeta()->incrementProposalCount();
 
 			$propertyUtils->addValue($entity, $field.'_value', $value);
 
@@ -415,7 +415,7 @@ class KnowledgeController extends Controller {
 		$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_REMOVED, new KnowledgeEvent($entity, array( 'field' => $field, 'value' => $value )));
 
 		// Decrement user proposal count
-		$value->getUser()->incrementProposalCount(-1);
+		$value->getUser()->getMeta()->incrementProposalCount(-1);
 
 		// Delete comments
 		$commentableUtils = $this->get(CommentableUtils::NAME);

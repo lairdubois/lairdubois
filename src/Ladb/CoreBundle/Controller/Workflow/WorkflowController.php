@@ -39,7 +39,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/new", name="core_workflow_new")
-	 * @Template("LadbCoreBundle:Workflow:new.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/new.html.twig")
 	 */
 	public function newAction() {
 
@@ -57,7 +57,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	/**
 	 * @Route("/create", name="core_workflow_create")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Workflow:new.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/new.html.twig")
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -88,7 +88,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($workflow));
 
-			return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $workflow->getSluggedId(), 'layout' => 'workspace' )));
+			return $this->redirect($this->generateUrl('core_workflow_show_workspace', array( 'id' => $workflow->getId() )));
 		}
 
 		// Flashbag
@@ -190,7 +190,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_edit")
-	 * @Template("LadbCoreBundle:Workflow:edit.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/edit.html.twig")
 	 */
 	public function editAction($id) {
 
@@ -215,7 +215,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_workflow_update")
 	 * @Method("POST")
-	 * @Template("LadbCoreBundle:Workflow:edit.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -295,7 +295,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_workflow_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_howtos_filter_page")
-	 * @Template("LadbCoreBundle:Workflow:howtos.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/howtos.html.twig")
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -333,7 +333,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_workflow_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_creations_filter_page")
-	 * @Template("LadbCoreBundle:Workflow:creations.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/creations.html.twig")
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -371,7 +371,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_workflow_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_plans_filter_page")
-	 * @Template("LadbCoreBundle:Workflow:plans.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/plans.html.twig")
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -409,7 +409,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_workflow_workshops")
 	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_workshops_filter")
 	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_workshops_filter_page")
-	 * @Template("LadbCoreBundle:Workflow:workshops.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/workshops.html.twig")
 	 */
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -447,7 +447,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_workflow_inspirations")
 	 * @Route("/{id}/inspirations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_inspirations_filter")
 	 * @Route("/{id}/inspirations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_inspirations_filter_page")
-	 * @Template("LadbCoreBundle:Workflow:inspirations.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/inspirations.html.twig")
 	 */
 	public function inspirationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -475,7 +475,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Workflow:Workflow/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -487,7 +487,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/rebonds", requirements={"id" = "\d+"}, name="core_workflow_rebounds")
 	 * @Route("/{id}/rebonds/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_rebounds_filter")
 	 * @Route("/{id}/rebonds/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_rebounds_filter_page")
-	 * @Template("LadbCoreBundle:Workflow:rebounds.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/rebounds.html.twig")
 	 */
 	public function reboundsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -515,7 +515,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Workflow:Workflow/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -525,7 +525,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/restart_confirm", requirements={"id" = "\d+"}, name="core_workflow_restart_confirm")
-	 * @Template("LadbCoreBundle:Workflow:restart-confirm-xhr.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/restart-confirm-xhr.html.twig")
 	 */
 	public function restartConfirmAction(Request $request, $id) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -587,7 +587,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/statistics", requirements={"id" = "\d+"}, name="core_workflow_statistics")
-	 * @Template("LadbCoreBundle:Workflow:statistics-xhr.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/statistics-xhr.html.twig")
 	 */
 	public function statisticsAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -618,7 +618,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}.html", name="core_workflow_show")
-	 * @Template("LadbCoreBundle:Workflow:show.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$witnessManager = $this->get(WitnessManager::NAME);
@@ -655,7 +655,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		);
 
 		if ($layout == 'workspace') {
-			return $this->render('LadbCoreBundle:Workflow:show-workspace.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Workflow:Workflow/show-workspace.html.twig', $parameters);
 		}
 
 		$watchableUtils = $this->get(WatchableUtils::NAME);
@@ -672,7 +672,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	/**
 	 * @Route("/", name="core_workflow_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_workflow_list_page")
-	 * @Template("LadbCoreBundle:Workflow:list.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -837,14 +837,14 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {
-				return $this->render('LadbCoreBundle:Workflow:list-choice-xhr.html.twig', $parameters);
+				return $this->render('LadbCoreBundle:Workflow:Workflow/list-choice-xhr.html.twig', $parameters);
 			} else {
-				return $this->render('LadbCoreBundle:Workflow:list-xhr.html.twig', $parameters);
+				return $this->render('LadbCoreBundle:Workflow:Workflow/list-xhr.html.twig', $parameters);
 			}
 		}
 
 		if ($layout == 'choice') {
-			return $this->render('LadbCoreBundle:Workflow:list-choice.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Workflow:Workflow/list-choice.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -852,7 +852,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/internal/diagram", name="core_workflow_internal_diagram")
-	 * @Template("LadbCoreBundle:Workflow:diagram.html.twig")
+	 * @Template("LadbCoreBundle:Workflow:Workflow/diagram.html.twig")
 	 */
 	public function internalDiagramAction($id) {
 

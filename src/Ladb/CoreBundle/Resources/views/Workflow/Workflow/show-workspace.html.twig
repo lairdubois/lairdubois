@@ -116,13 +116,13 @@
                                 {% endif %}
                             </ul>
                         </div>
-                        {% include 'LadbCoreBundle:Workflow:_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
+                        {% include 'LadbCoreBundle:Workflow:Workflow/_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
                         {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_workflow_modal', 'entityTitle':workflow.title, 'deletePath':path('core_workflow_delete', { 'id':workflow.id }) } %}
                         &nbsp;
                         <a id="ladb_layout_page_btn" class="btn btn-info" href="{{ ladb_entity_url_action(workflow) }}"><i class="ladb-icon-globe"></i><span class="ladb-visible-desktop">  Ouvrir en mode partage</span></a>
                     </div>
                 {% endblock %}
-                {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}
+                {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Workflow:Workflow/_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}
             {% endembed %}
         </header>
         <div class="ladb-workflow-board">
@@ -150,7 +150,7 @@
                         <div id="panel_body_hidden_status" class="panel-body" style="border-top: 1px solid #ddd;">
                         </div>
                     {% else %}
-                        {% include 'LadbCoreBundle:Workflow:_workflow-status.part.html.twig' %}
+                        {% include 'LadbCoreBundle:Workflow:Workflow/_workflow-status.part.html.twig' %}
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>

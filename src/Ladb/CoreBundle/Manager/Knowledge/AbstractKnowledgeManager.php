@@ -24,7 +24,7 @@ abstract class AbstractKnowledgeManager extends AbstractPublicationManager {
 			foreach ($values as $value) {
 
 				// Decrement user proposal count
-				$value->getUser()->incrementProposalCount(-1);
+				$value->getUser()->getMeta()->incrementProposalCount(-1);
 
 				// Delete comments
 				$commentableUtils->deleteComments($value, false);

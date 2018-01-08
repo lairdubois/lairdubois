@@ -89,7 +89,7 @@ class SchoolController extends Controller {
 			$logoValue->setParentEntityField(School::FIELD_LOGO);
 			$logoValue->setUser($user);
 
-			$user->incrementProposalCount(2);	// Name and Logo of this new school
+			$user->getMeta()->incrementProposalCount(2);	// Name and Logo of this new school
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);

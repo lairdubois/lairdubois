@@ -93,7 +93,7 @@ class WoodController extends Controller {
 			$grainValue->setParentEntityField(Wood::FIELD_GRAIN);
 			$grainValue->setUser($user);
 
-			$user->incrementProposalCount(2);	// Name and Grain of this new wood
+			$user->getMeta()->incrementProposalCount(2);	// Name and Grain of this new wood
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);

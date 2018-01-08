@@ -74,7 +74,7 @@ class TestimonialController extends Controller {
 			$school->addTestimonial($testimonial);
 
 			$school->incrementTestimonialCount();
-			$this->getUser()->incrementTestimonialCount();
+			$this->getUser()->getMeta()->incrementTestimonialCount();
 
 			$om->persist($testimonial);
 

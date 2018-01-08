@@ -91,7 +91,7 @@ class ProviderController extends Controller {
 			$logoValue->setParentEntityField(Provider::FIELD_LOGO);
 			$logoValue->setUser($user);
 
-			$user->incrementProposalCount(2);	// Sign and Logo of this new provider
+			$user->getMeta()->incrementProposalCount(2);	// Sign and Logo of this new provider
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);

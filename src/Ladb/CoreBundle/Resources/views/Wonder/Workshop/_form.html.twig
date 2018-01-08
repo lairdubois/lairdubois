@@ -6,7 +6,7 @@
     {{ parent() }}
     {% include 'LadbCoreBundle:Wonder/Plan:_form-gallery-script.part.html.twig' with { 'fieldId':form.plans.vars.id, 'maxPlanCount':4 } %}
     {% include 'LadbCoreBundle:Howto/Howto:_form-gallery-script.part.html.twig' with { 'fieldId':form.howtos.vars.id, 'maxHowtoCount':4 } %}
-    {% include 'LadbCoreBundle:Workflow:_form-gallery-script.part.html.twig' with { 'fieldId':form.workflows.vars.id, 'maxWorkflowCount':4 } %}
+    {% include 'LadbCoreBundle:Workflow:Workflow/_form-gallery-script.part.html.twig' with { 'fieldId':form.workflows.vars.id, 'maxWorkflowCount':4 } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
 {% endblock %}
 
@@ -19,7 +19,7 @@
     {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
     {% include 'LadbCoreBundle:Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
     {% include 'LadbCoreBundle:Howto/Howto:_form-sidenav-gallery.part.html.twig' %}
-    {% include 'LadbCoreBundle:Workflow:_form-sidenav-gallery.part.html.twig' %}
+    {% include 'LadbCoreBundle:Workflow:Workflow/_form-sidenav-gallery.part.html.twig' %}
     {% include 'LadbCoreBundle:Core/License:_form-sidenav.part.html.twig' %}
 {% endblock %}
 
@@ -57,7 +57,7 @@
     {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre atelier.' } %}
     {% include 'LadbCoreBundle:Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('wonder.workshop.form.help.plans'|trans()) } %}
     {% include 'LadbCoreBundle:Howto/Howto:_form-section-gallery.part.html.twig' with { 'maxHowtoCount':4, 'help':('wonder.workshop.form.help.howtos'|trans()) } %}
-    {% include 'LadbCoreBundle:Workflow:_form-section-gallery.part.html.twig' with { 'maxWorkflowCount':4, 'help':('wonder.workshop.form.help.workflows'|trans()) } %}
+    {% include 'LadbCoreBundle:Workflow:Workflow/_form-section-gallery.part.html.twig' with { 'maxWorkflowCount':4, 'help':('wonder.workshop.form.help.workflows'|trans()) } %}
     {% include 'LadbCoreBundle:Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
 {% endblock %}
 

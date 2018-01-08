@@ -16,7 +16,7 @@
     <div class="ladb-body">
         <div class="ladb-title ladb-unselectable">{{ task.title }}</div>
         {% if not durationsHidden %}
-            {% include 'LadbCoreBundle:Workflow:_durations.part.html.twig' with { 'entity':task } %}
+            {% include 'LadbCoreBundle:Workflow:Workflow/_durations.part.html.twig' with { 'entity':task } %}
         {% endif %}
         {% if task.labels is not empty %}
             <div class="ladb-labels">
