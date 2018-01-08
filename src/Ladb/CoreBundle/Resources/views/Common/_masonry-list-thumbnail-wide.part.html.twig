@@ -14,16 +14,18 @@
                 <div class="ladb-heading">
                     {% block headingInner %}
                         <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% if entity.isLocked is defined and entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<a href="{{ showPath }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
-                    {% endblock %}
-                    {% if entity.isDraft is defined and entity.isDraft or entity.visibility is defined and entity.isPrivate %}
-                        <div class="ladb-draft-badge" style="float: right; font-size: 90%; border-radius: 4px;">
-                            {% if entity.isDraft is defined %}
-                                <i class="ladb-icon-draft"></i> {{ 'default.choice.draft'|transchoice(1)|capitalize }}
-                            {% else %}
-                                <i class="ladb-icon-key"></i> {{ 'default.private'|trans }}
+                        {% block headingBadges %}
+                            {% if entity.isDraft is defined and entity.isDraft or entity.visibility is defined and entity.isPrivate %}
+                                <div class="ladb-draft-badge" style="float: right; margin-left: 5px;">
+                                    {% if entity.isDraft is defined %}
+                                        <i class="ladb-icon-draft"></i> {{ 'default.choice.draft'|transchoice(1)|capitalize }}
+                                    {% else %}
+                                        <i class="ladb-icon-key"></i> {{ 'default.private'|trans }}
+                                    {% endif %}
+                                </div>
                             {% endif %}
-                        </div>
-                    {% endif %}
+                        {% endblock %}
+                    {% endblock %}
                 </div>
                 {% block imageOuter %}
                     <div class="ladb-image">

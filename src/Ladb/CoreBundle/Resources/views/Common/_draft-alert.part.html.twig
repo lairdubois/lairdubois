@@ -16,6 +16,8 @@
         </div>
     </div>
 </div>
-{% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
-    {% block whatItIs %}{{ modalMessage|raw }}{% endblock %}
-{% endembed %}
+{% block modal %}
+    {% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+        {% block whatItIs %}{{ modalMessage|raw }}{% endblock %}
+    {% endembed %}
+{% endblock %}

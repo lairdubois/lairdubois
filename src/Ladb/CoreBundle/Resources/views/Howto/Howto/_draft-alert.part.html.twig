@@ -1,23 +1,22 @@
+{% extends 'LadbCoreBundle:Common:_draft-alert.part.html.twig' %}
 
-{# set howto #}
+{% set entity = howto %}
+{% set alertMessage = 'Ce pas à pas est un brouillon. Il n\'est visible que par vous.<br>Pour le rendre public, vous devez la publier.' %}
+{% set modalMessage = 'La publication du pas à pas <strong>'~howto.title~'</strong> le rendra piblic.' %}
 
-<div class="alert alert-info">
-    <p><i class="ladb-icon-warning"></i> Ce pas à pas est un brouillon. Il n'est visible que par vous. Pour le rendre public, vous devez le publier.</p>
-    <p class="text-right"><a href="#publish_howto_modal" class="btn btn-primary" data-toggle="modal"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></p>
-</div>
-{% if howto.publishedArticleCount > 0 %}
-    {% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_howto_modal', 'title':('default.publishing'|trans()), 'entity':howto } %}
-        {% block whatItIs %}La publication du pas à pas <strong>{{ howto.title }}</strong> le rendra public.{% endblock %}
-    {% endembed %}
-{% else %}
-    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'publish_howto_modal', 'title':('default.publishing'|trans()) } %}
-        {% block bodyInner %}
-            <p>Pour être publié, le pas à pas <strong>{{ howto.title }}</strong> doit contenir au moins un article.</p>
-            <p>Editez le pas à pas pour ajouter des articles.</p>
-        {% endblock %}
-        {% block footerInner %}
-            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
-            <a href="{{ ladb_entity_url_action(howto, 'edit', true, false) }}#articles" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
-        {% endblock %}
-    {% endembed %}
-{% endif %}
+{% block modal %}
+    {% if howto.publishedArticleCount > 0 %}
+        {{ parent() }}
+    {% else %}
+        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+            {% block bodyInner %}
+                <p>Pour être publié, le pas à pas <strong>{{ howto.title }}</strong> doit contenir au moins un article.</p>
+                <p>Editez le pas à pas pour ajouter des articles.</p>
+            {% endblock %}
+            {% block footerInner %}
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
+                <a href="{{ ladb_entity_url_action(howto, 'edit', true, false) }}#articles" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}

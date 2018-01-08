@@ -176,8 +176,7 @@
             self._setEventHandlers();
 
             // Binding to the Window load event to make sure the correct scrollTop is calculated
-            $(window).load(function() {
-
+            $(window).on("load", function() {
                 // Sets the active TOC item
                 self._setActiveElement(true);
 
@@ -213,21 +212,21 @@
                 ul,
                 ignoreSelector = self.options.ignoreSelector;
 
-             // If the selectors option has a comma within the string
-             if(this.options.selectors.indexOf(",") !== -1) {
+            // If the selectors option has a comma within the string
+            if(this.options.selectors.indexOf(",") !== -1) {
 
-                 // Grabs the first selector from the string
-                 firstElem = $(this.options.context).find(this.options.selectors.replace(/ /g,"").substr(0, this.options.selectors.indexOf(",")));
+                // Grabs the first selector from the string
+                firstElem = $(this.options.context).find(this.options.selectors.replace(/ /g,"").substr(0, this.options.selectors.indexOf(",")));
 
-             }
+            }
 
-             // If the selectors option does not have a comman within the string
-             else {
+            // If the selectors option does not have a comman within the string
+            else {
 
-                 // Grabs the first selector from the string and makes sure there are no spaces
-                 firstElem = $(this.options.context).find(this.options.selectors.replace(/ /g,""));
+                // Grabs the first selector from the string and makes sure there are no spaces
+                firstElem = $(this.options.context).find(this.options.selectors.replace(/ /g,""));
 
-             }
+            }
 
             if(!firstElem.length) {
 
@@ -319,12 +318,12 @@
                 elem.addClass(self.focusClass);
 
                 // If the showAndHide option is true
-                if(self.options.showAndHide) {
+                // if(self.options.showAndHide) {
 
-                    // Triggers the click event on the currently focused TOC item
-                    elem.click();
+                // Triggers the click event on the currently focused TOC item
+                elem.click();
 
-                }
+                // }
 
             }
 
@@ -397,9 +396,7 @@
                 // Sets a name attribute on the anchor tag to the text of the currently traversed HTML element (also making sure that all whitespace is replaced with an underscore)
                 "name": hashValue,
 
-                "data-unique": hashValue,
-
-                "class": "tocify-anchor"
+                "data-unique": hashValue
 
             }));
 
@@ -417,11 +414,18 @@
 
             if (hashGeneratorOption === "pretty") {
 
-                hashValue = self.text().toString().toLowerCase()
-                    .trim()
-                    .replace(/\s+/g, '-')           // Replace spaces with -
-                    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                // prettify the text
+                hashValue = self.text().toLowerCase().replace(/\s/g, "-");
+
+                // fix double hyphens
+                while (hashValue.indexOf("--") > -1) {
+                    hashValue = hashValue.replace(/--/g, "-");
+                }
+
+                // fix colon-space instances
+                while (hashValue.indexOf(":-") > -1) {
+                    hashValue = hashValue.replace(/:-/g, "-");
+                }
 
             } else if (typeof hashGeneratorOption === "function") {
 
@@ -496,7 +500,7 @@
 
         },
 
-       // _setEventHandlers
+        // _setEventHandlers
         // ----------------
         //      Adds jQuery event handlers to the newly generated table of contents
         _setEventHandlers: function() {
@@ -570,7 +574,7 @@
             // only attach handler if needed (expensive in IE)
             if (self.options.extendPage || self.options.highlightOnScroll || self.options.scrollHistory || self.options.showAndHideOnScroll)
             {
-            // Window scroll event handler
+                // Window scroll event handler
                 $(window).on("scroll.tocify", function() {
 
                     // Once all animations on the page are complete, this callback function will be called
@@ -741,35 +745,35 @@
 
                         elem.show();
 
-                    break;
+                        break;
 
                     //Uses the jQuery `show` special effect
                     case "show":
 
                         elem.show(self.options.showEffectSpeed);
 
-                    break;
+                        break;
 
                     //Uses the jQuery `slideDown` special effect
                     case "slideDown":
 
                         elem.slideDown(self.options.showEffectSpeed);
 
-                    break;
+                        break;
 
                     //Uses the jQuery `fadeIn` special effect
                     case "fadeIn":
 
                         elem.fadeIn(self.options.showEffectSpeed);
 
-                    break;
+                        break;
 
                     //If none of the above options were passed, then a `jQueryUI show effect` is expected
                     default:
 
                         elem.show();
 
-                    break;
+                        break;
 
                 }
 
@@ -812,35 +816,35 @@
 
                     elem.hide();
 
-                break;
+                    break;
 
                 // Uses the jQuery `hide` special effect
                 case "hide":
 
                     elem.hide(self.options.hideEffectSpeed);
 
-                break;
+                    break;
 
                 // Uses the jQuery `slideUp` special effect
                 case "slideUp":
 
                     elem.slideUp(self.options.hideEffectSpeed);
 
-                break;
+                    break;
 
                 // Uses the jQuery `fadeOut` special effect
                 case "fadeOut":
 
                     elem.fadeOut(self.options.hideEffectSpeed);
 
-                break;
+                    break;
 
                 // If none of the above options were passed, then a `jqueryUI hide effect` is expected
                 default:
 
                     elem.hide();
 
-                break;
+                    break;
 
             }
 

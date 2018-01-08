@@ -15,16 +15,6 @@
     {% include 'LadbCoreBundle:Howto/Howto:_list-topbar.part.html.twig' %}
 {% endblock %}
 
-{% block bodyContainerContent %}
-    {#{% embed 'LadbCoreBundle:Howto/Howto:_list-filterbar.part.html.twig' %}#}
-        {#{% set heading = 'howto.howto.list'|trans() %}#}
-        {#{% block filterbarRightContent%}#}
-            {#<a href="{{ path('core_howto_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'howto.howto.new'|trans() }}</a>#}
-        {#{% endblock %}#}
-    {#{% endembed %}#}
-    {{ parent() }}
-{% endblock %}
-
 {% block autopagerContainerInner %}
     {% include 'LadbCoreBundle:Howto/Howto:_list-n.part.html.twig' %}
 {% endblock %}

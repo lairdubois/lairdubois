@@ -20,12 +20,6 @@
             Cette <a href="{{ path('core_faq_question_show', { 'id':'qu-est-ce-que-la-xylotheque' }) }}" target="_blank">xylothèque</a> est complétée et contrôlée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">apportez vos propositions</a> !
         </div>
     </div>
-    {#{% embed 'LadbCoreBundle:Knowledge/Wood:_list-filterbar.part.html.twig' %}#}
-        {#{% set heading = 'knowledge.wood.list'|trans() %}#}
-        {#{% block filterbarRightContent%}#}
-            {#<a href="{{ path('core_wood_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'knowledge.wood.new'|trans() }}</a>#}
-        {#{% endblock %}#}
-    {#{% endembed %}#}
     {{ parent() }}
 {% endblock %}
 
