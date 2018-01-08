@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Blog\Post;
 use Ladb\CoreBundle\Form\Type\Blog\PostType;
 use Ladb\CoreBundle\Utils\TagUtils;
@@ -130,12 +131,9 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_blog_post_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_unpublish)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 

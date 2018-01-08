@@ -2,12 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
-use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Form\Type\Qa\QuestionType;
 use Ladb\CoreBundle\Utils\TagUtils;
@@ -25,6 +25,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Qa\QuestionManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Model\HiddableInterface;
 
 /**
  * @Route("/questions")
@@ -102,6 +103,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_qa_question_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_qa_question_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -110,9 +112,6 @@ class QuestionController extends Controller {
 		$question = $questionRepository->findOneById($id);
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_lock or core_qa_question_unlock)');
 		}
 		if ($question->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_qa_question_lock or core_qa_question_unlock)');
@@ -165,6 +164,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_qa_question_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -173,9 +173,6 @@ class QuestionController extends Controller {
 		$question = $questionRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_unpublish)');
 		}
 		if ($question->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_qa_question_unpublish)');

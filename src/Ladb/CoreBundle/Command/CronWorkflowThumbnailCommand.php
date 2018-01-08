@@ -69,7 +69,7 @@ EOT
 
 		foreach ($workflows as $workflow) {
 
-			$url = $router->generate('core_workflow_diagram', array( 'id' => $workflow->getId() ), UrlGeneratorInterface::ABSOLUTE_URL);
+			$url = $router->generate('core_workflow_internal_diagram', array( 'id' => $workflow->getId() ), UrlGeneratorInterface::ABSOLUTE_URL);
 
 			if ($verbose) {
 				$output->write('<info> Capturing ['.$url.'] ...</info>');

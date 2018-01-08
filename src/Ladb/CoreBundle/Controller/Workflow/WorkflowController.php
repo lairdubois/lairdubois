@@ -2,17 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
-use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Wonder\Creation;
-use Ladb\CoreBundle\Entity\Wonder\Plan;
-use Ladb\CoreBundle\Entity\Wonder\Workshop;
-use Ladb\CoreBundle\Model\HiddableInterface;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Ladb\CoreBundle\Form\Type\Workflow\WorkflowType;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
@@ -21,7 +16,6 @@ use Ladb\CoreBundle\Utils\FollowerUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
-use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Entity\Workflow\Task;
 use Ladb\CoreBundle\Event\PublicationEvent;
@@ -29,7 +23,12 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Workflow\WorkflowManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
-use Symfony\Component\HttpFoundation\Response;
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Entity\Wonder\Plan;
+use Ladb\CoreBundle\Entity\Wonder\Workshop;
+use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 
 /**
  * @Route("/processus")
@@ -107,15 +106,13 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_workflow_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_workflow_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
 
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_lock or core_workflow_unlock)');
-		}
 		if ($workflow->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_workflow_lock or core_workflow_unlock)');
 		}
@@ -164,15 +161,13 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_workflow_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
 
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_unpublish)');
-		}
 		if (!$workflow->getIsPublic()) {
 			throw $this->createNotFoundException('Already unpublished (core_workflow_publish)');
 		}
@@ -591,28 +586,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
-	 * @Route("/{id}/diagram", name="core_workflow_diagram")
-	 * @Template("LadbCoreBundle:Workflow:diagram.html.twig")
-	 */
-	public function diagramAction($id) {
-
-		// Localhost access only TODO
-//		if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
-//			'127.0.0.1',
-//			'::1',
-//		))) {
-//			throw $this->createNotFoundException('Not allowed (core_workflow_diagram) REMOTE_ADDR='.$_SERVER['REMOTE_ADDR']);
-//		}
-
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		return array(
-			'workflow' => $workflow,
-		);
-	}
-
-	/**
 	 * @Route("/{id}/statistics", requirements={"id" = "\d+"}, name="core_workflow_statistics")
 	 * @Template("LadbCoreBundle:Workflow:statistics-xhr.html.twig")
 	 */
@@ -875,6 +848,20 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		}
 
 		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}/internal/diagram", name="core_workflow_internal_diagram")
+	 * @Template("LadbCoreBundle:Workflow:diagram.html.twig")
+	 */
+	public function internalDiagramAction($id) {
+
+		// Retrieve workflow
+		$workflow = $this->_retrieveWorkflow($id);
+
+		return array(
+			'workflow' => $workflow,
+		);
 	}
 
 }

@@ -2,17 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Find;
 
-use Ladb\CoreBundle\Manager\Find\FindManager;
-use Ladb\CoreBundle\Manager\Core\WitnessManager;
-use Ladb\CoreBundle\Model\HiddableInterface;
-use Ladb\CoreBundle\Utils\BlockBodiedUtils;
-use Ladb\CoreBundle\Utils\FindUtils;
-use Ladb\CoreBundle\Utils\JoinableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Form\Type\Find\FindType;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Find\Content\Gallery;
@@ -29,6 +24,12 @@ use Ladb\CoreBundle\Utils\ExplorableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Manager\Find\FindManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\BlockBodiedUtils;
+use Ladb\CoreBundle\Utils\FindUtils;
+use Ladb\CoreBundle\Utils\JoinableUtils;
 
 /**
  * @Route("/trouvailles")
@@ -105,6 +106,7 @@ class FindController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_find_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_find_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -113,9 +115,6 @@ class FindController extends Controller {
 		$find = $findRepository->findOneById($id);
 		if (is_null($find)) {
 			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_find_lock or core_find_unlock)');
 		}
 		if ($find->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_find_lock or core_find_unlock)');
@@ -168,6 +167,7 @@ class FindController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_find_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -176,9 +176,6 @@ class FindController extends Controller {
 		$find = $findRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($find)) {
 			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_find_unpublish)');
 		}
 		if ($find->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_find_unpublish)');

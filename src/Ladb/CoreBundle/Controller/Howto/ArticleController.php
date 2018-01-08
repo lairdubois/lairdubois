@@ -2,36 +2,23 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
-use Ladb\CoreBundle\Utils\HowtoUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ladb\CoreBundle\Entity\Wonder\Creation;
-use Ladb\CoreBundle\Entity\Wonder\Plan;
-use Ladb\CoreBundle\Entity\Wonder\Workshop;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Howto\Article;
-use Ladb\CoreBundle\Entity\Knowledge\Provider;
-use Ladb\CoreBundle\Form\Type\Howto\HowtoType;
 use Ladb\CoreBundle\Form\Type\Howto\HowtoArticleType;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
-use Ladb\CoreBundle\Utils\LikableUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
-use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\FollowerUtils;
-use Ladb\CoreBundle\Utils\ExplorableUtils;
-use Ladb\CoreBundle\Utils\TagUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\EmbeddableUtils;
+use Ladb\CoreBundle\Utils\HowtoUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Howto\ArticleManager;
-use Ladb\CoreBundle\Manager\Howto\HowtoManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class ArticleController extends Controller {
@@ -160,6 +147,7 @@ class ArticleController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/article/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_article_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -168,9 +156,6 @@ class ArticleController extends Controller {
 		$article = $articleRepository->findOneById($id);
 		if (is_null($article)) {
 			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_unpublish)');
 		}
 		if ($article->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_howto_article_unpublish)');

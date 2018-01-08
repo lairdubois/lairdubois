@@ -10,29 +10,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Howto\Article;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Form\Type\Howto\HowtoType;
-use Ladb\CoreBundle\Form\Type\Howto\HowtoArticleType;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
-use Ladb\CoreBundle\Utils\LikableUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
-use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\FollowerUtils;
-use Ladb\CoreBundle\Utils\ExplorableUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
-use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\EmbeddableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
-use Ladb\CoreBundle\Manager\Howto\ArticleManager;
 use Ladb\CoreBundle\Manager\Howto\HowtoManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
@@ -103,6 +95,7 @@ class HowtoController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_howto_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_howto_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -111,9 +104,6 @@ class HowtoController extends Controller {
 		$howto = $howtoRepository->findOneById($id);
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_howto_lock or core_howto_unlock)');
 		}
 		if ($howto->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_howto_lock or core_howto_unlock)');
@@ -169,6 +159,7 @@ class HowtoController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -177,9 +168,6 @@ class HowtoController extends Controller {
 		$howto = $howtoRepository->findOneById($id);
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_howto_unpublish)');
 		}
 		if ($howto->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_howto_unpublish)');

@@ -2,14 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
-use Ladb\CoreBundle\Entity\Workflow\Workflow;
-use Ladb\CoreBundle\Model\HiddableInterface;
-use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
@@ -32,6 +30,9 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Manager\Wonder\WorkshopManager;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
+use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\LocalisableUtils;
 
 /**
  * @Route("/ateliers")
@@ -106,6 +107,7 @@ class WorkshopController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_workshop_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_workshop_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -114,9 +116,6 @@ class WorkshopController extends Controller {
 		$workshop = $workshopRepository->findOneById($id);
 		if (is_null($workshop)) {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_lock or core_workshop_unlock)');
 		}
 		if ($workshop->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_workshop_lock or core_workshop_unlock)');
@@ -169,6 +168,7 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_workshop_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -177,9 +177,6 @@ class WorkshopController extends Controller {
 		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($workshop)) {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_unpublish)');
 		}
 		if ($workshop->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_workshop_unpublish)');
@@ -903,12 +900,9 @@ class WorkshopController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttohowto", requirements={"id" = "\d+"}, name="core_workshop_admin_converttohowto")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function adminConvertToHowtoAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 

@@ -528,10 +528,10 @@ html.touchevents {
 }
 
 // tablet
-@media screen and (max-width: @ladb-screen-tablet-max) {
+@media screen  and (min-width: @ladb-screen-tablet) and (max-width: @ladb-screen-tablet-max) {
 
   .ladb-workflow-workspace {
-    left: 0;
+    left: @ladb-leftbar-width-tablet;
 
     header .ladb-avatar-header {
 

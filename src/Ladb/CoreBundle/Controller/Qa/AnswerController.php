@@ -2,16 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
-use Ladb\CoreBundle\Event\PublicationEvent;
-use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Manager\Qa\QuestionManager;
-use Ladb\CoreBundle\Utils\ActivityUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Qa\Answer;
 use Ladb\CoreBundle\Form\Type\Qa\AnswerType;
@@ -21,6 +17,11 @@ use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\VotableUtils;
 use Ladb\CoreBundle\Manager\Qa\AnswerManager;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Manager\Qa\QuestionManager;
+use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\WatchableUtils;
 
 /**
  * @Route("/questions")
@@ -320,12 +321,9 @@ class AnswerController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttocomment", requirements={"id" = "\d+"}, name="core_qa_answer_admin_converttocomment")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function adminConvertToCommentAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
 

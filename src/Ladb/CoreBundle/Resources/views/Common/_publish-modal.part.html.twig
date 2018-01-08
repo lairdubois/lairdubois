@@ -20,10 +20,10 @@
             </div>
         {% else %}
             <p>{% block whatItIs %}{% endblock %}</p>
-            <p><strong class="ladb-color-danger"><i class="ladb-icon-warning"></i> Cette action est définitive.</strong></p>
             {% if license is not null %}
                 <blockquote>{% include 'LadbCoreBundle:Core/License:_publish-modal.part.html.twig' %}</blockquote>
             {% endif %}
+            <p><strong class="ladb-color-danger"><i class="ladb-icon-warning"></i> Cette action est définitive.</strong></p>
             <p>Confirmez l'action pour continuer.</p>
         {% endif %}
     {% else %}

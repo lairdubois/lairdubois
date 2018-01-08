@@ -2,11 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
-use Ladb\CoreBundle\Entity\Workflow\Workflow;
-use Ladb\CoreBundle\Manager\Core\WitnessManager;
-use Ladb\CoreBundle\Manager\Wonder\PlanManager;
-use Ladb\CoreBundle\Model\HiddableInterface;
-use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +9,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Howto\Howto;
@@ -25,7 +21,6 @@ use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
-use Ladb\CoreBundle\Utils\ReportableUtils;
 use Ladb\CoreBundle\Utils\PlanUtils;
 use Ladb\CoreBundle\Utils\ExplorableUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
@@ -35,6 +30,11 @@ use Ladb\CoreBundle\Utils\EmbeddableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Manager\Wonder\PlanManager;
+use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\StripableUtils;
 
 /**
  * @Route("/plans")
@@ -114,6 +114,7 @@ class PlanController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_plan_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_plan_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -122,9 +123,6 @@ class PlanController extends Controller {
 		$plan = $planRepository->findOneById($id);
 		if (is_null($plan)) {
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_plan_lock or core_plan_unlock)');
 		}
 		if ($plan->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_plan_lock or core_plan_unlock)');
@@ -177,6 +175,7 @@ class PlanController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_plan_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -185,9 +184,6 @@ class PlanController extends Controller {
 		$plan = $planRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($plan)) {
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_plan_unpublish)');
 		}
 		if ($plan->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_plan_unpublish)');

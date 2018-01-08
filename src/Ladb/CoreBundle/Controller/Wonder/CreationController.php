@@ -2,17 +2,17 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
-use Ladb\CoreBundle\Entity\AbstractPublication;
-use Ladb\CoreBundle\Entity\Workflow\Workflow;
-use Ladb\CoreBundle\Model\HiddableInterface;
-use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Manager\Wonder\CreationManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
+use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\StripableUtils;
 use Ladb\CoreBundle\Form\Type\Wonder\CreationType;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
@@ -111,6 +111,7 @@ class CreationController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_creation_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_creation_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -119,9 +120,6 @@ class CreationController extends Controller {
 		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_creation_lock or core_creation_unlock)');
 		}
 		if ($creation->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_creation_lock or core_creation_unlock)');
@@ -174,6 +172,7 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_creation_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -182,9 +181,6 @@ class CreationController extends Controller {
 		$creation = $creationRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_creation_unpublish)');
 		}
 		if ($creation->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_creation_unpublish)');
@@ -1042,12 +1038,9 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttoworkshop", requirements={"id" = "\d+"}, name="core_creation_admin_converttoworkshop")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function adminConvertToWorkshopAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
@@ -1068,12 +1061,9 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttohowto", requirements={"id" = "\d+"}, name="core_creation_admin_converttohowto")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function adminConvertToHowtoAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
@@ -1094,12 +1084,9 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/admin/converttofind", requirements={"id" = "\d+"}, name="core_creation_admin_converttofind")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function adminConvertToFindAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 

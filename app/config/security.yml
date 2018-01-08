@@ -61,3 +61,6 @@ security:
         - { path: /delete$, role: ROLE_USER }
         - { path: /copy, role: ROLE_USER }
         - { path: /upload$, role: ROLE_USER }
+
+        - { path: /internal/, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+

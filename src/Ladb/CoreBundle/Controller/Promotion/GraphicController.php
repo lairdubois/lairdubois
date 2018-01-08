@@ -2,10 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Promotion;
 
-use Ladb\CoreBundle\Manager\Core\WitnessManager;
-use Ladb\CoreBundle\Manager\Promotion\GraphicManager;
-use Ladb\CoreBundle\Model\HiddableInterface;
-use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,24 +9,22 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ladb\CoreBundle\Entity\Promotion\Workshop;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Manager\Promotion\GraphicManager;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Entity\Promotion\Graphic;
-use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Promotion\Creation;
 use Ladb\CoreBundle\Form\Type\Promotion\GraphicType;
 use Ladb\CoreBundle\Utils\SearchUtils;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
-use Ladb\CoreBundle\Utils\ReportableUtils;
 use Ladb\CoreBundle\Utils\GraphicUtils;
 use Ladb\CoreBundle\Utils\ExplorableUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\PicturedUtils;
-use Ladb\CoreBundle\Utils\EmbeddableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
@@ -110,6 +104,7 @@ class GraphicController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_promotion_graphic_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_promotion_graphic_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -118,9 +113,6 @@ class GraphicController extends Controller {
 		$graphic = $graphicRepository->findOneById($id);
 		if (is_null($graphic)) {
 			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_lock or core_promotion_graphic_unlock)');
 		}
 		if ($graphic->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_promotion_graphic_lock or core_promotion_graphic_unlock)');
@@ -173,6 +165,7 @@ class GraphicController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_promotion_graphic_unpublish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -181,9 +174,6 @@ class GraphicController extends Controller {
 		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($graphic)) {
 			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_unpublish)');
 		}
 		if ($graphic->getIsDraft() === true) {
 			throw $this->createNotFoundException('Already draft (core_promotion_graphic_unpublish)');

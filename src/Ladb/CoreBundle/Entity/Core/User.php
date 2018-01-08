@@ -432,17 +432,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		return $this->emailConfirmed;
 	}
 
-	// Slug /////
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
 	// CreatedAt /////
 
 	public function setCreatedAt($createdAt) {
@@ -534,6 +523,8 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		}
 		return 'none';
 	}
+
+
 
 	// DEPRECATED /////
 
