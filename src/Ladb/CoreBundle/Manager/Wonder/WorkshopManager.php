@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Manager\Wonder;
 
+use Ladb\CoreBundle\Entity\Howto\Article;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
@@ -102,7 +103,7 @@ class WorkshopManager extends AbstractWonderManager {
 		} else {
 			$howto->incrementDraftArticleCount();
 		}
-		$article->setSortIndex(PHP_INT_MAX);	// Default sort index is max value = new articles at the end of the list
+		$article->setSortIndex(Article::MAX_SORT_INDEX);	// Default sort index is max value = new articles at the end of the list
 
 		foreach ($workshop->getTags() as $tag) {
 			$howto->addTag($tag);

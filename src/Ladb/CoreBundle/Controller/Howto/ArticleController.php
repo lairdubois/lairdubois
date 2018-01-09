@@ -86,7 +86,7 @@ class ArticleController extends Controller {
 			} else {
 				$howto->incrementDraftArticleCount();
 			}
-			$article->setSortIndex(PHP_INT_MAX);	// Default sort index is max value = new articles at the end of the list
+			$article->setSortIndex(Article::MAX_SORT_INDEX);	// Default sort index is max value = new articles at the end of the list
 
 			$om->persist($article);
 			$om->flush();
