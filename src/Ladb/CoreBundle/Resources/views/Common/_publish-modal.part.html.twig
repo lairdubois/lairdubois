@@ -41,7 +41,7 @@
     {% if app.user.emailConfirmed %}
         {% if not entity.isLocked %}
             {% if not lockedLicense and license is not null %}
-                <a href="{{ ladb_entity_url_action(licenseEntity, 'edit', true, false) }}#license" class="btn btn-default">Modifier la licence</a>
+                <a href="{{ ladb_entity_url_action(licenseEntity, 'edit', true, false) }}#license" class="btn btn-default"><i class="ladb-icon-cc"></i> Modifier la licence</a>
             {% endif %}
             <a href="{{ ladb_entity_url_action(entity, 'publish', true, false) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a>
         {% endif %}

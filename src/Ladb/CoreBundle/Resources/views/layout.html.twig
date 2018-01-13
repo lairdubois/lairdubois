@@ -134,7 +134,7 @@
             {% if not is_granted("ROLE_USER") %}
                 {% if not topbarTranslucent and not hideAboutAlert %}
                     <div class="alert alert-info">
-                        <p><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
+                        <p style="margin-top: 5px;"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
                         <p>
                             <a href="{{ path('fos_user_registration_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
                             <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>

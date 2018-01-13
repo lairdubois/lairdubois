@@ -88,7 +88,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($workflow));
 
-			return $this->redirect($this->generateUrl('core_workflow_show_workspace', array( 'id' => $workflow->getId() )));
+			return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $workflow->getId(), 'layout' => 'workspace' )));
 		}
 
 		// Flashbag
@@ -528,9 +528,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Template("LadbCoreBundle:Workflow:Workflow/restart-confirm-xhr.html.twig")
 	 */
 	public function restartConfirmAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied (core_workflow_restart_confirm)');
-		}
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
@@ -544,9 +541,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/restart", requirements={"id" = "\d+"}, name="core_workflow_restart")
 	 */
 	public function restartAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied (core_workflow_restart)');
-		}
 
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
@@ -637,24 +631,25 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			}
 		}
 
-		// TODO switch layout from workspace to page if referrer is not LADB server
-
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($workflow));
 
-		$likableUtils = $this->get(LikableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
+		$likableUtils = $this->get(LikableUtils::NAME);
 
 		$parameters = array(
 			'workflow'        => $workflow,
 			'readOnly'        => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
 			'durationsHidden' => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
-			'likeContext'     => $likableUtils->getLikeContext($workflow, $this->getUser()),
 			'followerContext' => $followerUtils->getFollowerContext($workflow->getUser(), $this->getUser()),
+			'likeContext'     => $likableUtils->getLikeContext($workflow, $this->getUser()),
 		);
 
 		if ($layout == 'workspace') {
+
+			// TODO switch layout from workspace to page if referrer is not LADB server
+
 			return $this->render('LadbCoreBundle:Workflow:Workflow/show-workspace.html.twig', $parameters);
 		}
 

@@ -18,7 +18,7 @@ abstract class AbstractWorkflowBasedController extends Controller {
 
 	/////
 
-	protected function _retrieveWorkflow($id, $assertIsOwner = true) {
+	protected function _retrieveWorkflow($id) {
 		$om = $this->getDoctrine()->getManager();
 		$workshopRepository = $om->getRepository(Workflow::CLASS_NAME);
 

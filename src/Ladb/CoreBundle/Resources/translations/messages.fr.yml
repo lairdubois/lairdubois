@@ -398,7 +398,7 @@ qa:
 
 workflow:
   nav: Processus
-  description: Retrouvez tous les processus
+  description: Retrouvez ici tous les processus de fabrication partagés par la communauté.
   workflow:
     new: Ajouter un processus
     edit: Edition du processus

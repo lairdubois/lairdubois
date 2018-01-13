@@ -63,6 +63,8 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 * @Assert\Length(max=4000)
+	 * @Assert\Length(min=5, groups={"public"})
+	 * @Assert\NotBlank(groups={"public"})
 	 */
 	private $body;
 
@@ -181,6 +183,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_workflow_tag")
+	 * @Assert\Count(min=2, groups={"public"})
 	 */
 	private $tags;
 

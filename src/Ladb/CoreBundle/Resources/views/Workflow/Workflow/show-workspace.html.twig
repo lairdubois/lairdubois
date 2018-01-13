@@ -9,7 +9,6 @@
 {% block headStylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" media="screen" />
     {% stylesheets filter='less,?yui_css'
         '@LadbCoreBundle/Resources/assets/less/ladb/component/inputcolor.less'
         '@LadbCoreBundle/Resources/assets/less/ladb/component/inputduration.less'
@@ -202,8 +201,13 @@
     {% if readOnly %}
         {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'readonly_modal', 'title':workflow.title } %}
             {% block bodyInner %}
-                Ce processus vous est accessible en <strong>lecteur seule</strong>. Vous pouvez donc le consulter librement.<br>
-                En revanche, pour l'utiliser ou le modifier, vous devrez le <em>copier</em> sur votre compte.
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-info ladb-icon-xl"></i></div>
+                    <div class="media-body">
+                        Ce processus vous est accessible en <strong>lecteur seule</strong>. Vous pouvez donc le consulter librement.<br>
+                        En revanche, pour l'utiliser ou le modifier, vous devrez le <em>copier</em> sur votre compte.
+                    </div>
+                </div>
             {% endblock %}
             {% block footerInner %}
                 <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>

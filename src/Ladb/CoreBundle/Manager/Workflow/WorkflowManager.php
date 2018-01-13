@@ -133,7 +133,7 @@ class WorkflowManager extends AbstractPublicationManager {
 		$newWorkflow = new Workflow();
 		$newWorkflow->setVisibility(Workflow::VISIBILITY_PRIVATE);
 		$newWorkflow->setUser($user);
-		$newWorkflow->setTitle($workflow->getTitle().' (copie)');
+		$newWorkflow->setTitle($workflow->getTitle().' - copie');
 		$newWorkflow->setMainPicture($workflow->getMainPicture());
 		$newWorkflow->setBody($workflow->getBody());
 		$newWorkflow->setHtmlBody($workflow->getHtmlBody());

@@ -2,6 +2,27 @@
 
 {% set entity = workflow %}
 {% set alertMessage = 'Ce processus est privé. Vous seul pouvez le consulter.<br>Pour le rendre public, vous devez le publier.' %}
-{% set modalMessage = 'La publication du processus <strong>'~workflow.title~'</strong> le rendra public.<br>L\'états des tâches et leurs durées estimées et réelles ne seront quant à elles pas rendues publiques.' %}
+{% set modalMessage = 'La publication du processus <strong>'~workflow.title~'</strong> le rendra public.<br>L\'états des tâches et leurs durées estimées et réelles <u>ne seront quant à elles pas rendues publiques</u>.' %}
 {% set icon = 'key' %}
 
+{% block modal %}
+    {% if workflow.body is not empty and workflow.tags|length >= 2 %}
+        {{ parent() }}
+    {% else %}
+        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+            {% block bodyInner %}
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-warning ladb-icon-xl"></i></div>
+                    <div class="media-body">
+                        <p>Attention, avant de pouvoir être publié, le processus <strong>{{ workflow.title }}</strong> doit une <em>description</em> et au moins deux <em>tags</em>.</p>
+                        <p>Editez le processus pour ajouter les éléments manquants.</p>
+                    </div>
+                </div>
+            {% endblock %}
+            {% block footerInner %}
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
+                <a href="{{ ladb_entity_url_action(workflow, 'edit', true, false) }}#body" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}
