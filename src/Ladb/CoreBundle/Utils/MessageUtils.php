@@ -59,7 +59,7 @@ class MessageUtils {
 			$message->addMeta($messageMeta);
 
 			if ($participant != $sender) {
-				$participant->incrementUnreadMessageCount();
+				$participant->getMeta()->incrementUnreadMessageCount();
 			}
 
 		}
