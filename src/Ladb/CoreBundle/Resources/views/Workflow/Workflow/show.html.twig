@@ -245,3 +245,60 @@
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':workflow.license } %}
 {% endblock %}
+
+{% block contentLinkedTo %}
+    {% if workflow.inspirationCount > 0 or workflow.reboundCount > 0 or workflow.planCount > 0 or workflow.howtoCount > 0 or workflow.creationCount > 0 %}
+        {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
+            {% block body %}
+                {% if workflow.inspirationCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.inspirationCount == 1 ? path('core_workflow_show', { 'id':workflow.inspirations[0].sluggedId }) : path('core_workflow_inspirations', { 'id':workflow.id }),
+                        'picture':workflow.inspirations[0].mainPicture,
+                        'icon':'ladb-icon-inspiration',
+                        'caption': workflow.inspirationCount~' '~('default.choice.inspirations'|transchoice(workflow.inspirationCount))
+                        } %}
+                {% endif %}
+                {% if workflow.planCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.planCount == 1 ? path('core_plan_show', { 'id':workflow.plans[0].sluggedId }) : path('core_creation_plans', { 'id':workflow.id }),
+                        'picture':workflow.plans[0].mainPicture,
+                        'icon':'ladb-icon-plan',
+                        'caption': workflow.planCount~' '~('wonder.plan.choice.plans'|transchoice(workflow.planCount))
+                        } %}
+                {% endif %}
+                {% if workflow.howtoCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.howtoCount == 1 ? path('core_howto_show', { 'id':workflow.howtos[0].sluggedId }) : path('core_creation_howtos', { 'id':workflow.id }),
+                        'picture':workflow.howtos[0].mainPicture,
+                        'icon':'ladb-icon-howto',
+                        'caption': workflow.howtoCount~' '~('howto.howto.choice.howtos'|transchoice(workflow.howtoCount))
+                        } %}
+                {% endif %}
+                {% if workflow.creationCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.creationCount == 1 ? path('core_creation_show', { 'id':workflow.creations[0].sluggedId }) : path('core_workflow_creations', { 'id':workflow.id }),
+                        'picture':workflow.creations[0].mainPicture,
+                        'icon':'ladb-icon-creation',
+                        'caption': workflow.creationCount~' '~('wonder.creation.choice.creations'|transchoice(workflow.creationCount))
+                        } %}
+                {% endif %}
+                {% if workflow.workshopCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.workshopCount == 1 ? path('core_workshop_show', { 'id':workflow.workshop[0].sluggedId }) : path('core_workflow_workshops', { 'id':workflow.id }),
+                        'picture':workflow.workshops[0].mainPicture,
+                        'icon':'ladb-icon-workshop',
+                        'caption': workflow.workshopCount~' '~('wonder.workshop.choice.workshops'|transchoice(workflow.workshopCount))
+                        } %}
+                {% endif %}
+                {% if workflow.reboundCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.reboundCount == 1 ? path('core_creation_show', { 'id':workflow.rebounds[0].sluggedId }) : path('core_creation_rebounds', { 'id':workflow.id }),
+                        'picture':workflow.rebounds[0].mainPicture,
+                        'icon':'ladb-icon-rebound',
+                        'caption': workflow.reboundCount~' '~('default.choice.rebounds'|transchoice(workflow.reboundCount))
+                        } %}
+                {% endif %}
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}

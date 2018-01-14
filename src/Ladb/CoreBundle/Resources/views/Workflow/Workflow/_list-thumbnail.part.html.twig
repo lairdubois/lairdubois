@@ -2,9 +2,9 @@
 
 {% set entity = workflow %}
 {% set emptyWebPath = 'empty_workflow.png' %}
-{% if not workflow.isPublic %}
-    {% set showPathAdditionalParams = { 'layout':'workspace' } %}
-{% endif %}
+{#{% if not workflow.isPublic %}#}
+    {#{% set showPathAdditionalParams = { 'layout':'workspace' } %}#}
+{#{% endif %}#}
 
 {% block title %}<i class="ladb-icon-workflow"></i> {{ parent() }}{% endblock %}
 
@@ -19,13 +19,13 @@
         <li class="ladb-linkto"><a href="{{ path('core_workflow_howtos', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.howtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(workflow.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
     {% endif %}
     {% if workflow.creationCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_workflow_creations', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.creationCount }} {{ 'workflow.creation.choice.creations'|transchoice(workflow.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_workflow_creations', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.creationCount }} {{ 'wonder.creation.choice.creations'|transchoice(workflow.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
     {% endif %}
     {% if workflow.planCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_workflow_plans', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.planCount }} {{ 'workflow.plan.choice.plans'|transchoice(workflow.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_workflow_plans', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(workflow.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
     {% endif %}
     {% if workflow.workshopCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_workflow_workshops', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.workshopCount }} {{ 'workflow.workshop.choice.workshops'|transchoice(workflow.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_workflow_workshops', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(workflow.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
     {% endif %}
     {{ parent() }}
 {% endblock %}

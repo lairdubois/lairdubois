@@ -428,7 +428,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 			$this->plans[] = $plan;
 			$this->planCount = count($this->plans);
 			if ($this->getIsPublic()) {
-				$plan->incrementPlanCount();
+				$plan->incrementWorkflowCount();
 			}
 		}
 		return $this;
@@ -438,7 +438,7 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 		if ($this->plans->removeElement($plan)) {
 			$this->planCount = count($this->plans);
 			if ($this->getIsPublic()) {
-				$plan->incrementPlanCount(-1);
+				$plan->incrementWorkflowCount(-1);
 			}
 		}
 	}
