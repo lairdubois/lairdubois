@@ -19,8 +19,8 @@ class FollowerUtils extends AbstractContainerAwareUtils {
 
 		$followers = $followerRepository->findByUser($user);
 		foreach ($followers as $follower) {
-			$follower->getUser()->incrementFollowingCount(-1);
-			$follower->getFollowingUser()->incrementFollowerCount(-1);
+			$follower->getUser()->getMeta()->incrementFollowingCount(-1);
+			$follower->getFollowingUser()->getMeta()->incrementFollowerCount(-1);
 			$activityUtils->deleteActivitiesByFollower($follower);
 			$om->remove($follower);
 		}
@@ -36,7 +36,7 @@ class FollowerUtils extends AbstractContainerAwareUtils {
 
 		$followers = $followerRepository->findByFollowingUser($user);
 		foreach ($followers as $follower) {
-			$follower->getUser()->incrementFollowingCount(-1);
+			$follower->getUser()->getMeta()->incrementFollowingCount(-1);
 			$follower->getFollowingUser()->incrementFollowerCount(-1);
 			$activityUtils->deleteActivitiesByFollower($follower);
 			$om->remove($follower);

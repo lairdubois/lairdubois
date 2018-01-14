@@ -68,11 +68,11 @@ class VoteController extends Controller {
 			if ($score > 0) {
 				$entity->incrementPositiveVoteScore($score);
 				$parentEntity->incrementPositiveVoteCount();
-				$this->getUser()->incrementPositiveVoteCount();
+				$this->getUser()->getMeta()->incrementPositiveVoteCount();
 			} else {
 				$entity->incrementNegativeVoteScore(abs($score));
 				$parentEntity->incrementNegativeVoteCount();
-				$this->getUser()->incrementNegativeVoteCount();
+				$this->getUser()->getMeta()->incrementNegativeVoteCount();
 			}
 
 		} else {
@@ -84,20 +84,20 @@ class VoteController extends Controller {
 				if ($vote->getScore() > 0) {
 					$entity->incrementPositiveVoteScore(-$vote->getScore());
 					$parentEntity->incrementPositiveVoteCount(-1);
-					$this->getUser()->incrementPositiveVoteCount(-1);
+					$this->getUser()->getMeta()->incrementPositiveVoteCount(-1);
 				} else {
 					$entity->incrementNegativeVoteScore(-abs($vote->getScore()));
 					$parentEntity->incrementNegativeVoteCount(-1);
-					$this->getUser()->incrementNegativeVoteCount(-1);
+					$this->getUser()->getMeta()->incrementNegativeVoteCount(-1);
 				}
 				if ($score > 0) {
 					$entity->incrementPositiveVoteScore($score);
 					$parentEntity->incrementPositiveVoteCount();
-					$this->getUser()->incrementPositiveVoteCount();
+					$this->getUser()->getMeta()->incrementPositiveVoteCount();
 				} else {
 					$entity->incrementNegativeVoteScore(abs($score));
 					$parentEntity->incrementNegativeVoteCount();
-					$this->getUser()->incrementNegativeVoteCount();
+					$this->getUser()->getMeta()->incrementNegativeVoteCount();
 				}
 
 				// Update vote
@@ -227,11 +227,11 @@ class VoteController extends Controller {
 		if ($vote->getScore() > 0) {
 			$entity->incrementPositiveVoteScore(-$vote->getScore());
 			$parentEntity->incrementPositiveVoteCount(-1);
-			$this->getUser()->incrementPositiveVoteCount(-1);
+			$this->getUser()->getMeta()->incrementPositiveVoteCount(-1);
 		} else {
 			$entity->incrementNegativeVoteScore(-abs($vote->getScore()));
 			$parentEntity->incrementNegativeVoteCount(-1);
-			$this->getUser()->incrementNegativeVoteCount(-1);
+			$this->getUser()->getMeta()->incrementNegativeVoteCount(-1);
 		}
 		$entity->incrementVoteScore(-$vote->getScore());
 		$entity->incrementVoteCount(-1);

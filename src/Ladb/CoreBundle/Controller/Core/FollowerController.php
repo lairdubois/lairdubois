@@ -48,8 +48,8 @@ class FollowerController extends Controller {
 
 			// Update counters
 
-			$followerUser->incrementFollowingCount();
-			$followingUser->incrementFollowerCount();
+			$followerUser->getMeta()->incrementFollowingCount();
+			$followingUser->getMeta()->incrementFollowerCount();
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
@@ -97,8 +97,8 @@ class FollowerController extends Controller {
 		$followerUser = $follower->getUser();
 
 		// Update counters
-		$followerUser->incrementFollowingCount(-1);
-		$followingUser->incrementFollowerCount(-1);
+		$followerUser->getMeta()->incrementFollowingCount(-1);
+		$followingUser->getMeta()->incrementFollowerCount(-1);
 
 		// Delete activities
 		$activityUtils = $this->get(ActivityUtils::NAME);

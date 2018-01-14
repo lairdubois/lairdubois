@@ -23,7 +23,7 @@ class QuestionManager extends AbstractPublicationManager {
 		foreach ($question->getAnswers() as $answer) {
 
 			// Increment user answer count
-			$answer->getUser()->incrementAnswerCount(1);
+			$answer->getUser()->getMeta()->incrementAnswerCount(1);
 
 			// Increment users comment counters
 			$commentableUtils = $this->container->get(CommentableUtils::NAME);
@@ -46,7 +46,7 @@ class QuestionManager extends AbstractPublicationManager {
 		foreach ($question->getAnswers() as $answer) {
 
 			// Decrement user answer count
-			$answer->getUser()->incrementAnswerCount(-1);
+			$answer->getUser()->getMeta()->incrementAnswerCount(-1);
 
 			// Decrement users comment counters
 			$commentableUtils = $this->container->get(CommentableUtils::NAME);

@@ -174,7 +174,7 @@ class MessageController extends Controller {
 
 		$unreadMessageCount = $threadRepository->countUnreadMessageByThreadAndUser($thread, $this->getUser());
 		if ($unreadMessageCount > 0) {
-			$this->getUser()->incrementUnreadMessageCount(-$unreadMessageCount);
+			$this->getUser()->getMeta()->incrementUnreadMessageCount(-$unreadMessageCount);
 		}
 
 		$remainingCount = 0;

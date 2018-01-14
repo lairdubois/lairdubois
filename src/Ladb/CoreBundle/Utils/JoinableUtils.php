@@ -38,7 +38,7 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 		foreach ($joins as $join) {
 			$joinable = $typableUtils->findTypable($join->getEntityType(), $join->getEntityId());
 			if (!is_null($joinable) && $joinable instanceof AuthoredInterface) {
-				$joinable->getUser()->incrementRecievedJoinCount(-1);
+				$joinable->getUser()->getMeta()->incrementJoinCount(-1);
 			}
 			$activityUtils->deleteActivitiesByJoin($join);
 			$om->remove($join);
@@ -54,7 +54,7 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 
 		$joins = $joinRepository->findByEntityTypeAndEntityId($joinable->getType(), $joinable->getId());
 		foreach ($joins as $join) {
-			$join->getUser()->incrementSentJoinCount($by);
+			$join->getUser()->getMeta()->incrementJoinCount($by);
 		}
 		if ($flush) {
 			$om->flush();

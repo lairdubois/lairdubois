@@ -49,8 +49,8 @@ EOT
 		$output->writeln('<comment> ['.count($users).' users]</comment>');
 
 		foreach ($users as $user) {
-			$user->incrementRecievedLikeCount(-$user->getMeta()->getRecievedLikeCount());
-			$user->incrementSentLikeCount(-$user->getMeta()->getSentLikeCount());
+			$user->getMeta()->incrementRecievedLikeCount(-$user->getMeta()->getRecievedLikeCount());
+			$user->getMeta()->incrementSentLikeCount(-$user->getMeta()->getSentLikeCount());
 		}
 
 		// Retrive likes /////
@@ -71,13 +71,13 @@ EOT
 		}
 
 		foreach ($likes as $like) {
-			$like->getUser()->incrementSentLikeCount();
+			$like->getUser()->getMeta()->incrementSentLikeCount();
 			$entityClassName = TypableUtils::getClassByType($like->getEntityType());
 			if (!is_null($entityClassName)) {
 				$entityRepository = $om->getRepository($entityClassName);
 				$entity = $entityRepository->findOneById($like->getEntityId());
 				if (!is_null($entity) and $entity instanceof AuthoredInterface) {
-					$entity->getUser()->incrementRecievedLikeCount();
+					$entity->getUser()->getMeta()->incrementRecievedLikeCount();
 					$like->setEntityUser($entity->getUser());
 				} else {
 					$like->setEntityUser(null);

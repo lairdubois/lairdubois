@@ -22,9 +22,9 @@ class LikableUtils extends AbstractContainerAwareUtils {
 		$likes = $likeRepository->findByEntityTypeAndEntityId($likable->getType(), $likable->getId());
 		foreach ($likes as $like) {
 			if ((!$likable instanceof DraftableInterface) || ($likable instanceof DraftableInterface && !$likable->getIsDraft())) {
-				$like->getUser()->incrementSentLikeCount(-1);
+				$like->getUser()->getMeta()->incrementSentLikeCount(-1);
 				if ($likable instanceof AuthoredInterface) {
-					$likable->getUser()->incrementRecievedLikeCount(-1);
+					$likable->getUser()->getMeta()->incrementRecievedLikeCount(-1);
 				}
 			}
 			$activityUtils->deleteActivitiesByLike($like);
@@ -43,10 +43,10 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 		$likes = $likeRepository->findByUser($user);
 		foreach ($likes as $like) {
-			$like->getUser()->incrementSentLikeCount(-1);
+			$like->getUser()->getMeta()->incrementSentLikeCount(-1);
 			$likable = $typableUtils->findTypable($like->getEntityType(), $like->getEntityId());
 			if (!is_null($likable) && $likable instanceof AuthoredInterface) {
-				$likable->getUser()->incrementRecievedLikeCount(-1);
+				$likable->getUser()->getMeta()->incrementRecievedLikeCount(-1);
 			}
 			$activityUtils->deleteActivitiesByLike($like);
 			$om->remove($like);
@@ -62,9 +62,9 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 		$likes = $likeRepository->findByEntityTypeAndEntityId($likable->getType(), $likable->getId());
 		foreach ($likes as $like) {
-			$like->getUser()->incrementSentLikeCount($by);
+			$like->getUser()->getMeta()->incrementSentLikeCount($by);
 			if ($likable instanceof AuthoredInterface) {
-				$likable->getUser()->incrementRecievedLikeCount($by);
+				$likable->getUser()->getMeta()->incrementRecievedLikeCount($by);
 			}
 		}
 		if ($flush) {

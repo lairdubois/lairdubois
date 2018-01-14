@@ -22,10 +22,10 @@ class VotableUtils extends AbstractContainerAwareUtils {
 		foreach ($votes as $vote) {
 			if ($vote->getScore() > 0) {
 				$votableParent->incrementPositiveVoteCount(-1);
-				$vote->getUser()->incrementPositiveVoteCount(-1);
+				$vote->getUser()->getMeta()->incrementPositiveVoteCount(-1);
 			} else {
 				$votableParent->incrementNegativeVoteCount(-1);
-				$vote->getUser()->incrementNegativeVoteCount(-1);
+				$vote->getUser()->getMeta()->incrementNegativeVoteCount(-1);
 			}
 			$votableParent->incrementVoteCount(-1);
 			$activityUtils->deleteActivitiesByVote($vote);
@@ -44,9 +44,9 @@ class VotableUtils extends AbstractContainerAwareUtils {
 		$votes = $voteRepository->findByEntityTypeAndEntityId($votable->getType(), $votable->getId());
 		foreach ($votes as $vote) {
 			if ($vote->getScore() > 0) {
-				$vote->getUser()->incrementPositiveVoteCount($by);
+				$vote->getUser()->getMeta()->incrementPositiveVoteCount($by);
 			} else {
-				$vote->getUser()->incrementNegativeVoteCount($by);
+				$vote->getUser()->getMeta()->incrementNegativeVoteCount($by);
 			}
 		}
 		if ($flush) {
