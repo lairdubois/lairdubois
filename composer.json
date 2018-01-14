@@ -28,7 +28,7 @@
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.6.4",
-        "symfony/symfony": "3.3.*",
+        "symfony/symfony": "3.4.*",
         "symfony/intl": "^3.3",
         "twig/twig": "^1.0||^2.0",
 
@@ -51,7 +51,7 @@
         "blueimp/jquery-file-upload": "9.18.0",
         "jublonet/codebird-php": "2.6.1",
         "jonnyw/php-phantomjs": "4.6.0",
-        "emojione/emojione": "2.2.7",
+        "emojione/emojione": "3.1.2",
         "eonasdan/bootstrap-datetimepicker": "4.17.37",
         "ps/image-optimizer": "1.0.6",
         "egulias/email-validator": "~1.2",
@@ -63,8 +63,8 @@
         "dirkgroenen/pinterest-api-php": "^0.2.11",
 
         "components/jquery": "3.2.1",
-        "components/jqueryui": "1.11.4",
-        "components/masonry": "3.2.2"
+        "components/jqueryui": "1.12.1",
+        "components/masonry": "4.2.0"
 
     },
     "require-dev": {

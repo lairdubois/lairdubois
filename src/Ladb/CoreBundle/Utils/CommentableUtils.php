@@ -46,7 +46,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 		// Update user comment count
 		if (!($commentable instanceof DraftableInterface) || ($commentable instanceof DraftableInterface && !$commentable->getIsDraft())) {
-			$comment->getUser()->incrementCommentCount(-1);
+			$comment->getUser()->getMeta()->incrementCommentCount(-1);
 		}
 
 		// Update commentable comment count
@@ -70,7 +70,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
-			$comment->getUser()->incrementCommentCount($by);
+			$comment->getUser()->getMeta()->incrementCommentCount($by);
 		}
 		if ($flush) {
 			$om->flush();

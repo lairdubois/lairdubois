@@ -148,7 +148,7 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $workflowCount = 0;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="workflows", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="howtos", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_howto_workflow")
 	 * @Assert\Count(min=0, max=4)
 	 */

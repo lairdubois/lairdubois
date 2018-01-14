@@ -124,7 +124,7 @@ class CommentController extends Controller {
 			// Counters
 
 			$entity->incrementCommentCount();
-			$this->getUser()->incrementCommentCount();
+			$this->getUser()->getMeta()->incrementCommentCount();
 
 			$om->persist($comment);
 
