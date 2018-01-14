@@ -54,6 +54,10 @@ class FieldPreprocessorUtils {
 				$this->preprocessBodyField($block);
 			}
 		}
+		$firstBlock = $blockBodied->getBodyBlocks()->first();
+		if ($firstBlock instanceof \Ladb\CoreBundle\Entity\Core\Block\Text) {
+			$blockBodied->setBodyExtract(strip_tags(mb_strimwidth($firstBlock->getHtmlBody(), 0, 250, '[...]')));
+		}
 	}
 
 }

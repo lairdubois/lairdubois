@@ -114,11 +114,6 @@ class BlockBodiedUtils {
 		}
 		$entity->setBody($body);
 
-		$firstBlock = $entity->getBodyBlocks()->first();
-		if ($firstBlock instanceof \Ladb\CoreBundle\Entity\Core\Block\Text) {
-			$entity->setBodyExtract(strip_tags(mb_strimwidth($firstBlock->getHtmlBody(), 0, 250, '[...]')));
-		}
-
 	}
 
 	public function getFirstPicture(BlockBodiedInterface $entity) {
