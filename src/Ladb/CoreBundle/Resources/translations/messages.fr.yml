@@ -278,7 +278,7 @@ howto:
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre pas à pas.
         body: Renseignez ici un petit texte introductif qui présente votre pas à pas. Le contenu de votre pas à pas sera détaillé dans les articles.
         plans: Associez jusqu'à <strong>4 plans</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces plans.
-        processus: Associez jusqu'à <strong>4 processus</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces processus.
+        workflows: Associez jusqu'à <strong>4 processus</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces processus.
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre pas à pas.
         wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
     choice:
