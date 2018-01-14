@@ -15,7 +15,7 @@ parameters:
     elasticsearch_host:             localhost
     elasticsearch_port:             9200
 
-    websocket_host:                 www.lairdubois.fr
+    websocket_host:                 127.0.0.1
     websocket_port:                 8080
     websocket_uri:                  wss://www.lairdubois.fr:8443
 

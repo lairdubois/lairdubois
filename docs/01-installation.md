@@ -215,8 +215,6 @@ Now you are ready to configure Nginx to access to the webroot directory.
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr-maintenance.conf /etc/nginx/sites-available/www.lairdubois.fr-maintenance.conf
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr.conf /etc/nginx/sites-available/www.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/www.lairdubois.fr.conf /etc/nginx/sites-enabled/www.lairdubois.fr.conf
-    $ sudo mkdir /etc/nginx/stream.d
-    $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/websocket.conf /etc/nginx/stream.d/websocket.conf
     $ service nginx restart
 ```
 
@@ -227,6 +225,37 @@ Not that the given DEV config is configured for running on MacOS.
 ``` bash
     $ sudo cp /var/www/dev.lairdubois.fr/docs/nginx/conf/dev.lairdubois.fr.conf /etc/nginx/sites-available/dev.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/dev.lairdubois.fr.conf /etc/nginx/sites-enabled/dev.lairdubois.fr.conf
+    $ service nginx restart
+```
+
+## Step 6 - Setup Stream on Nginx (to enable websocket through SSL)
+
+> If you are on the **PROD** server :
+
+Create a folder named stream.d at the root of your nginx install. And copy the predefined conf file.
+
+``` bash
+    $ sudo mkdir /etc/nginx/stream.d
+    $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/websocket.conf /etc/nginx/stream.d/websocket.conf
+    $ service nginx restart
+```
+
+Then, edit ```nginx.conf``` located in ```/etc/nginx```.
+After the http directive, place the following statement ```include /etc/nginx/stream.d/*.conf;``` It has to be at the same hierarchy level of ```http```.
+
+``` bash
+    $ sudo nano /etc/nginx/nginx.conf
+```
+
+Add the following line.
+
+```
+    include /etc/nginx/stream.d/*.conf;
+```
+
+Restart Nginx.
+
+``` bash
     $ service nginx restart
 ```
 
