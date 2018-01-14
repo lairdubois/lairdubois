@@ -203,22 +203,24 @@ class WorkflowManager extends AbstractPublicationManager {
 					$newTask->setStatus(Task::STATUS_PENDING);
 				}
 			}
-			$newTask->setPartCount($task->getPartCount());
 
+			$newWorkflow->addTask($newTask);
+			$newWorkflow->incrementTaskCount();
+
+			$newPartCount = 0;
 			foreach ($task->getParts() as $part) {
 				if (isset($newParts[$part->getId()])) {
 					$newTask->addPart($newParts[$part->getId()]);
+					$newPartCount++;
 				}
 			}
+			$newTask->setPartCount($newPartCount);
 
 			foreach ($task->getLabels() as $label) {
 				if (isset($newLabels[$label->getId()])) {
 					$newTask->addLabel($newLabels[$label->getId()]);
 				}
 			}
-
-			$newWorkflow->addTask($newTask);
-			$newWorkflow->incrementTaskCount();
 
 			// Add the newly created task to a temporary array indexed on the original task id.
 			$newTasks[$task->getId()] = $newTask;
