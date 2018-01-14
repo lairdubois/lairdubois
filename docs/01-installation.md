@@ -215,6 +215,8 @@ Now you are ready to configure Nginx to access to the webroot directory.
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr-maintenance.conf /etc/nginx/sites-available/www.lairdubois.fr-maintenance.conf
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr.conf /etc/nginx/sites-available/www.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/www.lairdubois.fr.conf /etc/nginx/sites-enabled/www.lairdubois.fr.conf
+    $ sudo mkdir /etc/nginx/stream.d
+    $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/websocket.conf /etc/nginx/stream.d/websocket.conf
     $ service nginx restart
 ```
 
