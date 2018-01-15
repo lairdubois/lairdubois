@@ -24,16 +24,16 @@ class HowtoRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 'ats', 'abbs', 'pls', 'cts', 'wfs', 'wks' ))
+			->select(array( 'h', 'u', 'mp', 'ats', 'abbs'/*, 'pls', 'cts', 'wfs', 'wks'*/ ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->innerJoin('h.mainPicture', 'mp')
 			->leftJoin('h.articles', 'ats')
 			->leftJoin('ats.bodyBlocks', 'abbs')
-			->leftJoin('h.plans', 'pls')
-			->leftJoin('h.creations', 'cts')
-			->leftJoin('h.workflows', 'wfs')
-			->leftJoin('h.workshops', 'wks')
+//			->leftJoin('h.plans', 'pls')
+//			->leftJoin('h.creations', 'cts')
+//			->leftJoin('h.workflows', 'wfs')
+//			->leftJoin('h.workshops', 'wks')
 			->where('h.id = :id')
 			->setParameter('id', $id)
 		;
