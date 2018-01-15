@@ -309,7 +309,7 @@
                 {% endif %}
             </div>
             <div class="ladb-howto-article">
-                <h2 id="{{ article.slug }}">{{ article.title }}</h2>
+                <h2>{{ article.title }}</h2>
                 {% if article.isDraft and not howto.isDraft %}
                     {% include 'LadbCoreBundle:Howto/Article:_draft-alert.part.html.twig' %}
                 {% endif %}
