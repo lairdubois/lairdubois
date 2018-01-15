@@ -240,7 +240,7 @@ class MessageController extends Controller {
 				$messageMeta->setIsRead(false);
 				$message->addMeta($messageMeta);
 
-				$participant->incrementUnreadMessageCount();
+				$participant->getMeta()->incrementUnreadMessageCount();
 
 				if ($participant != $sender) {
 					$recipients[] = $participant;
@@ -314,7 +314,7 @@ class MessageController extends Controller {
 		}
 
 		if ($unreadMessageCount > 0) {
-			$participant->incrementUnreadMessageCount(-$unreadMessageCount);
+			$participant->getMeta()->incrementUnreadMessageCount(-$unreadMessageCount);
 
 			$om->flush();
 
