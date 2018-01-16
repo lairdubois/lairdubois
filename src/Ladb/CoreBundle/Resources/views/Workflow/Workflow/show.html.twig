@@ -173,6 +173,11 @@
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+        <div class="ladb-meta{% if workflow.copyCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-duplicate ladb-icon-fixed-center"></i>
+            <strong>{{ workflow.copyCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'default.choice.copies'|transchoice(workflow.copyCount) }}</small>
+        </div>
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>

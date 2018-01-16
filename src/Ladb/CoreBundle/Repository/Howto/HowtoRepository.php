@@ -30,7 +30,7 @@ class HowtoRepository extends AbstractEntityRepository {
 			->innerJoin('h.mainPicture', 'mp')
 			->leftJoin('h.articles', 'ats')
 			->leftJoin('ats.bodyBlocks', 'abbs')
-//			->leftJoin('h.plans', 'pls')
+//			->leftJoin('h.plans', 'pls')		// Memory limit exceded
 //			->leftJoin('h.creations', 'cts')
 //			->leftJoin('h.workflows', 'wfs')
 //			->leftJoin('h.workshops', 'wks')

@@ -249,7 +249,12 @@ class WorkflowManager extends AbstractPublicationManager {
 			}
 
 		} else {
+
 			$newWorkflow->addInspiration($workflow);
+
+			// Increment copy count
+			$workflow->incrementCopyCount();
+
 		}
 
 		// Increment user workflow count

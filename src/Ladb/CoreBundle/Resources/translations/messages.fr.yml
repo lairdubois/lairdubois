@@ -102,6 +102,7 @@ default:
     proposals: '[0,1]proposition|]1,Inf]propositions'
     files: '[0,1]fichier|]1,Inf]fichiers'
     contains_videos: '[0,1]Cette contribution contient %count% video|]1,Inf]Cette contribution contient %count% videos'
+    copies: '[0,1]copie|]1,Inf]copies'
 
 registration:
     heading: Inscription

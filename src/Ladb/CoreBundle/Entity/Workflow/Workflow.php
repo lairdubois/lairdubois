@@ -157,6 +157,11 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	private $howtos;
 
 	/**
+	 * @ORM\Column(type="integer", name="copy_count")
+	 */
+	private $copyCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="rebound_count")
 	 */
 	private $reboundCount = 0;
@@ -477,6 +482,16 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	public function getHowtos() {
 		return $this->howtos;
+	}
+
+	// CopyCount /////
+
+	public function incrementCopyCount($by = 1) {
+		return $this->copyCount += intval($by);
+	}
+
+	public function getCopyCount() {
+		return $this->copyCount;
 	}
 
 }
