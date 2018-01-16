@@ -150,6 +150,7 @@ wonder:
     converttoworkshop: Convertir en atelier
     converttohowto: Convertir en pas à pas
     converttofind: Convertir en trouvaille
+    converttoquestion: Convertir en question
     form:
       inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
       alert:
@@ -180,6 +181,7 @@ wonder:
         converttoworkshop_success: La création %title% a été converti en atelier avec succès.
         converttohowto_success: La création %title% a été converti en pas à pas avec succès.
         converttofind_success: La création %title% a été converti en trouvaille avec succès.
+        converttoquestion_success: La création %title% a été converti en question avec succès.
   plan:
     description: Retrouvez tous les plans
     new: Ajouter un plan

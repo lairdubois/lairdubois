@@ -260,6 +260,7 @@ class CreationManager extends AbstractWonderManager {
 		$howto->setCreatedAt($creation->getCreatedAt());
 		$howto->setUpdatedAt($creation->getUpdatedAt());
 		$howto->setChangedAt($creation->getChangedAt());
+		$howto->setVisibility($creation->getVisibility());
 		$howto->setIsDraft($creation->getIsDraft());
 		$howto->setTitle($creation->getTitle());
 		$howto->setUser($creation->getUser());
@@ -368,6 +369,7 @@ class CreationManager extends AbstractWonderManager {
 		$find->setUpdatedAt($creation->getUpdatedAt());
 		$find->setChangedAt($creation->getChangedAt());
 		$find->setKind(\Ladb\CoreBundle\Entity\Find\Find::KIND_GALLERY);
+		$find->setVisibility($creation->getVisibility());
 		$find->setIsDraft($creation->getIsDraft());
 		$find->setTitle($creation->getTitle());
 		$find->setUser($creation->getUser());
@@ -437,6 +439,84 @@ class CreationManager extends AbstractWonderManager {
 		}
 
 		return $find;
+	}
+
+	public function convertToQuestion(Creation $creation, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Create a new question
+
+		$question = new \Ladb\CoreBundle\Entity\Qa\Question();
+		$question->setCreatedAt($creation->getCreatedAt());
+		$question->setUpdatedAt($creation->getUpdatedAt());
+		$question->setChangedAt($creation->getChangedAt());
+		$question->setVisibility($creation->getVisibility());
+		$question->setIsDraft($creation->getIsDraft());
+		$question->setTitle($creation->getTitle());
+		$question->setUser($creation->getUser());
+
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+		$blockBodiedUtils->copyBlocksTo($creation, $question);
+
+		foreach ($creation->getTags() as $tag) {
+			$question->addTag($tag);
+		}
+
+		// Setup question's htmlBody
+		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+		$fieldPreprocessorUtils->preprocessFields($question);
+
+		// Persist question to generate ID
+		$om->persist($question);
+		$om->flush();
+
+		// Dispatch publications event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED_FROM_CONVERT, new PublicationEvent($question));
+
+		// User counter
+		if ($question->getIsDraft()) {
+			$question->getUser()->getMeta()->incrementPrivateQuestionCount(1);
+		} else {
+			$question->getUser()->getMeta()->incrementPublicQuestionCount(1);
+		}
+
+		// Transfer views
+		$viewableUtils = $this->get(ViewableUtils::NAME);
+		$viewableUtils->transferViews($creation, $question, false);
+
+		// Transfer likes
+		$likableUtils = $this->get(LikableUtils::NAME);
+		$likableUtils->transferLikes($creation, $question, false);
+
+		// Transfer comments
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$commentableUtils->transferComments($creation, $question, false);
+
+		// Transfer watches
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$watchableUtils->transferWatches($creation, $question, false);
+
+		// transfer reports
+		$reportableUtils = $this->get(ReportableUtils::NAME);
+		$reportableUtils->transferReports($creation, $question, false);
+
+		// Transfer publish activities
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->transferPublishActivities($creation->getType(), $creation->getId(), $question->getType(), $question->getId(), false);
+
+		// Create the witness
+		$witnessManager = $this->get(WitnessManager::NAME);
+		$witnessManager->createConvertedByPublication($creation, $question, false);
+
+		// Delete the creation
+		$this->delete($creation, false, false);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+		return $question;
 	}
 
 }

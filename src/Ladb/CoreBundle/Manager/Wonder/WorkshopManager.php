@@ -90,6 +90,7 @@ class WorkshopManager extends AbstractWonderManager {
 		$howto->setCreatedAt($workshop->getCreatedAt());
 		$howto->setUpdatedAt($workshop->getUpdatedAt());
 		$howto->setChangedAt($workshop->getChangedAt());
+		$howto->setVisibility($workshop->getVisibility());
 		$howto->setIsDraft($workshop->getIsDraft());
 		$howto->setTitle($workshop->getTitle());
 		$howto->setUser($workshop->getUser());
