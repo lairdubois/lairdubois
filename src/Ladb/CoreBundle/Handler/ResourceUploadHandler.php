@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\Resource;
 
-require_once('../vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php');
+require_once(__DIR__.'/../../../../vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php');
 
 class ResourceUploadHandler extends \UploadHandler {
 

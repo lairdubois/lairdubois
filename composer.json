@@ -41,6 +41,7 @@
         "stof/doctrine-extensions-bundle": "*",
         "liip/imagine-bundle": "~1.9",
         "gos/web-socket-bundle": "*",
+        "bentools/webpush-bundle": "^0.3.0",
 
         "facebook/graph-sdk": "~5.0",
         "willdurand/geocoder": "~3.0",

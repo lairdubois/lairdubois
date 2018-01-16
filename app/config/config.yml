@@ -853,3 +853,14 @@ gos_web_socket:
         wamp:
             host: '%websocket_host%'
             port: '%websocket_port%'
+
+# BentoolsWebpushBundle
+bentools_webpush:
+    settings:
+        public_key: '%bentools_webpush.public_key%'
+        private_key: '%bentools_webpush.private_key%'
+    associations:
+        my_users:
+            user_class: LadbCoreBundle\Entity\Core\User
+            user_subscription_class: LadbCoreBundle\Entity\Core\UserSubscription
+            manager: '@LadbCoreBundle\Manager\UserSubscriptionManager'

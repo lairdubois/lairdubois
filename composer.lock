@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9432de55e68d8b96e9d05b90e50be8b",
+    "content-hash": "712dd9775538483d90f5e2a4ecb5dd69",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -36,6 +36,61 @@
             "description": "Defacto way to enable use of HTML5 sectioning elements in legacy Internet Explorer.",
             "homepage": "http://paulirish.com/2011/the-history-of-the-html5-shiv/",
             "time": "2015-07-20T20:04:00+00:00"
+        },
+        {
+            "name": "beberlei/assert",
+            "version": "v2.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/assert.git",
+                "reference": "fd8dc8f6de4645ccf4d1a0b38a6b8fdaf2e8b337"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/fd8dc8f6de4645ccf4d1a0b38a6b8fdaf2e8b337",
+                "reference": "fd8dc8f6de4645ccf4d1a0b38a6b8fdaf2e8b337",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.1.1",
+                "phpunit/phpunit": "^4.8.35|^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                },
+                "files": [
+                    "lib/Assert/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Richard Quadling",
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Thin assertion library for input validation in business models.",
+            "keywords": [
+                "assert",
+                "assertion",
+                "validation"
+            ],
+            "time": "2017-11-30T13:25:15+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -80,6 +135,94 @@
                 "transliterator"
             ],
             "time": "2017-04-04T11:38:05+00:00"
+        },
+        {
+            "name": "bentools/helpfultraits",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bpolaszek/helpfultraits.git",
+                "reference": "43c210c917f26e8557c1b4b38101a1542a2ca511"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bpolaszek/helpfultraits/zipball/43c210c917f26e8557c1b4b38101a1542a2ca511",
+                "reference": "43c210c917f26e8557c1b4b38101a1542a2ca511",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.5",
+                "symfony/symfony": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BenTools\\HelpfulTraits\\Symfony\\": "src/BenTools/HelpfulTraits/Symfony"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Beno!t POLASZEK",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Some nice traits to use with Symfony.",
+            "homepage": "https://github.com/bpolaszek/bentools-helpfultraits",
+            "time": "2017-12-14T11:05:08+00:00"
+        },
+        {
+            "name": "bentools/webpush-bundle",
+            "version": "0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bpolaszek/webpush-bundle.git",
+                "reference": "d699ae5e4e83cd26ddbd7e5f9299ccca39c3104c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bpolaszek/webpush-bundle/zipball/d699ae5e4e83cd26ddbd7e5f9299ccca39c3104c",
+                "reference": "d699ae5e4e83cd26ddbd7e5f9299ccca39c3104c",
+                "shasum": ""
+            },
+            "require": {
+                "bentools/helpfultraits": "^1.0",
+                "minishlink/web-push": "^2.0",
+                "php": ">=7.1",
+                "symfony/symfony": "^2.7|^3.0|^4.0"
+            },
+            "require-dev": {
+                "symfony/var-dumper": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BenTools\\WebPushBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Beno!t POLASZEK",
+                    "email": "bpolaszek@gmail.com"
+                }
+            ],
+            "description": "Symfony Bundle: Associate your users to webpush subscriptions.",
+            "time": "2018-01-05T10:41:28+00:00"
         },
         {
             "name": "blueimp/jquery-file-upload",
@@ -1985,6 +2128,75 @@
             "time": "2017-08-16T17:28:07+00:00"
         },
         {
+            "name": "fgrosse/phpasn1",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fgrosse/PHPASN1.git",
+                "reference": "0e27e71e3d0a8d5c3f1471d727fd9574d920f33c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fgrosse/PHPASN1/zipball/0e27e71e3d0a8d5c3f1471d727fd9574d920f33c",
+                "reference": "0e27e71e3d0a8d5c3f1471d727fd9574d920f33c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gmp": "*",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.3",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "suggest": {
+                "php-curl": "For loading OID information from the web if they have not bee defined statically"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FG\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Friedrich Große",
+                    "email": "friedrich.grosse@gmail.com",
+                    "homepage": "https://github.com/FGrosse",
+                    "role": "Author"
+                },
+                {
+                    "name": "All contributors",
+                    "homepage": "https://github.com/FGrosse/PHPASN1/contributors"
+                }
+            ],
+            "description": "A PHP Framework that allows you to encode and decode arbitrary ASN.1 structures using the ITU-T X.690 Encoding Rules.",
+            "homepage": "https://github.com/FGrosse/PHPASN1",
+            "keywords": [
+                "DER",
+                "asn.1",
+                "asn1",
+                "ber",
+                "binary",
+                "decoding",
+                "encoding",
+                "x.509",
+                "x.690",
+                "x509",
+                "x690"
+            ],
+            "time": "2017-12-17T10:21:51+00:00"
+        },
+        {
             "name": "fig/link-util",
             "version": "1.0.0",
             "source": {
@@ -2919,6 +3131,187 @@
             "time": "2014-05-01T21:36:02+00:00"
         },
         {
+            "name": "guzzlehttp/guzzle",
+            "version": "6.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/promises": "^1.0",
+                "guzzlehttp/psr7": "^1.4",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "^4.0 || ^5.0",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.2-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2017-06-22T18:50:49+00:00"
+        },
+        {
+            "name": "guzzlehttp/promises",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/promises.git",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle promises library",
+            "keywords": [
+                "promise"
+            ],
+            "time": "2016-12-20T10:07:11+00:00"
+        },
+        {
+            "name": "guzzlehttp/psr7",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/psr7.git",
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "psr/http-message": "~1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Psr7\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Tobias Schultze",
+                    "homepage": "https://github.com/Tobion"
+                }
+            ],
+            "description": "PSR-7 message implementation that also provides common utility methods",
+            "keywords": [
+                "http",
+                "message",
+                "request",
+                "response",
+                "stream",
+                "uri",
+                "url"
+            ],
+            "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
             "name": "guzzlehttp/ringphp",
             "version": "1.1.0",
             "source": {
@@ -3669,6 +4062,132 @@
                 "transformation"
             ],
             "time": "2017-09-09T03:53:30+00:00"
+        },
+        {
+            "name": "mdanter/ecc",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpecc/phpecc.git",
+                "reference": "ed5c6d496f5310de1b7071b8375fafa3559a1344"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpecc/phpecc/zipball/ed5c6d496f5310de1b7071b8375fafa3559a1344",
+                "reference": "ed5c6d496f5310de1b7071b8375fafa3559a1344",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gmp": "*",
+                "fgrosse/phpasn1": "v2.0.x",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0",
+                "squizlabs/php_codesniffer": "~2",
+                "symfony/yaml": "~2.6|~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mdanter\\Ecc\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matyas Danter",
+                    "homepage": "http://matejdanter.com/",
+                    "role": "Author"
+                },
+                {
+                    "name": "Thibaud Fabre",
+                    "email": "thibaud@aztech.io",
+                    "homepage": "http://aztech.io",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Thomas Kerin",
+                    "email": "afk11@users.noreply.github.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "PHP Elliptic Curve Cryptography library",
+            "homepage": "https://github.com/phpecc/phpecc",
+            "keywords": [
+                "Diffie",
+                "ECDSA",
+                "Hellman",
+                "curve",
+                "ecdh",
+                "elliptic",
+                "nistp192",
+                "nistp224",
+                "nistp256",
+                "nistp384",
+                "nistp521",
+                "phpecc",
+                "secp256k1",
+                "secp256r1"
+            ],
+            "time": "2017-10-09T16:05:37+00:00"
+        },
+        {
+            "name": "minishlink/web-push",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/web-push-libs/web-push-php.git",
+                "reference": "6e1b88c46351ea3850cb1e9ae9565b8c61a58396"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/web-push-libs/web-push-php/zipball/6e1b88c46351ea3850cb1e9ae9565b8c61a58396",
+                "reference": "6e1b88c46351ea3850cb1e9ae9565b8c61a58396",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "lib-openssl": "*",
+                "mdanter/ecc": "^0.5.0",
+                "php": "^7.0",
+                "spomky-labs/base64url": "^1.0",
+                "spomky-labs/jose": "^7.0",
+                "spomky-labs/php-aes-gcm": "^1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Minishlink\\WebPush\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Louis Lagrange",
+                    "email": "lagrange.louis@gmail.com",
+                    "homepage": "https://github.com/Minishlink"
+                }
+            ],
+            "description": "Web Push library for PHP",
+            "homepage": "https://github.com/web-push-libs/web-push-php",
+            "keywords": [
+                "Push API",
+                "WebPush",
+                "notifications",
+                "push",
+                "web"
+            ],
+            "time": "2017-11-22T20:04:25+00:00"
         },
         {
             "name": "moment/moment",
@@ -4817,6 +5336,261 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2018-01-11T05:54:03+00:00"
+        },
+        {
+            "name": "spomky-labs/aes-key-wrap",
+            "version": "v3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Spomky-Labs/aes-key-wrap.git",
+                "reference": "072e312ea119c4cc33012edc5e7e8c3f3def0d66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Spomky-Labs/aes-key-wrap/zipball/072e312ea119c4cc33012edc5e7e8c3f3def0d66",
+                "reference": "072e312ea119c4cc33012edc5e7e8c3f3def0d66",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^2.4",
+                "ext-mbstring": "*",
+                "lib-openssl": "*",
+                "php": "^5.4|^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5|^5.0",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AESKW\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Florent Morselli",
+                    "homepage": "https://github.com/Spomky-Labs/aes-key-wrap/contributors"
+                }
+            ],
+            "description": "AES Key Wrap for PHP.",
+            "homepage": "https://github.com/Spomky-Labs/aes-key-wrap",
+            "keywords": [
+                "A128KW",
+                "A192KW",
+                "A256KW",
+                "RFC3394",
+                "RFC5649",
+                "aes",
+                "key",
+                "padding",
+                "wrap"
+            ],
+            "time": "2017-03-25T21:07:11+00:00"
+        },
+        {
+            "name": "spomky-labs/base64url",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Spomky-Labs/base64url.git",
+                "reference": "ef6d5fb93894063d9cee996022259fd08d6646ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/ef6d5fb93894063d9cee996022259fd08d6646ea",
+                "reference": "ef6d5fb93894063d9cee996022259fd08d6646ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3|^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Base64Url\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Florent Morselli",
+                    "homepage": "https://github.com/Spomky-Labs/base64url/contributors"
+                }
+            ],
+            "description": "Base 64 URL Safe Encoding/decoding PHP Library",
+            "homepage": "https://github.com/Spomky-Labs/base64url",
+            "keywords": [
+                "base64",
+                "rfc4648",
+                "safe",
+                "url"
+            ],
+            "time": "2016-01-21T19:50:30+00:00"
+        },
+        {
+            "name": "spomky-labs/jose",
+            "version": "v7.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Spomky-Labs/jose.git",
+                "reference": "8c99915d9302bf088cfa2e37c08e1479ba022101"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Spomky-Labs/jose/zipball/8c99915d9302bf088cfa2e37c08e1479ba022101",
+                "reference": "8c99915d9302bf088cfa2e37c08e1479ba022101",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^2.4",
+                "fgrosse/phpasn1": "^2.0",
+                "lib-openssl": "*",
+                "mdanter/ecc": "0.5.*",
+                "php": "^7.0",
+                "psr/cache": "^1.0",
+                "spomky-labs/aes-key-wrap": "^3.0",
+                "spomky-labs/base64url": "^1.0",
+                "spomky-labs/php-aes-gcm": "^1.2",
+                "symfony/polyfill-mbstring": "^1.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0",
+                "satooshi/php-coveralls": "^1.0",
+                "symfony/cache": "^2.0|^3.0"
+            },
+            "suggest": {
+                "ext-crypto": "Highly recommended when you use AES GCM based algorithms.",
+                "ext-curve25519": "For EdDSA with X25519 curves support.",
+                "ext-ed25519": "For EdDSA with Ed25519 curves support."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jose\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Florent Morselli",
+                    "homepage": "https://github.com/Spomky"
+                },
+                {
+                    "name": "All contributors",
+                    "homepage": "https://github.com/Spomky-Labs/jose/contributors"
+                }
+            ],
+            "description": "JSON Object Signing and Encryption library for PHP.",
+            "homepage": "https://github.com/Spomky-Labs/Jose",
+            "keywords": [
+                "JOSE",
+                "JWE",
+                "JWK",
+                "JWKSet",
+                "JWS",
+                "Jot",
+                "RFC7515",
+                "RFC7516",
+                "RFC7517",
+                "RFC7518",
+                "RFC7519",
+                "RFC7520",
+                "jwa",
+                "jwt"
+            ],
+            "time": "2017-10-11T19:55:27+00:00"
+        },
+        {
+            "name": "spomky-labs/php-aes-gcm",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Spomky-Labs/php-aes-gcm.git",
+                "reference": "b655bef0d4f0fa2f36c11c5122e284951e81961c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Spomky-Labs/php-aes-gcm/zipball/b655bef0d4f0fa2f36c11c5122e284951e81961c",
+                "reference": "b655bef0d4f0fa2f36c11c5122e284951e81961c",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^2.4",
+                "lib-openssl": "*",
+                "php": ">=5.4",
+                "symfony/polyfill-mbstring": "^1.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5|^5.0",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "suggest": {
+                "ext-crypto": "Highly recommended for better performance."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AESGCM\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Florent Morselli",
+                    "homepage": "https://github.com/Spomky"
+                },
+                {
+                    "name": "All contributors",
+                    "homepage": "https://github.com/Spomky-Labs/php-aes-gcm/contributors"
+                }
+            ],
+            "description": "AES GCM (Galois Counter Mode) PHP implementation.",
+            "homepage": "https://github.com/Spomky-Labs/php-aes-gcm",
+            "keywords": [
+                "AES-GCM",
+                "Galois Counter Mode",
+                "aes",
+                "gcm"
+            ],
+            "time": "2016-11-22T21:11:11+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",

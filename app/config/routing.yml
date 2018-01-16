@@ -24,6 +24,12 @@ fos_user_profile_show:
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
+# Webpush Bundle
+
+bentools_webpush:
+    resource: '@WebPushBundle/Resources/config/routing.xml'
+    prefix: /webpush
+
 # Ladb Bundles
 
 ladb_core:

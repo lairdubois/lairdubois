@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Ladb\CoreBundle\Entity\Core\Picture;
 
-require_once('../vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php');
+require_once(__DIR__.'/../../../../vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php');
 
 class PictureUploadHandler extends \UploadHandler {
 

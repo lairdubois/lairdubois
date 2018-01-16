@@ -26,6 +26,8 @@ class AppKernel extends Kernel
 			new Gos\Bundle\WebSocketBundle\GosWebSocketBundle(),
 			new Gos\Bundle\PubSubRouterBundle\GosPubSubRouterBundle(),
 
+			new BenTools\WebPushBundle\WebPushBundle(),
+
             new Ladb\CoreBundle\LadbCoreBundle(),
         );
 
