@@ -86,7 +86,7 @@
                             <button class="btn btn-default ladb-restart-btn ladb-visible-desktop"><i class="ladb-icon-repeat"></i>  {{ 'default.restart'|trans() }}</button>
                             <span class="ladb-visible-desktop">&nbsp;</span>
                         {% elseif not ownerUser %}
-                            <a href="#copy_workflow_modal" class="btn btn-default ladb-visible-desktop" data-toggle="modal"><i class="ladb-icon-rebound"></i><span class="ladb-visible-large-desktop">  {{ 'default.copy'|trans() }}</span></a>
+                            <a href="#copy_workflow_modal" class="btn btn-default ladb-visible-desktop" data-toggle="modal"><i class="ladb-icon-duplicate"></i><span class="ladb-visible-large-desktop">  {{ 'default.copy'|trans() }}</span></a>
                         {% endif %}
                         <div class="btn-group{% if readOnly and not ownerUser %} ladb-hidden-desktop{% endif %}">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,11 +103,7 @@
                                     <li class="ladb-hidden-desktop"><a href="#" class="ladb-restart-btn"><i class="ladb-icon-repeat"></i> {{ 'default.restart'|trans() }}</a></li>
                                     <li role="separator" class="divider ladb-hidden-desktop"></li>
                                 {% endif %}
-                                {% if ownerUser %}
-                                    <li><a href="#copy_workflow_modal" data-toggle="modal"><i class="ladb-icon-duplicate"></i>  {{ 'default.duplicate'|trans() }}</a></li>
-                                {% else %}
-                                    <li><a href="#copy_workflow_modal" data-toggle="modal"><i class="ladb-icon-rebound"></i>  {{ 'default.copy'|trans() }}</a></li>
-                                {% endif %}
+                                <li><a href="#copy_workflow_modal" data-toggle="modal"><i class="ladb-icon-duplicate"></i>  {{ ownerUser ? 'default.duplicate'|trans() : 'default.copy'|trans() }}</a></li>
                                 {% if not readOnly %}
                                     <li role="separator" class="divider"></li>
                                     <li><a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
