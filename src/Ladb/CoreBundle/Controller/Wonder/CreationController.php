@@ -1105,4 +1105,27 @@ class CreationController extends Controller {
 		return $this->redirect($this->generateUrl('core_find_show', array( 'id' => $find->getSluggedId() )));
 	}
 
+	/**
+	 * @Route("/{id}/admin/converttoquestion", requirements={"id" = "\d+"}, name="core_creation_admin_converttoquestion")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 */
+	public function adminConvertToQuestionAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+
+		// Convert
+		$creationManager = $this->get(CreationManager::NAME);
+		$question = $creationManager->convertToQuestion($creation);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.admin.alert.converttoquestion_success', array( '%title%' => $creation->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
+	}
+
 }
