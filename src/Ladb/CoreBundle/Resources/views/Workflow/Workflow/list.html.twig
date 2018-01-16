@@ -17,7 +17,7 @@
 
 {% block bodyContainerContent %}
     <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
-        <div class="panel-body">{{ 'workflow.description'|trans() }}</div>
+        <div class="panel-body">{{ 'workflow.description'|trans() }} <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quun-processus' }) }}">En savoir plus</a>.</div>
     </div>
     {{ parent() }}
 {% endblock %}
