@@ -617,6 +617,7 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        copyCount: { type: integer }
                         creationCount: { type: integer }
                         planCount: { type: integer }
                         howtoCount: { type: integer }

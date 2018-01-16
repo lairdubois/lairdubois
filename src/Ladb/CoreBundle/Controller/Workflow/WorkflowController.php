@@ -769,6 +769,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
 						break;
 
+					case 'sort-popular-copies':
+						$sort = array( 'copyCount' => array( 'order' => 'desc' ) );
+						break;
+
 					case 'sort-random':
 						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
 						break;

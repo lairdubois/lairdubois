@@ -2,10 +2,8 @@
 
 namespace Ladb\CoreBundle\Manager\Workflow;
 
-use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Core\License;
 use Ladb\CoreBundle\Entity\Core\User;
-use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Workflow\Label;
 use Ladb\CoreBundle\Entity\Workflow\Part;
 use Ladb\CoreBundle\Entity\Workflow\Run;
@@ -14,7 +12,7 @@ use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
-use Ladb\CoreBundle\Utils\JoinableUtils;
+use Ladb\CoreBundle\Utils\SearchUtils;
 
 class WorkflowManager extends AbstractPublicationManager {
 
@@ -254,6 +252,10 @@ class WorkflowManager extends AbstractPublicationManager {
 
 			// Increment copy count
 			$workflow->incrementCopyCount();
+
+			// Update index
+			$searchUtils = $this->get(SearchUtils::NAME);
+			$searchUtils->replaceEntityInIndex($workflow);
 
 		}
 

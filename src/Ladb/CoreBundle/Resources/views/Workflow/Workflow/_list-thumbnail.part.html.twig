@@ -28,6 +28,9 @@
         <li class="ladb-linkto"><a href="{{ path('core_workflow_workshops', { 'id':workflow.id }) }}" data-tooltip="tooltip" title="{{ 'workflow.workflow.linked_to'|trans() }} {{ workflow.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(workflow.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
     {% endif %}
     {{ parent() }}
+    {% if workflow.copyCount > 0 %}
+        <li class="ladb-counter"><i class="ladb-icon-duplicate"></i> <span>{{ workflow.copyCount|number_format(0, ',', ' ') }}</span></li>
+    {% endif %}
 {% endblock %}
 
 
