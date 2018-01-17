@@ -1,12 +1,12 @@
 <?php
 
-namespace LadbCoreBundle\Manager\Core;
+namespace Ladb\CoreBundle\Manager\Webpush;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 use BenTools\WebPushBundle\Model\Subscription\UserSubscriptionInterface;
 use BenTools\WebPushBundle\Model\Subscription\UserSubscriptionManagerInterface;
-use LadbCoreBundle\Entity\Core\UserSubscription;
+use Ladb\CoreBundle\Entity\Webpush\UserSubscription;
 
 class UserSubscriptionManager implements UserSubscriptionManagerInterface  {
 

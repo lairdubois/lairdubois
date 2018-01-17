@@ -861,6 +861,10 @@ bentools_webpush:
         private_key: '%bentools_webpush.private_key%'
     associations:
         my_users:
-            user_class: LadbCoreBundle\Entity\Core\User
-            user_subscription_class: LadbCoreBundle\Entity\Core\UserSubscription
-            manager: '@LadbCoreBundle\Manager\UserSubscriptionManager'
+            user_class: Ladb\CoreBundle\Entity\Core\User
+            user_subscription_class: Ladb\CoreBundle\Entity\Webpush\UserSubscription
+            manager: '@Ladb\CoreBundle\Manager\Webpush\UserSubscriptionManager'
+        my_users_proxies:
+            user_class: Proxies\__CG__\Ladb\CoreBundle\Entity\Core\User
+            user_subscription_class: Ladb\CoreBundle\Entity\Webpush\UserSubscription
+            manager: '@Ladb\CoreBundle\Manager\Webpush\UserSubscriptionManager'

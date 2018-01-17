@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Message;
 
+use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -90,13 +91,20 @@ class MessageController extends Controller {
 				$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.alert.email_not_confirmed_error'));
 			}
 
-			// Email notification (after flush to have a thread id)
+			// Notifications (after flush to have a thread id)
 			$mailerUtils = $this->get(MailerUtils::NAME);
+			$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
 			foreach ($recipients as $recipient) {
+
+				// Email notification
 				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
+
+				// Webpush notification
+				$webpushNotificationUtils->sendIncomingMessageNotification($recipient, $sender, $thread);
+
 			}
 
-			return $this->redirect($this->generateUrl('core_message_thread_show', array( 'threadId' => $thread->getId())) );
+			return $this->redirect($this->generateUrl('core_message_thread_show', array( 'threadId' => $thread->getId())));
 		}
 
 		return array(
@@ -267,10 +275,17 @@ class MessageController extends Controller {
 				$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.alert.email_not_confirmed_error'));
 			}
 
-			// Email notification
+			// Notifications (after flush to have a thread id)
 			$mailerUtils = $this->get(MailerUtils::NAME);
+			$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
 			foreach ($recipients as $recipient) {
-				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $message);
+
+				// Email notification
+				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
+
+				// Webpush notification
+				$webpushNotificationUtils->sendIncomingMessageNotification($recipient, $sender, $thread);
+
 			}
 
 			return $this->redirect($this->generateUrl('core_message_thread_show', array('threadId' => $thread->getId())));

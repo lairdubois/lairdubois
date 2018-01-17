@@ -9,6 +9,18 @@
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'banner', 'fieldId':form.meta.banner.vars.id, 'maxPictureCount':1 } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.meta.skills.vars.id, 'help':('skill.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_skills_json')|raw) } %}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.settingspage.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#container').ladbSettingsPage({
+                serverKey: '{{ bentools_pusher.server_key | e('js') }}',
+                subscriptionUrl: '{{ path('bentools_webpush.subscription') }}'
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block sidenavHeading %}
@@ -278,6 +290,8 @@
                     avec les nouveautés de chaque semaine
                 </label>
             </div>
+            <a id="ladb_webpush_subscribe_btn" class="btn btn-default" style="display: none;">Subscribe</a>
+            <a id="ladb_webpush_revoke_btn" class="btn btn-default" style="display: none;">Revoke</a>
         {% endblock %}
     {% endembed %}
 {% endblock %}

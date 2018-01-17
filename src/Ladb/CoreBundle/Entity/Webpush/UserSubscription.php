@@ -1,14 +1,13 @@
 <?php
 
-namespace LadbCoreBundle\Entity\Core;
+namespace Ladb\CoreBundle\Entity\Webpush;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Ladb\CoreBundle\Entity\Core\User;
 use BenTools\WebPushBundle\Model\Subscription\UserSubscriptionInterface;
 
 /**
- * @ORM\Table("tbl_core_user_subscription")
+ * @ORM\Table("tbl_webpush_user_subscription")
  * @ORM\Entity()
  */
 class UserSubscription implements UserSubscriptionInterface {
@@ -21,13 +20,13 @@ class UserSubscription implements UserSubscriptionInterface {
 	private $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="LadbCoreBundle\Entity\Core\User")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $user;
 
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", name="subscription_hash")
 	 */
 	private $subscriptionHash;
 
@@ -38,7 +37,7 @@ class UserSubscription implements UserSubscriptionInterface {
 
 	/////
 
-	public function __construct(User $user, string $subscriptionHash, array $subscription) {
+	public function __construct(UserInterface $user, string $subscriptionHash, array $subscription) {
 		$this->user = $user;
 		$this->subscriptionHash = $subscriptionHash;
 		$this->subscription = $subscription;

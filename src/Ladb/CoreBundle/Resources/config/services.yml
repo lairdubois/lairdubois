@@ -134,6 +134,8 @@ services:
     class: Ladb\CoreBundle\Utils\PropertyUtils
   ladb_core.elastica_query_utils:
     class: Ladb\CoreBundle\Utils\ElasticaQueryUtils
+  Ladb\CoreBundle\Utils\WebpushNotificationUtils:
+    arguments: ['@service_container']
 
   # Managers
   ladb_core.creation_manager:
@@ -490,3 +492,7 @@ services:
     tags:
       - { name: gos_web_socket.topic }
     arguments: ['@service_container']
+
+  # WebPush
+  Ladb\CoreBundle\Manager\Webpush\UserSubscriptionManager:
+    arguments: ['@doctrine']
