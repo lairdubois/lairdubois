@@ -237,15 +237,6 @@
                     {% endblock %}
                 });
             </script>
-            {% if is_granted("ROLE_USER") %}
-                <script src="{{ asset('bundles/webpush/js/webpush_client.js') }}" data-webpushclient></script>
-                <script>
-                    var webpush = new BenToolsWebPushClient({
-                        serverKey: '{{ bentools_pusher.server_key | e('js') }}',
-                        url: '{{ path('bentools_webpush.subscription') }}'
-                    });
-                </script>
-            {% endif %}
             {% block googleAnalytics %}
                 {% if not app.debug and not is_granted("ROLE_ADMIN") %}
                     {# Google analytics #}

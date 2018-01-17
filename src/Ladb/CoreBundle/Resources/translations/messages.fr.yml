@@ -805,7 +805,7 @@ user:
   pinterest_help: Indiquez votre <strong>nom d'utilisateur</strong> Pinterest en complétant l'adresse ci dessous.
   instagram_help: Indiquez votre <strong>nom d'utilisateur</strong> Instagram en complétant l'adresse ci dessous.
   options: Options
-  email_notifications: Notifications par e-mail
+  notifications: Notifications
   add_banner: Ajoutez votre bannière
   add_biography: Ajoutez votre biographie
   add_location: Ajoutez votre localisation

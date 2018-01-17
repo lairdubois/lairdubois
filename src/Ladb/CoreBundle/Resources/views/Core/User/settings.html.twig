@@ -5,6 +5,7 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
+    <script src="{{ asset('bundles/ladbcore/ladb/js/ladb-webpush-client.js') }}" data-webpushclient></script>
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'avatar', 'fieldId':form.avatar.vars.id, 'maxPictureCount':1 } %}
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'banner', 'fieldId':form.meta.banner.vars.id, 'maxPictureCount':1 } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.meta.skills.vars.id, 'help':('skill.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_skills_json')|raw) } %}
@@ -36,7 +37,7 @@
     <li><a href="#location"><i class="ladb-icon-location"></i> {{ 'user.location'|trans() }}</a></li>
     <li><a href="#social"><i class="ladb-icon-social"></i> {{ 'user.social'|trans() }}</a></li>
     <li><a href="#options"><i class="ladb-icon-list"></i> {{ 'user.options'|trans() }}</a></li>
-    <li><a href="#email_notifications"><i class="ladb-icon-notifications"></i> {{ 'user.email_notifications'|trans() }}</a></li>
+    <li><a href="#notifications"><i class="ladb-icon-notifications"></i> {{ 'user.notifications'|trans() }}</a></li>
 {% endblock %}
 
 {% block form_buttons %}
@@ -239,9 +240,9 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'notifications', 'title':('user.email_notifications'|trans()), 'formSection':'email_notifications' } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'notifications', 'title':('user.notifications'|trans()), 'formSection':'notifications' } %}
         {% block body %}
-            <span class="help-block">Envoyer un e-mail :</span>
+            <span class="help-block">Envoyer un e-mail de notification :</span>
             <div class="checkbox">
                 <label>
                     {{ form_widget(form.meta.incomingMessageEmailNotificationEnabled) }}
@@ -290,8 +291,22 @@
                     avec les nouveautés de chaque semaine
                 </label>
             </div>
-            <a id="ladb_webpush_subscribe_btn" class="btn btn-default" style="display: none;">Subscribe</a>
-            <a id="ladb_webpush_revoke_btn" class="btn btn-default" style="display: none;">Revoke</a>
+            <hr>
+            <div>
+                <div class="media">
+                    <div class="media-body">
+                        <span id="ladb_webpush_active_span" style="display: none;"><i class="ladb-icon-check"></i> Les notifications "push" sont activées sur cet appareil.</span>
+                        <span id="ladb_webpush_inactive_span" style="display: none;"><i class="ladb-icon-plus"></i> Activez les notifications "push" sur cet appareil.</span>
+                        <span id="ladb_webpush_denied_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Vous avez bloqué les notifications "push" sur cet appareil.</span>
+                        <span id="ladb_webpush_disabled_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Les notifications "push" ne sont pas disponibles sur cet appareil.</span>
+                        <span id="ladb_webpush_help_span" class="help-block">Les notifications "push" s'affichent dans un coin de votre écran, même quand L'Air du Bois est fermé.</span>
+                    </div>
+                    <div class="media-right">
+                        <a id="ladb_webpush_subscribe_btn" class="btn btn-success" style="display: none;">Activer</a>
+                        <a id="ladb_webpush_revoke_btn" class="btn btn-default" style="display: none;">Désactiver</a>
+                    </div>
+                </div>
+            </div>
         {% endblock %}
     {% endembed %}
 {% endblock %}

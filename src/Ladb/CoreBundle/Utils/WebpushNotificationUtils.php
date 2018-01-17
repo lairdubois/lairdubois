@@ -38,6 +38,17 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 		}
 		$results = $webpush->flush();
 
+		// Delete expired subscriptions
+		if (is_array($results)) {
+			foreach ($results as $result) {
+				if (!empty($result['expired'])) {
+					foreach ($myUserManager->findByHash($myUserManager->hash($result['endpoint'])) as $subscription) {
+						$myUserManager->delete($subscription);
+					}
+				}
+			}
+		}
+
 	}
 
 	private function createNotification(string $title, string $body, string $link): Notification {

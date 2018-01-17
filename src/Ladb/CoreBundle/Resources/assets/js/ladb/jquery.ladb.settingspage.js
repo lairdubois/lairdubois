@@ -10,8 +10,14 @@
 
         this.webpush = null;
 
-        this.$webpushSubscribeBtn = $('#ladb_webpush_subscribe_btn');
-        this.$webpushRevokeBtn = $('#ladb_webpush_revoke_btn');
+        this.$activeSpan = $('#ladb_webpush_active_span');
+        this.$inactiveSpan = $('#ladb_webpush_inactive_span');
+        this.$deniedSpan = $('#ladb_webpush_denied_span');
+        this.$disabledSpan = $('#ladb_webpush_disabled_span');
+        this.$helpSpan = $('#ladb_webpush_help_span');
+
+        this.$subscribeBtn = $('#ladb_webpush_subscribe_btn');
+        this.$revokeBtn = $('#ladb_webpush_revoke_btn');
     };
 
     LadbSettingsPage.DEFAULTS = {
@@ -19,28 +25,55 @@
         subscriptionUrl: ''
     };
 
-    LadbSettingsPage.prototype.refreshWebpushButtonsState = function() {
+    LadbSettingsPage.prototype.refreshWebpushState = function() {
         var that = this;
 
-        this.webpush.getNotificationPermissionState().then(function(result) {
-            console.log(result);
-            switch (result) {
+        if (this.webpush) {
+            this.webpush.getNotificationPermissionState()
+                .then(function(state) {
+                    switch (state) {
 
-                case 'granted':
-                    that.$webpushSubscribeBtn.hide();
-                    that.$webpushRevokeBtn.show();
-                    break;
+                        case 'prompt':
+                        case 'granted':
+                            that.webpush.hasSubscription().then(function(result) {
+                                that.$subscribeBtn.button('reset');
+                                that.$revokeBtn.button('reset');
+                                that.$deniedSpan.hide();
+                                that.$disabledSpan.hide();
+                                if (result) {
+                                    that.$subscribeBtn.hide();
+                                    that.$revokeBtn.show();
+                                    that.$activeSpan.show();
+                                    that.$inactiveSpan.hide();
+                                } else {
+                                    that.$subscribeBtn.show();
+                                    that.$revokeBtn.hide();
+                                    that.$activeSpan.hide();
+                                    that.$inactiveSpan.show();
+                                }
+                            });
+                            break;
 
-                case 'prompt':
-                    break;
+                        case 'denied':
+                            that.$subscribeBtn.hide();
+                            that.$revokeBtn.hide();
+                            that.$activeSpan.hide();
+                            that.$inactiveSpan.hide();
+                            that.$deniedSpan.show();
+                            that.$disabledSpan.hide();
+                            break;
 
-                case 'denied':
-                    that.$webpushSubscribeBtn.hide();
-                    that.$webpushRevokeBtn.hide();
-                    break;
-
-            }
-        });
+                    }
+                });
+        } else {
+            that.$subscribeBtn.hide();
+            that.$revokeBtn.hide();
+            that.$activeSpan.hide();
+            that.$inactiveSpan.hide();
+            that.$deniedSpan.hide();
+            that.$disabledSpan.show();
+            that.$helpSpan.hide();
+        }
 
     };
 
@@ -48,21 +81,15 @@
         var that = this;
 
         // Bind buttons
-        this.$webpushSubscribeBtn.on('click', function(e) {
+        this.$subscribeBtn.on('click', function(e) {
             e.preventDefault();
-            that.$webpushSubscribeBtn.button('loading');
-            that.webpush.subscribe().then(function() {
-                that.$webpushSubscribeBtn.button('reset');
-                that.refreshWebpushButtonsState();
-            });
+            that.$subscribeBtn.button('loading');
+            that.webpush.subscribe();
         });
-        this.$webpushRevokeBtn.on('click', function(e) {
+        this.$revokeBtn.on('click', function(e) {
             e.preventDefault();
-            that.$webpushRevokeBtn.button('loading');
-            that.webpush.revoke().then(function() {
-                that.$webpushRevokeBtn.button('reset');
-                that.refreshWebpushButtonsState();
-            });
+            that.$revokeBtn.button('loading');
+            that.webpush.revoke();
         });
 
     };
@@ -70,13 +97,23 @@
     LadbSettingsPage.prototype.init = function() {
         var that = this;
 
-        this.webpush = new BenToolsWebPushClient({
+        this.webpush = new LadbWebPushClient({
             serverKey: this.options.serverKey,
             url: this.options.subscriptionUrl,
-            promptIfNotSubscribed: false // Defaults true - setting this to false will disable automatic prompt
+            promptIfNotSubscribed: false,
+            onRegistered: function() {
+                that.refreshWebpushState();
+            },
+            onUnavailable: function() {
+                that.refreshWebpushState();
+            },
+            onSubscribe: function(subscription) {
+                that.refreshWebpushState();
+            },
+            onUnsubscribe: function(subscription) {
+                that.refreshWebpushState();
+            }
         });
-
-        this.refreshWebpushButtonsState();
 
         this.bind();
 
