@@ -21,6 +21,7 @@
     };
 
     LadbSettingsPage.DEFAULTS = {
+        swPath: '',
         serverKey: '',
         subscriptionUrl: ''
     };
@@ -98,6 +99,7 @@
         var that = this;
 
         this.webpush = new LadbWebPushClient({
+            swPath: this.options.swPath,
             serverKey: this.options.serverKey,
             url: this.options.subscriptionUrl,
             promptIfNotSubscribed: false,

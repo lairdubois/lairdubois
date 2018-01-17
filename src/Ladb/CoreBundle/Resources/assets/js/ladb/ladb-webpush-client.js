@@ -1,8 +1,3 @@
-var thisScript = document.querySelector('script[data-webpushclient]');
-if (null === thisScript) {
-    console.log('Do not forget to add "data-webpushclient", i.e. <script src="ladb-webpush-client.js" data-webpushclient></script>');
-    throw Error("Cannot find where webpush_client.js is.");
-}
 var LadbWebPushClient = function LadbWebPushClient(options) {
 
     return {
@@ -19,8 +14,6 @@ var LadbWebPushClient = function LadbWebPushClient(options) {
                 throw Error('Url has not been defined.');
             }
 
-            this.options.url = options.url;
-            this.options.swPath = this.options.swPath || thisScript.src.replace('/ladb-webpush-client.js', '/ladb-webpush-sw.js');
             return this.initServiceWorker();
         },
 

@@ -5,7 +5,6 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/ladbcore/ladb/js/ladb-webpush-client.js') }}" data-webpushclient></script>
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'avatar', 'fieldId':form.avatar.vars.id, 'maxPictureCount':1 } %}
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'banner', 'fieldId':form.meta.banner.vars.id, 'maxPictureCount':1 } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.meta.skills.vars.id, 'help':('skill.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_skills_json')|raw) } %}
@@ -17,6 +16,7 @@
     <script>
         $(document).ready(function() {
             $('#container').ladbSettingsPage({
+                swPath: '{{ asset('bundles/ladbcore/ladb/js/ladb-webpush-sw.js') }}',
                 serverKey: '{{ bentools_pusher.server_key | e('js') }}',
                 subscriptionUrl: '{{ path('bentools_webpush.subscription') }}'
             });
@@ -295,7 +295,7 @@
             <div>
                 <div class="media">
                     <div class="media-body">
-                        <span id="ladb_webpush_active_span" style="display: none;"><i class="ladb-icon-check"></i> Les notifications "push" sont activées sur cet appareil.</span>
+                        <span id="ladb_webpush_active_span" style="display: none;" class="ladb-color-success"><i class="ladb-icon-check"></i> Les notifications "push" sont activées sur cet appareil.</span>
                         <span id="ladb_webpush_inactive_span" style="display: none;"><i class="ladb-icon-plus"></i> Activez les notifications "push" sur cet appareil.</span>
                         <span id="ladb_webpush_denied_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Vous avez bloqué les notifications "push" sur cet appareil.</span>
                         <span id="ladb_webpush_disabled_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Les notifications "push" ne sont pas disponibles sur cet appareil.</span>
