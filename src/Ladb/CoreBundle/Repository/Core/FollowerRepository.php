@@ -65,9 +65,10 @@ class FollowerRepository extends AbstractEntityRepository {
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'f', 'u' ))
+			->select(array( 'f', 'u', 'm' ))
 			->from($this->getEntityName(), 'f')
 			->innerJoin('f.followingUser', 'u')
+			->innerJoin('u.meta', 'm')
 			->where('f.user = :user')
 			->setParameter('user', $user)
 			->setFirstResult($offset)
@@ -82,46 +83,46 @@ class FollowerRepository extends AbstractEntityRepository {
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('contributors-all' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.contributionCount', 'DESC')
+				->addOrderBy('m.contributionCount', 'DESC')
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		} else if ('contributors-creations' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.publishedCreationCount', 'DESC')
+				->addOrderBy('m.publicCreationCount', 'DESC')
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		} else if ('contributors-plans' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.publishedPlanCount', 'DESC')
+				->addOrderBy('m.publicPlanCount', 'DESC')
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		} else if ('contributors-howtos' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.publishedHowtoCount', 'DESC')
+				->addOrderBy('m.publicHowtoCount', 'DESC')
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		} else if ('contributors-workshops' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.publishedWorkshopCount', 'DESC')
+				->addOrderBy('m.publicWorkshopCount', 'DESC')
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		} else if ('contributors-comments' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.commentCount', 'DESC')
+				->addOrderBy('m.commentCount', 'DESC')
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		} else if ('contributors-finds' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.publishedFindCount', 'DESC')
+				->addOrderBy('m.publicFindCount', 'DESC')
 				->addOrderBy('u.createdAt', 'DESC')
 			;
 		} else if ('popular-followers' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.followerCount', 'DESC')
+				->addOrderBy('m.followerCount', 'DESC')
 			;
 		} else if ('popular-likes' == $filter) {
 			$queryBuilder
-				->addOrderBy('u.recievedLikeCount', 'DESC')
+				->addOrderBy('m.recievedLikeCount', 'DESC')
 			;
 		} else {
 			$queryBuilder
@@ -133,9 +134,10 @@ class FollowerRepository extends AbstractEntityRepository {
 	public function findPaginedByFollowingUser(User $followingUser, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'f', 'u' ))
+			->select(array( 'f', 'u', 'm' ))
 			->from($this->getEntityName(), 'f')
 			->innerJoin('f.user', 'u')
+			->innerJoin('u.meta', 'm')
 			->where('f.followingUser = :followingUser')
 			->setParameter('followingUser', $followingUser)
 			->setFirstResult($offset)
