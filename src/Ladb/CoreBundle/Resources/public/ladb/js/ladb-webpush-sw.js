@@ -19,7 +19,6 @@ self.processMessage = payload => {
 
 // Register event listener for the 'push' event.
 self.addEventListener('push', event => {
-    console.log('SW received push event', event);
     const pushMessageData = event.data;
     const payload = pushMessageData ? pushMessageData.text() : undefined;
     event.waitUntil(self.processMessage(payload));

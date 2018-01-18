@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Core;
 
 use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -79,6 +80,11 @@ class LikeController extends Controller {
 					$watchableUtils = $this->get(WatchableUtils::NAME);
 					$watchableUtils->autoCreateWatch($entity, $this->getUser());
 				}
+
+				// Notification
+				$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
+				$webpushNotificationUtils->sendNewLikeNotification($like, $entity);
+
 
 				$om->flush();
 

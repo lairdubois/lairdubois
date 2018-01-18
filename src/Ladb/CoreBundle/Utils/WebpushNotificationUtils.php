@@ -4,7 +4,9 @@ namespace Ladb\CoreBundle\Utils;
 
 use BenTools\WebPushBundle\Model\Message\Notification;
 use BenTools\WebPushBundle\Registry\WebPushManagerRegistry;
+use Ladb\CoreBundle\Entity\Core\Like;
 use Ladb\CoreBundle\Entity\Message\Thread;
+use Ladb\CoreBundle\Model\TypableInterface;
 use Minishlink\WebPush\WebPush;
 use Ladb\CoreBundle\Entity\Core\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -14,9 +16,16 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 	public function sendIncomingMessageNotification(User $recipient, User $sender, Thread $thread) {
 		$this->sendNotification(
 			$recipient,
-			'L\'Air du Bois',
 			'Nouveau message de '.$sender->getDisplayname(),
 			$this->get('router')->generate('core_message_thread_show', array( 'threadId' => $thread->getId()), UrlGeneratorInterface::ABSOLUTE_URL)
+		);
+	}
+
+	public function sendNewLikeNotification(Like $like, TypableInterface $typable) {
+		$this->sendNotification(
+			$like->getEntityUser(),
+			'Nouveau coup de coeur de '.$like->getUser()->getDisplayname(),
+			$this->get(TypableUtils::NAME)->getUrlAction($typable)
 		);
 	}
 
@@ -51,9 +60,9 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 
 	}
 
-	private function createNotification(string $title, string $body, string $link): Notification {
+	private function createNotification(string $body, string $link): Notification {
 		return new Notification([
-			'title' => $title,
+			'title' => 'L\'Air du Bois',
 			'body'  => $body,
 			'icon'  => 'https://www.lairdubois.fr/favicon-144x144.png',
 			'data'  => [
