@@ -78,7 +78,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		if ($now < $refreshDate) {
 			return false;
 		}
-		$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType);
+		$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT'.rand(180, 300).'S' /* = between 3 and 5 min */);
 
 		$om = $this->getDoctrine()->getManager();
 		$viewRepository = $om->getRepository(View::CLASS_NAME);
@@ -133,7 +133,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		return false;	// Returns updated
 	}
 
-	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc = 'PT120S' /* = 2 min */) {
+	public function incrementUnlistedCounterRefreshTimeByEntityType($entityType, $inc) {
 		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
 	}
 
