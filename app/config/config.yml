@@ -870,6 +870,15 @@ old_sound_rabbit_mq:
             exchange_options:
                 name: 'view_exchange'
                 type: topic
+    consumers:
+        view:
+            connection: default
+            exchange_options:
+                name: 'view_exchange'
+                type: topic
+            queue_options:
+                name: 'view_queue'
+            callback: 'Ladb\CoreBundle\Consumer\ViewConsumer'
     batch_consumers:
         batch_view:
             connection: default
@@ -878,7 +887,7 @@ old_sound_rabbit_mq:
                 type: fanout
             queue_options:
                 name: 'view_queue'
-            callback: 'Ladb\CoreBundle\Consumer\BatchViewConsumer'
+            callback: 'Ladb\CoreBundle\Consumer\ViewConsumer'
             qos_options:
                 prefetch_size: 0
                 prefetch_count: 5

@@ -8,9 +8,11 @@ use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
 use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
+use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
+use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class BatchViewConsumer implements BatchConsumerInterface {
+class ViewConsumer implements ConsumerInterface, BatchConsumerInterface {
 
 	protected $container;
 
@@ -19,6 +21,9 @@ class BatchViewConsumer implements BatchConsumerInterface {
 	}
 
 	/////
+
+	public function execute(AMQPMessage $msg) {
+	}
 
 	public function batchExecute(array $messages) {
 		$om = $this->container->get('doctrine')->getManager();

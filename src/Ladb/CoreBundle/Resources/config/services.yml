@@ -494,8 +494,7 @@ services:
     arguments: ['@service_container']
 
   # Consumer
-  Ladb\CoreBundle\Consumer\FooConsumer: ~
-  Ladb\CoreBundle\Consumer\BatchViewConsumer:
+  Ladb\CoreBundle\Consumer\ViewConsumer:
     arguments: ['@service_container']
 
   # WebPush
