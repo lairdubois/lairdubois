@@ -58,7 +58,7 @@ Be sure you activate the following parameters (by uncomment or replace) :
 ```
 
 ``` bash
-    $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.1-mbstring php7.1-xml php7.1-zip php7.1-bz2 php7.1-gmp
+    $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.1-mbstring php7.1-xml php7.1-zip php7.1-bz2 php7.1-gmp php7.1-bcmath
 ```
 
 You can now configure PHP.
@@ -148,6 +148,12 @@ Configure Elasticsearch to automatically start during bootup.
 ``` bash
     $ sudo /bin/systemctl daemon-reload
     $ sudo /bin/systemctl enable elasticsearch.service
+```
+
+### Install [RabbitMQ](https://www.rabbitmq.com/) - *The message broker*
+
+``` bash
+    $ sudo apt-get install rabbitmq-server
 ```
 
 ### Install [ImageMagick](http://www.imagemagick.org/) - *The image manipulation library*
