@@ -865,25 +865,11 @@ old_sound_rabbit_mq:
             vhost:    /
             lazy:     false
     producers:
-        foo:
-            connection: default
-            exchange_options:
-                name: 'foo_exchange'
-                type: topic
         view:
             connection: default
             exchange_options:
                 name: 'view_exchange'
                 type: topic
-    consumers:
-        foo:
-            connection: default
-            exchange_options:
-                name: 'foo_exchange'
-                type: topic
-            queue_options:
-                name: 'foo_queue'
-            callback: 'Ladb\CoreBundle\Consumer\FooConsumer'
     batch_consumers:
         batch_view:
             connection: default
