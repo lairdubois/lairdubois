@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table("tbl_core_view")
+ * @ORM\Table("tbl_core_view", uniqueConstraints={@ORM\UniqueConstraint(name="view_unique", columns={"entity_type", "entity_id", "user_id", "kind"})})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\ViewRepository")
  */
 class View {

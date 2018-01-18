@@ -65,7 +65,8 @@
 
         "components/jquery": "3.2.1",
         "components/jqueryui": "1.12.1",
-        "components/masonry": "4.2.0"
+        "components/masonry": "4.2.0",
+        "php-amqplib/rabbitmq-bundle": "^1.14"
 
     },
     "require-dev": {

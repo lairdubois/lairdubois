@@ -493,6 +493,11 @@ services:
       - { name: gos_web_socket.topic }
     arguments: ['@service_container']
 
+  # Consumer
+  Ladb\CoreBundle\Consumer\FooConsumer: ~
+  Ladb\CoreBundle\Consumer\BatchViewConsumer:
+    arguments: ['@service_container']
+
   # WebPush
   Ladb\CoreBundle\Manager\Webpush\UserSubscriptionManager:
     arguments: ['@doctrine']

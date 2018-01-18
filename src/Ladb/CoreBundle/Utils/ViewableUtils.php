@@ -56,79 +56,19 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			if (!in_array($viewable->getId(), $shownIds)) {
 				$shownIds[] = $viewable->getId();
 				$session->set($key, $shownIds);
-
-				// Update in ORM
-				$viewable->incrementViewCount();
-				$this->om->flush();
-
-				// Update in Elasticsearch
-				if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
-					$searchUtils = $this->get(SearchUtils::NAME);
-					$searchUtils->replaceEntityInIndex($viewable);
-				}
-
-			}
-
-		} else {
-
-			// Authenticated user -> use viewManager
-
-			$viewRepository = $this->om->getRepository(View::CLASS_NAME);
-			$view = $viewRepository->findOneByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN);
-			if (is_null($view)) {
-
-				// Create a new view
-				$view = new View();
-				$view->setEntityType($viewable->getType());
-				$view->setEntityId($viewable->getId());
-				$view->setUser($user);
-				$view->setKind(View::KIND_SHOWN);
-
-				$this->om->persist($view);
-
-				// Exclude self contribution view
-				if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
-					$this->om->flush();
-					return;
-				}
-
-				// Update in ORM
-				$viewable->incrementViewCount();
-				$this->om->flush();
-
-				// Update in Elasticsearch
-				if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
-					$searchUtils = $this->get(SearchUtils::NAME);
-					$searchUtils->replaceEntityInIndex($viewable);
-				}
-
 			} else {
-
-				// Exclude self contribution view
-				if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
-					return;
-				}
-
-				if ($view->getCreatedAt() <= (new \DateTime())->sub(new \DateInterval('P1D'))) { // 1 day
-
-					// View is older than 1 day. Update view, increment view count.
-
-					// Update in ORM
-					$view->setCreatedAt(new \DateTime());
-					$viewable->incrementViewCount();
-					$this->om->flush();
-
-					// Update in Elasticsearch
-					if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
-						$searchUtils = $this->get(SearchUtils::NAME);
-						$searchUtils->replaceEntityInIndex($viewable);
-					}
-
-				}
-
+				return;
 			}
 
 		}
+
+		// Publish a view in queue
+		$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
+		$producer->publish(serialize(array(
+			'entityType' => $viewable->getType(),
+			'entityId'   => $viewable->getId(),
+			'userId'     => !is_null($user) ? $user->getId() : null,
+		)));
 
 	}
 
