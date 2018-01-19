@@ -87,10 +87,6 @@ class LikeController extends Controller {
 					$webpushNotificationUtils->enqueueNewLikeNotification($like, $entity);
 				}
 
-//				// Webpush Notification
-//				$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
-//				$webpushNotificationUtils->sendNewLikeNotification($like, $entity);
-
 				$om->flush();
 
 			}

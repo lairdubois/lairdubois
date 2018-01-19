@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -115,6 +116,10 @@ class AnswerController extends Controller {
 			// Auto watch
 			$watchableUtils = $this->container->get(WatchableUtils::NAME);
 			$watchableUtils->autoCreateWatch($question, $this->getUser());
+
+			// Publish a webpush notification in queue
+			$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
+			$webpushNotificationUtils->enqueueNewAnswerNotification($answer, $question);
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);

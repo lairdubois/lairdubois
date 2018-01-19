@@ -6,6 +6,8 @@ use BenTools\WebPushBundle\Model\Message\Notification;
 use BenTools\WebPushBundle\Registry\WebPushManagerRegistry;
 use Ladb\CoreBundle\Entity\Core\Like;
 use Ladb\CoreBundle\Entity\Message\Thread;
+use Ladb\CoreBundle\Entity\Qa\Answer;
+use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\TypableInterface;
@@ -14,6 +16,15 @@ use Ladb\CoreBundle\Entity\Core\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class WebpushNotificationUtils extends AbstractContainerAwareUtils {
+
+	public function enqueueNewAnswerNotification(Answer $answer, Question $question) {
+		$this->enqueueNotification(
+			$question->getUser()->getId(),
+			'Nouvelle réponse de '.$answer->getUser()->getDisplayname(),
+			$this->get('liip_imagine.cache.manager')->getBrowserPath($answer->getUser()->getAvatar()->getWebPath(), '128x128o'),
+			$this->get(TypableUtils::NAME)->getUrlAction($question)
+		);
+	}
 
 	public function enqueueNewLikeNotification(Like $like, LikableInterface $likable) {
 		$this->enqueueNotification(
