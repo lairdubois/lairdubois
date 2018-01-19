@@ -156,6 +156,12 @@ Configure Elasticsearch to automatically start during bootup.
     $ sudo apt-get install rabbitmq-server
 ```
 
+If you want to monitor RabbitMQ, enable the management plugin
+
+``` bash
+    $ rabbitmq-plugins enable rabbitmq_management
+```
+
 ### Install [ImageMagick](http://www.imagemagick.org/) - *The image manipulation library*
 
 ``` bash
@@ -374,4 +380,9 @@ And add the following lines
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
 ```
 
+## Setp 12 - Launch background tasks
 
+``` bash
+    $ bin/console gos:websocket:server &
+    $ bin/console rabbitmq:batch:consumer batch_view &
+```

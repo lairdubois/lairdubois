@@ -19,6 +19,12 @@ parameters:
     websocket_port:                 8080
     websocket_uri:                  wss://www.lairdubois.fr:8443
 
+    rabbitmq_host:                  localhost
+    rabbitmq_port:                  5672
+    rabbitmq_user:                  YOUR_RABBITMQ_USER
+    rabbitmq_password:              YOUR_RABBITMQ_PASSWORD
+    rabbitmq_vhost:                 /
+
     locale:                         fr
     secret:                         THIS_TOKEN_IS_NOT_SECRET_CHANGE_IT
     admin_username:                 admin

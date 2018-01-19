@@ -47,6 +47,7 @@ class AboutController extends Controller {
 			array( 'name' => 'GOSWebSocketBundle', 'url' => 'https://github.com/GeniusesOfSymfony/WebSocketBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'StofDoctrineExtensionsBundle', 'url' => 'https://github.com/stof/StofDoctrineExtensionsBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'LiipImagineBundle', 'url' => 'https://github.com/liip/LiipImagineBundle', 'labels' => array( 'PHP' ) ),
+			array( 'name' => 'RabbitMqBundle', 'url' => 'https://github.com/php-amqplib/RabbitMqBundle', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'WebPushBundle', 'url' => 'https://github.com/bpolaszek/webpush-bundle', 'labels' => array( 'PHP' ) ),
 
 			array( 'name' => 'Geocoder-PHP', 'url' => 'http://geocoder-php.org/Geocoder/', 'labels' => array( 'PHP' ) ),

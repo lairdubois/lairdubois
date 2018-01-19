@@ -7,7 +7,13 @@ trait SitemapableTrait {
 	// IsSitemapable /////
 
 	public function getIsSitemapable() {
-		return $this instanceof IndexableInterface ? $this->isIndexable() !== true : true;
+		if ($this instanceof HiddableInterface) {
+			return $this->getIsPublic();
+		}
+		if ($this instanceof IndexableInterface) {
+			return $this->isIndexable();
+		}
+		return true;
 	}
 
 }
