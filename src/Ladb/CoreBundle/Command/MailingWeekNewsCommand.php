@@ -347,9 +347,10 @@ EOT
 			$queryBuilder = $om->createQueryBuilder();
 			$queryBuilder
 				->select(array( 'count(u.id)' ))
-				->where('u.enabled = true')
-				->andWhere('u.weekNewsEmailEnabled = true')
 				->from('LadbCoreBundle:Core\User', 'u')
+				->innerJoin('u.meta', 'm')
+				->where('u.enabled = true')
+				->andWhere('m.weekNewsEmailEnabled = true')
 			;
 
 			try {
@@ -370,10 +371,11 @@ EOT
 
 				$queryBuilder = $om->createQueryBuilder();
 				$queryBuilder
-					->select(array( 'u' ))
-					->where('u.enabled = true')
-					->andWhere('u.weekNewsEmailEnabled = true')
+					->select(array( 'u', 'm' ))
 					->from('LadbCoreBundle:Core\User', 'u')
+					->innerJoin('u.meta', 'm')
+					->where('u.enabled = true')
+					->andWhere('m.weekNewsEmailEnabled = true')
 					->setFirstResult($batchIndex * $batchSize)
 					->setMaxResults($batchSize)
 				;
