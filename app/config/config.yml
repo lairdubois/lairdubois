@@ -870,6 +870,11 @@ old_sound_rabbit_mq:
             exchange_options:
                 name: 'view_exchange'
                 type: topic
+        webpush_notification:
+            connection: default
+            exchange_options:
+                name: 'webpush_notification_exchange'
+                type: topic
     consumers:
         view:
             connection: default
@@ -879,6 +884,14 @@ old_sound_rabbit_mq:
             queue_options:
                 name: 'view_queue'
             callback: 'Ladb\CoreBundle\Consumer\ViewConsumer'
+        webpush_notification:
+            connection: default
+            exchange_options:
+                name: 'webpush_notification_exchange'
+                type: topic
+            queue_options:
+                name: 'webpush_notification_queue'
+            callback: 'Ladb\CoreBundle\Consumer\WebpushNotificationConsumer'
     batch_consumers:
         batch_view:
             connection: default
@@ -888,6 +901,21 @@ old_sound_rabbit_mq:
             queue_options:
                 name: 'view_queue'
             callback: 'Ladb\CoreBundle\Consumer\ViewConsumer'
+            qos_options:
+                prefetch_size: 0
+                prefetch_count: 5
+                global: false
+            timeout_wait: 5
+            auto_setup_fabric: false
+            idle_timeout_exit_code: -2
+        batch_webpush_notification:
+            connection: default
+            exchange_options:
+                name: 'webpush_notification_exchange'
+                type: fanout
+            queue_options:
+                name: 'webpush_notification_queue'
+            callback: 'Ladb\CoreBundle\Consumer\WebpushNotificationConsumer'
             qos_options:
                 prefetch_size: 0
                 prefetch_count: 5

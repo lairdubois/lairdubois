@@ -28,6 +28,19 @@ use Ladb\CoreBundle\Utils\TypableUtils;
  */
 class CommentController extends Controller {
 
+	private function _retrieveRelatedEntity($entityType, $entityId) {
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$entity = $typableUtils->findTypable($entityType, $entityId);
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException($e->getMessage());
+		}
+		if (!($entity instanceof CommentableInterface)) {
+			throw $this->createNotFoundException('Entity must implements CommentableInterface.');
+		}
+		return $entity;
+	}
+
 	/**
 	 * @Route("/{entityType}/{entityId}/{parentId}/new", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, name="core_comment_new")
 	 * @Template("LadbCoreBundle:Core/Comment:new-xhr.html.twig")
@@ -58,19 +71,6 @@ class CommentController extends Controller {
 			'mentionStrategy' => $mentionStrategy
 		);
 
-	}
-
-	private function _retrieveRelatedEntity($entityType, $entityId) {
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entity = $typableUtils->findTypable($entityType, $entityId);
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException($e->getMessage());
-		}
-		if (!($entity instanceof CommentableInterface)) {
-			throw $this->createNotFoundException('Entity must implements CommentableInterface.');
-		}
-		return $entity;
 	}
 
 	/**

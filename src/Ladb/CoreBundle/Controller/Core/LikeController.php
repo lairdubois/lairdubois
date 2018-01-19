@@ -81,10 +81,15 @@ class LikeController extends Controller {
 					$watchableUtils->autoCreateWatch($entity, $this->getUser());
 				}
 
-				// Notification
-				$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
-				$webpushNotificationUtils->sendNewLikeNotification($like, $entity);
+				// Publish a webpush notification in queue
+				if ($entity instanceof AuthoredInterface) {
+					$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
+					$webpushNotificationUtils->enqueueNewLikeNotification($like, $entity);
+				}
 
+//				// Webpush Notification
+//				$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
+//				$webpushNotificationUtils->sendNewLikeNotification($like, $entity);
 
 				$om->flush();
 

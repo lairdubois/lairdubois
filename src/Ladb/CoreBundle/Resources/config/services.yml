@@ -496,6 +496,8 @@ services:
   # Consumer
   Ladb\CoreBundle\Consumer\ViewConsumer:
     arguments: ['@service_container']
+  Ladb\CoreBundle\Consumer\WebpushNotificationConsumer:
+    arguments: ['@service_container']
 
   # WebPush
   Ladb\CoreBundle\Manager\Webpush\UserSubscriptionManager:

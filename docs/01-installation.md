@@ -385,4 +385,5 @@ And add the following lines
 ``` bash
     $ bin/console gos:websocket:server &
     $ bin/console rabbitmq:batch:consumer batch_view &
+    $ bin/console rabbitmq:batch:consumer batch_webpush_notification &
 ```

@@ -100,7 +100,7 @@ class MessageController extends Controller {
 				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
 
 				// Webpush notification
-				$webpushNotificationUtils->sendIncomingMessageNotification($recipient, $sender, $thread);
+				$webpushNotificationUtils->enqueueIncomingMessageNotification($recipient, $sender, $thread);
 
 			}
 
@@ -284,7 +284,7 @@ class MessageController extends Controller {
 				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
 
 				// Webpush notification
-				$webpushNotificationUtils->sendIncomingMessageNotification($recipient, $sender, $thread);
+				$webpushNotificationUtils->enqueueIncomingMessageNotification($recipient, $sender, $thread);
 
 			}
 
