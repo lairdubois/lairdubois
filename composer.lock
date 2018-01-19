@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "de656ed26210347b0c130916355da514",
+    "content-hash": "280ef6e23f316a0927d74744c1523763",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -137,62 +137,20 @@
             "time": "2017-04-04T11:38:05+00:00"
         },
         {
-            "name": "bentools/helpfultraits",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bpolaszek/helpfultraits.git",
-                "reference": "43c210c917f26e8557c1b4b38101a1542a2ca511"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bpolaszek/helpfultraits/zipball/43c210c917f26e8557c1b4b38101a1542a2ca511",
-                "reference": "43c210c917f26e8557c1b4b38101a1542a2ca511",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "doctrine/orm": "^2.5",
-                "symfony/symfony": "^3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "BenTools\\HelpfulTraits\\Symfony\\": "src/BenTools/HelpfulTraits/Symfony"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Beno!t POLASZEK",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Some nice traits to use with Symfony.",
-            "homepage": "https://github.com/bpolaszek/bentools-helpfultraits",
-            "time": "2017-12-14T11:05:08+00:00"
-        },
-        {
             "name": "bentools/webpush-bundle",
-            "version": "0.3",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bpolaszek/webpush-bundle.git",
-                "reference": "d699ae5e4e83cd26ddbd7e5f9299ccca39c3104c"
+                "reference": "d95da37750db31ff58b88a84d04fac16117af18c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bpolaszek/webpush-bundle/zipball/d699ae5e4e83cd26ddbd7e5f9299ccca39c3104c",
-                "reference": "d699ae5e4e83cd26ddbd7e5f9299ccca39c3104c",
+                "url": "https://api.github.com/repos/bpolaszek/webpush-bundle/zipball/d95da37750db31ff58b88a84d04fac16117af18c",
+                "reference": "d95da37750db31ff58b88a84d04fac16117af18c",
                 "shasum": ""
             },
             "require": {
-                "bentools/helpfultraits": "^1.0",
                 "minishlink/web-push": "^2.0",
                 "php": ">=7.1",
                 "symfony/symfony": "^2.7|^3.0|^4.0"
@@ -222,7 +180,7 @@
                 }
             ],
             "description": "Symfony Bundle: Associate your users to webpush subscriptions.",
-            "time": "2018-01-05T10:41:28+00:00"
+            "time": "2018-01-18T14:37:39+00:00"
         },
         {
             "name": "blueimp/jquery-file-upload",
@@ -565,16 +523,16 @@
         },
         {
             "name": "components/masonry",
-            "version": "4.2.0",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/masonry.git",
-                "reference": "b43b7a0771c85ad5fd49f3b0fac86f804b228ec8"
+                "reference": "a58a01c134823f797636b92e9dde41ccd7f76929"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/masonry/zipball/b43b7a0771c85ad5fd49f3b0fac86f804b228ec8",
-                "reference": "b43b7a0771c85ad5fd49f3b0fac86f804b228ec8",
+                "url": "https://api.github.com/repos/components/masonry/zipball/a58a01c134823f797636b92e9dde41ccd7f76929",
+                "reference": "a58a01c134823f797636b92e9dde41ccd7f76929",
                 "shasum": ""
             },
             "type": "component",
@@ -604,7 +562,7 @@
             ],
             "description": "Cascading grid layout library",
             "homepage": "http://masonry.desandro.com",
-            "time": "2017-06-21T13:27:13+00:00"
+            "time": "2015-02-11T14:35:33+00:00"
         },
         {
             "name": "composer/ca-bundle",
