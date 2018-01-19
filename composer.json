@@ -42,6 +42,7 @@
         "liip/imagine-bundle": "~1.9",
         "gos/web-socket-bundle": "*",
         "bentools/webpush-bundle": "^0.3.0",
+        "php-amqplib/rabbitmq-bundle": "^1.14",
 
         "facebook/graph-sdk": "~5.0",
         "willdurand/geocoder": "~3.0",
@@ -65,8 +66,7 @@
 
         "components/jquery": "3.2.1",
         "components/jqueryui": "1.12.1",
-        "components/masonry": "4.2.0",
-        "php-amqplib/rabbitmq-bundle": "^1.14"
+        "components/masonry": "3.2.2"
 
     },
     "require-dev": {
