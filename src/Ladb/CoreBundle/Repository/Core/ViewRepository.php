@@ -72,7 +72,11 @@ class ViewRepository extends AbstractEntityRepository {
 		;
 
 		try {
-			return $queryBuilder->getQuery()->getResult()->first();
+			$result = $queryBuilder->getQuery()->getResult();
+			if (count($result) > 0) {
+				return $result[0];
+			}
+			return null;
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}
