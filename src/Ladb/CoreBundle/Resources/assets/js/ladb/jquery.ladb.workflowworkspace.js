@@ -110,7 +110,9 @@
     LadbWorkflowWorkspace.prototype._uiDiagramZoomIn = function() {
         if (this.$panzoom) {
             var scale = this._uiDiagramGetCurrentScale() + 0.1;
-            this.$panzoom.panzoom('zoom', scale);
+            this.$panzoom.panzoom('zoom', scale, {
+                focal: this._uiDiagramGetCenterFocal()
+            });
             this.plumb.setZoom(scale);
         }
     };
@@ -118,16 +120,28 @@
     LadbWorkflowWorkspace.prototype._uiDiagramZoomOut = function() {
         if (this.$panzoom) {
             var scale = this._uiDiagramGetCurrentScale() - 0.1;
-            this.$panzoom.panzoom('zoom', scale);
+            this.$panzoom.panzoom('zoom', scale, {
+                focal: this._uiDiagramGetCenterFocal()
+            });
             this.plumb.setZoom(scale);
         }
     };
 
     LadbWorkflowWorkspace.prototype._uiDiagramZoomOne = function() {
         if (this.$panzoom) {
-            this.$panzoom.panzoom('zoom', 1.0);
+            this.$panzoom.panzoom('zoom', 1.0, {
+                focal: this._uiDiagramGetCenterFocal()
+            });
             this.plumb.setZoom(1.0);
         }
+    };
+
+    LadbWorkflowWorkspace.prototype._uiDiagramGetCenterFocal = function() {
+        var areaRect = this.$diagram.get(0).getBoundingClientRect();
+        return {
+            clientX: areaRect.left + areaRect.width / 2,
+            clientY: areaRect.top + areaRect.height / 2
+        };
     };
 
     LadbWorkflowWorkspace.prototype._uiDiagramPanToTaskWidget = function(taskId) {
@@ -379,10 +393,10 @@
             _.each(response.createdConnections, function (connection) {
                 var sourceId = TASK_WIDGET_PREFIX + connection.from;
                 var targetId = TASK_WIDGET_PREFIX + connection.to;
-                that.plumb.detach({
+                that.plumb.select({
                     source: sourceId,
                     target: targetId
-                });
+                }).delete();
                 that.plumb.connect({
                     source: sourceId,
                     target: targetId
@@ -393,10 +407,10 @@
         // Deleted connections
         if (response.deletedConnections && that.plumb) {
             _.each(response.deletedConnections, function (connection) {
-                that.plumb.detach({
+                that.plumb.select({
                     source: TASK_WIDGET_PREFIX + connection.from,
                     target: TASK_WIDGET_PREFIX + connection.to
-                });
+                }).delete();
             });
         }
 
@@ -1415,7 +1429,7 @@
                     // Bind plumb
                     that.plumb.bind('connection', function (info, originalEvent) {
 
-                        if (!originalEvent || info.targetId == 'fake_task') {
+                        if (!originalEvent || info.targetId === 'fake_task') {
                             return;
                         }
 
@@ -1448,7 +1462,7 @@
 
                     });
                     that.plumb.bind('click', function (connection, originalEvent) {
-                        that.plumb.detach(connection);
+                        that.plumb.deleteConnection(connection);
 
                         // Sync with server
                         $.ajax(that.options.deleteTaskConnectionPath, {
@@ -1499,7 +1513,7 @@
                         var matrix = that.$panzoom.panzoom("getMatrix");
                         var offsetX = matrix[4];
                         var offsetY = matrix[5];
-                        var dragstart = {x: e.pageX, y: e.pageY, dx: offsetX, dy: offsetY};
+                        var dragstart = { x: e.pageX, y: e.pageY, dx: offsetX, dy: offsetY };
                         $(e.target).css("cursor", "move");
                         $(this).data('dragstart', dragstart);
                     })
