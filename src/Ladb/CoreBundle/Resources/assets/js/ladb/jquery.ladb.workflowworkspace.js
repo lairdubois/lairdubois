@@ -261,6 +261,14 @@
         }
     };
 
+    LadbWorkflowWorkspace.prototype._uiToggleSelectTaskWidget = function($taskWidget) {
+        $taskWidget.toggleClass('ladb-selected');
+    };
+
+    LadbWorkflowWorkspace.prototype._uiUnselectAllTaskWidget = function() {
+        $('.ladb-workflow-task-widget.ladb-selected', this.$diagram).removeClass('ladb-selected');
+    };
+
     LadbWorkflowWorkspace.prototype.updateBoardFromJsonData = function(data) {
         var that = this;
 
@@ -494,6 +502,7 @@
         var that = this;
 
         var taskId = $taskWidget.attr('id').substring(TASK_WIDGET_PREFIX.length);
+        var $taskBoxOuter = $('.ladb-box-outer', $taskWidget);
         var $taskBox = $('.ladb-box', $taskWidget);
 
         // Setup as plumb source and target
@@ -528,7 +537,7 @@
         this.bindTaskBox(taskId, $taskBox);
 
         // Bind task box dblclick
-        $taskBox.on('dblclick', function(e) {
+        $taskBoxOuter.on('dblclick', function(e) {
             e.stopPropagation();
             that._uiDiagramPanToTaskWidget(taskId);
         });
@@ -537,8 +546,15 @@
             return;
         }
 
-        // Bind ep button
+        $taskBoxOuter.on('click', function(e) {
+            if ($taskWidget.data('ladb-dragged')) {
+                $taskWidget.data('ladb-dragged', null);
+            } else {
+                that._uiToggleSelectTaskWidget($taskWidget);
+            }
+        });
 
+        // Bind ep button
         $('.ladb-ep', $taskWidget).on('click', function(e) {
 
             var currentScale = that._uiDiagramGetCurrentScale();
@@ -553,21 +569,62 @@
         // Make widget draggable
 
         var currentScale = 1;
+        var selectedTaskWidgets;
+        $taskWidget
+            .on('mousedown', function() {
+                that.$panzoom.panzoom("disable");
+            })
+            .on('mouseup', function() {
+                that.$panzoom.panzoom("enable");
+            })
+        ;
         $taskWidget.draggable({
             grid: [GRID_SPACING, GRID_SPACING],
             handle: ".ladb-box",
-            start: function (e) {
+            distance: 10,
+            start: function (e, ui) {
                 currentScale = that._uiDiagramGetCurrentScale();
                 $(this).draggable( "option", "grid", [ GRID_SPACING * currentScale, GRID_SPACING * currentScale ] );
                 $(this).css("cursor", "move");
-                that.$panzoom.panzoom("disable");
+
+                if (ui.helper.hasClass('ladb-selected')) {
+                    selectedTaskWidgets = $('.ladb-selected', that.$diagram);
+                } else {
+                    that._uiUnselectAllTaskWidget();
+                    selectedTaskWidgets = $(ui.helper);
+                }
+
+                selectedTaskWidgets.each(function() {
+                    var $this = $(this);
+                    var position = $this.position();
+                    $this
+                        .data('ladb-origin-left', position.left)
+                        .data('ladb-origin-top',position.top)
+                    ;
+                });
+
             },
             drag: function (e, ui) {
-                ui.position.left = ui.position.left / currentScale;
-                ui.position.top = ui.position.top / currentScale;
-                if ($(this).hasClass("jtk-connected")) {
-                    that.plumb.repaint($(this).attr('id'), ui.position);
-                }
+
+                var offsetLeft = (ui.position.left - ui.originalPosition.left);
+                var offsetTop = (ui.position.top - ui.originalPosition.top);
+
+                ui.position.left = Math.round(ui.position.left / currentScale);
+                ui.position.top = Math.round(ui.position.top / currentScale);
+
+                selectedTaskWidgets.each(function() {
+                    var $this = $(this);
+                    var position = {
+                        left: Math.round(($this.data('ladb-origin-left') + offsetLeft) / currentScale),
+                        top: Math.round(($this.data('ladb-origin-top') + offsetTop) / currentScale),
+                    };
+                    $this.css('left', position.left + 'px');
+                    $this.css('top', position.top + 'px');
+                    if ($this.hasClass("jtk-connected")) {
+                        that.plumb.repaint($this.attr('id'), position);
+                    }
+                })
+
             },
             stop: function (e, ui) {
                 var nodeId = $(this).attr('id');
@@ -575,11 +632,26 @@
                     that.plumb.repaint(nodeId, ui.position);
                 }
                 $(this).css("cursor", "");
-                that.$panzoom.panzoom("enable");
+                $(this).data('ladb-dragged', true);
 
-                // Round coordinates to grid
-                var positionLeft = Math.round(($taskWidget.position().left / currentScale) / GRID_SPACING) * GRID_SPACING ;
-                var positionTop = Math.round(($taskWidget.position().top / currentScale) / GRID_SPACING) * GRID_SPACING;
+                var taskIds = [];
+                var positionsLeft = [];
+                var positionsTop = [];
+
+                var data = {};
+                var index = 1;
+                selectedTaskWidgets.each(function() {
+                    var $widget = $(this);
+
+                    // Extract task id
+                    data['taskId' + index] = $widget.attr('id').substring(TASK_WIDGET_PREFIX.length);
+
+                    // Round coordinates to grid
+                    data['positionLeft' + index] = Math.round(($widget.position().left / currentScale) / GRID_SPACING) * GRID_SPACING;
+                    data['positionTop' + index] = Math.round(($widget.position().top / currentScale) / GRID_SPACING) * GRID_SPACING;
+
+                    index++;
+                });
 
                 // Sync with server
                 $.ajax(that.options.positionUpdateTaskPath, {
@@ -587,18 +659,14 @@
                     cache: false,
                     dataType: "html",
                     context: document.body,
-                    data: {
-                        taskId: taskId,
-                        positionLeft: positionLeft,
-                        positionTop: positionTop
-                    },
+                    data: data,
                     error: function () {
                         console.log('ERROR');
                     }
                 });
 
             }
-        });
+        })
 
     };
 
@@ -1513,16 +1581,28 @@
                         var matrix = that.$panzoom.panzoom("getMatrix");
                         var offsetX = matrix[4];
                         var offsetY = matrix[5];
-                        var dragstart = { x: e.pageX, y: e.pageY, dx: offsetX, dy: offsetY };
+                        var dragstart = {
+                            x: e.pageX,
+                            y: e.pageY,
+                            dx: offsetX,
+                            dy: offsetY
+                        };
                         $(e.target).css("cursor", "move");
                         $(this).data('dragstart', dragstart);
+                        $(this).data('dragged', null);
                     })
                     .on("touchstart", function (e) {
                         var matrix = that.$panzoom.panzoom("getMatrix");
                         var offsetX = matrix[4];
                         var offsetY = matrix[5];
-                        var dragstart = {x: e.originalEvent.touches[0].pageX, y: e.originalEvent.touches[0].pageY, dx: offsetX, dy: offsetY};
+                        var dragstart = {
+                            x: e.originalEvent.touches[0].pageX,
+                            y: e.originalEvent.touches[0].pageY,
+                            dx: offsetX,
+                            dy: offsetY
+                        };
                         $(this).data('dragstart', dragstart);
+                        $(this).data('dragged', null);
                     })
                     .on("mousemove", function (e) {
                         var dragstart = $(this).data('dragstart');
@@ -1533,6 +1613,8 @@
                             matrix[4] = parseInt(dragstart.dx) - deltaX;
                             matrix[5] = parseInt(dragstart.dy) - deltaY;
                             that.$panzoom.panzoom("setMatrix", matrix);
+                            $(this).data('dragged', true);
+                            e.preventDefault();
                         }
                     })
                     .on("touchmove", function (e) {
@@ -1544,12 +1626,19 @@
                             matrix[4] = parseInt(dragstart.dx) - deltaX;
                             matrix[5] = parseInt(dragstart.dy) - deltaY;
                             that.$panzoom.panzoom("setMatrix", matrix);
+                            $(this).data('dragged', true);
                             e.preventDefault();
                         }
                     })
                     .on("mouseup touchend touchcancel mouseout", function (e) {
                         $(this).data('dragstart', null);
                         $(e.target).css("cursor", "");
+                    })
+                    .on("mouseup touchend", function (e) {
+                        if (!$(this).data('dragged') && $(e.target).hasClass('ladb-workflow-task-diagram')) {
+                            that._uiUnselectAllTaskWidget();
+                        }
+                        $(this).data('dragged', null);
                     });
 
                 if (!that.options.readOnly) {

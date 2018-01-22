@@ -335,25 +335,48 @@ class TaskController extends AbstractWorkflowBasedController {
 	 */
 	public function positionUpdateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
+		$taskRepository = $om->getRepository(Task::CLASS_NAME);
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);
 		$this->_assertAuthorizedWorkflow($workflow);
 
-		// Retieve Task
-		$task = $this->_retrieveTaskFromTaskIdParam($request);
-		$this->_assertValidWorkflow($task, $workflow);
+		$tasks = array();
+		$index = 1;
+		while (true) {
 
-		// PositionLeft
-		if ($request->request->has('positionLeft')) {
-			$positionLeft = intval($request->request->get('positionLeft'));
-			$task->setPositionLeft($positionLeft);
+			try {
+
+				// Retieve Task
+				$task = $this->_retrieveTaskFromTaskIdParam($request, 'taskId'.$index);
+				$this->_assertValidWorkflow($task, $workflow);
+
+				$tasks[] = $task;
+
+			} catch (\Exception $e) {
+				// Parameter do not exists => break loop
+				break;
+			}
+
+			// PositionLeft
+			$positionLeftKey = 'positionLeft'.$index;
+			if ($request->request->has($positionLeftKey)) {
+				$positionLeft = intval($request->request->get($positionLeftKey));
+				$task->setPositionLeft($positionLeft);
+			}
+
+			// PositionTop
+			$positionTopKey = 'positionTop'.$index;
+			if ($request->request->has($positionTopKey)) {
+				$positionTop = intval($request->request->get($positionTopKey));
+				$task->setPositionTop($positionTop);
+			}
+
+			$index++;
 		}
 
-		// PositionTop
-		if ($request->request->has('positionTop')) {
-			$positionTop = intval($request->request->get('positionTop'));
-			$task->setPositionTop($positionTop);
+		if (count($tasks) == 0) {
+			throw $this->createNotFoundException('Unable to find Task entities.');
 		}
 
 		// Flag workflow as updated
@@ -362,7 +385,7 @@ class TaskController extends AbstractWorkflowBasedController {
 		$om->flush();
 
 		$this->_push($workflow, array(
-			'movedTaskInfos' => $this->_generateTaskInfos($task, self::TASKINFO_POSITION_LEFT | self::TASKINFO_POSITION_TOP | self::TASKINFO_SORT_INDEX),
+			'movedTaskInfos' => $this->_generateTaskInfos($tasks, self::TASKINFO_POSITION_LEFT | self::TASKINFO_POSITION_TOP | self::TASKINFO_SORT_INDEX),
 		));
 
 		return new JsonResponse(array(

@@ -194,6 +194,7 @@
     }
 
     .jtk-drag-hover .ladb-box,
+    .jtk-drag-selected .ladb-box,
     .jtk-source-hover .ladb-box,
     .jtk-target-hover .ladb-box {
       border-color: @ladb-brand-primary !important;
@@ -241,6 +242,10 @@
 
   &:hover > .ladb-ep {
     display: block;
+  }
+
+  &.ladb-selected .ladb-box {
+    border-color: @ladb-brand-primary !important;
   }
 
   .ladb-box {
