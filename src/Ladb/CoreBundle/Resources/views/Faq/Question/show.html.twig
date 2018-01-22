@@ -10,6 +10,48 @@
 
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == question.user.id %}
 
+{% block headStylesheets %}
+    {{ parent() }}
+    {% if question.hasToc %}
+        {% stylesheets filter='?yui_css'
+            '@LadbCoreBundle/Resources/assets/css/jquery-tocify/jquery.tocify.css' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+        {% endstylesheets %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if question.hasToc %}
+        {% javascripts filter='?closure'
+            '@LadbCoreBundle/Resources/assets/js/jquery-tocify/jquery.tocify.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            $(function() {
+                if ($(window).width() >= 768) {
+                    $("#tocify_toc").tocify({
+                        context: ".ladb-question",
+                        ignoreSelector: ".modal-title",
+                        selectors: "h3,h4",
+                        theme: "none",
+                        smoothScroll: false,
+                        showEffect: "none",
+                        hideEffect: "none",
+                        extendPage: false,
+                        hashGenerator: "pretty",
+                        history: false,
+                        scrollTo: 100
+                    });
+                    $("#ladb_toc_panel").sticky({
+                        topSpacing: 70
+                    });
+                }
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':question } %}
         {% block headerTools %}
@@ -87,4 +129,15 @@
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
     </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if question.hasToc %}
+        <div id="ladb_toc_panel" class="panel panel-default ladb-toc-panel ladb-hidden-mobile">
+            <div class="panel-heading">Navigation</div>
+            <div class="panel-body">
+                <div id="tocify_toc"></div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

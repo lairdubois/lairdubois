@@ -491,6 +491,8 @@ faq:
     new: Ajouter une question
     edit: Edition de la question
     icon: Icone
+    toc: Table des matières
+    has_toc: Afficher la table des matières
     weight: Poids
     links: Questions associées
     form:

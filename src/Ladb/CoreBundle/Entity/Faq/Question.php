@@ -97,6 +97,11 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	private $bodyBlockVideoCount = 0;
 
 	/**
+	 * @ORM\Column(type="boolean", name="has_toc")
+	 */
+	private $hasToc = false;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_faq_question_tag")
 	 * @Assert\Count(min=1)
@@ -170,6 +175,17 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 
 	public function setIcon($icon) {
 		$this->icon = $icon;
+		return $this;
+	}
+
+	// HasToc /////
+
+	public function getHasToc() {
+		return $this->hasToc;
+	}
+
+	public function setHasToc($hasToc) {
+		$this->hasToc = $hasToc;
 		return $this;
 	}
 

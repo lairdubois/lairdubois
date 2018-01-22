@@ -36,6 +36,7 @@ class QuestionType extends AbstractType {
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
+			->add('hasToc')
 			->add('weight')
 			->add($builder
 					->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
