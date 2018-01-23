@@ -175,23 +175,23 @@
         return 1;
     };
 
+    LadbWorkflowWorkspace.prototype._uiDisableButtons = function(disabled) {
+        this.$btnAddTask.prop('disabled', disabled);
+        this.$btnListParts.prop('disabled', disabled);
+        this.$btnListLabels.prop('disabled', disabled);
+        this.$btnStatistics.prop('disabled', disabled);
+        this.$btnRestart.prop('disabled', disabled);
+    };
+
     LadbWorkflowWorkspace.prototype._uiMarkLoading = function(status) {
         this.$loadingPanel.show();
         this.$loadingStatus.html(status ? status : '');
-        this.$btnAddTask.prop('disabled', true);
-        this.$btnListParts.prop('disabled', true);
-        this.$btnListLabels.prop('disabled', true);
-        this.$btnStatistics.prop('disabled', true);
-        this.$btnRestart.prop('disabled', true);
+        this._uiDisableButtons(true);
     };
 
     LadbWorkflowWorkspace.prototype._uiUnmarkLoading = function() {
         this.$loadingPanel.hide();
-        this.$btnAddTask.prop('disabled', false);
-        this.$btnListParts.prop('disabled', false);
-        this.$btnListLabels.prop('disabled', false);
-        this.$btnStatistics.prop('disabled', false);
-        this.$btnRestart.prop('disabled', false);
+        this._uiDisableButtons(this.options.readOnly);
     };
 
     LadbWorkflowWorkspace.prototype._uiAppendTaskRowToParent = function($taskRow, $parent) {
@@ -1316,12 +1316,16 @@
         this.options.readOnly = true;
 
         // Unbind plump
-        this.plumb.unbind('connection');
-        this.plumb.unbind('connectionAborted');
-        this.plumb.unbind('click');
+        if (this.plumb) {
+            this.plumb.unbind('connection');
+            this.plumb.unbind('connectionAborted');
+            this.plumb.unbind('click');
+        }
 
         // Unbind Panzoom
-        this.$panzoom.parent().off('dblclick');
+        if (this.$panzoom) {
+            this.$panzoom.parent().off('dblclick');
+        }
 
     };
 
@@ -1390,7 +1394,16 @@
 
         // Check capabilities
         if (!Modernizr.touchevents) {}
-        if (!Modernizr.websockets) {}
+        if (!Modernizr.websockets) {
+
+            that.switchToReadOnly();
+
+            bootbox.alert({
+                title: 'Aie !',
+                message: '<div class="media"><div class="media-left"><i class="ladb-icon-warning ladb-icon-xl"></i></div><div class="media-body"><p>Désolé, mais votre navigateur internet ne supporte pas les <a href="https://fr.wikipedia.org/wiki/WebSocket" target="_blank">WebSocket</a>. Fonctionnalité indispensable pour éditer les processus.</p><p>Mettez à jour votre navigateur ou optez pour un navigateur compatible (Firefox, Chrome, Safari).</p><p>En attendant le processus sera ouvert en <strong>lecture seule</strong>.</p></div></div>',
+            });
+
+        }
 
         if (this.options.readOnly) {
 
