@@ -240,37 +240,6 @@ Not that the given DEV config is configured for running on MacOS.
     $ service nginx restart
 ```
 
-## Step 6 - Setup Stream on Nginx (to enable websocket through SSL)
-
-> If you are on the **PROD** server :
-
-Create a folder named stream.d at the root of your nginx install. And copy the predefined conf file.
-
-``` bash
-    $ sudo mkdir /etc/nginx/stream.d
-    $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/websocket.conf /etc/nginx/stream.d/websocket.conf
-    $ service nginx restart
-```
-
-Then, edit ```nginx.conf``` located in ```/etc/nginx```.
-After the http directive, place the following statement ```include /etc/nginx/stream.d/*.conf;``` It has to be at the same hierarchy level of ```http```.
-
-``` bash
-    $ sudo nano /etc/nginx/nginx.conf
-```
-
-Add the following line.
-
-```
-    include /etc/nginx/stream.d/*.conf;
-```
-
-Restart Nginx.
-
-``` bash
-    $ service nginx restart
-```
-
 ## Step 6 - Generate HTTPS certificates (Not necessary on the **DEV** server)
 
 First you need to install certbot.

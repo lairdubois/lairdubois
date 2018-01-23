@@ -17,7 +17,7 @@ parameters:
 
     websocket_host:                 127.0.0.1
     websocket_port:                 8080
-    websocket_uri:                  wss://www.lairdubois.fr:8443
+    websocket_uri:                  wss://www.lairdubois.fr/ws
 
     rabbitmq_host:                  localhost
     rabbitmq_port:                  5672
