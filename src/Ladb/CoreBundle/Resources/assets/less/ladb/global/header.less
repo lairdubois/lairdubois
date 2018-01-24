@@ -79,6 +79,7 @@ header {
       padding-bottom: 5px;
       color: @ladb-global-color;
       font-size: 30px;
+      .ladb-truncate();
 
       small {
         color: @ladb-global-dark-color;
@@ -172,12 +173,30 @@ header {
 
 }
 
+// tablet
+@media screen and (min-width: @ladb-screen-tablet) and (max-width: @ladb-screen-tablet-max) {
+
+  header .ladb-avatar-header {
+
+    .ladb-heading {
+      font-size: 25px;
+      line-height: 25px;
+    }
+
+  }
+
+}
+
 // phone & tablet
 @media screen and (max-width: @ladb-screen-tablet-max) {
 
-  header .ladb-avatar-header .ladb-header-tools {
-    float: none;
-    text-align: right;
+  header .ladb-avatar-header {
+
+    .ladb-header-tools {
+      float: none;
+      text-align: right;
+    }
+
   }
 
 }

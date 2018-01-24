@@ -27,7 +27,7 @@
         {% endif %}
         {% if task.parts is not empty %}
             <div class="ladb-parts">
-                <a data-toggle="collapse"><i class="ladb-icon-plan" data-container="body"></i> <span style="font-size: 95%;">{{ task.partCount }} pièces</span><span class="caret"></span> </a>
+                <a data-toggle="collapse"><i class="ladb-icon-plan" data-container="body"></i> <span class="ladb-unselectable" style="font-size: 95%;">{{ task.partCount }} pièces</span><span class="caret"></span> </a>
                 <div class="collapse">
                     <ul style="list-style: none; padding-left: 20px; margin-top: 5px;">
                         {% for part in task.parts %}
