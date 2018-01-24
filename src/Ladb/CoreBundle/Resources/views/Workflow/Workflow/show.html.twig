@@ -236,7 +236,7 @@
         {% if workflow.reboundCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-rebound ladb-icon-fixed-center"></i>
-                <a href="{{ workflow.reboundCount == 1 ? path('core_workflow_show', { 'id':workflow.rebounds[0].sluggedId }) : path('core_workflow_rebounds', { 'id':workflow.id }) }}">
+                <a href="{{ path('core_workflow_rebounds', { 'id':workflow.id }) }}">
                     <strong>{{ workflow.reboundCount }}</strong>
                     <small>{{ 'default.choice.rebounds'|transchoice(workflow.reboundCount) }}</small>
                 </a>
