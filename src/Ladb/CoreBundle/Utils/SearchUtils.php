@@ -140,9 +140,10 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		// Compute filters and sort
 		$filters = array();
 		$sort = null;
+		$noGlobalFilters = false;
 		$defaults = true;
 		foreach ($queryParameters['facets'] as $facet) {
-			$queryCallback($facet, $filters, $sort);
+			$queryCallback($facet, $filters, $sort, $noGlobalFilters);
 		}
 		if (empty($filters) && is_null($sort)) {
 			$defaultFilters = array();
@@ -156,7 +157,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			$defaults = false;
 		}
 
-		if (!is_null($globalFiltersCallBack)) {
+		if (!$noGlobalFilters && !is_null($globalFiltersCallBack)) {
 			$globalFiltersCallBack($filters);
 		}
 

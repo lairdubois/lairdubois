@@ -592,7 +592,7 @@ class WorkshopController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters) {
 				switch ($facet->name) {
 
 					// Filters /////

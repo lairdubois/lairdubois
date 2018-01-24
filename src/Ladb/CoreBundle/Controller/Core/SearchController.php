@@ -34,7 +34,7 @@ class SearchController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters) {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
@@ -60,7 +60,7 @@ class SearchController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters) {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
@@ -86,7 +86,7 @@ class SearchController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters) {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
@@ -112,7 +112,7 @@ class SearchController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters) {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,
@@ -138,7 +138,7 @@ class SearchController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters) {
 				$filters[] = new \Elastica\Query\Match('label', $facet->value);
 			},
 			null,

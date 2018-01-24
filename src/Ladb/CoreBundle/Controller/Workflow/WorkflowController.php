@@ -679,11 +679,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$routeParameters['layout'] = $layout;
 		}
 
-		$noGlobalFilters = false;
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) use ($noGlobalFilters) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters) {
 				switch ($facet->name) {
 
 					// Filters /////
@@ -803,11 +802,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			function(&$filters) use ($layout, $noGlobalFilters) {
-
-				if ($noGlobalFilters) {
-					return;
-				}
+			function(&$filters) use ($layout) {
 
 				$user = $this->getUser();
 				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
