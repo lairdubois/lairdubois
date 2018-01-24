@@ -83,6 +83,7 @@
         <div class="row">
             <div class="col-md-3 col-md-push-9 col-xs-12">
                 <aside class="ladb-form-sidenav">
+                    {% block asideInner %}
                     <div class="panel panel-default">
                         <div class="panel-heading"><h1 class="panel-title">{% block sidenavHeading %}{% endblock %}</h1></div>
                         <div class="panel-body">
@@ -94,7 +95,8 @@
                             {% block form_buttons %}{% endblock %}
                         </div>
                     </div>
-                    <small class="text-muted text-center"><p>Vous êtes perdu ? <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':'zeloko' }) }}" target="_blank">Demandez de l'aide</a>.</p></small>
+                    <small class="text-muted"><p class="text-center">Vous êtes perdu ? <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':'zeloko' }) }}" target="_blank">Demandez de l'aide</a>.</p></small>
+                    {% endblock %}
                 </aside>
             </div>
             <div class="ladb-form-sections col-md-9 col-md-pull-3 col-xs-12">

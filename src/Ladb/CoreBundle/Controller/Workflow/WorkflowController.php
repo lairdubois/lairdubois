@@ -679,13 +679,21 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$routeParameters['layout'] = $layout;
 		}
 
+		$noGlobalFilters = false;
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort) {
+			function($facet, &$filters, &$sort) use ($noGlobalFilters) {
 				switch ($facet->name) {
 
 					// Filters /////
+
+					case 'admin-all':
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+							$filters[] = new \Elastica\Query\MatchAll();
+							$noGlobalFilters = true;
+						}
+						break;
 
 					case 'mine':
 
@@ -795,7 +803,11 @@ class WorkflowController extends AbstractWorkflowBasedController {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			function(&$filters) use ($layout) {
+			function(&$filters) use ($layout, $noGlobalFilters) {
+
+				if ($noGlobalFilters) {
+					return;
+				}
 
 				$user = $this->getUser();
 				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
@@ -815,7 +827,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 					$filter = $publicVisibilityFilter;
 				}
 				$filters[] = $filter;
-
 
 			},
 			'fos_elastica.index.ladb.workflow_workflow',

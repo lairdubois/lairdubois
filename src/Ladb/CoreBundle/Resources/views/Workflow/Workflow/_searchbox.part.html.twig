@@ -19,6 +19,10 @@
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes processus" data-unique="true" data-icon="workflow"><i class="ladb-icon-workflow"></i> Mes processus</a></li>
     {% endif %}
+    {% if is_granted("ROLE_ADMIN") %}
+        <li class="divider"></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="admin-all" data-label="Tous les processus" data-unique="true" data-icon="admin"><i class="ladb-icon-admin"></i> Tous les processus</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block sortersDropdown %}
