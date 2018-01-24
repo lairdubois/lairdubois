@@ -689,7 +689,11 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 					case 'admin-all':
 						if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
 							$filters[] = new \Elastica\Query\MatchAll();
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
 							$noGlobalFilters = true;
 						}
 						break;
