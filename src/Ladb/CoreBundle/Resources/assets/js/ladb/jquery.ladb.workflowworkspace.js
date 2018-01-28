@@ -1448,6 +1448,9 @@
 
                 switch (error.code) {
 
+                    case 0: // Connexion close by client
+                        break;
+
                     case 2: // Connection max retry
                         that._uiMarkLoading('Re-Connexion impossible avec le serveur :(');
                         break;
@@ -1476,7 +1479,7 @@
                         break;
 
                     default:
-                        that._uiMarkLoading('Vous avez été déconecté :(');
+                        that._uiMarkLoading('Vous avez été déconnecté :(');
                         break;
 
                 }
