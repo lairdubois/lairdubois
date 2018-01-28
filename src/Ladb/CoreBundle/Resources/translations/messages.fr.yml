@@ -953,7 +953,7 @@ picture:
   turn_left: Tourner l'image vers la gauche
   turn_right: Tourner l'image vers la droite
   form:
-    text_overlay_warning: Par mesure de lisibilité, les photos présentant des points de vue multiples et/ou du texte pourront faire l'objet d'une modération.
+    text_overlay_warning: Par mesure de lisibilité, les photos présentant des points de vue multiples (images en mosaïque) et/ou du texte pourront faire l'objet d'une modération.
     choice:
       mandatory: "[0,1]Cette image est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins une image."
 
