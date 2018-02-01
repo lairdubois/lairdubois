@@ -48,7 +48,11 @@ class ViewConsumer implements ConsumerInterface, BatchConsumerInterface {
 				$viewableMeta = $viewableMetas[$key];
 				$viewable = $viewableMeta->viewable;
 			} else {
-				$viewable = $typableUtils->findTypable($entityType, $entityId);
+				try {
+					$viewable = $typableUtils->findTypable($entityType, $entityId);
+				} catch(\Exception $e) {
+					continue;
+				}
 				$viewableMeta = new \StdClass();
 				$viewableMeta->viewable = $viewable;
 				$viewableMeta->userIds = array();
