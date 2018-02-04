@@ -682,7 +682,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort, &$noGlobalFilters) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
 				switch ($facet->name) {
 
 					// Filters /////
@@ -705,7 +705,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
 							$filters[] = $filter;
 
-							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+							$couldUseDefaultSort = true;
 
 						}
 
@@ -818,8 +818,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 					);
 					$filter->addShould(
 						(new \Elastica\Query\BoolQuery())
-							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
 					);
 
 				} else {

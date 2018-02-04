@@ -592,7 +592,7 @@ class WorkshopController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort, &$noGlobalFilters) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
 				switch ($facet->name) {
 
 					// Filters /////
@@ -604,8 +604,8 @@ class WorkshopController extends Controller {
 							if ($facet->value == 'draft') {
 
 								$filter = (new \Elastica\Query\BoolQuery())
-									->addMust(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
-									->addMust(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
+									->addFilter(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
+									->addFilter(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
 								;
 
 							} else {
@@ -615,7 +615,7 @@ class WorkshopController extends Controller {
 
 							$filters[] = $filter;
 
-							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+							$couldUseDefaultSort = true;
 
 						}
 
@@ -756,8 +756,8 @@ class WorkshopController extends Controller {
 					);
 					$filter->addShould(
 						(new \Elastica\Query\BoolQuery())
-							->addMust(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addMust(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
 					);
 
 				} else {

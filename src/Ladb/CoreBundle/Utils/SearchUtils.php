@@ -141,20 +141,24 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		$filters = array();
 		$sort = null;
 		$noGlobalFilters = false;
-		$defaults = true;
+		$couldUseDefaultSort = false;
+		$defaults = false;
 		foreach ($queryParameters['facets'] as $facet) {
-			$queryCallback($facet, $filters, $sort, $noGlobalFilters);
+			$queryCallback($facet, $filters, $sort, $noGlobalFilters, $couldUseDefaultSort);
 		}
-		if (empty($filters) && is_null($sort)) {
+		if (is_null($sort) && (empty($filters) || $couldUseDefaultSort)) {
 			$defaultFilters = array();
 			$defaultSort = null;
 			if (!is_null($defaultsCallBack)) {
 				$defaultsCallBack($defaultFilters, $defaultSort);
 			}
-			$filters = $defaultFilters;
-			$sort = $defaultSort;
-		} else {
-			$defaults = false;
+			if (empty($filters)) {
+				$filters = $defaultFilters;
+				$defaults = true;
+			}
+			if (is_null($sort) || $couldUseDefaultSort) {
+				$sort = $defaultSort;
+			}
 		}
 
 		if (!$noGlobalFilters && !is_null($globalFiltersCallBack)) {

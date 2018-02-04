@@ -119,7 +119,7 @@ class UserController extends Controller {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort, &$noGlobalFilters) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
 				switch ($facet->name) {
 
 					// Filters /////
