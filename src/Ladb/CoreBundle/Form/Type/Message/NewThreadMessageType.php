@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Form\Type\Message;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use FOS\UserBundle\Model\UserManagerInterface;
+use Ladb\CoreBundle\Form\DataTransformer\UsersToUsernamesTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,14 +16,18 @@ use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 class NewThreadMessageType extends AbstractType {
 
 	private $om;
+	private $userManager;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ObjectManager $om, UserManagerInterface $userManager) {
 		$this->om = $om;
+		$this->userManager = $userManager;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-            ->add('recipient', UsernameFormType::class)
+			->add($builder
+				->create('recipients', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden2' ) ))
+				->addModelTransformer(new UsersToUsernamesTransformer($this->userManager)))
 			->add('subject')
 			->add('body', TextareaType::class)
 			->add($builder

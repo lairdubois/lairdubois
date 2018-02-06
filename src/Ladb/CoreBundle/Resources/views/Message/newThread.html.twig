@@ -5,6 +5,54 @@
 
 {% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
 
+{#{% block headStylesheets %}#}
+    {#{{ parent() }}#}
+    {#<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.css" media="screen" />#}
+{#{% endblock %}#}
+
+{#{% block bodyJavascripts %}#}
+    {#{{ parent() }}#}
+    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>#}
+    {#<script>#}
+        {#$('#{{ form.recipients.vars.id }}').selectize({#}
+            {#delimiter: ',',#}
+            {#persist: false,#}
+            {#create: function(input) {#}
+                {#return {#}
+                    {#value: input,#}
+                    {#text: input#}
+                {#}#}
+            {#},#}
+            {#render: {#}
+                {#option: function(item, escape) {#}
+                    {#console.log('render');#}
+                    {#return '<div>' +#}
+                        {#'<span class="name">' + escape(item) + '</span>' +#}
+                        {#'</div>';#}
+                {#}#}
+            {#},#}
+            {#load: function(query, callback) {#}
+                {#if (!query.length) return callback();#}
+                {#$.ajax({#}
+                    {#url: '{{ path('core_search_typeahead_users_json') }}',#}
+                    {#type: 'GET',#}
+                    {#data: {#}
+                        {#q: query,#}
+                        {#page_limit: 10,#}
+                    {#},#}
+                    {#error: function() {#}
+                        {#callback();#}
+                    {#},#}
+                    {#success: function(res) {#}
+                        {#console.log(res, callback);#}
+                        {#callback(res.suggestions);#}
+                    {#}#}
+                {#});#}
+            {#}#}
+        {#});#}
+    {#</script>#}
+{#{% endblock %}#}
+
 {% block bodyContainerContent %}
     <div id="message-reply" class="ladb-message">
         {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
@@ -13,9 +61,9 @@
                 {{ form_start(form, { 'action':path(announcement ? 'core_message_thread_create_announcement' : 'core_message_thread_create'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
                     {% if not announcement %}
                         <div class="form-group">
-                            {{ form_label(form.recipient, 'Destinataire') }}
-                            {{ form_errors(form.recipient) }}
-                            {{ form_widget(form.recipient, { 'attr': { 'class':'form-control' } }) }}
+                            {{ form_label(form.recipients, 'Destinataires') }}
+                            {{ form_errors(form.recipients) }}
+                            {{ form_widget(form.recipients, { 'attr': { 'class':'form-control' } }) }}
                         </div>
                     {% endif %}
                     <div class="form-group">

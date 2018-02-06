@@ -47,7 +47,7 @@ class MessageController extends Controller {
 			if (is_null($recipient)) {
 				throw $this->createNotFoundException('User not found');
 			}
-			$newThreadMessage->setRecipient($recipient);
+			$newThreadMessage->addRecipient($recipient);
 		}
 
 		$form = $this->createForm($announcement ? NewThreadAnnouncementMessageType::class : NewThreadMessageType::class, $newThreadMessage);
@@ -72,7 +72,7 @@ class MessageController extends Controller {
 		if ($form->isValid()) {
 
 			$sender = $this->getUser();
-			$recipients = array( $newThreadMessage->getRecipient() );
+			$recipients = $newThreadMessage->getRecipients()->toArray();
 
 			$messageUtils = $this->get(MessageUtils::NAME);
 			$thread = $messageUtils->composeThread($sender, $recipients, $newThreadMessage->getSubject(), $newThreadMessage->getBody(), $newThreadMessage->getPictures());

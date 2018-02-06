@@ -7,40 +7,54 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NewThreadMessage {
 
 	/**
-	 * @Assert\Count(min=0, max=4)
+	 * Assert\NotBlank(message="Aucun membre n'a ce nom d'utilisateur")
 	 */
-	protected $pictures;
+
 	/**
-	 * @Assert\NotBlank(message="Aucun membre n'a ce nom d'utilisateur")
 	 * @Ladb\CoreBundle\Validator\Constraints\SelfRecipient()
+	 * @Assert\Count(min=1, max=20)
 	 */
-	private $recipient;
+	private $recipients;
+
 	/**
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=2, max=255)
 	 */
 	private $subject;
+
 	/**
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=2, max=10000)
 	 */
 	private $body;
 
+	/**
+	 * @Assert\Count(min=0, max=4)
+	 */
+	protected $pictures;
+
 	/////
 
 	public function __construct() {
+		$this->recipients = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->pictures = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
-	// Recipient /////
+	// Recipients /////
 
-	public function getRecipient() {
-		return $this->recipient;
+	public function addRecipient(\Ladb\CoreBundle\Entity\Core\User $recipient) {
+		if (!$this->recipients->contains($recipient)) {
+			$this->recipients[] = $recipient;
+		}
+		return $this;
 	}
 
-	public function setRecipient(\Ladb\CoreBundle\Entity\Core\User $recipient) {
-		$this->recipient = $recipient;
-		return $this;
+	public function removeRecipient(\Ladb\CoreBundle\Entity\Core\User $recipient) {
+		$this->recipients->removeElement($recipient);
+	}
+
+	public function getRecipients() {
+		return $this->recipients;
 	}
 
 	// Subject /////

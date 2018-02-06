@@ -449,7 +449,7 @@ services:
     class: Ladb\CoreBundle\Form\Type\Message\NewThreadMessageType
     tags:
       - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager']
+    arguments: ['@doctrine.orm.entity_manager', '@fos_user.user_manager']
   ladb_message_replymessage:
     class: Ladb\CoreBundle\Form\Type\Message\ReplyMessageType
     tags:

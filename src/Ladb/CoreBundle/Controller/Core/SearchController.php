@@ -25,6 +25,35 @@ class SearchController extends Controller {
 	}
 
 	/**
+	 * @Route("/typeahead/users.json", defaults={"_format" = "json"}, name="core_search_typeahead_users_json")
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadUsers.json.twig")
+	 */
+	public function searchTypeaheadUsersAction(Request $request, $page = 0) {
+		$searchUtils = $this->get(SearchUtils::NAME);
+
+
+		$searchParameters = $searchUtils->searchPaginedEntities(
+			$request,
+			$page,
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
+				$filter = new \Elastica\Query\QueryString($facet->value);
+				$filter->setFields(array( 'displayname', 'fullname', 'username' ));
+				$filters[] = $filter;
+			},
+			null,
+			null,
+			'fos_elastica.index.ladb.core_user',
+			\Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
+			null
+		);
+
+		$parameters = array_merge($searchParameters,  array(
+			'users'  => $searchParameters['entities'],
+		));
+		return $parameters;
+	}
+
+	/**
 	 * @Route("/typeahead/tags.json", defaults={"_format" = "json"}, name="core_search_typeahead_tags_json")
 	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadTags.json.twig")
 	 */
