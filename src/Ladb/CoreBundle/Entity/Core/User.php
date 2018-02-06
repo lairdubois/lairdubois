@@ -72,14 +72,14 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	 * @ORM\Column(type="string", length=25, unique=true)
 	 * @Assert\Length(min=3, max=25)
 	 * @Assert\NotBlank(groups={"settings"})
-	 * @Assert\Regex("/^[A-Za-z][ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]+$/")
+	 * @Assert\Regex("/^[A-Za-z][ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’-]+$/")
 	 */
 	private $displayname;
 
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 * @Assert\Length(min=3, max=100)
-	 * @Assert\Regex("/^[A-Za-z][ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]+$/")
+	 * @Assert\Regex("/^[A-Za-z][ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’-]+$/")
 	 */
 	private $fullname;
 

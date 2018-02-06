@@ -36,7 +36,7 @@ class SearchController extends Controller {
 			$request,
 			$page,
 			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
-				$filter = new \Elastica\Query\QueryString($facet->value);
+				$filter = new \Elastica\Query\QueryString('*'.$facet->value.'*');
 				$filter->setFields(array( 'displayname', 'fullname', 'username' ));
 				$filters[] = $filter;
 			},

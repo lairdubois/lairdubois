@@ -93,6 +93,7 @@ class AboutController extends Controller {
 			array( 'name' => 'Chart.js', 'url' => 'http://www.chartjs.org/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jsPlumb', 'url' => 'https://jsplumbtoolkit.com', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'Lodash', 'url' => 'https://lodash.com/', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'Selectize.js', 'url' => 'https://selectize.github.io/selectize.js/', 'labels' => array( 'JS' ) ),
 
 			array( 'name' => 'EmojiOne', 'url' => 'http://emojione.com/', 'labels' => array( 'PHP', 'CSS', 'JS' ) ),
 

@@ -1,0 +1,74 @@
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.selectize-dropdown-content {
+  max-height: 220px !important;
+}
+
+.selectize-control {
+  height: 34px !important;
+
+  &::before {
+    -moz-transition: opacity 0.2s;
+    -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    content: ' ';
+    z-index: 2;
+    position: absolute;
+    display: block;
+    top: 50%;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 0;
+    background: url(/bundles/ladbcore/ladb/images/spinner.gif);
+    background-size: 20px 20px;
+    opacity: 0;
+  }
+
+  &.loading::before {
+    opacity: 1;
+  }
+
+}
+
+.selectize-input {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.ladb-selectize-item {
+  padding: 4px !important;
+
+  .ladb-selectize-displayname {
+    padding: 0 5px;
+  }
+
+  .remove {
+    font-size: 20px !important;
+    width: 20px !important;
+  }
+
+}
+
+.ladb-selectize-option {
+  margin: 0;
+
+  .ladb-selectize-displayname {
+    margin: -2px 0 -2px 0;
+  }
+
+  .ladb-selectize-username {
+    color: #777;
+    font-size: 80%;
+  }
+
+  .highlight {
+    font-weight: bold;
+    background: none !important;
+  }
+
+}

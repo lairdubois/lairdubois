@@ -5,53 +5,72 @@
 
 {% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
 
-{#{% block headStylesheets %}#}
-    {#{{ parent() }}#}
-    {#<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.css" media="screen" />#}
-{#{% endblock %}#}
+{% block headStylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.css" media="screen" />
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/selectize/selectize.ladb.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
 
-{#{% block bodyJavascripts %}#}
-    {#{{ parent() }}#}
-    {#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>#}
-    {#<script>#}
-        {#$('#{{ form.recipients.vars.id }}').selectize({#}
-            {#delimiter: ',',#}
-            {#persist: false,#}
-            {#create: function(input) {#}
-                {#return {#}
-                    {#value: input,#}
-                    {#text: input#}
-                {#}#}
-            {#},#}
-            {#render: {#}
-                {#option: function(item, escape) {#}
-                    {#console.log('render');#}
-                    {#return '<div>' +#}
-                        {#'<span class="name">' + escape(item) + '</span>' +#}
-                        {#'</div>';#}
-                {#}#}
-            {#},#}
-            {#load: function(query, callback) {#}
-                {#if (!query.length) return callback();#}
-                {#$.ajax({#}
-                    {#url: '{{ path('core_search_typeahead_users_json') }}',#}
-                    {#type: 'GET',#}
-                    {#data: {#}
-                        {#q: query,#}
-                        {#page_limit: 10,#}
-                    {#},#}
-                    {#error: function() {#}
-                        {#callback();#}
-                    {#},#}
-                    {#success: function(res) {#}
-                        {#console.log(res, callback);#}
-                        {#callback(res.suggestions);#}
-                    {#}#}
-                {#});#}
-            {#}#}
-        {#});#}
-    {#</script>#}
-{#{% endblock %}#}
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
+    <script>
+        $('#{{ form.recipients.vars.id }}').selectize({
+            plugins: ['remove_button'],
+            valueField: 'username',
+            searchField: 'displayName',
+            create: false,
+            maxItems: 20,
+            closeAfterSelect: true,
+            selectOnTab: true,
+            placeholder: 'Saisissez le nom d\'un boiseu',
+            {% if form.vars.data.recipients|length > 0 %}
+                options: [
+                    {% for recipent in form.vars.data.recipients %}
+                    {
+                        username: "{{ recipent.username }}",
+                        displayName: "{{ recipent.displayName }}",
+                        avatar: "{{ recipent.avatar.webPath|imagine_filter('32x32o') }}"
+                    }{% if loop.last == false %},{% endif %}
+                    {% endfor %}
+                ],
+            {% endif %}
+            render: {
+                item: function(item) {
+                    return '<div class="ladb-selectize-item"><img src="' + item.avatar + '" width="20" height="20"><span class="ladb-selectize-displayname">' + item.displayName + '</span></div>';
+                },
+                option: function(item, escape) {
+                    return '<div class="ladb-selectize-option media">' +
+                        '<div class="media-left"><img src="' + item.avatar + '" width="32" height="32"></div>' +
+                        '<div class="media-body">' +
+                            '<div class="ladb-selectize-displayname">' + escape(item.displayName) + '</div> ' +
+                            '<div class="ladb-selectize-username">@' + escape(item.username) + '</div>' +
+                        '</div>' +
+                        '</div>';
+                }
+            },
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ path('core_search_typeahead_users_json') }}',
+                    type: 'GET',
+                    data: {
+                        q: query,
+                    },
+                    error: function(e) {
+                        callback();
+                    },
+                    success: function(res) {
+                        callback(res.suggestions);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
 
 {% block bodyContainerContent %}
     <div id="message-reply" class="ladb-message">
