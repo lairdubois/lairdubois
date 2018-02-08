@@ -27,7 +27,11 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 			$geocoder = new \Geocoder\Provider\GoogleMaps($adapter, null, null, true, $googleApiKey);
 			$geocoder->setLocale('fr_FR');
 
-			$response = $geocoder->geocode($localisable->getLocation());
+			try {
+				$response = $geocoder->geocode($localisable->getLocation());
+			} catch (\Exception $e) {
+				return false;
+			}
 
 			if ($response->count() > 0) {
 
@@ -87,7 +91,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 					$addressFormatRepository = new AddressFormatRepository();
 					$countryRepository = new CountryRepository();
 					$subdivisionRepository = new SubdivisionRepository();
-					$formatter = new DefaultFormatter($addressFormatRepository, $countryRepository, $subdivisionRepository, 'fr_FR', array( 'html' => false ));
+					$formatter = new DefaultFormatter($addressFormatRepository, $countryRepository, $subdivisionRepository, 'fr_FR', array('html' => false));
 
 					$a = new Address();
 

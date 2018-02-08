@@ -34,7 +34,6 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=false)
-	 * @Assert\NotBlank(groups={"event"})
 	 */
 	private $location;
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "280ef6e23f316a0927d74744c1523763",
+    "content-hash": "d6370404b3a2efc2ef8224251b4c4b6c",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -1938,21 +1938,21 @@
         },
         {
             "name": "eonasdan/bootstrap-datetimepicker",
-            "version": "4.17.37",
+            "version": "4.17.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Eonasdan/bootstrap-datetimepicker.git",
-                "reference": "fd8bd86dd78f789fb742798b7d49aba0a957af62"
+                "reference": "25c11d79e614bc6463a87c3dd9cbf8280422e006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Eonasdan/bootstrap-datetimepicker/zipball/fd8bd86dd78f789fb742798b7d49aba0a957af62",
-                "reference": "fd8bd86dd78f789fb742798b7d49aba0a957af62",
+                "url": "https://api.github.com/repos/Eonasdan/bootstrap-datetimepicker/zipball/25c11d79e614bc6463a87c3dd9cbf8280422e006",
+                "reference": "25c11d79e614bc6463a87c3dd9cbf8280422e006",
                 "shasum": ""
             },
             "require": {
                 "components/jquery": ">=1.9.1",
-                "moment/moment": ">=2.8",
+                "moment/moment": ">=2.10.5",
                 "robloach/component-installer": "*"
             },
             "type": "component",
@@ -1977,7 +1977,7 @@
                 "DateTimePicker",
                 "bootstrap"
             ],
-            "time": "2015-09-10T19:50:15+00:00"
+            "time": "2017-02-28T14:32:02+00:00"
         },
         {
             "name": "evenement/evenement",
@@ -2210,16 +2210,16 @@
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSElasticaBundle.git",
-                "reference": "4857392c7cb40b5b970157c283e57c5ebb08fcf5"
+                "reference": "ebf96f984c7f0b6bdc830accd722c76b80943a23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/4857392c7cb40b5b970157c283e57c5ebb08fcf5",
-                "reference": "4857392c7cb40b5b970157c283e57c5ebb08fcf5",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/ebf96f984c7f0b6bdc830accd722c76b80943a23",
+                "reference": "ebf96f984c7f0b6bdc830accd722c76b80943a23",
                 "shasum": ""
             },
             "require": {
@@ -2292,7 +2292,7 @@
                 "mongodb",
                 "search"
             ],
-            "time": "2018-01-03T13:22:51+00:00"
+            "time": "2018-02-07T12:32:48+00:00"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -5322,16 +5322,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v5.1.4",
+            "version": "v5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "072c00c52b947e88a1e619e9ff426cee6c8c482b"
+                "reference": "93ae48d5f4b567105bcc058c3a8ba506176eca8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/072c00c52b947e88a1e619e9ff426cee6c8c482b",
-                "reference": "072c00c52b947e88a1e619e9ff426cee6c8c482b",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/93ae48d5f4b567105bcc058c3a8ba506176eca8a",
+                "reference": "93ae48d5f4b567105bcc058c3a8ba506176eca8a",
                 "shasum": ""
             },
             "require": {
@@ -5387,7 +5387,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2018-01-12T13:08:16+00:00"
+            "time": "2018-02-06T19:53:10+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
