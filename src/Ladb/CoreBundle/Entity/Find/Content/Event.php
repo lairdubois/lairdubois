@@ -33,7 +33,7 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 	private $pictures;
 
 	/**
-	 * @ORM\Column(type="string", length=100, nullable=false)
+	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $location;
 
