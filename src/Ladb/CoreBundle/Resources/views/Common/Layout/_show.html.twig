@@ -11,7 +11,11 @@
         {% set pageDescription = entity.bodyExtract %}
     {% endif %}
     {% if entity.user is defined %}
-        {% set pageAuthor = entity.user.displayname %}
+        {% if entity.user.meta.facebook is not null %}
+            {% set pageAuthor = entity.user.meta.facebook %}
+        {% else %}
+            {% set pageAuthor = entity.user.displayname %}
+        {% endif %}
     {% endif %}
     {% if pageImage is not defined %}
         {% if entity.pictures is defined and entity.pictures is not empty %}
@@ -43,6 +47,9 @@
     {% block headOpenGraphArticleMetas %}
         {# OpenGraph metas #}
         {% if entity is defined %}
+            {% if entity.user is defined and entity.user.meta.facebook is not null %}
+                <meta property="article:author" content="{{ entity.user.meta.facebook }}" />
+            {% endif %}
             <meta property="article:publisher" content="LAirDuBois" />
             <meta property="article:modified_time" content="{{ entity.updatedAt|date('c') }}" />
             <meta property="article:published_time" content="{{ entity.createdAt|date('c') }}" />
