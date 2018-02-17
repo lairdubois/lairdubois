@@ -43,7 +43,6 @@
     {% block headOpenGraphArticleMetas %}
         {# OpenGraph metas #}
         {% if entity is defined %}
-            <meta property="article:author" content="{{ pageAuthor }}" />
             <meta property="article:publisher" content="LAirDuBois" />
             <meta property="article:modified_time" content="{{ entity.updatedAt|date('c') }}" />
             <meta property="article:published_time" content="{{ entity.createdAt|date('c') }}" />
