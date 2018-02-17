@@ -167,7 +167,7 @@ class PublicationListener implements EventSubscriberInterface {
 		$searchUtils->insertEntityToIndex($publication);
 
 		// Resolve main picture to avoid image url redirection
-//		$this->_resolvePicturesPageImageFilter($publication);
+		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
 //		$this->_scrapeOpenGraph($publication);
@@ -229,7 +229,7 @@ class PublicationListener implements EventSubscriberInterface {
 		}
 
 		// Resolve pictures
-//		$this->_resolvePicturesPageImageFilter($publication);
+		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
 		$this->_scrapeOpenGraph($publication);
@@ -335,7 +335,7 @@ class PublicationListener implements EventSubscriberInterface {
 		}
 
 		// Resolve main picture to avoid image url redirection
-//		$this->_resolvePicturesPageImageFilter($publication);
+		$this->_resolvePicturesPageImageFilter($publication);
 
 		// Scrape Open Graph URL
 		//$this->_scrapeOpenGraph($publication);
