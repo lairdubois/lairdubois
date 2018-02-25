@@ -23,7 +23,7 @@
 
 {% block entityMetas %}
     {% if provider.state > 0 %}
-        <li class="ladb-linkto ladb-color-negative"><i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}</li>
+        <div class="label label-danger"><i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}</div>
     {% endif %}
     {{ parent() }}
 {% endblock %}

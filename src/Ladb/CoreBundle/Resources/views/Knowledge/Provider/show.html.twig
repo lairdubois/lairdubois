@@ -104,7 +104,9 @@
 
 {% block contentBody %}
     {% if provider.state > 0 %}
-        <div style="background-color: #d9534f; padding: 10px 10px; color: white !important; text-align: center; margin-bottom: 20px;"><i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}</div>
+        <a href="#ladb_meta_field_state" class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_meta_field_state').effect('highlight', {}, 800);">
+            <i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}
+        </a>
     {% endif %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', provider), 'picture':provider.logo, 'values':provider.logoValues, 'itemProperty':'logo', 'pictureBoxClasses':(provider.logoRejected ? 'ladb-box-barred' : null) } %}
