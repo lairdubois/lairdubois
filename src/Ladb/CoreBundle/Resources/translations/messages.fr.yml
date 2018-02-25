@@ -627,6 +627,9 @@ knowledge:
     create: Créer un nouveau fournisseur
     list: Les fournisseurs
     nav: Fournisseurs
+    state_alert_1: En cours de redressement
+    state_alert_2: En cours de liquidation
+    state_alert_3: Définitivement fermé
     linkto: Associer un fournisseur déjà publié
     new_warning: Un <strong>fournisseur</strong> est une entreprise, une association ou un organisme qui vend des produits ou services <strong>pour le travail du bois</strong>.
     field:
@@ -644,6 +647,7 @@ knowledge:
       products: Type de produits
       services: Type de services
       woods: Essences
+      state: Etat de l'activité
     help:
       sign: "L'**Enseigne** comprend la marque du fournisseur ainsi que facultativement le nom de l'agence ou de la boutique."
       logo: "Le **Logo** est une image représentant le logotype du fournisseur."
@@ -660,6 +664,7 @@ knowledge:
       woods: |
         Le champ **Essences** permet, le cas échéant, de lister les principales essences de bois proposées par ce fournisseur.
         *Ce champs n'est disponible que si le type de produits **Bois massifs** est actif sur ce fournisseur.*
+      state: "L'**Etat de l'activité** permet d'indiquer la santé administrative de ce fournisseur."
     form:
       alert:
         delete_success: Le fournisseur <strong>%title%</strong> a été supprimé.
@@ -692,6 +697,7 @@ knowledge:
           - Ajoutez plusieurs propositions pour faire apparaitre plusieurs types de services.
         woods: |
           - Ajoutez **UNE** proposition par essence.
+        state:
     choice:
       new_providers: '[0,1]nouveau fournisseur|]1,Inf]nouveaux fournisseurs'
       providers: '[0,1]fournisseur|]1,Inf]fournisseurs'

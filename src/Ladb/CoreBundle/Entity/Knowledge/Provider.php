@@ -44,6 +44,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	const FIELD_PRODUCTS  = 'products';
 	const FIELD_SERVICES  = 'services';
 	const FIELD_WOODS  = 'woods';
+	const FIELD_STATE  = 'state';
 
 	public static $FIELD_DEFS = array(
 		Provider::FIELD_SIGN                => array(Provider::ATTRIB_TYPE => Sign::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true, Provider::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueProvider', array('excludedId' => '@getId'))), Provider::ATTRIB_LINKED_FIELDS => array('brand', 'isAffiliate', 'store')),
@@ -59,6 +60,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		Provider::FIELD_SERVICES            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Formations', 1 => 'Affûtage', 2 => 'Découpe', 3 => 'Location d\'atelier', 4 => 'Location d\'établi', 5 => 'Réparations'), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@services:"%q%"'),
 		Provider::FIELD_WOODS               => array(Provider::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_FILTER_QUERY => '@woods:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule essence par proposition.')))),
 		Provider::FIELD_DESCRIPTION         => array(Provider::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
+		Provider::FIELD_STATE         		=> array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(0 => 'En activité', 1 => 'En cours de redressement', 2 => 'En cours de liquidattion', 3 => 'Définitivement fermé')),
 	);
 
 	/**
@@ -280,6 +282,18 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	private $woodsValues;
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true)
+	 */
+	private $state;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_state")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $stateValues;
+
+	/**
 	 * @ORM\Column(type="integer", name="creation_count")
 	 */
 	private $creationCount = 0;
@@ -315,6 +329,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		$this->productsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->servicesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->woodsValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->stateValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -709,15 +724,15 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	// InStoreSellingValues /////
 
-	public function addInStoreSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $inStoreSellingValues) {
-		if (!$this->inStoreSellingValues->contains($inStoreSellingValues)) {
-			$this->inStoreSellingValues[] = $inStoreSellingValues;
+	public function addInStoreSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $inStoreSellingValue) {
+		if (!$this->inStoreSellingValues->contains($inStoreSellingValue)) {
+			$this->inStoreSellingValues[] = $inStoreSellingValue;
 		}
 		return $this;
 	}
 
-	public function removeInStoreSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $inStoreSellingValues) {
-		$this->inStoreSellingValues->removeElement($inStoreSellingValues);
+	public function removeInStoreSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $inStoreSellingValue) {
+		$this->inStoreSellingValues->removeElement($inStoreSellingValue);
 	}
 
 	public function setInStoreSellingValues($inStoreSellingValues) {
@@ -741,15 +756,15 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	// MailOrderSellingValues /////
 
-	public function addMailOrderSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $mailOrderSellingValues) {
-		if (!$this->mailOrderSellingValues->contains($mailOrderSellingValues)) {
-			$this->mailOrderSellingValues[] = $mailOrderSellingValues;
+	public function addMailOrderSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $mailOrderSellingValue) {
+		if (!$this->mailOrderSellingValues->contains($mailOrderSellingValue)) {
+			$this->mailOrderSellingValues[] = $mailOrderSellingValue;
 		}
 		return $this;
 	}
 
-	public function removeMailOrderSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $mailOrderSellingValues) {
-		$this->mailOrderSellingValues->removeElement($mailOrderSellingValues);
+	public function removeMailOrderSellingValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $mailOrderSellingValue) {
+		$this->mailOrderSellingValues->removeElement($mailOrderSellingValue);
 	}
 
 	public function setMailOrderSellingValues($mailOrderSellingValues) {
@@ -773,15 +788,15 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	// SaleToIndividualsValues /////
 
-	public function addSaleToIndividualsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $saleToIndividualsValues) {
-		if (!$this->saleToIndividualsValues->contains($saleToIndividualsValues)) {
-			$this->saleToIndividualsValues[] = $saleToIndividualsValues;
+	public function addSaleToIndividualsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $saleToIndividualsValue) {
+		if (!$this->saleToIndividualsValues->contains($saleToIndividualsValue)) {
+			$this->saleToIndividualsValues[] = $saleToIndividualsValue;
 		}
 		return $this;
 	}
 
-	public function removeSaleToIndividualsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $saleToIndividualsValues) {
-		$this->saleToIndividualsValues->removeElement($saleToIndividualsValues);
+	public function removeSaleToIndividualsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $saleToIndividualsValue) {
+		$this->saleToIndividualsValues->removeElement($saleToIndividualsValue);
 	}
 
 	public function setSaleToIndividualsValues($saleToIndividualsValues) {
@@ -890,6 +905,38 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	public function getWoodsValues() {
 		return $this->woodsValues;
+	}
+
+	// State /////
+
+	public function setState($state) {
+		$this->state = $state;
+		return $this;
+	}
+
+	public function getState() {
+		return $this->state;
+	}
+
+	// StateValues /////
+
+	public function addStateValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $stateValue) {
+		if (!$this->stateValues->contains($stateValue)) {
+			$this->stateValues[] = $stateValue;
+		}
+		return $this;
+	}
+
+	public function removeStateValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $stateValue) {
+		$this->stateValues->removeElement($stateValue);
+	}
+
+	public function setStateValues($stateValues) {
+		$this->stateValues = $stateValues;
+	}
+
+	public function getStateValues() {
+		return $this->stateValues;
 	}
 
 	// CreationCount /////

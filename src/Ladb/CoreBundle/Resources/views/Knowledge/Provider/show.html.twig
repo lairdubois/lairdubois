@@ -103,6 +103,9 @@
 {% endblock %}
 
 {% block contentBody %}
+    {% if provider.state > 0 %}
+        <div style="background-color: #d9534f; padding: 10px 10px; color: white !important; text-align: center; margin-bottom: 20px;"><i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}</div>
+    {% endif %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', provider), 'picture':provider.logo, 'values':provider.logoValues, 'itemProperty':'logo', 'pictureBoxClasses':(provider.logoRejected ? 'ladb-box-barred' : null) } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_PHOTO', provider), 'picture':provider.photo, 'values':provider.photoValues, 'itemProperty':'photo' } %}
@@ -136,6 +139,10 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', provider), 'data':provider.address, 'values':provider.addressValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', provider), 'data':provider.phone, 'values':provider.phoneValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', provider), 'data':provider.description, 'values':provider.descriptionValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Informations</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_STATE', provider), 'data':provider.state, 'values':provider.stateValues } %}
         </div>
         <div class="panel panel-default ladb-margin-top">
             <div class="panel-body">

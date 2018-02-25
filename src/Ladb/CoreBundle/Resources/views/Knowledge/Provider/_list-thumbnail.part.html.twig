@@ -21,6 +21,13 @@
     {% endif %}
 {% endblock %}
 
+{% block entityMetas %}
+    {% if provider.state > 0 %}
+        <li class="ladb-linkto ladb-color-negative"><i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}</li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     {% include 'LadbCoreBundle:Knowledge/Provider:_compact-infos.part.html.twig' %}
 {% endblock %}
