@@ -62,7 +62,7 @@ class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterfa
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 * @Assert\NotBlank()
-	 * @Assert\Length(min=2, max=5000)
+	 * @Assert\Length(min=2, max=10000)
 	 * @LadbAssert\NoMediaLink()
 	 */
 	private $body;

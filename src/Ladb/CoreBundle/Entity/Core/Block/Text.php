@@ -19,7 +19,7 @@ class Text extends AbstractBlock implements BodiedInterface {
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 * @Assert\NotBlank()
-	 * @Assert\Length(min=5, max=4000)
+	 * @Assert\Length(min=5, max=10000)
 	 * @LadbAssert\NoMediaLink()
 	 */
 	private $body;
