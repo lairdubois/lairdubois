@@ -25,7 +25,17 @@ class MailerUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function sendEmailMessage($toEmail, $subject, $body, $htmlBody = null, $unsubscribeList = null, $unsubscribeEncryptedEmail = null) {
+	public function generateListUnsubscribeLink(User $user, $list) {
+		return $this->get('router')->generate('core_user_email_unsubscribe', array(
+			'list' => $list,
+			'encryptedEmail' => $this->get(CryptoUtils::NAME)->encryptString($user->getEmailCanonical())
+		),
+		UrlGeneratorInterface::ABSOLUTE_URL);
+	}
+
+	/////
+
+	public function sendEmailMessage($toEmail, $subject, $body, $htmlBody = null, $listUnsubscribeLink = null) {
 		if (empty($toEmail)) {
 			return;	// Invalid email
 		}
@@ -45,13 +55,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			->setBody($body)
 
 		;
-		if (!is_null($unsubscribeList) && !is_null($unsubscribeEncryptedEmail)) {
-			$listUnsubscribeLink = $this->get('router')->generate('core_user_email_unsubscribe', array(
-				'list' => $unsubscribeList,
-				'encryptedEmail' => $unsubscribeEncryptedEmail,
-			), UrlGeneratorInterface::ABSOLUTE_URL);
-			$listUnsubscribeMailto = 'mailto:unsubscribe@lairdubois.fr?subject='.$listUnsubscribeLink;
-			$message->getHeaders()->addTextHeader('List-Unsubscribe', '<'.$listUnsubscribeMailto.'>, <'.$listUnsubscribeLink.'>');
+		if (!is_null($listUnsubscribeLink)) {
+			$message->getHeaders()->addTextHeader('List-Unsubscribe', '<mailto:unsubscribe@lairdubois.fr?subject='.$listUnsubscribeLink.'>');
 		}
 		if (!is_null($htmlBody)) {
 			$message->addPart($htmlBody, 'text/html');
@@ -79,20 +84,18 @@ class MailerUtils extends AbstractContainerAwareUtils {
 	public function sendIncomingMessageNotificationEmailMessage(User $recipientUser, User $actorUser, Thread $thread, Message $message) {
 		if ($recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
 			$parameters = array(
-				'recipientUser'             => $recipientUser,
-				'actorUser'                 => $actorUser,
-				'thread'                    => $thread,
-				'message'                   => $message,
-				'unsubscribeList'           => self::LIST_NOTIFICATIONS,
-				'unsubscribeEncryptedEmail' => $this->get(CryptoUtils::NAME)->encryptString($recipientUser->getEmailCanonical()),
+				'recipientUser'       => $recipientUser,
+				'actorUser'           => $actorUser,
+				'thread'              => $thread,
+				'message'             => $message,
+				'listUnsubscribeLink' => $this->generateListUnsubscribeLink($recipientUser, self::LIST_NOTIFICATIONS),
 			);
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
-				'Notification de nouveau message de ' . $actorUser->getDisplayname(),
+				'Notification de nouveau message de '.$actorUser->getDisplayname(),
 				$this->_renderTemplate('LadbCoreBundle:Message:email-notification.txt.twig', $parameters),
 				$this->_renderTemplate('LadbCoreBundle:Message:email-notification.html.twig', $parameters),
-				$parameters['unsubscribeList'],
-				$parameters['unsubscribeEncryptedEmail']
+				$parameters['listUnsubscribeLink']
 			);
 		}
 	}
@@ -100,21 +103,19 @@ class MailerUtils extends AbstractContainerAwareUtils {
 	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess) {
 		if ($recipientUser->getMeta()->getNewSpotlightEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
 			$parameters = array(
-				'recipientUser'             => $recipientUser,
-				'entity'                    => $entity,
-				'twitterSuccess'            => $twitterSuccess,
-				'facebookSuccess'           => $facebookSuccess,
-				'pinterestSuccess'          => $pinterestSuccess,
-				'unsubscribeList'           => self::LIST_NOTIFICATIONS,
-				'unsubscribeEncryptedEmail' => $this->get(CryptoUtils::NAME)->encryptString($recipientUser->getEmailCanonical()),
+				'recipientUser'       => $recipientUser,
+				'entity'              => $entity,
+				'twitterSuccess'      => $twitterSuccess,
+				'facebookSuccess'     => $facebookSuccess,
+				'pinterestSuccess'    => $pinterestSuccess,
+				'listUnsubscribeLink' => $this->generateListUnsubscribeLink($recipientUser, self::LIST_NOTIFICATIONS),
 			);
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Notification de nouveau coup de projecteur',
 				$this->_renderTemplate('LadbCoreBundle:Command:spotlight-email-notification.txt.twig', $parameters),
 				$this->_renderTemplate('LadbCoreBundle:Command:spotlight-email-notification.html.twig', $parameters),
-				$parameters['unsubscribeList'],
-				$parameters['unsubscribeEncryptedEmail']
+				$parameters['listUnsubscribeLink']
 			);
 		}
 	}
@@ -159,30 +160,29 @@ class MailerUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function sendWeekNewsEmailMessage(User &$recipientUser, &$creations, &$questions, &$plans, &$workshops, &$howtos, &$howtoArticles, &$finds, &$posts, &$woods, &$providers) {
+	public function sendWeekNewsEmailMessage(User &$recipientUser, &$creations, &$questions, &$plans, &$workshops, &$howtos, &$howtoArticles, &$finds, &$posts, &$woods, &$providers, &$schools) {
 		if ($recipientUser->getMeta()->getWeekNewsEmailEnabled()) {
 			$parameters = array(
-				'recipientUser'             => $recipientUser,
-				'creations'                 => $creations,
-				'questions'                 => $questions,
-				'plans'                     => $plans,
-				'workshops'                 => $workshops,
-				'howtos'                    => $howtos,
-				'howtoArticles'             => $howtoArticles,
-				'finds'                     => $finds,
-				'posts'                     => $posts,
-				'woods'                     => $woods,
-				'providers'                 => $providers,
-				'unsubscribeList'           => self::LIST_WEEKNEWS,
-				'unsubscribeEncryptedEmail' => $this->get(CryptoUtils::NAME)->encryptString($recipientUser->getEmailCanonical()),
+				'recipientUser'       => $recipientUser,
+				'creations'           => $creations,
+				'questions'           => $questions,
+				'plans'               => $plans,
+				'workshops'           => $workshops,
+				'howtos'              => $howtos,
+				'howtoArticles'       => $howtoArticles,
+				'finds'               => $finds,
+				'posts'               => $posts,
+				'woods'               => $woods,
+				'providers'           => $providers,
+				'schools'             => $schools,
+				'listUnsubscribeLink' => $this->generateListUnsubscribeLink($recipientUser, self::LIST_WEEKNEWS),
 			);
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Nouveautés l\'Air du Bois de la semaine',
 				$this->_renderTemplate('LadbCoreBundle:Command:mailing-weeknews-email.txt.twig', $parameters),
 				$this->_renderTemplate('LadbCoreBundle:Command:mailing-weeknews-email.html.twig', $parameters),
-				$parameters['unsubscribeList'],
-				$parameters['unsubscribeEncryptedEmail']
+				$parameters['listUnsubscribeLink']
 			);
 			unset($parameters);
 		}

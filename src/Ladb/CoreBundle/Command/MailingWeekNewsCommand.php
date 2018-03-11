@@ -17,6 +17,7 @@ class MailingWeekNewsCommand extends ContainerAwareCommand {
 		$this
 			->setName('ladb:mailing:weeknews')
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force sending')
+			->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Limit the number of users')
 			->setDescription('Send week news')
 			->setHelp(<<<EOT
 The <info>ladb:mailing:newsletter</info> send week news
@@ -28,6 +29,7 @@ EOT
 
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
+		$limit = $input->getOption('limit');
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
 		$mailerUtils = $this->getContainer()->get(MailerUtils::NAME);
@@ -354,7 +356,7 @@ EOT
 			;
 
 			try {
-				$userCount = $queryBuilder->getQuery()->getSingleScalarResult();
+				$userCount = min($queryBuilder->getQuery()->getSingleScalarResult(), $limit);
 			} catch (\Doctrine\ORM\NoResultException $e) {
 				$userCount = 0;
 			}
@@ -362,7 +364,7 @@ EOT
 			$progress = new ProgressBar($output, $userCount);
 			$progress->start();
 
-			$batchSize = 500;
+			$batchSize = min(500, $userCount);
 			$batchCount = ceil($userCount / $batchSize);
 
 			for ($batchIndex = 0; $batchIndex < $batchCount; $batchIndex++) {

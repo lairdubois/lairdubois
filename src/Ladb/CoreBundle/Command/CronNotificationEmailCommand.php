@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Utils\CryptoUtils;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -83,7 +82,6 @@ EOT
 
 			$typableUtils = $this->getContainer()->get(TypableUtils::NAME);
 			$mailerUtils = $this->getContainer()->get(MailerUtils::NAME);
-			$cryptoUtils = $this->getContainer()->get(CryptoUtils::NAME);
 			$translator = $this->getContainer()->get('translator');
 			$templating = $this->getContainer()->get('templating');
 
@@ -209,10 +207,9 @@ EOT
 			}
 
 			$parameters = array(
-				'recipientUser'             => $recipientUser,
-				'rows'                      => $rows,
-				'unsubscribeList'           => MailerUtils::LIST_NOTIFICATIONS,
-				'unsubscribeEncryptedEmail' => $cryptoUtils->encryptString($recipientUser->getEmailCanonical()),
+				'recipientUser'       => $recipientUser,
+				'rows'                => $rows,
+				'listUnsubscribeLink' => $mailerUtils->generateListUnsubscribeLink($recipientUser, MailerUtils::LIST_NOTIFICATIONS),
 			);
 
 			$subject = $translator->transChoice('notification.choice.'.$activityStrippedName, count($notifications));
@@ -228,8 +225,7 @@ EOT
 					$subject,
 					$body,
 					$htmlBody,
-					$parameters['unsubscribeList'],
-					$parameters['unsubscribeEncryptedEmail']
+					$parameters['listUnsubscribeLink']
 				);
 				if ($verbose) {
 					$output->writeln('<fg=cyan>[Done]</fg=cyan>');
