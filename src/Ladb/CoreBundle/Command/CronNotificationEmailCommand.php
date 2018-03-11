@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Command;
 
+use Ladb\CoreBundle\Utils\CryptoUtils;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -82,6 +83,7 @@ EOT
 
 			$typableUtils = $this->getContainer()->get(TypableUtils::NAME);
 			$mailerUtils = $this->getContainer()->get(MailerUtils::NAME);
+			$cryptoUtils = $this->getContainer()->get(CryptoUtils::NAME);
 			$translator = $this->getContainer()->get('translator');
 			$templating = $this->getContainer()->get('templating');
 
@@ -207,8 +209,10 @@ EOT
 			}
 
 			$parameters = array(
-				'recipientUser' => $recipientUser,
-				'rows'          => $rows,
+				'recipientUser'             => $recipientUser,
+				'rows'                      => $rows,
+				'unsubscribeList'           => MailerUtils::LIST_NOTIFICATIONS,
+				'unsubscribeEncryptedEmail' => $cryptoUtils->encryptString($recipientUser->getEmailCanonical()),
 			);
 
 			$subject = $translator->transChoice('notification.choice.'.$activityStrippedName, count($notifications));
@@ -219,7 +223,14 @@ EOT
 				$output->write('<info>--> Sending email to <fg=white>@'.$recipientUser->getDisplayname().'</fg=white> <fg=yellow>('.count($rows).' '.$activityStrippedName.')</fg=yellow>...</info>');
 			}
 			if ($forced) {
-				$mailerUtils->sendEmailMessage($recipientUser->getEmail(), $subject, $body, $htmlBody);
+				$mailerUtils->sendEmailMessage(
+					$recipientUser->getEmail(),
+					$subject,
+					$body,
+					$htmlBody,
+					$parameters['unsubscribeList'],
+					$parameters['unsubscribeEncryptedEmail']
+				);
 				if ($verbose) {
 					$output->writeln('<fg=cyan>[Done]</fg=cyan>');
 				}

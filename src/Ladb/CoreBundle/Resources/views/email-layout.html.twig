@@ -29,8 +29,13 @@
                     </tr>
                     {% block footer %}
                     <tr>
-                        <td align="center" style="padding: 20px; color: #999; font-size: 80%;">
-                            <p style="margin: 5px 0 5px 0;">Vous pouvez vous désabonner de ces emails en modifiant vos <a href="{{ url('core_user_settings')~'#email_notifications' }}" style="color:#f77f00; text-decoration: none;" target="_blank">paramètres de notification</a>.</p>
+                        <td align="center" style="padding: 20px; color: #999; font-size: 95%;">
+                            <p style="margin: 5px 0 5px 0;">
+                                {% if unsubscribeList is defined and unsubscribeEncryptedEmail is defined %}
+                                    <a href="{{ url('core_user_email_unsubscribe', { 'list':unsubscribeList, 'encryptedEmail':unsubscribeEncryptedEmail }) }}" style="color:#f77f00; text-decoration: none; padding-right: 10px; border-right: 1px solid #ddd; margin-right: 10px;" target="_blank">Se désabonner de ces emails</a>
+                                {% endif %}
+                                <a href="{{ url('core_user_settings')~'#notifications' }}" style="color:#f77f00; text-decoration: none;" target="_blank">Gérer vos paramètres de notification</a>.
+                            </p>
                         </td>
                     </tr>
                     {% endblock %}

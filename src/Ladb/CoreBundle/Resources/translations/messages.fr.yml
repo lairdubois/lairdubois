@@ -843,6 +843,12 @@ user:
       invalid_token: La clé de confirmation de votre adresse e-mail n'est pas valide
       invalid_user: L'utilisateur ne correspond pas à la clé de confirmation de l'adresse e-mail.
       success: Votre adresse e-mail <strong>%email%</strong> a bien été confirmée.
+  email_unsubscribe:
+    title: Désabonnement des e-mails
+    confirm:
+      invalid_email: L'adresse e-mail fournie est inconnue.
+      success_weeknews: L'adresse e-mail <strong>%email%</strong> ne recevera plus de courriel de nouveautés hebdomadaires.
+      success_notifications: L'adresse e-mail <strong>%email%</strong> ne recevera plus de courriel de notifications.
   admin:
     tab: Admin
     alert:

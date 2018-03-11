@@ -7,6 +7,7 @@ use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
 use Ladb\CoreBundle\Entity\Promotion\Graphic;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
+use Ladb\CoreBundle\Utils\CryptoUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -96,6 +97,52 @@ class UserController extends Controller {
 		return array(
 			'invalidToken' => $invalidToken,
 			'invalidUser'  => $invalidUser,
+		);
+	}
+
+	/**
+	 * @Route("/email/unsubscribe/{list}/{encryptedEmail}", requirements={"list" = "notifications|weeknews"}, name="core_user_email_unsubscribe")
+	 * @Template("LadbCoreBundle:Core/User:emailUnsubscribe.html.twig")
+	 */
+	public function emailUnsubsciteAction($list, $encryptedEmail) {
+		$userManager = $this->container->get('fos_user.user_manager');
+
+		$invalidEmail = false;
+
+		$email = $this->get(CryptoUtils::NAME)->decryptString($encryptedEmail);
+		$user = $userManager->findUserByEmail($email);
+		if (null === $user) {
+			$invalidEmail = true;
+		}
+
+		if (!$invalidEmail) {
+
+			switch ($list) {
+
+				case MailerUtils::LIST_NOTIFICATIONS:
+					$user->getMeta()->setIncomingMessageEmailNotificationEnabled(false);
+					$user->getMeta()->setNewFollowerEmailNotificationEnabled(false);
+					$user->getMeta()->setNewLikeEmailNotificationEnabled(false);
+					$user->getMeta()->setNewVoteEmailNotificationEnabled(false);
+					$user->getMeta()->setNewFollowingPostEmailNotificationEnabled(false);
+					$user->getMeta()->setNewWatchActivityEmailNotificationEnabled(false);
+					$user->getMeta()->setNewSpotlightEmailNotificationEnabled(false);
+					break;
+
+				case MailerUtils::LIST_WEEKNEWS:
+					$user->getMeta()->setWeekNewsEmailEnabled(false);
+					break;
+
+			}
+
+			$userManager->updateUser($user);
+
+		}
+
+		return array(
+			'invalidEmail' => $invalidEmail,
+			'email'        => $email,
+			'list'         => $list,
 		);
 	}
 

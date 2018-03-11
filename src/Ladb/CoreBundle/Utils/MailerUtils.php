@@ -8,26 +8,24 @@ use Ladb\CoreBundle\Entity\Core\Spotlight;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Message\Thread;
 use Ladb\CoreBundle\Entity\Core\Report;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class MailerUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.mailer_utils';
 
+	const LIST_NOTIFICATIONS = 'notifications';
+	const LIST_WEEKNEWS = 'weeknews';
+
 	/////
 
-	public function sendConfirmationEmailMessage(User $recipientUser) {
-		if (!$recipientUser->getEmailConfirmed()) {
-			$parameters = array( 'recipientUser' => $recipientUser, 'token' => $recipientUser->getConfirmationToken() );
-			$this->sendEmailMessage(
-				$recipientUser->getEmail(),
-				'Confirmation de votre adresse e-mail',
-				$this->_renderTemplate('LadbCoreBundle:Core/User:email-confirmation.txt.twig', $parameters),
-				$this->_renderTemplate('LadbCoreBundle:Core/User:email-confirmation.html.twig', $parameters)
-			);
-		}
+	private function _renderTemplate($name, array $parameters = array()) {
+		return $this->get('templating')->render($name, $parameters);
 	}
 
-	public function sendEmailMessage($toEmail, $subject, $body, $htmlBody = null) {
+	/////
+
+	public function sendEmailMessage($toEmail, $subject, $body, $htmlBody = null, $unsubscribeList = null, $unsubscribeEncryptedEmail = null) {
 		if (empty($toEmail)) {
 			return;	// Invalid email
 		}
@@ -45,37 +43,78 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			->setTo($toEmail)
 			->setSubject($subject)
 			->setBody($body)
+
 		;
+		if (!is_null($unsubscribeList) && !is_null($unsubscribeEncryptedEmail)) {
+			$listUnsubscribeLink = $this->get('router')->generate('core_user_email_unsubscribe', array(
+				'list' => $unsubscribeList,
+				'encryptedEmail' => $unsubscribeEncryptedEmail,
+			), UrlGeneratorInterface::ABSOLUTE_URL);
+			$listUnsubscribeMailto = 'mailto:unsubscribe@lairdubois.fr?subject='.$listUnsubscribeLink;
+			$message->getHeaders()->addTextHeader('List-Unsubscribe', '<'.$listUnsubscribeMailto.'>, <'.$listUnsubscribeLink.'>');
+		}
 		if (!is_null($htmlBody)) {
 			$message->addPart($htmlBody, 'text/html');
 		}
 		$this->get('mailer')->send($message);
 	}
 
-	private function _renderTemplate($name, array $parameters = array()) {
-		return $this->get('templating')->render($name, $parameters);
+	/////
+
+	public function sendConfirmationEmailMessage(User $recipientUser) {
+		if (!$recipientUser->getEmailConfirmed()) {
+			$parameters = array(
+				'recipientUser' => $recipientUser,
+				'token' => $recipientUser->getConfirmationToken(),
+			);
+			$this->sendEmailMessage(
+				$recipientUser->getEmail(),
+				'Confirmation de votre adresse e-mail',
+				$this->_renderTemplate('LadbCoreBundle:Core/User:email-confirmation.txt.twig', $parameters),
+				$this->_renderTemplate('LadbCoreBundle:Core/User:email-confirmation.html.twig', $parameters)
+			);
+		}
 	}
 
 	public function sendIncomingMessageNotificationEmailMessage(User $recipientUser, User $actorUser, Thread $thread, Message $message) {
 		if ($recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
-			$parameters = array( 'recipientUser' => $recipientUser, 'actorUser' => $actorUser, 'thread' => $thread, 'message' => $message );
+			$parameters = array(
+				'recipientUser'             => $recipientUser,
+				'actorUser'                 => $actorUser,
+				'thread'                    => $thread,
+				'message'                   => $message,
+				'unsubscribeList'           => self::LIST_NOTIFICATIONS,
+				'unsubscribeEncryptedEmail' => $this->get(CryptoUtils::NAME)->encryptString($recipientUser->getEmailCanonical()),
+			);
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Notification de nouveau message de ' . $actorUser->getDisplayname(),
 				$this->_renderTemplate('LadbCoreBundle:Message:email-notification.txt.twig', $parameters),
-				$this->_renderTemplate('LadbCoreBundle:Message:email-notification.html.twig', $parameters)
+				$this->_renderTemplate('LadbCoreBundle:Message:email-notification.html.twig', $parameters),
+				$parameters['unsubscribeList'],
+				$parameters['unsubscribeEncryptedEmail']
 			);
 		}
 	}
 
 	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess) {
 		if ($recipientUser->getMeta()->getNewSpotlightEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
-			$parameters = array( 'recipientUser' => $recipientUser, 'entity' => $entity, 'twitterSuccess' => $twitterSuccess, 'facebookSuccess' => $facebookSuccess, 'pinterestSuccess' => $pinterestSuccess );
+			$parameters = array(
+				'recipientUser'             => $recipientUser,
+				'entity'                    => $entity,
+				'twitterSuccess'            => $twitterSuccess,
+				'facebookSuccess'           => $facebookSuccess,
+				'pinterestSuccess'          => $pinterestSuccess,
+				'unsubscribeList'           => self::LIST_NOTIFICATIONS,
+				'unsubscribeEncryptedEmail' => $this->get(CryptoUtils::NAME)->encryptString($recipientUser->getEmailCanonical()),
+			);
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Notification de nouveau coup de projecteur',
 				$this->_renderTemplate('LadbCoreBundle:Command:spotlight-email-notification.txt.twig', $parameters),
-				$this->_renderTemplate('LadbCoreBundle:Command:spotlight-email-notification.html.twig', $parameters)
+				$this->_renderTemplate('LadbCoreBundle:Command:spotlight-email-notification.html.twig', $parameters),
+				$parameters['unsubscribeList'],
+				$parameters['unsubscribeEncryptedEmail']
 			);
 		}
 	}
@@ -104,8 +143,6 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		);
 	}
 
-	/////
-
 	public function sendFundingPaymentReceiptEmailMessage(User $recipientUser, $donation) {
 		$parameters = array(
 			'recipientUser' => $recipientUser,
@@ -125,23 +162,27 @@ class MailerUtils extends AbstractContainerAwareUtils {
 	public function sendWeekNewsEmailMessage(User &$recipientUser, &$creations, &$questions, &$plans, &$workshops, &$howtos, &$howtoArticles, &$finds, &$posts, &$woods, &$providers) {
 		if ($recipientUser->getMeta()->getWeekNewsEmailEnabled()) {
 			$parameters = array(
-				'recipientUser' => $recipientUser,
-				'creations'     => $creations,
-				'questions'     => $questions,
-				'plans'         => $plans,
-				'workshops'     => $workshops,
-				'howtos'        => $howtos,
-				'howtoArticles' => $howtoArticles,
-				'finds'         => $finds,
-				'posts'         => $posts,
-				'woods'         => $woods,
-				'providers'     => $providers
+				'recipientUser'             => $recipientUser,
+				'creations'                 => $creations,
+				'questions'                 => $questions,
+				'plans'                     => $plans,
+				'workshops'                 => $workshops,
+				'howtos'                    => $howtos,
+				'howtoArticles'             => $howtoArticles,
+				'finds'                     => $finds,
+				'posts'                     => $posts,
+				'woods'                     => $woods,
+				'providers'                 => $providers,
+				'unsubscribeList'           => self::LIST_WEEKNEWS,
+				'unsubscribeEncryptedEmail' => $this->get(CryptoUtils::NAME)->encryptString($recipientUser->getEmailCanonical()),
 			);
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Nouveautés l\'Air du Bois de la semaine',
 				$this->_renderTemplate('LadbCoreBundle:Command:mailing-weeknews-email.txt.twig', $parameters),
-				$this->_renderTemplate('LadbCoreBundle:Command:mailing-weeknews-email.html.twig', $parameters)
+				$this->_renderTemplate('LadbCoreBundle:Command:mailing-weeknews-email.html.twig', $parameters),
+				$parameters['unsubscribeList'],
+				$parameters['unsubscribeEncryptedEmail']
 			);
 			unset($parameters);
 		}

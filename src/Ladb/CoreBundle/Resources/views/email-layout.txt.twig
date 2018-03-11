@@ -5,4 +5,4 @@ Bonjour{% if recipientUser is defined %} {{ recipientUser.displayname }}{% endif
 Découvrez, fabriquez, partagez.
 http://www.lairdubois.fr
 
-{% block footer %}Vous pouvez vous désabonner de ces emails en modifiant vos préférences de notification ({{ url('core_user_settings')~'#email_notifications' }}).{% endblock %}
+{% block footer %}{% if unsubscribeList is defined and unsubscribeEncryptedEmail is defined %}Se désabonner de ces emails : {{ url('core_user_email_unsubscribe', { 'list':unsubscribeList, 'encryptedEmail':unsubscribeEncryptedEmail }) }}.{% endif %}{% endblock %}
