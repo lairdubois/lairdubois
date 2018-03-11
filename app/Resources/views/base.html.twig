@@ -80,6 +80,7 @@
                     <meta name="twitter:url" content="{{ pageUrl }}" />
                 {% endblock %}
             {% endblock %}
+            <link rel="canonical" href="{{ pageUrl }}">
             {% if prevPageUrl is defined and prevPageUrl is not empty %}
                 <link rel="prev" href="{{ prevPageUrl }}" />
             {% endif %}
