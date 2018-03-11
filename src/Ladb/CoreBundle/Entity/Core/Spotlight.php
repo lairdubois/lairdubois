@@ -7,7 +7,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table("tbl_core_spotlight")
+ * @ORM\Table("tbl_core_spotlight", indexes={
+ *     @ORM\Index(name="IDX_SPOTLIGHT_ENTITY", columns={"entity_type", "entity_id"})
+ * }))
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\SpotlightRepository")
  */
 class Spotlight {

@@ -14,7 +14,9 @@ use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 
 /**
- * @ORM\Table("tbl_core_comment")
+ * @ORM\Table("tbl_core_comment", indexes={
+ *     @ORM\Index(name="IDX_COMMENT_ENTITY", columns={"entity_type", "entity_id"})
+ * })
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\CommentRepository")
  */
 class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterface {

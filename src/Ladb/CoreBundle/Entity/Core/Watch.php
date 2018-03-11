@@ -6,7 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table("tbl_core_watch")
+ * @ORM\Table("tbl_core_watch", indexes={
+ *     @ORM\Index(name="IDX_WATCH_ENTITY", columns={"entity_type", "entity_id"})
+ * })
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\WatchRepository")
  */
 class Watch {
