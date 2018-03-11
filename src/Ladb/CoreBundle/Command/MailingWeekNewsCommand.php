@@ -356,9 +356,13 @@ EOT
 			;
 
 			try {
-				$userCount = min($queryBuilder->getQuery()->getSingleScalarResult(), $limit);
+				$userCount = $queryBuilder->getQuery()->getSingleScalarResult();
 			} catch (\Doctrine\ORM\NoResultException $e) {
 				$userCount = 0;
+			}
+
+			if ($limit > 0) {
+				$userCount = min($userCount, $limit);
 			}
 
 			$progress = new ProgressBar($output, $userCount);
