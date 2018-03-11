@@ -5,6 +5,10 @@
 {% set pageContentItemType = 'TechArticle' %}
 {% set pageSectionUrl = url('core_wood_list') %}
 {% set pageSectionName = 'knowledge.wood.list'|trans %}
+{% set pageDescription = ('knowledge.wood.field.name'|trans)~': '~wood.name %}
+{% if wood.scientificname is not empty %}
+    {% set pageDescription = pageDescription~' '~('knowledge.wood.field.scientificname'|trans)~': '~wood.scientificname %}
+{% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set navSection = 'woods' %}

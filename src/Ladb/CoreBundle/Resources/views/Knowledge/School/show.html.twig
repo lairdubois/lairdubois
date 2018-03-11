@@ -10,6 +10,14 @@
 {% set pageSectionName = 'knowledge.school.list'|trans %}
 {% if school.description %}
     {% set pageDescription = school.description|striptags|truncate(200, true, '...') %}
+{% else %}
+    {% set pageDescription = school.name %}
+    {% if school.diplomas is not empty %}
+        {% set pageDescription = pageDescription~' '~('knowledge.school.field.diplomas'|trans)~': '~school.diplomas %}
+    {% endif %}
+    {% if school.trainingTypes is not empty %}
+        {% set pageDescription = pageDescription~' '~('knowledge.school.field.training_types'|trans)~': '~school.trainingTypes %}
+    {% endif %}
 {% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}

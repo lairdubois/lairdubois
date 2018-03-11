@@ -224,7 +224,7 @@ EOT
 
 			$progress->advance();
 
-			if ($entity instanceof SitemapableInterface && $entity->getIsSitemapable()) {
+			if ($entity instanceof SitemapableInterface && !$entity->getIsSitemapable()) {
 				continue;
 			}
 
