@@ -137,7 +137,7 @@ change_password:
 
 wonder:
   creation:
-    description: Retrouvez toutes les créations
+    description: Base collaborative de créations autours du travail du bois.
     new: Ajouter une création
     edit: Edition de la création
     list: Les créations
@@ -183,7 +183,7 @@ wonder:
         converttofind_success: La création %title% a été converti en trouvaille avec succès.
         converttoquestion_success: La création %title% a été converti en question avec succès.
   plan:
-    description: Retrouvez tous les plans
+    description: Base collaborative de plans autours du travail du bois.
     new: Ajouter un plan
     create: Créer un nouveau plan
     edit: Edition du plan
@@ -218,7 +218,7 @@ wonder:
       inspiration: '[0,1]Ce plan est le rebond pour un autre plan|]1,Inf]Ce plan un rebond pour %count% autres plans'
       rebound: '[0,1]Ce plan est une inspiration pour un autre plan|]1,Inf]Ce plan est une inspiration pour %count% autres plans'
   workshop:
-    description: Retrouvez tous les ateliers
+    description: Base collaborative d'ateliers destinés au travail du bois.
     new: Ajouter un atelier
     edit: Edition de l'atelier
     list: Les ateliers
@@ -254,7 +254,7 @@ wonder:
 
 howto:
   howto:
-    description: Retrouvez tous les pas à pas
+    description: Base collaborative de pas à pas autours du travail du bois.
     new: Ajouter un pas à pas
     create: Créer un nouveau pas à pas
     edit: Edition du pas à pas
@@ -311,7 +311,7 @@ howto:
 
 find:
   find:
-    description: Retrouvez toutes les trouvailles
+    description: Base collaborative de trouvailles autours du travail du bois.
     new: Ajouter une trouvaille
     edit: Edition de la trouvaille
     list: Les trouvailles
@@ -357,7 +357,7 @@ find:
 
 qa:
   question:
-    description: Retrouvez toutes les questions
+    description: Base collaborative de questions et réponses autours du travail du bois.
     new: Ajouter une question
     edit: Edition de la question
     list: Les questions
@@ -530,7 +530,7 @@ knowledge:
       rejected: '[0,1]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;vérification défavorable|]1,Inf]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;vérifications défavorables'
       verified: '[0,1]Cette proposition a été validée par %count%&nbsp;vérification favorable|]1,Inf]Cette proposition a été validée par %count%&nbsp;vérifications favorables'
   wood:
-    description: Retrouvez toutes les essences de bois
+    description: Xylothèque collaborative d'essences de bois.
     new: Ajouter une essence
     list: Les essences
     nav: Xylothèque
@@ -622,7 +622,7 @@ knowledge:
       new_woods: '[0,1]nouvelle essence|]1,Inf]nouvelles essences'
       woods: '[0,1]essence|]1,Inf]essences'
   provider:
-    description: Retrouvez tous les fournisseurs
+    description: Annuaire collaboratif de fournisseurs pour le travail du bois.
     new: Ajouter un fournisseur
     create: Créer un nouveau fournisseur
     list: Les fournisseurs
@@ -703,7 +703,7 @@ knowledge:
       providers: '[0,1]fournisseur|]1,Inf]fournisseurs'
       stores: '[0,1]agence ou boutique|]1,Inf]agences ou boutiques'
   school:
-    description: Retrouvez toutes les écoles
+    description: Annuaire collaboratif des écoles et centres de formation préparants aux métiers du bois.
     new: Ajouter une école
     create: Créer une nouvelle école
     list: Les écoles
@@ -786,7 +786,7 @@ message:
     new: Nouveau message
 
 user:
-  description: Retrouvez tous les boiseux
+  description: Liste des boiseux inscrits à la plateforme de partage collaborative L'Air du Bois.
   list: Les boiseux
   nav: Boiseux
   home: Ma page
