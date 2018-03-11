@@ -10,6 +10,8 @@ use Ladb\CoreBundle\Model\InspirableTrait;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
+use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\SitemapableTrait;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableInterface;
@@ -32,9 +34,9 @@ use Ladb\CoreBundle\Model\LicensedTrait;
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication implements IndexableInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface, InspirableInterface {
+class Workflow extends AbstractAuthoredPublication implements IndexableInterface, SitemapableInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface, InspirableInterface {
 
-	use IndexableTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait, InspirableTrait;
+	use IndexableTrait, SitemapableTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait, InspirableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
 	const TYPE = 118;
