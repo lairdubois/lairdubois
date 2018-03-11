@@ -128,14 +128,21 @@
                                     "name": "{{ pageSectionName }}"
                                 }
                             }
+                            {% if pageUrl and pageName is defined %}
+                            ,{
+                                "@type": "ListItem",
+                                "position": 2,
+                                "item":
+                                {
+                                    "@id": "{{ pageUrl }}",
+                                    "name": "{{ pageName }}"
+                                }
+                            }
+                            {% endif %}
                         ]
                     }
                     </script>
                 {% endif %}
-                {#{% javascripts filter='?closure'#}
-                    {#'../components/jquery/jquery.js' %}#}
-                    {#<script type="text/javascript" src="{{ asset_url }}"></script>#}
-                {#{% endjavascripts %}#}
                 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
                 <!--[if lt IE 9]>
                     {% javascripts filter='?closure'

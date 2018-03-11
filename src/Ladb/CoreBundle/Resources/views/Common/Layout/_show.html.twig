@@ -3,7 +3,8 @@
 {% if entity is defined %}
     {% set pageUrl = pageUrl|default(ladb_entity_url_action(entity, 'show', true, false)) %}
     {% set pageType = pageType|default('article') %}
-    {% set pageTitle = pageTitle|default(entity.title) %}
+    {% set pageName = pageName|default(entity.title) %}
+    {% set pageTitle = pageTitle|default(pageName) %}
     {% if entity.user is defined %}
         {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.by'|trans()))~' '~entity.user.displayname %}
     {% endif %}
