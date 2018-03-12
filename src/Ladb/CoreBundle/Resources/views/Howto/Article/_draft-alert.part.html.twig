@@ -1,10 +1,6 @@
+{% extends 'LadbCoreBundle:Common:_draft-alert.part.html.twig' %}
 
-{# set article #}
+{% set entity = article %}
+{% set alertMessage = 'Cet article est un brouillon. Il n\'est visible que par vous.<br>Pour l\'intégrer pleinement au pas à pas, vous devez le publier.' %}
+{% set modalMessage = 'La publication de l\'article <strong>'~article.title~'</strong> le rendra public.' %}
 
-<div class="alert alert-info">
-    <p><i class="ladb-icon-warning"></i> Cet article est un brouillon. Il n'est visible que par vous. Pour l'intégrer pleinement au pas à pas, vous devez le publier.</p>
-    <p class="text-right"><a href="#publish_howto_article_{{ article.id }}_modal" data-toggle="modal" class="btn btn-primary"><i class="ladb-icon-publish"></i> {{ 'default.publish'|trans() }}</a></p>
-</div>
-{% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_howto_article_'~article.id~'_modal', 'title':('default.publishing'|trans()), 'entity':article, 'licenseEntity':howto } %}
-    {% block whatItIs %}La publication de cet article le rendra public.{% endblock %}
-{% endembed %}

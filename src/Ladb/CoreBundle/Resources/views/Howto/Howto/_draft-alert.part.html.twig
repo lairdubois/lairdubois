@@ -1,8 +1,8 @@
 {% extends 'LadbCoreBundle:Common:_draft-alert.part.html.twig' %}
 
 {% set entity = howto %}
-{% set alertMessage = 'Ce pas à pas est un brouillon. Il n\'est visible que par vous.<br>Pour le rendre public, vous devez la publier.' %}
-{% set modalMessage = 'La publication du pas à pas <strong>'~howto.title~'</strong> le rendra piblic.' %}
+{% set alertMessage = 'Ce pas à pas est un brouillon. Il n\'est visible que par vous.<br>Pour le rendre public, vous devez le publier.' %}
+{% set modalMessage = 'La publication du pas à pas <strong>'~howto.title~'</strong> le rendra public.' %}
 
 {% block modal %}
     {% if howto.publishedArticleCount > 0 %}

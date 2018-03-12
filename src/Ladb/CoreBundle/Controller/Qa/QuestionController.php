@@ -440,6 +440,10 @@ class QuestionController extends Controller {
 						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
 						break;
 
+					case 'sort-popular-answers':
+						$sort = array( 'answerCount' => array( 'order' => 'desc' ) );
+						break;
+
 					case 'sort-random':
 						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
 						break;
