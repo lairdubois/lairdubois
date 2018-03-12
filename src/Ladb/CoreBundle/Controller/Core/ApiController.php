@@ -20,6 +20,7 @@ class ApiController extends Controller {
 	public function networkShareCountAction(Request $request, $network) {
 
 		$url = $request->get('url');
+		$count = 0;
 
 		if (strpos($url, 'https://www.lairdubois.fr/') != 0) {
 			throw $this->createNotFoundException('Invalid URL (url='.$url.')');
@@ -34,13 +35,15 @@ class ApiController extends Controller {
 				$accessToken = $this->getParameter('facebook_access_token');
 
 				$curl = curl_init();
-				curl_setopt($curl, CURLOPT_URL, "https://graph.facebook.com/v2.2/?id=".$url.'&fields=og_object{engagement}&access_token='.$accessToken);
+				curl_setopt($curl, CURLOPT_URL, "https://graph.facebook.com/v2.12/?id=".$url.'&fields=og_object{engagement}&access_token='.$accessToken);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
 				$curlResults = curl_exec($curl);
 				curl_close($curl);
 				$json = json_decode($curlResults, true);
-				$count = intval($json['og_object']['engagement']['count']);
+				if (isset($json['og_object']['engagement']['count'])) {
+					$count = intval($json['og_object']['engagement']['count']);
+				}
 
 				break;
 
@@ -57,7 +60,9 @@ class ApiController extends Controller {
 				$curlResults = curl_exec($curl);
 				curl_close($curl);
 				$json = json_decode($curlResults, true);
-				$count = intval($json[0]['result']['metadata']['globalCounts']['count']);
+				if (isset($json[0]['result']['metadata']['globalCounts']['count'])) {
+					$count = intval($json[0]['result']['metadata']['globalCounts']['count']);
+				}
 
 				break;
 
