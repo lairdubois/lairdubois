@@ -31,8 +31,6 @@ class Version20180312101917 extends AbstractMigration
         $this->addSql('ALTER TABLE tbl_wonder_creation_body_block ADD CONSTRAINT FK_D91A44D3E9ED820C FOREIGN KEY (block_id) REFERENCES tbl_core_block (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE tbl_wonder_workshop_body_block DROP FOREIGN KEY FK_DE6F6E5CE9ED820C');
         $this->addSql('ALTER TABLE tbl_wonder_workshop_body_block ADD CONSTRAINT FK_DE6F6E5CE9ED820C FOREIGN KEY (block_id) REFERENCES tbl_core_block (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_4bcb70a82c7c2cba TO IDX_772B09CB2C7C2CBA');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_4bcb70a870f2bc06 TO IDX_772B09CB70F2BC06');
     }
 
     public function down(Schema $schema)
@@ -56,7 +54,5 @@ class Version20180312101917 extends AbstractMigration
         $this->addSql('ALTER TABLE tbl_wonder_creation_body_block ADD CONSTRAINT FK_D91A44D3E9ED820C FOREIGN KEY (block_id) REFERENCES tbl_core_block (id)');
         $this->addSql('ALTER TABLE tbl_wonder_workshop_body_block DROP FOREIGN KEY FK_DE6F6E5CE9ED820C');
         $this->addSql('ALTER TABLE tbl_wonder_workshop_body_block ADD CONSTRAINT FK_DE6F6E5CE9ED820C FOREIGN KEY (block_id) REFERENCES tbl_core_block (id)');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_772b09cb2c7c2cba TO IDX_4BCB70A82C7C2CBA');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_772b09cb70f2bc06 TO IDX_4BCB70A870F2BC06');
     }
 }
