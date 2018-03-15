@@ -620,7 +620,7 @@ class HowtoController extends Controller {
 	 * @Route("/pas-a-pas/{id}/ateliers", requirements={"id" = "\d+"}, name="core_howto_workshops")
 	 * @Route("/pas-a-pas/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workshops_filter")
 	 * @Route("/pas-a-pas/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workshops_filter_page")
-	 * @Template("LadbCoreBundle:Howto/Howto:workshop.html.twig")
+	 * @Template("LadbCoreBundle:Howto/Howto:workshops.html.twig")
 	 */
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
