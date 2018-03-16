@@ -12,7 +12,7 @@
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
     <li><a href="#icon"><i class="ladb-icon-camera"></i> {{ 'faq.question.icon'|trans() }}</a></li>
     {% include 'LadbCoreBundle:Core/Block:_form-sidenav-body.part.html.twig' %}
-    <li><a href="#toc"><i class="ladb-icon-characteristics"></i> {{ 'faq.question.toc'|trans() }}</a></li>
+    <li><a href="#toc"><i class="ladb-icon-characteristics"></i> {{ 'default.toc'|trans() }}</a></li>
     <li><a href="#weight"><i class="ladb-icon-weight"></i> {{ 'faq.question.weight'|trans() }}</a></li>
     {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
 {% endblock %}
@@ -30,13 +30,15 @@
         {% endblock %}
     {% endembed %}
     {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true } %}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('faq.question.toc'|trans()), 'formSection':'toc' } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.toc'|trans()), 'formSection':'toc' } %}
         {% block body %}
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.hasToc) }}
-                    {{ 'faq.question.has_toc'|trans }}
-                </label>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.hasToc) }}
+                        {{ 'faq.question.has_toc'|trans }}
+                    </label>
+                </div>
             </div>
         {% endblock %}
     {% endembed %}

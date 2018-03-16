@@ -13,7 +13,8 @@
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
     {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'formSection':'mainPicture', 'title':('default.picture'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Block:_form-sidenav-body.part.html.twig' %}
-    <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
+    <li><a href="#toc"><i class="ladb-icon-characteristics"></i> {{ 'default.toc'|trans() }}</a></li>
+    <li><a href="#highlight_level"><i class="ladb-icon-spotlight"></i> {{ 'faq.question.highlight_level'|trans() }}</a></li>
     {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
 {% endblock %}
 
@@ -22,10 +23,21 @@
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('blog.post.form.help.title'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formSection':'mainPicture', 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('blog.post.form.help.main_picture'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true } %}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.toc'|trans()), 'formSection':'toc' } %}
         {% block body %}
             <div class="form-group">
-                <label>Niveau de mise en avant</label>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.hasToc) }}
+                        {{ 'faq.question.has_toc'|trans }}
+                    </label>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'spotlight', 'title':('faq.question.highlight_level'|trans()), 'formSection':'highlight_level' } %}
+        {% block body %}
+            <div class="form-group">
                 {{ form_errors(form.highlightLevel) }}
                 {{ form_widget(form.highlightLevel) }}
             </div>

@@ -46,6 +46,7 @@ class PostType extends AbstractType {
 					->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 					->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
+			->add('hasToc')
 			->add('highlightLevel', ChoiceType::class, array(
 				'choices' => array_flip(array(
 					Post::HIGHLIGHT_LEVEL_NONE => 'Aucune mise en avant',

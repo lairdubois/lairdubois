@@ -72,6 +72,7 @@ default:
   private: Privé
   protected: Equipe
   public: Public
+  toc: Table des matières
   warning:
     be_owner: Vous devez avoir les droits sur ce que vous publiez.
     may_be_rejected: Les publications ne correspondant pas à ces critères pourront faire l'objet d'un rejet.
@@ -470,6 +471,7 @@ blog:
     new: Ajouter un sujet
     edit: Edition du sujet
     similar: Voir aussi
+    has_toc: Afficher la table des matières
     form:
       alert:
         publish_success: Le sujet <strong>%title%</strong> a été publié.
@@ -491,8 +493,8 @@ faq:
     new: Ajouter une question
     edit: Edition de la question
     icon: Icone
-    toc: Table des matières
     has_toc: Afficher la table des matières
+    highlight_level: Niveau de mise en avant
     weight: Poids
     links: Questions associées
     form:

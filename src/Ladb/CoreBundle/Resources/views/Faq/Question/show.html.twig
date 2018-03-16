@@ -134,7 +134,7 @@
 {% block contentSuggests %}
     {% if question.hasToc %}
         <div id="ladb_toc_panel" class="panel panel-default ladb-toc-panel ladb-hidden-mobile">
-            <div class="panel-heading">Navigation</div>
+            <div class="panel-heading">{{ 'default.toc'|trans() }}</div>
             <div class="panel-body">
                 <div id="tocify_toc"></div>
             </div>

@@ -100,6 +100,11 @@ class Post extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	private $mainPicture;
 
 	/**
+	 * @ORM\Column(type="boolean", name="has_toc")
+	 */
+	private $hasToc = false;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_blog_post_tag")
 	 * @Assert\Count(min=2)
@@ -163,6 +168,17 @@ class Post extends AbstractDraftableAuthoredPublication implements TitledInterfa
 
 	public function getSluggedId() {
 		return $this->id.'-'.$this->slug;
+	}
+
+	// HasToc /////
+
+	public function getHasToc() {
+		return $this->hasToc;
+	}
+
+	public function setHasToc($hasToc) {
+		$this->hasToc = $hasToc;
+		return $this;
 	}
 
 	// HighlightLevel
