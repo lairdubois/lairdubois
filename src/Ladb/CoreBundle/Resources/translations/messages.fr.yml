@@ -1067,6 +1067,7 @@ notification:
     qa_answer: une nouvelle réponse
     promotion_graphic: un nouveau graphisme
     workflow_workflow: un nouveau processus
+    blog_post: un nouveau sujet
   tooltip:
     all: Toutes les notifications
     comment: Notifications de commentaires
