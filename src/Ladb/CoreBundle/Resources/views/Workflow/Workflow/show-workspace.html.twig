@@ -39,22 +39,25 @@
             $('.ladb-workflow-workspace').ladbWorkflowWorkspace({
                 readOnly: {{ readOnly ? 'true' : 'false' }},
                 durationsHidden: {{ durationsHidden ? 'true' : 'false' }},
-                wsUri: '{{ websocket_uri }}',
-                wsChannel: 'workflow/{{ workflow.id }}',
-                listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}',
-                newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
-                createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
-                editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
-                updateTaskPath: '{{ path('core_workflow_task_update', { 'id':workflow.id }) }}',
-                positionUpdateTaskPath: '{{ path('core_workflow_task_position_update', { 'id':workflow.id }) }}',
-                statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
-                createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
-                deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
-                listPartPath: '{{ path('core_workflow_part_list', { 'id':workflow.id }) }}',
-                listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}',
-                statisticsPath: '{{ path('core_workflow_statistics', { 'id':workflow.id }) }}',
-                restartConfirmPath: '{{ path('core_workflow_restart_confirm', { 'id':workflow.id }) }}',
-                restartPath: '{{ path('core_workflow_restart', { 'id':workflow.id }) }}'
+                listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}'
+                {% if not readOnly %}
+                    ,
+                    wsUri: '{{ websocket_uri }}',
+                    wsChannel: 'workflow/{{ workflow.id }}',
+                    newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
+                    createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
+                    editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
+                    updateTaskPath: '{{ path('core_workflow_task_update', { 'id':workflow.id }) }}',
+                    positionUpdateTaskPath: '{{ path('core_workflow_task_position_update', { 'id':workflow.id }) }}',
+                    statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
+                    createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
+                    deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
+                    listPartPath: '{{ path('core_workflow_part_list', { 'id':workflow.id }) }}',
+                    listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}',
+                    statisticsPath: '{{ path('core_workflow_statistics', { 'id':workflow.id }) }}',
+                    restartConfirmPath: '{{ path('core_workflow_restart_confirm', { 'id':workflow.id }) }}',
+                    restartPath: '{{ path('core_workflow_restart', { 'id':workflow.id }) }}'
+                {% endif %}
             });
             {% if readOnly %}
                 $('#readonly_modal').modal('show');

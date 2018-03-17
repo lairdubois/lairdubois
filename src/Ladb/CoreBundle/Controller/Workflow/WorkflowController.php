@@ -650,7 +650,13 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 			// TODO switch layout from workspace to page if referrer is not LADB server
 
-			return $this->render('LadbCoreBundle:Workflow:Workflow/show-workspace.html.twig', $parameters);
+			// Exclude bots
+			$isBot = preg_match('/bot|spider|crawler|curl|facebookexternalhit|^$/i', $_SERVER['HTTP_USER_AGENT']);
+
+			if (!$isBot) {
+				return $this->render('LadbCoreBundle:Workflow:Workflow/show-workspace.html.twig', $parameters);
+			}
+
 		}
 
 		$watchableUtils = $this->get(WatchableUtils::NAME);

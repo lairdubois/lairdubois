@@ -18,6 +18,7 @@ Disallow: /*.xhr$
 Disallow: /*.geojson$
 Disallow: /*?referer=1$
 Disallow: /*?q=*
+Disallow: /*?layout=*
 
 User-agent: Googlebot-Image
 Allow: /media/
