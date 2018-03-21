@@ -42,7 +42,7 @@ security:
         - { path: ^/email/check$, role: ROLE_USER }
         - { path: ^/email/confirm, role: ROLE_USER }
 
-        - { path: ^/me, role: ROLE_USER }
+        - { path: ^/me$, role: ROLE_USER }
         - { path: ^/parametres$, role: ROLE_USER }
         - { path: ^/messagerie, role: ROLE_USER }
         - { path: ^/notifications, role: ROLE_USER }

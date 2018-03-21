@@ -287,8 +287,7 @@ class TaskController extends AbstractWorkflowBasedController {
 			if ($newEstimatedDuration != $previousEstimatedDuration) {
 
 				// Update workflow estimated duration
-				$workflow->incrementEstimatedDuration(-$previousEstimatedDuration);
-				$workflow->incrementEstimatedDuration($task->getEstimatedDuration());
+				$workflow->incrementEstimatedDuration($task->getEstimatedDuration() - $previousEstimatedDuration);
 
 			}
 
@@ -296,8 +295,7 @@ class TaskController extends AbstractWorkflowBasedController {
 			if ($newDuration != $previousDuration) {
 
 				// Update workflow duration
-				$workflow->incrementDuration(-$previousDuration);
-				$workflow->incrementDuration($task->getDuration());
+				$workflow->incrementDuration($task->getDuration() - $previousDuration);
 
 			}
 
