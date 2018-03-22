@@ -15,6 +15,10 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /parametres
 
+fos_user_profile_show:
+    path:   /me
+    defaults:  { _controller: LadbCoreBundle:Core/User:showMe }
+
 # Imagine Bundle
 
 _liip_imagine:

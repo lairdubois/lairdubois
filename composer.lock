@@ -39,16 +39,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.9.2",
+            "version": "v2.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "2d555f72f3f4ff9e72a7bc17cb8a53c86737c8a0"
+                "reference": "7d8108458bbe3d063dc3315278b2001a7156fade"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/2d555f72f3f4ff9e72a7bc17cb8a53c86737c8a0",
-                "reference": "2d555f72f3f4ff9e72a7bc17cb8a53c86737c8a0",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/7d8108458bbe3d063dc3315278b2001a7156fade",
+                "reference": "7d8108458bbe3d063dc3315278b2001a7156fade",
                 "shasum": ""
             },
             "require": {
@@ -90,7 +90,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2018-01-25T13:33:16+00:00"
+            "time": "2018-03-16T17:46:00+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -6605,16 +6605,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.2",
+            "version": "v1.35.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601"
+                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9c24f2cd39dc1906b76879e099970b7e53724601",
-                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
+                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
                 "shasum": ""
             },
             "require": {
@@ -6622,8 +6622,8 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -6666,7 +6666,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-03-03T16:21:29+00:00"
+            "time": "2018-03-20T04:25:58+00:00"
         },
         {
             "name": "twitter/bootstrap",
