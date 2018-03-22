@@ -348,7 +348,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_location)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -385,7 +385,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_card)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -406,7 +406,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_about)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -437,7 +437,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_likes)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -483,7 +483,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_comments)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -529,7 +529,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_creations)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -587,7 +587,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_workshops)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -645,7 +645,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_plans)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -710,7 +710,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_howtos)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
@@ -768,7 +768,7 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+			throw $this->createNotFoundException('User not found (core_user_show_finds)');
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');

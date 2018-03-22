@@ -62,13 +62,19 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		}
 
-		// Publish a view in queue
-		$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
-		$producer->publish(serialize(array(
-			'entityType' => $viewable->getType(),
-			'entityId'   => $viewable->getId(),
-			'userId'     => !is_null($user) ? $user->getId() : null,
-		)));
+		try {
+
+			// Publish a view in queue
+			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
+			$producer->publish(serialize(array(
+				'entityType' => $viewable->getType(),
+				'entityId'   => $viewable->getId(),
+				'userId'     => !is_null($user) ? $user->getId() : null,
+			)));
+
+		} catch(\Exception $e) {
+			$this->container->get('logger')->error('Failed to publish view process in queue.');
+		}
 
 	}
 

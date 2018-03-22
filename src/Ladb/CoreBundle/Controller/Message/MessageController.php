@@ -45,7 +45,7 @@ class MessageController extends Controller {
 			$userManager = $this->get('fos_user.user_manager');
 			$recipient = $userManager->findUserByUsername($recipientUsername);
 			if (is_null($recipient)) {
-				throw $this->createNotFoundException('User not found');
+				throw $this->createNotFoundException('User not found (core_message_thread_new_recipientusername)');
 			}
 			$newThreadMessage->addRecipient($recipient);
 		}
