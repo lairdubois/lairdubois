@@ -1,3 +1,4 @@
+{% spaceless %}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     {% for url in urls %}
@@ -11,6 +12,9 @@
                         <image:loc>{{ image.loc }}</image:loc>
                         {% if image.caption is not empty %}
                             <image:caption><![CDATA[{{ image.caption }}]]></image:caption>
+                        {% endif %}
+                        {% if url.license is not null %}
+                            <image:license><![CDATA[{{ url.license.contentUrl }}]]></image:license>
                         {% endif %}
                     </image:image>
                 {% endfor %}
@@ -47,3 +51,4 @@
         </url>
     {% endfor %}
 </urlset>
+{% endspaceless %}

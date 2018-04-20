@@ -29,6 +29,9 @@
         {% endif %}
     {% endif %}
     {% set pageContentItemType = pageContentItemType|default('CreativeWork') %}
+    {% if entity.license is defined %}
+        {% set pageLicenseUrl = entity.license.contentUrl %}
+    {% endif %}
 {% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}

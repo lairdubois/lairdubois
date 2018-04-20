@@ -17,6 +17,7 @@
 {% set pageVideoHeight = pageVideoHeight|default('') %}
 {% set pageSectionUrl = pageSectionUrl|default('') %}
 {% set pageSectionName = pageSectionName|default('') %}
+{% set pageLicenseUrl = pageLicenseUrl|default('') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
 
 {% endspaceless %}
@@ -86,6 +87,9 @@
             {% endif %}
             {% if nextPageUrl is defined and nextPageUrl is not empty %}
                 <link rel="next" href="{{ nextPageUrl }}" />
+            {% endif %}
+            {% if pageLicenseUrl %}
+                <link rel="license" href="{{ pageLicenseUrl }}" />
             {% endif %}
             <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
             <link rel="apple-touch-icon-precomposed" href="{{ asset('favicon-76x76.png') }}">

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Command;
 
+use Ladb\CoreBundle\Model\LicensedInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -310,12 +311,19 @@ EOT
 				}
 			}
 
+			// License
+			$license = null;
+			if ($entity instanceof LicensedInterface) {
+				$license = $entity->getLicense();
+			}
+
 			$urls[] = array(
-				'loc'        => $router->generate('core_'.$entityName.'_show', $slugged ? array('id' => $entity->getSluggedId()) : array( 'username' => $entity->getUsernameCanonical() ), UrlGeneratorInterface::ABSOLUTE_URL),
+				'loc'        => $router->generate('core_'.$entityName.'_show', $slugged ? array('id' => $entity->getSluggedId()) : array('username' => $entity->getUsernameCanonical()), UrlGeneratorInterface::ABSOLUTE_URL),
 				'lastmod'    => is_null($entity->getUpdatedAt()) ? $entity->getCreatedAt()->format('Y-m-d\TH:i:sP') : $entity->getUpdatedAt()->format('Y-m-d\TH:i:sP'),
 				'changefreq' => 'daily',
 				'images'     => $images,
 				'videos'     => $videos,
+				'license'    => $license,
 			);
 		}
 
