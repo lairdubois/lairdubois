@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle::layout.html.twig' %}
 
 {% if entity is defined %}
-    {% set pageUrl = pageUrl|default(ladb_entity_url_action(entity, 'show', true, false)) %}
+    {% set pageUrl = pageUrl|default(ladb_entity_url_action(entity, 'show')) %}
     {% set pageType = pageType|default('article') %}
     {% set pageName = pageName|default(entity.title) %}
     {% set pageTitle = pageTitle|default(pageName) %}
