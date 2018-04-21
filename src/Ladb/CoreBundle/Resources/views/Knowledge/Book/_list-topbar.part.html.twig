@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
+
+{% set heading = 'knowledge.book.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'LadbCoreBundle:Knowledge/Book:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{{ path('core_book_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'knowledge.book.new'|trans() }}</span></a>
+{% endblock %}

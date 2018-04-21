@@ -763,6 +763,11 @@ knowledge:
       edit: Editer mon témoignage
     choice:
       testimonials: '[0,1]témoignage|]1,Inf]témoignages'
+  book:
+    description: Bibliothèque collaborative de livres sur le bois.
+    new: Ajouter un livre
+    list: Les livres
+    nav: Livres
   tool:
     list: Outils
     token:

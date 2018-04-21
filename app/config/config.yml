@@ -796,6 +796,23 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
+                knowledge_book:
+                    properties:
+                        title: { type: text, boost: 3, analyzer: name_analyzer }
+                        titleRejected: { type: boolean }
+                        coverRejected: { type: boolean }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Knowledge\Book
+                        provider: ~
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
                 core_tag:
                     properties:
                         label: { analyzer: ngram_analyzer }

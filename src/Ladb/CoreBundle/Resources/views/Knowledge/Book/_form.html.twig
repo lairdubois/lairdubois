@@ -1,0 +1,67 @@
+{% extends 'LadbCoreBundle:Common:Layout/_form.html.twig' %}
+
+{% set navSection = 'about' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'cover', 'fieldId':form.coverValue.data.vars.id, 'maxPictureCount':1 } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    <li id="title_sidenav"><a href="#title"><i class="ladb-icon-title"></i> {{ 'knowledge.book.field.title'|trans() }}</a></li>
+    <li id="cover_sidenav"><a href="#cover"><i class="ladb-icon-camera"></i> {{ 'knowledge.book.field.cover'|trans() }}</a></li>
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'knowledge.book.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {{ form_errors(form) }}
+    <section id="title_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.book.field.title'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-text.part.html.twig' with { 'form':form.titleValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_TITLE') } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ ('knowledge.book.help.title')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.book.form.help.title')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.book.form.help.legend')|trans({ '%field%':(('knowledge.book.field.title')|trans())})|ladb_markdown|raw }}
+                            {{ ('knowledge.book.form.help.source')|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="cover_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.book.field.grain'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'cover', 'form':form.coverValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_COVER'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ ('knowledge.book.help.cover')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.book.form.help.cover')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.book.form.help.legend')|trans({ '%field%':(('knowledge.book.field.cover')|trans())})|ladb_markdown|raw }}
+                            {{ ('knowledge.book.form.help.source')|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'LadbCoreBundle:Knowledge/Book:_form.html.twig' %}
+
+{% set pageTitle = 'knowledge.book.new'|trans() %}
+{% set formAction = path('core_book_create') %}
+{% set hideWarning = hideWarning|default(false) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'knowledge.book.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        {% include 'LadbCoreBundle:Common:_new-warning-modal.part.html.twig' with { 'id':'warning_book_modal', 'title':('knowledge.book.new'|trans()), 'textTransKey':'knowledge.book.new_warning', 'cancelPath':'core_book_list' } %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        <script>
+            $(document).ready(function() {
+                $("#warning_book_modal").modal();
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+

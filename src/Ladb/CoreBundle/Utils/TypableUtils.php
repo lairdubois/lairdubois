@@ -65,6 +65,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Workflow
 			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
 				return implode($delimiter, array( 'workflow', 'workflow' ));
+			// Book
+			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
+				return implode($delimiter, array( 'workflow', 'workflow' ));
 
 		}
 		return '';
@@ -185,6 +188,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Workflow
 			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
 				return '\Ladb\CoreBundle\Entity\Workflow\Workflow';
+			// Book
+			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Book';
 
 		}
 		return null;
@@ -250,6 +256,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
 				$url = $router->generate('core_workflow_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
+				$url = $router->generate('core_book_'.$action, $params, $referenceType);
 				break;
 		}
 		return $url;

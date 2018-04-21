@@ -185,6 +185,11 @@ class UserMeta {
 	private $unlistedKnowledgeSchoolCount = 0;
 
 	/**
+	 * @ORM\Column(name="unlisted_knowledge_book_count", type="integer")
+	 */
+	private $unlistedKnowledgeBookCount = 0;
+
+	/**
 	 * @ORM\Column(name="unlisted_blog_post_count", type="integer")
 	 */
 	private $unlistedBlogPostCount = 0;
@@ -646,6 +651,15 @@ class UserMeta {
 		;
 	}
 
+	// UnlistedKnowledgeCount /////
+
+	public function getUnlistedKnowledgeCount() {
+		return
+			$this->getUnlistedKnowledgeWoodCount() +
+			$this->getUnlistedKnowledgeBookCount()
+		;
+	}
+
 	// UnlistedDirectoryCount /////
 
 	public function getUnlistedDirectoryCount() {
@@ -740,6 +754,17 @@ class UserMeta {
 
 	public function setUnlistedKnowledgeSchoolCount($unlistedKnowledgeSchoolCount) {
 		$this->unlistedKnowledgeSchoolCount = $unlistedKnowledgeSchoolCount;
+		return $this;
+	}
+
+	// UnlistedKnowledgeBookCount /////
+
+	public function getUnlistedKnowledgeBookCount() {
+		return $this->unlistedKnowledgeBookCount;
+	}
+
+	public function setUnlistedKnowledgeBookCount($unlistedKnowledgeBookCount) {
+		$this->unlistedKnowledgeBookCount = $unlistedKnowledgeBookCount;
 		return $this;
 	}
 

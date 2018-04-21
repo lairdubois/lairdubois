@@ -1,0 +1,27 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail.part.html.twig' %}
+
+{# set book #}
+
+{% set entity = book %}
+{% set headingClasses = book.titleRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = book.titleRejected or book.coverRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set pictureWidth = '282' %}
+{% set pictureHeight = '280' %}
+{% set pictureFilterMode = 'o' %}
+
+{% block image %}
+    {% if book.coverRejected %}
+        <div class="ladb-box-barred">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' with { 'entity':book } %}
+    {{ book.contributorCount }} <i class="ladb-icon-users"></i>{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}
+{% endblock %}
+
+

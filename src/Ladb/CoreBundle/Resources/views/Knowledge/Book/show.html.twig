@@ -1,0 +1,95 @@
+{% extends 'LadbCoreBundle:Knowledge:_show.html.twig' %}
+
+{% set entity = book %}
+
+{% set pageContentItemType = 'TechArticle' %}
+{% set pageSectionUrl = url('core_book_list') %}
+{% set pageSectionName = 'knowledge.book.list'|trans %}
+{% set pageDescription = ('knowledge.book.field.title'|trans)~': '~book.title %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set navSection = 'books' %}
+{% set searchPath = path('core_book_list') %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Knowledge/Book:_entity-header.part.html.twig' %}
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% if watchContext is not null and is_granted("ROLE_USER") %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                {% endif %}
+                &nbsp;
+                {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':book.type, 'entityId':book.id } %}
+                {% if is_granted("ROLE_ADMIN") %}
+                    &nbsp;
+                    <a href="#delete_book_modal" class="btn btn-danger" data-toggle="modal" ><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_book_modal', 'title':('default.deletion'|trans()) } %}
+                        {% block bodyInner %}
+                            <p>La suppression de l'essence <strong>{{ book.title }}</strong> entrainera la perte de toutes les informations qui lui sont relatives.</p>
+                            <p>Confirmez l'action pour continuer.</p>
+                        {% endblock %}
+                        {% block footerInner %}
+                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                            <a href="{{ path('core_book_delete', { 'id':book.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    <div class="ladb-knowledge-showcase row">
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':book, 'wide':true, 'field':constant('FIELD_COVER', book), 'picture':book.cover, 'values':book.coverValues, 'pictureBoxClasses':(book.coverRejected ? 'ladb-box-barred' : null) } %}
+    </div>
+    <div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Apellation</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_TITLE', book), 'data':book.title, 'values':book.titleValues } %}
+        </div>
+        <div class="panel panel-default ladb-margin-top">
+            <div class="panel-body">
+                Cette fiche est complétée et contrôlée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">apportez vos propositions</a> !
+            </div>
+        </div>
+        {% if book.updatedAt > book.createdAt %}
+            {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
+        {% endif %}
+        <div style="padding: 10px; text-align: center;">
+            {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+        </div>
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-users ladb-icon-fixed-center"></i>
+            {% if book.contributorCount > 0 %}
+                <a href="{{ path('core_knowledge_contributors', { 'entityType':book.type, 'entityId':book.id }) }}">
+            {% endif %}
+                <strong>{{ book.contributorCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'user.choice.contributors'|transchoice(book.contributorCount) }}</small>
+            {% if book.contributorCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':book } %}
+    </div>
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license } %}
+{% endblock %}
