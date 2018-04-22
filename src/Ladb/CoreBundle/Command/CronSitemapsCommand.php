@@ -113,6 +113,12 @@ EOT
 				'slugged'   => true,
 			),
 			array(
+				'className' => \Ladb\CoreBundle\Entity\Knowledge\Book::CLASS_NAME,
+				'name'      => 'book',
+				'section'   => 'knowledge-bookss',
+				'slugged'   => true,
+			),
+			array(
 				'className' => \Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
 				'name'      => 'user',
 				'section'   => 'core-users',

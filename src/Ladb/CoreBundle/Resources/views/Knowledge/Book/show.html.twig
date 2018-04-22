@@ -63,8 +63,8 @@
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Contenu</h4>
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUMMARY', book), 'data':book.summary, 'values':book.summaryValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUBJECTS', book), 'data':book.subjects, 'values':book.subjectsValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUMMARY', book), 'data':book.summary, 'values':book.summaryValues } %}
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Caractéristiques</h4>

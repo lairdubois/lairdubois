@@ -23,6 +23,7 @@ function bindNewValueProposalAjaxForm() {
         error: function() {
         }
     });
+    setupTextareas();
 }
 function bindEditValueProposalAjaxForm(id) {
     $("#ladb_value_proposal_" + id + " .ladb-content-box").find('form').ajaxForm({
@@ -45,6 +46,7 @@ function bindEditValueProposalAjaxForm(id) {
             cancelEditValueProposal();
         }
     });
+    setupTextareas();
 }
 function editValueProposal(id, url) {
     jQuery.ajax(url, {

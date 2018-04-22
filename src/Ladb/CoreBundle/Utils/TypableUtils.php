@@ -136,6 +136,15 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// LongText
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Longtext::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext';
+			// Language
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Language::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Language';
+			// Isbn
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Isbn::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Isbn';
+			// Price
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Price::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Price';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
