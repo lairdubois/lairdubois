@@ -36,8 +36,10 @@ class Book extends AbstractKnowledge {
 	const FIELD_SUMMARY = 'summary';
 	const FIELD_SUBJECTS = 'subjects';
 	const FIELD_LANGUAGE = 'language';
+	const FIELD_TRANSLATED = 'translated';
 	const FIELD_PAGE_COUNT = 'page_count';
 	const FIELD_ISBN = 'isbn';
+	const FIELD_PUBLISH_YEAR = 'publish_year';
 	const FIELD_PRICE = 'price';
 
 	public static $FIELD_DEFS = array(
@@ -50,8 +52,10 @@ class Book extends AbstractKnowledge {
 		Book::FIELD_SUMMARY      => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_SUBJECTS     => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@subjects:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul sujet par proposition.')))),
 		Book::FIELD_LANGUAGE     => array(Book::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_TRANSLATED   => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Book::FIELD_PAGE_COUNT   => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_ISBN         => array(Book::ATTRIB_TYPE => Isbn::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_PUBLISH_YEAR => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_PRICE        => array(Book::ATTRIB_TYPE => Price::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 	);
 
@@ -175,6 +179,19 @@ class Book extends AbstractKnowledge {
 
 
 	/**
+	 * @ORM\Column(type="boolean", nullable=true)
+	 */
+	private $translated;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_translated")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $translatedValues;
+
+
+	/**
 	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $pageCount;
@@ -198,6 +215,19 @@ class Book extends AbstractKnowledge {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $isbnValues;
+
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true)
+	 */
+	private $publishYear;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_publish_year")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $publishYearValues;
 
 
 	/**
@@ -225,9 +255,11 @@ class Book extends AbstractKnowledge {
 		$this->summaryValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->subjectsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->languageValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->translatedValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->pageCountValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->isbnValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->priceValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->publishYearValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -567,6 +599,38 @@ class Book extends AbstractKnowledge {
 		return $this->languageValues;
 	}
 
+	// Translated /////
+
+	public function setTranslated($translated) {
+		$this->translated = $translated;
+		return $this;
+	}
+
+	public function getTranslated() {
+		return $this->translated;
+	}
+
+	// TranslatedValues /////
+
+	public function addTranslatedValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $translatedValue) {
+		if (!$this->translatedValues->contains($translatedValue)) {
+			$this->translatedValues[] = $translatedValue;
+		}
+		return $this;
+	}
+
+	public function removeTranslatedValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $translatedValue) {
+		$this->translatedValues->removeElement($translatedValue);
+	}
+
+	public function setTranslatedValues($translatedValues) {
+		$this->translatedValues = $translatedValues;
+	}
+
+	public function getTranslatedValues() {
+		return $this->translatedValues;
+	}
+
 	// PageCount /////
 
 	public function setPageCount($pageCount) {
@@ -629,6 +693,38 @@ class Book extends AbstractKnowledge {
 
 	public function getIsbnValues() {
 		return $this->isbnValues;
+	}
+
+	// PublishYear /////
+
+	public function setPublishYear($publishYear) {
+		$this->publishYear = $publishYear;
+		return $this;
+	}
+
+	public function getPublishYear() {
+		return $this->publishYear;
+	}
+
+	// PublishYearValues /////
+
+	public function addPublishYearValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publishYearValue) {
+		if (!$this->publishYearValues->contains($publishYearValue)) {
+			$this->publishYearValues[] = $publishYearValue;
+		}
+		return $this;
+	}
+
+	public function removePublishYearValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publishYearValue) {
+		$this->publishYearValues->removeElement($publishYearValue);
+	}
+
+	public function setPublishYearValues($publishYearValues) {
+		$this->publishYearValues = $publishYearValues;
+	}
+
+	public function getPublishYearValues() {
+		return $this->publishYearValues;
 	}
 
 	// Price /////

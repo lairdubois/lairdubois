@@ -2,6 +2,7 @@
 
 {% set fieldDef = knowledge.fieldDefs[field] %}
 {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', knowledge)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', knowledge)] : null %}
+{% set fieldChoices = fieldDef[constant('ATTRIB_CHOICES', knowledge)] is defined ? fieldDef[constant('ATTRIB_CHOICES', knowledge)] : null %}
 
 {% block dataFormGroup %}
     {{ form_errors(form.data) }}
@@ -10,6 +11,8 @@
             {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
             <span class="input-group-addon">{{ fieldSuffix|raw }}</span>
         </div>
+    {% elseif fieldChoices %}
+        {{ form_widget(form.data) }}
     {% else %}
         {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
     {% endif %}

@@ -26,35 +26,33 @@
 
 {% set knowledge = provider %}
 
-{% block headPrefix %}{{ parent() }} fb: http://ogp.me/ns/fb# business: http://ogp.me/ns/business#{% endblock %}
+{% block headPrefix %}{{ parent() }} business: http://ogp.me/ns/business#{% endblock %}
 
 {% block headOpenGraphMetas %}
     {{ parent() }}
-    {% if true %}
-        {% if provider.phone %}
-            <meta property="business:contact_data:phone_number" content="{{ provider.phone }}" />
-        {% endif %}
-        {% if provider.address %}
-            <meta property="business:contact_data:street_address" content="{{ provider.address }}" />
-        {% endif %}
-        {% if provider.locality %}
-            <meta property="business:contact_data:locality" content="{{ provider.locality }}" />
-        {% endif %}
-        {% if provider.postalCode %}
-            <meta property="business:contact_data:postal_code" content="{{ provider.postalCode }}" />
-        {% endif %}
-        {% if provider.country %}
-            <meta property="business:contact_data:country_name" content="{{ provider.country }}" />
-        {% endif %}
-        {% if provider.website %}
-            <meta property="business:contact_data:website" content="{{ provider.website }}" />
-        {% endif %}
-        {% if provider.latitude %}
-            <meta property="place:location:latitude" content="{{ provider.latitude }}" />
-        {% endif %}
-        {% if provider.longitude %}
-            <meta property="place:location:longitude" content="{{ provider.longitude }}" />
-        {% endif %}
+    {% if provider.phone %}
+        <meta property="business:contact_data:phone_number" content="{{ provider.phone }}" />
+    {% endif %}
+    {% if provider.address %}
+        <meta property="business:contact_data:street_address" content="{{ provider.address }}" />
+    {% endif %}
+    {% if provider.locality %}
+        <meta property="business:contact_data:locality" content="{{ provider.locality }}" />
+    {% endif %}
+    {% if provider.postalCode %}
+        <meta property="business:contact_data:postal_code" content="{{ provider.postalCode }}" />
+    {% endif %}
+    {% if provider.country %}
+        <meta property="business:contact_data:country_name" content="{{ provider.country }}" />
+    {% endif %}
+    {% if provider.website %}
+        <meta property="business:contact_data:website" content="{{ provider.website }}" />
+    {% endif %}
+    {% if provider.latitude %}
+        <meta property="place:location:latitude" content="{{ provider.latitude }}" />
+    {% endif %}
+    {% if provider.longitude %}
+        <meta property="place:location:longitude" content="{{ provider.longitude }}" />
     {% endif %}
 {% endblock %}
 

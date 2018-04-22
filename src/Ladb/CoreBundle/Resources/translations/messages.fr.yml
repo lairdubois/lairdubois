@@ -780,22 +780,26 @@ knowledge:
       summary: Résumé
       subjects: Sujets
       language: Langue
+      translated: Traduction
       page_count: Nombre de pages
       isbn: ISBN
       price: Prix public
+      publish_year: Année de parution
     help:
       title: "Le **Title** est le titre du livre."
-      cover: "La **Couverture** est face avant du livre."
-      back_cover: "L'**Arrière** est face arrière du livre."
+      cover: "La **Couverture** est la face avant du livre."
+      back_cover: "L'**Arrière** est la face arrière du livre."
       author: "L'**Auteur** est l'auteur du livre."
       editor: "L'**Editeur** est l'éditeur du livre."
       catalog_link: "Le **Lien catalogue** est un lien internet vers la page du catalogue de l'éditeur où est présent le livre."
       summary: "Le **Résumé** est un court texte de présentation du livre."
       subjects: "Les **Sujets** représentent les thèmes principaux abordés dans le livre."
       language: "La **Langue** est la langue dans laquelle est écrit le livre."
+      translated: "**Traduction** indique si la version originale du le livre est écrite dans une autre langue."
       page_count: "Le **Nombre de pages** est le nombre de pages du livre."
       isbn: "L'**ISBN** est le code ISBN-10 ou ISBN-13 du livre."
       price: "Le **Prix public** correspond au prix initialement proposé par l'éditeur du livre."
+      publish_year: "L'**Année de parution** correspond à l'année de première parution du livre."
     form:
       alert:
         delete_success: Le livre <strong>%title%</strong> a été supprimé.
@@ -818,9 +822,11 @@ knowledge:
         subjects: |
           - N'indiquez **qu'un seul** sujet par proposition.
         language:
+        translated:
         page_count:
         isbn:
         price:
+        publish_year:
   tool:
     list: Outils
     token:
