@@ -169,6 +169,27 @@ class BookController extends Controller {
 
 						break;
 
+					case 'author':
+
+						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('author', $facet->value);
+
+						break;
+
+					case 'editor':
+
+						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('editor', $facet->value);
+
+						break;
+
+					case 'subjects':
+
+						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('subjects', $facet->value);
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\BoolQuery();
@@ -206,7 +227,7 @@ class BookController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100' ));
+							$filter->setFields(array( 'title^100', 'summary', 'author' ));
 							$filters[] = $filter;
 
 						}

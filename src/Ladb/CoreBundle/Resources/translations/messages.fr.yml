@@ -525,6 +525,7 @@ knowledge:
     legend: Légende
     source: Source
     country: Pays
+    currency: Devise
   bullet:
     not_verified: Cette proposition n'a pas été vérifiée
     undetermined: Les avis divergent sur la validation de cette proposition.
@@ -768,6 +769,58 @@ knowledge:
     new: Ajouter un livre
     list: Les livres
     nav: Livres
+    new_warning: Un <strong>livre</strong> est un <strong>ouvrage écrit</strong> qui porte sur un sujet tourant <strong>autour du travail du bois</strong>.
+    field:
+      title: Titre
+      cover: Couverture
+      back_cover: Arrière
+      author: Auteur
+      editor: Editeur
+      catalog_link: Lien catalogue
+      summary: Résumé
+      subjects: Sujets
+      language: Langue
+      page_count: Nombre de pages
+      isbn: ISBN
+      price: Prix public
+    help:
+      title: "Le **Title** est le titre du livre."
+      cover: "La **Couverture** est face avant du livre."
+      back_cover: "L'**Arrière** est face arrière du livre."
+      author: "L'**Auteur** est l'auteur du livre."
+      editor: "L'**Editeur** est l'éditeur du livre."
+      catalog_link: "Le **Lien catalogue** est un lien internet vers la page du catalogue de l'éditeur où est présent le livre."
+      summary: "Le **Résumé** est un court texte de présentation du livre."
+      subjects: "Les **Sujets** représentent les thèmes principaux abordés dans le livre."
+      language: "La **Langue** est la langue dans laquelle est écrit le livre."
+      page_count: "Le **Nombre de pages** est le nombre de pages du livre."
+      isbn: "L'**ISBN** est le code ISBN-10 ou ISBN-13 du livre."
+      price: "Le **Prix public** correspond au prix initialement proposé par l'éditeur du livre."
+    form:
+      alert:
+        delete_success: Le livre <strong>%title%</strong> a été supprimé.
+      help:
+        legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
+        source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        title: |
+          - Soyez le plus fidèle possible dans la rédaction du titre.
+        cover: |
+          - Utilisez une image lisible et de bonne qualité.
+        back_cover:
+        author: |
+          - N'indiquez **qu'un seul** nom par proposition.
+        editor:
+        catalog_link: |
+          - Utiliser un lien direct vers la page relative au livre dans le catalogue de l'éditeur.
+          - Les liens vers les sites de revendeurs/distributeurs sont **interdits**.
+          - Les liens affiliés sont **interdits**.
+        summary:
+        subjects: |
+          - N'indiquez **qu'un seul** sujet par proposition.
+        language:
+        page_count:
+        isbn:
+        price:
   tool:
     list: Outils
     token:
@@ -1003,6 +1056,7 @@ search:
     woods: Recherche dans les essences
     providers: Recherche dans les fournisseurs
     schools: Recherche dans les écoles
+    books: Recherche dans les livres
     finds: Recherche dans les trouvailles
     users: Recherche dans les boiseaux
     posts: Recherche dans le blog

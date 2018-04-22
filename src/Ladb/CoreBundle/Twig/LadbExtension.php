@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 use Ladb\CoreBundle\Parser\Markdown\LadbMarkdown;
 use Ladb\CoreBundle\Utils\TypableUtils;
+use Symfony\Component\Intl\Intl;
 
 class LadbExtension extends \Twig_Extension {
 

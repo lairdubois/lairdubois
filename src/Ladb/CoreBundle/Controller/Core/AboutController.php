@@ -61,6 +61,9 @@ class AboutController extends Controller {
 			array( 'name' => 'Hashids', 'url' => 'http://hashids.org/php/', 'labels' => array( 'PHP' ) ),
 			array( 'name' => 'Stripe PHP', 'url' => 'https://github.com/stripe/stripe-php', 'labels' => array( 'PHP' ) ),
 
+			array( 'name' => 'libphonenumber for PHP', 'url' => 'https://github.com/giggsey/libphonenumber-for-php', 'labels' => array( 'PHP' ) ),
+			array( 'name' => 'biblys/isbn', 'url' => 'https://github.com/biblys/isbn', 'labels' => array( 'PHP' ) ),
+
 			array( 'name' => 'Elasticsearch', 'url' => 'https://www.elastic.co', 'labels' => array( 'JAVA' ) ),
 
 			array( 'name' => 'jQuery', 'url' => 'https://jquery.com/', 'labels' => array( 'JS' ) ),

@@ -2,7 +2,7 @@
 
 {% set entity = book %}
 
-{% set pageContentItemType = 'TechArticle' %}
+{% set pageContentItemType = 'Book' %}
 {% set pageSectionUrl = url('core_book_list') %}
 {% set pageSectionName = 'knowledge.book.list'|trans %}
 {% set pageDescription = ('knowledge.book.field.title'|trans)~': '~book.title %}
@@ -51,11 +51,27 @@
 {% block contentBody %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':book, 'wide':true, 'field':constant('FIELD_COVER', book), 'picture':book.cover, 'values':book.coverValues, 'pictureBoxClasses':(book.coverRejected ? 'ladb-box-barred' : null) } %}
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':book, 'wide':true, 'field':constant('FIELD_BACK_COVER', book), 'picture':book.backCover, 'values':book.backCoverValues } %}
     </div>
     <div>
         <div class="ladb-metas">
-            <h4 class="ladb-heading">Apellation</h4>
+            <h4 class="ladb-heading">Ouvrage</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_TITLE', book), 'data':book.title, 'values':book.titleValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_AUTHOR', book), 'data':book.author, 'values':book.authorValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_EDITOR', book), 'data':book.editor, 'values':book.editorValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_CATALOG_LINK', book), 'data':book.catalogLink, 'values':book.catalogLinkValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Contenu</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUMMARY', book), 'data':book.summary, 'values':book.summaryValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUBJECTS', book), 'data':book.subjects, 'values':book.subjectsValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Caractéristiques</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_LANGUAGE', book), 'data':book.language, 'values':book.languageValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PAGE_COUNT', book), 'data':book.pageCount, 'values':book.pageCountValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_ISBN', book), 'data':book.isbn, 'values':book.isbnValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PRICE', book), 'data':book.price, 'values':book.priceValues } %}
         </div>
         <div class="panel panel-default ladb-margin-top">
             <div class="panel-body">

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc1c43314d9b795809f33d24912ed536",
+    "content-hash": "96df7d1f9afede97b470104984e655b5",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -181,6 +181,52 @@
             ],
             "description": "Symfony Bundle: Associate your users to webpush subscriptions.",
             "time": "2018-01-24T09:18:49+00:00"
+        },
+        {
+            "name": "biblys/isbn",
+            "version": "2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/biblys/isbn.git",
+                "reference": "0bad3d96058266e2bca306a2359f6594e4ef1561"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/biblys/isbn/zipball/0bad3d96058266e2bca306a2359f6594e4ef1561",
+                "reference": "0bad3d96058266e2bca306a2359f6594e4ef1561",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.2",
+                "phpunit/phpunit": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Biblys": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Clement Bourgoin",
+                    "email": "cb@nokto.net"
+                }
+            ],
+            "description": "A PHP library to convert and validate ISBN & EAN",
+            "homepage": "https://github.com/biblys/isbn",
+            "keywords": [
+                "ISBN",
+                "book",
+                "ean"
+            ],
+            "time": "2017-11-22T00:00:00+00:00"
         },
         {
             "name": "blueimp/jquery-file-upload",

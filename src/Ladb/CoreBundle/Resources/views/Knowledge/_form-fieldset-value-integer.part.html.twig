@@ -7,10 +7,10 @@
     {{ form_errors(form.data) }}
     {% if fieldSuffix is not null %}
         <div class="input-group">
-            {{ form_widget(form.data, { 'attr':{ 'class':'form-control' } }) }}
+            {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
             <span class="input-group-addon">{{ fieldSuffix|raw }}</span>
         </div>
     {% else %}
-        {{ form_widget(form.data) }}
+        {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
     {% endif %}
 {% endblock %}

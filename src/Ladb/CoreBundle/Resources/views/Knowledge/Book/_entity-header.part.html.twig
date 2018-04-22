@@ -2,3 +2,8 @@
 
 {% set entity = book %}
 {% set headingClasses = book.titleRejected ? 'ladb-strikethrough' : null %}
+
+{% block subheadingInner %}
+    {% if book.author %}<div class="ladb-subblock">de <a href="#">{{ book.author }}</a></div> {% endif %}
+    {% if book.editor %}<div class="ladb-subblock ladb-horizontal-separator-left"><i class="ladb-icon-book"></i> <a href="#">{{ book.editor }}</a></div>{% endif %}
+{% endblock %}
