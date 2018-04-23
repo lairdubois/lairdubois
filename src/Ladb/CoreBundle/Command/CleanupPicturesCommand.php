@@ -124,10 +124,11 @@ EOT
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'u', 'a', 'b' ))
+			->select(array( 'u', 'um', 'a', 'b' ))
 			->from('LadbCoreBundle:Core\User', 'u')
+			->innerJoin('u.meta', 'um')
 			->leftJoin('u.avatar', 'a')
-			->leftJoin('u.banner', 'b')
+			->leftJoin('um.banner', 'b')
 		;
 
 		try {
