@@ -85,6 +85,7 @@ class ValidUsernameValidator extends ConstraintValidator {
 				'xylotheque',
 				'fournisseurs',
 				'ecoles',
+				'livres',
 				'financement',
 				'outils',
 				'api',
