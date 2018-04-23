@@ -183,10 +183,24 @@ class BookController extends Controller {
 
 						break;
 
+					case 'collection':
+
+						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('collection', $facet->value);
+
+						break;
+
 					case 'subjects':
 
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
 						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('subjects', $facet->value);
+
+						break;
+
+					case 'language':
+
+						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('language', $facet->value);
 
 						break;
 

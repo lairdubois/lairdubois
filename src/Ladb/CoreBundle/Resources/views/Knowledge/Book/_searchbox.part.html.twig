@@ -10,11 +10,13 @@
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="editor" data-label="Editeur" data-editable="true" data-icon="book"><i class="ladb-icon-book"></i> Editeur</a></li>
         <li class="divider"></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="subjects" data-label="Sujets" data-editable="true" data-icon="list"><i class="ladb-icon-list"></i> Sujets</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="language" data-label="Langue" data-editable="true" data-icon="answer"><i class="ladb-icon-answer"></i> Langue</a></li>
         <li class="divider"></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
     {% endif %}
     {# Hidden filters #}
     <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="title" data-label="Titre" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Titre</a></li>
+    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="collection" data-label="Collection" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Collection</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}

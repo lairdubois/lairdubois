@@ -801,10 +801,12 @@ fos_elastica:
                         title: { type: text, boost: 3, analyzer: name_analyzer }
                         titleRejected: { type: boolean }
                         coverRejected: { type: boolean }
-                        author: { type: text, analyzer: name_analyzer }
-                        editor: { type: text, analyzer: name_analyzer }
+                        author: { analyzer: name_analyzer }
+                        editor: { analyzer: name_analyzer }
+                        collection: { type: text, analyzer: name_analyzer }
                         summary: { analyzer: body_analyzer }
                         subjects: { analyzer: body_analyzer }
+                        language: { type: text, analyzer: name_analyzer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }

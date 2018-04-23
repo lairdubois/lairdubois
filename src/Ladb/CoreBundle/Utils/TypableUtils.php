@@ -67,7 +67,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				return implode($delimiter, array( 'workflow', 'workflow' ));
 			// Book
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
-				return implode($delimiter, array( 'workflow', 'workflow' ));
+				return implode($delimiter, array( 'knowledge', 'book' ));
 
 		}
 		return '';

@@ -377,6 +377,31 @@ EOT
 		}
 		unset($graphics);
 
+		// Check workflows /////
+
+		$output->writeln('<info>Checking workflows...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'mp' ))
+			->from('LadbCoreBundle:Workflow\Workflow', 'w')
+			->leftJoin('w.mainPicture', 'mp')
+		;
+
+		try {
+			$workflows = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$workflows = array();
+		}
+
+		foreach ($workflows as $workflow) {
+			$mainPicture = $workflow->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($workflows);
+
 		// Check Woods /////
 
 		$output->writeln('<info>Checking woods...</info>');
@@ -486,6 +511,36 @@ EOT
 			}
 		}
 		unset($schools);
+
+		// Check Books /////
+
+		$output->writeln('<info>Checking Books...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'b', 'mp', 'bc' ))
+			->from('LadbCoreBundle:Knowledge\Book', 'b')
+			->leftJoin('s.mainPicture', 'mp')
+			->leftJoin('s.backCover', 'bc')
+		;
+
+		try {
+			$books = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$books = array();
+		}
+
+		foreach ($books as $book) {
+			$mainPicture = $book->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+			$backCover = $book->getBackCover();
+			if (!is_null($backCover)) {
+				$pictureCounters[$backCover->getId()][1]++;
+			}
+		}
+		unset($books);
 
 		// Check Knowledge/Value/Pictures /////
 
