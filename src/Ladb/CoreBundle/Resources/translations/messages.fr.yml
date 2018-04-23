@@ -776,6 +776,7 @@ knowledge:
       back_cover: Arrière
       author: Auteur
       editor: Editeur
+      collection: Collection
       catalog_link: Lien catalogue
       summary: Résumé
       subjects: Sujets
@@ -791,6 +792,7 @@ knowledge:
       back_cover: "L'**Arrière** est la face arrière du livre."
       author: "L'**Auteur** est l'auteur du livre."
       editor: "L'**Editeur** est l'éditeur du livre."
+      collection: "La **Collection** est ..."
       catalog_link: "Le **Lien catalogue** est un lien internet vers la page du catalogue de l'éditeur où est présent le livre."
       summary: "Le **Résumé** est un court texte de présentation du livre."
       subjects: "Les **Sujets** représentent les thèmes principaux abordés dans le livre."
@@ -814,6 +816,7 @@ knowledge:
         author: |
           - N'indiquez **qu'un seul** nom par proposition.
         editor:
+        collection:
         catalog_link: |
           - Utiliser un lien direct vers la page relative au livre dans le catalogue de l'éditeur.
           - Les liens vers les sites de revendeurs/distributeurs sont **interdits**.

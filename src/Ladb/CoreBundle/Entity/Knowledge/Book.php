@@ -32,6 +32,7 @@ class Book extends AbstractKnowledge {
 	const FIELD_BACK_COVER = 'back_cover';
 	const FIELD_AUTHOR = 'author';
 	const FIELD_EDITOR = 'editor';
+	const FIELD_COLLECTION = 'collection';
 	const FIELD_CATALOG_LINK = 'catalog_link';
 	const FIELD_SUMMARY = 'summary';
 	const FIELD_SUBJECTS = 'subjects';
@@ -48,6 +49,7 @@ class Book extends AbstractKnowledge {
 		Book::FIELD_BACK_COVER   => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Book::FIELD_AUTHOR       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@author:"%q%"'),
 		Book::FIELD_EDITOR       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@editor:"%q%"'),
+		Book::FIELD_COLLECTION   => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@collection:"%q%"'),
 		Book::FIELD_CATALOG_LINK => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_SUMMARY      => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_SUBJECTS     => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@subjects:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul sujet par proposition.')))),
@@ -124,6 +126,19 @@ class Book extends AbstractKnowledge {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $editorValues;
+
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $collection;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_collection")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $collectionValues;
 
 
 	/**
@@ -251,6 +266,7 @@ class Book extends AbstractKnowledge {
 		$this->backCoverValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->authorValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->editorValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->collectionValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->summaryValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->subjectsValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -469,6 +485,38 @@ class Book extends AbstractKnowledge {
 
 	public function getEditorValues() {
 		return $this->editorValues;
+	}
+
+	// Collection /////
+
+	public function setCollection($collection) {
+		$this->collection = $collection;
+		return $this;
+	}
+
+	public function getCollection() {
+		return $this->collection;
+	}
+
+	// CollectionValues /////
+
+	public function addCollectionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $collectionValue) {
+		if (!$this->collectionValues->contains($collectionValue)) {
+			$this->collectionValues[] = $collectionValue;
+		}
+		return $this;
+	}
+
+	public function removeCollectionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $collectionValue) {
+		$this->collectionValues->removeElement($collectionValue);
+	}
+
+	public function setCollectionValues($collectionValues) {
+		$this->collectionValues = $collectionValues;
+	}
+
+	public function getCollectionValues() {
+		return $this->collectionValues;
 	}
 
 	// CatalogLink /////
