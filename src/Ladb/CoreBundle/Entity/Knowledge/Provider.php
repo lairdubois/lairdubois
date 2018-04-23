@@ -48,7 +48,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 
 	public static $FIELD_DEFS = array(
 		Provider::FIELD_SIGN                => array(Provider::ATTRIB_TYPE => Sign::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true, Provider::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueProvider', array('excludedId' => '@getId'))), Provider::ATTRIB_LINKED_FIELDS => array('brand', 'isAffiliate', 'store')),
-		Provider::FIELD_LOGO                => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true, School::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
+		Provider::FIELD_LOGO                => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_MANDATORY => true, Provider::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Provider::FIELD_PHOTO               => array(Provider::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_WEBSITE             => array(Provider::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_ADDRESS             => array(Provider::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),

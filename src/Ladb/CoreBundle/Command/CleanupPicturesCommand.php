@@ -51,9 +51,9 @@ EOT
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 's', 'th' ))
+			->select(array( 'r', 'th' ))
 			->from('LadbCoreBundle:Core\Resource', 'r')
-			->leftJoin('s.thumbnail', 'th')
+			->leftJoin('r.thumbnail', 'th')
 		;
 
 		try {
