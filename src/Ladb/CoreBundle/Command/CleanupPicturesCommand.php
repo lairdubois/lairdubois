@@ -521,8 +521,8 @@ EOT
 		$queryBuilder
 			->select(array( 'b', 'mp', 'bc' ))
 			->from('LadbCoreBundle:Knowledge\Book', 'b')
-			->leftJoin('s.mainPicture', 'mp')
-			->leftJoin('s.backCover', 'bc')
+			->leftJoin('b.mainPicture', 'mp')
+			->leftJoin('b.backCover', 'bc')
 		;
 
 		try {
