@@ -793,7 +793,7 @@ knowledge:
       author: "L'**Auteur** est l'auteur du livre."
       editor: "L'**Editeur** est l'éditeur du livre."
       collection: "La **Collection** est ..."
-      catalog_link: "Le **Lien catalogue** est un lien internet vers la page du catalogue de l'éditeur où est présent le livre."
+      catalog_link: "Le **Lien catalogue** est le lien internet vers la page du catalogue de l'éditeur relative au livre OU le lien de consultation si le livre est dans le domaine public."
       summary: "Le **Résumé** est un court texte de présentation du livre."
       subjects: "Les **Sujets** représentent les thèmes principaux abordés dans le livre."
       language: "La **Langue** est la langue dans laquelle est écrit le livre."
@@ -818,7 +818,7 @@ knowledge:
         editor:
         collection:
         catalog_link: |
-          - Utiliser un lien direct vers la page relative au livre dans le catalogue de l'éditeur.
+          - Utiliser un lien direct vers la page relative au livre.
           - Les liens vers les sites de revendeurs/distributeurs sont **interdits**.
           - Les liens affiliés sont **interdits**.
         summary:
