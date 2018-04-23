@@ -1,5 +1,6 @@
 {% spaceless %}
 <div class="ladb-bottombar">
+    <div style="background-color: #d9534f; text-align: center; padding: 5px; color: #fff;"><i class="ladb-icon-warning"></i> Attention, vous êtes sur un serveur de test. <span style="color: #fcc; white-space: nowrap">( <a href="https://www.lairdubois.fr" style="color: #fcc;" target="_blank">Retour sur lairdubois.fr</a> )</span></div>
     <ul class="ladb-nav">
         <li style="background-color: #f0ad4e;"><a href="{{ path('core_funding_dashboard') }}"{% if navSection is defined and navSection == 'funding' %} class="ladb-active"{% endif %}><i class="ladb-icon-funding ladb-icon-lg"></i><span class="ladb-hidden-mobile">&nbsp;{{ 'funding.nav'|trans() }}</span></a></li>
         <li class="ladb-hidden-mobile"><a href="{{ path('core_promotion_graphic_list') }}"{% if navSection is defined and navSection == 'promotion' %} class="ladb-active"{% endif %}><i class="ladb-icon-promote ladb-icon-lg"></i><span class="ladb-hidden-mobile">&nbsp;{{ 'promotion.nav'|trans() }}</span>{% block bottomBarPromotionGraphicNotificationBadge %}{% endblock %}</a></li>
