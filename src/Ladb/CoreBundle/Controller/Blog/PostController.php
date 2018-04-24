@@ -199,6 +199,8 @@ class PostController extends Controller {
 			throw $this->createNotFoundException('Not allowed (core_blog_post_update)');
 		}
 
+		$doUp = $request->get('ladb_do_up', false);
+
 		$om = $this->getDoctrine()->getManager();
 		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
@@ -223,12 +225,18 @@ class PostController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($post);
 
+			if ($doUp) {
+				$post->setChangedAt(new \DateTime());
+			}
 			$post->setUpdatedAt(new \DateTime());
 
 			$om->flush();
 
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
+			if ($doUp) {
+				$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($post, array( 'previouslyUsedTags' => $previouslyUsedTags )));
+			}
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($post, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
