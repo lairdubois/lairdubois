@@ -47,7 +47,7 @@ class Book extends AbstractKnowledge {
 		Book::FIELD_TITLE        => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueBook', array('excludedId' => '@getId')))),
 		Book::FIELD_COVER        => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Book::FIELD_BACK_COVER   => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Book::FIELD_AUTHOR       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@author:"%q%"'),
+		Book::FIELD_AUTHOR       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@author:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
 		Book::FIELD_EDITOR       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@editor:"%q%"'),
 		Book::FIELD_COLLECTION   => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@collection:"%q%"'),
 		Book::FIELD_CATALOG_LINK => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),

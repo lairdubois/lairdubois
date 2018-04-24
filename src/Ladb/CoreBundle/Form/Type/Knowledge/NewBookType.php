@@ -22,7 +22,7 @@ class NewBookType extends AbstractType {
 		$builder
 			->add('titleValue', TextValueType::class, array(
 				'choices' => null,
-				'dataConstraints' => array( new OneThing(array('message' => 'N\'indiquez qu\'un seul Titre' )) ),
+				'dataConstraints' => null,
 				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueBook() )
 			))
 			->add('coverValue', PictureValueType::class, array(
