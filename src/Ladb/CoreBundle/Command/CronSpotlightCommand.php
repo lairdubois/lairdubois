@@ -223,7 +223,7 @@ EOT
 				// Publish on social networks
 				$twitterSuccess = $this->_publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output);
 				$facebookSuccess = $this->_publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output);
-				$pinterestSuccess = $this->_publishOnPinterest($spotlight, $entity, $forced, $forcedPinterest, $verbose, $output);
+				$pinterestSuccess = false; // 2018-04-24 LADB acces_token was banned by Pinterest // $this->_publishOnPinterest($spotlight, $entity, $forced, $forcedPinterest, $verbose, $output);
 
 				// Email notification
 				$mailerUtils = $this->getContainer()->get(MailerUtils::NAME);

@@ -73,6 +73,7 @@ default:
   protected: Equipe
   public: Public
   toc: Table des matières
+  do_up: Remonter la publication
   warning:
     be_owner: Vous devez avoir les droits sur ce que vous publiez.
     may_be_rejected: Les publications ne correspondant pas à ces critères pourront faire l'objet d'un rejet.
