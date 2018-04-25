@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -27,6 +28,96 @@ use Ladb\CoreBundle\Utils\PropertyUtils;
  * @Route("/knowledge")
  */
 class KnowledgeController extends Controller {
+
+	private function _retriveRelatedEntityRepository($entityType) {
+
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$entityRepository = $typableUtils->getRepositoryByType($entityType);
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException($e->getMessage());
+		}
+
+		return $entityRepository;
+	}
+
+	private function _retriveRelatedEntity($entityRepository, $entityId) {
+
+		$entity = $entityRepository->findOneById($entityId);
+		if (is_null($entity)) {
+			throw $this->createNotFoundException('Unknow Entity (entityId='.$entityId.').');
+		}
+		if (!($entity instanceof AbstractKnowledge)) {
+			throw $this->createNotFoundException('Entity must extends AbstractKnowledge.');
+		}
+
+		return $entity;
+	}
+
+	private function _retieveFieldDef($entity, $field) {
+
+		$fieldDef = $entity->getFieldDefs()[$field];
+		if (is_null($fieldDef)) {
+			throw $this->createNotFoundException('Unknow knowledge field (field='.$field.').');
+		}
+
+		return $fieldDef;
+	}
+
+	private function _getFieldType($fieldDef) {
+		return $fieldDef[AbstractKnowledge::ATTRIB_TYPE];
+	}
+
+	private function _getFieldMutltiple($fieldDef) {
+		return $fieldDef[AbstractKnowledge::ATTRIB_MULTIPLE];
+	}
+
+	private function _getFieldChoices($fieldDef) {
+		return isset($fieldDef[AbstractKnowledge::ATTRIB_CHOICES]) ? $fieldDef[AbstractKnowledge::ATTRIB_CHOICES] : null;
+	}
+
+	private function _getFieldConstraints($fieldDef, $entity, $attib = AbstractKnowledge::ATTRIB_CONSTRAINTS) {
+		$constraintDefs = isset($fieldDef[$attib]) ? $fieldDef[$attib] : null;
+		$fieldConstraints = array();
+		if (!is_null($constraintDefs)) {
+			foreach ($constraintDefs as $constraintDef) {
+				$constraint = new $constraintDef[0]();
+				if (isset($constraintDef[1])) {
+					foreach ($constraintDef[1] as $key => $value) {
+						if (strpos($value, '@') !== false) {
+							$value = $entity->{ substr($value, 1) }();
+						}
+						$constraint->{ $key } = $value;
+					}
+				}
+				$fieldConstraints[] = $constraint;
+			}
+		}
+		return $fieldConstraints;
+	}
+
+	private function _computeEntityClass($fieldType) {
+		return '\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\'.ucfirst($fieldType);
+	}
+
+	private function _computeFormTypeFqcn($fieldType) {
+		return 'Ladb\\CoreBundle\\Form\\Type\\Knowledge\\Value\\'.ucfirst($fieldType).'ValueType';
+	}
+
+	private function _retrieveValue($valueRepository, $id) {
+		$value = $valueRepository->findOneById($id);
+		if (is_null($value)) {
+			throw $this->createNotFoundException('Unable to find Value entity (id='.$id.').');
+		}
+
+		return $value;
+	}
+
+	private function _computeFormTypeName($fieldType, $value) {
+		return 'ladb_knowledge_value_'.$fieldType.'_'.$value->getId();
+	}
+
+	/////
 
 	/**
 	 * @Route("/{entityType}/{entityId}/contributors", requirements={"entityType" = "\d+","entityId" = "\d+"}, name="core_knowledge_contributors")
@@ -64,31 +155,6 @@ class KnowledgeController extends Controller {
 		return $parameters;
 	}
 
-	private function _retriveRelatedEntityRepository($entityType) {
-
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entityRepository = $typableUtils->getRepositoryByType($entityType);
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException($e->getMessage());
-		}
-
-		return $entityRepository;
-	}
-
-	private function _retriveRelatedEntity($entityRepository, $entityId) {
-
-		$entity = $entityRepository->findOneById($entityId);
-		if (is_null($entity)) {
-			throw $this->createNotFoundException('Unknow Entity (entityId='.$entityId.').');
-		}
-		if (!($entity instanceof AbstractKnowledge)) {
-			throw $this->createNotFoundException('Entity must extends AbstractKnowledge.');
-		}
-
-		return $entity;
-	}
-
 	/**
 	 * @Route("/{entityType}/{entityId}/{field}/create", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+"}, name="core_knowledge_value_create")
 	 * @Method("POST")
@@ -99,6 +165,7 @@ class KnowledgeController extends Controller {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 		$propertyUtils = $this->get(PropertyUtils::NAME);
 		$om = $this->getDoctrine()->getManager();
 
@@ -178,6 +245,7 @@ class KnowledgeController extends Controller {
 				'knowledge'       => $entity,
 				'field'           => $field,
 				'form'            => $form->createView(),
+				'sourcesHistory'  => $knowledgeUtils->getValueSourcesHistory(),
 				'values'          => $values,
 				'commentContexts' => $commentableUtils->getCommentContexts($values),
 				'voteContexts'    => $votableUtils->getVoteContexts($values, $user),
@@ -186,60 +254,11 @@ class KnowledgeController extends Controller {
 		}
 
 		return array(
-			'knowledge' => $entity,
-			'field'     => $field,
-			'form'      => $form->createView(),
+			'knowledge'      => $entity,
+			'field'          => $field,
+			'form'           => $form->createView(),
+			'sourcesHistory' => $knowledgeUtils->getValueSourcesHistory(),
 		);
-	}
-
-	private function _retieveFieldDef($entity, $field) {
-
-		$fieldDef = $entity->getFieldDefs()[$field];
-		if (is_null($fieldDef)) {
-			throw $this->createNotFoundException('Unknow knowledge field (field='.$field.').');
-		}
-
-		return $fieldDef;
-	}
-
-	private function _getFieldType($fieldDef) {
-		return $fieldDef[AbstractKnowledge::ATTRIB_TYPE];
-	}
-
-	private function _getFieldMutltiple($fieldDef) {
-		return $fieldDef[AbstractKnowledge::ATTRIB_MULTIPLE];
-	}
-
-	private function _getFieldChoices($fieldDef) {
-		return isset($fieldDef[AbstractKnowledge::ATTRIB_CHOICES]) ? $fieldDef[AbstractKnowledge::ATTRIB_CHOICES] : null;
-	}
-
-	private function _getFieldConstraints($fieldDef, $entity, $attib = AbstractKnowledge::ATTRIB_CONSTRAINTS) {
-		$constraintDefs = isset($fieldDef[$attib]) ? $fieldDef[$attib] : null;
-		$fieldConstraints = array();
-		if (!is_null($constraintDefs)) {
-			foreach ($constraintDefs as $constraintDef) {
-				$constraint = new $constraintDef[0]();
-				if (isset($constraintDef[1])) {
-					foreach ($constraintDef[1] as $key => $value) {
-						if (strpos($value, '@') !== false) {
-							$value = $entity->{ substr($value, 1) }();
-						}
-						$constraint->{ $key } = $value;
-					}
-				}
-				$fieldConstraints[] = $constraint;
-			}
-		}
-		return $fieldConstraints;
-	}
-
-	private function _computeEntityClass($fieldType) {
-		return '\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\'.ucfirst($fieldType);
-	}
-
-	private function _computeFormTypeFqcn($fieldType) {
-		return 'Ladb\\CoreBundle\\Form\\Type\\Knowledge\\Value\\'.ucfirst($fieldType).'ValueType';
 	}
 
 	/**
@@ -251,6 +270,7 @@ class KnowledgeController extends Controller {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve related entity
@@ -281,23 +301,11 @@ class KnowledgeController extends Controller {
 		$form = $this->get('form.factory')->createNamed($formTypeName, $formTypeFqcn, $value, array( 'choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints ));
 
 		return array(
-			'knowledge' => $entity,
-			'field'     => $field,
-			'form'      => $form->createView(),
+			'knowledge'      => $entity,
+			'field'          => $field,
+			'form'           => $form->createView(),
+			'sourcesHistory' => $knowledgeUtils->getValueSourcesHistory(),
 		);
-	}
-
-	private function _retrieveValue($valueRepository, $id) {
-		$value = $valueRepository->findOneById($id);
-		if (is_null($value)) {
-			throw $this->createNotFoundException('Unable to find Value entity (id='.$id.').');
-		}
-
-		return $value;
-	}
-
-	private function _computeFormTypeName($fieldType, $value) {
-		return 'ladb_knowledge_value_'.$fieldType.'_'.$value->getId();
 	}
 
 	/**
@@ -312,6 +320,7 @@ class KnowledgeController extends Controller {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve related entity
@@ -367,9 +376,10 @@ class KnowledgeController extends Controller {
 		}
 
 		return array(
-			'knowledge' => $entity,
-			'field'     => $field,
-			'form'      => $form->createView(),
+			'knowledge'      => $entity,
+			'field'          => $field,
+			'form'           => $form->createView(),
+			'sourcesHistory' => $knowledgeUtils->getValueSourcesHistory(),
 		);
 	}
 
@@ -539,6 +549,7 @@ class KnowledgeController extends Controller {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 		$propertyUtils = $this->get(PropertyUtils::NAME);
 
 		// Retrieve related entity
@@ -575,6 +586,7 @@ class KnowledgeController extends Controller {
 			'commentContexts' => $commentableUtils->getCommentContexts($values),
 			'voteContexts'    => $votableUtils->getVoteContexts($values, $this->getUser()),
 			'form'            => is_null($form) ? null : $form->createView(),
+			'sourcesHistory'  => $knowledgeUtils->getValueSourcesHistory(),
 		);
 	}
 

@@ -32,18 +32,20 @@ class KnowledgeListener implements EventSubscriberInterface {
 	public function onFieldValueAdded(KnowledgeEvent $event) {
 		$knowledge = $event->getKnowledge();
 		$field = $event->getData()['field'];
+		$value = $event->getData()['value'];
 
 		// Update field
 		$knowledgeUtils = $this->container->get(KnowledgeUtils::NAME);
 		$knowledgeUtils->updateKnowledgeField($knowledge, $field);
+
+		// Source history
+		$knowledgeUtils->pushToSourcesHistory($value);
 
 		$knowledge->setUpdatedAt(new \DateTime());
 		$knowledge->setChangedAt(new \DateTime());
 
 		if ($knowledge instanceof \Ladb\CoreBundle\Entity\Knowledge\Wood
 			&& ($field == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_GRAIN || $field == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_ENDGRAIN)) {
-
-			$value = $event->getData()['value'];
 
 			$textureUtils = $this->container->get(TextureUtils::NAME);
 			$textureUtils->createTexture($knowledge, $value, false);
@@ -55,17 +57,19 @@ class KnowledgeListener implements EventSubscriberInterface {
 	public function onFieldValueUpdated(KnowledgeEvent $event) {
 		$knowledge = $event->getKnowledge();
 		$field = $event->getData()['field'];
+		$value = $event->getData()['value'];
 
 		// Update field
 		$knowledgeUtils = $this->container->get(KnowledgeUtils::NAME);
 		$knowledgeUtils->updateKnowledgeField($knowledge, $field);
 
+		// Source history
+		$knowledgeUtils->pushToSourcesHistory($value);
+
 		$knowledge->setUpdatedAt(new \DateTime());
 
 		if ($knowledge instanceof \Ladb\CoreBundle\Entity\Knowledge\Wood
 			&& ($field == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_GRAIN || $field == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_ENDGRAIN)) {
-
-			$value = $event->getData()['value'];
 
 			$textureUtils = $this->container->get(TextureUtils::NAME);
 			$textureUtils->updateTexture($knowledge, $value, false);
@@ -77,6 +81,7 @@ class KnowledgeListener implements EventSubscriberInterface {
 	public function onFieldValueRemoved(KnowledgeEvent $event) {
 		$knowledge = $event->getKnowledge();
 		$field = $event->getData()['field'];
+		$value = $event->getData()['value'];
 
 		// Update field
 		$knowledgeUtils = $this->container->get(KnowledgeUtils::NAME);
@@ -87,8 +92,6 @@ class KnowledgeListener implements EventSubscriberInterface {
 
 		if ($knowledge instanceof \Ladb\CoreBundle\Entity\Knowledge\Wood
 			&& ($field == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_GRAIN || $field == \Ladb\CoreBundle\Entity\Knowledge\Wood::FIELD_ENDGRAIN)) {
-
-			$value = $event->getData()['value'];
 
 			$textureUtils = $this->container->get(TextureUtils::NAME);
 			$textureUtils->deleteTexture($knowledge, $value, false);

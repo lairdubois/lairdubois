@@ -5,7 +5,7 @@ namespace Ladb\CoreBundle\Utils;
 use Ladb\CoreBundle\Entity\Knowledge\AbstractKnowledge;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 
-class KnowledgeUtils extends AbstractContainerAwareUtils{
+class KnowledgeUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.knowledge_utils';
 
@@ -99,5 +99,47 @@ class KnowledgeUtils extends AbstractContainerAwareUtils{
 		}
 	}
 
+	/////
+
+	const SOURCES_HISTORY_KEY = '_ladb_knowledge_value_sources_history';
+
+	public function pushToSourcesHistory(BaseValue $value) {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+
+		// Extract sources history from user session
+		$session = $globalUtils->getSession();
+		$history = $session->get(self::SOURCES_HISTORY_KEY);
+
+		if (is_null($history)) {
+			$history = array();
+		}
+
+		$sourceInfo = array( $value->getSourceType(), $value->getSource() );
+		for ($i = count($history) - 1; $i >= 0; $i--) {
+			if (!count($history[$i]) == 2) {
+				unset($history[$i]);	// Remove sourceInfo if it is malformated
+				continue;
+			}
+			if ($history[$i][0] == $sourceInfo[0] && $history[$i][1] == $sourceInfo[1]) {
+				unset($history[$i]);	// Remove sourceInfo if it exists
+				break;
+			}
+		}
+		array_unshift($history, $sourceInfo);			// Add sourceInfo as firts array element
+		$history = array_slice($history, 0, 10);	// Maximize history to 10 elements
+
+		// Update sources history to user session
+		$session->set(self::SOURCES_HISTORY_KEY, $history);
+	}
+
+	public function getValueSourcesHistory() {
+		$globalUtils = $this->get(GlobalUtils::NAME);
+
+		// Extract sources history from user session
+		$session = $globalUtils->getSession();
+		$history = $session->get(self::SOURCES_HISTORY_KEY);
+
+		return $history;
+	}
 
 }
