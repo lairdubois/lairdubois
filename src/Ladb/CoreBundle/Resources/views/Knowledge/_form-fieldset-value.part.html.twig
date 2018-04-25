@@ -23,11 +23,10 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                {% for sourceInfo in sourcesHistory %}
-                    {%  set a = sourceInfo[1] %}
-                    <li><a href="#" class="ladb-source-info" data-ladb-source-type="{{ sourceInfo[0] }}" data-ladb-source="{{ sourceInfo[1] }}">[{{ ('knowledge.source_type_'~sourceInfo[0])|trans }}]{% if sourceInfo[1] is not empty %} {{ sourceInfo[1]|truncate }}{% endif %}</a></li>
+                {% for sourcesHistoryItem in sourcesHistory %}
+                    <li><a href="#" class="ladb-source-history-item" data-ladb-source-type="{{ sourcesHistoryItem[0] }}" data-ladb-source="{{ sourcesHistoryItem[1] }}">[{{ ('knowledge.source_type_'~sourcesHistoryItem[0])|trans }}]{% if sourcesHistoryItem[1] is not empty %} {{ sourcesHistoryItem[1]|truncate }}{% endif %}</a></li>
                 {% else %}
-                    <li><{{ 'default.empty'|trans }}</li>
+                    <li class="disabled"><a href="#">Vide</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -78,7 +77,7 @@
             var sourceType = parseInt($(this).val());
             apply{{ form.source.vars.id }}SourceType(sourceType);
         });
-        $("#{{ form.source.vars.id }}_history a").click(function() {
+        $("#{{ form.source.vars.id }}_history a.ladb-source-history-item").click(function() {
             var sourceType = parseInt($(this).data('ladb-source-type'));
             var source = $(this).data('ladb-source');
             $("#{{ form.sourceType.vars.id }}").val(sourceType);

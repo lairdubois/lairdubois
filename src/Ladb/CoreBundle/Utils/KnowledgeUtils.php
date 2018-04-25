@@ -114,18 +114,18 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 			$history = array();
 		}
 
-		$sourceInfo = array( $value->getSourceType(), $value->getSource() );
+		$historyItem = array( $value->getSourceType(), $value->getSource() );
 		for ($i = count($history) - 1; $i >= 0; $i--) {
 			if (!count($history[$i]) == 2) {
-				unset($history[$i]);	// Remove sourceInfo if it is malformated
+				unset($history[$i]);	// Remove historyItem if it is malformated
 				continue;
 			}
-			if ($history[$i][0] == $sourceInfo[0] && $history[$i][1] == $sourceInfo[1]) {
-				unset($history[$i]);	// Remove sourceInfo if it exists
+			if ($history[$i][0] == $historyItem[0] && $history[$i][1] == $historyItem[1]) {
+				unset($history[$i]);	// Remove historyItem if it exists
 				break;
 			}
 		}
-		array_unshift($history, $sourceInfo);			// Add sourceInfo as firts array element
+		array_unshift($history, $historyItem);			// Add historyItem as first array element
 		$history = array_slice($history, 0, 10);	// Maximize history to 10 elements
 
 		// Update sources history to user session
