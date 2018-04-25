@@ -207,6 +207,13 @@ class BookController extends Controller {
 
 						break;
 
+					case 'with-review':
+
+						$filter = new \Elastica\Query\Range('reviewCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\BoolQuery();

@@ -811,6 +811,7 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        reviewCount: { type: integer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Knowledge\Book

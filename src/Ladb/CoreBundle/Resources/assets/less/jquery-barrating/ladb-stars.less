@@ -1,0 +1,39 @@
+.br-theme-ladb-stars {
+
+  .br-widget {
+    height: 20px;
+    white-space: nowrap;
+
+    a {
+      font: normal normal normal 20px/1 'ladbicons';
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      text-decoration: none;
+      margin-right: 2px;
+
+      &:after {
+        content: '\e654';
+        color: #d2d2d2;
+      }
+
+      &.br-active:after {
+        color: #FEDC53;
+      }
+
+      &.br-selected:after {
+        color: #FEDC53;
+      }
+
+    }
+
+    .br-current-rating {
+      display: none;
+    }
+
+  }
+
+  .br-readonly a {
+    cursor: default;
+  }
+
+}

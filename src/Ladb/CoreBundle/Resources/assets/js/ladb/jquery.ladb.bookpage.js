@@ -61,6 +61,16 @@
 
         });
 
+        // Rating
+        var $barRating = $('.ladb-barrating', $row);
+        var rating = $barRating.data('ladb-rating');
+        $barRating
+            .barrating({
+                theme: 'ladb-stars',
+                readonly: true
+            })
+            .barrating('set', rating);
+
         setupTooltips();
 
     };
@@ -114,7 +124,7 @@
         setupTextareas();
 
         // Focus the first textarea
-        $('textarea', $form).first().focus();
+        $('input', $form).first().focus();
 
     };
 
@@ -173,7 +183,7 @@
                 setupTextareas();
 
                 // Focus the first textarea
-                $('textarea', $form).first().focus();
+                $('input', $form).first().focus();
 
             }
         });

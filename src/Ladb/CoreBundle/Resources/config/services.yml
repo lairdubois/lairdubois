@@ -137,6 +137,9 @@ services:
     class: Ladb\CoreBundle\Utils\PropertyUtils
   ladb_core.elastica_query_utils:
     class: Ladb\CoreBundle\Utils\ElasticaQueryUtils
+  ladb_core.book_utils:
+    class: Ladb\CoreBundle\Utils\BookUtils
+    arguments: ['@service_container']
   Ladb\CoreBundle\Utils\WebpushNotificationUtils:
     arguments: ['@service_container']
 
@@ -171,11 +174,14 @@ services:
   ladb_core.school_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\SchoolManager
     arguments: ['@service_container']
+  ladb_core.knowledge_school_testimonial_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager
+    arguments: ['@service_container']
   ladb_core.book_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\BookManager
     arguments: ['@service_container']
-  ladb_core.knowledge_school_testimonial_manager:
-    class: Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager
+  ladb_core.knowledge_book_review_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\Book\ReviewManager
     arguments: ['@service_container']
   ladb_core.wood_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\WoodManager

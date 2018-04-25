@@ -29,11 +29,10 @@
 {% block headStylesheets %}
     {{ parent() }}
     {% stylesheets filter='less,?yui_css'
-        '@LadbCoreBundle/Resources/assets/css/jquery-barrating/css-stars.css'
+        '@LadbCoreBundle/Resources/assets/less/jquery-barrating/ladb-stars.less'
         '@LadbCoreBundle/Resources/assets/less/ladb/layout/book.less' %}
         <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
     {% endstylesheets %}
-    {{ block('mapAreaStylesheets') }}
 {% endblock %}
 
 {% block bodyJavascripts %}
@@ -48,10 +47,6 @@
         $(document).ready(function() {
             $('#container').ladbBookPage({
                 reviewNewPath: '{{ path('core_knowledge_book_review_new', { 'id':book.id }) }}'
-            });
-            $('.barrating').barrating({
-                theme: 'css-stars',
-                readonly: true
             });
         });
     </script>
@@ -158,6 +153,7 @@
             <i class="ladb-icon-review ladb-icon-fixed-center"></i>
             <strong>{{ book.reviewCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'knowledge.book.choice.reviews'|transchoice(entity.reviewCount) }}</small>
+            {% if book.averageRating > 0 %} <small class="ladb-color-info">( {{ book.averageRating|number_format(1, ',', ' ') }} / 5 )</small>{% endif %}
         </div>
     </div>
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license } %}

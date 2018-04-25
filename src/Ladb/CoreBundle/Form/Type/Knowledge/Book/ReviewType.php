@@ -15,7 +15,14 @@ class ReviewType extends AbstractType {
 		$builder
 			->add('title', TextType::class)
 			->add('rating', ChoiceType::class, array(
-				'choices' => array_flip(array( 1, 2, 3, 4, 5 )),
+				'choices' => array_flip(array(
+					0 => '',
+					1 => 1,
+					2 => 2,
+					3 => 3,
+					4 => 4,
+					5 => 5
+				)),
 			))
 			->add('body', TextareaType::class)
 		;

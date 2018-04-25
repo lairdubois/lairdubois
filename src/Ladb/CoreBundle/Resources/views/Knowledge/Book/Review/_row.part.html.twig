@@ -28,18 +28,20 @@
                     </div>
                     {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':review, 'hideBy':true } %}
                     <div style="font-size: 110%; font-weight: bold; color: #000; padding-top: 10px;">{{ review.title }}</div>
-                    <div class="text-center" style="padding: 10px 0;">
-                        <select class="barrating">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="ladb-content">
                     <div>
+                        {% if review.rating > 0 %}
+                            <div style="padding: 5px 0 10px 0;">
+                                <select class="ladb-barrating hide" data-ladb-rating="{{ review.rating }}">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        {% endif %}
                         {{ review.htmlBody|raw }}
                     </div>
                     {% include 'LadbCoreBundle:Common:_published-age.part.html.twig' with { 'entity':review } %}

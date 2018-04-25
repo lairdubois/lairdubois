@@ -737,13 +737,13 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		return $this->testimonialCount += intval($by);
 	}
 
-	public function getTestimonialCount() {
-		return $this->testimonialCount;
-	}
-
 	public function setTestimonialCount($testimonialCount) {
 		$this->testimonialCount = $testimonialCount;
 		return $this;
+	}
+
+	public function getTestimonialCount() {
+		return $this->testimonialCount;
 	}
 
 	// Testimonials /////

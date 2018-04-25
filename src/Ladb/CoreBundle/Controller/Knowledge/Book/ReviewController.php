@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge\Book;
 
+use Ladb\CoreBundle\Utils\BookUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -75,6 +76,10 @@ class ReviewController extends Controller {
 
 			$book->incrementReviewCount();
 			$this->getUser()->getMeta()->incrementReviewCount();
+
+			// Average rating
+			$bookUtils = $this->get(BookUtils::NAME);
+			$bookUtils->computeAverageRating($book);
 
 			$om->persist($review);
 
@@ -158,6 +163,10 @@ class ReviewController extends Controller {
 				$review->setUpdatedAt(new \DateTime());
 			}
 
+			// Average rating
+			$bookUtils = $this->get(BookUtils::NAME);
+			$bookUtils->computeAverageRating($review->getBook());
+
 			$om->flush();
 
 			return $this->render('LadbCoreBundle:Knowledge/Book/Review:_row.part.html.twig', array(
@@ -192,6 +201,10 @@ class ReviewController extends Controller {
 		// Delete
 		$reviewManager = $this->get(ReviewManager::NAME);
 		$reviewManager->delete($review);
+
+		// Average rating
+		$bookUtils = $this->get(BookUtils::NAME);
+		$bookUtils->computeAverageRating($book);
 
 		// Search index update
 		$searchUtils = $this->get(SearchUtils::NAME);

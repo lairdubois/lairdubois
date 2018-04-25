@@ -23,8 +23,8 @@ class ReviewManager extends AbstractManager {
 		$book->incrementReviewCount(-1);
 
 		// Delete activities
-		$activityUtils = $this->get(ActivityUtils::NAME);
-		$activityUtils->deleteActivitiesByReview($review, false);
+//		$activityUtils = $this->get(ActivityUtils::NAME);
+//		$activityUtils->deleteActivitiesByReview($review, false);
 
 		parent::deleteEntity($review, $flush);
 	}

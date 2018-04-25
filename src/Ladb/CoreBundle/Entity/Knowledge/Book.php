@@ -269,6 +269,11 @@ class Book extends AbstractKnowledge {
 	 */
 	private $reviews;
 
+	/**
+	 * @ORM\Column(name="average_rating", type="float")
+	 */
+	private $averageRating = 0;
+
 	/////
 
 	public function __construct() {
@@ -825,13 +830,13 @@ class Book extends AbstractKnowledge {
 		return $this->reviewCount += intval($by);
 	}
 
-	public function getReviewCount() {
-		return $this->reviewCount;
-	}
-
 	public function setReviewCount($reviewCount) {
 		$this->reviewCount = $reviewCount;
 		return $this;
+	}
+
+	public function getReviewCount() {
+		return $this->reviewCount;
 	}
 
 	// Reviews /////
@@ -849,6 +854,17 @@ class Book extends AbstractKnowledge {
 
 	public function getReviews() {
 		return $this->reviews;
+	}
+
+	// AverageRating /////
+
+	public function setAverageRating($averageRating) {
+		$this->averageRating = $averageRating;
+		return $this;
+	}
+
+	public function getAverageRating() {
+		return $this->averageRating;
 	}
 
 }

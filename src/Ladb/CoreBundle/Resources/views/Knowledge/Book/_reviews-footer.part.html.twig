@@ -15,7 +15,7 @@
             {% if is_granted("ROLE_USER") %}
                 <button id="ladb_review_btn" class="btn btn-primary btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ 'knowledge.book.review.new'|trans() }}</button>
             {% else %}
-                <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre témoignage.
+                <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter votre critique.
             {% endif %}
         </div>
     {% endif %}
