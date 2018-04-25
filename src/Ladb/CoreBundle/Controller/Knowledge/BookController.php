@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 use Ladb\CoreBundle\Manager\Knowledge\BookManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,12 +39,14 @@ class BookController extends Controller {
 	 * @Template("LadbCoreBundle:Knowledge/Book:new.html.twig")
 	 */
 	public function newAction() {
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 
 		$newBook = new NewBook();
 		$form = $this->createForm(NewBookType::class, $newBook);
 
 		return array(
-			'form' => $form->createView(),
+			'form'           => $form->createView(),
+			'sourcesHistory' => $knowledgeUtils->getValueSourcesHistory(),
 		);
 	}
 

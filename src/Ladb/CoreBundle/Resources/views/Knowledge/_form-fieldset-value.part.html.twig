@@ -26,6 +26,8 @@
                 {% for sourceInfo in sourcesHistory %}
                     {%  set a = sourceInfo[1] %}
                     <li><a href="#" class="ladb-source-info" data-ladb-source-type="{{ sourceInfo[0] }}" data-ladb-source="{{ sourceInfo[1] }}">[{{ ('knowledge.source_type_'~sourceInfo[0])|trans }}]{% if sourceInfo[1] is not empty %} {{ sourceInfo[1]|truncate }}{% endif %}</a></li>
+                {% else %}
+                    <li><{{ 'default.empty'|trans }}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -48,7 +50,7 @@
         $("#{{ form.source.vars.id }}_other_input_group input").on("change keydown paste input", function() {
             $("#{{ form.source.vars.id }}").val($(this).val());
         });
-        function applySourceType(sourceType) {
+        function apply{{ form.source.vars.id }}SourceType(sourceType) {
             switch (sourceType) {
                 case 1:
                     $("#{{ form.source.vars.id }}").val("");
@@ -74,7 +76,7 @@
         $("#{{ form.sourceType.vars.id }}").on("change", function() {
             {% if cancelEdit %}cancelEditValueProposal();{% endif %}
             var sourceType = parseInt($(this).val());
-            applySourceType(sourceType);
+            apply{{ form.source.vars.id }}SourceType(sourceType);
         });
         $("#{{ form.source.vars.id }}_history a").click(function() {
             var sourceType = parseInt($(this).data('ladb-source-type'));
@@ -88,7 +90,7 @@
                     $("#{{ form.source.vars.id }}_other_input_group input").val(source);
                     break;
             }
-            applySourceType(sourceType)
+            apply{{ form.source.vars.id }}SourceType(sourceType)
         });
     </script>
 </div>
