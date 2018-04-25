@@ -265,7 +265,7 @@ class Book extends AbstractKnowledge {
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Book\Review", mappedBy="book", cascade={"all"})
-	 * @ORM\OrderBy({"score" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"rating" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $reviews;
 

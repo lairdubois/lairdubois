@@ -29,6 +29,7 @@
 {% block headStylesheets %}
     {{ parent() }}
     {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/css/jquery-barrating/css-stars.css'
         '@LadbCoreBundle/Resources/assets/less/ladb/layout/book.less' %}
         <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
     {% endstylesheets %}
@@ -38,6 +39,7 @@
 {% block bodyJavascripts %}
     {{ parent() }}
     {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-barrating/jquery.barrating.min.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.bookpage.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -46,6 +48,10 @@
         $(document).ready(function() {
             $('#container').ladbBookPage({
                 reviewNewPath: '{{ path('core_knowledge_book_review_new', { 'id':book.id }) }}'
+            });
+            $('.barrating').barrating({
+                theme: 'css-stars',
+                readonly: true
             });
         });
     </script>

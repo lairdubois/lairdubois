@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\TypableInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
+use Ladb\CoreBundle\Model\TitledInterface;
+use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\BodiedInterface;
 
@@ -15,9 +17,9 @@ use Ladb\CoreBundle\Model\BodiedInterface;
  * @ORM\Table("tbl_knowledge2_book_review")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\Book\ReviewRepository")
  */
-class Review implements TypableInterface, BodiedInterface {
+class Review implements TypableInterface, TitledInterface, BodiedInterface {
 
-	use AuthoredTrait, BodiedTrait;
+	use AuthoredTrait, TitledTrait, BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Book\Review';
 	const TYPE = 120;
@@ -54,9 +56,16 @@ class Review implements TypableInterface, BodiedInterface {
 	private $user;
 
 	/**
+	 * @ORM\Column(type="string", length=100, nullable=false)
+	 * @Assert\NotBlank()
+	 * @Assert\Length(min=2, max=100)
+	 */
+	private $title;
+
+	/**
 	 * @ORM\Column(type="integer", nullable=true)
 	 */
-	private $score;
+	private $rating;
 
 	/**
 	 * @ORM\Column(type="text", nullable=true)
@@ -118,14 +127,14 @@ class Review implements TypableInterface, BodiedInterface {
 		return $this;
 	}
 
-	// Score /////
+	// Rating /////
 
-	public function getScore() {
-		return $this->score;
+	public function getRating() {
+		return $this->rating;
 	}
 
-	public function setScore($score) {
-		$this->score = $score;
+	public function setRating($rating) {
+		$this->rating = $rating;
 		return $this;
 	}
 
