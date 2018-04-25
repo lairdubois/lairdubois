@@ -26,12 +26,29 @@
 
 {% block headOpenGraphArticleMetas %}{% endblock %}
 
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/book.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
 {% block bodyJavascripts %}
     {{ parent() }}
     {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.bookpage.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#container').ladbBookPage({
+                reviewNewPath: '{{ path('core_knowledge_book_review_new', { 'id':book.id }) }}'
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
@@ -102,6 +119,12 @@
         <div style="padding: 10px; text-align: center;">
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
+        <hr class="ladb-divider">
+        <div id="ladb_review_list">
+            {% include 'LadbCoreBundle:Knowledge/Book:_reviews-header.part.html.twig' %}
+            {% include 'LadbCoreBundle:Knowledge/Book/Review:_list.part.html.twig' with { 'reviews':book.reviews } %}
+            {% include 'LadbCoreBundle:Knowledge/Book:_reviews-footer.part.html.twig' %}
+        </div>
         {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
     </div>
     {{ parent() }}
@@ -124,6 +147,12 @@
             {% endif %}
         </div>
         {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':book } %}
+        <div class="ladb-meta{% if book.reviewCount == 0 %} text-muted{% endif %}">
+            <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_review_list').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+            <i class="ladb-icon-review ladb-icon-fixed-center"></i>
+            <strong>{{ book.reviewCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'knowledge.book.choice.reviews'|transchoice(entity.reviewCount) }}</small>
+        </div>
     </div>
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license } %}
 {% endblock %}

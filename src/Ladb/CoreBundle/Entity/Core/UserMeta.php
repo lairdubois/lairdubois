@@ -370,6 +370,11 @@ class UserMeta {
 	 */
 	private $testimonialCount = 0;
 
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="review_count")
+	 */
+	private $reviewCount = 0;
+
 
 	/**
 	 * @ORM\Column(name="donation_count", type="integer")
@@ -1129,6 +1134,17 @@ class UserMeta {
 
 	public function getTestimonialCount() {
 		return $this->testimonialCount;
+	}
+
+	// ReviewCount /////
+
+	public function incrementReviewCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->reviewCount += intval($by);
+	}
+
+	public function getReviewCount() {
+		return $this->reviewCount;
 	}
 
 

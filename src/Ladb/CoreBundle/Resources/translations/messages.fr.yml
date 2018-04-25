@@ -835,6 +835,11 @@ knowledge:
         isbn:
         price:
         publish_year:
+    review:
+      new: Ajouter ma critique
+      edit: Editer ma critique
+    choice:
+      reviews: '[0,1]critique|]1,Inf]critiques'
   tool:
     list: Outils
     token:
@@ -946,7 +951,7 @@ follower:
     following: '[0,1]abonnement|]1,Inf]abonnements'
 
 comment:
-  list: On en parle ici
+  list: Discussions
   new: Commenter
   reply: Répondre
   choice:

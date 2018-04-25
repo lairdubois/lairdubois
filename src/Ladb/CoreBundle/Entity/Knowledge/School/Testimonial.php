@@ -4,9 +4,9 @@ namespace Ladb\CoreBundle\Entity\Knowledge\School;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\TypableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\TypableInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\BodiedInterface;

@@ -299,6 +299,17 @@ class BookController extends Controller {
 			throw $this->createNotFoundException('Unable to find Book entity.');
 		}
 
+		$user = $this->getUser();
+		$userReview = null;
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+			foreach ($book->getReviews() as $review) {
+				if ($review->getUser()->getId() == $user->getId()) {
+					$userReview = $review;
+					break;
+				}
+			}
+		}
+
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($book));
@@ -308,10 +319,11 @@ class BookController extends Controller {
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 
 		return array(
-			'book'                    => $book,
-			'likeContext'             => $likableUtils->getLikeContext($book, $this->getUser()),
-			'watchContext'            => $watchableUtils->getWatchContext($book, $this->getUser()),
-			'commentContext'          => $commentableUtils->getCommentContext($book),
+			'book'           => $book,
+			'likeContext'    => $likableUtils->getLikeContext($book, $this->getUser()),
+			'watchContext'   => $watchableUtils->getWatchContext($book, $this->getUser()),
+			'commentContext' => $commentableUtils->getCommentContext($book),
+			'userReview'     => $userReview,
 		);
 	}
 

@@ -19,6 +19,15 @@
     {% endif %}
 {% endblock %}
 
+{% block entityMetas %}
+    {{ parent() }}
+    {% if book.reviewCount > 0 %}
+        <li class="ladb-counter">
+            <span class="ladb-horizontal-separator-right" style="color: #888;"><i class="ladb-icon-review"></i> {{ book.reviewCount|number_format(0, ',', ' ') }} {{ 'knowledge.book.choice.reviews'|transchoice(book.reviewCount) }}</span>
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block footer %}
     {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' with { 'entity':book } %}
     {{ book.contributorCount }} <i class="ladb-icon-users"></i>{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}

@@ -68,6 +68,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Book
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
 				return implode($delimiter, array( 'knowledge', 'book' ));
+			// Review (Book)
+			case \Ladb\CoreBundle\Entity\Knowledge\Book\Review::TYPE:
+				return implode($delimiter, array( 'knowledge', 'review' ));
 
 		}
 		return '';
@@ -200,6 +203,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Book
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Book';
+			// Review (Book)
+			case \Ladb\CoreBundle\Entity\Knowledge\Book\Review::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Book\Review';
 
 		}
 		return null;

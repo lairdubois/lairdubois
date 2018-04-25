@@ -1,0 +1,20 @@
+{% extends 'LadbCoreBundle:Knowledge/Book/Review:_form.html.twig' %}
+
+{% set formAction = path('core_knowledge_book_review_create', { 'id':book.id }) %}
+
+{% block title %}<i class="ladb-icon-plus"></i> {{ 'knowledge.book.review.new'|trans() }}{% endblock %}
+
+{% block buttons %}
+    <div class="alert alert-info">
+        <div class="media">
+            <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+            <div class="media-body">
+                <h4>A lire avant de publier</h4>
+                <p>Cet avis vous permet d'exprimer de façon syntétique votre expérience au sein de l'école ou centre de formation : '<strong>{{ book.title }}</strong>'.</p>
+                <p>Pour en savoir plus sur les témoignages, lisez ce <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}" class="alert-link">sujet</a>.</p>
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.publish'|trans()), 'classes':'btn-primary' } %}
+{% endblock %}

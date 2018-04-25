@@ -258,6 +258,17 @@ class Book extends AbstractKnowledge {
 	private $priceValues;
 
 
+	/**
+	 * @ORM\Column(name="review_count", type="integer")
+	 */
+	private $reviewCount = 0;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Book\Review", mappedBy="book", cascade={"all"})
+	 * @ORM\OrderBy({"score" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $reviews;
+
 	/////
 
 	public function __construct() {
@@ -276,6 +287,7 @@ class Book extends AbstractKnowledge {
 		$this->isbnValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->priceValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->publishYearValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -805,6 +817,38 @@ class Book extends AbstractKnowledge {
 
 	public function getPriceValues() {
 		return $this->priceValues;
+	}
+
+	// ReviewCount /////
+
+	public function incrementReviewCount($by = 1) {
+		return $this->reviewCount += intval($by);
+	}
+
+	public function getReviewCount() {
+		return $this->reviewCount;
+	}
+
+	public function setReviewCount($reviewCount) {
+		$this->reviewCount = $reviewCount;
+		return $this;
+	}
+
+	// Reviews /////
+
+	public function addReview($review) {
+		if (!$this->reviews->contains($review)) {
+			$this->reviews[] = $review;
+		}
+		return $this;
+	}
+
+	public function removeReview($review) {
+		$this->reviews->removeElement($review);
+	}
+
+	public function getReviews() {
+		return $this->reviews;
 	}
 
 }

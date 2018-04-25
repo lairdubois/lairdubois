@@ -1,0 +1,7 @@
+{# set book #}
+
+<div class="ladb-reviews-header">
+    {% if book.reviewCount > 0 %}
+        <h2 class="ladb-margin-bottom">{{ book.reviewCount }} {{ 'knowledge.book.choice.reviews'|transchoice(book.reviewCount) }}</h2>
+    {% endif %}
+</div>

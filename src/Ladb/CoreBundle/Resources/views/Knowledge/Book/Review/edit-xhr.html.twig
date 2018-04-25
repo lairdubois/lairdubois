@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Knowledge/Book/Review:_form.html.twig' %}
+
+{% set formAction = path('core_knowledge_book_review_update', { 'id':review.id }) %}
+
+{% block title %}<i class="ladb-icon-edit"></i> {{ 'knowledge.book.review.edit'|trans() }}{% endblock %}
+
+{% block buttons %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
+{% endblock %}

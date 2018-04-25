@@ -179,17 +179,7 @@
                 </a>
             {% endif %}
         </div>
-        <div class="ladb-meta{% if school.voteCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-check ladb-icon-fixed-center"></i>
-            {% if school.voteCount > 0 %}
-                <a href="{{ path('core_vote_list_parent_entity', { 'entityType':school.type, 'entityId':school.id }) }}">
-            {% endif %}
-            <strong>{{ school.voteCount|number_format(0, ',', ' ') }}</strong>
-            <small>{{ 'vote.choice.votes'|transchoice(school.voteCount) }}</small>
-            {% if school.voteCount > 0 %}
-                </a>
-            {% endif %}
-        </div>
+        {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':school } %}
         <div class="ladb-meta{% if school.testimonialCount == 0 %} text-muted{% endif %}">
             <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_testimonial_list').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
             <i class="ladb-icon-student ladb-icon-fixed-center"></i>
