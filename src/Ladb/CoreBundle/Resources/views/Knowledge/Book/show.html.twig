@@ -2,6 +2,10 @@
 
 {% set entity = book %}
 
+{% set pageTitle = book.title %}
+{% if book.author %}
+    {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.of'|trans()))~' '~book.author %}
+{% endif %}
 {% set pageContentItemType = 'Book' %}
 {% set pageType = 'book' %}
 {% set pageSectionUrl = url('core_book_list') %}
