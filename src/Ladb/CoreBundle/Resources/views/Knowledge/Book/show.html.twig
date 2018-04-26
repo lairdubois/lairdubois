@@ -6,7 +6,11 @@
 {% set pageType = 'book' %}
 {% set pageSectionUrl = url('core_book_list') %}
 {% set pageSectionName = 'knowledge.book.list'|trans %}
-{% set pageDescription = ('knowledge.book.field.title'|trans)~': '~book.title %}
+{% if book.summary %}
+    {% set pageDescription = book.summary|striptags|truncate(200, true, '...') %}
+{% else %}
+    {% set pageDescription = book.title %}
+{% endif %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set navSection = 'books' %}
@@ -153,7 +157,7 @@
             <i class="ladb-icon-review ladb-icon-fixed-center"></i>
             <strong>{{ book.reviewCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'knowledge.book.choice.reviews'|transchoice(entity.reviewCount) }}</small>
-            {% if book.averageRating > 0 %} <small class="ladb-color-info">( {{ book.averageRating|number_format(1, ',', ' ') }} / 5 )</small>{% endif %}
+            {% if book.averageRating > 0 %}{% include 'LadbCoreBundle:Knowledge:Book/_rating-stars.part.html.twig' with { 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
         </div>
     </div>
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license } %}

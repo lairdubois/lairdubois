@@ -24,6 +24,9 @@
     {% if book.reviewCount > 0 %}
         <li class="ladb-counter">
             <span class="ladb-horizontal-separator-right" style="color: #888;"><i class="ladb-icon-review"></i> {{ book.reviewCount|number_format(0, ',', ' ') }} {{ 'knowledge.book.choice.reviews'|transchoice(book.reviewCount) }}</span>
+            {% if book.averageRating > 0 %}
+                {% include 'LadbCoreBundle:Knowledge:Book/_rating-stars.part.html.twig' with { 'classes':'ladb-horizontal-separator-right', 'hideValue':true } %}
+            {% endif %}
         </li>
     {% endif %}
 {% endblock %}

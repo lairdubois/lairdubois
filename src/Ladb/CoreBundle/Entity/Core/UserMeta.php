@@ -648,6 +648,7 @@ class UserMeta {
 			$this->getUnlistedKnowledgeWoodCount() +
 			$this->getUnlistedKnowledgeProviderCount() +
 			$this->getUnlistedKnowledgeSchoolCount() +
+			$this->getUnlistedKnowledgeBookCount() +
 			$this->getUnlistedBlogPostCount() +
 			$this->getUnlistedFaqQuestionCount() +
 			$this->getUnlistedQaQuestionCount() +

@@ -174,29 +174,33 @@ class BookController extends Controller {
 
 					case 'author':
 
-						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('author', $facet->value);
+						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
+						$filter->setFields(array( 'author' ));
+						$filters[] = $filter;
 
 						break;
 
 					case 'editor':
 
-						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('editor', $facet->value);
+						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
+						$filter->setFields(array( 'editor' ));
+						$filters[] = $filter;
 
 						break;
 
 					case 'collection':
 
-						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('collection', $facet->value);
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'collection' ));
+						$filters[] = $filter;
 
 						break;
 
 					case 'subjects':
 
-						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('subjects', $facet->value);
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'subjects' ));
+						$filters[] = $filter;
 
 						break;
 

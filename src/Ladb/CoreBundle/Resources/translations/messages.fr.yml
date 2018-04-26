@@ -770,11 +770,11 @@ knowledge:
     choice:
       testimonials: '[0,1]témoignage|]1,Inf]témoignages'
   book:
-    description: Bibliothèque collaborative de livres sur le bois.
+    description: Catalogue collaboratif de livres sur la matière et le travail du bois.
     new: Ajouter un livre
     list: Les livres
     nav: Livres
-    new_warning: Un <strong>livre</strong> est un <strong>ouvrage écrit</strong> qui porte sur un sujet tourant <strong>autour du travail du bois</strong>.
+    new_warning: Un <strong>livre</strong> est un <strong>ouvrage écrit</strong> (<em>imprimé ou numérique</em>) dont le sujet principal porte sur <strong>la matière</strong> ou <strong>le travail du bois</strong>.
     field:
       title: Titre
       cover: Couverture
