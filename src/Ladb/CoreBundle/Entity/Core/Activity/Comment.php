@@ -30,13 +30,13 @@ class Comment extends AbstractActivity {
 
 	// Comment /////
 
-	public function getComment() {
-		return $this->comment;
-	}
-
 	public function setComment(\Ladb\CoreBundle\Entity\Core\Comment $comment) {
 		$this->comment = $comment;
 		return $this;
+	}
+
+	public function getComment() {
+		return $this->comment;
 	}
 
 }

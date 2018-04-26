@@ -30,13 +30,13 @@ class Vote extends AbstractActivity {
 
 	// Vote /////
 
-	public function getVote() {
-		return $this->vote;
-	}
-
 	public function setVote(\Ladb\CoreBundle\Entity\Core\Vote $vote) {
 		$this->vote = $vote;
 		return $this;
+	}
+
+	public function getVote() {
+		return $this->vote;
 	}
 
 }

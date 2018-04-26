@@ -30,13 +30,13 @@ class Write extends AbstractActivity {
 
 	// Message /////
 
-	public function getMessage() {
-		return $this->message;
-	}
-
 	public function setMessage(\Ladb\CoreBundle\Entity\Message\Message $message) {
 		$this->message = $message;
 		return $this;
+	}
+
+	public function getMessage() {
+		return $this->message;
 	}
 
 }

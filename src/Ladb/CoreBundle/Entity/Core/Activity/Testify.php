@@ -29,13 +29,13 @@ class Testify extends AbstractActivity {
 
 	// Testimonial /////
 
-	public function getTestimonial() {
-		return $this->testimonial;
-	}
-
 	public function setTestimonial(\Ladb\CoreBundle\Entity\Knowledge\School\Testimonial $testimonial) {
 		$this->testimonial = $testimonial;
 		return $this;
+	}
+
+	public function getTestimonial() {
+		return $this->testimonial;
 	}
 
 }

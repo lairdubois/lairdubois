@@ -30,13 +30,13 @@ class Follow extends AbstractActivity {
 
 	// Follower /////
 
-	public function getFollower() {
-		return $this->follower;
-	}
-
 	public function setFollower(\Ladb\CoreBundle\Entity\Core\Follower $follower) {
 		$this->follower = $follower;
 		return $this;
+	}
+
+	public function getFollower() {
+		return $this->follower;
 	}
 
 }

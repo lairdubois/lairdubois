@@ -34,23 +34,23 @@ class Publish extends AbstractActivity {
 
 	// EntityType /////
 
-	public function getEntityType() {
-		return $this->entityType;
-	}
-
 	public function setEntityType($entityType) {
 		$this->entityType = $entityType;
 	}
 
-	// EntityId /////
-
-	public function getEntityId() {
-		return $this->entityId;
+	public function getEntityType() {
+		return $this->entityType;
 	}
+
+	// EntityId /////
 
 	public function setEntityId($entityId) {
 		$this->entityId = $entityId;
 		return $this;
+	}
+
+	public function getEntityId() {
+		return $this->entityId;
 	}
 
 }

@@ -1130,6 +1130,7 @@ notification:
     knowledge_wood: l'essence
     knowledge_provider: le fournisseur
     knowledge_school: l'école
+    knowledge_book: le livre
     blog_post: le sujet
     faq_question: la question
     qa_question: la question
@@ -1161,6 +1162,7 @@ notification:
     write: Notifications de messages
     answer: Notifications de réponses
     testify: Notifications de témoignages
+    review: Notifications de critiques
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'

@@ -30,13 +30,13 @@ class Join extends AbstractActivity {
 
 	// Join /////
 
-	public function getJoin() {
-		return $this->join;
-	}
-
 	public function setJoin(\Ladb\CoreBundle\Entity\Core\Join $join) {
 		$this->join = $join;
 		return $this;
+	}
+
+	public function getJoin() {
+		return $this->join;
 	}
 
 }

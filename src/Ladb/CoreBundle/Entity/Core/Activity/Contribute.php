@@ -30,12 +30,12 @@ class Contribute extends AbstractActivity {
 
 	// Value /////
 
-	public function getValue() {
-		return $this->value;
-	}
-
 	public function setValue(\Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue $value) {
 		$this->value = $value;
+	}
+
+	public function getValue() {
+		return $this->value;
 	}
 
 }

@@ -30,13 +30,13 @@ class Like extends AbstractActivity {
 
 	// Like /////
 
-	public function getLike() {
-		return $this->like;
-	}
-
 	public function setLike(\Ladb\CoreBundle\Entity\Core\Like $like) {
 		$this->like = $like;
 		return $this;
+	}
+
+	public function getLike() {
+		return $this->like;
 	}
 
 }

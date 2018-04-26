@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge\Book;
 
-use Ladb\CoreBundle\Utils\BookUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -12,6 +11,7 @@ use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\BookUtils;
 use Ladb\CoreBundle\Entity\Knowledge\Book;
 use Ladb\CoreBundle\Form\Type\Knowledge\Book\ReviewType;
 use Ladb\CoreBundle\Manager\Knowledge\Book\ReviewManager;
@@ -84,9 +84,8 @@ class ReviewController extends Controller {
 			$om->persist($review);
 
 			// Create activity
-			// TODO
-//			$activityUtils = $this->get(ActivityUtils::NAME);
-//			$activityUtils->createTestifyActivity($review, false);
+			$activityUtils = $this->get(ActivityUtils::NAME);
+			$activityUtils->createReviewActivity($review, false);
 
 			// Dispatch publication event (on Book)
 			$dispatcher = $this->get('event_dispatcher');
@@ -168,6 +167,10 @@ class ReviewController extends Controller {
 			$bookUtils->computeAverageRating($review->getBook());
 
 			$om->flush();
+
+			// Search index update
+			$searchUtils = $this->container->get(SearchUtils::NAME);
+			$searchUtils->replaceEntityInIndex($review->getBook());
 
 			return $this->render('LadbCoreBundle:Knowledge/Book/Review:_row.part.html.twig', array(
 				'book'   => $review->getBook(),
