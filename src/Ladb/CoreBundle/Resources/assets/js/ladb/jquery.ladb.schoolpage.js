@@ -105,6 +105,7 @@
         $('.ladb-btn-cancel', this.$testimonialForm).on('click', function() {
             that.removeTestimonialForm();
             that.revealHiddenRow();
+            return false;
         });
         $('.ladb-btn-submit', this.$testimonialForm).on('click', function() {
             $(this).button('loading');
@@ -160,6 +161,7 @@
         $('.ladb-btn-cancel', this.$testimonialForm).on('click', function() {
             that.removeTestimonialForm();
             that.$btnNewTestimonial.show();
+            return false;
         });
         $('.ladb-btn-submit', this.$testimonialForm).on('click', function() {
             $(this).button('loading');

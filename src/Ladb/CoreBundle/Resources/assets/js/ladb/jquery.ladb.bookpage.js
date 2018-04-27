@@ -105,6 +105,7 @@
         $('.ladb-btn-cancel', this.$reviewForm).on('click', function() {
             that.removeReviewForm();
             that.revealHiddenRow();
+            return false;
         });
         $('.ladb-btn-submit', this.$reviewForm).on('click', function() {
             $(this).button('loading');
@@ -160,6 +161,7 @@
         $('.ladb-btn-cancel', this.$reviewForm).on('click', function() {
             that.removeReviewForm();
             that.$btnNewReview.show();
+            return false;
         });
         $('.ladb-btn-submit', this.$reviewForm).on('click', function() {
             $(this).button('loading');
