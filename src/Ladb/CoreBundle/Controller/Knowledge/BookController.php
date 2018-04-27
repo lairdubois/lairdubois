@@ -211,6 +211,13 @@ class BookController extends Controller {
 
 						break;
 
+					case 'public-domain':
+
+						$filter = new \Elastica\Query\Range('publicDomain', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'with-review':
 
 						$filter = new \Elastica\Query\Range('reviewCount', array( 'gt' => 0 ));

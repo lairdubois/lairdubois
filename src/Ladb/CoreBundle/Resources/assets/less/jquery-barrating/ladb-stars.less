@@ -1,3 +1,7 @@
+
+/* LESS related */
+@import "../ladb/_variables.less";
+
 .br-theme-ladb-stars {
 
   .br-widget {
@@ -13,15 +17,15 @@
 
       &:after {
         content: '\e654';
-        color: #d2d2d2;
+        color: @ladb-global-star-off;;
       }
 
       &.br-active:after {
-        color: #FEDC53;
+        color: @ladb-global-star-on;
       }
 
       &.br-selected:after {
-        color: #FEDC53;
+        color: @ladb-global-star-on;
       }
 
     }

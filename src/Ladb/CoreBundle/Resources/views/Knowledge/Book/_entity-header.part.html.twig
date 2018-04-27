@@ -4,6 +4,9 @@
 {% set headingClasses = book.titleRejected ? 'ladb-strikethrough' : null %}
 
 {% block subheadingInner %}
+    {% if book.publicDomain %}
+        <span data-tooltip="tooltip" title="{{ 'knowledge.book.field.public_domain'|trans() }}"><i class="ladb-icon-public-domain ladb-icon-lg"></i></span>
+    {% endif %}
     {% if book.author %}<div class="ladb-subblock">de {% for author in book.author|split(',') %}<a href='{{ path('core_book_list') }}?q=@author:"{{ author }}"'>{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</div> {% endif %}
     {% if book.editor %}<div class="ladb-subblock{% if book.author %} ladb-horizontal-separator-left{% endif %}"><em>{{ book.editor }}</em></div>{% endif %}
 {% endblock %}

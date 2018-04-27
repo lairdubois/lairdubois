@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20180426"
+        version:    "20180427"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -804,6 +804,7 @@ fos_elastica:
                         author: { analyzer: name_analyzer }
                         editor: { analyzer: name_analyzer }
                         collection: { type: text, analyzer: name_analyzer }
+                        publicDomain: { type: boolean }
                         summary: { analyzer: body_analyzer }
                         subjects: { analyzer: body_analyzer }
                         language: { type: text, analyzer: name_analyzer }

@@ -783,6 +783,7 @@ knowledge:
       author: Auteur
       editor: Editeur
       collection: Collection
+      public_domain: Domaine public
       catalog_link: Lien catalogue
       summary: Résumé
       subjects: Sujets
@@ -799,6 +800,7 @@ knowledge:
       author: "L'**Auteur** est l'auteur du livre."
       editor: "L'**Editeur** est l'éditeur du livre."
       collection: "La **Collection** est ..."
+      public_domain: "**Domain public** indique si l'ouvrage est tombé dans le domaine public."
       catalog_link: "Le **Lien catalogue** est le lien internet vers la page du catalogue de l'éditeur relative au livre OU le lien de consultation si le livre est dans le domaine public."
       summary: "Le **Résumé** est un court texte de présentation du livre."
       subjects: "Les **Sujets** représentent les thèmes principaux abordés dans le livre."
@@ -823,6 +825,7 @@ knowledge:
           - N'indiquez **qu'un seul** nom par proposition.
         editor:
         collection:
+        public_domain:
         catalog_link: |
           - Utiliser un lien direct vers la page relative au livre.
           - Les liens vers les sites de revendeurs/distributeurs sont **interdits**.

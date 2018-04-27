@@ -1,0 +1,27 @@
+//
+// RatingStars
+//
+
+.ladb-rating-stars {
+  display: inline-block;
+  line-height: 14px;
+  color: #b3b3b3;
+
+  i {
+    color: @ladb-global-star-off;
+
+    &:first-child:before {
+      margin-left: 0;
+    }
+
+    &:before {
+      margin-left: 2px;
+    }
+
+    &.highlighted {
+      color: @ladb-global-star-on;
+    }
+
+  }
+
+}

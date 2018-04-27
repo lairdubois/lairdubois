@@ -33,6 +33,7 @@ class Book extends AbstractKnowledge {
 	const FIELD_AUTHOR = 'author';
 	const FIELD_EDITOR = 'editor';
 	const FIELD_COLLECTION = 'collection';
+	const FIELD_PUBLIC_DOMAIN = 'public_domain';
 	const FIELD_CATALOG_LINK = 'catalog_link';
 	const FIELD_SUMMARY = 'summary';
 	const FIELD_SUBJECTS = 'subjects';
@@ -44,21 +45,22 @@ class Book extends AbstractKnowledge {
 	const FIELD_PRICE = 'price';
 
 	public static $FIELD_DEFS = array(
-		Book::FIELD_TITLE        => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueBook', array('excludedId' => '@getId')))),
-		Book::FIELD_COVER        => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Book::FIELD_BACK_COVER   => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Book::FIELD_AUTHOR       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@author:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
-		Book::FIELD_EDITOR       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@editor:"%q%"'),
-		Book::FIELD_COLLECTION   => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@collection:"%q%"'),
-		Book::FIELD_CATALOG_LINK => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true),
-		Book::FIELD_SUMMARY      => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
-		Book::FIELD_SUBJECTS     => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@subjects:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul sujet par proposition.')))),
-		Book::FIELD_LANGUAGE     => array(Book::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@language:"%q%"'),
-		Book::FIELD_TRANSLATED   => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
-		Book::FIELD_PAGE_COUNT   => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
-		Book::FIELD_ISBN         => array(Book::ATTRIB_TYPE => Isbn::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
-		Book::FIELD_PUBLISH_YEAR => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
-		Book::FIELD_PRICE        => array(Book::ATTRIB_TYPE => Price::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_TITLE         => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueBook', array('excludedId' => '@getId')))),
+		Book::FIELD_COVER         => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
+		Book::FIELD_BACK_COVER    => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
+		Book::FIELD_AUTHOR        => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@author:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
+		Book::FIELD_EDITOR        => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@editor:"%q%"'),
+		Book::FIELD_COLLECTION    => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@collection:"%q%"'),
+		Book::FIELD_PUBLIC_DOMAIN => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
+		Book::FIELD_CATALOG_LINK  => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true),
+		Book::FIELD_SUMMARY       => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_SUBJECTS      => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@subjects:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul sujet par proposition.')))),
+		Book::FIELD_LANGUAGE      => array(Book::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@language:"%q%"'),
+		Book::FIELD_TRANSLATED    => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
+		Book::FIELD_PAGE_COUNT    => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_ISBN          => array(Book::ATTRIB_TYPE => Isbn::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_PUBLISH_YEAR  => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_PRICE         => array(Book::ATTRIB_TYPE => Price::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 	);
 
 	/**
@@ -139,6 +141,19 @@ class Book extends AbstractKnowledge {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $collectionValues;
+
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=true)
+	 */
+	private $publicDomain;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_public_domain")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $publicDomainValues;
 
 
 	/**
@@ -283,6 +298,7 @@ class Book extends AbstractKnowledge {
 		$this->authorValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->editorValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->collectionValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->publicDomainValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->summaryValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->subjectsValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -534,6 +550,38 @@ class Book extends AbstractKnowledge {
 
 	public function getCollectionValues() {
 		return $this->collectionValues;
+	}
+
+	// PublicDomain /////
+
+	public function setPublicDomain($publicDomain) {
+		$this->publicDomain = $publicDomain;
+		return $this;
+	}
+
+	public function getPublicDomain() {
+		return $this->publicDomain;
+	}
+
+	// PublicDomainValues /////
+
+	public function addPublicDomainValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicDomainValue) {
+		if (!$this->publicDomainValues->contains($publicDomainValue)) {
+			$this->publicDomainValues[] = $publicDomainValue;
+		}
+		return $this;
+	}
+
+	public function removePublicDomainValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicDomainValue) {
+		$this->publicDomainValues->removeElement($publicDomainValue);
+	}
+
+	public function setPublicDomainValues($publicDomainValues) {
+		$this->publicDomainValues = $publicDomainValues;
+	}
+
+	public function getPublicDomainValues() {
+		return $this->publicDomainValues;
 	}
 
 	// CatalogLink /////

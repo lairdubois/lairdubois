@@ -101,6 +101,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_AUTHOR', book), 'data':book.author, 'values':book.authorValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_EDITOR', book), 'data':book.editor, 'values':book.editorValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_COLLECTION', book), 'data':book.collection, 'values':book.collectionValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PUBLIC_DOMAIN', book), 'data':book.publicDomain, 'values':book.publicDomainValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_CATALOG_LINK', book), 'data':book.catalogLink, 'values':book.catalogLinkValues } %}
         </div>
         <div class="ladb-metas">
@@ -161,7 +162,7 @@
             <i class="ladb-icon-review ladb-icon-fixed-center"></i>
             <strong>{{ book.reviewCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'knowledge.book.choice.reviews'|transchoice(entity.reviewCount) }}</small>
-            {% if book.averageRating > 0 %}{% include 'LadbCoreBundle:Knowledge:Book/_rating-stars.part.html.twig' with { 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
+            {% if book.averageRating > 0 %}{% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':book.averageRating, 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
         </div>
     </div>
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license } %}

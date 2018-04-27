@@ -61,16 +61,6 @@
 
         });
 
-        // Rating
-        var $barRating = $('.ladb-barrating', $row);
-        var rating = $barRating.data('ladb-rating');
-        $barRating
-            .barrating({
-                theme: 'ladb-stars',
-                readonly: true
-            })
-            .barrating('set', rating);
-
         setupTooltips();
 
     };

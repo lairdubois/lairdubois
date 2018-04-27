@@ -9,6 +9,13 @@
 {% set pictureHeight = '280' %}
 {% set pictureFilterMode = 'o' %}
 
+{% block title %}
+    {% if book.publicDomain %}
+        <i class="ladb-icon-public-domain ladb-icon-lg"></i>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
 {% block image %}
     {% if book.coverRejected %}
         <div class="ladb-box-barred">
@@ -25,7 +32,7 @@
         <li class="ladb-counter">
             <span class="ladb-horizontal-separator-right" style="color: #888;"><i class="ladb-icon-review"></i> {{ book.reviewCount|number_format(0, ',', ' ') }} {{ 'knowledge.book.choice.reviews'|transchoice(book.reviewCount) }}</span>
             {% if book.averageRating > 0 %}
-                {% include 'LadbCoreBundle:Knowledge:Book/_rating-stars.part.html.twig' with { 'classes':'ladb-horizontal-separator-right', 'hideValue':true } %}
+                {% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':book.averageRating, 'classes':'ladb-horizontal-separator-right', 'hideValue':true } %}
             {% endif %}
         </li>
     {% endif %}
