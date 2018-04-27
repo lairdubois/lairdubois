@@ -86,8 +86,6 @@
 
 {% block bodyMetas %}
     {{ parent() }}
-    {% if school.phone %}<meta itemprop="telephone" content="{{ school.phone }}"/>{% endif %}
-    {% if school.address %}<meta itemprop="address" content="{{ school.address }}"/>{% endif %}
     <meta itemprop="url" content="{{ school.website ? school.website : pageUrl }}"/>
 {% endblock %}
 
@@ -123,7 +121,7 @@
 {% block contentBody %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', school), 'picture':school.logo, 'values':school.logoValues, 'itemProperty':'logo', 'pictureBoxClasses':(school.logoRejected ? 'ladb-box-barred' : null) } %}
-        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_PHOTO', school), 'picture':school.photo, 'values':school.photoValues, 'itemProperty':'photo' } %}
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_PHOTO', school), 'picture':school.photo, 'values':school.photoValues } %}
     </div>
     <div>
         <div class="ladb-metas">
@@ -137,8 +135,8 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PUBLIC', school), 'data':school.public, 'values':school.publicValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_BIRTH_YEAR', school), 'data':school.birthYear, 'values':school.birthYearValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_WEBSITE', school), 'data':school.website, 'values':school.websiteValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', school), 'data':school.address, 'values':school.addressValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', school), 'data':school.phone, 'values':school.phoneValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', school), 'data':school.address, 'values':school.addressValues, 'itemprop':'address' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', school), 'data':school.phone, 'values':school.phoneValues, 'itemprop':'telephone' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', school), 'data':school.description, 'values':school.descriptionValues } %}
         </div>
         <div class="panel panel-default ladb-margin-top">

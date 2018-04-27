@@ -164,7 +164,7 @@
     <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageContentItemType is defined %} itemscope itemtype="http://schema.org/{{ pageContentItemType }}"{% endif %}>
         {% block bodyMetas %}
             {% if pageContentItemType is defined %}
-                <meta itemprop="{{ pageContentItemType == 'Article' ? 'headline' : 'name' }}" content="{{ pageTitle }}" />
+                <meta itemprop="{{ pageContentItemType == 'Article' ? 'headline' : 'name' }}" content="{{ pageName }}" />
                 <meta itemprop="description" content="{{ pageDescription }}" />
                 {% if pageImage is iterable %}
                     <meta itemprop="image" content="{{ pageImage[0] }}" />

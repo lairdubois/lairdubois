@@ -26,7 +26,7 @@
                             {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':testimonial.type, 'entityId':testimonial.id } %}
                         {% endif %}
                     </div>
-                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':testimonial, 'hideBy':true } %}
+                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':testimonial, 'hideBy':true, 'noMicrodata':true } %}
                     <div style="margin: 10px 0; color: #000; font-size: 110%;">
                         {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_period.part.html.twig' %}
                         {% if testimonial.diploma %}

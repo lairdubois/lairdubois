@@ -1,4 +1,4 @@
-<div id="ladb_review_{{ review.id }}" class="ladb-review-row">
+<div id="ladb_review_{{ review.id }}" class="ladb-review-row" itemprop="review" itemscope itemtype="http://schema.org/Review">
     <div class="ladb-box">
         <div class="ladb-box-inner">
             <div class="ladb-content-box">
@@ -31,9 +31,9 @@
                 <div class="ladb-content">
                     <div class="ladb-title">{{ review.title }}</div>
                     {% if review.rating > 0 %}
-                        {% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':review.rating, 'classes':'ladb-icon-lg', 'hideValue':true } %}
+                        {% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':review.rating, 'classes':'ladb-icon-lg', 'hideValue':true, 'itemtype':'Rating', 'itemprop':'reviewRating' } %}
                     {% endif %}
-                    <div>
+                    <div itemprop="reviewBody">
                         {{ review.htmlBody|raw }}
                     </div>
                     {% include 'LadbCoreBundle:Common:_published-age.part.html.twig' with { 'entity':review } %}

@@ -1,10 +1,21 @@
 {# set rating #}
+{# set ratingCount (facultative) #}
 {# set classes (facultative) #}
 {# set hideValue (facultative) #}
+{# set noMicrodata (facultative) #}
+{# set itemtype (facultative) #}
+{# set itemprop (facultative) #}
 
 {% set hideValue = hideValue|default(false) %}
+{% set noMicrodata = noMicrodata|default(false) %}
+{% set itemtype = itemtype|default('AggregateRating') %}
+{% set itemprop = itemprop|default('aggregateRating') %}
 
-<span class="ladb-rating-stars{% if classes is defined %} {{ classes }}{% endif %}">
+<span class="ladb-rating-stars{% if classes is defined %} {{ classes }}{% endif %}"{% if not noMicrodata %} itemprop="{{ itemprop }}" itemscope itemtype="http://schema.org/{{ itemtype }}"{% endif %}>
+    {% if ratingCount is defined %}<meta itemprop="ratingCount" content="{{ ratingCount }}">{% endif %}
+    <meta itemprop="worstRating" content="1">
+    <meta itemprop="bestRating" content="5">
+    <meta itemprop="ratingValue" content="{{ rating }}">
     {% spaceless %}
     <i class="ladb-icon-spotlight{% if rating >= 1 %} highlighted"{% endif %}"></i>
     <i class="ladb-icon-spotlight{% if rating >= 2 %} highlighted"{% endif %}"></i>

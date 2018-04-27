@@ -109,14 +109,14 @@
         <div class="ladb-metas">
             <h4 class="ladb-heading">Contenu</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUBJECTS', book), 'data':book.subjects, 'values':book.subjectsValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUMMARY', book), 'data':book.summary, 'values':book.summaryValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUMMARY', book), 'data':book.summary, 'values':book.summaryValues, 'itemprop':'about' } %}
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Détails</h4>
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_LANGUAGE', book), 'data':book.language, 'values':book.languageValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_LANGUAGE', book), 'data':book.language, 'values':book.languageValues, 'itemprop':'inLanguage' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_TRANSLATED', book), 'data':book.translated, 'values':book.translatedValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PAGE_COUNT', book), 'data':book.pageCount, 'values':book.pageCountValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_ISBN', book), 'data':book.isbn, 'values':book.isbnValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PAGE_COUNT', book), 'data':book.pageCount, 'values':book.pageCountValues, 'itemprop':'numberOfPages' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_ISBN', book), 'data':book.isbn, 'values':book.isbnValues, 'itemprop':'isbn' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PUBLISH_YEAR', book), 'data':book.publishYear, 'values':book.publishYearValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PRICE', book), 'data':book.price, 'values':book.priceValues } %}
         </div>
@@ -137,7 +137,7 @@
             {% include 'LadbCoreBundle:Knowledge/Book/Review:_list.part.html.twig' with { 'reviews':book.reviews } %}
             {% include 'LadbCoreBundle:Knowledge/Book:_reviews-footer.part.html.twig' %}
         </div>
-        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'activitiesHidden':true } %}
     </div>
     {{ parent() }}
 {% endblock %}
@@ -164,7 +164,7 @@
             <i class="ladb-icon-review ladb-icon-fixed-center"></i>
             <strong>{{ book.reviewCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'knowledge.book.choice.reviews'|transchoice(entity.reviewCount) }}</small>
-            {% if book.averageRating > 0 %}{% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':book.averageRating, 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
+            {% if book.averageRating > 0 %}{% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':book.averageRating, 'ratingCount':book.reviewCount, 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
         </div>
     </div>
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license } %}
