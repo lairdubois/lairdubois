@@ -34,4 +34,7 @@
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
 {% endblock %}
 
-{% block searchboxShortcutsOuter %}{% endblock %}
+{% block searchboxShortcuts %}
+    <li><a class="ladb-smartsearch-shortcut" data-query="@with-review"><i class="ladb-icon-review"></i> Avec critique</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@public-domain"><i class="ladb-icon-public-domain"></i> Domaine public</a></li>
+{% endblock %}
