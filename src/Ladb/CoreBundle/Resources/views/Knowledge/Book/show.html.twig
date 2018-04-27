@@ -24,11 +24,13 @@
 
 {% block headOpenGraphMetas %}
     {{ parent() }}
-    {% if book.author %}
-        <meta property="book:author" content="{{ book.author }}" />
-    {% endif %}
     {% if book.isbn %}
         <meta property="book:isbn" content="{{ book.isbn }}" />
+    {% endif %}
+    {% if book.subjects %}
+        {% for subject in book.subjects|split(',') %}
+            <meta property="book:tag" content="{{ subject }}" />
+        {% endfor %}
     {% endif %}
 {% endblock %}
 

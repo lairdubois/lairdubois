@@ -131,6 +131,7 @@
         $('.ladb-btn-cancel', this.$answerForm).on('click', function() {
             that.removeAnswerForm();
             that.revealHiddenRow();
+            return false;
         });
         $('.ladb-btn-submit', this.$answerForm).on('click', function() {
             $(this).button('loading');
@@ -190,6 +191,7 @@
         $('.ladb-btn-cancel', this.$answerForm).on('click', function() {
             that.removeAnswerForm();
             that.$btnNewAnswer.show();
+            return false;
         });
         $('.ladb-btn-submit', this.$answerForm).on('click', function() {
             $(this).button('loading');
