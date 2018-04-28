@@ -34,7 +34,7 @@
 
 {% import _self as Self %}
 
-<div id="ladb_meta_field_{{ field }}" class="ladb-meta ladb-meta-editable{% if valueIsUndefined %} text-muted{% endif %}{% if fieldMultiple or fieldType == 'longtext' %} ladb-readmore{% endif %}" onclick="if (event.target.tagName != 'A') { $('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' }); }">
+<div id="ladb_meta_field_{{ field }}" class="ladb-meta ladb-meta-editable{% if valueIsUndefined %} text-muted{% endif %}{% if fieldMultiple or fieldType == 'longtext' %} ladb-readmore{% endif %}" onclick="if ($(event.target).parents('a').length == 0) { $('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' }); return false; }">
     <div class="row">
         <div class="col-xs-3">
             <span class="ladb-key{% if disabled %} ladb-strikethrough{% endif %}" data-popover="popover" data-popover="popover" data-trigger="hover" data-placement="top" data-html="true" data-container="body" data-content="{{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}">{% if indented %}&nbsp;<i class="ladb-icon-arrow-turn-right"></i>&nbsp;{% endif %}{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</span>
@@ -62,7 +62,7 @@
             {% endif %}
         </div>
         <div class="col-xs-1">
-            <div class="ladb-minitools"><a data-tooltip="tooltip" title="{{ 'knowledge.show_proposals'|trans() }}" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' });"><i class="ladb-icon-chevron-right"></i></a></div>
+            <div class="ladb-minitools"><a data-tooltip="tooltip" title="{{ 'knowledge.show_proposals'|trans() }}" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' }); return false;"><i class="ladb-icon-chevron-right"></i></a></div>
         </div>
     </div>
 </div>
