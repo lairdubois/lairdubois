@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Command;
 
 use Ladb\CoreBundle\Model\LicensedInterface;
+use Ladb\CoreBundle\Model\PicturedInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -115,7 +116,7 @@ EOT
 			array(
 				'className' => \Ladb\CoreBundle\Entity\Knowledge\Book::CLASS_NAME,
 				'name'      => 'book',
-				'section'   => 'knowledge-bookss',
+				'section'   => 'knowledge-books',
 				'slugged'   => true,
 			),
 			array(
@@ -244,6 +245,11 @@ EOT
 					if (!is_null($image)) {
 						$images[] = $image;
 					}
+				}
+			} elseif ($entity instanceof PicturedInterface) {
+				$image = $picturedUtils->getPictureSitemapData($entity->getMainPicture());
+				if (!is_null($image)) {
+					$images[] = $image;
 				}
 			}
 			if ($entity instanceof BlockBodiedInterface) {
