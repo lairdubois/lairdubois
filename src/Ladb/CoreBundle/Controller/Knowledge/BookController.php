@@ -172,10 +172,10 @@ class BookController extends Controller {
 
 						break;
 
-					case 'author':
+					case 'authors':
 
 						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
-						$filter->setFields(array( 'author' ));
+						$filter->setFields(array( 'authors' ));
 						$filters[] = $filter;
 
 						break;
