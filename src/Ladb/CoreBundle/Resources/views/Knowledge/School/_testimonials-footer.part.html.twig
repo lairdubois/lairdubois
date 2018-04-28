@@ -3,7 +3,7 @@
 <div class="ladb-testimonials-footer">
     {% if userTestimonial %}
         <div class="alert alert-info text-center">
-            <p>Vous avez déjà apporté votre témoignage. <a onclick="$('#ladb_testimonial_{{ userTestimonial.id }}').ladbScrollTo(); return false;" class="alert-link">(Voir mon témoignage)</a></p>
+            <p>Vous avez déjà apporté votre témoignage. <a href="#" onclick="$('#ladb_testimonial_{{ userTestimonial.id }}').ladbScrollTo(event, { onAfter: function($target) { $('.ladb-box', $target).first().effect('highlight', {}, 1500); } }); return false;" class="alert-link">(Voir mon témoignage)</a></p>
         </div>
     {% else %}
         {% if school.testimonialCount == 0 %}

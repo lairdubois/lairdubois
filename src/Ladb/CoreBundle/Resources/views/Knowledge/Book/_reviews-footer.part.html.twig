@@ -3,7 +3,7 @@
 <div class="ladb-reviews-footer">
     {% if userReview %}
         <div class="alert alert-info text-center">
-            <p>Vous avez déjà apporté votre critique. <a onclick="$('#ladb_review_{{ userReview.id }}').ladbScrollTo(); return false;" class="alert-link">(Voir ma critique)</a></p>
+            <p>Vous avez déjà apporté votre critique. <a href="#" onclick="$('#ladb_review_{{ userReview.id }}').ladbScrollTo(event, { onAfter: function($target) { $('.ladb-box', $target).first().effect('highlight', {}, 1500); } }); return false;" class="alert-link">(Voir ma critique)</a></p>
         </div>
     {% else %}
         {% if book.reviewCount == 0 %}
