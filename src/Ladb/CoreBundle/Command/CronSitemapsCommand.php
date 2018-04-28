@@ -2,19 +2,19 @@
 
 namespace Ladb\CoreBundle\Command;
 
-use Ladb\CoreBundle\Model\LicensedInterface;
-use Ladb\CoreBundle\Model\PicturedInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 use Ladb\CoreBundle\Model\SitemapableInterface;
+use Ladb\CoreBundle\Model\LicensedInterface;
+use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Utils\PicturedUtils;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CronSitemapsCommand extends ContainerAwareCommand {
 
