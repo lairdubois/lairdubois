@@ -780,7 +780,7 @@ knowledge:
       title: Titre
       cover: Couverture
       back_cover: Arrière
-      authors: Auteurs
+      authors: Auteur(s)
       editor: Editeur
       collection: Collection
       public_domain: Domaine public
@@ -798,7 +798,7 @@ knowledge:
       title: "Le **Title** est le titre du livre."
       cover: "La **Couverture** est la face avant du livre."
       back_cover: "L'**Arrière** est la face arrière du livre."
-      authors: "Les **Auteurs** sont le ou les auteur(s) du livre."
+      authors: "**Auteur(s)** permet de définir le ou les auteur(s) du livre."
       editor: "L'**Editeur** est l'éditeur du livre."
       collection: "La **Collection** est la collection dans laquelle l'éditeur à placé le livre."
       public_domain: "**Domain public** indique si l'ouvrage est tombé dans le domaine public."
