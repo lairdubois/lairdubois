@@ -780,13 +780,14 @@ knowledge:
       title: Titre
       cover: Couverture
       back_cover: Arrière
-      author: Auteur
+      authors: Auteurs
       editor: Editeur
       collection: Collection
       public_domain: Domaine public
       catalog_link: Lien catalogue
-      summary: Résumé
       subjects: Sujets
+      summary: Résumé
+      toc: Sommaire
       language: Langue
       translated: Traduction
       page_count: Nombre de pages
@@ -797,13 +798,14 @@ knowledge:
       title: "Le **Title** est le titre du livre."
       cover: "La **Couverture** est la face avant du livre."
       back_cover: "L'**Arrière** est la face arrière du livre."
-      author: "L'**Auteur** est l'auteur du livre."
+      authors: "Les **Auteurs** sont le ou les auteur(s) du livre."
       editor: "L'**Editeur** est l'éditeur du livre."
-      collection: "La **Collection** est ..."
+      collection: "La **Collection** est la collection dans laquelle l'éditeur à placé le livre."
       public_domain: "**Domain public** indique si l'ouvrage est tombé dans le domaine public."
       catalog_link: "Le **Lien catalogue** est le lien internet vers la page du catalogue de l'éditeur relative au livre OU le lien de consultation si le livre est dans le domaine public."
-      summary: "Le **Résumé** est un court texte de présentation du livre."
       subjects: "Les **Sujets** représentent les thèmes principaux abordés dans le livre."
+      summary: "Le **Résumé** est un court texte de présentation du livre."
+      toc: "Le **Sommaire** est le sommaire du livre."
       language: "La **Langue** est la langue dans laquelle est écrit le livre."
       translated: "**Traduction** indique si la version originale du le livre est écrite dans une autre langue."
       page_count: "Le **Nombre de pages** est le nombre de pages du livre."
@@ -821,7 +823,7 @@ knowledge:
         cover: |
           - Utilisez une image lisible et de bonne qualité.
         back_cover:
-        author: |
+        authors: |
           - N'indiquez **qu'un seul** nom par proposition.
         editor:
         collection:
@@ -830,9 +832,10 @@ knowledge:
           - Utiliser un lien direct vers la page relative au livre.
           - Les liens vers les sites de revendeurs/distributeurs sont **interdits**.
           - Les liens affiliés sont **interdits**.
-        summary:
         subjects: |
           - N'indiquez **qu'un seul** sujet par proposition.
+        summary:
+        toc:
         language:
         translated:
         page_count:

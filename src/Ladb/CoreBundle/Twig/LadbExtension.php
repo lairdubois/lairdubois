@@ -22,6 +22,7 @@ class LadbExtension extends \Twig_Extension {
 			new \Twig_SimpleFilter('ladb_truncate_at', array( $this, 'truncateAtFilter' )),
 			new \Twig_SimpleFilter('ladb_markdown', array( $this, 'markdownFilter' )),
 			new \Twig_SimpleFilter('ladb_url_trim', array( $this, 'urlTrimFilter' )),
+			new \Twig_SimpleFilter('ladb_url_beautify', array( $this, 'urlBeautifyFilter' )),
 			new \Twig_SimpleFilter('ladb_duration', array( $this, 'durationFilter' )),
 			new \Twig_SimpleFilter('ladb_hours_minutes_duration', array( $this, 'hoursMinutesDurationFilter' )),
 		);
@@ -70,6 +71,15 @@ class LadbExtension extends \Twig_Extension {
 	public function urlTrimFilter($str) {
 		$str = preg_replace('#^https?://#', '', rtrim($str,'/'));
 		return $str;
+	}
+
+	public function urlBeautifyFilter($str) {
+		$components = parse_url($str);
+		$str = '<span class="ladb-url-host">'.$components['host'].'</span>';
+		if (isset($components['path'])) {
+			$str .= '<span class="ladb-url-path">'.$components['path'].'</span>';
+		}
+		return '<span class="ladb-url">'.$str.'</span>';
 	}
 
 	public function durationFilter($duration, $long = false) {

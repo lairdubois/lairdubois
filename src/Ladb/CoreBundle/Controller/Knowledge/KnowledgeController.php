@@ -360,7 +360,7 @@ class KnowledgeController extends Controller {
 
 			// Search index update
 			$searchUtils = $this->get(SearchUtils::NAME);
-			$searchUtils->insertEntityToIndex($entity);
+			$searchUtils->replaceEntityInIndex($entity);
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
@@ -449,6 +449,10 @@ class KnowledgeController extends Controller {
 			$entity->incrementContributorCount(-1);
 			$om->flush();	// Flush updated entity
 		}
+
+		// Search index update
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->replaceEntityInIndex($entity);
 
 		// Reload values
 

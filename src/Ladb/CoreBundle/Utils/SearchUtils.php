@@ -14,6 +14,18 @@ class SearchUtils extends AbstractContainerAwareUtils {
 
 	/////
 
+	private function _getObjectPersister($entity) {
+		$classname = strtolower(get_class($entity));
+		if (preg_match('@\\\\([\w]+)\\\\([\w]+)$@', $classname, $matches)) {
+			$familyName = $matches[1];
+			$typeName = $matches[2];
+			return $this->get('fos_elastica.object_persister.ladb.'.$familyName.'_'.$typeName);
+		}
+		return null;
+	}
+
+	/////
+
 	public function insertEntityToIndex(IndexableInterface $entity) {
 		if ($entity->isIndexable()) {
 			$objectPersister = $this->_getObjectPersister($entity);
@@ -24,18 +36,6 @@ class SearchUtils extends AbstractContainerAwareUtils {
 				}
 			}
 		}
-	}
-
-	/////
-
-	private function _getObjectPersister($entity) {
-		$classname = strtolower(get_class($entity));
-		if (preg_match('@\\\\([\w]+)\\\\([\w]+)$@', $classname, $matches)) {
-			$familyName = $matches[1];
-			$typeName = $matches[2];
-			return $this->get('fos_elastica.object_persister.ladb.'.$familyName.'_'.$typeName);
-		}
-		return null;
 	}
 
 	public function replaceEntityInIndex(IndexableInterface $entity) {

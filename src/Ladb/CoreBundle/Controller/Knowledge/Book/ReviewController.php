@@ -213,6 +213,8 @@ class ReviewController extends Controller {
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$searchUtils->replaceEntityInIndex($book);
 
+		$om->flush();
+
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('knowledge.book.review.form.alert.delete_success'));
 

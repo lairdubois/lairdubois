@@ -1,1 +1,3 @@
-<a href="{{ value.data }}" target="_blank"><i class="ladb-icon-globe"></i>&nbsp;{{ value.data|ladb_url_trim|truncate(40) }}</a>
+<div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+    <a href="{{ value.data }}" target="_blank"{% if itemprop is defined %} itemprop="{{ itemprop }}"{% endif %}><i class="ladb-icon-globe"></i> {{ value.data|ladb_url_beautify|raw }}</a>
+</div>

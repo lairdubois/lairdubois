@@ -196,6 +196,8 @@ class TestimonialController extends Controller {
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$searchUtils->replaceEntityInIndex($school);
 
+		$om->flush();
+
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('knowledge.school.testimonial.form.alert.delete_success'));
 

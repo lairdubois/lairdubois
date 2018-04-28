@@ -30,13 +30,14 @@ class Book extends AbstractKnowledge {
 	const FIELD_TITLE = 'title';
 	const FIELD_COVER = 'cover';
 	const FIELD_BACK_COVER = 'back_cover';
-	const FIELD_AUTHOR = 'author';
+	const FIELD_AUTHORS = 'authors';
 	const FIELD_EDITOR = 'editor';
 	const FIELD_COLLECTION = 'collection';
 	const FIELD_PUBLIC_DOMAIN = 'public_domain';
 	const FIELD_CATALOG_LINK = 'catalog_link';
-	const FIELD_SUMMARY = 'summary';
 	const FIELD_SUBJECTS = 'subjects';
+	const FIELD_SUMMARY = 'summary';
+	const FIELD_TOC = 'toc';
 	const FIELD_LANGUAGE = 'language';
 	const FIELD_TRANSLATED = 'translated';
 	const FIELD_PAGE_COUNT = 'page_count';
@@ -48,13 +49,14 @@ class Book extends AbstractKnowledge {
 		Book::FIELD_TITLE         => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueBook', array('excludedId' => '@getId')))),
 		Book::FIELD_COVER         => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Book::FIELD_BACK_COVER    => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Book::FIELD_AUTHOR        => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@author:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
+		Book::FIELD_AUTHORS       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@authors:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
 		Book::FIELD_EDITOR        => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@editor:"%q%"'),
 		Book::FIELD_COLLECTION    => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@collection:"%q%"'),
 		Book::FIELD_PUBLIC_DOMAIN => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Book::FIELD_CATALOG_LINK  => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true),
-		Book::FIELD_SUMMARY       => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_SUBJECTS      => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@subjects:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul sujet par proposition.')))),
+		Book::FIELD_SUMMARY       => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_TOC           => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_LANGUAGE      => array(Book::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@language:"%q%"'),
 		Book::FIELD_TRANSLATED    => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Book::FIELD_PAGE_COUNT    => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
@@ -107,14 +109,14 @@ class Book extends AbstractKnowledge {
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
-	private $author;
+	private $authors;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_author")
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_authors")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $authorValues;
+	private $authorsValues;
 
 
 	/**
@@ -180,6 +182,19 @@ class Book extends AbstractKnowledge {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $summaryValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $toc;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Longtext", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_toc")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $tocValues;
 
 
 	/**
@@ -295,13 +310,14 @@ class Book extends AbstractKnowledge {
 		$this->titleValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->coverValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->backCoverValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->authorValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->authorsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->editorValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->collectionValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->publicDomainValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->summaryValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->subjectsValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->summaryValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->tocValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->languageValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->translatedValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->pageCountValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -456,36 +472,36 @@ class Book extends AbstractKnowledge {
 		return $this->backCoverValues;
 	}
 
-	// Author /////
+	// Authors /////
 
-	public function setAuthor($author) {
-		$this->author = $author;
+	public function setAuthors($authors) {
+		$this->authors = $authors;
 		return $this;
 	}
 
-	public function getAuthor() {
-		return $this->author;
+	public function getAuthors() {
+		return $this->authors;
 	}
 
-	// AuthorValues /////
+	// AuthorsValues /////
 
-	public function addAuthorValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $authorValue) {
-		if (!$this->authorValues->contains($authorValue)) {
-			$this->authorValues[] = $authorValue;
+	public function addAuthorsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $authorValue) {
+		if (!$this->authorsValues->contains($authorValue)) {
+			$this->authorsValues[] = $authorValue;
 		}
 		return $this;
 	}
 
-	public function removeAuthorValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $authorValue) {
-		$this->authorValues->removeElement($authorValue);
+	public function removeAuthorsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $authorValue) {
+		$this->authorsValues->removeElement($authorValue);
 	}
 
-	public function setAuthorValues($authorValues) {
-		$this->authorValues = $authorValues;
+	public function setAuthorsValues($authorsValues) {
+		$this->authorsValues = $authorsValues;
 	}
 
-	public function getAuthorValues() {
-		return $this->authorValues;
+	public function getAuthorsValues() {
+		return $this->authorsValues;
 	}
 
 	// Editor /////
@@ -616,6 +632,38 @@ class Book extends AbstractKnowledge {
 		return $this->catalogLinkValues;
 	}
 
+	// Subjects /////
+
+	public function setSubjects($subjects) {
+		$this->subjects = $subjects;
+		return $this;
+	}
+
+	public function getSubjects() {
+		return $this->subjects;
+	}
+
+	// SubjectsValues /////
+
+	public function addSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
+		if (!$this->subjectsValues->contains($subjectsValue)) {
+			$this->subjectsValues[] = $subjectsValue;
+		}
+		return $this;
+	}
+
+	public function removeSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
+		$this->subjectsValues->removeElement($subjectsValue);
+	}
+
+	public function setSubjectsValues($subjectsValues) {
+		$this->subjectsValues = $subjectsValues;
+	}
+
+	public function getSubjectsValues() {
+		return $this->subjectsValues;
+	}
+
 	// Summary /////
 
 	public function setSummary($summary) {
@@ -648,36 +696,36 @@ class Book extends AbstractKnowledge {
 		return $this->summaryValues;
 	}
 
-	// Subjects /////
+	// Toc /////
 
-	public function setSubjects($subjects) {
-		$this->subjects = $subjects;
+	public function setToc($toc) {
+		$this->toc = $toc;
 		return $this;
 	}
 
-	public function getSubjects() {
-		return $this->subjects;
+	public function getToc() {
+		return $this->toc;
 	}
 
-	// SubjectsValues /////
+	// TocValues /////
 
-	public function addSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
-		if (!$this->subjectsValues->contains($subjectsValue)) {
-			$this->subjectsValues[] = $subjectsValue;
+	public function addTocValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $tocValue) {
+		if (!$this->tocValues->contains($tocValue)) {
+			$this->tocValues[] = $tocValue;
 		}
 		return $this;
 	}
 
-	public function removeSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
-		$this->subjectsValues->removeElement($subjectsValue);
+	public function removeTocValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $tocValue) {
+		$this->tocValues->removeElement($tocValue);
 	}
 
-	public function setSubjectsValues($subjectsValues) {
-		$this->subjectsValues = $subjectsValues;
+	public function setTocValues($tocValues) {
+		$this->tocValues = $tocValues;
 	}
 
-	public function getSubjectsValues() {
-		return $this->subjectsValues;
+	public function getTocValues() {
+		return $this->tocValues;
 	}
 
 	// Language /////

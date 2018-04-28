@@ -1,1 +1,1 @@
-{{ fieldChoices is not null ? fieldChoices[value.data] : value.data }}
+<span{% if itemprop is defined %} itemprop="{{ itemprop }}"{% endif %}>{{ fieldChoices is not null ? fieldChoices[value.data] : value.data }}</span>

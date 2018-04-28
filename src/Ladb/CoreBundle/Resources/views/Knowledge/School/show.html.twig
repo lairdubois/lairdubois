@@ -120,7 +120,7 @@
 
 {% block contentBody %}
     <div class="ladb-knowledge-showcase row">
-        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', school), 'picture':school.logo, 'values':school.logoValues, 'itemProperty':'logo', 'pictureBoxClasses':(school.logoRejected ? 'ladb-box-barred' : null) } %}
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', school), 'picture':school.logo, 'values':school.logoValues, 'itemprop':'logo', 'pictureBoxClasses':(school.logoRejected ? 'ladb-box-barred' : null) } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_PHOTO', school), 'picture':school.photo, 'values':school.photoValues } %}
     </div>
     <div>
