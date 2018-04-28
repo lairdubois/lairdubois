@@ -1,4 +1,7 @@
-<div id="ladb_comment_{{ comment.id }}" itemprop="comment" itemscope itemtype="http://schema.org/Comment" class="ladb-comment-row">
+
+{% set noMicrodata = noMicrodata|default(false) %}
+
+<div id="ladb_comment_{{ comment.id }}"{% if not noMicrodata %} itemprop="comment" itemscope itemtype="http://schema.org/Comment"{% endif %} class="ladb-comment-row">
     {% block minitools %}
         <div class="ladb-minitools">
             {% if not app.request.isxmlhttprequest %}
@@ -21,7 +24,7 @@
             {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':comment, 'hideBy':true, 'itemprop':'creator' } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':comment, 'itemprop':'dateCreated' } %}
         </div>
         <div class="ladb-body">
-            <span itemprop="text">{{ comment.htmlBody|raw }}</span>
+            <span{% if not noMicrodata %} itemprop="text"{% endif %}>{{ comment.htmlBody|raw }}</span>
             {% if comment.pictures is not empty %}
                 <div class="row" style="margin-bottom: 10px;">
                     {% for picture in comment.pictures %}

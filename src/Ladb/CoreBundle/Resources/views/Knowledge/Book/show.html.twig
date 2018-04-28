@@ -106,7 +106,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_EDITOR', book), 'data':book.editor, 'values':book.editorValues, 'itemprop':'editor' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_COLLECTION', book), 'data':book.collection, 'values':book.collectionValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PUBLIC_DOMAIN', book), 'data':book.publicDomain, 'values':book.publicDomainValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_CATALOG_LINK', book), 'data':book.catalogLink, 'values':book.catalogLinkValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_CATALOG_LINK', book), 'data':book.catalogLink, 'values':book.catalogLinkValues, 'itemprop':'url' } %}
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Contenu</h4>
@@ -170,5 +170,5 @@
             {% if book.averageRating > 0 %}{% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':book.averageRating, 'ratingCount':book.reviewCount, 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
         </div>
     </div>
-    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license } %}
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':book.license, 'noMicrodata':true } %}
 {% endblock %}
