@@ -2,16 +2,16 @@
 
 namespace Ladb\CoreBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\Validator\TraceableValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 
 class ValueSourceValidator extends ConstraintValidator {
 
 	protected $validator;
 
-	public function __construct(TraceableValidator $validator) {
+	public function __construct(ValidatorInterface $validator) {
 		$this->validator = $validator;
 	}
 
