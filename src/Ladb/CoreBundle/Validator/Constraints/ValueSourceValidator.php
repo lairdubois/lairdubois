@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\TraceableValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
@@ -11,7 +11,7 @@ class ValueSourceValidator extends ConstraintValidator {
 
 	protected $validator;
 
-	public function __construct(RecursiveValidator $validator) {
+	public function __construct(TraceableValidator $validator) {
 		$this->validator = $validator;
 	}
 
