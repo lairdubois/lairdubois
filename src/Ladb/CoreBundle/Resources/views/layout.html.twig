@@ -114,7 +114,7 @@
         <a href="{{ path('core_workflow_list') }}" {% if navSection is defined and navSection == 'workflows' %} ladb-active{% endif %}"><i class="ladb-icon-workflow"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWorkflowWorkflowCount' } %}<div>{{ 'workflow.workflow.nav'|trans() }}</div></a>
         <a href="{{ path('core_workshop_list') }}" {% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedWonderWorkshopCount' } %}<div>{{ 'wonder.workshop.nav'|trans() }}</div></a>
         <div class="ladb-leftbar-subbar ladb-leftbar-subbar-2">
-            <div class="ladb-subbar-toggle{% if navSection is defined and (navSection == 'woods' or navSection == 'books') %} ladb-nav-active{% endif %}">
+            <div class="ladb-subbar-toggle ladb-highlighted{% if navSection is defined and (navSection == 'woods' or navSection == 'books') %} ladb-nav-active{% endif %}">
                 <span class="ladb-toggle-handle"><i class="ladb-icon-more"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'valueName':'unlistedKnowledgeCount' } %}<div>Savoirs</div></span>
                 <span class="ladb-toggle-arrow"></span>
             </div>

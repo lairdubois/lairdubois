@@ -26,6 +26,7 @@ security:
                 path:     /
                 domain:   ~ # Defaults to the current domain from $_SERVER
             switch_user: { role: ROLE_ADMIN, parameter: _switch_to }
+            logout_on_user_change: true
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
