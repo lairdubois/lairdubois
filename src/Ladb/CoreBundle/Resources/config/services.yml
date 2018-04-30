@@ -318,6 +318,10 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\SchoolTestimonialValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.school_testimonial_validator }
+  ladb_core.exclude_domains_link_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ExcludeDomainsLinkValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.exclude_domains_link_validator }
 
   # Listeners
   ladb_core.kernel_listener:

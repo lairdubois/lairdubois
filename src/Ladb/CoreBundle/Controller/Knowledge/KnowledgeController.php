@@ -84,7 +84,7 @@ class KnowledgeController extends Controller {
 				$constraint = new $constraintDef[0]();
 				if (isset($constraintDef[1])) {
 					foreach ($constraintDef[1] as $key => $value) {
-						if (strpos($value, '@') !== false) {
+						if (is_string($value) && strpos($value, '@') !== false) {
 							$value = $entity->{ substr($value, 1) }();
 						}
 						$constraint->{ $key } = $value;

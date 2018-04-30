@@ -140,7 +140,7 @@
             {% include 'LadbCoreBundle:Knowledge/Book/Review:_list.part.html.twig' with { 'reviews':book.reviews } %}
             {% include 'LadbCoreBundle:Knowledge/Book:_reviews-footer.part.html.twig' %}
         </div>
-        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'activitiesHidden':true } %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'activitiesHidden':true, 'alert':('knowledge.book.comment_alert'|trans) } %}
     </div>
     {{ parent() }}
 {% endblock %}
@@ -165,8 +165,10 @@
         <div class="ladb-meta{% if book.reviewCount == 0 %} text-muted{% endif %}">
             <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_review_list').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
             <i class="ladb-icon-review ladb-icon-fixed-center"></i>
-            <strong>{{ book.reviewCount|number_format(0, ',', ' ') }}</strong>
-            <small>{{ 'knowledge.book.choice.reviews'|transchoice(entity.reviewCount) }}</small>
+            <a href="#" onclick="$('#ladb_review_list').ladbScrollTo(event);">
+                <strong>{{ book.reviewCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'knowledge.book.choice.reviews'|transchoice(entity.reviewCount) }}</small>
+            </a>
             {% if book.averageRating > 0 %}{% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':book.averageRating, 'ratingCount':book.reviewCount, 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
         </div>
     </div>

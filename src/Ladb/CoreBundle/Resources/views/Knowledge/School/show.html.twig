@@ -156,7 +156,7 @@
             {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_list.part.html.twig' with { 'testimonials':school.testimonials } %}
             {% include 'LadbCoreBundle:Knowledge/School:_testimonials-footer.part.html.twig' %}
         </div>
-        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true, 'alert':('knowledge.school.comment_alert'|trans) } %}
     </div>
     {{ parent() }}
 {% endblock %}
@@ -181,8 +181,10 @@
         <div class="ladb-meta{% if school.testimonialCount == 0 %} text-muted{% endif %}">
             <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_testimonial_list').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
             <i class="ladb-icon-student ladb-icon-fixed-center"></i>
-            <strong>{{ school.testimonialCount|number_format(0, ',', ' ') }}</strong>
-            <small>{{ 'knowledge.school.choice.testimonials'|transchoice(entity.testimonialCount) }}</small>
+            <a href="#" onclick="$('#ladb_testimonial_list').ladbScrollTo(event);">
+                <strong>{{ school.testimonialCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'knowledge.school.choice.testimonials'|transchoice(entity.testimonialCount) }}</small>
+            </a>
         </div>
     </div>
     {% if hasMap %}
