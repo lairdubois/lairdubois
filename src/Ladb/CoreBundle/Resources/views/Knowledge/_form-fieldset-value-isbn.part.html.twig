@@ -2,5 +2,5 @@
 
 {% block dataFormGroup %}
     {{ form_errors(form.rawIsbn) }}
-    {{ form_widget(form.rawIsbn, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
+    {{ form_widget(form.rawIsbn, { 'attr':{ 'class':'form-control input-lg', 'placeholder':fieldLabel } }) }}
 {% endblock %}

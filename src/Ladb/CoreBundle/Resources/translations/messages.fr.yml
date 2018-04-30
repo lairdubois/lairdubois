@@ -532,6 +532,7 @@ knowledge:
     source: Source
     country: Pays
     currency: Devise
+    of_value: de la valeur <em>%fieldLabel%</em>
   bullet:
     not_verified: Cette proposition n'a pas été vérifiée
     undetermined: Les avis divergent sur la validation de cette proposition.

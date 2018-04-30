@@ -62,7 +62,11 @@
             {% endif %}
         </div>
         <div class="col-xs-1">
-            <div class="ladb-minitools"><a data-tooltip="tooltip" title="{{ 'knowledge.show_proposals'|trans() }}" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' }); return false;"><i class="ladb-icon-chevron-right"></i></a></div>
+            <div class="ladb-minitools">
+                <a data-tooltip="tooltip" title="{{ 'knowledge.show_proposals'|trans() }}" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' }); return false;">
+                    <i class="ladb-icon-chevron-right"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>

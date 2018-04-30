@@ -3,6 +3,7 @@
 {# set cancelEdit (facultative) #}
 
 {% set cancelEdit = cancelEdit is defined ? cancelEdit : false %}
+{% set fieldLabel = fieldLabel|default('') %}
 
 {% block dataFormGroupOuter %}
     {{ form_errors(form) }}
@@ -11,7 +12,7 @@
     </div>
 {% endblock %}
 <div class="form-group">
-    {{ form_label(form.legend, ('knowledge.proposal_value.legend'|trans())) }}&nbsp;<small>(Facultatif)</small>
+    {{ form_label(form.legend, ('knowledge.proposal_value.legend'|trans())) }}&nbsp;{{ 'knowledge.proposal_value.of_value'|trans({ '%fieldLabel%':fieldLabel })|raw }}&nbsp;<small>(Facultatif)</small>
     {{ form_errors(form.legend) }}
     {{ form_widget(form.legend, { 'attr':{ 'class':'form-control' } }) }}
 </div>
@@ -31,7 +32,7 @@
             </ul>
         </div>
     {% endif %}
-    {{ form_label(form.source, 'knowledge.proposal_value.source'|trans()) }}
+    {{ form_label(form.source, 'knowledge.proposal_value.source'|trans()) }}&nbsp;{{ 'knowledge.proposal_value.of_value'|trans({ '%fieldLabel%':fieldLabel })|raw }}
     {{ form_errors(form.source) }}
     {{ form_widget(form.source) }}
     {{ form_widget(form.sourceType, { 'attr':{ 'class':'form-control' } }) }}
@@ -42,6 +43,7 @@
     <div id="{{ form.source.vars.id }}_other_input_group"{% if form.sourceType.vars.data != 3 %} style="display: none;"{% endif %} class="ladb-margin-top">
         <input type="text"{% if form.source.vars.data is not null and form.sourceType.vars.data == 3 %} value="{{ form.source.vars.data }}"{% endif %} placeholder="Nom de la source" class="form-control">
     </div>
+    {% block sourceWarning %}{% endblock %}
     <script>
         $("#{{ form.source.vars.id }}_website_input_group input").on("change keydown paste input", function() {
             $("#{{ form.source.vars.id }}").val($(this).val());

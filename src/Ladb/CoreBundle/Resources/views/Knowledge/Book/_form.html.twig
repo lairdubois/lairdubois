@@ -1,4 +1,4 @@
-{% extends 'LadbCoreBundle:Common:Layout/_form.html.twig' %}
+{% extends 'LadbCoreBundle:Knowledge:_form.html.twig' %}
 
 {% set navSection = 'about' %}
 
@@ -21,13 +21,12 @@
         </div>
     </div>
     {{ parent() }}
-    {{ form_errors(form) }}
     <section id="title_section">
         <div class="form-section">
             <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.book.field.title'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-text.part.html.twig' with { 'form':form.titleValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_TITLE') } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-text.part.html.twig' with { 'form':form.titleValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_TITLE'), 'fieldLabel':('knowledge.book.field.title'|trans()) } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -48,7 +47,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.book.field.cover'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'cover', 'form':form.coverValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_COVER'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'cover', 'form':form.coverValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_COVER'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE'), 'fieldLabel':('knowledge.book.field.cover'|trans()) } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

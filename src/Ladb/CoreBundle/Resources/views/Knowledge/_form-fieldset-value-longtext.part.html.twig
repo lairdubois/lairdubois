@@ -2,5 +2,5 @@
 
 {% block dataFormGroup %}
     {{ form_errors(form.data) }}
-    {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg ladb-autosize', 'rows':5, 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
+    {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg ladb-autosize', 'rows':5, 'placeholder':fieldLabel } }) }}
 {% endblock %}

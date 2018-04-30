@@ -1,4 +1,4 @@
-{% extends 'LadbCoreBundle:Common:Layout/_form.html.twig' %}
+{% extends 'LadbCoreBundle:Knowledge:_form.html.twig' %}
 
 {% set navSection = 'about' %}
 
@@ -21,13 +21,12 @@
         </div>
     </div>
     {{ parent() }}
-    {{ form_errors(form) }}
     <section id="name_section">
         <div class="form-section">
             <p class="form-section-title"><i class="ladb-icon-provider"></i> {{ 'knowledge.provider.field.sign'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-sign.part.html.twig' with { 'form':form.signValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_SIGN') } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-sign.part.html.twig' with { 'form':form.signValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_SIGN'), 'fieldLabel':('knowledge.provider.field.sign'|trans()) } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -48,7 +47,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.provider.field.logo'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'logo', 'form':form.logoValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_LOGO'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'logo', 'form':form.logoValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_LOGO'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE'), 'fieldLabel':('knowledge.provider.field.logo'|trans()) } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

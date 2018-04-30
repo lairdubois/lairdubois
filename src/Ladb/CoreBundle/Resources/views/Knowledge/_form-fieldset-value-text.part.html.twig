@@ -7,6 +7,6 @@
     {% if fieldDef is not null and fieldDef[constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\AbstractKnowledge::ATTRIB_CHOICES')] is defined %}
         {{ form_widget(form.data) }}
     {% else %}
-        {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' } }) }}
+        {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':fieldLabel } }) }}
     {% endif %}
 {% endblock %}

@@ -3,3 +3,7 @@
 {% block dataFormGroup %}
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formPictures':form.data, 'pictures':(form.vars.data is null or form.vars.data.data is null ? [] : [ form.vars.data.data ]), 'maxPictureCount':1, 'editable':true, 'hideTextOverlayWarning':true } %}
 {% endblock %}
+
+{% block sourceWarning %}
+    <small class="help-block"><i class="ladb-icon-warning"></i> Si votre image provient d'un autre site. Il est important de bien indiquer sa source.</small>
+{% endblock %}

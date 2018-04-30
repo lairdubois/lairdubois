@@ -10,6 +10,7 @@
 
 {% set actionPath = actionPath is defined ? actionPath : path('core_knowledge_value_create', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field }) %}
 {% set fieldType = knowledge.fieldDefs[field][constant('ATTRIB_TYPE', knowledge)] %}
+{% set fieldLabel = knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' %}
 {% set formSection = form.vars.id~'_data' %}
 
 <form action="{{ actionPath }}" method="post" novalidate class="ladb-value-proposal-form">
@@ -18,7 +19,7 @@
         {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') and knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] is defined %}
             {% set postProcessor = knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] %}
         {% endif %}
-        {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-'~fieldType~'.part.html.twig' %}
+        {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-'~fieldType~'.part.html.twig' with { 'fieldLabel':fieldLabel } %}
     </fieldset>
     {% block buttons %}
         {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
