@@ -99,7 +99,7 @@
         });
     </script>
     {{ block('blueimpGalleryJavascripts') }}
-    {% if entity.isDraft is defined and not entity.isDraft %}
+    {% if entity.isPublic is defined and entity.isPublic or entity.isPublic is not defined %}
         {{ block('sharebuttonsJavascript') }}
     {% endif %}
 {% endblock %}
@@ -107,7 +107,7 @@
 {% block body %}
     {{ parent() }}
     {{ block('blueimpGalleryWidget') }}
-    {% if entity.isDraft is defined and not entity.isDraft %}
+    {% if entity.isPublic is defined and entity.isPublic or entity.isPublic is not defined %}
         {{ block('sharebuttonsFloatVertical') }}
     {% endif %}
 {% endblock %}
