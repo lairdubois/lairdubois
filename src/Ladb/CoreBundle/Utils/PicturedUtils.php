@@ -33,7 +33,10 @@ class PicturedUtils {
 		}
 	}
 
-	public function getPictureSitemapData(Picture $picture) {
+	public function getPictureSitemapData(Picture $picture = null) {
+		if (is_null($picture)) {
+			return null;
+		}
 		return array(
 			'loc'     => $this->imagineCacheManager->getBrowserPath($picture->getWebPath(), '1024x1024i'),
 			'caption' => $picture->getLegend(),
