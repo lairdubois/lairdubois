@@ -266,7 +266,7 @@ class BookController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100', 'author', 'subjects', 'summary', 'toc' ));
+							$filter->setFields(array( 'title^100', 'authors', 'subjects', 'summary', 'toc' ));
 							$filters[] = $filter;
 
 						}
