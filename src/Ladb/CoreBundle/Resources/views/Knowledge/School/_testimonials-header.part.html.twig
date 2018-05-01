@@ -2,6 +2,9 @@
 
 <div class="ladb-testimonials-header">
     {% if school.testimonialCount > 0 %}
+        {% if is_granted("ROLE_USER") and userTestimonial is defined and not userTestimonial %}<button class="btn btn-default pull-right" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$('#ladb_testimonial_btn').click();"><i class="ladb-icon-plus"></i> {{ 'knowledge.school.testimonial.new'|trans() }}</button>{% endif %}
         <h2 class="ladb-margin-bottom">{{ school.testimonialCount }} {{ 'knowledge.school.choice.testimonials'|transchoice(school.testimonialCount) }}</h2>
+    {% else %}
+        <h2>{{ 'knowledge.school.choice.testimonials'|transchoice(2)|capitalize }}</h2>
     {% endif %}
 </div>
