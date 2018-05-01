@@ -810,7 +810,7 @@ knowledge:
       summary: "Le **Résumé** est un court texte de présentation du livre."
       toc: "Le **Sommaire** est le sommaire du livre."
       language: "La **Langue** est la langue dans laquelle est écrit le livre."
-      translated: "**Traduction** indique si la version originale du le livre est écrite dans une autre langue."
+      translated: "**Traduction** indique si la version originale du livre est écrite dans une autre langue."
       page_count: "Le **Nombre de pages** est le nombre de pages du livre."
       isbn: "L'**ISBN** est le code ISBN-10 ou ISBN-13 du livre."
       price: "Le **Prix public** correspond au prix initialement proposé par l'éditeur du livre."

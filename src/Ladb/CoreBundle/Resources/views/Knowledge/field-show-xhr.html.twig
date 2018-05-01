@@ -26,10 +26,10 @@
                     <div class="col-xs-12">
                         <h4><i class="ladb-icon-plus"></i> {{ 'knowledge.add_proposal_of'|trans() }} <em>{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</em></h4>
                     </div>
-                    <div class="col-sm-6 col-xs-12">
+                    <div class="col-sm-7 col-xs-12">
                         {% include 'LadbCoreBundle:Knowledge:_form-value.part.html.twig' with { 'cancelEdit':true } %}
                     </div>
-                    <div class="col-sm-6 col-xs-12">
+                    <div class="col-sm-5 col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
                             <div class="panel-body small">
@@ -37,12 +37,13 @@
                                 {% if ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans() != 'knowledge.'~knowledge.strippedName~'.form.help.'~field %}
                                     {{ ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans()|ladb_markdown|raw }}
                                 {% endif %}
-                                <hr>
                                 {{ ('knowledge.wood.form.help.legend')|trans({ '%field%':(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())})|ladb_markdown|raw }}
-                                <hr>
                                 {{ ('knowledge.wood.form.help.source')|trans()|ladb_markdown|raw }}
                                 <hr>
-                                <i class="ladb-icon-plus"></i>&nbsp;<a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">Comment contribuer aux contenus collaboratifs ?</a>
+                                <div class="media">
+                                    <div class="media-left"><i class="ladb-icon-help"></i></div>
+                                    <div class="media-body"><a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}" target="_blank">Comment contribuer aux contenus collaboratifs ?</a></div>
+                                </div>&nbsp;
                             </div>
                         </div>
                     </div>
@@ -64,7 +65,7 @@
     {% if values is not empty %}
         <div class="panel panel-default">
             <div class="panel-body">
-                <i class="ladb-icon-help"></i> {{ ('knowledge.info.'~(fieldMultiple ? 'multiple' : 'single')~'_proposal')|trans() }}
+                <i class="ladb-icon-info"></i> {{ ('knowledge.info.'~(fieldMultiple ? 'multiple' : 'single')~'_proposal')|trans() }}
             </div>
         </div>
     {% endif %}
