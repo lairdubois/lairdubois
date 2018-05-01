@@ -778,7 +778,7 @@ knowledge:
     list: Les livres
     nav: Livres
     new_warning: Un <strong>livre</strong> est un <strong>ouvrage écrit</strong> (<em>imprimé ou numérique</em>) dont le sujet principal porte sur <strong>la matière</strong> ou <strong>le travail du bois</strong>.
-    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Livre.</p><p><u>N'apportez pas votre critique ici.</u></p><p>Pour donner votre avis de lecteur, cliquez sur le bouton <strong>Ajouter ma critique</strong> un peu plus haut.</p>
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Livre.</p><p><u>N'apportez pas votre critique ou avis ici.</u></p><p>Pour donner votre avis de lecteur, cliquez sur le bouton <strong>Ajouter ma critique</strong> un peu plus haut.</p>
     field:
       title: Titre
       cover: Couverture
