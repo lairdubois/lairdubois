@@ -5,12 +5,16 @@
 .ladb-masonry-column, .ladb-masonry-column-wide {
   padding: 0 10px 20px 10px;
 
-  >.ladb-box {
+  > .ladb-box {
     .list-box();
     .list-box-hover();
     padding: 4px;
 
-    >.ladb-content {
+    > .ladb-content {
+
+      .ladb-image-and-caption {
+        position: relative;
+      }
 
       .ladb-image-overlay {
         position: absolute;
@@ -20,7 +24,7 @@
         text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
       }
 
-      >.ladb-counters {
+      > .ladb-counters {
         position: relative;
         right: 0;
         bottom: 0;
@@ -56,7 +60,7 @@
 
     }
 
-    >.ladb-footer {
+    > .ladb-footer {
       border-top: 1px solid @ladb-global-border;
       padding: 4px 0 0 4px;
       color: @ladb-global-light-color;
@@ -78,9 +82,9 @@
 
 .ladb-masonry-column {
 
-  >.ladb-box {
+  > .ladb-box {
 
-    >.ladb-content {
+    > .ladb-content {
       padding: 0;
 
       h2 {
@@ -89,7 +93,7 @@
         display: inline;
       }
 
-      .ladb-overlay-caption {
+      .ladb-caption {
         position: absolute;
         left: 0;
         right: 0;
@@ -100,7 +104,7 @@
         text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
       }
 
-      >.ladb-counters {
+      > .ladb-counters {
         height: 30px;
         line-height: 30px;
       }
@@ -111,15 +115,29 @@
 
 }
 
+.ladb-masonry-column.ladb-no-overlay-caption {
+
+  > .ladb-box > .ladb-content > .ladb-image-and-caption > .ladb-caption {
+    position: static;
+    padding: 0 0 10px 0;
+    color: #333;
+    background-image: none;
+    text-shadow: none;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+
+}
+
 .ladb-masonry-column-wide {
 
-  >.ladb-box {
+  > .ladb-box {
 
-    >.ladb-content {
+    > .ladb-content {
       padding: 6px 6px 10px 6px;
       min-height: 157px;
 
-      >.ladb-heading {
+      > .ladb-heading {
 
         h2 {
           font-size: 130%;
@@ -129,7 +147,7 @@
 
       }
 
-      >.ladb-image {
+      > .ladb-image {
         position: relative;
         float: left;
         width: 180px;

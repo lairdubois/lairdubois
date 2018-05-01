@@ -1,5 +1,6 @@
 
 {# set entity #}
+{# set classes (facultative) #}
 {# set headingClasses (facultative) #}
 {# set titleLinkClasses (facultative) #}
 {# set showPathAdditionalParams (facultative) #}
@@ -7,7 +8,7 @@
 {% set noMicrodata = true %}
 {% set showPath = showPathAdditionalParams is defined ? ladb_entity_url_action(entity, 'show', true, true, showPathAdditionalParams) : ladb_entity_url_action(entity) %}
 
-<div class="ladb-masonry-item ladb-masonry-column-wide">
+<div class="ladb-masonry-item ladb-masonry-column-wide{% if classes is defined %} {{ classes }}{% endif %}">
     <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
         <div class="ladb-content">
             {% block contentInner %}

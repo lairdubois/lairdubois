@@ -1,5 +1,6 @@
 
 {# set entity #}
+{# set classes (facultative) #}
 {# set headingClasses (facultative) #}
 {# set showPathAdditionalParams (facultative) #}
 
@@ -9,10 +10,10 @@
 {% set pictureHeight = pictureHeight|default('550') %}
 {% set pictureFilterMode = pictureFilterMode|default('i') %}
 
-<div class="ladb-masonry-item ladb-masonry-column">
+<div class="ladb-masonry-item ladb-masonry-column{% if classes is defined %} {{ classes }}{% endif %}">
     <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
         <div class="ladb-content">
-            <div class="uk-overlay">
+            <div class="ladb-image-and-caption">
                 {% block imageOuter %}
                     <div class="ladb-image">
                         {% block image %}
@@ -29,7 +30,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="ladb-overlay-caption">{% if entity.isLocked is defined and entity.isLocked %}<span><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{{ entity.title }}</h2>{% endblock %}</div>
+                    <div class="ladb-caption">{% if entity.isLocked is defined and entity.isLocked %}<span><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{{ entity.title }}</h2>{% endblock %}</div>
                 {% endblock %}
             </div>
             {% block entityMetasOuter %}
