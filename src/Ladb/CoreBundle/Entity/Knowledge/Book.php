@@ -32,17 +32,17 @@ class Book extends AbstractKnowledge {
 	const FIELD_BACK_COVER = 'back_cover';
 	const FIELD_AUTHORS = 'authors';
 	const FIELD_EDITOR = 'editor';
-	const FIELD_COLLECTION = 'collection';
-	const FIELD_PUBLIC_DOMAIN = 'public_domain';
-	const FIELD_CATALOG_LINK = 'catalog_link';
-	const FIELD_SUBJECTS = 'subjects';
 	const FIELD_SUMMARY = 'summary';
 	const FIELD_TOC = 'toc';
+	const FIELD_SUBJECTS = 'subjects';
+	const FIELD_COLLECTION = 'collection';
 	const FIELD_LANGUAGE = 'language';
 	const FIELD_TRANSLATED = 'translated';
 	const FIELD_PAGE_COUNT = 'page_count';
 	const FIELD_ISBN = 'isbn';
 	const FIELD_PUBLISH_YEAR = 'publish_year';
+	const FIELD_PUBLIC_DOMAIN = 'public_domain';
+	const FIELD_CATALOG_LINK = 'catalog_link';
 	const FIELD_PRICE = 'price';
 
 	public static $FIELD_DEFS = array(
@@ -51,17 +51,17 @@ class Book extends AbstractKnowledge {
 		Book::FIELD_BACK_COVER    => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Book::FIELD_AUTHORS       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@authors:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
 		Book::FIELD_EDITOR        => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@editor:"%q%"'),
-		Book::FIELD_COLLECTION    => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@collection:"%q%"'),
-		Book::FIELD_PUBLIC_DOMAIN => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
-		Book::FIELD_CATALOG_LINK  => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array( 'excludedDomainPaterns' => array( '/amazon./i', '/fnac./i', '/manomano./i' ), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.' )))),
-		Book::FIELD_SUBJECTS      => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@subjects:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul sujet par proposition.')))),
 		Book::FIELD_SUMMARY       => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_TOC           => array(Book::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_SUBJECTS      => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@subjects:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul sujet par proposition.')))),
+		Book::FIELD_COLLECTION    => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@collection:"%q%"'),
 		Book::FIELD_LANGUAGE      => array(Book::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_FILTER_QUERY => '@language:"%q%"'),
 		Book::FIELD_TRANSLATED    => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Book::FIELD_PAGE_COUNT    => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_ISBN          => array(Book::ATTRIB_TYPE => Isbn::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 		Book::FIELD_PUBLISH_YEAR  => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
+		Book::FIELD_PUBLIC_DOMAIN => array(Book::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
+		Book::FIELD_CATALOG_LINK  => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array( 'excludedDomainPaterns' => array( '/amazon./i', '/fnac./i', '/manomano./i' ), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.' )))),
 		Book::FIELD_PRICE         => array(Book::ATTRIB_TYPE => Price::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 	);
 
@@ -133,45 +133,6 @@ class Book extends AbstractKnowledge {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	private $collection;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_collection")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
-	 */
-	private $collectionValues;
-
-
-	/**
-	 * @ORM\Column(type="boolean", nullable=true)
-	 */
-	private $publicDomain;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_public_domain")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
-	 */
-	private $publicDomainValues;
-
-
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=255)
-	 */
-	private $catalogLink;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_catalog_link")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
-	 */
-	private $catalogLinkValues;
-
-
-	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $summary;
@@ -208,6 +169,19 @@ class Book extends AbstractKnowledge {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $subjectsValues;
+
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $collection;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_collection")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $collectionValues;
 
 
 	/**
@@ -276,6 +250,32 @@ class Book extends AbstractKnowledge {
 
 
 	/**
+	 * @ORM\Column(type="boolean", nullable=true)
+	 */
+	private $publicDomain;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_public_domain")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $publicDomainValues;
+
+
+	/**
+	 * @ORM\Column(type="string", nullable=true, length=255)
+	 */
+	private $catalogLink;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_catalog_link")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $catalogLinkValues;
+
+
+	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $price;
@@ -312,18 +312,18 @@ class Book extends AbstractKnowledge {
 		$this->backCoverValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->authorsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->editorValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->collectionValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->publicDomainValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->subjectsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->summaryValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tocValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->subjectsValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->collectionValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->languageValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->translatedValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->pageCountValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->isbnValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->priceValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->publishYearValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->publicDomainValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->priceValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -536,134 +536,6 @@ class Book extends AbstractKnowledge {
 		return $this->editorValues;
 	}
 
-	// Collection /////
-
-	public function setCollection($collection) {
-		$this->collection = $collection;
-		return $this;
-	}
-
-	public function getCollection() {
-		return $this->collection;
-	}
-
-	// CollectionValues /////
-
-	public function addCollectionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $collectionValue) {
-		if (!$this->collectionValues->contains($collectionValue)) {
-			$this->collectionValues[] = $collectionValue;
-		}
-		return $this;
-	}
-
-	public function removeCollectionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $collectionValue) {
-		$this->collectionValues->removeElement($collectionValue);
-	}
-
-	public function setCollectionValues($collectionValues) {
-		$this->collectionValues = $collectionValues;
-	}
-
-	public function getCollectionValues() {
-		return $this->collectionValues;
-	}
-
-	// PublicDomain /////
-
-	public function setPublicDomain($publicDomain) {
-		$this->publicDomain = $publicDomain;
-		return $this;
-	}
-
-	public function getPublicDomain() {
-		return $this->publicDomain;
-	}
-
-	// PublicDomainValues /////
-
-	public function addPublicDomainValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicDomainValue) {
-		if (!$this->publicDomainValues->contains($publicDomainValue)) {
-			$this->publicDomainValues[] = $publicDomainValue;
-		}
-		return $this;
-	}
-
-	public function removePublicDomainValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicDomainValue) {
-		$this->publicDomainValues->removeElement($publicDomainValue);
-	}
-
-	public function setPublicDomainValues($publicDomainValues) {
-		$this->publicDomainValues = $publicDomainValues;
-	}
-
-	public function getPublicDomainValues() {
-		return $this->publicDomainValues;
-	}
-
-	// CatalogLink /////
-
-	public function setCatalogLink($catalogLink) {
-		$this->catalogLink = $catalogLink;
-		return $this;
-	}
-
-	public function getCatalogLink() {
-		return $this->catalogLink;
-	}
-
-	// CatalogLinkValues /////
-
-	public function addCatalogLinkValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $catalogLinkValue) {
-		if (!$this->catalogLinkValues->contains($catalogLinkValue)) {
-			$this->catalogLinkValues[] = $catalogLinkValue;
-		}
-		return $this;
-	}
-
-	public function removeCatalogLinkValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $catalogLinkValue) {
-		$this->catalogLinkValues->removeElement($catalogLinkValue);
-	}
-
-	public function setCatalogLinkValues($catalogLinkValues) {
-		$this->catalogLinkValues = $catalogLinkValues;
-	}
-
-	public function getCatalogLinkValues() {
-		return $this->catalogLinkValues;
-	}
-
-	// Subjects /////
-
-	public function setSubjects($subjects) {
-		$this->subjects = $subjects;
-		return $this;
-	}
-
-	public function getSubjects() {
-		return $this->subjects;
-	}
-
-	// SubjectsValues /////
-
-	public function addSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
-		if (!$this->subjectsValues->contains($subjectsValue)) {
-			$this->subjectsValues[] = $subjectsValue;
-		}
-		return $this;
-	}
-
-	public function removeSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
-		$this->subjectsValues->removeElement($subjectsValue);
-	}
-
-	public function setSubjectsValues($subjectsValues) {
-		$this->subjectsValues = $subjectsValues;
-	}
-
-	public function getSubjectsValues() {
-		return $this->subjectsValues;
-	}
-
 	// Summary /////
 
 	public function setSummary($summary) {
@@ -726,6 +598,70 @@ class Book extends AbstractKnowledge {
 
 	public function getTocValues() {
 		return $this->tocValues;
+	}
+
+	// Subjects /////
+
+	public function setSubjects($subjects) {
+		$this->subjects = $subjects;
+		return $this;
+	}
+
+	public function getSubjects() {
+		return $this->subjects;
+	}
+
+	// SubjectsValues /////
+
+	public function addSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
+		if (!$this->subjectsValues->contains($subjectsValue)) {
+			$this->subjectsValues[] = $subjectsValue;
+		}
+		return $this;
+	}
+
+	public function removeSubjectsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $subjectsValue) {
+		$this->subjectsValues->removeElement($subjectsValue);
+	}
+
+	public function setSubjectsValues($subjectsValues) {
+		$this->subjectsValues = $subjectsValues;
+	}
+
+	public function getSubjectsValues() {
+		return $this->subjectsValues;
+	}
+
+	// Collection /////
+
+	public function setCollection($collection) {
+		$this->collection = $collection;
+		return $this;
+	}
+
+	public function getCollection() {
+		return $this->collection;
+	}
+
+	// CollectionValues /////
+
+	public function addCollectionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $collectionValue) {
+		if (!$this->collectionValues->contains($collectionValue)) {
+			$this->collectionValues[] = $collectionValue;
+		}
+		return $this;
+	}
+
+	public function removeCollectionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $collectionValue) {
+		$this->collectionValues->removeElement($collectionValue);
+	}
+
+	public function setCollectionValues($collectionValues) {
+		$this->collectionValues = $collectionValues;
+	}
+
+	public function getCollectionValues() {
+		return $this->collectionValues;
 	}
 
 	// Language /////
@@ -886,6 +822,70 @@ class Book extends AbstractKnowledge {
 
 	public function getPublishYearValues() {
 		return $this->publishYearValues;
+	}
+
+	// PublicDomain /////
+
+	public function setPublicDomain($publicDomain) {
+		$this->publicDomain = $publicDomain;
+		return $this;
+	}
+
+	public function getPublicDomain() {
+		return $this->publicDomain;
+	}
+
+	// PublicDomainValues /////
+
+	public function addPublicDomainValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicDomainValue) {
+		if (!$this->publicDomainValues->contains($publicDomainValue)) {
+			$this->publicDomainValues[] = $publicDomainValue;
+		}
+		return $this;
+	}
+
+	public function removePublicDomainValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $publicDomainValue) {
+		$this->publicDomainValues->removeElement($publicDomainValue);
+	}
+
+	public function setPublicDomainValues($publicDomainValues) {
+		$this->publicDomainValues = $publicDomainValues;
+	}
+
+	public function getPublicDomainValues() {
+		return $this->publicDomainValues;
+	}
+
+	// CatalogLink /////
+
+	public function setCatalogLink($catalogLink) {
+		$this->catalogLink = $catalogLink;
+		return $this;
+	}
+
+	public function getCatalogLink() {
+		return $this->catalogLink;
+	}
+
+	// CatalogLinkValues /////
+
+	public function addCatalogLinkValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $catalogLinkValue) {
+		if (!$this->catalogLinkValues->contains($catalogLinkValue)) {
+			$this->catalogLinkValues[] = $catalogLinkValue;
+		}
+		return $this;
+	}
+
+	public function removeCatalogLinkValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $catalogLinkValue) {
+		$this->catalogLinkValues->removeElement($catalogLinkValue);
+	}
+
+	public function setCatalogLinkValues($catalogLinkValues) {
+		$this->catalogLinkValues = $catalogLinkValues;
+	}
+
+	public function getCatalogLinkValues() {
+		return $this->catalogLinkValues;
 	}
 
 	// Price /////
