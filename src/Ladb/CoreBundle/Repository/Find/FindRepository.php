@@ -211,25 +211,37 @@ class FindRepository extends AbstractEntityRepository {
 		}
 	}
 
-	/////
-
-	public function findPagined($offset, $limit, $filter = 'recent') {
+	public function findByRunningNow() {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'f', 'u', 'mp', 'c' ))
+			->select(array( 'f', 'u', 'mp', 'ct' ))
 			->from($this->getEntityName(), 'f')
 			->innerJoin('f.user', 'u')
-			->leftJoin('f.mainPicture', 'mp')
-			->innerJoin('f.content', 'c')
-			->where('f.isDraft = false')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
+			->innerJoin('f.mainPicture', 'mp')
+			->innerJoin('f.content', 'ct')
+			->where('ct INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Find\\Content\\Event')
 		;
 
-		$this->_applyCommonFilter($queryBuilder, $filter);
+		try {
 
-		return new Paginator($queryBuilder->getQuery());
+			// TODO : Do the postreatment in DQL Query
+
+			$now = new \DateTime();
+			$finds = $queryBuilder->getQuery()->getResult();
+			$runningFinds = array();
+			foreach ($finds as $find) {
+				if ($find->getContent()->getStartAt() <= $now && $find->getContent()->getEndAt() >= $now) {
+					$runningFinds[] = $find;
+				}
+			}
+
+			return $runningFinds;
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
 	}
+
+	/////
 
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
@@ -264,6 +276,24 @@ class FindRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->addOrderBy('f.changedAt', 'DESC')
 		;
+	}
+
+	public function findPagined($offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'f', 'u', 'mp', 'c' ))
+			->from($this->getEntityName(), 'f')
+			->innerJoin('f.user', 'u')
+			->leftJoin('f.mainPicture', 'mp')
+			->innerJoin('f.content', 'c')
+			->where('f.isDraft = false')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
 	}
 
 	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent', $includeDrafts = false) {

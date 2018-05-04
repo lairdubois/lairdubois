@@ -9,7 +9,7 @@
 {% set showPath = showPathAdditionalParams is defined ? ladb_entity_url_action(entity, 'show', true, true, showPathAdditionalParams) : ladb_entity_url_action(entity) %}
 
 <div class="ladb-masonry-item ladb-masonry-column-wide{% if classes is defined %} {{ classes }}{% endif %}">
-    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
+    <div class="ladb-box ladb-box-hover"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
         <div class="ladb-content">
             {% block contentInner %}
                 <div class="ladb-heading">

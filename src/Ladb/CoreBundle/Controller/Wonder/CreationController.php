@@ -37,6 +37,7 @@ use Ladb\CoreBundle\Entity\Core\Spotlight;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Core\View;
+use Ladb\CoreBundle\Entity\Find\Find;
 
 /**
  * @Route("/creations")
@@ -712,6 +713,10 @@ class CreationController extends Controller {
 					$excludedIds = array( $spotlightEntity->getId() );
 				}
 
+				// RunningEvents
+				$findRepository = $om->getRepository(Find::CLASS_NAME);
+				$runningFinds = $findRepository->findByRunningNow();
+
 			}
 
 			// PostHighlight
@@ -948,15 +953,16 @@ class CreationController extends Controller {
 			}
 		}
 
+		if ($layout == 'choice') {
+			return $this->render('LadbCoreBundle:Wonder/Creation:list-choice.html.twig', $parameters);
+		}
+
 		$parameters = array_merge($parameters, array(
 			'spotlight'       => isset($spotlight) ? $spotlight : null,
 			'spotlightEntity' => isset($spotlightEntity) ? $spotlightEntity : null,
 			'highlightedPost' => isset($highlightedPost) ? $highlightedPost : null,
+			'runningFinds'    => isset($runningFinds) ? $runningFinds : null,
 		));
-
-		if ($layout == 'choice') {
-			return $this->render('LadbCoreBundle:Wonder/Creation:list-choice.html.twig', $parameters);
-		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateCreationCount() > 0) {
 

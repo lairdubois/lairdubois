@@ -11,7 +11,7 @@
 {% set pictureFilterMode = pictureFilterMode|default('i') %}
 
 <div class="ladb-masonry-item ladb-masonry-column{% if classes is defined %} {{ classes }}{% endif %}">
-    <div class="ladb-box"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
+    <div class="ladb-box ladb-box-hover"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
         <div class="ladb-content">
             <div class="ladb-image-and-caption">
                 {% block imageOuter %}

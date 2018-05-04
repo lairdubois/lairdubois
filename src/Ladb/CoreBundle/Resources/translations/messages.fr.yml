@@ -357,6 +357,7 @@ find:
       new_finds: '[0,1]nouvelle trouvaille|]1,Inf]nouvelles trouvailles'
       finds: '[0,1]trouvaille|]1,Inf]trouvailles'
       draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
+      events: '[0,1]évènement|]1,Inf]évènements'
 
 qa:
   question:
