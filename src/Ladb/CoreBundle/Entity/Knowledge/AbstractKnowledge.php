@@ -51,7 +51,7 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 
 	/**
 	 * @ORM\Column(type="string", length=100)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.-]+$/", message="default.title.regex")
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:-]+$/", message="default.title.regex")
 	 * @ladbAssert\UpperCaseRatio()
 	 */
 	private $title;
