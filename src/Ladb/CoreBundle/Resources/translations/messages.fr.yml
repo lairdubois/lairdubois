@@ -839,7 +839,7 @@ knowledge:
         subjects: |
           - N'indiquez **qu'un seul** sujet par proposition.
         summary: |
-          - Le résumé doit rester inpersonnel et descriptif.
+          - Le résumé doit rester impersonnel et descriptif.
           - Utilisez en priorité le résumé donné par l'auteur ou l'éditeur s'il existe.
         toc:
         language:
