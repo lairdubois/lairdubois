@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_plan_inspirations', { 'id':plan.id }) %}
+{% set pageTitle = 'Inspirations de '~plan.title %}
+{% set pageDescription = 'Inspirations du plan' %}
+
 {% set navSection = 'plans' %}
 
 {% set masonry = true %}

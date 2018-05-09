@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_creation_providers', { 'id':creation.id }) %}
+{% set pageTitle = 'Fournisseurs associés à '~creation.title %}
+{% set pageDescription = 'Fournisseurs associés à la création' %}
+
 {% set navSection = 'creations' %}
 
 {% set masonry = true %}

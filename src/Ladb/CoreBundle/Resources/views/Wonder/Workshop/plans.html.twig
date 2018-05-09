@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_workshop_plans', { 'id':workshop.id }) %}
+{% set pageTitle = 'Plans associés à '~workshop.title %}
+{% set pageDescription = 'Plans associés à l\'atelier' %}
+
 {% set navSection = 'workshops' %}
 
 {% set masonry = true %}

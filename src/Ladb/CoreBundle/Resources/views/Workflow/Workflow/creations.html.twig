@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_workflow_creations', { 'id':workflow.id }) %}
+{% set pageTitle = 'Créations associées à '~workflow.title %}
+{% set pageDescription = 'Créations associées au processus' %}
+
 {% set navSection = 'workflows' %}
 
 {% set masonry = true %}

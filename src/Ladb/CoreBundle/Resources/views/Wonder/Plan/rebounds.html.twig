@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_plan_rebounds', { 'id':plan.id }) %}
+{% set pageTitle = 'Rebonds de '~plan.title %}
+{% set pageDescription = 'Rebonds du plan' %}
+
 {% set navSection = 'plans' %}
 
 {% set masonry = true %}

@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_plan_workflows', { 'id':plan.id }) %}
+{% set pageTitle = 'Processus associés à '~plan.title %}
+{% set pageDescription = 'Processus associés au plan' %}
+
 {% set navSection = 'plans' %}
 
 {% set masonry = true %}

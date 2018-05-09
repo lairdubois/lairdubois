@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_creation_plans', { 'id':creation.id }) %}
+{% set pageTitle = 'Plans associés à '~creation.title %}
+{% set pageDescription = 'Plans associés à la création' %}
+
 {% set navSection = 'creations' %}
 
 {% set masonry = true %}

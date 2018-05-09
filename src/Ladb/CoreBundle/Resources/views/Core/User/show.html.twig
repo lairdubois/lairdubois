@@ -2,6 +2,7 @@
 
 {% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
 
+{% set pageUrl = url('core_user_show', { 'username':user.usernameCanonical }) %}
 {% set pageTitle = user.displayName %}
 {% set pageContentItemType = 'Person' %}
 {% if user.meta.biography is not null and user.meta.biography.htmlBody|length > 0 %}

@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_creation_howtos', { 'id':creation.id }) %}
+{% set pageTitle = 'Pas à pas associés à '~creation.title %}
+{% set pageDescription = 'Pas à pas associés à la création' %}
+
 {% set navSection = 'creations' %}
 
 {% set masonry = true %}

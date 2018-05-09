@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_howto_workshops', { 'id':workshop.id }) %}
+{% set pageTitle = 'Ateliers associés à '~workshop.title %}
+{% set pageDescription = 'Ateliers associés au pas à pas' %}
+
 {% set navSection = 'howtos' %}
 
 {% set masonry = true %}

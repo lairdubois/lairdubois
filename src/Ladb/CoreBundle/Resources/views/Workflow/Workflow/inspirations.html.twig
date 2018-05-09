@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_workflow_inspirations', { 'id':workflow.id }) %}
+{% set pageTitle = 'Inspiration de '~workflow.title %}
+{% set pageDescription = 'Inspiration du processus' %}
+
 {% set navSection = 'workflows' %}
 
 {% set masonry = true %}

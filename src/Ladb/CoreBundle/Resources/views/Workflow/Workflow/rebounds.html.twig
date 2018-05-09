@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_workflow_rebounds', { 'id':workflow.id }) %}
+{% set pageTitle = 'Rebonds de '~workflow.title %}
+{% set pageDescription = 'Rebonds du processus' %}
+
 {% set navSection = 'workflows' %}
 
 {% set masonry = true %}

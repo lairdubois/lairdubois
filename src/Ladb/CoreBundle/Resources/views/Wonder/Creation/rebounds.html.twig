@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_creation_rebounds', { 'id':creation.id }) %}
+{% set pageTitle = 'Rebonds de '~creation.title %}
+{% set pageDescription = 'Rebonds de la création' %}
+
 {% set navSection = 'creations' %}
 
 {% set masonry = true %}

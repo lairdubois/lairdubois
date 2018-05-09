@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_workshop_workflows', { 'id':workshop.id }) %}
+{% set pageTitle = 'Prcessus associés à '~workshop.title %}
+{% set pageDescription = 'Processus associés à l\'atelier' %}
+
 {% set navSection = 'workshops' %}
 
 {% set masonry = true %}

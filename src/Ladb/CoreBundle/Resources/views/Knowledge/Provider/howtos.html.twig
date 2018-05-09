@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_provider_howtos', { 'id':provider.id }) %}
+{% set pageTitle = 'Pas à pas associés à '~provider.title %}
+{% set pageDescription = 'Pas à pas associés au fournisseur' %}
+
 {% set navSection = 'providers' %}
 
 {% set masonry = true %}

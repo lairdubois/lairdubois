@@ -1,5 +1,9 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% set pageUrl = url('core_howto_providers', { 'id':workshop.id }) %}
+{% set pageTitle = 'Fournisseurs associés à '~workshop.title %}
+{% set pageDescription = 'Fournisseurs associés au pas à pas' %}
+
 {% set navSection = 'howtos' %}
 
 {% set masonry = true %}
