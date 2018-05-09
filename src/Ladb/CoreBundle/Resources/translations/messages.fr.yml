@@ -838,7 +838,9 @@ knowledge:
           - Les liens affiliés sont **interdits**.
         subjects: |
           - N'indiquez **qu'un seul** sujet par proposition.
-        summary:
+        summary: |
+          - Le résumé doit rester inpersonnel et descriptif.
+          - Utilisez en priorité le résumé donné par l'auteur ou l'éditeur s'il existe.
         toc:
         language:
         translated:
