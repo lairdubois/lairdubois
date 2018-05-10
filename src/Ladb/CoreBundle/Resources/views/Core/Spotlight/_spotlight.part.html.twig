@@ -2,7 +2,7 @@
 {# set spotlight #}
 {# set entity #}
 
-<div class="ladb-header-spotlight" style="background-image: url({{ entity.mainPicture.webPath|imagine_filter('800x800i') }}); background-position: {{ entity.mainPicture.centerX100 }}% {{ entity.mainPicture.centerY100 }}%;" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'});">
+<div class="ladb-header-spotlight" data-bg="{{ entity.mainPicture.webPath|imagine_filter('800x800i') }}" style="background-position: {{ entity.mainPicture.centerX100 }}% {{ entity.mainPicture.centerY100 }}%;" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'});">
     <div class="ladb-open"><i class="ladb-icon-zoomin"></i></div>
     <div class="ladb-shadow">
         <div class="container">

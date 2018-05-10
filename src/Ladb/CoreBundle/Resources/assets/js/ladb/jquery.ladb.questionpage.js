@@ -118,6 +118,7 @@
                     $row.replaceWith($newRow);
                     that.$hiddenRow = null;
                     that.bindAnswerRow($newRow);
+                    $(window).lazyLoadXT();
                 } else {
                     that.bindEditAnswerBox($row, data);
                 }

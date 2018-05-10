@@ -12,6 +12,7 @@
         bindNewValueProposalAjaxForm();
         setupPopovers();
         setupTooltips();
+        $(window).lazyLoadXT();
         {% if values is empty %}
             $(".modal input[type=text]").first().focus();
         {% endif %}

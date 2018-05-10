@@ -34,6 +34,7 @@
                     $jScrollAdded.remove();
                     $masonryInner.append(items);
                     $masonryInner.masonry('appended', items);
+                    $(window).lazyLoadXT();
                 }
                 setupTooltips();
             }
@@ -50,6 +51,7 @@
                 columnWidth: ".ladb-masonry-column" + (this.options.masonryWide ? "-wide" : ""),
                 transitionDuration: 0
             });
+            $(window).lazyLoadXT();
         }
 
     };
