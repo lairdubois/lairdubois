@@ -101,6 +101,7 @@
             <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ asset('favicon-152x152.png') }}">
             {% block headStylesheets %}
                 {% stylesheets filter='less,?yui_css'
+                    '@LadbCoreBundle/Resources/assets/css/jquery-lazyloadxt/jquery.lazyloadxt.fadein.css'
                     '@LadbCoreBundle/Resources/assets/less/bootstrap/bootstrap.less'
                     '@LadbCoreBundle/Resources/assets/less/jquery-autocomplete/jquery-autocomplete.less'
                     '@LadbCoreBundle/Resources/assets/less/uikit/core/animation.less'
@@ -111,8 +112,7 @@
                     '@LadbCoreBundle/Resources/assets/less/bootstrap-markdown/bootstrap-markdown-v1.less'
                     '@LadbCoreBundle/Resources/assets/less/bootstrap-datetimepicker/bootstrap-datetimepicker.less'
                     '@LadbCoreBundle/Resources/assets/less/ladb/ladb.less'
-                    '@LadbCoreBundle/Resources/assets/less/ladb/icons/ladbicons.less'
-                    '../node_modules/lazyloadxt/dist/jquery.lazyloadxt.fadein.css' %}
+                    '@LadbCoreBundle/Resources/assets/less/ladb/icons/ladbicons.less' %}
                     <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
                 {% endstylesheets %}
             {% endblock %}
@@ -218,10 +218,9 @@
                 '@LadbCoreBundle/Resources/assets/js/jquery-jscroll/jquery.jscroll.js'
                 '@LadbCoreBundle/Resources/assets/js/jquery-cornerslider/jquery.cornerslider.js'
                 '@LadbCoreBundle/Resources/assets/js/jquery-sticky/jquery.sticky.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-lazyloadxt/jquery.lazyloadxt.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-lazyloadxt/jquery.lazyloadxt.bg.js'
                 '@LadbCoreBundle/Resources/assets/js/readmorejs/readmore.js'
-
-                '../node_modules/lazyloadxt/dist/jquery.lazyloadxt.js'
-                '../node_modules/lazyloadxt/dist/jquery.lazyloadxt.bg.js'
 
                 '@LadbCoreBundle/Resources/assets/js/javascript-load-image/load-image.min.js'
                 '@LadbCoreBundle/Resources/assets/js/javascript-canvas-to-blob/canvas-to-blob.min.js'
