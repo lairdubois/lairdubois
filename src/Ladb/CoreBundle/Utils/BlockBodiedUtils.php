@@ -21,7 +21,7 @@ class BlockBodiedUtils {
 	}
 
 	public function copyBlocksTo(BlockBodiedInterface $entitySrc, BlockBodiedInterface $entityDest) {
-		$sortIndexOffet = $entitySrc->getBodyBlocks()->count();
+		$sortIndexOffet = $entitySrc->getBodyBlocks()->count() > 0 ? $entitySrc->getBodyBlocks()->last()->getSortIndex() : 0;
 		foreach ($entitySrc->getBodyBlocks() as $block) {
 
 			$newBlock = null;
