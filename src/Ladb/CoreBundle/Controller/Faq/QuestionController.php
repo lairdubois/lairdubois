@@ -34,11 +34,9 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/new", name="core_faq_question_new")
 	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_new)")
 	 */
 	public function newAction() {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_faq_question_new)');
-		}
 
 		$question = new Question();
 		$question->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -56,12 +54,9 @@ class QuestionController extends Controller {
 	 * @Route("/create", name="core_faq_question_create")
 	 * @Method("POST")
 	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_create)")
 	 */
 	public function createAction(Request $request) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_faq_question_create)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 
 		$question = new Question();
@@ -102,12 +97,9 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_faq_question_publish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_publish)")
 	 */
 	public function publishAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_faq_question_publish)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
@@ -131,7 +123,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_faq_question_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -164,12 +156,9 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_faq_question_edit")
 	 * @Template("LadbCoreBundle:Faq/Question:edit.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_edit)")
 	 */
 	public function editAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_faq_question_edit)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
@@ -193,12 +182,9 @@ class QuestionController extends Controller {
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_faq_question_update")
 	 * @Method("POST")
 	 * @Template("LadbCoreBundle:Faq/Question:edit.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_update)")
 	 */
 	public function updateAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_faq_question_update)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
@@ -255,12 +241,9 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_faq_question_delete")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_delete)")
 	 */
 	public function deleteAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_faq_question_delete)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 

@@ -112,7 +112,7 @@ class CreationController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_creation_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_creation_unlock")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_creation_lock or core_creation_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -173,7 +173,7 @@ class CreationController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_creation_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_creation_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

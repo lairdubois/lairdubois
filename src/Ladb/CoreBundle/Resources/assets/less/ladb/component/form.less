@@ -159,11 +159,6 @@ ul.ladb-form-thumbnails {
 
 .ladb-form-sidenav {
   display: block;
-
-  &.affix {
-    position: static;
-  }
-
 }
 
 .ladb-form-gallery {
@@ -191,29 +186,5 @@ ul.ladb-form-thumbnails {
 
   }
 
-}
-
-// desktop
-@media screen and (min-width: @ladb-screen-desktop) and (max-width: @ladb-screen-desktop-max) {
-  .ladb-form-sidenav {
-
-    &.affix {
-      position: fixed;
-      width: (@ladb-container-desktop / 12 * 3 - 10px);
-    }
-
-  }
-}
-
-// large desktop
-@media screen and (min-width: @ladb-screen-large-desktop) {
-  .ladb-form-sidenav {
-
-    &.affix {
-      position: fixed;
-      width: (@ladb-container-large-desktop / 12 * 3 - 10px);
-    }
-
-  }
 }
 

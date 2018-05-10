@@ -69,9 +69,11 @@
             $("[data-form-widget=collection]").each(function () {
                 new window.infinite.Collection(this, $('[data-prototype]', $(this).next()));
             });
-            $('.ladb-form-sidenav').sticky({
-                topSpacing: 70
-            });
+            if (window.innerWidth > 768) {
+                $('.ladb-form-sidenav').sticky({
+                    topSpacing: 70
+                });
+            }
         });
     </script>
 {% endblock %}

@@ -2,27 +2,26 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
-use Ladb\CoreBundle\Manager\Knowledge\BookManager;
-use Ladb\CoreBundle\Manager\Core\WitnessManager;
-use Ladb\CoreBundle\Utils\ActivityUtils;
-use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Form\Type\Knowledge\NewBookType;
 use Ladb\CoreBundle\Form\Model\NewBook;
 use Ladb\CoreBundle\Entity\Knowledge\Book;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
-use Ladb\CoreBundle\Utils\TextureUtils;
 use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
+use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
+use Ladb\CoreBundle\Manager\Knowledge\BookManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
@@ -126,6 +125,7 @@ class BookController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_book_delete")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_book_delete)")
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -134,9 +134,6 @@ class BookController extends Controller {
 		$book = $bookRepository->findOneById($id);
 		if (is_null($book)) {
 			throw $this->createNotFoundException('Unable to find Book entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_book_delete)');
 		}
 
 		// Delete

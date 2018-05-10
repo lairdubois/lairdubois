@@ -1,3 +1,6 @@
+
+{% set noLazyLoad = true %}
+
 {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' %}
 {% if not comment.parent %}
     <div id="ladb_comment_{{ comment.id }}_children_collapse" class="ladb-comment-children-collapse collapse"></div>

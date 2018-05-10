@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Manager\Knowledge\SchoolManager;
@@ -21,7 +22,6 @@ use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
-use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Event\PublicationEvent;
@@ -119,6 +119,7 @@ class SchoolController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_school_delete")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_school_delete)")
 	 */
 	public function deleteAction($id) {
 		$propertyUtils = $this->get(PropertyUtils::NAME);
@@ -128,9 +129,6 @@ class SchoolController extends Controller {
 		$school = $schoolRepository->findOneById($id);
 		if (is_null($school)) {
 			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_school_delete)');
 		}
 
 		// Delete

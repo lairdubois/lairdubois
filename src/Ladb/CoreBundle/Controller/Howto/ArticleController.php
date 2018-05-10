@@ -23,6 +23,17 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class ArticleController extends Controller {
 
+	private function _updateHowtoBlockVideoCount($howto) {
+		$bodyBlockVideoCount = 0;
+		foreach ($howto->getArticles() as $article) {
+			if ($article->getIsDraft()) {
+				continue;
+			}
+			$bodyBlockVideoCount += $article->getBodyBlockVideoCount();
+		}
+		$howto->setBodyBlockVideoCount($bodyBlockVideoCount);
+	}
+
 	/**
 	 * @Route("/pas-a-pas/{id}/article/new", requirements={"id" = "\d+"}, name="core_howto_article_new")
 	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
@@ -134,20 +145,9 @@ class ArticleController extends Controller {
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $article->getHowto()->getSluggedId() )).'#'.$article->getSluggedId());
 	}
 
-	private function _updateHowtoBlockVideoCount($howto) {
-		$bodyBlockVideoCount = 0;
-		foreach ($howto->getArticles() as $article) {
-			if ($article->getIsDraft()) {
-				continue;
-			}
-			$bodyBlockVideoCount += $article->getBodyBlockVideoCount();
-		}
-		$howto->setBodyBlockVideoCount($bodyBlockVideoCount);
-	}
-
 	/**
 	 * @Route("/pas-a-pas/article/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_article_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_howto_article_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

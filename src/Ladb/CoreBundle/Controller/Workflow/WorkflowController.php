@@ -161,7 +161,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_workflow_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workflow_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 

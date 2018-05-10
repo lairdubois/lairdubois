@@ -280,6 +280,10 @@
             }
 
         });
+        $('.collapse').on('shown.bs.collapse', function () {
+            console.log($('img[data-src]', $(this)));
+            $('img[data-src]', $(this)).lazyLoadXT();
+        });
         this.layoutActivities();
 
         this.bindNew($('.ladb-new', this.$element).last());

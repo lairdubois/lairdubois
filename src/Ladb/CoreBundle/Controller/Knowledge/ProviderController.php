@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
@@ -121,6 +122,7 @@ class ProviderController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_provider_delete")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_provider_delete)")
 	 */
 	public function deleteAction($id) {
 		$propertyUtils = $this->get(PropertyUtils::NAME);
@@ -130,9 +132,6 @@ class ProviderController extends Controller {
 		$provider = $providerRepository->findOneById($id);
 		if (is_null($provider)) {
 			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_provider_delete)');
 		}
 
 		// Delete

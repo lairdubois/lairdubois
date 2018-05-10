@@ -34,11 +34,9 @@ class PostController extends Controller {
 	/**
 	 * @Route("/new", name="core_blog_post_new")
 	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_new)")
 	 */
 	public function newAction() {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_new)');
-		}
 
 		$post = new Post();
 		$post->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -56,12 +54,9 @@ class PostController extends Controller {
 	 * @Route("/create", name="core_blog_post_create")
 	 * @Method("POST")
 	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_create)")
 	 */
 	public function createAction(Request $request) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_create)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 
 		$post = new Post();
@@ -102,12 +97,9 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_blog_post_publish")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_publish)")
 	 */
 	public function publishAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_publish)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
@@ -131,7 +123,7 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_blog_post_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -164,12 +156,9 @@ class PostController extends Controller {
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_blog_post_edit")
 	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_edit)")
 	 */
 	public function editAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_edit)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
@@ -193,16 +182,13 @@ class PostController extends Controller {
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_blog_post_update")
 	 * @Method("POST")
 	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_update)")
 	 */
 	public function updateAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_update)');
-		}
-
-		$doUp = $request->get('ladb_do_up', false);
-
 		$om = $this->getDoctrine()->getManager();
 		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
+
+		$doUp = $request->get('ladb_do_up', false);
 
 		$post = $postRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($post)) {
@@ -263,12 +249,9 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_blog_post_delete")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_delete)")
 	 */
 	public function deleteAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_delete)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
