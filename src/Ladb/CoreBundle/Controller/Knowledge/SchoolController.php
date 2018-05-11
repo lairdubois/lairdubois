@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
-use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,6 +12,7 @@ use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Manager\Knowledge\SchoolManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Form\Type\Knowledge\NewSchoolType;
@@ -181,6 +181,11 @@ class SchoolController extends Controller {
 	 */
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
+
+		// Elasticsearch paginiation limit
+		if ($page > 624) {
+			throw $this->createNotFoundException('Page limit reached (core_school_list_page)');
+		}
 
 		$layout = $request->get('layout', 'view');
 

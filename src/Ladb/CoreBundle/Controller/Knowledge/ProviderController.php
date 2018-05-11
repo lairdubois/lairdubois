@@ -185,6 +185,11 @@ class ProviderController extends Controller {
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
+		// Elasticsearch paginiation limit
+		if ($page > 624) {
+			throw $this->createNotFoundException('Page limit reached (core_provider_list_page)');
+		}
+
 		$layout = $request->get('layout', 'view');
 
 		$routeParameters = array();

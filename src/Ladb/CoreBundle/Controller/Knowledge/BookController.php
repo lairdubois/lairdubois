@@ -154,6 +154,11 @@ class BookController extends Controller {
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
+		// Elasticsearch paginiation limit
+		if ($page > 624) {
+			throw $this->createNotFoundException('Page limit reached (core_book_list_page)');
+		}
+
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,

@@ -680,6 +680,11 @@ class CreationController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$searchUtils = $this->get(SearchUtils::NAME);
 
+		// Elasticsearch paginiation limit
+		if ($page > 624) {
+			throw $this->createNotFoundException('Page limit reached (core_creation_list_page)');
+		}
+
 		$layout = $request->get('layout', 'view');
 		$homepage = $request->get('homepage', false);
 
