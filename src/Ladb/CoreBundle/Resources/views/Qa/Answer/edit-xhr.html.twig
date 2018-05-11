@@ -1,5 +1,6 @@
 {% extends 'LadbCoreBundle:Qa/Answer:_form.html.twig' %}
 
+{% set noLazyLoad = true %}
 {% set formAction = path('core_qa_answer_update', { 'id':answer.id }) %}
 
 {% block title %}<i class="ladb-icon-edit"></i> {{ 'qa.answer.edit'|trans() }}{% endblock %}

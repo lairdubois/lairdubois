@@ -1,5 +1,6 @@
 {% extends 'LadbCoreBundle:Qa/Answer:_form.html.twig' %}
 
+{% set noLazyLoad = true %}
 {% set formAction = path('core_qa_answer_create', { 'id':question.id }) %}
 
 {% block title %}<i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}{% endblock %}
