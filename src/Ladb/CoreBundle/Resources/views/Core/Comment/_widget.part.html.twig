@@ -65,7 +65,7 @@
                 <div class="ladb-fake-new">
                     {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
                     <div class="ladb-box">
-                        <button class="btn btn-default btn-block" data-ladb-new-container-selector="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':commentContext.entityType, 'entityId':commentContext.entityId, 'parentId':0, 'alertTransKey':alertTransKey|default('') }) }}" data-loading-text="{{ 'default.loading'|trans }}">Votre commentaire...</button>
+                        <button class="btn btn-default btn-block" data-ladb-new-container-selector="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget{% if collapsible %}_collapse{% endif %}" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':commentContext.entityType, 'entityId':commentContext.entityId, 'parentId':0, 'alertTransKey':alertTransKey|default('') }) }}" data-loading-text="{{ 'default.loading'|trans }}">Votre commentaire...</button>
                     </div>
                 </div>
             {% elseif not notGuestTip %}
