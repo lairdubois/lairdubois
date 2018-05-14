@@ -4,7 +4,6 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -343,11 +342,11 @@ class BookController extends Controller {
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 
 		return array(
-			'book'           => $book,
-			'likeContext'    => $likableUtils->getLikeContext($book, $this->getUser()),
-			'watchContext'   => $watchableUtils->getWatchContext($book, $this->getUser()),
-			'commentContext' => $commentableUtils->getCommentContext($book),
-			'userReview'     => $userReview,
+			'book'             => $book,
+			'likeContext'      => $likableUtils->getLikeContext($book, $this->getUser()),
+			'watchContext'     => $watchableUtils->getWatchContext($book, $this->getUser()),
+			'commentContext'   => $commentableUtils->getCommentContext($book),
+			'userReview'       => $userReview,
 		);
 	}
 
