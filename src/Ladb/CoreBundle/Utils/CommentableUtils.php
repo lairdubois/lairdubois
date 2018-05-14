@@ -6,10 +6,8 @@ use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Core\User;
-use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
-use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 
@@ -125,8 +123,6 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 	public function getCommentContext(CommentableInterface $commentable, $includeTimelineActivities = true) {
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
-		$authorizationChecker = $this->get('security.authorization_checker');
-		$formFactory = $this->get('form.factory');
 
 		// Retrieve comments
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
@@ -138,30 +134,13 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			$activities = $activityRepository->findByPublication($commentable);
 		}
 
-		if ($authorizationChecker->isGranted('ROLE_USER')) {
-
-			$comment = new Comment();
-			$form = $formFactory->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$commentable->getType().'_'.$commentable->getId().'_0', CommentType::class, $comment);
-
-			// Define the mentionsStrategy
-			$mentionStrategy = $this->_getMentionStrategyFromComments($comments);
-			if ($commentable instanceof AuthoredInterface) {
-				$this->_populateMentionStrategyWithUser($mentionStrategy, $commentable->getUser());
-			}
-
-		} else {
-			$mentionStrategy = null;
-		}
-
 		return array(
 			'entityType'      => $commentable->getType(),
 			'entityId'        => $commentable->getId(),
 			'commentCount'    => $commentable->getCommentCount(),
 			'comments'        => $comments,
 			'activities'      => $activities,
-			'form'            => isset($form) ? $form->createView() : null,
 			'isCommentable'   => $commentable instanceof HiddableInterface ? $commentable->getIsPublic() : true,
-			'mentionStrategy' => json_encode($mentionStrategy),
 		);
 	}
 

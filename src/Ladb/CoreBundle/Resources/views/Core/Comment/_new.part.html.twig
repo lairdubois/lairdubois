@@ -5,7 +5,7 @@
 {# set entityId #}
 {# set parentId (facultative) #}
 {# set mentionStrategy (facultative) #}
-{# set alert (facultative) #}
+{# set alertTransKey (facultative) #}
 
 {% set parentId = parentId|default(0) %}
 {% set id = 'ladb_comment_'~entityType~'_'~entityId~'_'~parentId~'_new' %}
@@ -18,11 +18,11 @@
     <div class="ladb-box">
         {% embed 'LadbCoreBundle:Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_create', { 'entityType':entityType, 'entityId':entityId, 'parentId':parentId }), 'galleryClasses':condenced ? 'ladb-pseudo-hidden' : '' } %}
             {% block buttons %}
-                {% if alert is defined and alert is not empty %}
-                    <div class="alert alert-info" style="display: none;">
+                {% if alertTransKey is defined and alertTransKey is not empty %}
+                    <div class="alert alert-info">
                         <div class="media">
                             <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
-                            <div class="media-body">{{ alert|raw }}</div>
+                            <div class="media-body">{{ alertTransKey|trans|raw }}</div>
                         </div>
                     </div>
                 {% endif %}

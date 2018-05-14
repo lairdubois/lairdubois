@@ -62,15 +62,18 @@
 
     // Reply /////
 
-    LadbCommentWidget.prototype.replyTo = function($btn, childrenCollapseSelector, mention, newPath) {
+    LadbCommentWidget.prototype.replyTo = function($btn, newContainerSelector, mention, newPath) {
         var that = this;
 
-        var $childrenCollapse = $(childrenCollapseSelector);
-        var $new = $('.ladb-new', $childrenCollapse);
-        var $fakeNew = $('.ladb-fake-new', $childrenCollapse);
+        var $newContainer = $(newContainerSelector);
+        var $new = $('.ladb-new', $newContainer).last();
+        var $fakeNew = $('.ladb-fake-new', $newContainer).last();
+        var isCollapse = $newContainer.hasClass('collapse');
 
         if ($new.length > 0) {
-            $childrenCollapse.collapse('show');
+            if (isCollapse) {
+                $newContainer.collapse('show');
+            }
             $new.ladbScrollTo();
             $('textarea', $new)
                 .val(mention)
@@ -84,9 +87,11 @@
                 dataType: "html",
                 context: document.body,
                 success: function(data, textStatus, jqXHR) {
-                    $childrenCollapse.collapse('show');
-                    $childrenCollapse.append(data);
-                    $new = $('.ladb-new', $childrenCollapse).first();
+                    if (isCollapse) {
+                        $newContainer.collapse('show');
+                    }
+                    $newContainer.append(data);
+                    $new = $('.ladb-new', $newContainer).last();
                     that.bindNew($new);
                     $new.ladbScrollTo();
                     $('textarea', $new)
@@ -122,10 +127,10 @@
             $btn.blur();
             $btn.button('loading');
 
-            var childrenCollapseSelector = $(this).data('ladb-children-collapse-selector');
+            var newContainerSelector = $(this).data('ladb-new-container-selector');
             var newPath = $(this).data('ladb-new-path');
 
-            that.replyTo($btn, childrenCollapseSelector, null, newPath);
+            that.replyTo($btn, newContainerSelector, null, newPath);
         });
     };
 
@@ -189,11 +194,11 @@
             $btn.blur();
             $btn.button('loading');
 
-            var childrenCollapseSelector = $(this).data('ladb-children-collapse-selector');
+            var newContainerSelector = $(this).data('ladb-new-container-selector');
             var mention = $(this).data('ladb-mention');
             var newPath = $(this).data('ladb-new-path');
 
-            that.replyTo($btn, childrenCollapseSelector, mention, newPath);
+            that.replyTo($btn, newContainerSelector, mention, newPath);
 
             return false;
         });
@@ -204,16 +209,13 @@
     LadbCommentWidget.prototype.bindNew = function($new) {
         var that = this;
 
-        $('textarea', $new).on('focus', function() {
-            $('.alert', $new).show();
-        });
         $('form', $new).ajaxForm({
             cache: false,
             dataType: "html",
             context: document.body,
             clearForm: true,
             success: function(data, textStatus, jqXHR) {
-                if ($(data).attr("class") == "ladb-new") {
+                if ($(data).hasClass("ladb-new")) {
                     var $newNew = $(data);
                     $new.replaceWith($newNew);
                     that.bindNew($newNew);
@@ -267,21 +269,17 @@
         });
         $('.ladb-comment-new', this.$element).on('click', function() {
 
-            var collapseSelector = $(this).data('ladb-collapse-selector');
+            var $btn = $(this);
+            $btn.blur();
+            $btn.button('loading');
 
-            var $collapse = $(collapseSelector);
-            var $new = $('.ladb-new', $collapse);
+            var newContainerSelector = $(this).data('ladb-new-container-selector');
+            var newPath = $(this).data('ladb-new-path');
 
-            if ($new.length > 0) {
-                $collapse.collapse('show');
-                $new.ladbScrollTo();
-                $('textarea', $new)
-                    .focus();
-            }
+            that.replyTo($btn, newContainerSelector, null, newPath);
 
         });
         $('.collapse').on('shown.bs.collapse', function () {
-            console.log($('img[data-src]', $(this)));
             $('img[data-src]', $(this)).lazyLoadXT();
         });
         this.layoutActivities();

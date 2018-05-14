@@ -50,6 +50,8 @@ class CommentController extends Controller {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
+		$alertTransKey = $request->get('alertTransKey', '');
+
 		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
@@ -68,7 +70,8 @@ class CommentController extends Controller {
 			'entityId'        => $entityId,
 			'parentId'        => $parentId,
 			'form'            => $form->createView(),
-			'mentionStrategy' => $mentionStrategy
+			'mentionStrategy' => $mentionStrategy,
+			'alertTransKey'   => $alertTransKey
 		);
 
 	}

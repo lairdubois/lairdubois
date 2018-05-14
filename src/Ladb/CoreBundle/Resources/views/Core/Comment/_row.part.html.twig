@@ -40,7 +40,7 @@
                 <div class="ladb-comment-footer">
                     <i class="ladb-icon-reply"></i>
                     {% if canReply %}
-                        <a class="ladb-comment-reply" data-ladb-children-collapse-selector="#ladb_comment_{{ comment.parent ? comment.parent.id : comment.id }}_children_collapse" data-ladb-mention="{% if comment.parent %}@{{ comment.user.usernameCanonical }} {% endif %}" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':(comment.parent ? comment.parent.id : comment.id) }) }}" data-loading-text="{{ 'default.loading'|trans }}">{{ 'comment.reply'|trans }}</a>
+                        <a class="ladb-comment-reply" data-ladb-new-container-selector="#ladb_comment_{{ comment.parent ? comment.parent.id : comment.id }}_children_collapse" data-ladb-mention="{% if comment.parent %}@{{ comment.user.usernameCanonical }} {% endif %}" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':(comment.parent ? comment.parent.id : comment.id) }) }}" data-loading-text="{{ 'default.loading'|trans }}">{{ 'comment.reply'|trans }}</a>
                     {% endif %}
                     {% if comment.childCount > 0 %}
                         <a class="ladb-comment-children-collapse-btn{% if canReply %} ladb-horizontal-separator-left{% endif %}" data-toggle="collapse" data-target="#ladb_comment_{{ comment.id }}_children_collapse"><i class="ladb-icon-comment"></i> <strong>{{ comment.childCount }}</strong> {{ 'comment.choice.children'|transchoice(comment.childCount) }} <span class="caret"></span></a>

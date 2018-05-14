@@ -140,7 +140,7 @@
             {% include 'LadbCoreBundle:Knowledge/Book/Review:_list.part.html.twig' with { 'reviews':book.reviews } %}
             {% include 'LadbCoreBundle:Knowledge/Book:_reviews-footer.part.html.twig' %}
         </div>
-        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'activitiesHidden':true, 'alert':('knowledge.book.comment_alert'|trans) } %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'activitiesHidden':true, 'alertTransKey':'knowledge.book.comment_alert' } %}
     </div>
     {{ parent() }}
 {% endblock %}
