@@ -159,7 +159,7 @@ class TestimonialController extends Controller {
 
 			$om->flush();
 
-			return $this->render('LadbCoreBundle:Knowledge/School/Testimonial:_row.part.html.twig', array(
+			return $this->render('LadbCoreBundle:Knowledge/School/Testimonial:update-xhr.html.twig', array(
 				'school'      => $testimonial->getSchool(),
 				'testimonial' => $testimonial,
 			));

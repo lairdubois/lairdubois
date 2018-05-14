@@ -7,7 +7,7 @@
 
 <div class="ladb-card ladb-card-thumbnail">
     <div class="ladb-image">
-        <a href="{{ showUrl }}">{% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':picture, 'alt':entity.title, 'width':282, 'height':200 } %}</a>
+        <a href="{{ showUrl }}">{% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':picture, 'alt':entity.title, 'width':282, 'height':200, 'noLazyLoad':true } %}</a>
     </div>
     <div class="ladb-body">
         <div class="ladb-heading">{% block headingInner %}<a href="{{ showUrl }}">{{ entity.title }}</a>{% endblock %}</div>

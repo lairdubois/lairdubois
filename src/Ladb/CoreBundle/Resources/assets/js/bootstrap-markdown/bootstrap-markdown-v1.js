@@ -787,6 +787,57 @@
                             }
                         }
                     ]
+                },
+                {
+                    name: 'groupQuote',
+                    data: [
+                        {
+                            name: 'cmdQuote',
+                            title: 'Citer',
+                            icon: 'ladb-icon-chevron-right',
+                            callback: function (e) {
+                                // Prepend/Give - surround the selection
+                                var chunk, cursor, selected = e.getSelection(), content = e.getContent()
+
+                                // transform selection and set the cursor into chunked text
+                                if (selected.length == 0) {
+                                    // Give extra word
+                                    chunk = 'votre citation ici'
+
+                                    e.replaceSelection('> ' + chunk)
+
+                                    // Set the cursor
+                                    cursor = selected.start + 2
+                                } else {
+                                    if (selected.text.indexOf('\n') < 0) {
+                                        chunk = selected.text
+
+                                        e.replaceSelection('> ' + chunk)
+
+                                        // Set the cursor
+                                        cursor = selected.start + 2
+                                    } else {
+                                        var list = []
+
+                                        list = selected.text.split('\n')
+                                        chunk = list[0]
+
+                                        $.each(list, function (k, v) {
+                                            list[k] = '> ' + v
+                                        })
+
+                                        e.replaceSelection('\n\n' + list.join('\n'))
+
+                                        // Set the cursor
+                                        cursor = selected.start + 4
+                                    }
+                                }
+
+                                // Set the cursor
+                                e.setSelection(cursor, cursor + chunk.length)
+                            }
+                        }
+                    ]
                 }
             ]
         ],

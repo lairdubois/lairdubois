@@ -251,7 +251,7 @@ class CommentController extends Controller {
 
 			$om->flush();
 
-			return $this->render('LadbCoreBundle:Core/Comment:_row.part.html.twig', array( 'comment' => $comment ));
+			return $this->render('LadbCoreBundle:Core/Comment:update-xhr.html.twig', array( 'comment' => $comment ));
 		}
 
 		// Retrieve related entity

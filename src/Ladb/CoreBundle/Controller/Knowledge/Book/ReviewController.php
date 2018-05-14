@@ -172,7 +172,7 @@ class ReviewController extends Controller {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($review->getBook());
 
-			return $this->render('LadbCoreBundle:Knowledge/Book/Review:_row.part.html.twig', array(
+			return $this->render('LadbCoreBundle:Knowledge/Book/Review:update-xhr.html.twig', array(
 				'book'   => $review->getBook(),
 				'review' => $review,
 			));

@@ -207,7 +207,7 @@ class AnswerController extends Controller {
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
 
-			return $this->render('LadbCoreBundle:Qa/Answer:_row.part.html.twig', array(
+			return $this->render('LadbCoreBundle:Qa/Answer:update-xhr.html.twig', array(
 				'question'       => $answer->getQuestion(),
 				'answer'         => $answer,
 				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),

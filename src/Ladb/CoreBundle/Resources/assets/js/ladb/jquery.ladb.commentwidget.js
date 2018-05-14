@@ -50,7 +50,6 @@
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
                     setupTooltips();
-                    $(window).lazyLoadXT();
                 }
             },
             error:function() {
