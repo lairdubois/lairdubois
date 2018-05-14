@@ -65,8 +65,8 @@
         var that = this;
 
         var $newContainer = $(newContainerSelector);
-        var $new = $('.ladb-new', $newContainer).last();
-        var $fakeNew = $('.ladb-fake-new', $newContainer).last();
+        var $new = $newContainer.children('.ladb-new').last();
+        var $fakeNew = $newContainer.children('.ladb-fake-new').last();
         var isCollapse = $newContainer.hasClass('collapse');
 
         if ($new.length > 0) {

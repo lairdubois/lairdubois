@@ -794,7 +794,7 @@
                         {
                             name: 'cmdQuote',
                             title: 'Citer',
-                            icon: 'ladb-icon-chevron-right',
+                            icon: 'ladb-icon-quote',
                             callback: function (e) {
                                 // Prepend/Give - surround the selection
                                 var chunk, cursor, selected = e.getSelection(), content = e.getContent()
