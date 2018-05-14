@@ -66,17 +66,9 @@
 
             var thanksMsg = $(this).data('thanks-msg');
 
-            // Open collapse comment area
-            var collapseSelector = $('[data-toggle=collapse]', $row).data('target');
-            var $collapse = $(collapseSelector);
-            $collapse.addClass('in');
-
-            var $textarea = $('textarea', $collapse);
-            $textarea
-                .focus()
-                .val(thanksMsg)
-                .select()
-                .closest('.ladb-new').ladbScrollTo();
+            // Write comment with thanks msg
+            var $commentWidget = $('.ladb-comment-widget', $row);
+            $commentWidget.ladbCommentWidget('writeComment', thanksMsg);
 
         });
 
@@ -286,17 +278,9 @@
 
             var thanksMsg = $(this).data('thanks-msg');
 
-            // Open collapse comment area
-            var collapseSelector = $('[data-toggle=collapse]', $('.ladb-qa-question')).data('target');
-            var $collapse = $(collapseSelector);
-            $collapse.addClass('in');
-
-            var $textarea = $('textarea', $collapse);
-            $textarea
-                .focus()
-                .val(thanksMsg)
-                .select()
-                .closest('.ladb-new').ladbScrollTo();
+            // Write comment with thanks msg
+            var $commentWidget = $('.ladb-comment-widget', $('.ladb-qa-question')).first();
+            $commentWidget.ladbCommentWidget('writeComment', thanksMsg);
 
         });
 

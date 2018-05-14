@@ -61,10 +61,21 @@
 
     // Reply /////
 
-    LadbCommentWidget.prototype.replyTo = function($btn, newContainerSelector, mention, newPath) {
+    LadbCommentWidget.prototype.writeComment = function(msg) {
+        console.log(this.$element);
+        var entityType = this.$element.data('ladb-entity-type');
+        var entityId = this.$element.data('ladb-entity-id');
+        var newContainerSelector = '#ladb_comment_' + entityType + '_' + entityId + '_group';
+        this.writeCommentIn(msg, newContainerSelector);
+    };
+
+    LadbCommentWidget.prototype.writeCommentIn = function(msg, newContainerSelector, callback) {
         var that = this;
 
+        console.log(newContainerSelector);
+
         var $newContainer = $(newContainerSelector);
+        var newPath = $newContainer.data('ladb-new-path');
         var $new = $newContainer.children('.ladb-new').last();
         var $fakeNew = $newContainer.children('.ladb-fake-new').last();
         var isCollapse = $newContainer.hasClass('collapse');
@@ -75,10 +86,10 @@
             }
             $new.ladbScrollTo();
             $('textarea', $new)
-                .val(mention)
+                .val(msg)
                 .focus();
-            if ($btn) {
-                $btn.button('reset');
+            if (typeof callback == 'function') {
+                callback();
             }
         } else {
             $.ajax(newPath, {
@@ -94,15 +105,15 @@
                     that.bindNew($new);
                     $new.ladbScrollTo();
                     $('textarea', $new)
-                        .val(mention);
-                    if ($btn) {
-                        $btn.button('reset');
+                        .val(msg);
+                    if (typeof callback == 'function') {
+                        callback();
                     }
                     $fakeNew.remove();
                 },
                 error: function () {
-                    if ($btn) {
-                        $btn.button('reset');
+                    if (typeof callback == 'function') {
+                        callback();
                     }
                 }
             });
@@ -127,9 +138,10 @@
             $btn.button('loading');
 
             var newContainerSelector = $(this).data('ladb-new-container-selector');
-            var newPath = $(this).data('ladb-new-path');
 
-            that.replyTo($btn, newContainerSelector, null, newPath);
+            that.writeCommentIn(null, newContainerSelector, function() {
+                $btn.button('reset')
+            });
         });
     };
 
@@ -195,9 +207,10 @@
 
             var newContainerSelector = $(this).data('ladb-new-container-selector');
             var mention = $(this).data('ladb-mention');
-            var newPath = $(this).data('ladb-new-path');
 
-            that.replyTo($btn, newContainerSelector, mention, newPath);
+            that.writeCommentIn(mention, newContainerSelector, function() {
+                $btn.button('reset')
+            });
 
             return false;
         });
@@ -273,9 +286,10 @@
             $btn.button('loading');
 
             var newContainerSelector = $(this).data('ladb-new-container-selector');
-            var newPath = $(this).data('ladb-new-path');
 
-            that.replyTo($btn, newContainerSelector, null, newPath);
+            that.writeCommentIn(null, newContainerSelector, function() {
+                $btn.button('reset')
+            });
 
         });
         $('.collapse').on('shown.bs.collapse', function () {
@@ -292,7 +306,7 @@
     // PLUGIN DEFINITION
     // =======================
 
-    function Plugin(option) {
+    function Plugin(option, _parameter) {
         return this.each(function () {
             var $this   = $(this);
             var data    = $this.data('ladb.commentWidget');
@@ -303,7 +317,7 @@
                 data.init();
             }
             if (typeof option == 'string') {
-                data[option]();
+                data[option](_parameter);
             }
         })
     }
