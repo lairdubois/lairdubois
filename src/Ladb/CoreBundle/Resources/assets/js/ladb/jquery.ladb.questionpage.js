@@ -228,6 +228,7 @@
                     $('.ladb-answers-header', that.$element).replaceWith($header);
                     that.bindSorters();
                     that.bindRows();
+                    $(window).lazyLoadXT();
                 },
                 error: function () {
                     console.log('error');
