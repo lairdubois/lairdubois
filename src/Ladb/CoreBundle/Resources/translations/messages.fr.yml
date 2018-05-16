@@ -271,6 +271,9 @@ howto:
     new_warning: Un <strong>pas à pas</strong> présente une méthode ou des étapes de fabrication ou d'aménagement directement liées au travail du <strong>bois</strong>.
     wip_tooltip: Ce pas à pas présente un projet en cours de réalisation
     wip_warning: Ce pas à pas présente un projet <strong>en cours de réalisation</strong>.
+    kind_1: Tuto
+    kind_2: Technique
+    kind_3: Documentation
     form:
       alert:
         lock_success: Le pas à pas <strong>%title%</strong> a été vérrouillé.

@@ -2,7 +2,9 @@
 
 namespace Ladb\CoreBundle\Form\Type\Howto;
 
+use Ladb\CoreBundle\Entity\Howto\Howto;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +33,14 @@ class HowtoType extends AbstractType {
                 ->create('mainPicture', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
                 ->addModelTransformer(new PictureToIdTransformer($this->om))
             )
+			->add('kind', ChoiceType::class, array(
+				'choices' => array_flip(array(
+					Howto::KIND_NONE => 'Non définie',
+					Howto::KIND_TUTORIAL => '<i class="ladb-icon-howto-tutorial"></i> Tuto - <small class="text-muted">Détails d\'une réalisation étape par étape</small>',
+					Howto::KIND_TECHNICAL => '<i class="ladb-icon-howto-technical"></i> Technique - <small class="text-muted">Détails d\'une ou plusieurs techniques de mise en oeuvre</small>',
+					Howto::KIND_DOCUMENTATION => '<i class="ladb-icon-howto-documentation"></i> Documentation - <small class="text-muted">Rédaction d\'une base documentaire sur un sujet donné</small>')),
+				'expanded' => true,
+			))
 			->add('body')
 			->add('isWorkInProgress')
 			->add($builder

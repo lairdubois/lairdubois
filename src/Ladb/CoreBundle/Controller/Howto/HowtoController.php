@@ -420,6 +420,13 @@ class HowtoController extends Controller {
 
 						break;
 
+					case 'kind':
+
+						$filter = new \Elastica\Query\MatchPhrase('kind', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
 					case 'license':
 
 						$filter = new \Elastica\Query\MatchPhrase('license.strippedname', $facet->value);

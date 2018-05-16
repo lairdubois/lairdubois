@@ -14,8 +14,8 @@
 {% block sidenav %}
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
     {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'title':('default.picture'|trans()) } %}
-    {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' with { 'title':'Introduction' } %}
     <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
+    {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' with { 'title':'Introduction' } %}
     {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
     {% block articlesSidenav %}{% endblock %}
     {% include 'LadbCoreBundle:Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
@@ -34,17 +34,26 @@
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('howto.howto.form.help.title'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('howto.howto.form.help.main_picture'|trans()) } %}
-    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':'Introduction', 'help':('howto.howto.form.help.body'|trans()) } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
-            <p class="help-block"><i>{{ ('howto.howto.form.help.wip'|trans())|raw }}</i></p>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.isWorkInProgress) }} En cours de réalisation ( <i class="ladb-icon-wip"></i> )
-                </label>
+            <div class="form-group">
+                <label>Nature</label>
+                <span class="help-block"><em>Indiquez la nature du contenu de votre pas à pas.</em></span>
+                {{ form_errors(form.kind) }}
+                {{ form_widget(form.kind) }}
+            </div>
+            <div class="form-group">
+                <label>Etat</label>
+                <p class="help-block"><i>{{ ('howto.howto.form.help.wip'|trans())|raw }}</i></p>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.isWorkInProgress) }} En cours de réalisation ( <i class="ladb-icon-wip"></i> )
+                    </label>
+                </div>
             </div>
         {% endblock %}
     {% endembed %}
+    {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':'Introduction', 'help':('howto.howto.form.help.body'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':'Indiquez les tags définissant votre pas à pas.' } %}
     {% block articlesSection %}{% endblock %}
     {% include 'LadbCoreBundle:Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('howto.howto.form.help.plans'|trans()) } %}

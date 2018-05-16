@@ -49,6 +49,11 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
 	const TYPE = 106;
 
+	const KIND_NONE = 0;
+	const KIND_TUTORIAL = 1;
+	const KIND_TECHNICAL = 2;
+	const KIND_DOCUMENTATION = 3;
+
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
@@ -63,6 +68,11 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
 	private $slug;
+
+	/**
+	 * @ORM\Column(type="smallint")
+	 */
+	private $kind = Howto::KIND_NONE;
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)
@@ -270,6 +280,17 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getSluggedId() {
 		return $this->id.'-'.$this->slug;
+	}
+
+	// Kind /////
+
+	public function getKind() {
+		return $this->kind;
+	}
+
+	public function setKind($kind) {
+		$this->kind = $kind;
+		return $this;
 	}
 
 	// BodyBlockVideoCount /////

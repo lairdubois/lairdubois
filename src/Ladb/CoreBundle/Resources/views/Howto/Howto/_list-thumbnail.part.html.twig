@@ -5,6 +5,10 @@
 {% set entity = howto %}
 {% set itemType = 'Article' %}
 
+{% block title %}
+    {% if howto.kind > constant('\\Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_NONE') %}<i class="ladb-icon-howto-{% if howto.kind == constant('\\Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_TUTORIAL') %}tutorial{% elseif howto.kind == constant('\\Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_TECHNICAL') %}technical{% elseif howto.kind == constant('\\Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_DOCUMENTATION') %}documentation{% endif %}" title="{{ ('howto.howto.kind_'~howto.kind)|trans }}" data-tooltip="tooltip"></i> {% endif %}{{ parent() }}
+{% endblock %}
+
 {% block entityMetas %}
     {% if howto.planCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_howto_plans', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(howto.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
