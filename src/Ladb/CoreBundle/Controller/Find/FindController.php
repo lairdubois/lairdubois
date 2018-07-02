@@ -233,6 +233,8 @@ class FindController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$findRepository = $om->getRepository(Find::CLASS_NAME);
 
+		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+
 		$find = $findRepository->findOneById($id);
 		if (is_null($find)) {
 			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
@@ -263,6 +265,9 @@ class FindController extends Controller {
 			$findUtils = $this->get(FindUtils::NAME);
 			$findUtils->generateMainPicture($find);
 
+			if ($doUp) {
+				$find->setChangedAt(new \DateTime());
+			}
 			if ($find->getUser()->getId() == $this->getUser()->getId()) {
 				$find->setUpdatedAt(new \DateTime());
 			}
