@@ -149,11 +149,11 @@
                 {% if ownerUser or is_granted("ROLE_ADMIN") %}
                     &nbsp;
                     <a href="{{ path('core_howto_edit', { 'id':howto.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
+                    {% if is_granted("ROLE_ADMIN") or (ownerUser and howto.isDraft) %}
+                        <a href="#delete_howto_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_howto_modal', 'entityTitle':howto.title, 'deletePath':path('core_howto_delete', { 'id':howto.id }) } %}
+                    {% endif %}
                     {% if is_granted("ROLE_ADMIN") %}
-                        {% if is_granted("ROLE_ADMIN") or (ownerUser and howto.isDraft) %}
-                            <a href="#delete_howto_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
-                            {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_howto_modal', 'entityTitle':howto.title, 'deletePath':path('core_howto_delete', { 'id':howto.id }) } %}
-                        {% endif %}
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="ladb-icon-admin"></i> <span class="caret"></span>
