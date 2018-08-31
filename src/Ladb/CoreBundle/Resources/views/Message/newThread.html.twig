@@ -119,6 +119,16 @@
                             {% endblock %}
                         {% endembed %}
                     {% else %}
+                        <div class="alert alert-info">
+                            <div class="media">
+                                <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+                                <div class="media-body">
+                                    <h4>A lire avant d'envoyer</h4>
+                                    <p>Cette messagerie privée se destine à prendre contact individuellement avec les membres inscrits de la plateforme.<br>
+                                    <u>Attention que la prospection commerciale n'y est pas attendue</u>. Pour plus d'informations, le sujet est débatu <a href="/102-publicite-en-message-prive.html" target="_blank">ici</a>.</p>
+                                </div>
+                            </div>
+                        </div>
                         {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
                     {% endif %}
                 {{ form_end(form) }}
