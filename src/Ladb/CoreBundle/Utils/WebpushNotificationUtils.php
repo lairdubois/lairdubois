@@ -40,7 +40,7 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 			$recipient,
 			'Nouveau message de '.$sender->getDisplayname(),
 			$this->get('liip_imagine.cache.manager')->getBrowserPath($sender->getAvatar()->getWebPath(), '128x128o'),
-			$this->get('router')->generate('core_message_thread_show', array( 'threadId' => $thread->getId()), UrlGeneratorInterface::ABSOLUTE_URL)
+			$this->get('router')->generate('core_message_thread_show', array( 'id' => $thread->getId()), UrlGeneratorInterface::ABSOLUTE_URL)
 		);
 	}
 

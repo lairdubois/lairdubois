@@ -5,7 +5,7 @@
 
 {% block items %}
     {% for thread in threads %}
-        <div class="ladb-thread-row{% if thread.unreadMessageCount > 0 %} ladb-unread{% endif %}{% if thread.announcement %} ladb-announcement{% endif %}" onclick="document.location.href = '{{ path('core_message_thread_show', { 'threadId':thread.id }) }}'">
+        <div class="ladb-thread-row{% if thread.unreadMessageCount > 0 %} ladb-unread{% endif %}{% if thread.announcement %} ladb-announcement{% endif %}" onclick="document.location.href = '{{ path('core_message_thread_show', { 'id':thread.id }) }}'">
             <div class="row">
                 <div class="col-sm-3 col-xs-12">
                     <div class="ladb-unread-message-count">
@@ -29,7 +29,7 @@
                         {{ thread.lastMessageDate|time_diff() }}
                     </div>
                     <div class="ladb-subject">
-                        <a href="{{ path('core_message_thread_show', { 'threadId':thread.id }) }}">{{ thread.subject|truncate(100, true) }}</a>
+                        <a href="{{ path('core_message_thread_show', { 'id':thread.id }) }}">{{ thread.subject|truncate(100, true) }}</a>
                     </div>
                 </div>
             </div>

@@ -104,7 +104,7 @@ class MessageController extends Controller {
 
 			}
 
-			return $this->redirect($this->generateUrl('core_message_thread_show', array( 'threadId' => $thread->getId())));
+			return $this->redirect($this->generateUrl('core_message_thread_show', array( 'id' => $thread->getId())));
 		}
 
 		return array(
@@ -165,16 +165,16 @@ class MessageController extends Controller {
 	}
 
 	/**
-	 * @Route("/thread/{threadId}/delete", requirements={"threadId" = "\d+"}, name="core_message_thread_delete")
+	 * @Route("/thread/{id}/delete", requirements={"id" = "\d+"}, name="core_message_thread_delete")
 	 * @Template("LadbCoreBundle:Message:deleteThread.html.twig")
 	 */
-	public function deleteThreadAction($threadId) {
+	public function deleteThreadAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
 
-		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($threadId);
+		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($id);
 		if (is_null($thread)) {
-			throw $this->createNotFoundException('Unable to find Thread entity (id='.$threadId.').');
+			throw $this->createNotFoundException('Unable to find Thread entity (id='.$id.').');
 		}
 		if (!$thread->getParticipants()->contains($this->getUser())) {
 			throw $this->createNotFoundException('Not allowed (core_message_thread_delete)');
@@ -203,17 +203,17 @@ class MessageController extends Controller {
 	}
 
 	/**
-	 * @Route("/thread/{threadId}/update", requirements={"threadId" = "\d+"}, name="core_message_thread_update")
+	 * @Route("/thread/{id}/update", requirements={"id" = "\d+"}, name="core_message_thread_update")
 	 * @Method("POST")
 	 * @Template("LadbCoreBundle:Message:showThread.html.twig")
 	 */
-	public function updateThreadAction(Request $request, $threadId) {
+	public function updateThreadAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
 
-		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($threadId);
+		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($id);
 		if (is_null($thread)) {
-			throw $this->createNotFoundException('Unable to find Thread entity (id='.$threadId.').');
+			throw $this->createNotFoundException('Unable to find Thread entity (id='.$id.').');
 		}
 		if (!$thread->getParticipants()->contains($this->getUser())) {
 			throw $this->createNotFoundException('Not allowed (core_message_thread_update)');
@@ -288,7 +288,7 @@ class MessageController extends Controller {
 
 			}
 
-			return $this->redirect($this->generateUrl('core_message_thread_show', array('threadId' => $thread->getId())));
+			return $this->redirect($this->generateUrl('core_message_thread_show', array('id' => $thread->getId())));
 		}
 
 		return array(
@@ -298,16 +298,16 @@ class MessageController extends Controller {
 	}
 
 	/**
-	 * @Route("/thread/{threadId}", requirements={"threadId" = "\d+"}, name="core_message_thread_show")
+	 * @Route("/thread/{id}", requirements={"id" = "\d+"}, name="core_message_thread_show")
 	 * @Template("LadbCoreBundle:Message:showThread.html.twig")
 	 */
-	public function showThreadAction($threadId) {
+	public function showThreadAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
 
-		$thread = $threadRepository->findOneByIdJoinedOnOptimized($threadId);
+		$thread = $threadRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($thread)) {
-			throw $this->createNotFoundException('Unable to find Thread entity (id='.$threadId.').');
+			throw $this->createNotFoundException('Unable to find Thread entity (id='.$id.').');
 		}
 		if (!$thread->getParticipants()->contains($this->getUser())) {
 			throw $this->createNotFoundException('Not allowed (core_message_thread_show)');

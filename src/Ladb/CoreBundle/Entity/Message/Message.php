@@ -8,51 +8,61 @@ use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedTrait;
+use Ladb\CoreBundle\Model\TypableInterface;
 
 /**
  * @ORM\Table("tbl_message")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Message\MessageRepository")
  */
-class Message implements MultiPicturedInterface, BodiedInterface {
+class Message implements TypableInterface, MultiPicturedInterface, BodiedInterface {
 
 	use MultiPicturedTrait, BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Message\Message';
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_message_picture")
-	 * @ORM\OrderBy({"sortIndex" = "ASC"})
-	 */
-	protected $pictures;
+	const TYPE = 3;
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	private $createdAt;
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Message\Thread", inversedBy="messages")
 	 * @ORM\JoinColumn(name="thread_id", referencedColumnName="id")
 	 */
 	private $thread;
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="sender_user_id", referencedColumnName="id")
 	 */
 	private $sender;
+
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
 	private $body;
+
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 */
 	private $htmlBody;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_message_picture")
+	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 */
+	protected $pictures;
+
 	/**
 	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Message\MessageMeta", mappedBy="message", cascade={"all"})
 	 */
@@ -75,37 +85,43 @@ class Message implements MultiPicturedInterface, BodiedInterface {
 		return $this->id;
 	}
 
-	// CreatedAt /////
+	// Type /////
 
-	public function getCreatedAt() {
-		return $this->createdAt;
+	public function getType() {
+		return Message::TYPE;
 	}
+
+	// CreatedAt /////
 
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
-	// Thread /////
-
-	public function getThread() {
-		return $this->thread;
+	public function getCreatedAt() {
+		return $this->createdAt;
 	}
+
+	// Thread /////
 
 	public function setThread($thread) {
 		$this->thread = $thread;
 		return $this;
 	}
 
-	// Sender /////
-
-	public function getSender() {
-		return $this->sender;
+	public function getThread() {
+		return $this->thread;
 	}
+
+	// Sender /////
 
 	public function setSender(\Ladb\CoreBundle\Entity\Core\User $sender) {
 		$this->sender = $sender;
 		return $this;
+	}
+
+	public function getSender() {
+		return $this->sender;
 	}
 
 	// Metas /////
@@ -129,13 +145,13 @@ class Message implements MultiPicturedInterface, BodiedInterface {
 
 	// IsRead /////
 
-	public function getIsRead() {
-		return $this->isRead;
-	}
-
 	public function setIsRead($isRead) {
 		$this->isRead = $isRead;
 		return $this;
+	}
+
+	public function getIsRead() {
+		return $this->isRead;
 	}
 
 }

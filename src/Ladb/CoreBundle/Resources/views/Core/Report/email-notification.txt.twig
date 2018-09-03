@@ -3,7 +3,7 @@
 {% block content %}
 Un nouveau rapport d'abus a été envoyé par {{ actorUser.displayname|raw }}.
 
-entityType = {{ report.entityType }}
+entityType = {{ ladb_entity_type_stripped_name(entity) }} ({{ report.entityType }})
 entityId = {{ report.entityId }}
 reason = {{ ('report.reason'~report.reason)|trans()|raw }} ({{ report.reason }})
 

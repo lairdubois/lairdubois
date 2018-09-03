@@ -4,7 +4,7 @@
 Vous avez reçu un nouveau message de la part de **{{ actorUser.displayname|raw }}** sur le sujet "{{ thread.subject|raw }}".
 
 Pour consulter le message, cliquez sur le lien suivant:
-{{ url('core_message_thread_show', { 'threadId':thread.id }) }}
+{{ url('core_message_thread_show', { 'id':thread.id }) }}
 {% if thread.announcement %}
 
 Ce message est une annonce publique.

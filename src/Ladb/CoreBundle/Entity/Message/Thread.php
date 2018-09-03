@@ -5,14 +5,16 @@ namespace Ladb\CoreBundle\Entity\Message;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\TypableInterface;
 
 /**
  * @ORM\Table("tbl_message_thread")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Message\ThreadRepository")
  */
-class Thread {
+class Thread implements TypableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Message\Thread';
+	const TYPE = 2;
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
@@ -80,6 +82,12 @@ class Thread {
 
 	public function getId() {
 		return $this->id;
+	}
+
+	// Type /////
+
+	public function getType() {
+		return Thread::TYPE;
 	}
 
 	// CreatedAt /////

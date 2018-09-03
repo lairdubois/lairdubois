@@ -14,6 +14,28 @@
 {% block bodyJavascripts %}
     {{ parent() }}
     {{ block('blueimpGalleryJavascripts') }}
+    <script>
+        $(document).ready(function () {
+
+            {# Setup Tooltips #}
+            setupTooltips();
+
+            {# Intercept hash that starts with #_ scrollto behavior #}
+            if (window.location.hash && window.location.hash.startsWith('#_')) {
+                setTimeout(function() {
+                    var selector = window.location.hash.replace('#', '#ladb');   {# Change to a valid element ID like #ladb_XXX #}
+                    var $target = $(selector);
+                    $target.parents('.collapse').addClass('in');
+                    $target.ladbScrollTo(null, {
+                        onAfter: function() {
+                            $target.effect('highlight', {}, 1500);
+                        }
+                    });
+                }, 1000);
+            }
+
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -23,6 +45,7 @@
 
 {% block tools %}
     <div class="ladb-header-tools pull-right">
+        {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':thread.type, 'entityId':thread.id } %}
         <a href="#delete_thread_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-hidden-mobile"> {{ 'default.delete'|trans() }}</span></a>
         {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_thread_modal', 'title':('default.deletion'|trans()) } %}
             {% block bodyInner %}
@@ -31,7 +54,7 @@
             {% endblock %}
             {% block footerInner %}
                 <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                <a href="{{ path('core_message_thread_delete', { 'threadId':thread.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                <a href="{{ path('core_message_thread_delete', { 'id':thread.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
             {% endblock %}
         {% endembed %}
     </div>
@@ -54,6 +77,12 @@
                     <div class="ladb-heading">
                         <button type="button" data-toggle="collapse" data-target="#ladb_message_{{ message.id }}_body" class="btn btn-default btn-xs pull-right"><i class="ladb-icon-caret-down"></i></button>
                         {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':message.sender } %}<span class="ladb-age">{{ message.createdAt|time_diff() }}</span>
+                        {% if message.sender != app.user %}
+                            <div class="pull-right ladb-minitools">
+                                {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':message.type, 'entityId':message.id } %}
+                                &nbsp;
+                            </div>
+                        {% endif %}
                     </div>
                     <div id="ladb_message_{{ message.id }}_body" class="ladb-body collapse{% if not message.isRead or loop.last %} in{% endif %}">
                         {{ message.htmlBody|raw }}
@@ -75,7 +104,7 @@
                 {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
                 <div class="ladb-box">
                     <div class="ladb-body">
-                        {{ form_start(form, { 'action':(path('core_message_thread_update', { 'threadId':thread.id })~'#message_reply'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
+                        {{ form_start(form, { 'action':(path('core_message_thread_update', { 'id':thread.id })~'#message_reply'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
                             <div class="form-group">
                                 {{ form_errors(form.body) }}
                                 {{ form_widget(form.body, { 'attr': { 'rows':'10', 'class':'form-control ladb-autosize' } }) }}
@@ -99,4 +128,5 @@
             </div>
         {% endif %}
     </div>
+    {% include 'LadbCoreBundle:Core/Report:_modal.part.html.twig' %}
 {% endblock %}

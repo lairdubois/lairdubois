@@ -17,6 +17,16 @@ class TypableUtils extends AbstractContainerAwareUtils {
 	public static function getStrippedNameByType($type, $delimiter = '_') {
 		switch ($type) {
 
+			// Comment
+			case \Ladb\CoreBundle\Entity\Core\Comment::TYPE:
+				return implode($delimiter, array( 'core', 'comment' ));
+			// Thread (Message)
+			case \Ladb\CoreBundle\Entity\Message\Thread::TYPE:
+				return implode($delimiter, array( 'message', 'thread' ));
+			// Message (Message)
+			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
+				return implode($delimiter, array( 'message', 'message' ));
+
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
 				return implode($delimiter, array( 'wonder', 'creation' ));
@@ -114,6 +124,12 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Comment
 			case \Ladb\CoreBundle\Entity\Core\Comment::TYPE:
 				return '\Ladb\CoreBundle\Entity\Core\Comment';
+			// Thread (Message)
+			case \Ladb\CoreBundle\Entity\Message\Thread::TYPE:
+				return '\Ladb\CoreBundle\Entity\Message\Thread';
+			// Message (Message)
+			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
+				return '\Ladb\CoreBundle\Entity\Message\Message';
 
 			// Text
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:
@@ -227,6 +243,15 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			$params = array_merge($params, $addionalParams);
 		}
 		switch ($typable->getType()) {
+
+			case \Ladb\CoreBundle\Entity\Message\Thread::TYPE:
+				$url = $router->generate('core_message_thread_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
+				$params['id'] = $typable->getThread()->getId();
+				$url = $router->generate('core_message_thread_'.$action, $params, $referenceType).'#_message_'.$typable->getId();
+				break;
+
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
 				$url = $router->generate('core_creation_'.$action, $params, $referenceType);
 				break;
@@ -275,6 +300,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
 				$url = $router->generate('core_book_'.$action, $params, $referenceType);
 				break;
+
 		}
 		return $url;
 	}
