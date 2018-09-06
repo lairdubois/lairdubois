@@ -84,21 +84,31 @@
 {% endblock %}
 
 {% block wonderShowcase %}
-    {% if plan.sketchup3DWarehouseEmbedIdentifier is not null %}
-        <style>
-            #ladb_3dwarehouse_viewer .ladb-tip {
-                margin-top: 2px;
-                text-align: center;
-                color: #999;
-            }
-        </style>
-        <div id="ladb_3dwarehouse_viewer" class="thumbnail">
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe src="" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
+    {% if plan.sketchup3DWarehouseEmbedIdentifier is not null or plan.a360EmbedIdentifier is not null %}
+        {% if plan.sketchup3DWarehouseEmbedIdentifier is not null %}
+            <style>
+                #ladb_3dwarehouse_viewer .ladb-tip {
+                    margin-top: 2px;
+                    text-align: center;
+                    color: #999;
+                }
+            </style>
+            <div id="ladb_3dwarehouse_viewer" class="thumbnail">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe src="" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
+                </div>
+                <div class="ladb-tip ladb-tip-webgl" style="display: none;"><small>Cliquez sur l'image pour un affichage en 3D</small></div>
+                <div class="ladb-tip ladb-tip-no-webgl ladb-color-danger" style="display: none;"><small><i class="ladb-icon-warning"></i> Votre navigateur ne supporte pas l'affichage en 3D</small></div>
             </div>
-            <div class="ladb-tip ladb-tip-webgl" style="display: none;"><small>Cliquez sur l'image pour un affichage en 3D</small></div>
-            <div class="ladb-tip ladb-tip-no-webgl ladb-color-danger" style="display: none;"><small><i class="ladb-icon-warning"></i> Votre navigateur ne supporte pas l'affichage en 3D</small></div>
-        </div>
+        {% else %}
+            <div id="ladb_a360_viewer" class="thumbnail">
+                <div class="embed-responsive embed-responsive-4by3">
+                    <iframe src="https://a360.co/2Cqb0Dh" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
+                </div>
+                <div class="ladb-tip ladb-tip-webgl" style="display: none;"><small>Cliquez sur l'image pour un affichage en 3D</small></div>
+                <div class="ladb-tip ladb-tip-no-webgl ladb-color-danger" style="display: none;"><small><i class="ladb-icon-warning"></i> Votre navigateur ne supporte pas l'affichage en 3D</small></div>
+            </div>
+        {% endif %}
         <div class="ladb-wonder-showcase row">
             {% for index in 0..5 %}
                 <div class="col-xs-6 col-md-2">

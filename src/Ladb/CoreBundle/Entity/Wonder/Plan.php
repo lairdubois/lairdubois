@@ -37,6 +37,7 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	const KIND_STL = 7;
 	const KIND_123DESIGN = 8;
 	const KIND_LIBREOFFICE = 9;
+	const KIND_FUISN360 = 10;
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)
@@ -71,15 +72,26 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	private $resources;
 
 	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @ORM\Column(type="string", length=255, nullable=true, name="sketchup_3d_warehouse_url")
 	 * @Assert\Url()
 	 */
 	private $sketchup3DWarehouseUrl = null;
 
 	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @ORM\Column(type="string", length=255, nullable=true, name="sketchup_3d_warehouse_embed_identifier")
 	 */
 	private $sketchup3DWarehouseEmbedIdentifier = null;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true, name="a360_url")
+	 * @Assert\Url()
+	 */
+	private $a360Url = null;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true, name="a360_embed_identifier")
+	 */
+	private $a360EmbedIdentifier = null;
 
 	/**
 	 * @ORM\Column(type="integer", name="zip_archive_size")
@@ -240,6 +252,26 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 
 	public function getSketchup3DWarehouseEmbedIdentifier() {
 		return $this->sketchup3DWarehouseEmbedIdentifier;
+	}
+
+	// A360Url /////
+
+	public function setA360Url($a360Url) {
+		return $this->a360Url = $a360Url;
+	}
+
+	public function getA360Url() {
+		return $this->a360Url;
+	}
+
+	// A360Identifier /////
+
+	public function setA360EmbedIdentifier($a360EmbedIdentifier) {
+		return $this->a360EmbedIdentifier = $a360EmbedIdentifier;
+	}
+
+	public function getA360EmbedIdentifier() {
+		return $this->a360EmbedIdentifier;
 	}
 
 	// ZipArchiveSize /////

@@ -42,6 +42,18 @@ class PlanUtils {
 		$plan->setSketchup3DWarehouseEmbedIdentifier($embedIdentifier);
 	}
 
+	public function processA360Url(Plan $plan) {
+		$embedIdentifier = null;
+		if (!is_null($plan->getA360Url())) {
+
+			if (preg_match('~(?:http|https|)(?::\/\/|)(a360\.co/)([a-z0-9]*)~i', $plan->getA360Url(), $match)) {
+				$embedIdentifier = $match[2];
+			}
+
+		}
+		$plan->setA360EmbedIdentifier($embedIdentifier);
+	}
+
 	public function createZipArchive(Plan $plan) {
 		$zipAbsolutePath = $this->getZipAbsolutePath($plan);
 

@@ -4,7 +4,7 @@
 
 {% block image %}
     {{ parent() }}
-    {% if plan.sketchup3DWarehouseEmbedIdentifier %}
+    {% if plan.sketchup3DWarehouseEmbedIdentifier or plan.a360Url %}
         <div class="ladb-image-overlay" data-tooltip="tooltip" title="Visualisation 3D"><i class="ladb-icon-3d ladb-icon-lg"></i></div>
     {% endif %}
 {% endblock %}

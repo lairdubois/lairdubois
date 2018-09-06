@@ -106,6 +106,11 @@ class ResourceUploadHandler extends \UploadHandler {
 					$kind = Resource::KIND_LIBREOFFICE;
 				}
 
+				// fusion360
+				if ($fileExtension == 'f3d') {
+					$kind = Resource::KIND_FUSION360;
+				}
+
 			}
 			$resource->setKind($kind);
 
