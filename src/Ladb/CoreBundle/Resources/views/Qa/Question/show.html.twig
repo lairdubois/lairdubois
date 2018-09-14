@@ -35,6 +35,9 @@
             $('#container').ladbQuestionPage({
                 answerNewPath: '{{ path('core_qa_answer_new', { 'id':question.id }) }}'
             });
+            $("#ladb_answers_nav_panel").sticky({
+                topSpacing: 70
+            });
         });
     </script>
 {% endblock %}
@@ -168,5 +171,6 @@
             </div>
         </div>
     {% endif %}
+    {% include 'LadbCoreBundle:Qa/Answer:_nav-panel.part.html.twig' %}
 {% endblock %}
 

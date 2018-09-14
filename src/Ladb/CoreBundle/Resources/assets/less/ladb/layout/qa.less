@@ -42,6 +42,55 @@
   margin-bottom: @ladb-gutter;
 }
 
+.ladb-answers-nav-panel {
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    padding-bottom: 4px;
+
+    div.media-left {
+      white-space: nowrap;
+    }
+
+    div.media-right {
+      white-space: nowrap;
+    }
+
+  }
+
+  .ladb-answer-nav-item {
+
+    .ladb-badge {
+      padding: 1px 4px;
+      color: #aaa;
+      background-color: #efefef;
+      border-radius: 2px;
+
+      &.ladb-positive {
+        color: darken(@ladb-global-positive-color, 10%);
+        background-color: lighten(@ladb-global-positive-color, 30%);
+      }
+
+      &.ladb-undeterminated {
+        color: darken(@ladb-global-undeterminated-color, 10%);
+        background-color: lighten(@ladb-global-undeterminated-color, 30%);
+      }
+
+      &.ladb-negative {
+        color: darken(@ladb-global-negative-color, 10%);
+        background-color: lighten(@ladb-global-negative-color, 30%);
+      }
+
+    }
+
+  }
+
+}
+
 .ladb-qa-question, .ladb-answer-row, .ladb-answer-form {
   margin-bottom: @ladb-gutter;
 
