@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Elastica\Query\Exists;
 use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
 use Ladb\CoreBundle\Entity\Promotion\Graphic;
 use Ladb\CoreBundle\Entity\Qa\Question;
@@ -10,8 +9,7 @@ use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Utils\CryptoUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Find\Find;

@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Howto;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
@@ -61,8 +60,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/article/create", requirements={"id" = "\d+"}, name="core_howto_article_create")
-	 * @Method("POST")
+	 * @Route("/pas-a-pas/{id}/article/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_create")
 	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
@@ -211,8 +209,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}/update", requirements={"id" = "\d+"}, name="core_howto_article_update")
-	 * @Method("POST")
+	 * @Route("/pas-a-pas/article/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_update")
 	 * @Template("LadbCoreBundle:Howto/Article:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

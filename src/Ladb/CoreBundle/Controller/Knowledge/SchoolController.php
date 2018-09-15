@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
@@ -49,8 +48,7 @@ class SchoolController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_school_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_school_create")
 	 * @Template("LadbCoreBundle:Knowledge/School:new.html.twig")
 	 */
 	public function createAction(Request $request) {

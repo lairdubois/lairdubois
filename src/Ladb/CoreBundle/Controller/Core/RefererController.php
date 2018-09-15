@@ -3,8 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Core;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\Referer\Referral;
 use Ladb\CoreBundle\Utils\TypableUtils;

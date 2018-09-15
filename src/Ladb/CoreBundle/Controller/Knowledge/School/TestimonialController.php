@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge\School;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
@@ -45,8 +44,7 @@ class TestimonialController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/temoignages/create", requirements={"id" = "\d+"}, name="core_knowledge_school_testimonial_create")
-	 * @Method("POST")
+	 * @Route("/{id}/temoignages/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_knowledge_school_testimonial_create")
 	 * @Template("LadbCoreBundle:Knowledge/School/Testimonial:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
@@ -129,8 +127,7 @@ class TestimonialController extends Controller {
 	}
 
 	/**
-	 * @Route("/temoignages/{id}/update", requirements={"id" = "\d+"}, name="core_knowledge_school_testimonial_update")
-	 * @Method("POST")
+	 * @Route("/temoignages/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_knowledge_school_testimonial_update")
 	 * @Template("LadbCoreBundle:Knowledge/School/Testimonial:edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

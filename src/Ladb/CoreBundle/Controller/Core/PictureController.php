@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Core;
 use Imagine\Gd\Imagine;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Form\Model\EditPicture;
@@ -64,8 +63,7 @@ class PictureController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_picture_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_picture_update")
 	 * @Template("LadbCoreBundle:Core/Picture:update-error-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge\Book;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
@@ -46,8 +45,7 @@ class ReviewController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/critiques/create", requirements={"id" = "\d+"}, name="core_knowledge_book_review_create")
-	 * @Method("POST")
+	 * @Route("/{id}/critiques/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_knowledge_book_review_create")
 	 * @Template("LadbCoreBundle:Knowledge/Book/Review:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
@@ -134,8 +132,7 @@ class ReviewController extends Controller {
 	}
 
 	/**
-	 * @Route("/critiques/{id}/update", requirements={"id" = "\d+"}, name="core_knowledge_book_review_update")
-	 * @Method("POST")
+	 * @Route("/critiques/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_knowledge_book_review_update")
 	 * @Template("LadbCoreBundle:Knowledge/Book/Review:edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

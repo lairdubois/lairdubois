@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Blog;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Blog\Post;
@@ -51,8 +50,7 @@ class PostController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_blog_post_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_blog_post_create")
 	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
 	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_create)")
 	 */
@@ -179,8 +177,7 @@ class PostController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_blog_post_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_blog_post_update")
 	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
 	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_update)")
 	 */

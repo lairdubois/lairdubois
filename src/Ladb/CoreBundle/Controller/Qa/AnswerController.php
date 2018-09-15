@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Qa;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Qa\Question;
@@ -53,8 +52,7 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/answer/create", requirements={"id" = "\d+"}, name="core_qa_answer_create")
-	 * @Method("POST")
+	 * @Route("/{id}/answer/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_create")
 	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
@@ -163,8 +161,7 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/answer/{id}/update", requirements={"id" = "\d+"}, name="core_qa_answer_update")
-	 * @Method("POST")
+	 * @Route("/answer/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_update")
 	 * @Template("LadbCoreBundle:Qa/Answer:edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

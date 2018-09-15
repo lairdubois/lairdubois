@@ -7,8 +7,7 @@ use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\HowtoUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
@@ -48,8 +47,7 @@ class HowtoController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/create", name="core_howto_create")
-	 * @Method("POST")
+	 * @Route("/pas-a-pas/create", methods={"POST"}, name="core_howto_create")
 	 * @Template("LadbCoreBundle:Howto/Howto:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -217,8 +215,7 @@ class HowtoController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/update", requirements={"id" = "\d+"}, name="core_howto_update")
-	 * @Method("POST")
+	 * @Route("/pas-a-pas/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_update")
 	 * @Template("LadbCoreBundle:Howto/Howto:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

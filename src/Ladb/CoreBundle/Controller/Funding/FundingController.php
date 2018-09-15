@@ -7,8 +7,7 @@ use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Form\Type\Funding\ChargeType;
 use Ladb\CoreBundle\Utils\MailerUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -138,8 +137,7 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route("/{year}/{month}/admin/charge/create", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_admin_charge_create")
-	 * @Method("POST")
+	 * @Route("/{year}/{month}/admin/charge/create", requirements={"year" = "\d+", "month" = "\d+"}, methods={"POST"}, name="core_funding_admin_charge_create")
 	 * @Template("LadbCoreBundle:Funding:charge-new-xhr.html.twig")
 	 */
 	public function chargeCreateAction(Request $request, $year = null, $month = null) {
@@ -214,8 +212,7 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route("/admin/charge/{id}/update", requirements={"id" = "\d+"}, name="core_funding_admin_charge_update")
-	 * @Method("POST")
+	 * @Route("/admin/charge/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_funding_admin_charge_update")
 	 * @Template("LadbCoreBundle:Funding:charge-update-xhr.html.twig")
 	 */
 	public function chargeUpdateAction(Request $request, $id) {
@@ -327,8 +324,7 @@ class FundingController extends Controller {
 	}
 
 	/**
-	 * @Route("/donation/create", name="core_funding_donation_create", defaults={"_format" = "json"})
-	 * @Method("POST")
+	 * @Route("/donation/create", name="core_funding_donation_create", methods={"POST"}, defaults={"_format" = "json"})
 	 */
 	public function donationCreateAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();

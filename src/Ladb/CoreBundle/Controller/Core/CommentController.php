@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Core;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Form\Type\CommentType;
@@ -77,8 +76,7 @@ class CommentController extends Controller {
 	}
 
 	/**
-	 * @Route("/{entityType}/{entityId}/{parentId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, name="core_comment_create")
-	 * @Method("POST")
+	 * @Route("/{entityType}/{entityId}/{parentId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, methods={"POST"}, name="core_comment_create")
 	 * @Template("LadbCoreBundle:Core/Comment:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $entityType, $entityId, $parentId = 0) {
@@ -218,8 +216,7 @@ class CommentController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_comment_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_comment_update")
 	 * @Template("LadbCoreBundle:Core/Comment:edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

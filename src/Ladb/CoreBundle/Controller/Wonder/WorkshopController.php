@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
@@ -58,8 +57,7 @@ class WorkshopController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_workshop_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_workshop_create")
 	 * @Template("LadbCoreBundle:Wonder/Workshop:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -226,8 +224,7 @@ class WorkshopController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_workshop_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workshop_update")
 	 * @Template("LadbCoreBundle:Wonder/Workshop:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
