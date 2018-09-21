@@ -230,7 +230,7 @@ class FindRepository extends AbstractEntityRepository {
 			$finds = $queryBuilder->getQuery()->getResult();
 			$runningFinds = array();
 			foreach ($finds as $find) {
-				if ($find->getContent()->getStartAt() <= $now && $find->getContent()->getEndAt() >= $now) {
+				if ($find->getContent()->getStartAt() <= $now && $find->getContent()->getEndAt() >= $now && $find->getContent()->getDuration()->d <= 3 ) {
 					$runningFinds[] = $find;
 				}
 			}
