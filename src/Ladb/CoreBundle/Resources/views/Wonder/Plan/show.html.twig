@@ -101,11 +101,10 @@
                 <div class="ladb-tip ladb-tip-no-webgl ladb-color-danger" style="display: none;"><small><i class="ladb-icon-warning"></i> Votre navigateur ne supporte pas l'affichage en 3D</small></div>
             </div>
         {% else %}
-            <div id="ladb_a360_viewer" class="thumbnail">
+            <div id="ladb_a360_viewer" class="thumbnail ladb-hidden-mobile">
                 <div class="embed-responsive embed-responsive-4by3">
-                    <iframe src="https://a360.co/2Cqb0Dh" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
+                    <iframe src="{{ plan.a360Url }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" allowfullscreen></iframe>
                 </div>
-                <div class="ladb-tip ladb-tip-webgl" style="display: none;"><small>Cliquez sur l'image pour un affichage en 3D</small></div>
                 <div class="ladb-tip ladb-tip-no-webgl ladb-color-danger" style="display: none;"><small><i class="ladb-icon-warning"></i> Votre navigateur ne supporte pas l'affichage en 3D</small></div>
             </div>
         {% endif %}
