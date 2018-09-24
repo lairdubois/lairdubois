@@ -84,6 +84,7 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true, name="a360_url")
+	 * @Assert\Regex("/^https:\/\/a360\.co\/[a-zA-Z0-9]+$/", message="Lien public non conforme.")
 	 * @Assert\Url()
 	 */
 	private $a360Url = null;
