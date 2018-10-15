@@ -206,7 +206,7 @@ Now you are ready to setup the website itself !
     $ sudo git pull origin master
 ```
 
-## Step 4.1 - Run composer to retrieve vendor dependencies
+## Step 4 - Run composer to retrieve vendor dependencies
 
 L'Air du Bois uses a lot of external libs and bundles. This step permits to automaticaly download them.
 
@@ -218,14 +218,6 @@ At the end of the download process, you will be invite to enter configuration pa
 This will auto generate the `app/config/parameters.yml` file.
 
 Now you are ready to configure Nginx to access to the webroot directory.
-
-## Step 4.2 - Run npm to retrieve js dependencies
-
-L'Air du Bois uses a some externals js libs. This step permits to automaticaly download them.
-
-``` bash
-    $ sudo npm install
-```
 
 ## Step 5 - Setup the virtual host on Nginx
 
