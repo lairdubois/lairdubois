@@ -18,29 +18,22 @@ class WebpushNotificationConsumer implements ConsumerInterface {
 	/////
 
 	public function execute(AMQPMessage $msg) {
-	}
-
-	public function batchExecute(array $messages) {
 		$om = $this->container->get('doctrine')->getManager();
 		$userRepository = $om->getRepository(User::CLASS_NAME);
 
-		foreach ($messages as $message) {
+		$msgBody = unserialize($msg->getBody());
 
-			$msgBody = unserialize($message->getBody());
+		$userId = $msgBody['userId'];
+		$body = $msgBody['body'];
+		$icon = $msgBody['icon'];
+		$link = $msgBody['link'];
 
-			$userId = $msgBody['userId'];
-			$body = $msgBody['body'];
-			$icon = $msgBody['icon'];
-			$link = $msgBody['link'];
+		$user = $userRepository->findOneById($userId);
+		if (!is_null($user)) {
 
-			$user = $userRepository->findOneById($userId);
-			if (!is_null($user)) {
-
-				// Send notification
-				$webpushNotificationUtils = $this->container->get(WebpushNotificationUtils::class);
-				$webpushNotificationUtils->sendNotification($user, $body, $icon, $link);
-
-			}
+			// Send notification
+			$webpushNotificationUtils = $this->container->get(WebpushNotificationUtils::class);
+			$webpushNotificationUtils->sendNotification($user, $body, $icon, $link);
 
 		}
 
