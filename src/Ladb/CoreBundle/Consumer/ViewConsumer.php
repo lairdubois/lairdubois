@@ -115,14 +115,17 @@ class ViewConsumer implements ConsumerInterface {
 
 		if ($updated) {
 
-			// Update in Elasticsearch
-			if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
-				$searchUtils = $this->container->get(SearchUtils::NAME);
-				$searchUtils->replaceEntityInIndex($viewable);
-			}
-
 			// Flush DB updates (view and/or entity)
 			$om->flush();
+
+			// Update in Elasticsearch
+
+//			Elasticsearch update is temporarily removed due to a strange bug that remove item from index...
+
+//			if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
+//				$searchUtils = $this->container->get(SearchUtils::NAME);
+//				$searchUtils->replaceEntityInIndex($viewable);
+//			}
 
 		}
 
