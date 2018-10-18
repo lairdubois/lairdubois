@@ -57,6 +57,11 @@ class ViewConsumer implements ConsumerInterface {
 
 				// Authenticated user -> use viewManager
 
+				// Exclude self contribution view
+				if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+					return;
+				}
+
 				$view = $viewRepository->findOneByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN);
 				if (is_null($view)) {
 
@@ -69,22 +74,12 @@ class ViewConsumer implements ConsumerInterface {
 
 					$om->persist($view);
 
-					// Exclude self contribution view
-					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
-						return;
-					}
-
 					// Increment viewCount
 					$viewable->incrementViewCount();
 
 					$updated = true;
 
 				} else {
-
-					// Exclude self contribution view
-					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
-						return;
-					}
 
 					if ($view->getCreatedAt() <= (new \DateTime())->sub(new \DateInterval('P1D'))) { // 1 day
 
