@@ -9,31 +9,41 @@ use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 
 class WebpushNotificationConsumer implements ConsumerInterface {
 
-	protected $container;
+	private $om;
+	private $userRepository;
+	private $webpushNotificationUtils;
 
 	public function __construct(ContainerInterface $container) {
-		$this->container = $container;
+
+		$this->om = $container->get('doctrine')->getManager();
+		$this->userRepository = $this->om->getRepository(User::CLASS_NAME);
+		$this->webpushNotificationUtils = $this->container->get(WebpushNotificationUtils::class);
+
 	}
 
 	/////
 
 	public function execute(AMQPMessage $msg) {
-		$om = $this->container->get('doctrine')->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
 
-		$msgBody = unserialize($msg->getBody());
+		try {
 
-		$userId = $msgBody['userId'];
-		$body = $msgBody['body'];
-		$icon = $msgBody['icon'];
-		$link = $msgBody['link'];
+			$msgBody = unserialize($msg->getBody());
 
-		$user = $userRepository->findOneById($userId);
+			$userId = $msgBody['userId'];
+			$body = $msgBody['body'];
+			$icon = $msgBody['icon'];
+			$link = $msgBody['link'];
+
+		} catch (\Exception $e) {
+			$this->logger->error('WebpushNotificationConsumer/execute', array( 'execption' => $e ));
+			return;
+		}
+
+		$user = $this->userRepository->findOneById($userId);
 		if (!is_null($user)) {
 
 			// Send notification
-			$webpushNotificationUtils = $this->container->get(WebpushNotificationUtils::class);
-			$webpushNotificationUtils->sendNotification($user, $body, $icon, $link);
+			$this->webpushNotificationUtils->sendNotification($user, $body, $icon, $link);
 
 		}
 

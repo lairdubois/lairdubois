@@ -14,22 +14,32 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ViewConsumer implements ConsumerInterface {
 
-	protected $container;
+	private $logger;
+	private $om;
+	private $userRepository;
+	private $viewRepository;
+	private $typableUtils;
+	private $searchUtils;
 
 	public function __construct(ContainerInterface $container) {
-		$this->container = $container;
+
+		$this->logger = $container->get('logger');
+
+		$this->om = $container->get('doctrine')->getManager();
+		$this->userRepository = $this->om->getRepository(User::CLASS_NAME);
+		$this->viewRepository = $this->om->getRepository(View::CLASS_NAME);
+
+		$this->typableUtils = $container->get(TypableUtils::NAME);
+		$this->searchUtils = $container->get(SearchUtils::NAME);
+
 	}
 
 	/////
 
 	public function execute(AMQPMessage $msg) {
-		$om = $this->container->get('doctrine')->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
-		$viewRepository = $om->getRepository(View::CLASS_NAME);
-		$typableUtils = $this->container->get(TypableUtils::NAME);
-		$logger = $this->container->get('logger');
 
 		try {
+
 			$msgBody = unserialize($msg->getBody());
 
 			$entityType = $msgBody['entityType'];
@@ -37,27 +47,27 @@ class ViewConsumer implements ConsumerInterface {
 			$userId = $msgBody['userId'];
 
 		} catch (\Exception $e) {
-			$logger->error($e);
+			$this->logger->error('ViewConsumer/execute', array ( 'exception' => $e));
 			return;
 		}
 
 		// Retrieve viewable
 		try {
-			$viewable = $typableUtils->findTypable($entityType, $entityId);
+			$viewable = $this->typableUtils->findTypable($entityType, $entityId);
 		} catch(\Exception $e) {
-			$logger->error($e);
+			$this->logger->error('ViewConsumer/execute', array ( 'exception' => $e));
 			return;
 		}
 		$updated = false;
 
 		if (!is_null($userId)) {
 
-			$user = $userRepository->findOneById($userId);
+			$user = $this->userRepository->findOneById($userId);
 			if (!is_null($user)) {
 
 				// Authenticated user -> use viewManager
 
-				$view = $viewRepository->findOneByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN);
+				$view = $this->viewRepository->findOneByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN);
 				if (is_null($view)) {
 
 					// Create a new view
@@ -67,7 +77,7 @@ class ViewConsumer implements ConsumerInterface {
 					$view->setUser($user);
 					$view->setKind(View::KIND_SHOWN);
 
-					$om->persist($view);
+					$this->om->persist($view);
 
 					// Exclude self contribution view
 					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
@@ -116,15 +126,14 @@ class ViewConsumer implements ConsumerInterface {
 		if ($updated) {
 
 			// Flush DB updates (view and/or entity)
-			$om->flush();
+			$this->om->flush();
 
 			// Update in Elasticsearch
 
 //			Elasticsearch update is temporarily removed due to a strange bug that remove item from index...
 
 //			if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
-//				$searchUtils = $this->container->get(SearchUtils::NAME);
-//				$searchUtils->replaceEntityInIndex($viewable);
+//				$this->searchUtils->replaceEntityInIndex($viewable);
 //			}
 
 		}
