@@ -353,7 +353,7 @@ And add the following lines
 ## Setp 12 - Launch background tasks
 
 ``` bash
-    $ bin/console gos:websocket:server &
-    $ bin/console rabbitmq:consumer view &
-    $ bin/console rabbitmq:consumer webpush_notification &
+    $ sudo bin/console --env=prod gos:websocket:server &
+    $ sudo bin/console --env=prod rabbitmq:consumer view &
+    $ sudo bin/console --env=prod rabbitmq:consumer webpush_notification &
 ```
