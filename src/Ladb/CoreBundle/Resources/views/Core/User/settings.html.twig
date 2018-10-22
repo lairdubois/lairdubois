@@ -51,8 +51,9 @@
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'user', 'title':('user.account'|trans()), 'formSection':'account' } %}
         {% block body %}
             <div class="form-group">
-                {{ form_label(form.usernameCanonical, 'Nom d\'utilisateur') }}
-                {{ form_widget(form.usernameCanonical, { 'attr': { 'class':'form-control' } }) }}
+                {{ form_label(form.username, 'Nom d\'utilisateur') }}
+                {{ form_errors(form.username) }}
+                {{ form_widget(form.username, { 'attr': { 'class':'form-control' } }) }}
             </div>
             <div class="form-group">
                 {{ form_label(form.displayname, 'Nom affiché') }}

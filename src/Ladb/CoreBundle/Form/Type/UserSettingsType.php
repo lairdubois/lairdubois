@@ -28,7 +28,7 @@ class UserSettingsType extends AbstractType {
 					->create('avatar', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 					->addModelTransformer(new PictureToIdTransformer($this->om))
 			)
-			->add('usernameCanonical', TextType::class, array( 'attr' => array( 'readonly' => true ) ))
+			->add('username', TextType::class)
 			->add('displayname')
 			->add('fullname')
 			->add('email')

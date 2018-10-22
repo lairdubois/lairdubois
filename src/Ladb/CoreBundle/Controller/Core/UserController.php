@@ -2,10 +2,13 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Entity\Core\UserWitness;
 use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
 use Ladb\CoreBundle\Entity\Promotion\Graphic;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
+use Ladb\CoreBundle\Form\Model\ChangeUsername;
+use Ladb\CoreBundle\Form\Type\UserChangeUsernameType;
 use Ladb\CoreBundle\Utils\CryptoUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -294,12 +297,32 @@ class UserController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 
 		$user = $this->getUser();
+		$oldUsername = $user->getUsernameCanonical();
 		$form = $this->createForm(UserSettingsType::class, $user);
 
 		if ($request->isMethod('post')) {
 			$form->handleRequest($request);
 
 			if ($form->isValid()) {
+
+				// Check if new username
+				if ($user->getUsernameCanonical() != $oldUsername) {
+
+					// Check if witness already exists
+					$userWitnessRepository = $om->getRepository(UserWitness::class);
+					$userWitness = $userWitnessRepository->findOneByUsername($oldUsername);
+					if (is_null($userWitness)) {
+
+						// No previous, create a new witness
+						$userWitness = new UserWitness();
+						$userWitness->setUsername($oldUsername);
+						$userWitness->setUser($user);
+
+						$om->persist($userWitness);
+
+					}
+
+				}
 
 				$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 				$fieldPreprocessorUtils->preprocessFields($user->getMeta()->getBiography());
@@ -1101,7 +1124,18 @@ class UserController extends Controller {
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
+
+			// Try to load user witness
+			$om = $this->getDoctrine()->getManager();
+			$userWitnessRepository = $om->getRepository(UserWitness::class);
+			$userWitness = $userWitnessRepository->findOneByUsername($username);
+			if (is_null($userWitness) || is_null($userWitness->getUser())) {
+				throw $this->createNotFoundException('User not found');
+			}
+
+			$user = $userWitness->getUser();
+			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $user->getUsernameCanonical() )));
+
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('User not enabled');
