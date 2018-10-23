@@ -4,9 +4,17 @@
     {{ form_errors(form) }}
     <fieldset>
         <div class="form-group">
-            {{ form_label(form.legend, 'Légende de l\'image') }}
+            {{ form_label(form.legend, 'Légende de l\'image (facultatif)') }}
             {{ form_errors(form.legend) }}
             {{ form_widget(form.legend, { 'attr':{ 'class':'form-control' } }) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.sourceUrl, 'Lien source de l\'image (facultatif)') }}
+            {{ form_errors(form.sourceUrl) }}
+            <div class="input-group">
+                <span class="input-group-addon"><i class="ladb-icon-link"></i></span>
+                {{ form_widget(form.sourceUrl, { 'attr':{ 'class':'form-control' } }) }}
+            </div>
         </div>
         <div class="row{% if not is_granted("ROLE_ADMIN") %} hidden{% endif %}">
             <div class="form-group col-xs-6">

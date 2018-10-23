@@ -19,7 +19,7 @@
 {% set filter = width~'x'~height~filterMode %}
 {% set noMicrodata = (noMicrodata|default(false)) or picture is empty %}
 {% set noSizer = noSizer|default(picture is not null and picture.width == 0) %}
-{% set autoSizer = autoSizer is defined ? autoSizer : (filterMode == 'i' or picture is not null and (picture.width < width or picture.height < height)) %}
+{% set autoSizer = autoSizer is defined ? autoSizer : filterMode == 'i' %}
 {% set noLazyLoad = noLazyLoad|default(false) %}
 
 {% block img %}

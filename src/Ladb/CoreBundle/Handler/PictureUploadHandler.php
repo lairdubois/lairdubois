@@ -68,9 +68,9 @@ class PictureUploadHandler extends \UploadHandler {
 				case Picture::POST_PROCESSOR_SQUARE:
 
 					$imagick = new \Imagick($resourceAbsolutePath.'[0]');
-					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);								// Convert to JPG
-					$imagick->setCompressionQuality(100);												// Set max quality
-					$imagick->setBackgroundColor('#ffffff');											// Set background color to white
+					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);					// Convert to JPG
+					$imagick->setCompressionQuality(100);										// Set max quality
+					$imagick->setBackgroundColor('#ffffff');									// Set background color to white
 					$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
 					$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);				// Merge layers
 					$imagick->thumbnailImage(1024, 1024, true, true);			// Rescale to 1024x1024 fill

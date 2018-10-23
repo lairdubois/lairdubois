@@ -11,6 +11,12 @@ class EditPicture {
 	 */
 	private $legend;
 
+	/**
+	 * @Assert\Length(max=255)
+	 * @Assert\Url()
+	 */
+	private $sourceUrl;
+
 	private $rotation = 0;
 
 	/**
@@ -32,6 +38,17 @@ class EditPicture {
 
 	public function getLegend() {
 		return $this->legend;
+	}
+
+	// SourceUrl /////
+
+	public function getSourceUrl() {
+		return $this->sourceUrl;
+	}
+
+	public function setSourceUrl($sourceUrl) {
+		$this->sourceUrl = $sourceUrl;
+		return $this;
 	}
 
 	// Rotation /////

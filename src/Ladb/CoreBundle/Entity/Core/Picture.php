@@ -51,6 +51,13 @@ class Picture {
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @Assert\Length(max=255)
+	 * @Assert\Url()
+	 */
+	private $sourceUrl;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $masterPath;
 
@@ -187,6 +194,17 @@ class Picture {
 
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
+		return $this;
+	}
+
+	// SourceUrl /////
+
+	public function getSourceUrl() {
+		return $this->sourceUrl;
+	}
+
+	public function setSourceUrl($sourceUrl) {
+		$this->sourceUrl = $sourceUrl;
 		return $this;
 	}
 

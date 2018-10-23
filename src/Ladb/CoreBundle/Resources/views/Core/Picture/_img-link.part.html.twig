@@ -4,15 +4,21 @@
 {# set dataGallery (facutative) #}
 
 {% set dataGallery = dataGallery|default('#blueimp-gallery') %}
+{% set hasOverlay = picture.legend is not empty %}
 
 {% block img %}
     <a href="{{ webPath|imagine_filter('1024x1024i') }}" data-gallery="{{ dataGallery }}" title="{{ picture.legend }}" class="thumbnail ladb-cursor-preview{% if aClasses is defined %} {{ aClasses }}{% endif %}" onclick="return false;"{% if not noMicrodata %} itemprop="image"{% endif %}>
-        {% if picture.legend is not null %}<div class="uk-overlay">{% endif %}
+        {% if hasOverlay %}<div class="uk-overlay">{% endif %}
             {% set noMicrodata = true %}
             {{ parent() }}
-            {% if picture.legend is not null %}
-                <div class="uk-overlay-caption ladb-legend">{{ picture.legend|truncate(50) }}</div>
+            {% if hasOverlay %}
+                <div class="uk-overlay-caption">
+                    <span class="ladb-legend">{{ picture.legend|truncate(50) }}</span>
+                </div>
             {% endif %}
-        {% if picture.legend is not null %}</div>{% endif %}
+        {% if hasOverlay %}</div>{% endif %}
     </a>
+    {% if picture.sourceUrl is not empty %}
+        <a href="{{ picture.sourceUrl }}" target="_blank" class="ladb-img-source-link" title="{{ picture.sourceUrl }}"><i class="ladb-icon-link"></i> Source</a>
+    {% endif %}
 {% endblock %}

@@ -12,6 +12,7 @@ class EditPictureType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('legend')
+			->add('sourceUrl')
 			->add('rotation', HiddenType::class)
 			->add('centerX100')
 			->add('centerY100')

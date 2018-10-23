@@ -48,6 +48,7 @@ class PictureController extends Controller {
 
 		$editPicture = new EditPicture();
 		$editPicture->setLegend($picture->getLegend());
+		$editPicture->setSourceUrl($picture->getSourceUrl());
 		$editPicture->setRotation($picture->getRotation());
 		$editPicture->setCenterX100($picture->getCenterX100());
 		$editPicture->setCenterY100($picture->getCenterY100());
@@ -89,8 +90,9 @@ class PictureController extends Controller {
 
 		if ($form->isValid()) {
 
-			// Legend
+			// Legend & SourceUrl
 			$picture->setLegend($editPicture->getLegend());
+			$picture->setSourceUrl($editPicture->getSourceUrl());
 
 			// Rotation
 			$rotation = $editPicture->getRotation();
