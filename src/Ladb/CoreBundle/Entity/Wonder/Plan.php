@@ -27,18 +27,6 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	const STRIPPED_NAME = 'plan';
 	const TYPE = 105;
 
-	const KIND_UNKNOW = 0;
-	const KIND_AUTOCAD = 1;
-	const KIND_SKETCHUP = 2;
-	const KIND_PDF = 3;
-	const KIND_GEOGEBRA = 4;
-	const KIND_SVG = 5;
-	const KIND_FREECAD = 6;
-	const KIND_STL = 7;
-	const KIND_123DESIGN = 8;
-	const KIND_LIBREOFFICE = 9;
-	const KIND_FUISN360 = 10;
-
 	/**
 	 * @ORM\Column(type="text", nullable=false)
 	 * @Assert\NotBlank()
