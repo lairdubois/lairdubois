@@ -13,9 +13,12 @@
     <div class="uk-overlay">
         <img src="{{ src|imagine_filter('128x128o') }}" width="128" height="128" nopin="nopin">
         {% if editable %}
-            <div class="uk-overlay-caption ladb-legend">{% if picture is defined and picture.legend is not null %}{{ picture.legend|truncate(50) }}{% else %}{{ 'picture.no_legend'|trans() }}{% endif %}</div>
+            <div class="uk-overlay-caption ladb-legend">{% if picture is defined and picture.legend is not empty %}{{ picture.legend|truncate(50) }}{% else %}{{ 'picture.no_legend'|trans() }}{% endif %}</div>
         {% endif %}
     </div>
+    {% if picture is defined and picture.sourceUrl is not empty %}
+        <a href="{{ picture.sourceUrl }}" target="_blank" class="ladb-img-source-link" title="{{ picture.sourceUrl }}"><i class="ladb-icon-link"></i> Source</a>
+    {% endif %}
     <div class="ladb-minitools">
         {% if editable %}
             <a href="#edit_{{ formSection }}_modal" data-toggle="modal" onclick="pictureGalleryEditPicture('{{ formSection }}', {{ id }}, '{{ path('core_picture_edit', { 'id':id, 'formSection':formSection, 'sortable':sortable }) }}');" class="ladb-edit ladb-minitools" data-tooltip="tooltip" title="{{ 'picture.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
