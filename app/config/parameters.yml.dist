@@ -58,5 +58,5 @@ parameters:
     funding_min_amount_eur:         1
     funding_max_amount_eur:         100
 
-    bentools_webpush.public_key:    ~
-    bentools_webpush.private_key:   ~
+    bentools_webpush.public_key:    YOUR_WEBPUSH_PUBLIC_KEY
+    bentools_webpush.private_key:   YOUR_WEBPUSH_PRIVATE_KEY

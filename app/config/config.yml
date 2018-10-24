@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "201810231452"
+        version:    "20181024"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -287,6 +287,14 @@ liip_imagine:
         1024x1024i: # Full gallery picture
             filters:
                 thumbnail: { size: [1024, 1024], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+
+        # Crop
+
+        600x450c: # Workflow (showcase)
+            filters:
+                crop: { size: [600, 450], start: [0, 1] }
             post_processors:
                 ladb_imageoptimizer: {}
 
