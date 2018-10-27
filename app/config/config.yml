@@ -243,6 +243,7 @@ liip_imagine:
                 ladb_imageoptimizer: {}
         600x450o: # Block gallery (large)
             filters:
+                relative_resize: { heighten: 450 }
                 thumbnail: { size: [600, 450], mode: outbound, allow_upscale: true }
             post_processors:
                 ladb_imageoptimizer: {}

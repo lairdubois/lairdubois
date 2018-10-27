@@ -139,18 +139,22 @@ class ValidUsernameValidator extends ConstraintValidator {
 				$userWitness = $userWitnessRepository->findOneByUsername($value->getUsernameCanonical());
 				if (is_null($userWitness)) {
 
-					// Check max changes count
-					if ($userWitnessRepository->countByUser($currentUser) > 2) {
-						$this->context->buildViolation('Le nombre limite de 2 changements est déjà atteint.')
-							->atPath('username')
-							->addViolation();
-					}
+					if (!is_null($currentUser)) {
 
-					// Check min change delay
-					else if ($userWitnessRepository->existsNewerFromDate((new \DateTime())->sub(new \DateInterval('P1D')))) {
-						$this->context->buildViolation('Seul 1 nouveau nom d\'utilisateur est possible par tranche de 24h.')
-							->atPath('username')
-							->addViolation();
+						// Check max changes count
+						if ($userWitnessRepository->countByUser($currentUser) > 2) {
+							$this->context->buildViolation('Le nombre limite de 2 changements est déjà atteint.')
+								->atPath('username')
+								->addViolation();
+						}
+
+						// Check min change delay
+						else if ($userWitnessRepository->existsNewerByUserFromDate($currentUser, (new \DateTime())->sub(new \DateInterval('P1D')))) {
+							$this->context->buildViolation('Seul 1 nouveau nom d\'utilisateur est possible par tranche de 24h.')
+								->atPath('username')
+								->addViolation();
+						}
+
 					}
 
 				} else {

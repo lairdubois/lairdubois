@@ -10,12 +10,14 @@ class UserWitnessRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function existsNewerFromDate($date) {
+	public function existsNewerByUserFromDate(User $user, $date) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(e.id)' ))
 			->from($this->getEntityName(), 'e')
-			->where('e.createdAt > :date')
+			->where('e.user = :user')
+			->andWhere('e.createdAt > :date')
+			->setParameter('user', $user)
 			->setParameter('date', $date)
 		;
 		try {
