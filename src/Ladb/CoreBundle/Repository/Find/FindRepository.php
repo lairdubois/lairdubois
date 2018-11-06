@@ -220,6 +220,8 @@ class FindRepository extends AbstractEntityRepository {
 			->innerJoin('f.mainPicture', 'mp')
 			->innerJoin('f.content', 'ct')
 			->where('ct INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Find\\Content\\Event')
+			->andWhere('f.createdAt > :limitDate')
+			->setParameter('limitDate', (new \DateTime())->sub(new \DateInterval('P1Y')))	// Limit search to 1 year ago
 		;
 
 		try {
@@ -230,7 +232,7 @@ class FindRepository extends AbstractEntityRepository {
 			$finds = $queryBuilder->getQuery()->getResult();
 			$runningFinds = array();
 			foreach ($finds as $find) {
-				if ($find->getContent()->getStartAt() <= $now && $find->getContent()->getEndAt() >= $now && $find->getContent()->getDuration()->d <= 3 ) {
+				if ($find->getContent()->getStartAt() <= $now && $find->getContent()->getEndAt() >= $now && $find->getContent()->getDuration()->d <= 3 /* limit to 3 days long events */ ) {
 					$runningFinds[] = $find;
 				}
 			}
