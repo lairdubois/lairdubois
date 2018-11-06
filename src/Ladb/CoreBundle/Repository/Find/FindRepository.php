@@ -232,7 +232,9 @@ class FindRepository extends AbstractEntityRepository {
 			$finds = $queryBuilder->getQuery()->getResult();
 			$runningFinds = array();
 			foreach ($finds as $find) {
-				if ($find->getContent()->getStartDate() <= $now && $find->getContent()->getEndAt() >= $now && $find->getContent()->getDuration()->d <= 3 /* limit to 3 days long events */ ) {
+				if ($find->getContent()->getStartDate() <= $now 	/* event starts today ? */
+					&& $find->getContent()->getEndAt() >= $now 		/* hide finished events */
+					&& $find->getContent()->getDuration()->d <= 3 	/* limit to 3 days long events */ ) {
 					$runningFinds[] = $find;
 				}
 			}
