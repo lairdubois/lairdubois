@@ -332,7 +332,26 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
     $ bin/console assets:install
 ```
 
-## Step 11 - Activate cron commands (Not necessary on the **DEV** server)
+## Step 11 - Initialize ehcache index
+
+This step will create the initial EHcache index.
+
+```bash
+    $ bin/console fos:elastica:populate
+```
+
+## Step 12 - Create a first admin user
+
+This step will create an admin user for the platform. It will prompt you for :
+  - a username
+  - an email
+  - a password
+
+```bash
+    $ bin/console fos:user:create
+```
+
+## Step 13 - Activate cron commands (Not necessary on the **DEV** server)
 
 ``` bash
     $ sudo crontab -e
@@ -350,7 +369,7 @@ And add the following lines
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
 ```
 
-## Setp 12 - Launch background tasks
+## Setp 14 - Launch background tasks
 
 ``` bash
     $ sudo bin/console --env=prod gos:websocket:server &
