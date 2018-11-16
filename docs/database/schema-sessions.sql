@@ -1,6 +1,6 @@
 -- Schema for sessions
 
-CREATE TABLE `sessions` (
+CREATE TABLE IF NOT EXISTS `sessions` (
     `sess_id` VARCHAR(128) NOT NULL PRIMARY KEY,
     `sess_data` BLOB NOT NULL,
     `sess_time` INTEGER UNSIGNED NOT NULL,
