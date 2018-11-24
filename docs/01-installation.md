@@ -325,9 +325,9 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
     $ bin/console assets:install
 ```
 
-## Step 11 - Initialize ehcache index
+## Step 11 - Initialize Elasticsearch index
 
-This step will create the initial EHcache index.
+This step will create the initial Elasticsearch index.
 
 ```bash
     $ bin/console fos:elastica:populate
@@ -362,10 +362,22 @@ And add the following lines
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
 ```
 
-## Setp 14 - Launch background tasks
+## Setp 14 - Launch background process
+
+The Workflow web socket server.
 
 ``` bash
     $ sudo bin/console --env=prod gos:websocket:server &
+```
+
+The RabbitMQ view consumer.
+
+``` bash
     $ sudo bin/console --env=prod rabbitmq:consumer view &
+```
+
+The RabbitMQ webpush notification consumer.
+
+``` bash
     $ sudo bin/console --env=prod rabbitmq:consumer webpush_notification &
 ```
