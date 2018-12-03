@@ -210,7 +210,7 @@ wonder:
       help:
         title: Renseignez ici le titre de votre plan.
         body: Décrivez ici votre plan.
-        resource: "Ajoutez ici jusqu'à <strong>10 fichiers</strong> issues de votre logiciel de <abbr title=\"Dessin Assisté par Ordinateur\">DAO</abbr>.<br><em>Les formats autorisés sont : AutoCAD (DWF, DWG), Sketchup (SKP), PDF, SVG, STL, 123D Design (123DX), Geogebra (GGB), FreeCAD (FCSTD), LibreOffice/Excel (ODS, XLSX, XLSM), Fusion 360 (F3D)</em>."
+        resource: "Ajoutez ici jusqu'à <strong>10 fichiers</strong> issues de votre logiciel de <abbr title=\"Dessin Assisté par Ordinateur\">DAO</abbr>.<br><em>Les formats autorisés sont : AutoCAD (DWF, DWG, DXF), Sketchup (SKP), PDF, SVG, STL, 123D Design (123DX), Geogebra (GGB), FreeCAD (FCSTD), LibreOffice/Excel (ODS, XLSX, XLSM), Fusion 360 (F3D)</em>."
         showcase: Ajoutez jusqu'à <strong>5 images</strong> de <u>capture</u> pour donner un aperçu de votre plan. La première image sera utilisée comme miniature.<br><u>Evitez les photos de la réalisation ici</u>. Préférez la rubrique Créations pour celà.
         inspirations: Associez jusqu'à <strong>4 plans</strong> qui ont été la source d'inspiration de votre plan. Vous n'êtes pas obligé d'être l'auteur de ces plans.<br>Cette association est intéressante si, par exemple, vous avez fait une précédente version de votre plan ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
     choice:
