@@ -2,8 +2,8 @@
 
 {% set entity = howto %}
 
-{% set pageContentItemType = 'Article' %}
-{% set pageContentNameItemProp = 'headline' %}
+{% set pageContentItemType = 'NewsArticle' %}
+{% set pageContentNameItemprop = 'headline' %}
 {% set pageTitlePrefix = '[Pas à pas]' %}
 {% set pageSectionUrl = url('core_howto_list') %}
 {% set pageSectionName = 'howto.howto.list'|trans %}
@@ -79,6 +79,18 @@
             }
         });
     </script>
+{% endblock %}
+
+{% block bodyMetas %}
+    {{ parent() }}
+    <meta itemprop="datePublished" content="{{ howto.createdAt|date('Y-m-dTH:i:s') }}" />
+    <meta itemprop="dateModified" content="{{ howto.updatedAt|date('Y-m-dTH:i:s') }}" />
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="{{ asset('favicon-512x512.jpg') }}">
+        </div>
+        <meta itemprop="name" content="L'Air du Bois">
+    </div>
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}

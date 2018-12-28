@@ -1,10 +1,10 @@
 
 {# set entity #}
 {# set noMicrodata (facultative) #}
-{# set noMicrodataHeadline (facultative) #}
+{# set authorItemprop (facultative) #}
+{# set ageItemprop (facultative) #}
 
 {% set noMicrodata = noMicrodata|default(false) %}
-{% set noMicrodataHeadline = noMicrodata or noMicrodataHeadline|default(false) %}
 {% set noMicrodataAuthor = noMicrodata or noMicrodataAuthor|default(false) %}
 
 <div class="ladb-avatar-header">
@@ -15,7 +15,7 @@
     {% endblock %}
     {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':entity.user, 'size':'64', 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
     <div class="ladb-body">
-        <h1 class="ladb-heading"{# {% if not noMicrodata %} itemprop="name{% if not noMicrodataHeadline %} headline{% endif %}"{% endif %} #}>{% if entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block headingInner %}{{ entity.title|raw }}{% endblock %}</h1>
+        <h1 class="ladb-heading">{% if entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block headingInner %}{{ entity.title|raw }}{% endblock %}</h1>
         {% block subheading %}
             <span class="ladb-subheading">
                 {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'noMicrodata':noMicrodataAuthor } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
