@@ -83,8 +83,8 @@
 
 {% block bodyMetas %}
     {{ parent() }}
-    <meta itemprop="datePublished" content="{{ howto.createdAt|date('Y-m-dTH:i:s') }}" />
-    <meta itemprop="dateModified" content="{{ howto.updatedAt|date('Y-m-dTH:i:s') }}" />
+    <meta itemprop="datePublished" content="{{ entity.createdAt|date('Y-m-dTH:i:s') }}" />
+    <meta itemprop="dateModified" content="{{ entity.updatedAt|date('Y-m-dTH:i:s') }}" />
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
         <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
             <meta itemprop="url" content="{{ asset('favicon-512x512.jpg') }}">

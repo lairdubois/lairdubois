@@ -3,6 +3,7 @@
 {% set entity = post %}
 
 {% set pageContentItemType = 'BlogPosting' %}
+{% set pageContentNameItemprop = 'headline' %}
 {% set pageSectionUrl = url('core_blog_post_list') %}
 {% set pageSectionName = 'blog.post.list'|trans %}
 
@@ -51,6 +52,18 @@
             });
         </script>
     {% endif %}
+{% endblock %}
+
+{% block bodyMetas %}
+    {{ parent() }}
+    <meta itemprop="datePublished" content="{{ entity.createdAt|date('Y-m-dTH:i:s') }}" />
+    <meta itemprop="dateModified" content="{{ entity.updatedAt|date('Y-m-dTH:i:s') }}" />
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="{{ asset('favicon-512x512.jpg') }}">
+        </div>
+        <meta itemprop="name" content="L'Air du Bois">
+    </div>
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
