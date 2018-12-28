@@ -24,4 +24,9 @@ Disallow: /*?layout=*
 User-agent: Googlebot-Image
 Allow: /media/
 
+User-agent: VelenPublicWebCrawler
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+
 Sitemap: https://www.lairdubois.fr/sitemap-index.xml

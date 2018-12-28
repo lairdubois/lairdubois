@@ -1,7 +1,10 @@
 {% spaceless %}
 
 {# set pageItemType (facultative) #}
+{# set pageContentItemProp (facultative) #}
 {# set pageContentItemType (facultative) #}
+{# set pageContentNameItemProp (facultative) #}
+{# set pageContentDescriptionItemProp (facultative) #}
 
 {% set pageUrl = pageUrl|default(app.request.uri) %}
 {% set pageType = pageType|default('website') %}
@@ -18,6 +21,8 @@
 {% set pageSectionUrl = pageSectionUrl|default('') %}
 {% set pageSectionName = pageSectionName|default('') %}
 {% set pageLicenseUrl = pageLicenseUrl|default('') %}
+{% set pageContentNameItemProp = pageContentNameItemProp|default('name') %}
+{% set pageContentDescriptionItemProp = pageContentDescriptionItemProp|default('description') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
 
 {% endspaceless %}
@@ -162,11 +167,11 @@
             {% endblock %}
         {% endblock %}
     </head>
-    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageContentItemType is defined %} itemscope itemtype="http://schema.org/{{ pageContentItemType }}"{% endif %}>
+    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageContentItemProp is defined %} itemprop="{{ pageContentItemProp }}"{% endif %}{% if pageContentItemType is defined %} itemscope itemtype="http://schema.org/{{ pageContentItemType }}"{% endif %}>
         {% block bodyMetas %}
             {% if pageContentItemType is defined %}
-                <meta itemprop="{{ pageContentItemType == 'Article' ? 'headline' : 'name' }}" content="{% if pageName is defined %}{{ pageName }}{% else %}{{ pageTitle }}{% endif %}" />
-                <meta itemprop="description" content="{{ pageDescription }}" />
+                <meta itemprop="{{ pageContentNameItemProp }}" content="{% if pageName is defined %}{{ pageName }}{% else %}{{ pageTitle }}{% endif %}" />
+                <meta itemprop="{{ pageContentDescriptionItemProp }}" content="{{ pageDescription }}" />
                 {% if pageImage is iterable %}
                     <meta itemprop="image" content="{{ pageImage[0] }}" />
                 {% else %}
