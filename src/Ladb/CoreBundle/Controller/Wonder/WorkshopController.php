@@ -674,6 +674,20 @@ class WorkshopController extends Controller {
 
 						break;
 
+					case 'area-lte':
+
+						$filter = new \Elastica\Query\Range('area', array( 'lte' => intval($facet->value) ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'area-gte':
+
+						$filter = new \Elastica\Query\Range('area', array( 'gte' => intval($facet->value) ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'around':
 
 						if (isset($facet->value)) {
