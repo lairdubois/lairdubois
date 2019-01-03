@@ -3,7 +3,7 @@ Disallow: /login$
 Disallow: /connexion$
 Disallow: /request
 Disallow: /api/*
-Disallow: /admin.php$
+Disallow: /admin*
 Disallow: /*/new$
 Disallow: /*/create*$
 Disallow: /*/edit$
