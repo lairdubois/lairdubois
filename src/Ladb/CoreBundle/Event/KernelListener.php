@@ -45,9 +45,9 @@ class KernelListener implements EventSubscriberInterface {
 			return;
 		}
 
-		// Compute unlisted counters
-		$userUtils = $this->container->get(UserUtils::NAME);
-		$userUtils->computeUnlistedCounters($user);
+//		// Compute unlisted counters
+//		$userUtils = $this->container->get(UserUtils::NAME);
+//		$userUtils->computeUnlistedCounters($user);
 
 	}
 
