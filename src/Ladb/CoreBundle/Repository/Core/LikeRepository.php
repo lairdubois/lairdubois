@@ -74,22 +74,6 @@ class LikeRepository extends AbstractEntityRepository {
 		}
 	}
 
-	public function findOneByUser(User $user) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'l' ))
-			->from($this->getEntityName(), 'l')
-			->where('l.user = :user')
-			->setParameter('user', $user)
-		;
-
-		try {
-			return $queryBuilder->getQuery()->getSingleResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
-		}
-	}
-
 	/////
 
 	public function findPaginedByEntityTypeAndEntityIdJoinedOnUser($entityType, $entityId, $offset, $limit) {
