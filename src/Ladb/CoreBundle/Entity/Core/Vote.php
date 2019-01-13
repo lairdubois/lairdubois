@@ -7,10 +7,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table("tbl_core_vote", indexes={
- *     @ORM\Index(name="IDX_VOTE_ENTITY", columns={"entity_type", "entity_id"}),
- *     @ORM\Index(name="IDX_VOTE_PARENT_ENTITY", columns={"parent_entity_type", "parent_entity_id"})
- * })
+ * @ORM\Table("tbl_core_vote",
+ *		uniqueConstraints={
+ *			@ORM\UniqueConstraint(name="ENTITY_USER_UNIQUE", columns={"entity_type", "entity_id", "user_id"})
+ * 		},
+ *		indexes={
+ *			@ORM\Index(name="IDX_VOTE_ENTITY", columns={"entity_type", "entity_id"}),
+ *			@ORM\Index(name="IDX_VOTE_PARENT_ENTITY", columns={"parent_entity_type", "parent_entity_id"})
+ *		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\VoteRepository")
  */
 class Vote {

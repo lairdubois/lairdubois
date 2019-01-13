@@ -4,19 +4,22 @@ namespace Ladb\CoreBundle\Entity\Knowledge\Value;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\AuthoredTrait;
-use Ladb\CoreBundle\Model\CommentableTrait;
-use Ladb\CoreBundle\Model\VotableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\AuthoredTrait;
+use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Model\VotableTrait;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\VotableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
 
 /**
- * @ORM\Table("tbl_knowledge2_value", uniqueConstraints={@ORM\UniqueConstraint(name="data_unique", columns={"data_hash", "parent_entity_type", "parent_entity_id", "parent_entity_field"})})
+ * @ORM\Table("tbl_knowledge2_value",
+ *		uniqueConstraints={
+ *			@ORM\UniqueConstraint(name="data_unique", columns={"data_hash", "parent_entity_type", "parent_entity_id", "parent_entity_field"})
+ * 		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\Value\BaseValueRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="integer")
