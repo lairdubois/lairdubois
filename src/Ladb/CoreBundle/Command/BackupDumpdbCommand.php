@@ -20,6 +20,7 @@ class BackupDumpdbCommand extends ContainerAwareCommand {
 			->addOption('overwrite', null, InputOption::VALUE_NONE, 'Define previous dump file is overwrited')
 			->addOption('table', null, InputOption::VALUE_REQUIRED, 'Dump this table ONLY')
 			->addOption('ignore-table', null, InputOption::VALUE_REQUIRED, 'Ignore given table (write without DB name)')
+			->addOption('where', null, InputOption::VALUE_REQUIRED, 'Dump only selected records. Quotes are mandatory.')
 			->setDescription('Dump the database')
 			->setHelp(<<<EOT
 The <info>ladb:backup:db</info> command dump the database
@@ -34,6 +35,7 @@ EOT
 		$overwrite = $input->getOption('overwrite');
 		$table = $input->getOption('table');
 		$ignoreTable = $input->getOption('ignore-table');
+		$where = $input->getOption('where');
 
 		$dbHost = $this->getContainer()->getParameter('database_host');
 		$dbPort = $this->getContainer()->getParameter('database_port');
@@ -61,6 +63,9 @@ EOT
 		}
 		if (!is_null($ignoreTable)) {
 			$mysqldumpCommand .= ' --ignore-table='.$dbName.'.'.$ignoreTable;
+		}
+		if (!is_null($where)) {
+			$mysqldumpCommand .= ' --where="'.$where.'"';
 		}
 		if (!is_null($dbName)) {
 			$mysqldumpCommand .= ' '.$dbName;
@@ -91,6 +96,8 @@ EOT
 
 		// Execute mysqldump command
 		$mysqldumpCommand .= ' > '.$sqlFile;
+		$output->writeln('<info>Executing mysqldump command ... </info>');
+		$output->writeln(' '.$mysqldumpCommand);
 		if (system($mysqldumpCommand) === false) {
 			$output->writeln('<error>Error executing mysqldump command.</error>');
 			return;
