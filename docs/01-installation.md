@@ -58,19 +58,19 @@ Be sure you activate the following parameters (by uncomment or replace) :
 ```
 
 ``` bash
-    $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.1-mbstring php7.1-xml php7.1-zip php7.1-bz2 php7.1-gmp php7.1-bcmath
+    $ sudo apt-get install php7.2 php7.2-cli php7.2-curl php7.2-intl php7.2-gd php7.2-imagick php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-zip php7.2-bz2 php7.2-gmp php7.2-bcmath
 ```
 
 You can now configure PHP.
 
 ``` bash
-    $ sudo nano /etc/php/7.1/fpm/php.ini
+    $ sudo nano /etc/php/7.2/fpm/php.ini
 ```
 
 Be sure you activate the following parameters (by uncomment or replace) :
 
 ```
-    # /etc/php/7.1/fpm/php.ini
+    # /etc/php/7.2/fpm/php.ini
 
     date.timezone = Europe/Paris
     upload_max_filesize = 60M
@@ -83,11 +83,11 @@ Be sure you activate the following parameters (by uncomment or replace) :
 Now configure the process management. You need to adapt this to the available RAM on your server.
 
 ``` bash
-    $ sudo nano /etc/php/7.1/fpm/pool.d/www.conf
+    $ sudo nano /etc/php/7.2/fpm/pool.d/www.conf
 ```
 
 ```
-# /etc/php/7.1/fpm/pool.d/www.conf
+# /etc/php/7.2/fpm/pool.d/www.conf
 
 pm = dynamic
 pm.max_children = 100       # The hard-limit total number of processes allowed
@@ -100,7 +100,7 @@ pm.max_spare_servers = 20   # Max number of spare (waiting for connections) proc
 Restart PHP FPM.
 
 ``` bash
-    $ sudo service php7.1-fpm restart
+    $ sudo service php7.2-fpm restart
 ```
 
 
