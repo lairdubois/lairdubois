@@ -2,14 +2,11 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use CommerceGuys\Addressing\Address;
+use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
+use CommerceGuys\Addressing\Country\CountryRepository;
 use CommerceGuys\Addressing\Formatter\DefaultFormatter;
-use CommerceGuys\Addressing\Model\Address;
-use CommerceGuys\Addressing\Repository\AddressFormatRepository;
-use CommerceGuys\Addressing\Repository\CountryRepository;
-use CommerceGuys\Addressing\Repository\SubdivisionRepository;
-use Ivory\GoogleMap\Overlays\InfoWindow;
-use Ivory\GoogleMap\Events\MouseEvent;
-use Ivory\GoogleMap\Services\Geocoding\GeocoderRequest;
+use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use Ladb\CoreBundle\Model\LocalisableExtendedInterface;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 
@@ -91,7 +88,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 					$addressFormatRepository = new AddressFormatRepository();
 					$countryRepository = new CountryRepository();
 					$subdivisionRepository = new SubdivisionRepository();
-					$formatter = new DefaultFormatter($addressFormatRepository, $countryRepository, $subdivisionRepository, 'fr_FR', array('html' => false));
+					$formatter = new DefaultFormatter($addressFormatRepository, $countryRepository, $subdivisionRepository, array( 'locale' => '\'fr_FR\'', 'html' => false ));
 
 					$a = new Address();
 
