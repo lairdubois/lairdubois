@@ -139,20 +139,31 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 		$googleApiKey = $this->getParameter('google_api_key');
 		try {
 
-			$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&key='.$googleApiKey;
-			$hash = json_decode(file_get_contents($url), true);
+			$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&key='.$googleApiKey.'&language=fr&region=FR';
+			$contents = file_get_contents($url);
+			$hash = json_decode($contents, true);
 
-			if ($hash && isset($hash['results']) && isset($hash['results'][0]) && isset($hash['results'][0]['geometry']) && isset($hash['results'][0]['geometry']['bounds'])) {
-				$bounds = $hash['results'][0]['geometry']['bounds'];
+			if ($hash && isset($hash['results']) && is_array($hash['results'])) {
 
-				// Returns an Elasticsearch ready bounds array [ top_left, bottom_right ]
-				return array(
-					$bounds['northeast']['lat'].','.$bounds['southwest']['lng'],
-					$bounds['southwest']['lat'].','.$bounds['northeast']['lng'],
-				);
+				foreach ($hash['results'] as $result) {
+
+					if (isset($result['geometry']) && isset($result['geometry']['bounds'])) {
+
+						$bounds = $result['geometry']['bounds'];
+
+						// Returns an Elasticsearch ready bounds array [ top_left, bottom_right ]
+						return array(
+							$bounds['northeast']['lat'].','.$bounds['southwest']['lng'],
+							$bounds['southwest']['lat'].','.$bounds['northeast']['lng'],
+						);
+					}
+
+				}
+
 			}
 
 		} catch (\Exception $e) {
+			$this->get('logger')->err($e);
 		}
 
 		return null;
