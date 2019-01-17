@@ -91,6 +91,53 @@
 
 }
 
+.ladb-answer-thumbnail {
+  padding: 0 10px 20px 10px;
+
+  >.ladb-box {
+    .list-box();
+    .list-box-hover();
+
+    >.ladb-content {
+
+      >.ladb-image {
+        float: left;
+      }
+
+      >.ladb-heading {
+        margin-left: 74px;
+
+        h3 {
+          margin: 5px 0;
+        }
+
+      }
+
+    }
+
+    >.ladb-answer-row {
+      padding: 6px 10px;
+      border-left: 1px solid @ladb-global-border;
+      min-height: 64px;
+
+      >.ladb-box {
+        border: none;
+        padding: 0;
+
+        >.ladb-content-box {
+          padding: 0;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
 .ladb-qa-question, .ladb-answer-row, .ladb-answer-form {
   margin-bottom: @ladb-gutter;
 

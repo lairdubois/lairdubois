@@ -8,67 +8,7 @@
                 {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.answer.vote_up_tooltip'|trans()), 'voteDownTooltip':('qa.answer.vote_down_tooltip'|trans()), 'popoverPlacement':'left' } %}
             </div>
             <div class="ladb-content-box col-sm-pull-1 col-sm-11 col-xs-12">
-                {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
-                {% if answer.isBestAnswer %}
-                    <div class="ladb-best ladb-color-best-answer" data-tooltip="tooltip" title="{{ 'qa.answer.best_tooltip'|trans() }}"><i class="ladb-icon-favorite"></i></div>
-                {% endif %}
-                <div class="ladb-heading">
-                    <div class="ladb-minitools">
-                        {% if is_granted("ROLE_ADMIN") %}
-                            <div class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="{{ path('core_qa_answer_admin_converttocomment', { 'id':answer.id }) }}"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} 'Commentaire'</a></li>
-                                </ul>
-                            </div>
-                        {% endif %}
-                        {% if not app.request.isxmlhttprequest %}
-                            <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers la réponse :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_answer_{{ answer.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
-                        {% endif %}
-                        {% if is_granted("ROLE_ADMIN") or answer.user == app.user %}
-                            <a href="{{ path('core_qa_answer_edit', { 'id':answer.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit"><i class="ladb-icon-edit"></i></a>
-                        {% endif %}
-                        {% if is_granted("ROLE_ADMIN") %}
-                            <a href="#delete_answer_{{ answer.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete"><i class="ladb-icon-delete"></i></a>
-                            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_answer_'~answer.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
-                                {% block bodyInner %}
-                                    <p>La suppression de cette réponse entrainera la perte de toutes les informations qui lui sont relatives.</p>
-                                    <p>Confirmez l'action pour continuer.</p>
-                                {% endblock %}
-                                {% block footerInner %}
-                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                                    <a href="{{ path('core_qa_answer_delete', { 'id':answer.id }) }}" class="btn btn-danger ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
-                                {% endblock %}
-                            {% endembed %}
-                        {% endif %}
-                        {% if answer.user != app.user %}
-                            {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':answer.type, 'entityId':answer.id } %}
-                        {% endif %}
-                    </div>
-                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer, 'classes':'ladb-visible-desktop' } %}
-                </div>
-                <div class="ladb-content">
-                    <div itemprop="text">
-                        {% for block in answer.bodyBlocks %}
-                            {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
-                        {% endfor %}
-                    </div>
-                    {% if answer.updatedAt > answer.createdAt %}
-                        {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':answer } %}
-                    {% endif %}
-                    {% if is_granted("ROLE_ADMIN") and answer.isBestAnswer or is_granted("ROLE_USER") and question.user == app.user %}
-                        <div class="ladb-margin-top">
-                            {% if answer.isBestAnswer %}
-                                <a href="{{ path('core_qa_answer_best_delete', { 'id':answer.id }) }}" class="btn btn-default active"><i class="ladb-icon-check"></i> {{ 'qa.answer.best'|trans() }}</a>
-                            {% elseif answer.voteScore >= 0 %}
-                                <a href="{{ path('core_qa_answer_best_create', { 'id':answer.id }) }}" class="btn btn-default"><i class="ladb-icon-favorite"></i><span class="ladb-hidden-mobile"> {{ 'qa.answer.set_as_best'|trans() }}</span></a>
-                            {% endif %}
-                            {% if question.user == app.user and answer.user != app.user %}
-                                <button href="#" class="btn btn-default ladb-btn-thanks" data-thanks-msg="Merci @{{ answer.user.usernameCanonical }} !"><i class="ladb-icon-comment"></i> Remercier <strong>{{ answer.user.displayName }}</strong></button>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                </div>
+                {% include 'LadbCoreBundle:Qa/Answer:_row-content.part.html.twig' %}
                 {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'notCollapsed':(is_granted("ROLE_USER") and (answer.user == app.user or question.user == app.user)) } %}
             </div>
         </div>

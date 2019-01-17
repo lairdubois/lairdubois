@@ -2,18 +2,16 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Entity\Core\UserWitness;
-use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
-use Ladb\CoreBundle\Entity\Promotion\Graphic;
-use Ladb\CoreBundle\Entity\Qa\Question;
-use Ladb\CoreBundle\Entity\Workflow\Workflow;
-use Ladb\CoreBundle\Form\Model\ChangeUsername;
-use Ladb\CoreBundle\Form\Type\UserChangeUsernameType;
-use Ladb\CoreBundle\Utils\CryptoUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ladb\CoreBundle\Entity\Core\UserWitness;
+use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
+use Ladb\CoreBundle\Entity\Promotion\Graphic;
+use Ladb\CoreBundle\Entity\Qa\Answer;
+use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Core\Follower;
@@ -24,6 +22,7 @@ use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Entity\Core\Registration;
 use Ladb\CoreBundle\Form\Type\UserSettingsType;
+use Ladb\CoreBundle\Utils\CryptoUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
@@ -129,7 +128,7 @@ class UserController extends Controller {
 	 * @Route("/email/unsubscribe/{list}/{encryptedEmail}", requirements={"list" = "notifications|weeknews"}, name="core_user_email_unsubscribe")
 	 * @Template("LadbCoreBundle:Core/User:emailUnsubscribe.html.twig")
 	 */
-	public function emailUnsubsciteAction($list, $encryptedEmail) {
+	public function emailUnsubscribeAction($list, $encryptedEmail) {
 		$userManager = $this->container->get('fos_user.user_manager');
 
 		$invalidEmail = false;
@@ -860,6 +859,47 @@ class UserController extends Controller {
 		return array_merge($parameters, array(
 			'user'            => $user,
 			'tab'             => 'questions',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
+	 * @Route("/{username}/reponses", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_answers")
+	 * @Route("/{username}/reponses/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_answers_filter")
+	 * @Route("/{username}/reponses/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_answers_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showAnswers.html.twig")
+	 */
+	public function showAnswersAction(Request $request, $username, $filter = "recent", $page = 0) {
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_answers', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$items = $answerRepository->findPaginedByUser($user, $offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_answers_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $user->getMeta()->getAnswerCount());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'items'       => $items,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Qa/Answer:list-byuser-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => '',
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 		));
 	}

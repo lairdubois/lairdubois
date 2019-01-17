@@ -1,0 +1,39 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set items #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for item in items %}
+        <div class="ladb-answer-thumbnail">
+            <div class="ladb-box row" onclick="document.location = '{{ ladb_entity_url_action(item.question)~'#_answer_'~item.id }}';">
+                <div class="ladb-content col-sm-6 col-xs-12">
+                    <div class="ladb-image">
+                        <img src="{{ (item.question.mainPicture is defined and item.question.mainPicture is not empty ? item.question.mainPicture.webPath : 'avatar.png')|imagine_filter('64x64o') }}" width="64" height="64">
+                    </div>
+                    <div class="ladb-heading">
+                        {% if item.question.title is defined %}
+                            <h3><a href="{{ ladb_entity_url_action(item.question) }}">{{ item.question.title }}</a></h3>
+                        {% endif %}
+                    </div>
+                    <div class="ladb-subheading">
+                        {% if item.question.user is defined %}
+                            {{ 'default.by'|trans() }}&nbsp;<a href="{{ url('core_user_show', { 'username':item.question.user.usernameCanonical }) }}">{{ item.question.user.displayname }}</a>
+                        {% endif %}
+                        {% if item.question.age is defined %}
+                            <span class="ladb-age">{{ item.question.createdAt|time_diff }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="ladb-answer-row col-sm-6 col-xs-12">
+                    <div class="ladb-box">
+                        <div class="ladb-content-box">
+                            {% include 'LadbCoreBundle:Qa/Answer:_row-content.part.html.twig' with { 'answer':item, 'noInteraction':true } %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
