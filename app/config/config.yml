@@ -486,6 +486,8 @@ fos_elastica:
                         workshopCount: { type: integer }
                         inspirationCount: { type: integer }
                         reboundCount: { type: integer }
+                        kinds:
+                            type: "integer"
                         user:
                             type: "object"
                             properties:

@@ -140,6 +140,8 @@ services:
   ladb_core.book_utils:
     class: Ladb\CoreBundle\Utils\BookUtils
     arguments: ['@service_container']
+  ladb_core.resource_utils:
+    class: Ladb\CoreBundle\Utils\ResourceUtils
   Ladb\CoreBundle\Utils\WebpushNotificationUtils:
     arguments: ['@service_container']
 

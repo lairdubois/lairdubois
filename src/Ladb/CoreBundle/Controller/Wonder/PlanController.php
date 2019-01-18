@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Entity\Core\Resource;
+use Ladb\CoreBundle\Utils\ResourceUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -783,6 +785,15 @@ class PlanController extends Controller {
 					case 'license':
 
 						$filter = new \Elastica\Query\MatchPhrase('license.strippedname', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
+					case 'kind':
+
+						$resourceUtils = $this->get(ResourceUtils::NAME);
+						$kind = $resourceUtils->getKindFromStrippedName($facet->value);
+						$filter = new \Elastica\Query\Range('kinds', array( 'gte' => $kind, 'lte' => $kind ));
 						$filters[] = $filter;
 
 						break;
