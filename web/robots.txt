@@ -29,5 +29,9 @@ User-agent: VelenPublicWebCrawler
 Disallow: /
 User-agent: SemrushBot
 Disallow: /
+User-agent: AhrefsBot
+Disallow: /
+User-agent: DotBot
+Disallow: /
 
 Sitemap: https://www.lairdubois.fr/sitemap-index.xml

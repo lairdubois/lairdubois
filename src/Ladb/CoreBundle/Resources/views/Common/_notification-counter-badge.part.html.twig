@@ -1,8 +1,3 @@
-{# set valueName #}
 {# set classes (facultative) #}
 
-{% if is_granted("ROLE_USER") %}
-    {% if app.user.meta is defined and attribute(app.user.meta, valueName) > 0 %}
-        <span class="badge badge-notification{% if classes is defined %} {{ classes }}{% endif %}">{{ attribute(app.user.meta, valueName) }}</span>
-    {% endif %}
-{% endif %}
+<span class="badge badge-notification{% if classes is defined %} {{ classes }}{% endif %}"></span>

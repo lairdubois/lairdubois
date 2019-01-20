@@ -22,7 +22,7 @@
         var left = Math.max(0, (screen.width - width) / 2);
         var specs = 'height=' + height + ',width=' + width + ',top=' + top + ',left=' + left
             + ',status=0,toolbar=0,directories=0,location=0'
-            + ',menubar=0,resizable=1,scrollbars=1'
+            + ',menubar=0,resizable=1,scrollbars=1';
         var windowName = 'sb-window-' + Math.random();
 
         var sharerUrl = null;
@@ -45,16 +45,6 @@
                     'via': button.getAttribute('data-sb-via'),
                     'hashtags': button.getAttribute('data-sb-hashtags')
                 });
-                break;
-            case 'google-plus':
-                sharerUrl = this.buildUrl('https://plus.google.com/share',{
-                    'url': url
-                });
-                if (withCounters) {
-                    $.getJSON('/api/google-plus/share.count.json?url=' + url, function(data) {
-                        that.appendCounterBadge(button, data.count);
-                    });
-                }
                 break;
             case 'pinterest':
                 sharerUrl = this.buildUrl('https://www.pinterest.com/pin/create/button/',{

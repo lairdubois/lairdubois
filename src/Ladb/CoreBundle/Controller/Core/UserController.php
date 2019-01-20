@@ -384,6 +384,44 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * @Route("/counters.json", name="core_user_counters", defaults={"_format" = "json"})
+	 * @Template("LadbCoreBundle:Core/User:counters-xhr.json.twig")
+	 */
+	public function countersAction(Request $request) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$user = $this->getUser();
+		if (is_null($user)) {
+			throw $this->createNotFoundException('No current user (core_user_counters)');
+		}
+
+		// Compute unlisted counters
+		$userUtils = $this->container->get(UserUtils::NAME);
+		$userUtils->computeUnlistedCounters($user);
+
+		return array(
+			'counters' => array(
+				'unlistedWonderCreationCount' => $user->getMeta()->getUnlistedWonderCreationCount(),
+				'unlistedWonderPlanCount' => $user->getMeta()->getUnlistedWonderPlanCount(),
+				'unlistedWonderWorkshopCount' => $user->getMeta()->getUnlistedWonderWorkshopCount(),
+				'unlistedFindFindCount' => $user->getMeta()->getUnlistedFindFindCount(),
+				'unlistedHowtoHowtoCount' => $user->getMeta()->getUnlistedHowtoHowtoCount(),
+				'unlistedKnowledgeWoodCount' => $user->getMeta()->getUnlistedKnowledgeWoodCount(),
+				'unlistedKnowledgeProviderCount' => $user->getMeta()->getUnlistedKnowledgeProviderCount(),
+				'unlistedKnowledgeSchoolCount' => $user->getMeta()->getUnlistedKnowledgeSchoolCount(),
+				'unlistedKnowledgeBookCount' => $user->getMeta()->getUnlistedKnowledgeBookCount(),
+				'unlistedBlogPostCount' => $user->getMeta()->getUnlistedBlogPostCount(),
+				'unlistedFaqQuestionCount' => $user->getMeta()->getUnlistedFaqQuestionCount(),
+				'unlistedQaQuestionCount' => $user->getMeta()->getUnlistedQaQuestionCount(),
+				'unlistedPromotionGraphicCount' => $user->getMeta()->getUnlistedPromotionGraphicCount(),
+				'unlistedWorkflowWorkflowCount' => $user->getMeta()->getUnlistedWorkflowWorkflowCount(),
+			),
+		);
+	}
+
+	/**
 	 * @Route("/{username}/location.geojson", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Core/User:location.geojson.twig")
 	 */

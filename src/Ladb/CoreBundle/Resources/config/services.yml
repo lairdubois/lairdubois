@@ -327,11 +327,6 @@ services:
       - { name: validator.constraint_validator, alias: ladb_core.exclude_domains_link_validator }
 
   # Listeners
-  ladb_core.kernel_listener:
-    class: Ladb\CoreBundle\Event\KernelListener
-    tags:
-      - { name: kernel.event_subscriber }
-    arguments: ['@service_container']
   ladb_core.user_listener:
     class: Ladb\CoreBundle\Event\UserListener
     tags:
