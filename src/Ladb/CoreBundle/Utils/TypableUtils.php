@@ -89,11 +89,23 @@ class TypableUtils extends AbstractContainerAwareUtils {
 	public function findTypable($type, $id) {
 		$repository = $this->getRepositoryByType($type);
 		if (is_null($repository)) {
-			throw new \Exception('Unknow Typable - Bad type (type='.$type.', id='.$id.').');
+			throw new \Exception('Unknow Typable - Bad type (type='.$type.').');
 		}
 		$typable = $repository->findOneByIdJoinedOn($id, $repository->getDefaultJoinOptions());
 		if (is_null($typable)) {
 			throw new \Exception('Unknow Typable - Bad id (type='.$type.', id='.$id.').');
+		}
+		return $typable;
+	}
+
+	public function findTypables($type, array $ids) {
+		$repository = $this->getRepositoryByType($type);
+		if (is_null($repository)) {
+			throw new \Exception('Unknow Typable - Bad type (type='.$type.').');
+		}
+		$typable = $repository->findByIdsJoinedOn($ids, $repository->getDefaultJoinOptions());
+		if (is_null($typable)) {
+			throw new \Exception('Unknow Typable - Bad id (type='.$type.', ids='.implode(',', $ids).').');
 		}
 		return $typable;
 	}

@@ -7,6 +7,7 @@ use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
+use Ladb\CoreBundle\Utils\UserUtils;
 use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -36,20 +37,63 @@ class ViewConsumer implements ConsumerInterface {
 
 	/////
 
-	public function execute(AMQPMessage $msg) {
+	private function _executeListedProcess($entityType, $entityIds, $userId) {
 
-		try {
+		if (!is_null($userId)) {
 
-			$msgBody = unserialize($msg->getBody());
+			$user = $this->userRepository->findOneById($userId);
+			if (!is_null($user)) {
 
-			$entityType = $msgBody['entityType'];
-			$entityId = $msgBody['entityId'];
-			$userId = $msgBody['userId'];
+				// Retrieve viewables
+				try {
+					$viewables = $this->typableUtils->findTypables($entityType, $entityIds);
+				} catch (\Exception $e) {
+					$this->logger->error('ViewConsumer/execute', array('exception' => $e));
+					return;
+				}
 
-		} catch (\Exception $e) {
-			$this->logger->error('ViewConsumer/execute', array ( 'exception' => $e));
-			return;
+				$viewRepository = $this->om->getRepository(View::CLASS_NAME);
+				$viewedCount = $viewRepository->countByEntityTypeAndEntityIdsAndUserAndKind($entityType, $entityIds, $user, View::KIND_LISTED);
+				if ($viewedCount < count($viewables)) {
+
+					$newViewCount = 0;
+					foreach ($viewables as $viewable) {
+
+						if (!$viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_LISTED)) {
+
+							// Create a new listed view
+							$view = new View();
+							$view->setEntityType($viewable->getType());
+							$view->setEntityId($viewable->getId());
+							$view->setUser($user);
+							$view->setKind(View::KIND_LISTED);
+
+							$this->om->persist($view);
+
+							$newViewCount++;
+						}
+
+					}
+
+					if ($newViewCount > 0) {
+
+						$this->om->flush();
+
+						// Force unlisted counter check on next request
+						$userUtils = $this->get(UserUtils::NAME);
+						$userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
+
+					}
+
+				}
+
+			}
+
 		}
+
+	}
+
+	private function _executeShownProcess($entityType, $entityId, $userId) {
 
 		// Retrieve viewable
 		try {
@@ -135,6 +179,44 @@ class ViewConsumer implements ConsumerInterface {
 //			if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
 //				$this->searchUtils->replaceEntityInIndex($viewable);
 //			}
+
+		}
+
+	}
+
+	/////
+
+	public function execute(AMQPMessage $msg) {
+
+		try {
+
+			$msgBody = unserialize($msg->getBody());
+
+			$kind = $msgBody['kind'];
+			$entityType = $msgBody['entityType'];
+			$entityIds = $msgBody['entityIds'];
+			$userId = $msgBody['userId'];
+
+		} catch (\Exception $e) {
+			$this->logger->error('ViewConsumer/execute', array ( 'exception' => $e));
+			return;
+		}
+
+		switch ($kind) {
+
+			case View::KIND_LISTED:
+				$this->_executeListedProcess($entityType, $entityIds, $userId);
+				break;
+
+			case View::KIND_SHOWN:
+				if (is_array($entityIds) && count($entityIds) > 0) {
+					$this->_executeShownProcess($entityType, $entityIds[0], $userId);
+				}
+				break;
+
+			default:
+				$this->logger->error('ViewConsumer/execute (Unknow kind='.$kind.')');
+				return;
 
 		}
 

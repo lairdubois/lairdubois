@@ -16,7 +16,7 @@
     LadbCounters.prototype.updateBadge = function(name, count) {
         if (count > 0) {
             $('.badge-notification.badge-nav-' + name, this.$element).each(function() {
-                this.append(count);
+                this.html(count);
             });
         }
     };

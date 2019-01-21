@@ -125,4 +125,33 @@ abstract class AbstractEntityRepository extends EntityRepository {
 		}
 	}
 
+	public function findByIdsJoinedOn(array $ids, array $joinOptions /* [ [ 0 = type (inner, left), 1 = join, 2 = alias ], [...] ] */) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'e' ))
+			->from($this->getEntityName(), 'e')
+			->where($queryBuilder->expr()->in('e.id', $ids))
+		;
+
+		foreach ($joinOptions as $joinOption) {
+			$type = $joinOption[0];
+			$join = $joinOption[1];
+			$alias = $joinOption[2];
+			$queryBuilder->addSelect($alias);
+			if ($type == 'inner') {
+				$queryBuilder->innerJoin('e.'.$join, $alias);
+			} else if ($type == 'left') {
+				$queryBuilder->leftJoin('e.'.$join, $alias);
+			} else {
+				$queryBuilder->join('e.'.$join, $alias);
+			}
+		}
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
 }

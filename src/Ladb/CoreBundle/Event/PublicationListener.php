@@ -2,11 +2,9 @@
 
 namespace Ladb\CoreBundle\Event;
 
-use Elastica\Index;
-use Ladb\CoreBundle\Model\InspirableInterface;
-use Ladb\CoreBundle\Model\ScrapableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Ladb\CoreBundle\Utils\UserUtils;
 use Ladb\CoreBundle\Utils\OpenGraphUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\TagUtils;
@@ -17,6 +15,8 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
+use Ladb\CoreBundle\Model\InspirableInterface;
+use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\PublicationInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
@@ -449,6 +449,10 @@ class PublicationListener implements EventSubscriberInterface {
 					}
 				}
 			}
+
+			// Compute unlisted counter by entity type
+			$userUtils = $this->container->get(UserUtils::NAME);
+			$userUtils->computeUnlistedCounterByEntityType($user, $entityType, true);
 
 			// Process listed view
 			$viewableUtils = $this->container->get(ViewableUtils::NAME);
