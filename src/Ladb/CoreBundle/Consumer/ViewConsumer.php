@@ -42,27 +42,19 @@ class ViewConsumer implements ConsumerInterface {
 			$user = $this->userRepository->findOneById($userId);
 			if (!is_null($user)) {
 
-				// Retrieve viewables
-				try {
-					$viewables = $this->typableUtils->findTypables($entityType, $entityIds);
-				} catch (\Exception $e) {
-					$this->logger->error('ViewConsumer/execute', array('exception' => $e));
-					return;
-				}
-
 				$viewRepository = $this->om->getRepository(View::CLASS_NAME);
 				$viewedCount = $viewRepository->countByEntityTypeAndEntityIdsAndUserAndKind($entityType, $entityIds, $user, View::KIND_LISTED);
-				if ($viewedCount < count($viewables)) {
+				if ($viewedCount < count($entityIds)) {
 
 					$newViewCount = 0;
-					foreach ($viewables as $viewable) {
+					foreach ($entityIds as $entityId) {
 
-						if (!$viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_LISTED)) {
+						if (!$viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($entityType, $entityId, $user, View::KIND_LISTED)) {
 
 							// Create a new listed view
 							$view = new View();
-							$view->setEntityType($viewable->getType());
-							$view->setEntityId($viewable->getId());
+							$view->setEntityType($entityType);
+							$view->setEntityId($entityId);
 							$view->setUser($user);
 							$view->setKind(View::KIND_LISTED);
 
@@ -78,6 +70,9 @@ class ViewConsumer implements ConsumerInterface {
 						$this->om->flush();
 
 						// Force unlisted counter check on next request
+
+//						Impossible to access user session from consumer
+
 //						$this->userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
 
 					}
