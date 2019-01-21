@@ -122,7 +122,8 @@ class UserUtils extends AbstractContainerAwareUtils {
 					$propertyUtils->setValue($meta, $propertyPath, $count);
 
 					if ($flush) {
-						$om->flush();
+						$userManager = $this->get('fos_user.user_manager');
+						$userManager->updateUser($user);
 					}
 
 					return true;
