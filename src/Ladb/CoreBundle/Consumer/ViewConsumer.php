@@ -1,17 +1,14 @@
 <?php
 namespace Ladb\CoreBundle\Consumer;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
+use PhpAmqpLib\Message\AMQPMessage;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
-use Ladb\CoreBundle\Utils\UserUtils;
-use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
-use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
-use PhpAmqpLib\Message\AMQPMessage;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ViewConsumer implements ConsumerInterface {
 
@@ -33,7 +30,6 @@ class ViewConsumer implements ConsumerInterface {
 
 		$this->typableUtils = $container->get(TypableUtils::NAME);
 		$this->searchUtils = $container->get(SearchUtils::NAME);
-		$this->userUtils = $container->get(UserUtils::NAME);
 
 	}
 
@@ -82,7 +78,7 @@ class ViewConsumer implements ConsumerInterface {
 						$this->om->flush();
 
 						// Force unlisted counter check on next request
-						$this->userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
+//						$this->userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
 
 					}
 
