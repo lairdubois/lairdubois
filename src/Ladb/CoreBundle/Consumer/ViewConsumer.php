@@ -21,6 +21,7 @@ class ViewConsumer implements ConsumerInterface {
 	private $viewRepository;
 	private $typableUtils;
 	private $searchUtils;
+	private $userUtils;
 
 	public function __construct(ContainerInterface $container) {
 
@@ -32,6 +33,7 @@ class ViewConsumer implements ConsumerInterface {
 
 		$this->typableUtils = $container->get(TypableUtils::NAME);
 		$this->searchUtils = $container->get(SearchUtils::NAME);
+		$this->userUtils = $container->get(UserUtils::NAME);
 
 	}
 
@@ -80,8 +82,7 @@ class ViewConsumer implements ConsumerInterface {
 						$this->om->flush();
 
 						// Force unlisted counter check on next request
-						$userUtils = $this->get(UserUtils::NAME);
-						$userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
+						$this->userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
 
 					}
 
