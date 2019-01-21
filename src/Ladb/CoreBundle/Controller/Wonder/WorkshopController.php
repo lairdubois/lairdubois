@@ -790,7 +790,7 @@ class WorkshopController extends Controller {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'workshops' => $searchParameters['entities'],
@@ -800,11 +800,15 @@ class WorkshopController extends Controller {
 
 			$features = array();
 			foreach ($searchParameters['entities'] as $workshop) {
+				$geoPoint = $workshop->getGeoPoint();
+				if (is_null($geoPoint)) {
+					continue;
+				}
 				$properties = array(
 					'type'    => 0,
 					'cardUrl' => $this->generateUrl('core_workshop_card', array( 'id' => $workshop->getId() )),
 				);
-				$gerometry = new \GeoJson\Geometry\Point($workshop->getGeoPoint());
+				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
 				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
 			}
 			$crs = new \GeoJson\CoordinateReferenceSystem\Named('urn:ogc:def:crs:OGC:1.3:CRS84');

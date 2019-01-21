@@ -66,15 +66,7 @@ class ViewConsumer implements ConsumerInterface {
 					}
 
 					if ($newViewCount > 0) {
-
 						$this->om->flush();
-
-						// Force unlisted counter check on next request
-
-//						Impossible to access user session from consumer
-
-//						$this->userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
-
 					}
 
 				}

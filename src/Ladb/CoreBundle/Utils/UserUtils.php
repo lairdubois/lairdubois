@@ -79,6 +79,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		if ($now < $refreshDate) {
 			return false;
 		}
+
 		$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT'.mt_rand(600, 900).'S' /* = between 10 and 15 min */);
 
 		$om = $this->getDoctrine()->getManager();
@@ -121,8 +122,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 					$propertyUtils->setValue($meta, $propertyPath, $count);
 
 					if ($flush) {
-						$userManager = $this->get('fos_user.user_manager');
-						$userManager->updateUser($user);
+						$om->flush();
 					}
 
 					return true;
