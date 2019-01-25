@@ -8,7 +8,7 @@
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ path('core_comment_moveup', { 'id':comment.id }) }}" class="ladb-comment-moveup" data-tooltip="tooltip" title="{{ 'default.move'|trans() }}"><i class="ladb-icon-arrow-up"></i> {{ 'default.move_to'|trans() }}</a></li>
+                        <li><a href="{{ path('core_comment_moveup', { 'id':comment.id }) }}" class="ladb-comment-moveup"><i class="ladb-icon-arrow-up"></i> {{ 'default.move_up'|trans() }}</a></li>
                     </ul>
                 </div>
             {% endif %}
