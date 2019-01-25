@@ -3,5 +3,5 @@
 
 {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' %}
 {% if not comment.parent %}
-    <div id="ladb_comment_{{ comment.id }}_children_collapse" class="ladb-comment-children-collapse collapse"></div>
+    <div id="ladb_comment_{{ comment.id }}_group" class="ladb-comment-children-collapse collapse" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':0, 'alertTransKey':alertTransKey|default('') }) }}"></div>
 {% endif %}

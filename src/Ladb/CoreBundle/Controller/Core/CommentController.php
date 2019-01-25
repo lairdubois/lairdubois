@@ -2,18 +2,18 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
-use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\PicturedUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
@@ -268,15 +268,11 @@ class CommentController extends Controller {
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_comment_delete")
 	 * @Template("LadbCoreBundle:Core/Comment:delete-xhr.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_delete)")
 	 */
 	public function deleteAction($id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_comment_delete)');
-		}
-
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
-		$typableUtils = $this->get(TypableUtils::NAME);
 		$activityUtils = $this->get(ActivityUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 
@@ -300,6 +296,33 @@ class CommentController extends Controller {
 			$searchUtils = $this->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($entity);
 		}
+
+		return array();
+	}
+
+	/**
+	 * @Route("/{id}/moveup", requirements={"id" = "\d+"}, name="core_comment_moveup")
+	 * @Template("LadbCoreBundle:Core/Comment:moveup-xhr.html.twig")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_moveup)")
+	 */
+	public function moveupAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+
+		$comment = $commentRepository->findOneById($id);
+		if (is_null($comment)) {
+			throw $this->createNotFoundException('Unable to find Comment entity (id='.$id.').');
+		}
+
+		// Moveup comment
+
+		$parent = $comment->getParent();
+		if ($parent) {
+			$parent->removeChild($comment);
+			$parent->incrementChildCount(-1);
+		}
+
+		$om->flush();
 
 		return array();
 	}

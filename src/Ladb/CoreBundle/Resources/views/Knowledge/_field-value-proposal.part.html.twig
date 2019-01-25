@@ -42,7 +42,7 @@
                                     <a href="#" onclick="editValueProposal({{ value.id }}, '{{ path('core_knowledge_value_edit', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
                                 {% endif %}
                                 {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 and not fieldMandatory %}
-                                    <a href="#delete_value_proposal_{{ value.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
+                                    <a href="#delete_value_proposal_{{ value.id }}_modal" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
                                     {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_value_proposal_'~value.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
                                         {% block bodyInner %}
                                             <p>La suppression de cette proposition entrainera la perte de toutes les informations qui lui sont relatives.</p>

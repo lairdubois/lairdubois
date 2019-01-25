@@ -3,15 +3,16 @@
 namespace Ladb\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Ladb\CoreBundle\Utils\MailerUtils;
 
 class MailingWeekNewsCommand extends ContainerAwareCommand {
+
+	use LockableTrait;
 
 	protected function configure() {
 		$this
@@ -26,6 +27,11 @@ EOT
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+
+		if (!$this->lock()) {
+			$output->writeln('The command is already running in another process.');
+			return 0;
+		}
 
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
@@ -365,10 +371,10 @@ EOT
 				$userCount = min($userCount, $limit);
 			}
 
-			$progress = new ProgressBar($output, $userCount);
-			$progress->start();
+			$progressBar = new ProgressBar($output, $userCount);
+			$progressBar->start();
 
-			$batchSize = min(500, $userCount);
+			$batchSize = min(100, $userCount);
 			$batchCount = ceil($userCount / $batchSize);
 
 			for ($batchIndex = 0; $batchIndex < $batchCount; $batchIndex++) {
@@ -393,7 +399,7 @@ EOT
 				}
 
 				foreach ($users as $user) {
-					$progress->advance();
+					$progressBar->advance();
 					if ($verbose) {
 						$output->write('<info>Sending week news to '.$user->getDisplayname().'...</info>');
 					}
@@ -417,9 +423,14 @@ EOT
 
 				unset($users);
 //				$output->writeln('Memory Usage: '.(memory_get_usage() / 1024 / 1024));
+
+				if ($verbose) {
+					$output->writeln('<info>Sleeping for 60 seconds...</info>');
+				}
+				sleep(60);
 			}
 
-			$progress->finish();
+			$progressBar->finish();
 
 			$output->writeln('<comment>[Finished]</comment>');
 

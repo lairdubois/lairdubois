@@ -19,47 +19,45 @@
             </div>
         {% endif %}
         <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_group"{% if collapsible %} class="collapse{% if notCollapsed %} in{% endif %}"{% endif %} data-ladb-new-path="{{ path('core_comment_new', { 'entityType':commentContext.entityType, 'entityId':commentContext.entityId, 'parentId':0, 'alertTransKey':alertTransKey|default('') }) }}">
-            <div class="ladb-comment-list">
-                {% if not headingHidden %}
-                    <hr class="ladb-divider">
-                    {% if commentContext.activities|length > 0 %}
-                        <div class="btn-group pull-right">
-                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="ladb-icon-settings"></i> <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a id="ladb_comment_settings_show_activities">Afficher l'activité</a></li>
-                                <li><a id="ladb_comment_settings_hide_activities">Masquer l'activité</a></li>
-                            </ul>
+            {% if not headingHidden %}
+                <hr class="ladb-divider">
+                {% if commentContext.activities|length > 0 %}
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-settings"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a id="ladb_comment_settings_show_activities">Afficher l'activité</a></li>
+                            <li><a id="ladb_comment_settings_hide_activities">Masquer l'activité</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+                <h2>{{ 'comment.list'|trans() }}</h2>
+            {% endif %}
+            {% set activityIndex = 0 %}
+            {% for comment in commentContext.comments %}
+                {% for activity in commentContext.activities|slice(activityIndex) if activity.createdAt <= comment.createdAt %}
+                    {% include 'LadbCoreBundle:Core/Activity:_row-'~activity.strippedName~'.part.html.twig' %}
+                    {% set activityIndex = activityIndex + 1 %}
+                {% endfor %}
+                {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' %}
+                <div id="ladb_comment_{{ comment.id }}_group" class="ladb-comment-children-collapse collapse" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':comment.id }) }}">
+                    {% for child in comment.children %}
+                        {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'comment':child } %}
+                    {% endfor %}
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="ladb-fake-new">
+                            {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
+                            <div class="ladb-box">
+                                <button class="btn btn-default btn-block" data-ladb-new-container-selector="#ladb_comment_{{ comment.id }}_group" data-loading-text="{{ 'default.loading'|trans }}">Votre commentaire...</button>
+                            </div>
                         </div>
                     {% endif %}
-                    <h2>{{ 'comment.list'|trans() }}</h2>
-                {% endif %}
-                {% set activityIndex = 0 %}
-                {% for comment in commentContext.comments %}
-                    {% for activity in commentContext.activities|slice(activityIndex) if activity.createdAt <= comment.createdAt %}
-                        {% include 'LadbCoreBundle:Core/Activity:_row-'~activity.strippedName~'.part.html.twig' %}
-                        {% set activityIndex = activityIndex + 1 %}
-                    {% endfor %}
-                    {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' %}
-                    <div id="ladb_comment_{{ comment.id }}_group" class="ladb-comment-children-collapse collapse" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':comment.id }) }}">
-                        {% for child in comment.children %}
-                            {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'comment':child } %}
-                        {% endfor %}
-                        {% if is_granted('ROLE_USER') %}
-                            <div class="ladb-fake-new">
-                                {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
-                                <div class="ladb-box">
-                                    <button class="btn btn-default btn-block" data-ladb-new-container-selector="#ladb_comment_{{ comment.id }}_group" data-loading-text="{{ 'default.loading'|trans }}">Votre commentaire...</button>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                {% for activity in commentContext.activities|slice(activityIndex) %}
-                    {% include 'LadbCoreBundle:Core/Activity:_row-'~activity.strippedName~'.part.html.twig' %}
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
+            {% for activity in commentContext.activities|slice(activityIndex) %}
+                {% include 'LadbCoreBundle:Core/Activity:_row-'~activity.strippedName~'.part.html.twig' %}
+            {% endfor %}
             {% if commentContext.isCommentable %}
                 {% if is_granted('ROLE_USER') %}
                     <div class="ladb-fake-new">

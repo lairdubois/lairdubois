@@ -72,8 +72,6 @@
     LadbCommentWidget.prototype.writeCommentIn = function(msg, newContainerSelector, callback) {
         var that = this;
 
-        console.log(newContainerSelector);
-
         var $newContainer = $(newContainerSelector);
         var newPath = $newContainer.data('ladb-new-path');
         var $new = $newContainer.children('.ladb-new').last();
@@ -181,6 +179,11 @@
             var $btn = $(this);
             $btn.blur();
             $btn.button('loading');
+            $('.tooltip').tooltip('hide');
+
+            if (!confirm('Confirmez votre action.')) {
+                return false;
+            }
 
             var deletePath = $(this).attr('href');
 
@@ -190,6 +193,36 @@
                 context: document.body,
                 success:function(data, textStatus, jqXHR) {
                     $row.remove();
+                    $('#'+ $row.attr('id') + '_group').remove();    // Remove childrens too
+                    $btn.button('reset');
+                },
+                error:function () {
+                    $btn.button('reset');
+                }
+            });
+
+            return false;
+        });
+        $('.ladb-comment-moveup', $row).on('click', function() {
+
+            var $btn = $(this);
+            $btn.blur();
+            $btn.button('loading');
+            $('.tooltip').tooltip('hide');
+            $('.dropdown.open .dropdown-toggle').dropdown('toggle');
+
+            if (!confirm('Confirmez votre action.')) {
+                return false;
+            }
+
+            var moveupPath = $(this).attr('href');
+
+            $.ajax(moveupPath, {
+                cache:false,
+                dataType:"html",
+                context: document.body,
+                success:function(data, textStatus, jqXHR) {
+                    $row.insertAfter($row.parent());
                     $btn.button('reset');
                 },
                 error:function () {
