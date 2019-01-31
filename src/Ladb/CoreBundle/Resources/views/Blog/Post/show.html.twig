@@ -109,7 +109,7 @@
         {% include 'LadbCoreBundle:Blog/Post:_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-post">
-        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title } %}
+        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title, 'noSizer':true, 'noLazyLoad':true } %}
         <div class="ladb-body" itemprop="articleBody">
             {% for block in post.bodyBlocks %}
                 {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
