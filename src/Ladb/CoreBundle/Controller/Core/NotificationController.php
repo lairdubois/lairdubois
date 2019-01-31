@@ -27,8 +27,8 @@ class NotificationController extends Controller {
 		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
-		$offset = $paginatorUtils->computePaginatorOffset($page, 8, 5);
-		$limit = $paginatorUtils->computePaginatorLimit($page, 8, 5);
+		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
 		$paginator = $notificationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_notification_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
 
