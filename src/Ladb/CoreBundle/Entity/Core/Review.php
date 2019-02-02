@@ -29,17 +29,49 @@ class Review implements TypableInterface, TitledInterface, BodiedInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Review';
 	const TYPE = 4;
+
+	/**
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
+
+	/**
+	 * @ORM\Column(name="entity_type", type="smallint", nullable=false)
+	 */
+	private $entityType;
+
+	/**
+	 * @ORM\Column(name="entity_id", type="integer", nullable=false)
+	 */
+	private $entityId;
+
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	protected $createdAt;
+
+	/**
+	 * @ORM\Column(name="updated_at", type="datetime")
+	 * @Gedmo\Timestampable(on="update")
+	 */
+	private $updatedAt;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $user;
+
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=false)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=2, max=100)
 	 */
 	protected $title;
+
 	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 * @Assert\NotBlank()
@@ -47,38 +79,16 @@ class Review implements TypableInterface, TitledInterface, BodiedInterface {
 	 * @LadbAssert\NoMediaLink()
 	 */
 	protected $body;
-	/**
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
-	/**
-	 * @ORM\Column(name="entity_type", type="smallint", nullable=false)
-	 */
-	private $entityType;
-	/**
-	 * @ORM\Column(name="entity_id", type="integer", nullable=false)
-	 */
-	private $entityId;
-	/**
-	 * @ORM\Column(name="updated_at", type="datetime")
-	 * @Gedmo\Timestampable(on="update")
-	 */
-	private $updatedAt;
-	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $user;
-	/**
-	 * @ORM\Column(type="integer", nullable=true)
-	 */
-	private $rating;
+
 	/**
 	 * @ORM\Column(name="html_body", type="text", nullable=true)
 	 */
 	private $htmlBody;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true)
+	 */
+	private $rating;
 
 	/////
 
@@ -96,56 +106,56 @@ class Review implements TypableInterface, TitledInterface, BodiedInterface {
 
 	// EntityType /////
 
-	public function getEntityType() {
-		return $this->entityType;
-	}
-
 	public function setEntityType($entityType) {
 		$this->entityType = $entityType;
 	}
 
-	// EntityId /////
-
-	public function getEntityId() {
-		return $this->entityId;
+	public function getEntityType() {
+		return $this->entityType;
 	}
+
+	// EntityId /////
 
 	public function setEntityId($entityId) {
 		$this->entityId = $entityId;
 		return $this;
 	}
 
-	// CreatedAt /////
-
-	public function getCreatedAt() {
-		return $this->createdAt;
+	public function getEntityId() {
+		return $this->entityId;
 	}
+
+	// CreatedAt /////
 
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
-	// UpdatedAt /////
-
-	public function getUpdatedAt() {
-		return $this->updatedAt;
+	public function getCreatedAt() {
+		return $this->createdAt;
 	}
+
+	// UpdatedAt /////
 
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
 		return $this;
 	}
 
-	// Rating /////
-
-	public function getRating() {
-		return $this->rating;
+	public function getUpdatedAt() {
+		return $this->updatedAt;
 	}
+
+	// Rating /////
 
 	public function setRating($rating) {
 		$this->rating = $rating;
 		return $this;
+	}
+
+	public function getRating() {
+		return $this->rating;
 	}
 
 }

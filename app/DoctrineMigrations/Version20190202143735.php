@@ -15,6 +15,7 @@ final class Version20190202143735 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+		$this->addSql('ALTER TABLE tbl_core_activity_review DROP FOREIGN KEY FK_8A2005E83E2E969B');
         $this->addSql('ALTER TABLE tbl_core_activity_review ADD CONSTRAINT FK_8A2005E83E2E969B FOREIGN KEY (review_id) REFERENCES tbl_core_review (id)');
     }
 
