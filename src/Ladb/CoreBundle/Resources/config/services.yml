@@ -60,6 +60,9 @@ services:
   ladb_core.commentable_utils:
     class: Ladb\CoreBundle\Utils\CommentableUtils
     arguments: ['@service_container']
+  ladb_core.reviewable_utils:
+    class: Ladb\CoreBundle\Utils\ReviewableUtils
+    arguments: ['@service_container']
   ladb_core.reportable_utils:
     class: Ladb\CoreBundle\Utils\ReportableUtils
     arguments: ['@service_container']

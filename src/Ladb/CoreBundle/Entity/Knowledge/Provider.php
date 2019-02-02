@@ -5,6 +5,8 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Model\ReviewableInterface;
+use Ladb\CoreBundle\Model\ReviewableTrait;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 use Ladb\CoreBundle\Model\LocalisableTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
@@ -22,9 +24,9 @@ use Ladb\CoreBundle\Entity\Knowledge\Value\Phone;
  * @ORM\Table("tbl_knowledge2_provider")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\ProviderRepository")
  */
-class Provider extends AbstractKnowledge implements LocalisableInterface {
+class Provider extends AbstractKnowledge implements LocalisableInterface, ReviewableInterface {
 
-	use LocalisableTrait;
+	use LocalisableTrait, ReviewableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Provider';
 	const TYPE = 111;
@@ -312,6 +314,17 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="providers")
 	 */
 	private $howtos;
+
+
+	/**
+	 * @ORM\Column(name="review_count", type="integer")
+	 */
+	private $reviewCount = 0;
+
+	/**
+	 * @ORM\Column(name="average_rating", type="float")
+	 */
+	private $averageRating = 0;
 
 	/////
 

@@ -4,7 +4,7 @@
     // CLASS DEFINITION
     // ======================
 
-    var LadbBookPage = function(element, options) {
+    var LadbReviewWidget = function(element, options) {
         this.options = options;
         this.$element = $(element);
 
@@ -17,33 +17,33 @@
 
     };
 
-    LadbBookPage.DEFAULTS = {
-        reviewNewPath: null,
-        reviewEditPath: null
+    LadbReviewWidget.DEFAULTS = {
     };
 
-    LadbBookPage.prototype.removeReviewForm = function() {
+    LadbReviewWidget.prototype.removeReviewForm = function() {
         if (this.$reviewForm) {
             this.$reviewForm.remove();
             this.$reviewForm = null;
         }
     };
 
-    LadbBookPage.prototype.revealHiddenRow = function() {
+    LadbReviewWidget.prototype.revealHiddenRow = function() {
         if (this.$hiddenRow) {
             this.$hiddenRow.show();
             this.$hiddenRow = null;
         }
     };
 
-    LadbBookPage.prototype.bindReviewRow = function($row) {
+    LadbReviewWidget.prototype.bindReviewRow = function($row) {
         var that = this;
 
         // Bind buttons
         $('.ladb-btn-edit', $row).on('click', function(e) {
             e.preventDefault();
             $(this).blur();
+            $(this).button('loading');
 
+            var $btn = $(this);
             var editPath = $(this).attr('href');
 
             // Load edit review form
@@ -53,6 +53,7 @@
                 context: document.body,
                 success: function(data, textStatus, jqXHR) {
                     that.bindEditReviewBox($row, data);
+                    $btn.button('reset');
                 },
                 error: function () {
                     console.log('error');
@@ -65,7 +66,7 @@
 
     };
 
-    LadbBookPage.prototype.bindEditReviewBox = function($row, data) {
+    LadbReviewWidget.prototype.bindEditReviewBox = function($row, data) {
         var that = this;
 
         this.removeReviewForm();
@@ -119,7 +120,7 @@
 
     };
 
-    LadbBookPage.prototype.bindNewReviewBox = function(data) {
+    LadbReviewWidget.prototype.bindNewReviewBox = function(data) {
         var that = this;
 
         this.removeReviewForm();
@@ -182,7 +183,7 @@
 
     };
 
-    LadbBookPage.prototype.bindRows = function() {
+    LadbReviewWidget.prototype.bindRows = function() {
         var that = this;
 
         // Bind rows
@@ -192,17 +193,21 @@
 
     };
 
-    LadbBookPage.prototype.bind = function() {
+    LadbReviewWidget.prototype.bind = function() {
         var that = this;
 
         this.bindRows();
 
         // Bind buttons
-        this.$btnNewReview.on('click', function() {
+        this.$btnNewReview.on('click', function(e) {
+            e.preventDefault();
+            $(this).blur();
             $(this).button('loading');
 
+            var newPath = $(this).attr('href');
+
             // Load new review form
-            $.ajax(that.options.reviewNewPath, {
+            $.ajax(newPath, {
                 cache: false,
                 dataType: "html",
                 context: document.body,
@@ -218,7 +223,7 @@
 
     };
 
-    LadbBookPage.prototype.init = function() {
+    LadbReviewWidget.prototype.init = function() {
         var that = this;
 
         this.bind();
@@ -233,11 +238,11 @@
     function Plugin(option) {
         return this.each(function () {
             var $this   = $(this);
-            var data    = $this.data('ladb.bookpage');
-            var options = $.extend({}, LadbBookPage.DEFAULTS, $this.data(), typeof option == 'object' && option);
+            var data    = $this.data('ladb.reviewwidget');
+            var options = $.extend({}, LadbReviewWidget.DEFAULTS, $this.data(), typeof option == 'object' && option);
 
             if (!data) {
-                $this.data('ladb.bookpage', (data = new LadbBookPage(this, options)));
+                $this.data('ladb.reviewwidget', (data = new LadbReviewWidget(this, options)));
             }
             if (typeof option == 'string') {
                 data[option]();
@@ -247,17 +252,17 @@
         })
     }
 
-    var old = $.fn.ladbBookPage;
+    var old = $.fn.ladbReviewWidget;
 
-    $.fn.ladbBookPage             = Plugin;
-    $.fn.ladbBookPage.Constructor = LadbBookPage;
+    $.fn.ladbReviewWidget             = Plugin;
+    $.fn.ladbReviewWidget.Constructor = LadbReviewWidget;
 
 
     // NO CONFLICT
     // =================
 
-    $.fn.ladbBookPage.noConflict = function () {
-        $.fn.ladbBookPage = old;
+    $.fn.ladbReviewWidget.noConflict = function () {
+        $.fn.ladbReviewWidget = old;
         return this;
     }
 

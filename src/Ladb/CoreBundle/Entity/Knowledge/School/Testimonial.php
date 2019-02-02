@@ -24,6 +24,13 @@ class Testimonial implements TypableInterface, BodiedInterface {
 	const TYPE = 116;
 
 	/**
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
+
+	/**
 	 * @ORM\Column(name="created_at", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
 	 */
@@ -34,13 +41,6 @@ class Testimonial implements TypableInterface, BodiedInterface {
 	 * @Gedmo\Timestampable(on="update")
 	 */
 	private $updatedAt;
-
-	/**
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="testimonials")

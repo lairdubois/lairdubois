@@ -60,6 +60,10 @@
 
 {% block headStylesheets %}
     {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/jquery-barrating/ladb-stars.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
     {{ block('mapAreaStylesheets') }}
 {% endblock %}
 
@@ -67,9 +71,18 @@
     {{ parent() }}
     {{ block('mapAreaJavascripts') }}
     {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-barrating/jquery.barrating.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Review Widget #}
+            $('.ladb-review-widget').ladbReviewWidget();
+
+        });
+    </script>
 {% endblock %}
 
 {% block bodyMetas %}
@@ -163,6 +176,7 @@
         <div style="padding: 10px; text-align: center;">
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
+        {% include 'LadbCoreBundle:Core/Review:_widget.part.html.twig' %}
         {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
     </div>
     {{ parent() }}
@@ -184,17 +198,8 @@
                 </a>
             {% endif %}
         </div>
-        <div class="ladb-meta{% if provider.voteCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-check ladb-icon-fixed-center"></i>
-            {% if provider.voteCount > 0 %}
-                <a href="{{ path('core_vote_list_parent_entity', { 'entityType':provider.type, 'entityId':provider.id }) }}">
-            {% endif %}
-            <strong>{{ provider.voteCount|number_format(0, ',', ' ') }}</strong>
-            <small>{{ 'vote.choice.votes'|transchoice(provider.voteCount) }}</small>
-            {% if provider.voteCount > 0 %}
-                </a>
-            {% endif %}
-        </div>
+        {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':provider } %}
+        {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':provider } %}
     </div>
     {% set hasWoods = provider.woodsValues is not empty or 'Bois massif' in provider.products %}
     {% if hasWoods or provider.creationCount > 0 or provider.howtoCount > 0 %}

@@ -26,6 +26,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Message (Message)
 			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
 				return implode($delimiter, array( 'message', 'message' ));
+			// Review
+			case \Ladb\CoreBundle\Entity\Core\Review::TYPE:
+				return implode($delimiter, array( 'core', 'review' ));
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -142,6 +145,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Message (Message)
 			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
 				return '\Ladb\CoreBundle\Entity\Message\Message';
+			// Review
+			case \Ladb\CoreBundle\Entity\Core\Review::TYPE:
+				return '\Ladb\CoreBundle\Entity\Core\Review';
 
 			// Text
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:

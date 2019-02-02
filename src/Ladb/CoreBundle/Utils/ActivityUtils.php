@@ -161,7 +161,7 @@ class ActivityUtils {
 		}
 	}
 
-	public function createReviewActivity(\Ladb\CoreBundle\Entity\Knowledge\Book\Review $review, $flush = true) {
+	public function createReviewActivity(\Ladb\CoreBundle\Entity\Core\Review $review, $flush = true) {
 
 		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Review();
 		$activity->setUser($review->getUser());
@@ -239,9 +239,15 @@ class ActivityUtils {
 		$this->_deleteActivities($activities, $flush);
 	}
 
-	public function deleteActivitiesByReview(\Ladb\CoreBundle\Entity\Knowledge\Book\Review $review, $flush = true) {
+	public function deleteActivitiesByReview(\Ladb\CoreBundle\Entity\Core\Review $review, $flush = true) {
 		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Review::CLASS_NAME);
 		$activities = $activityRepository->findByReview($review);
+		$this->_deleteActivities($activities, $flush);
+	}
+
+	public function deleteActivitiesByOldReview(\Ladb\CoreBundle\Entity\Knowledge\Book\Review $review, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Review::CLASS_NAME);
+		$activities = $activityRepository->findByOldReview($review);
 		$this->_deleteActivities($activities, $flush);
 	}
 

@@ -9,8 +9,8 @@
                             <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers le témoignage :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_review_{{ review.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
                         {% endif %}
                         {% if is_granted("ROLE_ADMIN") or review.user == app.user %}
-                            <a href="{{ path('core_knowledge_book_review_edit', { 'id':review.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit"><i class="ladb-icon-edit"></i></a>
-                            <a href="#delete_review_{{ review.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete"><i class="ladb-icon-delete"></i></a>
+                            <a href="{{ path('core_review_edit', { 'id':review.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>
+                            <a href="#delete_review_{{ review.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
                             {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_review_'~review.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
                                 {% block bodyInner %}
                                     <p>La suppression de cet avis entrainera la perte de toutes les informations qui lui sont relatives.</p>
@@ -18,7 +18,7 @@
                                 {% endblock %}
                                 {% block footerInner %}
                                     <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                                    <a href="{{ path('core_knowledge_book_review_delete', { 'id':review.id }) }}" class="btn btn-danger ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                                    <a href="{{ path('core_review_delete', { 'id':review.id }) }}" class="btn btn-danger ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
                                 {% endblock %}
                             {% endembed %}
                         {% endif %}

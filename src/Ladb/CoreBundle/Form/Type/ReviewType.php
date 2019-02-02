@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\Type\Knowledge\Book;
+namespace Ladb\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,12 +30,12 @@ class ReviewType extends AbstractType {
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Entity\Knowledge\Book\Review',
+			'data_class' => 'Ladb\CoreBundle\Entity\Core\Review',
 		));
 	}
 
 	public function getBlockPrefix() {
-		return 'ladb_knowledge_book_review';
+		return 'ladb_core_review';
 	}
 
 }

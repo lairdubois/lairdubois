@@ -774,6 +774,8 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        reviewCount: { type: integer }
+                        averageRating: { type: float }
                         inStoreSelling: { type: boolean }
                         mailOrderSelling: { type: boolean }
                         saleToIndividuals: { type: boolean }

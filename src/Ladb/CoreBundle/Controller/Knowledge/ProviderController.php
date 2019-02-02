@@ -27,6 +27,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
+use Ladb\CoreBundle\Utils\ReviewableUtils;
 
 
 /**
@@ -294,6 +295,13 @@ class ProviderController extends Controller {
 
 						break;
 
+					case 'with-review':
+
+						$filter = new \Elastica\Query\Range('reviewCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\Range('signRejected', array( 'gte' => 1 ));
@@ -532,6 +540,7 @@ class ProviderController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$reviewableUtils = $this->get(ReviewableUtils::NAME);
 
 		return array(
 			'provider'             => $provider,
@@ -540,6 +549,7 @@ class ProviderController extends Controller {
 			'likeContext'          => $likableUtils->getLikeContext($provider, $this->getUser()),
 			'watchContext'         => $watchableUtils->getWatchContext($provider, $this->getUser()),
 			'commentContext'       => $commentableUtils->getCommentContext($provider),
+			'reviewContext'        => $reviewableUtils->getReviewContext($provider),
 			'hasMap'               => !is_null($provider->getLatitude()) && !is_null($provider->getLongitude()),
 		);
 	}

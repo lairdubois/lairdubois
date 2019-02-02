@@ -143,7 +143,7 @@ class NotificationController extends Controller {
 		}
 
 		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Review) {
-			$entity = $activity->getReview()->getBook();
+			$entity = $typableUtils->findTypable($activity->getReview()->getEntityType(), $activity->getReview()->getEntityId());
 			$returnToUrl = $typableUtils->getUrlAction($entity).'#_review_'.$activity->getReview()->getId();
 		}
 

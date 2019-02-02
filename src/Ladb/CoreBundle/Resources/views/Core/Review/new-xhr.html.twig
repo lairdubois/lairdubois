@@ -1,8 +1,9 @@
-{% extends 'LadbCoreBundle:Knowledge/Book/Review:_form.html.twig' %}
+{% extends 'LadbCoreBundle:Core/Review:_form.html.twig' %}
 
-{% set formAction = path('core_knowledge_book_review_create', { 'id':book.id }) %}
+{% set i18nPrefix = i18nPrefix|default(ladb_entity_type_stripped_name(entity)) %}
+{% set formAction = path('core_review_create', { 'entityType':entity.type, 'entityId':entity.id }) %}
 
-{% block title %}<i class="ladb-icon-plus"></i> {{ 'knowledge.book.review.new'|trans() }}{% endblock %}
+{% block title %}<i class="ladb-icon-plus"></i> {{ ('review.'~i18nPrefix~'.new')|trans() }}{% endblock %}
 
 {% block buttons %}
     <div class="alert alert-info">
@@ -10,7 +11,7 @@
             <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
             <div class="media-body">
                 <h4>A lire avant de publier</h4>
-                <p>Cette critique vous permet d'exprimer de façon synthétique votre avis de lecteur sur le livre : '<strong>{{ book.title }}</strong>'.</p>
+                <p>{{ ('review.'~i18nPrefix~'.form.new_help')|trans() }} : '<strong>{{ entity.title }}</strong>'.</p>
             </div>
         </div>
     </div>

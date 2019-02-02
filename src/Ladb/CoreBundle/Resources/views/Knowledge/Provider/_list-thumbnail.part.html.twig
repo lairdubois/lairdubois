@@ -26,6 +26,7 @@
         <div class="label label-danger"><i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}</div>
     {% endif %}
     {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Review:_thumbnail-meta-counter.part.html.twig' %}
 {% endblock %}
 
 {% block body %}

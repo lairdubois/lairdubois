@@ -4,9 +4,11 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Price;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
-use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Model\ReviewableInterface;
+use Ladb\CoreBundle\Model\ReviewableTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Longtext;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
@@ -20,7 +22,9 @@ use Ladb\CoreBundle\Entity\Knowledge\Value\Isbn;
  * @ORM\Table("tbl_knowledge2_book")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\BookRepository")
  */
-class Book extends AbstractKnowledge {
+class Book extends AbstractKnowledge implements ReviewableInterface {
+
+	use ReviewableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Book';
 	const TYPE = 119;
@@ -920,21 +924,6 @@ class Book extends AbstractKnowledge {
 		return $this->priceValues;
 	}
 
-	// ReviewCount /////
-
-	public function incrementReviewCount($by = 1) {
-		return $this->reviewCount += intval($by);
-	}
-
-	public function setReviewCount($reviewCount) {
-		$this->reviewCount = $reviewCount;
-		return $this;
-	}
-
-	public function getReviewCount() {
-		return $this->reviewCount;
-	}
-
 	// Reviews /////
 
 	public function addReview($review) {
@@ -950,17 +939,6 @@ class Book extends AbstractKnowledge {
 
 	public function getReviews() {
 		return $this->reviews;
-	}
-
-	// AverageRating /////
-
-	public function setAverageRating($averageRating) {
-		$this->averageRating = $averageRating;
-		return $this;
-	}
-
-	public function getAverageRating() {
-		return $this->averageRating;
 	}
 
 }

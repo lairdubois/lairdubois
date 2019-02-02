@@ -852,11 +852,6 @@ knowledge:
         isbn:
         price:
         publish_year:
-    review:
-      new: Ajouter ma critique
-      edit: Editer ma critique
-    choice:
-      reviews: '[0,1]critique|]1,Inf]critiques'
   tool:
     list: Outils
     token:
@@ -974,6 +969,37 @@ comment:
   choice:
     comments: '[0,1]commentaire|]1,Inf]commentaires'
     children: '[0,1]réponse|]1,Inf]réponses'
+
+review:
+  default:
+    choice:
+      reviews: '[0,1]avis/critique|]1,Inf]avis/critiques'
+  knowledge_provider:
+    new: Ajouter mon avis
+    edit: Editer mon avis
+    already: Vous avez déjà apporté votre avis.
+    show_mine: Voir mon avis.
+    none: Cette publication ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
+    form:
+      new_help: Cet avis vous permet d'exprimer de façon synthétique votre expérience auprès du fournisseur
+      body: Votre avis
+    alert:
+      delete_success: L'avis a été supprimé.
+    choice:
+      reviews: '[0,1]avis|]1,Inf]avis'
+  knowledge_book:
+    new: Ajouter ma critique
+    edit: Editer ma critique
+    already: Vous avez déjà apporté votre critique.
+    show_mine: Voir ma critique.
+    none: Ce livre ne possède pour l'instant aucune critique de lecteur.<br>Soyez le premier à ajouter la votre !
+    form:
+      new_help: Cette critique vous permet d'exprimer de façon synthétique votre avis de lecteur sur le livre
+      body: Votre critique
+    alert:
+      delete_success: La critique a été supprimé.
+    choice:
+      reviews: '[0,1]critique|]1,Inf]critiques'
 
 referer:
   list: On en parle ailleurs
@@ -1181,7 +1207,7 @@ notification:
     write: Notifications de messages
     answer: Notifications de réponses
     testify: Notifications de témoignages
-    review: Notifications de critiques
+    review: Notifications d'avis
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
@@ -1194,6 +1220,7 @@ notification:
     write: '[0,1]Notification de nouveau message|]1,Inf]Notification de nouveaux messages'
     answer: '[0,1]Notification de nouvelle réponse|]1,Inf]Notification de nouvelles réponses'
     testify: '[0,1]Notification de nouveau témoignage|]1,Inf]Notification de nouveaux témoignages'
+    review: '[0,1]Notification de nouvel avis|]1,Inf]Notification de nouveaux avis'
 
 share:
   social:

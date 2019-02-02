@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository\Core;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\HiddableInterface;
@@ -27,7 +28,7 @@ class LikeRepository extends AbstractEntityRepository {
 
 		try {
 			return $queryBuilder->getQuery()->getSingleScalarResult() > 0;
-		} catch (\Doctrine\ORM\NoResultException $e) {
+		} catch (NonUniqueResultException $e) {
 			return false;
 		}
 	}
