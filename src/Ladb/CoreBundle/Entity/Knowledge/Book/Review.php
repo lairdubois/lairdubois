@@ -44,7 +44,7 @@ class Review implements TypableInterface, TitledInterface, BodiedInterface {
 	private $updatedAt;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Book", inversedBy="reviews")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Book")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $book;

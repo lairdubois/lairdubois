@@ -298,12 +298,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	private $reviewCount = 0;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Book\Review", mappedBy="book", cascade={"all"})
-	 * @ORM\OrderBy({"rating" = "DESC", "createdAt" = "DESC"})
-	 */
-	private $reviews;
-
-	/**
 	 * @ORM\Column(name="average_rating", type="float")
 	 */
 	private $averageRating = 0;
@@ -328,7 +322,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 		$this->publicDomainValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->priceValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -922,23 +915,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getPriceValues() {
 		return $this->priceValues;
-	}
-
-	// Reviews /////
-
-	public function addReview($review) {
-		if (!$this->reviews->contains($review)) {
-			$this->reviews[] = $review;
-		}
-		return $this;
-	}
-
-	public function removeReview($review) {
-		$this->reviews->removeElement($review);
-	}
-
-	public function getReviews() {
-		return $this->reviews;
 	}
 
 }
