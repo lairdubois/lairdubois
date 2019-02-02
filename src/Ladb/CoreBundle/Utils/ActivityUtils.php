@@ -245,12 +245,6 @@ class ActivityUtils {
 		$this->_deleteActivities($activities, $flush);
 	}
 
-	public function deleteActivitiesByOldReview(\Ladb\CoreBundle\Entity\Knowledge\Book\Review $review, $flush = true) {
-		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Review::CLASS_NAME);
-		$activities = $activityRepository->findByOldReview($review);
-		$this->_deleteActivities($activities, $flush);
-	}
-
 	public function deleteActivitiesByEntityTypeAndEntityId($entityType, $entityId, $flush = true) {
 		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Publish::CLASS_NAME);
 		$activities = $activityRepository->findByEntityTypeAndEntityId($entityType, $entityId);

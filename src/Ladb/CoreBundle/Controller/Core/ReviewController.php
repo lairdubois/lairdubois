@@ -97,6 +97,9 @@ class ReviewController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($review);
 
+			$entity->setChangedAt(new \DateTime());
+			$entity->setUpdatedAt(new \DateTime());
+
 			$entity->incrementReviewCount();
 			$this->getUser()->getMeta()->incrementReviewCount();
 

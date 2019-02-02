@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BasicTimestampableInterface;
+use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\AuthoredTrait;
@@ -19,8 +21,9 @@ use Ladb\CoreBundle\Model\MultiPicturedInterface;
  * })
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\CommentRepository")
  */
-class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterface {
+class Comment implements TypableInterface, BasicTimestampableInterface, BodiedInterface, MultiPicturedInterface {
 
+	use BasicTimestampableTrait;
 	use AuthoredTrait, BodiedTrait, MultiPicturedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Comment';
@@ -139,34 +142,6 @@ class Comment implements TypableInterface, BodiedInterface, MultiPicturedInterfa
 
 	public function getEntityId() {
 		return $this->entityId;
-	}
-
-	// CreatedAt /////
-
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
-	}
-
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
-	// Age /////
-
-	public function getAge() {
-		return $this->getCreatedAt()->diff(new \DateTime());
-	}
-
-	// UpdatedAt /////
-
-	public function setUpdatedAt($updatedAt) {
-		$this->updatedAt = $updatedAt;
-		return $this;
-	}
-
-	public function getUpdatedAt() {
-		return $this->updatedAt;
 	}
 
 	// Parent /////

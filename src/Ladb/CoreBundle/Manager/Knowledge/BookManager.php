@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Manager\Knowledge;
 
 use Ladb\CoreBundle\Entity\Knowledge\Book;
 use Ladb\CoreBundle\Manager\Knowledge\Book\ReviewManager;
+use Ladb\CoreBundle\Utils\ReviewableUtils;
 
 class BookManager extends AbstractKnowledgeManager {
 
@@ -12,10 +13,8 @@ class BookManager extends AbstractKnowledgeManager {
 	public function delete(Book $book, $withWitness = true, $flush = true) {
 
 		// Delete reviews
-		$reviewManager = $this->get(ReviewManager::NAME);
-		foreach ($book->getReviews() as $review) {
-			$reviewManager->delete($review);
-		}
+		$reviewableUtils = $this->get(ReviewableUtils::NAME);
+		$reviewableUtils->deleteReviews($book, false);
 
 		parent::deleteKnowledge($book, $withWitness, $flush);
 	}

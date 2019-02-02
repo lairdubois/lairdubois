@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Model;
 
-interface ReviewableInterface extends IdentifiableInterface, TypableInterface, TitledInterface {
+interface ReviewableInterface extends IdentifiableInterface, TypableInterface, TimestampableInterface, TitledInterface {
 
 	// ReviewCount /////
 

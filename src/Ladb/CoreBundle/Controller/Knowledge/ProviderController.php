@@ -327,6 +327,10 @@ class ProviderController extends Controller {
 						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
 						break;
 
+					case 'sort-popular-rating':
+						$sort = array( 'averageRating' => array( 'order' => 'desc' ) );
+						break;
+
 					case 'sort-random':
 						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
 						break;

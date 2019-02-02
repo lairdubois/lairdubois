@@ -4,6 +4,9 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Model\BasicTimestampableInterface;
+use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\TypableInterface;
@@ -23,8 +26,9 @@ use Ladb\CoreBundle\Model\BodiedInterface;
  * 		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\ReviewRepository")
  */
-class Review implements TypableInterface, TitledInterface, BodiedInterface {
+class Review implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, TitledInterface, BodiedInterface {
 
+	use BasicTimestampableTrait;
 	use AuthoredTrait, TitledTrait, BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Review';
@@ -123,28 +127,6 @@ class Review implements TypableInterface, TitledInterface, BodiedInterface {
 
 	public function getEntityId() {
 		return $this->entityId;
-	}
-
-	// CreatedAt /////
-
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
-	}
-
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
-	// UpdatedAt /////
-
-	public function setUpdatedAt($updatedAt) {
-		$this->updatedAt = $updatedAt;
-		return $this;
-	}
-
-	public function getUpdatedAt() {
-		return $this->updatedAt;
 	}
 
 	// Rating /////
