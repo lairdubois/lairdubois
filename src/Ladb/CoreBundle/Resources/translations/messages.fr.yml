@@ -979,7 +979,7 @@ review:
     edit: Editer mon avis
     already: Vous avez déjà apporté votre avis.
     show_mine: Voir mon avis.
-    none: Cette publication ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
+    none: Ce fournisseur ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
     your_review: votre avis
     form:
       new_help: Cet avis vous permet d'exprimer de façon synthétique votre expérience auprès du fournisseur
