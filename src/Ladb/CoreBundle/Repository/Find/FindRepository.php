@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository\Find;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 use Ladb\CoreBundle\Entity\Find\Find;
@@ -17,7 +18,7 @@ class FindRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function existsByUrl($url, $excludedId = 0) {
+	public function existsByWebsiteUrl($url, $excludedId = 0) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(w.id)' ))
@@ -36,16 +37,22 @@ class FindRepository extends AbstractEntityRepository {
 			if ($queryBuilder->getQuery()->getSingleScalarResult() > 0) {
 				return true;
 			}
-		} catch (\Doctrine\ORM\NoResultException $e) {
+		} catch (NonUniqueResultException $e) {
 			return false;
 		}
 
+		return false;
+	}
+
+	public function existsByVideoKindAndEmbedIdentifier($kind, $embedIdentifier, $excludedId = 0) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(v.id)' ))
 			->from('LadbCoreBundle:Find\Content\Video', 'v')
-			->where('v.url = :url')
-			->setParameter('url', $url)
+			->where('v.kind = :kind')
+			->andWhere('v.embedIdentifier = :embedIdentifier')
+			->setParameter('kind', $kind)
+			->setParameter('embedIdentifier', $embedIdentifier)
 		;
 		if ($excludedId != 0) {
 			$queryBuilder
@@ -58,7 +65,7 @@ class FindRepository extends AbstractEntityRepository {
 			if ($queryBuilder->getQuery()->getSingleScalarResult() > 0) {
 				return true;
 			}
-		} catch (\Doctrine\ORM\NoResultException $e) {
+		} catch (NonUniqueResultException $e) {
 			return false;
 		}
 
