@@ -34,5 +34,7 @@ User-agent: AhrefsBot
 Disallow: /
 User-agent: DotBot
 Disallow: /
+User-agent: Linguee Bot
+Disallow: /
 
 Sitemap: https://www.lairdubois.fr/sitemap-index.xml
