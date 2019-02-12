@@ -39,7 +39,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		$CrawlerDetect = new CrawlerDetect();
 		if ($CrawlerDetect->isCrawler()) {
-			$this->container->get('logger')->info('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
+			$this->container->get('logger')->error('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
 			return;	// Exclude bots
 		}
 
