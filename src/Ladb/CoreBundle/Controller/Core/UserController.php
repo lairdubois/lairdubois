@@ -50,14 +50,14 @@ class UserController extends Controller {
 			$userWitnessRepository = $om->getRepository(UserWitness::class);
 			$userWitness = $userWitnessRepository->findOneByUsername($username);
 			if (is_null($userWitness) || is_null($userWitness->getUser())) {
-				throw $this->createNotFoundException('User not found');
+				throw $this->createNotFoundException('User not found (username='.$username.')');
 			}
 
 			$user = $userWitness->getUser();
 
 		}
 		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+			throw $this->createNotFoundException('User not enabled (username='.$username.')');
 		}
 
 		return $user;
