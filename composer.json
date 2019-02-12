@@ -67,6 +67,7 @@
         "hashids/hashids": "^1.0",
         "dirkgroenen/pinterest-api-php": "^0.2.11",
         "biblys/isbn": "2.0.6",
+        "jaybizzle/crawler-detect" :"1.*",
 
         "components/jquery": "3.3.1",
         "components/jqueryui": "1.12.1",

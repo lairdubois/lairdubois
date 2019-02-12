@@ -2,9 +2,8 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Entity\Core\View;
-use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,7 +36,10 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 	}
 
 	public function processShownView(ViewableInterface $viewable) {
-		if (preg_match('/bot|spider|crawler|curl|facebookexternalhit|^$/i', $_SERVER['HTTP_USER_AGENT'])) {
+
+		$CrawlerDetect = new CrawlerDetect();
+		if ($CrawlerDetect->isCrawler()) {
+			$this->get('logger')->info('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
 			return;	// Exclude bots
 		}
 
