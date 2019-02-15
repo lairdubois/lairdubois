@@ -18,7 +18,6 @@ class ViewConsumer implements ConsumerInterface {
 	private $viewRepository;
 	private $typableUtils;
 	private $searchUtils;
-	private $userUtils;
 
 	public function __construct(ContainerInterface $container) {
 

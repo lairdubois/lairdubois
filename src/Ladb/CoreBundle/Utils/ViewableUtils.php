@@ -39,7 +39,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		$CrawlerDetect = new CrawlerDetect();
 		if ($CrawlerDetect->isCrawler()) {
-			$this->container->get('logger')->error('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
+			$this->container->get('logger')->info('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
 			return;	// Exclude bots
 		}
 
@@ -76,7 +76,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			)));
 
 		} catch (\Exception $e) {
-			$this->container->get('logger')->error('Failed to publish shown view process in queue : '.$e->getMessage());
+			$this->container->get('logger')->error('Failed to publish shown view process in queue', array ( 'exception' => $e));
 		}
 
 	}

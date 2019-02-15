@@ -226,7 +226,7 @@ First you need to install certbot. On Debian Stretch we will be using backports 
 
 ``` bash
     $ sudo echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/stretch_backports.list
-    $ sudo aptitude update
+    $ sudo apt-get update
     $ sudo apt-get install certbot -t stretch-backports
     $ sudo mkdir -p /var/www/.well-known/acme-challenge
 ```
@@ -234,7 +234,7 @@ First you need to install certbot. On Debian Stretch we will be using backports 
 You can now generate certificates.
 
 ``` bash
-    $ sudo certbot certonly -n --text --agree-tos --expand --authenticator webroot --server https://acme-v02.api.letsencrypt.org/directory --rsa-key-size 4096 --email root@sysnove.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com --webroot-path /var/www
+    $ sudo certbot certonly -n --text --agree-tos --expand --authenticator webroot --server https://acme-v02.api.letsencrypt.org/directory --rsa-key-size 4096 --email contact@lairdubois.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com --webroot-path /var/www
 ```
 
 ## Step 6 - Setup the virtual host on Nginx
