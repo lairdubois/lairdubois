@@ -220,7 +220,24 @@ This will auto generate the `app/config/parameters.yml` file.
 
 Now you are ready to configure Nginx to access to the webroot directory.
 
-## Step 5 - Setup the virtual host on Nginx
+## Step 5 - Generate HTTPS certificates (Not necessary on the **DEV** server)
+
+First you need to install certbot. On Debian Stretch we will be using backports repository to get the last version.
+
+``` bash
+    $ sudo echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/stretch_backports.list
+    $ sudo aptitude update
+    $ sudo apt-get install certbot -t stretch-backports
+    $ sudo mkdir -p /var/www/.well-known/acme-challenge
+```
+
+You can now generate certificates.
+
+``` bash
+    $ sudo certbot certonly -n --text --agree-tos --expand --authenticator webroot --server https://acme-v02.api.letsencrypt.org/directory --rsa-key-size 4096 --email root@sysnove.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com --webroot-path /var/www
+```
+
+## Step 6 - Setup the virtual host on Nginx
 
 > If you are on the **PROD** server :
 
@@ -241,30 +258,10 @@ Not that the given DEV config is configured for running on MacOS.
     $ service nginx restart
 ```
 
-## Step 6 - Generate HTTPS certificates (Not necessary on the **DEV** server)
-
-First you need to install certbot.
-
-``` bash
-    $ sudo apt-get install certbot
-```
-
-Before generate the certificates, you need to stop NGINX.
-
-``` bash
-    $ sudo service nginx stop
-```
-
-You can now generate certificates.
-
-``` bash
-    $ certbot certonly --standalone --email contact@lairdubois.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com
-```
-
 Restart NGINX.
 
 ``` bash
-    $ sudo service nginx start
+    $ sudo service nginx restart
 ```
 
 ## Step 7 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
