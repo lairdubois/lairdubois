@@ -58,19 +58,19 @@ Be sure you activate the following parameters (by uncomment or replace) :
 ```
 
 ``` bash
-    $ sudo apt-get install php7.1 php7.1-cli php7.1-curl php7.1-intl php7.1-gd php7.1-imagick php7.1-mysql php7.1-fpm php7.1-mbstring php7.1-xml php7.1-zip php7.1-bz2 php7.1-gmp php7.1-bcmath
+    $ sudo apt-get install php7.2 php7.2-cli php7.2-curl php7.2-intl php7.2-gd php7.2-imagick php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-zip php7.2-bz2 php7.2-gmp php7.2-bcmath
 ```
 
 You can now configure PHP.
 
 ``` bash
-    $ sudo nano /etc/php/7.1/fpm/php.ini
+    $ sudo nano /etc/php/7.2/fpm/php.ini
 ```
 
 Be sure you activate the following parameters (by uncomment or replace) :
 
 ```
-    # /etc/php/7.1/fpm/php.ini
+    # /etc/php/7.2/fpm/php.ini
 
     date.timezone = Europe/Paris
     upload_max_filesize = 60M
@@ -83,11 +83,11 @@ Be sure you activate the following parameters (by uncomment or replace) :
 Now configure the process management. You need to adapt this to the available RAM on your server.
 
 ``` bash
-    $ sudo nano /etc/php/7.1/fpm/pool.d/www.conf
+    $ sudo nano /etc/php/7.2/fpm/pool.d/www.conf
 ```
 
 ```
-# /etc/php/7.1/fpm/pool.d/www.conf
+# /etc/php/7.2/fpm/pool.d/www.conf
 
 pm = dynamic
 pm.max_children = 100       # The hard-limit total number of processes allowed
@@ -100,7 +100,7 @@ pm.max_spare_servers = 20   # Max number of spare (waiting for connections) proc
 Restart PHP FPM.
 
 ``` bash
-    $ sudo service php7.1-fpm restart
+    $ sudo service php7.2-fpm restart
 ```
 
 
@@ -135,6 +135,7 @@ As root :
 ### Install [Elasticsearch](https://www.elastic.co/products/elasticsearch) - *The search engine*
 
 ``` bash
+    $ wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
     $ echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
     $ sudo apt-get update
 ```
@@ -206,7 +207,7 @@ Now you are ready to setup the website itself !
     $ sudo git pull origin master
 ```
 
-## Step 4.1 - Run composer to retrieve vendor dependencies
+## Step 4 - Run composer to retrieve vendor dependencies
 
 L'Air du Bois uses a lot of external libs and bundles. This step permits to automaticaly download them.
 
@@ -219,15 +220,24 @@ This will auto generate the `app/config/parameters.yml` file.
 
 Now you are ready to configure Nginx to access to the webroot directory.
 
-## Step 4.2 - Run npm to retrieve js dependencies
+## Step 5 - Generate HTTPS certificates (Not necessary on the **DEV** server)
 
-L'Air du Bois uses a some externals js libs. This step permits to automaticaly download them.
+First you need to install certbot. On Debian Stretch we will be using backports repository to get the last version.
 
 ``` bash
-    $ sudo npm install
+    $ sudo echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/stretch_backports.list
+    $ sudo apt-get update
+    $ sudo apt-get install certbot -t stretch-backports
+    $ sudo mkdir -p /var/www/.well-known/acme-challenge
 ```
 
-## Step 5 - Setup the virtual host on Nginx
+You can now generate certificates.
+
+``` bash
+    $ sudo certbot certonly -n --text --agree-tos --expand --authenticator webroot --server https://acme-v02.api.letsencrypt.org/directory --rsa-key-size 4096 --email contact@lairdubois.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com --webroot-path /var/www
+```
+
+## Step 6 - Setup the virtual host on Nginx
 
 > If you are on the **PROD** server :
 
@@ -248,30 +258,10 @@ Not that the given DEV config is configured for running on MacOS.
     $ service nginx restart
 ```
 
-## Step 6 - Generate HTTPS certificates (Not necessary on the **DEV** server)
-
-First you need to install certbot.
-
-``` bash
-    $ sudo apt-get install certbot
-```
-
-Before generate the certificates, you need to stop NGINX.
-
-``` bash
-    $ sudo service nginx stop
-```
-
-You can now generate certificates.
-
-``` bash
-    $ certbot certonly --standalone --email contact@lairdubois.fr -d lairdubois.fr -d www.lairdubois.fr -d lairdubois.com -d www.lairdubois.com
-```
-
 Restart NGINX.
 
 ``` bash
-    $ sudo service nginx start
+    $ sudo service nginx restart
 ```
 
 ## Step 7 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
@@ -314,14 +304,7 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 
 ### Build session table
 
-``` bash
-CREATE TABLE `sessions` (
-    `sess_id` VARCHAR(128) NOT NULL PRIMARY KEY,
-    `sess_data` BLOB NOT NULL,
-    `sess_time` INTEGER UNSIGNED NOT NULL,
-    `sess_lifetime` MEDIUMINT NOT NULL
-) COLLATE utf8_bin, ENGINE = InnoDB;
-```
+Execute the SQL script located at [`database/schema-sessions.sql`](database/schema-sessions.sql).
 
 ## Step 8 - Compile and Minimize CSS and JS
 
@@ -339,7 +322,26 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
     $ bin/console assets:install
 ```
 
-## Step 11 - Activate cron commands (Not necessary on the **DEV** server)
+## Step 11 - Initialize Elasticsearch index
+
+This step will create the initial Elasticsearch index.
+
+```bash
+    $ bin/console fos:elastica:populate
+```
+
+## Step 12 - Create a first admin user
+
+This step will create an admin user for the platform. It will prompt you for :
+  - a username
+  - an email
+  - a password
+
+```bash
+    $ bin/console fos:user:create
+```
+
+## Step 13 - Activate cron commands (Not necessary on the **DEV** server)
 
 ``` bash
     $ sudo crontab -e
@@ -357,10 +359,22 @@ And add the following lines
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
 ```
 
-## Setp 12 - Launch background tasks
+## Setp 14 - Launch background process
+
+The Workflow web socket server.
 
 ``` bash
-    $ bin/console gos:websocket:server &
-    $ bin/console rabbitmq:batch:consumer batch_view &
-    $ bin/console rabbitmq:batch:consumer batch_webpush_notification &
+    $ sudo bin/console --env=prod gos:websocket:server &
+```
+
+The RabbitMQ view consumer.
+
+``` bash
+    $ sudo bin/console --env=prod rabbitmq:consumer view &
+```
+
+The RabbitMQ webpush notification consumer.
+
+``` bash
+    $ sudo bin/console --env=prod rabbitmq:consumer webpush_notification &
 ```

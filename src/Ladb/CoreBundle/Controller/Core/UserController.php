@@ -2,17 +2,16 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Elastica\Query\Exists;
-use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
-use Ladb\CoreBundle\Entity\Promotion\Graphic;
-use Ladb\CoreBundle\Entity\Qa\Question;
-use Ladb\CoreBundle\Entity\Workflow\Workflow;
-use Ladb\CoreBundle\Utils\CryptoUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ladb\CoreBundle\Entity\Core\UserWitness;
+use Ladb\CoreBundle\Entity\Knowledge\School\Testimonial;
+use Ladb\CoreBundle\Entity\Promotion\Graphic;
+use Ladb\CoreBundle\Entity\Qa\Answer;
+use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Core\Follower;
@@ -23,6 +22,7 @@ use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Entity\Core\Registration;
 use Ladb\CoreBundle\Form\Type\UserSettingsType;
+use Ladb\CoreBundle\Utils\CryptoUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
@@ -38,6 +38,30 @@ use Ladb\CoreBundle\Utils\UserUtils;
  * @Route("/")
  */
 class UserController extends Controller {
+
+	private function _retrieveUser($username) {
+		$userManager = $this->get('fos_user.user_manager');
+
+		$user = $userManager->findUserByUsername($username);
+		if (is_null($user)) {
+
+			// Try to load user witness
+			$om = $this->getDoctrine()->getManager();
+			$userWitnessRepository = $om->getRepository(UserWitness::class);
+			$userWitness = $userWitnessRepository->findOneByUsername($username);
+			if (is_null($userWitness) || is_null($userWitness->getUser())) {
+				throw $this->createNotFoundException('User not found (username='.$username.')');
+			}
+
+			$user = $userWitness->getUser();
+
+		}
+		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('User not enabled (username='.$username.')');
+		}
+
+		return $user;
+	}
 
 	/**
 	 * @Route("/email/check", name="core_user_email_check")
@@ -104,7 +128,7 @@ class UserController extends Controller {
 	 * @Route("/email/unsubscribe/{list}/{encryptedEmail}", requirements={"list" = "notifications|weeknews"}, name="core_user_email_unsubscribe")
 	 * @Template("LadbCoreBundle:Core/User:emailUnsubscribe.html.twig")
 	 */
-	public function emailUnsubsciteAction($list, $encryptedEmail) {
+	public function emailUnsubscribeAction($list, $encryptedEmail) {
 		$userManager = $this->container->get('fos_user.user_manager');
 
 		$invalidEmail = false;
@@ -296,12 +320,32 @@ class UserController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 
 		$user = $this->getUser();
+		$oldUsername = $user->getUsernameCanonical();
 		$form = $this->createForm(UserSettingsType::class, $user);
 
 		if ($request->isMethod('post')) {
 			$form->handleRequest($request);
 
 			if ($form->isValid()) {
+
+				// Check if new username
+				if ($user->getUsernameCanonical() != $oldUsername) {
+
+					// Check if witness already exists
+					$userWitnessRepository = $om->getRepository(UserWitness::class);
+					$userWitness = $userWitnessRepository->findOneByUsername($oldUsername);
+					if (is_null($userWitness)) {
+
+						// No previous, create a new witness
+						$userWitness = new UserWitness();
+						$userWitness->setUsername($oldUsername);
+						$userWitness->setUser($user);
+
+						$om->persist($userWitness);
+
+					}
+
+				}
 
 				$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 				$fieldPreprocessorUtils->preprocessFields($user->getMeta()->getBiography());
@@ -340,18 +384,51 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * @Route("/counters.json", name="core_user_counters", defaults={"_format" = "json"})
+	 * @Template("LadbCoreBundle:Core/User:counters-xhr.json.twig")
+	 */
+	public function countersAction(Request $request) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$user = $this->getUser();
+		if (is_null($user)) {
+			throw $this->createNotFoundException('No current user (core_user_counters)');
+		}
+
+		// Compute unlisted counters
+		$userUtils = $this->container->get(UserUtils::NAME);
+		$userUtils->computeUnlistedCounters($user);
+
+		return array(
+			'counters' => array(
+				'unlistedWonderCreationCount' => $user->getMeta()->getUnlistedWonderCreationCount(),
+				'unlistedWonderPlanCount' => $user->getMeta()->getUnlistedWonderPlanCount(),
+				'unlistedWonderWorkshopCount' => $user->getMeta()->getUnlistedWonderWorkshopCount(),
+				'unlistedFindFindCount' => $user->getMeta()->getUnlistedFindFindCount(),
+				'unlistedHowtoHowtoCount' => $user->getMeta()->getUnlistedHowtoHowtoCount(),
+				'unlistedKnowledgeWoodCount' => $user->getMeta()->getUnlistedKnowledgeWoodCount(),
+				'unlistedKnowledgeProviderCount' => $user->getMeta()->getUnlistedKnowledgeProviderCount(),
+				'unlistedKnowledgeSchoolCount' => $user->getMeta()->getUnlistedKnowledgeSchoolCount(),
+				'unlistedKnowledgeBookCount' => $user->getMeta()->getUnlistedKnowledgeBookCount(),
+				'unlistedBlogPostCount' => $user->getMeta()->getUnlistedBlogPostCount(),
+				'unlistedFaqQuestionCount' => $user->getMeta()->getUnlistedFaqQuestionCount(),
+				'unlistedQaQuestionCount' => $user->getMeta()->getUnlistedQaQuestionCount(),
+				'unlistedPromotionGraphicCount' => $user->getMeta()->getUnlistedPromotionGraphicCount(),
+				'unlistedWorkflowWorkflowCount' => $user->getMeta()->getUnlistedWorkflowWorkflowCount(),
+			),
+		);
+	}
+
+	/**
 	 * @Route("/{username}/location.geojson", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Core/User:location.geojson.twig")
 	 */
 	public function locationAction(Request $request, $username) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_location)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_location', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		$features = array();
@@ -381,14 +458,9 @@ class UserController extends Controller {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_card)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_card', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		return array(
@@ -401,16 +473,12 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showAbout.html.twig")
 	 */
 	public function showAboutAction($username) {
-		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get('fos_user.user_manager');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_about', array( 'username' => $user->getUsernameCanonical() )));
+		}
 
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_about)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
-		}
+		$om = $this->getDoctrine()->getManager();
 
 		$testimonialRepository = $om->getRepository(Testimonial::CLASS_NAME);
 		$testimonials = $testimonialRepository->findByUser($user);
@@ -433,14 +501,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showLikes.html.twig")
 	 */
 	public function showLikesAction(Request $request, $username, $filter = "sent", $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_likes)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_likes', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -479,14 +542,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showComments.html.twig")
 	 */
 	public function showCommentsAction(Request $request, $username, $filter = "recent", $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_comments)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_comments', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -525,14 +583,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showCreations.html.twig")
 	 */
 	public function showCreationsAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_creations)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_creations', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -583,14 +636,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showWorkshops.html.twig")
 	 */
 	public function showWorkshopsAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_workshops)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_workshops', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -641,14 +689,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showPlans.html.twig")
 	 */
 	public function showPlansAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_plans)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_plans', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -706,14 +749,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showHowtos.html.twig")
 	 */
 	public function showHowtosAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_howtos)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_howtos', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -764,14 +802,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showFinds.html.twig")
 	 */
 	public function showFindsAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found (core_user_show_finds)');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_finds', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -822,14 +855,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showQuestions.html.twig")
 	 */
 	public function showQuestionsAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_questions', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -874,20 +902,56 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * @Route("/{username}/reponses", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_answers")
+	 * @Route("/{username}/reponses/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_answers_filter")
+	 * @Route("/{username}/reponses/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_answers_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showAnswers.html.twig")
+	 */
+	public function showAnswersAction(Request $request, $username, $filter = "recent", $page = 0) {
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_answers', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$items = $answerRepository->findPaginedByUser($user, $offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_answers_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $user->getMeta()->getAnswerCount());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'items'       => $items,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Qa/Answer:list-byuser-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => '',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
 	 * @Route("/{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_graphics")
 	 * @Route("/{username}/graphismes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_graphics_filter")
 	 * @Route("/{username}/graphismes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_graphics_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showGraphics.html.twig")
 	 */
 	public function showGraphicsAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_graphics', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -938,14 +1002,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showWorkflows.html.twig")
 	 */
 	public function showWorkflowsAction(Request $request, $username, $filter = null, $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_workflows', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Default filter
@@ -996,14 +1055,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showFollowing.html.twig")
 	 */
 	public function showFollowingAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_following', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Following
@@ -1044,14 +1098,9 @@ class UserController extends Controller {
 	 * @Template("LadbCoreBundle:Core/User:showFollowers.html.twig")
 	 */
 	public function showFollowersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_followers', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Followers
@@ -1099,14 +1148,9 @@ class UserController extends Controller {
 	 * @Route("/{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show")
 	 */
 	public function showAction($username) {
-		$userManager = $this->get('fos_user.user_manager');
-
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-			throw $this->createNotFoundException('User not found');
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled');
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		if ($user->getMeta()->getPublicCreationCount() > 0) {

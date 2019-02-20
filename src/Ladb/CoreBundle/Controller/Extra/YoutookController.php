@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Extra;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Youtook\Took;
 use Ladb\CoreBundle\Form\Type\Youtook\NewTookType;
@@ -23,8 +22,7 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 class YoutookController extends Controller {
 
 	/**
-	 * @Route("/create", name="core_youtook_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_youtook_create")
 	 * @Template("LadbCoreBundle:Extra/Youtook:create-xhr.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -99,8 +97,7 @@ class YoutookController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_youtook_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_youtook_update")
 	 * @Template("LadbCoreBundle:Extra/Youtook:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

@@ -4,9 +4,11 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Price;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
-use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Model\ReviewableInterface;
+use Ladb\CoreBundle\Model\ReviewableTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Longtext;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
@@ -20,7 +22,9 @@ use Ladb\CoreBundle\Entity\Knowledge\Value\Isbn;
  * @ORM\Table("tbl_knowledge2_book")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\BookRepository")
  */
-class Book extends AbstractKnowledge {
+class Book extends AbstractKnowledge implements ReviewableInterface {
+
+	use ReviewableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Book';
 	const TYPE = 119;
@@ -294,12 +298,6 @@ class Book extends AbstractKnowledge {
 	private $reviewCount = 0;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Book\Review", mappedBy="book", cascade={"all"})
-	 * @ORM\OrderBy({"rating" = "DESC", "createdAt" = "DESC"})
-	 */
-	private $reviews;
-
-	/**
 	 * @ORM\Column(name="average_rating", type="float")
 	 */
 	private $averageRating = 0;
@@ -324,7 +322,6 @@ class Book extends AbstractKnowledge {
 		$this->publicDomainValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->priceValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -918,49 +915,6 @@ class Book extends AbstractKnowledge {
 
 	public function getPriceValues() {
 		return $this->priceValues;
-	}
-
-	// ReviewCount /////
-
-	public function incrementReviewCount($by = 1) {
-		return $this->reviewCount += intval($by);
-	}
-
-	public function setReviewCount($reviewCount) {
-		$this->reviewCount = $reviewCount;
-		return $this;
-	}
-
-	public function getReviewCount() {
-		return $this->reviewCount;
-	}
-
-	// Reviews /////
-
-	public function addReview($review) {
-		if (!$this->reviews->contains($review)) {
-			$this->reviews[] = $review;
-		}
-		return $this;
-	}
-
-	public function removeReview($review) {
-		$this->reviews->removeElement($review);
-	}
-
-	public function getReviews() {
-		return $this->reviews;
-	}
-
-	// AverageRating /////
-
-	public function setAverageRating($averageRating) {
-		$this->averageRating = $averageRating;
-		return $this;
-	}
-
-	public function getAverageRating() {
-		return $this->averageRating;
 	}
 
 }

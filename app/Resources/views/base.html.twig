@@ -1,7 +1,10 @@
 {% spaceless %}
 
 {# set pageItemType (facultative) #}
+{# set pageContentItemprop (facultative) #}
 {# set pageContentItemType (facultative) #}
+{# set pageContentNameItemprop (facultative) #}
+{# set pageContentDescriptionItemprop (facultative) #}
 
 {% set pageUrl = pageUrl|default(app.request.uri) %}
 {% set pageType = pageType|default('website') %}
@@ -18,11 +21,15 @@
 {% set pageSectionUrl = pageSectionUrl|default('') %}
 {% set pageSectionName = pageSectionName|default('') %}
 {% set pageLicenseUrl = pageLicenseUrl|default('') %}
+{% set pageItemType = pageItemType|default('WebPage') %}
+{% set pageContentItemprop = pageContentItemprop|default('mainEntity') %}
+{% set pageContentNameItemprop = pageContentNameItemprop|default('name') %}
+{% set pageContentDescriptionItemprop = pageContentDescriptionItemprop|default('description') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
 
 {% endspaceless %}
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}"{% if pageItemType is defined %} itemscope itemtype="http://schema.org/{{ pageItemType }}"{% endif %}>
+<html lang="{{ app.request.locale }}"itemscope itemtype="http://schema.org/{{ pageItemType }}">
     <head prefix="{% block headPrefix %}og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#{% endblock %}">
         {% block head %}
             <title>{% if is_granted("ROLE_USER") and app.user.meta.freshNotificationCount > 0 %}({{ app.user.meta.freshNotificationCount }}) {% endif %}{% if pageTitlePrefix is defined %}{{ pageTitlePrefix }} {% endif %}{% block title %}{{ pageTitle }}{% if not titleSuffixHidden %} {{ ('default.on'|trans())~' '~('default.ladb'|trans()) }}{% endif %}{% endblock %}</title>
@@ -127,21 +134,15 @@
                             {
                                 "@type": "ListItem",
                                 "position": 1,
-                                "item":
-                                {
-                                    "@id": "{{ pageSectionUrl }}",
-                                    "name": "{{ pageSectionName }}"
-                                }
+                                "name": "{{ pageSectionName }}",
+                                "item": "{{ pageSectionUrl }}"
                             }
                             {% if pageUrl and pageName is defined %}
                             ,{
                                 "@type": "ListItem",
                                 "position": 2,
-                                "item":
-                                {
-                                    "@id": "{{ pageUrl }}",
-                                    "name": "{{ pageName }}"
-                                }
+                                "name": "{{ pageName }}",
+                                "item": "{{ pageUrl }}"
                             }
                             {% endif %}
                         ]
@@ -162,16 +163,17 @@
             {% endblock %}
         {% endblock %}
     </head>
-    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageContentItemType is defined %} itemscope itemtype="http://schema.org/{{ pageContentItemType }}"{% endif %}>
+    <body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}{% if pageContentItemprop is defined %} itemprop="{{ pageContentItemprop }}"{% endif %}{% if pageContentItemType is defined %} itemscope itemtype="http://schema.org/{{ pageContentItemType }}"{% endif %}>
         {% block bodyMetas %}
             {% if pageContentItemType is defined %}
-                <meta itemprop="{{ pageContentItemType == 'Article' ? 'headline' : 'name' }}" content="{% if pageName is defined %}{{ pageName }}{% else %}{{ pageTitle }}{% endif %}" />
-                <meta itemprop="description" content="{{ pageDescription }}" />
+                <meta itemprop="{{ pageContentNameItemprop }}" content="{% if pageName is defined %}{{ pageName }}{% else %}{{ pageTitle }}{% endif %}" />
+                <meta itemprop="{{ pageContentDescriptionItemprop }}" content="{{ pageDescription }}" />
                 {% if pageImage is iterable %}
                     <meta itemprop="image" content="{{ pageImage[0] }}" />
                 {% else %}
                     <meta itemprop="image" content="{{ pageImage }}" />
                 {% endif %}
+                <meta itemprop="mainEntityOfPage" content="{{ pageUrl }}" />
             {% endif %}
         {% endblock %}
         {% block body %}
@@ -184,13 +186,14 @@
                 {% endblock %}
             </div>
             {% block bodyFooter %}{% endblock %}
+            <a href="/admin.html" style="display: none;" rel="nofollow">Admin</a> {# Honey Pot #}
         {% endblock %}
         {% block bodyJavascripts %}
             {% javascripts filter='?closure'
                 '../components/jquery-ui/jquery-ui.js'
-                '../components/jquery-ui/ui/sortable.js'
+                '../components/jquery-ui/ui/widgets/sortable.js'
                 '../components/jquery-ui/ui/effect.js'
-                '../components/jquery-ui/ui/effect-highlight.js'
+                '../components/jquery-ui/ui/effects/effect-highlight.js'
                 '../components/masonry/masonry.pkgd.js'
                 '../components/moment/moment.js'
                 '../components/moment/locale/fr.js'
@@ -231,6 +234,7 @@
                 '../vendor/blueimp/jquery-file-upload/js/jquery.fileupload-image.js'
                 '../vendor/blueimp/jquery-file-upload/js/jquery.fileupload-validate.js'
 
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.counters.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.hrefajax.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.textcompletify.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.sharebuttonsbuilder.js'
@@ -241,6 +245,7 @@
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.smartsearch.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.topbartranslucent.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.commentwidget.js'
+                '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.reviewwidget.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.boxlinkclick.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-common.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-reports.js'

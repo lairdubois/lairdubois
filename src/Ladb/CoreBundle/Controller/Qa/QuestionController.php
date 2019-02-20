@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Qa;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Qa\Question;
@@ -51,8 +50,7 @@ class QuestionController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_qa_question_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_qa_question_create")
 	 * @Template("LadbCoreBundle:Qa/Question:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -222,8 +220,7 @@ class QuestionController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_qa_question_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_question_update")
 	 * @Template("LadbCoreBundle:Qa/Question:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -501,7 +498,7 @@ class QuestionController extends Controller {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'questions' => $searchParameters['entities'],

@@ -2,8 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,8 +54,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
-	 * @Route("/create", name="core_workflow_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_workflow_create")
 	 * @Template("LadbCoreBundle:Workflow:Workflow/new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -213,8 +211,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_workflow_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_update")
 	 * @Template("LadbCoreBundle:Workflow:Workflow/edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -847,7 +844,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'workflows'       => $searchParameters['entities'],

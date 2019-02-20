@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
@@ -52,8 +51,7 @@ class GraphicController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_promotion_graphic_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_promotion_graphic_create")
 	 * @Template("LadbCoreBundle:Promotion/Graphic:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -223,8 +221,7 @@ class GraphicController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_promotion_graphic_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_promotion_graphic_update")
 	 * @Template("LadbCoreBundle:Promotion/Graphic:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -515,7 +512,7 @@ class GraphicController extends Controller {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'graphics'        => $searchParameters['entities'],

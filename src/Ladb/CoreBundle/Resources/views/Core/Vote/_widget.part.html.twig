@@ -1,11 +1,13 @@
 {# set voteUpTooltip (facultative) #}
 {# set voteDownTooltip (facultative) #}
+{# set voteDownConfirm (facultative) #}
 {# set popoverPlacement (facultative) #}
 
 {% set votedUp = voteContext.vote is not null and voteContext.vote.score > 0 %}
 {% set votedDown = voteContext.vote is not null and voteContext.vote.score < 0 %}
 {% set voteUpTooltip = voteUpTooltip|default('vote.tooltip.vote_up'|trans()) %}
 {% set voteDownTooltip = voteDownTooltip|default('vote.tooltip.vote_down'|trans()) %}
+{% set voteDownConfirm = voteDownConfirm|default(voteDownTooltip) %}
 {% set popoverPlacement = popoverPlacement|default('right') %}
 
 <div id="ladb_vote_widget_{{ voteContext.votable.id }}" class="ladb-vote-widget{% if voteContext.votable.voteScore > 0 %} ladb-positive{% elseif voteContext.votable.voteScore < 0 %} ladb-negative{% elseif voteContext.votable.voteScore == 0 and voteContext.votable.voteCount > 0 %} ladb-undeterminated{% endif %}">
@@ -38,7 +40,7 @@
         <script>
             $(document).ready(function () {
                 bindAjaxVoteButton({{ voteContext.votable.id }}, "up", "{{ votedUp ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'+' } ) }}");
-                bindAjaxVoteButton({{ voteContext.votable.id }}, "down", "{{ votedDown ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'-' } ) }}");
+                bindAjaxVoteButton({{ voteContext.votable.id }}, "down", "{{ votedDown ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'-' } ) }}", "{{ voteDownConfirm }}");
             });
         </script>
     </div>

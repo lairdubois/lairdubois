@@ -2,14 +2,11 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use CommerceGuys\Addressing\Address;
+use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
+use CommerceGuys\Addressing\Country\CountryRepository;
 use CommerceGuys\Addressing\Formatter\DefaultFormatter;
-use CommerceGuys\Addressing\Model\Address;
-use CommerceGuys\Addressing\Repository\AddressFormatRepository;
-use CommerceGuys\Addressing\Repository\CountryRepository;
-use CommerceGuys\Addressing\Repository\SubdivisionRepository;
-use Ivory\GoogleMap\Overlays\InfoWindow;
-use Ivory\GoogleMap\Events\MouseEvent;
-use Ivory\GoogleMap\Services\Geocoding\GeocoderRequest;
+use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use Ladb\CoreBundle\Model\LocalisableExtendedInterface;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 
@@ -91,7 +88,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 					$addressFormatRepository = new AddressFormatRepository();
 					$countryRepository = new CountryRepository();
 					$subdivisionRepository = new SubdivisionRepository();
-					$formatter = new DefaultFormatter($addressFormatRepository, $countryRepository, $subdivisionRepository, 'fr_FR', array('html' => false));
+					$formatter = new DefaultFormatter($addressFormatRepository, $countryRepository, $subdivisionRepository, array( 'locale' => '\'fr_FR\'', 'html' => false ));
 
 					$a = new Address();
 
@@ -142,20 +139,31 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 		$googleApiKey = $this->getParameter('google_api_key');
 		try {
 
-			$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&key='.$googleApiKey;
-			$hash = json_decode(file_get_contents($url), true);
+			$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&key='.$googleApiKey.'&language=fr&region=FR';
+			$contents = file_get_contents($url);
+			$hash = json_decode($contents, true);
 
-			if ($hash && isset($hash['results']) && isset($hash['results'][0]) && isset($hash['results'][0]['geometry']) && isset($hash['results'][0]['geometry']['bounds'])) {
-				$bounds = $hash['results'][0]['geometry']['bounds'];
+			if ($hash && isset($hash['results']) && is_array($hash['results'])) {
 
-				// Returns an Elasticsearch ready bounds array [ top_left, bottom_right ]
-				return array(
-					$bounds['northeast']['lat'].','.$bounds['southwest']['lng'],
-					$bounds['southwest']['lat'].','.$bounds['northeast']['lng'],
-				);
+				foreach ($hash['results'] as $result) {
+
+					if (isset($result['geometry']) && isset($result['geometry']['bounds'])) {
+
+						$bounds = $result['geometry']['bounds'];
+
+						// Returns an Elasticsearch ready bounds array [ top_left, bottom_right ]
+						return array(
+							$bounds['northeast']['lat'].','.$bounds['southwest']['lng'],
+							$bounds['southwest']['lat'].','.$bounds['northeast']['lng'],
+						);
+					}
+
+				}
+
 			}
 
 		} catch (\Exception $e) {
+			$this->get('logger')->err($e);
 		}
 
 		return null;

@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20180806"
+        version:    "20190203"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -31,7 +31,7 @@ services:
     pdo:
         class: PDO
         arguments:
-            - 'mysql:host=%database_host%;dbname=%database_name%'
+            - 'mysql:host=%database_host%;port=%database_port%;dbname=%database_name%'
             - '%database_user%'
             - '%database_password%'
         calls:
@@ -238,12 +238,13 @@ liip_imagine:
                 ladb_imageoptimizer: {}
         594x294o: # Blog main picture
             filters:
-                thumbnail: { size: [594, 294], mode: outbound }
+                thumbnail: { size: [594, 294], mode: outbound, allow_upscale: true }
             post_processors:
                 ladb_imageoptimizer: {}
         600x450o: # Block gallery (large)
             filters:
-                thumbnail: { size: [600, 450], mode: outbound }
+                relative_resize: { heighten: 450 }
+                thumbnail: { size: [600, 450], mode: outbound, allow_upscale: true }
             post_processors:
                 ladb_imageoptimizer: {}
         800x350o: # Spotlight
@@ -287,6 +288,14 @@ liip_imagine:
         1024x1024i: # Full gallery picture
             filters:
                 thumbnail: { size: [1024, 1024], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: {}
+
+        # Crop
+
+        600x450c: # Workflow (showcase)
+            filters:
+                crop: { size: [600, 450], start: [0, 1] }
             post_processors:
                 ladb_imageoptimizer: {}
 
@@ -477,6 +486,8 @@ fos_elastica:
                         workshopCount: { type: integer }
                         inspirationCount: { type: integer }
                         reboundCount: { type: integer }
+                        kinds:
+                            type: "integer"
                         user:
                             type: "object"
                             properties:
@@ -763,6 +774,8 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        reviewCount: { type: integer }
+                        averageRating: { type: float }
                         inStoreSelling: { type: boolean }
                         mailOrderSelling: { type: boolean }
                         saleToIndividuals: { type: boolean }
@@ -920,37 +933,6 @@ old_sound_rabbit_mq:
             queue_options:
                 name: 'webpush_notification_queue'
             callback: 'Ladb\CoreBundle\Consumer\WebpushNotificationConsumer'
-    batch_consumers:
-        batch_view:
-            connection: default
-            exchange_options:
-                name: 'view_exchange'
-                type: fanout
-            queue_options:
-                name: 'view_queue'
-            callback: 'Ladb\CoreBundle\Consumer\ViewConsumer'
-            qos_options:
-                prefetch_size: 0
-                prefetch_count: 5
-                global: false
-            timeout_wait: 5
-            auto_setup_fabric: false
-            idle_timeout_exit_code: -2
-        batch_webpush_notification:
-            connection: default
-            exchange_options:
-                name: 'webpush_notification_exchange'
-                type: fanout
-            queue_options:
-                name: 'webpush_notification_queue'
-            callback: 'Ladb\CoreBundle\Consumer\WebpushNotificationConsumer'
-            qos_options:
-                prefetch_size: 0
-                prefetch_count: 5
-                global: false
-            timeout_wait: 5
-            auto_setup_fabric: false
-            idle_timeout_exit_code: -2
 
 # BentoolsWebpushBundle
 bentools_webpush:

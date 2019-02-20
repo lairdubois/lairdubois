@@ -2,9 +2,8 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Entity\Core\View;
-use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,7 +36,10 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 	}
 
 	public function processShownView(ViewableInterface $viewable) {
-		if (preg_match('/bot|spider|crawler|curl|facebookexternalhit|^$/i', $_SERVER['HTTP_USER_AGENT'])) {
+
+		$CrawlerDetect = new CrawlerDetect();
+		if ($CrawlerDetect->isCrawler()) {
+			$this->container->get('logger')->info('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
 			return;	// Exclude bots
 		}
 
@@ -67,13 +69,14 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			// Publish a view in queue
 			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
 			$producer->publish(serialize(array(
+				'kind'       => View::KIND_SHOWN,
 				'entityType' => $viewable->getType(),
-				'entityId'   => $viewable->getId(),
+				'entityIds'  => array($viewable->getId()),
 				'userId'     => !is_null($user) ? $user->getId() : null,
 			)));
 
-		} catch(\Exception $e) {
-			$this->container->get('logger')->error('Failed to publish view process in queue.');
+		} catch (\Exception $e) {
+			$this->container->get('logger')->error('Failed to publish shown view process in queue', array ( 'exception' => $e));
 		}
 
 	}
@@ -99,40 +102,21 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			return;
 		}
 
-		$viewRepository = $this->om->getRepository(View::CLASS_NAME);
-		$viewedCount = $viewRepository->countByEntityTypeAndEntityIdsAndUserAndKind($entityType, $entityIds, $user, View::KIND_LISTED);
-		if ($viewedCount < count($viewables)) {
+		try {
 
-			$newViewCount = 0;
-			foreach($viewables as $viewable) {
+			// Publish a view in queue
+			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
+			$producer->publish(serialize(array(
+				'kind'       => View::KIND_LISTED,
+				'entityType' => $viewable->getType(),
+				'entityIds'  => $entityIds,
+				'userId'     => !is_null($user) ? $user->getId() : null,
+			)));
 
-				if (!$viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_LISTED)) {
-
-					// Create a new listed view
-					$view = new View();
-					$view->setEntityType($viewable->getType());
-					$view->setEntityId($viewable->getId());
-					$view->setUser($user);
-					$view->setKind(View::KIND_LISTED);
-
-					$this->om->persist($view);
-
-					$newViewCount++;
-				}
-
-			}
-
-			if ($newViewCount > 0) {
-
-				$this->om->flush();
-
-				// Force unlisted counter check on next request
-				$userUtils = $this->get(UserUtils::NAME);
-				$userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT0S');
-
-			}
-
+		} catch (\Exception $e) {
+			$this->container->get('logger')->error('Failed to publish shown view process in queue.');
 		}
+
 	}
 
 	// Transfer /////

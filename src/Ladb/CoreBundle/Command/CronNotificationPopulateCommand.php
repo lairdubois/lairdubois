@@ -283,16 +283,16 @@ EOT
 			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Review) {
 
 				$review = $activity->getReview();
-				$book = $review->getBook();
+				$reviewable = $typableUtils->findTypable($review->getEntityType(), $review->getEntityId());
 
-				if ($book->getWatchCount() > 0) {
+				if ($reviewable->getWatchCount() > 0) {
 
-					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($book->getType(), $book->getId(), $actorUser);
+					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($reviewable->getType(), $reviewable->getId(), $actorUser);
 					if (!is_null($watches)) {
 						foreach ($watches as $watch) {
 							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
 							if ($verbose) {
-								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new review='.mb_strimwidth($review->getBody(), 0, 50, '[...]').' on='.$book->getTitle().'</info>');
+								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new review='.mb_strimwidth($review->getBody(), 0, 50, '[...]').' on='.$reviewable->getTitle().'</info>');
 							}
 						}
 					}

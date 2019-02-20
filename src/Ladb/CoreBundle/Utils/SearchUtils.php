@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Elastica\Document;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -33,6 +34,8 @@ class SearchUtils extends AbstractContainerAwareUtils {
 				try {
 					$objectPersister->insertOne($entity);
 				} catch (\Exception $e) {
+					$logger = $this->container->get('logger');
+					$logger->error('SearchUtils/insertEntityToIndex', array( 'exception' => $e ));
 				}
 			}
 		}
@@ -45,6 +48,8 @@ class SearchUtils extends AbstractContainerAwareUtils {
 				try {
 					$objectPersister->replaceOne($entity);
 				} catch (\Exception $e) {
+					$logger = $this->container->get('logger');
+					$logger->error('SearchUtils/replaceEntityInIndex', array( 'exception' => $e ));
 				}
 			}
 		}
@@ -56,6 +61,8 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			try {
 				$objectPersister->deleteOne($entity);
 			} catch (\Exception $e) {
+				$logger = $this->container->get('logger');
+				$logger->error('SearchUtils/deleteEntityFromIndex', array( 'exception' => $e ));
 			}
 		}
 	}

@@ -1,155 +1,206 @@
 <?php
 namespace Ladb\CoreBundle\Consumer;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
+use PhpAmqpLib\Message\AMQPMessage;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
-use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
-use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
-use PhpAmqpLib\Message\AMQPMessage;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ViewConsumer implements ConsumerInterface, BatchConsumerInterface {
+class ViewConsumer implements ConsumerInterface {
 
-	protected $container;
+	private $logger;
+	private $om;
+	private $userRepository;
+	private $viewRepository;
+	private $typableUtils;
+	private $searchUtils;
 
 	public function __construct(ContainerInterface $container) {
-		$this->container = $container;
+
+		$this->logger = $container->get('logger');
+
+		$this->om = $container->get('doctrine')->getManager();
+		$this->userRepository = $this->om->getRepository(User::CLASS_NAME);
+		$this->viewRepository = $this->om->getRepository(View::CLASS_NAME);
+
+		$this->typableUtils = $container->get(TypableUtils::NAME);
+		$this->searchUtils = $container->get(SearchUtils::NAME);
+
 	}
 
 	/////
 
-	public function execute(AMQPMessage $msg) {
-	}
+	private function _executeListedProcess($entityType, $entityIds, $userId) {
 
-	public function batchExecute(array $messages) {
-		$om = $this->container->get('doctrine')->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
-		$viewRepository = $om->getRepository(View::CLASS_NAME);
-		$typableUtils = $this->container->get(TypableUtils::NAME);
+		if (!is_null($userId)) {
 
-		$viewableMetas = array();
-		$flush = false;
+			$user = $this->userRepository->findOneById($userId);
+			if (!is_null($user)) {
 
-		foreach ($messages as $message) {
-			$msgBody = unserialize($message->getBody());
+				$viewRepository = $this->om->getRepository(View::CLASS_NAME);
+				$viewedCount = $viewRepository->countByEntityTypeAndEntityIdsAndUserAndKind($entityType, $entityIds, $user, View::KIND_LISTED);
+				if ($viewedCount < count($entityIds)) {
 
-			$entityType = $msgBody['entityType'];
-			$entityId = $msgBody['entityId'];
-			$userId = $msgBody['userId'];
+					$newViewCount = 0;
+					foreach ($entityIds as $entityId) {
 
-			$key = $entityType.'_'.$entityId;
+						if (!$viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($entityType, $entityId, $user, View::KIND_LISTED)) {
 
-			// Retrieve viewable
-			if (isset($viewableMetas[$key])) {
-				$viewableMeta = $viewableMetas[$key];
-				$viewable = $viewableMeta->viewable;
-			} else {
-				try {
-					$viewable = $typableUtils->findTypable($entityType, $entityId);
-				} catch(\Exception $e) {
-					continue;
+							// Create a new listed view
+							$view = new View();
+							$view->setEntityType($entityType);
+							$view->setEntityId($entityId);
+							$view->setUser($user);
+							$view->setKind(View::KIND_LISTED);
+
+							$this->om->persist($view);
+
+							$newViewCount++;
+						}
+
+					}
+
+					if ($newViewCount > 0) {
+						$this->om->flush();
+					}
+
 				}
-				$viewableMeta = new \StdClass();
-				$viewableMeta->viewable = $viewable;
-				$viewableMeta->userIds = array();
-				$viewableMeta->updated = false;
-				$viewableMetas[$key] = $viewableMeta;
+
 			}
 
-			if (!is_null($userId)) {
+		}
 
-				// Process user only once by viewable
-				if (in_array($userId, $viewableMeta->userIds)) {
-					continue;
+	}
+
+	private function _executeShownProcess($entityType, $entityId, $userId) {
+
+		// Retrieve viewable
+		try {
+			$viewable = $this->typableUtils->findTypable($entityType, $entityId);
+		} catch(\Exception $e) {
+			$this->logger->error('ViewConsumer/execute', array ( 'exception' => $e));
+			return;
+		}
+		$updated = false;
+
+		if (!is_null($userId)) {
+
+			$user = $this->userRepository->findOneById($userId);
+			if (!is_null($user)) {
+
+				// Authenticated user -> use viewManager
+
+				$view = $this->viewRepository->findOneByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN);
+				if (is_null($view)) {
+
+					// Create a new view
+					$view = new View();
+					$view->setEntityType($viewable->getType());
+					$view->setEntityId($viewable->getId());
+					$view->setUser($user);
+					$view->setKind(View::KIND_SHOWN);
+
+					$this->om->persist($view);
+
+					// Exclude self contribution view
+					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+						return;
+					}
+
+					// Increment viewCount
+					$viewable->incrementViewCount();
+
+					$updated = true;
+
 				} else {
-					$userIds[] = $userId;
-				}
 
-				$user = $userRepository->findOneById($userId);
-				if (!is_null($user)) {
+					// Exclude self contribution view
+					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+						return;
+					}
 
-					// Authenticated user -> use viewManager
+					if ($view->getCreatedAt() <= (new \DateTime())->sub(new \DateInterval('P1D'))) { // 1 day
 
-					$view = $viewRepository->findOneByEntityTypeAndEntityIdAndUserAndKind($viewable->getType(), $viewable->getId(), $user, View::KIND_SHOWN);
-					if (is_null($view)) {
+						// View is older than 1 day. Update view, increment view count.
 
-						// Create a new view
-						$view = new View();
-						$view->setEntityType($viewable->getType());
-						$view->setEntityId($viewable->getId());
-						$view->setUser($user);
-						$view->setKind(View::KIND_SHOWN);
-
-						$om->persist($view);
-
-						// Exclude self contribution view
-						if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
-							continue;
-						}
+						// Reset view createAt
+						$view->setCreatedAt(new \DateTime());
 
 						// Increment viewCount
 						$viewable->incrementViewCount();
 
-						$viewableMeta->updated = true;
-						$flush = true;
-
-					} else {
-
-						// Exclude self contribution view
-						if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
-							continue;
-						}
-
-						if ($view->getCreatedAt() <= (new \DateTime())->sub(new \DateInterval('P1D'))) { // 1 day
-
-							// View is older than 1 day. Update view, increment view count.
-
-							// Reset view createAt
-							$view->setCreatedAt(new \DateTime());
-
-							// Increment viewCount
-							$viewable->incrementViewCount();
-
-							$viewableMeta->updated = true;
-							$flush = true;
-
-						}
+						$updated = true;
 
 					}
 
 				}
 
-			} else {
-
-				// Increment viewCount
-				$viewable->incrementViewCount();
-
-				$viewableMeta->updated = true;
-				$flush = true;
-
 			}
 
+		} else {
+
+			// Increment viewCount
+			$viewable->incrementViewCount();
+
+			$updated = true;
+
 		}
 
-		if ($flush) {
-			$om->flush();
+		if ($updated) {
+
+			// Flush DB updates (view and/or entity)
+			$this->om->flush();
+
+			// Update in Elasticsearch
+
+//			Elasticsearch update is temporarily removed due to a strange bug that remove item from index...
+
+//			if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
+//				$this->searchUtils->replaceEntityInIndex($viewable);
+//			}
+
 		}
 
-		// Update Elasticsearch if nesessary
-		$searchUtils = $this->container->get(SearchUtils::NAME);
-		foreach ($viewableMetas as $viewableMeta) {
-			if ($viewableMeta->updated) {
+	}
 
-				// Update in Elasticsearch
-				if ($viewableMeta->viewable instanceof IndexableInterface && $viewableMeta->viewable->isIndexable()) {
-					$searchUtils->replaceEntityInIndex($viewableMeta->viewable);
+	/////
+
+	public function execute(AMQPMessage $msg) {
+
+		try {
+
+			$msgBody = unserialize($msg->getBody());
+
+			$kind = $msgBody['kind'];
+			$entityType = $msgBody['entityType'];
+			$entityIds = $msgBody['entityIds'];
+			$userId = $msgBody['userId'];
+
+		} catch (\Exception $e) {
+			$this->logger->error('ViewConsumer/execute', array ( 'exception' => $e));
+			return;
+		}
+
+		switch ($kind) {
+
+			case View::KIND_LISTED:
+				$this->_executeListedProcess($entityType, $entityIds, $userId);
+				break;
+
+			case View::KIND_SHOWN:
+				if (is_array($entityIds) && count($entityIds) > 0) {
+					$this->_executeShownProcess($entityType, $entityIds[0], $userId);
 				}
+				break;
 
-			}
+			default:
+				$this->logger->error('ViewConsumer/execute (Unknow kind='.$kind.')');
+				return;
+
 		}
 
 	}

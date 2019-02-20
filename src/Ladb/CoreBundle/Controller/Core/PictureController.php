@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Core;
 use Imagine\Gd\Imagine;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Form\Model\EditPicture;
@@ -49,6 +48,7 @@ class PictureController extends Controller {
 
 		$editPicture = new EditPicture();
 		$editPicture->setLegend($picture->getLegend());
+		$editPicture->setSourceUrl($picture->getSourceUrl());
 		$editPicture->setRotation($picture->getRotation());
 		$editPicture->setCenterX100($picture->getCenterX100());
 		$editPicture->setCenterY100($picture->getCenterY100());
@@ -64,8 +64,7 @@ class PictureController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_picture_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_picture_update")
 	 * @Template("LadbCoreBundle:Core/Picture:update-error-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -91,8 +90,9 @@ class PictureController extends Controller {
 
 		if ($form->isValid()) {
 
-			// Legend
+			// Legend & SourceUrl
 			$picture->setLegend($editPicture->getLegend());
+			$picture->setSourceUrl($editPicture->getSourceUrl());
 
 			// Rotation
 			$rotation = $editPicture->getRotation();

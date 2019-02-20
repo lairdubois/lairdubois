@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Core;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Ladb\CoreBundle\Entity\Core\Activity\AbstractActivity;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
@@ -43,6 +44,22 @@ class NotificationRepository extends AbstractEntityRepository {
 			->innerJoin('n.activity', 'a')
 			->where('n.id = :id')
 			->setParameter('id', $id)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	public function findOneByActivity(AbstractActivity $activity) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'n' ))
+			->from($this->getEntityName(), 'n')
+			->where('n.activity = :activity')
+			->setParameter('activity', $activity)
 		;
 
 		try {

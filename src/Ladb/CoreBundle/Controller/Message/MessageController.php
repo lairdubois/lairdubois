@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Message;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Message\Message;
 use Ladb\CoreBundle\Entity\Message\MessageMeta;
@@ -59,8 +58,7 @@ class MessageController extends Controller {
 	}
 
 	/**
-	 * @Route("/thread/create", name="core_message_thread_create")
-	 * @Method("POST")
+	 * @Route("/thread/create", methods={"POST"}, name="core_message_thread_create")
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
 	public function createThreadAction(Request $request) {
@@ -114,8 +112,7 @@ class MessageController extends Controller {
 	}
 
 	/**
-	 * @Route("/thread/announcement/create", name="core_message_thread_create_announcement")
-	 * @Method("POST")
+	 * @Route("/thread/announcement/create", methods={"POST"}, name="core_message_thread_create_announcement")
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
 	public function createThreadAnnouncementAction(Request $request) {
@@ -203,8 +200,7 @@ class MessageController extends Controller {
 	}
 
 	/**
-	 * @Route("/thread/{id}/update", requirements={"id" = "\d+"}, name="core_message_thread_update")
-	 * @Method("POST")
+	 * @Route("/thread/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_message_thread_update")
 	 * @Template("LadbCoreBundle:Message:showThread.html.twig")
 	 */
 	public function updateThreadAction(Request $request, $id) {

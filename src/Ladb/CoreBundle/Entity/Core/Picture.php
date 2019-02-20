@@ -50,12 +50,19 @@ class Picture {
 	private $legend;
 
 	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @ORM\Column(type="string", length=255, nullable=true, name="source_url")
+	 * @Assert\Length(max=255)
+	 * @Assert\Url()
+	 */
+	private $sourceUrl;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true, name="master_path")
 	 */
 	private $masterPath;
 
 	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @ORM\Column(type="string", length=255, nullable=true, name="transformed_path")
 	 */
 	private $transformedPath;
 
@@ -65,7 +72,7 @@ class Picture {
 	private $rotation = 0;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", name="sort_index")
 	 */
 	private $sortIndex = 0;
 
@@ -85,12 +92,12 @@ class Picture {
 	private $heightRatio100 = 100;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", name="center_x_100")
 	 */
 	private $centerX100 = 50;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", name="center_y_100")
 	 */
 	private $centerY100 = 50;
 
@@ -187,6 +194,17 @@ class Picture {
 
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
+		return $this;
+	}
+
+	// SourceUrl /////
+
+	public function getSourceUrl() {
+		return $this->sourceUrl;
+	}
+
+	public function setSourceUrl($sourceUrl) {
+		$this->sourceUrl = $sourceUrl;
 		return $this;
 	}
 

@@ -60,6 +60,9 @@ services:
   ladb_core.commentable_utils:
     class: Ladb\CoreBundle\Utils\CommentableUtils
     arguments: ['@service_container']
+  ladb_core.reviewable_utils:
+    class: Ladb\CoreBundle\Utils\ReviewableUtils
+    arguments: ['@service_container']
   ladb_core.reportable_utils:
     class: Ladb\CoreBundle\Utils\ReportableUtils
     arguments: ['@service_container']
@@ -140,8 +143,12 @@ services:
   ladb_core.book_utils:
     class: Ladb\CoreBundle\Utils\BookUtils
     arguments: ['@service_container']
+  ladb_core.resource_utils:
+    class: Ladb\CoreBundle\Utils\ResourceUtils
   Ladb\CoreBundle\Utils\WebpushNotificationUtils:
     arguments: ['@service_container']
+  ladb_core.link_utils:
+    class: Ladb\CoreBundle\Utils\LinkUtils
 
   # Managers
   ladb_core.creation_manager:
@@ -213,6 +220,7 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidUsernameValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_username_validator }
+    arguments: ['@service_container']
   ladb_core.self_recipient_validator:
     class: Ladb\CoreBundle\Validator\Constraints\SelfRecipientValidator
     tags:
@@ -269,11 +277,6 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.body_blocks_validator }
     arguments: ['@validator']
-  ladb_core.find_body_blocks_validator:
-    class: Ladb\CoreBundle\Validator\Constraints\FindBodyBlocksValidator
-    tags:
-      - { name: validator.constraint_validator, alias: ladb_core.find_body_blocks_validator }
-    arguments: ['@validator']
   ladb_core.upper_case_ratio_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UpperCaseRatioValidator
     tags:
@@ -324,11 +327,6 @@ services:
       - { name: validator.constraint_validator, alias: ladb_core.exclude_domains_link_validator }
 
   # Listeners
-  ladb_core.kernel_listener:
-    class: Ladb\CoreBundle\Event\KernelListener
-    tags:
-      - { name: kernel.event_subscriber }
-    arguments: ['@service_container']
   ladb_core.user_listener:
     class: Ladb\CoreBundle\Event\UserListener
     tags:
@@ -415,7 +413,7 @@ services:
     class: Ladb\CoreBundle\Form\Type\Find\FindType
     tags:
       - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils', '@ladb_core.localisable_utils']
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils', '@ladb_core.localisable_utils', '@ladb_core.link_utils']
   ladb_find_content_event:
     class: Ladb\CoreBundle\Form\Type\Find\Content\EventType
     tags:

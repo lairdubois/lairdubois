@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Knowledge\AbstractKnowledge;
@@ -156,8 +155,7 @@ class KnowledgeController extends Controller {
 	}
 
 	/**
-	 * @Route("/{entityType}/{entityId}/{field}/create", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+"}, name="core_knowledge_value_create")
-	 * @Method("POST")
+	 * @Route("/{entityType}/{entityId}/{field}/create", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+"}, methods={"POST"}, name="core_knowledge_value_create")
 	 * @Template("LadbCoreBundle:Knowledge:value-new-xhr.html.twig")
 	 */
 	public function createFieldValueAction(Request $request, $entityType, $entityId, $field) {

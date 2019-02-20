@@ -2,10 +2,10 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Utils\ReviewableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Form\Type\Knowledge\NewBookType;
@@ -49,8 +49,7 @@ class BookController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_book_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_book_create")
 	 * @Template("LadbCoreBundle:Knowledge/Book:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -290,7 +289,7 @@ class BookController extends Controller {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'books' => $searchParameters['entities'],
@@ -322,17 +321,6 @@ class BookController extends Controller {
 			throw $this->createNotFoundException('Unable to find Book entity.');
 		}
 
-		$user = $this->getUser();
-		$userReview = null;
-		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-			foreach ($book->getReviews() as $review) {
-				if ($review->getUser()->getId() == $user->getId()) {
-					$userReview = $review;
-					break;
-				}
-			}
-		}
-
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($book));
@@ -340,13 +328,14 @@ class BookController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$reviewableUtils = $this->get(ReviewableUtils::NAME);
 
 		return array(
-			'book'             => $book,
-			'likeContext'      => $likableUtils->getLikeContext($book, $this->getUser()),
-			'watchContext'     => $watchableUtils->getWatchContext($book, $this->getUser()),
-			'commentContext'   => $commentableUtils->getCommentContext($book),
-			'userReview'       => $userReview,
+			'book'           => $book,
+			'likeContext'    => $likableUtils->getLikeContext($book, $this->getUser()),
+			'watchContext'   => $watchableUtils->getWatchContext($book, $this->getUser()),
+			'commentContext' => $commentableUtils->getCommentContext($book),
+			'reviewContext'  => $reviewableUtils->getReviewContext($book),
 		);
 	}
 

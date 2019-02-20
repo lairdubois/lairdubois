@@ -3,6 +3,7 @@
 {% set entity = question %}
 
 {% set pageItemType = 'QAPage' %}
+{% set pageContentItemprop = 'mainEntity' %}
 {% set pageContentItemType = 'Question' %}
 {% set pageTitlePrefix = '[Question]' %}
 {% if question.mainPicture is null %}
@@ -34,6 +35,9 @@
         $(document).ready(function() {
             $('#container').ladbQuestionPage({
                 answerNewPath: '{{ path('core_qa_answer_new', { 'id':question.id }) }}'
+            });
+            $("#ladb_answers_nav_panel").sticky({
+                topSpacing: 70
             });
         });
     </script>
@@ -168,5 +172,6 @@
             </div>
         </div>
     {% endif %}
+    {% include 'LadbCoreBundle:Qa/Answer:_nav-panel.part.html.twig' %}
 {% endblock %}
 

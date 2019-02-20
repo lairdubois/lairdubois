@@ -10,12 +10,14 @@
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'sortable':true } %}
     {% embed 'LadbCoreBundle:Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_update', { 'id':comment.id }), 'showButtons':true } %}
         {% block buttons %}
-            <a href="#" class="btn btn-default ladb-comment-cancel-edit" xonclick="cancelEditComment();return false;">{{ 'default.cancel'|trans() }}</a>
+            <a href="#" class="btn btn-default ladb-comment-cancel-edit">{{ 'default.cancel'|trans() }}</a>
             {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
         {% endblock %}
     {% endembed %}
     <script>
         setupTextareas();
-        $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({ mentionStrategy: {{ mentionStrategy|raw }} }).focus();
+        $("#{{ form.body.vars.id }}")
+            .markdown({ autofocus:true })
+            .ladbTextcompletify({ maxCount: 5, mentionStrategy: {{ mentionStrategy|raw }} })
     </script>
 </div>

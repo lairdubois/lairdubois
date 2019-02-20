@@ -3,6 +3,7 @@ Disallow: /login$
 Disallow: /connexion$
 Disallow: /request
 Disallow: /api/*
+Disallow: /admin*
 Disallow: /*/new$
 Disallow: /*/create*$
 Disallow: /*/edit$
@@ -17,11 +18,23 @@ Disallow: /*download$
 Disallow: /*sticker$
 Disallow: /*strip$
 Disallow: /*.xhr$
+Disallow: /*.geojson$
 Disallow: /*?referer=1$
 Disallow: /*?q=*
 Disallow: /*?layout=*
 
 User-agent: Googlebot-Image
 Allow: /media/
+
+User-agent: VelenPublicWebCrawler
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+User-agent: AhrefsBot
+Disallow: /
+User-agent: DotBot
+Disallow: /
+User-agent: Linguee Bot
+Disallow: /
 
 Sitemap: https://www.lairdubois.fr/sitemap-index.xml

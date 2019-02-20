@@ -57,7 +57,7 @@ EOT
 			if (!is_null($fileExtension)) {
 
 				// AutoCAD
-				if ($fileExtension == 'dwf' || $fileExtension == 'dwg') {
+				if ($fileExtension == 'dwf' || $fileExtension == 'dwg' || $fileExtension == 'dxf') {
 					$kind = Resource::KIND_AUTOCAD;
 				}
 
@@ -101,9 +101,14 @@ EOT
 					$kind = Resource::KIND_LIBREOFFICE;
 				}
 
-				// fusion360
+				// Fusion360
 				if ($fileExtension == 'f3d') {
 					$kind = Resource::KIND_FUSION360;
+				}
+
+				// Collada
+				if ($fileExtension == 'dae') {
+					$kind = Resource::KIND_COLLADA;
 				}
 
 			}

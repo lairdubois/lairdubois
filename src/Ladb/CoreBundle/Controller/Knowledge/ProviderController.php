@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Howto\Howto;
@@ -28,6 +27,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
+use Ladb\CoreBundle\Utils\ReviewableUtils;
 
 
 /**
@@ -50,8 +50,7 @@ class ProviderController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_provider_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_provider_create")
 	 * @Template("LadbCoreBundle:Knowledge/Provider:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -296,6 +295,13 @@ class ProviderController extends Controller {
 
 						break;
 
+					case 'with-review':
+
+						$filter = new \Elastica\Query\Range('reviewCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\Range('signRejected', array( 'gte' => 1 ));
@@ -319,6 +325,10 @@ class ProviderController extends Controller {
 
 					case 'sort-popular-comments':
 						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-rating':
+						$sort = array( 'averageRating' => array( 'order' => 'desc' ) );
 						break;
 
 					case 'sort-random':
@@ -354,7 +364,7 @@ class ProviderController extends Controller {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'providers'       => $searchParameters['entities'],
@@ -534,6 +544,7 @@ class ProviderController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$reviewableUtils = $this->get(ReviewableUtils::NAME);
 
 		return array(
 			'provider'             => $provider,
@@ -542,6 +553,7 @@ class ProviderController extends Controller {
 			'likeContext'          => $likableUtils->getLikeContext($provider, $this->getUser()),
 			'watchContext'         => $watchableUtils->getWatchContext($provider, $this->getUser()),
 			'commentContext'       => $commentableUtils->getCommentContext($provider),
+			'reviewContext'        => $reviewableUtils->getReviewContext($provider),
 			'hasMap'               => !is_null($provider->getLatitude()) && !is_null($provider->getLongitude()),
 		);
 	}

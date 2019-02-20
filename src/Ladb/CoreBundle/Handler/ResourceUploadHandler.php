@@ -62,7 +62,7 @@ class ResourceUploadHandler extends \UploadHandler {
 			if (!is_null($fileExtension)) {
 
 				// AutoCAD
-				if ($fileExtension == 'dwf' || $fileExtension == 'dwg') {
+				if ($fileExtension == 'dwf' || $fileExtension == 'dwg' || $fileExtension == 'dxf') {
 					$kind = Resource::KIND_AUTOCAD;
 				}
 
@@ -106,9 +106,14 @@ class ResourceUploadHandler extends \UploadHandler {
 					$kind = Resource::KIND_LIBREOFFICE;
 				}
 
-				// fusion360
+				// Fusion360
 				if ($fileExtension == 'f3d') {
 					$kind = Resource::KIND_FUSION360;
+				}
+
+				// Collada
+				if ($fileExtension == 'dae') {
+					$kind = Resource::KIND_COLLADA;
 				}
 
 			}

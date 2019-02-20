@@ -128,6 +128,10 @@ ladb_core_resource:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\ResourceController"
     type:     annotation
 
+ladb_core_review:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\ReviewController"
+    type:     annotation
+
 ladb_core_wood:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\WoodController"
     type:     annotation
@@ -146,10 +150,6 @@ ladb_core_school_testimonial:
 
 ladb_core_book:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\BookController"
-    type:     annotation
-
-ladb_core_book_review:
-    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\Book\\ReviewController"
     type:     annotation
 
 ladb_core_knowledge:

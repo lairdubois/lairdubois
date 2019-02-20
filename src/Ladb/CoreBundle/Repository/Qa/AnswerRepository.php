@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Qa;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\Blog\Answer;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
@@ -88,5 +88,24 @@ class AnswerRepository extends AbstractEntityRepository {
 			return null;
 		}
 	}
-	
+
+	/////
+
+	public function findPaginedByUser(User $user, $offset, $limit) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'a', 'u', 'q' ))
+			->from($this->getEntityName(), 'a')
+			->innerJoin('a.question', 'q')
+			->innerJoin('a.user', 'u')
+			->where('u = :user')
+			->setParameter('user', $user)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+			->addOrderBy('a.createdAt', 'DESC')
+		;
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 }

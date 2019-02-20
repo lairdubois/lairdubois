@@ -5,6 +5,7 @@
 {% set masonry = layout == 'view' %}
 
 {% block filtersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-label="Format" data-editable="true" data-icon="info" data-proposals="autocad,sketchup,pdf,geogebra,svg,freecad,stl,123design,libreoffice,fusion360,collada"><i class="ladb-icon-info"></i> Format</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-creations" data-label="Avec création" data-unique="true" data-icon="creation"><i class="ladb-icon-creation"></i> Avec création</a></li>
@@ -18,6 +19,7 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
+    <li class="divider"></li>
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes plans" data-unique="true" data-icon="plan"><i class="ladb-icon-plan"></i> Mes plans</a></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>

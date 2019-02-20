@@ -157,6 +157,11 @@
                                         <small>{{ 'comment.choice.comments'|transchoice(user.meta.commentCount) }}</small>
                                     {% if user.meta.commentCount > 0 %}</a>{% endif %}
                                 </div>
+                                <div class="ladb-meta{% if user.meta.reviewCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-review"></i>
+                                    <strong>{{ user.meta.reviewCount|number_format(0, ',', ' ') }}</strong>
+                                    <small>{{ 'review.default.choice.reviews'|transchoice(user.meta.reviewCount) }}</small>
+                                </div>
                                 <div class="ladb-meta{% if user.meta.publicCreationCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-creation"></i>
                                     {% if user.meta.publicCreationCount > 0 %}<a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{% endif %}
@@ -173,8 +178,10 @@
                                 </div>
                                 <div class="ladb-meta{% if user.meta.answerCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-answer"></i>
-                                    <strong>{{ user.meta.answerCount|number_format(0, ',', ' ') }}</strong>
-                                    <small>{{ 'qa.answer.choice.answers'|transchoice(user.meta.answerCount) }}</small>
+                                    {% if user.meta.answerCount > 0 %}<a href="{{ path('core_user_show_answers', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.answerCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'qa.answer.choice.answers'|transchoice(user.meta.answerCount) }}</small>
+                                    {% if user.meta.answerCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicPlanCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-plan"></i>

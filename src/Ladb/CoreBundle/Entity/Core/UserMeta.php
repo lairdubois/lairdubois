@@ -636,45 +636,6 @@ class UserMeta {
 	}
 
 
-	// UnlistedCount /////
-
-	public function getUnlistedCount() {
-		return
-			$this->getUnlistedWonderCreationCount() +
-			$this->getUnlistedWonderPlanCount() +
-			$this->getUnlistedWonderWorkshopCount() +
-			$this->getUnlistedFindFindCount() +
-			$this->getUnlistedHowtoHowtoCount() +
-			$this->getUnlistedKnowledgeWoodCount() +
-			$this->getUnlistedKnowledgeProviderCount() +
-			$this->getUnlistedKnowledgeSchoolCount() +
-			$this->getUnlistedKnowledgeBookCount() +
-			$this->getUnlistedBlogPostCount() +
-			$this->getUnlistedFaqQuestionCount() +
-			$this->getUnlistedQaQuestionCount() +
-			$this->getUnlistedPromotionGraphicCount() +
-			$this->getUnlistedWorkflowWorkflowCount()
-		;
-	}
-
-	// UnlistedKnowledgeCount /////
-
-	public function getUnlistedKnowledgeCount() {
-		return
-			$this->getUnlistedKnowledgeWoodCount() +
-			$this->getUnlistedKnowledgeBookCount()
-		;
-	}
-
-	// UnlistedDirectoryCount /////
-
-	public function getUnlistedDirectoryCount() {
-		return
-			$this->getUnlistedKnowledgeProviderCount() +
-			$this->getUnlistedKnowledgeSchoolCount()
-		;
-	}
-
 	// UnlistedWonderCreationCount /////
 
 	public function getUnlistedWonderCreationCount() {

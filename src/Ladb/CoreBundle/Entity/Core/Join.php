@@ -6,9 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table("tbl_core_join", indexes={
- *     @ORM\Index(name="IDX_JOIN_ENTITY", columns={"entity_type", "entity_id"})
- * })
+ * @ORM\Table("tbl_core_join",
+ *		uniqueConstraints={
+ *			@ORM\UniqueConstraint(name="ENTITY_USER_UNIQUE", columns={"entity_type", "entity_id", "user_id"})
+ * 		},
+ *		indexes={
+ *			@ORM\Index(name="IDX_JOIN_ENTITY", columns={"entity_type", "entity_id"})
+ *		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\JoinRepository")
  */
 class Join {

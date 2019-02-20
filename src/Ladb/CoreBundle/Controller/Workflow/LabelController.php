@@ -2,8 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Ladb\CoreBundle\Entity\Workflow\Task;
@@ -36,8 +35,7 @@ class LabelController extends AbstractWorkflowBasedController {
 	}
 
 	/**
-	 * @Route("/{id}/label/create", requirements={"id" = "\d+"}, name="core_workflow_label_create")
-	 * @Method("POST")
+	 * @Route("/{id}/label/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_label_create")
 	 * @Template("LadbCoreBundle:Workflow:Label/new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
@@ -91,8 +89,7 @@ class LabelController extends AbstractWorkflowBasedController {
 	}
 
 	/**
-	 * @Route("/label/{id}/update", requirements={"id" = "\d+"}, name="core_workflow_label_update")
-	 * @Method("POST")
+	 * @Route("/label/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_label_update")
 	 * @Template("LadbCoreBundle:Workflow:Label/edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {

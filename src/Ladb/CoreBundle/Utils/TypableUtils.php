@@ -26,6 +26,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Message (Message)
 			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
 				return implode($delimiter, array( 'message', 'message' ));
+			// Review
+			case \Ladb\CoreBundle\Entity\Core\Review::TYPE:
+				return implode($delimiter, array( 'core', 'review' ));
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -78,9 +81,6 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Book
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
 				return implode($delimiter, array( 'knowledge', 'book' ));
-			// Review (Book)
-			case \Ladb\CoreBundle\Entity\Knowledge\Book\Review::TYPE:
-				return implode($delimiter, array( 'knowledge', 'review' ));
 
 		}
 		return '';
@@ -89,11 +89,23 @@ class TypableUtils extends AbstractContainerAwareUtils {
 	public function findTypable($type, $id) {
 		$repository = $this->getRepositoryByType($type);
 		if (is_null($repository)) {
-			throw new \Exception('Unknow Typable - Bad type (type='.$type.', id='.$id.').');
+			throw new \Exception('Unknow Typable - Bad type (type='.$type.').');
 		}
 		$typable = $repository->findOneByIdJoinedOn($id, $repository->getDefaultJoinOptions());
 		if (is_null($typable)) {
 			throw new \Exception('Unknow Typable - Bad id (type='.$type.', id='.$id.').');
+		}
+		return $typable;
+	}
+
+	public function findTypables($type, array $ids) {
+		$repository = $this->getRepositoryByType($type);
+		if (is_null($repository)) {
+			throw new \Exception('Unknow Typable - Bad type (type='.$type.').');
+		}
+		$typable = $repository->findByIdsJoinedOn($ids, $repository->getDefaultJoinOptions());
+		if (is_null($typable)) {
+			throw new \Exception('Unknow Typable - Bad id (type='.$type.', ids='.implode(',', $ids).').');
 		}
 		return $typable;
 	}
@@ -130,6 +142,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Message (Message)
 			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
 				return '\Ladb\CoreBundle\Entity\Message\Message';
+			// Review
+			case \Ladb\CoreBundle\Entity\Core\Review::TYPE:
+				return '\Ladb\CoreBundle\Entity\Core\Review';
 
 			// Text
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository\Core;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\HiddableInterface;
@@ -27,7 +28,7 @@ class LikeRepository extends AbstractEntityRepository {
 
 		try {
 			return $queryBuilder->getQuery()->getSingleScalarResult() > 0;
-		} catch (\Doctrine\ORM\NoResultException $e) {
+		} catch (NonUniqueResultException $e) {
 			return false;
 		}
 	}
@@ -69,22 +70,6 @@ class LikeRepository extends AbstractEntityRepository {
 
 		try {
 			return $queryBuilder->getQuery()->getResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
-		}
-	}
-
-	public function findOneByUser(User $user) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'l' ))
-			->from($this->getEntityName(), 'l')
-			->where('l.user = :user')
-			->setParameter('user', $user)
-		;
-
-		try {
-			return $queryBuilder->getQuery()->getSingleResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}

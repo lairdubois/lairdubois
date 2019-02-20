@@ -1,0 +1,25 @@
+{# set entity #}
+{# set userReview #}
+
+{% set i18nPrefix = i18nPrefix|default(ladb_entity_type_stripped_name(entity)) %}
+
+<div class="ladb-reviews-footer">
+    {% if userReview %}
+        <div class="alert alert-info text-center">
+            <p>{{ ('review.'~i18nPrefix~'.already')|trans }} <a href="#" onclick="$('#ladb_review_{{ userReview.id }}').ladbScrollTo(event, { onAfter: function($target) { $('.ladb-box', $target).first().effect('highlight', {}, 1500); } }); return false;" class="alert-link">({{ ('review.'~i18nPrefix~'.show_mine')|trans }})</a></p>
+        </div>
+    {% else %}
+        {% if entity.reviewCount == 0 %}
+            <div class="panel panel-info ladb-margin-top">
+                <div class="panel-body text-center">{{ ('review.'~i18nPrefix~'.none')|trans|raw }}</div>
+            </div>
+        {% endif %}
+        <div class="ladb-btns-bar">
+            {% if is_granted("ROLE_USER") %}
+                <a href="{{ path('core_review_new', { 'entityType':entity.type, 'entityId':entity.id }) }}" id="ladb_review_btn" class="btn btn-primary btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ ('review.'~i18nPrefix~'.new')|trans() }}</a>
+            {% else %}
+                <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter {{ ('review.'~i18nPrefix~'.your_review')|trans() }}.
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

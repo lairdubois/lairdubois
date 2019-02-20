@@ -38,13 +38,19 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			$children = $comment->getChildren()->toArray();
 			$comment->resetChildren();
 			foreach ($children as $child) {
-				$this->deleteComment($child, $commentable, $activityUtils, $om, $flush);
+				$this->deleteComment($child, $commentable, $activityUtils, $om, false);
 			}
 		}
+
 
 		// Update user comment count
 		if (!($commentable instanceof DraftableInterface) || ($commentable instanceof DraftableInterface && !$commentable->getIsDraft())) {
 			$comment->getUser()->getMeta()->incrementCommentCount(-1);
+		}
+
+		// Update parent child count
+		if (!is_null($comment->getParent())) {
+			$comment->getParent()->incrementChildCount(-1);
 		}
 
 		// Update commentable comment count

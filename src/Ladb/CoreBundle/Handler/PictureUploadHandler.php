@@ -68,9 +68,9 @@ class PictureUploadHandler extends \UploadHandler {
 				case Picture::POST_PROCESSOR_SQUARE:
 
 					$imagick = new \Imagick($resourceAbsolutePath.'[0]');
-					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);								// Convert to JPG
-					$imagick->setCompressionQuality(100);												// Set max quality
-					$imagick->setBackgroundColor('#ffffff');											// Set background color to white
+					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);					// Convert to JPG
+					$imagick->setCompressionQuality(100);										// Set max quality
+					$imagick->setBackgroundColor('#ffffff');									// Set background color to white
 					$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
 					$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);				// Merge layers
 					$imagick->thumbnailImage(1024, 1024, true, true);			// Rescale to 1024x1024 fill
@@ -106,11 +106,15 @@ class PictureUploadHandler extends \UploadHandler {
 
 			list($img_width, $img_height) = $this->get_image_size($uploaded_file);
 
-			// Check image ratio
-			$ratio = $img_width / $img_height;
-			if ($ratio > 3 || $ratio < 0.33) {
-				$file->error = "Les proportions de l'image sont incorrectes.<br>La plus petite dimension de l'image ne doit pas être inférieure au <strong>1/3</strong> de la plus grande.";
-				return false;
+			if ($this->options['post_processor'] != Picture::POST_PROCESSOR_SQUARE) {	// Do not block 1/3 aspect ratio if post processor is SQUARE
+
+				// Check image ratio
+				$ratio = $img_width / $img_height;
+				if ($ratio > 3 || $ratio < 0.33) {
+					$file->error = "Les proportions de l'image sont incorrectes.<br>La plus petite dimension de l'image ne doit pas être inférieure au <strong>1/3</strong> de la plus grande.";
+					return false;
+				}
+
 			}
 
 			return true;

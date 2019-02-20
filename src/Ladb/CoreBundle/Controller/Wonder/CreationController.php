@@ -4,8 +4,7 @@ namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Manager\Wonder\CreationManager;
@@ -63,8 +62,7 @@ class CreationController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_creation_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_creation_create")
 	 * @Template("LadbCoreBundle:Wonder/Creation:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -231,8 +229,7 @@ class CreationController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_creation_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_creation_update")
 	 * @Template("LadbCoreBundle:Wonder/Creation:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -941,7 +938,7 @@ class CreationController extends Controller {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'creations'       => $searchParameters['entities'],

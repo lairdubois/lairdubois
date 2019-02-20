@@ -6,9 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table("tbl_core_like", indexes={
- *     @ORM\Index(name="IDX_LIKE_ENTITY", columns={"entity_type", "entity_id"})
- * })
+ * @ORM\Table("tbl_core_like",
+ *		uniqueConstraints={
+ *			@ORM\UniqueConstraint(name="ENTITY_USER_UNIQUE", columns={"entity_type", "entity_id", "user_id"})
+ * 		},
+ * 		indexes={
+ *     		@ORM\Index(name="IDX_LIKE_ENTITY", columns={"entity_type", "entity_id"})
+ * 		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\LikeRepository")
  */
 class Like {

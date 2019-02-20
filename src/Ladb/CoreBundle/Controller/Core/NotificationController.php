@@ -5,8 +5,7 @@ namespace Ladb\CoreBundle\Controller\Core;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Core\Notification;
 use Ladb\CoreBundle\Utils\TypableUtils;
@@ -28,8 +27,8 @@ class NotificationController extends Controller {
 		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
-		$offset = $paginatorUtils->computePaginatorOffset($page, 10, 10);
-		$limit = $paginatorUtils->computePaginatorLimit($page, 10, 10);
+		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
 		$paginator = $notificationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_notification_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
 
@@ -144,7 +143,7 @@ class NotificationController extends Controller {
 		}
 
 		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Review) {
-			$entity = $activity->getReview()->getBook();
+			$entity = $typableUtils->findTypable($activity->getReview()->getEntityType(), $activity->getReview()->getEntityId());
 			$returnToUrl = $typableUtils->getUrlAction($entity).'#_review_'.$activity->getReview()->getId();
 		}
 

@@ -3,6 +3,7 @@
 {% set entity = post %}
 
 {% set pageContentItemType = 'BlogPosting' %}
+{% set pageContentNameItemprop = 'headline' %}
 {% set pageSectionUrl = url('core_blog_post_list') %}
 {% set pageSectionName = 'blog.post.list'|trans %}
 
@@ -53,6 +54,18 @@
     {% endif %}
 {% endblock %}
 
+{% block bodyMetas %}
+    {{ parent() }}
+    <meta itemprop="datePublished" content="{{ entity.createdAt|date('Y-m-dTH:i:s') }}" />
+    <meta itemprop="dateModified" content="{{ entity.updatedAt|date('Y-m-dTH:i:s') }}" />
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="{{ asset('favicon-512x512.jpg') }}">
+        </div>
+        <meta itemprop="name" content="L'Air du Bois">
+    </div>
+{% endblock %}
+
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':post } %}
         {% block headerTools %}
@@ -96,7 +109,7 @@
         {% include 'LadbCoreBundle:Blog/Post:_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-post">
-        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title } %}
+        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title, 'noSizer':true, 'noLazyLoad':true } %}
         <div class="ladb-body" itemprop="articleBody">
             {% for block in post.bodyBlocks %}
                 {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}

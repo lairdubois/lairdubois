@@ -198,7 +198,12 @@
           width: 128px;
           height: 128px;
 
-          &+.ladb-body, &~.ladb-counters {
+          &~.ladb-counters {
+            padding-top: 4px;
+            padding-left: 0;
+          }
+
+          &+.ladb-body {
             padding-left: 128px + (@ladb-gutter / 2);
           }
 

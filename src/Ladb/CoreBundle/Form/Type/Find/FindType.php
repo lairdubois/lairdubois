@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Form\Type\Find;
 
+use Ladb\CoreBundle\Utils\LinkUtils;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,11 +25,13 @@ class FindType extends AbstractType {
 	private $om;
 	private $videoHostingUtils;
 	private $localisableUtils;
+	private $linkUtils;
 
-	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils) {
+	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils, LinkUtils $linkUtils) {
 		$this->om = $om;
 		$this->videoHostingUtils = $videoHostingUtils;
 		$this->localisableUtils = $localisableUtils;
+		$this->linkUtils = $linkUtils;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -109,19 +112,21 @@ class FindType extends AbstractType {
 				switch ($event->getForm()->get('contentType')->getData()) {
 
 					case Find::CONTENT_TYPE_LINK:
+
 						$link = $event->getForm()->get('link')->getData();
-						$kindAndEmbedIdentifier = $this->videoHostingUtils->getKindAndEmbedIdentifier($link->getUrl());
+						$canonicalUrl = $this->linkUtils->getCanonicalUrl($link->getUrl());
+						$kindAndEmbedIdentifier = $this->videoHostingUtils->getKindAndEmbedIdentifier($canonicalUrl);
 						if ($kindAndEmbedIdentifier['kind'] == VideoHostingUtils::KIND_UNKNOW) {
 							$website = new Website();
 							$website->setId($link->getId());
-							$website->setUrl($link->getUrl());
+							$website->setUrl($canonicalUrl);
 							$website->setThumbnail($link->getThumbnail());
 							$find->setContent($website);
 							$find->setKind(Find::KIND_WEBSITE);
 						} else {
 							$video = new Video();
 							$video->setId($link->getId());
-							$video->setUrl($link->getUrl());
+							$video->setUrl($canonicalUrl);
 							$video->setThumbnail($link->getThumbnail());
 							$video->setKind($kindAndEmbedIdentifier['kind']);
 							$video->setEmbedIdentifier($kindAndEmbedIdentifier['embedIdentifier']);

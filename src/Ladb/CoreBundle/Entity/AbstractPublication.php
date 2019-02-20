@@ -5,11 +5,14 @@ namespace Ladb\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\PublicationInterface;
+use Ladb\CoreBundle\Model\TimestampableTrait;
 
 /**
  * @ORM\MappedSuperclass
  */
 abstract class AbstractPublication implements PublicationInterface {
+
+	use TimestampableTrait;
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
@@ -46,45 +49,6 @@ abstract class AbstractPublication implements PublicationInterface {
 
 	public function getId() {
 		return $this->id;
-	}
-
-	// CreatedAt /////
-
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
-	}
-
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
-	// UpdatedAt /////
-
-	public function setUpdatedAt($updatedAt) {
-		$this->updatedAt = $updatedAt;
-		return $this;
-	}
-
-	public function getUpdatedAt() {
-		return $this->updatedAt;
-	}
-
-	// UpdatedAge /////
-
-	public function getUpdatedAge() {
-		return $this->getUpdatedAt()->diff(new \DateTime());
-	}
-
-	// ChangedAt /////
-
-	public function setChangedAt($changedAt) {
-		$this->changedAt = $changedAt;
-		return $this;
-	}
-
-	public function getChangedAt() {
-		return $this->changedAt;
 	}
 
 	// IsLocked /////

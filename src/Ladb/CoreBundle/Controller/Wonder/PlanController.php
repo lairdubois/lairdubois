@@ -2,12 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Entity\Core\Resource;
+use Ladb\CoreBundle\Utils\ResourceUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
@@ -59,8 +59,7 @@ class PlanController extends Controller {
 	}
 
 	/**
-	 * @Route("/create", name="core_plan_create")
-	 * @Method("POST")
+	 * @Route("/create", methods={"POST"}, name="core_plan_create")
 	 * @Template("LadbCoreBundle:Wonder/Plan:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -234,8 +233,7 @@ class PlanController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_plan_update")
-	 * @Method("POST")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_plan_update")
 	 * @Template("LadbCoreBundle:Wonder/Plan:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -791,6 +789,15 @@ class PlanController extends Controller {
 
 						break;
 
+					case 'kind':
+
+						$resourceUtils = $this->get(ResourceUtils::NAME);
+						$kind = $resourceUtils->getKindFromStrippedName($facet->value);
+						$filter = new \Elastica\Query\Range('kinds', array( 'gte' => $kind, 'lte' => $kind ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-creations':
 
 						$filter = new \Elastica\Query\Range('creationCount', array( 'gte' => 1 ));
@@ -908,7 +915,7 @@ class PlanController extends Controller {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities']));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
 			'plans'           => $searchParameters['entities'],

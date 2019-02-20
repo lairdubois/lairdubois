@@ -73,22 +73,6 @@ class JoinRepository extends AbstractEntityRepository {
 		}
 	}
 
-	public function findOneByUser(User $user) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'j' ))
-			->from($this->getEntityName(), 'j')
-			->where('j.user = :user')
-			->setParameter('user', $user)
-		;
-
-		try {
-			return $queryBuilder->getQuery()->getSingleResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
-		}
-	}
-
 	/////
 
 	public function findPaginedByEntityTypeAndEntityIdJoinedOnUser($entityType, $entityId, $offset, $limit) {

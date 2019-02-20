@@ -5,6 +5,8 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Model\ReviewableInterface;
+use Ladb\CoreBundle\Model\ReviewableTrait;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 use Ladb\CoreBundle\Model\LocalisableTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
@@ -22,9 +24,9 @@ use Ladb\CoreBundle\Entity\Knowledge\Value\Phone;
  * @ORM\Table("tbl_knowledge2_provider")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\ProviderRepository")
  */
-class Provider extends AbstractKnowledge implements LocalisableInterface {
+class Provider extends AbstractKnowledge implements LocalisableInterface, ReviewableInterface {
 
-	use LocalisableTrait;
+	use LocalisableTrait, ReviewableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Provider';
 	const TYPE = 111;
@@ -57,7 +59,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 		Provider::FIELD_MAIL_ORDER_SELLING  => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Provider::FIELD_SALE_TO_INDIVIDUALS => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Provider::FIELD_PRODUCTS            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Bois massifs', 1 => 'Bois panneaux', 2 => 'Bois placages', 11 => 'Bois de construction', 3 => 'Outillage', 4 => 'Quincaillerie', 5 => 'Produits de finition', 6 => 'Colle et Fixation', 8 => 'Consommables', 7 => 'Miroiterie - Vitrerie', 9 => 'Equipements', 10 => 'Librairie' /* MAX = 11 */ ), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@products:"%q%"'),
-		Provider::FIELD_SERVICES            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Formations', 1 => 'Affûtage', 2 => 'Découpe', 3 => 'Location d\'atelier', 4 => 'Location d\'établi', 5 => 'Réparations'), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@services:"%q%"'),
+		Provider::FIELD_SERVICES            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Formations', 1 => 'Affûtage', 2 => 'Découpe', 3 => 'Location d\'atelier', 4 => 'Location d\'établi', 5 => 'Réparations', 6 => 'Atelier partagé'), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@services:"%q%"'),
 		Provider::FIELD_WOODS               => array(Provider::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_FILTER_QUERY => '@woods:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule essence par proposition.')))),
 		Provider::FIELD_DESCRIPTION         => array(Provider::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_STATE         		=> array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(0 => 'En activité', 1 => 'En cours de redressement', 2 => 'En cours de liquidattion', 3 => 'Définitivement fermé')),
@@ -312,6 +314,17 @@ class Provider extends AbstractKnowledge implements LocalisableInterface {
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="providers")
 	 */
 	private $howtos;
+
+
+	/**
+	 * @ORM\Column(name="review_count", type="integer")
+	 */
+	private $reviewCount = 0;
+
+	/**
+	 * @ORM\Column(name="average_rating", type="float")
+	 */
+	private $averageRating = 0;
 
 	/////
 

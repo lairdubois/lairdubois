@@ -18,6 +18,9 @@ class BackupDumpdbCommand extends ContainerAwareCommand {
 			->addOption('dump-dir', null, InputOption::VALUE_REQUIRED, 'Define the dump dir', 'backups')
 			->addOption('compress', null, InputOption::VALUE_NONE, 'Define if dump file is compressed')
 			->addOption('overwrite', null, InputOption::VALUE_NONE, 'Define previous dump file is overwrited')
+			->addOption('table', null, InputOption::VALUE_REQUIRED, 'Dump this table ONLY')
+			->addOption('ignore-table', null, InputOption::VALUE_REQUIRED, 'Ignore given table (write without DB name)')
+			->addOption('where', null, InputOption::VALUE_REQUIRED, 'Dump only selected records. Quotes are mandatory.')
 			->setDescription('Dump the database')
 			->setHelp(<<<EOT
 The <info>ladb:backup:db</info> command dump the database
@@ -30,13 +33,16 @@ EOT
 		$dumpDir = $input->getOption('dump-dir');
 		$compress = $input->getOption('compress');
 		$overwrite = $input->getOption('overwrite');
+		$table = $input->getOption('table');
+		$ignoreTable = $input->getOption('ignore-table');
+		$where = $input->getOption('where');
 
 		$dbHost = $this->getContainer()->getParameter('database_host');
 		$dbPort = $this->getContainer()->getParameter('database_port');
 		$dbUser = $this->getContainer()->getParameter('database_user');
 		$dbPassword = $this->getContainer()->getParameter('database_password');
 		$dbName = $this->getContainer()->getParameter('database_name');
-		$sqlFile = $dbName.'.sql';
+		$sqlFile = date('Ymd_His').'.'.$dbName.(!is_null($table) ? '.'.$table : '').'.sql';
 		$fs = new Filesystem();
 
 		// Compute the mysqldump command
@@ -55,8 +61,17 @@ EOT
 		if (!is_null($dbPort)) {
 			$mysqldumpCommand .= ' --port='.$dbPort;
 		}
+		if (!is_null($ignoreTable)) {
+			$mysqldumpCommand .= ' --ignore-table='.$dbName.'.'.$ignoreTable;
+		}
+		if (!is_null($where)) {
+			$mysqldumpCommand .= ' --where="'.$where.'"';
+		}
 		if (!is_null($dbName)) {
 			$mysqldumpCommand .= ' '.$dbName;
+		}
+		if (!is_null($table)) {
+			$mysqldumpCommand .= ' '.$table;
 		}
 		if (!empty($dumpDir)) {
 
@@ -81,6 +96,8 @@ EOT
 
 		// Execute mysqldump command
 		$mysqldumpCommand .= ' > '.$sqlFile;
+		$output->writeln('<info>Executing mysqldump command ... </info>');
+		$output->writeln(' '.$mysqldumpCommand);
 		if (system($mysqldumpCommand) === false) {
 			$output->writeln('<error>Error executing mysqldump command.</error>');
 			return;
@@ -88,22 +105,22 @@ EOT
 
 		if ($compress && $fs->exists($sqlFile)) {
 
-			$tgzFile = $sqlFile.'.tgz';
+			$gzFile = $sqlFile.'.gz';
 
-			if ($fs->exists($tgzFile)) {
-				$fs->remove($tgzFile);
+			if ($fs->exists($gzFile)) {
+				$fs->remove($gzFile);
 			}
 
-			// Execute tar command
-			$tarCommand = 'tar -czf '.$tgzFile.' '.$sqlFile;
+			// Execute gzip command
+			$tarCommand = 'gzip < '.$sqlFile.' > '.$gzFile;
 			if (system($tarCommand) === false) {
-				$output->writeln('<error>Error executing tar command.</error>');
+				$output->writeln('<error>Error executing gzip command.</error>');
 				return;
 			}
 
 		}
 
-		$output->writeln('<info>Dump complete at '.$sqlFile.'</info>');
+		$output->writeln('<info>Dump complete at </info>'.$sqlFile.($compress ? '<info> and </info>'.$gzFile : ''));
 
 	}
 

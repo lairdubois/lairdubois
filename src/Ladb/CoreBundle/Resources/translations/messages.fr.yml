@@ -28,6 +28,7 @@ default:
   remove: Retirer
   move: Déplacer
   move_to: Déplacer vers
+  move_up: Remonter
   restore: Restaurer
   save: Enregistrer
   send: Envoyer
@@ -210,8 +211,8 @@ wonder:
       help:
         title: Renseignez ici le titre de votre plan.
         body: Décrivez ici votre plan.
-        resource: "Ajoutez ici jusqu'à <strong>10 fichiers</strong> issues de votre logiciel de <abbr title=\"Dessin Assisté par Ordinateur\">DAO</abbr>.<br><em>Les formats autorisés sont : AutoCAD (DWF, DWG), Sketchup (SKP), PDF, SVG, STL, 123D Design (123DX), Geogebra (GGB), FreeCAD (FCSTD), LibreOffice/Excel (ODS, XLSX, XLSM), Fusion 360 (F3D)</em>."
-        showcase: Ajoutez jusqu'à <strong>5 images</strong> de <u>capture</u> pour donner un aperçu de votre plan. La première image sera utilisée comme miniature.<br><u>Evitez les photos de la réalisation ici</u>. Préférez la rubrique Créations pour celà.
+        resource: "Ajoutez ici jusqu'à <strong>10 fichiers</strong> issues de votre logiciel de <abbr title=\"Dessin Assisté par Ordinateur\">DAO</abbr>.<br><em>Les formats autorisés sont : AutoCAD (DWF, DWG, DXF), Sketchup (SKP), PDF, SVG, STL, 123D Design (123DX), Geogebra (GGB), FreeCAD (FCSTD), LibreOffice/Excel (ODS, XLSX, XLSM), Fusion 360 (F3D)</em>."
+        showcase: Ajoutez jusqu'à <strong>5 images</strong> de <u>capture</u> pour donner un aperçu de votre plan. La première image sera utilisée comme miniature.<br><u>Ne mettez pas ici de photos de la réalisation</u>. Préférez la rubrique Créations pour celà.
         inspirations: Associez jusqu'à <strong>4 plans</strong> qui ont été la source d'inspiration de votre plan. Vous n'êtes pas obligé d'être l'auteur de ces plans.<br>Cette association est intéressante si, par exemple, vous avez fait une précédente version de votre plan ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
     choice:
       new_plans: '[0,1]nouveau plan|]1,Inf]nouveaux plans'
@@ -851,11 +852,6 @@ knowledge:
         isbn:
         price:
         publish_year:
-    review:
-      new: Ajouter ma critique
-      edit: Editer ma critique
-    choice:
-      reviews: '[0,1]critique|]1,Inf]critiques'
   tool:
     list: Outils
     token:
@@ -974,6 +970,39 @@ comment:
     comments: '[0,1]commentaire|]1,Inf]commentaires'
     children: '[0,1]réponse|]1,Inf]réponses'
 
+review:
+  default:
+    choice:
+      reviews: '[0,1]avis/critique|]1,Inf]avis/critiques'
+  knowledge_provider:
+    new: Ajouter mon avis
+    edit: Editer mon avis
+    already: Vous avez déjà apporté votre avis.
+    show_mine: Voir mon avis.
+    none: Ce fournisseur ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
+    your_review: votre avis
+    form:
+      new_help: Cet avis vous permet d'exprimer de façon synthétique votre expérience auprès du fournisseur
+      body: Votre avis
+    alert:
+      delete_success: L'avis a été supprimé.
+    choice:
+      reviews: '[0,1]avis|]1,Inf]avis'
+  knowledge_book:
+    new: Ajouter ma critique
+    edit: Editer ma critique
+    already: Vous avez déjà apporté votre critique.
+    show_mine: Voir ma critique.
+    none: Ce livre ne possède pour l'instant aucune critique de lecteur.<br>Soyez le premier à ajouter la votre !
+    your_review: votre critique
+    form:
+      new_help: Cette critique vous permet d'exprimer de façon synthétique votre avis de lecteur sur le livre
+      body: Votre critique
+    alert:
+      delete_success: La critique a été supprimé.
+    choice:
+      reviews: '[0,1]critique|]1,Inf]critiques'
+
 referer:
   list: On en parle ailleurs
   choice:
@@ -1079,6 +1108,7 @@ resource:
     123ddesign: 123D Design
     libreoffice: LibreOffice/Excel
     fusion360: Fusion 360
+    collada: Collada
   form:
     choice:
       mandatory: "[0,1]Ce fichier est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins un fichier."
@@ -1179,7 +1209,7 @@ notification:
     write: Notifications de messages
     answer: Notifications de réponses
     testify: Notifications de témoignages
-    review: Notifications de critiques
+    review: Notifications d'avis
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
@@ -1192,6 +1222,7 @@ notification:
     write: '[0,1]Notification de nouveau message|]1,Inf]Notification de nouveaux messages'
     answer: '[0,1]Notification de nouvelle réponse|]1,Inf]Notification de nouvelles réponses'
     testify: '[0,1]Notification de nouveau témoignage|]1,Inf]Notification de nouveaux témoignages'
+    review: '[0,1]Notification de nouvel avis|]1,Inf]Notification de nouveaux avis'
 
 share:
   social:

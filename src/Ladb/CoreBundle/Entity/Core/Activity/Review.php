@@ -14,7 +14,7 @@ class Review extends AbstractActivity {
 	const STRIPPED_NAME = 'review';
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Book\Review")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Review")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $review;
@@ -29,7 +29,7 @@ class Review extends AbstractActivity {
 
 	// Review /////
 
-	public function setReview(\Ladb\CoreBundle\Entity\Knowledge\Book\Review $review) {
+	public function setReview(\Ladb\CoreBundle\Entity\Core\Review $review) {
 		$this->review = $review;
 		return $this;
 	}

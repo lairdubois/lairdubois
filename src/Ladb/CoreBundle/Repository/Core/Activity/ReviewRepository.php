@@ -8,7 +8,7 @@ class ReviewRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByTestimonial(\Ladb\CoreBundle\Entity\Knowledge\Book\Review $review) {
+	public function findByReview(\Ladb\CoreBundle\Entity\Core\Review $review) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'r' ))

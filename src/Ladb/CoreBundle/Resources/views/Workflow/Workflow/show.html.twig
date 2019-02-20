@@ -111,7 +111,7 @@
     {% endif %}
     <div class="ladb-workflow">
         <a href="{{ path('core_workflow_show', { 'id':workflow.sluggedId, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
-            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'450', 'filterMode':'o', 'alt':workflow.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top', 'emptyWebPath':'empty_workflow.png' } %}
+            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'450', 'filterMode':'c', 'alt':workflow.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top', 'emptyWebPath':'empty_workflow.png' } %}
         </a>
         <hr>
         <div class="ladb-body">

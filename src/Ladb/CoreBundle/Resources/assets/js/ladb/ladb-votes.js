@@ -1,6 +1,12 @@
-function bindAjaxVoteButton(id, direction, url) {
+function bindAjaxVoteButton(id, direction, url, voteDownConfirm) {
     $("#ladb_vote_widget_" + id + " .ladb-vote-" + direction + ".ladb-enabled").on("click", function(event) {
         event.preventDefault();
+        if (direction == 'down' && !$(this).hasClass('ladb-active')) {
+            var r = confirm(voteDownConfirm + '.\nConfirmez votre action.');
+            if (!r) {
+                return;
+            }
+        }
         $('[data-tooltip=tooltip]').tooltip('hide');
         $(this).blur();
         $(this).find("i").removeClass("ladb-icon-thumb-" + direction).addClass("ladb-icon-spinner");

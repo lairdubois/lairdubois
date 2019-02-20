@@ -24,6 +24,15 @@
     {{ block('mapAreaJavascripts') }}
 {% endblock %}
 
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+        <div class="panel-body">
+            <i class="ladb-icon-info"></i> Vous recherchez un <em>Atelier partagé</em> ? <a href="{{ path('core_provider_list', { 'q':'@services:"Atelier partagé"' }) }}" target="_blank">Consultez l'annuaire</a> dans la rubrique <em>Fournisseurs</em> !
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
 {% block bodyHeaderContainer %}
     {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
     {{ parent() }}
