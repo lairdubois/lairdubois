@@ -369,22 +369,90 @@ And add the following lines
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
 ```
 
-## Setp 14 - Launch background process
+## Setp 14 - Create services and launch it fot background process
 
 The Workflow web socket server.
-
+Create service file
 ``` bash
-    $ sudo bin/console --env=prod gos:websocket:server &
+    $ sudo vi /etc/systemd/system/ladb_websocket.service
+```
+And add the following lines
+``` bash
+[Unit]
+Description=The Workflow web socket server.
+
+[Service]
+Type=simple
+User=www-cli
+WorkingDirectory=/var/www/www.lairdubois.fr/
+ExecStart=/usr/bin/php bin/console --env=prod gos:websocket:server
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 The RabbitMQ view consumer.
+Create service file
+``` bash
+    $ sudo vi /etc/systemd/system/ladb_consumer_view.service
+```
+And add the following lines
 
 ``` bash
-    $ sudo bin/console --env=prod rabbitmq:consumer view &
+[Unit]
+Description=The RabbitMQ view consumer.
+
+[Service]
+Type=simple
+User=www-cli
+WorkingDirectory=/var/www/www.lairdubois.fr/
+ExecStart=/usr/bin/php bin/console --env=prod rabbitmq:consumer view
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 The RabbitMQ webpush notification consumer.
-
+Create service file
 ``` bash
-    $ sudo bin/console --env=prod rabbitmq:consumer webpush_notification &
+    $ sudo vi /etc/systemd/system/ladb_consumer_webpush.service
+```
+And add the following lines
+``` bash
+[Unit]
+Description=The RabbitMQ webpush notification consumer.
+
+[Service]
+Type=simple
+User=www-cli
+WorkingDirectory=/var/www/www.lairdubois.fr/
+ExecStart=/usr/bin/php bin/console --env=prod rabbitmq:consumer webpush_notification
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.targe
+```
+
+Load these new service files
+``` bash
+    $ sudo systemctl daemon reload
+```
+
+Enable these services on boot
+``` bash
+    $ sudo systemctl enable ladb_consumer_view.service
+    $ sudo systemctl enable ladb_consumer_webpush.service
+    $ sudo systemctl enable ladb_websocket.service
+```
+
+Start these services
+``` bash
+    $ sudo systemctl start ladb_consumer_view.service
+    $ sudo systemctl start ladb_consumer_webpush.service
+    $ sudo systemctl start ladb_websocket.service
 ```
