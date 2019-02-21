@@ -343,8 +343,18 @@ This step will create an admin user for the platform. It will prompt you for :
 
 ## Step 13 - Activate cron commands (Not necessary on the **DEV** server)
 
+Create www-cli user
 ``` bash
-    $ sudo crontab -e
+    $ sudo useradd -s /usr/sbin/nologin -g www-data -d /var/www/ www-cli
+```
+Modify rights on the /var/www/www.lairdubois.fr/var/cache/prod directory
+``` bash
+    $ sudo chmod g+w /var/www/www.lairdubois.fr/var/cache/prod
+```
+
+Create crontab for www-cli user
+``` bash
+    $ sudo crontab -u www-cli -e
 ```
 
 And add the following lines
