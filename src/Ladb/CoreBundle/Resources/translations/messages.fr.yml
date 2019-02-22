@@ -647,6 +647,7 @@ knowledge:
     state_alert_3: Définitivement fermé
     linkto: Associer un fournisseur déjà publié
     new_warning: Un <strong>fournisseur</strong> est une entreprise, une association ou un organisme qui vend des produits ou services <strong>pour le travail du bois</strong>.
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Fournisseur.</p><p><u>N'apportez pas votre critique ou avis sur le fourniseur ici.</u></p><p>Pour donner votre avis de fournisseur, cliquez sur le bouton <strong>Ajouter mon avis</strong> un peu plus haut.</p>
     field:
       sign: Enseigne
       logo: Logo
