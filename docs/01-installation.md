@@ -52,8 +52,8 @@ Be sure you activate the following parameters (by uncomment or replace) :
 ### Install [PHP](http://www.php.net/) - *The scripting language*
 
 ``` bash
-    $ sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-    $ sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+    $ sudo wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
+    $ sudo echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list
     $ sudo apt update
 ```
 
@@ -361,12 +361,13 @@ And add the following lines
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
 ```
 
-## Setp 14 - Create services and launch it fot background process
+## Step 14 - Create services and launch it for background process
 
-The Workflow web socket server.
+### 14.1 The Workflow web socket server.
+
 Create service file
 ``` bash
-    $ sudo vi /etc/systemd/system/ladb_websocket.service
+    $ sudo nano /etc/systemd/system/ladb_websocket.service
 ```
 And add the following lines
 ``` bash
@@ -385,10 +386,11 @@ RestartSec=3
 WantedBy=multi-user.target
 ```
 
-The RabbitMQ view consumer.
+### 14.2 The RabbitMQ view consumer.
+
 Create service file
 ``` bash
-    $ sudo vi /etc/systemd/system/ladb_consumer_view.service
+    $ sudo nano /etc/systemd/system/ladb_consumer_view.service
 ```
 And add the following lines
 
@@ -408,10 +410,11 @@ RestartSec=3
 WantedBy=multi-user.target
 ```
 
-The RabbitMQ webpush notification consumer.
+### 14.3 The RabbitMQ webpush notification consumer.
+
 Create service file
 ``` bash
-    $ sudo vi /etc/systemd/system/ladb_consumer_webpush.service
+    $ sudo nano /etc/systemd/system/ladb_consumer_webpush.service
 ```
 And add the following lines
 ``` bash
@@ -429,6 +432,8 @@ RestartSec=3
 [Install]
 WantedBy=multi-user.targe
 ```
+
+### 14.4 Enable and start Services
 
 Load these new service files
 ``` bash
