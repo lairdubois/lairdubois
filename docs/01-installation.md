@@ -350,7 +350,6 @@ Create crontab for www-data user
 ```
 
 And add the following lines
-
 ```
 */2 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod swiftmailer:spool:send &> /dev/null
 0 4 * * 5 php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:mailing:weeknews --force &> /dev/null
@@ -369,6 +368,7 @@ Create service file
 ``` bash
     $ sudo nano /etc/systemd/system/ladb_websocket.service
 ```
+
 And add the following lines
 ``` bash
 [Unit]
@@ -392,8 +392,8 @@ Create service file
 ``` bash
     $ sudo nano /etc/systemd/system/ladb_consumer_view.service
 ```
-And add the following lines
 
+And add the following lines
 ``` bash
 [Unit]
 Description=The RabbitMQ view consumer.
@@ -416,6 +416,7 @@ Create service file
 ``` bash
     $ sudo nano /etc/systemd/system/ladb_consumer_webpush.service
 ```
+
 And add the following lines
 ``` bash
 [Unit]
