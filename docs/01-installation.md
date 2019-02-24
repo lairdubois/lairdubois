@@ -343,18 +343,10 @@ This step will create an admin user for the platform. It will prompt you for :
 
 ## Step 13 - Activate cron commands (Not necessary on the **DEV** server)
 
-Create www-cli user
-``` bash
-    $ sudo useradd -s /usr/sbin/nologin -g www-data -d /var/www/ www-cli
-```
-Modify rights on the /var/www/www.lairdubois.fr/var/cache/prod directory
-``` bash
-    $ sudo chmod g+w /var/www/www.lairdubois.fr/var/cache/prod
-```
 
-Create crontab for www-cli user
+Create crontab for www-data user
 ``` bash
-    $ sudo crontab -u www-cli -e
+    $ sudo crontab -u www-data -e
 ```
 
 And add the following lines
@@ -383,7 +375,7 @@ Description=The Workflow web socket server.
 
 [Service]
 Type=simple
-User=www-cli
+User=www-data
 WorkingDirectory=/var/www/www.lairdubois.fr/
 ExecStart=/usr/bin/php bin/console --env=prod gos:websocket:server
 Restart=always
@@ -406,7 +398,7 @@ Description=The RabbitMQ view consumer.
 
 [Service]
 Type=simple
-User=www-cli
+User=www-data
 WorkingDirectory=/var/www/www.lairdubois.fr/
 ExecStart=/usr/bin/php bin/console --env=prod rabbitmq:consumer view
 Restart=always
@@ -428,7 +420,7 @@ Description=The RabbitMQ webpush notification consumer.
 
 [Service]
 Type=simple
-User=www-cli
+User=www-data
 WorkingDirectory=/var/www/www.lairdubois.fr/
 ExecStart=/usr/bin/php bin/console --env=prod rabbitmq:consumer webpush_notification
 Restart=always
