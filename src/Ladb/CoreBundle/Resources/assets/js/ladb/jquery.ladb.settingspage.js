@@ -21,6 +21,8 @@
     };
 
     LadbSettingsPage.DEFAULTS = {
+        accountTypeFormFieldId: null,
+        accountTypeBrandValue: null,
         swPath: '',
         serverKey: '',
         subscriptionUrl: ''
@@ -92,6 +94,16 @@
             that.$revokeBtn.button('loading');
             that.webpush.revoke();
         });
+
+        // Bind form fields
+        $('#' + this.options.accountTypeFormFieldId).on('change', function(e) {
+            if ($('#' + that.options.accountTypeFormFieldId + ' input:checked').val() == that.options.accountTypeBrandValue) {
+                $('#ladb_account_type_brand_warning_alert').show();
+            } else {
+                $('#ladb_account_type_brand_warning_alert').hide();
+            }
+            console.log(this, e, $(this).val());
+        })
 
     };
 

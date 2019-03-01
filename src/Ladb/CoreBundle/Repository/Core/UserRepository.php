@@ -146,6 +146,10 @@ class UserRepository extends AbstractEntityRepository {
 			$queryBuilder
 				->andWhere('u.accountType = '.User::ACCOUNT_TYPE_HOBBYIST)
 			;
+		} else if ('type-brand' == $filter) {
+			$queryBuilder
+				->andWhere('u.accountType = '.User::ACCOUNT_TYPE_BRAND)
+			;
 		} else if ('social-facebook' == $filter) {
 			$queryBuilder
 				->andWhere('u.facebook IS NOT NULL')

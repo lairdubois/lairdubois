@@ -32,6 +32,7 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	const ACCOUNT_TYPE_ASSO = 1;
 	const ACCOUNT_TYPE_PRO = 2;
 	const ACCOUNT_TYPE_HOBBYIST = 3;
+	const ACCOUNT_TYPE_BRAND = 4;
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
@@ -257,6 +258,8 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 				return 'pro';
 			case User::ACCOUNT_TYPE_HOBBYIST:
 				return 'hobbyist';
+			case User::ACCOUNT_TYPE_BRAND:
+				return 'brand';
 		}
 		return 'none';
 	}

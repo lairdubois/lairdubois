@@ -98,7 +98,8 @@
                     0: 'default',
                     1: 'asso',
                     2: 'pro',
-                    3: 'default'
+                    3: 'default',
+                    4: 'brand'
                 };
                 geojsonLayer.eachLayer(function(layer) {
                     layer.setIcon(L.divIcon({
