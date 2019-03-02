@@ -2,6 +2,9 @@
 
 namespace Ladb\CoreBundle\Command;
 
+use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +24,7 @@ EOT
 			);
 	}
 
-	private function _process($entityClass, $em, OutputInterface $output, $blockBodiedUtils, $om, $forced) {
+	private function _process($entityClass, $em, OutputInterface $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced) {
 
 		$output->write('<info>Retrieve '.$entityClass.'...</info>');
 
@@ -41,7 +44,11 @@ EOT
 
 		$entityCount = 0;
 		foreach ($entities as $entity) {
-			$blockBodiedUtils->preprocessBlocks($entity);
+			if ($entity instanceof BlockBodiedInterface) {
+				$blockBodiedUtils->preprocessBlocks($entity);
+			} else if ($entity instanceof BodiedInterface) {
+				$filedProcessoUtils->preprocessBodyField($entity);
+			}
 			$entityCount++;
 		}
 
@@ -59,17 +66,24 @@ EOT
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
 		$blockBodiedUtils = $this->getContainer()->get(BlockBodiedUtils::NAME);
+		$filedProcessoUtils = $this->getContainer()->get(FieldPreprocessorUtils::NAME);
 
 		$entityCount = 0;
 
-		$entityCount += $this->_process('LadbCoreBundle:Blog\Post', $om, $output, $blockBodiedUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Faq\Question', $om, $output, $blockBodiedUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Find\Find', $om, $output, $blockBodiedUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Howto\Article', $om, $output, $blockBodiedUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Wonder\Creation', $om, $output, $blockBodiedUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Wonder\Workshop', $om, $output, $blockBodiedUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Qa\Question', $om, $output, $blockBodiedUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Qa\Answer', $om, $output, $blockBodiedUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Message\Message', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Core\Comment', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Wonder\Creation', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Wonder\Workshop', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Wonder\Plan', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Blog\Post', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Faq\Question', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Promotion\Graphic', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Find\Find', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Howto\Howto', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Howto\Article', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Workflow\Workflow', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Qa\Question', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Qa\Answer', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
 
 		if ($forced) {
 			$output->writeln('<info>'.$entityCount.' generated</info>');

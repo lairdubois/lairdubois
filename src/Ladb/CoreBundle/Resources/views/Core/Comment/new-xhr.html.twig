@@ -11,6 +11,6 @@
         setupTextareas();
         $("#{{ form.body.vars.id }}")
             .markdown({ autofocus:true })
-            .ladbTextcompletify({ maxCount: 5{% if mentionStrategy is defined %}, mentionStrategy: {{ mentionStrategy|raw }}{% endif %} });
+            .ladbTextcompletify({ maxCount: 5, mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'{% if mentionStrategy is defined %}, mentionStrategy: {{ mentionStrategy|raw }}{% endif %} });
     </script>
 {% endblock %}

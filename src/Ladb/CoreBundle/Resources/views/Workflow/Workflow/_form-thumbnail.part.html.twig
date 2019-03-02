@@ -4,7 +4,7 @@
 <li id="workflow_{{ workflow.id }}" class="ladb-workflow ladb-form-thumbnail thumbnail">
     <div class="uk-overlay">
         <img src="{{ (workflow.mainPicture is not null ? workflow.mainPicture.webPath : 'empty_workflow.png')|imagine_filter('128x128o') }}" width="128" height="128">
-        <div class="uk-overlay-caption">{{ workflow.title }}<br><small>{{ 'default.by'|trans() }} {{ workflow.user.displayName }}</small></div>
+        <div class="uk-overlay-caption">{{ workflow.title }}<br><small>{{ 'default.by'|trans() }} {{ workflow.user.displayname }}</small></div>
     </div>
     <div style="text-align: center;margin-top: 5px;">
         <a href="#" class="btn btn-xs btn-danger" onclick="$('#workflow_{{ workflow.id }}').remove();workflowRemoved();return false;">{{ 'default.remove'|trans() }}</a>

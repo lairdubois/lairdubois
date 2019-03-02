@@ -16,6 +16,8 @@ use cebe\markdown\Parser;
  */
 class LadbMarkdown extends Parser {
 
+	private $userManager;
+
 	// include block element parsing using traits
 	use \cebe\markdown\block\HeadlineTrait;
 	use \cebe\markdown\block\ListTrait {
@@ -56,6 +58,12 @@ class LadbMarkdown extends Parser {
 	public $headingLevelOffset = 2;
 
 	private $html5 = true;
+
+	/////
+
+	public function __construct($userManager) {
+		$this->userManager = $userManager;
+	}
 
 	/////
 

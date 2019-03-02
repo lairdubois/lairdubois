@@ -3,7 +3,7 @@
 {% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
 
 {% set pageUrl = url('core_user_show', { 'username':user.usernameCanonical }) %}
-{% set pageTitle = user.displayName %}
+{% set pageTitle = user.displayname %}
 {% set pageContentItemType = 'Person' %}
 {% if user.meta.biography is not null and user.meta.biography.htmlBody|length > 0 %}
     {% set pageDescription = user.meta.biography.htmlBody|striptags|truncate(200, true, '...') %}
@@ -60,7 +60,7 @@
                 {% if isOwner %}
                     <a href="{{ path('core_user_settings') }}" class="btn btn-default"><i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}</a>
                 {% else %}
-                    <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayName }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }}</a>
+                    <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }}</a>
                 {% endif %}
             {% endblock %}
         </div>

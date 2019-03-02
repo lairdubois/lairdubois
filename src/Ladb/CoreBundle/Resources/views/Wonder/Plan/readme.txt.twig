@@ -1,7 +1,7 @@
 IMPORTANT:
 ----------
 
-Le contenu original de cette archive a été publié par *{{ plan.user.displayName }}*{% if plan.user.fullName %} ({{ plan.user.fullName }}){% endif %} dans le plan *{{ plan.title }}* ({{ ladb_entity_url_action(plan) }}).
+Le contenu original de cette archive a été publié par *{{ plan.user.displayname }}*{% if plan.user.fullName %} ({{ plan.user.fullName }}){% endif %} dans le plan *{{ plan.title }}* ({{ ladb_entity_url_action(plan) }}).
 
 Cette archive contient {{ plan.resources|length }} {{ 'default.choice.files'|transchoice(plan.resources|length) }} :
 {% for resource in plan.resources %}

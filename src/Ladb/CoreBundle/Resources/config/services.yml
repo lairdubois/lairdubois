@@ -109,6 +109,7 @@ services:
     arguments: ['@doctrine.orm.entity_manager']
   ladb_core.field_preprocessor_utils:
     class: Ladb\CoreBundle\Utils\FieldPreprocessorUtils
+    arguments: ['@service_container']
   ladb_core.block_bodied_utils:
     class: Ladb\CoreBundle\Utils\BlockBodiedUtils
     arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils']
@@ -151,6 +152,9 @@ services:
     class: Ladb\CoreBundle\Utils\LinkUtils
 
   # Managers
+  ladb_core.user_manager:
+    class: Ladb\CoreBundle\Manager\Core\UserManager
+    arguments: ['@service_container']
   ladb_core.creation_manager:
     class: Ladb\CoreBundle\Manager\Wonder\CreationManager
     arguments: ['@service_container']

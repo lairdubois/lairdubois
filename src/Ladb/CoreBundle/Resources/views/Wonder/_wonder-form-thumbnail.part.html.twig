@@ -5,7 +5,7 @@
 <li id="{{ wonderType }}_{{ wonder.id }}" class="ladb-{{ wonderType }} ladb-form-thumbnail">
     <div class="uk-overlay">
         <img src="{{ wonder.mainPicture.webPath|imagine_filter('128x128o') }}" width="128" height="128">
-        <div class="uk-overlay-caption">{{ wonder.title }}<br><small>{{ 'default.by'|trans() }} {{ wonder.user.displayName }}</small></div>
+        <div class="uk-overlay-caption">{{ wonder.title }}<br><small>{{ 'default.by'|trans() }} {{ wonder.user.displayname }}</small></div>
     </div>
     <div style="text-align: center;margin-top: 5px;">
         <a href="#" class="btn btn-xs btn-danger" onclick="$('#{{ wonderType }}_{{ wonder.id }}').remove();{{ wonderType }}Removed();return false;">{{ 'default.remove'|trans() }}</a>

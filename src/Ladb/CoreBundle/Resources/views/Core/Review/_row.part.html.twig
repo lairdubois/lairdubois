@@ -41,7 +41,7 @@
                         <span class="ladb-horizontal-separator-left">{% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':review } %}</span>
                     {% endif %}
                     <div class="text-right">
-                        <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':review.user.usernameCanonical }) }}" target="_blank" class="btn btn-default btn-sm" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':review.user.displayName }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ review.user.displayName }}</a>
+                        <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':review.user.usernameCanonical }) }}" target="_blank" class="btn btn-default btn-sm" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':review.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ review.user.displayName }}</a>
                     </div>
                 </div>
             </div>

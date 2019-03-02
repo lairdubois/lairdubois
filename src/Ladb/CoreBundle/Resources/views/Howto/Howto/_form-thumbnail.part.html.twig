@@ -4,7 +4,7 @@
 <li id="howto_{{ howto.id }}" class="ladb-howto ladb-form-thumbnail thumbnail">
     <div class="uk-overlay">
         <img src="{{ (howto.mainPicture is not null ? howto.mainPicture.webPath : 'avatar.png')|imagine_filter('128x128o') }}" width="128" height="128">
-        <div class="uk-overlay-caption">{{ howto.title }}<br><small>{{ 'default.by'|trans() }} {{ howto.user.displayName }}</small></div>
+        <div class="uk-overlay-caption">{{ howto.title }}<br><small>{{ 'default.by'|trans() }} {{ howto.user.displayname }}</small></div>
     </div>
     <div style="text-align: center;margin-top: 5px;">
         <a href="#" class="btn btn-xs btn-danger" onclick="$('#howto_{{ howto.id }}').remove();howtoRemoved();return false;">{{ 'default.remove'|trans() }}</a>

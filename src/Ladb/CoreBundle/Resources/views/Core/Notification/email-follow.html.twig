@@ -13,7 +13,7 @@
                 </a>
             </td>
             <td>
-                <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="font-size: 130%; font-weight: bold; color: #f77f00; text-decoration: none;" target="_blank">{{ row.actorUser.displayName }}</a>{% if row.actorUser.fullname is not empty %}&nbsp;<span style="color: #999; font-size: 90%;">({{ row.actorUser.fullname }})</span>{% endif %}
+                <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="font-size: 130%; font-weight: bold; color: #f77f00; text-decoration: none;" target="_blank">{{ row.actorUser.displayname }}</a>{% if row.actorUser.fullname is not empty %}&nbsp;<span style="color: #999; font-size: 90%;">({{ row.actorUser.fullname }})</span>{% endif %}
                 {% if row.actorUser.location is not empty %}
                     <p style="margin:5px 0 0 0; font-size: 90%"><a href="https://maps.google.fr/maps?q={{ row.actorUser.location|url_encode }}" style="color: #f77f00; text-decoration: none;">{{ row.actorUser.location }}</a></p>
                 {% endif %}

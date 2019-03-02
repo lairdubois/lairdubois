@@ -56,7 +56,7 @@
         "blueimp/jquery-file-upload": "9.21.0",
         "jublonet/codebird-php": "2.6.1",
         "jonnyw/php-phantomjs": "4.6.1",
-        "emojione/emojione": "3.1.4",
+        "emojione/emojione": "4.5.0",
         "eonasdan/bootstrap-datetimepicker": "4.17.47",
         "ps/image-optimizer": "1.2.0",
         "egulias/email-validator": "~1.2",

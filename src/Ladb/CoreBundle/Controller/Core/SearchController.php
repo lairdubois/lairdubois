@@ -36,9 +36,13 @@ class SearchController extends Controller {
 			$request,
 			$page,
 			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
-				$filter = new \Elastica\Query\QueryString('*'.$facet->value.'*');
-				$filter->setFields(array( 'displayname', 'fullname', 'username' ));
-				$filters[] = $filter;
+				$bool = new \Elastica\Query\BoolQuery();
+				$q1 = new \Elastica\Query\QueryString('*'.$facet->value.'*');
+				$q1->setFields(array( 'displayname^10', 'username^5', 'fullname' ));
+				$bool->addMust($q1);
+				$q2 = new \Elastica\Query\SimpleQueryString($facet->value.'*', array( 'displayname^10', 'username^5', 'fullname' ));	// Starts with boost
+				$bool->addShould($q2);
+				$filters[] = $bool;
 			},
 			null,
 			null,

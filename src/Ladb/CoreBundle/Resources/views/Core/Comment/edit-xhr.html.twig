@@ -18,6 +18,6 @@
         setupTextareas();
         $("#{{ form.body.vars.id }}")
             .markdown({ autofocus:true })
-            .ladbTextcompletify({ maxCount: 5, mentionStrategy: {{ mentionStrategy|raw }} })
+            .ladbTextcompletify({ maxCount: 5, mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}', mentionStrategy: {{ mentionStrategy|raw }} })
     </script>
 </div>

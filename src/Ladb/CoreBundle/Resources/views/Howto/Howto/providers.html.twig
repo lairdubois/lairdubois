@@ -22,7 +22,7 @@
     {% else %}
         <div class="panel panel-default ladb-margin-remove ladb-margin-top">
             <div class="panel-body">
-                Liste des fournisseurs recencés par <a href="{{ path('core_user_show', { 'username':howto.user.usernameCanonical }) }}">{{ howto.user.displayName }}</a> pour la réalisation du pas à pas <a href="{{ ladb_entity_url_action(howto) }}">{{ howto.title }}</a>.
+                Liste des fournisseurs recencés par <a href="{{ path('core_user_show', { 'username':howto.user.usernameCanonical }) }}">{{ howto.user.displayname }}</a> pour la réalisation du pas à pas <a href="{{ ladb_entity_url_action(howto) }}">{{ howto.title }}</a>.
             </div>
         </div>
         {% embed 'LadbCoreBundle:Knowledge/Provider:_list-filterbar.part.html.twig' %}

@@ -22,7 +22,7 @@
     {% else %}
         <div class="panel panel-default ladb-margin-remove ladb-margin-top">
             <div class="panel-body">
-                Liste des fournisseurs recencés par <a href="{{ path('core_user_show', { 'username':creation.user.usernameCanonical }) }}">{{ creation.user.displayName }}</a> pour la réalisation de la création <a href="{{ ladb_entity_url_action(creation) }}">{{ creation.title }}</a>.
+                Liste des fournisseurs recencés par <a href="{{ path('core_user_show', { 'username':creation.user.usernameCanonical }) }}">{{ creation.user.displayname }}</a> pour la réalisation de la création <a href="{{ ladb_entity_url_action(creation) }}">{{ creation.title }}</a>.
             </div>
         </div>
         {% embed 'LadbCoreBundle:Knowledge/Provider:_list-filterbar.part.html.twig' %}

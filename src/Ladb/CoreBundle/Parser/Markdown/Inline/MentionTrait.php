@@ -24,7 +24,11 @@ trait MentionTrait {
 	}
 
 	protected function renderMention($block) {
-		return '<a href="https://www.lairdubois.fr/'.$this->renderAbsy($block[1]).'" target="_blank">@'.$this->renderAbsy($block[1]).'</a>';
+		$user = $this->userManager->findUserByUsername($this->renderAbsy($block[1]));
+		if (!is_null($user)) {
+			return '<a href="https://www.lairdubois.fr/'.$user->getUsernameCanonical().'" class="ladb-mention" target="_blank"><span>'.$user->getDisplayName().'</span></a>';
+		}
+		return '<span class="ladb-mention-unknown"><span>'.$this->renderAbsy($block[1]).'</span></span>';
 	}
 
 }

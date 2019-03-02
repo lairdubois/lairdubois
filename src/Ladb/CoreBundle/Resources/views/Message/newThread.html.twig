@@ -21,7 +21,7 @@
         $('#{{ form.recipients.vars.id }}').selectize({
             plugins: ['remove_button'],
             valueField: 'username',
-            searchField: 'displayName',
+            searchField: 'displayname',
             create: false,
             maxItems: 20,
             closeAfterSelect: true,
@@ -32,7 +32,7 @@
                     {% for recipent in form.vars.data.recipients %}
                     {
                         username: "{{ recipent.username }}",
-                        displayName: "{{ recipent.displayName }}",
+                        displayname: "{{ recipent.displayname }}",
                         avatar: "{{ recipent.avatar.webPath|imagine_filter('32x32o') }}"
                     }{% if loop.last == false %},{% endif %}
                     {% endfor %}
@@ -40,13 +40,13 @@
             {% endif %}
             render: {
                 item: function(item) {
-                    return '<div class="ladb-selectize-item"><img src="' + item.avatar + '" width="20" height="20"><span class="ladb-selectize-displayname">' + item.displayName + '</span></div>';
+                    return '<div class="ladb-selectize-item"><img src="' + item.avatar + '" width="20" height="20"><span class="ladb-selectize-displayname">' + item.displayname + '</span></div>';
                 },
                 option: function(item, escape) {
                     return '<div class="ladb-selectize-option media">' +
                         '<div class="media-left"><img src="' + item.avatar + '" width="32" height="32"></div>' +
                         '<div class="media-body">' +
-                            '<div class="ladb-selectize-displayname">' + escape(item.displayName) + '</div> ' +
+                            '<div class="ladb-selectize-displayname">' + escape(item.displayname) + '</div> ' +
                             '<div class="ladb-selectize-username">@' + escape(item.username) + '</div>' +
                         '</div>' +
                         '</div>';
@@ -98,10 +98,14 @@
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery-collapse.part.html.twig' %}
                         <script>
                             if (document.readyState == "complete") {
-                                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
+                                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                                    mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                                });
                             } else {
                                 $(document).ready(function() {
-                                    $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify();
+                                    $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                                        mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                                    });
                                 });
                             }
                         </script>

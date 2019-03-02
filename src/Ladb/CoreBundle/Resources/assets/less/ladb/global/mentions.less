@@ -1,0 +1,32 @@
+//
+// LADB Mentions
+//
+
+a.ladb-mention, span.ladb-mention-unknown {
+  background-color: rgba(241, 241, 241, 0.8);
+  padding: 1px 3px;
+  border-radius: 2px;
+
+  &:before {
+    content: '@';
+    color: #999;
+    margin-right: 2px;
+  }
+
+}
+
+a.ladb-mention {
+
+  &:hover {
+    text-decoration: none;
+
+    > span {
+      text-decoration: underline;
+    }
+  }
+
+}
+
+span.ladb-mention-unknown {
+  color: #999;
+}

@@ -59,7 +59,7 @@
                 <a href="{{ path('core_qa_answer_best_create', { 'id':answer.id }) }}" class="btn btn-default"><i class="ladb-icon-favorite"></i><span class="ladb-hidden-mobile"> {{ 'qa.answer.set_as_best'|trans() }}</span></a>
             {% endif %}
             {% if answer.question.user == app.user and answer.user != app.user %}
-                <button href="#" class="btn btn-default ladb-btn-thanks" data-thanks-msg="Merci @{{ answer.user.usernameCanonical }} !"><i class="ladb-icon-comment"></i> Remercier <strong>{{ answer.user.displayName }}</strong></button>
+                <button href="#" class="btn btn-default ladb-btn-thanks" data-thanks-msg="Merci @{{ answer.user.usernameCanonical }} !"><i class="ladb-icon-comment"></i> Remercier <strong>{{ answer.user.displayname }}</strong></button>
             {% endif %}
         </div>
     {% endif %}

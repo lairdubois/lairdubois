@@ -2,12 +2,13 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Ladb\CoreBundle\Manager\Core\UserManager;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Parser\Markdown\LadbMarkdown;
 
-class FieldPreprocessorUtils {
+class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.field_preprocessor_utils';
 
@@ -42,7 +43,7 @@ class FieldPreprocessorUtils {
 		$bodied->setBody($body);
 
 		// Render HTML Body
-		$parser = new LadbMarkdown();
+		$parser = new LadbMarkdown($this->get(UserManager::NAME));
 		$htmlBody = $parser->parse($bodied->getBody());
 		$bodied->setHtmlBody($htmlBody);
 
