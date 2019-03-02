@@ -15,7 +15,7 @@ final class Version20190302181513 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE tbl_core_mention (id INT AUTO_INCREMENT NOT NULL, mentioned_user_id INT DEFAULT NULL, user_id INT NOT NULL, entity_type SMALLINT NOT NULL, entity_id INT NOT NULL, INDEX IDX_E46966834A3E1B6 (mentioned_user_id), INDEX IDX_E469668A76ED395 (user_id), INDEX IDX_MENTION_ENTITY (entity_type, entity_id), UNIQUE INDEX ENTITY_USER_UNIQUE (entity_type, entity_id, user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE tbl_core_mention (id INT AUTO_INCREMENT NOT NULL, mentioned_user_id INT DEFAULT NULL, user_id INT NOT NULL, entity_type SMALLINT NOT NULL, entity_id INT NOT NULL, INDEX IDX_E46966834A3E1B6 (mentioned_user_id), INDEX IDX_E469668A76ED395 (user_id), INDEX IDX_MENTION_ENTITY (entity_type, entity_id), UNIQUE INDEX ENTITY_USER_UNIQUE (entity_type, entity_id, mentioned_user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE tbl_core_mention ADD CONSTRAINT FK_E46966834A3E1B6 FOREIGN KEY (mentioned_user_id) REFERENCES tbl_core_user (id)');
         $this->addSql('ALTER TABLE tbl_core_mention ADD CONSTRAINT FK_E469668A76ED395 FOREIGN KEY (user_id) REFERENCES tbl_core_user (id)');
         $this->addSql('ALTER TABLE tbl_core_activity_mention ADD mention_id INT NOT NULL');
