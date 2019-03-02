@@ -20,28 +20,26 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 	public function deleteComments(CommentableInterface $commentable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
-		$activityUtils = $this->get(ActivityUtils::NAME);
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
-			$this->deleteComment($comment, $commentable, $activityUtils, $om, false);
+			$this->deleteComment($comment, $commentable, $om, false);
 		}
 		if ($flush) {
 			$om->flush();
 		}
 	}
 
-	public function deleteComment(Comment $comment, CommentableInterface $commentable, ActivityUtils $activityUtils, $om, $flush = false) {
+	public function deleteComment(Comment $comment, CommentableInterface $commentable, $om, $flush = false) {
 
 		// Remove children
 		if ($comment->getChildCount() > 0) {
 			$children = $comment->getChildren()->toArray();
 			$comment->resetChildren();
 			foreach ($children as $child) {
-				$this->deleteComment($child, $commentable, $activityUtils, $om, false);
+				$this->deleteComment($child, $commentable, $om, false);
 			}
 		}
-
 
 		// Update user comment count
 		if (!($commentable instanceof DraftableInterface) || ($commentable instanceof DraftableInterface && !$commentable->getIsDraft())) {
@@ -56,8 +54,13 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		// Update commentable comment count
 		$commentable->incrementCommentCount(-1);
 
+		// Delete mentions
+		$mentionUtils = $this->get(MentionUtils::NAME);
+		$mentionUtils->deleteMentions($comment, false);
+
 		// Delete relative activities
-		$activityUtils->deleteActivitiesByComment($comment);
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->deleteActivitiesByComment($comment, false);
 
 		// Remove Comment from DB
 		$om->remove($comment);

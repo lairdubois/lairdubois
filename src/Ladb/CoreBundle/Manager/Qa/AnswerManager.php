@@ -11,6 +11,7 @@ use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\VotableUtils;
 
@@ -40,6 +41,10 @@ class AnswerManager extends AbstractManager {
 		}
 
 		/////
+
+		// Delete mentions
+		$mentionUtils = $this->get(MentionUtils::NAME);
+		$mentionUtils->deleteMentions($answer, false);
 
 		// Delete comments
 		$commentableUtils = $this->get(CommentableUtils::NAME);

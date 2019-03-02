@@ -114,7 +114,11 @@ class NotificationRepository extends AbstractEntityRepository {
 	}
 
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
-		if ('activity-like' == $filter) {
+		if ('activity-mention' == $filter) {
+			$queryBuilder
+				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Mention')
+			;
+		} elseif ('activity-like' == $filter) {
 			$queryBuilder
 				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Like')
 			;

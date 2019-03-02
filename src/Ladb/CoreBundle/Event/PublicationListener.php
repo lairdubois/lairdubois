@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Model\MentionSourceInterface;
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Ladb\CoreBundle\Utils\UserUtils;
@@ -154,6 +156,14 @@ class PublicationListener implements EventSubscriberInterface {
 	public function onPublicationCreatedFromConvert(PublicationEvent $event) {
 		$publication = $event->getPublication();
 
+		if ($publication instanceof MentionSourceInterface) {
+
+			// Process mentions
+			$mentionUtils = $this->container->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($publication);
+
+		}
+
 		if ($publication instanceof TaggableInterface) {
 
 			// Tags usage
@@ -197,6 +207,14 @@ class PublicationListener implements EventSubscriberInterface {
 
 	public function onPublicationUpdated(PublicationEvent $event) {
 		$publication = $event->getPublication();
+
+		if ($publication instanceof MentionSourceInterface) {
+
+			// Process mentions
+			$mentionUtils = $this->container->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($publication);
+
+		}
 
 		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
 

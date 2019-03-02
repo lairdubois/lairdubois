@@ -70,10 +70,11 @@ class ActivityUtils {
 		}
 	}
 
-	public function createMentionActivity(\Ladb\CoreBundle\Entity\Core\User $user, $flush = true) {
+	public function createMentionActivity(\Ladb\CoreBundle\Entity\Core\Mention $mention, $flush = true) {
 
 		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Mention();
-		$activity->setUser($user);
+		$activity->setUser($mention->getUser());
+		$activity->setMention($mention);
 
 		$this->om->persist($activity);
 
@@ -206,6 +207,12 @@ class ActivityUtils {
 	public function deleteActivitiesByLike(\Ladb\CoreBundle\Entity\Core\Like $like, $flush = true) {
 		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Like::CLASS_NAME);
 		$activities = $activityRepository->findByLike($like);
+		$this->_deleteActivities($activities, $flush);
+	}
+
+	public function deleteActivitiesByMention(\Ladb\CoreBundle\Entity\Core\Mention $mention, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Mention::CLASS_NAME);
+		$activities = $activityRepository->findByMention($mention);
 		$this->_deleteActivities($activities, $flush);
 	}
 

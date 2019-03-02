@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Model\AuthoredTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,7 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\JoinRepository")
  */
-class Join {
+class Join implements AuthoredInterface {
+
+	use AuthoredTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Join';
 
@@ -66,17 +70,6 @@ class Join {
 
 	public function setEntityId($entityId) {
 		$this->entityId = $entityId;
-		return $this;
-	}
-
-	// User /////
-
-	public function getUser() {
-		return $this->user;
-	}
-
-	public function setUser($user) {
-		$this->user = $user;
 		return $this;
 	}
 

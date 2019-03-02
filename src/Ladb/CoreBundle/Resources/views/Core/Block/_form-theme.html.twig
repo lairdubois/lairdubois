@@ -25,15 +25,16 @@
         {% endblock %}
         {% block footer %}
             <script>
-                if (document.readyState == "complete") {
+                var init{{ form.vars.id }} = function() {
                     $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
                         mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
                     });
+                };
+                if (document.readyState === "complete") {
+                    init{{ form.vars.id }}();
                 } else {
                     $(document).ready(function() {
-                        $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
-                            mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
-                        });
+                        init{{ form.vars.id }}();
                     });
                 }
             </script>

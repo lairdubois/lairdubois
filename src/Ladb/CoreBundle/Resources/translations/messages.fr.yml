@@ -1156,6 +1156,7 @@ notification:
   list: Notifications
   nav: Notifications
   your:
+    core_momment: votre commentaire
     wonder_creation: votre création
     wonder_workshop: votre atelier
     wonder_plan: votre plan
@@ -1169,6 +1170,7 @@ notification:
     promotion_graphic: votre graphisme
     workflow_workflow: votre processus
   the:
+    core_comment: le commentaire
     wonder_creation: la création
     wonder_workshop: l'atelier
     wonder_plan: le plan

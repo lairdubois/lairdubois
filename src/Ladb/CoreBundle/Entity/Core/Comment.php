@@ -4,8 +4,10 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BasicTimestampableInterface;
 use Ladb\CoreBundle\Model\BasicTimestampableTrait;
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\AuthoredTrait;
@@ -21,7 +23,7 @@ use Ladb\CoreBundle\Model\MultiPicturedInterface;
  * })
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\CommentRepository")
  */
-class Comment implements TypableInterface, BasicTimestampableInterface, BodiedInterface, MultiPicturedInterface {
+class Comment implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, BodiedInterface, MultiPicturedInterface, MentionSourceInterface {
 
 	use BasicTimestampableTrait;
 	use AuthoredTrait, BodiedTrait, MultiPicturedTrait;
@@ -192,6 +194,12 @@ class Comment implements TypableInterface, BasicTimestampableInterface, BodiedIn
 
 	public function getChildCount() {
 		return $this->childCount;
+	}
+
+	// Title /////
+
+	public function getTitle() {
+		return mb_strimwidth($this->getBody(), 0, 50, '[...]');
 	}
 
 }

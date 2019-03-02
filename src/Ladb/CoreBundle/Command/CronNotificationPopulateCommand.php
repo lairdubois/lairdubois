@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Command;
 
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -125,7 +126,14 @@ EOT
 
 			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Mention) {
 
-				// TODO
+				$mention = $activity->getMention();
+				$entity = $typableUtils->findTypable($mention->getEntityType(), $mention->getEntityId());
+				if ($entity instanceof MentionSourceInterface) {
+					$this->_createNotification($om, $mention->getMentionedUser(), $activity, $notifiedUsers, $freshNotificationCounters);
+					if ($verbose) {
+						$output->writeln('<info>--> Notifying <fg=white>@'.$mention->getMentionedUser()->getUsername(). '</fg=white> for new mention from=@'.$actorUser->getUsername().' on='.$entity->getId().'</info>');
+					}
+				}
 
 			}
 

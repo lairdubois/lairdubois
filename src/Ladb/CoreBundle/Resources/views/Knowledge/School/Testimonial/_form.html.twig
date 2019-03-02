@@ -52,8 +52,10 @@
         </div>
     </div>
     <script>
-        if (document.readyState == "complete") {
-            $("#{{ form.body.vars.id }}").markdown();
+        var init{{ form.vars.id }} = function() {
+            $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+            });
             $(".ladb-input-year").datetimepicker({
                 viewMode: 'years',
                 format: 'YYYY',
@@ -62,9 +64,12 @@
                     next: "ladb-icon-chevron-right"
                 }
             });
+        };
+        if (document.readyState === "complete") {
+            init{{ form.vars.id }}();
         } else {
             $(document).ready(function() {
-                $("#{{ form.body.vars.id }}").markdown();
+                init{{ form.vars.id }}();
             });
         }
     </script>

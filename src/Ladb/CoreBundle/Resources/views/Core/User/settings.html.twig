@@ -281,6 +281,12 @@
             </div>
             <div class="checkbox">
                 <label>
+                    {{ form_widget(form.meta.newMentionEmailNotificationEnabled) }}
+                    lorsqu'un utilisateur mentionne mon nom
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
                     {{ form_widget(form.meta.newLikeEmailNotificationEnabled) }}
                     lorsqu'un utilisateur aime l'une de mes publications
                 </label>

@@ -2,11 +2,11 @@
 
 namespace Ladb\CoreBundle\Twig;
 
+use Ladb\CoreBundle\Manager\Core\UserManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 use Ladb\CoreBundle\Parser\Markdown\LadbMarkdown;
 use Ladb\CoreBundle\Utils\TypableUtils;
-use Symfony\Component\Intl\Intl;
 
 class LadbExtension extends \Twig_Extension {
 
@@ -64,7 +64,7 @@ class LadbExtension extends \Twig_Extension {
 	}
 
 	public function markdownFilter($str) {
-		$parser = new LadbMarkdown();
+		$parser = new LadbMarkdown($this->container->get(UserManager::NAME));
 		return $parser->parse($str);
 	}
 

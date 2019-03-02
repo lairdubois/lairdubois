@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Model\BasicEmbeddableTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\DraftableTrait;
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -26,7 +27,7 @@ use Ladb\CoreBundle\Model\ChildInterface;
  * @LadbAssert\ArticleBody()
  * @LadbAssert\BodyBlocks()
  */
-class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, BlockBodiedInterface, DraftableInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface {
+class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, BlockBodiedInterface, DraftableInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface, MentionSourceInterface {
 
 	use TitledTrait, BlockBodiedTrait;
 	use DraftableTrait, BasicEmbeddableTrait;

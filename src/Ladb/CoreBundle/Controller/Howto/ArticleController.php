@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -134,6 +135,10 @@ class ArticleController extends Controller {
 		$articleManager = $this->get(ArticleManager::NAME);
 		$articleManager->publish($article);
 
+		// Process mentions
+		$mentionUtils = $this->get(MentionUtils::NAME);
+		$mentionUtils->processMentions($article);
+
 		$howto = $article->getHowto();
 		$this->_updateHowtoBlockVideoCount($howto);
 
@@ -251,6 +256,10 @@ class ArticleController extends Controller {
 			$this->_updateHowtoBlockVideoCount($howto);
 
 			$om->flush();
+
+			// Process mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($article);
 
 			// Search index update
 			$searchUtils = $this->get(SearchUtils::NAME);

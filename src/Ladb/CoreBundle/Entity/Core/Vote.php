@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Model\AuthoredTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,7 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\VoteRepository")
  */
-class Vote {
+class Vote implements AuthoredInterface {
+
+	use AuthoredTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Vote';
 
@@ -157,17 +161,6 @@ class Vote {
 
 	public function setUpdatedAt($updatedAt) {
 		$this->updatedAt = $updatedAt;
-		return $this;
-	}
-
-	// User /////
-
-	public function getUser() {
-		return $this->user;
-	}
-
-	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
-		$this->user = $user;
 		return $this;
 	}
 

@@ -10,10 +10,13 @@ use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
+use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Utils\ReportableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 
@@ -67,6 +70,10 @@ abstract class AbstractPublicationManager extends AbstractManager {
 			$publication->setIsDraft(false);
 		}
 
+		// Process mentions
+		$mentionUtils = $this->container->get(MentionUtils::NAME);
+		$mentionUtils->processMentions($publication);
+
 		// Delete the witness (if it exists)
 		$witnessManager = $this->get(WitnessManager::NAME);
 		$witnessManager->deleteByPublication($publication);
@@ -92,6 +99,10 @@ abstract class AbstractPublicationManager extends AbstractManager {
 			$publication->setIsDraft(true);
 		}
 
+		// Delete mentions
+		$mentionUtils = $this->container->get(MentionUtils::NAME);
+		$mentionUtils->deleteMentions($publication);
+
 		// Create the witness
 		$witnessManager = $this->get(WitnessManager::NAME);
 		$witnessManager->createUnpublishedByPublication($publication, false);
@@ -107,6 +118,12 @@ abstract class AbstractPublicationManager extends AbstractManager {
 	}
 
 	protected function deletePublication(AbstractPublication $publication, $withWitness = true, $flush = true) {
+
+		if ($publication instanceof MentionSourceInterface) {
+			// Delete mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->deleteMentions($publication, false);
+		}
 
 		if ($publication instanceof WatchableInterface) {
 			// Delete watches

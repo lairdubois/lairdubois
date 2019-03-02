@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\AuthoredInterface;
@@ -23,7 +24,7 @@ use Ladb\CoreBundle\Model\CommentableInterface;
  * @LadbAssert\BodyBlocks()
  * @LadbAssert\ValidAnswer()
  */
-class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface {
+class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface, MentionSourceInterface {
 
 	use AuthoredTrait, BlockBodiedTrait;
 	use CommentableTrait, VotableTrait;

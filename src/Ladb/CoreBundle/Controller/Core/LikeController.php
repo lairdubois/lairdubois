@@ -26,6 +26,19 @@ use Ladb\CoreBundle\Utils\TypableUtils;
  */
 class LikeController extends Controller {
 
+	private function _retrieveRelatedEntity($entityType, $entityId) {
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$entity = $typableUtils->findTypable($entityType, $entityId);
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException($e->getMessage());
+		}
+		if (!($entity instanceof LikableInterface)) {
+			throw $this->createNotFoundException('Entity must implements LikableInterface.');
+		}
+		return $entity;
+	}
+
 	/**
 	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_like_create")
 	 * @Template("LadbCoreBundle:Core/Like:create-xhr.html.twig")
@@ -108,19 +121,6 @@ class LikeController extends Controller {
 		return array(
 			'likeContext' => $likableUtils->getLikeContext($entity, $this->getUser()),
 		);
-	}
-
-	private function _retrieveRelatedEntity($entityType, $entityId) {
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entity = $typableUtils->findTypable($entityType, $entityId);
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException($e->getMessage());
-		}
-		if (!($entity instanceof LikableInterface)) {
-			throw $this->createNotFoundException('Entity must implements LikableInterface.');
-		}
-		return $entity;
 	}
 
 	/**

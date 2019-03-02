@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -120,7 +121,7 @@ class CommentController extends Controller {
 			}
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
-			$fieldPreprocessorUtils->preprocessBodyField($comment);
+			$fieldPreprocessorUtils->preprocessFields($comment);
 
 			// Counters
 
@@ -134,6 +135,10 @@ class CommentController extends Controller {
 			$activityUtils->createCommentActivity($comment, false);
 
 			$om->flush();
+
+			// Process mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($comment);
 
 			// Update index
 			if ($entity instanceof IndexableInterface) {
@@ -244,9 +249,13 @@ class CommentController extends Controller {
 		if ($form->isValid()) {
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
-			$fieldPreprocessorUtils->preprocessBodyField($comment);
+			$fieldPreprocessorUtils->preprocessFields($comment);
 
 			$om->flush();
+
+			// Process mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($comment);
 
 			return $this->render('LadbCoreBundle:Core/Comment:update-xhr.html.twig', array( 'comment' => $comment ));
 		}
@@ -273,7 +282,6 @@ class CommentController extends Controller {
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
-		$activityUtils = $this->get(ActivityUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 
 		$comment = $commentRepository->findOneById($id);
@@ -287,7 +295,7 @@ class CommentController extends Controller {
 
 		// Delete comment
 
-		$commentableUtils->deleteComment($comment, $entity, $activityUtils, $om, false);
+		$commentableUtils->deleteComment($comment, $entity, $om, false);
 
 		$om->flush();
 

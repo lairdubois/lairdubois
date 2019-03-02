@@ -33,19 +33,21 @@
         </div>
     </div>
     <script>
-        var init = function() {
-            $("#{{ form.body.vars.id }}").markdown();
+        var init{{ form.vars.id }} = function() {
+            $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+            });
             $('#{{ form.rating.vars.id }}').barrating({
                 theme: 'ladb-stars',
                 allowEmpty: true,
                 emptyValue: 0
             });
         };
-        if (document.readyState == "complete") {
-            init();
+        if (document.readyState === "complete") {
+            init{{ form.vars.id }}();
         } else {
             $(document).ready(function() {
-                init();
+                init{{ form.vars.id }}();
             });
         }
     </script>

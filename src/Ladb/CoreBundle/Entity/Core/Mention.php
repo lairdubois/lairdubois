@@ -8,20 +8,20 @@ use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
 
 /**
- * @ORM\Table("tbl_core_watch",
+ * @ORM\Table("tbl_core_mention",
  *		uniqueConstraints={
- *			@ORM\UniqueConstraint(name="ENTITY_USER_UNIQUE", columns={"entity_type", "entity_id", "user_id"})
+ *			@ORM\UniqueConstraint(name="ENTITY_USER_UNIQUE", columns={"entity_type", "entity_id", "mentioned_user_id"})
  * 		},
- *		indexes={
- *			@ORM\Index(name="IDX_WATCH_ENTITY", columns={"entity_type", "entity_id"})
- *		})
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\WatchRepository")
+ * 		indexes={
+ *     		@ORM\Index(name="IDX_MENTION_ENTITY", columns={"entity_type", "entity_id"})
+ * 		})
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\MentionRepository")
  */
-class Watch implements AuthoredInterface {
+class Mention implements AuthoredInterface {
 
 	use AuthoredTrait;
 
-	const CLASS_NAME = 'LadbCoreBundle:Core\Watch';
+	const CLASS_NAME = 'LadbCoreBundle:Core\Mention';
 
 	/**
 	 * @ORM\Column(name="id", type="integer")
@@ -39,6 +39,12 @@ class Watch implements AuthoredInterface {
 	 * @ORM\Column(name="entity_id", type="integer", nullable=false)
 	 */
 	private $entityId;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
+	 * @ORM\JoinColumn(name="mentioned_user_id", nullable=false)
+	 */
+	private $mentionedUser = null;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
@@ -72,6 +78,17 @@ class Watch implements AuthoredInterface {
 
 	public function setEntityId($entityId) {
 		$this->entityId = $entityId;
+		return $this;
+	}
+
+	// MentionedUser /////
+
+	public function getMentionedUser() {
+		return $this->mentionedUser;
+	}
+
+	public function setMentionedUser(\Ladb\CoreBundle\Entity\Core\User $mentionedUser = null) {
+		$this->mentionedUser = $mentionedUser;
 		return $this;
 	}
 

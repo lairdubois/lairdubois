@@ -8,11 +8,12 @@ use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\HiddableTrait;
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractAuthoredPublication extends AbstractPublication implements AuthoredInterface, HiddableInterface {
+abstract class AbstractAuthoredPublication extends AbstractPublication implements AuthoredInterface, HiddableInterface, MentionSourceInterface {
 
 	use AuthoredTrait;
 	use HiddableTrait;

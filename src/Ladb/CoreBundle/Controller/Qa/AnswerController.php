@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,6 +99,10 @@ class AnswerController extends Controller {
 
 			$om->persist($answer);
 			$om->flush();
+
+			// Process mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($answer);
 
 			// Compute answer counters
 			$questionManager = $this->get(QuestionManager::NAME);
@@ -196,6 +201,10 @@ class AnswerController extends Controller {
 			}
 
 			$om->flush();
+
+			// Process mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($answer);
 
 			// Dispatch publication event (on Question)
 			$dispatcher = $this->get('event_dispatcher');

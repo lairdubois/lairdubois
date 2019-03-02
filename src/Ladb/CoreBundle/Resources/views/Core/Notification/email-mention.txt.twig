@@ -1,4 +1,4 @@
 {% extends 'LadbCoreBundle:Core/Notification:_email.txt.twig' %}
 
-{% block rowContent %}
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** a mentionné votre nom.
 {% endblock %}

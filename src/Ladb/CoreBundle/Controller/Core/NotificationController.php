@@ -2,6 +2,9 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Entity\Core\Comment;
+use Ladb\CoreBundle\Entity\Howto\Article;
+use Ladb\CoreBundle\Entity\Qa\Answer;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -114,7 +117,21 @@ class NotificationController extends Controller {
 		}
 
 		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Mention) {
-			// TODO
+			$entity = $typableUtils->findTypable($activity->getMention()->getEntityType(), $activity->getMention()->getEntityId());
+			$suffix = '';
+			if ($entity instanceof Comment) {
+				$comment = $entity;
+				$entity = $typableUtils->findTypable($comment->getEntityType(), $comment->getEntityId());
+				$suffix = '#_comment_'.$comment->getId();
+				if ($entity instanceof WatchableChildInterface) {
+					$entity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
+				}
+			} else if ($entity instanceof Answer) {
+				$answer = $entity;
+				$entity = $answer->getQuestion();
+				$suffix = '#_answer_'.$answer->getId();
+			}
+			$returnToUrl = $typableUtils->getUrlAction($entity).$suffix;
 		}
 
 		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Publish) {

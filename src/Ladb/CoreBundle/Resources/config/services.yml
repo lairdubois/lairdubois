@@ -150,6 +150,9 @@ services:
     arguments: ['@service_container']
   ladb_core.link_utils:
     class: Ladb\CoreBundle\Utils\LinkUtils
+  ladb_core.mention_utils:
+    class: Ladb\CoreBundle\Utils\MentionUtils
+    arguments: ['@service_container']
 
   # Managers
   ladb_core.user_manager:

@@ -4,13 +4,14 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\IdentifiableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_follower")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\FollowerRepository")
  */
-class Follower {
+class Follower implements IdentifiableInterface {
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Follower';
 

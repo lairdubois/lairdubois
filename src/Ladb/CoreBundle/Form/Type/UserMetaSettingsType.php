@@ -45,6 +45,7 @@ class UserMetaSettingsType extends AbstractType {
 			->add('autoWatchEnabled')
 			->add('incomingMessageEmailNotificationEnabled')
 			->add('newFollowerEmailNotificationEnabled')
+			->add('newMentionEmailNotificationEnabled')
 			->add('newLikeEmailNotificationEnabled')
 			->add('newVoteEmailNotificationEnabled')
 			->add('newFollowingPostEmailNotificationEnabled')

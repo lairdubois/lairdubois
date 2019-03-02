@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Repository\Core\Activity;
+namespace Ladb\CoreBundle\Repository\Core;
 
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
@@ -8,13 +8,15 @@ class MentionRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByLike(\Ladb\CoreBundle\Entity\Core\Mention $mention) {
+	public function findByEntityTypeAndEntityId($entityType, $entityId) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'a' ))
-			->from($this->getEntityName(), 'a')
-			->where('a.mention = :mention')
-			->setParameter('mention', $mention)
+			->select(array( 'm' ))
+			->from($this->getEntityName(), 'm')
+			->where('m.entityType = :entityType')
+			->andWhere('m.entityId = :entityId')
+			->setParameter('entityType', $entityType)
+			->setParameter('entityId', $entityId)
 		;
 
 		try {

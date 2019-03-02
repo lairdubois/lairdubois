@@ -114,6 +114,11 @@ class UserMeta {
 	private $newFollowerEmailNotificationEnabled = true;
 
 	/**
+	 * @ORM\Column(type="boolean", nullable=true, name="new_mention_email_notification_enabled")
+	 */
+	private $newMentionEmailNotificationEnabled = true;
+
+	/**
 	 * @ORM\Column(type="boolean", nullable=true, name="new_like_email_notification_enabled")
 	 */
 	private $newLikeEmailNotificationEnabled = true;
@@ -567,6 +572,17 @@ class UserMeta {
 
 	public function getNewFollowerEmailNotificationEnabled() {
 		return $this->newFollowerEmailNotificationEnabled;
+	}
+
+	// NewMentionEmailNotificationEnabled /////
+
+	public function setNewMentionEmailNotificationEnabled($newMentionEmailNotificationEnabled) {
+		$this->newMentionEmailNotificationEnabled = $newMentionEmailNotificationEnabled;
+		return $this;
+	}
+
+	public function getNewMentionEmailNotificationEnabled() {
+		return $this->newMentionEmailNotificationEnabled;
 	}
 
 	// NewLikeEmailNotificationEnabled /////
