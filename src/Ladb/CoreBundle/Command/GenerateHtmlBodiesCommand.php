@@ -24,7 +24,7 @@ EOT
 			);
 	}
 
-	private function _process($entityClass, $em, OutputInterface $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced) {
+	private function _process($entityClass, $em, OutputInterface $output, $filedProcessoUtils, $om, $forced) {
 
 		$output->write('<info>Retrieve '.$entityClass.'...</info>');
 
@@ -45,7 +45,7 @@ EOT
 		$entityCount = 0;
 		foreach ($entities as $entity) {
 			if ($entity instanceof BlockBodiedInterface) {
-				$blockBodiedUtils->preprocessBlocks($entity);
+				$filedProcessoUtils->preprocessBodyBlocksField($entity);
 			} else if ($entity instanceof BodiedInterface) {
 				$filedProcessoUtils->preprocessBodyField($entity);
 			}
@@ -65,25 +65,24 @@ EOT
 		$forced = $input->getOption('force');
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
-		$blockBodiedUtils = $this->getContainer()->get(BlockBodiedUtils::NAME);
 		$filedProcessoUtils = $this->getContainer()->get(FieldPreprocessorUtils::NAME);
 
 		$entityCount = 0;
 
-		$entityCount += $this->_process('LadbCoreBundle:Message\Message', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Core\Comment', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Wonder\Creation', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Wonder\Workshop', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Wonder\Plan', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Blog\Post', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Faq\Question', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Promotion\Graphic', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Find\Find', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Howto\Howto', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Howto\Article', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Workflow\Workflow', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Qa\Question', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
-		$entityCount += $this->_process('LadbCoreBundle:Qa\Answer', $om, $output, $blockBodiedUtils, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Message\Message', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Core\Comment', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Wonder\Creation', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Wonder\Workshop', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Wonder\Plan', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Blog\Post', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Faq\Question', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Promotion\Graphic', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Find\Find', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Howto\Howto', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Howto\Article', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Workflow\Workflow', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Qa\Question', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Qa\Answer', $om, $output, $filedProcessoUtils, $om, $forced);
 
 		if ($forced) {
 			$output->writeln('<info>'.$entityCount.' generated</info>');
