@@ -198,7 +198,7 @@ class UserController extends Controller {
 					case 'skill':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);
-						$filter->setFields(array( 'skills.label' ));
+						$filter->setFields(array( 'meta.skills.label' ));
 						$filters[] = $filter;
 
 						break;
