@@ -12,7 +12,7 @@ trait MentionTrait {
 	 * @marker @
 	 */
 	protected function parseMention($markdown) {
-		if (preg_match('/@([A-Za-z0-9]{3,})/', $markdown, $matches)) {
+		if (preg_match('/^@([A-Za-z0-9]{3,})/', $markdown, $matches)) {
 			return [
 				[
 					'mention', [['text', $matches[1]]]
