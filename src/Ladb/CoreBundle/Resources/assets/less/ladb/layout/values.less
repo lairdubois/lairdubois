@@ -47,6 +47,7 @@
     padding: 4px;
 
     >.ladb-box-inner {
+      .flex();
       margin: 0;
     }
 
@@ -152,6 +153,10 @@
 // phone
 @media screen and (max-width: (@ladb-screen-phone-max)) {
   .ladb-value-proposal > .ladb-box {
+
+    .ladb-box-inner {
+      display: block;
+    }
 
     .ladb-vote-widget, .ladb-full-height {
       height: auto;
