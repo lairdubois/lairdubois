@@ -62,7 +62,8 @@
             var i,
                 ns = this.$ns,
                 handler = this.$handler,
-                callback = this.$callback
+                callback = this.$callback,
+                that = this
 
             for (i = 0; i < buttonsArray.length; i++) {
                 // Build each group container
@@ -115,6 +116,25 @@
                     container.append(btnGroupContainer)
                 }
             }
+
+            var emojioneareaId = that.$element.attr('id') + '_emojionarea_standalone';
+            var $emojionearea = $('<div id="' + emojioneareaId + '"></div>');
+            container.append($emojionearea);
+            window.emojioneVersion = "4.5";
+            $emojionearea.emojioneArea({
+                standalone: true,
+                autocomplete: false,
+                searchPlaceholder: 'Rechercher',
+                buttonTitle: '',
+                events: {
+                    emojibtn_click: function (button, event) {
+                        var emoji = button.data('name');
+                        var selected = that.getSelection();
+                        that.replaceSelection(emoji);
+                        that.$textarea.focus();
+                    },
+                }
+            });
 
             return container
         }, __setListener: function () {

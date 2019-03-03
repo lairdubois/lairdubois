@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Command;
 
 use Ladb\CoreBundle\Entity\Core\Comment;
+use Ladb\CoreBundle\Entity\Qa\Answer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -142,18 +143,14 @@ EOT
 					$mention = $activity->getMention();
 					$row->entity = $typableUtils->findTypable($mention->getEntityType(), $mention->getEntityId());
 					if ($row->entity instanceof Comment) {
-						$comment = $row->entity;
-						$row->entity = $typableUtils->findTypable($comment->getEntityType(), $comment->getEntityId());
-						$row->suffix = '#_comment_'.$comment->getId();
+						$row->comment = $row->entity;
+						$row->entity = $typableUtils->findTypable($row->comment->getEntityType(), $row->comment->getEntityId());
 						if ($row->entity instanceof WatchableChildInterface) {
 							$row->entity = $typableUtils->findTypable($row->entity->getParentEntityType(), $row->entity->getParentEntityId());
 						}
 					} else if ($row->entity instanceof Answer) {
-						$answer = $row->entity;
-						$row->entity = $answer->getQuestion();
-						$row->suffix = '#_answer_'.$answer->getId();
-					} else {
-						$row->suffix = '';
+						$row->answer = $row->entity;
+						$row->entity = $row->answer->getQuestion();
 					}
 					$row->mention = $mention;
 
