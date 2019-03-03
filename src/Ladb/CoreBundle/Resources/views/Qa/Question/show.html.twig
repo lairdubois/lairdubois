@@ -101,7 +101,7 @@
     {% endif %}
     <div class="ladb-qa-question">
         <div class="ladb-box">
-            <div class="ladb-box-inner row">
+            <div class="ladb-box-inner row row-eq-height">
                 <div class="ladb-content-box col-sm-11 col-xs-12" itemprop="text">
                     {% for block in question.bodyBlocks %}
                         {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}

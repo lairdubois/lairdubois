@@ -3,7 +3,7 @@
     <meta itemprop="upvoteCount" content="{{ answer.positiveVoteScore }}"/>
     <meta itemprop="url" content="{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_answer_{{ answer.id }}"/>
     <div class="ladb-box">
-        <div class="ladb-box-inner row">
+        <div class="ladb-box-inner row row-eq-height">
             <div class="ladb-side-bar col-sm-push-11 col-sm-1 col-xs-12">
                 {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.answer.vote_up_tooltip'|trans()), 'voteDownTooltip':('qa.answer.vote_down_tooltip'|trans()), 'popoverPlacement':'left' } %}
             </div>

@@ -125,7 +125,7 @@
                 standalone: true,
                 autocomplete: false,
                 searchPlaceholder: 'Rechercher',
-                buttonTitle: '',
+                buttonTitle: 'Liste des Emojis',
                 events: {
                     emojibtn_click: function (button, event) {
                         var emoji = button.data('name');
