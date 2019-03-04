@@ -918,11 +918,11 @@ user:
     check:
       action: Demander la confirmation maintenant
       body: |
-        Un e-mail a été envoyé à l'adresse **%email%**.
+        Un e-mail a été envoyé à l'adresse <%email%>.
         Il contient un lien sur lequel il vous faudra cliquer afin de confirmer votre adresse.
 
          - Si cet e-mail tarde à vous arriver, vérifiez bien qu'il n'est pas dans votre spam.
-         - Si l'adresse e-mail *%email%* n'est pas correcte, [modifiez-la](%path%) ici.
+         - Si l'adresse e-mail <%email%> n'est pas correcte, [modifiez-la](%path%) ici.
       modal_action: Découvrir pourquoi ?
       modal_body: |
         La confirmation de votre adresse e-mail vous permet :
