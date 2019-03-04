@@ -32,15 +32,21 @@
             <div class="form-group">
                 {{ form_errors(form.contentType) }}
                 {{ form_widget(form.contentType, { 'attr': { 'class':'form-control' } }) }}
-                <script>
-                    $("#{{ form.contentType.vars.id }}").on("change", function() {
-                        $("#ladb_content_tab_content").find(".tab-pane").removeClass("active");
-                        $("#ladb_content_tab_pane_" + $(this).val()).addClass("active");
-                    });
-                </script>
             </div>
-            <div id="ladb_content_tab_content" class="tab-content">
+            <ul id="{{ form.contentType.vars.id }}_tab" class="nav nav-tabs" role="tablist">
+                <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}" aria-controls="home" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}"><i class="ladb-icon-link"></i> {{ 'find.find.content.link.name'|trans }}</a></li>
+                <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}" aria-controls="profile" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}"><i class="ladb-icon-camera"></i> {{ 'find.find.content.gallery.name'|trans }}</a></li>
+                <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" aria-controls="messages" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}"><i class="ladb-icon-date"></i> {{ 'find.find.content.event.name'|trans }}</a></li>
+            </ul>
+            <script>
+                $("#{{ form.contentType.vars.id }}_tab").on('shown.bs.tab', function(e) {
+                    var value = $(e.target).data('value');
+                    $('#{{ form.contentType.vars.id }}').val(value);
+                });
+            </script>
+            <div id="ladb_content_tab_content" class="tab-content" style="border: 1px solid #ccc; margin-top: -1px; padding: 10px;">
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') %} active{% endif %}">
+                    <p class="help-block"><i>{{ 'find.find.form.help.link'|trans()|raw }}</i></p>
                     <div class="form-group">
                         {{ form_errors(form.link.url) }}
                         <div class="input-group">
@@ -54,6 +60,7 @@
                     </div>
                 </div>
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') %} active{% endif %}">
+                    <p class="help-block"><i>{{ 'find.find.form.help.gallery'|trans()|raw }}</i></p>
                     <div class="form-group">
                         <label>Photos<span class="ladb-mandatory">*</span></label>
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_gallery', 'form':form.gallery, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.gallery_pictures'|trans()), 'hideTextOverlayWarning':true } %}
@@ -69,6 +76,7 @@
                     </div>
                 </div>
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} active{% endif %}">
+                    <p class="help-block"><i>{{ 'find.find.form.help.event'|trans()|raw }}</i></p>
                     <div class="form-group">
                         <label>Images<span class="ladb-mandatory">*</span></label>
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_event', 'form':form.event, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.event_pictures'|trans()), 'hideTextOverlayWarning':true } %}

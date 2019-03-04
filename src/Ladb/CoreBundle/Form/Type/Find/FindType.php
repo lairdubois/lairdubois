@@ -2,9 +2,8 @@
 
 namespace Ladb\CoreBundle\Form\Type\Find;
 
-use Ladb\CoreBundle\Utils\LinkUtils;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -19,6 +18,7 @@ use Ladb\CoreBundle\Entity\Find\Content\Website;
 use Ladb\CoreBundle\Entity\Find\Content\Video;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
+use Ladb\CoreBundle\Utils\LinkUtils;
 
 class FindType extends AbstractType {
 
@@ -51,9 +51,7 @@ class FindType extends AbstractType {
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
-			->add('contentType', ChoiceType::class, array(
-				'choices'     => array_flip(array(Find::CONTENT_TYPE_LINK => 'find.find.content.link.name', Find::CONTENT_TYPE_GALLERY => 'find.find.content.gallery.name', Find::CONTENT_TYPE_EVENT => 'find.find.content.event.name')),
-			))
+			->add('contentType', HiddenType::class)
 			->add('link', Content\LinkType::class, array(
 				'mapped'      => false,
 				'constraints' => array(new \Symfony\Component\Validator\Constraints\Valid())

@@ -10,7 +10,7 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="diplomas" data-label="Diplômes" data-editable="true" data-icon="diploma"><i class="ladb-icon-diploma ladb-icon-fixed-center"></i> Diplômes</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="training-types" data-label="Type de formation" data-editable="true" data-icon="provider-products" data-proposals="Continue,Alternance,Apprentissage,Professionnelle,Stage court"><i class="ladb-icon-provider-products ladb-icon-fixed-center"></i> Type de formation</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="training-types" data-label="Type de formation" data-editable="true" data-icon="provider-products" data-proposals="Continue,Alternance,Apprentissage,Professionnelle,Stage court,Formations en ligne"><i class="ladb-icon-provider-products ladb-icon-fixed-center"></i> Type de formation</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-diploma" data-label="Avec diplôme" data-editable="false" data-icon="filter"><i class="ladb-icon-filter"></i> Avec diplôme</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-testimonial" data-label="Avec témoignage" data-editable="false" data-icon="student"><i class="ladb-icon-student"></i> Avec témoignage</a></li>
@@ -32,4 +32,5 @@
 
 {% block searchboxShortcuts %}
     <li><a class="ladb-smartsearch-shortcut" data-query="@with-testimonial"><i class="ladb-icon-student"></i> Avec témoignage</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@training-types:&quot;En ligne&quot;"><i class="ladb-icon-globe"></i> Formations en ligne</a></li>
 {% endblock %}
