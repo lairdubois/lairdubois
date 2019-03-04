@@ -127,7 +127,7 @@ class LadbMarkdown extends Parser {
 	protected function renderAutoUrl($block) {
 		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
 		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		return '<a href="'.$href.'" target="_blank">'.$text.'</a>';
+		return '<a href="'.$href.'">'.$text.'</a>';
 	}
 
 	/**
@@ -136,7 +136,7 @@ class LadbMarkdown extends Parser {
 	protected function renderUrl($block) {
 		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
 		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		return '<a href="'.$href.'" target="_blank">'.$text.'</a>';
+		return '<a href="'.$href.'">'.$text.'</a>';
 	}
 
 	/**
@@ -152,7 +152,7 @@ class LadbMarkdown extends Parser {
 		}
 		return '<a href="'.htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8').'"'
 		.(empty($block['title']) ? '' : ' title="'.htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8').'"')
-		.' target="_blank">'.$this->_truncateUrl($this->renderAbsy($block['text'])).'</a>';
+		.'>'.$this->_truncateUrl($this->renderAbsy($block['text'])).'</a>';
 	}
 
 	///// Headline

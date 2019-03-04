@@ -99,7 +99,7 @@
     <div class="ladb-find">
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') %}
             <div class="ladb-thumb">
-                <a href="{{ find.content.url }}" target="_blank" class="thumbnail">
+                <a href="{{ find.content.url }}" class="thumbnail">
                     {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'nopin="nopin"' } %}
                 </a>
             </div>
@@ -169,7 +169,7 @@
         {% endif %}
         {% if find.content.url is defined and find.content.url is not null %}
             <div class="ladb-link">
-                <i class="ladb-icon-link ladb-icon-fixed-center"></i> <a href="{{ find.content.url }}" target="_blank" itemprop="url">{{ find.content.url|truncate(50) }}</a>
+                <i class="ladb-icon-link ladb-icon-fixed-center"></i> <a href="{{ find.content.url }}" itemprop="url">{{ find.content.url|truncate(50) }}</a>
             </div>
         {% endif %}
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') and not find.isDraft and joinContext.isJoinable %}

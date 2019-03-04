@@ -16,7 +16,7 @@
         {% endfor %}
         {% if entities|length > maxResults and not noShowMore %}
             <tr>
-                <td><a href="{{ url('core_'~typePrefix~type~'_list') }}" style="color: #f77f00; font-size: 90%;" target="_blank">Voir la suite...</a></td>
+                <td><a href="{{ url('core_'~typePrefix~type~'_list') }}" style="color: #f77f00; font-size: 90%;">Voir la suite...</a></td>
             </tr>
         {% endif %}
         </tbody>

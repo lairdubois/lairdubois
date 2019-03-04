@@ -44,7 +44,7 @@
             {% endblock %}
             {% block footerInner %}
                 <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                <a href="{{ path('core_howto_new') }}" class="btn btn-primary" target="_blank" onclick="$('#new_howto_modal').find('button.close').click();"><i class="ladb-icon-plus"></i> {{ 'howto.howto.create'|trans() }}</a>
+                <a href="{{ path('core_howto_new') }}" class="btn btn-primary" onclick="$('#new_howto_modal').find('button.close').click();"><i class="ladb-icon-plus"></i> {{ 'howto.howto.create'|trans() }}</a>
             {% endblock %}
         {% endembed %}
     </div>

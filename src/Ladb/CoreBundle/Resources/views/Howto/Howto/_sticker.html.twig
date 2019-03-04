@@ -1,10 +1,10 @@
 {% spaceless %}
-<a href="{{ ladb_entity_url_action(howto) }}?referer=1" title="{{ howto.title|escape('html') }}" target="_blank"><img src="{{ url('core_howto_sticker', { 'id':howto.id }) }}" alt="{{ howto.title|escape('html') }}"></a>
+<a href="{{ ladb_entity_url_action(howto) }}?referer=1" title="{{ howto.title|escape('html') }}"><img src="{{ url('core_howto_sticker', { 'id':howto.id }) }}" alt="{{ howto.title|escape('html') }}"></a>
 <br>
 <strong>{{ 'howto.article.list'|trans() }} :</strong>
 <ul>
     {% for article in howto.articles if not article.isDraft %}
-        <li><a href="{{ ladb_entity_url_action(article) }}?referer=1" target="_blank">{{ article.title|raw|escape('html') }}</a></li>
+        <li><a href="{{ ladb_entity_url_action(article) }}?referer=1">{{ article.title|raw|escape('html') }}</a></li>
     {% endfor %}
 </ul>
 {% endspaceless %}

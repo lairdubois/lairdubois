@@ -19,7 +19,7 @@
                     <img src="{{ (row.actorUser.avatar ? row.actorUser.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32">
                 </td>
                 <td>
-                    <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none; font-weight: bold;" target="_blank">{{ row.actorUser.displayname }}</a>
+                    <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none; font-weight: bold;">{{ row.actorUser.displayname }}</a>
                     <p style="margin: 5px 0 0 0; padding: 0;">
                         <div>
                             {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_period.part.html.twig' with { 'testimonial':row.testimonial } %}
@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td height="30"><a href="{{ ladb_entity_url_action(row.entity) }}#_testimonial_{{ row.testimonial.id }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;" target="_blank">Voir le témoignage</a></td>
+                <td height="30"><a href="{{ ladb_entity_url_action(row.entity) }}#_testimonial_{{ row.testimonial.id }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Voir le témoignage</a></td>
             </tr>
             </tbody>
         </table>

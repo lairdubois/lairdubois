@@ -47,11 +47,11 @@
                     </div>
                     <div class="ladb-meta">
                         <span class="pull-right"></span>
-                        <span class="pull-right">{{ registration.clientIp4 }} | <a href="http://ip-api.com/#{{ registration.clientIp4 }}" target="_blank">GeoIP</a> | <a href="https://cleantalk.org/blacklists/{{ registration.clientIp4 }}" target="_blank">CleanTalk</a></span>
+                        <span class="pull-right">{{ registration.clientIp4 }} | <a href="http://ip-api.com/#{{ registration.clientIp4 }}">GeoIP</a> | <a href="https://cleantalk.org/blacklists/{{ registration.clientIp4 }}">CleanTalk</a></span>
                         <span>clientIp4</span>
                     </div>
                     <div class="ladb-meta">
-                        <span class="pull-right"><a href= "http://www.useragentstring.com/?uas={{ registration.clientUserAgent|url_encode }}&getText=all" target="_blank">{{ registration.clientUserAgent|truncate(30) }}</a></span>
+                        <span class="pull-right"><a href= "http://www.useragentstring.com/?uas={{ registration.clientUserAgent|url_encode }}&getText=all">{{ registration.clientUserAgent|truncate(30) }}</a></span>
                         <span>userAgent</span>
                     </div>
                 {% endif %}

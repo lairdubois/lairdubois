@@ -8,6 +8,6 @@
 {% endblock %}
 
 {% block subheadingInner %}
-    {% if provider.website %}<div class="ladb-subblock"><i class="ladb-icon-globe"></i> <a href="{{ provider.website }}" target="_blank">{{ provider.website|ladb_url_trim|truncate(30) }}</a></div> {% endif %}
+    {% if provider.website %}<div class="ladb-subblock"><i class="ladb-icon-globe"></i> <a href="{{ provider.website }}">{{ provider.website|ladb_url_trim|truncate(30) }}</a></div> {% endif %}
     {% if provider.phone %}<div class="ladb-subblock"><i class="ladb-icon-phone"></i> <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></div>{% endif %}
 {% endblock %}

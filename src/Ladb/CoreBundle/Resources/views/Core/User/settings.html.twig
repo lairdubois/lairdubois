@@ -107,7 +107,7 @@
                 </div>
             </div>
             <hr>
-            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'quel-sont-les-differents-type-de-comptes' }) }}" target="_blank">Quel sont les différents type de comptes ?</a> </p>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'quel-sont-les-differents-type-de-comptes' }) }}">Quel sont les différents type de comptes ?</a> </p>
         {% endblock %}
     {% endembed %}
     {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'formSection':'banner', 'formPictures':form.meta.banner, 'pictures':(form.vars.data.meta.banner is null ? [] : [ form.vars.data.meta.banner ]), 'maxPictureCount':1, 'title':('user.banner'|trans()), 'help':('user.banner_help'|trans()), 'hideTextOverlayWarning':true } %}

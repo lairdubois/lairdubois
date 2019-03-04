@@ -10,12 +10,12 @@
         <tbody>
         <tr>
             <td height="74" width="74">
-                <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}"  style="color: #333;" target="_blank">
+                <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}"  style="color: #333;">
                     <img src="{{ (row.actorUser.avatar is empty ? 'avatar.png' : row.actorUser.avatar.webPath)|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px;" alt="{{ row.actorUser.displayname }}">
                 </a>
             </td>
             <td>
-                <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="font-size: 130%; font-weight: bold; color: #f77f00; text-decoration: none;" target="_blank">{{ row.actorUser.displayname }}</a>{% if row.actorUser.fullname is not empty %}&nbsp;<span style="color: #999; font-size: 90%;">({{ row.actorUser.fullname }})</span>{% endif %}
+                <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="font-size: 130%; font-weight: bold; color: #f77f00; text-decoration: none;">{{ row.actorUser.displayname }}</a>{% if row.actorUser.fullname is not empty %}&nbsp;<span style="color: #999; font-size: 90%;">({{ row.actorUser.fullname }})</span>{% endif %}
                 {% if row.actorUser.location is not empty %}
                     <p style="margin:5px 0 0 0; font-size: 90%"><a href="https://maps.google.fr/maps?q={{ row.actorUser.location|url_encode }}" style="color: #f77f00; text-decoration: none;">{{ row.actorUser.location }}</a></p>
                 {% endif %}

@@ -1,6 +1,6 @@
 {% spaceless %}
 <div id="ladb_bottombar" class="ladb-bottombar ladb-no-print">
-    {#<div style="background-color: #d9534f; text-align: center; padding: 5px; color: #fff;"><i class="ladb-icon-warning"></i> Attention, vous êtes sur un serveur de test. <span style="color: #fcc; white-space: nowrap">( <a href="https://www.lairdubois.fr" style="color: #fcc;" target="_blank">Retour sur lairdubois.fr</a> )</span></div>#}
+    {#<div style="background-color: #d9534f; text-align: center; padding: 5px; color: #fff;"><i class="ladb-icon-warning"></i> Attention, vous êtes sur un serveur de test. <span style="color: #fcc; white-space: nowrap">( <a href="https://www.lairdubois.fr" style="color: #fcc;">Retour sur lairdubois.fr</a> )</span></div>#}
     <ul class="ladb-nav">
         <li style="background-color: #f0ad4e;"><a href="{{ path('core_funding_dashboard') }}"{% if navSection is defined and navSection == 'funding' %} class="ladb-active"{% endif %}><i class="ladb-icon-funding ladb-icon-lg"></i><span class="ladb-hidden-mobile">&nbsp;{{ 'funding.nav'|trans() }}</span></a></li>
         <li class="ladb-hidden-mobile"><a href="{{ path('core_promotion_graphic_list') }}"{% if navSection is defined and navSection == 'promotion' %} class="ladb-active"{% endif %}><i class="ladb-icon-promote ladb-icon-lg"></i><span class="ladb-hidden-mobile">&nbsp;{{ 'promotion.nav'|trans() }}</span>{% block bottomBarPromotionGraphicNotificationBadge %}{% endblock %}</a></li>
@@ -9,12 +9,12 @@
         <li><a href="{{ path('core_about_legals') }}"{% if navSection is defined and navSection == 'legals' %} class="ladb-active"{% endif %}>{{ 'default.legals'|trans() }}</a></li>
     </ul>
     <ul class="ladb-social">
-        <li><a href="https://www.facebook.com/LAirDuBois" target="_blank" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Facebook"><i class="ladb-icon-facebook ladb-icon-lg"></i></a></li>
-        <li><a href="https://www.twitter.com/LAirDuBois" target="_blank" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Twitter"><i class="ladb-icon-twitter ladb-icon-lg"></i></a></li>
-        <li><a href="https://www.instagram.com/lairdubois/" target="_blank" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Instagram"><i class="ladb-icon-instagram ladb-icon-lg"></i></a></li>
-        <li><a href="https://pinterest.com/lairdubois" target="_blank" data-tooltip="tooltip" rel="publisher" title="Suivez L'Air du Bois sur Pinterest"><i class="ladb-icon-pinterest ladb-icon-lg"></i></a></li>
-        <li><a href="https://github.com/lairdubois" target="_blank" data-tooltip="tooltip" rel="publisher" title="Suivez L'Air du Bois sur GitHub"><i class="ladb-icon-github ladb-icon-lg"></i></a></li>
-        <li class="ladb-hidden-mobile"><a href="https://extensions.sketchup.com/fr/content/lair-du-bois-sketchup-toolbox-0" target="_blank" data-tooltip="tooltip" rel="publisher" title="Retrouvez L'Air du Bois sur L'Extension Warehouse de Sketchup"><i class="ladb-icon-sketchup ladb-icon-lg"></i></a></li>
+        <li><a href="https://www.facebook.com/LAirDuBois" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Facebook"><i class="ladb-icon-facebook ladb-icon-lg"></i></a></li>
+        <li><a href="https://www.twitter.com/LAirDuBois" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Twitter"><i class="ladb-icon-twitter ladb-icon-lg"></i></a></li>
+        <li><a href="https://www.instagram.com/lairdubois/" data-tooltip="tooltip" title="Suivez L'Air du Bois sur Instagram"><i class="ladb-icon-instagram ladb-icon-lg"></i></a></li>
+        <li><a href="https://pinterest.com/lairdubois" data-tooltip="tooltip" rel="publisher" title="Suivez L'Air du Bois sur Pinterest"><i class="ladb-icon-pinterest ladb-icon-lg"></i></a></li>
+        <li><a href="https://github.com/lairdubois" data-tooltip="tooltip" rel="publisher" title="Suivez L'Air du Bois sur GitHub"><i class="ladb-icon-github ladb-icon-lg"></i></a></li>
+        <li class="ladb-hidden-mobile"><a href="https://extensions.sketchup.com/fr/content/lair-du-bois-sketchup-toolbox-0" data-tooltip="tooltip" rel="publisher" title="Retrouvez L'Air du Bois sur L'Extension Warehouse de Sketchup"><i class="ladb-icon-sketchup ladb-icon-lg"></i></a></li>
     </ul>
 </div>
 {% endspaceless %}

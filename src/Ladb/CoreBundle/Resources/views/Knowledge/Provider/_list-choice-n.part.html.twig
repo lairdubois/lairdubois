@@ -7,7 +7,7 @@
     {% for provider in providers %}
         <div class="ladb-choice-row">
             <div class="ladb-thumbnail">
-                <a href="{{ path('core_provider_show', { 'id':provider.sluggedId }) }}" class="thumbnail" target="_blank">
+                <a href="{{ path('core_provider_show', { 'id':provider.sluggedId }) }}" class="thumbnail">
                     <img src="{{ (provider.mainPicture is not null ? provider.mainPicture.webPath : 'avatar.png')|imagine_filter('80x60o') }}">
                 </a>
             </div>

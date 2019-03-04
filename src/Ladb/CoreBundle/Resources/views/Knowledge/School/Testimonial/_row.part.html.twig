@@ -43,7 +43,7 @@
                         <span class="ladb-horizontal-separator-left">{% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':testimonial } %}</span>
                     {% endif %}
                     <div class="text-right">
-                        <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':testimonial.user.usernameCanonical }) }}" target="_blank" class="btn btn-default btn-sm" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':testimonial.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ testimonial.user.displayName }}</a>
+                        <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':testimonial.user.usernameCanonical }) }}" class="btn btn-default btn-sm" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':testimonial.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ testimonial.user.displayName }}</a>
                     </div>
                 </div>
             </div>

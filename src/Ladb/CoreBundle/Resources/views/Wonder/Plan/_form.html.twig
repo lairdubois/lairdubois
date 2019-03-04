@@ -36,7 +36,7 @@
         {% block body %}
             {{ parent() }}
             <hr>
-            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-exporter-une-capture-d-un-plan-sketchup' }) }}" target="_blank">Comment exporter une capture d'un plan Sketchup ?</a> </p>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-exporter-une-capture-d-un-plan-sketchup' }) }}">Comment exporter une capture d'un plan Sketchup ?</a> </p>
         {% endblock %}
     {% endembed %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'3d', 'title':'3D Warehouse', 'formSection':'3dwarehouse' } %}
@@ -44,7 +44,7 @@
             <div class="media ladb-margin-remove ladb-margin-bottom">
                 <div class="media-left"><img src="{{ asset('bundles/ladbcore/ladb/images/logo-3dwarehouse.png') }}"></div>
                 <div class="media-body">
-                    <p class="help-block ladb-margin-remove">Si le fichier principal de votre plan est au format <a href="https://www.sketchup.com/" target="_blank">Sketchup</a> et que vous souhaitez avoir une visualisation en 3D directement dans la fiche du plan. Vous pouvez le publier également sur <a href="https://3dwarehouse.sketchup.com" target="_blank">3D Warehouse</a> et placer le lien vers la page correspondante de se dernier dans le champs suivant.</p>
+                    <p class="help-block ladb-margin-remove">Si le fichier principal de votre plan est au format <a href="https://www.sketchup.com/">Sketchup</a> et que vous souhaitez avoir une visualisation en 3D directement dans la fiche du plan. Vous pouvez le publier également sur <a href="https://3dwarehouse.sketchup.com">3D Warehouse</a> et placer le lien vers la page correspondante de se dernier dans le champs suivant.</p>
                 </div>
             </div>
             {{ form_errors(form.sketchup3DWarehouseUrl) }}
@@ -59,7 +59,7 @@
             <div class="media ladb-margin-remove ladb-margin-bottom">
                 <div class="media-left"><img src="{{ asset('bundles/ladbcore/ladb/images/logo-fusion360.png') }}"></div>
                 <div class="media-body">
-                    <p class="help-block ladb-margin-remove">Si le fichier principal de votre plan est au format <a href="https://www.autodesk.com/products/fusion-360" target="_blank">Fusion 360</a> et que vous souhaitez avoir une visualisation en 3D directement dans la fiche du plan. Vous pouvez placer ici le <strong>lien public</strong> dans le champs suivant.</p>
+                    <p class="help-block ladb-margin-remove">Si le fichier principal de votre plan est au format <a href="https://www.autodesk.com/products/fusion-360">Fusion 360</a> et que vous souhaitez avoir une visualisation en 3D directement dans la fiche du plan. Vous pouvez placer ici le <strong>lien public</strong> dans le champs suivant.</p>
                 </div>
             </div>
             {{ form_errors(form.a360Url) }}

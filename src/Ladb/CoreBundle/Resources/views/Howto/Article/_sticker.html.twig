@@ -1,3 +1,3 @@
 {% spaceless %}
-<a href="{{ ladb_entity_url_action(article) }}?referer=1" title="{{ article.title|escape('html') }}" target="_blank"><img src="{{ url('core_howto_article_sticker', { 'id':article.id }) }}" alt="{{ article.title|escape('html') }}"></a>
+<a href="{{ ladb_entity_url_action(article) }}?referer=1" title="{{ article.title|escape('html') }}"><img src="{{ url('core_howto_article_sticker', { 'id':article.id }) }}" alt="{{ article.title|escape('html') }}"></a>
 {% endspaceless %}

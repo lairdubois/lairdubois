@@ -7,7 +7,7 @@
     {% for howto in howtos %}
         <div class="ladb-choice-row">
             <div class="ladb-thumbnail">
-                <a href="{{ path('core_howto_show', { 'id':howto.sluggedId }) }}" class="thumbnail" target="_blank">
+                <a href="{{ path('core_howto_show', { 'id':howto.sluggedId }) }}" class="thumbnail">
                     <img src="{{ (howto.mainPicture is not null ? howto.mainPicture.webPath : 'avatar.png')|imagine_filter('80x60o') }}">
                 </a>
             </div>

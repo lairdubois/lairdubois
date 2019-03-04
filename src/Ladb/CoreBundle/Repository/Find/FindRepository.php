@@ -228,6 +228,7 @@ class FindRepository extends AbstractEntityRepository {
 			->innerJoin('f.content', 'ct')
 			->where('ct INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Find\\Content\\Event')
 			->andWhere('f.createdAt > :limitDate')
+			->andWhere('f.isDraft = false')
 			->setParameter('limitDate', (new \DateTime())->sub(new \DateInterval('P1Y')))	// Limit search to 1 year ago
 		;
 

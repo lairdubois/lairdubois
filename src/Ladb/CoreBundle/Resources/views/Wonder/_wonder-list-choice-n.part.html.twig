@@ -7,7 +7,7 @@
     {% for wonder in wonders %}
         <div class="ladb-choice-row">
             <div class="ladb-thumbnail">
-                <a href="{{ ladb_entity_url_action(wonder) }}" class="thumbnail" target="_blank">
+                <a href="{{ ladb_entity_url_action(wonder) }}" class="thumbnail">
                     <img src="{{ wonder.mainPicture.webPath|imagine_filter('80x60o') }}">
                 </a>
             </div>

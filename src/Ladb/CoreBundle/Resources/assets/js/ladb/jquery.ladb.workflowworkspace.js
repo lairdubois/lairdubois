@@ -1400,7 +1400,7 @@
 
             bootbox.alert({
                 title: 'Aie !',
-                message: '<div class="media"><div class="media-left"><i class="ladb-icon-warning ladb-icon-xl"></i></div><div class="media-body"><p>Désolé, mais votre navigateur internet ne supporte pas les <a href="https://fr.wikipedia.org/wiki/WebSocket" target="_blank">WebSocket</a>. Fonctionnalité indispensable pour éditer les processus.</p><p>Mettez à jour votre navigateur ou optez pour un navigateur compatible (Firefox, Chrome, Safari).</p><p>En attendant le processus sera ouvert en <strong>lecture seule</strong>.</p></div></div>',
+                message: '<div class="media"><div class="media-left"><i class="ladb-icon-warning ladb-icon-xl"></i></div><div class="media-body"><p>Désolé, mais votre navigateur internet ne supporte pas les <a href="https://fr.wikipedia.org/wiki/WebSocket">WebSocket</a>. Fonctionnalité indispensable pour éditer les processus.</p><p>Mettez à jour votre navigateur ou optez pour un navigateur compatible (Firefox, Chrome, Safari).</p><p>En attendant le processus sera ouvert en <strong>lecture seule</strong>.</p></div></div>',
             });
 
         }
