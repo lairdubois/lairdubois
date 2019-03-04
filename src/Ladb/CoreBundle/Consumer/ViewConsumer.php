@@ -182,7 +182,7 @@ class ViewConsumer implements ConsumerInterface {
 
 		} catch (\Exception $e) {
 			$this->logger->error('ViewConsumer/execute', array ( 'exception' => $e));
-			return;
+			return false;
 		}
 
 		switch ($kind) {
@@ -199,10 +199,11 @@ class ViewConsumer implements ConsumerInterface {
 
 			default:
 				$this->logger->error('ViewConsumer/execute (Unknow kind='.$kind.')');
-				return;
+				return false;
 
 		}
 
+		return true;
 	}
 
 }

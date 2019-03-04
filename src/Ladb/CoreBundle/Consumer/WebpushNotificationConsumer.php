@@ -9,11 +9,14 @@ use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 
 class WebpushNotificationConsumer implements ConsumerInterface {
 
+	private $logger;
 	private $om;
 	private $userRepository;
 	private $webpushNotificationUtils;
 
 	public function __construct(ContainerInterface $container) {
+
+		$this->logger = $container->get('logger');
 
 		$this->om = $container->get('doctrine')->getManager();
 		$this->userRepository = $this->om->getRepository(User::CLASS_NAME);
@@ -36,7 +39,7 @@ class WebpushNotificationConsumer implements ConsumerInterface {
 
 		} catch (\Exception $e) {
 			$this->logger->error('WebpushNotificationConsumer/execute', array( 'execption' => $e ));
-			return;
+			return false;
 		}
 
 		$user = $this->userRepository->findOneById($userId);
@@ -47,6 +50,7 @@ class WebpushNotificationConsumer implements ConsumerInterface {
 
 		}
 
+		return true;
 	}
 
 }
