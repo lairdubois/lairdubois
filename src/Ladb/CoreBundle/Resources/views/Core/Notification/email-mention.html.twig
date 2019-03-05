@@ -5,11 +5,20 @@
 {% block rowContent %}
     <p style="margin: 5px 0 5px 0;">
         <strong>{{ row.actorUser.displayname }}</strong> a mentionné votre nom dans
-        {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
+        {{ ('notification.'~(row.activityEntity.user is defined and row.activityEntity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.activityEntity))|trans() }} <em>{{ row.activityEntity.title|raw }}</em>.
     </p>
     <table cellspacing="10" cellpadding="0">
         <tbody>
         {% include 'LadbCoreBundle:Common:_entity-email-row.part.html.twig' with { 'entity':row.entity } %}
+        {% if row.comment is defined %}
+            <tr>
+                <td height="30" colspan="2"><a href="{{ ladb_entity_url_action(row.entity) }}#_comment_{{ row.comment.id }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Voir le commentaire</a></td>
+            </tr>
+        {% elseif row.answer is defined %}
+            <tr>
+                <td height="30" colspan="2"><a href="{{ ladb_entity_url_action(row.entity) }}#_answer_{{ row.answer.id }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Voir la réponse</a></td>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
 {% endblock %}

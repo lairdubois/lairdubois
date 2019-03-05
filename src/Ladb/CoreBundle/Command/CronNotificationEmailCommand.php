@@ -142,6 +142,7 @@ EOT
 
 					$mention = $activity->getMention();
 					$row->entity = $typableUtils->findTypable($mention->getEntityType(), $mention->getEntityId());
+					$row->activityEntity = $row->entity;
 					if ($row->entity instanceof Comment) {
 						$row->comment = $row->entity;
 						$row->entity = $typableUtils->findTypable($row->comment->getEntityType(), $row->comment->getEntityId());
