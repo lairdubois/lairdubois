@@ -38,9 +38,6 @@
                 <meta name="description" content="{{ pageDescription }}" />
                 <meta name="author" content="{{ pageAuthor }}">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-                <meta name="mobile-web-app-capable" content="yes">
-                <meta name="apple-mobile-web-app-title" content="L'Air du Bois">
-                <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
                 {% block headOpenGraphMetas %}
                     <meta property="fb:app_id" content="456294721102605" />
                     <meta property="og:site_name" content="L'Air du Bois" />
@@ -116,7 +113,12 @@
             <link rel="manifest" href="{{ asset('manifest.json') }}">
             <meta name="msapplication-TileColor" content="#ffffff">
             <meta name="msapplication-TileImage" content="{{ asset('ms-icon-144x144.png') }}">
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-title" content="L'Air du Bois">
+            <meta name="apple-mobile-web-app-status-bar-style" content="default">
             <meta name="theme-color" content="#ffffff">
+            <meta name="application-name" content="L'Air du Bois">
             {% block headStylesheets %}
                 {% stylesheets filter='less,?yui_css'
                     '@LadbCoreBundle/Resources/assets/css/jquery-lazyloadxt/jquery.lazyloadxt.fadein.css'
