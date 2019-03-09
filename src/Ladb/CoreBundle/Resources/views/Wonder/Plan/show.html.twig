@@ -10,7 +10,6 @@
 {% block bodyJavascripts %}
     {{ parent() }}
     {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/modernizr/modernizr-custom.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.planpage.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
