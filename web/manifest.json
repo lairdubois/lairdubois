@@ -50,5 +50,5 @@
   "display": "minimal-ui",
   "scope": "/",
   "theme_color": "#3E3B33",
-  "orientation": "portrait"
+  "orientation": "portrait-primary"
 }
