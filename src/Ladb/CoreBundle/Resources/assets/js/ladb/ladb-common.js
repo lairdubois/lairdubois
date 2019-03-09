@@ -8,7 +8,9 @@ function notifyFileError(fileName, error) {
     notifyError("Erreur sur le fichier <strong>" + fileName + "</strong><br><em>" + error + "</em>");
 }
 function setupTooltips() {
-    $("[data-tooltip=tooltip]").tooltip({container: 'body'});
+    if (!Modernizr.touchevents) {   // No tootltip on if touch screen
+        $("[data-tooltip=tooltip]").tooltip({container: 'body'});
+    }
 }
 function setupPopovers() {
     $("[data-popover=popover]").popover();
