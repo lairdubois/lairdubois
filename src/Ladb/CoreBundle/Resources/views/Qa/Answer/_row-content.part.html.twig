@@ -40,7 +40,7 @@
             {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':answer.type, 'entityId':answer.id } %}
         {% endif %}
     </div>
-    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer, 'classes':'ladb-visible-desktop' } %}
+    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer } %}
 </div>
 <div class="ladb-content">
     <div itemprop="text">

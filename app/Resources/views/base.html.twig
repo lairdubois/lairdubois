@@ -113,10 +113,11 @@
             <link rel="manifest" href="{{ asset('manifest.json') }}">
             <meta name="msapplication-TileColor" content="#ffffff">
             <meta name="msapplication-TileImage" content="{{ asset('ms-icon-144x144.png') }}">
-            {#<meta name="mobile-web-app-capable" content="yes">#}
-            {#<meta name="apple-mobile-web-app-capable" content="yes">#}
-            {#<meta name="apple-mobile-web-app-title" content="L'Air du Bois">#}
-            {#<meta name="apple-mobile-web-app-status-bar-style" content="default">#}
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-title" content="L'Air du Bois">
+            <meta name="apple-mobile-web-app-status-bar-style" content="default">
+            <link rel="apple-touch-startup-image" href="{{ asset('apple-icon-114x114.png') }}">
             <meta name="theme-color" content="#ffffff">
             <meta name="application-name" content="L'Air du Bois">
             {% block headStylesheets %}

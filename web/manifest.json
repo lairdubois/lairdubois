@@ -1,6 +1,7 @@
 {
   "short_name": "L'Air du Bois",
   "name": "L'Air du Bois",
+  "description": "L'Air du Bois est une plateforme Open Source de partage collaboratif ouverte à tous les amoureux du travail du bois.",
   "icons": [
     {
       "src": "/android-icon-36x36.png",
@@ -46,7 +47,8 @@
   ],
   "start_url": "/",
   "background_color": "#3E3B33",
-  "display": "browser",
+  "display": "minimal-ui",
   "scope": "/",
-  "theme_color": "#3E3B33"
+  "theme_color": "#3E3B33",
+  "orientation": "portrait"
 }
