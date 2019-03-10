@@ -24,9 +24,6 @@ final class Version20190310172619 extends AbstractMigration
         $this->addSql('ALTER TABLE tbl_collection_tag ADD CONSTRAINT FK_3CCB530ABAD26311 FOREIGN KEY (tag_id) REFERENCES tbl_core_tag (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE tbl_collection_entry ADD CONSTRAINT FK_6607A751514956FD FOREIGN KEY (collection_id) REFERENCES tbl_collection (id)');
         $this->addSql('ALTER TABLE tbl_core_mention CHANGE mentioned_user_id mentioned_user_id INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_core_mention ADD CONSTRAINT FK_E469668A76ED395 FOREIGN KEY (user_id) REFERENCES tbl_core_user (id)');
-        $this->addSql('ALTER TABLE tbl_core_mention RENAME INDEX idx_e46966834a3e1b6 TO IDX_E469668E6655814');
-        $this->addSql('ALTER TABLE tbl_core_mention RENAME INDEX entity_user_unique TO ENTITY_MENTIONED_USER_UNIQUE');
         $this->addSql('ALTER TABLE tbl_core_user_meta ADD unlisted_collection_collection_count INT NOT NULL, ADD private_collection_count INT DEFAULT NULL, ADD public_collection_count INT DEFAULT NULL');
         $this->addSql('ALTER TABLE tbl_find ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
         $this->addSql('ALTER TABLE tbl_howto ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
