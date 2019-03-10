@@ -72,9 +72,12 @@ default:
   unviewed: Non vu
   thumbnail: Miniature
   get_link: Obtenir le lien
-  private: Privé
-  protected: Equipe
-  public: Public
+  private_m: Privé
+  private_f: Privée
+  protected_m: Equipe
+  protected_f: Equipe
+  public_m: Public
+  public_f: Publique
   toc: Table des matières
   do_up: Remonter la publication
   warning:

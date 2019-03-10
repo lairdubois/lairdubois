@@ -6,6 +6,7 @@
 
 {% set noMicrodata = true %}
 {% set showPath = showPathAdditionalParams is defined ? ladb_entity_url_action(entity, 'show', true, true, showPathAdditionalParams) : ladb_entity_url_action(entity) %}
+{% set gender = gender|default('m') %}
 {% set pictureWidth = pictureWidth|default('300') %}
 {% set pictureHeight = pictureHeight|default('550') %}
 {% set pictureFilterMode = pictureFilterMode|default('i') %}
@@ -24,9 +25,13 @@
                                 <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'default.choice.contains_videos'|transchoice(entity.bodyBlockVideoCount, { '%count%':entity.bodyBlockVideoCount }) }}"><i class="ladb-icon-video"></i></div>
                             {% endif %}
                         {% endblock %}
-                        {% if entity.isDraft is defined and entity.isDraft %}
+                        {% if entity.isDraft is defined and entity.isDraft or entity.visibility is defined and entity.isPrivate %}
                             <div class="ladb-draft-badge" style="position: absolute; top: 10px; right: 10px;">
-                                <i class="ladb-icon-draft"></i> {{ 'default.choice.draft'|transchoice(1)|capitalize }}
+                                {% if entity.isDraft is defined %}
+                                    <i class="ladb-icon-draft"></i> {{ 'default.choice.draft'|transchoice(1)|capitalize }}
+                                {% else %}
+                                    <i class="ladb-icon-key"></i> {{ ('default.private_'~gender)|trans }}
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>

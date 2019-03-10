@@ -349,18 +349,20 @@ class CollectionController extends AbstractCollectionBasedController {
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($collection));
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
+		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		$parameters = array(
-			'entityType'      => $entityType,
-			'collection'      => $collection,
-			'followerContext' => $followerUtils->getFollowerContext($collection->getUser(), $this->getUser()),
-			'likeContext'     => $likableUtils->getLikeContext($collection, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($collection, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($collection),
+			'entityType'        => $entityType,
+			'collection'        => $collection,
+			'likeContext'       => $likableUtils->getLikeContext($collection, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($collection, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($collection),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($collection),
+			'followerContext'   => $followerUtils->getFollowerContext($collection->getUser(), $this->getUser()),
 		);
 
 		if ($entityType > 0) {

@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Collection;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\InspirableTrait;
@@ -38,9 +40,10 @@ use Ladb\CoreBundle\Model\LicensedTrait;
  * @ORM\Table("tbl_collection")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Collection\CollectionRepository")
  */
-class Collection extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface {
+class Collection extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, CollectionnableInterface, WatchableInterface {
 
-	use IndexableTrait, TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait;
+	use IndexableTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, CollectionnableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Collection\Collection';
 	const TYPE = 120;
@@ -116,6 +119,16 @@ class Collection extends AbstractAuthoredPublication implements IndexableInterfa
 	 * @ORM\Column(type="integer", name="comment_count")
 	 */
 	private $commentCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="private_collection_count")
+	 */
+	private $privateCollectionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="public_collection_count")
+	 */
+	private $publicCollectionCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="view_count")

@@ -7,6 +7,7 @@
 
 {% set noMicrodata = true %}
 {% set showPath = showPathAdditionalParams is defined ? ladb_entity_url_action(entity, 'show', true, true, showPathAdditionalParams) : ladb_entity_url_action(entity) %}
+{% set gender = gender|default('m') %}
 
 <div class="ladb-masonry-item ladb-masonry-column-wide{% if classes is defined %} {{ classes }}{% endif %}">
     <div class="ladb-box ladb-box-hover"{% block onClickOuter %} onclick="{% block onClickInner %}$(this).ladbBoxLinkClick(event, { location:'{{ showPath }}'}){% endblock %}"{% endblock %}>
@@ -21,7 +22,7 @@
                                     {% if entity.isDraft is defined %}
                                         <i class="ladb-icon-draft"></i> {{ 'default.choice.draft'|transchoice(1)|capitalize }}
                                     {% else %}
-                                        <i class="ladb-icon-key"></i> {{ 'default.private'|trans }}
+                                        <i class="ladb-icon-key"></i> {{ ('default.private_'~gender)|trans }}
                                     {% endif %}
                                 </div>
                             {% endif %}

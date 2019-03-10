@@ -24,6 +24,9 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 		if ($collectionnable instanceof HiddableInterface && !$collectionnable->getIsPublic()) {
 			throw new \Exception('Entity must be public (entityType='.$collectionnable->getType().', entityId='.$collectionnable->getId().')');
 		}
+		if ($collectionnable === $collection) {
+			throw new \Exception('Entity can not be the collection itself');
+		}
 
 		// Create the new Entry
 		$entry = new Entry();

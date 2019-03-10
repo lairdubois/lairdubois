@@ -49,5 +49,9 @@
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
     </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+    </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':collection.tags, 'type':'collections' } %}
 {% endblock %}
