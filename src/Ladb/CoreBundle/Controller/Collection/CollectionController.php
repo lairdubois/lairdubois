@@ -36,7 +36,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 * @Route("/new", name="core_collection_new")
 	 * @Template("LadbCoreBundle:Collection:Collection/new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$collection = new Collection();
 		$form = $this->createForm(CollectionType::class, $collection);
@@ -46,6 +46,8 @@ class CollectionController extends AbstractCollectionBasedController {
 		return array(
 			'form'         => $form->createView(),
 			'tagProposals' => $tagUtils->getProposals($collection),
+			'entityType'   => $request->get('entityType', null),
+			'entityId'     => $request->get('entityId', null),
 		);
 	}
 
@@ -74,6 +76,26 @@ class CollectionController extends AbstractCollectionBasedController {
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($collection));
+
+			// Check auto add
+			$entityType = $request->get('entityType', null);
+			$entityId = $request->get('entityId', null);
+			if (!is_null($entityType) && !is_null($entityId)) {
+
+				// Retrieve related entity
+				$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
+
+				// Create entry
+				$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
+				try {
+					$collectionnableUtils->createEntry($entity, $collection);
+				} catch (\Exception $e) {
+					throw $this->createNotFoundException($e->getMessage());
+				}
+
+				$typableUtils = $this->get(TypableUtils::NAME);
+				return $this->redirect($typableUtils->getUrlAction($entity));
+			}
 
 			return $this->redirect($this->generateUrl('core_collection_show', array( 'id' => $collection->getId() )));
 		}

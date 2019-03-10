@@ -59,7 +59,7 @@ class PostType extends AbstractType {
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class'         => 'Ladb\CoreBundle\Entity\Blog\Post',
+			'data_class' => 'Ladb\CoreBundle\Entity\Blog\Post',
 		));
 	}
 

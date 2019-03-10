@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Collection:Collection/_form.html.twig' %}
 
 {% set pageTitle = 'collection.collection.new'|trans() %}
-{% set formAction = path('core_collection_create') %}
+{% set formAction = path('core_collection_create', { 'entityType':entityType, 'entityId':entityId }) %}
 {% set hideWarning = hideWarning|default(false) %}
 
 {% block sidenavHeading %}

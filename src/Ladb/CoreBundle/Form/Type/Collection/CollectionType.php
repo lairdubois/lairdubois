@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Form\Type\Collection;
 
+use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,6 +23,10 @@ class CollectionType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('title')
+			->add($builder
+				->create('mainPicture', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
+				->addModelTransformer(new PictureToIdTransformer($this->om))
+			)
 			->add('body', TextareaType::class)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))

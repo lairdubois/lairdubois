@@ -9,14 +9,20 @@
             {{ collection.htmlBody|raw }}
         </div>
         {% if collection.entryCount > 0 %}
-            <h4>Cette collection contient :</h4>
-            <ul>
-                {% for type, count in collection.entryTypeCounters if count > 0 %}
-                    <li>
-                        <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|transchoice(count) }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Contenu de la collection
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        {% for type, count in collection.entryTypeCounters if count > 0 %}
+                            <li>
+                                <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|transchoice(count) }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         {% else %}
             <div class="alert alert-info">
                 <div class="media">
@@ -25,7 +31,7 @@
                     </div>
                     <div class="media-body">
                         <p>Cette collection est pour l'instant vide.</p>
-                        <p>Afin d'y ajouter des publications, rendez-vous sur la fiche de chacune d'entre elles et cliquez sur le bonton <em>Ajouter à mes collections</em> reconnaissable par ce symbol <i class="ladb-icon-collection-add ladb-icon-lg"></i>.</p>
+                        <p>Afin d'y ajouter des publications, rendez-vous sur la fiche de chacune d'entre elles et cliquez sur le bonton "<strong>Enregistrer dans mes collections...</strong>" reconnaissable par le symbole suivant : <i class="ladb-icon-collection-add ladb-icon-lg"></i>.</p>
                     </div>
                 </div>
             </div>
@@ -34,10 +40,6 @@
     {% if collection.updatedAt > collection.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':collection } %}
     {% endif %}
-    {% if not ownerUser %}
-        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
-    {% endif %}
-
     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
 {% endblock %}
 

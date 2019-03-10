@@ -4,11 +4,13 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'mainPicture', 'fieldId':form.mainPicture.vars.id, 'maxPictureCount':1 } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
 {% endblock %}
 
 {% block sidenav %}
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'formSection':'mainPicture', 'title':('default.picture'|trans()) } %}
     {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' %}
     {% if collection is not defined %}<div style="display:none">{% endif %}
         {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
@@ -18,6 +20,7 @@
 {% block sections %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('collection.collection.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':false, 'formSection':'mainPicture', 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('collection.collection.form.help.main_picture'|trans()), 'hideTextOverlayWarning':true } %}
     {% include 'LadbCoreBundle:Common:_form-section-body.part.html.twig' with { 'mandatory':(collection is defined ? collection.isPublic : false), 'help':('collection.collection.form.help.body'|trans()) } %}
     {% if collection is not defined %}<div style="display:none">{% endif %}
         {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':(collection is defined ? collection.isPublic : false), 'help':('collection.collection.form.help.tags'|trans()) } %}

@@ -50,7 +50,7 @@
     {% else %}
         <a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.followerCount }}</div>
-            <span class="ladb-subheading">{{ 'follower.choice.followers'|transchoice(user.meta.followerCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'follower.choice.entities'|transchoice(user.meta.followerCount)|capitalize }}</span>
         </a>
     {% endif %}
     {{ parent() }}

@@ -10,12 +10,15 @@
 
 {% block bodyInner %}
     {% if collections|length == 0 %}
-        <p>Aucune collection.</p>
+        <p>Vous n'avez aucune collection pour l'instant.</p>
     {% endif %}
     {% include 'LadbCoreBundle:Collection/Collection:_list-available-n.part.html.twig' %}
     {{ block('autopagerScript') }}
 {% endblock %}
 
 {% block footerInner %}
-    <a href="{{ path('core_collection_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'collection.collection.new'|trans() }}</a>
+    {% if collections|length > 0 %}
+        <small class="help-block pull-left">⬆ Cochez les cases pour enregistrer</small>
+    {% endif %}
+    <a href="{{ path('core_collection_new', { 'entityType':entity.type, 'entityId':entity.id }) }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'collection.collection.new'|trans() }}</a>
 {% endblock %}

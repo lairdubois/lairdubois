@@ -58,6 +58,22 @@ class EntryRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findByEntityTypeAndEntityId($entityType, $entityId) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'e' ))
+			->from($this->getEntityName(), 'e')
+			->where('e.entityType = :entityType')
+			->andWhere('e.entityId = :entityId')
+			->setParameter('entityType', $entityType)
+			->setParameter('entityId', $entityId)
+		;
+
+		return $queryBuilder->getQuery()->getResult();
+	}
+
+	/////
+
 	public function findPaginedByEntityTypeAndCollection($entityType, Collection $collection, $offset, $limit) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -67,6 +83,7 @@ class EntryRepository extends AbstractEntityRepository {
 			->andWhere('e.collection = :collection')
 			->setParameter('entityType', $entityType)
 			->setParameter('collection', $collection)
+			->orderBy('e.createdAt', 'DESC')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

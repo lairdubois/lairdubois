@@ -25,9 +25,9 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privateQuestionCount~' '~('default.choice.draft'|transchoice(user.meta.privateQuestionCount)) }}
                     {% elseif filter|slice(0,4) == 'type' %}
-                        {{ questions.count~' '~('qa.question.choice.questions'|transchoice(questions.count)) }}
+                        {{ questions.count~' '~('qa.question.choice.entities'|transchoice(questions.count)) }}
                     {% else %}
-                        {{ user.meta.publicQuestionCount }} {{ 'qa.question.choice.questions'|transchoice(user.meta.publicQuestionCount) }}{% if isDraftVisible and user.meta.privateQuestionCount > 0 %} (+{{ user.meta.privateQuestionCount~' '~('default.choice.draft'|transchoice(user.meta.privateQuestionCount)) }}){% endif %}
+                        {{ user.meta.publicQuestionCount }} {{ 'qa.question.choice.entities'|transchoice(user.meta.publicQuestionCount) }}{% if isDraftVisible and user.meta.privateQuestionCount > 0 %} (+{{ user.meta.privateQuestionCount~' '~('default.choice.draft'|transchoice(user.meta.privateQuestionCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

@@ -6,6 +6,7 @@ use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
@@ -14,6 +15,7 @@ use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\MentionUtils;
@@ -99,6 +101,12 @@ abstract class AbstractPublicationManager extends AbstractManager {
 			$publication->setIsDraft(true);
 		}
 
+		if ($publication instanceof CollectionnableInterface) {
+			// Delete collection's entries
+			$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
+			$collectionnableUtils->deleteEntries($publication, false);
+		}
+
 		// Delete mentions
 		$mentionUtils = $this->container->get(MentionUtils::NAME);
 		$mentionUtils->deleteMentions($publication);
@@ -141,6 +149,12 @@ abstract class AbstractPublicationManager extends AbstractManager {
 			// Delete comments
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$commentableUtils->deleteComments($publication, false);
+		}
+
+		if ($publication instanceof CollectionnableInterface) {
+			// Delete collection's entries
+			$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
+			$collectionnableUtils->deleteEntries($publication, false);
 		}
 
 		if ($publication instanceof ReportableInterface) {

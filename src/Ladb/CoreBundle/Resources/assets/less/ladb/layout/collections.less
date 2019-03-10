@@ -5,18 +5,21 @@
 @boxMarginLeft: 42px;
 @boxMinHeight: 32px;
 
-#collections_modal .modal-body {
-  max-height: 500px;
-  overflow-y: auto;
-}
+#collections_modal {
+  text-align: left;
 
-.ladb-collection-row {
-  margin: 0;
-  padding: 10px;
-  background-color: #fff;
-  border-bottom: 1px solid @ladb-body-color;
+  .modal-body {
+    max-height: 500px;
+    overflow-y: auto;
+  }
 
-  .ladb-collection-entry-widget {
+  .ladb-collection-row {
+    margin: 0;
+    padding: 10px;
+    background-color: #fff;
+    border-bottom: 1px solid @ladb-body-color;
+
+    .ladb-collection-entry-widget {
       width: 28px;
       height: 28px;
       border: 2px solid #ccc;
@@ -34,6 +37,8 @@
         opacity: 0.4;
         border-color: #ccc !important;
       }
+
+    }
 
   }
 

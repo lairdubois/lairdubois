@@ -485,7 +485,7 @@ collection:
     user_list: Mes collections
     private_tooltip: Cette collection est Privée
     public_tooltip: Cette collection est Publique
-    add: Ajouter à mes collections...
+    add: Enregistrer dans mes collections...
     form:
       alert:
         lock_success: La collection <strong>%title%</strong> a été vérrouillée.
@@ -497,6 +497,7 @@ collection:
         copy_success: La collection <strong>%title%</strong> a été copiée.
       help:
         title: Renseignez ici le titre de votre collection.
+        main_picture: Ajoutez ici une image qui sera utilisée en miniature de votre collection.
         body: Renseignez ici le descriptif de votre collection.
         tags: Indiquez les tags définissant votre collection.
     choice:

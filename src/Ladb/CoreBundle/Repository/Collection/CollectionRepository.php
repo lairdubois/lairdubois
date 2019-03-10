@@ -20,7 +20,7 @@ class CollectionRepository extends AbstractEntityRepository {
 			->innerJoin('c.user', 'u')
 			->where('c.user = :user')
 			->setParameter('user', $user)
-			->orderBy('c.createdAt', 'DESC')
+			->orderBy('c.title', 'ASC')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

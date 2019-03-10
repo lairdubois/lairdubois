@@ -26,7 +26,7 @@ abstract class AbstractCollectionBasedController extends Controller {
 	protected function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::NAME);
 		try {
-			$entity = $typableUtils->findTypable($entityType, $entityId);
+			$entity = $typableUtils->findTypable(intval($entityType), intval($entityId));
 		} catch (\Exception $e) {
 			throw $this->createNotFoundException($e->getMessage());
 		}
