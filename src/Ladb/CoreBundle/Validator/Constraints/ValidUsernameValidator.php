@@ -101,7 +101,8 @@ class ValidUsernameValidator extends ConstraintValidator {
 				'api',
 				'youtook',
 				'questions',
-				'promouvoir'
+				'promouvoir',
+				'collections',
 
 			);
 
