@@ -494,7 +494,7 @@ collection:
         unpublish_success: La collection <strong>%title%</strong> a été dépubliée.
         update_success: La collection <strong>%title%</strong> a été mise à jour.
         delete_success: La collection <strong>%title%</strong> a été supprimée.
-        copy_success: La collection <strong>%title%</strong> a été copiée.
+        auto_add_success: La publication <strong>%title%</strong> a été enregistrée dans la collection <strong>%collection%</strong>.
       help:
         title: Renseignez ici le titre de votre collection.
         main_picture: Ajoutez ici une image qui sera utilisée en miniature de votre collection.
@@ -550,7 +550,7 @@ faq:
         title: Renseignez ici le titre de votre question.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre question.
     choice:
-      entities: '[0,1]question|]1,Inf]questions'
+      entities: '[0,1]question (FAQ)|]1,Inf]questions (FAQ)'
 
 knowledge:
   show_proposals: Voir les propositions

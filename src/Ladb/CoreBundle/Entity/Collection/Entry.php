@@ -38,7 +38,7 @@ class Entry implements IdentifiableInterface {
 	private $entityId;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Collection\Collection")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Collection\Collection", inversedBy="entries")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $collection;

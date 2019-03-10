@@ -10,7 +10,7 @@ use Ladb\CoreBundle\Model\AuthoredTrait;
 /**
  * @ORM\Table("tbl_core_mention",
  *		uniqueConstraints={
- *			@ORM\UniqueConstraint(name="ENTITY_USER_UNIQUE", columns={"entity_type", "entity_id", "mentioned_user_id"})
+ *			@ORM\UniqueConstraint(name="ENTITY_MENTIONED_USER_UNIQUE", columns={"entity_type", "entity_id", "mentioned_user_id"})
  * 		},
  * 		indexes={
  *     		@ORM\Index(name="IDX_MENTION_ENTITY", columns={"entity_type", "entity_id"})

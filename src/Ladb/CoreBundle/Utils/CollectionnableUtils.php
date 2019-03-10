@@ -19,6 +19,7 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 
 	public function createEntry(CollectionnableInterface $collectionnable, Collection $collection) {
 		$om = $this->getDoctrine()->getManager();
+		$picturedUtils = $this->get(PicturedUtils::NAME);
 
 		if ($collectionnable instanceof HiddableInterface && !$collectionnable->getIsPublic()) {
 			throw new \Exception('Entity must be public (entityType='.$collectionnable->getType().', entityId='.$collectionnable->getId().')');
@@ -36,11 +37,20 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 		$collection->setChangedAt(new \DateTime());
 		$collection->setUpdatedAt(new \DateTime());
 		if (is_null($collection->getMainPicture()) && $collectionnable instanceof PicturedInterface) {
-			$collection->setMainPicture($collectionnable->getMainPicture());
+
+			// Duplicate the entyt mainPicture
+			$mainPicture = $picturedUtils->duplicatePicture($collectionnable->getMainPicture());
+			$mainPicture->setUser($collection->getUser());
+			$collection->setMainPicture($mainPicture);
+
 		}
 
 		// Update related entity
-		$collectionnable->incrementPrivateCollectionCount();
+		if ($collection->getIsPublic()) {
+			$collectionnable->incrementPublicCollectionCount();
+		} else {
+			$collectionnable->incrementPrivateCollectionCount();
+		}
 
 		$om->persist($entry);
 		$om->flush();

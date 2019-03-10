@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Faq;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -447,15 +448,17 @@ class QuestionController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
-			'question'         => $question,
-			'similarQuestions' => $similarQuestions,
-			'likeContext'      => $likableUtils->getLikeContext($question, $this->getUser()),
-			'watchContext'     => $watchableUtils->getWatchContext($question, $this->getUser()),
-			'commentContext'   => $commentableUtils->getCommentContext($question),
-			'followerContext'  => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
+			'question'          => $question,
+			'similarQuestions'  => $similarQuestions,
+			'likeContext'       => $likableUtils->getLikeContext($question, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($question, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($question),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($question),
+			'followerContext'   => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
 		);
 	}
 

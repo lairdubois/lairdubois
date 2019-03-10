@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Blog;
 
 use Ladb\CoreBundle\Model\HiddableInterface;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -448,15 +449,17 @@ class PostController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
-			'post'            => $post,
-			'similarPosts'    => $similarPosts,
-			'likeContext'     => $likableUtils->getLikeContext($post, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($post, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($post),
-			'followerContext' => $followerUtils->getFollowerContext($post->getUser(), $this->getUser()),
+			'post'              => $post,
+			'similarPosts'      => $similarPosts,
+			'likeContext'       => $likableUtils->getLikeContext($post, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($post, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($post),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($post),
+			'followerContext'   => $followerUtils->getFollowerContext($post->getUser(), $this->getUser()),
 		);
 	}
 

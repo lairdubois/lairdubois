@@ -643,6 +643,31 @@ EOT
 		}
 		unset($tooks);
 
+		// Check Collections /////
+
+		$output->writeln('<info>Checking Collections...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'mp' ))
+			->from('LadbCoreBundle:Collection\Collection', 'c')
+			->innerJoin('c.mainPicture', 'mp')
+		;
+
+		try {
+			$collections = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$collections = array();
+		}
+
+		foreach ($collections as $collection) {
+			$mainPicture = $collection->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($collections);
+
 		// Cleanup /////
 
 		$forced = $input->getOption('force');

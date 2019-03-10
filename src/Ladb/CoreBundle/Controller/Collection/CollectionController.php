@@ -93,6 +93,9 @@ class CollectionController extends AbstractCollectionBasedController {
 					throw $this->createNotFoundException($e->getMessage());
 				}
 
+				// Flashbag
+				$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('collection.collection.form.alert.auto_add_success', array( '%title%' => $entity->getTitle(), '%collection%' => $collection->getTitle() )));
+
 				$typableUtils = $this->get(TypableUtils::NAME);
 				return $this->redirect($typableUtils->getUrlAction($entity));
 			}

@@ -25,9 +25,9 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privateGraphicCount~' '~('default.choice.draft'|transchoice(user.meta.privateGraphicCount)) }}
                     {% elseif filter|slice(0,4) == 'type' %}
-                        {{ graphics.count~' '~('promotion.graphic.choice.graphics'|transchoice(graphics.count)) }}
+                        {{ graphics.count~' '~('promotion.graphic.choice.entities'|transchoice(graphics.count)) }}
                     {% else %}
-                        {{ user.meta.publicGraphicCount }} {{ 'promotion.graphic.choice.graphics'|transchoice(user.meta.publicGraphicCount) }}{% if isDraftVisible and user.meta.privateGraphicCount > 0 %} (+{{ user.meta.privateGraphicCount~' '~('default.choice.draft'|transchoice(user.meta.privateGraphicCount)) }}){% endif %}
+                        {{ user.meta.publicGraphicCount }} {{ 'promotion.graphic.choice.entities'|transchoice(user.meta.publicGraphicCount) }}{% if isDraftVisible and user.meta.privateGraphicCount > 0 %} (+{{ user.meta.privateGraphicCount~' '~('default.choice.draft'|transchoice(user.meta.privateGraphicCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

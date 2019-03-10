@@ -106,7 +106,7 @@ services:
     arguments: ['@ladb_core.search_utils']
   ladb_core.pictured_utils:
     class: Ladb\CoreBundle\Utils\PicturedUtils
-    arguments: ['@liip_imagine.cache.manager']
+    arguments: ['@service_container']
   ladb_core.tag_utils:
     class: Ladb\CoreBundle\Utils\TagUtils
     arguments: ['@doctrine.orm.entity_manager']

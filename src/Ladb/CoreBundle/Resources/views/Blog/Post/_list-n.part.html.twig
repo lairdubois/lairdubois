@@ -3,6 +3,8 @@
 {# set posts #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set posts = entities %}{% endif %}
+
 {% block items %}
     {% for post in posts %}
         {% include 'LadbCoreBundle:Blog/Post:_list-thumbnail.part.html.twig' %}
