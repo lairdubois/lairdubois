@@ -127,8 +127,8 @@
             </div>
             <div class="ladb-subbar-panel">
                 <a href="{{ path('core_wood_list') }}" {% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-woods' } %}<div>{{ 'knowledge.wood.nav'|trans() }}</div></a>
-                <a href="{{ path('core_book_list') }}" {% if navSection is defined and navSection == 'books' %} ladb-active{% endif %}"><i class="ladb-icon-book"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-books' } %}<div>{{ 'knowledge.book.nav'|trans() }}</div></a>
-                <a href="{{ path('core_collection_list') }}" {% if navSection is defined and navSection == 'collections' %} ladb-active{% endif %}"><i class="ladb-icon-collection"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-collection-collections' } %}<div>{{ 'collection.collection.nav'|trans() }}</div></a>
+                <a href="{{ path('core_book_list') }}" {% if navSection is defined and navSection == 'books' %} class="ladb-active"{% endif %}><i class="ladb-icon-book"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-books' } %}<div>{{ 'knowledge.book.nav'|trans() }}</div></a>
+                <a href="{{ path('core_collection_list') }}" class="ladb-highlighted{% if navSection is defined and navSection == 'collections' %} ladb-active{% endif %}"><i class="ladb-icon-collection"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-collection-collections' } %}<div>{{ 'collection.collection.nav'|trans() }}</div></a>
             </div>
         </div>
         <div class="ladb-leftbar-subbar ladb-leftbar-subbar-3">
