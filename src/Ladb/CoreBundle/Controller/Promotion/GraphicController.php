@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Promotion;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -575,16 +576,18 @@ class GraphicController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
-			'graphic'         => $graphic,
-			'userGraphics'    => $userGraphics,
-			'similarGraphics' => $similarGraphics,
-			'likeContext'     => $likableUtils->getLikeContext($graphic, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($graphic, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($graphic),
-			'followerContext' => $followerUtils->getFollowerContext($graphic->getUser(), $this->getUser()),
+			'graphic'           => $graphic,
+			'userGraphics'      => $userGraphics,
+			'similarGraphics'   => $similarGraphics,
+			'likeContext'       => $likableUtils->getLikeContext($graphic, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($graphic, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($graphic),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($graphic),
+			'followerContext'   => $followerUtils->getFollowerContext($graphic->getUser(), $this->getUser()),
 		);
 	}
 

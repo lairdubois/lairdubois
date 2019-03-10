@@ -210,9 +210,14 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $commentCount = 0;
 
 	/**
-	 * @ORM\Column(type="integer", name="collection_count")
+	 * @ORM\Column(type="integer", name="private_collection_count")
 	 */
-	private $collectionCount = 0;
+	private $privateCollectionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="public_collection_count")
+	 */
+	private $publicCollectionCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="view_count")

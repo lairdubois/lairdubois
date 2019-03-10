@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -545,6 +546,7 @@ class ProviderController extends Controller {
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$reviewableUtils = $this->get(ReviewableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
 		return array(
 			'provider'             => $provider,
@@ -553,6 +555,7 @@ class ProviderController extends Controller {
 			'likeContext'          => $likableUtils->getLikeContext($provider, $this->getUser()),
 			'watchContext'         => $watchableUtils->getWatchContext($provider, $this->getUser()),
 			'commentContext'       => $commentableUtils->getCommentContext($provider),
+			'collectionContext'    => $collectionnableUtils->getCollectionContext($provider),
 			'reviewContext'        => $reviewableUtils->getReviewContext($provider),
 			'hasMap'               => !is_null($provider->getLatitude()) && !is_null($provider->getLongitude()),
 		);

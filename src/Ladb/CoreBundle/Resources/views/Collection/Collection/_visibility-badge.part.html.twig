@@ -1,7 +1,7 @@
 {# set collection #}
 {# set classes (facultative) #}
 
-<span{% if classes is defined %} class=" ladb-hidden-mobile ladb-visibility-badge {{ classes }}"{% endif %} title="{{ ('collection.collection.'~(collection.isPublic ? 'public' : 'private')~'_tooltip')|trans() }}" data-tooltip="tooltip">
+<span class="ladb-visibility-badge{% if classes is defined %} {{ classes }}{% endif %}" title="{{ ('collection.collection.'~(collection.isPublic ? 'public' : 'private')~'_tooltip')|trans() }}" data-tooltip="tooltip">
     {% if collection.isPrivate %}
         <i class="ladb-icon-key"></i> <span>{{ 'default.private'|trans }}</span>
     {% elseif collection.isProtected %}

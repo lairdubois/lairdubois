@@ -27,6 +27,7 @@
         {% block headerTools %}
             <div class="ladb-header-tools">
                 {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
@@ -129,13 +130,14 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if searchableCreationCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-creation ladb-icon-fixed-center"></i>
             {% if searchableCreationCount > 0 %}
                 <a href="{{ path('core_creation_list', { 'q':'@woods:"'~wood.name~'"'}) }}" rel="nofollow">
             {% endif %}
                 <strong>{{ searchableCreationCount }}</strong>
-                <small>{{ 'wonder.creation.choice.creations'|transchoice(searchableCreationCount) }}</small>
+                <small>{{ 'wonder.creation.choice.entities'|transchoice(searchableCreationCount) }}</small>
             {% if searchableCreationCount > 0 %}
                 </a>
             {% endif %}
@@ -146,7 +148,7 @@
                 <a href="{{ path('core_provider_list', { 'q':'@woods:"'~wood.name~'"'}) }}" rel="nofollow">
             {% endif %}
                 <strong>{{ searchableProviderCount }}</strong>
-                <small>{{ 'knowledge.provider.choice.providers'|transchoice(searchableProviderCount) }}</small>
+                <small>{{ 'knowledge.provider.choice.entities'|transchoice(searchableProviderCount) }}</small>
             {% if searchableProviderCount > 0 %}
                 </a>
             {% endif %}

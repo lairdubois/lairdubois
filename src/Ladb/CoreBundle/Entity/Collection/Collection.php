@@ -147,7 +147,8 @@ class Collection extends AbstractAuthoredPublication implements IndexableInterfa
 		if (!isset($this->entryTypeCounters[$type])) {
 			$this->entryTypeCounters[$type] = 0;
 		}
-		return $this->entryTypeCounters[$type] += intval($by);
+		$this->entryTypeCounters[$type] += intval($by);
+		ksort ( $this->entryTypeCounters);
 	}
 
 	public function getEntryTypeCounters() {

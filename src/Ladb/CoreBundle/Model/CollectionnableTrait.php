@@ -4,19 +4,34 @@ namespace Ladb\CoreBundle\Model;
 
 trait CollectionnableTrait {
 
-	// CollectionCount /////
+	// PrivateCollectionCount /////
 
-	public function incrementCollectionCount($by = 1) {
-		return $this->collectionCount += intval($by);
+	public function incrementPrivateCollectionCount($by = 1) {
+		return $this->privateCollectionCount += intval($by);
 	}
 
-	public function setCollectionCount($collectionCount) {
-		$this->collectionCount = $collectionCount;
+	public function setPrivateCollectionCount($privateCollectionCount) {
+		$this->privateCollectionCount = $privateCollectionCount;
 		return $this;
 	}
 
-	public function getCollectionCount() {
-		return $this->collectionCount;
+	public function getPrivateCollectionCount() {
+		return $this->privateCollectionCount;
+	}
+
+	// PublicCollectionCount /////
+
+	public function incrementPublicCollectionCount($by = 1) {
+		return $this->publicCollectionCount += intval($by);
+	}
+
+	public function setPublicCollectionCount($publicCollectionCount) {
+		$this->publicCollectionCount = $publicCollectionCount;
+		return $this;
+	}
+
+	public function getPublicCollectionCount() {
+		return $this->publicCollectionCount;
 	}
 
 }

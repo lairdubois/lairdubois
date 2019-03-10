@@ -12,7 +12,7 @@
 
 {% block bodyContainerContent %}
     <div class="ladb-filterbar ladb-filterbar-line">
-        <span class="ladb-heading pull-right">{{ likes.count }} {{ 'like.choice.likes'|transchoice(likes.count) }}</span>
+        <span class="ladb-heading pull-right">{{ likes.count }} {{ 'like.choice.entities'|transchoice(likes.count) }}</span>
     </div>
     {{ parent() }}
 {% endblock %}

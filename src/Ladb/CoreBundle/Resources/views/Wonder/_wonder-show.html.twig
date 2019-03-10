@@ -87,11 +87,10 @@
                 {% if not ownerUser %}
                     {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
                 {% endif %}
+                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
-                &nbsp;
-                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
                 {% if not ownerUser %}
                     &nbsp;
                     {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':wonder.type, 'entityId':wonder.id } %}
@@ -276,6 +275,12 @@
         <div class="ladb-metas">
             <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
             {% block characteristicsMetas %}{% endblock %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+            {% block linksMetas %}
+                {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+            {% endblock %}
         </div>
     {% endblock %}
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':wonder.tags } %}

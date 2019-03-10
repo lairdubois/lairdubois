@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Find;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +38,7 @@ class FindController extends Controller {
 
 	/**
 	 * @Route("/new", name="core_find_new")
-	 * @Template("LadbCoreBundle:Find:new.html.twig")
+	 * @Template("LadbCoreBundle:Find/Find:new.html.twig")
 	 */
 	public function newAction() {
 
@@ -55,7 +56,7 @@ class FindController extends Controller {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_find_create")
-	 * @Template("LadbCoreBundle:Find:new.html.twig")
+	 * @Template("LadbCoreBundle:Find/Find:new.html.twig")
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -197,7 +198,7 @@ class FindController extends Controller {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_find_edit")
-	 * @Template("LadbCoreBundle:Find:edit.html.twig")
+	 * @Template("LadbCoreBundle:Find/Find:edit.html.twig")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -224,7 +225,7 @@ class FindController extends Controller {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_find_update")
-	 * @Template("LadbCoreBundle:Find:edit.html.twig")
+	 * @Template("LadbCoreBundle:Find/Find:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -324,7 +325,7 @@ class FindController extends Controller {
 
 	/**
 	 * @Route("/{id}/location.geojson", name="core_find_location", defaults={"_format" = "json"})
-	 * @Template("LadbCoreBundle:Find:location.geojson.twig")
+	 * @Template("LadbCoreBundle:Find/Find:location.geojson.twig")
 	 */
 	public function locationAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -369,7 +370,7 @@ class FindController extends Controller {
 	/**
 	 * @Route("/", name="core_find_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_find_list_page")
-	 * @Template("LadbCoreBundle:Find:list.html.twig")
+	 * @Template("LadbCoreBundle:Find/Find:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
@@ -511,7 +512,7 @@ class FindController extends Controller {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Find:list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Find/Find:list-xhr.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateFindCount() > 0) {
@@ -529,7 +530,7 @@ class FindController extends Controller {
 
 	/**
 	 * @Route("/{id}.html", name="core_find_show")
-	 * @Template("LadbCoreBundle:Find:show.html.twig")
+	 * @Template("LadbCoreBundle:Find/Find:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -565,6 +566,7 @@ class FindController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 		$joinableUtils = $this->get(JoinableUtils::NAME);
 
@@ -575,15 +577,16 @@ class FindController extends Controller {
 		}
 
 		return array(
-			'find'            => $find,
-			'userFinds'       => $userFinds,
-			'similarFinds'    => $similarFinds,
-			'likeContext'     => $likableUtils->getLikeContext($find, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($find, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($find),
-			'followerContext' => $followerUtils->getFollowerContext($find->getUser(), $this->getUser()),
-			'joinContext'     => $joinableUtils->getJoinContext($find, $this->getUser()),
-			'hasMap'          => $hasMap,
+			'find'              => $find,
+			'userFinds'         => $userFinds,
+			'similarFinds'      => $similarFinds,
+			'likeContext'       => $likableUtils->getLikeContext($find, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($find, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($find),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($find),
+			'followerContext'   => $followerUtils->getFollowerContext($find->getUser(), $this->getUser()),
+			'joinContext'       => $joinableUtils->getJoinContext($find, $this->getUser()),
+			'hasMap'            => $hasMap,
 		);
 	}
 

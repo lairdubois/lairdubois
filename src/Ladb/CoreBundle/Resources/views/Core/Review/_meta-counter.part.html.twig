@@ -7,7 +7,7 @@
     <i class="ladb-icon-review ladb-icon-fixed-center"></i>
     <a href="#" onclick="$('#ladb_review_widget').ladbScrollTo(event);">
         <strong>{{ entity.reviewCount|number_format(0, ',', ' ') }}</strong>
-        <small>{{ ('review.'~i18nPrefix~'.choice.reviews')|transchoice(entity.reviewCount) }}</small>
+        <small>{{ ('review.'~i18nPrefix~'.choice.entities')|transchoice(entity.reviewCount) }}</small>
     </a>
     {% if entity.averageRating > 0 %}{% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':entity.averageRating, 'ratingCount':entity.reviewCount, 'classes':'ladb-horizontal-separator-left' } %}{% endif %}
 </div>

@@ -6,7 +6,7 @@
     <a href="{{ path('core_vote_list_parent_entity', { 'entityType':entity.type, 'entityId':entity.id }) }}">
         {% endif %}
         <strong>{{ entity.voteCount|number_format(0, ',', ' ') }}</strong>
-        <small>{{ 'vote.choice.votes'|transchoice(entity.voteCount) }}</small>
+        <small>{{ 'vote.choice.entities'|transchoice(entity.voteCount) }}</small>
         {% if entity.voteCount > 0 %}
     </a>
     {% endif %}

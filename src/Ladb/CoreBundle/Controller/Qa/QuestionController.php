@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -574,6 +575,7 @@ class QuestionController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 		$votableUtils = $this->get(VotableUtils::NAME);
 
@@ -587,6 +589,7 @@ class QuestionController extends Controller {
 			'followerContext'  => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
 			'voteContexts'     => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
 			'commentContexts'  => $commentableUtils->getCommentContexts($question->getAnswers(), false),
+			'collectionContext'   => $collectionnableUtils->getCollectionContext($question),
 			'answers'          => $answers,
 			'userAnswer'       => $userAnswer,
 			'sorter'           => $sorter,

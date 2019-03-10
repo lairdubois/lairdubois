@@ -7,6 +7,9 @@
 
 {% block entityMetas %}
     {{ parent() }}
+    <li class="ladb-counter">
+        {% include 'LadbCoreBundle:Collection/Collection:_publications-counter.part.html.twig' with { 'classes':'ladb-horizontal-separator-right pull-right' } %}
+    </li>
 {% endblock %}
 
 

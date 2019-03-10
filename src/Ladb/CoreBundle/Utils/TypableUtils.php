@@ -10,81 +10,106 @@ class TypableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public static function getStrippedName(TypableInterface $typable, $delimiter = '_') {
+	public static function getStrippedName(TypableInterface $typable, $delimiter = '_', $capitalize = false) {
 		return self::getStrippedNameByType($typable->getType(), $delimiter);
 	}
 
-	public static function getStrippedNameByType($type, $delimiter = '_') {
+	public static function getStrippedNameByType($type, $delimiter = '_', $capitalize = false) {
+		$a = null;
 		switch ($type) {
 
 			// Comment
 			case \Ladb\CoreBundle\Entity\Core\Comment::TYPE:
-				return implode($delimiter, array( 'core', 'comment' ));
+				$a = array( 'core', 'comment' );
+				break;
 			// Thread (Message)
 			case \Ladb\CoreBundle\Entity\Message\Thread::TYPE:
-				return implode($delimiter, array( 'message', 'thread' ));
+				$a = array( 'message', 'thread' );
+				break;
 			// Message (Message)
 			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
-				return implode($delimiter, array( 'message', 'message' ));
+				$a = array( 'message', 'message' );
+				break;
 			// Review
 			case \Ladb\CoreBundle\Entity\Core\Review::TYPE:
-				return implode($delimiter, array( 'core', 'review' ));
-
+				$a = array( 'core', 'review' );
+				break;
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
-				return implode($delimiter, array( 'wonder', 'creation' ));
+				$a = array( 'wonder', 'creation' );
+				break;
 			// Workshop
 			case \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE:
-				return implode($delimiter, array( 'wonder', 'workshop' ));
+				$a = array( 'wonder', 'workshop' );
+				break;
 			// Find
 			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
-				return implode($delimiter, array( 'find', 'find' ));
+				$a = array( 'find', 'find' );
+				break;
 			// Plan
 			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
-				return implode($delimiter, array( 'wonder', 'plan' ));
+				$a = array( 'wonder', 'plan' );
+				break;
 			// Howto
 			case \Ladb\CoreBundle\Entity\Howto\Howto::TYPE:
-				return implode($delimiter, array( 'howto', 'howto' ));
+				$a = array( 'howto', 'howto' );
+				break;
 			// Article
 			case \Ladb\CoreBundle\Entity\Howto\Article::TYPE:
-				return implode($delimiter, array( 'howto', 'article' ));
+				$a = array( 'howto', 'article' );
+				break;
 			// Post
 			case \Ladb\CoreBundle\Entity\Blog\Post::TYPE:
-				return implode($delimiter, array( 'blog', 'post' ));
+				$a = array( 'blog', 'post' );
+				break;
 			// Wood
 			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
-				return implode($delimiter, array( 'knowledge', 'wood' ));
+				$a = array( 'knowledge', 'wood' );
+				break;
 			// Question (Faq)
 			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
-				return implode($delimiter, array( 'faq', 'question' ));
+				$a = array( 'faq', 'question' );
+				break;
 			// Provider
 			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
-				return implode($delimiter, array( 'knowledge', 'provider' ));
+				$a = array( 'knowledge', 'provider' );
+				break;
 			// Question (Qa)
 			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
-				return implode($delimiter, array( 'qa', 'question' ));
+				$a = array( 'qa', 'question' );
+				break;
 			// Answer (Qa)
 			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
-				return implode($delimiter, array( 'qa', 'answer' ));
+				$a = array( 'qa', 'answer' );
+				break;
 			// School
 			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
-				return implode($delimiter, array( 'knowledge', 'school' ));
+				$a = array( 'knowledge', 'school' );
+				break;
 			// Testimonial (School)
 			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
-				return implode($delimiter, array( 'knowledge', 'testimonial' ));
+				$a = array( 'knowledge', 'testimonial' );
+				break;
 			// Graphic
 			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
-				return implode($delimiter, array( 'promotion', 'graphic' ));
+				$a = array( 'promotion', 'graphic' );
+				break;
 			// Workflow
 			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
-				return implode($delimiter, array( 'workflow', 'workflow' ));
+				$a = array( 'workflow', 'workflow' );
+				break;
 			// Book
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
-				return implode($delimiter, array( 'knowledge', 'book' ));
+				$a = array( 'knowledge', 'book' );
+				break;
 			// Collection
 			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
-				return implode($delimiter, array( 'collection', 'collection' ));
+				$a = array( 'collection', 'collection' );
+				break;
 
+		}
+		if ($a) {
+			return implode($delimiter, $capitalize ? array_map('ucfirst', $a) : $a);
 		}
 		return '';
 	}

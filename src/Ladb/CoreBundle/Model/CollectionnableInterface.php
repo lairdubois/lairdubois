@@ -4,12 +4,20 @@ namespace Ladb\CoreBundle\Model;
 
 interface CollectionnableInterface extends TypableInterface, IdentifiableInterface {
 
-	// CollectionCount /////
+	// PrivateCollectionCount /////
 
-	public function incrementCollectionCount($by = 1);
+	public function incrementPrivateCollectionCount($by = 1);
 
-	public function setCollectionCount($collectionCount);
+	public function setPrivateCollectionCount($privateCollectionCount);
 
-	public function getCollectionCount();
+	public function getPrivateCollectionCount();
+
+	// PublicCollectionCount /////
+
+	public function incrementPublicCollectionCount($by = 1);
+
+	public function setPublicCollectionCount($publicCollectionCount);
+
+	public function getPublicCollectionCount();
 
 }

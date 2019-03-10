@@ -24,7 +24,7 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privateWorkshopCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkshopCount)) }}
                     {% else %}
-                        {{ user.meta.publicWorkshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(user.meta.publicWorkshopCount) }}{% if isDraftVisible and user.meta.privateWorkshopCount > 0 %} (+{{ user.meta.privateWorkshopCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkshopCount)) }}){% endif %}
+                        {{ user.meta.publicWorkshopCount }} {{ 'wonder.workshop.choice.entities'|transchoice(user.meta.publicWorkshopCount) }}{% if isDraftVisible and user.meta.privateWorkshopCount > 0 %} (+{{ user.meta.privateWorkshopCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkshopCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

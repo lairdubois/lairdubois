@@ -24,7 +24,7 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privatePlanCount~' '~('default.choice.draft'|transchoice(user.meta.privatePlanCount)) }}
                     {% else %}
-                        {{ user.meta.publicPlanCount }} {{ 'wonder.plan.choice.plans'|transchoice(user.meta.publicPlanCount) }}{% if isDraftVisible and user.meta.privatePlanCount > 0 %} (+{{ user.meta.privatePlanCount~' '~('default.choice.draft'|transchoice(user.meta.privatePlanCount)) }}){% endif %}
+                        {{ user.meta.publicPlanCount }} {{ 'wonder.plan.choice.entities'|transchoice(user.meta.publicPlanCount) }}{% if isDraftVisible and user.meta.privatePlanCount > 0 %} (+{{ user.meta.privatePlanCount~' '~('default.choice.draft'|transchoice(user.meta.privatePlanCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

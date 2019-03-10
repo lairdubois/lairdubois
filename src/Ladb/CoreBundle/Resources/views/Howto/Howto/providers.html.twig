@@ -29,7 +29,7 @@
             {% set filterPath = 'core_howto_providers_filter' %}
             {% set filterPathParameters = { 'id':howto.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ howto.providerCount }} {{ 'knowledge.provider.choice.providers'|transchoice(howto.providerCount) }}</span>
+                <span class="ladb-heading">{{ howto.providerCount }} {{ 'knowledge.provider.choice.entities'|transchoice(howto.providerCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

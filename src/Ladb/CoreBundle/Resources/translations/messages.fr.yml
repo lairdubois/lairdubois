@@ -50,6 +50,7 @@ default:
   by: par
   or: ou
   on: sur
+  in: dans
   showcase: Vitrine
   content: Contenu
   file: Fichier
@@ -107,6 +108,7 @@ default:
     files: '[0,1]fichier|]1,Inf]fichiers'
     contains_videos: '[0,1]Cette contribution contient %count% video|]1,Inf]Cette contribution contient %count% videos'
     copies: '[0,1]copie|]1,Inf]copies'
+    publications: '[0,1]publication|]1,Inf]publications'
 
 registration:
     heading: Inscription
@@ -174,8 +176,8 @@ wonder:
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre création.
         inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
     choice:
+      entities: '[0,1]création|]1,Inf]creations'
       new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles creations'
-      creations: '[0,1]création|]1,Inf]creations'
       show_linked_to: '[0,1]Voir la création|]1,Inf]Voir les créations'
       draft_alert: '[0,1]Vous avez 1 creation en brouillon.|]1,Inf]Vous avez %count% creations en brouillon.'
       inspiration: '[0,1]Cette création est un rebond pour une autre création|]1,Inf]Cette création est un rebond pour %count% autres créations'
@@ -215,8 +217,8 @@ wonder:
         showcase: Ajoutez jusqu'à <strong>5 images</strong> de <u>capture</u> pour donner un aperçu de votre plan. La première image sera utilisée comme miniature.<br><u>Ne mettez pas ici de photos de la réalisation</u>. Préférez la rubrique Créations pour celà.
         inspirations: Associez jusqu'à <strong>4 plans</strong> qui ont été la source d'inspiration de votre plan. Vous n'êtes pas obligé d'être l'auteur de ces plans.<br>Cette association est intéressante si, par exemple, vous avez fait une précédente version de votre plan ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
     choice:
+      entities: '[0,1]plan|]1,Inf]plans'
       new_plans: '[0,1]nouveau plan|]1,Inf]nouveaux plans'
-      plans: '[0,1]plan|]1,Inf]plans'
       show_linked_to: '[0,1]Voir le plan|]1,Inf]Voir les plans'
       draft_alert: '[0,1]Vous avez 1 plan en brouillon.|]1,Inf]Vous avez %count% plans en brouillon.'
       inspiration: '[0,1]Ce plan est le rebond pour un autre plan|]1,Inf]Ce plan un rebond pour %count% autres plans'
@@ -248,8 +250,8 @@ wonder:
         howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces pas à pas.
         workflows: Associez jusqu'à <strong>4 processus</strong> à votre atelier. Vous n'êtes pas obligé d'être l'auteur des ces processus.
     choice:
+      entities: '[0,1]atelier|]1,Inf]ateliers'
       new_workshops: '[0,1]nouvel atelier|]1,Inf]nouveaux ateliers'
-      workshops: '[0,1]atelier|]1,Inf]ateliers'
       show_linked_to: "[0,1]Voir l'atelier|]1,Inf]Voir les ateliers"
       draft_alert: '[0,1]Vous avez 1 atelier en brouillon.|]1,Inf]Vous avez %count% ateliers en brouillon.'
     admin:
@@ -292,8 +294,8 @@ howto:
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre pas à pas.
         wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
     choice:
+      entities: '[0,1]pas à pas|]1,Inf]pas à pas'
       new_howtos: '[0,1]nouveau pas à pas|]1,Inf]nouveaux pas à pas'
-      howtos: '[0,1]pas à pas|]1,Inf]pas à pas'
       show_linked_to: '[0,1]Voir le pas à pas|]1,Inf]Voir les pas à pas'
       draft_alert: '[0,1]Vous avez 1 pas à pas en brouillon.|]1,Inf]Vous avez %count% pas à pas en brouillon.'
   article:
@@ -313,8 +315,8 @@ howto:
         title: Renseignez ici le titre de votre article.
         body: Renseigner ici le corps de votre article.
     choice:
+      entities: '[0,1]article|]1,Inf]articles'
       new_articles: '[0,1]nouvel article|]1,Inf]nouveaux articles'
-      articles: '[0,1]article|]1,Inf]articles'
 
 find:
   find:
@@ -361,8 +363,8 @@ find:
         event_location: Indiquez le lieu géographique de l'évènement.
         event_url: Indiquez, le cas échéant, le site web de l'évènement.
     choice:
+      entities: '[0,1]trouvaille|]1,Inf]trouvailles'
       new_finds: '[0,1]nouvelle trouvaille|]1,Inf]nouvelles trouvailles'
-      finds: '[0,1]trouvaille|]1,Inf]trouvailles'
       draft_alert: '[0,1]Vous avez 1 trouvaille en brouillon.|]1,Inf]Vous avez %count% trouvailles en brouillon.'
       events: '[0,1]évènement|]1,Inf]évènements'
 
@@ -389,8 +391,8 @@ qa:
         body: Détaillez ici plus en profondeur votre question.
         tags: Indiquez les tags définissant votre question.
     choice:
+      entities: '[0,1]question|]1,Inf]questions'
       new_questions: '[0,1]nouvelle question|]1,Inf]nouvelles questions'
-      questions: '[0,1]question|]1,Inf]questions'
       draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
   answer:
     new: Répondre à la question
@@ -408,7 +410,7 @@ qa:
       alert:
         delete_success: La réponse a été supprimée.
     choice:
-      answers: '[0,1]réponse|]1,Inf]réponses'
+      entities: '[0,1]réponse|]1,Inf]réponses'
 
 workflow:
   description: Retrouvez ici tous les processus de fabrication partagés par la communauté.
@@ -439,7 +441,7 @@ workflow:
         tags: Indiquez les tags définissant votre processus.
         plans: Associez jusqu'à <strong>4 plans</strong> à votre processus. Vous n'êtes pas obligé d'être l'auteur des ces plans.
     choice:
-      workflows: '[0,Inf]processus'
+      entities: '[0,Inf]processus'
       inspiration: '[0,1]Ce processus est un rebond pour un autre processus|]1,Inf]Ce processus est un rebond pour %count% autres processus'
       rebound: '[0,1]Ce processus est une inspiration pour un autre processus|]1,Inf]Ce processus est une inspiration pour %count% autres processus'
   task:
@@ -457,7 +459,7 @@ workflow:
     status_3: Tâches en cours
     status_4: Tâches effectuées
     choice:
-      tasks: '[0,1]tâche|]1,Inf]tâches'
+      entities: '[0,1]tâche|]1,Inf]tâches'
   part:
     number: N° de pièce
     name: Libellé
@@ -483,6 +485,7 @@ collection:
     user_list: Mes collections
     private_tooltip: Cette collection est Privée
     public_tooltip: Cette collection est Publique
+    add: Ajouter à mes collections...
     form:
       alert:
         lock_success: La collection <strong>%title%</strong> a été vérrouillée.
@@ -497,7 +500,8 @@ collection:
         body: Renseignez ici le descriptif de votre collection.
         tags: Indiquez les tags définissant votre collection.
     choice:
-      collections: '[0,1]collection|[1,Inf]collections'
+      entities: '[0,1]collection|[1,Inf]collections'
+      in_public_collections: '[0,1]Dans %count% collection publique|[1,Inf]Dans %count% collections publiques'
 
 blog:
   nav: Le blog
@@ -519,6 +523,7 @@ blog:
         title: Renseignez ici le titre de votre sujet.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre sujet.
     choice:
+      entities: '[0,1]sujet|]1,Inf]sujets'
       new_posts: '[0,1]nouveau sujet sur le blog|]1,Inf]nouveaux sujets sur le blog'
 
 faq:
@@ -543,6 +548,8 @@ faq:
       help:
         title: Renseignez ici le titre de votre question.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre question.
+    choice:
+      entities: '[0,1]question|]1,Inf]questions'
 
 knowledge:
   show_proposals: Voir les propositions
@@ -664,8 +671,8 @@ knowledge:
       choice:
         textures: '[0,1]texture|]1,Inf]textures'
     choice:
+      entities: '[0,1]essence|]1,Inf]essences'
       new_woods: '[0,1]nouvelle essence|]1,Inf]nouvelles essences'
-      woods: '[0,1]essence|]1,Inf]essences'
   provider:
     description: Annuaire collaboratif de fournisseurs pour le travail du bois.
     new: Ajouter un fournisseur
@@ -745,8 +752,8 @@ knowledge:
           - Ajoutez **UNE** proposition par essence.
         state:
     choice:
+      entities: '[0,1]fournisseur|]1,Inf]fournisseurs'
       new_providers: '[0,1]nouveau fournisseur|]1,Inf]nouveaux fournisseurs'
-      providers: '[0,1]fournisseur|]1,Inf]fournisseurs'
       stores: '[0,1]agence ou boutique|]1,Inf]agences ou boutiques'
   school:
     description: Annuaire collaboratif des écoles et centres de formation préparants aux métiers du bois.
@@ -807,6 +814,7 @@ knowledge:
       new: Ajouter mon témoignage
       edit: Editer mon témoignage
     choice:
+      entities: '[0,1]école|]1,Inf]écoles'
       testimonials: '[0,1]témoignage|]1,Inf]témoignages'
   book:
     description: Catalogue collaboratif de livres sur la matière et le travail du bois.
@@ -883,18 +891,20 @@ knowledge:
         isbn:
         price:
         publish_year:
+    choice:
+      entities: '[0,1]livre|]1,Inf]livres'
   tool:
     list: Outils
     token:
       help: Saisissez un outil et cliquez sur la flèche pour l'ajouter
     choice:
-      tools: '[0,1]outil|]1,Inf]outils'
+      entities: '[0,1]outil|]1,Inf]outils'
   finish:
     list: Finitions
     token:
       help: Saisissez une finition et cliquez sur la flèche pour l'ajouter
     choice:
-      finishes: '[0,1]finition|]1,Inf]finitions'
+      entities: '[0,1]finition|]1,Inf]finitions'
 
 message:
   list: Messagerie
@@ -981,7 +991,7 @@ user:
     alert:
       settings_success: Vos paramètres ont été enregistrés.
   choice:
-    users: '[0,1]boiseu|]1,Inf]boiseux'
+    entities: '[0,1]boiseu|]1,Inf]boiseux'
     contributors: '[0,1]contributeur|]1,Inf]contributeurs'
 
 follower:
@@ -990,7 +1000,7 @@ follower:
   following: Abonné
   following_tooltip: Se désabonner
   choice:
-    followers: '[0,1]abonné|]1,Inf]abonnés'
+    entities: '[0,1]abonné|]1,Inf]abonnés'
     following: '[0,1]abonnement|]1,Inf]abonnements'
 
 comment:
@@ -998,13 +1008,13 @@ comment:
   new: Commenter
   reply: Répondre
   choice:
-    comments: '[0,1]commentaire|]1,Inf]commentaires'
+    entities: '[0,1]commentaire|]1,Inf]commentaires'
     children: '[0,1]réponse|]1,Inf]réponses'
 
 review:
   default:
     choice:
-      reviews: '[0,1]avis/critique|]1,Inf]avis/critiques'
+      entities: '[0,1]avis/critique|]1,Inf]avis/critiques'
   knowledge_provider:
     new: Ajouter mon avis
     edit: Editer mon avis
@@ -1018,7 +1028,7 @@ review:
     alert:
       delete_success: L'avis a été supprimé.
     choice:
-      reviews: '[0,1]avis|]1,Inf]avis'
+      entities: '[0,1]avis|]1,Inf]avis'
   knowledge_book:
     new: Ajouter ma critique
     edit: Editer ma critique
@@ -1032,7 +1042,7 @@ review:
     alert:
       delete_success: La critique a été supprimé.
     choice:
-      reviews: '[0,1]critique|]1,Inf]critiques'
+      entities: '[0,1]critique|]1,Inf]critiques'
 
 referer:
   list: On en parle ailleurs
@@ -1049,7 +1059,7 @@ like:
   like: J'aime
   liked: Coup de coeur
   choice:
-    likes: '[0,1]coup de coeur|]1,Inf]coups de coeur'
+    entities: '[0,1]coup de coeur|]1,Inf]coups de coeur'
     recieved_likes: '[0,1]coup de coeur reçu|]1,Inf]coups de coeur reçus'
     sent_likes: '[0,1]coup de coeur envoyé|]1,Inf]coups de coeur envoyés'
 
@@ -1059,7 +1069,7 @@ watch:
   create: Surveiller l'activité de cette publication
   delete: Ne plus surveiller cette publication
   choice:
-    watches: '[0,1]boiseu surveille cette publication|]1,Inf]boiseux surveillent cette publication'
+    entities: '[0,1]boiseu surveille cette publication|]1,Inf]boiseux surveillent cette publication'
 
 vote:
   vote: Vérification
@@ -1067,7 +1077,7 @@ vote:
     vote_up: Je valide
     vote_down: Je rejette
   choice:
-    votes: '[-Inf,1]vérification|]1,Inf]vérifications'
+    entities: '[-Inf,1]vérification|]1,Inf]vérifications'
     positive_votes: '[-Inf,1]vérification favorable|]1,Inf]vérifications favorables'
     negative_votes: '[-Inf,1]vérification défavorable|]1,Inf]vérifications défavorables'
 
@@ -1077,7 +1087,7 @@ join:
   join: J'y participe
   joined: J'y participe
   choice:
-    joins: '[0,1]participant|]1,Inf]participants'
+    entities: '[0,1]participant|]1,Inf]participants'
 
 report:
   report: Signaler
@@ -1336,7 +1346,7 @@ promotion:
         resource: "Ajoutez ici votre fichier graphique.<br><em>Les formats autorisés sont : PDF, SVG</em>."
         body: Décrivez ici votre graphisme.
     choice:
-      graphics: '[0,1]graphisme|]1,Inf]graphismes'
+      entities: '[0,1]graphisme|]1,Inf]graphismes'
       draft_alert: '[0,1]Vous avez 1 graphisme en brouillon.|]1,Inf]Vous avez %count% graphismes en brouillon.'
 
 youtook:

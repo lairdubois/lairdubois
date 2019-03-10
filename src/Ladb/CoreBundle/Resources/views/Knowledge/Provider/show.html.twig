@@ -97,6 +97,7 @@
         {% block headerTools %}
             <div class="ladb-header-tools">
                 {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
@@ -202,42 +203,41 @@
         {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':provider } %}
     </div>
     {% set hasWoods = provider.woodsValues is not empty or 'Bois massif' in provider.products %}
-    {% if hasWoods or provider.creationCount > 0 or provider.howtoCount > 0 %}
-        <div class="ladb-metas">
-            <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-            {% if hasWoods %}
-                <div class="ladb-meta{% if searchableWoodCount == 0 %} text-muted{% endif %}">
-                    <i class="ladb-icon-wood ladb-icon-fixed-center"></i>
-                    {% if searchableWoodCount > 0 %}
-                    <a href="{{ path('core_wood_list', { 'q':'@name:"'~provider.woods~'"'}) }}" rel="nofollow">
-                        {% endif %}
-                        <strong>{{ searchableWoodCount }}</strong>
-                        <small>{{ 'knowledge.wood.choice.woods'|transchoice(searchableWoodCount) }}</small>
-                        {% if searchableWoodCount > 0 %}
-                    </a>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+        {% if hasWoods %}
+            <div class="ladb-meta{% if searchableWoodCount == 0 %} text-muted{% endif %}">
+                <i class="ladb-icon-wood ladb-icon-fixed-center"></i>
+                {% if searchableWoodCount > 0 %}
+                <a href="{{ path('core_wood_list', { 'q':'@name:"'~provider.woods~'"'}) }}" rel="nofollow">
                     {% endif %}
-                </div>
-            {% endif %}
-            {% if provider.creationCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-creation"></i>
-                    <a href="{{ provider.creationCount == 1 ? path('core_creation_show', { 'id':provider.creations[0].sluggedId }) : path('core_provider_creations', { 'id':provider.id }) }}">
-                        <strong>{{ provider.creationCount }}</strong>
-                        <small>{{ 'wonder.creation.choice.creations'|transchoice(provider.creationCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-            {% if provider.howtoCount > 0 %}
-                <div class="ladb-meta">
-                    <i class="ladb-icon-howto"></i>
-                    <a href="{{ provider.howtoCount == 1 ? path('core_howto_show', { 'id':provider.howtos[0].sluggedId }) : path('core_provider_howtos', { 'id':provider.id }) }}">
-                        <strong>{{ provider.howtoCount }}</strong>
-                        <small>{{ 'howto.howto.choice.howtos'|transchoice(provider.howtoCount) }}</small>
-                    </a>
-                </div>
-            {% endif %}
-        </div>
-    {% endif %}
+                    <strong>{{ searchableWoodCount }}</strong>
+                    <small>{{ 'knowledge.wood.choice.entities'|transchoice(searchableWoodCount) }}</small>
+                    {% if searchableWoodCount > 0 %}
+                </a>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if provider.creationCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-creation"></i>
+                <a href="{{ provider.creationCount == 1 ? path('core_creation_show', { 'id':provider.creations[0].sluggedId }) : path('core_provider_creations', { 'id':provider.id }) }}">
+                    <strong>{{ provider.creationCount }}</strong>
+                    <small>{{ 'wonder.creation.choice.entities'|transchoice(provider.creationCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if provider.howtoCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-howto"></i>
+                <a href="{{ provider.howtoCount == 1 ? path('core_howto_show', { 'id':provider.howtos[0].sluggedId }) : path('core_provider_howtos', { 'id':provider.id }) }}">
+                    <strong>{{ provider.howtoCount }}</strong>
+                    <small>{{ 'howto.howto.choice.entities'|transchoice(provider.howtoCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+    </div>
     {% if hasMap %}
         <div class="ladb-metas">
             <div class="ladb-meta">

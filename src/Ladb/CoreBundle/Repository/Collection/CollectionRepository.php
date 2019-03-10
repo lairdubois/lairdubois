@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Repository\Collection;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class CollectionRepository extends AbstractEntityRepository {
@@ -18,7 +20,25 @@ class CollectionRepository extends AbstractEntityRepository {
 			->innerJoin('c.user', 'u')
 			->where('c.user = :user')
 			->setParameter('user', $user)
-			->orderBy('c.updatedAt', 'DESC')
+			->orderBy('c.createdAt', 'DESC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByEntity(CollectionnableInterface $entity, $offset, $limit) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'es' ))
+			->from($this->getEntityName(), 'c')
+			->innerJoin('c.entries', 'es')
+			->where('es.entityType = :entityType')
+			->andWhere('c.visibility = :visibility')
+			->setParameter('entityType', $entity->getType())
+			->setParameter('visibility', HiddableInterface::VISIBILITY_PUBLIC)
+			->orderBy('c.changedAt', 'DESC')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

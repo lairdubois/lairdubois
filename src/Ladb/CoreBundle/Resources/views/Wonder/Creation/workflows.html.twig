@@ -24,7 +24,7 @@
             {% set filterPath = 'core_creation_workflows_filter' %}
             {% set filterPathParameters = { 'id':creation.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ creation.workflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(creation.workflowCount) }}</span>
+                <span class="ladb-heading">{{ creation.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(creation.workflowCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

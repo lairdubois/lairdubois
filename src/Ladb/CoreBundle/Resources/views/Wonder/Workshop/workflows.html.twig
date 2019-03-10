@@ -24,7 +24,7 @@
             {% set filterPath = 'core_workshop_workflows_filter' %}
             {% set filterPathParameters = { 'id':workshop.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ workshop.workflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(workshop.workflowCount) }}</span>
+                <span class="ladb-heading">{{ workshop.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(workshop.workflowCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

@@ -14,7 +14,7 @@
             {% endif %}
         </div>
     {% else %}
-        {% embed 'LadbCoreBundle:Find:_list-filterbar.part.html.twig' %}
+        {% embed 'LadbCoreBundle:Find/Find:_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_user_show_finds_filter' %}
             {% set filterPathParameters = { 'username':user.usernameCanonical } %}
             {% set customFilterDefs = {
@@ -25,9 +25,9 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privateFindCount~' '~('default.choice.draft'|transchoice(user.meta.privateFindCount)) }}
                     {% elseif filter|slice(0,4) == 'type' %}
-                        {{ finds.count~' '~('find.find.choice.finds'|transchoice(finds.count)) }}
+                        {{ finds.count~' '~('find.find.choice.entities'|transchoice(finds.count)) }}
                     {% else %}
-                        {{ user.meta.publicFindCount }} {{ 'find.find.choice.finds'|transchoice(user.meta.publicFindCount) }}{% if isDraftVisible and user.meta.privateFindCount > 0 %} (+{{ user.meta.privateFindCount~' '~('default.choice.draft'|transchoice(user.meta.privateFindCount)) }}){% endif %}
+                        {{ user.meta.publicFindCount }} {{ 'find.find.choice.entities'|transchoice(user.meta.publicFindCount) }}{% if isDraftVisible and user.meta.privateFindCount > 0 %} (+{{ user.meta.privateFindCount~' '~('default.choice.draft'|transchoice(user.meta.privateFindCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}
@@ -37,5 +37,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Find:_list-n.part.html.twig' %}
+    {% include 'LadbCoreBundle:Find/Find:_list-n.part.html.twig' %}
 {% endblock %}

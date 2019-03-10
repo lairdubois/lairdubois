@@ -23,7 +23,7 @@
             {% set filterPath = 'core_workflow_workshops_filter' %}
             {% set filterPathParameters = { 'id':workflow.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ workflow.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(workflow.workshopCount) }}</span>
+                <span class="ladb-heading">{{ workflow.workshopCount }} {{ 'wonder.workshop.choice.entities'|transchoice(workflow.workshopCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -401,6 +402,7 @@ class WoodController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
 		return array(
 			'wood'                    => $wood,
@@ -409,6 +411,7 @@ class WoodController extends Controller {
 			'likeContext'             => $likableUtils->getLikeContext($wood, $this->getUser()),
 			'watchContext'            => $watchableUtils->getWatchContext($wood, $this->getUser()),
 			'commentContext'          => $commentableUtils->getCommentContext($wood),
+			'collectionContext'       => $collectionnableUtils->getCollectionContext($wood),
 		);
 	}
 

@@ -28,7 +28,7 @@
             {% set filterPath = 'core_provider_creations_filter' %}
             {% set filterPathParameters = { 'id':provider.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ provider.creations.count }} {{ 'wonder.creation.choice.creations'|transchoice(provider.creations.count) }}</span>
+                <span class="ladb-heading">{{ provider.creations.count }} {{ 'wonder.creation.choice.entities'|transchoice(provider.creations.count) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

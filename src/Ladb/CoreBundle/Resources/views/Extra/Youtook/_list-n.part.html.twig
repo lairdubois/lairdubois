@@ -3,6 +3,8 @@
 {# set tooks #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set tooks = entities %}{% endif %}
+
 {% block items %}
     {% for took in tooks %}
         {% include 'LadbCoreBundle:Extra/Youtook:_list-thumbnail.part.html.twig' %}

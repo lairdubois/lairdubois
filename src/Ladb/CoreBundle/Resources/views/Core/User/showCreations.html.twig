@@ -24,7 +24,7 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privateCreationCount~' '~('default.choice.draft'|transchoice(user.meta.privateCreationCount)) }}
                     {% else %}
-                        {{ user.meta.publicCreationCount }} {{ 'wonder.creation.choice.creations'|transchoice(user.meta.publicCreationCount) }}{% if isDraftVisible and user.meta.privateCreationCount > 0 %} (+{{ user.meta.privateCreationCount~' '~('default.choice.draft'|transchoice(user.meta.privateCreationCount)) }}){% endif %}
+                        {{ user.meta.publicCreationCount }} {{ 'wonder.creation.choice.entities'|transchoice(user.meta.publicCreationCount) }}{% if isDraftVisible and user.meta.privateCreationCount > 0 %} (+{{ user.meta.privateCreationCount~' '~('default.choice.draft'|transchoice(user.meta.privateCreationCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

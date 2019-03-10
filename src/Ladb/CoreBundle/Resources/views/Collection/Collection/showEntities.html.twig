@@ -15,13 +15,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% if entityType == 100 %}
-        {% include 'LadbCoreBundle:Wonder/Creation:_list-n.part.html.twig' with { 'creations':entities } %}
-    {% elseif entityType == 101 %}
-        {% include 'LadbCoreBundle:Wonder/Workshop:_list-n.part.html.twig' with { 'workshops':entities } %}
-    {% elseif entityType == 102 %}
-        {% include 'LadbCoreBundle:Wonder/Plan:_list-n.part.html.twig' with { 'plans':entities } %}
-    {% elseif entityType == 118 %}
-        {% include 'LadbCoreBundle:Workflow/Workflow:_list-n.part.html.twig' with { 'workflows':entities } %}
-    {% endif %}
+    {% include 'LadbCoreBundle:'~ladb_entity_type_stripped_name(entityType, '/', true)~':_list-n.part.html.twig' %}
 {% endblock %}

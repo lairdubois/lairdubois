@@ -25,9 +25,9 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privateWorkflowCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkflowCount)) }}
                     {% elseif filter|slice(0,4) == 'type' %}
-                        {{ workflows.count~' '~('workflow.workflow.choice.workflows'|transchoice(workflows.count)) }}
+                        {{ workflows.count~' '~('workflow.workflow.choice.entities'|transchoice(workflows.count)) }}
                     {% else %}
-                        {{ user.meta.publicWorkflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(user.meta.publicWorkflowCount) }}{% if isDraftVisible and user.meta.privateWorkflowCount > 0 %} (+{{ user.meta.privateWorkflowCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkflowCount)) }}){% endif %}
+                        {{ user.meta.publicWorkflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(user.meta.publicWorkflowCount) }}{% if isDraftVisible and user.meta.privateWorkflowCount > 0 %} (+{{ user.meta.privateWorkflowCount~' '~('default.choice.draft'|transchoice(user.meta.privateWorkflowCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

@@ -62,44 +62,40 @@
     </div>
 {% endblock %}
 
-{% block wonderMetas %}
+{% block linksMetas %}
     {{ parent() }}
-    <div class="ladb-metas">
-        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
-        <div class="ladb-meta{% if workshop.planCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
-            {% if workshop.planCount > 0 %}
-                <a href="{{ workshop.planCount == 1 ? path('core_plan_show', { 'id':workshop.plans[0].sluggedId }) : path('core_workshop_plans', { 'id':workshop.id }) }}">
-            {% endif %}
-            <strong>{{ workshop.planCount }}</strong>
-            <small>{{ 'wonder.plan.choice.plans'|transchoice(workshop.planCount) }}</small>
-            {% if workshop.planCount > 0 %}
-                </a>
-            {% endif %}
-        </div>
-        <div class="ladb-meta{% if workshop.howtoCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-howto ladb-icon-fixed-center"></i>
-            {% if workshop.howtoCount > 0 %}
-                <a href="{{ workshop.howtoCount == 1 ? path('core_howto_show', { 'id':workshop.howtos[0].sluggedId }) : path('core_workshop_howtos', { 'id':workshop.id }) }}">
-            {% endif %}
-            <strong>{{ workshop.howtoCount }}</strong>
-            <small>{{ 'howto.howto.choice.howtos'|transchoice(workshop.howtoCount) }}</small>
-            {% if workshop.planCount > 0 %}
-                </a>
-            {% endif %}
-        </div>
-        <div class="ladb-meta{% if workshop.workflowCount == 0 %} text-muted{% endif %}">
-            <i class="ladb-icon-workflow ladb-icon-fixed-center"></i>
-            {% if workshop.workflowCount > 0 %}
-                <a href="{{ workshop.workflowCount == 1 ? path('core_workflow_show', { 'id':workshop.workflows[0].sluggedId }) : path('core_workshop_workflows', { 'id':workshop.id }) }}">
-            {% endif %}
-            <strong>{{ workshop.workflowCount }}</strong>
-            <small>{{ 'workflow.workflow.choice.workflows'|transchoice(workshop.workflowCount) }}</small>
-            {% if workshop.workflowCount > 0 %}
-                </a>
-            {% endif %}
-        </div>
+    <div class="ladb-meta{% if workshop.planCount == 0 %} text-muted{% endif %}">
+        <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
+        {% if workshop.planCount > 0 %}
+            <a href="{{ workshop.planCount == 1 ? path('core_plan_show', { 'id':workshop.plans[0].sluggedId }) : path('core_workshop_plans', { 'id':workshop.id }) }}">
+        {% endif %}
+        <strong>{{ workshop.planCount }}</strong>
+        <small>{{ 'wonder.plan.choice.entities'|transchoice(workshop.planCount) }}</small>
+        {% if workshop.planCount > 0 %}
+            </a>
+        {% endif %}
+    </div>
+    <div class="ladb-meta{% if workshop.howtoCount == 0 %} text-muted{% endif %}">
+        <i class="ladb-icon-howto ladb-icon-fixed-center"></i>
+        {% if workshop.howtoCount > 0 %}
+            <a href="{{ workshop.howtoCount == 1 ? path('core_howto_show', { 'id':workshop.howtos[0].sluggedId }) : path('core_workshop_howtos', { 'id':workshop.id }) }}">
+        {% endif %}
+        <strong>{{ workshop.howtoCount }}</strong>
+        <small>{{ 'howto.howto.choice.entities'|transchoice(workshop.howtoCount) }}</small>
+        {% if workshop.planCount > 0 %}
+            </a>
+        {% endif %}
+    </div>
+    <div class="ladb-meta{% if workshop.workflowCount == 0 %} text-muted{% endif %}">
+        <i class="ladb-icon-workflow ladb-icon-fixed-center"></i>
+        {% if workshop.workflowCount > 0 %}
+            <a href="{{ workshop.workflowCount == 1 ? path('core_workflow_show', { 'id':workshop.workflows[0].sluggedId }) : path('core_workshop_workflows', { 'id':workshop.id }) }}">
+        {% endif %}
+        <strong>{{ workshop.workflowCount }}</strong>
+        <small>{{ 'workflow.workflow.choice.entities'|transchoice(workshop.workflowCount) }}</small>
+        {% if workshop.workflowCount > 0 %}
+            </a>
+        {% endif %}
     </div>
 {% endblock %}
 
@@ -112,7 +108,7 @@
                         'path':workshop.planCount == 1 ? path('core_plan_show', { 'id':workshop.plans[0].sluggedId }) : path('core_workshop_plans', { 'id':workshop.id }),
                         'picture':workshop.plans[0].mainPicture,
                         'icon':'ladb-icon-plan',
-                        'caption': workshop.planCount~' '~('wonder.plan.choice.plans'|transchoice(workshop.planCount))
+                        'caption': workshop.planCount~' '~('wonder.plan.choice.entities'|transchoice(workshop.planCount))
                     } %}
                 {% endif %}
                 {% if workshop.howtoCount > 0 %}
@@ -120,7 +116,7 @@
                         'path':workshop.howtoCount == 1 ? path('core_howto_show', { 'id':workshop.howtos[0].sluggedId }) : path('core_workshop_howtos', { 'id':workshop.id }),
                         'picture':workshop.howtos[0].mainPicture,
                         'icon':'ladb-icon-howto',
-                        'caption': workshop.howtoCount~' '~('howto.howto.choice.howtos'|transchoice(workshop.howtoCount))
+                        'caption': workshop.howtoCount~' '~('howto.howto.choice.entities'|transchoice(workshop.howtoCount))
                     } %}
                 {% endif %}
                 {% if workshop.workflowCount > 0 %}
@@ -128,7 +124,7 @@
                         'path':workshop.workflowCount == 1 ? path('core_workflow_show', { 'id':workshop.workflows[0].sluggedId }) : path('core_workshop_workflows', { 'id':workshop.id }),
                         'picture':workshop.workflows[0].mainPicture,
                         'icon':'ladb-icon-workflow',
-                        'caption': workshop.workflowCount~' '~('workflow.workflow.choice.workflows'|transchoice(workshop.workflowCount))
+                        'caption': workshop.workflowCount~' '~('workflow.workflow.choice.entities'|transchoice(workshop.workflowCount))
                     } %}
                 {% endif %}
             {% endblock %}

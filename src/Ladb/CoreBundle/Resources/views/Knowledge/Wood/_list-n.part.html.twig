@@ -3,6 +3,8 @@
 {# set woods #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set woods = entities %}{% endif %}
+
 {% block items %}
     {% for wood in woods %}
         {% include 'LadbCoreBundle:Knowledge/Wood:_list-thumbnail.part.html.twig' %}

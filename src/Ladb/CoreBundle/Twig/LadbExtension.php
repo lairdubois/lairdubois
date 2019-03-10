@@ -155,11 +155,13 @@ class LadbExtension extends \Twig_Extension {
 		return $url;
 	}
 
-    public function entityTypeStrippedNameFunction($entity, $delimiter = '_') {
-        if ($entity instanceof \Ladb\CoreBundle\Model\TypableInterface) {
-			$typableUtils = $this->container->get(TypableUtils::NAME);
-			return $typableUtils->getStrippedName($entity, $delimiter);
-        }
+    public function entityTypeStrippedNameFunction($entityOrType, $delimiter = '_', $capitalize = false) {
+		$typableUtils = $this->container->get(TypableUtils::NAME);
+        if ($entityOrType instanceof \Ladb\CoreBundle\Model\TypableInterface) {
+			return $typableUtils->getStrippedName($entityOrType, $delimiter, $capitalize);
+        } else if (is_int($entityOrType) or is_string($entityOrType)) {
+			return $typableUtils->getStrippedNameByType(intval($entityOrType), $delimiter, $capitalize);
+		}
         return '';
     }
 

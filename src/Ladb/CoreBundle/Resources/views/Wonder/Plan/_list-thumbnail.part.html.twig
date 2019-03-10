@@ -17,16 +17,16 @@
         <li class="ladb-linkto"><a href="{{ path('core_plan_rebounds', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.choice.rebound'|transchoice(wonder.reboundCount, { '%count%':wonder.reboundCount }) }}"><i class="ladb-icon-rebound ladb-color-rebound"></i> <span class="ladb-color-rebound">{{ wonder.reboundCount }}</span></a></li>
     {% endif %}
     {% if wonder.howtoCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_plan_howtos', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.howtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(wonder.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_plan_howtos', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(wonder.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
     {% endif %}
     {% if wonder.creationCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_plan_creations', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.creationCount }} {{ 'wonder.creation.choice.creations'|transchoice(wonder.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_plan_creations', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.creationCount }} {{ 'wonder.creation.choice.entities'|transchoice(wonder.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
     {% endif %}
     {% if wonder.workflowCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_plan_workflows', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.workflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(wonder.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_plan_workflows', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(wonder.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
     {% endif %}
     {% if wonder.workshopCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_plan_workshops', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.workshopCount }} {{ 'wonder.workshop.choice.workshops'|transchoice(wonder.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
+        <li class="ladb-linkto"><a href="{{ path('core_plan_workshops', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.plan.linked_to'|trans() }} {{ wonder.workshopCount }} {{ 'wonder.workshop.choice.entities'|transchoice(wonder.workshopCount) }}"><i class="ladb-icon-workshop"></i></a></li>
     {% endif %}
     {{ parent() }}
     {% if wonder.downloadCount > 0 %}

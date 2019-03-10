@@ -154,19 +154,19 @@
                                     <i class="ladb-icon-comment"></i>
                                     {% if user.meta.commentCount > 0 %}<a href="{{ path('core_user_show_comments', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.commentCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'comment.choice.comments'|transchoice(user.meta.commentCount) }}</small>
+                                        <small>{{ 'comment.choice.entities'|transchoice(user.meta.commentCount) }}</small>
                                     {% if user.meta.commentCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.reviewCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-review"></i>
                                     <strong>{{ user.meta.reviewCount|number_format(0, ',', ' ') }}</strong>
-                                    <small>{{ 'review.default.choice.reviews'|transchoice(user.meta.reviewCount) }}</small>
+                                    <small>{{ 'review.default.choice.entities'|transchoice(user.meta.reviewCount) }}</small>
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicCreationCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-creation"></i>
                                     {% if user.meta.publicCreationCount > 0 %}<a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicCreationCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'wonder.creation.choice.creations'|transchoice(user.meta.publicCreationCount) }}</small>
+                                        <small>{{ 'wonder.creation.choice.entities'|transchoice(user.meta.publicCreationCount) }}</small>
                                     {% if user.meta.publicCreationCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicQuestionCount == 0 %} text-muted{% endif %}">
@@ -180,42 +180,42 @@
                                     <i class="ladb-icon-answer"></i>
                                     {% if user.meta.answerCount > 0 %}<a href="{{ path('core_user_show_answers', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.answerCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'qa.answer.choice.answers'|transchoice(user.meta.answerCount) }}</small>
+                                        <small>{{ 'qa.answer.choice.entities'|transchoice(user.meta.answerCount) }}</small>
                                     {% if user.meta.answerCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicPlanCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-plan"></i>
                                     {% if user.meta.publicPlanCount > 0 %}<a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicPlanCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'wonder.plan.choice.plans'|transchoice(user.meta.publicPlanCount) }}</small>
+                                        <small>{{ 'wonder.plan.choice.entities'|transchoice(user.meta.publicPlanCount) }}</small>
                                     {% if user.meta.publicPlanCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicHowtoCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-howto"></i>
                                     {% if user.meta.publicHowtoCount > 0 %}<a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicHowtoCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'howto.howto.choice.howtos'|transchoice(user.meta.publicHowtoCount) }}</small>
+                                        <small>{{ 'howto.howto.choice.entities'|transchoice(user.meta.publicHowtoCount) }}</small>
                                     {% if user.meta.publicHowtoCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicWorkflowCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-workflow"></i>
                                     {% if user.meta.publicWorkflowCount > 0 %}<a href="{{ path('core_user_show_workflows', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicWorkflowCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'workflow.workflow.choice.workflows'|transchoice(user.meta.publicWorkflowCount) }}</small>
+                                        <small>{{ 'workflow.workflow.choice.entities'|transchoice(user.meta.publicWorkflowCount) }}</small>
                                     {% if user.meta.publicWorkflowCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicWorkshopCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-workshop"></i>
                                     {% if user.meta.publicWorkshopCount > 0 %}<a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicWorkshopCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'wonder.workshop.choice.workshops'|transchoice(user.meta.publicWorkshopCount) }}</small>
+                                        <small>{{ 'wonder.workshop.choice.entities'|transchoice(user.meta.publicWorkshopCount) }}</small>
                                         {% if user.meta.publicWorkshopCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicFindCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-globe"></i>
                                     {% if user.meta.publicFindCount > 0 %}<a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicFindCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'find.find.choice.finds'|transchoice(user.meta.publicFindCount) }}</small>
+                                        <small>{{ 'find.find.choice.entities'|transchoice(user.meta.publicFindCount) }}</small>
                                     {% if user.meta.publicFindCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.positiveVoteCount == 0 %} text-muted{% endif %}">

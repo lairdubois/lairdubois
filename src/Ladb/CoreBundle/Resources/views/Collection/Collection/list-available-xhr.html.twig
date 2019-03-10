@@ -3,7 +3,7 @@
 {% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
 
 {% set id = 'collections_modal' %}
-{% set title = '<i class="ladb-icon-collection"></i>&nbsp;'~('collection.collection.list'|trans()) %}
+{% set title = '<i class="ladb-icon-collection-add"></i>&nbsp;'~('collection.collection.add'|trans()) %}
 {% set embeddedBody = collections|length > 0  %}
 
 {% set autopagerContainerSelector = '#collections_modal .modal-body' %}
@@ -16,4 +16,6 @@
     {{ block('autopagerScript') }}
 {% endblock %}
 
-{% block footer %}{% endblock %}
+{% block footerInner %}
+    <a href="{{ path('core_collection_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'collection.collection.new'|trans() }}</a>
+{% endblock %}

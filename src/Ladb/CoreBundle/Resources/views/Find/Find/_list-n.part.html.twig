@@ -3,8 +3,10 @@
 {# set finds #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set finds = entities %}{% endif %}
+
 {% block items %}
     {% for find in finds %}
-        {% include 'LadbCoreBundle:Find:_list-thumbnail.part.html.twig' %}
+        {% include 'LadbCoreBundle:Find/Find:_list-thumbnail.part.html.twig' %}
     {% endfor %}
 {% endblock %}

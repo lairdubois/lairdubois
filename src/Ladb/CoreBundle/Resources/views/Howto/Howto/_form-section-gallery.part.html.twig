@@ -8,7 +8,7 @@
 
 {% set formSection = 'howtos' %}
 {% set icon = icon|default('howto') %}
-{% set title = title|default('howto.howto.choice.howtos'|transchoice(2)|capitalize) %}
+{% set title = title|default('howto.howto.choice.entities'|transchoice(2)|capitalize) %}
 
 {% if formHowtos is not defined %}
     {% set formHowtos = form.howtos %}

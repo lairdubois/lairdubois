@@ -837,7 +837,7 @@ class UserController extends Controller {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Find:list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Find/Find:list-xhr.html.twig', $parameters);
 		}
 
 		$followerUtils = $this->get(FollowerUtils::NAME);

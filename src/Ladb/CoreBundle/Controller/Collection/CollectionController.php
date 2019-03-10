@@ -301,8 +301,8 @@ class CollectionController extends AbstractCollectionBasedController {
 
 	/**
 	 * @Route("/{id}.html", name="core_collection_show")
-	 * @Route("/{id}/{entityType}", requirements={"id" = "\d+", "entityType" = "\d+"}, name="core_collection_show_type")
-	 * @Route("/{id}/{entityType}/{page}", requirements={"id" = "\d+", "entityType" = "\d+", "page" = "\d+"}, name="core_collection_show_type_page")
+	 * @Route("/{id}/tab/{entityType}", requirements={"id" = "\d+", "entityType" = "\d+"}, name="core_collection_show_type")
+	 * @Route("/{id}/tab/{entityType}/{page}", requirements={"id" = "\d+", "entityType" = "\d+", "page" = "\d+"}, name="core_collection_show_type_page")
 	 * @Template("LadbCoreBundle:Collection:Collection/showAbout.html.twig")
 	 */
 	public function showAction(Request $request, $id, $entityType = 0, $page = 0) {
@@ -518,21 +518,20 @@ class CollectionController extends AbstractCollectionBasedController {
 	/**
 	 * @Route("/available/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_list_available")
 	 * @Route("/available/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_available_page")
-	 * @Template("LadbCoreBundle:Collection:Collection/list-available-xhr.html.twig")
+	 * @Template("LadbCoreBundle:Collection/Collection:list-available-xhr.html.twig")
 	 */
 	public function listAvailableAction($entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
-		$entryRepository = $om->getRepository(Entry::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		// Retrieve related entity
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
 
-		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
-		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $collectionRepository->findPaginedByUser($this->getUser(), $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_collection_list_available_page', array( ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_collection_list_available_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
 
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
@@ -558,12 +557,35 @@ class CollectionController extends AbstractCollectionBasedController {
 	}
 
 	/**
-	 * @Route("/entity/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_list_entity")
-	 * @Route("/entity/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_entity_page")
-	 * @Template("LadbCoreBundle:Collection:Collection/list-entity-xhr.html.twig")
+	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_list_entity")
+	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_entity_page")
+	 * @Template("LadbCoreBundle:Collection/Collection:list-byentity.html.twig")
 	 */
-	public function listEntityAction($entityType, $entityId, $page = 0) {
-		return array();
+	public function listEntityAction(Request $request, $entityType, $entityId, $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		// Retrieve related entity
+		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
+		$paginator = $collectionRepository->findPaginedByEntity($entity, $offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_collection_list_entity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
+
+		$parameters = array(
+			'prevPageUrl'   => $pageUrls->prev,
+			'nextPageUrl'   => $pageUrls->next,
+			'collections'   => $paginator,
+			'entity'        => $entity,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Collection/Collection:list-byentity-n-xhr.html.twig', $parameters);
+		}
+
+		return $parameters;
 	}
 
 }

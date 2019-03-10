@@ -3,6 +3,8 @@
 {# set schools #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set schools = entities %}{% endif %}
+
 {% block items %}
     {% for school in schools %}
         {% include 'LadbCoreBundle:Knowledge/School:_list-thumbnail.part.html.twig' %}

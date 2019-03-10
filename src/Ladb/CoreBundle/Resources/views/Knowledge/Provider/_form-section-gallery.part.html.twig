@@ -8,7 +8,7 @@
 
 {% set formSection = 'providers' %}
 {% set icon = icon|default('provider') %}
-{% set title = title|default('knowledge.provider.choice.providers'|transchoice(2)|capitalize) %}
+{% set title = title|default('knowledge.provider.choice.entities'|transchoice(2)|capitalize) %}
 
 {% if formProviders is not defined %}
     {% set formProviders = form.providers %}

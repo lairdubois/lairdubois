@@ -21,7 +21,7 @@
         {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-margin-bottom' } %}
             {% set filterDefs = {} %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ user.meta.answerCount }} {{ 'qa.answer.choice.answers'|transchoice(user.meta.answerCount) }}</span>
+                <span class="ladb-heading">{{ user.meta.answerCount }} {{ 'qa.answer.choice.entities'|transchoice(user.meta.answerCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

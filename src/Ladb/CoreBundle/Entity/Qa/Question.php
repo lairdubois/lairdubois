@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Entity\Qa;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
@@ -43,7 +44,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, VotableParentInterface, ReportableInterface, ExplorableInterface {
+class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, VotableParentInterface, ReportableInterface, ExplorableInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, VotableParentTrait;
@@ -175,9 +176,14 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	private $commentCount = 0;
 
 	/**
-	 * @ORM\Column(type="integer", name="collection_count")
+	 * @ORM\Column(type="integer", name="private_collection_count")
 	 */
-	private $collectionCount = 0;
+	private $privateCollectionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="public_collection_count")
+	 */
+	private $publicCollectionCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="view_count")

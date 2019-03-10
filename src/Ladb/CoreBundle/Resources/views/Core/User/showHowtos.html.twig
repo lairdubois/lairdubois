@@ -27,7 +27,7 @@
                     {% if filter == 'draft' and isDraftVisible %}
                         {{ user.meta.privateHowtoCount~' '~('default.choice.draft'|transchoice(user.meta.privateHowtoCount)) }}
                     {% else %}
-                        {{ user.meta.publicHowtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(user.meta.publicHowtoCount) }}{% if isDraftVisible and user.meta.privateHowtoCount > 0 %} (+{{ user.meta.privateHowtoCount~' '~('default.choice.draft'|transchoice(user.meta.privateHowtoCount)) }}){% endif %}
+                        {{ user.meta.publicHowtoCount }} {{ 'howto.howto.choice.entities'|transchoice(user.meta.publicHowtoCount) }}{% if isDraftVisible and user.meta.privateHowtoCount > 0 %} (+{{ user.meta.privateHowtoCount~' '~('default.choice.draft'|transchoice(user.meta.privateHowtoCount)) }}){% endif %}
                     {% endif %}
                 </span>
             {% endblock %}

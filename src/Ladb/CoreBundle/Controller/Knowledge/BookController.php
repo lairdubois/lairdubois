@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ReviewableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -329,13 +330,15 @@ class BookController extends Controller {
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$reviewableUtils = $this->get(ReviewableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
 		return array(
-			'book'           => $book,
-			'likeContext'    => $likableUtils->getLikeContext($book, $this->getUser()),
-			'watchContext'   => $watchableUtils->getWatchContext($book, $this->getUser()),
-			'commentContext' => $commentableUtils->getCommentContext($book),
-			'reviewContext'  => $reviewableUtils->getReviewContext($book),
+			'book'              => $book,
+			'likeContext'       => $likableUtils->getLikeContext($book, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($book, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($book),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($book),
+			'reviewContext'     => $reviewableUtils->getReviewContext($book),
 		);
 	}
 

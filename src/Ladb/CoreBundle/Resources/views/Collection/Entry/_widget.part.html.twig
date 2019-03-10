@@ -1,6 +1,6 @@
 
 {# entryContext #}
 
-<a id="ladb_collection_entry_{{ entryContext.collection.id }}_{{ entryContext.entityId }}_{{ entryContext.entityId }}_widget" href="{{ path('core_collection_entry_'~(entryContext.isCollectionned ? 'delete' : 'create'), { 'id':entryContext.collection.id, 'entityType':entryContext.entityType, 'entityId':entryContext.entityId }) }}" class="btn btn-default" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'#ladb_collection_entry_{{ entryContext.collection.id }}_{{ entryContext.entityId }}_{{ entryContext.entityId }}_widget' });{% else %}$(this).button('loading');{% endif %}">
+<a id="ladb_collection_entry_{{ entryContext.collection.id }}_{{ entryContext.entityId }}_{{ entryContext.entityId }}_widget" href="{{ path('core_collection_entry_'~(entryContext.isCollectionned ? 'delete' : 'create'), { 'id':entryContext.collection.id, 'entityType':entryContext.entityType, 'entityId':entryContext.entityId }) }}" class="btn btn-default ladb-collection-entry-widget" data-loading-text="<i class='ladb-icon-spinner'></i>" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'#ladb_collection_entry_{{ entryContext.collection.id }}_{{ entryContext.entityId }}_{{ entryContext.entityId }}_widget' });{% else %}$(this).button('loading');{% endif %}">
     {% if entryContext.isCollectionned %}<i class="ladb-icon-check"></i>{% endif %}
 </a>

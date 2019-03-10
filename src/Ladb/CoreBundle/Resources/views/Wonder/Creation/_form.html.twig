@@ -43,15 +43,15 @@
     {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('wonder.creation.form.help.body'|trans()) } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
-            {{ form_label(form.woods, ('knowledge.wood.choice.woods'|transchoice(2)|capitalize)) }}
+            {{ form_label(form.woods, ('knowledge.wood.choice.entities'|transchoice(2)|capitalize)) }}
             {{ form_errors(form.woods) }}
             <p class="help-block">Indiquez la/les essence(s) utilisées. <i>Exemple : <strong>Hêtre,Chêne</strong></i></p>
             {{ form_widget(form.woods) }}
-            {{ form_label(form.tools, ('knowledge.tool.choice.tools'|transchoice(2)|capitalize)) }}
+            {{ form_label(form.tools, ('knowledge.tool.choice.entities'|transchoice(2)|capitalize)) }}
             {{ form_errors(form.tools) }}
             <p class="help-block">Indiquez les principaux outils utilisés. <i>Exemple : <strong>Rabot,Racloir</strong></i></p>
             {{ form_widget(form.tools) }}
-            {{ form_label(form.finishes, ('knowledge.finish.choice.finishes'|transchoice(2)|capitalize)) }}
+            {{ form_label(form.finishes, ('knowledge.finish.choice.entities'|transchoice(2)|capitalize)) }}
             {{ form_errors(form.finishes) }}
             <p class="help-block">Indiquez la/les finitions utilisées. <i>Exemple : <strong>Teinte,Vernis</strong></i></p>
             {{ form_widget(form.finishes) }}

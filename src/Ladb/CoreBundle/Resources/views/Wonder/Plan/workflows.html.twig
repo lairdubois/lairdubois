@@ -24,7 +24,7 @@
             {% set filterPath = 'core_plan_workflows_filter' %}
             {% set filterPathParameters = { 'id':plan.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ plan.workflowCount }} {{ 'workflow.workflow.choice.workflows'|transchoice(plan.workflowCount) }}</span>
+                <span class="ladb-heading">{{ plan.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(plan.workflowCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

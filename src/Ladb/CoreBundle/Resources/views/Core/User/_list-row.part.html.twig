@@ -9,32 +9,32 @@
     {% if subfilter == 'creations' %}
         <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.publicCreationCount }}</div>
-            <span class="ladb-subheading">{{ 'wonder.creation.choice.creations'|transchoice(user.meta.publicCreationCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'wonder.creation.choice.entities'|transchoice(user.meta.publicCreationCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'plans' %}
         <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.publicPlanCount }}</div>
-            <span class="ladb-subheading">{{ 'wonder.plan.choice.plans'|transchoice(user.meta.publicPlanCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'wonder.plan.choice.entities'|transchoice(user.meta.publicPlanCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'howtos' %}
         <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.publicHowtoCount }}</div>
-            <span class="ladb-subheading">{{ 'howto.howto.choice.howtos'|transchoice(user.meta.publicHowtoCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'howto.howto.choice.entities'|transchoice(user.meta.publicHowtoCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'workshops' %}
         <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.publicWorkshopCount }}</div>
-            <span class="ladb-subheading">{{ 'wonder.workshop.choice.workshops'|transchoice(user.meta.publicWorkshopCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'wonder.workshop.choice.entities'|transchoice(user.meta.publicWorkshopCount)|capitalize }}</span>
         </a>
     {% elseif subfilter == 'comments' %}
         <div class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.commentCount }}</div>
-            <span class="ladb-subheading">{{ 'comment.choice.comments'|transchoice(user.meta.commentCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'comment.choice.entities'|transchoice(user.meta.commentCount)|capitalize }}</span>
         </div>
     {% elseif subfilter == 'finds' %}
         <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.publicFindCount }}</div>
-            <span class="ladb-subheading">{{ 'find.find.choice.finds'|transchoice(user.meta.publicFindCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'find.find.choice.entities'|transchoice(user.meta.publicFindCount)|capitalize }}</span>
         </a>
     {% else %}
         <div class="ladb-counter ladb-hidden-mobile">
@@ -45,7 +45,7 @@
     {% if filter is defined and filter == 'popular-likes' %}
         <div class="ladb-counter ladb-hidden-mobile">
             <div class="ladb-heading">{{ user.meta.recievedLikeCount }}</div>
-            <span class="ladb-subheading">{{ 'like.choice.likes'|transchoice(user.meta.recievedLikeCount)|capitalize }}</span>
+            <span class="ladb-subheading">{{ 'like.choice.entities'|transchoice(user.meta.recievedLikeCount)|capitalize }}</span>
         </div>
     {% else %}
         <a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">

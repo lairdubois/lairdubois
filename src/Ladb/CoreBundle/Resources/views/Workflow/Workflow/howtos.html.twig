@@ -24,7 +24,7 @@
             {% set filterPath = 'core_workflow_howtos_filter' %}
             {% set filterPathParameters = { 'id':workflow.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ workflow.howtoCount }} {{ 'howto.howto.choice.howtos'|transchoice(workflow.howtoCount) }}</span>
+                <span class="ladb-heading">{{ workflow.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(workflow.howtoCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

@@ -9,7 +9,7 @@
 
 {% set formSection = 'workflows' %}
 {% set icon = icon|default('workflow') %}
-{% set title = title|default('workflow.workflow.choice.workflows'|transchoice(2)|capitalize) %}
+{% set title = title|default('workflow.workflow.choice.entities'|transchoice(2)|capitalize) %}
 
 {% if formWorkflows is not defined %}
     {% set formWorkflows = form.workflows %}

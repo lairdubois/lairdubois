@@ -4,7 +4,7 @@
 
 {% if entity.reviewCount > 0 %}
     <li class="ladb-counter">
-        <span class="ladb-horizontal-separator-right" style="color: #888;"><i class="ladb-icon-review"></i> {{ entity.reviewCount|number_format(0, ',', ' ') }} {{ ('review.'~i18nPrefix~'.choice.reviews')|transchoice(entity.reviewCount) }}</span>
+        <span class="ladb-horizontal-separator-right" style="color: #888;"><i class="ladb-icon-review"></i> {{ entity.reviewCount|number_format(0, ',', ' ') }} {{ ('review.'~i18nPrefix~'.choice.entities')|transchoice(entity.reviewCount) }}</span>
         {% if entity.averageRating > 0 %}
             {% include 'LadbCoreBundle:Common:_rating-stars.part.html.twig' with { 'rating':entity.averageRating, 'classes':'ladb-horizontal-separator-right', 'hideValue':true } %}
         {% endif %}

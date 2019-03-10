@@ -661,6 +661,7 @@ fos_elastica:
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        entryCount: { type: integer }
                         user:
                             type: "object"
                             properties:

@@ -23,7 +23,7 @@
             {% set filterPath = 'core_workshop_plans_filter' %}
             {% set filterPathParameters = { 'id':workshop.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ workshop.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(workshop.planCount) }}</span>
+                <span class="ladb-heading">{{ workshop.planCount }} {{ 'wonder.plan.choice.entities'|transchoice(workshop.planCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

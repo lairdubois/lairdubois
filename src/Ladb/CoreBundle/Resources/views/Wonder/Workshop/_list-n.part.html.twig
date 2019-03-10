@@ -3,6 +3,8 @@
 {# set workshops #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set workshops = entities %}{% endif %}
+
 {% block items %}
     {% for workshop in workshops %}
         {% include 'LadbCoreBundle:Wonder/Workshop:_list-thumbnail.part.html.twig' %}

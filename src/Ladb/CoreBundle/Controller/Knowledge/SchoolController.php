@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -503,14 +504,16 @@ class SchoolController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
 		return array(
-			'school'          => $school,
-			'likeContext'     => $likableUtils->getLikeContext($school, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($school, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($school),
-			'hasMap'          => !is_null($school->getLatitude()) && !is_null($school->getLongitude()),
-			'userTestimonial' => $userTestimonial,
+			'school'            => $school,
+			'likeContext'       => $likableUtils->getLikeContext($school, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($school, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($school),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($school),
+			'hasMap'            => !is_null($school->getLatitude()) && !is_null($school->getLongitude()),
+			'userTestimonial'   => $userTestimonial,
 		);
 	}
 

@@ -2,8 +2,10 @@
 
 {% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
 
-{# set workflow #}
+{# set workflows #}
 {# set nextPageUrl #}
+
+{% if entities is defined %}{% set workflows = entities %}{% endif %}
 
 {% block items %}
     {% for workflow in workflows %}

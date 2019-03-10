@@ -3,6 +3,8 @@
 {# set graphics #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set graphics = entities %}{% endif %}
+
 {% block items %}
     {% for graphic in graphics %}
         {% include 'LadbCoreBundle:Promotion/Graphic:_list-thumbnail.part.html.twig' %}

@@ -8,13 +8,6 @@
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-creations" data-label="Avec création" data-unique="true" data-icon="creation"><i class="ladb-icon-creation"></i> Avec création</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-plans" data-label="Avec plan" data-unique="true" data-icon="plan"><i class="ladb-icon-plan"></i> Avec plan</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-workshops" data-label="Avec atelier" data-unique="true" data-icon="workshop"><i class="ladb-icon-workshop"></i> Avec atelier</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-howtos" data-label="Avec pas à pas" data-unique="true" data-icon="howto"><i class="ladb-icon-howto"></i> Avec pas à pas</a></li>
-    <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
-    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-label="Mes collections" data-unique="true" data-icon="collection"><i class="ladb-icon-collection"></i> Mes collections</a></li>
@@ -31,7 +24,6 @@
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-views" data-label="Plus vus" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus vus</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-likes" data-label="Préférés" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférés</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-comments" data-label="Plus commentés" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentés</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-copies" data-label="Plus copiés" data-unique="true" data-icon="duplicate"><i class="ladb-icon-duplicate"></i> Plus copiés</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
 {% endblock %}

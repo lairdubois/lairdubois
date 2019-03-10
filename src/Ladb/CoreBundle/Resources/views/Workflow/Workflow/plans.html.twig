@@ -23,7 +23,7 @@
             {% set filterPath = 'core_workflow_plans_filter' %}
             {% set filterPathParameters = { 'id':workflow.id } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ workflow.planCount }} {{ 'wonder.plan.choice.plans'|transchoice(workflow.planCount) }}</span>
+                <span class="ladb-heading">{{ workflow.planCount }} {{ 'wonder.plan.choice.entities'|transchoice(workflow.planCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

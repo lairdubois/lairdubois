@@ -2,7 +2,10 @@
 
 namespace Ladb\CoreBundle\Controller\Collection;
 
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\SearchUtils;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -45,12 +48,22 @@ class EntryController extends AbstractCollectionBasedController {
 			$collection->addEntry($entry);
 			$collection->incrementEntryCount();
 			$collection->incrementEntryTypeCounters($entry->getEntityType());
+			$collection->setChangedAt(new \DateTime());
+			$collection->setUpdatedAt(new \DateTime());
 
 			// Update related entity
-			$entity->incrementCollectionCount();
+			if ($collection->getIsPublic()) {
+				$entity->incrementPublicCollectionCount();
+			} else {
+				$entity->incrementPrivateCollectionCount();
+			}
 
 			$om->persist($entry);
 			$om->flush();
+
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($collection));
 
 		}
 
@@ -88,12 +101,22 @@ class EntryController extends AbstractCollectionBasedController {
 		$collection->removeEntry($entry);
 		$collection->incrementEntryCount(-1);
 		$collection->incrementEntryTypeCounters($entry->getEntityType(), -1);
+		$collection->setChangedAt(new \DateTime());
+		$collection->setUpdatedAt(new \DateTime());
 
 		// Update related entity
-		$entity->incrementCollectionCount(-1);
+		if ($collection->getIsPublic()) {
+			$entity->incrementPublicCollectionCount(-1);
+		} else {
+			$entity->incrementPrivateCollectionCount(-1);
+		}
 
 		$om->remove($entry);
 		$om->flush();
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($collection));
 
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 

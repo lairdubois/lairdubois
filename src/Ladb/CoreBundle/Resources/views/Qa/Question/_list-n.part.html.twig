@@ -3,6 +3,8 @@
 {# set questions #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set questions = entities %}{% endif %}
+
 {% block items %}
     {% for question in questions %}
         {% include 'LadbCoreBundle:Qa/Question:_list-thumbnail.part.html.twig' %}

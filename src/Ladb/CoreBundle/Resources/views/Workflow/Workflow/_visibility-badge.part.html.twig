@@ -1,7 +1,7 @@
 {# set workflow #}
 {# set classes (facultative) #}
 
-<span{% if classes is defined %} class=" ladb-hidden-mobile ladb-visibility-badge {{ classes }}"{% endif %} title="{{ ('workflow.workflow.'~(workflow.isPublic ? 'public' : 'private')~'_tooltip')|trans() }}" data-tooltip="tooltip">
+<span class="ladb-visibility-badge{% if classes is defined %} {{ classes }}{% endif %}" title="{{ ('workflow.workflow.'~(workflow.isPublic ? 'public' : 'private')~'_tooltip')|trans() }}" data-tooltip="tooltip">
     {% if workflow.isPrivate %}
         <i class="ladb-icon-key"></i> <span>{{ 'default.private'|trans }}</span>
     {% elseif workflow.isProtected %}

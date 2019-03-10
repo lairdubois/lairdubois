@@ -3,6 +3,8 @@
 {# set howtos #}
 {# set nextPageUrl #}
 
+{% if entities is defined %}{% set howtos = entities %}{% endif %}
+
 {% block items %}
     {% for howto in howtos %}
         {% include 'LadbCoreBundle:Howto/Howto:_list-thumbnail.part.html.twig' %}

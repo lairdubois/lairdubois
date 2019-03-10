@@ -1,21 +1,35 @@
 {% extends 'LadbCoreBundle:Collection:Collection/show.html.twig' %}
 
 {% block contentBody %}
-    {% if not collection.isPublic %}
+    {% if not collection.isPublic and collection.entryCount > 0 %}
         {% include 'LadbCoreBundle:Collection:Collection/_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-collection">
         <div class="ladb-body">
             {{ collection.htmlBody|raw }}
         </div>
-        Cette collection contient :
-        <ul>
-            {% for type, count in collection.entryTypeCounters %}
-                <li>
-                    <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ type }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        {% if collection.entryCount > 0 %}
+            <h4>Cette collection contient :</h4>
+            <ul>
+                {% for type, count in collection.entryTypeCounters if count > 0 %}
+                    <li>
+                        <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|transchoice(count) }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info">
+                <div class="media">
+                    <div class="media-left">
+                        <i class="ladb-icon-plus ladb-icon-lg"></i>
+                    </div>
+                    <div class="media-body">
+                        <p>Cette collection est pour l'instant vide.</p>
+                        <p>Afin d'y ajouter des publications, rendez-vous sur la fiche de chacune d'entre elles et cliquez sur le bonton <em>Ajouter à mes collections</em> reconnaissable par ce symbol <i class="ladb-icon-collection-add ladb-icon-lg"></i>.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
     {% if collection.updatedAt > collection.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':collection } %}
