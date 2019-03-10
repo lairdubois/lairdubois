@@ -15,21 +15,6 @@ final class Version20190310172619 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE tbl_core_user_meta ADD unlisted_collection_collection_count INT NOT NULL, ADD private_collection_count INT DEFAULT NULL, ADD public_collection_count INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE tbl_find ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_howto ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_knowledge2_book ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_knowledge2_provider ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_knowledge2_school ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_knowledge2_wood ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_promotion_graphic ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_qa_question ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_wonder_creation ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_wonder_plan ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_wonder_workshop ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_workflow ADD private_collection_count INT NOT NULL, ADD public_collection_count INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_4bcb70a82c7c2cba TO IDX_772B09CB2C7C2CBA');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_4bcb70a870f2bc06 TO IDX_772B09CB70F2BC06');
     }
 
     public function down(Schema $schema) : void
