@@ -4,6 +4,10 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CommentableTrait;
@@ -40,10 +44,10 @@ use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractWonder extends AbstractDraftableAuthoredPublication implements TitledInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
+abstract class AbstractWonder extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface {
 
-	use TitledTrait, PicturedTrait, MultiPicturedTrait, LicensedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, EmbeddableTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, MultiPicturedTrait, LicensedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CollectionnableTrait, CommentableTrait, EmbeddableTrait;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -103,6 +107,11 @@ abstract class AbstractWonder extends AbstractDraftableAuthoredPublication imple
 	private $commentCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="collection_count")
+	 */
+	private $collectionCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
@@ -142,21 +151,6 @@ abstract class AbstractWonder extends AbstractDraftableAuthoredPublication imple
 
 	public function getNotificationStrategy() {
 		return self::NOTIFICATION_STRATEGY_FOLLOWER;
-	}
-
-	// Slug /////
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// Body /////

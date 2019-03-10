@@ -1,0 +1,27 @@
+{% extends 'LadbCoreBundle:Collection:Collection/show.html.twig' %}
+
+{% set masonry = true %}
+{% set masonryWide = false %}
+
+{% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('autopagerScript') }}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {{ block('autopagerContainer') }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% if entityType == 100 %}
+        {% include 'LadbCoreBundle:Wonder/Creation:_list-n.part.html.twig' with { 'creations':entities } %}
+    {% elseif entityType == 101 %}
+        {% include 'LadbCoreBundle:Wonder/Workshop:_list-n.part.html.twig' with { 'workshops':entities } %}
+    {% elseif entityType == 102 %}
+        {% include 'LadbCoreBundle:Wonder/Plan:_list-n.part.html.twig' with { 'plans':entities } %}
+    {% elseif entityType == 118 %}
+        {% include 'LadbCoreBundle:Workflow/Workflow:_list-n.part.html.twig' with { 'workflows':entities } %}
+    {% endif %}
+{% endblock %}

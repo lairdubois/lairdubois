@@ -81,6 +81,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Book
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
 				return implode($delimiter, array( 'knowledge', 'book' ));
+			// Collection
+			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
+				return implode($delimiter, array( 'collection', 'collection' ));
 
 		}
 		return '';
@@ -234,9 +237,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Book
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Book';
-			// Review (Book)
-			case \Ladb\CoreBundle\Entity\Knowledge\Book\Review::TYPE:
-				return '\Ladb\CoreBundle\Entity\Knowledge\Book\Review';
+			// Collection
+			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
+				return '\Ladb\CoreBundle\Entity\Collection\Collection';
 
 		}
 		return null;
@@ -314,6 +317,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
 				$url = $router->generate('core_book_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
+				$url = $router->generate('core_collection_'.$action, $params, $referenceType);
 				break;
 
 		}

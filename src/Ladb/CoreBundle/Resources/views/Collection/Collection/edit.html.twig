@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle:Collection:Collection/_form.html.twig' %}
+
+{% set pageTitle = 'collection.collection.edit'|trans() %}
+{% set formAction = path('core_collection_update', { 'id':collection.id }) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'collection.collection.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_collection_show', { 'id':collection.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.back'|trans() }}</a>
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}

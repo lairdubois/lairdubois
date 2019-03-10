@@ -1,0 +1,7 @@
+{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'collections_modal', 'title':'<i class="ladb-icon-collection"></i>&nbsp;'~('collection.collection.list'|trans()) } %}
+    {% block bodyInner %}
+        {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true } %}
+    {% endblock %}
+    {% block footer %}{% endblock %}
+{% endembed %}
+

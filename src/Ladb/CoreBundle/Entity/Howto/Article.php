@@ -9,6 +9,8 @@ use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\DraftableTrait;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -27,9 +29,9 @@ use Ladb\CoreBundle\Model\ChildInterface;
  * @LadbAssert\ArticleBody()
  * @LadbAssert\BodyBlocks()
  */
-class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, BlockBodiedInterface, DraftableInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface, MentionSourceInterface {
+class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, SluggedInterface, BlockBodiedInterface, DraftableInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface, MentionSourceInterface {
 
-	use TitledTrait, BlockBodiedTrait;
+	use TitledTrait, SluggedTrait, BlockBodiedTrait;
 	use DraftableTrait, BasicEmbeddableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Article';
@@ -141,21 +143,6 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 		}
 		return $this->howto->getUser();
 	}
-
-    // Slug /////
-
-    public function setSlug($slug) {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    public function getSlug() {
-        return $this->slug;
-    }
-
-    public function getSluggedId() {
-        return $this->id.'-'.$this->slug;
-    }
 
 	// MainPicture /////
 

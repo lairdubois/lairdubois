@@ -1,0 +1,26 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set entity #}
+{# set collections #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for collection in collections %}
+        <div class="ladb-choice-row">
+            <div class="ladb-thumbnail">
+                <a href="{{ path('core_collection_show', { 'id':collection.sluggedId }) }}" class="thumbnail">
+                    <img src="{{ (collection.mainPicture is not null ? collection.mainPicture.webPath : 'avatar.png')|imagine_filter('80x60o') }}">
+                </a>
+            </div>
+            <div class="ladb-tools">
+                {% include 'LadbCoreBundle:Collection/Entry:_widget.part.html.twig' with { 'entryContext':entryContexts[loop.index0] } %}
+            </div>
+            <div class="ladb-body">
+                <h4 class="ladb-heading">{{ collection.title }}</h4>
+                <span class="ladb-subheading">
+                    par {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':collection.user } %}<small class="ladb-age">{{ collection.createdAt|time_diff() }}</small>
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

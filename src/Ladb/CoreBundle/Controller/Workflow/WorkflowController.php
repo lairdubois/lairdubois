@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -658,10 +659,12 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
 		$parameters = array_merge($parameters, array(
-			'watchContext'    => $watchableUtils->getWatchContext($workflow, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($workflow),
+			'watchContext'      => $watchableUtils->getWatchContext($workflow, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($workflow),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($workflow),
 		));
 
 		return $parameters;

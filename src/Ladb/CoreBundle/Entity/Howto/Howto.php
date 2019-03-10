@@ -5,6 +5,10 @@ namespace Ladb\CoreBundle\Entity\Howto;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BodiedTrait;
@@ -41,10 +45,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Table("tbl_howto")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Howto\HowtoRepository")
  */
-class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface {
+class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface {
 
-	use TitledTrait, PicturedTrait, BodiedTrait, LicensedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, EmbeddableTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait, LicensedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, EmbeddableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
 	const TYPE = 106;
@@ -206,6 +210,11 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $commentCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="collection_count")
+	 */
+	private $collectionCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
@@ -265,21 +274,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 
     public function getType() {
 		return Howto::TYPE;
-	}
-
-    // Slug /////
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// Kind /////

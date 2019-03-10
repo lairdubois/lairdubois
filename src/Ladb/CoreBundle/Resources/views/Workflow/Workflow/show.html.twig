@@ -52,6 +52,8 @@
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
                 &nbsp;
+                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
+                &nbsp;
                 <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-duplicate"></i><span class="ladb-visible-desktop">  {{ ownerUser ? 'default.duplicate'|trans() : 'default.copy'|trans() }}</span></a>
                 {% include 'LadbCoreBundle:Workflow:Workflow/_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
                 {% if not ownerUser %}
@@ -161,7 +163,8 @@
                 {% endif %}
             {% endblock %}
         {% endembed %}
-    {% endif %}    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
+    {% endif %}
+    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
@@ -186,6 +189,7 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
         {% if workflow.inspirationCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-inspiration ladb-icon-fixed-center"></i>

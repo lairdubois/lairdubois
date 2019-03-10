@@ -417,6 +417,7 @@ class UserController extends Controller {
 				'unlistedQaQuestionCount' => $user->getMeta()->getUnlistedQaQuestionCount(),
 				'unlistedPromotionGraphicCount' => $user->getMeta()->getUnlistedPromotionGraphicCount(),
 				'unlistedWorkflowWorkflowCount' => $user->getMeta()->getUnlistedWorkflowWorkflowCount(),
+				'unlistedCollectionCollectionCount' => $user->getMeta()->getUnlistedCollectionCollectionCount(),
 			),
 		);
 	}

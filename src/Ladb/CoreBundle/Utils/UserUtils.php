@@ -60,6 +60,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Qa\Question::TYPE, false);
 		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE, false);
 		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE, false);
+		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Collection\Collection::TYPE, false);
 
 		if ($updated) {
 			$userManager = $this->get('fos_user.user_manager');

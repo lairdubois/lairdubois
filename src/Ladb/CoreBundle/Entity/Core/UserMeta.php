@@ -219,6 +219,11 @@ class UserMeta {
 	 */
 	private $unlistedWorkflowWorkflowCount = 0;
 
+	/**
+	 * @ORM\Column(name="unlisted_collection_collection_count", type="integer")
+	 */
+	private $unlistedCollectionCollectionCount = 0;
+
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="follower_count")
@@ -363,6 +368,17 @@ class UserMeta {
 	 * @ORM\Column(type="integer", nullable=true, name="public_workflow_count")
 	 */
 	private $publicWorkflowCount = 0;
+
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="private_collection_count")
+	 */
+	private $privateCollectionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="public_collection_count")
+	 */
+	private $publicCollectionCount = 0;
 
 
 	/**
@@ -806,6 +822,17 @@ class UserMeta {
 		return $this;
 	}
 
+	// UnlistedCollectionCollectionCount /////
+
+	public function getUnlistedCollectionCollectionCount() {
+		return $this->unlistedCollectionCollectionCount;
+	}
+
+	public function setUnlistedCollectionCollectionCount($unlistedCollectionCollectionCount) {
+		$this->unlistedCollectionCollectionCount = $unlistedCollectionCollectionCount;
+		return $this;
+	}
+
 
 	// FollowerCount /////
 
@@ -1090,6 +1117,26 @@ class UserMeta {
 
 	public function getPublicWorkflowCount() {
 		return $this->publicWorkflowCount;
+	}
+
+	// PrivateCollectionCount /////
+
+	public function incrementPrivateCollectionCount($by = 1) {
+		return $this->privateCollectionCount += intval($by);
+	}
+
+	public function getPrivateCollectionCount() {
+		return $this->privateCollectionCount;
+	}
+
+	// PublicCollectionCount /////
+
+	public function incrementPublicCollectionCount($by = 1) {
+		return $this->publicCollectionCount += intval($by);
+	}
+
+	public function getPublicCollectionCount() {
+		return $this->publicCollectionCount;
 	}
 
 	// ProposalCount /////

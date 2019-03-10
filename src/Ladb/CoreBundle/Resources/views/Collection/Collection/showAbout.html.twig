@@ -1,0 +1,37 @@
+{% extends 'LadbCoreBundle:Collection:Collection/show.html.twig' %}
+
+{% block contentBody %}
+    {% if not collection.isPublic %}
+        {% include 'LadbCoreBundle:Collection:Collection/_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-collection">
+        <div class="ladb-body">
+            {{ collection.htmlBody|raw }}
+        </div>
+        Cette collection contient :
+        <ul>
+            {% for type, count in collection.entryTypeCounters %}
+                <li>
+                    <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ type }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if collection.updatedAt > collection.createdAt %}
+        {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':collection } %}
+    {% endif %}
+    {% if not ownerUser %}
+        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
+    {% endif %}
+
+    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+    </div>
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':collection.tags, 'type':'collections' } %}
+{% endblock %}

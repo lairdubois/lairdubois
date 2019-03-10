@@ -4,6 +4,10 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
@@ -42,10 +46,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @LadbAssert\UniqueFind()
  * @LadbAssert\BodyBlocks()
  */
-class Find extends AbstractDraftableAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
+class Find extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
 
-	use TitledTrait, PicturedTrait, BlockBodiedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
 	const TYPE = 104;
@@ -144,6 +148,11 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	private $commentCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="collection_count")
+	 */
+	private $collectionCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
@@ -187,21 +196,6 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	public function setContentType($contentType) {
 		$this->contentType = $contentType;
 		return $this;
-	}
-
-	// Slug /////
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// Kind /////

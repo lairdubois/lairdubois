@@ -1,0 +1,71 @@
+{% extends 'LadbCoreBundle:Common:Layout/_show.html.twig' %}
+
+{% set entity = collection %}
+
+{% set navSection = 'collections' %}
+{% set searchPath = path('core_collection_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == collection.user.id %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':collection } %}
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% if not ownerUser %}
+                    {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                {% endif %}
+                {% if watchContext is not null and is_granted("ROLE_USER") %}
+                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
+                {% endif %}
+                {% if not ownerUser %}
+                    &nbsp;
+                    {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':collection.type, 'entityId':collection.id } %}
+                {% endif %}
+                {% if ownerUser or is_granted("ROLE_ADMIN") %}
+                    &nbsp;
+                    <a href="{{ path('core_collection_edit', { 'id':collection.id }) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span class="ladb-visible-desktop"> {{ 'default.edit'|trans() }}</span></a>
+                    {% if is_granted("ROLE_ADMIN") or (ownerUser and not collection.isPublic) %}
+                        <a href="#delete_collection_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+                        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_collection_modal', 'entityTitle':collection.title, 'deletePath':path('core_collection_delete', { 'id':collection.id }) } %}
+                    {% endif %}
+                {% endif %}
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-admin"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="{{ ladb_entity_url_action(collection, collection.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if collection.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (collection.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
+                            {% if collection.isPublic %}
+                                <li><a href="#unpublish_collection_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% if collection.isPublic %}
+                        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_collection_modal', 'title':('default.unpublishing'|trans()) } %}
+                            {% block bodyInner %}
+                                <p>La dépublication de <strong>{{ collection.title }}</strong> le rendra invisible pour les autres utilisateurs.</p>
+                                <p>Confirmez l'action pour continuer.</p>
+                            {% endblock %}
+                            {% block footerInner %}
+                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                <a href="{{ path('core_collection_unpublish', { 'id':collection.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endblock %}
+        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Collection:Collection/_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}
+    {% endembed %}
+    <ul class="nav nav-tabs">
+        <li{% if entityType == 0 %} class="active"{% endif %}>
+            <a href="{{ path('core_collection_show', { 'id':collection.sluggedId }) }}">Infos</a>
+        </li>
+        {% for type, count in collection.entryTypeCounters %}
+            <li{% if entityType == type %} class="active"{% endif %}>
+                <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ type }} <span class="badge badge-black">{{ count }}</span></a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

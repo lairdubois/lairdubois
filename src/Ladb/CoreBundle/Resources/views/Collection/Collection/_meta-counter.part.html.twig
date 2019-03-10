@@ -1,0 +1,13 @@
+{# set entity #}
+
+<div class="ladb-meta{% if entity.collectionCount == 0 %} text-muted{% endif %}">
+    <i class="ladb-icon-collection"></i>
+    {% if entity.collectionCount > 0 %}
+        <a href="{{ path('core_collection_list_entity', { 'entityType':entity.type, 'entityId':entity.id }) }}">
+    {% endif %}
+            <strong>{{ entity.collectionCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'collection.collection.choice.collections'|transchoice(entity.likeCount) }}</small>
+    {% if entity.collectionCount > 0 %}
+        </a>
+    {% endif %}
+</div>

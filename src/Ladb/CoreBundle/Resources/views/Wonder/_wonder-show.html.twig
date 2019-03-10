@@ -90,6 +90,8 @@
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
+                &nbsp;
+                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
                 {% if not ownerUser %}
                     &nbsp;
                     {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':wonder.type, 'entityId':wonder.id } %}

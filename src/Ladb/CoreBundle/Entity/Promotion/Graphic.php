@@ -5,6 +5,10 @@ namespace Ladb\CoreBundle\Entity\Promotion;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\LicensedTrait;
@@ -39,10 +43,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Promotion\GraphicRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Graphic extends AbstractDraftableAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
+class Graphic extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface {
 
-	use TitledTrait, PicturedTrait, BodiedTrait, LicensedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait, LicensedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Promotion\Graphic';
 	const TYPE = 117;
@@ -128,6 +132,11 @@ class Graphic extends AbstractDraftableAuthoredPublication implements TitledInte
 	private $commentCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="collection_count")
+	 */
+	private $collectionCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
@@ -148,21 +157,6 @@ class Graphic extends AbstractDraftableAuthoredPublication implements TitledInte
 
 	public function getType() {
 		return Graphic::TYPE;
-	}
-
-	// Slug /////
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// Resources /////

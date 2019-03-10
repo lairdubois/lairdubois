@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -1029,6 +1030,7 @@ class CreationController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
@@ -1040,8 +1042,9 @@ class CreationController extends Controller {
 			'likeContext'         => $likableUtils->getLikeContext($creation, $this->getUser()),
 			'watchContext'        => $watchableUtils->getWatchContext($creation, $this->getUser()),
 			'commentContext'      => $commentableUtils->getCommentContext($creation),
+			'collectionContext'   => $collectionnableUtils->getCollectionContext($creation),
 			'followerContext'     => $followerUtils->getFollowerContext($creation->getUser(), $this->getUser()),
-			'referral'			  => $referral,
+			'referral'            => $referral,
 		);
 	}
 

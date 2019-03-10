@@ -1,0 +1,12 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{% set entity = collection %}
+{% set emptyWebPath = 'empty_collection.png' %}
+
+{% block title %}<i class="ladb-icon-collection"></i> {{ parent() }}{% endblock %}
+
+{% block entityMetas %}
+    {{ parent() }}
+{% endblock %}
+
+

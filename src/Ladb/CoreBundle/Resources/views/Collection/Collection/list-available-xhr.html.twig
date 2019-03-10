@@ -1,0 +1,19 @@
+{% extends 'LadbCoreBundle:Common:Modal/_modal-content.part.html.twig' %}
+
+{% use 'LadbCoreBundle:Common:_list-autopager.blocks.html.twig' %}
+
+{% set id = 'collections_modal' %}
+{% set title = '<i class="ladb-icon-collection"></i>&nbsp;'~('collection.collection.list'|trans()) %}
+{% set embeddedBody = collections|length > 0  %}
+
+{% set autopagerContainerSelector = '#collections_modal .modal-body' %}
+
+{% block bodyInner %}
+    {% if collections|length == 0 %}
+        <p>Aucune collection.</p>
+    {% endif %}
+    {% include 'LadbCoreBundle:Collection/Collection:_list-available-n.part.html.twig' %}
+    {{ block('autopagerScript') }}
+{% endblock %}
+
+{% block footer %}{% endblock %}

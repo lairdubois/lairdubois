@@ -66,6 +66,7 @@
     {{ parent() }}
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if workshop.planCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
             {% if workshop.planCount > 0 %}

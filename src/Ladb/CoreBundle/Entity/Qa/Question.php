@@ -5,8 +5,11 @@ namespace Ladb\CoreBundle\Entity\Qa;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\VotableParentInterface;
@@ -40,10 +43,10 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Qa\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, VotableParentInterface, ReportableInterface, ExplorableInterface {
+class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, VotableParentInterface, ReportableInterface, ExplorableInterface {
 
-	use TitledTrait, PicturedTrait, BlockBodiedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, VotableParentTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, VotableParentTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Qa\Question';
 	const TYPE = 113;
@@ -172,6 +175,11 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	private $commentCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="collection_count")
+	 */
+	private $collectionCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
@@ -194,21 +202,6 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 
 	public function getType() {
 		return Question::TYPE;
-	}
-
-	// Slug /////
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// AnswerCount /////

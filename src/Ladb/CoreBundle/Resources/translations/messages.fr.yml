@@ -472,6 +472,33 @@ workflow:
     add: Ajouter une étiquette
     empty: Aucune étiquette
 
+collection:
+  description: Retrouvez ici toutes les collections partagées par la communauté.
+  collection:
+    nav: Collections
+    new: Ajouter une collection
+    edit: Edition de la collection
+    create: Créer une nouvelle collection
+    list: Les collections
+    user_list: Mes collections
+    private_tooltip: Cette collection est Privée
+    public_tooltip: Cette collection est Publique
+    form:
+      alert:
+        lock_success: La collection <strong>%title%</strong> a été vérrouillée.
+        unlock_success: La collection <strong>%title%</strong> a été dévérrouillée.
+        publish_success: La collection <strong>%title%</strong> a été publiée.
+        unpublish_success: La collection <strong>%title%</strong> a été dépubliée.
+        update_success: La collection <strong>%title%</strong> a été mise à jour.
+        delete_success: La collection <strong>%title%</strong> a été supprimée.
+        copy_success: La collection <strong>%title%</strong> a été copiée.
+      help:
+        title: Renseignez ici le titre de votre collection.
+        body: Renseignez ici le descriptif de votre collection.
+        tags: Indiquez les tags définissant votre collection.
+    choice:
+      collections: '[0,1]collection|[1,Inf]collections'
+
 blog:
   nav: Le blog
   title: Le blog
@@ -1134,6 +1161,7 @@ search:
     qa_questions: Recherche dans les questions
     promotion_graphic: Recherche dans les graphismes
     workflows: Recherche dans les processus
+    collections: Recherche dans les collections
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 
@@ -1172,6 +1200,7 @@ notification:
     qa_answer: votre réponse
     promotion_graphic: votre graphisme
     workflow_workflow: votre processus
+    collection_collection: votre collection
   the:
     core_comment: le commentaire
     wonder_creation: la création
@@ -1190,6 +1219,7 @@ notification:
     qa_answer: la réponse
     promotion_graphic: le graphisme
     workflow_workflow: le processus
+    collection_collection: la collection
   one_new:
     wonder_creation: une nouvelle création
     wonder_workshop: un nouvel atelier
@@ -1201,6 +1231,7 @@ notification:
     qa_answer: une nouvelle réponse
     promotion_graphic: un nouveau graphisme
     workflow_workflow: un nouveau processus
+    collection_collection: une nouvelle collection
     blog_post: un nouveau sujet
   tooltip:
     all: Toutes les notifications

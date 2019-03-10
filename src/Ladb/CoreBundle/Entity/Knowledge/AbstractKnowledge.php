@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
 use Ladb\CoreBundle\Model\LikableTrait;
@@ -11,6 +13,8 @@ use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\ScrapableTrait;
 use Ladb\CoreBundle\Model\SitemapableInterface;
 use Ladb\CoreBundle\Model\SitemapableTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\VotableParentTrait;
@@ -32,9 +36,10 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractKnowledge extends AbstractPublication implements TitledInterface, PicturedInterface, IndexableInterface, SitemapableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, VotableParentInterface {
+abstract class AbstractKnowledge extends AbstractPublication implements TitledInterface, SluggedInterface, PicturedInterface, IndexableInterface, SitemapableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, VotableParentInterface {
 
-	use TitledTrait, ScrapableTrait, IndexableTrait, ViewableTrait, PicturedTrait, LikableTrait, WatchableTrait, CommentableTrait, VotableParentTrait;
+	use TitledTrait, SluggedTrait, ScrapableTrait, PicturedTrait;
+	use IndexableTrait, ViewableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, VotableParentTrait;
 	use SitemapableTrait { getIsSitemapable as public getIsSitemapableTrait; }
 
 	const ATTRIB_TYPE = 0;
@@ -105,6 +110,11 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 	private $commentCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="collection_count")
+	 */
+	private $collectionCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
@@ -135,21 +145,6 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 
 	public function getBody() {
 		return '';
-	}
-
-	// Slug /////
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// License /////

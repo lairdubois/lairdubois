@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Workflow;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\InspirableTrait;
@@ -12,6 +14,10 @@ use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\SitemapableInterface;
 use Ladb\CoreBundle\Model\SitemapableTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
+use Ladb\CoreBundle\Model\TitledInterface;
+use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableInterface;
@@ -34,9 +40,10 @@ use Ladb\CoreBundle\Model\LicensedTrait;
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication implements IndexableInterface, SitemapableInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface, InspirableInterface {
+class Workflow extends AbstractAuthoredPublication implements IndexableInterface, SitemapableInterface, TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface, InspirableInterface, CollectionnableInterface {
 
-	use IndexableTrait, SitemapableTrait, PicturedTrait, BodiedTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, LicensedTrait, InspirableTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait, LicensedTrait;
+	use IndexableTrait, SitemapableTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, InspirableTrait, CollectionnableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Workflow\Workflow';
 	const TYPE = 118;
@@ -217,6 +224,11 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	private $commentCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", name="collection_count")
+	 */
+	private $collectionCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="view_count")
 	 */
 	private $viewCount = 0;
@@ -242,32 +254,6 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	public function getType() {
 		return Workflow::TYPE;
-	}
-
-	// Title /////
-
-	public function setTitle($title) {
-		$this->title = $title;
-		return $this;
-	}
-
-	public function getTitle() {
-		return $this->title;
-	}
-
-	// Slug /////
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// EstimatedDuration /////

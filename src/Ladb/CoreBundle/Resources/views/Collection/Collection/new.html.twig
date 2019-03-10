@@ -1,0 +1,25 @@
+{% extends 'LadbCoreBundle:Collection:Collection/_form.html.twig' %}
+
+{% set pageTitle = 'collection.collection.new'|trans() %}
+{% set formAction = path('core_collection_create') %}
+{% set hideWarning = hideWarning|default(false) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'collection.collection.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':'Enregistrer et continuer', 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block asideInner %}
+    {{ parent() }}
+    <div class="alert alert-warning">
+        <div class="media">
+            <div class="media-left"><i class="ladb-icon-key ladb-icon-lg"></i></div>
+            <div class="media-body">
+                Par défaut tous les nouveaux processus sont <strong>privés</strong>.
+            </div>
+        </div>
+    </div>
+{% endblock %}

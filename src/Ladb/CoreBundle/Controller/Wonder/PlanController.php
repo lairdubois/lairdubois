@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Entity\Core\Resource;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ResourceUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -989,17 +990,19 @@ class PlanController extends Controller {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
-			'plan'            => $plan,
-			'userPlans'       => $userPlans,
-			'similarPlans'    => $similarPlans,
-			'likeContext'     => $likableUtils->getLikeContext($plan, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($plan, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($plan),
-			'followerContext' => $followerUtils->getFollowerContext($plan->getUser(), $this->getUser()),
-			'referral'        => $referral,
+			'plan'              => $plan,
+			'userPlans'         => $userPlans,
+			'similarPlans'      => $similarPlans,
+			'likeContext'       => $likableUtils->getLikeContext($plan, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($plan, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($plan),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($plan),
+			'followerContext'   => $followerUtils->getFollowerContext($plan->getUser(), $this->getUser()),
+			'referral'          => $referral,
 		);
 	}
 

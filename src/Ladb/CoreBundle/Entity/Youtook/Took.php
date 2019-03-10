@@ -11,6 +11,8 @@ use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\ScrapableTrait;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,9 +25,9 @@ use Ladb\CoreBundle\Model\TypableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Youtook\TookRepository")
  * @LadbAssert\ValidTook()
  */
-class Took extends AbstractAuthoredPublication implements TitledInterface, PicturedInterface, BodiedInterface, ScrapableInterface {
+class Took extends AbstractAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, ScrapableInterface {
 
-	use TitledTrait, PicturedTrait, BodiedTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait;
 	use ScrapableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Youtook\Took';
@@ -137,21 +139,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Pictu
 	public function setEmbedIdentifier($embedIdentifier) {
 		$this->embedIdentifier = $embedIdentifier;
 		return $this;
-	}
-
-	// Slug /////
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// ThumbnailUrl /////

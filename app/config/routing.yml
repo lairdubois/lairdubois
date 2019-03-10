@@ -200,3 +200,11 @@ ladb_core_workflow_label:
     resource: "Ladb\\CoreBundle\\Controller\\Workflow\\LabelController"
     type:     annotation
 
+ladb_core_collection:
+    resource: "Ladb\\CoreBundle\\Controller\\Collection\\CollectionController"
+    type:     annotation
+
+ladb_core_collection_entry:
+    resource: "Ladb\\CoreBundle\\Controller\\Collection\\EntryController"
+    type:     annotation
+

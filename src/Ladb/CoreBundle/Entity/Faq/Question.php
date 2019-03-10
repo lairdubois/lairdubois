@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Faq;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\SluggedInterface;
+use Ladb\CoreBundle\Model\SluggedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
@@ -35,9 +37,9 @@ use Ladb\CoreBundle\Model\TaggableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Faq\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
+class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface {
 
-	use TitledTrait, BlockBodiedTrait;
+	use TitledTrait, SluggedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Faq\Question';
@@ -149,21 +151,6 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	public function setWeight($weight) {
 		$this->weight = $weight;
 		return $this;
-	}
-
-	// Slug /////
-
-	public function getSlug() {
-		return $this->slug;
-	}
-
-	public function setSlug($slug) {
-		$this->slug = $slug;
-		return $this;
-	}
-
-	public function getSluggedId() {
-		return $this->id.'-'.$this->slug;
 	}
 
 	// Icon /////
