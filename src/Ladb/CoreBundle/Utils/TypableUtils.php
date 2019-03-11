@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Model\TypableInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class TypableUtils extends AbstractContainerAwareUtils {
 
@@ -131,11 +133,18 @@ class TypableUtils extends AbstractContainerAwareUtils {
 		if (is_null($repository)) {
 			throw new \Exception('Unknow Typable - Bad type (type='.$type.').');
 		}
-		$typable = $repository->findByIdsJoinedOn($ids, $repository->getDefaultJoinOptions());
-		if (is_null($typable)) {
-			throw new \Exception('Unknow Typable - Bad id (type='.$type.', ids='.implode(',', $ids).').');
+		$typables = $repository->findByIdsJoinedOn($ids, $repository->getDefaultJoinOptions());
+		if (is_null($typables)) {
+			throw new \Exception('Unknow Typable - Bad ids (type='.$type.', ids='.implode(',', $ids).').');
 		}
-		return $typable;
+		// Reorder on ids
+		$identifierPropertyPath = new PropertyPath('id');
+		$propertyAccessor = PropertyAccess::createPropertyAccessor();
+		$idPos = array_flip($ids);
+		usort($typables, function($a, $b) use ($idPos, $identifierPropertyPath, $propertyAccessor) {
+			return $idPos[$propertyAccessor->getValue($a, $identifierPropertyPath)] > $idPos[$propertyAccessor->getValue($b, $identifierPropertyPath)];
+		});
+		return $typables;
 	}
 
 	public function getRepositoryByType($type) {
