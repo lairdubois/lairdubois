@@ -243,6 +243,21 @@
 
     }
 
+    &.ladb-masonry-column-wide-rounded {
+
+      > .ladb-box > .ladb-content > .ladb-image {
+        width: 128px;
+        height: 128px;
+
+        & + .ladb-body {
+          min-height: 138px;
+          padding-right: 128px + (@ladb-gutter / 2);
+        }
+
+      }
+
+    }
+
   }
 
 }

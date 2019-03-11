@@ -20,11 +20,20 @@
                 <div class="panel-heading">
                     <strong><i class="ladb-icon-collection"></i> Contenu de la collection</strong>
                 </div>
-                <div class="panel-body">
-                    <ul>
+                <div class="panel-body" style="padding: 0;">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
                         {% for type, count in collection.entryTypeCounters if count > 0 %}
-                            <li>
-                                <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|transchoice(count) }}</a>
+                            <li style="display: block; height: 50px; border-bottom: 1px solid #eee; line-height: 50px; padding: 0 10px;">
+                                <div class="pull-left" style="width: 200px; height: 50px;">
+                                    <i class="ladb-icon-{{ random(['creation', 'plan', 'workshop', 'howto']) }} ladb-icon-lg"></i>
+                                    <a style="font-size: 110%; color: #000;" href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|transchoice(count) }}</a>
+                                </div>
+                                <span class="pull-right" style="color: #eee;"><i class="ladb-icon-chevron-right"></i></span>
+                                <div>
+                                    {#{% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':collection.mainPicture, 'width':50, 'height':50, 'noSizer':true } %}#}
+                                    {#{% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':collection.mainPicture, 'width':50, 'height':50, 'noSizer':true } %}#}
+                                    {#{% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':collection.mainPicture, 'width':50, 'height':50, 'noSizer':true } %}#}
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>
