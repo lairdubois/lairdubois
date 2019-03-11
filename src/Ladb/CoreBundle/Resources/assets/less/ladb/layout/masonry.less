@@ -176,6 +176,32 @@
 
   }
 
+  &.ladb-masonry-column-wide-rounded {
+
+    > .ladb-box > .ladb-content > .ladb-image {
+      float: right;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+
+      & img {
+        border-radius: 50%;
+      }
+
+      & + .ladb-body, & ~ .ladb-counters {
+        padding-left: 0;
+      }
+
+      & + .ladb-body {
+        min-height: 170px;
+        padding-right: 160px + (@ladb-gutter / 2);
+      }
+
+    }
+
+  }
+
 }
 
 /* Responsive */

@@ -3,13 +3,14 @@
 {% set gender = 'f' %}
 {% set entity = collection %}
 {% set emptyWebPath = 'empty_collection.png' %}
+{% set classes = 'ladb-masonry-column-wide-rounded' %}
 
 {% block title %}<i class="ladb-icon-collection"></i> {{ parent() }}{% endblock %}
 
 {% block entityMetas %}
     {{ parent() }}
     <li class="ladb-counter">
-        {% include 'LadbCoreBundle:Collection/Collection:_publications-counter.part.html.twig' with { 'classes':'ladb-horizontal-separator-right pull-right' } %}
+        {% include 'LadbCoreBundle:Collection/Collection:_publications-counter.part.html.twig' with { 'classes':collection.viewCount > 0 ? 'ladb-horizontal-separator-right pull-right' : '' } %}
     </li>
 {% endblock %}
 
