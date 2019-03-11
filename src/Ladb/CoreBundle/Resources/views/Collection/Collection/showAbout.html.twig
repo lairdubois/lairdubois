@@ -5,13 +5,20 @@
         {% include 'LadbCoreBundle:Collection:Collection/_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-collection">
-        <div class="ladb-body">
-            {{ collection.htmlBody|raw }}
-        </div>
+        {% if collection.htmlBody is not empty %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong><i class="ladb-icon-body"></i> Descriptif de la collection</strong>
+                </div>
+                <div class="panel-body">
+                    {{ collection.htmlBody|raw }}
+                </div>
+            </div>
+        {% endif %}
         {% if collection.entryCount > 0 %}
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Contenu de la collection
+                    <strong><i class="ladb-icon-collection"></i> Contenu de la collection</strong>
                 </div>
                 <div class="panel-body">
                     <ul>

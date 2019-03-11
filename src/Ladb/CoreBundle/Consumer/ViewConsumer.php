@@ -1,13 +1,13 @@
 <?php
 namespace Ladb\CoreBundle\Consumer;
 
-use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
 
