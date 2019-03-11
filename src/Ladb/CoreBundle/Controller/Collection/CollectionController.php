@@ -588,7 +588,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_entity_page")
 	 * @Template("LadbCoreBundle:Collection/Collection:list-byentity.html.twig")
 	 */
-	public function listEntityAction(Request $request, $entityType, $entityId, $page = 0) {
+	public function listByEntityAction(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
