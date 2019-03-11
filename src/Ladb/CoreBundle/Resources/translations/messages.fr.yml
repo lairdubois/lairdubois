@@ -427,8 +427,8 @@ workflow:
     linkto: Associer un processus déjà publié
     linked_to: Ce processus est associé à
     statistics: Statistiques
-    private_tooltip: Ce processus est Privé
-    public_tooltip: Ce processus est Public
+    private_tooltip: Vous seul pouvez consulter ce processus
+    public_tooltip: Tout le monde peut consulter ce processus
     form:
       alert:
         lock_success: Le processus <strong>%title%</strong> a été vérrouillé.
@@ -486,8 +486,8 @@ collection:
     create: Créer une nouvelle collection
     list: Les collections
     user_list: Mes collections
-    private_tooltip: Cette collection est Privée
-    public_tooltip: Cette collection est Publique
+    private_tooltip: Vous seul pouvez consulter cette collection
+    public_tooltip: Tout le monde peut consulter cette collection
     add: Enregistrer dans mes collections...
     form:
       alert:
