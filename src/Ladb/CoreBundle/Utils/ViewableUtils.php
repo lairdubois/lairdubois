@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Utils;
 
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Entity\Core\View;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

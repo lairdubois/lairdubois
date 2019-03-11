@@ -1,6 +1,7 @@
 <?php
 namespace Ladb\CoreBundle\Consumer;
 
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -106,8 +107,9 @@ class ViewConsumer implements ConsumerInterface {
 
 					$this->om->persist($view);
 
-					// Exclude self contribution view
-					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+					// Exclude self contribution view and non public viewables
+					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()
+						|| $viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
 						return;
 					}
 
@@ -118,8 +120,9 @@ class ViewConsumer implements ConsumerInterface {
 
 				} else {
 
-					// Exclude self contribution view
-					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+					// Exclude self contribution view and non public viewables
+					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()
+						|| $viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
 						return;
 					}
 
@@ -142,6 +145,11 @@ class ViewConsumer implements ConsumerInterface {
 			}
 
 		} else {
+
+			// Exclude non public viewables
+			if ($viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
+				return;
+			}
 
 			// Increment viewCount
 			$viewable->incrementViewCount();
