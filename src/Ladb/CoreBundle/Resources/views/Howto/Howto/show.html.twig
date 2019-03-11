@@ -152,6 +152,7 @@
                 {% if not ownerUser %}
                     {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
                 {% endif %}
+                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
                 {% if watchContext is not null and is_granted("ROLE_USER") %}
                     {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
                 {% endif %}
@@ -423,6 +424,7 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if howto.planCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
             {% if howto.planCount > 0 %}

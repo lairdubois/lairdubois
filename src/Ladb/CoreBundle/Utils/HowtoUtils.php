@@ -2,10 +2,7 @@
 
 namespace Ladb\CoreBundle\Utils;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Core\Picture;
 
 class HowtoUtils extends AbstractContainerAwareUtils {
 
@@ -23,19 +20,21 @@ class HowtoUtils extends AbstractContainerAwareUtils {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		$user = $globalUtils->getUser();
 
 		return array(
-			'howto'           => $howto,
-			'userHowtos'      => $userHowtos,
-			'similarHowtos'   => $similarHowtos,
-			'likeContext'     => $likableUtils->getLikeContext($howto, $user),
-			'watchContext'    => $watchableUtils->getWatchContext($howto, $user),
-			'commentContext'  => $commentableUtils->getCommentContext($howto),
-			'followerContext' => $followerUtils->getFollowerContext($howto->getUser(), $user),
-			'referral'        => $referral,
+			'howto'             => $howto,
+			'userHowtos'        => $userHowtos,
+			'similarHowtos'     => $similarHowtos,
+			'likeContext'       => $likableUtils->getLikeContext($howto, $user),
+			'watchContext'      => $watchableUtils->getWatchContext($howto, $user),
+			'commentContext'    => $commentableUtils->getCommentContext($howto),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($howto),
+			'followerContext'   => $followerUtils->getFollowerContext($howto->getUser(), $user),
+			'referral'          => $referral,
 		);
 	}
 
