@@ -50,7 +50,8 @@
 
                 that.updateBadge('catalogs',
                     parseInt(counters.unlistedKnowledgeWoodCount) +
-                    parseInt(counters.unlistedKnowledgeBookCount));
+                    parseInt(counters.unlistedKnowledgeBookCount) +
+                    parseInt(counters.unlistedCollectionCollectionCount));
                 that.updateBadge('directories',
                     parseInt(counters.unlistedKnowledgeProviderCount) +
                     parseInt(counters.unlistedKnowledgeSchoolCount));
