@@ -111,10 +111,6 @@ class ViewConsumer implements ConsumerInterface {
 					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
 						return;
 					}
-					// Exclude non public viewables
-					if ($viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
-						return;
-					}
 
 					// Increment viewCount
 					$viewable->incrementViewCount();
@@ -125,10 +121,6 @@ class ViewConsumer implements ConsumerInterface {
 
 					// Exclude self contribution view and non public viewables
 					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
-						return;
-					}
-					// Exclude non public viewables
-					if ($viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
 						return;
 					}
 
@@ -151,11 +143,6 @@ class ViewConsumer implements ConsumerInterface {
 			}
 
 		} else {
-
-			// Exclude non public viewables
-			if ($viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
-				return;
-			}
 
 			// Increment viewCount
 			$viewable->incrementViewCount();
