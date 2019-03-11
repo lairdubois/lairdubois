@@ -3,10 +3,10 @@
 
 <span class="ladb-visibility-badge{% if classes is defined %} {{ classes }}{% endif %}" title="{{ ('workflow.workflow.'~(workflow.isPublic ? 'public' : 'private')~'_tooltip')|trans() }}" data-tooltip="tooltip">
     {% if workflow.isPrivate %}
-        <i class="ladb-icon-key"></i> <span>{{ 'default.private'|trans }}</span>
+        <i class="ladb-icon-key"></i> <span>{{ 'default.private_m'|trans }}</span>
     {% elseif workflow.isProtected %}
-        <i class="ladb-icon-users"></i> <span>{{ 'default.protected'|trans }}</span>
+        <i class="ladb-icon-users"></i> <span>{{ 'default.protected_m'|trans }}</span>
     {% else %}
-        <i class="ladb-icon-globe"></i> <span>{{ 'default.public'|trans }}</span>
+        <i class="ladb-icon-globe"></i> <span>{{ 'default.public_m'|trans }}</span>
     {% endif %}
 </span>
