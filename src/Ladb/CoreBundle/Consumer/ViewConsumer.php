@@ -108,8 +108,11 @@ class ViewConsumer implements ConsumerInterface {
 					$this->om->persist($view);
 
 					// Exclude self contribution view and non public viewables
-					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()
-						|| $viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
+					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+						return;
+					}
+					// Exclude non public viewables
+					if ($viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
 						return;
 					}
 
@@ -121,8 +124,11 @@ class ViewConsumer implements ConsumerInterface {
 				} else {
 
 					// Exclude self contribution view and non public viewables
-					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()
-						|| $viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
+					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
+						return;
+					}
+					// Exclude non public viewables
+					if ($viewable instanceof HiddableInterface && !$viewable->getIsPublic()) {
 						return;
 					}
 
