@@ -106,8 +106,6 @@ class ViewConsumer implements ConsumerInterface {
 
 					$this->om->persist($view);
 
-					$this->logger->error('ViewConsumer/execute -> new view type='.$viewable->getType().' id='.$viewable->getId());
-
 					// Exclude self contribution view and non public viewables
 					if ($viewable instanceof AuthoredInterface && $viewable->getUser()->getId() == $user->getId()) {
 						return;
@@ -156,8 +154,6 @@ class ViewConsumer implements ConsumerInterface {
 
 			// Flush DB updates (view and/or entity)
 			$this->om->flush();
-
-			$this->logger->error('ViewConsumer/execute -> new view type='.$viewable->getType().' id='.$viewable->getId().' [FLUSH]');
 
 			// Update in Elasticsearch
 
