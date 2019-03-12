@@ -8,39 +8,42 @@
 #notifications_modal .modal-body {
   max-height: 500px;
   overflow-y: auto;
-}
 
-.ladb-notification-row {
-  padding: 10px;
-  background-color: #eee;
-  border-bottom: solid 1px @ladb-global-border;
-  cursor: pointer;
+  .ladb-notification-row {
+    padding: 10px;
+    background-color: #eee;
+    border-bottom: solid 1px @ladb-global-border;
+    cursor: pointer;
 
-  &.ladb-listed {
-    color: #777;
-  }
+    &.ladb-listed {
+      color: #777;
+    }
 
-  &.ladb-shown {
-    background-color: white;
-  }
+    &.ladb-shown {
+      background-color: white;
+    }
 
-  &:hover {
-    background-color: #f5f5f5;
-  }
+    &:hover {
+      background-color: #f5f5f5;
+    }
 
-  .ladb-avatar {
-    float: left;
-  }
+    .ladb-avatar {
+      float: left;
+    }
 
-  .ladb-box {
-    margin-left: @boxMarginLeft;
-    min-height: @boxMinHeight;
+    .ladb-box {
+      margin-left: @boxMarginLeft;
+      min-height: @boxMinHeight;
 
-    .ladb-age {
-      .age();
+      .ladb-age {
+        .age();
+      }
+
     }
 
   }
 
 }
+
+
 

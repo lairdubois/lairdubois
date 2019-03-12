@@ -2,22 +2,19 @@
 // LADB Notifications
 //
 
-@boxMarginLeft: 42px;
-@boxMinHeight: 32px;
-
 #collections_modal {
   text-align: left;
 
   .modal-body {
     max-height: 500px;
     overflow-y: auto;
+    background-color: #fff;
   }
 
   .ladb-collection-row {
     margin: 0;
     padding: 10px;
-    background-color: #fff;
-    border-bottom: 1px solid @ladb-body-color;
+    border-bottom: 1px solid @ladb-global-border;
 
     .ladb-collection-entry-widget {
       width: 28px;
@@ -40,6 +37,14 @@
 
     }
 
+  }
+
+  .ladb-help-block {
+    padding-left: 20px;
+    background-color: @ladb-brand-info;
+    line-height: 30px;
+    color: #fff;
+    font-size: 90%
   }
 
 }

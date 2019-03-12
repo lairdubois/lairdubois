@@ -1,4 +1,4 @@
-{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'collections_modal', 'title':'<i class="ladb-icon-collection-add"></i>&nbsp;'~('collection.collection.add'|trans()) } %}
+{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'collections_modal', 'title':'<i class="ladb-icon-collection-add"></i>&nbsp;'~('collection.collection.add'|trans()), 'classes':'modal-infinit' } %}
     {% block bodyInner %}
         {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true } %}
     {% endblock %}

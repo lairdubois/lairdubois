@@ -4,6 +4,7 @@
 
 {% set id = 'collections_modal' %}
 {% set title = '<i class="ladb-icon-collection-add"></i>&nbsp;'~('collection.collection.add'|trans()) %}
+{% set classes = 'modal-infinit' %}
 {% set embeddedBody = collections|length > 0  %}
 
 {% set autopagerContainerSelector = '#collections_modal .modal-body' %}
@@ -16,9 +17,14 @@
     {{ block('autopagerScript') }}
 {% endblock %}
 
-{% block footerInner %}
+{% block body %}
+    {{ parent() }}
     {% if collections|length > 0 %}
-        <small class="help-block pull-left">⬆ Cochez les cases pour enregistrer</small>
+        <div class="ladb-help-block"><i class="ladb-icon-arrow-up"></i> Cochez pour enregistrer</div>
     {% endif %}
-    <a href="{{ path('core_collection_new', { 'entityType':entity.type, 'entityId':entity.id }) }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'collection.collection.new'|trans() }}</a>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="{{ path('core_collection_new', { 'entityType':entity.type, 'entityId':entity.id }) }}" class="btn btn-default pull-left"><i class="ladb-icon-plus"></i> {{ 'collection.collection.new'|trans() }}</a>
+    <button class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</button>
 {% endblock %}
