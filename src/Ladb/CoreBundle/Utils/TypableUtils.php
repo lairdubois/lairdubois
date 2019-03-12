@@ -360,4 +360,79 @@ class TypableUtils extends AbstractContainerAwareUtils {
 		return $url;
 	}
 
+	/////
+
+	public function getIcon(TypableInterface $typable) {
+		return $this->getIconByType($typable->getType());
+	}
+
+	public function getIconByType($type) {
+		switch ($type) {
+
+			// Comment
+			case \Ladb\CoreBundle\Entity\Core\Comment::TYPE:
+				return 'comment';
+			// Message (Message)
+			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
+				return 'message';
+			// Review
+			case \Ladb\CoreBundle\Entity\Core\Review::TYPE:
+				return 'review';
+
+			// Creation
+			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
+				return 'creation';
+			// Workshop
+			case \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE:
+				return 'workshop';
+			// Find
+			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
+				return 'globe';
+			// Plan
+			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
+				return 'plan';
+			// Howto
+			case \Ladb\CoreBundle\Entity\Howto\Howto::TYPE:
+				return 'howto';
+			// Post
+			case \Ladb\CoreBundle\Entity\Blog\Post::TYPE:
+				return 'blog';
+			// Wood
+			case \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE:
+				return 'wood';
+			// Question (Faq)
+			case \Ladb\CoreBundle\Entity\Faq\Question::TYPE:
+				return 'help';
+			// Provider
+			case \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE:
+				return 'provider';
+			// Question (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
+				return 'question';
+			// Answer (Qa)
+			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
+				return 'answer';
+			// School
+			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
+				return 'school';
+			// Testimonial (School)
+			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
+				return 'review';
+			// Graphic (School)
+			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
+				return 'graphic';
+			// Workflow
+			case \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE:
+				return 'workflow';
+			// Book
+			case \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE:
+				return 'book';
+			// Collection
+			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
+				return 'collection';
+
+		}
+		return null;
+	}
+
 }

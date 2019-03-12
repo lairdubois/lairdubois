@@ -33,6 +33,7 @@ class LadbExtension extends \Twig_Extension {
 			new \Twig_SimpleFunction('ladb_entity', array( $this, 'entityFunction' )),
 			new \Twig_SimpleFunction('ladb_entity_url_action', array( $this, 'entityUrlActionFunction' )),
 			new \Twig_SimpleFunction('ladb_entity_type_stripped_name', array( $this, 'entityTypeStrippedNameFunction' )),
+			new \Twig_SimpleFunction('ladb_entity_type_icon', array( $this, 'entityTypeIconFunction' )),
 			new \Twig_SimpleFunction('ladb_value2json_tokens', array( $this, 'value2jsonTokensFunction' )),
 			new \Twig_SimpleFunction('ladb_estimate_row_count', array( $this, 'estimateRowCountFunction' )),
 			new \Twig_SimpleFunction('ladb_video_player_frame', array( $this, 'videoPlayerFrameFunction' )),
@@ -161,6 +162,16 @@ class LadbExtension extends \Twig_Extension {
 			return $typableUtils->getStrippedName($entityOrType, $delimiter, $capitalize);
         } else if (is_int($entityOrType) or is_string($entityOrType)) {
 			return $typableUtils->getStrippedNameByType(intval($entityOrType), $delimiter, $capitalize);
+		}
+        return '';
+    }
+
+    public function entityTypeIconFunction($entityOrType) {
+		$typableUtils = $this->container->get(TypableUtils::NAME);
+        if ($entityOrType instanceof \Ladb\CoreBundle\Model\TypableInterface) {
+			return $typableUtils->getIcon($entityOrType);
+        } else if (is_int($entityOrType) or is_string($entityOrType)) {
+			return $typableUtils->getIconByType(intval($entityOrType));
 		}
         return '';
     }
