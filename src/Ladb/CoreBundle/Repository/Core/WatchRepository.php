@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository\Core;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
@@ -87,6 +88,25 @@ class WatchRepository extends AbstractEntityRepository {
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}
+	}
+
+	/////
+
+	public function findPaginedByEntityTypeAndEntityIdJoinedOnUser($entityType, $entityId, $offset, $limit) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'w', 'u' ))
+			->from($this->getEntityName(), 'w')
+			->innerJoin('w.user', 'u')
+			->where('w.entityType = :entityType')
+			->andWhere('w.entityId = :entityId')
+			->setParameter('entityType', $entityType)
+			->setParameter('entityId', $entityId)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		return new Paginator($queryBuilder->getQuery());
 	}
 
 }

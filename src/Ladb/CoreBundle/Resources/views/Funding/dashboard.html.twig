@@ -17,15 +17,15 @@
         '@LadbCoreBundle/Resources/assets/js/jquery-payment/jquery.payment.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingdashboard.js'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingwidget.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% if is_granted('ROLE_ADMIN') %}
         {% javascripts filter='?closure'
             '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingchargeinfos.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
+            <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endif %}
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script src="https://js.stripe.com/v2/"></script>
     <script>
         $(document).ready(function() {
 

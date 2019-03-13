@@ -39,6 +39,8 @@ class LikeController extends Controller {
 		return $entity;
 	}
 
+	/////
+
 	/**
 	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_like_create")
 	 * @Template("LadbCoreBundle:Core/Like:create-xhr.html.twig")
@@ -187,11 +189,11 @@ class LikeController extends Controller {
 	}
 
 	/**
-	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_like_list_entity")
-	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_like_list_entity_page")
+	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_like_list_byentity")
+	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_like_list_byentity_page")
 	 * @Template("LadbCoreBundle:Core/Like:list-byentity.html.twig")
 	 */
-	public function listEntityAction(Request $request, $entityType, $entityId, $page = 0) {
+	public function listByEntityAction(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$likeRepository = $om->getRepository(Like::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
@@ -205,7 +207,7 @@ class LikeController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $likeRepository->findPaginedByEntityTypeAndEntityIdJoinedOnUser($entityType, $entityId, $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_like_list_entity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_like_list_byentity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
 
 		$parameters = array(
 			'prevPageUrl' => $pageUrls->prev,

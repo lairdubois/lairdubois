@@ -29,7 +29,7 @@
 
 {% endspaceless %}
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}"itemscope itemtype="http://schema.org/{{ pageItemType }}">
+<html lang="{{ app.request.locale }}" itemscope itemtype="http://schema.org/{{ pageItemType }}">
     <head prefix="{% block headPrefix %}og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#{% endblock %}">
         {% block head %}
             <title>{% if is_granted("ROLE_USER") and app.user.meta.freshNotificationCount > 0 %}({{ app.user.meta.freshNotificationCount }}) {% endif %}{% if pageTitlePrefix is defined %}{{ pageTitlePrefix }} {% endif %}{% block title %}{{ pageTitle }}{% if not titleSuffixHidden %} {{ ('default.on'|trans())~' '~('default.ladb'|trans()) }}{% endif %}{% endblock %}</title>
@@ -166,13 +166,13 @@
                 {% endif %}
                 {% javascripts filter='?closure'
                     '../components/jquery/jquery.js' %}
-                    <script type="text/javascript" src="{{ asset_url }}"></script>
+                    <script src="{{ asset_url }}"></script>
                 {% endjavascripts %}
                 <!--[if lt IE 9]>
                     {% javascripts filter='?closure'
                         '../components/html5shiv/dist/html5shiv.js'
                         '@LadbCoreBundle/Resources/assets/js/respond/respond.js' %}
-                        <script type="text/javascript" src="{{ asset_url }}"></script>
+                        <script src="{{ asset_url }}"></script>
                     {% endjavascripts %}
                 <![endif]-->
             {% endblock %}
@@ -269,7 +269,7 @@
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-votes.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-pictures.js'
                 '@LadbCoreBundle/Resources/assets/js/ladb/ladb-webpush-client.js' %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>
+                <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
             <script>
                 $(document).ready(function() {
@@ -281,7 +281,7 @@
             {% block googleAnalytics %}
                 {% if not app.debug and not is_granted("ROLE_ADMIN") %}
                     {# Matomo #}
-                    <script type="text/javascript">
+                    <script>
                         var _paq = window._paq || [];
                         _paq.push(['trackPageView']);
                         _paq.push(['enableLinkTracking']);

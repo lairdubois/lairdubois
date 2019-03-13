@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +17,21 @@ use Ladb\CoreBundle\Entity\Core\Watch;
  * @Route("/watches")
  */
 class WatchController extends Controller {
+
+	private function _retrieveRelatedEntity($entityType, $entityId) {
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$entity = $typableUtils->findTypable($entityType, $entityId);
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException($e->getMessage());
+		}
+		if (!($entity instanceof WatchableInterface)) {
+			throw $this->createNotFoundException('Entity must implements WatchableInterface.');
+		}
+		return $entity;
+	}
+
+	/////
 
 	/**
 	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_watch_create")
@@ -49,19 +66,6 @@ class WatchController extends Controller {
 		return array(
 			'watchContext' => $watchableUtils->getWatchContext($entity, $this->getUser()),
 		);
-	}
-
-	private function _retrieveRelatedEntity($entityType, $entityId) {
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entity = $typableUtils->findTypable($entityType, $entityId);
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException($e->getMessage());
-		}
-		if (!($entity instanceof WatchableInterface)) {
-			throw $this->createNotFoundException('Entity must implements WatchableInterface.');
-		}
-		return $entity;
 	}
 
 	/**
@@ -104,6 +108,41 @@ class WatchController extends Controller {
 		return array(
 			'watchContext' => $watchableUtils->getWatchContext($entity, $this->getUser()),
 		);
+	}
+
+	/**
+	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_watch_list_byentity")
+	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_watch_list_byentity_page")
+	 * @Template("LadbCoreBundle:Core/Watch:list-byentity.html.twig")
+	 */
+	public function listByEntityAction(Request $request, $entityType, $entityId, $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		// Retrieve related entity
+
+		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
+
+		// Retrive watchs
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $watchRepository->findPaginedByEntityTypeAndEntityIdJoinedOnUser($entityType, $entityId, $offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_watch_list_byentity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
+
+		$parameters = array(
+			'prevPageUrl'  => $pageUrls->prev,
+			'nextPageUrl'  => $pageUrls->next,
+			'entity'       => $entity,
+			'authored'     => $entity instanceof AuthoredInterface,
+			'watchs'       => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Watch:list-byentity-xhr.html.twig', $parameters);
+		}
+		return $parameters;
 	}
 
 }

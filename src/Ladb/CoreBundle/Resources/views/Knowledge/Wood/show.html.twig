@@ -18,7 +18,7 @@
     {{ parent() }}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 

@@ -2,7 +2,7 @@
     {% set wide = block.pictures|length == 1 %}
     {% for picture in block.pictures %}
         <div class="{% if wide %}col-xs-12{% else %}col-sm-4 col-xs-6{% endif %}">
-            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':(wide ? '600' : '180'), 'height':(wide ? '450' : '180'), 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-bottom' } %}
+            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':(wide ? '600' : '180'), 'height':(wide ? '450' : '180'), 'attributes':'data-pin-nopin="true"', 'aClasses':'ladb-margin-bottom' } %}
         </div>
     {% endfor %}
 </div>

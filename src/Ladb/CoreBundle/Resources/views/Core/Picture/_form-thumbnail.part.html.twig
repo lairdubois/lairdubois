@@ -11,7 +11,7 @@
 
 <li id="picture_{{ id }}" class="ladb-picture ladb-form-thumbnail{% if sortable %} ladb-sortable{% endif %}">
     <div class="uk-overlay">
-        <img src="{{ src|imagine_filter('128x128o') }}" width="128" height="128" nopin="nopin">
+        <img src="{{ src|imagine_filter('128x128o') }}" width="128" height="128" data-pin-nopin="true">
         {% if editable %}
             <div class="uk-overlay-caption ladb-legend">{% if picture is defined and picture.legend is not empty %}{{ picture.legend|truncate(50) }}{% else %}{{ 'picture.no_legend'|trans() }}{% endif %}</div>
         {% endif %}

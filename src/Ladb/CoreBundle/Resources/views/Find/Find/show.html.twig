@@ -101,7 +101,7 @@
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') %}
             <div class="ladb-thumb">
                 <a href="{{ find.content.url }}" class="thumbnail">
-                    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'nopin="nopin"' } %}
+                    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'data-pin-nopin="true"' } %}
                 </a>
             </div>
         {% endif %}
@@ -120,9 +120,9 @@
                     {% for index in 1..4 %}
                         <div class="col-xs-3">
                             {% if index < find.content.pictures.count %}
-                                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[index], 'width':'128', 'height':'128', 'alt':find.title, 'attributes':'nopin="nopin"' } %}
+                                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[index], 'width':'128', 'height':'128', 'alt':find.title, 'attributes':'data-pin-nopin="true"' } %}
                             {% else %}
-                                <span class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" nopin="nopin"></span>
+                                <span class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" data-pin-nopin="true"></span>
                             {% endif %}
                         </div>
                     {% endfor %}

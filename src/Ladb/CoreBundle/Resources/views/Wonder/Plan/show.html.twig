@@ -11,7 +11,7 @@
     {{ parent() }}
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.planpage.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         $(document).ready(function() {
@@ -111,9 +111,9 @@
             {% for index in 0..5 %}
                 <div class="col-xs-6 col-md-2">
                     {% if index < wonder.pictures.count %}
-                        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':wonder.pictures[index], 'width':'128', 'height':'128', 'alt':wonder.title, 'attributes':'nopin="nopin"', 'aClasses':'ladb-margin-top' } %}
+                        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':wonder.pictures[index], 'width':'128', 'height':'128', 'alt':wonder.title, 'attributes':'data-pin-nopin="true"', 'aClasses':'ladb-margin-top' } %}
                     {% else %}
-                        <span class="thumbnail thumbnail-empty{% if index > 2 and wonder.pictures.count <= 3  %} ladb-hidden-mobile ladb-hidden-tablet{% endif %} ladb-margin-top"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" alt="empty" nopin="nopin"></span>
+                        <span class="thumbnail thumbnail-empty{% if index > 2 and wonder.pictures.count <= 3  %} ladb-hidden-mobile ladb-hidden-tablet{% endif %} ladb-margin-top"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" alt="empty" data-pin-nopin="true"></span>
                     {% endif %}
                 </div>
             {% endfor %}
