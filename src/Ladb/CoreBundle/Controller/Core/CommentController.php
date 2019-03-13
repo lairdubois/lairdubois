@@ -41,6 +41,8 @@ class CommentController extends Controller {
 		return $entity;
 	}
 
+	/////
+
 	/**
 	 * @Route("/{entityType}/{entityId}/{parentId}/new", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, name="core_comment_new")
 	 * @Template("LadbCoreBundle:Core/Comment:new-xhr.html.twig")
@@ -277,7 +279,6 @@ class CommentController extends Controller {
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_comment_delete")
 	 * @Template("LadbCoreBundle:Core/Comment:delete-xhr.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_delete)")
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -287,6 +288,9 @@ class CommentController extends Controller {
 		$comment = $commentRepository->findOneById($id);
 		if (is_null($comment)) {
 			throw $this->createNotFoundException('Unable to find Comment entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && ($comment->getUser()->getId() != $this->getUser()->getId() || $comment->getChildCount() > 0)) {
+			throw $this->createNotFoundException('Not allowed (core_comment_delete)');
 		}
 
 		// Retrieve related entity

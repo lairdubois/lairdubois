@@ -62,7 +62,6 @@
     // Reply /////
 
     LadbCommentWidget.prototype.writeComment = function(msg) {
-        console.log(this.$element);
         var entityType = this.$element.data('ladb-entity-type');
         var entityId = this.$element.data('ladb-entity-id');
         var newContainerSelector = '#ladb_comment_' + entityType + '_' + entityId + '_group';
