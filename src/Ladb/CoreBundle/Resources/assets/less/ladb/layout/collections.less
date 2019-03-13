@@ -14,7 +14,11 @@
   .ladb-collection-row {
     margin: 0;
     padding: 10px;
-    border-bottom: 1px solid @ladb-global-border;
+    border-top: 1px solid @ladb-global-border;
+
+    &:last-child {
+      border: none;
+    }
 
     .ladb-collection-entry-widget {
       width: 28px;
@@ -41,10 +45,10 @@
 
   .ladb-help-block {
     padding-left: 20px;
-    background-color: @ladb-brand-info;
+    background-color: #fff;
     line-height: 30px;
-    color: #fff;
-    font-size: 90%
+    color: #555;
+    font-size: 90%;
   }
 
 }

@@ -3,7 +3,7 @@
 <div class="ladb-meta{% if entity.publicCollectionCount == 0 %} text-muted{% endif %}">
     <i class="ladb-icon-collection"></i>
     {% if entity.publicCollectionCount > 0 %}
-        <a href="{{ path('core_collection_list_entity', { 'entityType':entity.type, 'entityId':entity.id }) }}">
+        <a href="{{ path('core_collection_list_byentity', { 'entityType':entity.type, 'entityId':entity.id }) }}">
     {% endif %}
             <strong>{{ entity.publicCollectionCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'collection.collection.choice.entities'|transchoice(entity.publicCollectionCount) }}</small>

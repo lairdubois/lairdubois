@@ -386,6 +386,7 @@ class CollectionController extends AbstractCollectionBasedController {
 			$parameters = array_merge($parameters, array(
 				'prevPageUrl' => $pageUrls->prev,
 				'nextPageUrl' => $pageUrls->next,
+				'entries'     => $paginator,
 				'entities'    => $entities,
 			));
 
@@ -584,8 +585,8 @@ class CollectionController extends AbstractCollectionBasedController {
 	}
 
 	/**
-	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_list_entity")
-	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_entity_page")
+	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_list_byentity")
+	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_byentity_page")
 	 * @Template("LadbCoreBundle:Collection/Collection:list-byentity.html.twig")
 	 */
 	public function listByEntityAction(Request $request, $entityType, $entityId, $page = 0) {
@@ -599,7 +600,7 @@ class CollectionController extends AbstractCollectionBasedController {
 		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
 		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
 		$paginator = $collectionRepository->findPaginedByEntity($entity, $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_collection_list_entity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_collection_list_byentity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
 
 		$parameters = array(
 			'prevPageUrl'   => $pageUrls->prev,

@@ -5,7 +5,8 @@
         var settings = $.extend({
             loading: true,
             targetSelector: null,
-            replaceTargetInnerOnly: false
+            replaceTargetInnerOnly: false,
+            onSuccess: null
         }, options );
 
         var btn = this;
@@ -38,6 +39,9 @@
                             $(this).replaceWith(data);
                         }
                     });
+                }
+                if (typeof settings.onSuccess == 'function') {
+                    settings.onSuccess();
                 }
             },
             error: function () {

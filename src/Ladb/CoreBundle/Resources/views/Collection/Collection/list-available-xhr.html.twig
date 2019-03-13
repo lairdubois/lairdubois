@@ -18,10 +18,10 @@
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}
     {% if collections|length > 0 %}
-        <div class="ladb-help-block"><i class="ladb-icon-arrow-up"></i> Cochez pour enregistrer</div>
+        <div class="ladb-help-block"><i class="ladb-icon-arrow-down"></i> Cochez pour enregistrer<span class="ladb-hidden-mobile"> / Décochez pour retirer</span></div>
     {% endif %}
+    {{ parent() }}
 {% endblock %}
 
 {% block footerInner %}

@@ -42,7 +42,7 @@
                 <ul class="ladb-counters">
                     {% block entityMetas %}
                         {% if entity.publicCollectionCount is defined and entity.publicCollectionCount > 0 %}
-                            <li class="ladb-linkto"><a href="{{ path('core_collection_list_entity', { 'entityType':entity.type, 'entityId':entity.id }) }}" data-tooltip="tooltip" title="{{ 'collection.collection.choice.in_public_collections'|transchoice(entity.publicCollectionCount, { 'count':entity.publicCollectionCount }) }}"><i class="ladb-icon-collection"></i></a></li>
+                            <li class="ladb-linkto"><a href="{{ path('core_collection_list_byentity', { 'entityType':entity.type, 'entityId':entity.id }) }}" data-tooltip="tooltip" title="{{ 'collection.collection.choice.in_public_collections'|transchoice(entity.publicCollectionCount, { 'count':entity.publicCollectionCount }) }}"><i class="ladb-icon-collection"></i></a></li>
                         {% endif %}
                         {% if entity.viewCount is defined and entity.viewCount > 0 %}
                             <li class="ladb-counter"><i class="ladb-icon-eye"></i> <span>{{ entity.viewCount|number_format(0, ',', ' ') }}</span></li>
