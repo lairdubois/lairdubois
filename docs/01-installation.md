@@ -454,3 +454,45 @@ Start these services
     $ sudo systemctl start ladb_consumer_webpush.service
     $ sudo systemctl start ladb_websocket.service
 ```
+
+## Step 15 - Sending emails
+
+Note : The application is able to connect to any SMTP to send emails. See https://github.com/lairdubois/lairdubois/blob/master/app/config/parameters.yml.dist
+
+But if the distant SMTP is not available or if it rejects the connection for any reason (rate limit…) the app will loose the email.
+
+The solution is to send the email throught a local sender which will manage a mailqueue in case of problem.
+
+```
+sudo aptitude install postfix libsasl2-modules
+# In the following dialog, choose « Internet site with smarthost »
+```
+
+Then, create or edit `/etc/postfix/sasl_passwd`:
+
+```
+auth.smtp.1and1.fr contact@ladb.fr:P@$$€word
+```
+
+And compile the file:
+
+```
+sudo postmap /etc/postfix/sasl_passwd
+```
+
+Then, edit `/etc/postfix/main.cf` to add the following lines at the end:
+
+```
+relayhost = auth.smtp.1and1.fr
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+```
+
+And restart Postfix:
+
+```
+sudo service postfix restart
+```
+
+Now, you have a SMTP server accessible in localhost without authentication. You can see sendings logs, and possible errors, in `/var/log/mail.log`.
