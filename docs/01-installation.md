@@ -497,3 +497,6 @@ And restart Postfix:
 ```
 
 Now, you have a SMTP server accessible in localhost without authentication. You can see sendings logs, and possible errors, in `/var/log/mail.log`.
+
+And don't forget to change the `mailer_host`, `mailer_user` and `mailer_password` in symfony configuration `/app/config/parameters.yml`.
+

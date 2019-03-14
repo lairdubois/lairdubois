@@ -8,9 +8,9 @@ parameters:
     database_path:                  null
 
     mailer_transport:               smtp
-    mailer_host:                    YOUR_MAILER_HOST
-    mailer_user:                    YOUR_MAILER_USER
-    mailer_password:                YOUR_MAILER_PASSWORD
+    mailer_host:                    localhost
+    mailer_user:                    null
+    mailer_password:                null
 
     elasticsearch_host:             localhost
     elasticsearch_port:             9200
