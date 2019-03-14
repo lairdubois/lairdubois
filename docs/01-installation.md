@@ -370,7 +370,7 @@ Create service file
 ```
 
 And add the following lines
-``` bash
+```
 [Unit]
 Description=The Workflow web socket server.
 
@@ -394,7 +394,7 @@ Create service file
 ```
 
 And add the following lines
-``` bash
+```
 [Unit]
 Description=The RabbitMQ view consumer.
 
@@ -418,7 +418,7 @@ Create service file
 ```
 
 And add the following lines
-``` bash
+```
 [Unit]
 Description=The RabbitMQ webpush notification consumer.
 
@@ -463,27 +463,28 @@ But if the distant SMTP is not available or if it rejects the connection for any
 
 The solution is to send the email throught a local sender which will manage a mailqueue in case of problem.
 
-```
-sudo aptitude install postfix libsasl2-modules
-# In the following dialog, choose « Internet site with smarthost »
+``` bash
+    $ sudo aptitude install postfix libsasl2-modules
 ```
 
-Then, create or edit `/etc/postfix/sasl_passwd`:
+In the following dialog, choose « Internet site with smarthost »
+
+Then, create or edit `/etc/postfix/sasl_passwd` with the following syntax. (Replace [ XXX ] by relative values):
 
 ```
-auth.smtp.1and1.fr contact@ladb.fr:P@$$€word
+[SMTP_RELAY_HOST] [SMTP_RELAY_USER]:[SMTP_RELAY_PASSWORD]
 ```
 
 And compile the file:
 
-```
-sudo postmap /etc/postfix/sasl_passwd
+``` bash
+    $ sudo postmap /etc/postfix/sasl_passwd
 ```
 
 Then, edit `/etc/postfix/main.cf` to add the following lines at the end:
 
 ```
-relayhost = auth.smtp.1and1.fr
+relayhost = [SMTP_RELAY_HOST]
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
 smtp_sasl_security_options = noanonymous
@@ -491,8 +492,8 @@ smtp_sasl_security_options = noanonymous
 
 And restart Postfix:
 
-```
-sudo service postfix restart
+``` bash
+    $ sudo service postfix restart
 ```
 
 Now, you have a SMTP server accessible in localhost without authentication. You can see sendings logs, and possible errors, in `/var/log/mail.log`.
