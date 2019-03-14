@@ -4,12 +4,12 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\EmbeddableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -53,8 +53,6 @@ abstract class AbstractWonder extends AbstractDraftableAuthoredPublication imple
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
-	 * @ladbAssert\UpperCaseRatio()
 	 */
 	private $title;
 

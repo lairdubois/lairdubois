@@ -4,12 +4,12 @@ namespace Ladb\CoreBundle\Entity\Faq;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;

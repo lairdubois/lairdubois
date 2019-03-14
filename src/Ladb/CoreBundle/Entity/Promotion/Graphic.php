@@ -4,13 +4,13 @@ namespace Ladb\CoreBundle\Entity\Promotion;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\LicensedTrait;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
@@ -36,7 +36,6 @@ use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_promotion_graphic")
@@ -57,7 +56,6 @@ class Graphic extends AbstractDraftableAuthoredPublication implements TitledInte
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
 	 */
 	private $title;
 

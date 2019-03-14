@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Howto;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BasicEmbeddableTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\DraftableInterface;
@@ -12,8 +14,6 @@ use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Model\AuthoredInterface;
@@ -49,8 +49,6 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
-	 * @ladbAssert\UpperCaseRatio()
 	 */
 	private $title;
 

@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Youtook;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
@@ -15,10 +17,7 @@ use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\TitledTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
-use Ladb\CoreBundle\Model\TypableInterface;
 
 /**
  * @ORM\Table("tbl_youtook_took")

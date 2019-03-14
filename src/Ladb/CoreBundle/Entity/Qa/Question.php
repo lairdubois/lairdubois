@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
@@ -11,8 +13,6 @@ use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\VotableParentInterface;
 use Ladb\CoreBundle\Model\VotableParentTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
@@ -37,7 +37,6 @@ use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_qa_question")
@@ -56,7 +55,6 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
 	 */
 	private $title;
 

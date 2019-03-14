@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Workflow;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\CommentableInterface;
@@ -22,8 +24,6 @@ use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
@@ -52,8 +52,6 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
-	 * @LadbAssert\UpperCaseRatio()
 	 */
 	private $title;
 

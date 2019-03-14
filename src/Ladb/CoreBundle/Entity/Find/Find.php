@@ -4,12 +4,12 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
@@ -29,7 +29,6 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
-use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
@@ -38,7 +37,6 @@ use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
 use Ladb\CoreBundle\Entity\Find\Content\Event;
-use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_find")
@@ -68,8 +66,6 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
-	 * @ladbAssert\UpperCaseRatio()
 	 */
 	private $title;
 

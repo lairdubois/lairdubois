@@ -4,16 +4,14 @@ namespace Ladb\CoreBundle\Entity\Collection;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\CommentableInterface;
-use Ladb\CoreBundle\Model\InspirableInterface;
-use Ladb\CoreBundle\Model\InspirableTrait;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
-use Ladb\CoreBundle\Model\SitemapableInterface;
-use Ladb\CoreBundle\Model\SitemapableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
 use Ladb\CoreBundle\Model\TitledInterface;
@@ -22,8 +20,6 @@ use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
@@ -33,8 +29,6 @@ use Ladb\CoreBundle\Model\LikableTrait;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\TaggableTrait;
-use Ladb\CoreBundle\Model\LicensedInterface;
-use Ladb\CoreBundle\Model\LicensedTrait;
 
 /**
  * @ORM\Table("tbl_collection")
@@ -52,8 +46,6 @@ class Collection extends AbstractAuthoredPublication implements IndexableInterfa
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:%?!-]+$/", message="default.title.regex")
-	 * @LadbAssert\UpperCaseRatio()
 	 */
 	private $title;
 

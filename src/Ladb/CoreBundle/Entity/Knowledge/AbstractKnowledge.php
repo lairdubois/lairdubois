@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
@@ -19,8 +21,6 @@ use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\VotableParentTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
@@ -56,8 +56,6 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 
 	/**
 	 * @ORM\Column(type="string", length=100)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:-]+$/", message="default.title.regex")
-	 * @ladbAssert\UpperCaseRatio()
 	 */
 	private $title;
 
