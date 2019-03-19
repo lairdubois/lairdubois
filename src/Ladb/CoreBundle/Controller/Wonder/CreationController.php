@@ -985,14 +985,18 @@ class CreationController extends Controller {
 	 * @Route("/feed.xml", name="core_creation_feed")
 	 */
 	public function feedAction() {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$translator = $this->get('translator');
+
 		$feedIo = \FeedIo\Factory::create()->getFeedIo();
 
 		$feed = new \FeedIo\Feed;
-		$feed->setTitle('THE FEED');
-		$feed->setDescription('THE FEED DESCRIPTION');
-
-		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$feed->setTitle('L\'Air du Bois : '.$translator->trans('wonder.creation.list'));
+		$feed->setDescription($translator->trans('wonder.creation.description'));
+		$feed->setLink($this->generateUrl('core_creation_list', array(), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
+		$feed->setLanguage('fr');
+		$feed->set('category', 'bricolage');
 
 		$creations = $creationRepository->findPagined(0, 15);
 		foreach ($creations as $creation) {
@@ -1002,6 +1006,7 @@ class CreationController extends Controller {
 			$item->setDescription($creation->getBodyExtract());
 			$item->setLastModified($creation->getUpdatedAt());
 			$item->setLink($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
+			$item->setPublicId($this->generateUrl('core_creation_show', array( 'id' => $creation->getId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
 
 			$media = new \FeedIo\Feed\Item\Media();
 			$media->setUrl($this->get('liip_imagine.cache.manager')->getBrowserPath($creation->getMainPicture()->getWebPath(), '644x322o'));
@@ -1016,7 +1021,7 @@ class CreationController extends Controller {
 		return new Response(
 			$feedIo->toRss($feed),
 			Response::HTTP_OK,
-			array( 'content-type' => 'application/rss+xml' )
+			array( 'content-type' => 'application/xml' )
 		);
 	}
 
