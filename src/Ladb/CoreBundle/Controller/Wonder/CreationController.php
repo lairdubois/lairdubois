@@ -1008,6 +1008,12 @@ class CreationController extends Controller {
 			$item->setLink($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
 			$item->setPublicId($this->generateUrl('core_creation_show', array( 'id' => $creation->getId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
 
+			$author = new \FeedIo\Feed\Item\Author();
+			$author->setName($creation->getUser()->getDisplayName());
+			$author->setUri($this->generateUrl('core_user_show', array( 'username' => $creation->getUser()->getUsernameCanonical() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
+
+			$item->setAuthor($author);
+
 			$media = new \FeedIo\Feed\Item\Media();
 			$media->setUrl($this->get('liip_imagine.cache.manager')->getBrowserPath($creation->getMainPicture()->getWebPath(), '644x322o'));
 			$media->setType(image_type_to_mime_type(exif_imagetype($creation->getMainPicture()->getAbsoluteMasterPath())));
@@ -1019,7 +1025,7 @@ class CreationController extends Controller {
 		}
 
 		return new Response(
-			$feedIo->toRss($feed),
+			$feedIo->toAtom($feed),
 			Response::HTTP_OK,
 			array( 'content-type' => 'application/xml' )
 		);
