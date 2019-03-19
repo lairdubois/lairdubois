@@ -32,7 +32,7 @@
             {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':comment, 'hideBy':true, 'itemprop':'creator' } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':comment, 'itemprop':'dateCreated' } %}
         </div>
         <div class="ladb-body">
-            <span{% if not noMicrodata %} itemprop="text"{% endif %}>{{ comment.htmlBody|raw }}</span>
+            <div{% if not noMicrodata %} itemprop="text"{% endif %}>{{ comment.htmlBody|raw }}</div>
             {% if comment.pictures is not empty %}
                 <div class="row" style="margin-bottom: 10px;">
                     {% for picture in comment.pictures %}

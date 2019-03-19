@@ -19,11 +19,11 @@
 <div class="form-group">
     {% if sourcesHistory is defined %}
         <div id="{{ form.source.vars.id }}_history" class="dropdown pull-right">
-            <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <i class="ladb-icon-history"></i> {{ 'knowledge.history'|trans }}
                 <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <ul class="dropdown-menu">
                 {% for sourcesHistoryItem in sourcesHistory %}
                     <li><a href="#" class="ladb-source-history-item" data-ladb-source-type="{{ sourcesHistoryItem[0] }}" data-ladb-source="{{ sourcesHistoryItem[1] }}">[{{ ('knowledge.source_type_'~sourcesHistoryItem[0])|trans }}]{% if sourcesHistoryItem[1] is not empty %} {{ sourcesHistoryItem[1]|truncate }}{% endif %}</a></li>
                 {% else %}

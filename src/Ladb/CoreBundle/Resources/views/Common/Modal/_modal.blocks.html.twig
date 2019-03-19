@@ -5,7 +5,7 @@
 {# set bodyClasses (facultative) #}
 
 {% block modal %}
-<div id="{{ id }}" class="modal{% if classes is defined %} {{ classes }}{% endif %}" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="{{ id }}_label">
+<div id="{{ id }}" class="modal{% if classes is defined %} {{ classes }}{% endif %}" role="dialog" tabindex="-1" aria-hidden="true">
     {% block dialog %}
         <div class="modal-dialog">
             {% block content %}

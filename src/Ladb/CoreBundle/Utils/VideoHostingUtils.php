@@ -105,7 +105,7 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 
 			$microdataScope = 'itemscope itemtype="http://schema.org/VideoObject"';
 			if (!empty($itemprop)) {
-				$microdataScope = 'itemprop="'.$itemprop.'"'.$microdataScope;
+				$microdataScope = 'itemprop="'.$itemprop.'" '.$microdataScope;
 			}
 			$microdataMetas = '<meta itemprop="embedUrl" content="'.$embedUrl.'"/>';
 			$player = '<div class="embed-responsive embed-responsive-'.$format.'">'.$player.'</div>';

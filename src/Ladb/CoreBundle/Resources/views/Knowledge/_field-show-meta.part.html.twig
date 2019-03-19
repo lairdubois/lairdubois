@@ -37,11 +37,11 @@
 <div id="ladb_meta_field_{{ field }}" class="ladb-meta ladb-meta-editable{% if valueIsUndefined %} text-muted{% endif %}{% if fieldMultiple or fieldType == 'longtext' %} ladb-readmore{% endif %}" onclick="if ($(event.target).parents('a').length == 0 && event.target.tagName !='A') { $('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' }); return false; }">
     <div class="row">
         <div class="col-xs-3">
-            <span class="ladb-key{% if disabled %} ladb-strikethrough{% endif %}" data-popover="popover" data-popover="popover" data-trigger="hover" data-placement="top" data-html="true" data-container="body" data-content="{{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}">{% if indented %}&nbsp;<i class="ladb-icon-arrow-turn-right"></i>&nbsp;{% endif %}{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</span>
+            <span class="ladb-key{% if disabled %} ladb-strikethrough{% endif %}" data-popover="popover" data-trigger="hover" data-placement="top" data-html="true" data-container="body" data-content="{{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}">{% if indented %}&nbsp;<i class="ladb-icon-arrow-turn-right"></i>&nbsp;{% endif %}{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</span>
         </div>
         <div class="col-xs-8">
             {% if valueIsUndefined %}
-                <span class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if disabled %} text-muted{% endif %}">-</div></span>
+                <div class="ladb-value">{% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if disabled %} text-muted{% endif %}">-</div></div>
             {% elseif fieldMultiple %}
                 {% if valueIsRejected and fieldMandatory %}
                     {% set value = values[0] %}

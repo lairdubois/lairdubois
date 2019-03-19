@@ -5,7 +5,7 @@
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle ladb-sorter-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-loading-text="{{ 'default.loading'|trans() }}">
-                    <i class="ladb-icon-sort"></i><span class="hidden-mobile"> {{ 'qa.answer.sort'|trans() }}</span> <span class="caret"></span>
+                    <i class="ladb-icon-sort"></i><span class="ladb-hidden-mobile"> {{ 'qa.answer.sort'|trans() }}</span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li><a href="{{ path('core_qa_answer_list_sorter', { 'id':question.id, 'sorter':'score' }) }}" rel="nofollow" class="ladb-sorter-item">{% if sorter is defined and sorter == 'score' %}<span class="pull-left"><i class="ladb-icon-arrow-right"></i></span>{% endif %}<div class="ladb-indent">{{ 'qa.answer.sort_score'|trans() }}</div></a></li>

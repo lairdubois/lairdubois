@@ -17,11 +17,11 @@
     <meta itemprop="bestRating" content="5">
     <meta itemprop="ratingValue" content="{{ rating }}">
     {% spaceless %}
-    <i class="ladb-icon-spotlight{% if rating >= 1 %} highlighted"{% endif %}"></i>
-    <i class="ladb-icon-spotlight{% if rating >= 2 %} highlighted"{% endif %}"></i>
-    <i class="ladb-icon-spotlight{% if rating >= 3 %} highlighted"{% endif %}"></i>
-    <i class="ladb-icon-spotlight{% if rating >= 4 %} highlighted"{% endif %}"></i>
-    <i class="ladb-icon-spotlight{% if rating >= 5 %} highlighted"{% endif %}"></i>
+    <i class="ladb-icon-spotlight{% if rating >= 1 %} highlighted{% endif %}"></i>
+    <i class="ladb-icon-spotlight{% if rating >= 2 %} highlighted{% endif %}"></i>
+    <i class="ladb-icon-spotlight{% if rating >= 3 %} highlighted{% endif %}"></i>
+    <i class="ladb-icon-spotlight{% if rating >= 4 %} highlighted{% endif %}"></i>
+    <i class="ladb-icon-spotlight{% if rating >= 5 %} highlighted{% endif %}"></i>
     {% endspaceless %}
     {% if not hideValue %}
         <small>( {{ rating|number_format(1, ',', ' ') }} / 5 )</small>

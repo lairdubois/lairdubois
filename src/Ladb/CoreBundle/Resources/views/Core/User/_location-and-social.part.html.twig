@@ -3,9 +3,9 @@
 
 {% set noMicrodata = noMicrodata|default(false) %}
 
-{% if user.location %}<div class="ladb-subblock"><i class="ladb-icon-location"></i> <a href="https://maps.google.fr/maps?q={{ user.location|url_encode }}"><span{% if not noMicrodata %} itemprop="homeLocation"{% endif %}>{{ user.location }}</span></a></div> {% endif %}
-{% if user.meta.website %}<div class="ladb-subblock"><i class="ladb-icon-globe"></i> <a href="{{ user.meta.website }}"{% if not noMicrodata %} itemprop="sameAs"{% endif %}>{{ user.meta.website|ladb_url_trim|truncate(30) }}</a></div> {% endif %}
-<div class="ladb-subblock">
+{% if user.location %}<span class="ladb-subblock"><i class="ladb-icon-location"></i> <a href="https://maps.google.fr/maps?q={{ user.location|url_encode }}"><span{% if not noMicrodata %} itemprop="homeLocation"{% endif %}>{{ user.location }}</span></a></span> {% endif %}
+{% if user.meta.website %}<span class="ladb-subblock"><i class="ladb-icon-globe"></i> <a href="{{ user.meta.website }}"{% if not noMicrodata %} itemprop="sameAs"{% endif %}>{{ user.meta.website|ladb_url_trim|truncate(30) }}</a></span> {% endif %}
+<span class="ladb-subblock">
     {% if user.meta.facebook %}<a href="https://www.facebook.com/{{ user.meta.facebook }}" data-tooltip="tooltip" title="Retrouvez {{ user.displayname }} sur Facebook"{% if not noMicrodata %} itemprop="sameAs"{% endif %}><i class="ladb-icon-facebook-square ladb-icon-lg"></i></a> {% endif %}
     {% if user.meta.twitter %}<a href="https://twitter.com/{{ user.meta.twitter }}" data-tooltip="tooltip" title="Retrouvez {{ user.displayname }} sur Twitter"{% if not noMicrodata %} itemprop="sameAs"{% endif %}><i class="ladb-icon-twitter-square ladb-icon-lg"></i></a> {% endif %}
     {% if user.meta.googleplus %}<a href="https://plus.google.com/{{ user.meta.googleplus }}" data-tooltip="tooltip" title="Retrouvez {{ user.displayname }} sur Google+"{% if not noMicrodata %} itemprop="sameAs"{% endif %}><i class="ladb-icon-google-plus-square ladb-icon-lg"></i></a> {% endif %}
@@ -14,4 +14,4 @@
     {% if user.meta.dailymotion %}<a href="https://www.dailymotion.com/{{ user.meta.dailymotion }}" data-tooltip="tooltip" title="Retrouvez {{ user.displayname }} sur Dailymotion"{% if not noMicrodata %} itemprop="sameAs"{% endif %}><i class="ladb-icon-dailymotion-square ladb-icon-lg"></i></a> {% endif %}
     {% if user.meta.pinterest %}<a href="http://pinterest.com/{{ user.meta.pinterest }}" data-tooltip="tooltip" title="Retrouvez {{ user.displayname }} sur Pinterest"{% if not noMicrodata %} itemprop="sameAs"{% endif %}><i class="ladb-icon-pinterest-square ladb-icon-lg"></i></a> {% endif %}
     {% if user.meta.instagram %}<a href="http://instagram.com/{{ user.meta.instagram }}" data-tooltip="tooltip" title="Retrouvez {{ user.displayname }} sur Instagram"{% if not noMicrodata %} itemprop="sameAs"{% endif %}><i class="ladb-icon-instagram-square ladb-icon-lg"></i></a> {% endif %}
-</div>
+</span>

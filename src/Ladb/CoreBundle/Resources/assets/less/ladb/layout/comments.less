@@ -46,6 +46,10 @@
       margin-left: @boxMarginLeft;
       min-height: @boxMinHeight;
     }
+
+    .ladb-avatar {
+      float: left;
+    }
     
   }
 
@@ -91,7 +95,7 @@
 
     .ladb-comment-row, .ladb-new, .ladb-fake-new {
 
-      > a > img {
+      .ladb-avatar > img {
         width: 22px;
       }
 
@@ -133,7 +137,7 @@
     .ladb-heading {
       margin-bottom: 5px;
 
-      & .author > a {
+      .ladb-author > a {
         font-weight: bold;
       }
 
@@ -210,6 +214,29 @@
 
   .ladb-comment-thumbnail > .ladb-box > .ladb-comments {
     border-left:none;
+  }
+
+  .ladb-comment-row {
+
+    .ladb-box {
+      margin-left: @boxChildMarginLeft;
+    }
+
+    .ladb-avatar img {
+      width: 25px;
+    }
+
+    .ladb-heading {
+
+      .ladb-age {
+        display: block;
+        border-left: none;
+        margin-left: 0;
+        padding-left: 0;
+      }
+
+    }
+
   }
 
 }

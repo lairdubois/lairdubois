@@ -23,7 +23,7 @@
         </div>
         <div class="caption">
             <div class="ladb-minitools pull-right"><a href="{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}" data-toggle="modal" data-target="#proposals_modal" data-tooltip="tooltip" title="Voir les propositions"><i class="ladb-icon-chevron-right"></i></a></div>
-            {% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}&nbsp;<span{% if values|length == 0 %} class="ladb-color-null"{% endif %} data-popover="popover" data-popover="popover" data-trigger="hover" data-placement="top" data-html="true" data-container="body" data-content="{{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}">{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}<span>
+            {% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}&nbsp;<span{% if values|length == 0 %} class="ladb-color-null"{% endif %} data-popover="popover" data-trigger="hover" data-placement="top" data-html="true" data-container="body" data-content="{{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}">{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</span>
         </div>
     </div>
 </div>

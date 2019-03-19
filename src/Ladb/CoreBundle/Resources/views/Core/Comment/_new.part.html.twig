@@ -14,7 +14,7 @@
 
 <div id="{{ id }}" class="ladb-new">
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
-    {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
+    {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
     <div class="ladb-box">
         {% embed 'LadbCoreBundle:Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_create', { 'entityType':entityType, 'entityId':entityId, 'parentId':parentId }), 'galleryClasses':condenced ? 'ladb-pseudo-hidden' : '' } %}
             {% block buttons %}
