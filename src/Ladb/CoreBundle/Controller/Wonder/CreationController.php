@@ -989,43 +989,39 @@ class CreationController extends Controller {
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 		$translator = $this->get('translator');
 
-		$feedIo = \FeedIo\Factory::create()->getFeedIo();
+		$feed = new \Suin\RSSWriter\Feed();
 
-		$feed = new \FeedIo\Feed;
-		$feed->setTitle('L\'Air du Bois : '.$translator->trans('wonder.creation.list'));
-		$feed->setDescription($translator->trans('wonder.creation.description'));
-		$feed->setLink($this->generateUrl('core_creation_list', array(), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
-		$feed->setLanguage('fr');
-		$feed->set('category', 'bricolage');
+		$channel = new \Suin\RSSWriter\Channel();
+		$channel
+			->title('L\'Air du Bois : '.$translator->trans('wonder.creation.list'))
+			->description($translator->trans('wonder.creation.description'))
+			->url($this->generateUrl('core_creation_list', array(), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
+			->feedUrl($this->generateUrl('core_creation_feed', array(), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
+			->language('fr-FR')
+			->pubDate((new \DateTime())->getTimestamp())
+			->lastBuildDate((new \DateTime())->getTimestamp())
+			->ttl(60)
+			->appendTo($feed);
+
 
 		$creations = $creationRepository->findPagined(0, 15);
 		foreach ($creations as $creation) {
 
-			$item = $feed->newItem();
-			$item->setTitle($creation->getTitle());
-			$item->setDescription($creation->getBodyExtract());
-			$item->setLastModified($creation->getUpdatedAt());
-			$item->setLink($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
-			$item->setPublicId($this->generateUrl('core_creation_show', array( 'id' => $creation->getId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
-
-			$author = new \FeedIo\Feed\Item\Author();
-			$author->setName($creation->getUser()->getDisplayName());
-			$author->setUri($this->generateUrl('core_user_show', array( 'username' => $creation->getUser()->getUsernameCanonical() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
-
-			$item->setAuthor($author);
-
-			$media = new \FeedIo\Feed\Item\Media();
-			$media->setUrl($this->get('liip_imagine.cache.manager')->getBrowserPath($creation->getMainPicture()->getWebPath(), '644x322o'));
-			$media->setType(image_type_to_mime_type(exif_imagetype($creation->getMainPicture()->getAbsoluteMasterPath())));
-
-			$item->addMedia($media);
-
-			$feed->add($item);
+			$item = new \Suin\RSSWriter\Item();
+			$item
+				->title($creation->getTitle())
+				->description($creation->getBodyExtract())
+				->url($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
+				->author($creation->getUser()->getDisplayName())
+				->pubDate($creation->getChangedAt()->getTimestamp())
+				->guid($this->generateUrl('core_creation_show', array( 'id' => $creation->getId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL), true)
+				->preferCdata(false)// By this, title and description become CDATA wrapped HTML.
+				->appendTo($channel);
 
 		}
 
 		return new Response(
-			$feedIo->toAtom($feed),
+			$feed->render(),
 			Response::HTTP_OK,
 			array( 'content-type' => 'application/xml' )
 		);
