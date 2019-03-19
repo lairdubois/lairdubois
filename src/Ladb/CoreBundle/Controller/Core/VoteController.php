@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Model\VotableInterface;
 use Ladb\CoreBundle\Model\VotableParentInterface;
-use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Utils\VotableUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
@@ -21,6 +20,61 @@ use Ladb\CoreBundle\Event\VotableListener;
  * @Route("/votes")
  */
 class VoteController extends Controller {
+
+	private function _retriveRelatedEntityRepository($entityType) {
+
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$entityRepository = $typableUtils->getRepositoryByType($entityType);
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException($e->getMessage());
+		}
+
+		return $entityRepository;
+	}
+
+	private function _retriveRelatedEntity($entityRepository, $entityId) {
+
+		$entity = $entityRepository->findOneById($entityId);
+		if (is_null($entity)) {
+			throw $this->createNotFoundException('Unknow Entity Id (entityId='.$entityId.').');
+		}
+		if (!($entity instanceof VotableInterface)) {
+			throw $this->createNotFoundException('Entity must implements VotableInterface.');
+		}
+		if ($entity->getUser()->getId() == $this->getUser()->getId()) {
+			throw $this->createNotFoundException('Not allowed (vote->_retriveRelatedEntity)');
+		}
+
+		return $entity;
+	}
+
+	private function _retrieveRelatedParentEntityRepository($entity) {
+
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$parentEntityRepository = $typableUtils->getRepositoryByType($entity->getParentEntityType());
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException('Unknow Parent Entity Type (groupEntityType='.$entity->getParentEntityType().').');
+		}
+
+		return $parentEntityRepository;
+	}
+
+	private function _retrieveRelatedParentEntity($parentEntityRepository, $entity) {
+
+		$parentEntity = $parentEntityRepository->findOneById($entity->getParentEntityId());
+		if (is_null($parentEntity)) {
+			throw $this->createNotFoundException('Unknow Parent Entity Id (entityId='.$entity->getParentEntityId().').');
+		}
+		if (!($parentEntity instanceof VotableParentInterface)) {
+			throw $this->createNotFoundException('Parent Entity must implements VotableParentInterface.');
+		}
+
+		return $parentEntity;
+	}
+
+	/////
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{sign}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "sign" = "[+-]"}, name="core_vote_create")
@@ -141,59 +195,6 @@ class VoteController extends Controller {
 		return $this->redirect($returnToUrl);
 	}
 
-	private function _retriveRelatedEntityRepository($entityType) {
-
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entityRepository = $typableUtils->getRepositoryByType($entityType);
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException($e->getMessage());
-		}
-
-		return $entityRepository;
-	}
-
-	private function _retriveRelatedEntity($entityRepository, $entityId) {
-
-		$entity = $entityRepository->findOneById($entityId);
-		if (is_null($entity)) {
-			throw $this->createNotFoundException('Unknow Entity Id (entityId='.$entityId.').');
-		}
-		if (!($entity instanceof VotableInterface)) {
-			throw $this->createNotFoundException('Entity must implements VotableInterface.');
-		}
-		if ($entity->getUser()->getId() == $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (vote->_retriveRelatedEntity)');
-		}
-
-		return $entity;
-	}
-
-	private function _retrieveRelatedParentEntityRepository($entity) {
-
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$parentEntityRepository = $typableUtils->getRepositoryByType($entity->getParentEntityType());
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException('Unknow Parent Entity Type (groupEntityType='.$entity->getParentEntityType().').');
-		}
-
-		return $parentEntityRepository;
-	}
-
-	private function _retrieveRelatedParentEntity($parentEntityRepository, $entity) {
-
-		$parentEntity = $parentEntityRepository->findOneById($entity->getParentEntityId());
-		if (is_null($parentEntity)) {
-			throw $this->createNotFoundException('Unknow Parent Entity Id (entityId='.$entity->getParentEntityId().').');
-		}
-		if (!($parentEntity instanceof VotableParentInterface)) {
-			throw $this->createNotFoundException('Parent Entity must implements VotableParentInterface.');
-		}
-
-		return $parentEntity;
-	}
-
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_vote_delete")
 	 */
@@ -303,7 +304,6 @@ class VoteController extends Controller {
 
 		return array_merge($parameters, array(
 			'entity'   => $entity,
-			'authored' => $entity instanceof AuthoredInterface,
 		));
 	}
 

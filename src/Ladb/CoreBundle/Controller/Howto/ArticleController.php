@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
-use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +15,7 @@ use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\EmbeddableUtils;
 use Ladb\CoreBundle\Utils\HowtoUtils;
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\Howto\ArticleManager;
@@ -34,8 +34,10 @@ class ArticleController extends Controller {
 		$howto->setBodyBlockVideoCount($bodyBlockVideoCount);
 	}
 
+	/////
+
 	/**
-	 * @Route("/pas-a-pas/{id}/article/new", requirements={"id" = "\d+"}, name="core_howto_article_new")
+	 * @Route("/pas-a-pas/{id}/articles/new", requirements={"id" = "\d+"}, name="core_howto_article_new")
 	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
 	 */
 	public function newAction($id) {
@@ -61,7 +63,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/article/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_create")
+	 * @Route("/pas-a-pas/{id}/articles/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_create")
 	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
@@ -114,7 +116,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}/publish", requirements={"id" = "\d+"}, name="core_howto_article_publish")
+	 * @Route("/pas-a-pas/articles/{id}/publish", requirements={"id" = "\d+"}, name="core_howto_article_publish")
 	 */
 	public function publishAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -149,7 +151,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_article_unpublish")
+	 * @Route("/pas-a-pas/articles/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_article_unpublish")
 	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_howto_article_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
@@ -181,7 +183,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_article_edit")
+	 * @Route("/pas-a-pas/articles/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_article_edit")
 	 * @Template("LadbCoreBundle:Howto/Article:edit.html.twig")
 	 */
 	public function editAction(Request $request, $id) {
@@ -214,7 +216,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_update")
+	 * @Route("/pas-a-pas/articles/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_update")
 	 * @Template("LadbCoreBundle:Howto/Article:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -287,7 +289,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}/delete", requirements={"id" = "\d+"}, name="core_howto_article_delete")
+	 * @Route("/pas-a-pas/articles/{id}/delete", requirements={"id" = "\d+"}, name="core_howto_article_delete")
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -322,7 +324,7 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}.html", name="core_howto_article_show")
+	 * @Route("/pas-a-pas/articles/{id}.html", name="core_howto_article_show")
 	 * @Template("LadbCoreBundle:Howto/Article:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
@@ -345,7 +347,7 @@ class ArticleController extends Controller {
 				if ($response = $witnessManager->checkResponse(Howto::TYPE, $id)) {
 					return $response;
 				}
-				throw $this->createNotFoundException('Not allowed (core_howto_show)');
+				throw $this->createNotFoundException('Not allowed (core_howto_article_show)');
 			}
 		}
 
@@ -369,7 +371,8 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/article/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_article_sticker")
+	 * @Route("/pas-a-pas/articles/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_article_sticker_png")
+	 * @Route("/pas-a-pas/articles/{id}/sticker", requirements={"id" = "\d+"}, name="core_howto_article_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

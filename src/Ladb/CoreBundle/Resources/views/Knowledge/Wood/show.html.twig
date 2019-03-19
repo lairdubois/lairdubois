@@ -23,31 +23,20 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'LadbCoreBundle:Knowledge/Wood:_entity-header.part.html.twig' %}
-        {% block headerTools %}
-            <div class="ladb-header-tools">
-                {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
-                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
-                {% if watchContext is not null and is_granted("ROLE_USER") %}
-                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
-                {% endif %}
-                &nbsp;
-                {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':wood.type, 'entityId':wood.id } %}
-                {% if is_granted("ROLE_ADMIN") %}
-                    &nbsp;
-                    <a href="#delete_wonder_modal" class="btn btn-danger" data-toggle="modal" ><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
-                    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_wonder_modal', 'title':('default.deletion'|trans()) } %}
-                        {% block bodyInner %}
-                            <p>La suppression de l'essence <strong>{{ wood.title }}</strong> entrainera la perte de toutes les informations qui lui sont relatives.</p>
-                            <p>Confirmez l'action pour continuer.</p>
-                        {% endblock %}
-                        {% block footerInner %}
-                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                            <a href="{{ path('core_wood_delete', { 'id':wood.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
-                        {% endblock %}
-                    {% endembed %}
-                {% endif %}
-            </div>
+    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+        {% set headingClasses = wood.nameRejected ? 'ladb-strikethrough' : null %}
+        {% block subheadingInner %}
+            {% if wood.availability == 1 %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.wood.red_list'|trans() }}"><i class="ladb-icon-warning ladb-icon-lg ladb-color-negative"></i></span>&nbsp;
+            {% endif %}
+            {% if wood.family == 1 %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.wood.hardwood'|trans() }}"><i class="ladb-icon-hardwood ladb-icon-lg"></i></span>&nbsp;
+            {% elseif wood.family == 2 %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.wood.resinous'|trans() }}"><i class="ladb-icon-resinous ladb-icon-lg"></i></span>&nbsp;
+            {% endif %}
+            {% if wood.scientificname is not empty or wood.englishname is not empty %}
+                {% if wood.scientificname is not empty %}<em>{{ (wood.scientificname|split(','))[0] }}</em>{% endif %}{% if wood.englishname is not empty %}{% if wood.scientificname is not empty %} / {% endif %}{{ (wood.englishname|split(','))[0] }}{% endif %}
+            {% endif %}
         {% endblock %}
     {% endembed %}
 {% endblock %}

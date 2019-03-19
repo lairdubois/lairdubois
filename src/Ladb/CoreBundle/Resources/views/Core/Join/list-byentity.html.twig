@@ -3,16 +3,12 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% if authored %}
-        {% include 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' %}
-    {% else %}
-        {% include 'LadbCoreBundle:Common:_entity-header.part.html.twig' %}
-    {% endif %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' %}
 {% endblock %}
 
 {% block bodyContainerContent %}
     <div class="ladb-filterbar ladb-filterbar-line">
-        <span class="ladb-heading pull-right">{{ joins.count }} {{ 'join.choice.joins'|transchoice(joins.count) }}</span>
+        <span class="ladb-heading pull-right">{{ joins.count }} {{ 'join.choice.entities'|transchoice(joins.count) }}</span>
     </div>
     {{ parent() }}
 {% endblock %}

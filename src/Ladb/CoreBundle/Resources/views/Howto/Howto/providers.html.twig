@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
-{% set pageUrl = url('core_howto_providers', { 'id':workshop.id }) %}
-{% set pageTitle = 'Fournisseurs associés à '~workshop.title %}
+{% set pageUrl = url('core_howto_providers', { 'id':howto.id }) %}
+{% set pageTitle = 'Fournisseurs associés à '~howto.title %}
 {% set pageDescription = 'Fournisseurs associés au pas à pas' %}
 
 {% set navSection = 'howtos' %}
@@ -11,7 +11,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':howto } %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' with { 'entity':howto } %}
 {% endblock %}
 
 {% block bodyContainerContent %}

@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
-{% set pageUrl = url('core_howto_plans', { 'id':workshop.id }) %}
-{% set pageTitle = 'Plans associés à '~workshop.title %}
+{% set pageUrl = url('core_howto_plans', { 'id':howto.id }) %}
+{% set pageTitle = 'Plans associés à '~howto.title %}
 {% set pageDescription = 'Plans associés au pas à pas' %}
 
 {% set navSection = 'howtos' %}
@@ -10,7 +10,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' with { 'entity':howto } %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' with { 'entity':howto } %}
 {% endblock %}
 
 {% block bodyContainerContent %}

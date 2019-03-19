@@ -4,7 +4,7 @@
 
 {% block rowContent %}
     <p style="margin: 15px 0 5px 0;">
-        <strong>{{ row.actorUser.displayname }}</strong> a ajouté sa critique sur {{ ('notification.the.knowledge_book')|trans() }} <em>{{ row.entity.title|raw }}</em>.
+        <strong>{{ row.actorUser.displayname }}</strong> a ajouté sa critique sur {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
     </p>
     <table cellspacing="10" cellpadding="0">
         <tbody>
@@ -28,7 +28,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td height="30"><a href="{{ ladb_entity_url_action(row.entity) }}#_review_{{ row.review.id }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Voir la critique</a></td>
+                <td height="30"><a href="{{ ladb_entity_url_action(row.review) }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Voir l'avis</a></td>
             </tr>
             </tbody>
         </table>

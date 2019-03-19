@@ -11,7 +11,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Knowledge/Provider:_entity-header.part.html.twig' %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' with { 'entity':provider } %}
 {% endblock %}
 
 {% block bodyContainerContent %}

@@ -303,7 +303,8 @@ class HowtoController extends Controller {
     }
 
 	/**
-	 * @Route("/pas-a-pas/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_sticker")
+	 * @Route("/pas-a-pas/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_sticker_png")
+	 * @Route("/pas-a-pas/{id}/sticker", requirements={"id" = "\d+"}, name="core_howto_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

@@ -5,11 +5,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% if authored %}
-        {% include 'LadbCoreBundle:Common:_entity-avatar-header.part.html.twig' %}
-    {% else %}
-        {% include 'LadbCoreBundle:Common:_entity-header.part.html.twig' %}
-    {% endif %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' %}
 {% endblock %}
 
 {% block bodyContainerContent %}

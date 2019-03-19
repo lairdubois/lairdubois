@@ -63,6 +63,8 @@ class UserController extends Controller {
 		return $user;
 	}
 
+	/////
+
 	/**
 	 * @Route("/email/check", name="core_user_email_check")
 	 * @Template("LadbCoreBundle:Core/User:emailCheck.html.twig")

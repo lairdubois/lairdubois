@@ -95,6 +95,37 @@ class QuestionController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_faq_question_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_faq_question_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (faq_question_lock or core_faq_question_unlock)")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneById($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
+		}
+		if ($question->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_faq_question_lock or core_faq_question_unlock)');
+		}
+
+		// Lock or Unlock
+		$postManager = $this->get(QuestionManager::NAME);
+		if ($lock) {
+			$postManager->lock($question);
+		} else {
+			$postManager->unlock($question);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $question->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_faq_question_show', array( 'id' => $question->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_faq_question_publish")
 	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_publish)")
 	 */

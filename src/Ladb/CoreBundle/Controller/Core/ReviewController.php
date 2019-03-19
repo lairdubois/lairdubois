@@ -39,6 +39,8 @@ class ReviewController extends Controller {
 		return $entity;
 	}
 
+	/////
+
 	/**
 	 * @Route("/{entityType}/{entityId}/new", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_review_new")
 	 * @Template("LadbCoreBundle:Core/Review:new-xhr.html.twig")
@@ -224,7 +226,7 @@ class ReviewController extends Controller {
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_review_delete")
 	 */
-	public function deleteAction(Request $request, $id) {
+	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
 		$activityUtils = $this->get(ActivityUtils::NAME);
@@ -263,6 +265,24 @@ class ReviewController extends Controller {
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('review.'.$typableUtils->getStrippedNameByType($entity->getType()).'.alert.delete_success'));
 
 		return $this->redirect($typableUtils->getUrlAction($entity));
+	}
+
+	/**
+	 * @Route("/{id}", requirements={"id" = "\d+"}, name="core_review_show")
+	 */
+	public function showAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$typableUtils = $this->get(TypableUtils::NAME);
+
+		$review = $reviewRepository->findOneById($id);
+		if (is_null($review)) {
+			throw $this->createNotFoundException('Unable to find Review entity (id='.$id.').');
+		}
+
+		$entity = $this->_retrieveRelatedEntity($review->getEntityType(), $review->getEntityId());
+
+		return $this->redirect($typableUtils->getUrlAction($entity).'#_review_'.$review->getId());
 	}
 
 }

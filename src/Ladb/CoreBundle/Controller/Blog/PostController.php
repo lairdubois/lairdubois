@@ -95,6 +95,37 @@ class PostController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_blog_post_lock")
+	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_blog_post_unlock")
+	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (blog_post_lock or core_blog_post_unlock)")
+	 */
+	public function lockUnlockAction($id, $lock) {
+		$om = $this->getDoctrine()->getManager();
+		$postRepository = $om->getRepository(Post::CLASS_NAME);
+
+		$post = $postRepository->findOneById($id);
+		if (is_null($post)) {
+			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
+		}
+		if ($post->getIsLocked() === $lock) {
+			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_blog_post_lock or core_blog_post_unlock)');
+		}
+
+		// Lock or Unlock
+		$postManager = $this->get(PostManager::NAME);
+		if ($lock) {
+			$postManager->lock($post);
+		} else {
+			$postManager->unlock($post);
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.'.($lock ? 'lock' : 'unlock').'_success', array( '%title%' => $post->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_blog_post_show', array( 'id' => $post->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_blog_post_publish")
 	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_publish)")
 	 */

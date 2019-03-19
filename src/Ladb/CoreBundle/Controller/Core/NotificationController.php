@@ -95,11 +95,7 @@ class NotificationController extends Controller {
 		$returnToUrl = $request->headers->get('referer');
 
 		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Comment) {
-			$entity = $typableUtils->findTypable($activity->getComment()->getEntityType(), $activity->getComment()->getEntityId());
-			if ($entity instanceof WatchableChildInterface) {
-				$entity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
-			}
-			$returnToUrl = $typableUtils->getUrlAction($entity).'#_comment_'.$activity->getComment()->getId();
+			$returnToUrl = $typableUtils->getUrlAction($activity->getComment());
 		}
 
 		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Contribute) {
@@ -118,20 +114,7 @@ class NotificationController extends Controller {
 
 		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Mention) {
 			$entity = $typableUtils->findTypable($activity->getMention()->getEntityType(), $activity->getMention()->getEntityId());
-			$suffix = '';
-			if ($entity instanceof Comment) {
-				$comment = $entity;
-				$entity = $typableUtils->findTypable($comment->getEntityType(), $comment->getEntityId());
-				$suffix = '#_comment_'.$comment->getId();
-				if ($entity instanceof WatchableChildInterface) {
-					$entity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
-				}
-			} else if ($entity instanceof Answer) {
-				$answer = $entity;
-				$entity = $answer->getQuestion();
-				$suffix = '#_answer_'.$answer->getId();
-			}
-			$returnToUrl = $typableUtils->getUrlAction($entity).$suffix;
+			$returnToUrl = $typableUtils->getUrlAction($entity);
 		}
 
 		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Publish) {
@@ -140,7 +123,7 @@ class NotificationController extends Controller {
 		}
 
 		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Vote) {
-			$entity = $typableUtils->findTypable($activity->getVote()->getParentEntityType(), $activity->getVote()->getParentEntityId());
+			$entity = $typableUtils->findTypable($activity->getVote()->getEntityType(), $activity->getVote()->getEntityId());
 			$returnToUrl = $typableUtils->getUrlAction($entity);
 		}
 
@@ -149,19 +132,16 @@ class NotificationController extends Controller {
 			$returnToUrl = $typableUtils->getUrlAction($entity);
 		}
 
-		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Answer) {
-			$entity = $activity->getAnswer()->getQuestion();
-			$returnToUrl = $typableUtils->getUrlAction($entity).'#_answer_'.$activity->getAnswer()->getId();
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Answer) {
+			$returnToUrl = $typableUtils->getUrlAction($activity->getAnswer());
 		}
 
-		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Testify) {
-			$entity = $activity->getTestimonial()->getSchool();
-			$returnToUrl = $typableUtils->getUrlAction($entity).'#_testimonial_'.$activity->getTestimonial()->getId();
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Testify) {
+			$returnToUrl = $typableUtils->getUrlAction($activity->getTestimonial());
 		}
 
-		if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Review) {
-			$entity = $typableUtils->findTypable($activity->getReview()->getEntityType(), $activity->getReview()->getEntityId());
-			$returnToUrl = $typableUtils->getUrlAction($entity).'#_review_'.$activity->getReview()->getId();
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Review) {
+			$returnToUrl = $typableUtils->getUrlAction($activity->getReview());
 		}
 
 		return $this->redirect($returnToUrl);

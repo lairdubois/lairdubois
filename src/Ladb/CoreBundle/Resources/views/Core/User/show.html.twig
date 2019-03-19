@@ -51,6 +51,15 @@
 
 {% block bodyHeaderContainerContent %}
     <div class="ladb-avatar-header{% if hasBanner %} ladb-avatar-header-with-banner{% endif %}">
+        <a href="{{ user.avatar.webPath|imagine_filter('1024x1024i') }}" data-gallery="avatar" class="ladb-avatar ladb-cursor-preview">
+            {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'size':'128', 'noLazyLoad':true } %}
+        </a>
+        <div class="ladb-body">
+            <h1 class="ladb-heading"><span itemprop="name"{% if not user.enabled %} class="ladb-strikethrough"{% endif %}>{{ user.displayname }}</span>{% include 'LadbCoreBundle:Core/User:_account-type.part.html.twig' %}{% if user.isFullnameDisplayble %} <small>(<span itemprop="additionalName">{{ user.fullname }}</span>)</small>{% endif %}</h1>
+            <span class="ladb-subheading">
+                {% include 'LadbCoreBundle:Core/User:_location-and-social.part.html.twig' %}
+            </span>
+        </div>
         <div class="ladb-header-tools">
             {% block headerToolsInner %}
                 {% if followerContext is not null %}
@@ -63,15 +72,6 @@
                     <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }}</a>
                 {% endif %}
             {% endblock %}
-        </div>
-        <a href="{{ user.avatar.webPath|imagine_filter('1024x1024i') }}" data-gallery="avatar" class="ladb-cursor-preview">
-            {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'size':'128', 'imgClasses':'ladb-avatar' } %}
-        </a>
-        <div class="ladb-body">
-            <h1 class="ladb-heading"><span itemprop="name"{% if not user.enabled %} class="ladb-strikethrough"{% endif %}>{{ user.displayname }}</span>{% include 'LadbCoreBundle:Core/User:_account-type.part.html.twig' %}{% if user.isFullnameDisplayble %} <small>(<span itemprop="additionalName">{{ user.fullname }}</span>)</small>{% endif %}</h1>
-            <span class="ladb-subheading">
-                {% include 'LadbCoreBundle:Core/User:_location-and-social.part.html.twig' %}
-            </span>
         </div>
     </div>
     <ul class="nav nav-tabs">

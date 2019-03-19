@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,7 +11,7 @@ use Ladb\CoreBundle\Entity\Core\Like;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Model\ViewableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
@@ -213,7 +212,6 @@ class LikeController extends Controller {
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
 			'entity'      => $entity,
-			'authored'    => $entity instanceof AuthoredInterface,
 			'likes'       => $paginator,
 		);
 

@@ -1,9 +1,9 @@
 {% if followerContext.id is null %}
-    <a href="{{ path('core_follower_create', { 'followingUserId':followerContext.followingUser.id, 'rtu':app.request.requesturi }) }}" class="btn btn-primary" data-tooltip="tooltip" title="{{ 'follower.follow_tooltip'|trans({ '%name%':followerContext.followingUser.displayname}) }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-follower-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
+    <a href="{{ path('core_follower_create', { 'followingUserId':followerContext.followingUser.id, 'rtu':app.request.requesturi }) }}" class="btn btn-primary" data-tooltip="tooltip" title="{{ 'follower.follow_tooltip'|trans({ '%name%':followerContext.followingUser.displayname}) }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'follower.follow'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-follower-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
         <i class="ladb-icon-follow"></i> {{ 'follower.follow'|trans() }}
     </a>
 {%  else %}
-    <a href="{{ path('core_follower_delete', { 'id' : followerContext.id }) }}" class="btn btn-default active" data-tooltip="tooltip" title="{{ 'follower.following_tooltip'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-follower-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
+    <a href="{{ path('core_follower_delete', { 'id' : followerContext.id }) }}" class="btn btn-default active" data-tooltip="tooltip" title="{{ 'follower.following_tooltip'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'follower.following'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-follower-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
         <i class="ladb-icon-check-square"></i> {{ 'follower.following'|trans() }}
     </a>
 {% endif %}

@@ -2,13 +2,15 @@
 // LADB Header
 //
 
+@ladb-header-bg-color: #f4f4f4;
+
 .sticky-wrapper.is-sticky > .ladb-header {
   z-index: @ladb-zindex-topbar-fixed - 1;
 }
 
 .ladb-fake-header {
   position: relative;
-  background-color: #f4f4f4; //@ladb-global-dark-bg;
+  background-color: @ladb-header-bg-color;
   margin: 0 -@ladb-gutter;
   padding: 0 @ladb-gutter;
   border-bottom: 1px solid @ladb-global-border;
@@ -18,7 +20,7 @@ header {
   position: relative;
 
   .ladb-header {
-    background-color: #f4f4f4; //@ladb-global-dark-bg;
+    background-color: @ladb-header-bg-color;
     padding: 0;
     border-bottom: 1px solid @ladb-global-border;
   }
@@ -63,64 +65,69 @@ header {
   .ladb-avatar-header {
     margin-top: 13px;
     margin-bottom: 13px;
-    min-height: 64px;
 
     .ladb-avatar {
-      float: left;
+      display: table-cell;
     }
 
     .ladb-body {
-      margin-left: 74px;
-    }
+      padding-left: 10px;
+      display: table-cell;
+      width: 100%;
+      vertical-align: middle;
 
-    .ladb-heading {
-      margin: 0;
-      padding-top: 5px;
-      padding-bottom: 5px;
-      color: @ladb-global-color;
-      font-size: 30px;
-      .truncated-text();
+      .ladb-heading {
+        margin: 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: @ladb-global-color;
+        font-size: 30px;
+        //.truncated-text();
 
-      small {
-        color: @ladb-global-dark-color;
-      }
-
-    }
-
-    .ladb-subheading {
-      color: @ladb-global-dark-color;
-      margin-left: 2px;
-
-      .ladb-subblock {
-        display: inline-block;
-
-        a:hover {
-          text-decoration: none;
-
-          i {
-            opacity: 0.5
-          }
-
+        small {
+          color: @ladb-global-dark-color;
         }
 
       }
 
-      i {
+      .ladb-subheading {
+        color: @ladb-global-dark-color;
+        margin-left: 2px;
+
+        .ladb-subblock {
+          display: inline-block;
+
+          a:hover {
+            text-decoration: none;
+
+            i {
+              opacity: 0.5
+            }
+
+          }
+
+        }
+
+        i {
+          color: @ladb-global-dark-color;
+        }
+
+      }
+
+      .ladb-age {
+        .age();
         color: @ladb-global-dark-color;
       }
 
-    }
-
-    .ladb-age {
-      .age();
-      color: @ladb-global-dark-color;
     }
 
   }
 
   .ladb-header-tools {
-    margin: 15px 0 15px 0;
-    float: right;
+    display: table-cell;
+    white-space: nowrap;
+    vertical-align: top;
+    padding-top: 15px;
 
     form {
       display: inline;
@@ -155,18 +162,18 @@ header {
     }
 
     .ladb-body {
-      margin-left: 42px;
-    }
 
-    .ladb-heading {
-      font-size: 15px;
-      line-height: 15px;
-      padding-top: 0;
-      padding-bottom: 0;
-    }
+      .ladb-heading {
+        font-size: 15px;
+        line-height: 15px;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
 
-    .ladb-subheading {
-      font-size: 80%;
+      .ladb-subheading {
+        font-size: 80%;
+      }
+
     }
 
   }
@@ -193,8 +200,8 @@ header {
   header .ladb-avatar-header {
 
     .ladb-header-tools {
-      float: none;
-      text-align: right;
+      display: block;
+      text-align: center;
     }
 
   }

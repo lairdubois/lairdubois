@@ -48,6 +48,7 @@ EOT
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Testify::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Review::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
 	}
 
@@ -212,6 +213,16 @@ EOT
 
 				}
 
+				// Review
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Review::STRIPPED_NAME) {
+
+					$review = $activity->getReview();
+					$row->entity = $typableUtils->findTypable($review->getEntityType(), $review->getEntityId());
+					$row->childEntity = null;
+					$row->review = $review;
+
+				}
+
 				// Unknow
 				else {
 					break;
@@ -290,11 +301,17 @@ EOT
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Join::STRIPPED_NAME) {
 			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
 		}
-		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME) {
-			return $recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled();
-		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME) {
 			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
+		}
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Testify::STRIPPED_NAME) {
+			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
+		}
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Review::STRIPPED_NAME) {
+			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
+		}
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME) {
+			return $recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled();
 		}
 		return true;
 	}

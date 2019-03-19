@@ -2,14 +2,13 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Entity\Core\Watch;
 
@@ -135,7 +134,6 @@ class WatchController extends Controller {
 			'prevPageUrl'  => $pageUrls->prev,
 			'nextPageUrl'  => $pageUrls->next,
 			'entity'       => $entity,
-			'authored'     => $entity instanceof AuthoredInterface,
 			'watchs'       => $paginator,
 		);
 

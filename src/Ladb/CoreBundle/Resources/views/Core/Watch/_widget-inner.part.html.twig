@@ -1,9 +1,9 @@
 {% if watchContext.id is null %}
-    <a href="{{ path('core_watch_create', { 'entityType':watchContext.entityType, 'entityId':watchContext.entityId, 'rtu':app.request.requesturi }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'watch.create'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-watch-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
+    <a href="{{ path('core_watch_create', { 'entityType':watchContext.entityType, 'entityId':watchContext.entityId, 'rtu':app.request.requesturi }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'watch.create'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'watch.watch'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-watch-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
         <i class="ladb-icon-eye"></i> {{ 'watch.watch'|trans() }}
     </a>
 {%  else %}
-    <a href="{{ path('core_watch_delete', { 'id':watchContext.id }) }}" class="btn btn-default active" data-tooltip="tooltip" title="{{ 'watch.delete'|trans() }}" data-loading-text="{{ 'default.loading'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-watch-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
+    <a href="{{ path('core_watch_delete', { 'id':watchContext.id }) }}" class="btn btn-default active" data-tooltip="tooltip" title="{{ 'watch.delete'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'watch.watched'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-watch-widget', replaceTargetInnerOnly:true });{% else %}$(this).button('loading');{% endif %}">
         <i class="ladb-icon-check-square"></i> {{ 'watch.watched'|trans() }}
     </a>
 {% endif %}

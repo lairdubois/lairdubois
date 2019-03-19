@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Model\HiddableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,8 +11,7 @@ use Ladb\CoreBundle\Model\PublicationInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\JoinableInterface;
-use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Model\ViewableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Utils\WatchableUtils;
@@ -27,6 +25,21 @@ use Ladb\CoreBundle\Utils\TypableUtils;
  * @Route("/joins")
  */
 class JoinController extends Controller {
+
+	private function _retrieveRelatedEntity($entityType, $entityId) {
+		$typableUtils = $this->get(TypableUtils::NAME);
+		try {
+			$entity = $typableUtils->findTypable($entityType, $entityId);
+		} catch (\Exception $e) {
+			throw $this->createNotFoundException($e->getMessage());
+		}
+		if (!($entity instanceof JoinableInterface)) {
+			throw $this->createNotFoundException('Entity must implements JoinableInterface.');
+		}
+		return $entity;
+	}
+
+	/////
 
 	/**
 	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_join_create")
@@ -105,19 +118,6 @@ class JoinController extends Controller {
 		);
 	}
 
-	private function _retrieveRelatedEntity($entityType, $entityId) {
-		$typableUtils = $this->get(TypableUtils::NAME);
-		try {
-			$entity = $typableUtils->findTypable($entityType, $entityId);
-		} catch (\Exception $e) {
-			throw $this->createNotFoundException($e->getMessage());
-		}
-		if (!($entity instanceof JoinableInterface)) {
-			throw $this->createNotFoundException('Entity must implements JoinableInterface.');
-		}
-		return $entity;
-	}
-
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_join_delete")
 	 * @Template("LadbCoreBundle:Core/Join:delete-xhr.html.twig")
@@ -174,11 +174,11 @@ class JoinController extends Controller {
 	}
 
 	/**
-	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_join_list_entity")
-	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_join_list_entity_page")
+	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_join_list_byentity")
+	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_join_list_byentity_page")
 	 * @Template("LadbCoreBundle:Core/Join:list-byentity.html.twig")
 	 */
-	public function listEntityAction(Request $request, $entityType, $entityId, $page = 0) {
+	public function listByEntityAction(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 		$joinRepository = $om->getRepository(Join::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
@@ -192,13 +192,12 @@ class JoinController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $joinRepository->findPaginedByEntityTypeAndEntityIdJoinedOnUser($entityType, $entityId, $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_join_list_entity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_join_list_byentity_page', array( 'entityType' => $entityType, 'entityId' => $entityId ), $page, $paginator->count());
 
 		$parameters = array(
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
 			'entity'      => $entity,
-			'authored'    => $entity instanceof AuthoredInterface,
 			'joins'       => $paginator,
 		);
 

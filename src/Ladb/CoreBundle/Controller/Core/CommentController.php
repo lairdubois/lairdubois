@@ -313,6 +313,29 @@ class CommentController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}", requirements={"id" = "\d+"}, name="core_comment_show")
+	 */
+	public function showAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$typableUtils = $this->get(TypableUtils::NAME);
+
+		$comment = $commentRepository->findOneById($id);
+		if (is_null($comment)) {
+			throw $this->createNotFoundException('Unable to find Comment entity (id='.$id.').');
+		}
+
+		// Retrieve related entity
+
+		$entity = $this->_retrieveRelatedEntity($comment->getEntityType(), $comment->getEntityId());
+		if ($entity instanceof WatchableChildInterface) {
+			$entity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
+		}
+
+		return $this->redirect($typableUtils->getUrlAction($entity).'#_comment_'.$comment->getId());
+	}
+
+	/**
 	 * @Route("/{id}/moveup", requirements={"id" = "\d+"}, name="core_comment_moveup")
 	 * @Template("LadbCoreBundle:Core/Comment:moveup-xhr.html.twig")
 	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_moveup)")

@@ -30,7 +30,7 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 class AnswerController extends Controller {
 
 	/**
-	 * @Route("/{id}/answer/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
+	 * @Route("/{id}/reponses/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
 	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
 	 */
 	public function newAction($id) {
@@ -53,7 +53,7 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/answer/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_create")
+	 * @Route("/{id}/reponses/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_create")
 	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
@@ -142,7 +142,7 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/answer/{id}/edit", requirements={"id" = "\d+"}, name="core_qa_answer_edit")
+	 * @Route("/reponses/{id}/edit", requirements={"id" = "\d+"}, name="core_qa_answer_edit")
 	 * @Template("LadbCoreBundle:Qa/Answer:edit-xhr.html.twig")
 	 */
 	public function editAction(Request $request, $id) {
@@ -166,7 +166,7 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/answer/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_update")
+	 * @Route("/reponses/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_update")
 	 * @Template("LadbCoreBundle:Qa/Answer:edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -228,8 +228,8 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/answer/{id}/best/create", requirements={"id" = "\d+"}, defaults={"action" = "create"}, name="core_qa_answer_best_create")
-	 * @Route("/answer/{id}/best/delete", requirements={"id" = "\d+"}, defaults={"action" = "delete"}, name="core_qa_answer_best_delete")
+	 * @Route("/reponses/{id}/best/create", requirements={"id" = "\d+"}, defaults={"action" = "create"}, name="core_qa_answer_best_create")
+	 * @Route("/reponses/{id}/best/delete", requirements={"id" = "\d+"}, defaults={"action" = "delete"}, name="core_qa_answer_best_delete")
 	 */
 	public function bestToggleAction(Request $request, $id, $action) {
 		$om = $this->getDoctrine()->getManager();
@@ -269,7 +269,7 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/answer/{id}/delete", requirements={"id" = "\d+"}, name="core_qa_answer_delete")
+	 * @Route("/reponses/{id}/delete", requirements={"id" = "\d+"}, name="core_qa_answer_delete")
 	 */
 	public function deleteAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -277,7 +277,7 @@ class AnswerController extends Controller {
 
 		$answer = $answerRepository->findOneById($id);
 		if (is_null($answer)) {
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
+			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
 		}
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $answer->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_qa_answer_delete)');
@@ -300,8 +300,30 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/answers", requirements={"id" = "\d+"}, name="core_qa_answer_list")
-	 * @Route("/{id}/answers/{sorter}", requirements={"id" = "\d+", "sorter" = "[a-z-]+"}, name="core_qa_answer_list_sorter")
+	 * @Route("/reponses/{id}", requirements={"id" = "\d+"}, name="core_qa_answer_show")
+	 */
+	public function showAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+
+		$answer = $answerRepository->findOneById($id);
+		if (is_null($answer)) {
+			throw $this->createNotFoundException('Unable to find Answer entity (id='.$id.').');
+		}
+
+		$question = $answer->getQuestion();
+		if ($question->getIsDraft() === true) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $question->getUser()->getId() != $this->getUser()->getId())) {
+				throw $this->createNotFoundException('Not allowed (core_qa_answer_show)');
+			}
+		}
+
+		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )).'#_answer_'.$answer->getId());
+	}
+
+	/**
+	 * @Route("/{id}/reponses", requirements={"id" = "\d+"}, name="core_qa_answer_list")
+	 * @Route("/{id}/reponses/{sorter}", requirements={"id" = "\d+", "sorter" = "[a-z-]+"}, name="core_qa_answer_list_sorter")
 	 * @Template("LadbCoreBundle:Qa/Answer:list-xhr.html.twig")
 	 */
 	public function listAction(Request $request, $id, $sorter = 'score') {
@@ -331,7 +353,7 @@ class AnswerController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/admin/converttocomment", requirements={"id" = "\d+"}, name="core_qa_answer_admin_converttocomment")
+	 * @Route("/{id}/reponses/admin/converttocomment", requirements={"id" = "\d+"}, name="core_qa_answer_admin_converttocomment")
 	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
 	 */
 	public function adminConvertToCommentAction($id) {

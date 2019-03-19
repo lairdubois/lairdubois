@@ -19,6 +19,8 @@
                 </div>
             </div>
         {% else %}
+            <p><strong class='ladb-color-danger'><u>Attention</u> : Les fichiers et images joints à cette publication doivent vous appartenir ou doivent pouvoir être diffusés librement par l'accord de leur auteur.</strong></p>
+            <hr>
             <p>{% block whatItIs %}{% endblock %}</p>
             {% if license is not null %}
                 <blockquote>{% include 'LadbCoreBundle:Core/License:_publish-modal.part.html.twig' %}</blockquote>

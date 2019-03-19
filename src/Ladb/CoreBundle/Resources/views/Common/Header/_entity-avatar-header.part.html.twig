@@ -1,0 +1,40 @@
+
+{# set entity #}
+{# set noMicrodata (facultative) #}
+{# set authorItemprop (facultative) #}
+{# set ageItemprop (facultative) #}
+{# set headingClasses (facultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+{% set noMicrodataAuthor = noMicrodata or noMicrodataAuthor|default(false) %}
+{% set noAuthorAvatar = noAuthorAvatar|default(false) %}
+
+<div class="ladb-avatar-header">
+    {% block headerInner %}
+        {% if not noAuthorAvatar and entity.user is defined %}
+            {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':entity.user, 'size':64, 'linkClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } %}
+        {% else %}
+            <div class="ladb-avatar">{% include 'LadbCoreBundle:Common:_avatar.part.html.twig' with { 'size':64, 'noMicrodata':true, 'noLazyLoad':true } %}</div>
+        {% endif %}
+        <div class="ladb-body">
+            <h1 class="ladb-heading{% if headingClasses is defined and headingClasses is not null %} {{ headingClasses }}{% endif %}">{% if entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block headingInner %}{{ entity.title|raw }}{% endblock %}</h1>
+            {% block subheading %}
+                <span class="ladb-subheading">
+                    {% block subheadingInner %}
+                        {% if entity.user is defined %}
+                            {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'noMicrodata':noMicrodataAuthor } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
+                        {% endif %}
+                    {% endblock %}
+                </span>
+            {% endblock %}
+            {% if followerContext is defined and followerContext is not null %}<span style="padding-left: 10px;" class="ladb-hidden-mobile">{% include 'LadbCoreBundle:Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext, 'tiny':true } %}</span>{% endif %}
+        </div>
+        {% block headerTools %}
+            <div class="ladb-header-tools">
+                {% block headerToolsInner %}
+                    <a href="{{ ladb_entity_url_action(entity) }}" class="btn btn-default">{{ 'default.back'|trans() }}</a>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    {% endblock %}
+</div>

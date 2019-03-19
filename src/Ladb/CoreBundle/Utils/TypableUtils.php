@@ -296,12 +296,18 @@ class TypableUtils extends AbstractContainerAwareUtils {
 		}
 		switch ($typable->getType()) {
 
+			case \Ladb\CoreBundle\Entity\Core\Comment::TYPE:
+				$url = $router->generate('core_comment_'.$action, $params, $referenceType);
+				break;
 			case \Ladb\CoreBundle\Entity\Message\Thread::TYPE:
 				$url = $router->generate('core_message_thread_'.$action, $params, $referenceType);
 				break;
 			case \Ladb\CoreBundle\Entity\Message\Message::TYPE:
 				$params['id'] = $typable->getThread()->getId();
 				$url = $router->generate('core_message_thread_'.$action, $params, $referenceType).'#_message_'.$typable->getId();
+				break;
+			case \Ladb\CoreBundle\Entity\Core\Review::TYPE:
+				$url = $router->generate('core_review_'.$action, $params, $referenceType);
 				break;
 
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -340,8 +346,14 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Qa\Question::TYPE:
 				$url = $router->generate('core_qa_question_'.$action, $params, $referenceType);
 				break;
+			case \Ladb\CoreBundle\Entity\Qa\Answer::TYPE:
+				$url = $router->generate('core_qa_answer_'.$action, $params, $referenceType);
+				break;
 			case \Ladb\CoreBundle\Entity\Knowledge\School::TYPE:
 				$url = $router->generate('core_school_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Knowledge\School\Testimonial::TYPE:
+				$url = $router->generate('core_knowledge_school_testimonial_'.$action, $params, $referenceType);
 				break;
 			case \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE:
 				$url = $router->generate('core_promotion_graphic_'.$action, $params, $referenceType);

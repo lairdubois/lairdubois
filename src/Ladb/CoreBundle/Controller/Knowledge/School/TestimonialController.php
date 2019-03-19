@@ -201,4 +201,21 @@ class TestimonialController extends Controller {
 		return $this->redirect($this->generateUrl('core_school_show', array( 'id' => $school->getSluggedId() )));
 	}
 
+	/**
+	 * @Route("/temoignages/{id}", requirements={"id" = "\d+"}, name="core_knowledge_school_testimonial_show")
+	 */
+	public function showAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$testimonialRepository = $om->getRepository(School\Testimonial::CLASS_NAME);
+
+		$testimonial = $testimonialRepository->findOneById($id);
+		if (is_null($testimonial)) {
+			throw $this->createNotFoundException('Unable to find Testimonial entity (id='.$id.').');
+		}
+
+		$school = $testimonial->getSchool();
+
+		return $this->redirect($this->generateUrl('core_school_show', array( 'id' => $school->getSluggedId() )).'#_testimonial_'.$testimonial->getId());
+	}
+
 }

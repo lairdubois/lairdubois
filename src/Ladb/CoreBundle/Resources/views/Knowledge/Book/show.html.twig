@@ -64,31 +64,14 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'LadbCoreBundle:Knowledge/Book:_entity-header.part.html.twig' %}
-        {% block headerTools %}
-            <div class="ladb-header-tools">
-                {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
-                {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
-                {% if watchContext is not null and is_granted("ROLE_USER") %}
-                    {% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}
-                {% endif %}
-                &nbsp;
-                {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':book.type, 'entityId':book.id } %}
-                {% if is_granted("ROLE_ADMIN") %}
-                    &nbsp;
-                    <a href="#delete_book_modal" class="btn btn-danger" data-toggle="modal" ><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
-                    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_book_modal', 'title':('default.deletion'|trans()) } %}
-                        {% block bodyInner %}
-                            <p>La suppression de l'essence <strong>{{ book.title }}</strong> entrainera la perte de toutes les informations qui lui sont relatives.</p>
-                            <p>Confirmez l'action pour continuer.</p>
-                        {% endblock %}
-                        {% block footerInner %}
-                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                            <a href="{{ path('core_book_delete', { 'id':book.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
-                        {% endblock %}
-                    {% endembed %}
-                {% endif %}
-            </div>
+    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+        {% set headingClasses = book.titleRejected ? 'ladb-strikethrough' : null %}
+        {% block subheadingInner %}
+            {% if book.publicDomain %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.book.field.public_domain'|trans() }}"><i class="ladb-icon-public-domain ladb-icon-lg"></i></span>
+            {% endif %}
+            {% if book.authors %}<div class="ladb-subblock">de {% for author in book.authors|split(',') %}<a href='{{ path('core_book_list') }}?q=@authors:"{{ author }}"'>{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</div> {% endif %}
+            {% if book.editor %}<div class="ladb-subblock{% if book.authors %} ladb-horizontal-separator-left{% endif %}"><em>{{ book.editor }}</em></div>{% endif %}
         {% endblock %}
     {% endembed %}
 {% endblock %}
