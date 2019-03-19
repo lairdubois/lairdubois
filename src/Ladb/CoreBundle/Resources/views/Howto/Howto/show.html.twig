@@ -94,7 +94,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' with { 'shareModalAddonTemplate':'LadbCoreBundle:Howto/Howto:_share-modal-addon.part.html.twig' } %}
     {% endembed %}
 {% endblock %}
 

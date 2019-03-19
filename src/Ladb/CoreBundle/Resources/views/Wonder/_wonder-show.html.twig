@@ -24,7 +24,7 @@
 {% set sbImage = url('core_'~wonderType~'_strip', { 'id':wonder.id }) %} {# use Strip as shared image #}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' with { 'entity':wonder} %}
+    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' with { 'shareModalAddonTemplate':'LadbCoreBundle:Wonder:_wonder-share-modal-addon.part.html.twig' } %}
         {% block adminItems %}
             {{ parent() }}
             {% if wonderType == 'creation' %}
