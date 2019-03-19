@@ -236,7 +236,7 @@ liip_imagine:
                 thumbnail: { size: [505, 180], mode: outbound }
             post_processors:
                 ladb_imageoptimizer: {}
-        594x294o: # Blog main picture
+        594x294o: # Blog main picture + Feed
             filters:
                 thumbnail: { size: [594, 294], mode: outbound, allow_upscale: true }
             post_processors:
@@ -245,11 +245,6 @@ liip_imagine:
             filters:
                 relative_resize: { heighten: 450 }
                 thumbnail: { size: [600, 450], mode: outbound, allow_upscale: true }
-            post_processors:
-                ladb_imageoptimizer: {}
-        644x322o: # Feed
-            filters:
-                thumbnail: { size: [644, 322], mode: outbound, allow_upscale: true }
             post_processors:
                 ladb_imageoptimizer: {}
         800x350o: # Spotlight

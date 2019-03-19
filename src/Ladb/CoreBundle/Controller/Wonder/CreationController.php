@@ -1015,7 +1015,7 @@ class CreationController extends Controller {
 				->author($creation->getUser()->getDisplayName())
 				->pubDate($creation->getChangedAt()->getTimestamp())
 				->guid($this->generateUrl('core_creation_show', array( 'id' => $creation->getId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL), true)
-				->preferCdata(false)// By this, title and description become CDATA wrapped HTML.
+				->enclosure($this->get('liip_imagine.cache.manager')->getBrowserPath($creation->getMainPicture()->getWebPath(), '594x294o'), 0, image_type_to_mime_type(exif_imagetype($creation->getMainPicture()->getAbsoluteMasterPath())))
 				->appendTo($channel);
 
 		}
@@ -1023,7 +1023,7 @@ class CreationController extends Controller {
 		return new Response(
 			$feed->render(),
 			Response::HTTP_OK,
-			array( 'content-type' => 'application/xml' )
+			array( 'content-type' => 'application/rss+xml' )
 		);
 	}
 
