@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20190319"
+        version:    "201903191952"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -245,6 +245,11 @@ liip_imagine:
             filters:
                 relative_resize: { heighten: 450 }
                 thumbnail: { size: [600, 450], mode: outbound, allow_upscale: true }
+            post_processors:
+                ladb_imageoptimizer: {}
+        644x322o: # Feed
+            filters:
+                thumbnail: { size: [644, 322], mode: outbound, allow_upscale: true }
             post_processors:
                 ladb_imageoptimizer: {}
         800x350o: # Spotlight

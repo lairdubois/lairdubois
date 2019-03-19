@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Controller\Wonder;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -978,6 +979,45 @@ class CreationController extends Controller {
 		}
 
 		return $parameters;
+	}
+
+	/**
+	 * @Route("/feed.xml", name="core_creation_feed")
+	 */
+	public function feedAction() {
+		$feedIo = \FeedIo\Factory::create()->getFeedIo();
+
+		$feed = new \FeedIo\Feed;
+		$feed->setTitle('THE FEED');
+		$feed->setDescription('THE FEED DESCRIPTION');
+
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$creations = $creationRepository->findPagined(0, 15);
+		foreach ($creations as $creation) {
+
+			$item = $feed->newItem();
+			$item->setTitle($creation->getTitle());
+			$item->setDescription($creation->getBodyExtract());
+			$item->setLastModified($creation->getUpdatedAt());
+			$item->setLink($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL));
+
+			$media = new \FeedIo\Feed\Item\Media();
+			$media->setUrl($this->get('liip_imagine.cache.manager')->getBrowserPath($creation->getMainPicture()->getWebPath(), '644x322o'));
+			$media->setType(image_type_to_mime_type(exif_imagetype($creation->getMainPicture()->getAbsoluteMasterPath())));
+
+			$item->addMedia($media);
+
+			$feed->add($item);
+
+		}
+
+		return new Response(
+			$feedIo->toRss($feed),
+			Response::HTTP_OK,
+			array( 'content-type' => 'application/rss+xml' )
+		);
 	}
 
 	/**
