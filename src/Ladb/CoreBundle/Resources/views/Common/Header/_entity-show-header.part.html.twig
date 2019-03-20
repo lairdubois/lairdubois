@@ -15,11 +15,11 @@
         {% if likeContext is defined and not ownerUser %}
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
         {% endif %}
-        {% if collectionContext is defined %}
-            {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
-        {% endif %}
         {% if authored and ownerUser %}
             <a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
+        {% endif %}
+        {% if collectionContext is defined %}
+            {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
         {% endif %}
     {% endblock %}
     <div class="btn-group">

@@ -1011,12 +1011,18 @@ class CreationController extends Controller {
 			$item
 				->title($creation->getTitle())
 				->description($creation->getBodyExtract())
-				->url($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
+				->url($this->generateUrl('core_creation_show', array('id' => $creation->getSluggedId()), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
 				->author($creation->getUser()->getDisplayName())
 				->pubDate($creation->getChangedAt()->getTimestamp())
-				->guid($this->generateUrl('core_creation_show', array( 'id' => $creation->getId() ), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL), true)
+				->guid($this->generateUrl('core_creation_show', array('id' => $creation->getId()), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL), true)
 				->enclosure($this->get('liip_imagine.cache.manager')->getBrowserPath($creation->getMainPicture()->getWebPath(), '594x294o'), 0, image_type_to_mime_type(exif_imagetype($creation->getMainPicture()->getAbsoluteMasterPath())))
-				->appendTo($channel);
+			;
+
+			foreach ($creation->getTags() as $tag) {
+				$item->category($tag->getLabel());
+			}
+
+			$item->appendTo($channel);
 
 		}
 
