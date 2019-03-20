@@ -27,7 +27,7 @@ class PictureUploadHandler extends \UploadHandler {
 						   $imageMaxHeight = Picture::DEFAULT_IMAGE_MAX_HEIGHT) {
 		parent::__construct(array(
 			'script_url'                   => '',
-			'upload_dir'                   => sys_get_temp_dir().DIRECTORY_SEPARATOR,
+			'upload_dir'                   => sys_get_temp_dir(),
 			'upload_url'                   => '',
 			'access_control_allow_methods' => array(
 				'POST',
@@ -54,8 +54,8 @@ class PictureUploadHandler extends \UploadHandler {
 		if (empty($file->error)) {
 
 			$user = $this->tokenStorage->getToken()->getUser();
-			$fileAbsolutePath = $this->options['upload_dir'].$name;
-			$fileExtension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+			$fileAbsolutePath = $this->options['upload_dir'].$file->name;
+			$fileExtension = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
 			$resourceAbsolutePath = __DIR__.'/../../../../uploads/'.$resourcePath;
 
