@@ -9,5 +9,5 @@
 {% set noMicrodataAge = noMicrodata or noMicrodataAge|default(false) %}
 {% set itemprop = itemprop|default('dateCreated') %}
 
-<span class="ladb-age{% if classes is defined %} {{ classes }}{% endif %}">{% if not noMicrodataAge %}<time datetime="{{ entity.createdAt|date('Y-m-d H:i:s') }}" itemprop="{{ itemprop }}">{% endif %}{{ entity.createdAt|time_diff() }}{% if not noMicrodataAge %}</time>{% endif %}</span>
+<span class="ladb-age{% if classes is defined %} {{ classes }}{% endif %}">{% if not noMicrodataAge %}<time datetime="{{ entity.createdAt|date('Y-m-d H:i:s') }}" itemprop="{{ itemprop }}">{% endif %}{{ entity.createdAt|time_diff }}{% if not noMicrodataAge %}</time>{% endif %}</span>
 {% endspaceless %}

@@ -81,7 +81,7 @@
                             buttonToggle = '',
                             buttonHandler = ns + '-' + button.name,
                             btnText = button.btnText ? button.btnText : '',
-                            btnClass = button.btnClass ? button.btnClass : 'btn btn-default',
+                            btnClass = button.btnClass ? button.btnClass : '',
                             tabIndex = button.tabIndex ? button.tabIndex : '-1'
 
                         if (button.toggle == true) {
@@ -91,7 +91,7 @@
                         // Attach the button object
                         btnGroupContainer.append('<button class="'
                             + btnClass
-                            + ' btn-sm" data-tooltip="tooltip" title="'
+                            + ' btn btn-default btn-sm" data-tooltip="tooltip" title="'
                             + button.title
                             + '" tabindex="'
                             + tabIndex
@@ -688,6 +688,7 @@
                             name: 'cmdHeading',
                             title: 'Titre',
                             icon: 'ladb-icon-title',
+                            btnClass: 'ladb-hidden-mobile',
                             callback: function (e) {
                                 // Append/remove ### surround the selection
                                 var chunk, cursor, selected = e.getSelection(), content = e.getContent(), pointer, prevChar
@@ -764,6 +765,7 @@
                             name: 'cmdList',
                             title: 'Liste',
                             icon: 'ladb-icon-list',
+                            btnClass: 'ladb-hidden-mobile',
                             callback: function (e) {
                                 // Prepend/Give - surround the selection
                                 var chunk, cursor, selected = e.getSelection(), content = e.getContent()
@@ -815,6 +817,7 @@
                             name: 'cmdQuote',
                             title: 'Citer',
                             icon: 'ladb-icon-quote',
+                            btnClass: 'ladb-hidden-mobile',
                             callback: function (e) {
                                 // Prepend/Give - surround the selection
                                 var chunk, cursor, selected = e.getSelection(), content = e.getContent()

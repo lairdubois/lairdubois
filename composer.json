@@ -21,6 +21,7 @@
         "php": ">=7.2",
         "ext-curl": "*",
         "ext-dom": "*",
+        "ext-imagick": "*",
 
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
@@ -53,7 +54,7 @@
         "twitter/bootstrap": "3.3.7",
         "uikit/uikit": "2.27.2",
         "afarkas/html5shiv": "3.7.3",
-        "blueimp/jquery-file-upload": "9.21.0",
+        "blueimp/jquery-file-upload": "9.28.0",
         "jublonet/codebird-php": "2.6.1",
         "jonnyw/php-phantomjs": "4.6.1",
         "emojione/emojione": "4.5.0",

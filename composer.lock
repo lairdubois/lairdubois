@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d28fe2a58eb23f4bf754916cdae9cb0",
+    "content-hash": "370af2e7b304b7de44ebf344e3fecd3e",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -230,19 +230,24 @@
         },
         {
             "name": "blueimp/jquery-file-upload",
-            "version": "v9.21.0",
+            "version": "v9.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vkhramtsov/jQuery-File-Upload.git",
-                "reference": "8439fc8b3cb0cb69019452eedd20f56ad7722b5f"
+                "reference": "ff5accfe2e5c4a522777faa980a90cf86a636d1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vkhramtsov/jQuery-File-Upload/zipball/8439fc8b3cb0cb69019452eedd20f56ad7722b5f",
-                "reference": "8439fc8b3cb0cb69019452eedd20f56ad7722b5f",
+                "url": "https://api.github.com/repos/vkhramtsov/jQuery-File-Upload/zipball/ff5accfe2e5c4a522777faa980a90cf86a636d1d",
+                "reference": "ff5accfe2e5c4a522777faa980a90cf86a636d1d",
                 "shasum": ""
             },
             "type": "library",
+            "autoload": {
+                "classmap": [
+                    "server/php/UploadHandler.php"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -276,7 +281,7 @@
                 "upload",
                 "widget"
             ],
-            "time": "2018-02-20T06:20:24+00:00"
+            "time": "2018-11-13T05:41:39+00:00"
         },
         {
             "name": "cboden/ratchet",

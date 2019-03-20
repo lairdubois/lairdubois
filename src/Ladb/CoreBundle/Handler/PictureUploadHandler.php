@@ -110,8 +110,8 @@ class PictureUploadHandler extends \UploadHandler {
 
 				// Check image ratio
 				$ratio = $img_width / $img_height;
-				if ($ratio > 3 || $ratio < 0.33) {
-					$file->error = "Les proportions de l'image sont incorrectes.<br>La plus petite dimension de l'image ne doit pas être inférieure au <strong>1/3</strong> de la plus grande.";
+				if ($ratio > 4 || $ratio < 0.25) {
+					$file->error = "Les proportions de l'image sont incorrectes.<br>La plus petite dimension de l'image ne doit pas être inférieure au <strong>1/4</strong> de la plus grande.";
 					return false;
 				}
 
