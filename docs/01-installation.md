@@ -77,6 +77,7 @@ Be sure you activate the following parameters (by uncomment or replace) :
     post_max_size = 60M
     memory_limit = 256M
     cgi.fix_pathinfo=0
+    expose_php = Off
 
 ```
 

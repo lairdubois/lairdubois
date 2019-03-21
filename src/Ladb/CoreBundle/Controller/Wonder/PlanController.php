@@ -629,7 +629,13 @@ class PlanController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_plan_sticker_png")
+	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_plan_sticker_bc")
+	 */
+	public function bcStickerAction(Request $request, $id) {
+		return $this->redirect($this->generateUrl('core_plan_sticker', array( 'id' => $id )));
+	}
+
+	/**
 	 * @Route("/{id}/sticker", requirements={"id" = "\d+"}, name="core_plan_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {

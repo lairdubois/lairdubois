@@ -324,6 +324,13 @@ class ArticleController extends Controller {
 	}
 
 	/**
+	 * @Route("/pas-a-pas/article/{id}.html", name="core_howto_article_show_bc")
+	 */
+	public function bcShowAction(Request $request, $id) {
+		return $this->redirect($this->generateUrl('core_howto_article_show', array( 'id' => $id )));
+	}
+
+	/**
 	 * @Route("/pas-a-pas/articles/{id}.html", name="core_howto_article_show")
 	 * @Template("LadbCoreBundle:Howto/Article:show.html.twig")
 	 */
@@ -371,7 +378,13 @@ class ArticleController extends Controller {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/articles/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_article_sticker_png")
+	 * @Route("/pas-a-pas/article/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_article_sticker_bc")
+	 */
+	public function bcStickerAction(Request $request, $id) {
+		return $this->redirect($this->generateUrl('core_howto_article_sticker', array( 'id' => $id )));
+	}
+
+	/**
 	 * @Route("/pas-a-pas/articles/{id}/sticker", requirements={"id" = "\d+"}, name="core_howto_article_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {

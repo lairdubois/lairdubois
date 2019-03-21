@@ -457,7 +457,13 @@ class WorkshopController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_workshop_sticker_png")
+	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_workshop_sticker_bc")
+	 */
+	public function bcStickerAction(Request $request, $id) {
+		return $this->redirect($this->generateUrl('core_workshop_sticker', array( 'id' => $id )));
+	}
+
+	/**
 	 * @Route("/{id}/sticker", requirements={"id" = "\d+"}, name="core_workshop_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {

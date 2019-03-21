@@ -33,7 +33,11 @@ class AnswerController extends Controller {
 	 * @Route("/{id}/reponses/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
 	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
 	 */
-	public function newAction($id) {
+	public function newAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
@@ -57,6 +61,10 @@ class AnswerController extends Controller {
 	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
@@ -146,6 +154,10 @@ class AnswerController extends Controller {
 	 * @Template("LadbCoreBundle:Qa/Answer:edit-xhr.html.twig")
 	 */
 	public function editAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
 
@@ -170,6 +182,10 @@ class AnswerController extends Controller {
 	 * @Template("LadbCoreBundle:Qa/Answer:edit-xhr.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
 
@@ -265,7 +281,7 @@ class AnswerController extends Controller {
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($question));
 
-		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )).'#_answer_'.$answer->getId());
+		return $this->redirect($this->generateUrl('core_qa_answer_show', array( 'id' => $answer->getId() )));
 	}
 
 	/**
@@ -327,6 +343,10 @@ class AnswerController extends Controller {
 	 * @Template("LadbCoreBundle:Qa/Answer:list-xhr.html.twig")
 	 */
 	public function listAction(Request $request, $id, $sorter = 'score') {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 		$answerRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Answer::CLASS_NAME);
