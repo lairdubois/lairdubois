@@ -424,12 +424,6 @@ EOT
 				}
 
 				unset($users);
-//				$output->writeln('Memory Usage: '.(memory_get_usage() / 1024 / 1024));
-
-				if ($verbose) {
-					$output->writeln('<info>Sleeping for 60 seconds...</info>');
-				}
-				sleep(60);
 			}
 
 			$progressBar->finish();

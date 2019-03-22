@@ -352,7 +352,7 @@ Create crontab for www-data user
 
 And add the following lines
 ```
-*/2 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod swiftmailer:spool:send &> /dev/null
+*/2 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod swiftmailer:spool:send --message-limit=100 &> /dev/null
 0 4 * * 5 php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:mailing:weeknews --force &> /dev/null
 0 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:spotlight --force &> /dev/null
 */2 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:notification:populate --force &> /dev/null
