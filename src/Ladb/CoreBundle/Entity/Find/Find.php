@@ -52,9 +52,10 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
 	const TYPE = 104;
 
-	const CONTENT_TYPE_LINK = 0;
-	const CONTENT_TYPE_GALLERY = 1;
-	const CONTENT_TYPE_EVENT = 2;
+	const CONTENT_TYPE_NONE = 0;
+	const CONTENT_TYPE_LINK = 1;
+	const CONTENT_TYPE_GALLERY = 2;
+	const CONTENT_TYPE_EVENT = 3;
 
 	const KIND_NONE = 0;
 	const KIND_WEBSITE = 1;
@@ -165,7 +166,10 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 
 	/////
 
-	private $contentType = Find::CONTENT_TYPE_LINK;
+	/**
+	 * @Assert\Range(min=1, max=3, minMessage="Vous devez sélectionner un type.")
+	 */
+	private $contentType = Find::CONTENT_TYPE_NONE;
 
 	/////
 
