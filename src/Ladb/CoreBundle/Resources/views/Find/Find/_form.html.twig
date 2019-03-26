@@ -28,10 +28,10 @@
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('find.find.form.help.title'|trans()) } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'globe', 'title':('default.content'|trans()), 'formSection':'content' } %}
         {% block body %}
-            <p class="help-block"><i>{{ 'find.find.form.help.data'|trans()|raw }}</i></p>
+            <p><span style="border: 1px solid #000; border-radius: 50%; width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; background-color: #000; color: #fff; font-size: 18px;">1</span> {{ 'find.find.form.help.data'|trans()|raw }}</p>
             <div class="form-group">
                 {{ form_errors(form.contentType) }}
-                {{ form_widget(form.contentType, { 'attr': { 'class':'form-control' } }) }}
+                {{ form_widget(form.contentType) }}
             </div>
             <ul id="{{ form.contentType.vars.id }}_tab" class="nav nav-tabs" role="tablist">
                 <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}" aria-controls="home" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}"><i class="ladb-icon-link"></i> {{ 'find.find.content.link.name'|trans }}</a></li>
@@ -44,12 +44,11 @@
                     $('#{{ form.contentType.vars.id }}').val(value);
                 });
             </script>
-            <div id="ladb_content_tab_content" class="tab-content" style="border: 1px solid #ccc; margin-top: -1px; padding: 10px;">
+            <div id="ladb_content_tab_content" class="tab-content" style="padding-top: 20px;">
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_NONE') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_NONE') %} active{% endif %}">
-                    <p class="help-block"><i>{{ 'find.find.form.help.none'|trans()|raw }}</i></p>
                 </div>
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') %} active{% endif %}">
-                    <p class="help-block"><i>{{ 'find.find.form.help.link'|trans()|raw }}</i></p>
+                    <p><span style="border: 1px solid #000; border-radius: 50%; width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; background-color: #000; color: #fff; font-size: 18px;">2</span> {{ 'find.find.form.help.link'|trans()|raw }}</p>
                     <div class="form-group">
                         {{ form_errors(form.link.url) }}
                         <div class="input-group">
@@ -63,7 +62,7 @@
                     </div>
                 </div>
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') %} active{% endif %}">
-                    <p class="help-block"><i>{{ 'find.find.form.help.gallery'|trans()|raw }}</i></p>
+                    <p><span style="border: 1px solid #000; border-radius: 50%; width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; background-color: #000; color: #fff; font-size: 18px;">2</span> {{ 'find.find.form.help.gallery'|trans()|raw }}</p>
                     <div class="form-group">
                         <label>Photos<span class="ladb-mandatory">*</span></label>
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_gallery', 'form':form.gallery, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.gallery_pictures'|trans()), 'hideTextOverlayWarning':true } %}
@@ -79,7 +78,7 @@
                     </div>
                 </div>
                 <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} active{% endif %}">
-                    <p class="help-block"><i>{{ 'find.find.form.help.event'|trans()|raw }}</i></p>
+                    <p><span style="border: 1px solid #000; border-radius: 50%; width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; background-color: #000; color: #fff; font-size: 18px;">2</span> {{ 'find.find.form.help.event'|trans()|raw }}</p>
                     <div class="form-group">
                         <label>Images<span class="ladb-mandatory">*</span></label>
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_event', 'form':form.event, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.event_pictures'|trans()), 'hideTextOverlayWarning':true } %}
@@ -194,14 +193,6 @@
                                     }
                                 })
                                 .on("dp.change", function (e) {
-                                    if (e.date) {
-                                        var startDatePicker = $('#{{ form.event.startDate.vars.id }}').data("DateTimePicker");
-                                        var startDate = startDatePicker.date();
-                                        if (startDate) {
-                                            var endDate = e.date;
-                                            startDatePicker.date(moment.min(startDate, endDate));
-                                        }
-                                    }
                                     markAsUnsaved();
                                 })
                             ;

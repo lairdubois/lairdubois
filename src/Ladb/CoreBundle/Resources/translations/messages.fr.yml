@@ -356,13 +356,13 @@ find:
         title: Renseignez ici le titre de votre trouvaille.
         body: Décrivez ici votre trouvaille.
         tags: Indiquez les tags définissant votre trouvaille.
-        data: "<span style='font-size: 120%;'>1.</span> Sélectionnez le type de votre trouvaille (<strong>Lien</strong>, <strong>Photos</strong> ou <strong>Evènement</strong>). Un seul choix possible."
+        data: "Sélectionnez le type de votre trouvaille (<em>Lien</em>, <em>Photos</em> ou <em>Evènement</em>). <strong>Un seul choix possible</strong>."
         none: "<span style='font-size: 120%'><i class='ladb-icon-arrow-up'></i> Sélectionnez un type <i class='ladb-icon-arrow-up'></i></span>"
-        link: 2. Renseignez le lien vers un site web ou une vidéo.
-        gallery: 2. Ajoutez vos photos...
+        link: Renseignez le lien vers un site web ou une vidéo.
+        gallery: Ajoutez vos photos...
         gallery_pictures: Ajoutez jusqu'à <strong>5 photos</strong> de votre trouvaille. La première photo sera utilisée comme miniature.<br/><p class="ladb-color-danger"><i class="ladb-icon-warning"></i> N'ajoutez que des photos qui vous appartiennent. Pour des raisons de droit, si les photos sont issuent d'un autre site, utilisez le type <strong>Lien</strong> pour pointer vers ce site.</p>
         gallery_location: Indiquez le lieu géographique de prise de vos photos.
-        event: 2. Renseignez l'évènement...
+        event: Renseignez l'évènement...
         event_pictures: Ajoutez jusqu'à <strong>5 images</strong> de l'évènement. La première image sera utilisée comme miniature.
         event_location: Indiquez le lieu géographique de l'évènement.
         event_url: Indiquez, le cas échéant, le site web de l'évènement.

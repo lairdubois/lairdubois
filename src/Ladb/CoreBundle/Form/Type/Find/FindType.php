@@ -51,7 +51,7 @@ class FindType extends AbstractType {
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
-			->add('contentType', HiddenType::class)
+			->add('contentType', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 			->add('link', Content\LinkType::class, array(
 				'mapped'      => false,
 				'constraints' => array(new \Symfony\Component\Validator\Constraints\Valid())
