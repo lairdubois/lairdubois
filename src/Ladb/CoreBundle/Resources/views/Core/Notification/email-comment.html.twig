@@ -6,14 +6,7 @@
     <p style="margin: 15px 0 5px 0;">
         <strong>{{ row.actorUser.displayname }}</strong> a commenté
         {% if row.childEntity is not null %}
-            {% if (row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
-                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
-                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
-                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Url::TYPE')
-                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Location::TYPE')
-                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
-                or row.childEntity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE'))
-            %}
+            {% if row.childEntity.type >= 10 and row.childEntity.type < 100 %} {# Knowledge value #}
                 {% set childEntity = row.childEntity %}
                 {% set parentEntity = ladb_entity(childEntity.parentEntityType, childEntity.parentEntityId) %}
                 {% set fieldDef = parentEntity.fieldDefs[childEntity.parentEntityField] %}

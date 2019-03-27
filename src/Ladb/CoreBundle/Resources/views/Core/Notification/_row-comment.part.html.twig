@@ -5,14 +5,7 @@
 
 {% block body %}
     {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a commenté
-    {% if entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
-        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
-        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
-        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Url::TYPE')
-        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Location::TYPE')
-        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
-        or entity.type is constant('Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE')
-    %}
+    {% if entity.type >= 10 and entity.type < 100 %} {# Knowledge value #}
         {% set childEntity = entity %}
         {% set parentEntity = ladb_entity(childEntity.parentEntityType, childEntity.parentEntityId) %}
         {% set fieldDef = parentEntity.fieldDefs[childEntity.parentEntityField] %}
