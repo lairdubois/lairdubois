@@ -310,6 +310,20 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				$url = $router->generate('core_review_'.$action, $params, $referenceType);
 				break;
 
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Integer::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Picture::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Url::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Location::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Phone::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Sign::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Longtext::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Language::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Isbn::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Price::TYPE:
+				$parentTypable = $this->findTypable($typable->getParentEntityType(), $typable->getParentEntityId());
+				return $this->getUrlAction($parentTypable, $action, $absoluteUrl, $useSluggedId, $addionalParams);
+
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
 				$url = $router->generate('core_creation_'.$action, $params, $referenceType);
 				break;
