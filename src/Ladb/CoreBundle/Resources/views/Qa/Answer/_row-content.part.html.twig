@@ -4,9 +4,6 @@
 {% set noInteraction = noInteraction|default(false) %}
 
 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
-{% if answer.isBestAnswer %}
-    <div class="ladb-best ladb-color-best-answer" data-tooltip="tooltip" title="{{ 'qa.answer.best_tooltip'|trans() }}"><i class="ladb-icon-favorite"></i></div>
-{% endif %}
 <div class="ladb-heading">
     <div class="ladb-minitools">
         {% if is_granted("ROLE_ADMIN") %}
@@ -42,6 +39,9 @@
     </div>
     {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer } %}
 </div>
+{% if answer.isBestAnswer %}
+    <div class="ladb-best ladb-color-best-answer" data-tooltip="tooltip" title="{{ 'qa.answer.best_tooltip'|trans() }}"><i class="ladb-icon-favorite"></i><span class="ladb-visible-mobile"> Meilleure réponse</span></div>
+{% endif %}
 <div class="ladb-content">
     <div itemprop="text">
         {% for block in answer.bodyBlocks %}
