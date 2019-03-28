@@ -40,7 +40,7 @@
     {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer } %}
 </div>
 {% if answer.isBestAnswer %}
-    <div class="ladb-best ladb-color-best-answer" data-tooltip="tooltip" title="{{ 'qa.answer.best_tooltip'|trans() }}"><i class="ladb-icon-favorite"></i><span class="ladb-visible-mobile"> Meilleure réponse</span></div>
+    <div class="ladb-best ladb-color-best-answer" data-tooltip="tooltip" title="{{ 'qa.answer.best_tooltip'|trans() }}"><i class="ladb-icon-favorite"></i><span class="ladb-visible-mobile"> {{ 'qa.answer.best'|trans() }}</span></div>
 {% endif %}
 <div class="ladb-content">
     <div itemprop="text">
