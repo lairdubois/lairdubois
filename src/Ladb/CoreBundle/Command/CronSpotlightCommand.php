@@ -24,6 +24,7 @@ class CronSpotlightCommand extends ContainerAwareCommand {
 			->addOption('force-twitter', null, InputOption::VALUE_NONE, 'Force posting on Twitter')
 			->addOption('force-facebook', null, InputOption::VALUE_NONE, 'Force posting on Facebook')
 			->addOption('force-pinterest', null, InputOption::VALUE_NONE, 'Force posting on Pinterest')
+			->addOption('force-mastodon', null, InputOption::VALUE_NONE, 'Force posting on Mastodon')
 			->setDescription('Update spotlights')
 			->setHelp(<<<EOT
 The <info>ladb:cron:spotlight</info> update spotlights
@@ -39,6 +40,7 @@ EOT
 		$forcedTwitter = $input->getOption('force-twitter');
 		$forcedFacebook = $input->getOption('force-facebook');
 		$forcedPinterest = $input->getOption('force-pinterest');
+		$forcedMastodon = $input->getOption('force-mastodon');
 		$verbose = $input->getOption('verbose');
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
@@ -74,6 +76,9 @@ EOT
 				}
 				if ($forcedPinterest) {
 					$this->_publishOnPinterest($currentSpotlight, $entity, $forced, $forcedPinterest, $verbose, $output);
+				}
+				if ($forcedMastodon) {
+					$this->_publishOnMastodon($currentSpotlight, $entity, $forced, $forcedMastodon, $verbose, $output);
 				}
 			}
 
@@ -224,6 +229,7 @@ EOT
 				$twitterSuccess = $this->_publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output);
 				$facebookSuccess = $this->_publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output);
 				$pinterestSuccess = false; // 2018-04-24 LADB acces_token was banned by Pinterest // $this->_publishOnPinterest($spotlight, $entity, $forced, $forcedPinterest, $verbose, $output);
+				$mastodonSuccess = $this->_publishOnMastodon($spotlight, $entity, $forced, $forcedMastodon, $verbose, $output);
 
 				// Email notification
 				$mailerUtils = $this->getContainer()->get(MailerUtils::NAME);
@@ -231,7 +237,7 @@ EOT
 					$output->write('<info>Sending notification to '.$entity->getUser()->getDisplayname().'...</info>');
 				}
 				if ($forced) {
-					$mailerUtils->sendNewSpotlightNotificationEmailMessage($entity->getUser(), $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess);
+					$mailerUtils->sendNewSpotlightNotificationEmailMessage($entity->getUser(), $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess, $mastodonSuccess);
 					if ($verbose) {
 						$output->writeln('<fg=cyan>[Done]</fg=cyan>');
 					}
@@ -450,6 +456,50 @@ EOT
 		}
 
 		return $success;
+	}
+
+	private function _publishOnMastodon($spotlight, $entity, $forced, $forcedMastodon, $verbose, $output) {
+
+		$status = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-mastodon-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		if ($verbose) {
+			$output->writeln('<info>Posting to Mastodon (<fg=yellow>'.$status.'</fg=yellow>) ...</info>');
+		}
+
+		$mastodonInstance = $this->getContainer()->getParameter('mastodon_instance');
+		$accessToken = $this->getContainer()->getParameter('mastodon_access_token');
+
+		$headers = array(
+			'Authorization: Bearer '.$accessToken,
+		);
+
+		$status_data = array(
+			"status" => $status,
+			"language" => "fra",
+			"visibility" => "public"
+		);
+
+		$ch_status = curl_init();
+		curl_setopt($ch_status, CURLOPT_URL, $mastodonInstance."/api/v1/statuses");
+		curl_setopt($ch_status, CURLOPT_POST, 1);
+		curl_setopt($ch_status, CURLOPT_POSTFIELDS, $status_data);
+		curl_setopt($ch_status, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch_status, CURLOPT_HTTPHEADER, $headers);
+
+		if ($forced || $forcedMastodon) {
+
+			$output_status = json_decode(curl_exec($ch_status));
+
+			if ($verbose && $output_status) {
+				$output->writeln('<fg=cyan>[Done]</fg=cyan>');
+			}
+		} else {
+			if ($verbose) {
+				$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
+			}
+		}
+
+		curl_close ($ch_status);
+
 	}
 
 }

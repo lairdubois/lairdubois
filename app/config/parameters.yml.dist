@@ -52,6 +52,9 @@ parameters:
     pinterest_client_secret:        YOUR_PINTEREST_CLIENT_SECRET
     pinterest_access_token:         YOUR_PINTEREST_ACCESS_TOKEN
 
+    mastodon_instance:              https://mastodon.social
+    mastodon_access_token:          YOUR_MASTODON_ACCESS_TOKEN
+
     stripe_secret_key:              YOUR_STRIPE_SECRET_KEY
     stripe_publishable_key:         YOUR_STRIPE_PUBLISHABLE_KEY
 
