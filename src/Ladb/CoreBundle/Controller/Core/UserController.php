@@ -1226,6 +1226,10 @@ class UserController extends Controller {
 
 		$manipulator->activate($username);
 
+		// Search index update
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->insertEntityFromIndex($user);
+
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.admin.alert.activate_success', array( '%displayname%' => $user->getDisplayname() )));
 
@@ -1249,6 +1253,10 @@ class UserController extends Controller {
 		}
 
 		$manipulator->deactivate($username);
+
+		// Search index update
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->deleteEntityFromIndex($user);
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.admin.alert.deactivate_success', array( '%displayname%' => $user->getDisplayname() )));
@@ -1284,6 +1292,10 @@ class UserController extends Controller {
 		// TODO
 
 		$om->flush();
+
+		// Search index update
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->replaceEntityInIndex($user);
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.admin.alert.empty_success', array( '%displayname%' => $user->getDisplayname() )));
