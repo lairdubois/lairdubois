@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block form_buttons %}
-    <a href="{{ rtu is not empty ? rtu : path('core_howto_article_show', { 'id':article.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.cancel'|trans() }}</a>
+    <a href="{{ rtu is not empty ? rtu : path('core_howto_article_show', { 'id':article.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
     {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
 {% endblock %}
 

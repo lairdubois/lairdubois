@@ -122,11 +122,11 @@
             </div>
             {% if wonder.pictures.count > 1 %}
                 {% for index in 1..(wonder.maxPictureCount - 1) %}
-                    <div class="col-xs-6 col-md-3">
+                    <div class="col-xs-6 col-md-3 ladb-margin-top{% if index >= wonder.pictures.count and index > 2 and wonder.pictures.count <= 3  %} ladb-hidden-mobile ladb-hidden-tablet{% endif %}">
                         {% if index < wonder.pictures.count %}
-                            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':wonder.pictures[index], 'width':'128', 'height':'128', 'alt':wonder.title, 'attributes':'data-pin-nopin="true"', 'aClasses':'ladb-margin-top' } %}
+                            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':wonder.pictures[index], 'width':'128', 'height':'128', 'alt':wonder.title, 'attributes':'data-pin-nopin="true"' } %}
                         {% else %}
-                            <span class="thumbnail thumbnail-empty{% if index > 2 and wonder.pictures.count <= 3  %} ladb-hidden-mobile ladb-hidden-tablet{% endif %} ladb-margin-top"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" alt="empty" data-pin-nopin="true"></span>
+                            <div class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" alt="empty" data-pin-nopin="true"></div>
                         {% endif %}
                     </div>
                 {% endfor %}
