@@ -39,7 +39,7 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 		$collection->incrementEntryTypeCounters($entry->getEntityType());
 		$collection->setChangedAt(new \DateTime());
 		$collection->setUpdatedAt(new \DateTime());
-		if (is_null($collection->getMainPicture()) && $collectionnable instanceof PicturedInterface) {
+		if (is_null($collection->getMainPicture()) && $collectionnable instanceof PicturedInterface && !is_null($collectionnable->getMainPicture())) {
 
 			// Duplicate the entyt mainPicture
 			$mainPicture = $picturedUtils->duplicatePicture($collectionnable->getMainPicture());
