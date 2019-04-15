@@ -1228,7 +1228,7 @@ class UserController extends Controller {
 
 		// Search index update
 		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchUtils->insertEntityFromIndex($user);
+		$searchUtils->insertEntityToIndex($user);
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.admin.alert.activate_success', array( '%displayname%' => $user->getDisplayname() )));

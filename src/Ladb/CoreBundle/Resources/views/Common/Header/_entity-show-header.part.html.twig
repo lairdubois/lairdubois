@@ -83,7 +83,9 @@
             {% endblock %}
         {% endembed %}
     {% endif %}
-    {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_entity_modal', 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', false, false) } %}
+    {% if is_granted("ROLE_ADMIN") or (ownerUser and not isPublic) %}
+        {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_entity_modal', 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', false, false) } %}
+    {% endif %}
     {% if is_granted("ROLE_ADMIN") and authored %}
         {% block adminModals %}
             {% if isPublic %}
