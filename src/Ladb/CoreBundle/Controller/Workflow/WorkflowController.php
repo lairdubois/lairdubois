@@ -876,8 +876,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function internalDiagramAction($id) {
 
-		echo $_SERVER['REMOTE_ADDR'];
-
 		// Retrieve workflow
 		$workflow = $this->_retrieveWorkflow($id);
 
