@@ -49,7 +49,6 @@ security:
         - { path: ^/notifications, role: ROLE_USER }
         - { path: /mes-dons$, role: ROLE_USER }
         - { path: /mes-tooks$, role: ROLE_USER }
-        - { path: /mes-processus$, role: ROLE_USER }
 
         - { path: /new$, role: ROLE_USER }
         - { path: /create$, role: ROLE_USER }
@@ -60,8 +59,9 @@ security:
         - { path: /update$, role: ROLE_USER }
         - { path: /edit$, role: ROLE_USER }
         - { path: /delete$, role: ROLE_USER }
-        - { path: /copy, role: ROLE_USER }
+        - { path: /copy$, role: ROLE_USER }
         - { path: /upload$, role: ROLE_USER }
 
         - { path: /internal/, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: /internal/, role: ROLE_ADMIN }
 
