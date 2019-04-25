@@ -2,18 +2,16 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Minishlink\WebPush\WebPush;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use BenTools\WebPushBundle\Model\Message\Notification;
 use BenTools\WebPushBundle\Registry\WebPushManagerRegistry;
 use Ladb\CoreBundle\Entity\Core\Like;
 use Ladb\CoreBundle\Entity\Message\Thread;
 use Ladb\CoreBundle\Entity\Qa\Answer;
 use Ladb\CoreBundle\Entity\Qa\Question;
-use Ladb\CoreBundle\Model\CommentableInterface;
-use Ladb\CoreBundle\Model\LikableInterface;
-use Ladb\CoreBundle\Model\TypableInterface;
-use Minishlink\WebPush\WebPush;
 use Ladb\CoreBundle\Entity\Core\User;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Ladb\CoreBundle\Model\LikableInterface;
 
 class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 
