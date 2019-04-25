@@ -5,6 +5,7 @@
 {# set pageContentItemType (facultative) #}
 {# set pageContentNameItemprop (facultative) #}
 {# set pageContentDescriptionItemprop (facultative) #}
+{# set pageFeedRoute (facultative) #}
 
 {% set pageUrl = pageUrl|default(app.request.uri) %}
 {% set pageType = pageType|default('website') %}
@@ -96,6 +97,9 @@
             {% endif %}
             {% if pageLicenseUrl %}
                 <link rel="license" href="{{ pageLicenseUrl }}" />
+            {% endif %}
+            {% if pageFeedRoute %}
+                <link rel="alternate" type="application/rss+xml" title="L'Air du Bois : {{ pageTitle }}" href="{{ url(pageFeedRoute) }}">
             {% endif %}
             <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('apple-icon-57x57.png') }}">
             <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('apple-icon-60x60.png') }}">

@@ -1009,14 +1009,13 @@ class CreationController extends Controller {
 			->ttl(60)
 			->appendTo($feed);
 
-
 		$creations = $creationRepository->findPagined(0, 15);
 		foreach ($creations as $creation) {
 
 			$item = new \Suin\RSSWriter\Item();
 			$item
 				->title($creation->getTitle())
-				->description($creation->getBodyExtract())
+				->description($creation->getBodyExtract().'<br><a href="'.$this->generateUrl('core_creation_show', array('id' => $creation->getSluggedId()), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL).'">Lire la suite...</a>')
 				->url($this->generateUrl('core_creation_show', array('id' => $creation->getSluggedId()), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
 				->author($creation->getUser()->getDisplayName())
 				->pubDate($creation->getChangedAt()->getTimestamp())
