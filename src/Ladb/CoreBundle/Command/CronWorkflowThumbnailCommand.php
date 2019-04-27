@@ -79,7 +79,11 @@ EOT
 			$workflow->setMainPicture($mainPicture);
 
 			if ($verbose) {
-				$output->writeln('<fg=cyan> [OK]</fg=cyan>');
+				if ($forced) {
+					$output->writeln('<fg=cyan> [OK]</fg=cyan>');
+				} else {
+					$output->writeln('<fg=cyan> [FAKE]</fg=cyan>');
+				}
 			}
 
 		}
