@@ -102,7 +102,6 @@
             } else {
                 $('#ladb_account_type_brand_warning_alert').hide();
             }
-            console.log(this, e, $(this).val());
         })
 
     };
