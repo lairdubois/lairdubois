@@ -501,3 +501,14 @@ Now, you have a SMTP server accessible in localhost without authentication. You 
 
 And don't forget to change the `mailer_host`, `mailer_user` and `mailer_password` in symfony configuration `/app/config/parameters.yml`.
 
+## Step 16 - System configuration tuning
+
+### Local host
+
+In order to map local call to webserver through localhost, edit the `/etc/hosts` file and add the following lines.
+This is important so that all calls where url contains `/internal/` will be accessible from the local server.
+
+```
+127.0.0.1 lairdubois.fr www.lairdubois.fr
+```
+
