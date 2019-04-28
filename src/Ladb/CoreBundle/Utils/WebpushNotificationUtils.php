@@ -20,7 +20,7 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 			$question->getUser()->getId(),
 			'Nouvelle réponse de '.$answer->getUser()->getDisplayname(),
 			$this->get('liip_imagine.cache.manager')->getBrowserPath($answer->getUser()->getAvatar()->getWebPath(), '128x128o'),
-			$this->get(TypableUtils::NAME)->getUrlAction($question)
+			$this->get(TypableUtils::NAME)->getUrlAction($answer)
 		);
 	}
 
