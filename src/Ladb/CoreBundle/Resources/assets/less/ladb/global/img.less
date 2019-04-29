@@ -85,3 +85,35 @@
 
 }
 
+.ladb-img {
+
+  & .ladb-img-search-link {
+    display: none;
+  }
+
+  &:hover .ladb-img-search-link {
+    display: block;
+  }
+
+}
+
+.ladb-img-search-link {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #fff;
+  padding: 1px 5px 2px 5px;
+  border-radius: 2px;
+  font-size: 80%;
+  text-shadow: 0 0 2px #000;
+  opacity: 0.5;
+
+  &:hover {
+    text-decoration: none;
+    background-color: @ladb-brand-primary;
+    text-shadow: none;
+    opacity: 1;
+  }
+
+}
+
