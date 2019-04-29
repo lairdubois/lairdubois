@@ -128,9 +128,11 @@ class AnswerController extends Controller {
 			$watchableUtils = $this->container->get(WatchableUtils::NAME);
 			$watchableUtils->autoCreateWatch($question, $this->getUser());
 
-			// Publish a webpush notification in queue
-			$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
-			$webpushNotificationUtils->enqueueNewAnswerNotification($answer, $question);
+			if ($answer->getUser() !== $question->getUser()) {
+				// Publish a webpush notification in queue
+				$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
+				$webpushNotificationUtils->enqueueNewAnswerNotification($answer, $question);
+			}
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);

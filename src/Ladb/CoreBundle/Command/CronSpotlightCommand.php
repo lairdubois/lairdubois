@@ -338,54 +338,49 @@ EOT
 		$pageId = $this->getContainer()->getParameter('facebook_page_id');
 		$accessToken = $this->getContainer()->getParameter('facebook_access_token');
 
-		// Setup Facebook SDK
-		$fb = new \Facebook\Facebook([
-			'app_id' => $appId,
-			'app_secret' => $appSecret,
-			'default_graph_version' => 'v2.8',
-			'default_access_token' => $accessToken,
-		]);
+		try {
 
-		if ($forced || $forcedFacebook) {
+			// Setup Facebook SDK
+			$fb = new \Facebook\Facebook([
+				'app_id' => $appId,
+				'app_secret' => $appSecret,
+				'default_graph_version' => 'v3.2',
+				'default_access_token' => $accessToken,
+			]);
 
-			$request = $fb->request(
-				'POST',
-				'/'. $pageId .'/feed',
-				array(
-					'message' => $message,
-					'link' => $link,
-				)
-			);
+			if ($forced || $forcedFacebook) {
 
-			try {
+				$request = $fb->request(
+					'POST',
+					'/'. $pageId .'/feed',
+					array(
+						'message' => $message,
+						'link' => $link,
+					)
+				);
+
 				$fb->getClient()->sendRequest($request);
-			} catch (\Facebook\Exceptions\FacebookResponseException $e) {
 
-				// When Graph returns an error
-				if ($verbose) {
-					$output->writeln('<fg=red>[Error] Graph returned an error: '.$e->getMessage().'</fg=red>');
+				if ($verbose && $success) {
+					$output->writeln('<fg=cyan>[Done]</fg=cyan>');
 				}
 
-				$success = false;
-			} catch (\Facebook\Exceptions\FacebookSDKException $e) {
-
-				// When validation fails or other local issues
+			} else {
 				if ($verbose) {
-					$output->writeln('<fg=red>[Error] Facebook SDK returned an error: '.$e->getMessage().'</fg=red>');
+					$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
 				}
-
-				$success = false;
 			}
 
-			if ($verbose && $success) {
-				$output->writeln('<fg=cyan>[Done]</fg=cyan>');
-			}
+		} catch (\Facebook\Exceptions\FacebookSDKException $e) {
 
-		} else {
+			// When validation fails or other local issues
 			if ($verbose) {
-				$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
+				$output->writeln('<fg=red>[Error] Facebook SDK returned an error: '.$e->getMessage().'</fg=red>');
 			}
+
+			return false;
 		}
+
 
 		return $success;
 	}

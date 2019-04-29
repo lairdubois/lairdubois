@@ -31,17 +31,37 @@ class ApiController extends Controller {
 
 				// Facebook
 
+				$appId = $this->getParameter('facebook_app_id');
+				$appSecret = $this->getParameter('facebook_app_secret');
 				$accessToken = $this->getParameter('facebook_access_token');
 
-				$curl = curl_init();
-				curl_setopt($curl, CURLOPT_URL, "https://graph.facebook.com/v2.12/?id=".$url.'&fields=og_object{engagement}&access_token='.$accessToken);
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-				$curlResults = curl_exec($curl);
-				curl_close($curl);
-				$json = json_decode($curlResults, true);
-				if (isset($json['og_object']['engagement']['count'])) {
-					$count = intval($json['og_object']['engagement']['count']);
+				try {
+
+					// Setup Facebook SDK
+					$fb = new \Facebook\Facebook([
+						'app_id' => $appId,
+						'app_secret' => $appSecret,
+						'default_graph_version' => 'v3.2',
+						'default_access_token' => $accessToken,
+					]);
+
+					$request = $fb->request(
+						'GET',
+						'/',
+						array(
+							'id' => $url,
+							'fields' => 'og_object{engagement}',
+						)
+					);
+
+					$response = $fb->getClient()->sendRequest($request);
+					$decodedBody = $response->getDecodedBody();
+					if (isset($decodedBody['og_object']['engagement']['count'])) {
+						$count = intval($decodedBody['og_object']['engagement']['count']);
+					}
+
+				} catch(\Facebook\Exceptions\FacebookSDKException $e) {
+					throw $this->createNotFoundException('Facebook SDK returned an error: '.$e->getMessage());
 				}
 
 				break;
