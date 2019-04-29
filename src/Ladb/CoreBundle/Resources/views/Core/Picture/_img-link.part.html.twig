@@ -20,8 +20,8 @@
             {% if hasOverlay %}</div>{% endif %}
         </a>
         {% if picture.sourceUrl is not empty %}
-            <a href="{{ picture.sourceUrl }}" class="ladb-img-source-link" title="{{ picture.sourceUrl }}"><i class="ladb-icon-link"></i> Source</a>
+            <a href="{{ picture.sourceUrl }}" class="ladb-img-source-link" title="{{ picture.sourceUrl }}" target="_blank"><i class="ladb-icon-link"></i> Source</a>
         {% endif %}
-        <a href="http://images.google.com/searchbyimage?image_url={{ webPath|imagine_filter('1024x1024i') }}" class="ladb-img-search-link" title="Trouver des images similaires" data-tooltip=tooltip> + <i class="ladb-icon-camera"></i></a>
+        <a href="http://images.google.com/searchbyimage?image_url={{ webPath|imagine_filter('1024x1024i') }}" class="ladb-img-search-link" title="Trouver des images similaires" data-tooltip=tooltip target="_blank"> + <i class="ladb-icon-camera"></i></a>
     </figure>
 {% endblock %}
