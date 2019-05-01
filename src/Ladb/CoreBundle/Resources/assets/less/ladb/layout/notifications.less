@@ -5,44 +5,67 @@
 @boxMarginLeft: 42px;
 @boxMinHeight: 32px;
 
-#notifications_modal .modal-body {
-  max-height: 500px;
-  overflow-y: auto;
+#notifications_modal {
 
-  .ladb-notification-row {
-    padding: 10px;
-    background-color: #eee;
-    border-bottom: solid 1px @ladb-global-border;
-    cursor: pointer;
+  .modal-body {
+    max-height: 500px;
+    overflow-y: auto;
 
-    &.ladb-listed {
-      color: #777;
-    }
+    .ladb-notification-row {
+      padding: 10px;
+      background-color: #eee;
+      border-bottom: solid 1px @ladb-global-border;
+      cursor: pointer;
 
-    &.ladb-shown {
-      background-color: white;
-    }
+      &.ladb-listed {
+        color: #777;
+      }
 
-    &:hover {
-      background-color: #f5f5f5;
-    }
+      &.ladb-shown {
+        background-color: white;
+      }
 
-    .ladb-avatar {
-      float: left;
-    }
+      &:hover {
+        background-color: #f5f5f5;
+      }
 
-    .ladb-box {
-      margin-left: @boxMarginLeft;
-      min-height: @boxMinHeight;
+      .ladb-avatar {
+        float: left;
+      }
 
-      .ladb-age {
-        .age();
+      .ladb-box {
+        margin-left: @boxMarginLeft;
+        min-height: @boxMinHeight;
+
+        .ladb-age {
+          .age();
+        }
+
       }
 
     }
 
   }
 
+  .modal-footer {
+    display: none;
+
+    .ladb-notification-webpush-tip {
+      text-align: left;
+      font-size: 80%;
+
+      .media-right {
+        white-space: nowrap;
+      }
+
+    }
+
+  }
+
+}
+
+html.webworkers #notifications_modal .modal-footer {
+  display: block !important;
 }
 
 
