@@ -28,7 +28,7 @@ class ValidAnswerValidator extends ConstraintValidator {
 					}
 				}
 
-				if (preg_match('/merci/i', $body)) {
+				if (preg_match('/^merci/i', $body)) {
 					$this->context->buildViolation('Si vous souhaitez remercier les auteurs des réponses ci-dessus, utilisez les commentaires associés à la question. Merci de bien lire les consignes de rédaction d\'une réponse ci-dessus.')
 						->addViolation();
 				}
