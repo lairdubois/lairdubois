@@ -206,6 +206,7 @@ liip_imagine:
                 ladb_imageoptimizer: {}
         180x180o: # Block gallery (small)
             filters:
+                upscale: { min: [180, 180] }
                 thumbnail: { size: [180, 180], mode: outbound }
             post_processors:
                 ladb_imageoptimizer: {}
@@ -243,7 +244,7 @@ liip_imagine:
                 ladb_imageoptimizer: {}
         600x450o: # Block gallery (large)
             filters:
-                relative_resize: { heighten: 450 }
+                upscale: { min: [600, 450] }
                 thumbnail: { size: [600, 450], mode: outbound, allow_upscale: true }
             post_processors:
                 ladb_imageoptimizer: {}
