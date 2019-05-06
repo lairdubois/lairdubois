@@ -34,7 +34,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/new", name="core_faq_question_new")
 	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_new)")
+	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_new)")
 	 */
 	public function newAction() {
 
@@ -53,7 +53,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_faq_question_create")
 	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_create)")
+	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_create)")
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -127,7 +127,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_faq_question_publish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_publish)")
+	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_publish)")
 	 */
 	public function publishAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -186,7 +186,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_faq_question_edit")
 	 * @Template("LadbCoreBundle:Faq/Question:edit.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_edit)")
+	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_edit)")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -211,7 +211,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_faq_question_update")
 	 * @Template("LadbCoreBundle:Faq/Question:edit.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_update)")
+	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_update)")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -270,7 +270,6 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_faq_question_delete")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_delete)")
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -279,6 +278,9 @@ class QuestionController extends Controller {
 		$question = $questionRepository->findOneById($id);
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($question->getIsDraft() === true && $question->getUser()->getId() == $this->getUser()->getId())) {
+			throw $this->createNotFoundException('Not allowed (core_faq_question_delete)');
 		}
 
 		// Delete
@@ -461,7 +463,7 @@ class QuestionController extends Controller {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
 		if ($question->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_FAQ')) {
 				if ($response = $witnessManager->checkResponse(Question::TYPE, $id)) {
 					return $response;
 				}

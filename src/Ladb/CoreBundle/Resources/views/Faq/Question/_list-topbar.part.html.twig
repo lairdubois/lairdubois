@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block listTopbarRightOuter %}
-    {% if is_granted('ROLE_ADMIN') %}{{ parent() }}{% endif %}
+    {% if is_granted('ROLE_FAQ') %}{{ parent() }}{% endif %}
 {% endblock %}
 
 {% block listTopbarRightInner %}

@@ -34,7 +34,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/new", name="core_blog_post_new")
 	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_new)")
+	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_new)")
 	 */
 	public function newAction() {
 
@@ -53,7 +53,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_blog_post_create")
 	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_create)")
+	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_create)")
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -127,7 +127,7 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_blog_post_publish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_publish)")
+	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_publish)")
 	 */
 	public function publishAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -186,7 +186,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_blog_post_edit")
 	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_edit)")
+	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_edit)")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -211,7 +211,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_blog_post_update")
 	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_update)")
+	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_update)")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -278,7 +278,6 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_blog_post_delete")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_delete)")
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -287,6 +286,9 @@ class PostController extends Controller {
 		$post = $postRepository->findOneById($id);
 		if (is_null($post)) {
 			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
+		}
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($post->getIsDraft() === true && $post->getUser()->getId() == $this->getUser()->getId())) {
+			throw $this->createNotFoundException('Not allowed (core_blog_post_delete)');
 		}
 
 		// Delete
@@ -462,7 +464,7 @@ class PostController extends Controller {
 			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
 		}
 		if ($post->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_BLOG')) {
 				if ($response = $witnessManager->checkResponse(Post::TYPE, $id)) {
 					return $response;
 				}

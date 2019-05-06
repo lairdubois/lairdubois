@@ -8,9 +8,9 @@
 {% endblock %}
 
 {% block listTopbarRightOuter %}
-    {% if is_granted('ROLE_ADMIN') %}{{ parent() }}{% endif %}
+    {% if is_granted('ROLE_BLOG') %}{{ parent() }}{% endif %}
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('core_blog_post_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'blog.post.new'|trans() }}</span></a>{% endif %}
+    <a href="{{ path('core_blog_post_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'blog.post.new'|trans() }}</span></a>
 {% endblock %}
