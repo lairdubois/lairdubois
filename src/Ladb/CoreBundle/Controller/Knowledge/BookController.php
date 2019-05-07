@@ -124,7 +124,7 @@ class BookController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_book_delete")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_book_delete)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_book_delete)")
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();

@@ -338,7 +338,7 @@ class CommentController extends Controller {
 	/**
 	 * @Route("/{id}/moveup", requirements={"id" = "\d+"}, name="core_comment_moveup")
 	 * @Template("LadbCoreBundle:Core/Comment:moveup-xhr.html.twig")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_moveup)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_moveup)")
 	 */
 	public function moveupAction($id) {
 		$om = $this->getDoctrine()->getManager();

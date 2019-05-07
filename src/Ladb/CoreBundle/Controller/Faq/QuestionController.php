@@ -34,7 +34,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/new", name="core_faq_question_new")
 	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
-	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_new)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_new)")
 	 */
 	public function newAction() {
 
@@ -53,7 +53,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_faq_question_create")
 	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
-	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_create)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_create)")
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -97,7 +97,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_faq_question_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_faq_question_unlock")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (faq_question_lock or core_faq_question_unlock)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (faq_question_lock or core_faq_question_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -127,7 +127,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_faq_question_publish")
-	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_publish)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_publish)")
 	 */
 	public function publishAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -153,7 +153,7 @@ class QuestionController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_faq_question_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_unpublish)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -186,7 +186,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_faq_question_edit")
 	 * @Template("LadbCoreBundle:Faq/Question:edit.html.twig")
-	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_edit)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_edit)")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -211,7 +211,7 @@ class QuestionController extends Controller {
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_faq_question_update")
 	 * @Template("LadbCoreBundle:Faq/Question:edit.html.twig")
-	 * @Security("has_role('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_update)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_update)")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -321,6 +321,17 @@ class QuestionController extends Controller {
 				switch ($facet->name) {
 
 					// Filters /////
+
+					case 'admin-all':
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+							$filters[] = new \Elastica\Query\MatchAll();
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+							$noGlobalFilters = true;
+						}
+						break;
 
 					case 'mine':
 
@@ -463,7 +474,7 @@ class QuestionController extends Controller {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
 		if ($question->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_FAQ')) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $question->getUser()->getId() != $this->getUser()->getId())) {
 				if ($response = $witnessManager->checkResponse(Question::TYPE, $id)) {
 					return $response;
 				}

@@ -376,7 +376,7 @@ class AnswerController extends Controller {
 
 	/**
 	 * @Route("/{id}/reponses/admin/converttocomment", requirements={"id" = "\d+"}, name="core_qa_answer_admin_converttocomment")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_qa_answer_admin_converttocomment)")
 	 */
 	public function adminConvertToCommentAction($id) {
 		$om = $this->getDoctrine()->getManager();

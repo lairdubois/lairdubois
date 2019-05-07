@@ -152,7 +152,7 @@ class ArticleController extends Controller {
 
 	/**
 	 * @Route("/pas-a-pas/articles/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_article_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_howto_article_unpublish)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_howto_article_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

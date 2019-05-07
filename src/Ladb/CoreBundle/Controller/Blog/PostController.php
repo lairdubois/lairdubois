@@ -34,7 +34,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/new", name="core_blog_post_new")
 	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
-	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_new)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_new)")
 	 */
 	public function newAction() {
 
@@ -53,7 +53,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_blog_post_create")
 	 * @Template("LadbCoreBundle:Blog/Post:new.html.twig")
-	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_create)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_create)")
 	 */
 	public function createAction(Request $request) {
 		$om = $this->getDoctrine()->getManager();
@@ -97,7 +97,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_blog_post_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_blog_post_unlock")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (blog_post_lock or core_blog_post_unlock)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (blog_post_lock or core_blog_post_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 		$om = $this->getDoctrine()->getManager();
@@ -127,7 +127,7 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_blog_post_publish")
-	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_publish)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_publish)")
 	 */
 	public function publishAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -153,7 +153,7 @@ class PostController extends Controller {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_blog_post_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_unpublish)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -186,7 +186,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_blog_post_edit")
 	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
-	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_edit)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_edit)")
 	 */
 	public function editAction($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -211,7 +211,7 @@ class PostController extends Controller {
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_blog_post_update")
 	 * @Template("LadbCoreBundle:Blog/Post:edit.html.twig")
-	 * @Security("has_role('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_update)")
+	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_update)")
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -329,6 +329,17 @@ class PostController extends Controller {
 				switch ($facet->name) {
 
 					// Filters /////
+
+					case 'admin-all':
+						if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+							$filters[] = new \Elastica\Query\MatchAll();
+
+							$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+
+							$noGlobalFilters = true;
+						}
+						break;
 
 					case 'mine':
 
@@ -464,7 +475,7 @@ class PostController extends Controller {
 			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
 		}
 		if ($post->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_BLOG')) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $post->getUser()->getId() != $this->getUser()->getId())) {
 				if ($response = $witnessManager->checkResponse(Post::TYPE, $id)) {
 					return $response;
 				}

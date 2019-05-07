@@ -122,7 +122,7 @@ class ProviderController extends Controller {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_provider_delete")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_provider_delete)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_provider_delete)")
 	 */
 	public function deleteAction($id) {
 		$propertyUtils = $this->get(PropertyUtils::NAME);

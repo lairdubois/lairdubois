@@ -118,7 +118,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_collection_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_collection_unlock")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_collection_lock or core_collection_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -173,7 +173,7 @@ class CollectionController extends AbstractCollectionBasedController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_collection_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_collection_unpublish)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_collection_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 

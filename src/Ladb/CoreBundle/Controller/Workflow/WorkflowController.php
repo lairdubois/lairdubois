@@ -105,7 +105,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_workflow_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_workflow_unlock")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404)
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workflow_lock or core_workflow_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -160,7 +160,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_workflow_unpublish")
-	 * @Security("has_role('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workflow_unpublish)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workflow_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 

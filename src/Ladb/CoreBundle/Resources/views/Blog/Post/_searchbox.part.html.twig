@@ -12,6 +12,10 @@
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes sujets" data-unique="true" data-icon="blog"><i class="ladb-icon-blog"></i> Mes sujets</a></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
+    {% if is_granted("ROLE_ADMIN") %}
+        <li class="divider"></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="admin-all" data-label="Tous les sujets" data-unique="true" data-icon="admin"><i class="ladb-icon-admin"></i> Tous les sujets</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block sortersDropdown %}

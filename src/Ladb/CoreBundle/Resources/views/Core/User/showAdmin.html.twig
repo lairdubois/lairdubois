@@ -39,6 +39,14 @@
                     <span class="pull-right">{{ user.displayname }}</span>
                     <span>displayname</span>
                 </div>
+                <div class="ladb-meta">
+                    <span>roles</span>
+                    <ul>
+                        {% for role in user.roles %}
+                            <li class="ladb-value">{{ role }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
                 {% if registration is not null %}
                     <h4 class="ladb-heading">Inscription</h4>
                     <div class="ladb-meta">
