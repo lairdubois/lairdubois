@@ -45,6 +45,8 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 					$postalCode = $address->getPostalCode();
 					if ($postalCode) {
 						$localisable->setPostalCode($postalCode);
+					} else {
+						$localisable->setPostalCode(null);
 					}
 
 					// Locality /////
@@ -52,6 +54,8 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 					$locality = $address->getLocality();
 					if ($locality) {
 						$localisable->setLocality($locality);
+					} else {
+						$localisable->setLocality(null);
 					}
 
 					// Country /////
@@ -59,6 +63,8 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 					$country = $address->getCountry();
 					if ($country) {
 						$localisable->setCountry($country->getName());
+					} else {
+						$localisable->setCountry(null);
 					}
 
 					// GeographicalAreas /////
@@ -69,8 +75,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 						$geographicalAreaParts[] = $locality;
 					}
 					$adminLevels = $address->getAdminLevels();
-					for ($i = $adminLevels->count(); $i > 0; $i--) {
-						$adminLevel = $adminLevels->get($i);
+					foreach ($adminLevels as $adminLevel) {
 						$geographicalAreaParts[] = $adminLevel->getName();
 					}
 					if ($country) {
