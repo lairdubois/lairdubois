@@ -23,3 +23,5 @@
 /composer.phar
 .idea
 .DS_Store
+*.log
+.vagrant/
