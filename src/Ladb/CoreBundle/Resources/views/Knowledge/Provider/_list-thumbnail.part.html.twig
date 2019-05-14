@@ -8,7 +8,7 @@
 {% set imgClasses = provider.signRejected or provider.logoRejected ? 'ladb-desaturate ladb-translucent' : null %}
 
 {% block title %}
-    {{ parent() }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}
+    {% if 'Atelier partagé' in provider.services %}<i class="ladb-icon-workshop" data-tooltip="tooltip" data-original-title="Atelier partagé"></i> {% endif %}{% if 'Recyclerie' in provider.services %}<i class="ladb-icon-recycling" data-tooltip="tooltip" data-original-title="Recyclerie"></i> {% endif %}{{ parent() }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}
 {% endblock %}
 
 {% block image %}
@@ -31,6 +31,7 @@
 
 {% block body %}
     {% include 'LadbCoreBundle:Knowledge/Provider:_compact-infos.part.html.twig' %}
+    {{ provider.services }}
 {% endblock %}
 
 {% block footer %}
