@@ -63,12 +63,6 @@ class UserMeta {
 
 	/**
 	 * @ORM\Column(type="string", length=50, nullable=true)
-	 * @Assert\Regex("/^[0-9]+|\+[a-zA-Z0-9-]+$/")
-	 */
-	private $googleplus;
-
-	/**
-	 * @ORM\Column(type="string", length=50, nullable=true)
 	 * @Assert\Regex("/^[a-zA-Z0-9-_]+$/")
 	 */
 	private $youtube;
@@ -494,16 +488,6 @@ class UserMeta {
 
 	public function getTwitter() {
 		return $this->twitter;
-	}
-
-	// GooglePlus /////
-
-	public function setGoogleplus($googleplus) {
-		$this->googleplus = $googleplus;
-	}
-
-	public function getGoogleplus() {
-		return $this->googleplus;
 	}
 
 	// YouTube /////

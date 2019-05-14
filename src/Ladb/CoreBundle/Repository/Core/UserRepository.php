@@ -158,10 +158,6 @@ class UserRepository extends AbstractEntityRepository {
 			$queryBuilder
 				->andWhere('u.twitter IS NOT NULL')
 			;
-		} else if ('social-googleplus' == $filter) {
-			$queryBuilder
-				->andWhere('u.googleplus IS NOT NULL')
-			;
 		} else if ('social-youtube' == $filter) {
 			$queryBuilder
 				->andWhere('u.youtube IS NOT NULL')

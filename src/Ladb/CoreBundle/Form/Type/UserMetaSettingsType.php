@@ -36,7 +36,6 @@ class UserMetaSettingsType extends AbstractType {
 			->add('website')
 			->add('facebook')
 			->add('twitter')
-			->add('googleplus')
 			->add('youtube')
 			->add('vimeo')
 			->add('dailymotion')
