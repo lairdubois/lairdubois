@@ -34,10 +34,17 @@
                     add{{ fieldId|capitalize }}Token(suggestion.value);
                     input.focus();
                 }
-            }).on('keyup', function(evt) {
-                if (evt.which == 13 && input.val()) {
+            }).on('keydown', function(evt) {
+                if (evt.which === 13) {
+                    evt.preventDefault();
                     add{{ fieldId|capitalize }}Token(input.val());
                     input.focus();
+                    return false;
+                }
+            }).on('keyup', function(evt) {
+                if (evt.which === 13) {
+                    evt.preventDefault();
+                    return false;
                 }
             });
         {% endif %}
