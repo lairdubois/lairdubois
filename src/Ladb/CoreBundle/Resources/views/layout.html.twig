@@ -77,6 +77,7 @@
                     <li><a href="{{ path('core_message_mailbox') }}">{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}<i class="ladb-icon-message"></i> {{ 'message.nav'|trans() }}</a></li>
                     <li><a href="{{ path('core_user_settings') }}"><i class="ladb-icon-settings ladb-icon-fixed-center"></i> {{ 'user.settings'|trans() }}</a></li>
                     <li class="uk-nav-divider"></li>
+                    <li><a href="{{ path('core_workflow_list', { 'q':'@mine' }) }}"><i class="ladb-icon-workflow ladb-icon-fixed-center"></i> {{ 'workflow.workflow.user_list'|trans }}</a></li>
                     <li><a href="{{ path('core_collection_list', { 'q':'@mine' }) }}"><i class="ladb-icon-collection ladb-icon-fixed-center"></i> {{ 'collection.collection.user_list'|trans }}</a></li>
                     <li><a href="{{ path('core_funding_user_donation_list') }}"><i class="ladb-icon-funding ladb-icon-fixed-center"></i> Mes dons</a></li>
                     <li><a href="{{ path('core_youtook_user_list') }}"><i class="ladb-icon-video ladb-icon-fixed-center"></i> {{ 'youtook.user_list'|trans() }}</a></li>
