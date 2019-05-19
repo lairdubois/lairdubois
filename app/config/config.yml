@@ -866,6 +866,34 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
+                knowledge_software:
+                    properties:
+                        application: { type: text, boost: 3, analyzer: name_analyzer }
+                        applicationRejected: { type: boolean }
+                        isAddOn: { type: boolean }
+                        hostSoftware: { type: string, analyzer: name_analyzer }
+                        iconRejected: { type: boolean }
+                        authors: { analyzer: name_analyzer }
+                        publisher: { analyzer: name_analyzer }
+                        opensource: { type: bool }
+                        operatingSystems: { type: text, analyzer: name_analyzer }
+                        licenses: { type: text, analyzer: name_analyzer }
+                        features: { type: text, analyzer: name_analyzer }
+                        languages: { type: text, analyzer: name_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        reviewCount: { type: integer }
+                        averageRating: { type: float }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Knowledge\Software
+                        provider: ~
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
                 core_tag:
                     properties:
                         label: { analyzer: ngram_analyzer }

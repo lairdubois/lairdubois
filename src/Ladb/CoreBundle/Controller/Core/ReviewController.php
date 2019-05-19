@@ -14,7 +14,6 @@ use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
 use Ladb\CoreBundle\Model\ReviewableInterface;
 use Ladb\CoreBundle\Form\Type\ReviewType;
-use Ladb\CoreBundle\Manager\Knowledge\Book\ReviewManager;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Entity\Core\Review;

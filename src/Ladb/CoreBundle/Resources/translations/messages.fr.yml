@@ -899,6 +899,51 @@ knowledge:
         publish_year:
     choice:
       entities: '[0,1]livre|]1,Inf]livres'
+  software:
+    description: Catalogue collaboratif de logiciel sur la matière et le travail du bois.
+    new: Ajouter un logiciel
+    list: Les logiciels
+    nav: Logiciels
+    addon_of: Ce logiciel est un plugin de
+    new_warning: Un <strong>logiciel</strong> est ...
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Logiciel.</p><p><u>N'apportez pas votre critique ou avis sur le logiciel ici.</u></p><p>Pour donner votre avis d'utilisateur, cliquez sur le bouton <strong>Ajouter mon avis</strong> un peu plus haut.</p>
+    field:
+      application: Nom
+      icon: Icône
+      screenshot: Capture d'écran
+      authors: Auteur(s)
+      publisher: Editeur
+      last_version: Dernière version
+      dependency: Dépendance
+      website: Site web
+      description: Descriptif
+      open_source: Open Source
+      source_code_repository: Code source
+      operating_systems: Système(s) d'exploitation
+      licenses: Licence(s)
+      features: Fonctionnalités
+      languages: Langues
+    help:
+      application: "Le **Title** est le titre du logiciel."
+      icon: "L'**Icône** est ..."
+      screenshot: "La **Capture** est ..."
+      authors: "**Auteur(s)** permet de définir le ou les auteur(s) du livre."
+    form:
+      alert:
+        delete_success: Le logiciel <strong>%title%</strong> a été supprimé.
+      help:
+        legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
+        source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        application: |
+          - Soyez le plus fidèle possible dans la rédaction du titre.
+        icon: |
+          - Utilisez une image lisible et de bonne qualité.
+        screenshot:
+        authors: |
+          - N'indiquez **qu'un seul** nom par proposition.
+    choice:
+      entities: '[0,1]logiciel|]1,Inf]logiciels'
+      addons: '[0,1]plugin|]1,Inf]plugins'
   tool:
     list: Outils
     token:
@@ -1048,6 +1093,20 @@ review:
       delete_success: La critique a été supprimé.
     choice:
       entities: '[0,1]critique|]1,Inf]critiques'
+  knowledge_software:
+    new: Ajouter mon avis
+    edit: Editer mon avis
+    already: Vous avez déjà apporté votre avis.
+    show_mine: Voir mon avis.
+    none: Ce logiciel ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
+    your_review: votre avis
+    form:
+      new_help: Cet avis vous permet d'exprimer de façon synthétique votre expérience auprès du logiciel
+      body: Votre avis
+    alert:
+      delete_success: L'avis a été supprimé.
+    choice:
+      entities: '[0,1]avis|]1,Inf]avis'
 
 referer:
   list: On en parle ailleurs
@@ -1169,6 +1228,7 @@ search:
     providers: Recherche dans les fournisseurs
     schools: Recherche dans les écoles
     books: Recherche dans les livres
+    softwares: Recherche dans les logiciels
     finds: Recherche dans les trouvailles
     users: Recherche dans les boiseaux
     posts: Recherche dans le blog

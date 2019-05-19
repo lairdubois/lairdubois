@@ -1,0 +1,42 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail.part.html.twig' %}
+
+{# set software #}
+
+{% set entity = software %}
+{% set classes = 'ladb-no-overlay-caption' %}
+{% set headingClasses = software.applicationRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = software.applicationRejected or software.iconRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set pictureWidth = '282' %}
+{% set pictureHeight = '280' %}
+{% set pictureFilterMode = 'o' %}
+
+{% block title %}
+    {{ parent() }}{% if software.publisher %} <span class="ladb-horizontal-separator-left"><em>{{ software.publisher }}</em></span>{% endif %}
+    {% if software.isAddOn %}
+        <div><small><i class="ladb-icon-plugin"></i> Plugin {{ software.hostSoftware }}</small></div>
+    {% endif %}
+{% endblock %}
+
+{% block image %}
+    <div style="padding: 10px;">
+    {% if software.iconRejected %}
+        <div class="ladb-box-barred">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Review:_thumbnail-meta-counter.part.html.twig' %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' with { 'entity':software } %}
+    {{ software.contributorCount }} <i class="ladb-icon-users"></i>{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}
+{% endblock %}
+
+

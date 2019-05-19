@@ -197,11 +197,11 @@ services:
   ladb_core.book_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\BookManager
     arguments: ['@service_container']
-  ladb_core.knowledge_book_review_manager:
-    class: Ladb\CoreBundle\Manager\Knowledge\Book\ReviewManager
-    arguments: ['@service_container']
   ladb_core.wood_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\WoodManager
+    arguments: ['@service_container']
+  ladb_core.software_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\SoftwareManager
     arguments: ['@service_container']
   ladb_core.workflow_manager:
     class: Ladb\CoreBundle\Manager\Workflow\WorkflowManager
@@ -259,6 +259,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.unique_book_validator }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.unique_software_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueBookValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.unique_software_validator }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_core.unique_find_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UniqueFindValidator
     tags:
@@ -285,6 +290,10 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidSignValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_sign_value_validator }
+  ladb_core.valid_application_value_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidApplicationValueValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_application_value_validator }
   ladb_core.body_blocks_validator:
     class: Ladb\CoreBundle\Validator\Constraints\BodyBlocksValidator
     tags:
@@ -484,6 +493,11 @@ services:
     arguments: ['@doctrine.orm.entity_manager']
   ladb_knowledge_newbook:
     class: Ladb\CoreBundle\Form\Type\Knowledge\NewBookType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_knowledge_newsoftware:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\NewSoftwareType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']

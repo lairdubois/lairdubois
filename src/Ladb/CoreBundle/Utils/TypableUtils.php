@@ -108,6 +108,10 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
 				$a = array( 'collection', 'collection' );
 				break;
+			// Software
+			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
+				$a = array( 'knowledge', 'software' );
+				break;
 
 		}
 		if ($a) {
@@ -216,6 +220,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Price
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Price::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Price';
+			// Application
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Application::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Application';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -274,6 +281,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Collection
 			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
 				return '\Ladb\CoreBundle\Entity\Collection\Collection';
+			// Software
+			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Software';
 
 		}
 		return null;
@@ -321,6 +331,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Language::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Isbn::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Price::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Application::TYPE:
 				$parentTypable = $this->findTypable($typable->getParentEntityType(), $typable->getParentEntityId());
 				return $this->getUrlAction($parentTypable, $action, $absoluteUrl, $useSluggedId, $addionalParams);
 
@@ -380,6 +391,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
 				$url = $router->generate('core_collection_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
+				$url = $router->generate('core_software_'.$action, $params, $referenceType);
 				break;
 
 		}
@@ -456,6 +470,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Collection
 			case \Ladb\CoreBundle\Entity\Collection\Collection::TYPE:
 				return 'collection';
+			// Software
+			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
+				return 'software';
 
 		}
 		return null;

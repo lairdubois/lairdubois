@@ -152,6 +152,10 @@ ladb_core_book:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\BookController"
     type:     annotation
 
+ladb_core_software:
+    resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\SoftwareController"
+    type:     annotation
+
 ladb_core_knowledge:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\KnowledgeController"
     type:     annotation

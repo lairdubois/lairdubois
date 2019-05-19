@@ -1,0 +1,13 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set softwares #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set softwares = entities %}{% endif %}
+
+{% block items %}
+    {% for software in softwares %}
+        {% include 'LadbCoreBundle:Knowledge/Software:_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

@@ -3,7 +3,6 @@
 namespace Ladb\CoreBundle\Manager\Knowledge;
 
 use Ladb\CoreBundle\Entity\Knowledge\Book;
-use Ladb\CoreBundle\Manager\Knowledge\Book\ReviewManager;
 use Ladb\CoreBundle\Utils\ReviewableUtils;
 
 class BookManager extends AbstractKnowledgeManager {

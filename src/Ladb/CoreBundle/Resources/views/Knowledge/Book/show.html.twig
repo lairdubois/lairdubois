@@ -70,7 +70,7 @@
             {% if book.publicDomain %}
                 <span data-tooltip="tooltip" title="{{ 'knowledge.book.field.public_domain'|trans() }}"><i class="ladb-icon-public-domain ladb-icon-lg"></i></span>
             {% endif %}
-            {% if book.authors %}<span class="ladb-subblock">de {% for author in book.authors|split(',') %}<a href="{{ path('core_book_list') }}?q=@authors:%22{{ author }}%22">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</span> {% endif %}
+            {% if book.authors %}<span class="ladb-subblock">{{ 'default.of'|trans() }} {% for author in book.authors|split(',') %}<a href="{{ path('core_book_list') }}?q=@authors:%22{{ author }}%22">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</span> {% endif %}
             {% if book.editor %}<span class="ladb-subblock{% if book.authors %} ladb-horizontal-separator-left{% endif %}"><em>{{ book.editor }}</em></span>{% endif %}
         {% endblock %}
     {% endembed %}

@@ -23,7 +23,7 @@ use Ladb\CoreBundle\Model\WatchableChildInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\Value\BaseValueRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="integer")
- * @ORM\DiscriminatorMap({1 = "Integer", 2 = "Text", 3 = "Picture", 4 = "Url", 5 = "Location", 6 = "Phone", 7 = "Sign", 8 = "Longtext", 9 = "Language", 10 = "Isbn", 11 = "Price"})
+ * @ORM\DiscriminatorMap({1 = "Integer", 2 = "Text", 3 = "Picture", 4 = "Url", 5 = "Location", 6 = "Phone", 7 = "Sign", 8 = "Longtext", 9 = "Language", 10 = "Isbn", 11 = "Price", 12 = "Application"})
  * @LadbAssert\ValueSource()
  * @UniqueEntity(fields={"dataHash", "parentEntityType", "parentEntityId", "parentEntityField"})
  */
@@ -55,7 +55,7 @@ abstract class BaseValue implements AuthoredInterface, WatchableChildInterface, 
 	protected $parentEntityId;
 
 	/**
-	 * @ORM\Column(name="parent_entity_field", type="string", length=20, nullable=false)
+	 * @ORM\Column(name="parent_entity_field", type="string", length=25, nullable=false)
 	 */
 	protected $parentEntityField;
 
