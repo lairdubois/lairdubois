@@ -33,7 +33,7 @@ class Application extends BaseValue {
 	private $name;
 
 	/**
-	 * @ORM\Column(type="boolean", name="is_affiliate")
+	 * @ORM\Column(type="boolean", name="is_addon")
 	 */
 	private $isAddOn = false;
 
