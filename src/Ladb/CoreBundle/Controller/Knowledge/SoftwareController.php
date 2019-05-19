@@ -166,13 +166,6 @@ class SoftwareController extends Controller {
 
 					// Filters /////
 
-					case 'name':
-
-						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('name', $facet->value);
-
-						break;
-
 					case 'authors':
 
 						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
@@ -229,7 +222,7 @@ class SoftwareController extends Controller {
 
 					case 'open-source':
 
-						$filters[] = new \Elastica\Query\Range('opensource', array( 'gte' => 1 ));
+						$filters[] = new \Elastica\Query\Range('openSource', array( 'gte' => 1 ));
 
 						break;
 
@@ -281,7 +274,7 @@ class SoftwareController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'name^100' ));
+							$filter->setFields(array( 'name^100', 'hostSoftware^50', 'publisher' ));
 							$filters[] = $filter;
 
 						}

@@ -414,6 +414,7 @@ class UserController extends Controller {
 				'unlistedKnowledgeProviderCount' => $user->getMeta()->getUnlistedKnowledgeProviderCount(),
 				'unlistedKnowledgeSchoolCount' => $user->getMeta()->getUnlistedKnowledgeSchoolCount(),
 				'unlistedKnowledgeBookCount' => $user->getMeta()->getUnlistedKnowledgeBookCount(),
+				'unlistedKnowledgeSoftwareCount' => $user->getMeta()->getUnlistedKnowledgeSoftwareCount(),
 				'unlistedBlogPostCount' => $user->getMeta()->getUnlistedBlogPostCount(),
 				'unlistedFaqQuestionCount' => $user->getMeta()->getUnlistedFaqQuestionCount(),
 				'unlistedQaQuestionCount' => $user->getMeta()->getUnlistedQaQuestionCount(),

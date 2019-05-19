@@ -120,6 +120,12 @@ EOT
 				'slugged'   => true,
 			),
 			array(
+				'className' => \Ladb\CoreBundle\Entity\Knowledge\Software::CLASS_NAME,
+				'name'      => 'software',
+				'section'   => 'knowledge-softwares',
+				'slugged'   => true,
+			),
+			array(
 				'className' => \Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
 				'name'      => 'user',
 				'section'   => 'core-users',

@@ -868,14 +868,14 @@ fos_elastica:
                             delete: false
                 knowledge_software:
                     properties:
-                        application: { type: text, boost: 3, analyzer: name_analyzer }
+                        name: { type: text, boost: 3, analyzer: name_analyzer }
                         applicationRejected: { type: boolean }
                         isAddOn: { type: boolean }
                         hostSoftware: { type: string, analyzer: name_analyzer }
                         iconRejected: { type: boolean }
                         authors: { analyzer: name_analyzer }
                         publisher: { analyzer: name_analyzer }
-                        opensource: { type: bool }
+                        openSource: { type: bool }
                         operatingSystems: { type: text, analyzer: name_analyzer }
                         licenses: { type: text, analyzer: name_analyzer }
                         features: { type: text, analyzer: name_analyzer }

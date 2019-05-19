@@ -189,6 +189,11 @@ class UserMeta {
 	private $unlistedKnowledgeBookCount = 0;
 
 	/**
+	 * @ORM\Column(name="unlisted_knowledge_software_count", type="integer")
+	 */
+	private $unlistedKnowledgeSoftwareCount = 0;
+
+	/**
 	 * @ORM\Column(name="unlisted_blog_post_count", type="integer")
 	 */
 	private $unlistedBlogPostCount = 0;
@@ -748,6 +753,17 @@ class UserMeta {
 
 	public function setUnlistedKnowledgeBookCount($unlistedKnowledgeBookCount) {
 		$this->unlistedKnowledgeBookCount = $unlistedKnowledgeBookCount;
+		return $this;
+	}
+
+	// UnlistedKnowledgeSoftwareCount /////
+
+	public function getUnlistedKnowledgeSoftwareCount() {
+		return $this->unlistedKnowledgeSoftwareCount;
+	}
+
+	public function setUnlistedKnowledgeSoftwareCount($unlistedKnowledgeSoftwareCount) {
+		$this->unlistedKnowledgeSoftwareCount = $unlistedKnowledgeSoftwareCount;
 		return $this;
 	}
 
