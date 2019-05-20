@@ -62,14 +62,8 @@ final class Version20190520090708 extends AbstractMigration
         $this->addSql('ALTER TABLE tbl_knowledge2_software_value_languages ADD CONSTRAINT FK_467007B5D7452741 FOREIGN KEY (software_id) REFERENCES tbl_knowledge2_software (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE tbl_knowledge2_software_value_languages ADD CONSTRAINT FK_467007B582F1BAF4 FOREIGN KEY (language_id) REFERENCES tbl_knowledge2_value_language (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE tbl_knowledge2_value_software_identity ADD CONSTRAINT FK_DAB7854DBF396750 FOREIGN KEY (id) REFERENCES tbl_knowledge2_value (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE tbl_core_mention CHANGE mentioned_user_id mentioned_user_id INT NOT NULL');
-        $this->addSql('ALTER TABLE tbl_core_mention ADD CONSTRAINT FK_E469668A76ED395 FOREIGN KEY (user_id) REFERENCES tbl_core_user (id)');
-        $this->addSql('ALTER TABLE tbl_core_mention RENAME INDEX idx_e46966834a3e1b6 TO IDX_E469668E6655814');
-        $this->addSql('ALTER TABLE tbl_core_mention RENAME INDEX entity_user_unique TO ENTITY_MENTIONED_USER_UNIQUE');
         $this->addSql('ALTER TABLE tbl_core_user_meta ADD unlisted_knowledge_software_count INT NOT NULL');
         $this->addSql('ALTER TABLE tbl_knowledge2_value CHANGE parent_entity_field parent_entity_field VARCHAR(25) NOT NULL');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_4bcb70a82c7c2cba TO IDX_772B09CB2C7C2CBA');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_4bcb70a870f2bc06 TO IDX_772B09CB70F2BC06');
     }
 
     public function down(Schema $schema) : void
@@ -108,13 +102,7 @@ final class Version20190520090708 extends AbstractMigration
         $this->addSql('DROP TABLE tbl_knowledge2_software_value_features');
         $this->addSql('DROP TABLE tbl_knowledge2_software_value_languages');
         $this->addSql('DROP TABLE tbl_knowledge2_value_software_identity');
-        $this->addSql('ALTER TABLE tbl_core_mention DROP FOREIGN KEY FK_E469668A76ED395');
-        $this->addSql('ALTER TABLE tbl_core_mention CHANGE mentioned_user_id mentioned_user_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE tbl_core_mention RENAME INDEX idx_e469668e6655814 TO IDX_E46966834A3E1B6');
-        $this->addSql('ALTER TABLE tbl_core_mention RENAME INDEX entity_mentioned_user_unique TO ENTITY_USER_UNIQUE');
         $this->addSql('ALTER TABLE tbl_core_user_meta DROP unlisted_knowledge_software_count');
         $this->addSql('ALTER TABLE tbl_knowledge2_value CHANGE parent_entity_field parent_entity_field VARCHAR(20) NOT NULL COLLATE utf8_unicode_ci');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_772b09cb2c7c2cba TO IDX_4BCB70A82C7C2CBA');
-        $this->addSql('ALTER TABLE tbl_workflow_inspiration RENAME INDEX idx_772b09cb70f2bc06 TO IDX_4BCB70A870F2BC06');
     }
 }
