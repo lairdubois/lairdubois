@@ -12,7 +12,7 @@
 
 {% block title %}
     {% if book.publicDomain %}
-        <i class="ladb-icon-public-domain ladb-icon-lg"></i>
+        <i class="ladb-icon-public-domain ladb-icon-lg" data-tooltip="tooltip" data-original-title="Domaine public"></i>
     {% endif %}
     {{ parent() }}
 {% endblock %}

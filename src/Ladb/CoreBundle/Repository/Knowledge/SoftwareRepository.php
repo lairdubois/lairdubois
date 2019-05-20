@@ -59,6 +59,22 @@ class SoftwareRepository extends AbstractKnowledgeRepository {
 		}
 	}
 
+	public function findOneByName($name) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's' ))
+			->from($this->getEntityName(), 's')
+			->where('s.name = :name')
+			->setParameter('name', $name)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
 	/////
 
 	public function findByIds(array $ids) {

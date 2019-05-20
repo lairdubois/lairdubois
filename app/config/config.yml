@@ -871,11 +871,11 @@ fos_elastica:
                         name: { type: text, boost: 3, analyzer: name_analyzer }
                         applicationRejected: { type: boolean }
                         isAddOn: { type: boolean }
-                        hostSoftware: { type: string, analyzer: name_analyzer }
+                        hostSoftware: { type: string, analyzer: exact_lowercase_analyzer }
                         iconRejected: { type: boolean }
                         authors: { analyzer: name_analyzer }
                         publisher: { analyzer: name_analyzer }
-                        openSource: { type: bool }
+                        openSource: { type: boolean }
                         operatingSystems: { type: text, analyzer: name_analyzer }
                         licenses: { type: text, analyzer: name_analyzer }
                         features: { type: text, analyzer: name_analyzer }

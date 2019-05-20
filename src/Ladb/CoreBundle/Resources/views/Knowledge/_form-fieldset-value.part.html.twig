@@ -11,6 +11,7 @@
         {% block dataFormGroup %}{% endblock %}
     </div>
 {% endblock %}
+<hr>
 <div class="form-group">
     {{ form_label(form.legend, ('knowledge.proposal_value.legend'|trans())) }}&nbsp;{{ 'knowledge.proposal_value.of_value'|trans({ '%fieldLabel%':fieldLabel })|raw }}&nbsp;<small>(Facultatif)</small>
     {{ form_errors(form.legend) }}

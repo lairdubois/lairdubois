@@ -184,8 +184,8 @@ class SoftwareController extends Controller {
 
 					case 'addon':
 
-						$filters[] = new \Elastica\Query\Range('isAddOn', array( 'gte' => 1 ));
-						$filters[] = new \Elastica\Query\Match('hostSoftware', $facet->value);
+						$filters[] = new \Elastica\Query\Term(['isAddOn' => ['value' => true, 'boost' => 1.0]]);
+						$filters[] = new \Elastica\Query\Term(['hostSoftware' => ['value' => strtolower($facet->value), 'boost' => 1.0]]);
 
 						break;
 
@@ -222,7 +222,7 @@ class SoftwareController extends Controller {
 
 					case 'open-source':
 
-						$filters[] = new \Elastica\Query\Range('openSource', array( 'gte' => 1 ));
+						$filters[] = new \Elastica\Query\Term(['openSource' => ['value' => true, 'boost' => 1.0]]);
 
 						break;
 
@@ -333,8 +333,13 @@ class SoftwareController extends Controller {
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($software));
 
+		$hostSoftware = $software->getIsAddOn() && !is_null($software->getHostSoftware()) ? $softwareRepository->findOneByName($software->getHostSoftware()) : null;
+
 		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchableAddonCount = $software->getIsAddOn() ? 0 : $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Range('isAddOn', array( 'gte' => 1 )), new \Elastica\Query\Match('hostSoftware', $software->getName()) ), 'fos_elastica.index.ladb.knowledge_software');
+		$searchableAddonCount = $software->getIsAddOn() ? 0 : $searchUtils->searchEntitiesCount(array(
+			new \Elastica\Query\Term(['isAddOn' => ['value' => true, 'boost' => 1.0]]),
+			new \Elastica\Query\Term(['hostSoftware' => ['value' => strtolower($software->getName()), 'boost' => 1.0]])
+		), 'fos_elastica.index.ladb.knowledge_software');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
@@ -344,6 +349,7 @@ class SoftwareController extends Controller {
 
 		return array(
 			'software'             => $software,
+			'hostSoftware'         => $hostSoftware,
 			'searchableAddonCount' => $searchableAddonCount,
 			'likeContext'          => $likableUtils->getLikeContext($software, $this->getUser()),
 			'watchContext'         => $watchableUtils->getWatchContext($software, $this->getUser()),

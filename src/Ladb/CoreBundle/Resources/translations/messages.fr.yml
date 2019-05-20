@@ -730,11 +730,11 @@ knowledge:
       help:
         legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        sign: |
+          Utilisez le champ **Nom d'Agence ou de Boutique** pour préciser la boutique à laquelle vous faites référence dans cette fiche si le fournisseur fait partie d'une chaîne avec plusieurs points de ventes.
         logo: |
           - Préférez les images carrées.
         photo:
-        sign: |
-          Utilisez le champ **Nom d'Agence ou de Boutique** pour préciser la boutique à laquelle vous faites référence dans cette fiche si le fournisseur fait partie d'une chaîne avec plusieurs points de ventes.
         website:
         address:
         phone: |
@@ -900,12 +900,12 @@ knowledge:
     choice:
       entities: '[0,1]livre|]1,Inf]livres'
   software:
-    description: Catalogue collaboratif de logiciel sur la matière et le travail du bois.
+    description: Catalogue collaboratif de logiciels sur la matière et le travail du bois.
     new: Ajouter un logiciel
     list: Les logiciels
     nav: Logiciels
     addon_of: Ce logiciel est un plugin de
-    new_warning: Un <strong>logiciel</strong> est outil numérique qui aide au travail du bois.
+    new_warning: Un <strong>logiciel</strong> est programme informatique pouvant s'éxécuter sur un ordinateur, une tablette ou un mobile et permettant d'aider aux tâches entourants le travail du bois.
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Logiciel.</p><p><u>N'apportez pas votre avis sur le logiciel ici.</u></p><p>Pour donner votre avis d'utilisateur, cliquez sur le bouton <strong>Ajouter mon avis</strong> un peu plus haut.</p>
     field:
       application: Nom
@@ -914,7 +914,7 @@ knowledge:
       authors: Auteur(s)
       publisher: Editeur
       last_version: Dernière version
-      website: Site web
+      website: Site officiel
       description: Descriptif
       open_source: Open Source
       source_code_repository: Code source
@@ -923,19 +923,19 @@ knowledge:
       features: Fonctionnalités
       languages: Langues
     help:
-      application: "Le **Nom** est le nom du logiciel."
+      application: "Le **Nom** est le nom officiel du logiciel."
       icon: "L'**Icône** est l'image qui sert d'icône au logiciel."
       screenshot: "La **Capture d'écran** est une capture du logiciel en cours d'utilisation"
       authors: "**Auteur(s)** permet de définir le ou les auteur(s) du logiciel."
       publisher: "**Auteur(s)** permet de définir l'éditeur du logiciel."
       last_version: Dernière version
-      website: "**Site web** permet de définir le lien vers le site du logiciel."
+      website: "**Site officiel** permet de définir le lien vers la page officielle du logiciel."
       description: "Le **Descriptif** décrit succintement ce logiciel."
-      open_source: "**Open Source** permet d'indiquer si le code source de ce logiciel est libre."
+      open_source: "**Open Source** permet d'indiquer si le code source de ce logiciel est en libre accès."
       source_code_repository: "**Source code** permet de préciser le lien vers le dépot des sources du logiciel."
       operating_systems: "**Système(s) d'exploitation** permet de définir la liste des systèmes d'exploitation où peut être exécuté le logiciel."
-      licenses: "**Licence(s)** permet de lister les différentes forme d'utilisation logiciel."
-      features: "**Fonctionnalités** permet de lister les principale fonctionnalités du logiciel. (Ex: CAO)."
+      licenses: "**Licence(s)** permet de lister les différentes formes d'utilisation possible logiciel."
+      features: "**Fonctionnalités** permet de lister les principales fonctionnalités du logiciel. *(Ex: CAO, Modeleur 3D, ...)*."
       languages: "**Langues** permet de lister les différentes langues dans lesquelles est disponible le logiciel."
     form:
       alert:
@@ -944,7 +944,7 @@ knowledge:
         legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
         application: |
-          - Soyez le plus fidèle possible dans la rédaction du titre.
+          - Si ce logiciel est un **plugin** (extension d'un autre logiciel), cochez la case *Ce logiciel est un plugin pour un autre logiciel* et renseigné le nom du logiciel hôte.
         icon: |
           - Utilisez une image lisible et de bonne qualité.
         screenshot:
@@ -1309,6 +1309,7 @@ notification:
     knowledge_provider: le fournisseur
     knowledge_school: l'école
     knowledge_book: le livre
+    knowledge_software: le logiciel
     blog_post: le sujet
     faq_question: la question
     qa_question: la question

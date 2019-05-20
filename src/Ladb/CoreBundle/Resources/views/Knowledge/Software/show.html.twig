@@ -7,7 +7,6 @@
     {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.of'|trans()))~' '~software.authors %}
 {% endif %}
 {% set pageContentItemType = 'SoftwareApplication' %}
-{% set pageType = 'software' %}
 {% set pageSectionUrl = url('core_software_list') %}
 {% set pageSectionName = 'knowledge.software.list'|trans %}
 {% if software.description %}
@@ -77,7 +76,13 @@
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':software, 'wide':true, 'field':constant('FIELD_SCREENSHOT', software), 'picture':software.screenshot, 'values':software.screenshotValues, 'itemprop':'screenshot' } %}
     </div>
     <div>
-        {% if searchableAddonCount > 0 %}
+        {% if hostSoftware %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Ce logiciel est un plugin pour <a href="{{ ladb_entity_url_action(hostSoftware) }}">{{ hostSoftware.name }}</a>.</span>
+                </div>
+            </div>
+        {% elseif searchableAddonCount > 0 %}
             <div class="ladb-metas">
                 <div class="ladb-meta">
                     <span class="ladb-key"><i class="ladb-icon-info"></i> Ce logiciel compte <a href="{{ path('core_software_list', { 'q':'@addon:"'~software.name~'"'}) }}" rel="nofollow"><strong>{{ searchableAddonCount }}</strong> {{ 'knowledge.software.choice.addons'|transchoice(searchableAddonCount) }}</a> au catalogue.</span>
@@ -139,10 +144,29 @@
         </div>
         {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':software } %}
         {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':software } %}
+        <div class="ladb-btn">
+            <a href="{{ software.website }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-link ladb-icon-lg"></i> {{ 'knowledge.software.field.website'|trans() }}</a>
+        </div>
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+        {% if hostSoftware %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-software ladb-icon-fixed-center"></i>
+                <a href="{{ ladb_entity_url_action(hostSoftware) }}">
+                    <strong>1</strong>
+                    <small>{{ 'knowledge.software.choice.entities'|transchoice(1) }}</small>
+                </a>
+            </div>
+        {% elseif searchableAddonCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-plugin ladb-icon-fixed-center"></i>
+                <a href="{{ path('core_software_list', { 'q':'@addon:"'~software.name~'"'}) }}" rel="nofollow">
+                    <strong>{{ searchableAddonCount }}</strong>
+                    <small>{{ 'knowledge.software.choice.addons'|transchoice(searchableAddonCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
     </div>
-    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':software.license, 'noMicrodata':true } %}
 {% endblock %}

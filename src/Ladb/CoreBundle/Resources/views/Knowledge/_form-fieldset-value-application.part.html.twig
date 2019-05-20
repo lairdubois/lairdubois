@@ -8,7 +8,7 @@
 {% block dataFormGroupOuter %}
     {{ parent() }}
     <div class="checkbox">
-        <label>{{ form_widget(form.isAddOn) }} Ce logiciel est un plugin d'un autre logiciel.</label>
+        <label>{{ form_widget(form.isAddOn) }} Ce logiciel est un plugin pour un autre logiciel</label>
     </div>
     <div id="{{ form.hostSoftware.vars.id }}_form_group" class="form-group ladb-margin-left"{% if form.isAddOn.vars.data is empty or not form.isAddOn.vars.data %} style="display: none;"{% endif %}>
         {{ form_label(form.hostSoftware, 'Nom du logiciel hôte') }}
