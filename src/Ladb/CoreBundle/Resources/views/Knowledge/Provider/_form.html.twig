@@ -26,7 +26,7 @@
             <p class="form-section-title"><i class="ladb-icon-provider"></i> {{ 'knowledge.provider.field.sign'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-sign.part.html.twig' with { 'form':form.signValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_SIGN'), 'fieldLabel':('knowledge.provider.field.sign'|trans()) } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-sign.part.html.twig' with { 'form':form.signValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Provider::FIELD_SIGN'), 'fieldLabel':('knowledge.provider.field.sign'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -34,8 +34,6 @@
                         <div class="panel-body small">
                             {{ ('knowledge.provider.help.sign')|trans()|ladb_markdown|raw }}
                             {{ ('knowledge.provider.form.help.sign')|trans()|ladb_markdown|raw }}
-                            {{ ('knowledge.provider.form.help.legend')|trans({ '%field%':(('knowledge.provider.field.sign')|trans())})|ladb_markdown|raw }}
-                            {{ ('knowledge.provider.form.help.source')|trans()|ladb_markdown|raw }}
                         </div>
                     </div>
                 </div>

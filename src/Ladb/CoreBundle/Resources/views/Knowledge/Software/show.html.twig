@@ -144,9 +144,11 @@
         </div>
         {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':software } %}
         {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':software } %}
-        <div class="ladb-btn">
-            <a href="{{ software.website }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-link ladb-icon-lg"></i> {{ 'knowledge.software.field.website'|trans() }}</a>
-        </div>
+        {% if software.website %}
+            <div class="ladb-btn">
+                <a href="{{ software.website }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-link"></i> {{ 'knowledge.software.field.website'|trans() }}</a>
+            </div>
+        {% endif %}
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>

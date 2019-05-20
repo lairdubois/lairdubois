@@ -1,9 +1,11 @@
 {# set form #}
 {# set label #}
 {# set cancelEdit (facultative) #}
+{# set isCompact (facultative) #}
 
 {% set cancelEdit = cancelEdit is defined ? cancelEdit : false %}
 {% set fieldLabel = fieldLabel|default('') %}
+{% set isCompact = isCompact|default(false) %}
 
 {% block dataFormGroupOuter %}
     {{ form_errors(form) }}
@@ -11,13 +13,13 @@
         {% block dataFormGroup %}{% endblock %}
     </div>
 {% endblock %}
-<hr>
-<div class="form-group">
+{% if not isCompact %}<hr>{% endif %}
+<div class="form-group{% if isCompact %} hide{% endif %}">
     {{ form_label(form.legend, ('knowledge.proposal_value.legend'|trans())) }}&nbsp;{{ 'knowledge.proposal_value.of_value'|trans({ '%fieldLabel%':fieldLabel })|raw }}&nbsp;<small>(Facultatif)</small>
     {{ form_errors(form.legend) }}
     {{ form_widget(form.legend, { 'attr':{ 'class':'form-control' } }) }}
 </div>
-<div class="form-group">
+<div class="form-group{% if isCompact %} hide{% endif %}">
     {% if sourcesHistory is defined %}
         <div id="{{ form.source.vars.id }}_history" class="dropdown pull-right">
             <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -46,6 +48,9 @@
     </div>
     {% block sourceWarning %}{% endblock %}
     <script>
+        {% if isCompact %}
+            $("#{{ form.sourceType.vars.id }}").val('1');   {# Set source to 1 = "Connaissances personnelles" #}
+        {% endif %}
         $("#{{ form.source.vars.id }}_website_input_group input").on("change keydown paste input", function() {
             $("#{{ form.source.vars.id }}").val($(this).val());
         });

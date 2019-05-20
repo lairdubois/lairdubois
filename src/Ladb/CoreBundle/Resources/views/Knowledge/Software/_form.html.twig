@@ -26,7 +26,7 @@
             <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.identity'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-software-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_IDENTITY'), 'fieldLabel':('knowledge.software.field.identity'|trans()) } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-software-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_IDENTITY'), 'fieldLabel':('knowledge.software.field.identity'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -34,8 +34,6 @@
                         <div class="panel-body small">
                             {{ ('knowledge.software.help.identity')|trans()|ladb_markdown|raw }}
                             {{ ('knowledge.software.form.help.identity')|trans()|ladb_markdown|raw }}
-                            {{ ('knowledge.software.form.help.legend')|trans({ '%field%':(('knowledge.software.field.identity')|trans())})|ladb_markdown|raw }}
-                            {{ ('knowledge.software.form.help.source')|trans()|ladb_markdown|raw }}
                         </div>
                     </div>
                 </div>

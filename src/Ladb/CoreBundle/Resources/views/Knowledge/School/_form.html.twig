@@ -26,7 +26,7 @@
             <p class="form-section-title"><i class="ladb-icon-school"></i> {{ 'knowledge.school.field.name'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\School::FIELD_NAME'), 'fieldLabel':('knowledge.school.field.name'|trans()) } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\School::FIELD_NAME'), 'fieldLabel':('knowledge.school.field.name'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -34,8 +34,6 @@
                         <div class="panel-body small">
                             {{ ('knowledge.school.help.name')|trans()|ladb_markdown|raw }}
                             {{ ('knowledge.school.form.help.name')|trans()|ladb_markdown|raw }}
-                            {{ ('knowledge.school.form.help.legend')|trans({ '%field%':(('knowledge.school.field.name')|trans())})|ladb_markdown|raw }}
-                            {{ ('knowledge.school.form.help.source')|trans()|ladb_markdown|raw }}
                         </div>
                     </div>
                 </div>
