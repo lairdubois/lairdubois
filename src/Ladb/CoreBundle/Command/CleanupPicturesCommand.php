@@ -543,6 +543,36 @@ EOT
 		}
 		unset($books);
 
+		// Check Books /////
+
+		$output->writeln('<info>Checking Softwares...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'mp', 'src' ))
+			->from('LadbCoreBundle:Knowledge\Software', 'b')
+			->leftJoin('b.mainPicture', 'mp')
+			->leftJoin('b.screenshot', 'src')
+		;
+
+		try {
+			$softwares = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$softwares = array();
+		}
+
+		foreach ($softwares as $software) {
+			$mainPicture = $software->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+			$screenshot = $software->getScreenshot();
+			if (!is_null($screenshot)) {
+				$pictureCounters[$screenshot->getId()][1]++;
+			}
+		}
+		unset($books);
+
 		// Check Knowledge/Value/Pictures /////
 
 		$output->writeln('<info>Checking knowledge value pictures...</info>');
