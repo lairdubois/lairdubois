@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20190514"
+        version:    "20190520"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -869,9 +869,9 @@ fos_elastica:
                 knowledge_software:
                     properties:
                         name: { type: text, boost: 3, analyzer: name_analyzer }
-                        applicationRejected: { type: boolean }
+                        identityRejected: { type: boolean }
                         isAddOn: { type: boolean }
-                        hostSoftware: { type: string, analyzer: exact_lowercase_analyzer }
+                        hostSoftwareName: { type: string, analyzer: exact_lowercase_analyzer }
                         iconRejected: { type: boolean }
                         authors: { analyzer: name_analyzer }
                         publisher: { analyzer: name_analyzer }

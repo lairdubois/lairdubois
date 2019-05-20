@@ -2,6 +2,9 @@
 
 namespace Ladb\CoreBundle\Form\Model;
 
+use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
+
 class NewBook {
 
 	/**
@@ -14,24 +17,24 @@ class NewBook {
 
 	// NameValue /////
 
-	public function getTitleValue() {
-		return $this->titleValue;
-	}
-
-	public function setTitleValue($titleValue) {
+	public function setTitleValue(Text $titleValue) {
 		$this->titleValue = $titleValue;
 		return $this;
 	}
 
+	public function getTitleValue() {
+		return $this->titleValue;
+	}
+
 	// GrainValue /////
+
+	public function setCoverValue(Picture $coverValue) {
+		$this->coverValue = $coverValue;
+		return $this;
+	}
 
 	public function getCoverValue() {
 		return $this->coverValue;
-	}
-
-	public function setCoverValue($coverValue) {
-		$this->coverValue = $coverValue;
-		return $this;
 	}
 
 }

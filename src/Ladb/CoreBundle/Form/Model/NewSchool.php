@@ -2,6 +2,9 @@
 
 namespace Ladb\CoreBundle\Form\Model;
 
+use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
+
 class NewSchool {
 
 	/**
@@ -14,7 +17,7 @@ class NewSchool {
 
 	// NameValue /////
 
-	public function setNameValue($nameValue) {
+	public function setNameValue(Text $nameValue) {
 		$this->nameValue = $nameValue;
 		return $this;
 	}
@@ -25,7 +28,7 @@ class NewSchool {
 
 	// LogoValue /////
 
-	public function setLogoValue($logoValue) {
+	public function setLogoValue(Picture $logoValue) {
 		$this->logoValue = $logoValue;
 		return $this;
 	}

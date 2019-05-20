@@ -2,6 +2,6 @@
 
 namespace Ladb\CoreBundle\Repository\Knowledge\Value;
 
-class ApplicationRepository extends BaseValueRepository {
+class SoftwareIdentityRepository extends BaseValueRepository {
 
 }

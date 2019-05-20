@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Form\Type\Knowledge\Value\ApplicationValueType;
+use Ladb\CoreBundle\Form\Type\Knowledge\Value\SoftwareIdentityValueType;
 use Ladb\CoreBundle\Form\Type\Knowledge\Value\PictureValueType;
 
 class NewSoftwareType extends AbstractType {
@@ -19,7 +19,7 @@ class NewSoftwareType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('applicationValue', ApplicationValueType::class, array(
+			->add('identityValue', SoftwareIdentityValueType::class, array(
 				'choices' => null,
 				'dataConstraints' => null,
 				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueSoftware() )

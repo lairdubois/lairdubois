@@ -290,10 +290,10 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidSignValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_sign_value_validator }
-  ladb_core.valid_application_value_validator:
-    class: Ladb\CoreBundle\Validator\Constraints\ValidApplicationValueValidator
+  ladb_core.valid_software_identity_value_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidSoftwareIdentityValueValidator
     tags:
-      - { name: validator.constraint_validator, alias: ladb_core.valid_application_value_validator }
+      - { name: validator.constraint_validator, alias: ladb_core.valid_software_identity_value_validator }
   ladb_core.body_blocks_validator:
     class: Ladb\CoreBundle\Validator\Constraints\BodyBlocksValidator
     tags:

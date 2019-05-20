@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ReviewableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -63,32 +64,32 @@ class SoftwareController extends Controller {
 
 		if ($form->isValid()) {
 
-			$applicationValue = $newSoftware->getApplicationValue();
+			$identityValue = $newSoftware->getIdentityValue();
 			$iconValue = $newSoftware->getIconValue();
 			$user = $this->getUser();
 
-			// Sanitize Application values
-			if ($applicationValue instanceof Text) {
-				$applicationValue->setData(trim(ucfirst($applicationValue->getData())));
+			// Sanitize Identity values
+			if ($identityValue instanceof SoftwareIdentity) {
+				$identityValue->setData(trim(ucfirst($identityValue->getData())));
 			}
 
 			$software = new Software();
-			$software->setTitle($applicationValue->getData());
+			$software->setTitle($identityValue->getData());
 			$software->incrementContributorCount();
 
 			$om->persist($software);
 			$om->flush();	// Need to save software to be sure ID is generated
 
-			$software->addApplicationValue($applicationValue);
+			$software->addIdentityValue($identityValue);
 			$software->addIconValue($iconValue);
 
 			// Dispatch knowledge events
-			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($software, array( 'field' => Software::FIELD_APPLICATION, 'value' => $applicationValue )));
+			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($software, array( 'field' => Software::FIELD_IDENTITY, 'value' => $identityValue )));
 			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($software, array( 'field' => Software::FIELD_ICON, 'value' => $iconValue )));
 
-			$applicationValue->setParentEntity($software);
-			$applicationValue->setParentEntityField(Software::FIELD_APPLICATION);
-			$applicationValue->setUser($user);
+			$identityValue->setParentEntity($software);
+			$identityValue->setParentEntityField(Software::FIELD_IDENTITY);
+			$identityValue->setUser($user);
 
 			$iconValue->setParentEntity($software);
 			$iconValue->setParentEntityField(Software::FIELD_ICON);
@@ -98,7 +99,7 @@ class SoftwareController extends Controller {
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
-			$activityUtils->createContributeActivity($applicationValue, false);
+			$activityUtils->createContributeActivity($identityValue, false);
 			$activityUtils->createContributeActivity($iconValue, false);
 
 			// Dispatch publication event
@@ -116,7 +117,7 @@ class SoftwareController extends Controller {
 		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
 
 		return array(
-			'newSoftware'     => $newSoftware,
+			'newSoftware' => $newSoftware,
 			'form'        => $form->createView(),
 			'hideWarning' => true,
 		);
@@ -185,7 +186,7 @@ class SoftwareController extends Controller {
 					case 'addon':
 
 						$filters[] = new \Elastica\Query\Term(['isAddOn' => ['value' => true, 'boost' => 1.0]]);
-						$filters[] = new \Elastica\Query\Term(['hostSoftware' => ['value' => strtolower($facet->value), 'boost' => 1.0]]);
+						$filters[] = new \Elastica\Query\Term(['hostSoftwareName' => ['value' => strtolower($facet->value), 'boost' => 1.0]]);
 
 						break;
 
@@ -236,7 +237,7 @@ class SoftwareController extends Controller {
 					case 'rejected':
 
 						$filter = new \Elastica\Query\BoolQuery();
-						$filter->addShould(new \Elastica\Query\Range('applicationRejected', array( 'gte' => 1 )));
+						$filter->addShould(new \Elastica\Query\Range('identityRejected', array( 'gte' => 1 )));
 						$filter->addShould(new \Elastica\Query\Range('iconRejected', array( 'gte' => 1 )));
 						$filters[] = $filter;
 
@@ -274,7 +275,7 @@ class SoftwareController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'name^100', 'hostSoftware^50', 'publisher' ));
+							$filter->setFields(array( 'name^100', 'hostSoftwareName^50', 'publisher' ));
 							$filters[] = $filter;
 
 						}
@@ -283,7 +284,7 @@ class SoftwareController extends Controller {
 			},
 			function(&$filters, &$sort) {
 
-				$filters[] = new \Elastica\Query\Range('applicationRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lt' => 1 ));
 				$filters[] = new \Elastica\Query\Range('iconRejected', array( 'lt' => 1 ));
 
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
@@ -333,12 +334,12 @@ class SoftwareController extends Controller {
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($software));
 
-		$hostSoftware = $software->getIsAddOn() && !is_null($software->getHostSoftware()) ? $softwareRepository->findOneByName($software->getHostSoftware()) : null;
+		$hostSoftware = $software->getIsAddOn() && !is_null($software->getHostSoftwareName()) ? $softwareRepository->findOneByName($software->getHostSoftwareName()) : null;
 
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$searchableAddonCount = $software->getIsAddOn() ? 0 : $searchUtils->searchEntitiesCount(array(
 			new \Elastica\Query\Term(['isAddOn' => ['value' => true, 'boost' => 1.0]]),
-			new \Elastica\Query\Term(['hostSoftware' => ['value' => strtolower($software->getName()), 'boost' => 1.0]])
+			new \Elastica\Query\Term(['hostSoftwareName' => ['value' => strtolower($software->getName()), 'boost' => 1.0]])
 		), 'fos_elastica.index.ladb.knowledge_software');
 
 		$likableUtils = $this->get(LikableUtils::NAME);

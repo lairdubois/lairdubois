@@ -4,8 +4,8 @@
 
 {% set entity = software %}
 {% set classes = 'ladb-no-overlay-caption' %}
-{% set headingClasses = software.applicationRejected ? 'ladb-text-barred' : null %}
-{% set imgClasses = software.applicationRejected or software.iconRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set headingClasses = software.identityRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = software.identityRejected or software.iconRejected ? 'ladb-desaturate ladb-translucent' : null %}
 {% set pictureWidth = '282' %}
 {% set pictureHeight = '280' %}
 {% set pictureFilterMode = 'o' %}
@@ -19,7 +19,7 @@
         <span class="ladb-horizontal-separator-left ladb-color-null"><em>{{ software.publisher }}</em></span>
     {% endif %}
     {% if software.isAddOn %}
-        <div class="ladb-color-null"><small><i class="ladb-icon-plugin"></i> Plugin {{ software.hostSoftware }}</small></div>
+        <div class="ladb-color-null"><small><i class="ladb-icon-addon"></i> Plugin {{ software.hostSoftwareName }}</small></div>
     {% endif %}
 {% endblock %}
 

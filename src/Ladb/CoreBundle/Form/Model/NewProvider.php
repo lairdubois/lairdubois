@@ -2,6 +2,9 @@
 
 namespace Ladb\CoreBundle\Form\Model;
 
+use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Sign;
+
 class NewProvider {
 
 	/**
@@ -14,7 +17,7 @@ class NewProvider {
 
 	// SignValue /////
 
-	public function setSignValue($signValue) {
+	public function setSignValue(Sign $signValue) {
 		$this->signValue = $signValue;
 		return $this;
 	}
@@ -25,7 +28,7 @@ class NewProvider {
 
 	// LogoValue /////
 
-	public function setLogoValue($logoValue) {
+	public function setLogoValue(Picture $logoValue) {
 		$this->logoValue = $logoValue;
 		return $this;
 	}

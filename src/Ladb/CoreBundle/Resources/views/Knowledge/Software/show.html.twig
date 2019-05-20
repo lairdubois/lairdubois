@@ -59,10 +59,10 @@
 
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
-        {% set headingClasses = software.applicationRejected ? 'ladb-strikethrough' : null %}
+        {% set headingClasses = software.identityRejected ? 'ladb-strikethrough' : null %}
         {% block subheadingInner %}
             {% if software.isAddOn %}
-                <span data-tooltip="tooltip" title="{{ 'knowledge.software.addon_of'|trans() }} {{ software.hostSoftware }}"><i class="ladb-icon-plugin ladb-icon-lg"></i></span>&nbsp;
+                <span data-tooltip="tooltip" title="{{ 'knowledge.software.addon_of'|trans() }} {{ software.hostSoftwareName }}"><i class="ladb-icon-addon ladb-icon-lg"></i></span>&nbsp;
             {% endif %}
             {% if software.authors %}<span class="ladb-subblock">créé par {% for author in software.authors|split(',') %}<a href="{{ path('core_software_list') }}?q=@authors:%22{{ author }}%22">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</span> {% endif %}
             {% if software.publisher %}<span class="ladb-subblock{% if software.authors %} ladb-horizontal-separator-left{% endif %}"><em>{{ software.publisher }}</em></span>{% endif %}
@@ -100,7 +100,7 @@
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Caractéristiques</h4>
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_APPLICATION', software), 'data':software.application, 'values':software.applicationValues, 'itemprop':'name' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_IDENTITY', software), 'data':software.identity, 'values':software.identityValues, 'itemprop':'name' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_AUTHORS', software), 'data':software.authors, 'values':software.authorsValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_PUBLISHER', software), 'data':software.publisher, 'values':software.publisherValues } %}
 {#            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LAST_VERSION', software), 'data':software.lastVersion, 'values':software.lastVersionValues, 'itemprop':'softwareVersion' } %}#}
@@ -161,7 +161,7 @@
             </div>
         {% elseif searchableAddonCount > 0 %}
             <div class="ladb-meta">
-                <i class="ladb-icon-plugin ladb-icon-fixed-center"></i>
+                <i class="ladb-icon-addon ladb-icon-fixed-center"></i>
                 <a href="{{ path('core_software_list', { 'q':'@addon:"'~software.name~'"'}) }}" rel="nofollow">
                     <strong>{{ searchableAddonCount }}</strong>
                     <small>{{ 'knowledge.software.choice.addons'|transchoice(searchableAddonCount) }}</small>

@@ -96,11 +96,11 @@ class KnowledgeController extends Controller {
 	}
 
 	private function _computeEntityClass($fieldType) {
-		return '\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\'.ucfirst($fieldType);
+		return '\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\'.implode('', array_map('ucfirst', explode('-', $fieldType)));
 	}
 
 	private function _computeFormTypeFqcn($fieldType) {
-		return 'Ladb\\CoreBundle\\Form\\Type\\Knowledge\\Value\\'.ucfirst($fieldType).'ValueType';
+		return 'Ladb\\CoreBundle\\Form\\Type\\Knowledge\\Value\\'.implode('', array_map('ucfirst', explode('-', $fieldType))).'ValueType';
 	}
 
 	private function _retrieveValue($valueRepository, $id) {
@@ -113,7 +113,7 @@ class KnowledgeController extends Controller {
 	}
 
 	private function _computeFormTypeName($fieldType, $value) {
-		return 'ladb_knowledge_value_'.$fieldType.'_'.$value->getId();
+		return 'ladb_knowledge_value_'.implode('_', explode('-', $fieldType)).'_'.$value->getId();
 	}
 
 	/////

@@ -221,8 +221,8 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Price::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Price';
 			// Application
-			case \Ladb\CoreBundle\Entity\Knowledge\Value\Application::TYPE:
-				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Application';
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -331,7 +331,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Language::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Isbn::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Price::TYPE:
-			case \Ladb\CoreBundle\Entity\Knowledge\Value\Application::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity::TYPE:
 				$parentTypable = $this->findTypable($typable->getParentEntityType(), $typable->getParentEntityId());
 				return $this->getUrlAction($parentTypable, $action, $absoluteUrl, $useSluggedId, $addionalParams);
 

@@ -9,14 +9,14 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ApplicationValueType extends AbstractValueType {
+class SoftwareIdentityValueType extends AbstractValueType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);
 		$builder
 			->add('name', TextType::class)
 			->add('isAddOn', CheckboxType::class)
-			->add('hostSoftware', TextType::class)
+			->add('hostSoftwareName', TextType::class)
 		;
 
 		$builder->addEventListener(
@@ -24,12 +24,12 @@ class ApplicationValueType extends AbstractValueType {
 			function(FormEvent $event) {
 				$value = $event->getData();
 				$value->setName(ucfirst($value->getName()));
-				$value->setHostSoftware(ucfirst($value->getHostSoftware()));
+				$value->setHostSoftwareName(ucfirst($value->getHostSoftwareName()));
 				if (!$value->getIsAddOn()) {
-					$value->setHostSoftware(null);
+					$value->setHostSoftwareName(null);
 					$value->setData($value->getName());
 				} else {
-					$value->setData($value->getName().','.$value->getHostSoftware());
+					$value->setData($value->getName().','.$value->getHostSoftwareName());
 				}
 			}
 		);
@@ -39,12 +39,12 @@ class ApplicationValueType extends AbstractValueType {
 	public function configureOptions(OptionsResolver $resolver) {
 		parent::configureOptions($resolver);
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Entity\Knowledge\Value\Application',
+			'data_class' => 'Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity',
 		));
 	}
 
 	public function getBlockPrefix() {
-		return 'ladb_knowledge_value_application';
+		return 'ladb_knowledge_value_software_identity';
 	}
 
 }

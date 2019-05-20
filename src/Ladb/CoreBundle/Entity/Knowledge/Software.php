@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\ReviewableInterface;
 use Ladb\CoreBundle\Model\ReviewableTrait;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Application;
+use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Language;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
@@ -30,7 +30,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 	const STRIPPED_NAME = 'software';
 
-	const FIELD_APPLICATION = 'application';
+	const FIELD_IDENTITY = 'identity';
 	const FIELD_ICON = 'icon';
 	const FIELD_SCREENSHOT = 'screenshot';
 	const FIELD_AUTHORS = 'authors';
@@ -46,7 +46,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_LANGUAGES  = 'languages';
 
 	public static $FIELD_DEFS = array(
-		Software::FIELD_APPLICATION            => array(Software::ATTRIB_TYPE => Application::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_MANDATORY => true, Software::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueSoftware', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('name', 'isAddOn', 'hostSoftware')),
+		Software::FIELD_IDENTITY               => array(Software::ATTRIB_TYPE => SoftwareIdentity::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_MANDATORY => true, Software::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueSoftware', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('name', 'isAddOn', 'hostSoftwareName')),
 		Software::FIELD_ICON                   => array(Software::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_MANDATORY => true, Software::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Software::FIELD_SCREENSHOT             => array(Software::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_AUTHORS                => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@authors:"%q%"', Software::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
@@ -68,31 +68,31 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	private $name;
 
 	/**
-	 * @ORM\Column(type="boolean", name="is_affiliate")
+	 * @ORM\Column(type="boolean", name="is_addon")
 	 */
 	private $isAddOn = false;
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="string", nullable=true, length=100, name="host_software_name")
 	 */
-	private $hostSoftware;
+	private $hostSoftwareName;
 
 	/**
 	 * @ORM\Column(type="string", nullable=true, length=100)
 	 */
-	private $application;
+	private $identity;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Application", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_application")
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_identity")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $applicationValues;
+	private $identityValues;
 
 	/**
 	 * @ORM\Column(type="boolean", nullable=false, name="name_rejected")
 	 */
-	private $applicationRejected = false;
+	private $identityRejected = false;
 
 
 	/**
@@ -137,7 +137,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\Column(type="string", nullable=true, name="last_version")
 	 */
 	private $lastVersion;
 
@@ -189,7 +189,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true)
+	 * @ORM\Column(type="boolean", nullable=true, name="open_source")
 	 */
 	private $openSource;
 
@@ -202,7 +202,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255)
+	 * @ORM\Column(type="string", nullable=true, length=255, name="source_core_repository")
 	 */
 	private $sourceCodeRepository;
 
@@ -215,7 +215,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="text", nullable=true, name="operating_systems")
 	 */
 	private $operatingSystems;
 
@@ -279,7 +279,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/////
 
 	public function __construct() {
-		$this->applicationValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->identityValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->iconValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->screenshotValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->authorsValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -300,7 +300,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	// IsRejected /////
 
 	public function getIsRejected() {
-		return $this->getApplicationRejected() || $this->getIconRejected();
+		return $this->getIdentityRejected() || $this->getIconRejected();
 	}
 
 	// Type /////
@@ -315,7 +315,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		if (!empty($this->getDescription())) {
 			return $this->getDescription();
 		}
-		$terms = array($this->getApplication());
+		$terms = array($this->getIdentity());
 		return implode($terms, ',');
 	}
 
@@ -356,61 +356,61 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 	// HostSoftware /////
 
-	public function setHostSoftware($hostSoftware) {
-		$this->hostSoftware = $hostSoftware;
+	public function setHostSoftwareName($hostSoftwareName) {
+		$this->hostSoftwareName = $hostSoftwareName;
 		return $this;
 	}
 
-	public function getHostSoftware() {
-		return $this->hostSoftware;
+	public function getHostSoftwareName() {
+		return $this->hostSoftwareName;
 	}
 
-	// Application /////
+	// Identity /////
 
-	public function setApplication($application) {
-		$this->application = $application;
-		if (!is_null($application)) {
-			$this->setTitle(explode(',', $application)[0]);
+	public function setIdentity($identity) {
+		$this->identity = $identity;
+		if (!is_null($identity)) {
+			$this->setTitle(explode(',', $identity)[0]);
 		} else {
 			$this->setTitle(null);
 		}
 		return $this;
 	}
 
-	public function getApplication() {
-		return $this->application;
+	public function getIdentity() {
+		return $this->identity;
 	}
 
-	// ApplicationValues /////
+	// IdentityValues /////
 
-	public function addApplicationValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Application $applicationValue) {
-		if (!$this->applicationValues->contains($applicationValue)) {
-			$this->applicationValues[] = $applicationValue;
+	public function addIdentityValue(\Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity $identityValue) {
+		if (!$this->identityValues->contains($identityValue)) {
+			$this->identityValues[] = $identityValue;
 		}
 		return $this;
 	}
 
-	public function removeApplicationValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Application $applicationValue) {
-		$this->applicationValues->removeElement($applicationValue);
+	public function removeIdentityValue(\Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity $identityValue) {
+		$this->identityValues->removeElement($identityValue);
 	}
 
-	public function setApplicationValues($applicationValues) {
-		$this->applicationValues = $applicationValues;
+	public function setIdentityValues($identityValues) {
+		$this->identityValues = $identityValues;
 	}
 
-	public function getApplicationValues() {
-		return $this->applicationValues;
+	public function getIdentityValues() {
+		return $this->identityValues;
 	}
 
-	// NameRejected /////
+	// IdentityRejected /////
 
-	public function setApplicationRejected($applicationRejected) {
-		$this->applicationRejected = $applicationRejected;
+	public function setIdentityRejected($identityRejected) {
+		$this->identityRejected = $identityRejected;
 		return $this;
 	}
 
-	public function getApplicationRejected() {
-		return $this->applicationRejected;
+	public function getIdentityRejected() {
+		return $this->identityRejected;
 	}
 
 	// Icon /////

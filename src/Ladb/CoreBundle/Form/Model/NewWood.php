@@ -2,6 +2,9 @@
 
 namespace Ladb\CoreBundle\Form\Model;
 
+use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
+
 class NewWood {
 
 	/**
@@ -14,7 +17,7 @@ class NewWood {
 
 	// NameValue /////
 
-	public function setNameValue($nameValue) {
+	public function setNameValue(Text $nameValue) {
 		$this->nameValue = $nameValue;
 		return $this;
 	}
@@ -25,7 +28,7 @@ class NewWood {
 
 	// GrainValue /////
 
-	public function setGrainValue($grainValue) {
+	public function setGrainValue(Picture $grainValue) {
 		$this->grainValue = $grainValue;
 		return $this;
 	}

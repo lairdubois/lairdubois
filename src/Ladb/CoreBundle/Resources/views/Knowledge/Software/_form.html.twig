@@ -9,7 +9,7 @@
 
 {% block sidenav %}
     {{ parent() }}
-    <li id="application_sidenav"><a href="#application"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.application'|trans() }}</a></li>
+    <li id="identity_sidenav"><a href="#identity"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.identity'|trans() }}</a></li>
     <li id="icon_sidenav"><a href="#icon"><i class="ladb-icon-camera"></i> {{ 'knowledge.software.field.icon'|trans() }}</a></li>
 {% endblock %}
 
@@ -21,20 +21,20 @@
         </div>
     </div>
     {{ parent() }}
-    <section id="application_section">
+    <section id="identity_section">
         <div class="form-section">
-            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.application'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.identity'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-application.part.html.twig' with { 'form':form.applicationValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_APPLICATION'), 'fieldLabel':('knowledge.software.field.application'|trans()) } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-software-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_IDENTITY'), 'fieldLabel':('knowledge.software.field.identity'|trans()) } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
                         <div class="panel-body small">
-                            {{ ('knowledge.software.help.application')|trans()|ladb_markdown|raw }}
-                            {{ ('knowledge.software.form.help.application')|trans()|ladb_markdown|raw }}
-                            {{ ('knowledge.software.form.help.legend')|trans({ '%field%':(('knowledge.software.field.application')|trans())})|ladb_markdown|raw }}
+                            {{ ('knowledge.software.help.identity')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.software.form.help.identity')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.software.form.help.legend')|trans({ '%field%':(('knowledge.software.field.identity')|trans())})|ladb_markdown|raw }}
                             {{ ('knowledge.software.form.help.source')|trans()|ladb_markdown|raw }}
                         </div>
                     </div>

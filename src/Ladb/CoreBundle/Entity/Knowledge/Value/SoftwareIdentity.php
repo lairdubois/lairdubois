@@ -8,16 +8,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 
 /**
- * @ORM\Table("tbl_knowledge2_value_application")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\Value\ApplicationRepository")
- * @ladbAssert\ValidApplicationValue()
+ * @ORM\Table("tbl_knowledge2_value_software_identity")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\Value\SoftwareIdentityRepository")
+ * @ladbAssert\ValidSoftwareIdentityValue()
  */
-class Application extends BaseValue {
+class SoftwareIdentity extends BaseValue {
 
-	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\Application';
+	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\SoftwareIdentity';
 	const TYPE = 21;
 
-	const TYPE_STRIPPED_NAME = 'application';
+	const TYPE_STRIPPED_NAME = 'software-identity';
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -38,11 +38,11 @@ class Application extends BaseValue {
 	private $isAddOn = false;
 
 	/**
-	 * @ORM\Column(type="string", length=100, nullable=true)
+	 * @ORM\Column(type="string", length=100, nullable=true, name="host_software_name")
 	 * @Assert\Length(max=100)
 	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ\-.'&]+$/")
 	 */
-	private $hostSoftware;
+	private $hostSoftwareName;
 
 	/////
 
@@ -80,15 +80,15 @@ class Application extends BaseValue {
 		return $this->isAddOn;
 	}
 
-	// HostSoftware /////
+	// HostSoftwareName /////
 
-	public function setHostSoftware($hostSoftware) {
-		$this->hostSoftware = $hostSoftware;
+	public function setHostSoftwareName($hostSoftwareName) {
+		$this->hostSoftwareName = $hostSoftwareName;
 		return $this;
 	}
 
-	public function getHostSoftware() {
-		return $this->hostSoftware;
+	public function getHostSoftwareName() {
+		return $this->hostSoftwareName;
 	}
 
 }

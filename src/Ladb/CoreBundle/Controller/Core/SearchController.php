@@ -187,4 +187,37 @@ class SearchController extends Controller {
 		return $parameters;
 	}
 
+	/**
+	 * @Route("/typeahead/softwares.json", defaults={"_format" = "json"}, name="core_search_typeahead_softwares_json")
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadSoftwares.json.twig")
+	 */
+	public function searchTypeaheadSoftwareAction(Request $request, $page = 0) {
+		$searchUtils = $this->get(SearchUtils::NAME);
+
+
+		$searchParameters = $searchUtils->searchPaginedEntities(
+			$request,
+			$page,
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
+				$bool = new \Elastica\Query\BoolQuery();
+				$q1 = new \Elastica\Query\QueryString('*'.$facet->value.'*');
+				$q1->setFields(array( 'name' ));
+				$bool->addMust($q1);
+				$q2 = new \Elastica\Query\SimpleQueryString($facet->value.'*', array( 'name' ));	// Starts with boost
+				$bool->addShould($q2);
+				$filters[] = $bool;
+			},
+			null,
+			null,
+			'fos_elastica.index.ladb.knowledge_software',
+			\Ladb\CoreBundle\Entity\Knowledge\Software::CLASS_NAME,
+			null
+		);
+
+		$parameters = array_merge($searchParameters, array(
+			'softwares' => $searchParameters['entities'],
+		));
+		return $parameters;
+	}
+
 }

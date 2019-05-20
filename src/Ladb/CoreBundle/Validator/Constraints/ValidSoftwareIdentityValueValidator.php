@@ -4,9 +4,9 @@ namespace Ladb\CoreBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Application;
+use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
 
-class ValidApplicationValueValidator extends ConstraintValidator {
+class ValidSoftwareIdentityValueValidator extends ConstraintValidator {
 
 	/**
 	 * Checks if the passed value is valid.
@@ -17,10 +17,10 @@ class ValidApplicationValueValidator extends ConstraintValidator {
 	 * @api
 	 */
 	public function validate($value, Constraint $constraint) {
-		if ($value instanceof Application) {
-			if ($value->getIsAddOn() && empty($value->getHostSoftware())) {
+		if ($value instanceof SoftwareIdentity) {
+			if ($value->getIsAddOn() && empty($value->getHostSoftwareName())) {
 				$this->context->buildViolation($constraint->message)
-					->atPath('hostSoftware')
+					->atPath('hostSoftwareName')
 					->addViolation();
 			}
 		}
