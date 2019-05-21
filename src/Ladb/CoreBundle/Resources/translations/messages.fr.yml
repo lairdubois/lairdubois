@@ -911,32 +911,36 @@ knowledge:
       identity: Nom
       icon: Icône
       screenshot: Capture d'écran
-      authors: Auteur(s)
+      authors: Auteurs
       publisher: Editeur
       last_version: Dernière version
       website: Site officiel
       description: Descriptif
       open_source: Open Source
       source_code_repository: Code source
-      operating_systems: Système(s) d'exploitation
-      licenses: Licence(s)
+      operating_systems: Systèmes d'exploitation
+      license_url: Licence
+      pricings: Tarifications
       features: Fonctionnalités
       languages: Langues
+      supported_files: Fichiers supportés
     help:
       identity: "Le **Nom** est le nom officiel du logiciel."
       icon: "L'**Icône** est l'image qui sert d'icône au logiciel."
       screenshot: "La **Capture d'écran** est une capture du logiciel en cours d'utilisation"
-      authors: "**Auteur(s)** permet de définir le ou les auteur(s) du logiciel."
-      publisher: "**Auteur(s)** permet de définir l'éditeur du logiciel."
+      authors: "**Auteurs** permet de définir le ou les auteur(s) du logiciel."
+      publisher: "**Editeur** permet de définir l'éditeur du logiciel."
       last_version: Dernière version
       website: "**Site officiel** permet de définir le lien vers la page officielle du logiciel."
       description: "Le **Descriptif** décrit succintement ce logiciel."
       open_source: "**Open Source** permet d'indiquer si le code source de ce logiciel est en libre accès."
       source_code_repository: "**Source code** permet de préciser le lien vers le dépot des sources du logiciel."
-      operating_systems: "**Système(s) d'exploitation** permet de définir la liste des systèmes d'exploitation où peut être exécuté le logiciel."
-      licenses: "**Licence(s)** permet de lister les différentes formes d'utilisation possible logiciel."
+      operating_systems: "**Systèmes d'exploitation** permet de définir la liste des systèmes d'exploitation où peut être exécuté le logiciel."
+      license_url: "**Licence** permet de pointer vers la page où peut être consultée la licence du logiciel."
+      pricings: "**Tarifications** permet de lister les différentes formes de tarification du logiciel."
       features: "**Fonctionnalités** permet de lister les principales fonctionnalités du logiciel. *(Ex: CAO, Modeleur 3D, ...)*."
       languages: "**Langues** permet de lister les différentes langues dans lesquelles est disponible le logiciel."
+      supported_files: "**Fichiers supportés** permet de lister les extensions de fichiers qu'il est possible d'ouvrir avec le logiciel."
     form:
       alert:
         delete_success: Le logiciel <strong>%title%</strong> a été supprimé.
@@ -958,10 +962,14 @@ knowledge:
         source_code_repository:
         operating_systems: |
           - N'indiquez **qu'un seul** système d'exploitation par proposition.
-        licenses:
+        license_url: |
+          - Une URL est attendue pour cette valeur.
+        pricings:
         features: |
           - N'indiquez **qu'une seule** fonctionnalité par proposition.
         languages:
+        supported_files: |
+          - N'indiquez **qu'une seule** extension par proposition.
     choice:
       entities: '[0,1]logiciel|]1,Inf]logiciels'
       addons: '[0,1]plugin|]1,Inf]plugins'

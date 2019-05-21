@@ -800,8 +800,14 @@ class PlanController extends Controller {
 
 						$resourceUtils = $this->get(ResourceUtils::NAME);
 						$kind = $resourceUtils->getKindFromStrippedName($facet->value);
-						$filter = new \Elastica\Query\Range('kinds', array( 'gte' => $kind, 'lte' => $kind ));
+						$filter = new \Elastica\Query\Term(['kinds' => ['value' => $kind, 'boost' => 1.0]]);
 						$filters[] = $filter;
+
+						break;
+
+					case 'file-extension':
+
+						$filters[] = new \Elastica\Query\Match('resources.fileExtension', $facet->value);
 
 						break;
 
@@ -989,6 +995,11 @@ class PlanController extends Controller {
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($plan));
 
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchableSoftwareCount = $searchUtils->searchEntitiesCount(array(
+			new \Elastica\Query\Match('supportedFiles', implode(',', $plan->getResourceFileExtensions()))
+		), 'fos_elastica.index.ladb.knowledge_software');
+
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
 		$userPlans = $explorableUtils->getPreviousAndNextPublishedUserExplorables($plan, $planRepository, $plan->getUser()->getMeta()->getPublicPlanCount());
 		$similarPlans = $explorableUtils->getSimilarExplorables($plan, 'fos_elastica.index.ladb.wonder_plan', Plan::CLASS_NAME, $userPlans);
@@ -1000,15 +1011,16 @@ class PlanController extends Controller {
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array(
-			'plan'              => $plan,
-			'userPlans'         => $userPlans,
-			'similarPlans'      => $similarPlans,
-			'likeContext'       => $likableUtils->getLikeContext($plan, $this->getUser()),
-			'watchContext'      => $watchableUtils->getWatchContext($plan, $this->getUser()),
-			'commentContext'    => $commentableUtils->getCommentContext($plan),
-			'collectionContext' => $collectionnableUtils->getCollectionContext($plan),
-			'followerContext'   => $followerUtils->getFollowerContext($plan->getUser(), $this->getUser()),
-			'referral'          => $referral,
+			'plan'                    => $plan,
+			'searchableSoftwareCount' => $searchableSoftwareCount,
+			'userPlans'               => $userPlans,
+			'similarPlans'            => $similarPlans,
+			'likeContext'             => $likableUtils->getLikeContext($plan, $this->getUser()),
+			'watchContext'            => $watchableUtils->getWatchContext($plan, $this->getUser()),
+			'commentContext'          => $commentableUtils->getCommentContext($plan),
+			'collectionContext'       => $collectionnableUtils->getCollectionContext($plan),
+			'followerContext'         => $followerUtils->getFollowerContext($plan->getUser(), $this->getUser()),
+			'referral'                => $referral,
 		);
 	}
 

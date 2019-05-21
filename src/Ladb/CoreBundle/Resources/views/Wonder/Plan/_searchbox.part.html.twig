@@ -24,6 +24,8 @@
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes plans" data-unique="true" data-icon="plan"><i class="ladb-icon-plan"></i> Mes plans</a></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
+    {# Hidden filters #}
+    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="file-extension" data-label="Extension" data-editable="true" data-icon="file"><i class="ladb-icon-file"></i> Extension</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}

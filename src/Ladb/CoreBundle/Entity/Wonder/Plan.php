@@ -223,6 +223,18 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 		return 10;
 	}
 
+	// ResouceFileExtensions /////
+
+	public function getResourceFileExtensions() {
+		$fileExtensions = array();
+		foreach ($this->getResources() as $resource) {
+			if (!in_array($resource->getFileExtension(), $fileExtensions)) {
+				$fileExtensions[] = $resource->getFileExtension();
+			}
+		}
+		return $fileExtensions;
+	}
+
 	// Sketchup3DWarehouseUrl /////
 
 	public function setSketchup3DWarehouseUrl($sketchup3DWarehouseUrl) {

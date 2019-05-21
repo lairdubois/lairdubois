@@ -489,6 +489,10 @@ fos_elastica:
                         reboundCount: { type: integer }
                         kinds:
                             type: "integer"
+                        resources:
+                            type: "object"
+                            properties:
+                                fileExtension: { type: string }
                         user:
                             type: "object"
                             properties:
@@ -877,9 +881,10 @@ fos_elastica:
                         publisher: { analyzer: name_analyzer }
                         openSource: { type: boolean }
                         operatingSystems: { type: text, analyzer: name_analyzer }
-                        licenses: { type: text, analyzer: name_analyzer }
+                        pricings: { type: text, analyzer: name_analyzer }
                         features: { type: text, analyzer: name_analyzer }
                         languages: { type: text, analyzer: name_analyzer }
+                        supportedFiles: { type: text }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }

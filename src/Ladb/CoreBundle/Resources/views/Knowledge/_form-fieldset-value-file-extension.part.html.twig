@@ -1,0 +1,20 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.extension) }}
+    <small class="help-block">Exemple : <em>SKP</em></small>
+    <div class="input-group">
+        <span class="input-group-addon">.</span>
+        {{ form_widget(form.extension, { 'attr':{ 'class':'form-control input-lg', 'placeholder':'Extension' } }) }}
+    </div>
+{% endblock %}
+
+{% block dataFormGroupOuter %}
+    {{ parent() }}
+    <div class="form-group">
+        {{ form_label(form.label, 'Désignation') }} <small>(Facultatif)</small>
+        <small class="help-block">Exemple : <em>Document Sketchup</em></small>
+        {{ form_errors(form.label) }}
+        {{ form_widget(form.label, { 'attr':{ 'class':'form-control' } }) }}
+    </div>
+{% endblock %}

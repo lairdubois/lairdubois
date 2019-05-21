@@ -92,7 +92,8 @@
         <div class="ladb-metas">
             <h4 class="ladb-heading">Distribution</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_WEBSITE', software), 'data':software.website, 'values':software.websiteValues, 'itemprop':'url' } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LICENSES', software), 'data':software.licenses, 'values':software.licensesValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_PRICINGS', software), 'data':software.pricings, 'values':software.pricingsValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LICENSE_URL', software), 'data':software.licenseUrl, 'values':software.licenseUrlValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_OPEN_SOURCE', software), 'data':software.openSource, 'values':software.openSourceValues } %}
             {% if software.sourceCodeRepositoryValues is not empty or software.opensource %}
                 {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SOURCE_CODE_REPOSITORY', software), 'data':software.sourceCodeRepository, 'values':software.sourceCodeRepositoryValues, 'disabled':not software.opensource, 'indented':true } %}
@@ -108,6 +109,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_OPERATING_SYSTEMS', software), 'data':software.operatingSystems, 'values':software.operatingSystemsValues, 'itemprop':'operatingSystem' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LANGUAGES', software), 'data':software.languages, 'values':software.languagesValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_FEATURES', software), 'data':software.features, 'values':software.featuresValues, 'itemprop':'featureList' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SUPPORTED_FILES', software), 'data':software.supportedFiles, 'values':software.supportedFilesValues } %}
         </div>
         <div class="panel panel-default ladb-margin-top">
             <div class="panel-body">
@@ -167,6 +169,15 @@
                 <a href="{{ path('core_software_list', { 'q':'@addon:"'~software.name~'"'}) }}" rel="nofollow">
                     <strong>{{ searchableAddonCount }}</strong>
                     <small>{{ 'knowledge.software.choice.addons'|transchoice(searchableAddonCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if searchablePlanCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
+                <a href="{{ path('core_plan_list', { 'q':'@file-extension:"'~software.supportedFiles~'"'}) }}" rel="nofollow">
+                    <strong>{{ searchablePlanCount }}</strong>
+                    <small>{{ 'wonder.plan.choice.entities'|transchoice(searchablePlanCount) }}</small>
                 </a>
             </div>
         {% endif %}

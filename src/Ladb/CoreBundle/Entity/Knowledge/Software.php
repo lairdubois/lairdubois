@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\ReviewableInterface;
 use Ladb\CoreBundle\Model\ReviewableTrait;
+use Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension;
 use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Language;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
@@ -41,25 +42,29 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_OPEN_SOURCE  = 'open_source';
 	const FIELD_SOURCE_CODE_REPOSITORY  = 'source_code_repository';
 	const FIELD_OPERATING_SYSTEMS  = 'operating_systems';
-	const FIELD_LICENSES  = 'licenses';
+	const FIELD_LICENSE_URL  = 'license_url';
+	const FIELD_PRICINGS  = 'pricings';
 	const FIELD_FEATURES  = 'features';
 	const FIELD_LANGUAGES  = 'languages';
+	const FIELD_SUPPORTED_FILES  = 'supported_files';
 
 	public static $FIELD_DEFS = array(
-		Software::FIELD_IDENTITY               => array(Software::ATTRIB_TYPE => SoftwareIdentity::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_MANDATORY => true, Software::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueSoftware', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('name', 'isAddOn', 'hostSoftwareName')),
-		Software::FIELD_ICON                   => array(Software::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_MANDATORY => true, Software::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Software::FIELD_SCREENSHOT             => array(Software::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
-		Software::FIELD_AUTHORS                => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@authors:"%q%"', Software::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
-		Software::FIELD_PUBLISHER              => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_FILTER_QUERY => '@publisher:"%q%"'),
-		Software::FIELD_LAST_VERSION           => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
-		Software::FIELD_WEBSITE                => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
-		Software::FIELD_DESCRIPTION            => array(Software::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
-		Software::FIELD_OPEN_SOURCE            => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
-		Software::FIELD_SOURCE_CODE_REPOSITORY => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
-		Software::FIELD_OPERATING_SYSTEMS      => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Windows', 1 => 'Mac', 2 => 'Linux', 3 => 'Android', 4 => 'iOS'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@os:"%q%"'),
-		Software::FIELD_LICENSES               => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Gratuit', 1 => 'Gratuit pour usage personnel', 2 => 'Gratuit avec fonctionnalités limitées', 3 => 'Payant'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@licenses:"%q%"'),
-		Software::FIELD_FEATURES               => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@features:"%q%"', Software::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule fonctionnalité par proposition.')))),
-		Software::FIELD_LANGUAGES              => array(Software::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@languages:"%q%"'),
+		Software::FIELD_IDENTITY                     => array(Software::ATTRIB_TYPE => SoftwareIdentity::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_MANDATORY => true, Software::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueSoftware', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('name', 'isAddOn', 'hostSoftwareName')),
+		Software::FIELD_ICON                         => array(Software::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_MANDATORY => true, Software::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
+		Software::FIELD_SCREENSHOT                   => array(Software::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_AUTHORS                      => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@authors:"%q%"', Software::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
+		Software::FIELD_PUBLISHER                    => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_FILTER_QUERY => '@publisher:"%q%"'),
+		Software::FIELD_LAST_VERSION                 => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_WEBSITE                      => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_DESCRIPTION                  => array(Software::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_OPEN_SOURCE                  => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
+		Software::FIELD_SOURCE_CODE_REPOSITORY       => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_OPERATING_SYSTEMS            => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Windows', 1 => 'Mac', 2 => 'Linux', 3 => 'Android', 4 => 'iOS'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@os:"%q%"'),
+		Software::FIELD_LICENSE_URL                  => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_PRICINGS                     => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Gratuit', 1 => 'Gratuit pour usage personnel', 2 => 'Gratuit avec fonctionnalités limitées', 3 => 'Payant'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@pricings:"%q%"'),
+		Software::FIELD_FEATURES                     => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@features:"%q%"', Software::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule fonctionnalité par proposition.')))),
+		Software::FIELD_LANGUAGES                    => array(Software::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@languages:"%q%"'),
+		Software::FIELD_SUPPORTED_FILES              => array(Software::ATTRIB_TYPE => FileExtension::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@supported-files:"%q%"'),
 	);
 
 	/**
@@ -228,16 +233,29 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
+	 * @ORM\Column(type="string", nullable=true, name="license_url")
+	 */
+	private $licenseUrl;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_license_url")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $licenseUrlValues;
+
+
+	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
-	private $licenses;
+	private $pricings;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_licenses")
+	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_pricings")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $licensesValues;
+	private $pricingsValues;
 
 
 	/**
@@ -267,6 +285,19 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
+	 * @ORM\Column(type="text", nullable=true, name="supported_files")
+	 */
+	private $supportedFiles;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_supported_files")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $supportedFilesValues;
+
+
+	/**
 	 * @ORM\Column(name="review_count", type="integer")
 	 */
 	private $reviewCount = 0;
@@ -290,9 +321,11 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		$this->openSourceValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->sourceCodeRepositoryValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->operatingSystemsValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->licensesValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->licenseUrlValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->pricingsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->featuresValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->languagesValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->supportedFilesValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -742,36 +775,68 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		return $this->operatingSystemsValues;
 	}
 
-	// Licenses /////
+	// LicenseUrl /////
 
-	public function setLicenses($licenses) {
-		$this->licenses = $licenses;
+	public function setLicenseUrl($licenseUrl) {
+		$this->licenseUrl = $licenseUrl;
 		return $this;
 	}
 
-	public function getLicenses() {
-		return $this->licenses;
+	public function getLicenseUrl() {
+		return $this->licenseUrl;
 	}
 
-	// LicensesValues /////
+	// LicenseUrlValues /////
 
-	public function addLicensesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $licensesValue) {
-		if (!$this->licensesValues->contains($licensesValue)) {
-			$this->licensesValues[] = $licensesValue;
+	public function addLicenseUrlValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $licenseUrlValue) {
+		if (!$this->licenseUrlValues->contains($licenseUrlValue)) {
+			$this->licenseUrlValues[] = $licenseUrlValue;
 		}
 		return $this;
 	}
 
-	public function removeLicensesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $licensesValue) {
-		$this->licensesValues->removeElement($licensesValue);
+	public function removeLicenseUrlValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $licenseUrlValue) {
+		$this->licenseUrlValues->removeElement($licenseUrlValue);
 	}
 
-	public function setLicensesValues($licensesValues) {
-		$this->licensesValues = $licensesValues;
+	public function setLicenseUrlValues($licenseUrlValues) {
+		$this->licenseUrlValues = $licenseUrlValues;
 	}
 
-	public function getLicensesValues() {
-		return $this->licensesValues;
+	public function getLicenseUrlValues() {
+		return $this->licenseUrlValues;
+	}
+
+	// Pricings /////
+
+	public function setPricings($pricings) {
+		$this->pricings = $pricings;
+		return $this;
+	}
+
+	public function getPricings() {
+		return $this->pricings;
+	}
+
+	// PricingsValues /////
+
+	public function addPricingsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $pricingsValue) {
+		if (!$this->pricingsValues->contains($pricingsValue)) {
+			$this->pricingsValues[] = $pricingsValue;
+		}
+		return $this;
+	}
+
+	public function removePricingsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $pricingsValue) {
+		$this->pricingsValues->removeElement($pricingsValue);
+	}
+
+	public function setPricingsValues($pricingsValues) {
+		$this->pricingsValues = $pricingsValues;
+	}
+
+	public function getPricingsValues() {
+		return $this->pricingsValues;
 	}
 
 	// Features /////
@@ -836,6 +901,38 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getLanguagesValues() {
 		return $this->languagesValues;
+	}
+
+	// SupportedFiles /////
+
+	public function setSupportedFiles($supportedFiles) {
+		$this->supportedFiles = $supportedFiles;
+		return $this;
+	}
+
+	public function getSupportedFiles() {
+		return $this->supportedFiles;
+	}
+
+	// SupportedFilesValues /////
+
+	public function addSupportedFilesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension $supportedFilesValue) {
+		if (!$this->supportedFilesValues->contains($supportedFilesValue)) {
+			$this->supportedFilesValues[] = $supportedFilesValue;
+		}
+		return $this;
+	}
+
+	public function removeSupportedFilesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension $supportedFilesValue) {
+		$this->supportedFilesValues->removeElement($supportedFilesValue);
+	}
+
+	public function setSupportedFilesValues($supportedFilesValues) {
+		$this->supportedFilesValues = $supportedFilesValues;
+	}
+
+	public function getSupportedFilesValues() {
+		return $this->supportedFilesValues;
 	}
 
 }

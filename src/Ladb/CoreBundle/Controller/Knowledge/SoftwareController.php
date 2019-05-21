@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ReviewableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -198,10 +199,10 @@ class SoftwareController extends Controller {
 
 						break;
 
-					case 'licenses':
+					case 'pricings':
 
 						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
-						$filter->setFields(array( 'licenses' ));
+						$filter->setFields(array( 'pricings' ));
 						$filters[] = $filter;
 
 						break;
@@ -224,6 +225,12 @@ class SoftwareController extends Controller {
 					case 'open-source':
 
 						$filters[] = new \Elastica\Query\Term(['openSource' => ['value' => true, 'boost' => 1.0]]);
+
+						break;
+
+					case 'supported-files':
+
+						$filters[] = new \Elastica\Query\Match('supportedFiles', $facet->value);
 
 						break;
 
@@ -341,6 +348,10 @@ class SoftwareController extends Controller {
 			new \Elastica\Query\Term(['isAddOn' => ['value' => true, 'boost' => 1.0]]),
 			new \Elastica\Query\Term(['hostSoftwareName' => ['value' => strtolower($software->getName()), 'boost' => 1.0]])
 		), 'fos_elastica.index.ladb.knowledge_software');
+		$searchablePlanCount = is_null($software->getSupportedFiles()) ? 0 : $searchUtils->searchEntitiesCount(array(
+			new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC )),
+			new \Elastica\Query\Match('resources.fileExtension', $software->getSupportedFiles())
+		), 'fos_elastica.index.ladb.wonder_plan');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
@@ -352,6 +363,7 @@ class SoftwareController extends Controller {
 			'software'             => $software,
 			'hostSoftware'         => $hostSoftware,
 			'searchableAddonCount' => $searchableAddonCount,
+			'searchablePlanCount'  => $searchablePlanCount,
 			'likeContext'          => $likableUtils->getLikeContext($software, $this->getUser()),
 			'watchContext'         => $watchableUtils->getWatchContext($software, $this->getUser()),
 			'commentContext'       => $commentableUtils->getCommentContext($software),
