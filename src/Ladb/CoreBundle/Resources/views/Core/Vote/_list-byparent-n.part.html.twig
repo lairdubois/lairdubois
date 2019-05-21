@@ -28,13 +28,8 @@
                     {% for votable in item.votables %}
                         <div class="ladb-votable row">
                             <div class="col-xs-1 text-center"><i class="ladb-icon-arrow-{% if filter == 'negative' %}down ladb-color-negative{% else %}up ladb-color-positive{% endif %}"></i></div>
-                            {% if votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
-                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Integer::TYPE')
-                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE')
-                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Url::TYPE')
-                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Location::TYPE')
-                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Phone::TYPE')
-                                    or votable.type == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Sign::TYPE') %}
+                            {% if votable.type >= constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
+                                    and votable.type < constant('\\Ladb\\CoreBundle\\Entity\\Wonder\\Creation::TYPE') %}
                                 {% include 'LadbCoreBundle:Knowledge:_value-votable-thumbnail.part.html.twig' with { 'knowledge':entity, 'value':votable } %}
                             {% else %}
                                 {{ votable.title }}
