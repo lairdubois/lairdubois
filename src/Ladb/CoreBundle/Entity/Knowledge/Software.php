@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\ReviewableInterface;
 use Ladb\CoreBundle\Model\ReviewableTrait;
@@ -42,7 +43,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_OPEN_SOURCE  = 'open_source';
 	const FIELD_SOURCE_CODE_REPOSITORY  = 'source_code_repository';
 	const FIELD_OPERATING_SYSTEMS  = 'operating_systems';
-	const FIELD_LICENSE_URL  = 'license_url';
+	const FIELD_LICENSE_TYPE  = 'license_type';
 	const FIELD_PRICINGS  = 'pricings';
 	const FIELD_FEATURES  = 'features';
 	const FIELD_LANGUAGES  = 'languages';
@@ -60,7 +61,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		Software::FIELD_OPEN_SOURCE                  => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Software::FIELD_SOURCE_CODE_REPOSITORY       => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_OPERATING_SYSTEMS            => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Windows', 1 => 'Mac', 2 => 'Linux', 3 => 'Android', 4 => 'iOS'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@os:"%q%"'),
-		Software::FIELD_LICENSE_URL                  => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_LICENSE_TYPE                 => array(Software::ATTRIB_TYPE => LinkableText::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_PRICINGS                     => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Gratuit', 1 => 'Gratuit pour usage personnel', 2 => 'Gratuit avec fonctionnalités limitées', 3 => 'Payant'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@pricings:"%q%"'),
 		Software::FIELD_FEATURES                     => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@features:"%q%"', Software::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule fonctionnalité par proposition.')))),
 		Software::FIELD_LANGUAGES                    => array(Software::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@languages:"%q%"'),
@@ -233,16 +234,16 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, name="license_url")
+	 * @ORM\Column(type="string", nullable=true, name="license_type")
 	 */
-	private $licenseUrl;
+	private $licenseType;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_license_url")
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_license_type")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $licenseUrlValues;
+	private $licenseTypeValues;
 
 
 	/**
@@ -321,7 +322,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		$this->openSourceValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->sourceCodeRepositoryValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->operatingSystemsValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->licenseUrlValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->licenseTypeValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->pricingsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->featuresValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->languagesValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -775,36 +776,36 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		return $this->operatingSystemsValues;
 	}
 
-	// LicenseUrl /////
+	// LicenseType /////
 
-	public function setLicenseUrl($licenseUrl) {
-		$this->licenseUrl = $licenseUrl;
+	public function setLicenseType($licenseType) {
+		$this->licenseType = $licenseType;
 		return $this;
 	}
 
-	public function getLicenseUrl() {
-		return $this->licenseUrl;
+	public function getLicenseType() {
+		return $this->licenseType;
 	}
 
-	// LicenseUrlValues /////
+	// LicenseTypeValues /////
 
-	public function addLicenseUrlValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $licenseUrlValue) {
-		if (!$this->licenseUrlValues->contains($licenseUrlValue)) {
-			$this->licenseUrlValues[] = $licenseUrlValue;
+	public function addLicenseTypeValue(\Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText $licenseTypeValue) {
+		if (!$this->licenseTypeValues->contains($licenseTypeValue)) {
+			$this->licenseTypeValues[] = $licenseTypeValue;
 		}
 		return $this;
 	}
 
-	public function removeLicenseUrlValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $licenseUrlValue) {
-		$this->licenseUrlValues->removeElement($licenseUrlValue);
+	public function removeLicenseTypeValue(\Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText $licenseTypeValue) {
+		$this->licenseTypeValues->removeElement($licenseTypeValue);
 	}
 
-	public function setLicenseUrlValues($licenseUrlValues) {
-		$this->licenseUrlValues = $licenseUrlValues;
+	public function setLicenseTypeValues($licenseTypeValues) {
+		$this->licenseTypeValues = $licenseTypeValues;
 	}
 
-	public function getLicenseUrlValues() {
-		return $this->licenseUrlValues;
+	public function getLicenseTypeValues() {
+		return $this->licenseTypeValues;
 	}
 
 	// Pricings /////

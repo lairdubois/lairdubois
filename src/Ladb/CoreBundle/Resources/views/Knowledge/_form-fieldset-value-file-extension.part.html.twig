@@ -1,11 +1,11 @@
 {% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
 
 {% block dataFormGroup %}
-    {{ form_errors(form.extension) }}
+    {{ form_errors(form.data) }}
     <small class="help-block">Exemple : <em>SKP</em></small>
     <div class="input-group">
         <span class="input-group-addon">.</span>
-        {{ form_widget(form.extension, { 'attr':{ 'class':'form-control input-lg', 'placeholder':'Extension' } }) }}
+        {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':'Extension' } }) }}
     </div>
 {% endblock %}
 

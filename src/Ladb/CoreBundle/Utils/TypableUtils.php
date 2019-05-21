@@ -226,6 +226,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// FileExtension
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension';
+			// LinkableText
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:

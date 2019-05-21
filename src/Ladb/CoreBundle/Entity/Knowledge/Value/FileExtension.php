@@ -19,16 +19,11 @@ class FileExtension extends BaseValue {
 
 	/**
 	 * @ORM\Column(type="string", length=10)
-	 */
-	protected $data;
-
-	/**
-	 * @ORM\Column(type="string", length=10)
 	 * @Assert\NotBlank
 	 * @Assert\Length(max=10)
 	 * @Assert\Regex("/^[a-zA-Z0-9]+$/")
 	 */
-	private $extension;
+	protected $data;
 
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
@@ -48,17 +43,6 @@ class FileExtension extends BaseValue {
 
 	public function getTitle() {
 		return $this->getData();
-	}
-
-	// Extension /////
-
-	public function getExtension() {
-		return $this->extension;
-	}
-
-	public function setExtension($extension) {
-		$this->extension = $extension;
-		return $this;
 	}
 
 	// Label /////

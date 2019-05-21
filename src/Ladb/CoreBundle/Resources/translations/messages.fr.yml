@@ -919,7 +919,7 @@ knowledge:
       open_source: Open Source
       source_code_repository: Code source
       operating_systems: Systèmes d'exploitation
-      license_url: Licence
+      license_type: Licence
       pricings: Tarifications
       features: Fonctionnalités
       languages: Langues
@@ -936,7 +936,7 @@ knowledge:
       open_source: "**Open Source** permet d'indiquer si le code source de ce logiciel est en libre accès."
       source_code_repository: "**Source code** permet de préciser le lien vers le dépot des sources du logiciel."
       operating_systems: "**Systèmes d'exploitation** permet de définir la liste des systèmes d'exploitation où peut être exécuté le logiciel."
-      license_url: "**Licence** permet de pointer vers la page où peut être consultée la licence du logiciel."
+      license_url: "**Licence** permet d'indiquer la licence du logiciel."
       pricings: "**Tarifications** permet de lister les différentes formes de tarification du logiciel."
       features: "**Fonctionnalités** permet de lister les principales fonctionnalités du logiciel. *(Ex: CAO, Modeleur 3D, ...)*."
       languages: "**Langues** permet de lister les différentes langues dans lesquelles est disponible le logiciel."
@@ -962,8 +962,8 @@ knowledge:
         source_code_repository:
         operating_systems: |
           - N'indiquez **qu'un seul** système d'exploitation par proposition.
-        license_url: |
-          - Une URL est attendue pour cette valeur.
+        license_type: |
+          - Pour plus de précision, vous pouvez remplir le lien de consultation de cette licence.
         pricings:
         features: |
           - N'indiquez **qu'une seule** fonctionnalité par proposition.

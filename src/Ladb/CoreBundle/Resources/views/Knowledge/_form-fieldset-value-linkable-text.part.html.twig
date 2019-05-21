@@ -1,0 +1,20 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% set fieldDef = knowledge is defined ? knowledge.fieldDefs[field] : fieldDef|default(null) %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.data) }}
+    {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':fieldLabel } }) }}
+{% endblock %}
+
+{% block dataFormGroupOuter %}
+    {{ parent() }}
+    <div class="form-group">
+        {{ form_label(form.url, 'Lien de consultation') }} <small>(Facultatif)</small>
+        {{ form_errors(form.url) }}
+        <div class="input-group">
+            <span class="input-group-addon"><i class="ladb-icon-link"></i></span>
+            {{ form_widget(form.url, { 'attr':{ 'class':'form-control input-lg' } }) }}
+        </div>
+    </div>
+{% endblock %}
