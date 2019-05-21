@@ -90,7 +90,7 @@
             <h4 class="ladb-heading">Distribution</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_WEBSITE', software), 'data':software.website, 'values':software.websiteValues, 'itemprop':'url' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_PRICINGS', software), 'data':software.pricings, 'values':software.pricingsValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LICENSE_TYPE', software), 'data':software.licenseType, 'values':software.licenseTypeValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LICENSE_TYPE', software), 'data':software.licenseType, 'values':software.licenseTypeValues, 'itemprop':'license' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_OPEN_SOURCE', software), 'data':software.openSource, 'values':software.openSourceValues } %}
             {% if software.sourceCodeRepositoryValues is not empty or software.opensource %}
                 {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SOURCE_CODE_REPOSITORY', software), 'data':software.sourceCodeRepository, 'values':software.sourceCodeRepositoryValues, 'disabled':not software.opensource, 'indented':true } %}
