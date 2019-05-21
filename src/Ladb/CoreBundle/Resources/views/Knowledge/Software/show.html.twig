@@ -3,9 +3,6 @@
 {% set entity = software %}
 
 {% set pageTitle = software.name %}
-{% if software.authors %}
-    {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.of'|trans()))~' '~software.authors %}
-{% endif %}
 {% set pageContentItemType = 'SoftwareApplication' %}
 {% set pageSectionUrl = url('core_software_list') %}
 {% set pageSectionName = 'knowledge.software.list'|trans %}
