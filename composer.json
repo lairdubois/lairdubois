@@ -104,7 +104,8 @@
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "vendor-dir": "/var/cache/ladb/vendor"
     },
     "extra": {
         "symfony-app-dir": "app",
