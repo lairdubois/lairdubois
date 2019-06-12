@@ -5,8 +5,8 @@
 <div class="ladb-reviews-header">
     {% if entity.reviewCount > 0 %}
         {% if is_granted("ROLE_USER") and userReview is defined and not userReview %}<button class="btn btn-default pull-right" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$('#ladb_review_btn').click();"><i class="ladb-icon-plus"></i> {{ 'review.new'|trans() }}</button>{% endif %}
-        <h2 class="ladb-margin-bottom">{{ entity.reviewCount }} {{ ('review.'~i18nPrefix~'.choice.entities')|transchoice(entity.reviewCount) }}</h2>
+        <h2 id="ladb_reviews" class="ladb-margin-bottom">{{ entity.reviewCount }} {{ ('review.'~i18nPrefix~'.choice.entities')|transchoice(entity.reviewCount) }}</h2>
     {% else %}
-        <h2>{{ ('review.'~i18nPrefix~'.choice.entities')|transchoice(2)|capitalize }}</h2>
+        <h2 id="ladb_reviews">{{ ('review.'~i18nPrefix~'.choice.entities')|transchoice(2)|capitalize }}</h2>
     {% endif %}
 </div>

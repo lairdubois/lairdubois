@@ -42,7 +42,7 @@ class ReviewRepository extends AbstractEntityRepository {
 			->andWhere('r.entityId = :entityId')
 			->setParameter('entityType', $entityType)
 			->setParameter('entityId', $entityId)
-			->orderBy('r.createdAt', 'ASC')
+			->orderBy('r.createdAt', 'DESC')
 		;
 
 		try {
