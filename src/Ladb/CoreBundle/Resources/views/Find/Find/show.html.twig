@@ -49,6 +49,11 @@
         {% include 'LadbCoreBundle:Find/Find:_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-find">
+        {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') and find.content.cancelled %}
+            <a class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_event_datetime').ladbScrollTo(null, { onAfter: function() { $('#ladb_event_datetime').effect('highlight', {}, 1000);}})">
+                <i class="ladb-icon-warning"></i> {{ 'find.find.content.event.cancelled'|trans() }}
+            </a>
+        {% endif %}
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') %}
             <div class="ladb-thumb">
                 <a href="{{ find.content.url }}" class="thumbnail">
@@ -86,7 +91,7 @@
                 {% set startTime = find.content.startTime %}
                 {% set endDate = find.content.endDate %}
                 {% set endTime = find.content.endTime %}
-                <div class="media">
+                <div id="ladb_event_datetime" class="media">
                     <div class="media-left">
                         <i class="ladb-icon-date ladb-icon-lg"></i>
                     </div>
