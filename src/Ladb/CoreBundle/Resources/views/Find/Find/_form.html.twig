@@ -146,6 +146,15 @@
                             {{ form_widget(form.event.url) }}
                         </div>
                     </div>
+                    <div class="form-group">
+                        {{ form_label(form.event.cancelled, 'Annulation') }}
+                        <div class="checkbox">
+                            <label>
+                                {{ form_widget(form.event.cancelled) }}
+                                Cet évènement est annulé
+                            </label>
+                        </div>
+                    </div>
                     <script>
                         $(function () {
                             $('#{{ form.event.startDate.vars.id }}')

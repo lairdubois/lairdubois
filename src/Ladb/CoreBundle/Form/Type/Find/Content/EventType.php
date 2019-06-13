@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Form\Type\Find\Content;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -31,6 +32,7 @@ class EventType extends AbstractType {
 			->add('endDate', DateType::class, array( 'html5' => false, 'format' => 'dd/MM/yyyy', 'widget' => 'single_text' ))
 			->add('endTime', TimeType::class, array( 'html5' => false, 'widget' => 'single_text' ))
 			->add('url')
+			->add('cancelled')
 		;
 	}
 

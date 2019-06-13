@@ -88,6 +88,11 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 	 */
 	private $url;
 
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $cancelled = false;
+
 	/////
 
 	public function __construct() {
@@ -192,6 +197,17 @@ class Event extends AbstractContent implements MultiPicturedInterface, Localisab
 
 	public function getUrl() {
 		return $this->url;
+	}
+
+	// Cancelled /////
+
+	public function setCancelled($cancelled) {
+		$this->cancelled = $cancelled;
+		return $this;
+	}
+
+	public function getCancelled() {
+		return $this->cancelled;
 	}
 
 }

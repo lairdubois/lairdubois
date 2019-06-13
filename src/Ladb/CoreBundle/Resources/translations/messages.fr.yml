@@ -341,6 +341,7 @@ find:
         scheduled: Prochainement
         running: En ce moment
         completed: Terminé
+        cancelled: Annulé
         event_starts: L'évènement commence
         event_ends: L'évènement se termine
         event_was_completed: L'évènement s'est terminé

@@ -23,7 +23,9 @@
         {% if entity.joinCount > 0 %}
             <li class="ladb-counter"><i class="ladb-icon-users"></i> <span>{{ entity.joinCount|number_format(0, ',', ' ') }}</span></li>
         {% endif %}
-        {% if find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_SCHEDULED') %}
+        {% if find.content.cancelled %}
+            <span class="label label-danger"><i class="ladb-icon-warning"></i> {{ 'find.find.content.event.cancelled'|trans() }}</span>
+        {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_SCHEDULED') %}
             <span class="label label-info">{{ find.content.startAt|time_diff()|capitalize }}</span>
         {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_RUNNING') %}
             <span class="label label-success">{{ 'find.find.content.event.running'|trans() }}</span>
