@@ -550,9 +550,9 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 's', 'mp', 'src' ))
-			->from('LadbCoreBundle:Knowledge\Software', 'b')
-			->leftJoin('b.mainPicture', 'mp')
-			->leftJoin('b.screenshot', 'src')
+			->from('LadbCoreBundle:Knowledge\Software', 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->leftJoin('s.screenshot', 'src')
 		;
 
 		try {
