@@ -112,8 +112,8 @@ class FindType extends AbstractType {
 					case Find::CONTENT_TYPE_LINK:
 
 						$link = $event->getForm()->get('link')->getData();
-						$canonicalUrl = $this->linkUtils->getCanonicalUrl($link->getUrl());
-						$kindAndEmbedIdentifier = $this->videoHostingUtils->getKindAndEmbedIdentifier($canonicalUrl);
+						$canonicalUrl = $link->getUrl(); // TODO Google don't like this method : $this->linkUtils->getCanonicalUrl($link->getUrl());
+						$kindAndEmbedIdentifier = $this->videoHostingUtils->getKindAndEmbedIdentifier($link->getUrl());
 						if ($kindAndEmbedIdentifier['kind'] == VideoHostingUtils::KIND_UNKNOW) {
 							$website = new Website();
 							$website->setId($link->getId());
