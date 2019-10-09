@@ -97,6 +97,10 @@
             {% endif %}
         </div>
         <div class="ladb-metas">
+            <h4 class="ladb-heading">Ressources</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_DOCS', software), 'data':software.docs, 'values':software.docsValues } %}
+        </div>
+        <div class="ladb-metas">
             <h4 class="ladb-heading">Caractéristiques</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_IDENTITY', software), 'data':software.identity, 'values':software.identityValues, 'itemprop':'name' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_AUTHORS', software), 'data':software.authors, 'values':software.authorsValues } %}

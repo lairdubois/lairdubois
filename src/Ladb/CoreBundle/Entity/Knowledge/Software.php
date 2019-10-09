@@ -42,6 +42,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_DESCRIPTION  = 'description';
 	const FIELD_OPEN_SOURCE  = 'open_source';
 	const FIELD_SOURCE_CODE_REPOSITORY  = 'source_code_repository';
+	const FIELD_DOCS  = 'docs';
 	const FIELD_OPERATING_SYSTEMS  = 'operating_systems';
 	const FIELD_LICENSE_TYPE  = 'license_type';
 	const FIELD_PRICINGS  = 'pricings';
@@ -60,6 +61,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		Software::FIELD_DESCRIPTION                  => array(Software::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_OPEN_SOURCE                  => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Software::FIELD_SOURCE_CODE_REPOSITORY       => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
+		Software::FIELD_DOCS				         => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true),
 		Software::FIELD_OPERATING_SYSTEMS            => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Windows', 1 => 'Mac', 2 => 'Linux', 3 => 'Android', 4 => 'iOS'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@os:"%q%"'),
 		Software::FIELD_LICENSE_TYPE                 => array(Software::ATTRIB_TYPE => LinkableText::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_PRICINGS                     => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Gratuit', 1 => 'Gratuit pour usage personnel', 2 => 'Gratuit avec fonctionnalités limitées', 3 => 'Payant'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@pricings:"%q%"'),
@@ -221,6 +223,19 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
+	 * @ORM\Column(type="string", nullable=true, length=255, name="source_docs")
+	 */
+	private $docs;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_docs")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $docsValues;
+
+
+	/**
 	 * @ORM\Column(type="text", nullable=true, name="operating_systems")
 	 */
 	private $operatingSystems;
@@ -321,6 +336,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->openSourceValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->sourceCodeRepositoryValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->sourceDocsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->operatingSystemsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->licenseTypeValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->pricingsValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -742,6 +758,38 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getSourceCodeRepositoryValues() {
 		return $this->sourceCodeRepositoryValues;
+	}
+
+	// Docs /////
+
+	public function setDocs($docs) {
+		$this->docs = $docs;
+		return $this;
+	}
+
+	public function getDocs() {
+		return $this->docs;
+	}
+
+	// DocsValues /////
+
+	public function addDocsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $docsValue) {
+		if (!$this->docsValues->contains($docsValue)) {
+			$this->docsValues[] = $docsValue;
+		}
+		return $this;
+	}
+
+	public function removeDocsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $docsValue) {
+		$this->docsValues->removeElement($docsValue);
+	}
+
+	public function setDocsValues($docsValues) {
+		$this->docsValues = $docsValues;
+	}
+
+	public function getDocsValues() {
+		return $this->docsValues;
 	}
 
 	// OperatingSystems /////
