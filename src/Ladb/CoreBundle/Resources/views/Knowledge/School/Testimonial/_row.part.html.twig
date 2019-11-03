@@ -1,4 +1,4 @@
-<div id="ladb_testimonial_{{ testimonial.id }}" class="ladb-testimonial-row">
+<div id="ladb_testimonial_{{ testimonial.id }}" class="ladb-testimonial-row" itemprop="review" itemscope itemtype="http://schema.org/Review">
     <div class="ladb-box">
         <div class="ladb-box-inner">
             <div class="ladb-content-box">
@@ -26,7 +26,7 @@
                             {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':testimonial.type, 'entityId':testimonial.id } %}
                         {% endif %}
                     </div>
-                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':testimonial, 'hideBy':true, 'noMicrodata':true } %}
+                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':testimonial, 'hideBy':true } %}
                     <div style="margin: 10px 0; color: #000; font-size: 110%;">
                         {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_period.part.html.twig' %}
                         {% if testimonial.diploma %}
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="ladb-content">
-                    <div>
+                    <div itemprop="reviewBody">
                         {{ testimonial.htmlBody|raw }}
                     </div>
                     {% include 'LadbCoreBundle:Common:_published-age.part.html.twig' with { 'entity':testimonial } %}
