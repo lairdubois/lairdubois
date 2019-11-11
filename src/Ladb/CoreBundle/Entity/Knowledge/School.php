@@ -10,11 +10,11 @@ use Ladb\CoreBundle\Model\LocalisableTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Longtext;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Sign;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Location;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Phone;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Video;
 
 /**
  * Ladb\CoreBundle\Entity\Knowledge\School
@@ -38,6 +38,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 	const FIELD_ADDRESS = 'address';
 	const FIELD_PHONE = 'phone';
 	const FIELD_DESCRIPTION = 'description';
+	const FIELD_VIDEO = 'video';
 	const FIELD_PUBLIC = 'public';
 	const FIELD_BIRTH_YEAR = 'birth_year';
 	const FIELD_DIPLOMAS = 'diplomas';
@@ -51,6 +52,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		School::FIELD_ADDRESS        => array(School::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),
 		School::FIELD_PHONE          => array(School::ATTRIB_TYPE => Phone::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_DESCRIPTION    => array(School::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
+		School::FIELD_VIDEO    		 => array(School::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_PUBLIC         => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		School::FIELD_BIRTH_YEAR     => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_DIPLOMAS       => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_FILTER_QUERY => '@diplomas:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul diplôme par proposition.')))),
@@ -186,6 +188,19 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 
 	/**
+	 * @ORM\Column(type="string", nullable=true, length=255)
+	 */
+	private $video;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Video", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_school_value_video")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $videoValues;
+
+
+	/**
 	 * @ORM\Column(type="boolean", nullable=true)
 	 */
 	private $public;
@@ -257,6 +272,8 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->websiteValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->addressValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->phoneValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->videoValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->publicValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->birthYearValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->diplomasValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -601,6 +618,38 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	public function getDescriptionValues() {
 		return $this->descriptionValues;
+	}
+
+	// Video /////
+
+	public function setVideo($video) {
+		$this->video = $video;
+		return $this;
+	}
+
+	public function getVideo() {
+		return $this->video;
+	}
+
+	// VideoValues /////
+
+	public function addVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		if (!$this->videoValues->contains($videoValue)) {
+			$this->videoValues[] = $videoValue;
+		}
+		return $this;
+	}
+
+	public function removeVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		$this->videoValues->removeElement($videoValue);
+	}
+
+	public function setVideoValues($videoValues) {
+		$this->videoValues = $videoValues;
+	}
+
+	public function getVideoValues() {
+		return $this->videoValues;
 	}
 
 	// Public /////

@@ -29,7 +29,7 @@
                         <strong>{{ ('knowledge.'~row.entity.strippedName~'.field.'~row.activityEntity.parentEntityField)|trans() }} :</strong>
                     </td>
                     <td>
-                        {% include 'LadbCoreBundle:Knowledge:_field-show-meta-'~fieldType~'.part.html.twig' with { 'knowledge':row.entity, 'value':row.activityEntity } %}{% if fieldSuffix is not null %}&nbsp;<em>{{ fieldSuffix|raw }}</em>{% endif %}
+                        {% include 'LadbCoreBundle:Knowledge:_field-show-meta-'~fieldType~'.part.html.twig' with { 'knowledge':row.entity, 'value':row.activityEntity, 'emailRendered':true } %}{% if fieldSuffix is not null %}&nbsp;<em>{{ fieldSuffix|raw }}</em>{% endif %}
                     </td>
                 {% endif %}
             </tr>

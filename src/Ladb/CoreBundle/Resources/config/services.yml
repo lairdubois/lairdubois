@@ -476,6 +476,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@ladb_core.localisable_utils']
+  ladb_knowledge_value_video:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\Value\VideoValueType
+    tags:
+      - { name: form.type }
+    arguments: ['@ladb_core.video_hosting_utils']
   ladb_knowledge_newwood:
     class: Ladb\CoreBundle\Form\Type\Knowledge\NewWoodType
     tags:

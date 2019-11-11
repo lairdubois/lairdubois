@@ -229,6 +229,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// LinkableText
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText';
+			// Video
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Video::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Video';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -339,6 +342,8 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Price::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Video::TYPE:
 				$parentTypable = $this->findTypable($typable->getParentEntityType(), $typable->getParentEntityId());
 				return $this->getUrlAction($parentTypable, $action, $absoluteUrl, $useSluggedId, $addionalParams);
 

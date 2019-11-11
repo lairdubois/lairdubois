@@ -1,0 +1,9 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.data) }}
+    <div class="input-group">
+        <span class="input-group-addon"><i class="ladb-icon-link"></i></span>
+        {{ form_widget(form.data, { 'attr':{ 'class':'form-control input-lg', 'placeholder':fieldLabel } }) }}
+    </div>
+{% endblock %}

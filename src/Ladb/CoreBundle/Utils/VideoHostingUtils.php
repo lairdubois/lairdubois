@@ -49,10 +49,10 @@ class VideoHostingUtils extends AbstractContainerAwareUtils {
 			}
 
 			// Facebook
-			else if (preg_match('^http(?:s?):\/\/www\.facebook\.com\/(?:(?:video.php|watch\/))\?v=([a-zA-Z0-9]+)', $url, $match)) {
-				$kind = VideoHostingUtils::KIND_FACEBOOK;
-				$embedIdentifier = $match[1];
-			}
+//			else if (preg_match('^http(?:s?):\/\/www\.facebook\.com\/(?:(?:video.php|watch\/))\?v=([a-zA-Z0-9]+)', $url, $match)) {
+//				$kind = VideoHostingUtils::KIND_FACEBOOK;
+//				$embedIdentifier = $match[1];
+//			}
 
 		}
 

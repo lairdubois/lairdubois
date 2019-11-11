@@ -6,6 +6,7 @@
 {# set disabled (facultative) #}
 {# set indented (facultative) #}
 {# set itemprop (facultative) #}
+{# set email (facultative) #}
 
 {% set fieldDef = knowledge.fieldDefs[field] %}
 {% set fieldType = fieldDef[constant('ATTRIB_TYPE', knowledge)] %}
@@ -21,6 +22,8 @@
 
 {% set disabled = disabled|default(false) %}
 {% set indented = indented|default(false) %}
+
+{% set emailRendered = emailRendered|default(false)%}
 
 {% macro searchQueryLink(context) %}
     {% if context.fieldFilterQuery is not null and not context.disabled %}

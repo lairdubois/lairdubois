@@ -119,6 +119,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', school), 'data':school.address, 'values':school.addressValues, 'itemprop':'address' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', school), 'data':school.phone, 'values':school.phoneValues, 'itemprop':'telephone' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', school), 'data':school.description, 'values':school.descriptionValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_VIDEO', school), 'data':school.video, 'values':school.videoValues } %}
         </div>
         <div class="panel panel-default ladb-margin-top">
             <div class="panel-body">

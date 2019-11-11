@@ -778,6 +778,7 @@ knowledge:
       address: Adresse
       phone: Téléphone
       description: Descriptif
+      video: Video
       public: Etablissement public
       birth_year: Année de création
       diplomas: Diplômes
@@ -790,6 +791,7 @@ knowledge:
       address: "L'**Adresse** est l'adresse postale de l'école."
       phone: "Le **Téléphone** est le numéro de téléphone de l'école."
       description: "Le **Descriptif** décrit succintement cette école."
+      video: "La **Vidéo** permet de présenter cette école."
       public: "**Etablissement public** indique si cette école est publique."
       birth_year: "L'**Année de création** est l'année de création de l'école."
       diplomas: "**Diplômes** permet de lister les diplômes délivrés par cet école."
@@ -817,6 +819,7 @@ knowledge:
           - pas de d'avis personnels
           - pas de formulations publicitaires
           - pas de tarifs, prix, etc...
+        video:
     testimonial:
       new: Ajouter mon témoignage
       edit: Editer mon témoignage
