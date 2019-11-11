@@ -778,7 +778,7 @@ knowledge:
       address: Adresse
       phone: Téléphone
       description: Descriptif
-      video: Video
+      video: Vidéo
       public: Etablissement public
       birth_year: Année de création
       diplomas: Diplômes
@@ -819,7 +819,8 @@ knowledge:
           - pas de d'avis personnels
           - pas de formulations publicitaires
           - pas de tarifs, prix, etc...
-        video:
+        video: |
+          Saisissez dans le champ *Vidéo* un lien vers une vidéo (YouTube, Vimeo, Daylimotion)
     testimonial:
       new: Ajouter mon témoignage
       edit: Editer mon témoignage
