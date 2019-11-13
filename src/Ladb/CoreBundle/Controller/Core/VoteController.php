@@ -81,6 +81,11 @@ class VoteController extends Controller {
 	 */
 	public function createAction(Request $request, $entityType, $entityId, $sign) {
 
+		// Exclude vote if user is not email confirmed for score < 0
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_vote_create)');
+		}
+
 		// Retrieve related entity
 
 		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
@@ -92,7 +97,7 @@ class VoteController extends Controller {
 		$parentEntity = $this->_retrieveRelatedParentEntity($parentEntityRepository, $entity);
 
 		// Compute score
-		$score = $sign == '+' ? 1 : -1;
+		$score = $sign == '-' ? -1 : 1;
 
 		// Process vote
 

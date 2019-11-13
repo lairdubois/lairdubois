@@ -13,6 +13,11 @@ class VotableUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.votable_utils';
 
+	const DISABLE_REASON_NONE = 0;
+	const DISABLE_REASON_NOT_CONNECTED = 1;
+	const DISABLE_REASON_SELF_VOTING = 2;
+	const DISABLE_REASON_NOT_EMAIL_CONFIRMED = 3;
+
 	public function deleteVotes(VotableInterface $votable, VotableParentInterface $votableParent, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
@@ -72,18 +77,20 @@ class VotableUtils extends AbstractContainerAwareUtils {
 		if (!is_null($user)) {
 			$vote = $voteRepository->findOneByEntityTypeAndEntityIdAndUser($votable->getType(), $votable->getId(), $user);
 		}
-		$enabled = !is_null($user);
-		$allowed = true;
-		if (!is_null($user) && $votable instanceof AuthoredInterface) {
-			$allowed = $votable->getUser()->getId() != $user->getId();
+		$disableReason = self::DISABLE_REASON_NONE;
+		if (is_null($user)) {
+			$disableReason = self::DISABLE_REASON_NOT_CONNECTED;
+		} else if ($votable instanceof AuthoredInterface && $votable->getUser()->getId() == $user->getId()) {
+			$disableReason = self::DISABLE_REASON_SELF_VOTING;
+		} else if (!$user->getEmailConfirmed()) {
+			$disableReason = self::DISABLE_REASON_NOT_EMAIL_CONFIRMED;
 		}
 		return array(
-			'votable'    => $votable,
-			'vote'       => $vote,
-			'enabled'    => $enabled,
-			'allowed'    => $allowed,
-			'entityType' => $votable->getType(),
-			'entityId'   => $votable->getId(),
+			'votable'       => $votable,
+			'vote'          => $vote,
+			'disableReason' => $disableReason,
+			'entityType'    => $votable->getType(),
+			'entityId'      => $votable->getId(),
 		);
 	}
 

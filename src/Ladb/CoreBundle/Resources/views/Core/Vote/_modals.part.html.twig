@@ -1,4 +1,13 @@
-{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'disallowed_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
+{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'not_connected_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
+    {% block bodyInner %}
+        <p>Vous devez être connecté pour pouvoir valider ou rejeter.</p>
+    {% endblock %}
+    {% block footerInner %}
+        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+        <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-primary">{{ 'security.login.submit'|trans() }}</a>
+    {% endblock %}
+{% endembed %}
+{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'self_voting_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
     {% block bodyInner %}
         <p>Vous n'êtes pas autorisé de valider ou rejeter vos propres contributions.</p>
     {% endblock %}
@@ -6,12 +15,12 @@
         <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
     {% endblock %}
 {% endembed %}
-{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'disabled_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
+{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'not_email_confirmed_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
     {% block bodyInner %}
-        <p>Vous devez être connecté pour pouvoir valider ou rejeter.</p>
+        <p>l'adresse e-mail associée à votre compte doit être confirmée pour pouvoir valider ou rejeter.</p>
     {% endblock %}
     {% block footerInner %}
         <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-        <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-primary">{{ 'security.login.submit'|trans() }}</a>
+        <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
     {% endblock %}
 {% endembed %}
