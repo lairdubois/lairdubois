@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Video;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\ReviewableInterface;
 use Ladb\CoreBundle\Model\ReviewableTrait;
@@ -43,6 +44,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_OPEN_SOURCE  = 'open_source';
 	const FIELD_SOURCE_CODE_REPOSITORY  = 'source_code_repository';
 	const FIELD_DOCS  = 'docs';
+	const FIELD_VIDEO  = 'video';
 	const FIELD_OPERATING_SYSTEMS  = 'operating_systems';
 	const FIELD_LICENSE_TYPE  = 'license_type';
 	const FIELD_PRICINGS  = 'pricings';
@@ -62,6 +64,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		Software::FIELD_OPEN_SOURCE                  => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false, Software::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Software::FIELD_SOURCE_CODE_REPOSITORY       => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_DOCS				         => array(Software::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true),
+		Software::FIELD_VIDEO				         => array(Software::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_OPERATING_SYSTEMS            => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Windows', 1 => 'Mac', 2 => 'Linux', 3 => 'Android', 4 => 'iOS'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@os:"%q%"'),
 		Software::FIELD_LICENSE_TYPE                 => array(Software::ATTRIB_TYPE => LinkableText::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_PRICINGS                     => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Gratuit', 1 => 'Gratuit pour usage personnel', 2 => 'Gratuit avec fonctionnalités limitées', 3 => 'Payant'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@pricings:"%q%"'),
@@ -233,6 +236,19 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $docsValues;
+
+
+	/**
+	 * @ORM\Column(type="string", nullable=true, length=255, name="video")
+	 */
+	private $video;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Video", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_video")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $videoValues;
 
 
 	/**
@@ -790,6 +806,38 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getDocsValues() {
 		return $this->docsValues;
+	}
+
+	// Video /////
+
+	public function setVideo($video) {
+		$this->video = $video;
+		return $this;
+	}
+
+	public function getVideo() {
+		return $this->video;
+	}
+
+	// VideoValues /////
+
+	public function addVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		if (!$this->videoValues->contains($videoValue)) {
+			$this->videoValues[] = $videoValue;
+		}
+		return $this;
+	}
+
+	public function removeVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		$this->videoValues->removeElement($videoValue);
+	}
+
+	public function setVideoValues($videoValues) {
+		$this->videoValues = $videoValues;
+	}
+
+	public function getVideoValues() {
+		return $this->videoValues;
 	}
 
 	// OperatingSystems /////

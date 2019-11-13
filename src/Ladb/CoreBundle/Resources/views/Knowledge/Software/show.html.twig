@@ -99,6 +99,7 @@
         <div class="ladb-metas">
             <h4 class="ladb-heading">Ressources</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_DOCS', software), 'data':software.docs, 'values':software.docsValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_VIDEO', software), 'data':software.video, 'values':software.videoValues } %}
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Caractéristiques</h4>
@@ -150,6 +151,21 @@
         {% if software.website %}
             <div class="ladb-btn">
                 <a href="{{ software.website }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-link"></i> {{ 'knowledge.software.field.website'|trans() }}</a>
+            </div>
+        {% endif %}
+        {% if software.docs %}
+            <div class="ladb-btn">
+                <div class="btn-group" style="display: flex;">
+                    <a class="btn btn-default btn-expand btn-lg" style="flex: 1;" href="{{ software.docs|split(',')[0] }}">{{ 'knowledge.software.field.docs'|trans() }}</a>
+                    <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for doc in software.docs|split(',') %}
+                            <li><a href="{{ doc }}">{{ doc|ladb_url_beautify|raw }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         {% endif %}
     </div>

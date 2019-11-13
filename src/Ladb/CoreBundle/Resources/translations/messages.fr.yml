@@ -924,6 +924,7 @@ knowledge:
       open_source: Open Source
       source_code_repository: Code source
       docs: Documentations
+      video: Vidéo
       operating_systems: Systèmes d'exploitation
       license_type: Licence
       pricings: Tarifications
@@ -942,6 +943,7 @@ knowledge:
       open_source: "**Open Source** permet d'indiquer si le code source de ce logiciel est en libre accès."
       source_code_repository: "**Source code** permet de préciser le lien vers le dépot des sources du logiciel."
       docs: "**Documentations** permet de préciser les liens vers les pages de documentation et d'aide à l'utilisation du logiciel."
+      video: "La **Vidéo** permet de présenter ce logiciel."
       operating_systems: "**Systèmes d'exploitation** permet de définir la liste des systèmes d'exploitation où peut être exécuté le logiciel."
       license_url: "**Licence** permet d'indiquer la licence du logiciel."
       pricings: "**Tarifications** permet de lister les différentes formes de tarification du logiciel."
@@ -968,6 +970,8 @@ knowledge:
         open_source:
         source_code_repository:
         docs:
+        video: |
+          Saisissez dans le champ *Vidéo* un lien vers une vidéo (YouTube, Vimeo, Daylimotion)
         operating_systems: |
           - N'indiquez **qu'un seul** système d'exploitation par proposition.
         license_type: |
