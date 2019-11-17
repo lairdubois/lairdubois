@@ -124,7 +124,7 @@ services:
     arguments: ['@service_container']
   ladb_core.web_screenshot_utils:
     class: Ladb\CoreBundle\Utils\WebScreenshotUtils
-    arguments: ['@doctrine.orm.entity_manager']
+    arguments: ['@service_container']
   ladb_core.open_graph_utils:
     class: Ladb\CoreBundle\Utils\OpenGraphUtils
     arguments: ['@service_container']

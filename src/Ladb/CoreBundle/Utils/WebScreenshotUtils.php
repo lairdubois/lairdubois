@@ -5,15 +5,11 @@ namespace Ladb\CoreBundle\Utils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Entity\Core\Picture;
 
-class WebScreenshotUtils {
+class WebScreenshotUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.web_screenshot_utils';
 
-	private $om;
-
-	public function __construct(ObjectManager $om) {
-		$this->om = $om;
-	}
+	/////
 
 	public function captureToPicture($url, $width, $height, $clipWidth = 0, $clipHeight = 0) {
 
@@ -49,23 +45,42 @@ class WebScreenshotUtils {
 
 		// PHP-PhantomJS Capture /////
 
-		$client = \JonnyW\PhantomJs\Client::getInstance();
-		$client->getEngine()->setPath(__DIR__.'/../../../../bin/phantomjs');
-		$client->getEngine()->addOption('--load-images=true');
-		$client->getEngine()->addOption('--ignore-ssl-errors=true');
-		$client->getEngine()->addOption('--ssl-protocol=any');
-		$client->getEngine()->addOption('--max-disk-cache-size=0');
+		$browserFactory = new \HeadlessChromium\BrowserFactory($this->getParameter('chromium'));
 
-		$request  = $client->getMessageFactory()->createCaptureRequest($url);
-		$response = $client->getMessageFactory()->createResponse();
+		// starts headless chrome
+		$browser = $browserFactory->createBrowser(array(
+			'windowSize' => array( $width, $height ),
+		));
 
-		$request->setOutputFile($pictureFile);
-		$request->setViewportSize($width, $height);
-		$request->setCaptureDimensions($clipWidth, $clipHeight, 0, 0);
-		$request->setTimeout(10000);	// 10 seconds
-		$request->setDelay(5);			// 5 seconds
+		// creates a new page and navigate to an url
+		$page = $browser->createPage();
+		$page->navigate($url)->waitForNavigation();
 
-		$client->send($request, $response);
+		// screenshot - Say "Cheese"! 😄
+		$page->screenshot()->saveToFile($pictureFile);
+
+		// bye
+		$browser->close();
+
+		// PHP-PhantomJS Capture /////
+
+//		$client = \JonnyW\PhantomJs\Client::getInstance();
+//		$client->getEngine()->setPath(__DIR__.'/../../../../bin/phantomjs');
+//		$client->getEngine()->addOption('--load-images=true');
+//		$client->getEngine()->addOption('--ignore-ssl-errors=true');
+//		$client->getEngine()->addOption('--ssl-protocol=any');
+//		$client->getEngine()->addOption('--max-disk-cache-size=0');
+//
+//		$request  = $client->getMessageFactory()->createCaptureRequest($url);
+//		$response = $client->getMessageFactory()->createResponse();
+//
+//		$request->setOutputFile($pictureFile);
+//		$request->setViewportSize($width, $height);
+//		$request->setCaptureDimensions($clipWidth, $clipHeight, 0, 0);
+//		$request->setTimeout(10000);	// 10 seconds
+//		$request->setDelay(5);			// 5 seconds
+//
+//		$client->send($request, $response);
 
 		/////
 
@@ -76,8 +91,8 @@ class WebScreenshotUtils {
 			$picture->setHeight($height);
 			$picture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
 
-			$this->om->persist($picture);
-			$this->om->flush();
+			$this->getDoctrine()->getManager()->persist($picture);
+			$this->getDoctrine()->getManager()->flush();
 
 			return $picture;
 		}

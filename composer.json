@@ -35,7 +35,8 @@
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
         "symfony/intl": "^3.3",
-        "twig/twig": "^1.0||^2.0",
+        "twig/twig": "^2.0",
+        "monolog/monolog": "~1.22",
 
         "doctrine/doctrine-migrations-bundle": "^1.3.1",
         "twig/extensions": "~1.0",
@@ -57,7 +58,6 @@
         "afarkas/html5shiv": "3.7.3",
         "blueimp/jquery-file-upload": "9.28.0",
         "jublonet/codebird-php": "2.6.1",
-        "jonnyw/php-phantomjs": "4.6.1",
         "emojione/emojione": "4.5.0",
         "eonasdan/bootstrap-datetimepicker": "4.17.47",
         "ps/image-optimizer": "1.2.0",
@@ -71,6 +71,7 @@
         "biblys/isbn": "2.0.6",
         "jaybizzle/crawler-detect" :"1.*",
         "suin/php-rss-writer": "^1.6",
+        "chrome-php/chrome": "^0.7.0",
 
         "components/jquery": "3.3.1",
         "components/jqueryui": "1.12.1",
@@ -99,8 +100,7 @@
             "Ladb\\CoreBundle\\Composer\\ScriptHandler::updateDirectoryStructure"
         ],
         "post-update-cmd": [
-            "@symfony-scripts",
-            "PhantomInstaller\\Installer::installPhantomJS"
+            "@symfony-scripts"
         ]
     },
     "config": {

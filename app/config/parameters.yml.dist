@@ -36,6 +36,8 @@ parameters:
     node:                           /usr/bin/node
     node_paths:                     [/usr/lib/node_modules/]
 
+    chromium:                       /urs/bin/chromium
+
     google_api_key:                 YOUR_GOOGLE_API_KEY
 
     twitter_consumer_key:           YOUR_TWITTER_CONSUMER_KEY
@@ -63,3 +65,4 @@ parameters:
 
     bentools_webpush.public_key:    YOUR_WEBPUSH_PUBLIC_KEY
     bentools_webpush.private_key:   YOUR_WEBPUSH_PRIVATE_KEY
+
