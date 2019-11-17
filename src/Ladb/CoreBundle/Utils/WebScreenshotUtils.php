@@ -62,26 +62,6 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 		// bye
 		$browser->close();
 
-		// PHP-PhantomJS Capture /////
-
-//		$client = \JonnyW\PhantomJs\Client::getInstance();
-//		$client->getEngine()->setPath(__DIR__.'/../../../../bin/phantomjs');
-//		$client->getEngine()->addOption('--load-images=true');
-//		$client->getEngine()->addOption('--ignore-ssl-errors=true');
-//		$client->getEngine()->addOption('--ssl-protocol=any');
-//		$client->getEngine()->addOption('--max-disk-cache-size=0');
-//
-//		$request  = $client->getMessageFactory()->createCaptureRequest($url);
-//		$response = $client->getMessageFactory()->createResponse();
-//
-//		$request->setOutputFile($pictureFile);
-//		$request->setViewportSize($width, $height);
-//		$request->setCaptureDimensions($clipWidth, $clipHeight, 0, 0);
-//		$request->setTimeout(10000);	// 10 seconds
-//		$request->setDelay(5);			// 5 seconds
-//
-//		$client->send($request, $response);
-
 		/////
 
 		if (is_file($pictureFile)) {
