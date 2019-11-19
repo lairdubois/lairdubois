@@ -96,7 +96,6 @@
         ],
         "post-install-cmd": [
             "@symfony-scripts",
-            "PhantomInstaller\\Installer::installPhantomJS",
             "Ladb\\CoreBundle\\Composer\\ScriptHandler::updateDirectoryStructure"
         ],
         "post-update-cmd": [

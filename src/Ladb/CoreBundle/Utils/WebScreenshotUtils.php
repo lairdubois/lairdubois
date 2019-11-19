@@ -3,6 +3,12 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use HeadlessChromium\Exception\CommunicationException;
+use HeadlessChromium\Exception\FilesystemException;
+use HeadlessChromium\Exception\NavigationExpired;
+use HeadlessChromium\Exception\NoResponseAvailable;
+use HeadlessChromium\Exception\OperationTimedOut;
+use HeadlessChromium\Exception\ScreenshotFailed;
 use Ladb\CoreBundle\Entity\Core\Picture;
 
 class WebScreenshotUtils extends AbstractContainerAwareUtils {
@@ -43,21 +49,38 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 		$picture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
 		$pictureFile = $picture->getAbsoluteMasterPath();
 
-		// PHP-PhantomJS Capture /////
+		// HeadlessChromium Capture /////
 
 		$browserFactory = new \HeadlessChromium\BrowserFactory($this->getParameter('chromium'));
 
 		// starts headless chrome
 		$browser = $browserFactory->createBrowser(array(
 			'windowSize' => array( $width, $height ),
+			'connectionDelay' => 1.0,
 		));
 
-		// creates a new page and navigate to an url
-		$page = $browser->createPage();
-		$page->navigate($url)->waitForNavigation();
+		try {
 
-		// screenshot - Say "Cheese"! 😄
-		$page->screenshot()->saveToFile($pictureFile);
+			// creates a new page and navigate to an url
+			$page = $browser->createPage();
+			$page->navigate($url)->waitForNavigation();
+
+			// screenshot - Say "Cheese"! 😄
+			$page->screenshot()->saveToFile($pictureFile);
+
+		} catch (CommunicationException $e) {
+			$this->get('logger')->error('HeadlessChromium CommunicationException : '.$e->getMessage());
+		} catch (NoResponseAvailable $e) {
+			$this->get('logger')->error('HeadlessChromium NoResponseAvailable : '.$e->getMessage());
+		} catch (OperationTimedOut $e) {
+			$this->get('logger')->error('HeadlessChromium OperationTimedOut : '.$e->getMessage());
+		} catch (NavigationExpired $e) {
+			$this->get('logger')->error('HeadlessChromium NavigationExpired : '.$e->getMessage());
+		} catch (FilesystemException $e) {
+			$this->get('logger')->error('HeadlessChromium FilesystemException : '.$e->getMessage());
+		} catch (ScreenshotFailed $e) {
+			$this->get('logger')->error('HeadlessChromium ScreenshotFailed : '.$e->getMessage());
+		}
 
 		// bye
 		$browser->close();

@@ -58,19 +58,19 @@ Be sure you activate the following parameters (by uncomment or replace) :
 ```
 
 ``` bash
-    $ sudo apt-get install php7.2 php7.2-cli php7.2-curl php7.2-intl php7.2-gd php7.2-imagick php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-zip php7.2-bz2 php7.2-gmp php7.2-bcmath
+    $ sudo apt-get install php7.3 php7.3-cli php7.3-curl php7.3-intl php7.3-gd php7.3-imagick php7.3-mysql php7.3-fpm php7.3-mbstring php7.3-xml php7.3-zip php7.3-bz2 php7.3-gmp php7.3-bcmath
 ```
 
 You can now configure PHP.
 
 ``` bash
-    $ sudo nano /etc/php/7.2/fpm/php.ini
+    $ sudo nano /etc/php/7.3/fpm/php.ini
 ```
 
 Be sure you activate the following parameters (by uncomment or replace) :
 
 ```
-    # /etc/php/7.2/fpm/php.ini
+    # /etc/php/7.3/fpm/php.ini
 
     date.timezone = Europe/Paris
     upload_max_filesize = 60M
@@ -84,11 +84,11 @@ Be sure you activate the following parameters (by uncomment or replace) :
 Now configure the process management. You need to adapt this to the available RAM on your server.
 
 ``` bash
-    $ sudo nano /etc/php/7.2/fpm/pool.d/www.conf
+    $ sudo nano /etc/php/7.3/fpm/pool.d/www.conf
 ```
 
 ```
-# /etc/php/7.2/fpm/pool.d/www.conf
+# /etc/php/7.3/fpm/pool.d/www.conf
 
 pm = dynamic
 pm.max_children = 100       # The hard-limit total number of processes allowed
@@ -101,7 +101,7 @@ pm.max_spare_servers = 20   # Max number of spare (waiting for connections) proc
 Restart PHP FPM.
 
 ``` bash
-    $ sudo service php7.2-fpm restart
+    $ sudo service php7.3-fpm restart
 ```
 
 
@@ -587,4 +587,12 @@ COMMIT
 
 ``` bash
 sudo service netfilter-persistent restart
+```
+
+## Step 18 - Installing Chromium
+
+The platforme uses Chromium headless in order to auto generate screenshot of shared links in "Trouvailles".
+
+``` bash
+sudo apt-get install chromium chromium-l10n
 ```
