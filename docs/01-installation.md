@@ -533,7 +533,7 @@ Then, edit `/etc/iptables/rules.v4`, remove the content and add the following li
 *filter
 :INPUT DROP [50603776:12581438471]
 :FORWARD DROP [0:0]
-:OUTPUT DROP [47320883:84614059861]
+:OUTPUT ACCEPT [47320883:84614059861]
 
 -A INPUT ! -i lo -s 127.0.0.0/8 -j DROP
 -A INPUT -s 0.0.0.0 -i eth0 -j DROP
