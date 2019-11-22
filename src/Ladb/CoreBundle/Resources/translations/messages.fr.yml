@@ -179,10 +179,10 @@ wonder:
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre création.
         inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
     choice:
-      entities: '[0,1]création|]1,Inf]creations'
-      new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles creations'
+      entities: '[0,1]création|]1,Inf]créations'
+      new_creations: '[0,1]nouvelle création|]1,Inf]nouvelles créations'
       show_linked_to: '[0,1]Voir la création|]1,Inf]Voir les créations'
-      draft_alert: '[0,1]Vous avez 1 creation en brouillon.|]1,Inf]Vous avez %count% creations en brouillon.'
+      draft_alert: '[0,1]Vous avez 1 création en brouillon.|]1,Inf]Vous avez %count% créations en brouillon.'
       inspiration: '[0,1]Cette création est un rebond pour une autre création|]1,Inf]Cette création est un rebond pour %count% autres créations'
       rebound: '[0,1]Cette création est une inspiration pour une autre création|]1,Inf]Cette création est une inspiration pour %count% autres créations'
     admin:
