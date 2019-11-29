@@ -282,7 +282,7 @@ class SoftwareController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'name^100', 'hostSoftwareName^50', 'publisher' ));
+							$filter->setFields(array( 'name^100', 'hostSoftwareName^50', 'publisher', 'description', 'features' ));
 							$filters[] = $filter;
 
 						}
