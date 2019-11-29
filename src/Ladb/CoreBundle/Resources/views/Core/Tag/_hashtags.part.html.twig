@@ -1,1 +1,1 @@
-{% for tag in tags %}#{{ tag.label|replace('-', '_') }} {% endfor %}
+{% for tag in tags %}#{{ tag.label|replace({ '-':'_' }) }} {% endfor %}
