@@ -57,13 +57,14 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 		$browser = $browserFactory->createBrowser(array(
 			'windowSize' => array( $width, $height ),
 			'connectionDelay' => 1.0,
+			'sendSyncDefaultTimeout' => 5000,
 		));
 
 		try {
 
 			// creates a new page and navigate to an url
 			$page = $browser->createPage();
-			$page->navigate($url)->waitForNavigation();
+			$page->navigate($url)->waitForNavigation(\HeadlessChromium\Page::DOM_CONTENT_LOADED);
 
 			// screenshot - Say "Cheese"! 😄
 			$page->screenshot()->saveToFile($pictureFile);
