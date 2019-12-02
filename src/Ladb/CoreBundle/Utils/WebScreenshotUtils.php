@@ -56,8 +56,11 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 		// starts headless chrome
 		$browser = $browserFactory->createBrowser(array(
 			'windowSize' => array( $width, $height ),
-			'connectionDelay' => 1.0,
+			'connectionDelay' => 2.0,
 			'sendSyncDefaultTimeout' => 5000,
+			'customFlags' => array(
+				'--no-sandbox',
+			),
 		));
 
 		try {
