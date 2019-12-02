@@ -17,7 +17,7 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function captureToPicture($url, $width, $height, $clipWidth = 0, $clipHeight = 0) {
+	public function captureToPicture($url, $width, $height, $clipWidth = 0, $clipHeight = 0, $waitBeforeCapture = 0 /* in seconds */) {
 
 		// Process URL
 		$url = trim(urldecode($url));
@@ -65,6 +65,10 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 			// creates a new page and navigate to an url
 			$page = $browser->createPage();
 			$page->navigate($url)->waitForNavigation(\HeadlessChromium\Page::DOM_CONTENT_LOADED);
+
+			if ($waitBeforeCapture > 0) {
+				sleep($waitBeforeCapture);
+			}
 
 			// screenshot - Say "Cheese"! 😄
 			$page->screenshot()->saveToFile($pictureFile);
