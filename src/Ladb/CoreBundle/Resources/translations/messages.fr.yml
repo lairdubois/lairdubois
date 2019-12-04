@@ -155,7 +155,7 @@ wonder:
     similar: Voir aussi
     linkto: Associer une création déjà publiée
     linked_to: Cette création est associée à
-    new_warning: Une <strong>création</strong> est une réalisation <strong>personnelle</strong> achevée, majoritairement constituée de <strong>bois</strong> ou conçue pour le <strong>travail du bois</strong> et ne doit représenter qu'<strong>un seul projet</strong>.
+    new_warning: Une <strong>création</strong> est une réalisation <strong>personnelle</strong> <u>ACHEVÉE</u>, majoritairement constituée de <strong>bois</strong> ou conçue pour le <strong>travail du bois</strong> et ne doit représenter qu'<strong>un seul projet</strong>.
     converttoworkshop: Convertir en atelier
     converttohowto: Convertir en pas à pas
     converttofind: Convertir en trouvaille
@@ -768,7 +768,7 @@ knowledge:
     create: Créer une nouvelle école
     list: Les écoles
     nav: Ecoles
-    new_warning: Une <strong>école</strong> est un <strong>établissement physique</strong> qui propose des formations diplômantes ou non <strong>autour du travail du bois</strong>.
+    new_warning: Une <strong>école</strong> est un <strong>établissement physique</strong> ou <strong>plateforme en ligne</strong> qui propose des formations diplômantes ou non <strong>autour du travail du bois</strong>.
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Ecole.</p><p><u>N'apportez pas votre témoignage ici.</u></p><p>Pour donner votre avis d'ancien élève, cliquez sur le bouton <strong>Ajouter mon témoignage</strong> un peu plus haut.</p>
     field:
       name: Nom
