@@ -826,6 +826,7 @@ knowledge:
       edit: Editer mon témoignage
     choice:
       entities: '[0,1]école|]1,Inf]écoles'
+      new_schools: '[0,1]nouvelle école|]1,Inf]nouvelles écoles'
       testimonials: '[0,1]témoignage|]1,Inf]témoignages'
   book:
     description: Catalogue collaboratif de livres sur la matière et le travail du bois.
