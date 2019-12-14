@@ -32,7 +32,9 @@
                     });
                 }, 1000);
             } else {
-                window.scrollTo(0,document.body.scrollHeight);
+                $('.ladb-message-row:last').ladbScrollTo(null, {
+                    smoothScroll: false
+                });
             }
 
         });
