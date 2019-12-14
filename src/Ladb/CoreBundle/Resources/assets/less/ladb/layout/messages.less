@@ -89,16 +89,38 @@
     margin-right: 10px;
   }
 
-  .ladb-message {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-top: 1px solid @ladb-global-border;
+}
+
+.ladb-messages {
+
+  .ladb-message-row {
+
+    .ladb-message {
+      width: 90%;
+    }
+
+    &.ladb-message-mine {
+      text-align: right;
+
+      & > .ladb-message {
+        border-color: @ladb-brand-primary;
+        background-color: lighten(@ladb-brand-primary, 50%);
+      }
+    }
+
   }
 
 }
 
 .ladb-message {
   position: relative;
+  background: #fff;
+  border: 1px solid @ladb-global-border;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  display: inline-block;
+  text-align: left;
 
   .ladb-box {
     margin-left: 42px;

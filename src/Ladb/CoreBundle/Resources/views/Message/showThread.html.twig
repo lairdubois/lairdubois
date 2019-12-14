@@ -25,13 +25,14 @@
                 setTimeout(function() {
                     var selector = window.location.hash.replace('#', '#ladb');   {# Change to a valid element ID like #ladb_XXX #}
                     var $target = $(selector);
-                    $target.parents('.collapse').addClass('in');
                     $target.ladbScrollTo(null, {
                         onAfter: function() {
                             $target.effect('highlight', {}, 1500);
                         }
                     });
                 }, 1000);
+            } else {
+                window.scrollTo(0,document.body.scrollHeight);
             }
 
         });
@@ -70,67 +71,74 @@
             {% endfor %}
         </div>
         <h2 class="ladb-subject">{{ thread.subject }}</h2>
-        {% for message in thread.messages %}
-            <div id="ladb_message_{{ message.id }}" class="ladb-message">
-                {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':message.sender, 'linkClasses':'pull-left' } %}
-                <div class="ladb-box">
-                    <div class="ladb-heading">
-                        <button type="button" data-toggle="collapse" data-target="#ladb_message_{{ message.id }}_body" class="btn btn-default btn-xs pull-right"><i class="ladb-icon-caret-down"></i></button>
-                        {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':message.sender } %}<span class="ladb-age">{{ message.createdAt|time_diff() }}</span>
-                        {% if message.sender != app.user %}
-                            <div class="pull-right ladb-minitools">
-                                {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':message.type, 'entityId':message.id } %}
-                                &nbsp;
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div id="ladb_message_{{ message.id }}_body" class="ladb-body collapse{% if not message.isRead or loop.last %} in{% endif %}">
-                        {{ message.htmlBody|raw }}
-                        {% if message.pictures is not empty %}
-                            <div class="row">
-                                {% for picture in message.pictures %}
-                                    <div class="col-xs-3">
-                                        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
+        <div class="ladb-messages">
+            {% for message in thread.messages %}
+                <div class="ladb-message-row{% if message.sender == app.user %} ladb-message-mine{% endif %}">
+                    <div id="ladb_message_{{ message.id }}" class="ladb-message">
+                        {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':message.sender, 'linkClasses':'pull-left' } %}
+                        <div class="ladb-box">
+                            <div class="ladb-heading">
+                                {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':message.sender } %}<span class="ladb-age">{{ message.createdAt|time_diff() }}</span>
+                                {% if message.sender != app.user %}
+                                    <div class="pull-right ladb-minitools">
+                                        {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':message.type, 'entityId':message.id } %}
+                                        &nbsp;
                                     </div>
-                                {% endfor %}
+                                {% endif %}
                             </div>
-                        {% endif %}
+                            <div id="ladb_message_{{ message.id }}_body" class="ladb-body collapse in">
+                                {{ message.htmlBody|raw }}
+                                {% if message.pictures is not empty %}
+                                    <div class="row">
+                                        {% for picture in message.pictures %}
+                                            <div class="col-xs-3">
+                                                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-        {% if not thread.announcement %}
-            <div id="message_reply" class="ladb-message">
-                {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
-                <div class="ladb-box">
-                    <div class="ladb-body">
-                        {{ form_start(form, { 'action':(path('core_message_thread_update', { 'id':thread.id })~'#message_reply'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
-                            <div class="form-group">
-                                {{ form_errors(form.body) }}
-                                {{ form_widget(form.body, { 'attr': { 'rows':'10', 'class':'form-control ladb-autosize' } }) }}
-                                {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
-                                {% include 'LadbCoreBundle:Core/Picture:_form-gallery-collapse.part.html.twig' %}
-                                <script>
-                                    if (document.readyState == "complete") {
-                                        $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
-                                            mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
-                                        });
-                                    } else {
-                                        $(document).ready(function() {
-                                            $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
-                                                mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
-                                            });
-                                        });
-                                    }
-                                </script>
+            {% endfor %}
+            {% if not thread.announcement %}
+                <div class="ladb-message-row ladb-message-mine">
+                    <div id="message_reply" class="ladb-message">
+                        {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
+                        <div class="ladb-box">
+                            <div class="ladb-body">
+                                {{ form_start(form, { 'action':(path('core_message_thread_update', { 'id':thread.id })~'#message_reply'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
+                                    <div class="form-group">
+                                        {{ form_errors(form.body) }}
+                                        {{ form_widget(form.body, { 'attr': { 'rows':'3', 'class':'form-control ladb-autosize' } }) }}
+                                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
+                                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery-collapse.part.html.twig' %}
+                                        <script>
+                                            if (document.readyState == "complete") {
+                                                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                                                    mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                                                });
+                                            } else {
+                                                $(document).ready(function() {
+                                                    $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                                                        mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                                                    });
+                                                });
+                                            }
+                                        </script>
+                                    </div>
+                                    {{ form_rest(form) }}
+                                    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
+                                {{ form_end(form) }}
                             </div>
-                            {{ form_rest(form) }}
-                            {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
-                        {{ form_end(form) }}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
     {% include 'LadbCoreBundle:Core/Report:_modal.part.html.twig' %}
 {% endblock %}
+
+{% block bodyFooter %}{% endblock %}
