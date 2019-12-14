@@ -2,7 +2,7 @@
 
 {# set noStickyHeader (facultative) #}
 
-{% set bodyClass = 'ladb-topbar-enabled ladb-bottombar-enabled ladb-leftbar-enabled' %}
+{% set bodyClass = (bodyClass is defined ? bodyClass~' ' : '')~'ladb-topbar-enabled ladb-bottombar-enabled ladb-leftbar-enabled' %}
 {% set topbarTranslucent = topbarTranslucent|default(false) %}
 {% set hideAboutAlert = hideAboutAlert|default(false) %}
 
