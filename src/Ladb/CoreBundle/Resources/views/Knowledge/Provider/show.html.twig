@@ -8,6 +8,7 @@
 {% set pageType = 'business.business' %}
 {% set pageSectionUrl = url('core_provider_list') %}
 {% set pageSectionName = 'knowledge.provider.list'|trans %}
+{% set pageTitle = provider.sign %}
 {% if provider.description %}
     {% set pageDescription = provider.description|striptags|truncate(200, true, '...') %}
 {% else %}
