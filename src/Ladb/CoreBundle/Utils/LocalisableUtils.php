@@ -139,7 +139,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function getTopLeftBottomRightBounds($address) {
+	public function getBoundsAndLocation($address) {
 
 		$googleApiKey = $this->getParameter('google_api_key');
 		try {
@@ -152,15 +152,31 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 
 				foreach ($hash['results'] as $result) {
 
-					if (isset($result['geometry']) && isset($result['geometry']['bounds'])) {
+					if (isset($result['geometry'])) {
 
-						$bounds = $result['geometry']['bounds'];
+						$boundsAndLocation = array();
 
-						// Returns an Elasticsearch ready bounds array [ top_left, bottom_right ]
-						return array(
-							$bounds['northeast']['lat'].','.$bounds['southwest']['lng'],
-							$bounds['southwest']['lat'].','.$bounds['northeast']['lng'],
-						);
+						if (isset($result['geometry']['bounds'])) {
+
+							$bounds = $result['geometry']['bounds'];
+
+							// Returns an Elasticsearch ready bounds array [ top_left, bottom_right ]
+							$boundsAndLocation['bounds'] = array(
+								$bounds['northeast']['lat'].','.$bounds['southwest']['lng'],
+								$bounds['southwest']['lat'].','.$bounds['northeast']['lng'],
+							);
+						}
+
+						if (isset($result['geometry']['location'])) {
+
+							$location = $result['geometry']['location'];
+
+							// Returns an Elasticsearch ready geopoint string "lat,lng"
+							$boundsAndLocation['location'] = $location['lat'].','.$location['lng'];
+						}
+
+						return $boundsAndLocation;
+
 					}
 
 				}

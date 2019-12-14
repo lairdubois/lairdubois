@@ -212,10 +212,18 @@ class SchoolController extends Controller {
 					case 'location':
 
 						$localisableUtils = $this->get(LocalisableUtils::NAME);
-						$bounds = $localisableUtils->getTopLeftBottomRightBounds($facet->value);
+						$boundsAndLocation = $localisableUtils->getBoundsAndLocation($facet->value);
 
-						if (!is_null($bounds)) {
-							$filter = new \Elastica\Query\GeoBoundingBox('geoPoint', $bounds);
+						if (!is_null($boundsAndLocation)) {
+							$filter = new \Elastica\Query\BoolQuery();
+							if (isset($boundsAndLocation['bounds'])) {
+								$geoQuery = new \Elastica\Query\GeoBoundingBox('geoPoint', $boundsAndLocation['bounds']);
+								$filter->addShould($geoQuery);
+							}
+							if (isset($boundsAndLocation['location'])) {
+								$geoQuery = new \Elastica\Query\GeoDistance('geoPoint', $boundsAndLocation['location'], '20km');
+								$filter->addShould($geoQuery);
+							}
 							$filters[] = $filter;
 						}
 
