@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Message;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
@@ -17,6 +18,7 @@ use Ladb\CoreBundle\Model\TypableInterface;
  */
 class Message implements TypableInterface, MultiPicturedInterface, BodiedInterface {
 
+	use BasicTimestampableTrait;
 	use MultiPicturedTrait, BodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Message\Message';
@@ -34,6 +36,12 @@ class Message implements TypableInterface, MultiPicturedInterface, BodiedInterfa
 	 * @Gedmo\Timestampable(on="create")
 	 */
 	private $createdAt;
+
+	/**
+	 * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+	 * @Gedmo\Timestampable(on="update")
+	 */
+	private $updatedAt;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Message\Thread", inversedBy="messages")
@@ -93,17 +101,6 @@ class Message implements TypableInterface, MultiPicturedInterface, BodiedInterfa
 
 	public function getType() {
 		return Message::TYPE;
-	}
-
-	// CreatedAt /////
-
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
-	}
-
-	public function getCreatedAt() {
-		return $this->createdAt;
 	}
 
 	// Thread /////

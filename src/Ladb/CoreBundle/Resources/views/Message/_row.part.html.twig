@@ -3,7 +3,7 @@
         {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':message.sender, 'linkClasses':'pull-left' } %}
         <div class="ladb-box">
             <div class="ladb-heading">
-                {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':message.sender } %}<span class="ladb-age">{{ message.createdAt|time_diff() }}</span>
+                {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':message.sender } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':message, 'showEdited':true } %}
                 <div class="pull-right ladb-minitools">
                     {% if message.sender == app.user %}
                         <a href="{{ path('core_message_edit', { 'id':message.id }) }}" class="ladb-message-edit" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>

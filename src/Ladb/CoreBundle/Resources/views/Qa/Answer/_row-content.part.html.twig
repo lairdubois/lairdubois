@@ -37,7 +37,7 @@
             {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':answer.type, 'entityId':answer.id } %}
         {% endif %}
     </div>
-    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer } %}
+    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':answer, 'showEdited':true } %}
 </div>
 {% if answer.isBestAnswer %}
     <div class="ladb-best ladb-color-best-answer" data-tooltip="tooltip" title="{{ 'qa.answer.best_tooltip'|trans() }}"><i class="ladb-icon-favorite"></i><span class="ladb-visible-mobile"> {{ 'qa.answer.best'|trans() }}</span></div>

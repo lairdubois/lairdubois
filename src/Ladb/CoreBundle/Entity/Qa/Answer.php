@@ -4,9 +4,10 @@ namespace Ladb\CoreBundle\Entity\Qa;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\BasicTimestampableTrait;
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
@@ -26,7 +27,7 @@ use Ladb\CoreBundle\Model\CommentableInterface;
  */
 class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterface, CommentableInterface, VotableInterface, WatchableChildInterface, MentionSourceInterface {
 
-	use AuthoredTrait, BlockBodiedTrait;
+	use BasicTimestampableTrait, AuthoredTrait, BlockBodiedTrait;
 	use CommentableTrait, VotableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Qa\Answer';
@@ -151,34 +152,6 @@ class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterfac
 
 	public function getId() {
 		return $this->id;
-	}
-
-	// CreatedAt /////
-
-	public function setCreatedAt($createdAt) {
-		$this->createdAt = $createdAt;
-		return $this;
-	}
-
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
-
-	// Age /////
-
-	public function getAge() {
-		return $this->getCreatedAt()->diff(new \DateTime());
-	}
-
-	// UpdatedAt /////
-
-	public function setUpdatedAt($updatedAt) {
-		$this->updatedAt = $updatedAt;
-		return $this;
-	}
-
-	public function getUpdatedAt() {
-		return $this->updatedAt;
 	}
 
 	// IsBestAnswer /////

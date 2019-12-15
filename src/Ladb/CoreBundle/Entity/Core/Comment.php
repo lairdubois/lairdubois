@@ -4,12 +4,12 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BasicTimestampableInterface;
 use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\MultiPicturedTrait;

@@ -61,7 +61,7 @@
         <h2 class="ladb-subject">{{ thread.subject }}</h2>
         <div class="ladb-messages">
             {% for message in thread.messages %}
-                {% include 'LadbCoreBundle:Message:_row.html.twig' %}
+                {% include 'LadbCoreBundle:Message:_row.part.html.twig' %}
             {% endfor %}
             {% if not thread.announcement %}
                 <div class="ladb-message-row ladb-message-mine">
