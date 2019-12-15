@@ -311,6 +311,20 @@ class ProviderController extends Controller {
 
 						break;
 
+					case 'content-creations':
+
+						$filter = new \Elastica\Query\Range('creationCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-howtos':
+
+						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\Range('signRejected', array( 'gte' => 1 ));

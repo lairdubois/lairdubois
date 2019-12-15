@@ -42,7 +42,7 @@ default:
   characteristics: Caractéristiques
   body: Corps
   back: Retour
-  links: Contenus associés
+  links: Publications associées
   no_links: Aucun
   license: Licence
   loading: Chargement...
@@ -173,10 +173,12 @@ wonder:
         title: Renseignez ici le titre de votre création.
         showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre création. La première photo sera utilisée comme miniature.
         body: Décrivez ici votre création.
+        questions: Associez jusqu'à <strong>4 questions</strong> vous ayant aidé de réaliser votre création.
         plans: Associez jusqu'à <strong>4 plans</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces plans.
         howtos: Associez jusqu'à <strong>4 pas à pas</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces pas à pas.
         workflows: Associez jusqu'à <strong>4 processus</strong> à votre création. Vous n'êtes pas obligé d'être l'auteur de ces processus.
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre création.
+        schools: Associez jusqu'à <strong>4 écoles</strong> vous ayant permis de réaliser votre création.
         inspirations: Associez jusqu'à <strong>4 créations</strong> qui ont été la <strong>source d'inspiration</strong> de votre création. Vous n'êtes pas obligé d'être l'auteur de ces créations.<br>Cette association est intéressante si, par exemple, vous avez fait une précedente version de votre création ou si vous vous êtes basé sur l'idée originale d'un autre contributeur.
     choice:
       entities: '[0,1]création|]1,Inf]créations'
@@ -292,9 +294,11 @@ howto:
         title: Renseignez ici le titre de votre pas à pas.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre pas à pas.
         body: Renseignez ici un petit texte introductif qui présente votre pas à pas. Le contenu de votre pas à pas sera détaillé dans les articles.
+        questions: Associez jusqu'à <strong>4 questions</strong> à votre pas à pas.
         plans: Associez jusqu'à <strong>4 plans</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces plans.
         workflows: Associez jusqu'à <strong>4 processus</strong> à votre pas à pas. Vous n'êtes pas obligé d'être l'auteur des ces processus.
         providers: Associez jusqu'à <strong>10 fournisseurs</strong> vous ayant permis de réaliser votre pas à pas.
+        schools: Associez jusqu'à <strong>4 écoles</strong> vous ayant aidé de réaliser votre pas à pas.
         wip: Cochez la case ci-dessous si votre pas à pas présente un projet <u>en cours de réalisation</u>.
     choice:
       entities: '[0,1]pas à pas|]1,Inf]pas à pas'
@@ -377,9 +381,12 @@ qa:
   question:
     description: Base collaborative de questions et réponses autours du travail du bois.
     new: Ajouter une question
+    create: Créer une nouvelle question
     edit: Edition de la question
     list: Les questions
     nav: Questions
+    linkto: Associer une question déjà publiée
+    linked_to: Cette question est associée à
     other_from: Autres questions de
     similar: Voir aussi
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la question (remerciements, demande de précisions, corrections, etc ...).</p><p><u>N'apportez pas votre réponse ici.</u></p><p>Pour répondre à  la question, cliquez sur <strong>Répondre à la question</strong> en bas de page.</p>
@@ -690,6 +697,7 @@ knowledge:
     state_alert_2: En cours de liquidation
     state_alert_3: Définitivement fermé
     linkto: Associer un fournisseur déjà publié
+    linked_to: Ce fournisseur est associé à
     new_warning: Un <strong>fournisseur</strong> est une entreprise, une association ou un organisme qui vend des produits ou services <strong>pour le travail du bois</strong>.
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Fournisseur.</p><p><u>N'apportez pas votre critique ou avis sur le fourniseur ici.</u></p><p>Pour donner votre avis de fournisseur, cliquez sur le bouton <strong>Ajouter mon avis</strong> un peu plus haut.</p>
     field:
@@ -768,6 +776,8 @@ knowledge:
     create: Créer une nouvelle école
     list: Les écoles
     nav: Ecoles
+    linkto: Associer une école déjà publiée
+    linked_to: Cette école est associée à
     new_warning: Une <strong>école</strong> est un <strong>établissement physique</strong> ou <strong>plateforme en ligne</strong> qui propose des formations diplômantes ou non <strong>autour du travail du bois</strong>.
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Ecole.</p><p><u>N'apportez pas votre témoignage ici.</u></p><p>Pour donner votre avis d'ancien élève, cliquez sur le bouton <strong>Ajouter mon témoignage</strong> un peu plus haut.</p>
     field:

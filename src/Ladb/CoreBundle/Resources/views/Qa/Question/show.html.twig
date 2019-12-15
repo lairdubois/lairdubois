@@ -91,6 +91,24 @@
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+        {% if question.creationCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-creation"></i>
+                <a href="{{ question.creationCount == 1 ? path('core_creation_show', { 'id':question.creations[0].sluggedId }) : path('core_qa_question_creations', { 'id':question.id }) }}">
+                    <strong>{{ question.creationCount }}</strong>
+                    <small>{{ 'wonder.creation.choice.entities'|transchoice(question.creationCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if question.howtoCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-howto"></i>
+                <a href="{{ question.howtoCount == 1 ? path('core_howto_show', { 'id':question.howtos[0].sluggedId }) : path('core_qa_question_howtos', { 'id':question.id }) }}">
+                    <strong>{{ question.howtoCount }}</strong>
+                    <small>{{ 'howto.howto.choice.entities'|transchoice(question.howtoCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
     </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':question.license } %}

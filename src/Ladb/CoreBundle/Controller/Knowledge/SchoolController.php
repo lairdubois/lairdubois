@@ -267,6 +267,20 @@ class SchoolController extends Controller {
 
 						break;
 
+					case 'content-creations':
+
+						$filter = new \Elastica\Query\Range('creationCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-howtos':
+
+						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\Range('nameRejected', array( 'gte' => 1 ));
@@ -433,7 +447,7 @@ class SchoolController extends Controller {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $howtoRepository->findPaginedBySchool($school, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_school_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -443,7 +457,7 @@ class SchoolController extends Controller {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Wonder/Creation:list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(

@@ -813,42 +813,42 @@ class PlanController extends Controller {
 
 					case 'content-creations':
 
-						$filter = new \Elastica\Query\Range('creationCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('creationCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-workflows':
 
-						$filter = new \Elastica\Query\Range('workflowCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-workshops':
 
-						$filter = new \Elastica\Query\Range('workshopCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('workshopCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-howtos':
 
-						$filter = new \Elastica\Query\Range('howtoCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'with-inspiration':
 
-						$filter = new \Elastica\Query\Range('inspirationCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('inspirationCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'with-rebound':
 
-						$filter = new \Elastica\Query\Range('reboundCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('reboundCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;

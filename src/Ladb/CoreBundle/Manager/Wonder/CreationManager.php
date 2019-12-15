@@ -27,6 +27,11 @@ class CreationManager extends AbstractWonderManager {
 		$creation->getUser()->getMeta()->incrementPrivateCreationCount(-1);
 		$creation->getUser()->getMeta()->incrementPublicCreationCount();
 
+		// Question counter update
+		foreach ($creation->getQuestions() as $question) {
+			$question->incrementCreationCount(1);
+		}
+
 		// Plans counter update
 		foreach ($creation->getPlans() as $plan) {
 			$plan->incrementCreationCount(1);
@@ -47,6 +52,11 @@ class CreationManager extends AbstractWonderManager {
 			$provider->incrementCreationCount(1);
 		}
 
+		// Scrool counter update
+		foreach ($creation->getSchools() as $school) {
+			$school->incrementCreationCount(1);
+		}
+
 		// Inspirations counter update
 		foreach ($creation->getInspirations() as $inspiration) {
 			$inspiration->incrementReboundCount(1);
@@ -59,6 +69,11 @@ class CreationManager extends AbstractWonderManager {
 
 		$creation->getUser()->getMeta()->incrementPrivateCreationCount(1);
 		$creation->getUser()->getMeta()->incrementPublicCreationCount(-1);
+
+		// Question counter update
+		foreach ($creation->getQuestions() as $question) {
+			$question->incrementCreationCount(-1);
+		}
 
 		// Plans counter update
 		foreach ($creation->getPlans() as $plan) {
@@ -78,6 +93,11 @@ class CreationManager extends AbstractWonderManager {
 		// Providers counter update
 		foreach ($creation->getProviders() as $provider) {
 			$provider->incrementCreationCount(-1);
+		}
+
+		// School counter update
+		foreach ($creation->getSchools() as $school) {
+			$school->incrementCreationCount(-1);
 		}
 
 		// Inspirations counter update
@@ -102,6 +122,11 @@ class CreationManager extends AbstractWonderManager {
 			$creation->getUser()->getMeta()->incrementPublicCreationCount(-1);
 		}
 
+		// Unlink questions
+		foreach ($creation->getQuestions() as $question) {
+			$creation->removeQuestion($question);
+		}
+
 		// Unlink plans
 		foreach ($creation->getPlans() as $plan) {
 			$creation->removePlan($plan);
@@ -120,6 +145,11 @@ class CreationManager extends AbstractWonderManager {
 		// Unlink providers
 		foreach ($creation->getProviders() as $provider) {
 			$creation->removeProvider($provider);
+		}
+
+		// Unlink schools
+		foreach ($creation->getSchools() as $school) {
+			$creation->removeSchool($school);
 		}
 
 		// Unlink inspirations
@@ -280,6 +310,11 @@ class CreationManager extends AbstractWonderManager {
 			$howto->addTag($tag);
 		}
 
+		// Transfer questions
+		foreach ($creation->getQuestions() as $question) {
+			$howto->addQuestion($question);
+		}
+
 		// Transfer plans
 		foreach ($creation->getPlans() as $plan) {
 			$howto->addPlan($plan);
@@ -293,6 +328,11 @@ class CreationManager extends AbstractWonderManager {
 		// transfer providers
 		foreach ($creation->getProviders() as $provider) {
 			$howto->addProvider($provider);
+		}
+
+		// transfer school
+		foreach ($creation->getSchools() as $school) {
+			$howto->addSchool($school);
 		}
 
 		// Setup howto's and article's htmlBody

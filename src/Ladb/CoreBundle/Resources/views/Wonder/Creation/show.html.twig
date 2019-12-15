@@ -12,6 +12,11 @@
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
+    {% if creation.questionCount > 0 %}
+        {% for entity in creation.questions %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
     {% if creation.planCount > 0 %}
         {% for entity in creation.plans %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
@@ -99,6 +104,17 @@
             </a>
         </div>
     {% endif %}
+    <div class="ladb-meta{% if creation.questionCount == 0 %} text-muted{% endif %}">
+        <i class="ladb-icon-question ladb-icon-fixed-center"></i>
+        {% if creation.questionCount > 0 %}
+            <a href="{{ creation.questionCount == 1 ? path('core_qa_question_show', { 'id':creation.questions[0].sluggedId }) : path('core_creation_questions', { 'id':creation.id }) }}">
+        {% endif %}
+        <strong>{{ creation.questionCount }}</strong>
+        <small>{{ 'qa.question.choice.entities'|transchoice(creation.questionCount) }}</small>
+        {% if creation.questionCount > 0 %}
+            </a>
+        {% endif %}
+    </div>
     <div class="ladb-meta{% if creation.planCount == 0 %} text-muted{% endif %}">
         <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
         {% if creation.planCount > 0 %}
@@ -143,6 +159,17 @@
             </a>
         {% endif %}
     </div>
+    <div class="ladb-meta{% if creation.schoolCount == 0 %} text-muted{% endif %}">
+        <i class="ladb-icon-school ladb-icon-fixed-center"></i>
+        {% if creation.schoolCount > 0 %}
+            <a href="{{ creation.schoolCount == 1 ? path('core_school_show', { 'id':creation.schools[0].sluggedId }) : path('core_creation_schools', { 'id':creation.id }) }}">
+        {% endif %}
+        <strong>{{ creation.schoolCount }}</strong>
+        <small>{{ 'knowledge.school.choice.entities'|transchoice(creation.schoolCount) }}</small>
+        {% if creation.schoolCount > 0 %}
+            </a>
+        {% endif %}
+    </div>
     {% if creation.reboundCount > 0 %}
         <div class="ladb-meta">
             <i class="ladb-icon-rebound ladb-icon-fixed-center"></i>
@@ -164,6 +191,14 @@
                         'picture':creation.inspirations[0].mainPicture,
                         'icon':'ladb-icon-inspiration',
                         'caption': creation.inspirationCount~' '~('default.choice.inspirations'|transchoice(creation.inspirationCount))
+                    } %}
+                {% endif %}
+                {% if creation.questionCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':creation.questionCount == 1 ? path('core_qa_question_show', { 'id':creation.questions[0].sluggedId }) : path('core_creation_questions', { 'id':creation.id }),
+                        'picture':creation.questions[0].mainPicture,
+                        'icon':'ladb-icon-question',
+                        'caption': creation.questionCount~' '~('qa.question.choice.entities'|transchoice(creation.questionCount))
                     } %}
                 {% endif %}
                 {% if creation.planCount > 0 %}
@@ -196,6 +231,14 @@
                         'picture':creation.providers[0].mainPicture,
                         'icon':'ladb-icon-provider',
                         'caption': creation.providerCount~' '~('knowledge.provider.choice.entities'|transchoice(creation.providerCount))
+                    } %}
+                {% endif %}
+                {% if creation.schoolCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':creation.schoolCount == 1 ? path('core_school_show', { 'id':creation.schools[0].sluggedId }) : path('core_creation_schools', { 'id':creation.id }),
+                        'picture':creation.schools[0].mainPicture,
+                        'icon':'ladb-icon-school',
+                        'caption': creation.schoolCount~' '~('knowledge.school.choice.entities'|transchoice(creation.schoolCount))
                     } %}
                 {% endif %}
                 {% if creation.reboundCount > 0 %}

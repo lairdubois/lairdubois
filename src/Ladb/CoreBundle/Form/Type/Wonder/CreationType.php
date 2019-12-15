@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\WoodsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\FinishesToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\ToolsToLabelsTransformer;
@@ -67,6 +69,10 @@ class CreationType extends AbstractType {
 				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 			->add($builder
+				->create('questions', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new QuestionsToIdsTransformer($this->om))
+			)
+			->add($builder
 				->create('plans', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new PlansToIdsTransformer($this->om))
 			)
@@ -81,6 +87,10 @@ class CreationType extends AbstractType {
 			->add($builder
 				->create('providers', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new ProvidersToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('schools', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new SchoolsToIdsTransformer($this->om))
 			)
 			->add($builder
 				->create('inspirations', HiddenType::class, array( 'required' => false ))

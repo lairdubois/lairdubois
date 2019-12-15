@@ -20,6 +20,16 @@ class QuestionManager extends AbstractPublicationManager {
 		$question->getUser()->getMeta()->incrementPrivateQuestionCount(-1);
 		$question->getUser()->getMeta()->incrementPublicQuestionCount();
 
+		// Creations counter update
+		foreach ($question->getCreations() as $creation) {
+			$creation->incrementQuestionCount(1);
+		}
+
+		// Howto counter update
+		foreach ($question->getHowtos() as $howto) {
+			$howto->incrementQuestionCount(1);
+		}
+
 		foreach ($question->getAnswers() as $answer) {
 
 			// Increment user answer count
@@ -42,6 +52,16 @@ class QuestionManager extends AbstractPublicationManager {
 
 		$question->getUser()->getMeta()->incrementPrivateQuestionCount(1);
 		$question->getUser()->getMeta()->incrementPublicQuestionCount(-1);
+
+		// Creations counter update
+		foreach ($question->getCreations() as $creation) {
+			$creation->incrementQuestionCount(-1);
+		}
+
+		// Howto counter update
+		foreach ($question->getHowtos() as $howto) {
+			$howto->incrementQuestionCount(-1);
+		}
 
 		foreach ($question->getAnswers() as $answer) {
 
@@ -68,6 +88,16 @@ class QuestionManager extends AbstractPublicationManager {
 			$question->getUser()->getMeta()->incrementPrivateQuestionCount(-1);
 		} else {
 			$question->getUser()->getMeta()->incrementPublicQuestionCount(-1);
+		}
+
+		// Unlink creations
+		foreach ($question->getCreations() as $creation) {
+			$creation->removeQuestion($question);
+		}
+
+		// Unlink howtos
+		foreach ($question->getHowtos() as $howto) {
+			$howto->removeQuestion($question);
 		}
 
 		$answerManager = $this->get(AnswerManager::NAME);

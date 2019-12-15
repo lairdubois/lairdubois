@@ -5,6 +5,8 @@ namespace Ladb\CoreBundle\Repository\Howto;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Knowledge\School;
+use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
@@ -290,18 +292,17 @@ class HowtoRepository extends AbstractEntityRepository {
 		return new Paginator($queryBuilder->getQuery());
 	}
 
-	public function findPaginedByPlan(Plan $plan, $offset, $limit, $filter = 'recent') {
+	public function findPaginedByQuestion(Question $question, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 't', 'p' ))
+			->select(array( 'h', 'u', 'mp', 'q' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->leftJoin('h.mainPicture', 'mp')
-			->leftJoin('h.tags', 't')
-			->innerJoin('h.plans', 'p')
+			->innerJoin('h.questions', 'q')
 			->where('h.isDraft = false')
-			->andWhere('p = :plan')
-			->setParameter('plan', $plan)
+			->andWhere('q = :question')
+			->setParameter('question', $question)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
@@ -314,11 +315,10 @@ class HowtoRepository extends AbstractEntityRepository {
 	public function findPaginedByCreation(Creation $creation, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 't', 'c' ))
+			->select(array( 'h', 'u', 'mp', 'c' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->leftJoin('h.mainPicture', 'mp')
-			->leftJoin('h.tags', 't')
 			->innerJoin('h.creations', 'c')
 			->where('h.isDraft = false')
 			->andWhere('c = :creation')
@@ -332,14 +332,33 @@ class HowtoRepository extends AbstractEntityRepository {
 		return new Paginator($queryBuilder->getQuery());
 	}
 
-	public function findPaginedByWorkflow(Workflow $workflow, $offset, $limit, $filter = 'recent') {
+	public function findPaginedByPlan(Plan $plan, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 't', 'w' ))
+			->select(array( 'h', 'u', 'mp', 'p' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->leftJoin('h.mainPicture', 'mp')
-			->leftJoin('h.tags', 't')
+			->innerJoin('h.plans', 'p')
+			->where('h.isDraft = false')
+			->andWhere('p = :plan')
+			->setParameter('plan', $plan)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByWorkflow(Workflow $workflow, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'h', 'u', 'mp', 'w' ))
+			->from($this->getEntityName(), 'h')
+			->innerJoin('h.user', 'u')
+			->leftJoin('h.mainPicture', 'mp')
 			->innerJoin('h.workflows', 'w')
 			->where('h.isDraft = false')
 			->andWhere('w = :workflow')
@@ -356,11 +375,10 @@ class HowtoRepository extends AbstractEntityRepository {
 	public function findPaginedByWorkshop(Workshop $workshop, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 't', 'w' ))
+			->select(array( 'h', 'u', 'mp', 'w' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->leftJoin('h.mainPicture', 'mp')
-			->leftJoin('h.tags', 't')
 			->innerJoin('h.workshops', 'w')
 			->where('h.isDraft = false')
 			->andWhere('w = :workshop')
@@ -377,15 +395,34 @@ class HowtoRepository extends AbstractEntityRepository {
 	public function findPaginedByProvider(Provider $provider, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'u', 'mp', 't', 'p' ))
+			->select(array( 'h', 'u', 'mp', 'p' ))
 			->from($this->getEntityName(), 'h')
 			->innerJoin('h.user', 'u')
 			->leftJoin('h.mainPicture', 'mp')
-			->leftJoin('h.tags', 't')
 			->innerJoin('h.providers', 'p')
 			->where('h.isDraft = false')
 			->andWhere('p = :provider')
 			->setParameter('provider', $provider)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedBySchool(School $school, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'h', 'u', 'mp', 's' ))
+			->from($this->getEntityName(), 'h')
+			->innerJoin('h.user', 'u')
+			->leftJoin('h.mainPicture', 'mp')
+			->innerJoin('h.schools', 's')
+			->where('h.isDraft = false')
+			->andWhere('s = :school')
+			->setParameter('school', $school)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

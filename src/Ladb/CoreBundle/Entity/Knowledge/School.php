@@ -263,6 +263,26 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 	 */
 	private $testimonials;
 
+	/**
+	 * @ORM\Column(type="integer", name="creation_count")
+	 */
+	private $creationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="schools")
+	 */
+	private $creations;
+
+	/**
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="schools")
+	 */
+	private $howtos;
+
 	/////
 
 	public function __construct() {
@@ -279,6 +299,8 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->diplomasValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->trainingTypesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->testimonials = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -810,6 +832,48 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	public function getTestimonials() {
 		return $this->testimonials;
+	}
+
+	// CreationCount /////
+
+	public function incrementCreationCount($by = 1) {
+		return $this->creationCount += intval($by);
+	}
+
+	public function getCreationCount() {
+		return $this->creationCount;
+	}
+
+	public function setCreationCount($creationCount) {
+		$this->creationCount = $creationCount;
+		return $this;
+	}
+
+	// Creations /////
+
+	public function getCreations() {
+		return $this->creations;
+	}
+
+	// HowtoCount /////
+
+	public function incrementHowtoCount($by = 1) {
+		return $this->howtoCount += intval($by);
+	}
+
+	public function getHowtoCount() {
+		return $this->howtoCount;
+	}
+
+	public function setHowtoCount($howtoCount) {
+		$this->howtoCount = $howtoCount;
+		return $this;
+	}
+
+	// Howtos /////
+
+	public function getHowtos() {
+		return $this->howtos;
 	}
 
 }

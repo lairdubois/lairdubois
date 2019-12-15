@@ -16,6 +16,11 @@
 
 {% block headOpenGraphMetas %}
     {{ parent() }}
+    {% if howto.questionCount > 0 %}
+        {% for entity in howto.questions %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
     {% if howto.creationCount > 0 %}
         {% for entity in howto.creations %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
@@ -248,9 +253,17 @@
         {% if not ownerUser %}
             {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
         {% endif %}
-        {% if howto.planCount > 0 or howto.creationCount > 0 or howto.workflowCount > 0 or howto.workshopCount > 0 or howto.providerCount > 0 %}
+        {% if howto.questionCount > 0 or howto.planCount > 0 or howto.creationCount > 0 or howto.workflowCount > 0 or howto.workshopCount > 0 or howto.providerCount > 0 %}
             {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
                 {% block body %}
+                    {% if howto.questionCount > 0 %}
+                        {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                            'path':howto.questionCount == 1 ? path('core_qa_question_show', { 'id':howto.questions[0].sluggedId }) : path('core_howto_questions', { 'id':howto.id }),
+                            'picture':howto.questions[0].mainPicture,
+                            'icon':'ladb-icon-question',
+                            'caption': howto.questionCount~' '~('qa.question.choice.entities'|transchoice(howto.questionCount))
+                        } %}
+                    {% endif %}
                     {% if howto.planCount > 0 %}
                         {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
                             'path':howto.planCount == 1 ? path('core_plan_show', { 'id':howto.plans[0].sluggedId }) : path('core_howto_plans', { 'id':howto.id }),
@@ -325,6 +338,17 @@
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta{% if howto.questionCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-question ladb-icon-fixed-center"></i>
+            {% if howto.questionCount > 0 %}
+                <a href="{{ howto.questionCount == 1 ? path('core_qa_question_show', { 'id':howto.questions[0].sluggedId }) : path('core_howto_questions', { 'id':howto.id }) }}">
+            {% endif %}
+            <strong>{{ howto.questionCount }}</strong>
+            <small>{{ 'qa.question.choice.entities'|transchoice(howto.questionCount) }}</small>
+            {% if howto.questionCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
         <div class="ladb-meta{% if howto.planCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
             {% if howto.planCount > 0 %}
@@ -373,6 +397,17 @@
             <strong>{{ howto.providerCount }}</strong>
             <small>{{ 'knowledge.provider.choice.entities'|transchoice(howto.providerCount) }}</small>
             {% if howto.providerCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        <div class="ladb-meta{% if howto.schoolCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-school ladb-icon-fixed-center"></i>
+            {% if howto.schoolCount > 0 %}
+                <a href="{{ howto.schoolCount == 1 ? path('core_school_show', { 'id':howto.schools[0].sluggedId }) : path('core_howto_schools', { 'id':howto.id }) }}">
+            {% endif %}
+            <strong>{{ howto.schoolCount }}</strong>
+            <small>{{ 'knowledge.school.choice.entities'|transchoice(howto.schoolCount) }}</small>
+            {% if howto.schoolCount > 0 %}
                 </a>
             {% endif %}
         </div>

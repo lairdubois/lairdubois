@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Form\Type\Howto;
 
-use Ladb\CoreBundle\Entity\Howto\Howto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -10,6 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Howto\ArticlesToIdsTransformer;
@@ -52,6 +54,10 @@ class HowtoType extends AbstractType {
 				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 			->add($builder
+				->create('questions', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new QuestionsToIdsTransformer($this->om))
+			)
+			->add($builder
 				->create('plans', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new PlansToIdsTransformer($this->om))
 			)
@@ -62,6 +68,10 @@ class HowtoType extends AbstractType {
 			->add($builder
 				->create('providers', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new ProvidersToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('schools', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new SchoolsToIdsTransformer($this->om))
 			)
 			->add('license', LicenseType::class)
 		;

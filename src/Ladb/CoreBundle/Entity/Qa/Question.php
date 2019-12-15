@@ -137,6 +137,26 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	private $answers;
 
 	/**
+	 * @ORM\Column(type="integer", name="creation_count")
+	 */
+	private $creationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="questions")
+	 */
+	private $creations;
+
+	/**
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="questions")
+	 */
+	private $howtos;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_qa_question_tag")
 	 * @Assert\Count(min=2)
@@ -193,6 +213,8 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	public function __construct() {
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -303,6 +325,48 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 
 	public function getLicense() {
 		return new \Ladb\CoreBundle\Entity\Core\License(true, true, true);
+	}
+
+	// CreationCount /////
+
+	public function incrementCreationCount($by = 1) {
+		return $this->creationCount += intval($by);
+	}
+
+	public function getCreationCount() {
+		return $this->creationCount;
+	}
+
+	public function setCreationCount($creationCount) {
+		$this->creationCount = $creationCount;
+		return $this;
+	}
+
+	// Creations /////
+
+	public function getCreations() {
+		return $this->creations;
+	}
+
+	// HowtoCount /////
+
+	public function incrementHowtoCount($by = 1) {
+		return $this->howtoCount += intval($by);
+	}
+
+	public function getHowtoCount() {
+		return $this->howtoCount;
+	}
+
+	public function setHowtoCount($howtoCount) {
+		$this->howtoCount = $howtoCount;
+		return $this;
+	}
+
+	// Howtos /////
+
+	public function getHowtos() {
+		return $this->howtos;
 	}
 
 }

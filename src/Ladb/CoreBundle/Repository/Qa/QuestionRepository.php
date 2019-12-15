@@ -3,8 +3,9 @@
 namespace Ladb\CoreBundle\Repository\Qa;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Ladb\CoreBundle\Entity\Blog\Question;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class QuestionRepository extends AbstractEntityRepository {
@@ -217,6 +218,44 @@ class QuestionRepository extends AbstractEntityRepository {
 				->andWhere('q.isDraft = false')
 			;
 		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByCreation(Creation $creation, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u', 'c' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->innerJoin('q.creations', 'c')
+			->where('q.isDraft = false')
+			->andWhere('c = :creation')
+			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByHowto(Howto $howto, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u', 'h' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->innerJoin('q.howtos', 'h')
+			->where('q.isDraft = false')
+			->andWhere('h = :howto')
+			->setParameter('howto', $howto)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
 
 		$this->_applyCommonFilter($queryBuilder, $filter);
 

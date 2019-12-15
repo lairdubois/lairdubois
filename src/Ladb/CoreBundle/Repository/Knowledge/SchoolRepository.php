@@ -88,10 +88,10 @@ class SchoolRepository extends AbstractKnowledgeRepository {
 	public function findPagined($offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'mp' ))
-			->from($this->getEntityName(), 'p')
-			->innerJoin('p.mainPicture', 'mp')
-			->where('p.isDraft = false')
+			->select(array( 's', 'mp' ))
+			->from($this->getEntityName(), 's')
+			->innerJoin('s.mainPicture', 'mp')
+			->where('s.isDraft = false')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
@@ -104,37 +104,37 @@ class SchoolRepository extends AbstractKnowledgeRepository {
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('popular-views' == $filter) {
 			$queryBuilder
-				->addOrderBy('p.viewCount', 'DESC')
+				->addOrderBy('s.viewCount', 'DESC')
 			;
 		} else if ('popular-likes' == $filter) {
 			$queryBuilder
-				->addOrderBy('p.likeCount', 'DESC')
+				->addOrderBy('s.likeCount', 'DESC')
 			;
 		} else if ('popular-comments' == $filter) {
 			$queryBuilder
-				->addOrderBy('p.commentCount', 'DESC')
+				->addOrderBy('s.commentCount', 'DESC')
 			;
 		} else if ('collaborative-contributors' == $filter) {
 			$queryBuilder
-				->addOrderBy('p.contributorCount', 'DESC')
+				->addOrderBy('s.contributorCount', 'DESC')
 			;
 		} else if ('order-alphabetical' == $filter) {
 			$queryBuilder
-				->addOrderBy('p.title', 'ASC')
+				->addOrderBy('s.title', 'ASC')
 			;
 		}
 		$queryBuilder
-			->addOrderBy('p.changedAt', 'DESC')
+			->addOrderBy('s.changedAt', 'DESC')
 		;
 	}
 
 	public function findPaginedByCreation(Creation $creation, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'mp', 'c' ))
-			->from($this->getEntityName(), 'p')
-			->leftJoin('p.mainPicture', 'mp')
-			->innerJoin('p.creations', 'c')
+			->select(array( 's', 'mp', 'c' ))
+			->from($this->getEntityName(), 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->innerJoin('s.creations', 'c')
 			->where('c = :creation')
 			->setParameter('creation', $creation)
 			->setFirstResult($offset)
@@ -149,10 +149,10 @@ class SchoolRepository extends AbstractKnowledgeRepository {
 	public function findPaginedByHowto(Howto $howto, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'mp', 'h' ))
-			->from($this->getEntityName(), 'p')
-			->leftJoin('p.mainPicture', 'mp')
-			->innerJoin('p.howtos', 'h')
+			->select(array( 's', 'mp', 'h' ))
+			->from($this->getEntityName(), 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->innerJoin('s.howtos', 'h')
 			->where('h = :howto')
 			->setParameter('howto', $howto)
 			->setFirstResult($offset)
@@ -167,11 +167,11 @@ class SchoolRepository extends AbstractKnowledgeRepository {
 	public  function findGeocoded($filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'mp' ))
-			->from($this->getEntityName(), 'p')
-			->leftJoin('p.mainPicture', 'mp')
-			->where('p.latitude IS NOT NULL')
-			->andWhere('p.longitude IS NOT NULL')
+			->select(array( 's', 'mp' ))
+			->from($this->getEntityName(), 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->where('s.latitude IS NOT NULL')
+			->andWhere('s.longitude IS NOT NULL')
 		;
 
 		$this->_applyCommonFilter($queryBuilder, $filter);

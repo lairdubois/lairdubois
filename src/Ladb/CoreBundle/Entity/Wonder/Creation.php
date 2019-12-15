@@ -74,6 +74,18 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	private $finishes;
 
 	/**
+	 * @ORM\Column(type="integer", name="question_count")
+	 */
+	private $questionCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="creations", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_question")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $questions;
+
+	/**
 	 * @ORM\Column(type="integer", name="plan_count")
 	 */
 	private $planCount = 0;
@@ -120,6 +132,18 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	 * @Assert\Count(min=0, max=10)
 	 */
 	private $providers;
+
+	/**
+	 * @ORM\Column(type="integer", name="school_count")
+	 */
+	private $schoolCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="creations", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_school")
+	 * @Assert\Count(min=0, max=10)
+	 */
+	private $schools;
 
 	/**
      * @ORM\Column(type="integer", name="rebound_count")
@@ -174,10 +198,12 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 		$this->woods = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->finishes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tools = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -236,6 +262,42 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getFinishes() {
 		return $this->finishes;
+	}
+
+	// QuestionCount /////
+
+	public function incrementQuestionCount($by = 1) {
+		return $this->questionCount += intval($by);
+	}
+
+	public function getQuestionCount() {
+		return $this->questionCount;
+	}
+
+	// Questions /////
+
+	public function addQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if (!$this->questions->contains($question)) {
+			$this->questions[] = $question;
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementCreationCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if ($this->questions->removeElement($question)) {
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementCreationCount(-1);
+			}
+		}
+	}
+
+	public function getQuestions() {
+		return $this->questions;
 	}
 
 	// PlanCount /////
@@ -380,6 +442,42 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getProviders() {
 		return $this->providers;
+	}
+
+	// SchoolCount /////
+
+	public function incrementSchoolCount($by = 1) {
+		return $this->schoolCount += intval($by);
+	}
+
+	public function getSchoolCount() {
+		return $this->schoolCount;
+	}
+
+	// Schools /////
+
+	public function addSchool(\Ladb\CoreBundle\Entity\Knowledge\School $school) {
+		if (!$this->schools->contains($school)) {
+			$this->schools[] = $school;
+			$this->schoolCount = count($this->schools);
+			if (!$this->getIsDraft()) {
+				$school->incrementCreationCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeSchool(\Ladb\CoreBundle\Entity\Knowledge\School $school) {
+		if ($this->schools->removeElement($school)) {
+			$this->schoolCount = count($this->schools);
+			if (!$this->getIsDraft()) {
+				$school->incrementCreationCount(-1);
+			}
+		}
+	}
+
+	public function getSchools() {
+		return $this->schools;
 	}
 
 	// Spotlight /////

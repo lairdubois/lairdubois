@@ -154,6 +154,18 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $plans;
 
 	/**
+	 * @ORM\Column(type="integer", name="question_count")
+	 */
+	private $questionCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="howtos", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_howto_question")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $questions;
+
+	/**
 	 * @ORM\Column(type="integer", name="workflow_count")
 	 */
 	private $workflowCount = 0;
@@ -176,6 +188,18 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @Assert\Count(min=0, max=10)
 	 */
 	private $providers;
+
+	/**
+	 * @ORM\Column(type="integer", name="school_count")
+	 */
+	private $schoolCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="howtos", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_howto_school")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $schools;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
@@ -253,8 +277,10 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workshops = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->referrals = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -433,6 +459,42 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 		return $this->plans;
 	}
 
+	// QuestionCount /////
+
+	public function incrementQuestionCount($by = 1) {
+		return $this->questionCount += intval($by);
+	}
+
+	public function getQuestionCount() {
+		return $this->questionCount;
+	}
+
+	// Questions /////
+
+	public function addQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if (!$this->questions->contains($question)) {
+			$this->questions[] = $question;
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementHowtoCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if ($this->questions->removeElement($question)) {
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementHowtoCount(-1);
+			}
+		}
+	}
+
+	public function getQuestions() {
+		return $this->questions;
+	}
+
 	// WorkflowCount /////
 
 	public function incrementWorkflowCount($by = 1) {
@@ -503,6 +565,42 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getProviders() {
 		return $this->providers;
+	}
+
+	// SchoolCount /////
+
+	public function incrementSchoolCount($by = 1) {
+		return $this->schoolCount += intval($by);
+	}
+
+	public function getSchoolCount() {
+		return $this->schoolCount;
+	}
+
+	// Schools /////
+
+	public function addSchool(\Ladb\CoreBundle\Entity\Knowledge\School $school) {
+		if (!$this->schools->contains($school)) {
+			$this->schools[] = $school;
+			$this->schoolCount = count($this->schools);
+			if (!$this->getIsDraft()) {
+				$school->incrementHowtoCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeSchool(\Ladb\CoreBundle\Entity\Knowledge\School $school) {
+		if ($this->schools->removeElement($school)) {
+			$this->schoolCount = count($this->schools);
+			if (!$this->getIsDraft()) {
+				$school->incrementHowtoCount(-1);
+			}
+		}
+	}
+
+	public function getSchools() {
+		return $this->schools;
 	}
 
 	// Spotlight /////

@@ -2,13 +2,15 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
-use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Ladb\CoreBundle\Entity\Knowledge\School;
+use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Manager\Wonder\CreationManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
@@ -333,6 +335,47 @@ class CreationController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/questions", requirements={"id" = "\d+"}, name="core_creation_questions")
+	 * @Route("/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_questions_filter")
+	 * @Route("/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_questions_filter_page")
+	 * @Template("LadbCoreBundle:Wonder/Creation:questions.html.twig")
+	 */
+	public function questionsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$creation = $creationRepository->findOneById($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+
+		// Questions
+
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $questionRepository->findPaginedByCreation($creation, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_questions_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'questions'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Qa/Question:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'creation' => $creation,
+		));
+	}
+
+	/**
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_creation_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_plans_filter_page")
@@ -495,7 +538,48 @@ class CreationController extends Controller {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Knowledge/Provider:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'creation' => $creation,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/ecoles", requirements={"id" = "\d+"}, name="core_creation_schools")
+	 * @Route("/{id}/ecoles/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_schools_filter")
+	 * @Route("/{id}/ecoles/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_schools_filter_page")
+	 * @Template("LadbCoreBundle:Wonder/Creation:schools.html.twig")
+	 */
+	public function schoolsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$creation = $creationRepository->findOneById($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+
+		// Schools
+
+		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $schoolRepository->findPaginedByCreation($creation, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_schools_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'schools'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Knowledge/School:list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -825,51 +909,65 @@ class CreationController extends Controller {
 
 						break;
 
+					case 'content-questions':
+
+						$filter = new \Elastica\Query\Range('questionCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-plans':
 
-						$filter = new \Elastica\Query\Range('planCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('planCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-howtos':
 
-						$filter = new \Elastica\Query\Range('howtoCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-workflows':
 
-						$filter = new \Elastica\Query\Range('workflowCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-providers':
 
-						$filter = new \Elastica\Query\Range('providerCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('providerCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-schools':
+
+						$filter = new \Elastica\Query\Range('schoolCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-videos':
 
-						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'with-inspiration':
 
-						$filter = new \Elastica\Query\Range('inspirationCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('inspirationCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'with-rebound':
 
-						$filter = new \Elastica\Query\Range('reboundCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('reboundCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;

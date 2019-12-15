@@ -655,28 +655,28 @@ class WorkshopController extends Controller {
 
 					case 'content-plans':
 
-						$filter = new \Elastica\Query\Range('planCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('planCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-howtos':
 
-						$filter = new \Elastica\Query\Range('howtoCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-workflows':
 
-						$filter = new \Elastica\Query\Range('workflowCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-videos':
 
-						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;

@@ -6,6 +6,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Knowledge\School;
+use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
@@ -329,6 +331,25 @@ class CreationRepository extends AbstractEntityRepository {
 		return new Paginator($queryBuilder->getQuery());
 	}
 
+	public function findPaginedByQuestion(Question $question, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'u', 'q' ))
+			->from($this->getEntityName(), 'c')
+			->innerJoin('c.user', 'u')
+			->innerJoin('c.questions', 'q')
+			->where('c.isDraft = false')
+			->andWhere('q = :question')
+			->setParameter('question', $question)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	public function findPaginedByPlan(Plan $plan, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -400,6 +421,26 @@ class CreationRepository extends AbstractEntityRepository {
 			->where('c.isDraft = false')
 			->andWhere('p = :provider')
 			->setParameter('provider', $provider)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedBySchool(School $school, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c', 'u', 'mp', 's' ))
+			->from($this->getEntityName(), 'c')
+			->innerJoin('c.user', 'u')
+			->innerJoin('c.mainPicture', 'mp')
+			->innerJoin('c.schools', 's')
+			->where('c.isDraft = false')
+			->andWhere('s = :school')
+			->setParameter('school', $school)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

@@ -1,0 +1,36 @@
+
+{# set fieldId #}
+{# set maxQuestionCount #}
+{# set excludedId (facultative) #}
+
+<script>
+    function updateQuestionsForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#question_thumbnails").find("li.ladb-question").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(9); {# 9 = "question_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount == {{ maxQuestionCount }}) {
+            $("#linkto_question_buttons").hide();
+        } else {
+            $("#linkto_question_buttons").show();
+        }
+    }
+    function questionAdded(data) {
+        $("#question_thumbnails").append(data);
+        updateQuestionsForm();
+        $("#linkto_question_modal_iframe").attr("src", "");
+        $("#linkto_question_modal").find("button.close").click();
+    }
+    function questionRemoved() {
+        updateQuestionsForm();
+    }
+    function updateQuestionChoiceModal() {
+        $('#linkto_question_modal_iframe').attr('src', '{{ path('core_qa_question_list', { 'layout':'choice' }) }}&ex=' + $("#{{ fieldId }}").val(){% if excludedId is defined and excludedId is not empty %}+',{{ excludedId }}'{% endif %});
+    }
+</script>

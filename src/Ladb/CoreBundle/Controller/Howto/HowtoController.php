@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
+use Ladb\CoreBundle\Entity\Knowledge\School;
+use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\HowtoUtils;
@@ -432,44 +434,58 @@ class HowtoController extends Controller {
 
 						break;
 
+					case 'content-questions':
+
+						$filter = new \Elastica\Query\Range('questionCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-creations':
 
-						$filter = new \Elastica\Query\Range('creationCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('creationCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-plans':
 
-						$filter = new \Elastica\Query\Range('planCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('planCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-workshops':
 
-						$filter = new \Elastica\Query\Range('workshopCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('workshopCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-workflows':
 
-						$filter = new \Elastica\Query\Range('workflowCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-providers':
 
-						$filter = new \Elastica\Query\Range('providerCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('providerCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-schools':
+
+						$filter = new \Elastica\Query\Range('schoolCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'content-videos':
 
-						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gte' => 1 ));
+						$filter = new \Elastica\Query\Range('bodyBlockVideoCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
@@ -709,6 +725,47 @@ class HowtoController extends Controller {
 	}
 
 	/**
+	 * @Route("/pas-a-pas/{id}/questions", requirements={"id" = "\d+"}, name="core_howto_questions")
+	 * @Route("/pas-a-pas/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_questions_filter")
+	 * @Route("/pas-a-pas/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_questions_filter_page")
+	 * @Template("LadbCoreBundle:Howto/Howto:questions.html.twig")
+	 */
+	public function questionsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+
+		// Plans
+
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $questionRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_questions_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'questions'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Wonder/Plan:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'howto' => $howto,
+		));
+	}
+
+	/**
 	 * @Route("/pas-a-pas/{id}/processus", requirements={"id" = "\d+"}, name="core_howto_workflows")
 	 * @Route("/pas-a-pas/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workflows_filter")
 	 * @Route("/pas-a-pas/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workflows_filter_page")
@@ -779,6 +836,47 @@ class HowtoController extends Controller {
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
 			'providers'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'howto' => $howto,
+		));
+	}
+
+	/**
+	 * @Route("/pas-a-pas/{id}/ecoles", requirements={"id" = "\d+"}, name="core_howto_schools")
+	 * @Route("/pas-a-pas/{id}/ecoles/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_schools_filter")
+	 * @Route("/pas-a-pas/{id}/ecoles/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_schools_filter_page")
+	 * @Template("LadbCoreBundle:Howto/Howto:schools.html.twig")
+	 */
+	public function schoolsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$howto = $howtoRepository->findOneById($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+
+		// Providers
+
+		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $schoolRepository->findPaginedByHowto($howto, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_howto_schools_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'schools'     => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {

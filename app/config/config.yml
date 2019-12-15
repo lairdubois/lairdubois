@@ -394,10 +394,12 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         bodyBlockVideoCount: { type: integer }
+                        questionCount: { type: integer }
                         planCount: { type: integer }
                         howtoCount: { type: integer }
                         workflowCount: { type: integer }
                         providerCount: { type: integer }
+                        schoolCount: { type: integer }
                         inspirationCount: { type: integer }
                         reboundCount: { type: integer }
                         user:
@@ -528,6 +530,8 @@ fos_elastica:
                         nullAnswerCount: { type: integer }
                         undeterminedAnswerCount: { type: integer }
                         negativeAnswerCount: { type: integer }
+                        creationCount: { type: integer }
+                        howtoCount: { type: integer }
                         user:
                             type: "object"
                             properties:
@@ -563,11 +567,13 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         bodyBlockVideoCount: { type: integer }
+                        questionCount: { type: integer }
                         creationCount: { type: integer }
                         planCount: { type: integer }
                         workflowCount: { type: integer }
                         workshopCount: { type: integer }
                         providerCount: { type: integer }
+                        schoolCount: { type: integer }
                         kind: { type: short }
                         isWorkInProgress: { type: boolean }
                         articles:
@@ -808,6 +814,8 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         reviewCount: { type: integer }
+                        creationCount: { type: integer }
+                        howtoCount: { type: integer }
                         averageRating: { type: float }
                         inStoreSelling: { type: boolean }
                         mailOrderSelling: { type: boolean }
@@ -835,6 +843,8 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         testimonialCount: { type: integer }
+                        creationCount: { type: integer }
+                        howtoCount: { type: integer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Knowledge\School

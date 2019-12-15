@@ -2,7 +2,11 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Knowledge\School;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -327,6 +331,13 @@ class QuestionController extends Controller {
 			throw $this->createNotFoundException('Page limit reached (core_qa_question_list_page)');
 		}
 
+		$layout = $request->get('layout', 'view');
+
+		$routeParameters = array();
+		if ($layout != 'view') {
+			$routeParameters['layout'] = $layout;
+		}
+
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
@@ -425,6 +436,20 @@ class QuestionController extends Controller {
 
 						break;
 
+					case 'content-creations':
+
+						$filter = new \Elastica\Query\Range('creationCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-howtos':
+
+						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					// Sorters /////
 
 					case 'sort-recent':
@@ -506,7 +531,15 @@ class QuestionController extends Controller {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Qa/Question:list-xhr.html.twig', $parameters);
+			if ($layout == 'choice') {
+				return $this->render('LadbCoreBundle:Qa/Question:list-choice-xhr.html.twig', $parameters);
+			} else {
+				return $this->render('LadbCoreBundle:Qa/Question:list-xhr.html.twig', $parameters);
+			}
+		}
+
+		if ($layout == 'choice') {
+			return $this->render('LadbCoreBundle:Qa/Question:list-choice.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateQuestionCount() > 0) {
@@ -520,6 +553,88 @@ class QuestionController extends Controller {
 		}
 
 		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_qa_question_creations")
+	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_qa_question_creations_filter")
+	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_qa_question_creations_filter_page")
+	 * @Template("LadbCoreBundle:Qa/Question:creations.html.twig")
+	 */
+	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		// Creations
+
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $creationRepository->findPaginedByQuestion($question, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_qa_question_creations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'creations'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Wonder/Creation:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'question' => $question,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_qa_question_howtos")
+	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_qa_question_howtos_filter")
+	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_qa_question_howtos_filter_page")
+	 * @Template("LadbCoreBundle:Qa/Question:howtos.html.twig")
+	 */
+	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		// Howtos
+
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $howtoRepository->findPaginedByQuestion($question, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_qa_question_howtos_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'howtos'      => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'question' => $question,
+		));
 	}
 
 	/**

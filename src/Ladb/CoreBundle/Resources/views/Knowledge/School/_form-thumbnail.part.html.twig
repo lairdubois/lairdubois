@@ -1,0 +1,12 @@
+
+{# set school #}
+
+<li id="school_{{ school.id }}" class="ladb-school ladb-form-thumbnail thumbnail">
+    <div class="uk-overlay">
+        <img src="{{ (school.mainPicture is not null ? school.mainPicture.webPath : 'avatar.png')|imagine_filter('128x128o') }}" width="128" height="128">
+        <div class="uk-overlay-caption">{{ school.title }}</div>
+    </div>
+    <div style="text-align: center;margin-top: 5px;">
+        <a href="#" class="btn btn-xs btn-danger" onclick="$('#school_{{ school.id }}').remove();schoolRemoved();return false;">{{ 'default.remove'|trans() }}</a>
+    </div>
+</li>

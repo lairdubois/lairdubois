@@ -10,6 +10,9 @@
 {% endblock %}
 
 {% block entityMetas %}
+    {% if howto.questionCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_howto_questions', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.questionCount }} {{ 'qa.question.choice.entities'|transchoice(howto.questionCount) }}"><i class="ladb-icon-question"></i></a></li>
+    {% endif %}
     {% if howto.planCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_howto_plans', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.planCount }} {{ 'wonder.plan.choice.entities'|transchoice(howto.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
     {% endif %}
@@ -24,6 +27,9 @@
     {% endif %}
     {% if howto.providerCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_howto_providers', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.providerCount }} {{ 'knowledge.provider.choice.entities'|transchoice(howto.providerCount) }}"><i class="ladb-icon-provider"></i></a></li>
+    {% endif %}
+    {% if howto.schoolCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_howto_schools', { 'id':howto.id }) }}" data-tooltip="tooltip" title="{{ 'howto.howto.linked_to'|trans() }} {{ howto.schoolCount }} {{ 'knowledge.school.choice.entities'|transchoice(howto.schoolCount) }}"><i class="ladb-icon-school"></i></a></li>
     {% endif %}
     {{ parent() }}
 {% endblock %}

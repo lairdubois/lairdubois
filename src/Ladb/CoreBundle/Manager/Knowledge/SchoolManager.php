@@ -11,6 +11,16 @@ class SchoolManager extends AbstractKnowledgeManager {
 
 	public function delete(School $school, $withWitness = true, $flush = true) {
 
+		// Unlink creations
+		foreach ($school->getCreations() as $creation) {
+			$creation->removeSchool($school);
+		}
+
+		// Unlink howtos
+		foreach ($school->getHowtos() as $howto) {
+			$howto->removeSchool($school);
+		}
+
 		// Delete testimonials
 		$testimonialManager = $this->get(TestimonialManager::NAME);
 		foreach ($school->getTestimonials() as $testimonial) {

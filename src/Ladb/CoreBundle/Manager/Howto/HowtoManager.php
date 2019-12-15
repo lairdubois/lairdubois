@@ -17,6 +17,11 @@ class HowtoManager extends AbstractPublicationManager {
 		$howto->getUser()->getMeta()->incrementPrivateHowtoCount(-1);
 		$howto->getUser()->getMeta()->incrementPublicHowtoCount();
 
+		// Questions counter update
+		foreach ($howto->getQuestions() as $question) {
+			$question->incrementHowtoCount(1);
+		}
+
 		// Creations counter update
 		foreach ($howto->getCreations() as $creation) {
 			$creation->incrementHowtoCount(1);
@@ -42,6 +47,11 @@ class HowtoManager extends AbstractPublicationManager {
 			$provider->incrementHowtoCount(1);
 		}
 
+		// School counter update
+		foreach ($howto->getSchools() as $school) {
+			$school->incrementHowtoCount(1);
+		}
+
 		// Witness articles
 		$witnessManager = $this->get(WitnessManager::NAME);
 		foreach ($howto->getArticles() as $article) {
@@ -55,6 +65,11 @@ class HowtoManager extends AbstractPublicationManager {
 
 		$howto->getUser()->getMeta()->incrementPrivateHowtoCount(1);
 		$howto->getUser()->getMeta()->incrementPublicHowtoCount(-1);
+
+		// Questions counter update
+		foreach ($howto->getQuestions() as $question) {
+			$question->incrementHowtoCount(-1);
+		}
 
 		// Creations counter update
 		foreach ($howto->getCreations() as $creation) {
@@ -79,6 +94,11 @@ class HowtoManager extends AbstractPublicationManager {
 		// Providers counter update
 		foreach ($howto->getProviders() as $provider) {
 			$provider->incrementHowtoCount(-1);
+		}
+
+		// Schools counter update
+		foreach ($howto->getSchools() as $school) {
+			$school->incrementHowtoCount(-1);
 		}
 
 		// Witness articles
@@ -106,6 +126,11 @@ class HowtoManager extends AbstractPublicationManager {
 			$howto->getUser()->getMeta()->incrementPublicHowtoCount(-1);
 		}
 
+		// Unlink questions
+		foreach ($howto->getQuestions() as $question) {
+			$howto->removeQuestion($question);
+		}
+
 		// Unlink creations
 		foreach ($howto->getCreations() as $creation) {
 			$creation->removeHowto($howto);
@@ -124,6 +149,11 @@ class HowtoManager extends AbstractPublicationManager {
 		// Unlink providers
 		foreach ($howto->getProviders() as $provider) {
 			$howto->removeProvider($provider);
+		}
+
+		// Unlink schools
+		foreach ($howto->getSchools() as $school) {
+			$howto->removeSchool($school);
 		}
 
 		// Witness articles

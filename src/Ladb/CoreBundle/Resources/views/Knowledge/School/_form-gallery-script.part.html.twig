@@ -1,0 +1,35 @@
+
+{# set fieldId #}
+{# set maxSchoolCount #}
+
+<script>
+    function updateSchoolsForm() {
+        var idsValue = "";
+        var idsCount = 0;
+        $("#school_thumbnails").find("li.ladb-school").each(function(index, value) {
+            if (idsValue.length > 0) {
+                idsValue += ",";
+            }
+            idsValue += value.id.substring(7); {# 7 = "school_" length #}
+            idsCount++;
+        });
+        $("#{{ fieldId }}").val(idsValue).trigger('change');
+        if (idsCount == {{ maxSchoolCount }}) {
+            $("#linkto_school_buttons").hide();
+        } else {
+            $("#linkto_school_buttons").show();
+        }
+    }
+    function schoolAdded(data) {
+        $("#school_thumbnails").append(data);
+        updateSchoolsForm();
+        $("#linkto_school_modal_iframe").attr("src", "");
+        $("#linkto_school_modal").find("button.close").click();
+    }
+    function schoolRemoved() {
+        updateSchoolsForm();
+    }
+    function updateSchoolChoiceModal() {
+        $('#linkto_school_modal_iframe').attr('src', '{{ path('core_school_list', { 'layout':'choice' }) }}&ex=' + $("#{{ fieldId }}").val());
+    }
+</script>

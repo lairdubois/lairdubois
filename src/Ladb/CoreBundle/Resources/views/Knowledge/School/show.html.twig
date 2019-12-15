@@ -172,6 +172,24 @@
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+        {% if school.creationCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-creation"></i>
+                <a href="{{ school.creationCount == 1 ? path('core_creation_show', { 'id':school.creations[0].sluggedId }) : path('core_school_creations', { 'id':school.id }) }}">
+                    <strong>{{ school.creationCount }}</strong>
+                    <small>{{ 'wonder.creation.choice.entities'|transchoice(school.creationCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if school.howtoCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-howto"></i>
+                <a href="{{ school.howtoCount == 1 ? path('core_howto_show', { 'id':school.howtos[0].sluggedId }) : path('core_school_howtos', { 'id':school.id }) }}">
+                    <strong>{{ school.howtoCount }}</strong>
+                    <small>{{ 'howto.howto.choice.entities'|transchoice(school.howtoCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
     </div>
     {% if hasMap %}
         <div class="ladb-metas">

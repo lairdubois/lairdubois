@@ -295,6 +295,17 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	 */
 	private $stateValues;
 
+
+	/**
+	 * @ORM\Column(name="review_count", type="integer")
+	 */
+	private $reviewCount = 0;
+
+	/**
+	 * @ORM\Column(name="average_rating", type="float")
+	 */
+	private $averageRating = 0;
+
 	/**
 	 * @ORM\Column(type="integer", name="creation_count")
 	 */
@@ -314,17 +325,6 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="providers")
 	 */
 	private $howtos;
-
-
-	/**
-	 * @ORM\Column(name="review_count", type="integer")
-	 */
-	private $reviewCount = 0;
-
-	/**
-	 * @ORM\Column(name="average_rating", type="float")
-	 */
-	private $averageRating = 0;
 
 	/////
 
