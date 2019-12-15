@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Message:_layout.html.twig' %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
-{% set tab = announcement ? 'new_thread_announcement' : 'new_thread' %}
+{% set tab = 'new_thread' %}
 
 {% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
 
@@ -73,18 +73,15 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    <div id="message-reply" class="ladb-message">
-        {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
+    <div id="message-reply">
         <div class="ladb-box">
             <div class="ladb-body">
-                {{ form_start(form, { 'action':path(announcement ? 'core_message_thread_create_announcement' : 'core_message_thread_create'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
-                    {% if not announcement %}
-                        <div class="form-group">
-                            {{ form_label(form.recipients, 'Destinataires') }}
-                            {{ form_errors(form.recipients) }}
-                            {{ form_widget(form.recipients, { 'attr': { 'class':'form-control' } }) }}
-                        </div>
-                    {% endif %}
+                {{ form_start(form, { 'action':path('core_message_thread_create'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
+                    <div class="form-group">
+                        {{ form_label(form.recipients, 'Destinataires') }}
+                        {{ form_errors(form.recipients) }}
+                        {{ form_widget(form.recipients, { 'attr': { 'class':'form-control' } }) }}
+                    </div>
                     <div class="form-group">
                         {{ form_label(form.subject, 'Objet') }}
                         {{ form_errors(form.subject) }}
@@ -97,7 +94,7 @@
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
                         {% include 'LadbCoreBundle:Core/Picture:_form-gallery-collapse.part.html.twig' %}
                         <script>
-                            if (document.readyState == "complete") {
+                            if (document.readyState === "complete") {
                                 $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
                                     mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
                                 });
@@ -110,31 +107,17 @@
                             }
                         </script>
                     </div>
-                    {% if announcement %}
-                        <a href="#new_thread_modal" class="btn btn-danger" data-toggle="modal" >{{ 'default.send'|trans() }}</a>
-                        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'new_thread_modal', 'title':('message.thread.announcement.new'|trans()) } %}
-                            {% block bodyInner %}
-                                <p>Ce mesage est une annonce, il sera envoyé à tout le monde.</p>
-                                <p>Confirmez l'action pour continuer.</p>
-                            {% endblock %}
-                            {% block footerInner %}
-                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                                {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()), 'classes':'btn-danger' } %}
-                            {% endblock %}
-                        {% endembed %}
-                    {% else %}
-                        <div class="alert alert-info">
-                            <div class="media">
-                                <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
-                                <div class="media-body">
-                                    <h4>A lire avant d'envoyer</h4>
-                                    <p>Cette messagerie privée se destine à prendre contact individuellement avec les membres inscrits de la plateforme.<br>
-                                    <u>La prospection commerciale n'y est pas attendue</u>. Pour plus d'informations, le sujet est débattu <a href="/blog/102-publicite-en-message-prive.html" class="alert-link">ici</a>.</p>
-                                </div>
+                    <div class="alert alert-info">
+                        <div class="media">
+                            <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+                            <div class="media-body">
+                                <h4>A lire avant d'envoyer</h4>
+                                <p>Cette messagerie privée se destine à prendre contact individuellement avec les membres inscrits de la plateforme.<br>
+                                <u>La prospection commerciale n'y est pas attendue</u>. Pour plus d'informations, le sujet est débattu <a href="/blog/102-publicite-en-message-prive.html" class="alert-link">ici</a>.</p>
                             </div>
                         </div>
-                        {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
-                    {% endif %}
+                    </div>
+                    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
                 {{ form_end(form) }}
             </div>
         </div>

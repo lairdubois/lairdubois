@@ -1,7 +1,5 @@
 {% extends 'LadbCoreBundle:Message:_layout.html.twig' %}
 
-{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
-
 {% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
 
 {% set tab = 'show_thread' %}
@@ -15,28 +13,15 @@
 {% block bodyJavascripts %}
     {{ parent() }}
     {{ block('blueimpGalleryJavascripts') }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.threadpage.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <script>
         $(document).ready(function () {
 
-            {# Setup Tooltips #}
-            setupTooltips();
-
-            {# Intercept hash that starts with #_ scrollto behavior #}
-            if (window.location.hash && window.location.hash.startsWith('#_')) {
-                setTimeout(function() {
-                    var selector = window.location.hash.replace('#', '#ladb');   {# Change to a valid element ID like #ladb_XXX #}
-                    var $target = $(selector);
-                    $target.ladbScrollTo(null, {
-                        onAfter: function() {
-                            $target.effect('highlight', {}, 1500);
-                        }
-                    });
-                }, 1000);
-            } else {
-                $('.ladb-message-row:last').ladbScrollTo(null, {
-                    smoothScroll: false
-                });
-            }
+            {# Setup Thread page #}
+            $('.ladb-thread').ladbThreadPage();
 
         });
     </script>
@@ -76,65 +61,14 @@
         <h2 class="ladb-subject">{{ thread.subject }}</h2>
         <div class="ladb-messages">
             {% for message in thread.messages %}
-                <div class="ladb-message-row{% if message.sender == app.user %} ladb-message-mine{% endif %}">
-                    <div id="ladb_message_{{ message.id }}" class="ladb-message">
-                        {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':message.sender, 'linkClasses':'pull-left' } %}
-                        <div class="ladb-box">
-                            <div class="ladb-heading">
-                                {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':message.sender } %}<span class="ladb-age">{{ message.createdAt|time_diff() }}</span>
-                                {% if message.sender != app.user %}
-                                    <div class="pull-right ladb-minitools">
-                                        {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':message.type, 'entityId':message.id } %}
-                                        &nbsp;
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div id="ladb_message_{{ message.id }}_body" class="ladb-body collapse in">
-                                {{ message.htmlBody|raw }}
-                                {% if message.pictures is not empty %}
-                                    <div class="row">
-                                        {% for picture in message.pictures %}
-                                            <div class="col-xs-3">
-                                                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% include 'LadbCoreBundle:Message:_row.html.twig' %}
             {% endfor %}
             {% if not thread.announcement %}
                 <div class="ladb-message-row ladb-message-mine">
-                    <div id="message_reply" class="ladb-message">
-                        {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'pull-left' } %}
-                        <div class="ladb-box">
-                            <div class="ladb-body">
-                                {{ form_start(form, { 'action':(path('core_message_thread_update', { 'id':thread.id })~'#message_reply'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
-                                    <div class="form-group">
-                                        {{ form_errors(form.body) }}
-                                        {{ form_widget(form.body, { 'attr': { 'rows':'3', 'class':'form-control ladb-autosize' } }) }}
-                                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
-                                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery-collapse.part.html.twig' %}
-                                        <script>
-                                            if (document.readyState == "complete") {
-                                                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
-                                                    mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
-                                                });
-                                            } else {
-                                                $(document).ready(function() {
-                                                    $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
-                                                        mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
-                                                    });
-                                                });
-                                            }
-                                        </script>
-                                    </div>
-                                    {{ form_rest(form) }}
-                                    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
-                                {{ form_end(form) }}
-                            </div>
+                    <div class="ladb-message">
+                        {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
+                        <div class="ladb-box ladb-fake-new">
+                            <button class="btn btn-default btn-block" data-ladb-new-path="{{ path('core_message_new', { 'threadId':thread.id }) }}" data-loading-text="{{ 'default.loading'|trans }}">Votre message...</button>
                         </div>
                     </div>
                 </div>

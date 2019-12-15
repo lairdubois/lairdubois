@@ -43,13 +43,17 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 	}
 
 	public function enqueueNotification($userId, $body, $icon, $link) {
-		$producer = $this->container->get('old_sound_rabbit_mq.webpush_notification_producer');
-		$producer->publish(serialize(array(
-			'userId' => $userId,
-			'body' => $body,
-			'icon' => $icon,
-			'link' => $link,
-		)));
+		try {
+			$producer = $this->container->get('old_sound_rabbit_mq.webpush_notification_producer');
+			$producer->publish(serialize(array(
+				'userId' => $userId,
+				'body'   => $body,
+				'icon'   => $icon,
+				'link'   => $link,
+			)));
+		} catch (\Exception $e) {
+
+		}
 	}
 
 	/////

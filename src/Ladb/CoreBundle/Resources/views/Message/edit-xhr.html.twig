@@ -1,0 +1,14 @@
+{# set message #}
+
+{% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
+
+<div class="ladb-edit">
+    <div class="ladb-body">
+        {% embed 'LadbCoreBundle:Message:_form.html.twig' with { 'action':path('core_message_update', { 'id':message.id }) } %}
+            {% block buttons %}
+                <a href="#" class="btn btn-default ladb-message-cancel-edit">{{ 'default.cancel'|trans() }}</a>
+                {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()), 'classes':'btn-primary' } %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+</div>

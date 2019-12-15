@@ -10,9 +10,6 @@
     <ul class="nav nav-tabs">
         <li{% if tab == 'inbox' %} class="active"{% endif %}><a href="{{ path('core_message_mailbox') }}"><i class="ladb-icon-inbox"></i> {{ 'message.mailbox'|trans() }}{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}</a></li>
         <li{% if tab == 'new_thread' %} class="active"{% endif %}><a href="{{ path('core_message_thread_new' )}}"><i class="ladb-icon-new-thread"></i> {{ 'message.thread.new'|trans() }}</a></li>
-        {% if is_granted("ROLE_ADMIN") %}
-            <li{% if tab == 'new_thread_announcement' %} class="active"{% endif %}><a href="{{ path('core_message_thread_new_announcement' )}}"><span class="text-danger"><i class="ladb-icon-warning"></i> {{ 'message.thread.announcement.new'|trans() }}</span></a></li>
-        {% endif %}
         {% if tab == 'show_thread' %}
             <li class="active"><a href="#">Conversation</a></li>
         {% endif %}

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Message;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
@@ -48,6 +49,8 @@ class Message implements TypableInterface, MultiPicturedInterface, BodiedInterfa
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)
+	 * @Assert\NotBlank()
+	 * @Assert\Length(min=2, max=10000)
 	 */
 	private $body;
 
@@ -60,6 +63,7 @@ class Message implements TypableInterface, MultiPicturedInterface, BodiedInterfa
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_message_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 * @Assert\Count(min=0, max=4)
 	 */
 	protected $pictures;
 

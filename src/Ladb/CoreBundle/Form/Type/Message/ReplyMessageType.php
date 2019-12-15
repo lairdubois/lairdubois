@@ -21,7 +21,6 @@ class ReplyMessageType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('body', TextareaType::class)
-			->add('body', TextareaType::class)
 			->add($builder
 				->create('pictures', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new PicturesToIdsTransformer($this->om)))
@@ -30,7 +29,7 @@ class ReplyMessageType extends AbstractType {
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Form\Model\ReplyMessage'
+			'data_class' => 'Ladb\CoreBundle\Entity\Message\Message'
 		));
 	}
 

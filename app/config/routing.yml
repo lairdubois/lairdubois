@@ -80,6 +80,10 @@ ladb_core_message:
     resource: "Ladb\\CoreBundle\\Controller\\Message\\MessageController"
     type:     annotation
 
+ladb_core_thread:
+    resource: "Ladb\\CoreBundle\\Controller\\Message\\ThreadController"
+    type:     annotation
+
 ladb_core_notification:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\NotificationController"
     type:     annotation
