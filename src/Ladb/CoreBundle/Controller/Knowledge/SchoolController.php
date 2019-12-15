@@ -342,7 +342,7 @@ class SchoolController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
-			'schools'       => $searchParameters['entities'],
+			'schools'         => $searchParameters['entities'],
 			'layout'          => $layout,
 			'routeParameters' => $routeParameters,
 		));

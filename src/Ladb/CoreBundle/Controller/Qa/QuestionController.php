@@ -519,7 +519,8 @@ class QuestionController extends Controller {
 			},
 			'fos_elastica.index.ladb.qa_question',
 			\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME,
-			'core_qa_question_list_page'
+			'core_qa_question_list_page',
+			$routeParameters
 		);
 
 		// Dispatch publication event
@@ -528,6 +529,8 @@ class QuestionController extends Controller {
 
 		$parameters = array_merge($searchParameters, array(
 			'questions' => $searchParameters['entities'],
+			'layout'    => $layout,
+			'routeParameters' => $routeParameters,
 		));
 
 		if ($request->isXmlHttpRequest()) {
