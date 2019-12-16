@@ -92,18 +92,24 @@ class MessageController extends Controller {
 			$thread->addMessage($message);
 
 			foreach ($participants as $participant) {
+
 				$messageMeta = new MessageMeta();
 				$messageMeta->setParticipant($participant);
-				$messageMeta->setIsRead(false);
+				$messageMeta->setIsRead($participant == $sender);
 				$message->addMeta($messageMeta);
 
-				$participant->getMeta()->incrementUnreadMessageCount();
-
 				if ($participant != $sender) {
+
+					// Increment unread message count
+					$participant->getMeta()->incrementUnreadMessageCount();
+
+					// Populate recipients list
 					$recipients[] = $participant;
+
 				}
 			}
 
+			// Reactivate deleted threads
 			foreach ($thread->getMetas() as $threadMeta) {
 				$threadMeta->setIsDeleted(false);
 			}
