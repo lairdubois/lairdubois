@@ -197,22 +197,6 @@
 
             // Prepare the editor
             if (this.$editor == null) {
-                // Create the panel
-                var editorHeader = $('<div/>', {
-                    'class': 'md-header'
-                })
-
-                // Build the main buttons
-                if (options.buttons.length > 0) {
-                    editorHeader = this.__buildButtons(options.buttons, editorHeader)
-                }
-
-                // Build the additional buttons
-                if (options.additionalButtons.length > 0) {
-                    editorHeader = this.__buildButtons(options.additionalButtons, editorHeader)
-                }
-
-                editor.append(editorHeader)
 
                 // Wrap the textarea
                 if (container.is('textarea')) {
@@ -245,6 +229,22 @@
                     // Set editor to blocked the original container
                     container.replaceWith(editor)
                 }
+
+                // Create the panel
+                var editorHeader = $('<div/>', {
+                    'class': 'md-header'
+                })
+
+                // Build the main buttons
+                if (options.buttons.length > 0) {
+                    editorHeader = this.__buildButtons(options.buttons, editorHeader)
+                }
+
+                // Build the additional buttons
+                if (options.additionalButtons.length > 0) {
+                    editorHeader = this.__buildButtons(options.additionalButtons, editorHeader)
+                }
+                editor.append(editorHeader)
 
                 // Create the footer if savable
                 if (options.savable) {
