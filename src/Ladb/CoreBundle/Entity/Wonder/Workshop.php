@@ -4,10 +4,10 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\BlockBodiedTrait;
-use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
+use Ladb\CoreBundle\Model\LocalisableTrait;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 
@@ -149,6 +149,16 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 
 	public function getArea() {
 		return $this->area;
+	}
+
+	// LinkedEntities /////
+
+	public function getLinkedEntities() {
+		return array_merge(
+			$this->plans->getValues(),
+			$this->howtos->getValues(),
+			$this->workflows->getValues()
+		);
 	}
 
 	// PlanCount /////

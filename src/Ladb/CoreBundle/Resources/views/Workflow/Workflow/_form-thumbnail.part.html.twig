@@ -1,12 +1,5 @@
+{% extends 'LadbCoreBundle:Common:_form-thumbnail.part.html.twig' %}
 
-{# set workflow #}
-
-<li id="workflow_{{ workflow.id }}" class="ladb-workflow ladb-form-thumbnail thumbnail">
-    <div class="uk-overlay">
-        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'empty_workflow.png', 'noSizer':true, 'noMicrodata':true } %}
-        <div class="uk-overlay-caption">{{ workflow.title }}<br><small>{{ 'default.by'|trans() }} {{ workflow.user.displayname }}</small></div>
-    </div>
-    <div style="text-align: center;margin-top: 5px;">
-        <a href="#" class="btn btn-xs btn-danger" onclick="$('#workflow_{{ workflow.id }}').remove();workflowRemoved();return false;">{{ 'default.remove'|trans() }}</a>
-    </div>
-</li>
+{% set entity = workflow %}
+{% set entityStrippedName = 'workflow' %}
+{% set emptyWebPath = 'empty_workflow.png' %}

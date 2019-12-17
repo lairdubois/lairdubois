@@ -1,12 +1,5 @@
+{% extends 'LadbCoreBundle:Common:_form-thumbnail.part.html.twig' %}
 
-{# set question #}
-
-<li id="question_{{ question.id }}" class="ladb-question ladb-form-thumbnail thumbnail">
-    <div class="uk-overlay">
-        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':question.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'empty_question.png', 'noSizer':true, 'noMicrodata':true } %}
-        <div class="uk-overlay-caption">{{ question.title }}</div>
-    </div>
-    <div style="text-align: center;margin-top: 5px;">
-        <a href="#" class="btn btn-xs btn-danger" onclick="$('#question_{{ question.id }}').remove();questionRemoved();return false;">{{ 'default.remove'|trans() }}</a>
-    </div>
-</li>
+{% set entity = question %}
+{% set entityStrippedName = 'question' %}
+{% set emptyWebPath = 'empty_question.png' %}

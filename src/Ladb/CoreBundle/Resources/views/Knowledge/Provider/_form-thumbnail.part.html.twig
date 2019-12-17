@@ -1,12 +1,8 @@
+{% extends 'LadbCoreBundle:Common:_form-thumbnail.part.html.twig' %}
 
-{# set provider #}
+{% set entity = provider %}
+{% set entityStrippedName = 'provider' %}
 
-<li id="provider_{{ provider.id }}" class="ladb-provider ladb-form-thumbnail thumbnail">
-    <div class="uk-overlay">
-        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':provider.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'avatar.png', 'noSizer':true, 'noMicrodata':true } %}
-        <div class="uk-overlay-caption">{{ provider.title }}{% if provider.store is not empty %}<br><small>({{ provider.store }})</small>{% endif %}</div>
-    </div>
-    <div style="text-align: center;margin-top: 5px;">
-        <a href="#" class="btn btn-xs btn-danger" onclick="$('#provider_{{ provider.id }}').remove();providerRemoved();return false;">{{ 'default.remove'|trans() }}</a>
-    </div>
-</li>
+{% block overlayCaptionInner %}
+    {{ parent() }}{% if provider.store is not empty %}<br><small>({{ provider.store }})</small>{% endif %}
+{% endblock %}

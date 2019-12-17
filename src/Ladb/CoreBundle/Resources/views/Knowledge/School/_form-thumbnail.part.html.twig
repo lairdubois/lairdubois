@@ -1,12 +1,4 @@
+{% extends 'LadbCoreBundle:Common:_form-thumbnail.part.html.twig' %}
 
-{# set school #}
-
-<li id="school_{{ school.id }}" class="ladb-school ladb-form-thumbnail thumbnail">
-    <div class="uk-overlay">
-        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':school.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'avatar.png', 'noSizer':true, 'noMicrodata':true } %}
-        <div class="uk-overlay-caption">{{ school.title }}</div>
-    </div>
-    <div style="text-align: center;margin-top: 5px;">
-        <a href="#" class="btn btn-xs btn-danger" onclick="$('#school_{{ school.id }}').remove();schoolRemoved();return false;">{{ 'default.remove'|trans() }}</a>
-    </div>
-</li>
+{% set entity = school %}
+{% set entityStrippedName = 'school' %}

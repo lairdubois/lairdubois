@@ -4,14 +4,12 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\Core\Resource;
 use Ladb\CoreBundle\Model\BodiedTrait;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\InspirableTrait;
-use Ladb\CoreBundle\Model\LikableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
-use Ladb\CoreBundle\Model\EmbeddableInterface;
 use Ladb\CoreBundle\Model\BodiedInterface;
 
 /**
@@ -284,6 +282,14 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 
 	public function getZipArchiveSize() {
 		return $this->zipArchiveSize;
+	}
+
+	// LinkedEntities /////
+
+	public function getLinkedEntities() {
+		return array_merge(
+			$this->inspirations->getValues(),
+		);
 	}
 
 	// CreationCount /////

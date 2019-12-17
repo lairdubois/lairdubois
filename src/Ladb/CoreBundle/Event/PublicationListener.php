@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Model\LinkedToInterface;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -17,7 +18,6 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
-use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\PublicationInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
@@ -222,18 +222,16 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($publication);
 
-			// Inspirations update
-			if ($publication instanceof InspirableInterface) {
-
-				foreach ($publication->getInspirations() as $inspiration) {
-					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+			// Linked entities update
+			if ($publication instanceof LinkedToInterface) {
+				foreach ($publication->getLinkedEntities() as $entity) {
+					if ($entity instanceof IndexableInterface && $entity->isIndexable()) {
 
 						// Search index update
-						$searchUtils->replaceEntityInIndex($inspiration);
+						$searchUtils->replaceEntityInIndex($entity);
 
 					}
 				}
-
 			}
 
 		}
@@ -263,18 +261,16 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->deleteEntityFromIndex($publication);
 
-			// Inspirations update
-			if ($publication instanceof InspirableInterface) {
-
-				foreach ($publication->getInspirations() as $inspiration) {
-					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+			// Linked entities update
+			if ($publication instanceof LinkedToInterface) {
+				foreach ($publication->getLinkedEntities() as $entity) {
+					if ($entity instanceof IndexableInterface && $entity->isIndexable()) {
 
 						// Search index update
-						$searchUtils->replaceEntityInIndex($inspiration);
+						$searchUtils->replaceEntityInIndex($entity);
 
 					}
 				}
-
 			}
 
 		}
@@ -312,18 +308,16 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($publication);
 
-			// Inspirations update
-			if ($publication instanceof InspirableInterface) {
-
-				foreach ($publication->getInspirations() as $inspiration) {
-					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+			// Linked entities update
+			if ($publication instanceof LinkedToInterface) {
+				foreach ($publication->getLinkedEntities() as $entity) {
+					if ($entity instanceof IndexableInterface && $entity->isIndexable()) {
 
 						// Search index update
-						$searchUtils->replaceEntityInIndex($inspiration);
+						$searchUtils->replaceEntityInIndex($entity);
 
 					}
 				}
-
 			}
 
 		}
@@ -369,18 +363,16 @@ class PublicationListener implements EventSubscriberInterface {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($publication);
 
-			// Inspirations update
-			if ($publication instanceof InspirableInterface) {
-
-				foreach ($publication->getInspirations() as $inspiration) {
-					if ($inspiration instanceof IndexableInterface && $inspiration->isIndexable()) {
+			// Linked entities update
+			if ($publication instanceof LinkedToInterface) {
+				foreach ($publication->getLinkedEntities() as $entity) {
+					if ($entity instanceof IndexableInterface && $entity->isIndexable()) {
 
 						// Search index update
-						$searchUtils->replaceEntityInIndex($inspiration);
+						$searchUtils->replaceEntityInIndex($entity);
 
 					}
 				}
-
 			}
 
 		}

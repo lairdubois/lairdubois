@@ -1,0 +1,13 @@
+
+{# set entity #}
+{# set entityStrippedName #}
+
+<li id="{{ entityStrippedName }}_{{ entity.id }}" class="ladb-{{ entityStrippedName }} ladb-form-thumbnail thumbnail">
+    <div class="uk-overlay">
+        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':128, 'height':128, 'noSizer':true, 'noMicrodata':true, 'noLazyLoad':true } %}
+        <div class="uk-overlay-caption">{% block overlayCaptionInner %}{{ entity.title }}{% if entity.user is defined %}<br><small>{{ 'default.by'|trans() }} {{ entity.user.displayname }}</small>{% endif %}{% endblock %}</div>
+    </div>
+    <div style="text-align: center;margin-top: 5px;">
+        <a href="#" class="btn btn-xs btn-danger" onclick="$('#{{ entityStrippedName }}_{{ entity.id }}').remove();{{ entityStrippedName }}Removed();return false;">{{ 'default.remove'|trans() }}</a>
+    </div>
+</li>

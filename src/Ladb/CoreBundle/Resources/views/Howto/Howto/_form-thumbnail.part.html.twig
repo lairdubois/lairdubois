@@ -1,12 +1,5 @@
+{% extends 'LadbCoreBundle:Common:_form-thumbnail.part.html.twig' %}
 
-{# set howto #}
-
-<li id="howto_{{ howto.id }}" class="ladb-howto ladb-form-thumbnail thumbnail">
-    <div class="uk-overlay">
-        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':howto.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'avatar.png', 'noSizer':true, 'noMicrodata':true } %}
-        <div class="uk-overlay-caption">{{ howto.title }}<br><small>{{ 'default.by'|trans() }} {{ howto.user.displayname }}</small></div>
-    </div>
-    <div style="text-align: center;margin-top: 5px;">
-        <a href="#" class="btn btn-xs btn-danger" onclick="$('#howto_{{ howto.id }}').remove();howtoRemoved();return false;">{{ 'default.remove'|trans() }}</a>
-    </div>
-</li>
+{% set entity = howto %}
+{% set entityStrippedName = 'howto' %}
+{% set emptyWebPath = 'empty_workflow.png' %}

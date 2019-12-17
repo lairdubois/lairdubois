@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
+use Ladb\CoreBundle\Model\LinkedToInterface;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
@@ -44,7 +45,7 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
  * @ORM\Table("tbl_howto")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Howto\HowtoRepository")
  */
-class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface {
+class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, LinkedToInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait, LicensedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, EmbeddableTrait;
@@ -122,6 +123,18 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $articles;
 
 	/**
+	 * @ORM\Column(type="integer", name="question_count")
+	 */
+	private $questionCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="howtos", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_howto_question")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $questions;
+
+	/**
 	 * @ORM\Column(type="integer", name="creation_count")
 	 */
 	private $creationCount = 0;
@@ -152,18 +165,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $plans;
-
-	/**
-	 * @ORM\Column(type="integer", name="question_count")
-	 */
-	private $questionCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="howtos", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_howto_question")
-	 * @Assert\Count(min=0, max=4)
-	 */
-	private $questions;
 
 	/**
 	 * @ORM\Column(type="integer", name="workflow_count")
@@ -274,10 +275,10 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	public function __construct() {
 		$this->articles = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workshops = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
@@ -381,6 +382,54 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 		$this->articles = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	// LinkedEntities /////
+
+	public function getLinkedEntities() {
+		return array_merge(
+			$this->questions->getValues(),
+			$this->plans->getValues(),
+			$this->workflows->getValues(),
+			$this->providers->getValues(),
+			$this->schools->getValues()
+		);
+	}
+
+	// QuestionCount /////
+
+	public function incrementQuestionCount($by = 1) {
+		return $this->questionCount += intval($by);
+	}
+
+	public function getQuestionCount() {
+		return $this->questionCount;
+	}
+
+	// Questions /////
+
+	public function addQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if (!$this->questions->contains($question)) {
+			$this->questions[] = $question;
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementHowtoCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if ($this->questions->removeElement($question)) {
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementHowtoCount(-1);
+			}
+		}
+	}
+
+	public function getQuestions() {
+		return $this->questions;
+	}
+
 	// CreationCount /////
 
 	public function incrementCreationCount($by = 1) {
@@ -457,42 +506,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getPlans() {
 		return $this->plans;
-	}
-
-	// QuestionCount /////
-
-	public function incrementQuestionCount($by = 1) {
-		return $this->questionCount += intval($by);
-	}
-
-	public function getQuestionCount() {
-		return $this->questionCount;
-	}
-
-	// Questions /////
-
-	public function addQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
-		if (!$this->questions->contains($question)) {
-			$this->questions[] = $question;
-			$this->questionCount = count($this->questions);
-			if (!$this->getIsDraft()) {
-				$question->incrementHowtoCount();
-			}
-		}
-		return $this;
-	}
-
-	public function removeQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
-		if ($this->questions->removeElement($question)) {
-			$this->questionCount = count($this->questions);
-			if (!$this->getIsDraft()) {
-				$question->incrementHowtoCount(-1);
-			}
-		}
-	}
-
-	public function getQuestions() {
-		return $this->questions;
 	}
 
 	// WorkflowCount /////

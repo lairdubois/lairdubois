@@ -1,13 +1,4 @@
+{% extends 'LadbCoreBundle:Common:_form-thumbnail.part.html.twig' %}
 
-{# set wonder #}
-{# set wonderType #}
-
-<li id="{{ wonderType }}_{{ wonder.id }}" class="ladb-{{ wonderType }} ladb-form-thumbnail">
-    <div class="uk-overlay">
-        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':wonder.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'avatar.png', 'noSizer':true, 'noMicrodata':true } %}
-        <div class="uk-overlay-caption">{{ wonder.title }}<br><small>{{ 'default.by'|trans() }} {{ wonder.user.displayname }}</small></div>
-    </div>
-    <div style="text-align: center;margin-top: 5px;">
-        <a href="#" class="btn btn-xs btn-danger" onclick="$('#{{ wonderType }}_{{ wonder.id }}').remove();{{ wonderType }}Removed();return false;">{{ 'default.remove'|trans() }}</a>
-    </div>
-</li>
+{% set entity = wonder %}
+{% set entityStrippedName = wonderType %}

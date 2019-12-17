@@ -4,11 +4,11 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\InspirableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 
 /**
@@ -262,6 +262,20 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getFinishes() {
 		return $this->finishes;
+	}
+
+	// LinkedEntities /////
+
+	public function getLinkedEntities() {
+		return array_merge(
+			$this->inspirations->getValues(),
+			$this->questions->getValues(),
+			$this->plans->getValues(),
+			$this->howtos->getValues(),
+			$this->workflows->getValues(),
+			$this->providers->getValues(),
+			$this->schools->getValues()
+		);
 	}
 
 	// QuestionCount /////

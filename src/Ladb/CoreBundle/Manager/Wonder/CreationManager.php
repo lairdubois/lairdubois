@@ -52,7 +52,7 @@ class CreationManager extends AbstractWonderManager {
 			$provider->incrementCreationCount(1);
 		}
 
-		// Scrool counter update
+		// School counter update
 		foreach ($creation->getSchools() as $school) {
 			$school->incrementCreationCount(1);
 		}
