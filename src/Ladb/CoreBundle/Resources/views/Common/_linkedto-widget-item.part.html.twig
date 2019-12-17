@@ -1,6 +1,6 @@
 <div class="col-md-3 col-xs-6 ladb-item">
     <a href="{{ path }}" class="thumbnail">
-        <img src="{{ (picture is not null ? picture.webPath : 'avatar.png')|imagine_filter('128x128o') }}">
+        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':picture, 'width':128, 'height':128, 'noSizer':true, 'noMicrodata':true, 'noLazyLoad':true } %}
         <div class="ladb-caption"><i class="{{ icon }}"></i> {{ caption }}</div>
     </a>
 </div>

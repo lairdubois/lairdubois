@@ -37,6 +37,11 @@
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
+    {% if creation.schoolCount > 0 %}
+        {% for entity in creation.schools %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
     {% if creation.reboundCount > 0 %}
         {% for entity in creation.rebounds %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
@@ -182,7 +187,7 @@
 {% endblock %}
 
 {% block contentLinkedTo %}
-    {% if creation.inspirationCount > 0 or creation.reboundCount > 0 or creation.planCount > 0 or creation.howtoCount > 0 or creation.workflowCount > 0 or creation.providerCount > 0 %}
+    {% if creation.inspirationCount > 0 or creation.questionCount > 0 or creation.planCount > 0 or creation.howtoCount > 0 or creation.workflowCount > 0 or creation.providerCount > 0 or creation.schoolCount > 0 or creation.reboundCount > 0 %}
         {% embed 'LadbCoreBundle:Common:_linkedto-widget.part.html.twig' %}
             {% block body %}
                 {% if creation.inspirationCount > 0 %}
@@ -198,7 +203,8 @@
                         'path':creation.questionCount == 1 ? path('core_qa_question_show', { 'id':creation.questions[0].sluggedId }) : path('core_creation_questions', { 'id':creation.id }),
                         'picture':creation.questions[0].mainPicture,
                         'icon':'ladb-icon-question',
-                        'caption': creation.questionCount~' '~('qa.question.choice.entities'|transchoice(creation.questionCount))
+                        'caption': creation.questionCount~' '~('qa.question.choice.entities'|transchoice(creation.questionCount)),
+                        'emptyWebPath': 'empty_question.png'
                     } %}
                 {% endif %}
                 {% if creation.planCount > 0 %}
@@ -222,7 +228,8 @@
                         'path':creation.workflowCount == 1 ? path('core_workflow_show', { 'id':creation.workflows[0].sluggedId }) : path('core_creation_workflows', { 'id':creation.id }),
                         'picture':creation.workflows[0].mainPicture,
                         'icon':'ladb-icon-workflow',
-                        'caption': creation.workflowCount~' '~('workflow.workflow.choice.entities'|transchoice(creation.workflowCount))
+                        'caption': creation.workflowCount~' '~('workflow.workflow.choice.entities'|transchoice(creation.workflowCount)),
+                        'emptyWebPath': 'empty_workflow.png'
                     } %}
                 {% endif %}
                 {% if creation.providerCount > 0 %}

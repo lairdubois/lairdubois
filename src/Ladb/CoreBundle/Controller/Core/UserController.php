@@ -281,7 +281,7 @@ class UserController extends Controller {
 			},
 			function(&$filters, &$sort) {
 
-				$sort = array( 'meta.followerCount' => array( 'order' => 'desc' ) );
+				$sort = array( 'meta.recievedLikeCount' => array( 'order' => 'desc' ) );
 
 			},
 			null,
