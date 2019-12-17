@@ -3,7 +3,7 @@
 
 <li id="school_{{ school.id }}" class="ladb-school ladb-form-thumbnail thumbnail">
     <div class="uk-overlay">
-        <img src="{{ (school.mainPicture is not null ? school.mainPicture.webPath : 'avatar.png')|imagine_filter('128x128o') }}" width="128" height="128">
+        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':school.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'avatar.png', 'noSizer':true, 'noMicrodata':true } %}
         <div class="uk-overlay-caption">{{ school.title }}</div>
     </div>
     <div style="text-align: center;margin-top: 5px;">

@@ -3,7 +3,7 @@
 
 <li id="workflow_{{ workflow.id }}" class="ladb-workflow ladb-form-thumbnail thumbnail">
     <div class="uk-overlay">
-        <img src="{{ (workflow.mainPicture is not null ? workflow.mainPicture.webPath : 'empty_workflow.png')|imagine_filter('128x128o') }}" width="128" height="128">
+        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'empty_workflow.png', 'noSizer':true, 'noMicrodata':true } %}
         <div class="uk-overlay-caption">{{ workflow.title }}<br><small>{{ 'default.by'|trans() }} {{ workflow.user.displayname }}</small></div>
     </div>
     <div style="text-align: center;margin-top: 5px;">

@@ -528,8 +528,8 @@ class QuestionController extends Controller {
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		$parameters = array_merge($searchParameters, array(
-			'questions' => $searchParameters['entities'],
-			'layout'    => $layout,
+			'questions'       => $searchParameters['entities'],
+			'layout'          => $layout,
 			'routeParameters' => $routeParameters,
 		));
 

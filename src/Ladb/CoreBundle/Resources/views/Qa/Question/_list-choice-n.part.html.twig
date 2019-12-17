@@ -7,8 +7,8 @@
     {% for question in questions %}
         <div class="ladb-choice-row">
             <div class="ladb-thumbnail">
-                <a href="{{ path('core_qa_question_show', { 'id':question.sluggedId }) }}" class="thumbnail">
-                    <img src="{{ (question.mainPicture is not null ? question.mainPicture.webPath : 'avatar.png')|imagine_filter('80x60o') }}">
+                <a href="{{ path('core_qa_question_show', { 'id':question.sluggedId }) }}" class="thumbnail" target="_blank">
+                    <img src="{{ (question.mainPicture is not null ? question.mainPicture.webPath : 'empty_question.png')|imagine_filter('80x60o') }}">
                 </a>
             </div>
             <div class="ladb-tools">

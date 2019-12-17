@@ -3,7 +3,7 @@
 
 <li id="question_{{ question.id }}" class="ladb-question ladb-form-thumbnail thumbnail">
     <div class="uk-overlay">
-        <img src="{{ (question.mainPicture is not null ? question.mainPicture.webPath : 'avatar.png')|imagine_filter('128x128o') }}" width="128" height="128">
+        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':question.mainPicture, 'width':128, 'height':128, 'emptyWebPath':'empty_question.png', 'noSizer':true, 'noMicrodata':true } %}
         <div class="uk-overlay-caption">{{ question.title }}</div>
     </div>
     <div style="text-align: center;margin-top: 5px;">
