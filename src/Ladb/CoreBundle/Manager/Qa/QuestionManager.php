@@ -25,6 +25,11 @@ class QuestionManager extends AbstractPublicationManager {
 			$creation->incrementQuestionCount(1);
 		}
 
+		// Plans counter update
+		foreach ($question->getPlans() as $plan) {
+			$plan->incrementQuestionCount(1);
+		}
+
 		// Howto counter update
 		foreach ($question->getHowtos() as $howto) {
 			$howto->incrementQuestionCount(1);
@@ -56,6 +61,11 @@ class QuestionManager extends AbstractPublicationManager {
 		// Creations counter update
 		foreach ($question->getCreations() as $creation) {
 			$creation->incrementQuestionCount(-1);
+		}
+
+		// Plans counter update
+		foreach ($question->getPlans() as $plan) {
+			$plan->incrementQuestionCount(-1);
 		}
 
 		// Howto counter update
@@ -93,6 +103,11 @@ class QuestionManager extends AbstractPublicationManager {
 		// Unlink creations
 		foreach ($question->getCreations() as $creation) {
 			$creation->removeQuestion($question);
+		}
+
+		// Unlink plans
+		foreach ($question->getPlans() as $plan) {
+			$plan->removeQuestion($question);
 		}
 
 		// Unlink howtos

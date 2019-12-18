@@ -274,6 +274,16 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 	private $creations;
 
 	/**
+	 * @ORM\Column(type="integer", name="plan_count")
+	 */
+	private $planCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", mappedBy="schools")
+	 */
+	private $plans;
+
+	/**
 	 * @ORM\Column(type="integer", name="howto_count")
 	 */
 	private $howtoCount = 0;
@@ -300,6 +310,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		$this->trainingTypesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->testimonials = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -853,6 +864,27 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	public function getCreations() {
 		return $this->creations;
+	}
+
+	// PlanCount /////
+
+	public function incrementPlanCount($by = 1) {
+		return $this->planCount += intval($by);
+	}
+
+	public function getPlanCount() {
+		return $this->planCount;
+	}
+
+	public function setPlanCount($planCount) {
+		$this->planCount = $planCount;
+		return $this;
+	}
+
+	// Plans /////
+
+	public function getPlans() {
+		return $this->plans;
 	}
 
 	// HowtoCount /////

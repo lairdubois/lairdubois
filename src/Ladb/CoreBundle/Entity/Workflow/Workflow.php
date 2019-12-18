@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\LinkedToInterface;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\CommentableInterface;
@@ -40,7 +41,7 @@ use Ladb\CoreBundle\Model\LicensedTrait;
  * @ORM\Table("tbl_workflow")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Workflow\WorkflowRepository")
  */
-class Workflow extends AbstractAuthoredPublication implements IndexableInterface, SitemapableInterface, TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface, InspirableInterface, CollectionnableInterface {
+class Workflow extends AbstractAuthoredPublication implements IndexableInterface, SitemapableInterface, TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, WatchableInterface, LicensedInterface, InspirableInterface, CollectionnableInterface, LinkedToInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait, LicensedTrait;
 	use IndexableTrait, SitemapableTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, InspirableTrait, CollectionnableTrait;
@@ -122,77 +123,6 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	protected $labels;
 
 	/**
-	 * @ORM\Column(type="integer", name="creation_count")
-	 */
-	private $creationCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="workflows")
-	 */
-	private $creations;
-
-	/**
-	 * @ORM\Column(type="integer", name="plan_count")
-	 */
-	private $planCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="workflows", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_workflow_plan")
-	 * @Assert\Count(min=0, max=4)
-	 */
-	private $plans;
-
-	/**
-	 * @ORM\Column(type="integer", name="workshop_count")
-	 */
-	private $workshopCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Workshop", mappedBy="workflows")
-	 */
-	private $workshops;
-
-	/**
-	 * @ORM\Column(type="integer", name="howto_count")
-	 */
-	private $howtoCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="workflows")
-	 */
-	private $howtos;
-
-	/**
-	 * @ORM\Column(type="integer", name="copy_count")
-	 */
-	private $copyCount = 0;
-
-	/**
-	 * @ORM\Column(type="integer", name="rebound_count")
-	 */
-	private $reboundCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", mappedBy="inspirations")
-	 */
-	private $rebounds;
-
-	/**
-	 * @ORM\Column(type="integer", name="inspiration_count")
-	 */
-	private $inspirationCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="rebounds", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_workflow_inspiration",
-	 *      	joinColumns={ @ORM\JoinColumn(name="workflow_id", referencedColumnName="id") },
-	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_workflow_id", referencedColumnName="id") }
-	 *      )
-	 */
-	private $inspirations;
-
-	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_workflow_tag")
 	 * @Assert\Count(min=2, groups={"public"})
@@ -236,15 +166,86 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	 */
 	private $viewCount = 0;
 
+	/**
+	 * @ORM\Column(type="integer", name="copy_count")
+	 */
+	private $copyCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="rebound_count")
+	 */
+	private $reboundCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", mappedBy="inspirations")
+	 */
+	private $rebounds;
+
+	/**
+	 * @ORM\Column(type="integer", name="inspiration_count")
+	 */
+	private $inspirationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Workflow\Workflow", inversedBy="rebounds", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_workflow_inspiration",
+	 *      	joinColumns={ @ORM\JoinColumn(name="workflow_id", referencedColumnName="id") },
+	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_workflow_id", referencedColumnName="id") }
+	 *      )
+	 */
+	private $inspirations;
+
+	/**
+	 * @ORM\Column(type="integer", name="creation_count")
+	 */
+	private $creationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="workflows")
+	 */
+	private $creations;
+
+	/**
+	 * @ORM\Column(type="integer", name="plan_count")
+	 */
+	private $planCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="workflows", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_workflow_plan")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $plans;
+
+	/**
+	 * @ORM\Column(type="integer", name="workshop_count")
+	 */
+	private $workshopCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Workshop", mappedBy="workflows")
+	 */
+	private $workshops;
+
+	/**
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="workflows")
+	 */
+	private $howtos;
+
 	/////
 
 	public function __construct() {
 		$this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->parts = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// NotificationStrategy /////
@@ -391,6 +392,24 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 		$this->labels = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	// CopyCount /////
+
+	public function incrementCopyCount($by = 1) {
+		return $this->copyCount += intval($by);
+	}
+
+	public function getCopyCount() {
+		return $this->copyCount;
+	}
+
+	// LinkedEntities /////
+
+	public function getLinkedEntities() {
+		return array_merge(
+			$this->inspirations->getValues()
+		);
+	}
+
 	// CreationCount /////
 
 	public function incrementCreationCount($by = 1) {
@@ -473,16 +492,6 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 
 	public function getHowtos() {
 		return $this->howtos;
-	}
-
-	// CopyCount /////
-
-	public function incrementCopyCount($by = 1) {
-		return $this->copyCount += intval($by);
-	}
-
-	public function getCopyCount() {
-		return $this->copyCount;
 	}
 
 }

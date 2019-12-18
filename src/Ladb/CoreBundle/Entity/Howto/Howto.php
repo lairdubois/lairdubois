@@ -123,6 +123,74 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $articles;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_howto_tag")
+	 * @Assert\Count(min=2)
+	 */
+	private $tags;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
+	 * @ORM\JoinColumn(nullable=true, name="license_id")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
+	 */
+	private $license;
+
+	/**
+	 * @ORM\Column(type="integer", name="like_count")
+	 */
+	private $likeCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="watch_count")
+	 */
+	private $watchCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="comment_count")
+	 */
+	private $commentCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="private_collection_count")
+	 */
+	private $privateCollectionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="public_collection_count")
+	 */
+	private $publicCollectionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="view_count")
+	 */
+	private $viewCount = 0;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Spotlight", cascade={"remove"})
+	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
+	 */
+	private $spotlight = null;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
+	 */
+	private $sticker;
+
+	/**
+	 * @ORM\Column(type="integer", name="referral_count")
+	 */
+	private $referralCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_howto_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"accessCount" = "DESC"})
+	 */
+	protected $referrals;
+
+	/**
 	 * @ORM\Column(type="integer", name="question_count")
 	 */
 	private $questionCount = 0;
@@ -202,79 +270,12 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 */
 	private $schools;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_howto_tag")
-	 * @Assert\Count(min=2)
-	 */
-	private $tags;
-
-	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\License", cascade={"persist", "remove"})
-	 * @ORM\JoinColumn(nullable=true, name="license_id")
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\License")
-	 */
-	private $license;
-
-	/**
-	 * @ORM\Column(type="integer", name="like_count")
-	 */
-	private $likeCount = 0;
-
-	/**
-	 * @ORM\Column(type="integer", name="watch_count")
-	 */
-	private $watchCount = 0;
-
-	/**
-	 * @ORM\Column(type="integer", name="comment_count")
-	 */
-	private $commentCount = 0;
-
-	/**
-	 * @ORM\Column(type="integer", name="private_collection_count")
-	 */
-	private $privateCollectionCount = 0;
-
-	/**
-	 * @ORM\Column(type="integer", name="public_collection_count")
-	 */
-	private $publicCollectionCount = 0;
-
-	/**
-	 * @ORM\Column(type="integer", name="view_count")
-	 */
-	private $viewCount = 0;
-
-	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Spotlight", cascade={"remove"})
-	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
-	 */
-	private $spotlight = null;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
-	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
-	 */
-	private $sticker;
-
-	/**
-	 * @ORM\Column(type="integer", name="referral_count")
-	 */
-	private $referralCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_howto_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 * @ORM\OrderBy({"accessCount" = "DESC"})
-	 */
-	protected $referrals;
-
 	/////
 
 	public function __construct() {
 		$this->articles = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->referrals = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workshops = new \Doctrine\Common\Collections\ArrayCollection();
@@ -282,7 +283,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->referrals = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
     /////
@@ -380,6 +380,17 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function resetArticles() {
 		$this->articles = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	// Spotlight /////
+
+	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
+		$this->spotlight = $spotlight;
+		return $this;
+	}
+
+	public function getSpotlight() {
+		return $this->spotlight;
 	}
 
 	// LinkedEntities /////
@@ -614,17 +625,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getSchools() {
 		return $this->schools;
-	}
-
-	// Spotlight /////
-
-	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
-		$this->spotlight = $spotlight;
-		return $this;
-	}
-
-	public function getSpotlight() {
-		return $this->spotlight;
 	}
 
 }

@@ -5,6 +5,8 @@ namespace Ladb\CoreBundle\Repository\Wonder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Knowledge\School;
+use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
@@ -299,6 +301,26 @@ class PlanRepository extends AbstractEntityRepository {
 		return new Paginator($queryBuilder->getQuery());
 	}
 
+	public function findPaginedByQuestion(Question $question, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'u', 'mp', 'q' ))
+			->from($this->getEntityName(), 'p')
+			->innerJoin('p.user', 'u')
+			->innerJoin('p.mainPicture', 'mp')
+			->innerJoin('p.questions', 'q')
+			->where('p.isDraft = false')
+			->andWhere('q = :question')
+			->setParameter('question', $question)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 	public function findPaginedByCreation(Creation $creation, $offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -370,6 +392,26 @@ class PlanRepository extends AbstractEntityRepository {
 			->where('p.isDraft = false')
 			->andWhere('h = :howto')
 			->setParameter('howto', $howto)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedBySchool(School $school, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'p', 'u', 'mp', 's' ))
+			->from($this->getEntityName(), 'p')
+			->innerJoin('p.user', 'u')
+			->innerJoin('p.mainPicture', 'mp')
+			->innerJoin('p.schools', 's')
+			->where('p.isDraft = false')
+			->andWhere('s = :school')
+			->setParameter('school', $school)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

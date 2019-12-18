@@ -25,6 +25,9 @@
     {% if school.creationCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_school_creations', { 'id':school.id }) }}" data-tooltip="tooltip" title="{{ 'knowledge.school.linked_to'|trans() }} {{ school.creationCount }} {{ 'wonder.creation.choice.entities'|transchoice(school.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
     {% endif %}
+    {% if school.planCount > 0 %}
+        <li class="ladb-linkto"><a href="{{ path('core_school_plans', { 'id':school.id }) }}" data-tooltip="tooltip" title="{{ 'knowledge.school.linked_to'|trans() }} {{ school.planCount }} {{ 'wonder.plan.choice.entities'|transchoice(school.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+    {% endif %}
     {% if school.howtoCount > 0 %}
         <li class="ladb-linkto"><a href="{{ path('core_school_howtos', { 'id':school.id }) }}" data-tooltip="tooltip" title="{{ 'knowledge.school.linked_to'|trans() }} {{ school.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(school.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
     {% endif %}

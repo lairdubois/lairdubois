@@ -15,6 +15,11 @@ class PlanManager extends AbstractWonderManager {
 		$plan->getUser()->getMeta()->incrementPrivatePlanCount(-1);
 		$plan->getUser()->getMeta()->incrementPublicPlanCount();
 
+		// Questions counter update
+		foreach ($plan->getQuestions() as $question) {
+			$question->incrementPlanCount(1);
+		}
+
 		// Creations counter update
 		foreach ($plan->getCreations() as $creation) {
 			$creation->incrementPlanCount(1);
@@ -30,6 +35,11 @@ class PlanManager extends AbstractWonderManager {
 			$howto->incrementPlanCount(1);
 		}
 
+		// School counter update
+		foreach ($plan->getSchools() as $school) {
+			$school->incrementPlanCount(1);
+		}
+
 		// Inspirations counter update
 		foreach ($plan->getInspirations() as $inspiration) {
 			$inspiration->incrementReboundCount(1);
@@ -42,6 +52,11 @@ class PlanManager extends AbstractWonderManager {
 
 		$plan->getUser()->getMeta()->incrementPrivatePlanCount(1);
 		$plan->getUser()->getMeta()->incrementPublicPlanCount(-1);
+
+		// Questions counter update
+		foreach ($plan->getQuestions() as $question) {
+			$question->incrementPlanCount(-1);
+		}
 
 		// Creations counter update
 		foreach ($plan->getCreations() as $creation) {
@@ -56,6 +71,11 @@ class PlanManager extends AbstractWonderManager {
 		// Howtos counter update
 		foreach ($plan->getHowtos() as $howto) {
 			$howto->incrementPlanCount(-1);
+		}
+
+		// School counter update
+		foreach ($plan->getSchools() as $school) {
+			$school->incrementPlanCount(-1);
 		}
 
 		// Inspirations counter update

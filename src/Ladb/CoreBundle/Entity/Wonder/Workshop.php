@@ -75,6 +75,20 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	private $bodyBlockVideoCount = 0;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_workshop_tag")
+	 * @Assert\Count(min=2)
+	 */
+	protected $tags;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_workshop_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"accessCount" = "DESC"})
+	 */
+	protected $referrals;
+
+	/**
 	 * @ORM\Column(type="integer", name="plan_count")
 	 */
 	private $planCount = 0;
@@ -109,20 +123,6 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	 * @Assert\Count(min=0, max=4)
 	 */
 	private $workflows;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_workshop_tag")
-	 * @Assert\Count(min=2)
-	 */
-	protected $tags;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_workshop_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 * @ORM\OrderBy({"accessCount" = "DESC"})
-	 */
-	protected $referrals;
 
 	/////
 

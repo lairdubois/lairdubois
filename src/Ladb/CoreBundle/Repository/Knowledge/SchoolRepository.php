@@ -10,6 +10,7 @@ use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Repository\Knowledge\Value\BaseValueRepository;
 
 class SchoolRepository extends AbstractKnowledgeRepository {
@@ -137,6 +138,24 @@ class SchoolRepository extends AbstractKnowledgeRepository {
 			->innerJoin('s.creations', 'c')
 			->where('c = :creation')
 			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByPlan(Plan $plan, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'mp', 'p' ))
+			->from($this->getEntityName(), 's')
+			->leftJoin('s.mainPicture', 'mp')
+			->innerJoin('s.plans', 'p')
+			->where('p = :plan')
+			->setParameter('plan', $plan)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;

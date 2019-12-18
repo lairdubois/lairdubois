@@ -137,26 +137,6 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	private $answers;
 
 	/**
-	 * @ORM\Column(type="integer", name="creation_count")
-	 */
-	private $creationCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="questions")
-	 */
-	private $creations;
-
-	/**
-	 * @ORM\Column(type="integer", name="howto_count")
-	 */
-	private $howtoCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="questions")
-	 */
-	private $howtos;
-
-	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_qa_question_tag")
 	 * @Assert\Count(min=2)
@@ -208,14 +188,45 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	 */
 	private $viewCount = 0;
 
+	/**
+	 * @ORM\Column(type="integer", name="creation_count")
+	 */
+	private $creationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="questions")
+	 */
+	private $creations;
+
+	/**
+	 * @ORM\Column(type="integer", name="plan_count")
+	 */
+	private $planCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", mappedBy="questions")
+	 */
+	private $plans;
+
+	/**
+	 * @ORM\Column(type="integer", name="howto_count")
+	 */
+	private $howtoCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", mappedBy="questions")
+	 */
+	private $howtos;
+
 	/////
 
 	public function __construct() {
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->answers = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// NotificationStrategy /////
@@ -346,6 +357,27 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 
 	public function getCreations() {
 		return $this->creations;
+	}
+
+	// PlanCount /////
+
+	public function incrementPlanCount($by = 1) {
+		return $this->planCount += intval($by);
+	}
+
+	public function getPlanCount() {
+		return $this->planCount;
+	}
+
+	public function setPlanCount($planCount) {
+		$this->planCount = $planCount;
+		return $this;
+	}
+
+	// Plans /////
+
+	public function getPlans() {
+		return $this->plans;
 	}
 
 	// HowtoCount /////

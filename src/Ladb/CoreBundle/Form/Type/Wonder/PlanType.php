@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Form\Type\Wonder;
 
+use Ladb\CoreBundle\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
+use Ladb\CoreBundle\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -44,6 +46,14 @@ class PlanType extends AbstractType {
 			->add($builder
 				->create('inspirations', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new PlansToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('questions', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new QuestionsToIdsTransformer($this->om))
+			)
+			->add($builder
+				->create('schools', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new SchoolsToIdsTransformer($this->om))
 			)
 			->add('license', LicenseType::class)
 		;

@@ -2,17 +2,17 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
-use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Entity\Knowledge\School;
-use Ladb\CoreBundle\Entity\Wonder\Creation;
-use Ladb\CoreBundle\Utils\CollectionnableUtils;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Entity\Wonder\Plan;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Form\Type\Qa\QuestionType;
 use Ladb\CoreBundle\Utils\TagUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
@@ -443,6 +443,13 @@ class QuestionController extends Controller {
 
 						break;
 
+					case 'content-plans':
+
+						$filter = new \Elastica\Query\Range('planCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'content-howtos':
 
 						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
@@ -592,6 +599,47 @@ class QuestionController extends Controller {
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Wonder/Creation:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'question' => $question,
+		));
+	}
+
+	/**
+	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_qa_question_plans")
+	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_qa_question_plans_filter")
+	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_qa_question_plans_filter_page")
+	 * @Template("LadbCoreBundle:Qa/Question:plans.html.twig")
+	 */
+	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		// Plans
+
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $planRepository->findPaginedByQuestion($question, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_qa_question_plans_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'plans'       => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Wonder/Plan:list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(

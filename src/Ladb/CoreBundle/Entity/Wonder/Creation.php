@@ -74,6 +74,51 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	private $finishes;
 
 	/**
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Spotlight", cascade={"remove"})
+	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
+	 */
+	private $spotlight = null;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_tag")
+	 * @Assert\Count(min=2)
+	 */
+	protected $tags;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"accessCount" = "DESC"})
+	 */
+	protected $referrals;
+
+	/**
+	 * @ORM\Column(type="integer", name="rebound_count")
+	 */
+	private $reboundCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="inspirations")
+	 */
+	private $rebounds;
+
+	/**
+	 * @ORM\Column(type="integer", name="inspiration_count")
+	 */
+	private $inspirationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", inversedBy="rebounds", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_inspiration",
+	 *      	joinColumns={ @ORM\JoinColumn(name="creation_id", referencedColumnName="id") },
+	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_creation_id", referencedColumnName="id") }
+	 *      )
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $inspirations;
+
+	/**
 	 * @ORM\Column(type="integer", name="question_count")
 	 */
 	private $questionCount = 0;
@@ -141,54 +186,9 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="creations", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_school")
-	 * @Assert\Count(min=0, max=10)
-	 */
-	private $schools;
-
-	/**
-     * @ORM\Column(type="integer", name="rebound_count")
-     */
-    private $reboundCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", mappedBy="inspirations")
-	 */
-	private $rebounds;
-
-	/**
-	 * @ORM\Column(type="integer", name="inspiration_count")
-	 */
-	private $inspirationCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Creation", inversedBy="rebounds", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_creation_inspiration",
-	 *      	joinColumns={ @ORM\JoinColumn(name="creation_id", referencedColumnName="id") },
-	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_creation_id", referencedColumnName="id") }
-	 *      )
 	 * @Assert\Count(min=0, max=4)
 	 */
-	private $inspirations;
-
-	/**
-	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Spotlight", cascade={"remove"})
-	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
-	 */
-	private $spotlight = null;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_creation_tag")
-	 * @Assert\Count(min=2)
-	 */
-	protected $tags;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_creation_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 * @ORM\OrderBy({"accessCount" = "DESC"})
-	 */
-	protected $referrals;
+	private $schools;
 
 	/////
 
@@ -198,13 +198,13 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 		$this->woods = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->finishes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tools = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->providers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// Type /////
@@ -262,6 +262,17 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getFinishes() {
 		return $this->finishes;
+	}
+
+	// Spotlight /////
+
+	public function getSpotlight() {
+		return $this->spotlight;
+	}
+
+	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
+		$this->spotlight = $spotlight;
+		return $this;
 	}
 
 	// LinkedEntities /////
@@ -492,17 +503,6 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getSchools() {
 		return $this->schools;
-	}
-
-	// Spotlight /////
-
-	public function getSpotlight() {
-		return $this->spotlight;
-	}
-
-	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
-		$this->spotlight = $spotlight;
-		return $this;
 	}
 
 }

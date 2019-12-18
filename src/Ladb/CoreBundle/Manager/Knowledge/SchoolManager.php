@@ -16,6 +16,11 @@ class SchoolManager extends AbstractKnowledgeManager {
 			$creation->removeSchool($school);
 		}
 
+		// Unlink plans
+		foreach ($school->getPlans() as $plan) {
+			$plan->removeSchool($school);
+		}
+
 		// Unlink howtos
 		foreach ($school->getHowtos() as $howto) {
 			$howto->removeSchool($school);

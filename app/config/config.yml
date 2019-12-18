@@ -483,10 +483,12 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         downloadCount: { type: integer }
+                        questionCount: { type: integer }
                         creationCount: { type: integer }
+                        workshopCount: { type: integer }
                         howtoCount: { type: integer }
                         workflowCount: { type: integer }
-                        workshopCount: { type: integer }
+                        schoolCount: { type: integer }
                         inspirationCount: { type: integer }
                         reboundCount: { type: integer }
                         kinds:
@@ -531,6 +533,7 @@ fos_elastica:
                         undeterminedAnswerCount: { type: integer }
                         negativeAnswerCount: { type: integer }
                         creationCount: { type: integer }
+                        planCount: { type: integer }
                         howtoCount: { type: integer }
                         user:
                             type: "object"
@@ -844,6 +847,7 @@ fos_elastica:
                         commentCount: { type: integer }
                         testimonialCount: { type: integer }
                         creationCount: { type: integer }
+                        planCount: { type: integer }
                         howtoCount: { type: integer }
                     persistence:
                         driver: orm

@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Entity\Core\Resource;
+use Ladb\CoreBundle\Entity\Knowledge\School;
+use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ResourceUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -385,6 +387,47 @@ class PlanController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/questions", requirements={"id" = "\d+"}, name="core_plan_questions")
+	 * @Route("/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_questions_filter")
+	 * @Route("/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_questions_filter_page")
+	 * @Template("LadbCoreBundle:Wonder/Plan:questions.html.twig")
+	 */
+	public function questionsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+
+		$plan = $planRepository->findOneById($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
+
+		// Questions
+
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $questionRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_questions_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'questions'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Qa/Question:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'plan' => $plan,
+		));
+	}
+
+	/**
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_plan_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_howtos_filter_page")
@@ -547,6 +590,47 @@ class PlanController extends Controller {
 			'plan' => $plan,
 		));
     }
+
+	/**
+	 * @Route("/{id}/ecoles", requirements={"id" = "\d+"}, name="core_plan_schools")
+	 * @Route("/{id}/ecoles/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_schools_filter")
+	 * @Route("/{id}/ecoles/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_schools_filter_page")
+	 * @Template("LadbCoreBundle:Wonder/Plan:schools.html.twig")
+	 */
+	public function schoolsAction(Request $request, $id, $filter = "recent", $page = 0) {
+		$om = $this->getDoctrine()->getManager();
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+
+		$plan = $planRepository->findOneById($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
+
+		// Schools
+
+		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $schoolRepository->findPaginedByPlan($plan, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_schools_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'schools'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Knowledge/School:list-xhr.html.twig', $parameters);
+		}
+
+		return array_merge($parameters, array(
+			'plan' => $plan,
+		));
+	}
 
 	/**
 	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_plan_inspirations")
@@ -811,16 +895,16 @@ class PlanController extends Controller {
 
 						break;
 
-					case 'content-creations':
+					case 'content-questions':
 
-						$filter = new \Elastica\Query\Range('creationCount', array( 'gt' => 0 ));
+						$filter = new \Elastica\Query\Range('questionCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
 
-					case 'content-workflows':
+					case 'content-creations':
 
-						$filter = new \Elastica\Query\Range('workflowCount', array( 'gt' => 0 ));
+						$filter = new \Elastica\Query\Range('creationCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;
@@ -835,6 +919,20 @@ class PlanController extends Controller {
 					case 'content-howtos':
 
 						$filter = new \Elastica\Query\Range('howtoCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-workflows':
+
+						$filter = new \Elastica\Query\Range('workflowCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'content-schools':
+
+						$filter = new \Elastica\Query\Range('schoolCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
 
 						break;

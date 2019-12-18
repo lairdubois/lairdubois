@@ -69,6 +69,10 @@ class CreationType extends AbstractType {
 				->addModelTransformer(new TagsToLabelsTransformer($this->om))
 			)
 			->add($builder
+				->create('inspirations', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new CreationsToIdsTransformer($this->om))
+			)
+			->add($builder
 				->create('questions', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new QuestionsToIdsTransformer($this->om))
 			)
@@ -91,10 +95,6 @@ class CreationType extends AbstractType {
 			->add($builder
 				->create('schools', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new SchoolsToIdsTransformer($this->om))
-			)
-			->add($builder
-				->create('inspirations', HiddenType::class, array( 'required' => false ))
-				->addModelTransformer(new CreationsToIdsTransformer($this->om))
 			)
 			->add('license', LicenseType::class)
 		;

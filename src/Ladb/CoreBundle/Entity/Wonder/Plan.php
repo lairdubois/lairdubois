@@ -87,6 +87,62 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	private $zipArchiveSize = 0;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_plan_tag")
+	 * @Assert\Count(min=2)
+	 */
+	protected $tags;
+
+	/**
+	 * @ORM\Column(type="integer", name="download_count")
+	 */
+	private $downloadCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_wonder_plan_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
+	 * @ORM\OrderBy({"accessCount" = "DESC"})
+	 */
+	protected $referrals;
+
+	/**
+	 * @ORM\Column(type="integer", name="rebound_count")
+	 */
+	private $reboundCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", mappedBy="inspirations")
+	 */
+	private $rebounds;
+
+	/**
+	 * @ORM\Column(type="integer", name="inspiration_count")
+	 */
+	private $inspirationCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="rebounds", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_plan_inspiration",
+	 *      	joinColumns={ @ORM\JoinColumn(name="plan_id", referencedColumnName="id") },
+	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_plan_id", referencedColumnName="id") }
+	 *      )
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $inspirations;
+
+	/**
+	 * @ORM\Column(type="integer", name="question_count")
+	 */
+	private $questionCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Qa\Question", inversedBy="plans", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_plan_question")
+	 * @Assert\Count(min=0, max=4)
+	 */
+	private $questions;
+
+	/**
 	 * @ORM\Column(type="integer", name="creation_count")
 	 */
 	private $creationCount = 0;
@@ -127,59 +183,29 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 	private $workflows;
 
 	/**
-	 * @ORM\Column(type="integer", name="rebound_count")
+	 * @ORM\Column(type="integer", name="school_count")
 	 */
-	private $reboundCount = 0;
+	private $schoolCount = 0;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", mappedBy="inspirations")
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\School", inversedBy="plans", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_plan_school")
+	 * @Assert\Count(min=0, max=10)
 	 */
-	private $rebounds;
-
-	/**
-	 * @ORM\Column(type="integer", name="inspiration_count")
-	 */
-	private $inspirationCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Wonder\Plan", inversedBy="rebounds", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_plan_inspiration",
-	 *      	joinColumns={ @ORM\JoinColumn(name="plan_id", referencedColumnName="id") },
-	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="rebound_plan_id", referencedColumnName="id") }
-	 *      )
-	 * @Assert\Count(min=0, max=4)
-	 */
-	private $inspirations;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_wonder_plan_tag")
-	 * @Assert\Count(min=2)
-	 */
-	protected $tags;
-
-	/**
-	 * @ORM\Column(type="integer", name="download_count")
-	 */
-	private $downloadCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Referer\Referral", cascade={"persist", "remove"})
-	 * @ORM\JoinTable(name="tbl_wonder_plan_referral", inverseJoinColumns={@ORM\JoinColumn(name="referral_id", referencedColumnName="id", unique=true)})
-	 * @ORM\OrderBy({"accessCount" = "DESC"})
-	 */
-	protected $referrals;
+	private $schools;
 
 	/////
 
 	public function __construct() {
 		parent::__construct();
 		$this->resources = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workshops = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->workflows = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -284,12 +310,65 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 		return $this->zipArchiveSize;
 	}
 
+	// DownloadCount /////
+
+	public function incrementDownloadCount($by = 1) {
+		return $this->downloadCount += intval($by);
+	}
+
+	public function setDownloadCount($downloadCount) {
+		$this->downloadCount = $downloadCount;
+		return $this;
+	}
+
+	public function getDownloadCount() {
+		return $this->downloadCount;
+	}
+
 	// LinkedEntities /////
 
 	public function getLinkedEntities() {
 		return array_merge(
 			$this->inspirations->getValues(),
+			$this->questions->getValues(),
+			$this->schools->getValues()
 		);
+	}
+
+	// QuestionCount /////
+
+	public function incrementQuestionCount($by = 1) {
+		return $this->questionCount += intval($by);
+	}
+
+	public function getQuestionCount() {
+		return $this->questionCount;
+	}
+
+	// Questions /////
+
+	public function addQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if (!$this->questions->contains($question)) {
+			$this->questions[] = $question;
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementPlanCount();
+			}
+		}
+		return $this;
+	}
+
+	public function removeQuestion(\Ladb\CoreBundle\Entity\Qa\Question $question) {
+		if ($this->questions->removeElement($question)) {
+			$this->questionCount = count($this->questions);
+			if (!$this->getIsDraft()) {
+				$question->incrementPlanCount(-1);
+			}
+		}
+	}
+
+	public function getQuestions() {
+		return $this->questions;
 	}
 
 	// CreationCount /////
@@ -356,19 +435,40 @@ class Plan extends AbstractWonder implements BodiedInterface, InspirableInterfac
 		return $this->workflows;
 	}
 
-	// DownloadCount /////
+	// SchoolCount /////
 
-	public function incrementDownloadCount($by = 1) {
-		return $this->downloadCount += intval($by);
+	public function incrementSchoolCount($by = 1) {
+		return $this->schoolCount += intval($by);
 	}
 
-	public function setDownloadCount($downloadCount) {
-		$this->downloadCount = $downloadCount;
+	public function getSchoolCount() {
+		return $this->schoolCount;
+	}
+
+	// Schools /////
+
+	public function addSchool(\Ladb\CoreBundle\Entity\Knowledge\School $school) {
+		if (!$this->schools->contains($school)) {
+			$this->schools[] = $school;
+			$this->schoolCount = count($this->schools);
+			if (!$this->getIsDraft()) {
+				$school->incrementPlanCount();
+			}
+		}
 		return $this;
 	}
 
-	public function getDownloadCount() {
-		return $this->downloadCount;
+	public function removeSchool(\Ladb\CoreBundle\Entity\Knowledge\School $school) {
+		if ($this->schools->removeElement($school)) {
+			$this->schoolCount = count($this->schools);
+			if (!$this->getIsDraft()) {
+				$school->incrementPlanCount(-1);
+			}
+		}
+	}
+
+	public function getSchools() {
+		return $this->schools;
 	}
 
 }

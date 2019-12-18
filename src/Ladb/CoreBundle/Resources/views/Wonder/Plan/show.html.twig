@@ -29,8 +29,8 @@
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
-    {% if plan.howtoCount > 0 %}
-        {% for entity in plan.howtos %}
+    {% if plan.questionCount > 0 %}
+        {% for entity in plan.questions %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
@@ -41,6 +41,21 @@
     {% endif %}
     {% if plan.workshopCount > 0 %}
         {% for entity in plan.workshops %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if plan.howtoCount > 0 %}
+        {% for entity in plan.howtos %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if plan.workflowCount > 0 %}
+        {% for entity in plan.workflows %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if plan.schoolCount > 0 %}
+        {% for entity in plan.schools %}
             <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
         {% endfor %}
     {% endif %}
@@ -135,6 +150,15 @@
             </a>
         </div>
     {% endif %}
+    {% if plan.questionCount > 0 %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-question"></i>
+            <a href="{{ plan.questionCount == 1 ? path('core_qa_question_show', { 'id':plan.questions[0].sluggedId }) : path('core_plan_questions', { 'id':plan.id }) }}">
+                <strong>{{ plan.questionCount }}</strong>
+                <small>{{ 'qa.question.choice.entities'|transchoice(plan.questionCount) }}</small>
+            </a>
+        </div>
+    {% endif %}
     {% if plan.howtoCount > 0 %}
         <div class="ladb-meta">
             <i class="ladb-icon-howto"></i>
@@ -171,6 +195,15 @@
             </a>
         </div>
     {% endif %}
+    {% if plan.schoolCount > 0 %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-school"></i>
+            <a href="{{ plan.schoolCount == 1 ? path('core_school_show', { 'id':plan.schools[0].sluggedId }) : path('core_plan_schools', { 'id':plan.id }) }}">
+                <strong>{{ plan.schoolCount }}</strong>
+                <small>{{ 'knowledge.school.choice.entities'|transchoice(plan.schoolCount) }}</small>
+            </a>
+        </div>
+    {% endif %}
     {% if plan.reboundCount > 0 %}
         <div class="ladb-meta">
             <i class="ladb-icon-rebound ladb-icon-fixed-center"></i>
@@ -203,6 +236,15 @@
                         'caption': plan.inspirationCount~' '~('default.choice.inspirations'|transchoice(plan.inspirationCount))
                     } %}
                 {% endif %}
+                {% if plan.questionCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':plan.questionCount == 1 ? path('core_qa_question_show', { 'id':plan.questions[0].sluggedId }) : path('core_plan_questions', { 'id':plan.id }),
+                        'picture':plan.questions[0].mainPicture,
+                        'icon':'ladb-icon-question',
+                        'caption': plan.questionCount~' '~('qa.question.choice.entities'|transchoice(plan.questionCount)),
+                        'emptyWebPath': 'empty_question.png'
+                    } %}
+                {% endif %}
                 {% if plan.howtoCount > 0 %}
                     {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
                         'path':plan.howtoCount == 1 ? path('core_howto_show', { 'id':plan.howtos[0].sluggedId }) : path('core_plan_howtos', { 'id':plan.id }),
@@ -233,6 +275,14 @@
                         'picture':plan.workshops[0].mainPicture,
                         'icon':'ladb-icon-workshop',
                         'caption': plan.workshopCount~' '~('wonder.workshop.choice.entities'|transchoice(plan.workshopCount))
+                    } %}
+                {% endif %}
+                {% if plan.schoolCount > 0 %}
+                    {% include 'LadbCoreBundle:Common:_linkedto-widget-item.part.html.twig' with {
+                        'path':plan.schoolCount == 1 ? path('core_school_show', { 'id':plan.schools[0].sluggedId }) : path('core_plan_schools', { 'id':plan.id }),
+                        'picture':plan.schools[0].mainPicture,
+                        'icon':'ladb-icon-school',
+                        'caption': plan.schoolCount~' '~('knowledge.school.choice.entities'|transchoice(plan.schoolCount))
                     } %}
                 {% endif %}
                 {% if plan.reboundCount > 0 %}

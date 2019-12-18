@@ -6,6 +6,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class QuestionRepository extends AbstractEntityRepository {
@@ -234,6 +235,25 @@ class QuestionRepository extends AbstractEntityRepository {
 			->where('q.isDraft = false')
 			->andWhere('c = :creation')
 			->setParameter('creation', $creation)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
+	public function findPaginedByPlan(Plan $plan, $offset, $limit, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'u', 'p' ))
+			->from($this->getEntityName(), 'q')
+			->innerJoin('q.user', 'u')
+			->innerJoin('q.plans', 'p')
+			->where('q.isDraft = false')
+			->andWhere('p = :plan')
+			->setParameter('plan', $plan)
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
