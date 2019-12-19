@@ -216,3 +216,8 @@ ladb_core_collection_entry:
     resource: "Ladb\\CoreBundle\\Controller\\Collection\\EntryController"
     type:     annotation
 
+ladb_core_offer:
+    resource: "Ladb\\CoreBundle\\Controller\\Offer\\OfferController"
+    type:     annotation
+
+

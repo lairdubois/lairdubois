@@ -1,9 +1,11 @@
 <?php
 
-namespace Ladb\CoreBundle\Entity\Find;
+namespace Ladb\CoreBundle\Entity\Offer;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\LocalisableInterface;
+use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
@@ -43,13 +45,13 @@ use Ladb\CoreBundle\Entity\Find\Content\Event;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Offer\OfferRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface {
+class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, LocalisableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Offer\Offer';
-	const TYPE = 104;
+	const TYPE = 122;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -99,6 +101,21 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $mainPicture;
 
 	/**
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
+	private $location;
+
+	/**
+	 * @ORM\Column(type="float", nullable=true)
+	 */
+	private $latitude;
+
+	/**
+	 * @ORM\Column(type="float", nullable=true)
+	 */
+	private $longitude;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_offer_tag")
 	 * @Assert\Count(min=2)
@@ -143,7 +160,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	// Type /////
 
 	public function getType() {
-		return Find::TYPE;
+		return Offer::TYPE;
 	}
 
 }

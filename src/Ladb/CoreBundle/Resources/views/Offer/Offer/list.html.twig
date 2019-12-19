@@ -1,0 +1,20 @@
+{% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
+
+{% set pageTitle = 'offer.offer.list'|trans() %}
+{% set pageDescription = 'offer.offer.description'|trans() %}
+{% set pageImage = asset('banner-offers-600x376.jpg') %}
+{% set pageSectionUrl = url('core_offer_list') %}
+{% set pageSectionName = 'offer.offer.list'|trans %}
+
+{% set navSection = 'offers' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Offer/Offer:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Offer/Offer:_list-n.part.html.twig' %}
+{% endblock %}

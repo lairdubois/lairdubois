@@ -348,6 +348,17 @@ class UserMeta {
 
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true, name="private_offer_count")
+	 */
+	private $privateOfferCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="public_offer_count")
+	 */
+	private $publicOfferCount = 0;
+
+
+	/**
 	 * @ORM\Column(type="integer", nullable=true, name="private_graphic_count")
 	 */
 	private $privateGraphicCount = 0;
@@ -1081,6 +1092,27 @@ class UserMeta {
 
 	public function getAnswerCount() {
 		return $this->answerCount;
+	}
+
+	// PrivateOfferCount /////
+
+	public function incrementPrivateOfferCount($by = 1) {
+		return $this->privateOfferCount += intval($by);
+	}
+
+	public function getPrivateOfferCount() {
+		return $this->privateOfferCount;
+	}
+
+	// PublicOfferCount /////
+
+	public function incrementPublicOfferCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->publicOfferCount += intval($by);
+	}
+
+	public function getPublicOfferCount() {
+		return $this->publicOfferCount;
 	}
 
 	// PrivateGraphicCount /////
