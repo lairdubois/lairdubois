@@ -6,11 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
-use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
+use Ladb\CoreBundle\Model\JoinableTrait;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
@@ -48,6 +49,9 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 
 	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait;
+	use JoinableTrait {
+		getIsJoinable as getIsJoinableTrait;
+	}
 
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
 	const TYPE = 104;
@@ -216,35 +220,21 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 
 	// Content /////
 
-	public function getIsJoinable() {
-		return $this->getIsPublic()
-			&& $this->getContent() instanceof Event
-			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
-	}
-
 	public function getContent() {
 		return $this->content;
 	}
-
-	// IsJoinable /////
 
 	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
 		$this->content = $content;
 		return $this;
 	}
 
-	// JoinCount /////
+	// IsJoinable /////
 
-	public function incrementJoinCount($by = 1) {
-		return $this->joinCount += intval($by);
-	}
-
-	public function getJoinCount() {
-		return $this->joinCount;
-	}
-
-	public function setJoinCount($joinCount) {
-		$this->joinCount = $joinCount;
+	public function getIsJoinable() {
+		return $this->getIsJoinableTrait()
+			&& $this->getContent() instanceof Event
+			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
 	}
 
 }
