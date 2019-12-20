@@ -64,11 +64,15 @@ class QuestionController extends Controller {
 
 		if ($form->isValid()) {
 
-			$blockUtils = $this->get(BlockBodiedUtils::NAME);
-			$blockUtils->preprocessBlocks($question);
+			$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockBodiedUtils->preprocessBlocks($question);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($question);
+
+			if ($question->getBodyBlockPictureCount() > 0) {
+				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
+			}
 
 			$question->setUser($this->getUser());
 
@@ -232,13 +236,19 @@ class QuestionController extends Controller {
 
 		if ($form->isValid()) {
 
-			$blockUtils = $this->get(BlockBodiedUtils::NAME);
-			$blockUtils->preprocessBlocks($question, $originalBodyBlocks);
+			$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockBodiedUtils->preprocessBlocks($question, $originalBodyBlocks);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($question);
 
-			$question->setUpdatedAt(new \DateTime());
+			if ($question->getBodyBlockPictureCount() > 0) {
+				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
+			}
+
+			if ($question->getUser()->getId() == $this->getUser()->getId()) {
+				$question->setUpdatedAt(new \DateTime());
+			}
 
 			$om->flush();
 

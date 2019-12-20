@@ -67,14 +67,13 @@ class QuestionController extends Controller {
 
 		if ($form->isValid()) {
 
-			$blockUtils = $this->get(BlockBodiedUtils::NAME);
-			$blockUtils->preprocessBlocks($question);
+			$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockBodiedUtils->preprocessBlocks($question);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($question);
 
 			if ($question->getBodyBlockPictureCount() > 0) {
-				$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
 				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
 			}
 
@@ -250,14 +249,13 @@ class QuestionController extends Controller {
 
 		if ($form->isValid()) {
 
-			$blockUtils = $this->get(BlockBodiedUtils::NAME);
-			$blockUtils->preprocessBlocks($question, $originalBodyBlocks);
+			$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockBodiedUtils->preprocessBlocks($question, $originalBodyBlocks);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($question);
 
 			if ($question->getBodyBlockPictureCount() > 0) {
-				$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
 				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
 			}
 
