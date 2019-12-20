@@ -59,7 +59,7 @@ EOT
 		try {
 			$plans = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			$plans = array();
 		}
 
 		foreach ($plans as $plan) {
@@ -67,6 +67,32 @@ EOT
 				$resourceCounters[$resource->getId()][1]++;
 			}
 		}
+		unset($plans);
+
+		// Check Graphics /////
+
+		$output->writeln('<info>Checking graphics...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'g', 'r' ))
+			->from('LadbCoreBundle:Promotion\Graphic', 'g')
+			->leftJoin('g.resource', 'r')
+		;
+
+		try {
+			$graphics = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$graphics = array();
+		}
+
+		foreach ($graphics as $graphic) {
+			$resource = $graphic->getResource();
+			if (!is_null($resource)) {
+				$resourceCounters[$resource->getId()][1]++;
+			}
+		}
+		unset($graphics);
 
 		// Cleanup /////
 
