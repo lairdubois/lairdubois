@@ -37,93 +37,34 @@
         {% include 'LadbCoreBundle:Offer/Offer:_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-offer">
-        {% if offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_EVENT') and offer.content.cancelled %}
-            <a class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_event_datetime').ladbScrollTo(null, { onAfter: function() { $('#ladb_event_datetime').effect('highlight', {}, 1000);}})">
-                <i class="ladb-icon-warning"></i> {{ 'offer.offer.content.event.cancelled'|trans() }}
-            </a>
-        {% endif %}
-        {% if offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_WEBSITE') %}
-            <div class="ladb-thumb">
-                <a href="{{ offer.content.url }}" class="thumbnail">
-                    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':offer.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':offer.title, 'attribute':'data-pin-nopin="true"' } %}
-                </a>
+        <div class="row">
+            <div class="col-xs-12">
+                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[0], 'width':'600', 'height':'600', 'filterMode':'i', 'alt':offer.title, 'aClasses':(offer.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
             </div>
-        {% endif %}
-        {% if offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_VIDEO') %}
-            {{ ladb_video_player_frame(offer.content.kind, offer.content.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail', true)|raw }}
-        {% endif %}
-        {% if offer.content.pictures is defined %}
-            <div class="row">
-                <div class="col-xs-12">
-                    {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.content.pictures[0], 'width':'600', 'height':'600', 'filterMode':'i', 'alt':offer.title, 'aClasses':(offer.content.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
-                    {% if offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_EVENT') %}
-                        {% include 'LadbCoreBundle:Offer/Offer:_event-calendar.part.html.twig' with { 'event':offer.content, 'topRight':true } %}
-                    {% endif %}
-                </div>
-                {% if offer.content.pictures.count > 1 %}
-                    {% for index in 1..4 %}
-                        <div class="col-xs-3">
-                            {% if index < offer.content.pictures.count %}
-                                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.content.pictures[index], 'width':'128', 'height':'128', 'alt':offer.title, 'attributes':'data-pin-nopin="true"' } %}
-                            {% else %}
-                                <span class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" data-pin-nopin="true"></span>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        {% endif %}
-        {% if offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_EVENT') %}
-            <div class="ladb-link">
-                {% set startDate = offer.content.startDate %}
-                {% set startTime = offer.content.startTime %}
-                {% set endDate = offer.content.endDate %}
-                {% set endTime = offer.content.endTime %}
-                <div id="ladb_event_datetime" class="media">
-                    <div class="media-left">
-                        <i class="ladb-icon-date ladb-icon-lg"></i>
-                    </div>
-                    <div class="media-body ladb-event">
-                        <meta itemprop="startDate" content="{{ startDate|date('Y-m-dTH:i:s') }}">
-                        {% if offer.content.cancelled %}<del>{% endif %}
-                            {% if endDate is not null and endDate > startDate %}<meta itemprop="endDate" content="{{ endDate|date('Y-m-dTH:i:s') }}">{% endif %}
-                            <span class="ladb-full-date">{% if endDate is not null and endDate > startDate %}<span class="ladb-link-word">du</span>{% else %}<span class="ladb-link-word">le</span>{% endif %} {{ startDate|localizeddate('full', 'none') }}{% if startTime is not null %}{% if endTime is not null and endTime > startTime and (endDate == startDate or endDate is null) %} <span class="ladb-link-word">de</span>{% else %} <span class="ladb-link-word">à</span>{% endif %} <span class="ladb-time">{{ startTime|date('G:i') }}</span>{% endif %}{% if endDate is not null and endDate > startDate %} <span class="ladb-link-word">au</span> {{ endDate|localizeddate('full', 'none') }}{% endif %}{% if endTime is not null %} <span class="ladb-link-word">à</span> <span class="ladb-time">{{ endTime|date('G:i') }}{% endif %}</span></span>
-                        {% if offer.content.cancelled %}</del>{% endif %}
-                        {% if offer.content.cancelled %}
-                            <br><span class="label label-danger"><i class="ladb-icon-warning"></i> {{ 'offer.offer.content.event.cancelled'|trans() }}</span>
-                        {% elseif offer.content.status == constant('Ladb\\CoreBundle\\Entity\\Offer\\Content\\Event::STATUS_SCHEDULED') %}
-                            <br><span class="label label-info">{{ 'offer.offer.content.event.scheduled'|trans() }}</span> <span class="ladb-duration"> {{ 'offer.offer.content.event.event_starts'|trans() }} {{ offer.content.startAt|time_diff() }}.</span>
-                        {% elseif offer.content.status == constant('Ladb\\CoreBundle\\Entity\\Offer\\Content\\Event::STATUS_RUNNING') %}
-                            <br><span class="label label-success">{{ 'offer.offer.content.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'offer.offer.content.event.event_ends'|trans() }} {{ offer.content.endAt|time_diff() }}.</span>
-                        {% elseif offer.content.status == constant('Ladb\\CoreBundle\\Entity\\Offer\\Content\\Event::STATUS_COMPLETED') %}
-                            <br><span class="label label-danger">{{ 'offer.offer.content.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'offer.offer.content.event.event_was_completed'|trans() }} {{ offer.content.endAt|time_diff() }}.</span>
+            {% if offer.pictures.count > 1 %}
+                {% for index in 1..4 %}
+                    <div class="col-xs-3">
+                        {% if index < offer.pictures.count %}
+                            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[index], 'width':'128', 'height':'128', 'alt':offer.title, 'attributes':'data-pin-nopin="true"' } %}
+                        {% else %}
+                            <span class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" data-pin-nopin="true"></span>
                         {% endif %}
                     </div>
-                </div>
-            </div>
-        {% endif %}
-        {% if offer.content.location is defined and offer.content.location is not null %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if offer.location is defined and offer.location is not null %}
             <div class="ladb-link">
                 <i class="ladb-icon-location ladb-icon-fixed-center"></i>
-                {% if not noMicrodataLocation %}
-                    <span itemprop="location" itemscope itemtype="http://schema.org/Place">
-                        <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                {% endif %}
-                            {% if not noMicrodataLocation %}<span itemprop="addressLocality">{% endif %}{{ offer.content.location ? offer.content.location : '-' }}{% if not noMicrodataLocation %}</span>{% endif %}
-                {% if not noMicrodataLocation %}
+                    {% if not noMicrodataLocation %}
+                        <span itemprop="location" itemscope itemtype="http://schema.org/Place">
+                            <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                    {% endif %}
+                            {% if not noMicrodataLocation %}<span itemprop="addressLocality">{% endif %}{{ offer.location ? offer.location : '-' }}{% if not noMicrodataLocation %}</span>{% endif %}
+                    {% if not noMicrodataLocation %}
+                            </span>
                         </span>
-                    </span>
-                {% endif %}
-            </div>
-        {% endif %}
-        {% if offer.content.url is defined and offer.content.url is not null %}
-            <div class="ladb-link">
-                <i class="ladb-icon-link ladb-icon-fixed-center"></i> <a href="{{ offer.content.url }}" itemprop="url">{{ offer.content.url|truncate(50) }}</a>
-            </div>
-        {% endif %}
-        {% if offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_EVENT') and not offer.isDraft and joinContext.isJoinable %}
-            <div class="ladb-join-row">
-                {% include 'LadbCoreBundle:Core/Join:_widget.part.html.twig' %}
+                    {% endif %}
             </div>
         {% endif %}
         <hr>
@@ -147,9 +88,6 @@
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
-        {% if offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_EVENT') %}
-            {% include 'LadbCoreBundle:Common:_meta-join-counter.part.html.twig' %}
-        {% endif %}
         {% if hasMap %}
             <div class="ladb-meta">
                 {% if hasMap %}

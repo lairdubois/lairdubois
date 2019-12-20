@@ -74,6 +74,7 @@ class OfferController extends Controller {
 			$fieldPreprocessorUtils->preprocessFields($offer);
 
 			$offer->setUser($this->getUser());
+			$offer->setMainPicture($offer->getPictures()->first());
 			$this->getUser()->getMeta()->incrementPrivateOfferCount();
 
 			$om->persist($offer);
@@ -236,10 +237,8 @@ class OfferController extends Controller {
 			throw $this->createNotFoundException('Not allowed (core_offer_update)');
 		}
 
-		if ($offer->getContent() instanceof Gallery) {
-			$picturedUtils = $this->get(PicturedUtils::NAME);
-			$picturedUtils->resetPictures($offer->getContent()); // Reset pictures array to consider form pictures order
-		}
+		$picturedUtils = $this->get(PicturedUtils::NAME);
+		$picturedUtils->resetPictures($offer); // Reset pictures array to consider form pictures order
 
 		$originalBodyBlocks = $offer->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $offer->getTags()->toArray();	// Need to be an array to copy values
@@ -255,6 +254,7 @@ class OfferController extends Controller {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($offer);
 
+			$offer->setMainPicture($offer->getPictures()->first());
 			if ($offer->getUser()->getId() == $this->getUser()->getId()) {
 				$offer->setUpdatedAt(new \DateTime());
 			}

@@ -38,13 +38,12 @@ class OfferRepository extends AbstractEntityRepository {
 	public function findOneByIdJoinedOnOptimized($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'o', 'u', 'uav', 'mp', 'bbs', 'ct', 'tgs' ))
+			->select(array( 'o', 'u', 'uav', 'mp', 'bbs', 'tgs' ))
 			->from($this->getEntityName(), 'o')
 			->innerJoin('o.user', 'u')
 			->innerJoin('u.avatar', 'uav')
-			->innerJoin('o.mainPicture', 'mp')
+			->leftJoin('o.mainPicture', 'mp')
 			->leftJoin('o.bodyBlocks', 'bbs')
-			->leftJoin('o.content', 'ct')
 			->leftJoin('o.tags', 'tgs')
 			->where('o.id = :id')
 			->setParameter('id', $id)
@@ -146,52 +145,15 @@ class OfferRepository extends AbstractEntityRepository {
 	public function findByIds(array $ids) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'o', 'u', 'mp', 'ct' ))
+			->select(array( 'o', 'u', 'mp' ))
 			->from($this->getEntityName(), 'o')
 			->innerJoin('o.user', 'u')
-			->innerJoin('o.mainPicture', 'mp')
-			->leftJoin('o.content', 'ct')
+			->leftJoin('o.mainPicture', 'mp')
 			->where($queryBuilder->expr()->in('o.id', $ids))
 		;
 
 		try {
 			return $queryBuilder->getQuery()->getResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
-		}
-	}
-
-	public function findByRunningNow() {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'o', 'u', 'mp', 'ct' ))
-			->from($this->getEntityName(), 'o')
-			->innerJoin('o.user', 'u')
-			->innerJoin('o.mainPicture', 'mp')
-			->innerJoin('o.content', 'ct')
-			->where('ct INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Offer\\Content\\Event')
-			->andWhere('o.createdAt > :limitDate')
-			->andWhere('o.isDraft = false')
-			->setParameter('limitDate', (new \DateTime())->sub(new \DateInterval('P1Y')))	// Limit search to 1 year ago
-		;
-
-		try {
-
-			// TODO : Do the postreatment in DQL Query
-
-			$now = new \DateTime();
-			$offers = $queryBuilder->getQuery()->getResult();
-			$runningOffers = array();
-			foreach ($offers as $offer) {
-				if (!$offer->getContent()->getCancelled()
-					&& $offer->getContent()->getStartDate() <= $now 	/* event starts today ? */
-					&& $offer->getContent()->getEndAt() >= $now 		/* hide finished events */
-					&& $offer->getContent()->getDuration()->d <= 3 	/* limit to 3 days long events */ ) {
-					$runningOffers[] = $offer;
-				}
-			}
-
-			return $runningOffers;
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}

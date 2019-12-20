@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 use Ladb\CoreBundle\Model\LocalisableTrait;
+use Ladb\CoreBundle\Model\MultiPicturedInterface;
+use Ladb\CoreBundle\Model\MultiPicturedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
@@ -45,9 +47,9 @@ use Ladb\CoreBundle\Entity\Find\Content\Event;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Offer\OfferRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface {
+class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface {
 
-	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, MultiPicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, LocalisableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Offer\Offer';
@@ -101,6 +103,14 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $mainPicture;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_offer_picture")
+	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 * @Assert\Count(min=1, max=5)
+	 */
+	protected $pictures;
+
+	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $location;
@@ -146,6 +156,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function __construct() {
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->pictures = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -161,6 +172,12 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getType() {
 		return Offer::TYPE;
+	}
+
+	// Pictures /////
+
+	public function getMaxPictureCount() {
+		return 5;
 	}
 
 }

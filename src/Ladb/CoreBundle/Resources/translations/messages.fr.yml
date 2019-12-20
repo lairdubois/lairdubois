@@ -488,6 +488,16 @@ workflow:
     add: Ajouter une étiquette
     empty: Aucune étiquette
 
+offer:
+  offer:
+    description: Base collaborative de petites annonces autours du travail du bois.
+    new: Ajouter une annonce
+    edit: Edition de l'annonce
+    list: Les annonces
+    nav: Annonces
+    other_from: Autres annonces de
+    similar: Voir aussi
+
 collection:
   description: Retrouvez ici toutes les collections partagées par la communauté.
   collection:

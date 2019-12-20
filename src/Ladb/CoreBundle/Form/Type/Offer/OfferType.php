@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 use Ladb\CoreBundle\Form\Type\PolyCollectionType;
 
@@ -21,6 +22,10 @@ class OfferType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('title')
+			->add($builder
+				->create('pictures', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
+				->addModelTransformer(new PicturesToIdsTransformer($this->om))
+			)
 			->add('bodyBlocks', PolyCollectionType::class, array(
 				'types'        => array(
 					\Ladb\CoreBundle\Form\Type\Block\TextBlockType::class,
