@@ -6,11 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\PicturedInterface;
+use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\SluggedInterface;
 use Ladb\CoreBundle\Model\SluggedTrait;
-use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -33,15 +34,16 @@ use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
+use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 
 /**
  * @ORM\Table("tbl_faq_question")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Faq\QuestionRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface {
+class Question extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface {
 
-	use TitledTrait, SluggedTrait, BlockBodiedTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Faq\Question';
@@ -64,6 +66,13 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
 	private $slug;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\JoinColumn(nullable=true, name="main_picture_id")
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
+	 */
+	private $mainPicture;
 
 	/**
 	 * @ORM\Column(type="string", length=50)

@@ -92,7 +92,9 @@ class Resource {
 	 */
 	public function removeUpload() {
 		if ($filename = $this->getAbsolutePath()) {
-			unlink($filename);
+			try {
+				unlink($filename);
+			} catch (\Exception $e) {}
 		}
 	}
 

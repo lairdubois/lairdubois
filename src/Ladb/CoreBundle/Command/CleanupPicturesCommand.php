@@ -26,7 +26,7 @@ EOT
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
 
-		// Extract pictures /////
+		// Extract Pictures /////
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
@@ -118,7 +118,7 @@ EOT
 		}
 		unset($messages);
 
-		// Check avatars and banners /////
+		// Check Avatars and Banners /////
 
 		$output->writeln('<info>Checking avatars and banners...</info>');
 
@@ -149,7 +149,7 @@ EOT
 		}
 		unset($users);
 
-		// Check creations /////
+		// Check Creations /////
 
 		$output->writeln('<info>Checking creations...</info>');
 
@@ -186,7 +186,7 @@ EOT
 		}
 		unset($creations);
 
-		// Check plans /////
+		// Check Plans /////
 
 		$output->writeln('<info>Checking plans...</info>');
 
@@ -223,7 +223,7 @@ EOT
 		}
 		unset($plans);
 
-		// Check workshops /////
+		// Check Workshops /////
 
 		$output->writeln('<info>Checking workshops...</info>');
 
@@ -291,7 +291,7 @@ EOT
 		}
 		unset($finds);
 
-		// Check howtos and articles /////
+		// Check Howtos and Articles /////
 
 		$output->writeln('<info>Checking howtos...</info>');
 
@@ -328,7 +328,7 @@ EOT
 		}
 		unset($howtos);
 
-		// Check blog posts /////
+		// Check Blog Posts /////
 
 		$output->writeln('<info>Checking blog posts...</info>');
 
@@ -353,7 +353,7 @@ EOT
 		}
 		unset($posts);
 
-		// Check promotion graphics /////
+		// Check Promotion Graphics /////
 
 		$output->writeln('<info>Checking promotion graphics...</info>');
 
@@ -378,7 +378,57 @@ EOT
 		}
 		unset($graphics);
 
-		// Check workflows /////
+		// Check Qa Questions /////
+
+		$output->writeln('<info>Checking qa questions...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'mp' ))
+			->from('LadbCoreBundle:Qa\Question', 'q')
+			->leftJoin('q.mainPicture', 'mp')
+		;
+
+		try {
+			$questions = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$questions = array();
+		}
+
+		foreach ($questions as $question) {
+			$mainPicture = $question->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($question);
+
+		// Check Faq Questions /////
+
+		$output->writeln('<info>Checking faq questions...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'q', 'mp' ))
+			->from('LadbCoreBundle:Faq\Question', 'q')
+			->leftJoin('q.mainPicture', 'mp')
+		;
+
+		try {
+			$questions = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$questions = array();
+		}
+
+		foreach ($questions as $question) {
+			$mainPicture = $question->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($question);
+
+		// Check Workflows /////
 
 		$output->writeln('<info>Checking workflows...</info>');
 
@@ -543,7 +593,7 @@ EOT
 		}
 		unset($books);
 
-		// Check Books /////
+		// Check Softwares /////
 
 		$output->writeln('<info>Checking Softwares...</info>');
 
