@@ -33,8 +33,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% if highlightedTip %}
-        {% include 'LadbCoreBundle:Core/Tip:_list-thumbnail.part.html.twig' with { 'tip':highlightedTip, 'tiny':true, 'massonryWide':true } %}
-    {% endif %}
     {% include 'LadbCoreBundle:Qa/Question:_list-n.part.html.twig' %}
 {% endblock %}

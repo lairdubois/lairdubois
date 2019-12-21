@@ -6,6 +6,9 @@
 {% if entities is defined %}{% set creations = entities %}{% endif %}
 
 {% block items %}
+    {% if highlightedTip %}
+        {% include 'LadbCoreBundle:Core/Tip:_list-thumbnail.part.html.twig' with { 'tip':highlightedTip, 'tiny':true } %}
+    {% endif %}
     {% for creation in creations %}
         {% include 'LadbCoreBundle:Wonder/Creation:_list-thumbnail.part.html.twig' %}
     {% endfor %}

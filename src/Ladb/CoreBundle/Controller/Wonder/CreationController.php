@@ -1064,6 +1064,7 @@ class CreationController extends Controller {
 			'layout'          => $layout,
 			'homepage'        => $homepage,
 			'routeParameters' => $routeParameters,
+			'highlightedTip'  => isset($highlightedTip) ? $highlightedTip : null,
 		));
 
 		if ($request->isXmlHttpRequest()) {
@@ -1083,7 +1084,6 @@ class CreationController extends Controller {
 			'spotlightEntity' => isset($spotlightEntity) ? $spotlightEntity : null,
 			'highlightedPost' => isset($highlightedPost) ? $highlightedPost : null,
 			'runningFinds'    => isset($runningFinds) ? $runningFinds : null,
-			'highlightedTip'  => isset($highlightedTip) ? $highlightedTip : null,
 		));
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateCreationCount() > 0) {
