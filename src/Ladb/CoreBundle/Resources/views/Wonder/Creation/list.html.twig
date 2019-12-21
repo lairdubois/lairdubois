@@ -85,7 +85,7 @@
 
 {% block autopagerContainerInner %}
     {% if highlightedTip %}
-        {% include 'LadbCoreBundle:Core/Tip:_list-thumbnail.part.html.twig' with { 'tip':highlightedTip } %}
+        {% include 'LadbCoreBundle:Core/Tip:_list-thumbnail.part.html.twig' with { 'tip':highlightedTip, 'tiny':true } %}
     {% endif %}
     {% if homepage and runningFinds and runningFinds is not empty %}
         <div class="ladb-masonry-item ladb-masonry-column">
