@@ -100,6 +100,8 @@ doctrine:
         dql:
             string_functions:
                 GROUP_CONCAT: Ladb\CoreBundle\DoctrineExtensions\Query\Mysql\GroupConcat
+            numeric_functions:
+                Rand: Ladb\CoreBundle\DoctrineExtensions\Query\Mysql\Rand
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -382,6 +384,18 @@ fos_elastica:
                         model: Ladb\CoreBundle\Entity\Core\User
                         provider:
                             query_builder_method: "createIsEnabledQueryBuilder"
+                        listener:
+                            update: false
+                core_tip:
+                    properties:
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        viewCount: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Core\Tip
+                        provider: ~
                         listener:
                             update: false
                 wonder_creation:

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Entity\Core\Tip;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -336,6 +337,17 @@ class QuestionController extends Controller {
 			$routeParameters['layout'] = $layout;
 		}
 
+		/////
+
+		if ($page == 0 && $layout == 'view') {
+			$om = $this->getDoctrine()->getManager();
+
+			// Tip
+			$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+			$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
+
+		}
+
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
@@ -536,6 +548,7 @@ class QuestionController extends Controller {
 			'questions'       => $searchParameters['entities'],
 			'layout'          => $layout,
 			'routeParameters' => $routeParameters,
+			'highlightedTip'  => isset($highlightedTip) ? $highlightedTip : null,
 		));
 
 		if ($request->isXmlHttpRequest()) {

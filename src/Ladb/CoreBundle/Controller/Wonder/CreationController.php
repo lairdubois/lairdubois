@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Entity\Core\Tip;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -766,7 +767,6 @@ class CreationController extends Controller {
 	 * @Template("LadbCoreBundle:Wonder/Creation:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
-		$om = $this->getDoctrine()->getManager();
 		$searchUtils = $this->get(SearchUtils::NAME);
 
 		// Elasticsearch paginiation limit
@@ -784,7 +784,8 @@ class CreationController extends Controller {
 
 		/////
 
-		if ($page == 0) {
+		if ($page == 0 && $layout == 'view') {
+			$om = $this->getDoctrine()->getManager();
 
 			if ($homepage) {
 
@@ -811,6 +812,12 @@ class CreationController extends Controller {
 				$findRepository = $om->getRepository(Find::CLASS_NAME);
 				$runningFinds = $findRepository->findByRunningNow();
 
+			}
+
+			// Tip
+			if (!isset($runningFinds) || empty($runningFinds)) {
+				$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+				$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
 			}
 
 			// PostHighlight
@@ -1070,6 +1077,7 @@ class CreationController extends Controller {
 			'spotlightEntity' => isset($spotlightEntity) ? $spotlightEntity : null,
 			'highlightedPost' => isset($highlightedPost) ? $highlightedPost : null,
 			'runningFinds'    => isset($runningFinds) ? $runningFinds : null,
+			'highlightedTip'  => isset($highlightedTip) ? $highlightedTip : null,
 		));
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateCreationCount() > 0) {

@@ -1,27 +1,19 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
-{% set pageTitle = 'blog.title'|trans() %}
-{% set pageDescription = 'blog.description'|trans() %}
-{% set pageImage = asset('banner-blog-600x376.jpg') %}
-{% set pageSectionUrl = url('core_blog_post_list') %}
-{% set pageSectionName = 'blog.post.list'|trans %}
+{% set pageTitle = 'core.tip.title'|trans() %}
+{% set pageDescription = 'core.tip.description'|trans() %}
+{% set pageImage = asset('banner-core-600x376.jpg') %}
+{% set pageSectionUrl = url('core_tip_list') %}
+{% set pageSectionName = 'core.tip.list'|trans %}
 
-{% set navSection = 'blog' %}
+{% set navSection = 'tip' %}
 {% set masonry = true %}
-{% set masonryWide = true %}
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Blog/Post:_list-topbar.part.html.twig' %}
-{% endblock %}
-
-{% block bodyContainerContent %}
-    <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
-        <div class="panel-body">{{ 'blog.description'|trans() }}</div>
-    </div>
-    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Tip:_list-topbar.part.html.twig' %}
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Blog/Post:_list-n.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Tip:_list-n.part.html.twig' %}
 {% endblock %}

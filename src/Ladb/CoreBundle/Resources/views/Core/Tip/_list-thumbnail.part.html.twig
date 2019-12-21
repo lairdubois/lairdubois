@@ -1,3 +1,15 @@
-{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
-
-{% set entity = post %}
+<div class="ladb-masonry-item ladb-masonry-column{% if massonryWide is defined and massonryWide %}-wide{% endif %}">
+    <div class="ladb-box ladb-box-hover" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(tip) }}'})">
+        <div style="padding: 10px;">
+            <div class="pull-right ladb-minitools">
+                <a href="{{ path('core_tip_list') }}">n°{{ tip.id }}</a>
+                {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_TIP") %}
+                    <a href="{{ path('core_tip_edit', { 'id':tip.id }) }}" class="ladb-horizontal-separator-left"><i class="ladb-icon-edit"></i></a>
+                {% endif %}
+            </div>
+            <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-tip ladb-icon-lg"></i> Le saviez vous ?</div>
+            <p>{{ tip.htmlBody|raw }}</p>
+            <div class="text-right"><a href="{{ ladb_entity_url_action(tip) }}">En savoir plus...</a></div>
+        </div>
+    </div>
+</div>

@@ -8,18 +8,6 @@
 {% endblock %}
 
 {% block form_buttons %}
-    <a href="{{ path('core_tip_show', { 'id':tip.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
+    <a href="{{ path('core_tip_list') }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
     {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" name="ladb_do_up"> {{ 'default.do_up'|trans }}
-        </label>
-    </div>
-{% endblock %}
-
-{% block sections %}
-    {% if tip.isDraft %}
-        {% include 'LadbCoreBundle:Core/Tip:_draft-alert.part.html.twig' %}
-    {% endif %}
-    {{ parent() }}
 {% endblock %}

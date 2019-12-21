@@ -19,22 +19,26 @@
             </div>
             <div class="ladb-minitools">
                 <a class="ladb-btn-clear"><i class="ladb-icon-clear"></i></a>
-                <div class="btn-group">
-                    <button class="ladb-filters-btn btn btn-infield btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="ladb-icon-filter"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Filtres</span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        {% block filtersDropdown %}{% endblock %}
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="ladb-sorters-btn btn btn-infield btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="ladb-icon-sort"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Tri</span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        {% block sortersDropdown %}{% endblock %}
-                    </ul>
-                </div>
+                {% block filtersBtnOuter %}
+                    <div class="btn-group">
+                        <button class="ladb-filters-btn btn btn-infield btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-filter"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Filtres</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% block filtersDropdown %}{% endblock %}
+                        </ul>
+                    </div>
+                {% endblock %}
+                {% block sortersBtnOuter %}
+                    <div class="btn-group">
+                        <button class="ladb-sorters-btn btn btn-infield btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-sort"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Tri</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% block sortersDropdown %}{% endblock %}
+                        </ul>
+                    </div>
+                {% endblock %}
             </div>
         </div>
         <div class="ladb-search-box-bottom" style="display: none;">

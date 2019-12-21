@@ -15,13 +15,7 @@ use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Form\Type\Core\TipType;
 use Ladb\CoreBundle\Utils\SearchUtils;
-use Ladb\CoreBundle\Utils\LikableUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
-use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\FollowerUtils;
-use Ladb\CoreBundle\Utils\ExplorableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
-use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
@@ -66,13 +60,12 @@ class TipController extends Controller {
 			$om->persist($tip);
 			$om->flush();
 
-			$om->flush();	// Resave to store file size
-
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($tip));
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_PUBLISHED, new PublicationEvent($tip));
 
-			return $this->redirect($this->generateUrl('core_tip_show', array('id' => $tip->getId())));
+			return $this->redirect($this->generateUrl('core_tip_list'));
 		}
 
 		// Flashbag
@@ -94,7 +87,7 @@ class TipController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$tipRepository = $om->getRepository(Tip::CLASS_NAME);
 
-		$tip = $tipRepository->findOneByIdJoinedOnOptimized($id);
+		$tip = $tipRepository->findOneById($id);
 		if (is_null($tip)) {
 			throw $this->createNotFoundException('Unable to find Tip entity (id='.$id.').');
 		}
@@ -116,7 +109,7 @@ class TipController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$tipRepository = $om->getRepository(Tip::CLASS_NAME);
 
-		$tip = $tipRepository->findOneByIdJoinedOnUser($id);
+		$tip = $tipRepository->findOneById($id);
 		if (is_null($tip)) {
 			throw $this->createNotFoundException('Unable to find Tip entity (id='.$id.').');
 		}
@@ -208,20 +201,8 @@ class TipController extends Controller {
 						$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
 						break;
 
-					case 'sort-popular-likes':
-						$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
-						break;
-
-					case 'sort-popular-comments':
-						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
-						break;
-
 					case 'sort-random':
 						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
-						break;
-
-					case 'popular-downloads':
-						$sort = array( 'downloadCount' => array( 'order' => 'desc' ) );
 						break;
 
 					/////
@@ -230,7 +211,7 @@ class TipController extends Controller {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100', 'body' ));
+							$filter->setFields(array( 'body' ));
 							$filters[] = $filter;
 
 						}
@@ -242,30 +223,8 @@ class TipController extends Controller {
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			function(&$filters) {
-
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
-
-
-			},
-			'fos_elastica.index.ladb.tip',
+			null,
+			'fos_elastica.index.ladb.core_tip',
 			\Ladb\CoreBundle\Entity\Core\Tip::CLASS_NAME,
 			'core_tip_list_page'
 		);
@@ -286,7 +245,7 @@ class TipController extends Controller {
 	}
 
 	/**
-	 * @Route("/{id}", name="core_tip_show")
+	 * @Route("/{id}.html", name="core_tip_show")
 	 * @Template("LadbCoreBundle:Core/Tip:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
@@ -296,7 +255,7 @@ class TipController extends Controller {
 
 		$id = intval($id);
 
-		$tip = $tipRepository->findOneByIdJoinedOnOptimized($id);
+		$tip = $tipRepository->findOneById($id);
 		if (is_null($tip)) {
 			if ($response = $witnessManager->checkResponse(Tip::TYPE, $id)) {
 				return $response;
@@ -308,9 +267,7 @@ class TipController extends Controller {
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($tip));
 
-		return array(
-			'tip' => $tip,
-		);
+		return $this->redirect($tip->getUrl());
 	}
 
 }

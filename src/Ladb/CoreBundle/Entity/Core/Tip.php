@@ -43,11 +43,12 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\TipRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Tip extends AbstractPublication implements TitledInterface, BodiedInterface {
+class Tip extends AbstractPublication implements TitledInterface, BodiedInterface, IndexableInterface, ViewableInterface {
 
 	use BodiedTrait;
+	use IndexableTrait, ViewableTrait;
 
-	const CLASS_NAME = 'LadbCoreBundle:Promotion\Tip';
+	const CLASS_NAME = 'LadbCoreBundle:Core\Tip';
 	const TYPE = 5;
 
 	/**
@@ -66,6 +67,11 @@ class Tip extends AbstractPublication implements TitledInterface, BodiedInterfac
 	 * @Assert\Url()
 	 */
 	private $url;
+
+	/**
+	 * @ORM\Column(type="integer", name="view_count")
+	 */
+	private $viewCount = 0;
 
 	/////
 

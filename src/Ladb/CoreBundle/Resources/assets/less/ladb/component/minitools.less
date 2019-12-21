@@ -7,27 +7,16 @@
 
   > a, .dropdown > a, .dropup > a {
     cursor: pointer;
+    color: @ladb-global-lighter-color !important;
 
     &:hover, &:focus {
       text-decoration: none;
-
-      > i {
-        color: @ladb-global-color;
-      }
+      color: @ladb-global-color !important;
 
       &.ladb-minitool-danger {
-
-        > i {
-          color: @ladb-brand-danger
-        }
-
+        color: @ladb-brand-danger !important;
       }
 
-    }
-
-    > i {
-      color: @ladb-global-lighter-color;
-      text-decoration: none;
     }
 
   }

@@ -4,16 +4,18 @@
 {# set mandatory (facultative) #}
 {# set help (facultative) #}
 {# set tips (facultative) #}
+{# set rows (facultative) #}
 
 {% set icon = 'body' %}
 {% set title = title|default('default.descriptive'|trans()) %}
 {% set formSection = formSection|default('body') %}
+{% set rows = rows|default(15) %}
 
 {% block body %}
     {% if help is defined %}<p class="help-block"><i>{{ help|raw }}</i></p>{% endif %}
     <div class="form-group">
         {{ form_errors(form.body) }}
-        {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize', 'rows':15 } }) }}
+        {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize', 'rows':rows } }) }}
     </div>
     <script>
         if (document.readyState == "complete") {
