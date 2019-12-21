@@ -67,8 +67,6 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		try {
 
-			$this->container->get('logger')->error('### BEFORE QUEUE');
-
 			// Publish a view in queue
 			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
 			$producer->publish(serialize(array(
@@ -78,7 +76,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 				'userId'     => !is_null($user) ? $user->getId() : null,
 			)));
 
-			$this->container->get('logger')->error('### AFTER QUEUE');
+			$this->container->get('logger')->error('### AFTER QUEUE '.(!is_null($user) ? $user->getId() : '0'));
 
 		} catch (\Exception $e) {
 			$this->container->get('logger')->error('Failed to publish shown view process in queue', array ( 'exception' => $e));
