@@ -466,10 +466,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_workflow_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
-			'filter'       => $filter,
-			'prevPageUrl'  => $pageUrls->prev,
-			'nextPageUrl'  => $pageUrls->next,
-			'inspirations' => $paginator,
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'workflows'   => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -509,7 +509,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'rebounds'    => $paginator,
+			'workflows'   => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {

@@ -657,10 +657,10 @@ class PlanController extends Controller {
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
-			'filter'       => $filter,
-			'prevPageUrl'  => $pageUrls->prev,
-			'nextPageUrl'  => $pageUrls->next,
-			'inspirations' => $paginator,
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'plans'       => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -700,7 +700,7 @@ class PlanController extends Controller {
 			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'rebounds'    => $paginator,
+			'plans'       => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {

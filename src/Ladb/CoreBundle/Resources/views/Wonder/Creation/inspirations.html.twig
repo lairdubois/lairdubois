@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    {% if inspirations.count == 0 %}
+    {% if creations.count == 0 %}
         <div class="alert alert-info ladb-margin-top">
             Cette création n'a aucune inspiration
         </div>
@@ -31,5 +31,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Wonder/Creation:_list-n.part.html.twig' with { 'creations':inspirations } %}
+    {% include 'LadbCoreBundle:Wonder/Creation:_list-n.part.html.twig' %}
 {% endblock %}

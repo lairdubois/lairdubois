@@ -612,10 +612,10 @@ class CreationController extends Controller {
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
-			'filter'       => $filter,
-			'prevPageUrl'  => $pageUrls->prev,
-			'nextPageUrl'  => $pageUrls->next,
-			'inspirations' => $paginator,
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'creations'   => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -655,7 +655,7 @@ class CreationController extends Controller {
 			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'rebounds'    => $paginator,
+			'creations'   => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
