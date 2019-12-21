@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Entity\Core\Tip;
+use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -816,8 +817,13 @@ class CreationController extends Controller {
 
 			// Tip
 			if (!isset($runningFinds) || empty($runningFinds)) {
-				$tipRepository = $om->getRepository(Tip::CLASS_NAME);
-				$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
+
+				$maybeUtils = $this->get(MaybeUtils::NAME);
+				if ($maybeUtils->canDoIt(0, 10, 'tip')) {
+					$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+					$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
+				}
+
 			}
 
 			// PostHighlight

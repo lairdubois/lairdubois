@@ -33,6 +33,9 @@ services:
   ladb_core.global_utils:
     class: Ladb\CoreBundle\Utils\GlobalUtils
     arguments: ['@service_container']
+  ladb_core.maybe_utils:
+    class: Ladb\CoreBundle\Utils\MaybeUtils
+    arguments: ['@service_container']
   ladb_core.crypto_utils:
     class: Ladb\CoreBundle\Utils\CryptoUtils
     arguments: ['@service_container']

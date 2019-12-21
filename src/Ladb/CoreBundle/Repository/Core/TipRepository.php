@@ -9,12 +9,6 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 class TipRepository extends AbstractEntityRepository {
 
 	public function findOneRandomByUser(User $user = null) {
-
-		// 1/10 chance to return something
-		if (rand(0, 10) != 1) {
-			return null;
-		}
-
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 't' ))

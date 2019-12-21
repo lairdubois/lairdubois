@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Qa;
 
 use Ladb\CoreBundle\Entity\Core\Tip;
+use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -342,9 +343,11 @@ class QuestionController extends Controller {
 		if ($page == 0 && $layout == 'view') {
 			$om = $this->getDoctrine()->getManager();
 
-			// Tip
-			$tipRepository = $om->getRepository(Tip::CLASS_NAME);
-			$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
+			$maybeUtils = $this->get(MaybeUtils::NAME);
+			if ($maybeUtils->canDoIt(0, 10, 'tip')) {
+				$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+				$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
+			}
 
 		}
 

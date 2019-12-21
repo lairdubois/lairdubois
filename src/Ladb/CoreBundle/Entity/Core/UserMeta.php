@@ -411,7 +411,6 @@ class UserMeta {
 	 */
 	private $donationFeeBalance = 0;
 
-
 	/////
 
 	public function __construct() {
