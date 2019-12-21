@@ -344,7 +344,7 @@ class QuestionController extends Controller {
 			$om = $this->getDoctrine()->getManager();
 
 			$maybeUtils = $this->get(MaybeUtils::NAME);
-			if ($maybeUtils->canDoIt(0, 1, 'tip')) {
+			if ($maybeUtils->canDoIt(0, 10, 'tip')) {
 				$tipRepository = $om->getRepository(Tip::CLASS_NAME);
 				$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
 			}
