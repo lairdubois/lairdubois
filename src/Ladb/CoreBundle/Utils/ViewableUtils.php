@@ -76,8 +76,6 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 				'userId'     => !is_null($user) ? $user->getId() : null,
 			)));
 
-			$this->container->get('logger')->error('### AFTER QUEUE '.(!is_null($user) ? $user->getId() : '0'));
-
 		} catch (\Exception $e) {
 			$this->container->get('logger')->error('Failed to publish shown view process in queue', array ( 'exception' => $e));
 		}
