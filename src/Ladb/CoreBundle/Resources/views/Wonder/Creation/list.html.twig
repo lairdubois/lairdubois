@@ -84,6 +84,16 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
+    <div class="ladb-masonry-item ladb-masonry-column">
+        <div class="ladb-box">
+            <div style="padding: 10px;">
+                <span class="pull-right" style="color: #ccc;">n°12</span>
+                <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-tip ladb-icon-lg"></i> Le saviez vous ?</div>
+                <p>{{ 'Il est possible de consulter *L\'Air du Bois* comme une application **mobile** !'|ladb_markdown|raw }}</p>
+                <div class="text-right"><a href="#">En savoir plus...</a></div>
+            </div>
+        </div>
+    </div>
     {% if homepage and runningFinds and runningFinds is not empty %}
         <div class="ladb-masonry-item ladb-masonry-column">
             <div class="ladb-box">
