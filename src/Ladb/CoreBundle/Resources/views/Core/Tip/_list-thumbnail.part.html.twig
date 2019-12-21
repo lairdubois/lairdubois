@@ -5,6 +5,7 @@
                 <a href="{{ path('core_tip_list') }}">n°{{ tip.id }}</a>
                 {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_TIP") %}
                     <a href="{{ path('core_tip_edit', { 'id':tip.id }) }}" class="ladb-horizontal-separator-left"><i class="ladb-icon-edit"></i></a>
+                    <a href="{{ path('core_tip_delete', { 'id':tip.id }) }}" class="ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
                 {% endif %}
             </div>
             <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-tip ladb-icon-lg"></i> Le saviez vous ?</div>

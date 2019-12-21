@@ -155,7 +155,7 @@ class TipController extends Controller {
 		$om = $this->getDoctrine()->getManager();
 		$tipRepository = $om->getRepository(Tip::CLASS_NAME);
 
-		$tip = $tipRepository->findOneByIdJoinedOnUser($id);
+		$tip = $tipRepository->findOneById($id);
 		if (is_null($tip)) {
 			throw $this->createNotFoundException('Unable to find Tip entity (id='.$id.').');
 		}
