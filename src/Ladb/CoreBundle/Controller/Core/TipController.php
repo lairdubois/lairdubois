@@ -21,7 +21,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\PublicationsEvent;
 
 /**
- * @Route("/le-saviez-vous")
+ * @Route("/astuces")
  */
 class TipController extends Controller {
 
