@@ -1,6 +1,6 @@
 {% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' %}
 
-<div class="ladb-box ladb-new">
+<div class="ladb-content ladb-new">
     <div class="ladb-body">
         {% embed 'LadbCoreBundle:Message:_form.html.twig' with { 'action':path('core_message_create', { 'threadId':thread.id }) } %}
             {% block buttons %}

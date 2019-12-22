@@ -303,6 +303,29 @@ class CollectionController extends AbstractCollectionBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_collection_widget")
+	 * @Template("LadbCoreBundle:Collection/Collection:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+
+		$id = intval($id);
+
+		$collection = $collectionRepository->findOneById($id);
+		if (is_null($collection)) {
+			throw $this->createNotFoundException('Unable to find Collection entity (id='.$id.').');
+		}
+		if ($collection->getIsPrivate() === true) {
+			throw $this->createNotFoundException('Not allowed (core_collection_widget)');
+		}
+
+		return array(
+			'collection' => $collection,
+		);
+	}
+
+	/**
 	 * @Route("/{id}/{entityType}/{entityId}/+", requirements={"id" = "\d+", "entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_add")
 	 */
 	public function addAction($id, $entityType, $entityId) {
