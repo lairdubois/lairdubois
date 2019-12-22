@@ -755,6 +755,29 @@ class CreationController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_creation_widget")
+	 * @Template("LadbCoreBundle:Wonder/Creation:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$id = intval($id);
+
+		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+		if ($creation->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_creation_widget)');
+		}
+
+		return array(
+			'creation' => $creation,
+		);
+	}
+
+	/**
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_creation_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_list_filter_page")
 	 */

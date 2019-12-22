@@ -8,6 +8,7 @@
 namespace Ladb\CoreBundle\Parser\Markdown;
 
 use cebe\markdown\Parser;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Markdown parser for github flavored markdown.
@@ -17,6 +18,7 @@ use cebe\markdown\Parser;
 class LadbMarkdown extends Parser {
 
 	private $userManager;
+	private $router;
 
 	// include block element parsing using traits
 	use \cebe\markdown\block\HeadlineTrait;
@@ -61,27 +63,26 @@ class LadbMarkdown extends Parser {
 
 	/////
 
-	public function __construct($userManager) {
+	public function __construct($userManager, $router) {
 		$this->userManager = $userManager;
+		$this->router = $router;
 	}
 
 	/////
 
-	private function _truncateUrl($value, $length = 30, $preserve = false, $separator = '...', $charset = 'UTF-8') {
-		if (mb_strlen($value, $charset) > $length && mb_strpos($value, 'http', 0, $charset) !== false) {
-			if ($preserve) {
-
-				// If breakpoint is on the last word, return the value without separator.
-				if (false === ($breakpoint = mb_strpos($value, ' ', $length, $charset))) {
-					return $value;
-				}
-
-				$length = $breakpoint;
-			}
-
-			return rtrim(mb_substr($value, 0, $length, $charset)).$separator;
+	private function _truncateUrl($value, $removeProtocol = true, $lengthL = 15, $lengthR = 15, $separator = '...', $charset = 'UTF-8') {
+		if ($removeProtocol) {
+			$value = ltrim($value, 'htps:/');
+		}
+		$valueLength = mb_strlen($value, $charset);
+		if ($valueLength > $lengthL + $lengthR) {
+			return rtrim(mb_substr($value, 0, $lengthL, $charset)).$separator.ltrim(mb_substr($value, $valueLength - $lengthR, $lengthR, $charset));
 		}
 		return $value;
+	}
+
+	private function _isLocalUrl($url) {
+		return preg_match('/^(?:http|https|)(?::\/\/|)(?:[a-z]+.|)lairdubois.fr/i', $url);
 	}
 
 	/////
@@ -91,8 +92,7 @@ class LadbMarkdown extends Parser {
 	 *
 	 * Allow headlines, lists and code to break paragraphs
 	 */
-	protected function consumeParagraph($lines, $current)
-	{
+	protected function consumeParagraph($lines, $current) {
 		// consume until newline
 		$content = [];
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
@@ -126,8 +126,38 @@ class LadbMarkdown extends Parser {
 	 */
 	protected function renderAutoUrl($block) {
 		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
+		$isLocalUrl = $this->_isLocalUrl($href);
+		$target = $isLocalUrl ? '' : ' target="_blank"';
 		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		return '<a href="'.$href.'">'.$text.'</a>';
+		$anchor = '<a href="'.$href.'"'.$target.'>'.$text.'</a>';
+		if ($isLocalUrl) {
+			try {
+
+				// Extract url components
+				$path = parse_url($href, PHP_URL_PATH);
+				$query = parse_url($href, PHP_URL_QUERY);
+				$fragment = parse_url($href, PHP_URL_FRAGMENT);
+
+				// Try to retrieve route params
+				$routeParams = $this->router->match($path);
+
+				// Check if route is 'show'
+				if (preg_match('/_show$/i', $routeParams['_route']) && is_null($query) && is_null($fragment)) {
+
+					// Route is 'show' add widget url attribute
+					$widgetHref = $this->router->generate(
+						str_replace('show', 'widget', $routeParams['_route']),
+						array( 'id' => intval($routeParams['id']) )
+					);
+
+					return '<div data-loader="ajax" data-src="'.$widgetHref.'" class="ladb-entity-widget"><div class="ladb-box ladb-box-lazy">'.$anchor.'</div></div>';
+				}
+
+			} catch (\Exception $e) {
+				return $e->getMessage();
+			}
+		}
+		return $anchor;
 	}
 
 	/**
@@ -135,8 +165,9 @@ class LadbMarkdown extends Parser {
 	 */
 	protected function renderUrl($block) {
 		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
+		$target = $this->_isLocalUrl($href) ? '' : ' target="_blank"';
 		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		return '<a href="'.$href.'">'.$text.'</a>';
+		return '<a href="'.$href.'"'.$target.'>'.$text.'</a>';
 	}
 
 	/**
@@ -150,7 +181,9 @@ class LadbMarkdown extends Parser {
 				return $block['orig'];
 			}
 		}
-		return '<a href="'.htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8').'"'
+		$href = htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8');
+		$target = $this->_isLocalUrl($href) ? '' : ' target="_blank"';
+		return '<a href="'.$href.'"'.$target
 		.(empty($block['title']) ? '' : ' title="'.htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8').'"')
 		.'>'.$this->_truncateUrl($this->renderAbsy($block['text'])).'</a>';
 	}

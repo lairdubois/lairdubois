@@ -177,6 +177,26 @@ class ProviderController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_provider_widget")
+	 * @Template("LadbCoreBundle:Knowledge/Provider:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+
+		$id = intval($id);
+
+		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($provider)) {
+			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
+		}
+
+		return array(
+			'provider' => $provider,
+		);
+	}
+
+	/**
 	 * @Route("/", name="core_provider_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_provider_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_provider_list_geojson")

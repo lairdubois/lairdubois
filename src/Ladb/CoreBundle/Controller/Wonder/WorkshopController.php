@@ -542,6 +542,29 @@ class WorkshopController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_workshop_widget")
+	 * @Template("LadbCoreBundle:Wonder/Workshop:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+
+		$id = intval($id);
+
+		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($workshop)) {
+			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
+		}
+		if ($workshop->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_workshop_widget)');
+		}
+
+		return array(
+			'workshop' => $workshop,
+		);
+	}
+
+	/**
 	 * @Route("/{id}/location.geojson", name="core_workshop_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Wonder/Workshop:location.geojson.twig")
 	 */

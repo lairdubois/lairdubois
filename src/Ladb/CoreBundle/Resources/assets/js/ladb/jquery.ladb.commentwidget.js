@@ -50,6 +50,7 @@
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
                     setupTooltips();
+                    lazyLoad();
                 }
             },
             error:function() {
@@ -161,7 +162,7 @@
                 success: function(data, textStatus, jqXHR) {
                     that.cancelEditComment();
                     $(".ladb-body", $row).hide();
-                    $(".ladb-box", $row).append(data);
+                    $(".ladb-content", $row).append(data);
                     that.bindEditComment($row);
                     $btn.button('reset');
                 },
@@ -269,8 +270,9 @@
                     $row.insertBefore($new);
                     $('ul.alert-danger', $new).remove();
                     $('.ladb-form-gallery-section', $new).collapse('hide');
-                    setupTooltips();
                     that.bindRow($row.first());
+                    setupTooltips();
+                    lazyLoad();
                 }
                 $('[type=submit]', $new).button('reset');
             },
@@ -325,7 +327,7 @@
 
         });
         $('.collapse').on('shown.bs.collapse', function () {
-            $('img[data-src]', $(this)).lazyLoadXT();
+            lazyLoad();
         });
         this.layoutActivities();
 

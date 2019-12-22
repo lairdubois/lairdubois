@@ -319,6 +319,29 @@ class QuestionController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_qa_question_widget")
+	 * @Template("LadbCoreBundle:Qa/Question:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$id = intval($id);
+
+		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+		if ($question->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_question_widget)');
+		}
+
+		return array(
+			'question' => $question,
+		);
+	}
+
+	/**
 	 * @Route("/", name="core_qa_question_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_qa_question_list_page")
 	 * @Template("LadbCoreBundle:Qa/Question:list.html.twig")

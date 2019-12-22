@@ -8,16 +8,20 @@
 
 .ladb-answer-row {
 
-  .ladb-box .ladb-content-box .ladb-comment-widget {
-    margin-left: 42px;
-  }
+  .ladb-box .ladb-content-box {
 
-  .ladb-best {
-    position: absolute;
-    top: 52px;
-    width: 32px;
-    text-align: center;
-    font-size: 180%;
+    > .ladb-best {
+      position: absolute;
+      top: 52px;
+      width: 32px;
+      text-align: center;
+      font-size: 180%;
+    }
+
+    .ladb-comment-widget {
+      margin-left: 42px;
+    }
+
   }
 
 }
@@ -222,13 +226,6 @@
 @media screen and (max-width: @ladb-screen-phone-max) {
   .ladb-qa-question, .ladb-answer-row {
 
-    .ladb-best {
-      position: initial;
-      width: auto;
-      font-size: 120%;
-      padding-top: 10px;
-    }
-
     > .ladb-box {
 
       .ladb-box-inner {
@@ -240,6 +237,13 @@
       }
 
       .ladb-content-box {
+
+        > .ladb-best {
+          position: initial;
+          width: auto;
+          font-size: 120%;
+          padding-top: 10px;
+        }
 
         > .ladb-heading {
 

@@ -146,6 +146,26 @@ class BookController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_book_widget")
+	 * @Template("LadbCoreBundle:Knowledge/Book:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$bookRepository = $om->getRepository(Book::CLASS_NAME);
+
+		$id = intval($id);
+
+		$book = $bookRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($book)) {
+			throw $this->createNotFoundException('Unable to find Book entity (id='.$id.').');
+		}
+
+		return array(
+			'book' => $book,
+		);
+	}
+
+	/**
 	 * @Route("/", name="core_book_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_book_list_page")
 	 * @Template("LadbCoreBundle:Knowledge/Book:list.html.twig")

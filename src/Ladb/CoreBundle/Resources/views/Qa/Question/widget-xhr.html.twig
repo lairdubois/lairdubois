@@ -1,0 +1,15 @@
+{% extends 'LadbCoreBundle:Common:_entity-widget.html.twig' %}
+
+{% set entity = question %}
+{% set emptyWebPath = 'empty_question.png' %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    <li class="ladb-counter">
+        {% if question.bestAnswer %}
+            <span class="ladb-best ladb-color-best-answer ladb-horizontal-separator-right"><i class="ladb-icon-favorite"></i></span>
+        {% endif %}
+        {% include 'LadbCoreBundle:Qa/Question:_answers-counter.part.html.twig' %}
+    </li>
+{% endblock %}
+

@@ -798,6 +798,29 @@ class PlanController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_plan_widget")
+	 * @Template("LadbCoreBundle:Wonder/Plan:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+
+		$id = intval($id);
+
+		$plan = $planRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
+		if ($plan->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_plan_widget)');
+		}
+
+		return array(
+			'plan' => $plan,
+		);
+	}
+
+	/**
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_plan_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_list_filter_page")
 	 */

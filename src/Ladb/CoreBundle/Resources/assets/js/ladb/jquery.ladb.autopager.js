@@ -35,7 +35,7 @@
                     $masonryInner.append(items);
                     $masonryInner.masonry('appended', items);
                 }
-                $(window).lazyLoadXT();
+                lazyLoad();
                 setupTooltips();
             }
         });
@@ -52,7 +52,7 @@
                 transitionDuration: 0
             });
         }
-        $(window).lazyLoadXT();
+        lazyLoad();
 
     };
     
