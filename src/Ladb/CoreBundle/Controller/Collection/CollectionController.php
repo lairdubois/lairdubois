@@ -316,7 +316,7 @@ class CollectionController extends AbstractCollectionBasedController {
 		if (is_null($collection)) {
 			throw $this->createNotFoundException('Unable to find Collection entity (id='.$id.').');
 		}
-		if ($collection->getIsPrivate() === true) {
+		if (!$collection->getIsPublic()) {
 			throw $this->createNotFoundException('Not allowed (core_collection_widget)');
 		}
 

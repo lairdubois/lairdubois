@@ -316,6 +316,29 @@ class GraphicController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_promotion_graphic_widget")
+	 * @Template("LadbCoreBundle:Promotion/Graphic:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+
+		$id = intval($id);
+
+		$graphic = $graphicRepository->findOneById($id);
+		if (is_null($graphic)) {
+			throw $this->createNotFoundException('Unable to graphic Graphic entity (id='.$id.').');
+		}
+		if ($graphic->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_graphic_widget)');
+		}
+
+		return array(
+			'graphic' => $graphic,
+		);
+	}
+
+	/**
 	 * @Route("/{id}/download", requirements={"id" = "\d+"}, name="core_promotion_graphic_download")
 	 */
 	public function downloadAction($id) {

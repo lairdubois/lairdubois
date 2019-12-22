@@ -129,7 +129,6 @@ class LadbMarkdown extends Parser {
 		$isLocalUrl = $this->_isLocalUrl($href);
 		$target = $isLocalUrl ? '' : ' target="_blank"';
 		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		$anchor = '<a href="'.$href.'"'.$target.'>'.$text.'</a>';
 		if ($isLocalUrl) {
 			try {
 
@@ -142,7 +141,7 @@ class LadbMarkdown extends Parser {
 				$routeParams = $this->router->match($path);
 
 				// Check if route is 'show'
-				if (preg_match('/_show$/i', $routeParams['_route']) && is_null($query) && is_null($fragment)) {
+				if (preg_match('/_show$/i', $routeParams['_route']) && isset($routeParams['id']) && is_null($query) && is_null($fragment)) {
 
 					// Route is 'show' add widget url attribute
 					$widgetHref = $this->router->generate(
@@ -150,14 +149,14 @@ class LadbMarkdown extends Parser {
 						array( 'id' => intval($routeParams['id']) )
 					);
 
-					return '<div data-loader="ajax" data-src="'.$widgetHref.'" class="ladb-entity-widget"><div class="ladb-box ladb-box-lazy">'.$anchor.'</div></div>';
+					return '<div data-loader="ajax" data-src="'.$widgetHref.'" class="ladb-entity-widget"><div class="ladb-box ladb-box-lazy"><a href="'.$href.'">'.$text.'</a></div></div>';
 				}
 
 			} catch (\Exception $e) {
-				return $e->getMessage();
 			}
+			return '<a href="'.$href.'" class="ladb-link ladb-link-intern"><span>'.$text.'</span></a>';
 		}
-		return $anchor;
+		return '<a href="'.$href.'" target="_blank" class="ladb-link ladb-link-extern"><span>'.$text.'</span></a>';
 	}
 
 	/**
@@ -165,9 +164,9 @@ class LadbMarkdown extends Parser {
 	 */
 	protected function renderUrl($block) {
 		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
-		$target = $this->_isLocalUrl($href) ? '' : ' target="_blank"';
+		$target = $this->_isLocalUrl($href) ? ' class="ladb-link ladb-link-intern"' : ' class="ladb-link ladb-link-extern" target="_blank"';
 		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		return '<a href="'.$href.'"'.$target.'>'.$text.'</a>';
+		return '<a href="'.$href.'"'.$target.'><span>'.$text.'</span></a>';
 	}
 
 	/**

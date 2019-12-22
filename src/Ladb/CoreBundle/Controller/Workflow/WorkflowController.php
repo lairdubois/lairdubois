@@ -290,6 +290,29 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_workflow_widget")
+	 * @Template("LadbCoreBundle:Workflow/Workflow:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+
+		$id = intval($id);
+
+		$workflow = $workflowRepository->findOneById($id);
+		if (is_null($workflow)) {
+			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
+		}
+		if (!$workflow->getIsPublic()) {
+			throw $this->createNotFoundException('Not allowed (core_workflow_widget)');
+		}
+
+		return array(
+			'workflow' => $workflow,
+		);
+	}
+
+	/**
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_workflow_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_howtos_filter_page")

@@ -345,6 +345,29 @@ class HowtoController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_widget")
+	 * @Template("LadbCoreBundle:Howto/Howto:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$id = intval($id);
+
+		$howto = $howtoRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if ($howto->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_howto_widget)');
+		}
+
+		return array(
+			'howto' => $howto,
+		);
+	}
+
+	/**
 	 * @Route("/pas-a-pas/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_howto_list_filter")
 	 * @Route("/pas-a-pas/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_list_filter_page")
 	 */

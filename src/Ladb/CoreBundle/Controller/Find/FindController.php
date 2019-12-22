@@ -324,6 +324,29 @@ class FindController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_find_widget")
+	 * @Template("LadbCoreBundle:Find/Find:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$findRepository = $om->getRepository(Find::CLASS_NAME);
+
+		$id = intval($id);
+
+		$find = $findRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($find)) {
+			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
+		}
+		if ($find->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_find_widget)');
+		}
+
+		return array(
+			'find' => $find,
+		);
+	}
+
+	/**
 	 * @Route("/{id}/location.geojson", name="core_find_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Find/Find:location.geojson.twig")
 	 */
