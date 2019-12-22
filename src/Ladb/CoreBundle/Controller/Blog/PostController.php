@@ -302,6 +302,29 @@ class PostController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_blog_post_widget")
+	 * @Template("LadbCoreBundle:Blog/Post:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$postRepository = $om->getRepository(Post::CLASS_NAME);
+
+		$id = intval($id);
+
+		$post = $postRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($post)) {
+			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
+		}
+		if ($post->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_post_widget)');
+		}
+
+		return array(
+			'post' => $post,
+		);
+	}
+
+	/**
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_blog_post_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_blog_post_list_filter_page")
 	 */
