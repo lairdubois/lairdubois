@@ -71,12 +71,14 @@ class LadbMarkdown extends Parser {
 	/////
 
 	private function _truncateUrl($value, $removeProtocol = true, $lengthL = 15, $lengthR = 15, $separator = '...', $charset = 'UTF-8') {
-		if ($removeProtocol) {
-			$value = ltrim($value, 'htps:/');
-		}
-		$valueLength = mb_strlen($value, $charset);
-		if ($valueLength > $lengthL + $lengthR) {
-			return rtrim(mb_substr($value, 0, $lengthL, $charset)).$separator.ltrim(mb_substr($value, $valueLength - $lengthR, $lengthR, $charset));
+		if (mb_strpos($value, 'http', 0, $charset) === 0) {
+			if ($removeProtocol) {
+				$value = ltrim($value, 'htps:/');
+			}
+			$valueLength = mb_strlen($value, $charset);
+			if ($valueLength > $lengthL + $lengthR) {
+				return rtrim(mb_substr($value, 0, $lengthL, $charset)).$separator.ltrim(mb_substr($value, $valueLength - $lengthR, $lengthR, $charset));
+			}
 		}
 		return $value;
 	}
@@ -127,7 +129,6 @@ class LadbMarkdown extends Parser {
 	protected function renderAutoUrl($block) {
 		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
 		$isLocalUrl = $this->_isLocalUrl($href);
-		$target = $isLocalUrl ? '' : ' target="_blank"';
 		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 		if ($isLocalUrl) {
 			try {
