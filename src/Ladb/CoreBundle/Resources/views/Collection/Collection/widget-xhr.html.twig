@@ -1,0 +1,10 @@
+{% extends 'LadbCoreBundle:Common:_entity-widget.html.twig' %}
+
+{% set entity = collection %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    <li class="ladb-counter">
+        {% include 'LadbCoreBundle:Collection/Collection:_publications-counter.part.html.twig' with { 'classes':collection.viewCount > 0 ? 'ladb-horizontal-separator-right pull-right' : '' } %}
+    </li>
+{% endblock %}

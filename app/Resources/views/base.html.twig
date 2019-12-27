@@ -244,8 +244,8 @@
                 '@LadbCoreBundle/Resources/assets/js/jquery-jscroll/jquery.jscroll.js'
                 '@LadbCoreBundle/Resources/assets/js/jquery-cornerslider/jquery.cornerslider.js'
                 '@LadbCoreBundle/Resources/assets/js/jquery-sticky/jquery.sticky.js'
-                '@LadbCoreBundle/Resources/assets/js/jquery-lazyloadxt/jquery.lazyloadxt.js'
-                '@LadbCoreBundle/Resources/assets/js/jquery-lazyloadxt/jquery.lazyloadxt.bg.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-lazy/jquery.lazy.js'
+                '@LadbCoreBundle/Resources/assets/js/jquery-lazy/jquery.lazy.ajax.js'
                 '@LadbCoreBundle/Resources/assets/js/readmorejs/readmore.js'
                 '@LadbCoreBundle/Resources/assets/js/emojionearea/emojionearea.js'
 
@@ -279,6 +279,7 @@
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
             <script>
+                $(window).on('load orientationchange resize scroll touchmove focus', lazyLoad);
                 $(document).ready(function() {
                     {% block bodyJavascriptsInlineReady %}
                         setupTextareas();

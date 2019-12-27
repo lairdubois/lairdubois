@@ -103,6 +103,8 @@ class ValidUsernameValidator extends ConstraintValidator {
 				'questions',
 				'promouvoir',
 				'collections',
+				'logiciels',
+				'astuces',
 
 			);
 

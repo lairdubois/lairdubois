@@ -657,10 +657,10 @@ class PlanController extends Controller {
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_plan_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
-			'filter'       => $filter,
-			'prevPageUrl'  => $pageUrls->prev,
-			'nextPageUrl'  => $pageUrls->next,
-			'inspirations' => $paginator,
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'plans'       => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -700,7 +700,7 @@ class PlanController extends Controller {
 			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'rebounds'    => $paginator,
+			'plans'       => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -795,6 +795,29 @@ class PlanController extends Controller {
 			throw $this->createNotFoundException('No strip');
 		}
 
+	}
+
+	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_plan_widget")
+	 * @Template("LadbCoreBundle:Wonder/Plan:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+
+		$id = intval($id);
+
+		$plan = $planRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($plan)) {
+			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
+		}
+		if ($plan->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_plan_widget)');
+		}
+
+		return array(
+			'plan' => $plan,
+		);
 	}
 
 	/**

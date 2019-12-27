@@ -1,0 +1,16 @@
+{% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
+
+{% set heading = 'core.tip.list'|trans() %}
+{% set headingLevel = 2 %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'LadbCoreBundle:Core/Tip:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightOuter %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TIP') %}{{ parent() }}{% endif %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{{ path('core_tip_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'core.tip.new'|trans() }}</span></a>
+{% endblock %}

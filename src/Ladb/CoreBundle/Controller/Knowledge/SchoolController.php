@@ -174,6 +174,26 @@ class SchoolController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_school_widget")
+	 * @Template("LadbCoreBundle:Knowledge/School:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+
+		$id = intval($id);
+
+		$school = $schoolRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($school)) {
+			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
+		}
+
+		return array(
+			'school' => $school,
+		);
+	}
+
+	/**
 	 * @Route("/", name="core_school_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_school_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_school_list_geojson")

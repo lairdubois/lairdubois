@@ -82,7 +82,7 @@ class AboutController extends Controller {
 			array( 'name' => 'jquery-payment', 'url' => 'https://github.com/stripe/jquery.payment', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-panzoom', 'url' => 'http://timmywil.github.io/jquery.panzoom/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-mousewheel', 'url' => 'https://github.com/jquery/jquery-mousewheel', 'labels' => array( 'JS' ) ),
-			array( 'name' => 'jquery-lazyloadxt', 'url' => 'https://github.com/ressio/lazy-load-xt', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'jquery-lazy', 'url' => 'http://jquery.eisbehr.de/lazy/', 'labels' => array( 'JS' ) ),
 
 			array( 'name' => 'Bootstrap', 'url' => 'http://getbootstrap.com/', 'labels' => array( 'HTML', 'CSS', 'JS' ) ),
 			array( 'name' => 'bootstrap-datetimepicker', 'url' => 'https://github.com/Eonasdan/bootstrap-datetimepicker', 'labels' => array( 'JS' ) ),

@@ -110,7 +110,7 @@
                     $row.replaceWith($newRow);
                     that.$hiddenRow = null;
                     that.bindAnswerRow($newRow);
-                    $(window).lazyLoadXT();
+                    lazyLoad();
                 } else {
                     that.bindEditAnswerBox($row, data);
                 }
@@ -228,7 +228,7 @@
                     $('.ladb-answers-header', that.$element).replaceWith($header);
                     that.bindSorters();
                     that.bindRows();
-                    $(window).lazyLoadXT();
+                    lazyLoad();
                 },
                 error: function () {
                     console.log('error');

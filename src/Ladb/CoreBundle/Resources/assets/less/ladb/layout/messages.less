@@ -136,21 +136,23 @@
     display: inline-block;
     text-align: left;
 
-    .ladb-box {
+    > .ladb-content {
       margin-left: 42px;
-    }
 
-    .ladb-heading {
-      margin-bottom: 5px;
-      color: @ladb-global-light-color;
-    }
+      > .ladb-heading {
+        margin-bottom: 5px;
+        color: @ladb-global-light-color;
 
-    .ladb-heading > a {
-      font-weight: bold;
-    }
+        > a {
+          font-weight: bold;
+        }
 
-    .ladb-age {
-      .age();
+        .ladb-age {
+          .age();
+        }
+
+      }
+
     }
 
     .ladb-body > form {

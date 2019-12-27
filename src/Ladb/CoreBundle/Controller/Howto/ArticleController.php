@@ -324,6 +324,29 @@ class ArticleController extends Controller {
 	}
 
 	/**
+	 * @Route("/pas-a-pas/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_article_widget")
+	 * @Template("LadbCoreBundle:Howto/Article:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$articleRepository = $om->getRepository(Article::CLASS_NAME);
+
+		$id = intval($id);
+
+		$article = $articleRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($article)) {
+			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
+		}
+		if ($article->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_howto_article_widget)');
+		}
+
+		return array(
+			'article' => $article,
+		);
+	}
+
+	/**
 	 * @Route("/pas-a-pas/article/{id}.html", name="core_howto_article_show_bc")
 	 */
 	public function bcShowAction(Request $request, $id) {

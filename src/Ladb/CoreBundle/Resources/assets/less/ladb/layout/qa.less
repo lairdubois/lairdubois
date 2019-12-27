@@ -8,16 +8,20 @@
 
 .ladb-answer-row {
 
-  .ladb-box .ladb-content-box .ladb-comment-widget {
-    margin-left: 42px;
-  }
+  > .ladb-box .ladb-content-box {
 
-  .ladb-best {
-    position: absolute;
-    top: 52px;
-    width: 32px;
-    text-align: center;
-    font-size: 180%;
+    > .ladb-best {
+      position: absolute;
+      top: 52px;
+      width: 32px;
+      text-align: center;
+      font-size: 180%;
+    }
+
+    .ladb-comment-widget {
+      margin-left: 42px;
+    }
+
   }
 
 }
@@ -98,17 +102,17 @@
 .ladb-answer-thumbnail {
   padding: 0 10px 20px 10px;
 
-  >.ladb-box {
+  > .ladb-box {
     .list-box();
     .list-box-hover();
 
-    >.ladb-content {
+    > .ladb-content {
 
-      >.ladb-image {
+      > .ladb-image {
         float: left;
       }
 
-      >.ladb-heading {
+      > .ladb-heading {
         margin-left: 74px;
 
         h3 {
@@ -119,16 +123,16 @@
 
     }
 
-    >.ladb-answer-row {
+    > .ladb-answer-row {
       padding: 6px 10px;
       border-left: 1px solid @ladb-global-border;
       min-height: 64px;
 
-      >.ladb-box {
+      > .ladb-box {
         border: none;
         padding: 0;
 
-        >.ladb-content-box {
+        > .ladb-content-box {
           padding: 0;
         }
 
@@ -185,7 +189,7 @@
         float: left;
       }
 
-      .ladb-content {
+      > .ladb-content {
         margin-top: 5px;
         margin-left: 42px;
         min-height: 50px;
@@ -222,13 +226,6 @@
 @media screen and (max-width: @ladb-screen-phone-max) {
   .ladb-qa-question, .ladb-answer-row {
 
-    .ladb-best {
-      position: initial;
-      width: auto;
-      font-size: 120%;
-      padding-top: 10px;
-    }
-
     > .ladb-box {
 
       .ladb-box-inner {
@@ -241,6 +238,13 @@
 
       .ladb-content-box {
 
+        > .ladb-best {
+          position: initial;
+          width: auto;
+          font-size: 120%;
+          padding-top: 10px;
+        }
+
         > .ladb-heading {
 
           .ladb-age {
@@ -252,7 +256,7 @@
 
         }
 
-        .ladb-content {
+        > .ladb-content {
           margin-left: 0;
         }
 

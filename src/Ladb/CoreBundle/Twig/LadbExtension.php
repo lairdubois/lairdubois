@@ -2,13 +2,16 @@
 
 namespace Ladb\CoreBundle\Twig;
 
-use Ladb\CoreBundle\Manager\Core\UserManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 use Ladb\CoreBundle\Parser\Markdown\LadbMarkdown;
 use Ladb\CoreBundle\Utils\TypableUtils;
+use Ladb\CoreBundle\Manager\Core\UserManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
-class LadbExtension extends \Twig_Extension {
+class LadbExtension extends AbstractExtension {
 
 	private $container;
 
@@ -18,26 +21,26 @@ class LadbExtension extends \Twig_Extension {
 
 	public function getFilters() {
 		return array(
-			new \Twig_SimpleFilter('ladb_file_size_format', array( $this, 'fileSizeFormatFilter' )),
-			new \Twig_SimpleFilter('ladb_truncate_at', array( $this, 'truncateAtFilter' )),
-			new \Twig_SimpleFilter('ladb_markdown', array( $this, 'markdownFilter' )),
-			new \Twig_SimpleFilter('ladb_url_trim', array( $this, 'urlTrimFilter' )),
-			new \Twig_SimpleFilter('ladb_url_beautify', array( $this, 'urlBeautifyFilter' )),
-			new \Twig_SimpleFilter('ladb_duration', array( $this, 'durationFilter' )),
-			new \Twig_SimpleFilter('ladb_hours_minutes_duration', array( $this, 'hoursMinutesDurationFilter' )),
+			new TwigFilter('ladb_file_size_format', array( $this, 'fileSizeFormatFilter' )),
+			new TwigFilter('ladb_truncate_at', array( $this, 'truncateAtFilter' )),
+			new TwigFilter('ladb_markdown', array( $this, 'markdownFilter' )),
+			new TwigFilter('ladb_url_trim', array( $this, 'urlTrimFilter' )),
+			new TwigFilter('ladb_url_beautify', array( $this, 'urlBeautifyFilter' )),
+			new TwigFilter('ladb_duration', array( $this, 'durationFilter' )),
+			new TwigFilter('ladb_hours_minutes_duration', array( $this, 'hoursMinutesDurationFilter' )),
 		);
 	}
 
 	public function getFunctions() {
 		return array(
-			new \Twig_SimpleFunction('ladb_entity', array( $this, 'entityFunction' )),
-			new \Twig_SimpleFunction('ladb_entity_url_action', array( $this, 'entityUrlActionFunction' )),
-			new \Twig_SimpleFunction('ladb_entity_type_stripped_name', array( $this, 'entityTypeStrippedNameFunction' )),
-			new \Twig_SimpleFunction('ladb_entity_type_icon', array( $this, 'entityTypeIconFunction' )),
-			new \Twig_SimpleFunction('ladb_value2json_tokens', array( $this, 'value2jsonTokensFunction' )),
-			new \Twig_SimpleFunction('ladb_estimate_row_count', array( $this, 'estimateRowCountFunction' )),
-			new \Twig_SimpleFunction('ladb_video_player_frame', array( $this, 'videoPlayerFrameFunction' )),
-			new \Twig_SimpleFunction('ladb_video_icon_class', array( $this, 'videoIconClassFunction' )),
+			new TwigFunction('ladb_entity', array( $this, 'entityFunction' )),
+			new TwigFunction('ladb_entity_url_action', array( $this, 'entityUrlActionFunction' )),
+			new TwigFunction('ladb_entity_type_stripped_name', array( $this, 'entityTypeStrippedNameFunction' )),
+			new TwigFunction('ladb_entity_type_icon', array( $this, 'entityTypeIconFunction' )),
+			new TwigFunction('ladb_value2json_tokens', array( $this, 'value2jsonTokensFunction' )),
+			new TwigFunction('ladb_estimate_row_count', array( $this, 'estimateRowCountFunction' )),
+			new TwigFunction('ladb_video_player_frame', array( $this, 'videoPlayerFrameFunction' )),
+			new TwigFunction('ladb_video_icon_class', array( $this, 'videoIconClassFunction' )),
 		);
 	}
 
@@ -65,7 +68,7 @@ class LadbExtension extends \Twig_Extension {
 	}
 
 	public function markdownFilter($str) {
-		$parser = new LadbMarkdown($this->container->get(UserManager::NAME));
+		$parser = new LadbMarkdown($this->container->get(UserManager::NAME), $this->container->get('router'));
 		return $parser->parse($str);
 	}
 

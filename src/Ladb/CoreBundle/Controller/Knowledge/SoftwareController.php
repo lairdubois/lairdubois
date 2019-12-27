@@ -148,6 +148,26 @@ class SoftwareController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_software_widget")
+	 * @Template("LadbCoreBundle:Knowledge/Software:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$softwareRepository = $om->getRepository(Software::CLASS_NAME);
+
+		$id = intval($id);
+
+		$software = $softwareRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($software)) {
+			throw $this->createNotFoundException('Unable to find Software entity (id='.$id.').');
+		}
+
+		return array(
+			'software' => $software,
+		);
+	}
+
+	/**
 	 * @Route("/", name="core_software_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_software_list_page")
 	 * @Template("LadbCoreBundle:Knowledge/Software:list.html.twig")

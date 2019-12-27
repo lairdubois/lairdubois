@@ -144,6 +144,13 @@ change_password:
     heading: Modifier le mot de passe
     submit: Envoyer
 
+core:
+  tip:
+    new: Ajouter une astuce
+    edit: Edition de l'astuce
+    list: Les astuces
+    nav: Astuces
+
 wonder:
   creation:
     description: Base collaborative de créations autours du travail du bois.
@@ -1301,6 +1308,7 @@ search:
     promotion_graphic: Recherche dans les graphismes
     workflows: Recherche dans les processus
     collections: Recherche dans les collections
+    tips: Recherche dans les astuces
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 

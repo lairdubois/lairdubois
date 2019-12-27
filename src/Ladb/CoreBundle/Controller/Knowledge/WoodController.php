@@ -240,6 +240,26 @@ class WoodController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_wood_widget")
+	 * @Template("LadbCoreBundle:Knowledge/Wood:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$woodRepository = $om->getRepository(Wood::CLASS_NAME);
+
+		$id = intval($id);
+
+		$wood = $woodRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($wood)) {
+			throw $this->createNotFoundException('Unable to find Wood entity (id='.$id.').');
+		}
+
+		return array(
+			'wood' => $wood,
+		);
+	}
+
+	/**
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_wood_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_wood_list_filter_page")
 	 */

@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    {% if inspirations.count == 0 %}
+    {% if plans.count == 0 %}
         <div class="alert alert-info ladb-margin-top">
             Ce plan n'a aucune inspiration
         </div>
@@ -38,5 +38,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Wonder/Plan:_list-n.part.html.twig' with { 'plans':inspirations } %}
+    {% include 'LadbCoreBundle:Wonder/Plan:_list-n.part.html.twig' %}
 {% endblock %}

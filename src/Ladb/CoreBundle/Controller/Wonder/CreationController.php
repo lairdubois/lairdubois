@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Entity\Core\Tip;
+use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -612,10 +614,10 @@ class CreationController extends Controller {
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_creation_inspirations_filter_page', array( 'id' => $id, 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
-			'filter'       => $filter,
-			'prevPageUrl'  => $pageUrls->prev,
-			'nextPageUrl'  => $pageUrls->next,
-			'inspirations' => $paginator,
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'creations'   => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -655,7 +657,7 @@ class CreationController extends Controller {
 			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'rebounds'    => $paginator,
+			'creations'   => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {
@@ -753,6 +755,29 @@ class CreationController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_creation_widget")
+	 * @Template("LadbCoreBundle:Wonder/Creation:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$id = intval($id);
+
+		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+		if ($creation->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_creation_widget)');
+		}
+
+		return array(
+			'creation' => $creation,
+		);
+	}
+
+	/**
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_creation_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_list_filter_page")
 	 */
@@ -766,7 +791,6 @@ class CreationController extends Controller {
 	 * @Template("LadbCoreBundle:Wonder/Creation:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
-		$om = $this->getDoctrine()->getManager();
 		$searchUtils = $this->get(SearchUtils::NAME);
 
 		// Elasticsearch paginiation limit
@@ -784,7 +808,8 @@ class CreationController extends Controller {
 
 		/////
 
-		if ($page == 0) {
+		if ($page == 0 && $layout == 'view') {
+			$om = $this->getDoctrine()->getManager();
 
 			if ($homepage) {
 
@@ -810,6 +835,17 @@ class CreationController extends Controller {
 				// RunningEvents
 				$findRepository = $om->getRepository(Find::CLASS_NAME);
 				$runningFinds = $findRepository->findByRunningNow();
+
+			}
+
+			// Tip
+			if (!isset($runningFinds) || empty($runningFinds)) {
+
+				$maybeUtils = $this->get(MaybeUtils::NAME);
+				if ($maybeUtils->canDoIt(0, 10, 'tip')) {
+					$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+					$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
+				}
 
 			}
 
@@ -1051,6 +1087,7 @@ class CreationController extends Controller {
 			'layout'          => $layout,
 			'homepage'        => $homepage,
 			'routeParameters' => $routeParameters,
+			'highlightedTip'  => isset($highlightedTip) ? $highlightedTip : null,
 		));
 
 		if ($request->isXmlHttpRequest()) {

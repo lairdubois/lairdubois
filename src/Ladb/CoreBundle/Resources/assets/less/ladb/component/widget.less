@@ -1,0 +1,92 @@
+//
+// Widget
+//
+
+@widgetMargin: 5px;
+@widgetBoxMinHeight: 50px;
+
+.ladb-entity-widget {
+  margin: @widgetMargin 0;
+
+  > .ladb-box {
+    .list-box();
+    min-height: @widgetBoxMinHeight;
+    box-sizing: content-box;
+
+    &.ladb-box-hover {
+      .list-box-hover();
+    }
+
+    &.ladb-box-lazy {
+
+      > a {
+        line-height: @widgetBoxMinHeight;
+        display: block;
+        color: #ccc;
+
+        &:before {
+          background-color: #eee;
+          width: @widgetBoxMinHeight;
+          height: @widgetBoxMinHeight;
+          display: inline-block;
+          content: " ";
+          float: left;
+          border-right: @widgetMargin solid #fff;
+          box-sizing: content-box;
+        }
+
+      }
+
+    }
+
+    > .ladb-image {
+      float: left;
+    }
+
+    > .ladb-body {
+      padding-left: @widgetBoxMinHeight + @widgetMargin;
+      position: relative;
+
+      > .ladb-heading {
+        font-weight: bold;
+        margin: 4px 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+      }
+
+      > .ladb-subheading {
+        color: @ladb-global-light-color;
+
+        .ladb-author {
+          font-size: 80%;
+        }
+
+        .ladb-age {
+          display: inline-block;
+          .age();
+        }
+
+      }
+
+      > .ladb-counters {
+        .list-counters();
+        position: absolute;
+        right: 0;
+        bottom: 0;
+
+        > .ladb-counter {
+          font-size: 85%;
+        }
+
+      }
+
+    }
+
+  }
+
+  + br {
+    display: none;
+  }
+
+}

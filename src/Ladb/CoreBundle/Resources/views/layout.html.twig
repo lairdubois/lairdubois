@@ -112,6 +112,7 @@
                 <li class="uk-nav-divider"></li>
                 <li><a href="{{ path('core_find_list') }}"><i class="ladb-icon-globe"></i>{{ 'find.find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-find-finds pull-right' } %}</a></li>
                 <li class="uk-nav-divider"></li>
+                <li><a href="{{ path('core_tip_list') }}"><i class="ladb-icon-tip"></i>{{ 'core.tip.nav'|trans() }}</a></li>
                 <li><a href="{{ path('core_blog_post_list') }}"><i class="ladb-icon-blog"></i>{{ 'blog.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-blog-posts pull-right' } %}</a></li>
                 <li><a href="{% if is_granted("ROLE_USER") and app.user.meta.unlistedFaqQuestionCount > 0 %}{{ path('core_faq_question_list', { 'q':'@sort-recent' }) }}{% else %}{{ path('core_faq_question_list') }}{% endif %}"><i class="ladb-icon-help"></i>{{ 'faq.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-faq-questions pull-right' } %}</a></li>
                 <li><a href="{{ path('core_promotion_graphic_list') }}"><i class="ladb-icon-promote"></i>{{ 'promotion.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-promotion-graphics pull-right' } %}</a></li>

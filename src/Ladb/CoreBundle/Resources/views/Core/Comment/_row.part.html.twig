@@ -27,7 +27,7 @@
         </div>
     {% endblock %}
     {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':comment.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
-    <div class="ladb-box">
+    <div class="ladb-content">
         <div class="ladb-heading">
             {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':comment, 'hideBy':true, 'itemprop':'creator' } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':comment, 'itemprop':'dateCreated', 'showEdited':true } %}
         </div>

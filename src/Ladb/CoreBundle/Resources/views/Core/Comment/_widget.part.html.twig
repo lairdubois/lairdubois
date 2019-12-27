@@ -48,7 +48,7 @@
                     {% if is_granted('ROLE_USER') %}
                         <div class="ladb-fake-new">
                             {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
-                            <div class="ladb-box">
+                            <div class="ladb-content">
                                 <button class="btn btn-default btn-block" data-ladb-new-container-selector="#ladb_comment_{{ comment.id }}_group" data-loading-text="{{ 'default.loading'|trans }}">Votre commentaire...</button>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                 {% if is_granted('ROLE_USER') %}
                     <div class="ladb-fake-new">
                         {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
-                        <div class="ladb-box">
+                        <div class="ladb-content">
                             <button class="btn btn-default btn-block" data-ladb-new-container-selector="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_group" data-loading-text="{{ 'default.loading'|trans }}">Votre commentaire...</button>
                         </div>
                     </div>

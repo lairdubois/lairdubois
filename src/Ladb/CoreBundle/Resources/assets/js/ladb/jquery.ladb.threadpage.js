@@ -36,7 +36,7 @@
             dataType: "html",
             context: document.body,
             success: function(data, textStatus, jqXHR) {
-                if ($(data).attr("class") == "ladb-edit") {
+                if ($(data).attr("class") === "ladb-edit") {
                     $edit.replaceWith(data);
                     that.bindEdit($row);
                 } else {
@@ -115,7 +115,7 @@
                 success: function (data, textStatus, jqXHR) {
                     that.cancelEdit();
                     $(".ladb-body", $row).hide();
-                    $(".ladb-box", $row).append(data);
+                    $(".ladb-content", $row).append(data);
                     that.bindEdit($row);
                     $btn.button('reset');
                 },

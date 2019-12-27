@@ -67,7 +67,7 @@
                 <div class="ladb-message-row ladb-message-mine">
                     <div class="ladb-message">
                         {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
-                        <div class="ladb-box ladb-fake-new">
+                        <div class="ladb-content ladb-fake-new">
                             <button class="btn btn-default btn-block" data-ladb-new-path="{{ path('core_message_new', { 'threadId':thread.id }) }}" data-loading-text="{{ 'default.loading'|trans }}">Votre message...</button>
                         </div>
                     </div>

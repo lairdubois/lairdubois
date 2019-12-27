@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block bodyContainerContent %}
-    {% if rebounds.count == 0 %}
+    {% if workflows.count == 0 %}
         <div class="alert alert-info ladb-margin-top">
             Ce processus n'a aucun rebond
         </div>
@@ -32,5 +32,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'LadbCoreBundle:Workflow:Workflow/_list-n.part.html.twig' with { 'workflows':rebounds } %}
+    {% include 'LadbCoreBundle:Workflow:Workflow/_list-n.part.html.twig' %}
 {% endblock %}
