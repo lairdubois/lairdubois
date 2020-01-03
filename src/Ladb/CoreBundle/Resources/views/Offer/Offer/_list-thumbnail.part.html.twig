@@ -3,3 +3,15 @@
 {# set offer #}
 
 {% set entity = offer %}
+
+{% block body %}
+    {{ parent() }}
+    <div style="">
+        <div style="font-weight: bold; font-size: 150%; color: #0b93d5;">
+            300€
+        </div>
+        <div style="font-weight: bold; font-size: 110%;">
+            38780 Pont-Evêque
+        </div>
+    </div>
+{% endblock %}
