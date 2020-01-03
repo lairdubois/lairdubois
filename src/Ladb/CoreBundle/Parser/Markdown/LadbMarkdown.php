@@ -73,7 +73,7 @@ class LadbMarkdown extends Parser {
 	private function _truncateUrl($value, $removeProtocol = true, $lengthL = 14, $lengthR = 15, $separator = '...', $charset = 'UTF-8') {
 		if (mb_strpos($value, 'http', 0, $charset) === 0) {
 			if ($removeProtocol) {
-				$value = ltrim($value, 'htps:/w.');
+				$value = preg_replace('/^(?:https?:|)(?:\/\/)(?:www.|)/i', '', $value);
 			}
 			$valueLength = mb_strlen($value, $charset);
 			if ($valueLength > $lengthL + $lengthR) {
