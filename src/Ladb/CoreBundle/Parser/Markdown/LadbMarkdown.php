@@ -70,10 +70,10 @@ class LadbMarkdown extends Parser {
 
 	/////
 
-	private function _truncateUrl($value, $removeProtocol = true, $lengthL = 15, $lengthR = 15, $separator = '...', $charset = 'UTF-8') {
-		if (mb_strpos($value, 'http', 0, $charset) === 0) {
+	private function _truncateUrl($value, $removeProtocol = true, $lengthL = 14, $lengthR = 15, $separator = '...', $charset = 'UTF-8') {
+		if (preg_match('/^(?:https?:|)(?:\/\/)/i', $value)) {
 			if ($removeProtocol) {
-				$value = ltrim($value, 'htps:/');
+				$value = preg_replace('/^(?:https?:|)(?:\/\/)(?:www.|)/i', '', $value);
 			}
 			$valueLength = mb_strlen($value, $charset);
 			if ($valueLength > $lengthL + $lengthR) {
@@ -84,7 +84,51 @@ class LadbMarkdown extends Parser {
 	}
 
 	private function _isLocalUrl($url) {
-		return preg_match('/^(?:http|https|)(?::\/\/|)(?:[a-z]+.|)lairdubois.fr/i', $url);
+		return preg_match('/^(?:https?:|)(?:\/\/)(?:[a-z]+.|)lairdubois.fr/i', $url);
+	}
+
+	private function _renderDecoratedLink($url, $text = null, $title = null) {
+		$href = htmlspecialchars($url, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+		$textIsUrl = preg_match('/^(?:https?:|)(?:\/\/)/i', $text);
+		$decorated = empty($text) || $textIsUrl;
+		if (empty($text) || $textIsUrl /* text url are replaced by url */) {
+			$text = $this->_truncateUrl(htmlspecialchars(urldecode($url), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+		}
+		if (!empty($title)) {
+			$title = htmlspecialchars($title, ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8');
+		}
+		$isLocalUrl = $this->_isLocalUrl($href);
+		if ($isLocalUrl && $decorated) {
+			try {
+
+				// Extract url components
+				$path = parse_url($href, PHP_URL_PATH);
+				$query = parse_url($href, PHP_URL_QUERY);
+				$fragment = parse_url($href, PHP_URL_FRAGMENT);
+
+				// Try to retrieve route params
+				$routeParams = $this->router->match($path);
+
+				// Check if route is 'show'
+				if (preg_match('/_show$/i', $routeParams['_route']) && isset($routeParams['id']) && is_null($query) && is_null($fragment)) {
+
+					// Route is 'show' add widget url attribute
+					$widgetHref = $this->router->generate(
+						str_replace('show', 'widget', $routeParams['_route']),
+						array( 'id' => intval($routeParams['id']) )
+					);
+
+					return '<div data-loader="ajax" data-src="'.$widgetHref.'" class="ladb-entity-widget"><div class="ladb-box ladb-box-lazy"><a href="'.$href.'">'.$text.'</a></div></div>';
+				}
+
+			} catch (\Exception $e) {
+			}
+		}
+		return '<a href="'.$href.'"'
+			.($isLocalUrl ? '' : ' target="_blank"')
+			.(empty($title) ? '' : ' title="'.$title.'" data-tooltip="tooltip"')
+			.($decorated ? ' class="ladb-link ladb-link-'.($isLocalUrl ? 'intern' : 'extern').'"' : '')
+			.'><span>'.$text.'</span></a>';
 	}
 
 	/////
@@ -127,47 +171,14 @@ class LadbMarkdown extends Parser {
 	 * Set target to _blank and truncate Url
 	 */
 	protected function renderAutoUrl($block) {
-		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
-		$isLocalUrl = $this->_isLocalUrl($href);
-		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		if ($isLocalUrl) {
-			try {
-
-				// Extract url components
-				$path = parse_url($href, PHP_URL_PATH);
-				$query = parse_url($href, PHP_URL_QUERY);
-				$fragment = parse_url($href, PHP_URL_FRAGMENT);
-
-				// Try to retrieve route params
-				$routeParams = $this->router->match($path);
-
-				// Check if route is 'show'
-				if (preg_match('/_show$/i', $routeParams['_route']) && isset($routeParams['id']) && is_null($query) && is_null($fragment)) {
-
-					// Route is 'show' add widget url attribute
-					$widgetHref = $this->router->generate(
-						str_replace('show', 'widget', $routeParams['_route']),
-						array( 'id' => intval($routeParams['id']) )
-					);
-
-					return '<div data-loader="ajax" data-src="'.$widgetHref.'" class="ladb-entity-widget"><div class="ladb-box ladb-box-lazy"><a href="'.$href.'">'.$text.'</a></div></div>';
-				}
-
-			} catch (\Exception $e) {
-			}
-			return '<a href="'.$href.'" class="ladb-link ladb-link-intern"><span>'.$text.'</span></a>';
-		}
-		return '<a href="'.$href.'" target="_blank" class="ladb-link ladb-link-extern"><span>'.$text.'</span></a>';
+		return $this->_renderDecoratedLink($block[1]);
 	}
 
 	/**
 	 * Set target to _blank and truncate Url
 	 */
 	protected function renderUrl($block) {
-		$href = htmlspecialchars($block[1], ENT_COMPAT | ENT_HTML401, 'UTF-8');
-		$target = $this->_isLocalUrl($href) ? ' class="ladb-link ladb-link-intern"' : ' class="ladb-link ladb-link-extern" target="_blank"';
-		$text = $this->_truncateUrl(htmlspecialchars(urldecode($block[1]), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-		return '<a href="'.$href.'"'.$target.'><span>'.$text.'</span></a>';
+		return $this->_renderDecoratedLink($block[1]);
 	}
 
 	/**
@@ -178,14 +189,13 @@ class LadbMarkdown extends Parser {
 			if (($ref = $this->lookupReference($block['refkey'])) !== false) {
 				$block = array_merge($block, $ref);
 			} else {
+				if (strncmp($block['orig'], '[', 1) === 0) {
+					return '[' . $this->renderAbsy($this->parseInline(substr($block['orig'], 1)));
+				}
 				return $block['orig'];
 			}
 		}
-		$href = htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8');
-		$target = $this->_isLocalUrl($href) ? '' : ' target="_blank"';
-		return '<a href="'.$href.'"'.$target
-		.(empty($block['title']) ? '' : ' title="'.htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8').'"')
-		.'>'.$this->_truncateUrl($this->renderAbsy($block['text'])).'</a>';
+		return $this->_renderDecoratedLink($block['url'], $this->renderAbsy($block['text']), $block['title']);
 	}
 
 	///// Headline

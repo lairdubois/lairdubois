@@ -6,11 +6,11 @@
 {% block bodyInner %}
     <div class="row">
         <div class="col-xs-6">
-            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':texture.value.data, 'width':282, 'height':280 } %}
+            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':texture.value.data, 'width':282, 'height':280, 'noLazyLoad':true } %}
             {{ 'knowledge.wood.texture.single_picture'|trans() }}
         </div>
         <div class="col-xs-6">
-            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':texture.mosaicPicture, 'width':282, 'height':280 } %}
+            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':texture.mosaicPicture, 'width':282, 'height':280, 'noLazyLoad':true } %}
             {{ 'knowledge.wood.texture.mosaic_picture'|trans() }}
         </div>
     </div>
