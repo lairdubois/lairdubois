@@ -20,7 +20,9 @@ class ScriptHandler {
 		$fs->mkdir(array( $uploadsDir, $downloadsDir, $keysDir ));
 
 		// Copy some fixtures
-		$fs->copy($fixturesDir.'/empty*.png', $uploadsDir);
+		foreach (glob($fixturesDir.'/empty*.png') as $file) {
+			$fs->copy($file, $uploadsDir);
+		}
 
 	}
 
