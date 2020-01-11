@@ -34,7 +34,7 @@ parameters:
     router.request_context.scheme:  https
 
     node:                           /usr/bin/node
-    node_paths:                     [/usr/lib/node_modules/]
+    node_paths:                     [/usr/local/lib/node_modules/]
 
     chromium:                       /urs/bin/chromium
 
@@ -61,7 +61,7 @@ parameters:
     stripe_publishable_key:         YOUR_STRIPE_PUBLISHABLE_KEY
 
     funding_min_amount_eur:         1
-    funding_max_amount_eur:         100
+    funding_max_amount_eur:         250
 
     bentools_webpush.public_key:    YOUR_WEBPUSH_PUBLIC_KEY
     bentools_webpush.private_key:   YOUR_WEBPUSH_PRIVATE_KEY
