@@ -479,7 +479,7 @@ services:
     class: Ladb\CoreBundle\Form\Type\Offer\OfferType
     tags:
       - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager']
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.localisable_utils']
   ladb_knowledge_value_picture:
     class: Ladb\CoreBundle\Form\Type\Knowledge\Value\PictureValueType
     tags:

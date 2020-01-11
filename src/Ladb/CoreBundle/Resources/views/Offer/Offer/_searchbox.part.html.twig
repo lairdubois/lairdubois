@@ -8,9 +8,18 @@
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') }}" data-label="Offres" data-editable="false" data-unique="true" data-icon="arrow-down"><i class="ladb-icon-arrow-down"></i> Offres</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_REQUEST') }}" data-label="Demandes" data-editable="false" data-unique="true" data-icon="arrow-up"><i class="ladb-icon-arrow-up"></i> Demandes</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="category" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::CATEGORY_JOB') }}" data-label="Emploi" data-editable="false" data-unique="true" data-icon="job"><i class="ladb-icon-job"></i> Emploi</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="category" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::CATEGORY_TOOL') }}" data-label="Matériel" data-editable="false" data-unique="true" data-icon="wip"><i class="ladb-icon-wip"></i> Matériel</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="category" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::CATEGORY_MATERIAL') }}" data-label="Matière" data-editable="false" data-unique="true" data-icon="wood"><i class="ladb-icon-wood"></i> Matière</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="category" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::CATEGORY_SERVICE') }}" data-label="Service" data-editable="false" data-unique="true" data-icon="donate"><i class="ladb-icon-donate"></i> Service</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="category" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::CATEGORY_OTHER') }}" data-label="Autre" data-editable="false" data-unique="true" data-icon="filter"><i class="ladb-icon-filter"></i> Autre</a></li>
+    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes trouvailles" data-unique="true" data-icon="globe"><i class="ladb-icon-globe"></i> Mes trouvailles</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes annonces" data-unique="true" data-icon="globe"><i class="ladb-icon-offer"></i> Mes annonces</a></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
 {% endblock %}
@@ -25,5 +34,12 @@
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
 {% endblock %}
 
+{% block searchboxShortcuts %}
+    {% if is_granted("ROLE_USER") %}
+        <li><a class="ladb-smartsearch-shortcut" data-query="@mine"><i class="ladb-icon-user"></i> Mes annonces</a></li>
+    {% endif %}
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') }} @sort-recent"><i class="ladb-icon-arrow-down"></i> Offres</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_REQUEST') }} @sort-recent"><i class="ladb-icon-arrow-up"></i> Demandes</a></li>
+{% endblock %}
 
 

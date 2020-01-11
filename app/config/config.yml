@@ -795,6 +795,8 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        kind: { type: integer }
+                        category: { type: integer }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -811,7 +813,7 @@ fos_elastica:
                                 label: { type: text, boost: 2 }
                     persistence:
                         driver: orm
-                        model: Ladb\CoreBundle\Entity\Faq\Question
+                        model: Ladb\CoreBundle\Entity\Offer\Offer
                         provider: ~
                         listener:
                             insert: false

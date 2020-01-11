@@ -29,7 +29,10 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Offer:Offer/_kind-category-badge.part.html.twig' with { 'classes':'ladb-visibility-badge ladb-hidden-mobile ladb-margin-left' } %}{% endblock %}
+    {% endembed %}
+
 {% endblock %}
 
 {% block contentBody %}
@@ -53,18 +56,23 @@
                 {% endfor %}
             {% endif %}
         </div>
+        {% if offer.price is defined and offer.price is not null %}
+            <div class="ladb-price">
+                {{ offer.price }}
+            </div>
+        {% endif %}
         {% if offer.location is defined and offer.location is not null %}
             <div class="ladb-link">
                 <i class="ladb-icon-location ladb-icon-fixed-center"></i>
-                    {% if not noMicrodataLocation %}
-                        <span itemprop="location" itemscope itemtype="http://schema.org/Place">
-                            <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                    {% endif %}
-                            {% if not noMicrodataLocation %}<span itemprop="addressLocality">{% endif %}{{ offer.location ? offer.location : '-' }}{% if not noMicrodataLocation %}</span>{% endif %}
-                    {% if not noMicrodataLocation %}
-                            </span>
+                {% if not noMicrodataLocation %}
+                    <span itemprop="location" itemscope itemtype="http://schema.org/Place">
+                        <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                {% endif %}
+                        {% if not noMicrodataLocation %}<span itemprop="addressLocality">{% endif %}{% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}{% if not noMicrodataLocation %}</span>{% endif %}
+                {% if not noMicrodataLocation %}
                         </span>
-                    {% endif %}
+                    </span>
+                {% endif %}
             </div>
         {% endif %}
         <hr>
@@ -88,13 +96,24 @@
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
-        {% if hasMap %}
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+            <div class="ladb-meta">
+                <i class="ladb-icon-funding"></i> Prix
+                <span class="pull-right">{{ offer.price }}</span>
+            </div>
             <div class="ladb-meta">
                 {% if hasMap %}
-                    {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'150px', 'markersUrl':path('core_offer_location', { 'id':offer.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
+                    <span class="pull-right">
+                        {{ offer.location ? (offer.location|truncate(15)) : '-' }}
+                    </span>
+                    <span><i class="ladb-icon-location"></i>&nbsp;{{ 'default.location'|trans() }}</span>
+                    {% if hasMap %}
+                        {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'250px', 'markersUrl':path('core_offer_location', { 'id':offer.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
+                    {% endif %}
                 {% endif %}
             </div>
-        {% endif %}
+        </div>
     </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':offer.tags, 'type':'offers' } %}
 {% endblock %}

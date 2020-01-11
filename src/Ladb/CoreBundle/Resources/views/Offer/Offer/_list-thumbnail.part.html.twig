@@ -5,13 +5,26 @@
 {% set entity = offer %}
 
 {% block body %}
-    {{ parent() }}
-    <div style="">
-        <div style="font-weight: bold; font-size: 150%; color: #0b93d5;">
-            300€
+    <div style="display: flex; flex-direction: column; min-height: 160px;">
+        <div style="flex-grow: 1;">
+            {{ parent() }}
         </div>
-        <div style="font-weight: bold; font-size: 110%;">
-            38780 Pont-Evêque
+        <div>
+            {% if offer.price is defined and offer.price is not null %}
+                <div style="font-weight: bold; font-size: 130%; color: #0b93d5;">
+                    {{ offer.price }}
+                </div>
+            {% endif %}
+            {% if offer.location is defined and offer.location is not null %}
+                <div>
+                    {% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}
+                </div>
+            {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block headingBadges %}
+    {% include 'LadbCoreBundle:Offer/Offer:_kind-category-badge.part.html.twig' %}
+    {{ parent() }}
 {% endblock %}

@@ -15,7 +15,6 @@
             {% block contentInner %}
                 <div class="ladb-heading">
                     {% block headingInner %}
-                        <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% if entity.isLocked is defined and entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<a href="{{ showPath }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
                         {% block headingBadges %}
                             {% if entity.isDraft is defined and entity.isDraft or entity.visibility is defined and entity.isPrivate %}
                                 <div class="ladb-draft-badge" style="float: right; margin-left: 5px;">
@@ -27,6 +26,7 @@
                                 </div>
                             {% endif %}
                         {% endblock %}
+                        <h2{% if headingClasses is defined and not null %} class="{{ headingClasses }}"{% endif %}>{% if entity.isLocked is defined and entity.isLocked %}<span class="ladb-color-null"><i class="ladb-icon-lock"></i></span> {% endif %}{% block title %}<a href="{{ showPath }}" {% if titleLinkClasses is defined and not null %} class="{{ titleLinkClasses }}"{% endif %}>{{ entity.title }}</a>{% endblock %}</h2>
                     {% endblock %}
                 </div>
                 {% block imageOuter %}

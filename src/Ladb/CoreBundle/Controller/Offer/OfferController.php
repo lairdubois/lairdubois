@@ -32,7 +32,7 @@ use Ladb\CoreBundle\Utils\OfferUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
 
 /**
- * @Route("/petites-annonces")
+ * @Route("/annonces")
  */
 class OfferController extends Controller {
 
@@ -389,6 +389,20 @@ class OfferController extends Controller {
 							$couldUseDefaultSort = true;
 
 						}
+
+						break;
+
+					case 'kind':
+
+						$filter = new \Elastica\Query\MatchPhrase('kind', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
+					case 'category':
+
+						$filter = new \Elastica\Query\MatchPhrase('category', $facet->value);
+						$filters[] = $filter;
 
 						break;
 

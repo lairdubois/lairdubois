@@ -504,6 +504,18 @@ offer:
     nav: Annonces
     other_from: Autres annonces de
     similar: Voir aussi
+    kind: Type
+    kind_0: Non défini
+    kind_1: Offre
+    kind_2: Demande
+    category: Catégorie
+    category_0: Non définie
+    category_1: Emploi
+    category_2: Matériel
+    category_3: Matière
+    category_4: Service
+    category_99: Autre
+    price: Prix
 
 collection:
   description: Retrouvez ici toutes les collections partagées par la communauté.
@@ -1309,6 +1321,7 @@ search:
     workflows: Recherche dans les processus
     collections: Recherche dans les collections
     tips: Recherche dans les astuces
+    offers: Recherche dans les annonces
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 
@@ -1341,13 +1354,14 @@ notification:
     howto_howto: votre pas à pas
     howto_article: votre article
     find_find: votre trouvaille
-    blog_post: votre sujet
-    faq_question: votre question
     qa_question: votre question
     qa_answer: votre réponse
     promotion_graphic: votre graphisme
     workflow_workflow: votre processus
     collection_collection: votre collection
+    offer_offer: votre annonce
+    blog_post: votre sujet
+    faq_question: votre question
   the:
     core_comment: le commentaire
     wonder_creation: la création
@@ -1361,13 +1375,14 @@ notification:
     knowledge_school: l'école
     knowledge_book: le livre
     knowledge_software: le logiciel
-    blog_post: le sujet
-    faq_question: la question
     qa_question: la question
     qa_answer: la réponse
     promotion_graphic: le graphisme
     workflow_workflow: le processus
     collection_collection: la collection
+    offer_offer: l'offre
+    blog_post: le sujet
+    faq_question: la question
   one_new:
     wonder_creation: une nouvelle création
     wonder_workshop: un nouvel atelier
@@ -1380,6 +1395,7 @@ notification:
     promotion_graphic: un nouveau graphisme
     workflow_workflow: un nouveau processus
     collection_collection: une nouvelle collection
+    offer_offer: une nouvelle annonce
     blog_post: un nouveau sujet
   tooltip:
     all: Toutes les notifications
