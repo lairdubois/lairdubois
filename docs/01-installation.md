@@ -2,7 +2,7 @@ Setting up L'Air du Bois
 ========================
 
 The following installation instruction suppose that your server is running under a Linux Operating System.
-To write this documentation the [Debian 9 "Stretch"](https://www.debian.org) distribution is used.
+To write this documentation the [Debian 10 "Buster"](https://www.debian.org) distribution is used.
 Else you need to adapt it to your configuration.
 
 ## Step 0 - Install required softwares
@@ -12,13 +12,17 @@ L'Air du Bois uses some important tools you need to install first.
 ### Install Useful Tools
 
 ``` bash
-    $ sudo apt-get install curl apt-transport-https ghostscript librsvg2-bin
+    $ sudo apt-get install curl apt-transport-https ghostscript librsvg2-bin lnav
 ```
 
 ### Install [MySQL](https://www.mysql.com/) - *The database*
 
 ``` bash
     $ sudo apt-get install mariadb-server mariadb-client
+```
+
+``` bash
+    $ sudo mysql_secure_installation
 ```
 
 ### Install [Ningx](https://nginx.org/) - *The webserver*
@@ -52,12 +56,6 @@ Be sure you activate the following parameters (by uncomment or replace) :
 ### Install [PHP](http://www.php.net/) - *The scripting language*
 
 ``` bash
-    $ sudo wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
-    $ sudo echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list
-    $ sudo apt update
-```
-
-``` bash
     $ sudo apt-get install php7.3 php7.3-cli php7.3-curl php7.3-intl php7.3-gd php7.3-imagick php7.3-mysql php7.3-fpm php7.3-mbstring php7.3-xml php7.3-zip php7.3-bz2 php7.3-gmp php7.3-bcmath
 ```
 
@@ -77,7 +75,6 @@ Be sure you activate the following parameters (by uncomment or replace) :
     post_max_size = 60M
     memory_limit = 256M
     cgi.fix_pathinfo=0
-    expose_php = Off
 
 ```
 
@@ -122,9 +119,8 @@ Restart PHP FPM.
 As root :
 
 ``` bash
-    $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-    $ apt-get install -y nodejs
-    $ npm install -g less
+    $ sudo apt-get install nodejs npm
+    $ sudo npm install -g less
 ```
 
 ### Install *Java8* - *Used to run Elesticsearch*
@@ -223,12 +219,10 @@ Now you are ready to configure Nginx to access to the webroot directory.
 
 ## Step 5 - Generate HTTPS certificates (Not necessary on the **DEV** server)
 
-First you need to install certbot. On Debian Stretch we will be using backports repository to get the last version.
+First you need to install certbot.
 
 ``` bash
-    $ sudo echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/stretch_backports.list
-    $ sudo apt-get update
-    $ sudo apt-get install certbot -t stretch-backports
+    $ sudo apt-get install certbot python-certbot-nginx
     $ sudo mkdir -p /var/www/.well-known/acme-challenge
 ```
 
@@ -246,7 +240,6 @@ You can now generate certificates.
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr-maintenance.conf /etc/nginx/sites-available/www.lairdubois.fr-maintenance.conf
     $ sudo cp /var/www/www.lairdubois.fr/docs/nginx/conf/www.lairdubois.fr.conf /etc/nginx/sites-available/www.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/www.lairdubois.fr.conf /etc/nginx/sites-enabled/www.lairdubois.fr.conf
-    $ service nginx restart
 ```
 
 > If you are on the **DEV** server :
@@ -256,7 +249,6 @@ Not that the given DEV config is configured for running on MacOS.
 ``` bash
     $ sudo cp /var/www/dev.lairdubois.fr/docs/nginx/conf/dev.lairdubois.fr.conf /etc/nginx/sites-available/dev.lairdubois.fr.conf
     $ sudo ln -s /etc/nginx/sites-available/dev.lairdubois.fr.conf /etc/nginx/sites-enabled/dev.lairdubois.fr.conf
-    $ service nginx restart
 ```
 
 Restart NGINX.
@@ -307,7 +299,7 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 
 Execute the SQL script located at [`database/schema-sessions.sql`](database/schema-sessions.sql).
 
-## Step 8 - Compile and Minimize CSS and JS
+## Step 9 - Compile and Minimize CSS and JS
 
 This step will create `web/js` and `web/css` folders and fill them with compiled and minimized assets. 
 
