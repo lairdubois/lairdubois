@@ -511,7 +511,7 @@ This is important so that all calls where url contains `/internal/` will be acce
 We need at least to configure a minimal firewall
 
 ``` bash
-sudo aptitude install iptables-persistent
+    $ sudo aptitude install iptables-persistent
 ```
 
 Then, edit `/etc/iptables/rules.v4`, remove the content and add the following lines (be careful to replace `ens3` by your network interface name):
@@ -578,7 +578,7 @@ COMMIT
 </details>
 
 ``` bash
-sudo service netfilter-persistent restart
+    $ sudo service netfilter-persistent restart
 ```
 
 ## Step 18 - Installing Chromium
@@ -586,5 +586,5 @@ sudo service netfilter-persistent restart
 The platforme uses Chromium headless in order to auto generate screenshot of shared links in "Trouvailles".
 
 ``` bash
-sudo apt-get install chromium chromium-l10n
+    $ sudo apt-get install chromium chromium-l10n
 ```
