@@ -424,7 +424,7 @@ Restart=always
 RestartSec=3
 
 [Install]
-WantedBy=multi-user.targe
+WantedBy=multi-user.target
 ```
 
 ### 14.4 Enable and start Services
