@@ -7,6 +7,10 @@
 {% set titleLinkClasses = school.nameRejected ? 'ladb-color-null' : null %}
 {% set imgClasses = school.nameRejected or school.logoRejected ? 'ladb-desaturate ladb-translucent' : null %}
 
+{% block title %}
+    {% if 'En ligne' in school.trainingTypes %}<i class="ladb-icon-school-training-online" data-tooltip="tooltip" data-original-title="En ligne"></i> {% endif %}{{ parent() }}
+{% endblock %}
+
 {% block image %}
     {% if school.logoRejected %}
         <div class="ladb-box-barred">
