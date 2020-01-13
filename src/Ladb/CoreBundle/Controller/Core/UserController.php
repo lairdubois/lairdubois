@@ -430,6 +430,7 @@ class UserController extends Controller {
 				'unlistedPromotionGraphicCount' => $user->getMeta()->getUnlistedPromotionGraphicCount(),
 				'unlistedWorkflowWorkflowCount' => $user->getMeta()->getUnlistedWorkflowWorkflowCount(),
 				'unlistedCollectionCollectionCount' => $user->getMeta()->getUnlistedCollectionCollectionCount(),
+				'unlistedOfferOfferCount' => $user->getMeta()->getUnlistedOfferOfferCount(),
 			),
 		);
 	}

@@ -45,9 +45,14 @@
                 {{ form_widget(form.rawPrice) }}
             </div>
             <div class="form-group">
-                {{ form_label(form.currency, ('knowledge.proposal_value.currency'|trans())) }}
+                {{ form_label(form.currency, 'knowledge.proposal_value.currency'|trans()) }}
                 {{ form_errors(form.currency) }}
                 {{ form_widget(form.currency, { 'attr':{ 'class':'form-control', } }) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.priceSuffix, 'offer.offer.price_suffix'|trans()) }}
+                {{ form_errors(form.priceSuffix) }}
+                {{ form_widget(form.priceSuffix) }}
             </div>
             <div class="form-group">
                 {{ form_label(form.location, 'default.location'|trans()) }}

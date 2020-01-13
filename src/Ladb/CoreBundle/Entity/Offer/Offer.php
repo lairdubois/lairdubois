@@ -139,7 +139,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	protected $price;
 
 	/**
-	 * @ORM\Column(type="float")
+	 * @ORM\Column(name="raw_price", type="float")
 	 */
 	protected $rawPrice = 0;
 
@@ -147,6 +147,11 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @ORM\Column(type="string", length=3)
 	 */
 	protected $currency = 'EUR';
+
+	/**
+	 * @ORM\Column(name="price_suffix", type="string", length=10, nullable=true)
+	 */
+	protected $priceSuffix;
 
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
@@ -295,6 +300,17 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function setCurrency($currency) {
 		$this->currency = $currency;
+		return $this;
+	}
+
+	// PriceSuffix /////
+
+	public function getPriceSuffix() {
+		return $this->priceSuffix;
+	}
+
+	public function setPriceSuffix($priceSuffix) {
+		$this->priceSuffix = $priceSuffix;
 		return $this;
 	}
 

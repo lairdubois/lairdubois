@@ -223,6 +223,11 @@ class UserMeta {
 	 */
 	private $unlistedCollectionCollectionCount = 0;
 
+	/**
+	 * @ORM\Column(name="unlisted_offer_offer_count", type="integer")
+	 */
+	private $unlistedOfferOfferCount = 0;
+
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="follower_count")
@@ -840,6 +845,17 @@ class UserMeta {
 
 	public function setUnlistedCollectionCollectionCount($unlistedCollectionCollectionCount) {
 		$this->unlistedCollectionCollectionCount = $unlistedCollectionCollectionCount;
+		return $this;
+	}
+
+	// UnlistedOfferOfferCount /////
+
+	public function getUnlistedOfferOfferCount() {
+		return $this->unlistedOfferOfferCount;
+	}
+
+	public function setUnlistedOfferOfferCount($unlistedOfferOfferCount) {
+		$this->unlistedOfferOfferCount = $unlistedOfferOfferCount;
 		return $this;
 	}
 

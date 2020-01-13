@@ -116,7 +116,9 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 						$a = $a->withAdministrativeArea($address->getAdminLevels()->first()->getName());
 					}
 
-					$localisable->setFormattedAddress($formatter->format($a));
+					try {
+						$localisable->setFormattedAddress($formatter->format($a));
+					} catch (\Exception $e) {}
 
 				}
 

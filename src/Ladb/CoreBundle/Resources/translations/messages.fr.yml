@@ -516,6 +516,17 @@ offer:
     category_4: Service
     category_99: Autre
     price: Prix
+    form:
+      alert:
+        lock_success: L'annonce <strong>%title%</strong> a été vérrouillée.
+        unlock_success: L'annonce <strong>%title%</strong> a été dévérrouillée.
+        publish_success: L'annonce <strong>%title%</strong> a été publiée.
+        unpublish_success: L'annonce <strong>%title%</strong> a été dépubliée.
+        update_success: L'annonce <strong>%title%</strong> a été mise à jour.
+        delete_success: L'annonce <strong>%title%</strong> a été supprimée.
+    choice:
+      entities: '[0,1]annonce|]1,Inf]annonces'
+      draft_alert: '[0,1]Vous avez 1 annonce en brouillon.|]1,Inf]Vous avez %count% annonces en brouillon.'
 
 collection:
   description: Retrouvez ici toutes les collections partagées par la communauté.
@@ -1044,6 +1055,7 @@ message:
   list: Messagerie
   nav: Messagerie
   mailbox: Boîte aux lettres
+  send: Envoyer un message
   sendTo: Envoyer un message à %NAME%
   contact: Contacter
   thread:

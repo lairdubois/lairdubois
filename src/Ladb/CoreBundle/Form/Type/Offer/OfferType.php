@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Form\Type\Offer;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -60,13 +61,14 @@ class OfferType extends AbstractType {
 					Offer::CATEGORY_TOOL     => 'Matériel',
 					Offer::CATEGORY_MATERIAL => 'Matière',
 					Offer::CATEGORY_SERVICE  => 'Service',
-					Offer::CATEGORY_OTHER  => 'Autre',
+					Offer::CATEGORY_OTHER    => 'Autre',
 				)),
 				'expanded' => true,
 			))
 			->add('rawPrice')
+			->add('currency', CurrencyType::class)
+			->add('priceSuffix', TextType::class)
 			->add('location')
-			->add('currency', \Symfony\Component\Form\Extension\Core\Type\CurrencyType::class)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new TagsToLabelsTransformer($this->om))

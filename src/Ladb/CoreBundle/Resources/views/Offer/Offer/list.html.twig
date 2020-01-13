@@ -15,6 +15,15 @@
     {% include 'LadbCoreBundle:Offer/Offer:_list-topbar.part.html.twig' %}
 {% endblock %}
 
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+        <div class="panel-body">
+            Cette rubrique vous permet de publier vos <strong>petites-annonces</strong> à la communauté. <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}">En savoir plus</a>.
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
 {% block autopagerContainerInner %}
     {% include 'LadbCoreBundle:Offer/Offer:_list-n.part.html.twig' %}
 {% endblock %}

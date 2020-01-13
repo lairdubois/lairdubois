@@ -1,1 +1,5 @@
-{% if offer.locality %}<span style="font-weight: bold; font-size: 110%;">{{ offer.locality }}</span>{% endif %}{% if offer.postalCode %} {{ offer.postalCode }} {% endif %}
+{% if offer.locality or offer.postalCode %}
+    {% if offer.locality %}<span style="font-weight: bold; font-size: 110%;">{{ offer.locality }}</span>{% endif %}{% if offer.postalCode %} {{ offer.postalCode }} {% endif %}
+{% elseif offer.location %}
+    <span style="font-weight: bold; font-size: 110%;">{{ offer.location }}</span>
+{% endif %}

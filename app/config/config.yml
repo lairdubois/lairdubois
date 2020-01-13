@@ -456,6 +456,8 @@ fos_elastica:
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
+                        area: { type: integer }
+                        geoPoint: { type: geo_point }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
@@ -463,8 +465,6 @@ fos_elastica:
                         planCount: { type: integer }
                         howtoCount: { type: integer }
                         workflowCount: { type: integer }
-                        area: { type: integer }
-                        geoPoint: { type: geo_point }
                         user:
                             type: "object"
                             properties:
@@ -795,9 +795,11 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
-                        kind: { type: integer }
-                        category: { type: integer }
                         changedAt: { type: date }
+                        kind: { type: short }
+                        category: { type: integer }
+                        rawPrice: { type: float }
+                        geoPoint: { type: geo_point }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }

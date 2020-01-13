@@ -29,10 +29,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
-        {% block subheading %}{{ parent() }}{% include 'LadbCoreBundle:Offer:Offer/_kind-category-badge.part.html.twig' with { 'classes':'ladb-visibility-badge ladb-hidden-mobile ladb-margin-left' } %}{% endblock %}
-    {% endembed %}
-
+    {% include 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
 {% endblock %}
 
 {% block contentBody %}
@@ -56,11 +53,7 @@
                 {% endfor %}
             {% endif %}
         </div>
-        {% if offer.price is defined and offer.price is not null %}
-            <div class="ladb-price">
-                {{ offer.price }}
-            </div>
-        {% endif %}
+        {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
         {% if offer.location is defined and offer.location is not null %}
             <div class="ladb-link">
                 <i class="ladb-icon-location ladb-icon-fixed-center"></i>
@@ -86,7 +79,9 @@
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':offer } %}
     {% endif %}
     {% if not ownerUser %}
-        {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
+        <div class="ladb-like-and-follow-row">
+            <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':offer.user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ offer.user.displayName }}</a>
+        </div>
     {% endif %}
     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
 {% endblock %}
@@ -99,20 +94,31 @@
         <div class="ladb-metas">
             <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
             <div class="ladb-meta">
-                <i class="ladb-icon-funding"></i> Prix
-                <span class="pull-right">{{ offer.price }}</span>
+                <span class="pull-right">{{ ('offer.offer.kind_'~offer.kind)|trans }}</span>
+                <span><i class="ladb-icon-arrow-up ladb-icon-fixed-center"></i> <small>{{ 'offer.offer.kind'|trans }}</small></span>
             </div>
             <div class="ladb-meta">
-                {% if hasMap %}
-                    <span class="pull-right">
-                        {{ offer.location ? (offer.location|truncate(15)) : '-' }}
-                    </span>
-                    <span><i class="ladb-icon-location"></i>&nbsp;{{ 'default.location'|trans() }}</span>
-                    {% if hasMap %}
-                        {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'250px', 'markersUrl':path('core_offer_location', { 'id':offer.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
-                    {% endif %}
-                {% endif %}
+                <span class="pull-right">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
+                <span><i class="ladb-icon-list ladb-icon-fixed-center"></i> <small>{{ 'offer.offer.category'|trans }}</small></span>
             </div>
+            {% if offer.price %}
+                <div class="ladb-meta">
+                    <span class="pull-right">{% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}</span>
+                    <span><i class="ladb-icon-funding ladb-icon-fixed-center"></i> <small>{{ 'offer.offer.price'|trans }}</small></span>
+                </div>
+            {% endif %}
+            {% if offer.location %}
+                <div class="ladb-meta">
+                    <span class="pull-right">{% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}</span>
+                    <span><i class="ladb-icon-location ladb-icon-fixed-center"></i>&nbsp;<small>{{ 'default.location'|trans }}</small></span>
+                </div>
+            {% endif %}
+            <div class="ladb-btn">
+                <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':offer.user.usernameCanonical }) }}" class="btn btn-primary btn-expand btn-lg" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
+            </div>
+            {% if hasMap %}
+                {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'250px', 'markersUrl':path('core_offer_location', { 'id':offer.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
+            {% endif %}
         </div>
     </div>
     {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':offer.tags, 'type':'offers' } %}
