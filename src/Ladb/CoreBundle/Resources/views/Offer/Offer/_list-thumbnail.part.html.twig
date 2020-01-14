@@ -5,7 +5,7 @@
 {% set entity = offer %}
 {% set classes = 'ladb-offer-list-thumbnail' %}
 
-{% block title %}<i class="ladb-icon-offer-kind-{{ offer.kind }}"></i> {{ parent() }}{% endblock %}
+{% block title %}<i class="ladb-icon-offer-kind-{{ offer.kind }}" data-tooltip="tooltip" title="{{ ('offer.offer.kind_'~offer.kind)|trans }}"></i> {{ parent() }}{% endblock %}
 
 {% block body %}
     <div class="ladb-flex ladb-flex-column">
@@ -14,7 +14,7 @@
         </div>
         <div class="ladb-flex-footer">
             {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
-            <span style="font-style: italic;">{{ ('offer.offer.kind_'~offer.kind)|trans }}</span> - <span>{{ ('offer.offer.category_'~offer.category)|trans }}</span>
+            <span style="font-style: italic;">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
             {% if offer.location is defined and offer.location is not null %}
                 <div>
                     {% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}
