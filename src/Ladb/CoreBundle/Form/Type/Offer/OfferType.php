@@ -96,6 +96,7 @@ class OfferType extends AbstractType {
 					}
 				} else {
 					$offer->setPrice('');
+					$offer->setRawPrice(0);
 				}
 
 			}

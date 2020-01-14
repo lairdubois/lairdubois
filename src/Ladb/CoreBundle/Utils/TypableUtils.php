@@ -509,6 +509,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Software
 			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
 				return 'software';
+			// Software
+			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
+				return 'offer';
 
 		}
 		return null;
