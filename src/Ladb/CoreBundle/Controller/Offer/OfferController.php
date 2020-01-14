@@ -550,7 +550,7 @@ class OfferController extends Controller {
 					continue;
 				}
 				$properties = array(
-					'type'    => 0,
+					'type'    => $offer->getKind(),
 					'cardUrl' => $this->generateUrl('core_offer_card', array( 'id' => $offer->getId() )),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
