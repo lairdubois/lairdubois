@@ -66,15 +66,15 @@
     <div class="ladb-offer">
         <div class="row">
             <div class="col-xs-12">
-                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[0], 'width':'594', 'height':'294', 'filterMode':'o', 'alt':offer.title, 'aClasses':(offer.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
+                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[0], 'width':'600', 'height':'450', 'filterMode':'o', 'alt':offer.title, 'aClasses':(offer.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
             </div>
             {% if offer.pictures.count > 1 %}
-                {% for index in 1..4 %}
-                    <div class="col-xs-3">
+                {% for index in 1..(offer.maxPictureCount - 1) %}
+                    <div class="col-xs-6 col-md-3{% if index >= offer.pictures.count and index > 2 and offer.pictures.count <= 3  %} ladb-hidden-mobile ladb-hidden-tablet{% endif %}">
                         {% if index < offer.pictures.count %}
                             {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[index], 'width':'128', 'height':'128', 'alt':offer.title, 'attributes':'data-pin-nopin="true"' } %}
                         {% else %}
-                            <span class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" data-pin-nopin="true"></span>
+                            <div class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" alt="empty" data-pin-nopin="true"></div>
                         {% endif %}
                     </div>
                 {% endfor %}

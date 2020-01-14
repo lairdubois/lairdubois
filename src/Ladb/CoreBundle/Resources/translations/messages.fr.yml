@@ -518,6 +518,7 @@ offer:
     category_4: Matière
     category_5: Service
     price: Prix
+    price_suffix: Complément
     form:
       alert:
         lock_success: L'annonce <strong>%title%</strong> a été vérrouillée.
@@ -1399,7 +1400,7 @@ notification:
     promotion_graphic: le graphisme
     workflow_workflow: le processus
     collection_collection: la collection
-    offer_offer: l'offre
+    offer_offer: l'annonce
     blog_post: le sujet
     faq_question: la question
   one_new:
