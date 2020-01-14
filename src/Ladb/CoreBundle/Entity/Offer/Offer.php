@@ -143,7 +143,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	protected $price;
 
 	/**
-	 * @ORM\Column(name="raw_price", type="float")
+	 * @ORM\Column(name="raw_price", type="integer")
 	 */
 	protected $rawPrice = 0;
 

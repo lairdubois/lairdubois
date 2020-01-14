@@ -27,6 +27,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 			try {
 				$response = $geocoder->geocode($localisable->getLocation());
 			} catch (\Exception $e) {
+				$this->get('logger')->error($e);
 				return false;
 			}
 
