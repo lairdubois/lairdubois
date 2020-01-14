@@ -5,6 +5,8 @@
 {% set entity = offer %}
 {% set classes = 'ladb-offer-list-thumbnail' %}
 
+{% block title %}<i class="ladb-icon-offer-kind-{{ offer.kind }}"></i> {{ parent() }}{% endblock %}
+
 {% block body %}
     <div class="ladb-flex ladb-flex-column">
         <div class="ladb-flex-body ladb-hidden-mobile">
