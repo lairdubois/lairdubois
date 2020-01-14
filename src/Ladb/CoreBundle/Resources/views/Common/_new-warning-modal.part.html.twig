@@ -10,12 +10,12 @@
         </div>
         <div class="media-body">
             <p>{{ textTransKey|trans()|raw }}</p>
+            <p><em class="ladb-color-danger">{{ 'default.warning.may_be_rejected'|trans() }}</em></p>
         </div>
     </div>
-    <em class="ladb-color-danger">{{ 'default.warning.may_be_rejected'|trans() }}</em>
 {% endblock %}
 
 {% block footerInner %}
     <a href="{{ path(cancelPath) }}" class="btn btn-default">{{ 'default.cancel'|trans() }}</a>
-    <a href="#" class="btn btn-primary" data-dismiss="modal">{{ 'default.continue'|trans() }}</a>
+    <a href="#" class="btn btn-primary" data-dismiss="modal">{{ 'default.accept_and_continue'|trans() }}</a>
 {% endblock %}

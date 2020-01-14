@@ -17,6 +17,8 @@ class OfferManager extends AbstractPublicationManager {
 		$offer->getUser()->getMeta()->incrementPrivateOfferCount(-1);
 		$offer->getUser()->getMeta()->incrementPublicOfferCount();
 
+		$offer->incrementPublishCount();
+
 		parent::publishPublication($offer, $flush);
 	}
 

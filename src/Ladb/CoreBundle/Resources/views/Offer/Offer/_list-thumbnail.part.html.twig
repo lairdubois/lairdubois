@@ -3,15 +3,16 @@
 {# set offer #}
 
 {% set entity = offer %}
+{% set classes = 'ladb-offer-list-thumbnail' %}
 
 {% block body %}
-    <div style="display: flex; flex-direction: column; min-height: 160px;">
-        <div style="flex-grow: 1;">
+    <div class="ladb-flex ladb-flex-column">
+        <div class="ladb-flex-body ladb-hidden-mobile">
             {{ parent() }}
         </div>
-        <div style="margin-top: 5px;">
+        <div class="ladb-flex-footer">
             {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
-            <span style="font-style: italic;">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
+            <span style="font-style: italic;">{{ ('offer.offer.kind_'~offer.kind)|trans }}</span> - <span>{{ ('offer.offer.category_'~offer.category)|trans }}</span>
             {% if offer.location is defined and offer.location is not null %}
                 <div>
                     {% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}
@@ -22,6 +23,9 @@
 {% endblock %}
 
 {% block headingBadges %}
-    {% include 'LadbCoreBundle:Offer/Offer:_kind-category-badge.part.html.twig' %}
-    {{ parent() }}
+    {% if offer.isExpired %}
+        <div class="ladb-draft-badge pull-right" style="margin-left: 5px;"><i class="ladb-icon-warning"></i> Expirée</div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}

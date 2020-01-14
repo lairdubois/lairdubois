@@ -55,16 +55,20 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	const CLASS_NAME = 'LadbCoreBundle:Offer\Offer';
 	const TYPE = 122;
 
+	const ACTIVE_LIFETIME = 'P30D';	// 30 days
+	const FULL_LIFETIME = 'P60D';	// 60 days
+	const MAX_PUBLISH_COUNT = 5;
+
 	const KIND_NONE = 0;
 	const KIND_OFFER = 1;
 	const KIND_REQUEST = 2;
 
 	const CATEGORY_NONE = 0;
-	const CATEGORY_JOB = 1;
-	const CATEGORY_TOOL = 2;
-	const CATEGORY_MATERIAL = 3;
-	const CATEGORY_SERVICE = 4;
-	const CATEGORY_OTHER = 99;
+	const CATEGORY_OTHER = 1;
+	const CATEGORY_JOB = 2;
+	const CATEGORY_TOOL = 3;
+	const CATEGORY_MATERIAL = 4;
+	const CATEGORY_SERVICE = 5;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -201,6 +205,11 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $tags;
 
 	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $publishCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="like_count")
 	 */
 	private $likeCount = 0;
@@ -242,6 +251,16 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 		return Offer::TYPE;
 	}
 
+	// Date /////
+
+	public function getExpiredDate() {
+		return $this->getChangedAt()->add(new \DateInterval(self::ACTIVE_LIFETIME));
+	}
+
+	public function getOudatedDate() {
+		return $this->getChangedAt()->add(new \DateInterval(self::FULL_LIFETIME));
+	}
+
 	// Pictures /////
 
 	public function getMaxPictureCount() {
@@ -250,68 +269,117 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	// Kind /////
 
-	public function getKind() {
-		return $this->kind;
-	}
-
 	public function setKind($kind) {
 		$this->kind = $kind;
 		return $this;
 	}
 
-	// Category /////
-
-	public function getCategory() {
-		return $this->category;
+	public function getKind() {
+		return $this->kind;
 	}
+
+	public function isKindOffer() {
+		return $this->getKind() == self::KIND_OFFER;
+	}
+
+	public function isKindRequest() {
+		return $this->getKind() == self::KIND_REQUEST;
+	}
+
+	// Category /////
 
 	public function setCategory($category) {
 		$this->category = $category;
 		return $this;
 	}
 
-	// Price /////
-
-	public function getPrice() {
-		return $this->price;
+	public function getCategory() {
+		return $this->category;
 	}
+
+	public function isCategoryOther() {
+		return $this->getCategory() == self::CATEGORY_OTHER;
+	}
+
+	public function isCategoryJob() {
+		return $this->getCategory() == self::CATEGORY_JOB;
+	}
+
+	public function isCategoryTool() {
+		return $this->getCategory() == self::CATEGORY_TOOL;
+	}
+
+	public function isCategoryMaterial() {
+		return $this->getCategory() == self::CATEGORY_MATERIAL;
+	}
+
+	public function isCategoryService() {
+		return $this->getCategory() == self::CATEGORY_SERVICE;
+	}
+
+	// Price /////
 
 	public function setPrice($price) {
 		$this->price = $price;
 		return $this;
 	}
 
-	// RawPrice /////
-
-	public function getRawPrice() {
-		return $this->rawPrice;
+	public function getPrice() {
+		return $this->price;
 	}
+
+	// RawPrice /////
 
 	public function setRawPrice($rawPrice) {
 		$this->rawPrice = $rawPrice;
 		return $this;
 	}
 
-	// Currency /////
-
-	public function getCurrency() {
-		return $this->currency;
+	public function getRawPrice() {
+		return $this->rawPrice;
 	}
+
+	// Currency /////
 
 	public function setCurrency($currency) {
 		$this->currency = $currency;
 		return $this;
 	}
 
+	public function getCurrency() {
+		return $this->currency;
+	}
+
 	// PriceSuffix /////
+
+	public function setPriceSuffix($priceSuffix) {
+		$this->priceSuffix = $priceSuffix;
+		return $this;
+	}
 
 	public function getPriceSuffix() {
 		return $this->priceSuffix;
 	}
 
-	public function setPriceSuffix($priceSuffix) {
-		$this->priceSuffix = $priceSuffix;
+	// isExpired /////
+
+	public function isExpired() {
+		return $this->getIsDraft() && $this->getPublishCount() > 0;
+	}
+
+	// PublishCount /////
+
+	public function incrementPublishCount($by = 1) {
+		return $this->publishCount += intval($by);
+	}
+
+	public function setPublishCount($publishCount) {
+		$this->publishCount = $publishCount;
 		return $this;
+	}
+
+	public function getPublishCount() {
+		return $this->publishCount;
 	}
 
 }

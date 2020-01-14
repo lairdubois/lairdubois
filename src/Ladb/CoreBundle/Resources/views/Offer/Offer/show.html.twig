@@ -4,8 +4,19 @@
 
 {% set entity = offer %}
 
-{% set pageTitleBy = 'trouvé par' %}
-{% set noMicrodataLocation = false %}
+{% if offer.isKindOffer %}
+    {% if offer.isCategoryJob %}
+        {% set pageContentItemType = 'JobPosting' %}
+        {% set pageContentNameItemprop = 'title' %}
+        {% set authorItemtype = 'Organization' %}
+        {% set authorItemprop = 'hiringOrganization' %}
+        {% set locationItemprop = 'jobLocation' %}
+    {% else %}
+        {% set pageContentItemType = 'Offer' %}
+        {% set authorItemprop = 'seller' %}
+        {% set locationItemprop = 'areaServed' %}
+    {% endif %}
+{% endif %}
 {% set pageSectionUrl = url('core_offer_list') %}
 {% set pageSectionName = 'offer.offer.list'|trans %}
 
@@ -28,8 +39,24 @@
     {% endif %}
 {% endblock %}
 
+{% block bodyMetas %}
+    {{ parent() }}
+    {% if offer.isKindOffer %}
+        {% if offer.isCategoryJob %}
+            <meta itemprop="datePosted" content="{{ entity.changedAt|date('Y-m-dTH:i:s') }}" />
+            <meta itemprop="validThrough" content="{{ entity.expiredDate|date('Y-m-dTH:i:s') }}" />
+        {% else %}
+            <meta itemprop="availabilityEnds" content="{{ entity.expiredDate|date('Y-m-dTH:i:s') }}" />
+            {% if offer.price %}
+                <meta itemprop="price" content="{{ offer.rawPrice }}" />
+                <meta itemprop="priceCurrency" content="{{ offer.currency }}" />
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' with { 'ownerCanAlwaysDelete':true, 'noMicrodataAge':true } %}
 {% endblock %}
 
 {% block contentBody %}
@@ -39,7 +66,7 @@
     <div class="ladb-offer">
         <div class="row">
             <div class="col-xs-12">
-                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[0], 'width':'600', 'height':'600', 'filterMode':'i', 'alt':offer.title, 'aClasses':(offer.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
+                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[0], 'width':'594', 'height':'294', 'filterMode':'o', 'alt':offer.title, 'aClasses':(offer.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
             </div>
             {% if offer.pictures.count > 1 %}
                 {% for index in 1..4 %}
@@ -57,15 +84,11 @@
         {% if offer.location is defined and offer.location is not null %}
             <div class="ladb-link">
                 <i class="ladb-icon-location ladb-icon-fixed-center"></i>
-                {% if not noMicrodataLocation %}
-                    <span itemprop="location" itemscope itemtype="http://schema.org/Place">
-                        <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                {% endif %}
-                        {% if not noMicrodataLocation %}<span itemprop="addressLocality">{% endif %}{% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}{% if not noMicrodataLocation %}</span>{% endif %}
-                {% if not noMicrodataLocation %}
-                        </span>
+                <span itemprop="{{ locationItemprop|default('location') }}" itemscope itemtype="http://schema.org/Place">
+                    <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                        <span itemprop="addressLocality">{% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}</span>
                     </span>
-                {% endif %}
+                </span>
             </div>
         {% endif %}
         <hr>
@@ -83,6 +106,22 @@
             <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':offer.user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ offer.user.displayName }}</a>
         </div>
     {% endif %}
+    {% if not offer.isDraft and (ownerUser or offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER')) %}
+        <div class="panel panel-default ladb-margin-top">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+                    <div class="media-body">
+                        {% if ownerUser %}
+                            Cette annonce expirera <strong>{{ offer.expiredDate|time_diff }}</strong>.
+                        {% elseif offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') %}
+                            La qualité du produit, la transaction, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont de la responsabilité de l'annonceur, {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':offer.user } %}.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
 {% endblock %}
 
@@ -90,7 +129,7 @@
     <div class="ladb-metas">
         {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
-        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' with { 'noMicrodata':true } %}
         <div class="ladb-metas">
             <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
             <div class="ladb-meta">
@@ -113,15 +152,17 @@
                     <span><i class="ladb-icon-location ladb-icon-fixed-center"></i>&nbsp;<small>{{ 'default.location'|trans }}</small></span>
                 </div>
             {% endif %}
-            <div class="ladb-btn">
-                <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':offer.user.usernameCanonical }) }}" class="btn btn-primary btn-expand btn-lg" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
-            </div>
+            {% if not ownerUser %}
+                <div class="ladb-btn">
+                    <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':offer.user.usernameCanonical }) }}" class="btn btn-primary btn-expand btn-lg" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
+                </div>
+            {% endif %}
             {% if hasMap %}
                 {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'250px', 'markersUrl':path('core_offer_location', { 'id':offer.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
             {% endif %}
         </div>
     </div>
-    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':offer.tags, 'type':'offers' } %}
+    {% include 'LadbCoreBundle:Core/Tag:_metas.part.html.twig' with { 'tags':offer.tags, 'type':'offers', 'noMicrodata':true } %}
 {% endblock %}
 
 {% block contentSuggests %}

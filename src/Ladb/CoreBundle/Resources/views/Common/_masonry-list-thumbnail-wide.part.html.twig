@@ -39,7 +39,7 @@
                         {% endif %}
                     </div>
                 {% endblock %}
-                <div class="ladb-body">{% block body %}{{ entity.bodyExtract }}{% endblock %}</div>
+                <div class="ladb-body">{% block body %}<div class="ladb-body-extract">{{ entity.bodyExtract }}</div>{% endblock %}</div>
                 <ul class="ladb-counters">
                     {% block entityMetas %}
                         {% if entity.publicCollectionCount is defined and entity.publicCollectionCount > 0 %}

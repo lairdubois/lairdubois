@@ -299,7 +299,7 @@ class OfferController extends Controller {
 		if (is_null($offer)) {
 			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($offer->getIsDraft() === true && $offer->getUser()->getId() == $this->getUser()->getId())) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$offer->getUser()->getId() == $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_offer_delete)');
 		}
 
@@ -514,9 +514,7 @@ class OfferController extends Controller {
 				if (!is_null($user)) {
 
 					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
+					$filter->addShould($publicVisibilityFilter);
 					$filter->addShould(
 						(new \Elastica\Query\BoolQuery())
 							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
@@ -527,7 +525,6 @@ class OfferController extends Controller {
 					$filter = $publicVisibilityFilter;
 				}
 				$filters[] = $filter;
-
 
 			},
 			'fos_elastica.index.ladb.offer_offer',

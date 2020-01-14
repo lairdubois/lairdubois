@@ -5,9 +5,11 @@
 {# set likeContext (facultative) #}
 {# set collectionContext (facultative) #}
 {# set watchContext (facultative) #}
+{# set ownerCanDelete (facultative) #}
 
 {% set authored = entity.user is defined %}
 {% set ownerUser = ownerUser is defined ? ownerUser : false %}
+{% set ownerCanAlwaysDelete = ownerCanAlwaysDelete|default(false) %}
 {% set isPublic = entity.isPublic is defined ? entity.isPublic : true %}
 
 {% block headerToolsInner %}
@@ -28,11 +30,11 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             {% block headerToolsItems %}
-                {% if is_granted("ROLE_ADMIN") or (ownerUser and not isPublic) %}
+                {% if is_granted("ROLE_ADMIN") or (ownerUser and ownerCanAlwaysDelete) or (ownerUser and not isPublic) %}
                     {% if authored and not ownerUser %}
                         <li><a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
                     {% endif %}
-                    {% if is_granted("ROLE_ADMIN") or (ownerUser and not isPublic) %}
+                    {% if is_granted("ROLE_ADMIN") or (ownerUser and ownerCanAlwaysDelete) or (ownerUser and not isPublic) %}
                         <li class="dropdown-item-danger"><a href="#delete_entity_modal" data-toggle="modal"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}...</a></li>
                     {% endif %}
                     {% if isPublic %}
@@ -83,7 +85,7 @@
             {% endblock %}
         {% endembed %}
     {% endif %}
-    {% if is_granted("ROLE_ADMIN") or (ownerUser and not isPublic) %}
+    {% if is_granted("ROLE_ADMIN") or (ownerUser and ownerCanAlwaysDelete) or (ownerUser and not isPublic) %}
         {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_entity_modal', 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', false, false) } %}
     {% endif %}
     {% if is_granted("ROLE_ADMIN") and authored %}

@@ -116,7 +116,7 @@
       .ladb-heading {
 
         h2 {
-          font-size: 130%;
+          font-size: 120%;
           margin-top: 0;
         }
 
@@ -129,20 +129,25 @@
         height: 180px;
         border: 1px solid #ddd;
 
-        &+.ladb-body, &~.ladb-counters {
+        & + .ladb-body, & ~ .ladb-counters {
           padding-left: 180px + (@ladb-gutter / 2);
         }
 
-        &+.ladb-body {
+        & + .ladb-body {
           min-height: 160px;
         }
 
       }
 
-      >.ladb-body {
+      > .ladb-body {
         color: #555;
         min-height: 100px;
         position: relative;
+
+        .ladb-body-extract {
+          font-size: 90%;
+        }
+
       }
 
     }
@@ -189,9 +194,18 @@
   .ladb-masonry-column-wide {
     width: 100%;
 
-    >.ladb-box {
+    > .ladb-box {
+      padding: 2px;
 
       > .ladb-content {
+
+        > .ladb-heading {
+
+          h2 {
+            font-size: 110%;
+          }
+
+        }
 
         > .ladb-image {
           width: 128px;

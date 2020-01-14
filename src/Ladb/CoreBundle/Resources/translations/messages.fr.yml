@@ -66,6 +66,7 @@ default:
   choose: Choisir
   close: Fermer
   continue: Continuer
+  accept_and_continue: Accepter et Continuer
   help: Aide
   collective_contents: Contenus collectifs
   see_more: Voir la suite...
@@ -504,17 +505,18 @@ offer:
     nav: Annonces
     other_from: Autres annonces de
     similar: Voir aussi
+    new_warning: "Une <strong>annonce</strong> doit correspondre à une <em>Offre</em> ou une <em>Demande</em> d'un Emploi, Matériel (occasion), Matière ou Service en rapport avec le travail du bois.<p style='font-weight: bold;'>Les offres commerciales de produits neufs ou service à titre professsionnel <u>ne sont pas autorisées</u>.</p><p>La qualité du produit, la transaction, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont de la responsabilité de l'annonceur.</p>"
     kind: Type
     kind_0: Non défini
     kind_1: Offre
     kind_2: Demande
     category: Catégorie
     category_0: Non définie
-    category_1: Emploi
-    category_2: Matériel
-    category_3: Matière
-    category_4: Service
-    category_99: Autre
+    category_1: Autre
+    category_2: Emploi
+    category_3: Matériel
+    category_4: Matière
+    category_5: Service
     price: Prix
     form:
       alert:
@@ -524,6 +526,11 @@ offer:
         unpublish_success: L'annonce <strong>%title%</strong> a été dépubliée.
         update_success: L'annonce <strong>%title%</strong> a été mise à jour.
         delete_success: L'annonce <strong>%title%</strong> a été supprimée.
+      help:
+        title: Renseignez ici le titre de votre annonce.
+        showcase: Ajoutez jusqu'à <strong>5 photos</strong> à votre annonce. La première photo sera utilisée comme miniature.
+        body: Renseignez ici le descriptif de votre annonce.
+        tags: Indiquez les tags définissant votre annonce.
     choice:
       entities: '[0,1]annonce|]1,Inf]annonces'
       draft_alert: '[0,1]Vous avez 1 annonce en brouillon.|]1,Inf]Vous avez %count% annonces en brouillon.'
