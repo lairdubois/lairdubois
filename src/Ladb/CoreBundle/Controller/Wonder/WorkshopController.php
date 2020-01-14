@@ -610,7 +610,7 @@ class WorkshopController extends Controller {
 	/**
 	 * @Route("/", name="core_workshop_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_workshop_list_page")
-	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_core_workshop_list_geojsonworkshop_list_geojson")
+	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_workshop_list_geojson")
 	 * @Template("LadbCoreBundle:Wonder/Workshop:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
