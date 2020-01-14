@@ -1,18 +1,28 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
+
 {% set pageTitle = 'offer.offer.list'|trans() %}
 {% set pageDescription = 'offer.offer.description'|trans() %}
 {% set pageImage = asset('banner-offers-600x376.jpg') %}
 {% set pageSectionUrl = url('core_offer_list') %}
 {% set pageSectionName = 'offer.offer.list'|trans %}
 
-{% set navSection = 'offers' %}
 {% set masonry = true %}
 {% set masonryWide = true %}
+{% set topbarTranslucent = true %}
 {% set hideHeaderContainer = false %}
 
-{% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Offer/Offer:_list-topbar.part.html.twig' %}
+{% set navSection = 'offers' %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -22,6 +32,15 @@
         </div>
     </div>
     {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Offer/Offer:_list-topbar.part.html.twig' %}
 {% endblock %}
 
 {% block autopagerContainerInner %}

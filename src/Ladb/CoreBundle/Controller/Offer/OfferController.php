@@ -351,9 +351,10 @@ class OfferController extends Controller {
 	/**
 	 * @Route("/", name="core_offer_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_offer_list_page")
+	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_offer_list_geojson")
 	 * @Template("LadbCoreBundle:Offer/Offer:list.html.twig")
 	 */
-	public function listAction(Request $request, $page = 0) {
+	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
 		// Elasticsearch paginiation limit
@@ -540,6 +541,31 @@ class OfferController extends Controller {
 			'offers' => $searchParameters['entities'],
 		));
 
+		if ($layout == 'geojson') {
+
+			$features = array();
+			foreach ($searchParameters['entities'] as $offer) {
+				$geoPoint = $offer->getGeoPoint();
+				if (is_null($geoPoint)) {
+					continue;
+				}
+				$properties = array(
+					'type'    => 0,
+					'cardUrl' => $this->generateUrl('core_offer_card', array( 'id' => $offer->getId() )),
+				);
+				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
+				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
+			}
+			$crs = new \GeoJson\CoordinateReferenceSystem\Named('urn:ogc:def:crs:OGC:1.3:CRS84');
+			$collection = new \GeoJson\Feature\FeatureCollection($features, $crs);
+
+			$parameters = array_merge($parameters, array(
+				'collection' => $collection,
+			));
+
+			return $this->render('LadbCoreBundle:Offer/Offer:list-xhr.geojson.twig', $parameters);
+		}
+
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Offer/Offer:list-xhr.html.twig', $parameters);
 		}
@@ -555,6 +581,30 @@ class OfferController extends Controller {
 		}
 
 		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}/card.xhr", name="core_offer_card")
+	 * @Template("LadbCoreBundle:Wonder/Workshop:card-xhr.html.twig")
+	 */
+	public function cardAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+
+		$id = intval($id);
+
+		$offer = $offerRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($offer)) {
+			throw $this->createNotFoundException('Unable to find Workshop entity.');
+		}
+
+		return array(
+			'offer' => $offer,
+		);
 	}
 
 	/**
