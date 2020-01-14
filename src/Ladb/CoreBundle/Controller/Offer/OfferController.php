@@ -585,7 +585,7 @@ class OfferController extends Controller {
 
 	/**
 	 * @Route("/{id}/card.xhr", name="core_offer_card")
-	 * @Template("LadbCoreBundle:Wonder/Workshop:card-xhr.html.twig")
+	 * @Template("LadbCoreBundle:Offer/Offer:card-xhr.html.twig")
 	 */
 	public function cardAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -599,7 +599,7 @@ class OfferController extends Controller {
 
 		$offer = $offerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity.');
+			throw $this->createNotFoundException('Unable to find Offer entity.');
 		}
 
 		return array(
