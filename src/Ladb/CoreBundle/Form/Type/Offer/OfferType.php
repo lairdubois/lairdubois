@@ -50,8 +50,8 @@ class OfferType extends AbstractType {
 			))
 			->add('kind', ChoiceType::class, array(
 				'choices'  => array_flip(array(
-					Offer::KIND_OFFER   => 'Offre - <small class="text-muted">J\'ai un emploi, du matériel ou de la matière à proposer</small>',
-					Offer::KIND_REQUEST => 'Demande - <small class="text-muted">Je recherche un emploi, du matériel ou de la matière</small>',
+					Offer::KIND_OFFER   => 'Offre - <small class="text-muted">Je propose, je donne ou je vends.</small>',
+					Offer::KIND_REQUEST => 'Demande - <small class="text-muted">Je cherche.</small>',
 				)),
 				'expanded' => true,
 			))

@@ -829,10 +829,6 @@ class WorkshopController extends Controller {
 			'core_workshop_list_page'
 		);
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
-
 		$parameters = array_merge($searchParameters, array(
 			'workshops' => $searchParameters['entities'],
 		));
@@ -861,6 +857,10 @@ class WorkshopController extends Controller {
 
 			return $this->render('LadbCoreBundle:Wonder/Workshop:list-xhr.geojson.twig', $parameters);
 		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Wonder/Workshop:list-xhr.html.twig', $parameters);

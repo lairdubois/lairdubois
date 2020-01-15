@@ -601,10 +601,6 @@ class OfferController extends Controller {
 			'core_offer_list_page'
 		);
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
-
 		$parameters = array_merge($searchParameters, array(
 			'offers' => $searchParameters['entities'],
 		));
@@ -633,6 +629,10 @@ class OfferController extends Controller {
 
 			return $this->render('LadbCoreBundle:Offer/Offer:list-xhr.geojson.twig', $parameters);
 		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Offer/Offer:list-xhr.html.twig', $parameters);

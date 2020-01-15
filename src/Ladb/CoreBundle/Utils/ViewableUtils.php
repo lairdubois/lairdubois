@@ -99,17 +99,25 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			}
 		}
 
+		$this->container->get('logger')->error('### processListedView ... '.$entityType.' '.count($viewables));
+
 		if (is_null($entityType)) {
 			return;
 		}
 
 		try {
 
+			$this->container->get('logger')->error('### pas return ?? '.count($entityIds));
+
+			if ($entityType == 122) {
+				$this->container->get('logger')->error('### processListedView =>'.implode(',', $entityIds));
+			}
+
 			// Publish a view in queue
 			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
 			$producer->publish(serialize(array(
 				'kind'       => View::KIND_LISTED,
-				'entityType' => $viewable->getType(),
+				'entityType' => $entityType,
 				'entityIds'  => $entityIds,
 				'userId'     => !is_null($user) ? $user->getId() : null,
 			)));

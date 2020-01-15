@@ -366,10 +366,6 @@ class SchoolController extends Controller {
 			$routeParameters
 		);
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
-
 		$parameters = array_merge($searchParameters, array(
 			'schools'         => $searchParameters['entities'],
 			'layout'          => $layout,
@@ -396,6 +392,10 @@ class SchoolController extends Controller {
 
 			return $this->render('LadbCoreBundle:Knowledge/School:list-xhr.geojson.twig', $parameters);
 		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {
