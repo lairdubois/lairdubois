@@ -31,6 +31,7 @@ use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\OfferUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/annonces")
@@ -375,6 +376,40 @@ class OfferController extends Controller {
 		return array(
 			'collection' => $collection,
 		);
+	}
+
+	/**
+	 * @Route("/{id}/message/new", name="core_offer_message_new")
+	 */
+	public function messageNewAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+
+		$id = intval($id);
+
+		$offer = $offerRepository->findOneById($id);
+		if (is_null($offer)) {
+			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
+		}
+		if ($offer->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_offer_message_new)');
+		}
+		if ($offer->getUser() === $this->getUser()) {
+			throw $this->createNotFoundException('Unable to send to yourself (core_offer_message_new)');
+		}
+
+		$translator = $this->get('translator');
+
+		return $this->forward('LadbCoreBundle:Message/Thread:new', array(
+			'recipientUsername' => $offer->getUser()->getUsernameCanonical(),
+			'subject'           => $translator->trans('offer.offer.contact.subject', array('%TITLE%' => $offer->getTitle())),
+			'message'           => $translator->trans('offer.offer.contact.body', array(
+				'%TITLE%'     => $offer->getTitle(),
+				'%URL%'       => $this->generateUrl('core_offer_show', array('id' => $offer->getSluggedId()), UrlGeneratorInterface::ABSOLUTE_URL),
+				'%RECIPIENT%' => $offer->getUser()->getDisplayName(),
+				'%SENDER%'    => $this->getUser()->getDisplayName()
+			)),
+		));
 	}
 
 	/**

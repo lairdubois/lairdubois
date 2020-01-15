@@ -519,6 +519,18 @@ offer:
     category_5: Service
     price: Prix
     price_suffix: Complément
+    contact:
+      subject: Réponse à votre annonce "%TITLE%"
+      body: |
+        Bonjour %RECIPIENT%,
+
+        Je me permets de vous contacter par rapport à votre annonce **%TITLE%**.
+        %URL%
+
+
+
+        Cordialement,
+        %SENDER%
     form:
       alert:
         lock_success: L'annonce <strong>%title%</strong> a été vérrouillée.

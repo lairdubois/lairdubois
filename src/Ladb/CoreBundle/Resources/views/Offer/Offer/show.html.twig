@@ -103,7 +103,7 @@
     {% endif %}
     {% if not ownerUser %}
         <div class="ladb-like-and-follow-row">
-            <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':offer.user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ offer.user.displayName }}</a>
+            <a href="{{ path('core_offer_message_new', { 'id':offer.id }) }}" target="_blank" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
         </div>
     {% endif %}
     {% if not offer.isDraft and (ownerUser or offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER')) %}
@@ -154,7 +154,7 @@
             {% endif %}
             {% if not ownerUser %}
                 <div class="ladb-btn">
-                    <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':offer.user.usernameCanonical }) }}" class="btn btn-primary btn-expand btn-lg" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
+                    <a href="{{ path('core_offer_message_new', { 'id':offer.id }) }}" target="_blank" class="btn btn-primary btn-expand btn-lg" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
                 </div>
             {% endif %}
             {% if hasMap %}
