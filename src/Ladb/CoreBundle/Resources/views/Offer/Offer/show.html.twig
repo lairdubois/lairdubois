@@ -115,7 +115,7 @@
                         {% if ownerUser %}
                             Cette annonce expirera <strong>{{ offer.expiredDate|time_diff }}</strong>.
                         {% elseif offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') %}
-                            La qualité du produit, la transaction, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont de la responsabilité de l'annonceur, {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':offer.user } %}.
+                            La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont de la responsabilité de l'annonceur, {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':offer.user } %}.
                         {% endif %}
                     </div>
                 </div>
