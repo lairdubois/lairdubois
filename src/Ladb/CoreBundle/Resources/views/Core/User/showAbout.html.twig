@@ -240,12 +240,19 @@
                                     <strong>{{ user.meta.proposalCount|number_format(0, ',', ' ') }}</strong>
                                     <small>{{ 'default.choice.proposals'|transchoice(user.meta.proposalCount) }}</small>
                                 </div>
+                                <div class="ladb-meta{% if user.meta.publicOfferCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-offer"></i>
+                                    {% if user.meta.publicOfferCount > 0 %}<a href="{{ path('core_offer_list', { 'q':'@author:'~user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicOfferCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'offer.offer.choice.entities'|transchoice(user.meta.publicOfferCount) }}</small>
+                                    {% if user.meta.publicOfferCount > 0 %}</a>{% endif %}
+                                </div>
                                 <div class="ladb-meta{% if user.meta.publicGraphicCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-promote"></i>
                                     {% if user.meta.publicGraphicCount > 0 %}<a href="{{ path('core_user_show_graphics', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicGraphicCount|number_format(0, ',', ' ') }}</strong>
                                         <small>{{ 'promotion.graphic.choice.entities'|transchoice(user.meta.publicGraphicCount) }}</small>
-                                        {% if user.meta.publicGraphicCount > 0 %}</a>{% endif %}
+                                    {% if user.meta.publicGraphicCount > 0 %}</a>{% endif %}
                                 </div>
                             </div>
                         </div>

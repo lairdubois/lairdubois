@@ -579,7 +579,9 @@ class WorkshopController extends Controller {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
 		if ($workshop->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_location)');
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workshop->getUser()->getId() != $this->getUser()->getId())) {
+				throw $this->createNotFoundException('Not allowed (core_workshop_location)');
+			}
 		}
 
 		$features = array();

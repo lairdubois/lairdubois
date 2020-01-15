@@ -361,7 +361,9 @@ class FindController extends Controller {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
 		if ($find->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_find_location)');
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $find->getUser()->getId() != $this->getUser()->getId())) {
+				throw $this->createNotFoundException('Not allowed (core_find_location)');
+			}
 		}
 
 		$features = array();

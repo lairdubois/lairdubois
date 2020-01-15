@@ -116,8 +116,6 @@ class UserUtils extends AbstractContainerAwareUtils {
 //				}
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
 
-				echo $count;
-
 				// Update count value on user entity
 				$propertyPath = 'unlisted_'.$entityStrippedName.'_count';
 				$propertyUtils = $this->get(PropertyUtils::NAME);

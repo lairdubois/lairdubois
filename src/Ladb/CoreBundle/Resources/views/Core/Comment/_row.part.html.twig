@@ -43,7 +43,7 @@
                 </div>
             {% endif %}
             {% set noFooter = noFooter|default(false) %}
-            {% set canReply = is_granted('ROLE_USER') %}
+            {% set canReply = is_granted('ROLE_USER') and commentContext is defined and commentContext.isCommentable %}
             {% if not noFooter and (canReply or comment.childCount > 0) %}
                 <div class="ladb-comment-footer">
                     <i class="ladb-icon-reply"></i>

@@ -45,8 +45,8 @@
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-shortcut" data-query="@mine:all"><i class="ladb-icon-user"></i> Mes annonces</a></li>
     {% endif %}
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') }} @sort-recent"><i class="ladb-icon-offer-kind-1"></i> Offres</a></li>
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_REQUEST') }} @sort-recent"><i class="ladb-icon-offer-kind-2"></i> Demandes</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') }}"><i class="ladb-icon-offer-kind-1"></i> Offres</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_REQUEST') }}"><i class="ladb-icon-offer-kind-2"></i> Demandes</a></li>
 {% endblock %}
 
 

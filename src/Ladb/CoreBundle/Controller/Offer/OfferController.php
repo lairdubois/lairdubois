@@ -152,6 +152,9 @@ class OfferController extends Controller {
 		if ($offer->getIsLocked() === true) {
 			throw $this->createNotFoundException('Locked (core_offer_publish)');
 		}
+		if ($offer->getPublishCount() >= Offer::MAX_PUBLISH_COUNT) {
+			throw $this->createNotFoundException('Max publish count reached (core_offer_publish)');
+		}
 
 		// Publish
 		$offerManager = $this->get(OfferManager::NAME);
@@ -314,6 +317,29 @@ class OfferController extends Controller {
 	}
 
 	/**
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_offer_widget")
+	 * @Template("LadbCoreBundle:Offer/Offer:widget-xhr.html.twig")
+	 */
+	public function widgetAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+
+		$id = intval($id);
+
+		$offer = $offerRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($offer)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if ($offer->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_offer_widget)');
+		}
+
+		return array(
+			'offer' => $offer,
+		);
+	}
+
+	/**
 	 * @Route("/{id}/location.geojson", name="core_offer_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Offer/Offer:location.geojson.twig")
 	 */
@@ -328,7 +354,9 @@ class OfferController extends Controller {
 			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
 		}
 		if ($offer->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_offer_location)');
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $offer->getUser()->getId() != $this->getUser()->getId())) {
+				throw $this->createNotFoundException('Not allowed (core_offer_location)');
+			}
 		}
 
 		$features = array();
@@ -400,12 +428,16 @@ class OfferController extends Controller {
 						$filter = new \Elastica\Query\MatchPhrase('kind', $facet->value);
 						$filters[] = $filter;
 
+						$couldUseDefaultSort = true;
+
 						break;
 
 					case 'category':
 
 						$filter = new \Elastica\Query\MatchPhrase('category', $facet->value);
 						$filters[] = $filter;
+
+						$couldUseDefaultSort = true;
 
 						break;
 
