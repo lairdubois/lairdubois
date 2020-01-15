@@ -257,11 +257,11 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	// Date /////
 
 	public function getExpiredDate() {
-		return $this->getChangedAt()->add(new \DateInterval(self::ACTIVE_LIFETIME));
+		return (clone $this->getChangedAt())->add(new \DateInterval(self::ACTIVE_LIFETIME));
 	}
 
 	public function getOudatedDate() {
-		return $this->getChangedAt()->add(new \DateInterval(self::FULL_LIFETIME));
+		return (clone $this->getChangedAt())->add(new \DateInterval(self::FULL_LIFETIME));
 	}
 
 	// Pictures /////
