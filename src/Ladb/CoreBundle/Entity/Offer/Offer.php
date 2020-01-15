@@ -73,7 +73,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
-	 * @Assert\Length(min=4)
+	 * @Assert\Length(min=4, max=100)
 	 */
 	private $title;
 
@@ -144,6 +144,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	/**
 	 * @ORM\Column(name="raw_price", type="integer")
+	 * @Assert\GreaterThanOrEqual(0)
 	 */
 	protected $rawPrice = 0;
 
@@ -154,11 +155,13 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	/**
 	 * @ORM\Column(name="price_suffix", type="string", length=10, nullable=true)
+	 * @Assert\Length(max=10)
 	 */
 	protected $priceSuffix;
 
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
+	 * @Assert\Length(max=100)
 	 */
 	private $location;
 

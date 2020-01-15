@@ -53,11 +53,9 @@ abstract class AbstractWonder extends AbstractDraftableAuthoredPublication imple
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
-	 * @Assert\Length(min=4)
+	 * @Assert\Length(min=4, max=100)
 	 */
-	private $title;
-
-	/**
+	private $title;/**
 	 * @Gedmo\Slug(fields={"title"}, separator="-")
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
