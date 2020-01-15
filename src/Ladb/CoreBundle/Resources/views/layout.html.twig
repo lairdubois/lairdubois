@@ -109,7 +109,7 @@
                 <li><a href="{{ path('core_school_list') }}"><i class="ladb-icon-school"></i>{{ 'knowledge.school.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-schools pull-right' } %}</a></li>
                 <li><a href="{{ path('core_user_list') }}"><i class="ladb-icon-users"></i>{{ 'user.nav'|trans() }}</a></li>
                 <li class="uk-nav-divider"></li>
-                <li class="ladb-highlighted"><a href="{{ path('core_offer_list') }}"><i class="ladb-icon-offer"></i>{{ 'offer.offer.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers pull-right' } %}</a></li>
+                <li><a href="{{ path('core_offer_list') }}" class="ladb-highlighted"><i class="ladb-icon-offer"></i>{{ 'offer.offer.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers pull-right' } %}</a></li>
                 <li><a href="{{ path('core_find_list') }}"><i class="ladb-icon-globe"></i>{{ 'find.find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-find-finds pull-right' } %}</a></li>
                 <li class="uk-nav-divider"></li>
                 <li><a href="{{ path('core_workflow_list') }}"><i class="ladb-icon-workflow"></i>{{ 'workflow.workflow.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-workflow-workflows pull-right' } %}</a></li>
