@@ -76,19 +76,11 @@ class UserUtils extends AbstractContainerAwareUtils {
 			return false;
 		}
 
-		if ($entityType == 122) {
-			$this->get('logger')->error('### DOIT ?');
-		}
-
 		// Check refresh date
-//		$now = new \DateTime();
-//		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType, $now);
-//		if ($now < $refreshDate) {
-//			return false;
-//		}
-
-		if ($entityType == 122) {
-			$this->get('logger')->error('### CHECK start');
+		$now = new \DateTime();
+		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType, $now);
+		if ($now < $refreshDate) {
+			return false;
 		}
 
 		$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT'.mt_rand(180, 300).'S' /* = between 3 and 5 min */);
@@ -100,9 +92,6 @@ class UserUtils extends AbstractContainerAwareUtils {
 			$lastViewDate = max(new \DateTime('2014-11-22'), $user->getCreatedAt());
 		} else {
 			$lastViewDate = $lastView->getCreatedAt();
-		}
-		if ($entityType == 122) {
-			$this->get('logger')->error('### '.$lastViewDate->format('Y-m-d H:i:s'));
 		}
 		if (!is_null($lastViewDate)) {
 			$typableUtils = $this->get(TypableUtils::NAME);
@@ -126,10 +115,6 @@ class UserUtils extends AbstractContainerAwareUtils {
 //					$andWheres[] = 'e.isRejected = false';
 //				}
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
-
-				if ($entityType == 122) {
-					$this->get('logger')->error('### $count='.$count);
-				}
 
 				// Update count value on user entity
 				$propertyPath = 'unlisted_'.$entityStrippedName.'_count';
