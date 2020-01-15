@@ -928,7 +928,7 @@ class UserMeta {
 	}
 
 	public function incrementUnreadMessageCount($by = 1) {
-		return $this->unreadMessageCount += intval($by);
+		return $this->unreadMessageCount = max(0, $this->unreadMessageCount + intval($by));
 	}
 
 	public function getUnreadMessageCount() {

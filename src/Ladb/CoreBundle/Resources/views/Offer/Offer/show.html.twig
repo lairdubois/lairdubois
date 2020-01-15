@@ -122,7 +122,7 @@
             </div>
         </div>
     {% endif %}
-    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true } %}
 {% endblock %}
 
 {% block contentMetasPanel %}
