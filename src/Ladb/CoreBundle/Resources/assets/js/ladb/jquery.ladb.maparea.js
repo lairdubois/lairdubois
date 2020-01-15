@@ -94,16 +94,9 @@
                         });
                     }
                 });
-                var classes = {
-                    0: 'default',
-                    1: 'asso',
-                    2: 'pro',
-                    3: 'default',
-                    4: 'brand'
-                };
                 geojsonLayer.eachLayer(function(layer) {
                     layer.setIcon(L.divIcon({
-                        className: 'ladb-marker-' + classes[layer.feature.properties.type],
+                        className: 'ladb-marker-' + layer.feature.properties.color,
                         iconSize: L.point(30, 70),
                         popupAnchor: [0, -35]
                     }));

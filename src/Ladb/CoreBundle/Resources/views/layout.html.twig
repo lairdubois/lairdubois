@@ -109,7 +109,7 @@
                 <li><a href="{{ path('core_school_list') }}"><i class="ladb-icon-school"></i>{{ 'knowledge.school.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-schools pull-right' } %}</a></li>
                 <li><a href="{{ path('core_user_list') }}"><i class="ladb-icon-users"></i>{{ 'user.nav'|trans() }}</a></li>
                 <li class="uk-nav-divider"></li>
-                <li><a href="{{ path('core_offer_list') }}"><i class="ladb-icon-offer"></i>{{ 'offer.offer.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers pull-right' } %}</a></li>
+                <li class="ladb-highlighted"><a href="{{ path('core_offer_list') }}"><i class="ladb-icon-offer"></i>{{ 'offer.offer.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers pull-right' } %}</a></li>
                 <li><a href="{{ path('core_find_list') }}"><i class="ladb-icon-globe"></i>{{ 'find.find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-find-finds pull-right' } %}</a></li>
                 <li class="uk-nav-divider"></li>
                 <li><a href="{{ path('core_workflow_list') }}"><i class="ladb-icon-workflow"></i>{{ 'workflow.workflow.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-workflow-workflows pull-right' } %}</a></li>
@@ -150,7 +150,7 @@
                 <a href="{{ path('core_user_list') }}"{% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'user.nav'|trans() }}</div></a>
             </div>
         </div>
-        <a href="{{ path('core_offer_list') }}"{% if navSection is defined and navSection == 'offers' %} class="ladb-active"{% endif %}><i class="ladb-icon-offer"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers' } %}<div>{{ 'offer.offer.nav'|trans() }}</div></a>
+        <a href="{{ path('core_offer_list') }}" class="ladb-highlighted{% if navSection is defined and navSection == 'offers' %} ladb-active{% endif %}"><i class="ladb-icon-offer"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers' } %}<div>{{ 'offer.offer.nav'|trans() }}</div></a>
         <a href="{{ path('core_find_list') }}"{% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-globe"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-find-finds' } %}<div>{{ 'find.find.nav'|trans() }}</div></a>
         <a href="{{ path('core_workflow_list') }}"{% if navSection is defined and navSection == 'workflows' %} class="ladb-active"{% endif %}><i class="ladb-icon-workflow"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-workflow-workflows' } %}<div>{{ 'workflow.workflow.nav'|trans() }}</div></a>
     </nav>

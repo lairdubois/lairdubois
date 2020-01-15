@@ -334,7 +334,8 @@ class OfferController extends Controller {
 		$features = array();
 		if (!is_null($offer->getLongitude()) && !is_null($offer->getLatitude())) {
 			$properties = array(
-				'type' => 0,
+				'color'   => array( 1 => 'blue', 2 => 'green' )[$offer->getKind()],
+				'cardUrl' => $this->generateUrl('core_offer_card', array('id' => $offer->getId())),
 			);
 			$gerometry = new \GeoJson\Geometry\Point($offer->getGeoPoint());
 			$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -550,8 +551,8 @@ class OfferController extends Controller {
 					continue;
 				}
 				$properties = array(
-					'type'    => $offer->getKind(),
-					'cardUrl' => $this->generateUrl('core_offer_card', array( 'id' => $offer->getId() )),
+					'color'   => array( 1 => 'blue', 2 => 'green' )[$offer->getKind()],
+					'cardUrl' => $this->generateUrl('core_offer_card', array('id' => $offer->getId())),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
 				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);

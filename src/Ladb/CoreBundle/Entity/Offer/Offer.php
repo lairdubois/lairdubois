@@ -60,8 +60,8 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	const MAX_PUBLISH_COUNT = 5;
 
 	const KIND_NONE = 0;
-	const KIND_REQUEST = 1;
-	const KIND_OFFER = 2;
+	const KIND_OFFER = 1;
+	const KIND_REQUEST = 2;
 
 	const CATEGORY_NONE = 0;
 	const CATEGORY_OTHER = 1;

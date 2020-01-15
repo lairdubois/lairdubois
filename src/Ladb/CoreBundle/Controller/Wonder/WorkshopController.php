@@ -585,7 +585,8 @@ class WorkshopController extends Controller {
 		$features = array();
 		if (!is_null($workshop->getLongitude()) && !is_null($workshop->getLatitude())) {
 			$properties = array(
-				'type' => 0,
+				'color'   => 'orange',
+				'cardUrl' => $this->generateUrl('core_workshop_card', array('id' => $workshop->getId())),
 			);
 			$gerometry = new \GeoJson\Geometry\Point($workshop->getGeoPoint());
 			$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -843,8 +844,8 @@ class WorkshopController extends Controller {
 					continue;
 				}
 				$properties = array(
-					'type'    => 0,
-					'cardUrl' => $this->generateUrl('core_workshop_card', array( 'id' => $workshop->getId() )),
+					'color'   => 'orange',
+					'cardUrl' => $this->generateUrl('core_workshop_card', array('id' => $workshop->getId())),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
 				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);

@@ -300,7 +300,7 @@ class UserController extends Controller {
 			$features = array();
 			foreach ($searchParameters['entities'] as $user) {
 				$properties = array(
-					'type' => $user->getAccountType(),
+					'color' => array( 'orange', 'green', 'blue', 'orange', 'green' )[$user->getAccountType()],
 					'cardUrl' => $this->generateUrl('core_user_card', array( 'username' => $user->getUsernameCanonical() )),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($user->getGeoPoint());
@@ -448,7 +448,7 @@ class UserController extends Controller {
 		$features = array();
 		if (!is_null($user->getLongitude()) && !is_null($user->getLatitude())) {
 			$properties = array(
-				'type' => $user->getAccountType(),
+				'color' => array( 'orange', 'green', 'blue', 'orange', 'green' )[$user->getAccountType()],
 				'cardUrl' => $this->generateUrl('core_user_card', array( 'username' => $user->getUsername() )),
 			);
 			$gerometry = new \GeoJson\Geometry\Point($user->getGeoPoint());

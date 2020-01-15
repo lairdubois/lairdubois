@@ -368,7 +368,7 @@ class FindController extends Controller {
 		$content = $find->getContent();
 		if (!is_null($content->getLongitude()) && !is_null($content->getLatitude())) {
 			$properties = array(
-				'type' => 0,
+				'color' => 'orange',
 			);
 			$gerometry = new \GeoJson\Geometry\Point($content->getGeoPoint());
 			$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
