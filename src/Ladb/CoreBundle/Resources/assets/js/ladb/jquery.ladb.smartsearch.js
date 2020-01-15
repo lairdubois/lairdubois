@@ -96,7 +96,6 @@
             }
             this.$textInput.val(text.trim());
         }
-        this.mapLoad(query);
     };
 
     LadbSmartSearch.prototype.createFacet = function(facetDef) {
@@ -491,6 +490,7 @@
     LadbSmartSearch.prototype.init = function() {
         this.bind();
         this.parseQuery(this.options.query);
+        this.mapLoad(this.options.query);
         if (this.countFacets() === 0) {
             this.$shortcuts.show();
         }
