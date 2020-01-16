@@ -223,6 +223,11 @@ class UserMeta {
 	 */
 	private $unlistedCollectionCollectionCount = 0;
 
+	/**
+	 * @ORM\Column(name="unlisted_offer_offer_count", type="integer")
+	 */
+	private $unlistedOfferOfferCount = 0;
+
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="follower_count")
@@ -345,6 +350,17 @@ class UserMeta {
 	 * @ORM\Column(type="integer", nullable=true, name="answer_count")
 	 */
 	private $answerCount = 0;
+
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="private_offer_count")
+	 */
+	private $privateOfferCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="public_offer_count")
+	 */
+	private $publicOfferCount = 0;
 
 
 	/**
@@ -832,6 +848,17 @@ class UserMeta {
 		return $this;
 	}
 
+	// UnlistedOfferOfferCount /////
+
+	public function getUnlistedOfferOfferCount() {
+		return $this->unlistedOfferOfferCount;
+	}
+
+	public function setUnlistedOfferOfferCount($unlistedOfferOfferCount) {
+		$this->unlistedOfferOfferCount = $unlistedOfferOfferCount;
+		return $this;
+	}
+
 
 	// FollowerCount /////
 
@@ -901,7 +928,7 @@ class UserMeta {
 	}
 
 	public function incrementUnreadMessageCount($by = 1) {
-		return $this->unreadMessageCount += intval($by);
+		return $this->unreadMessageCount = max(0, $this->unreadMessageCount + intval($by));
 	}
 
 	public function getUnreadMessageCount() {
@@ -1080,6 +1107,27 @@ class UserMeta {
 
 	public function getAnswerCount() {
 		return $this->answerCount;
+	}
+
+	// PrivateOfferCount /////
+
+	public function incrementPrivateOfferCount($by = 1) {
+		return $this->privateOfferCount += intval($by);
+	}
+
+	public function getPrivateOfferCount() {
+		return $this->privateOfferCount;
+	}
+
+	// PublicOfferCount /////
+
+	public function incrementPublicOfferCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->publicOfferCount += intval($by);
+	}
+
+	public function getPublicOfferCount() {
+		return $this->publicOfferCount;
 	}
 
 	// PrivateGraphicCount /////

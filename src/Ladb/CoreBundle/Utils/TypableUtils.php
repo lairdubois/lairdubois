@@ -117,6 +117,10 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
 				$a = array( 'knowledge', 'software' );
 				break;
+			// Offer
+			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
+				$a = array( 'offer', 'offer' );
+				break;
 
 		}
 		if ($a) {
@@ -301,6 +305,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Software
 			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Software';
+			// Offer
+			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
+				return '\Ladb\CoreBundle\Entity\Offer\Offer';
 
 		}
 		return null;
@@ -418,6 +425,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
 				$url = $router->generate('core_software_'.$action, $params, $referenceType);
 				break;
+			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
+				$url = $router->generate('core_offer_'.$action, $params, $referenceType);
+				break;
 
 		}
 		return $url;
@@ -499,6 +509,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Software
 			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
 				return 'software';
+			// Software
+			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
+				return 'offer';
 
 		}
 		return null;

@@ -168,10 +168,6 @@ ladb_core_knowledge:
     resource: "Ladb\\CoreBundle\\Controller\\Knowledge\\KnowledgeController"
     type:     annotation
 
-ladb_core_user:
-    resource: "Ladb\\CoreBundle\\Controller\\Core\\UserController"
-    type:     annotation
-
 ladb_core_referer:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\RefererController"
     type:     annotation
@@ -219,4 +215,13 @@ ladb_core_collection:
 ladb_core_collection_entry:
     resource: "Ladb\\CoreBundle\\Controller\\Collection\\EntryController"
     type:     annotation
+
+ladb_core_offer:
+    resource: "Ladb\\CoreBundle\\Controller\\Offer\\OfferController"
+    type:     annotation
+
+ladb_core_user:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\UserController"
+    type:     annotation
+
 

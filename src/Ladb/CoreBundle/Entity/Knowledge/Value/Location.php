@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge\Value;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\LocalisableExtendedTrait;
 use Ladb\CoreBundle\Model\LocalisableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
@@ -16,7 +17,7 @@ use Ladb\CoreBundle\Model\LocalisableExtendedInterface;
  */
 class Location extends BaseValue implements LocalisableExtendedInterface {
 
-	use LocalisableTrait;
+	use LocalisableTrait, LocalisableExtendedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\Location';
 	const TYPE = 14;
@@ -71,50 +72,6 @@ class Location extends BaseValue implements LocalisableExtendedInterface {
 
 	public function getType() {
 		return self::TYPE;
-	}
-
-	// PostalCode /////
-
-	public function setPostalCode($postalCode = null) {
-		$this->postalCode = $postalCode;
-		return $this;
-	}
-
-	public function getPostalCode() {
-		return $this->postalCode;
-	}
-
-	// Locality /////
-
-	public function setLocality($locality = null) {
-		$this->locality = $locality;
-		return $this;
-	}
-
-	public function getLocality() {
-		return $this->locality;
-	}
-
-	// Country /////
-
-	public function setCountry($country = null) {
-		$this->country = $country;
-		return $this;
-	}
-
-	public function getCountry() {
-		return $this->country;
-	}
-
-	// GeographicalAreas /////
-
-	public function setGeographicalAreas($geographicalAreas = null) {
-		$this->geographicalAreas = $geographicalAreas;
-		return $this;
-	}
-
-	public function getGeographicalAreas() {
-		return $this->geographicalAreas;
 	}
 
 	// FormattedAddress /////

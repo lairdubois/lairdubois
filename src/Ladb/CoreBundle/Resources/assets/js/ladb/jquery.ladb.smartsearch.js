@@ -96,7 +96,6 @@
             }
             this.$textInput.val(text.trim());
         }
-        this.mapLoad(query);
     };
 
     LadbSmartSearch.prototype.createFacet = function(facetDef) {
@@ -165,7 +164,7 @@
                 .on('click', function() {
                     that.removeFacet($(this).parent());
                     if (that.countFacets() === 0) {
-                        that.$shortcuts.show(); // No more facet => display shortcuts
+                        that.showShortcuts(); // No more facet => display shortcuts
                     }
                     that.search();
                 }))
@@ -331,6 +330,16 @@
         $('#' + this.options.mapAreaId).ladbMapArea('load', this.options.mapSearchPath + '?q=@geocoded ' + query);
     };
 
+    LadbSmartSearch.prototype.showShortcuts = function() {
+        this.$shortcuts.show();
+        this.$shortcuts.closest('.ladb-list-topbar').addClass('ladb-list-topbar-with-shortcuts');
+    };
+
+    LadbSmartSearch.prototype.hideShortcuts = function() {
+        this.$shortcuts.hide();
+        this.$shortcuts.closest('.ladb-list-topbar').removeClass('ladb-list-topbar-with-shortcuts');
+    };
+
     LadbSmartSearch.prototype.bind = function() {
         var that = this;
 
@@ -387,7 +396,7 @@
 
             $facetItem.on('click', function() {
 
-                that.$shortcuts.hide();
+                that.hideShortcuts();
 
                 var $facet = that.createFacet(facetDef);
 
@@ -491,8 +500,9 @@
     LadbSmartSearch.prototype.init = function() {
         this.bind();
         this.parseQuery(this.options.query);
+        this.mapLoad(this.options.query);
         if (this.countFacets() === 0) {
-            this.$shortcuts.show();
+            this.showShortcuts();
         }
     };
 

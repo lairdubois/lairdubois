@@ -1,0 +1,33 @@
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{# set offer #}
+
+{% set entity = offer %}
+{% set classes = 'ladb-offer-list-thumbnail' %}
+
+{% block title %}<i class="ladb-icon-offer-kind-{{ offer.kind }}" data-tooltip="tooltip" title="{{ ('offer.offer.kind_'~offer.kind)|trans }}"></i> {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="ladb-flex ladb-flex-column">
+        <div class="ladb-flex-body ladb-hidden-mobile">
+            {{ parent() }}
+        </div>
+        <div class="ladb-flex-footer">
+            {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
+            <span style="font-style: italic;">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
+            {% if offer.location is defined and offer.location is not null %}
+                <div>
+                    {% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block headingBadges %}
+    {% if offer.isExpired %}
+        <div class="ladb-draft-badge pull-right" style="margin-left: 5px;"><i class="ladb-icon-warning"></i> Expirée</div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

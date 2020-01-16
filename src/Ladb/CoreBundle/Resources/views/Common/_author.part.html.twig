@@ -4,12 +4,14 @@
 {# set hideBy (facultative) #}
 {# set noMicrodata (facultative) #}
 {# set noMicrodataAuthor (facultative) #}
-{# set itemprop (facultative) #}
+{# set authorItemtype (facultative) #}
+{# set authorItemprop (facultative) #}
 
 {% set hideBy = hideBy|default(false) %}
 {% set noMicrodata = noMicrodata|default(false) %}
 {% set noMicrodataAuthor = noMicrodata or noMicrodataAuthor|default(false) %}
-{% set itemprop = itemprop|default('author') %}
+{% set authorItemtype = authorItemtype|default('Person') %}
+{% set authorItemprop = authorItemprop|default('author') %}
 
-<span{% if not noMicrodataAuthor %} itemprop="{{ itemprop }}" itemscope itemtype="http://schema.org/Person"{% endif %} class="ladb-author">{% if not hideBy %}{{ 'default.by'|trans() }} {% endif %}{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':entity.user } %}</span>
+<span{% if not noMicrodataAuthor %} itemprop="{{ authorItemprop }}" itemscope itemtype="http://schema.org/{{ authorItemtype }}"{% endif %} class="ladb-author">{% if not hideBy %}{{ 'default.by'|trans() }} {% endif %}{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':entity.user } %}</span>
 {% endspaceless %}

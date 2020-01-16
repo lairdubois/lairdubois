@@ -27,6 +27,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 			try {
 				$response = $geocoder->geocode($localisable->getLocation());
 			} catch (\Exception $e) {
+				$this->get('logger')->error($e);
 				return false;
 			}
 
@@ -116,7 +117,9 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 						$a = $a->withAdministrativeArea($address->getAdminLevels()->first()->getName());
 					}
 
-					$localisable->setFormattedAddress($formatter->format($a));
+					try {
+						$localisable->setFormattedAddress($formatter->format($a));
+					} catch (\Exception $e) {}
 
 				}
 

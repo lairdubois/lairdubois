@@ -32,7 +32,7 @@ class ThreadController extends Controller {
 	 * @Route("/thread/to/{recipientUsername}/new", requirements={"recipientUsername" = "[a-zA-Z0-9]+"}, name="core_message_thread_new_recipientusername", defaults={"announcement" = false})
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
-	public function newAction($recipientUsername, $announcement) {
+	public function newAction($recipientUsername, $subject = null, $message = null) {
 
 		$newThreadMessage = new NewThreadMessage();
 
@@ -43,6 +43,14 @@ class ThreadController extends Controller {
 				throw $this->createNotFoundException('User not found (core_message_thread_new_recipientusername)');
 			}
 			$newThreadMessage->addRecipient($recipient);
+		}
+
+		if (!is_null($subject)) {
+			$newThreadMessage->setSubject($subject);
+		}
+
+		if (!is_null($message)) {
+			$newThreadMessage->setBody($message);
 		}
 
 		$form = $this->createForm(NewThreadMessageType::class, $newThreadMessage);

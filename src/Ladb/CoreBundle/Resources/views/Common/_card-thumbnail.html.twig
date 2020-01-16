@@ -14,7 +14,7 @@
         <div class="ladb-subheading">
             {% block subheadingInner %}
                 {% if entity.user is defined %}
-                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':workshop } %}
+                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' %}
                 {% endif %}
             {% endblock %}
         </div>

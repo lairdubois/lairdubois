@@ -12,7 +12,7 @@ L'Air du Bois uses some important tools you need to install first.
 ### Install Useful Tools
 
 ``` bash
-    $ sudo apt-get install curl apt-transport-https ghostscript librsvg2-bin lnav
+    $ sudo apt-get install curl apt-transport-https ghostscript librsvg2-bin lnav unzip
 ```
 
 ### Install [MySQL](https://www.mysql.com/) - *The database*
@@ -351,6 +351,7 @@ And add the following lines
 */30 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:notification:email --force &> /dev/null
 0 3 * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:sitemaps --force &> /dev/null
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
+0 3 * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:offers --force &> /dev/null
 ```
 
 ## Step 14 - Create services and launch it for background process

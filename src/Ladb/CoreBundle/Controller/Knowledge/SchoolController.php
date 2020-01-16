@@ -159,7 +159,8 @@ class SchoolController extends Controller {
 		$features = array();
 		if (!is_null($school->getLongitude()) && !is_null($school->getLatitude())) {
 			$properties = array(
-				'type' => 0,
+				'color'   => 'green',
+				'cardUrl' => $this->generateUrl('core_school_card', array('id' => $school->getId())),
 			);
 			$gerometry = new \GeoJson\Geometry\Point($school->getGeoPoint());
 			$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -365,10 +366,6 @@ class SchoolController extends Controller {
 			$routeParameters
 		);
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
-
 		$parameters = array_merge($searchParameters, array(
 			'schools'         => $searchParameters['entities'],
 			'layout'          => $layout,
@@ -380,8 +377,8 @@ class SchoolController extends Controller {
 			$features = array();
 			foreach ($searchParameters['entities'] as $school) {
 				$properties = array(
-					'type'    => 0,
-					'cardUrl' => $this->generateUrl('core_school_card', array( 'id' => $school->getId() )),
+					'color'   => 'green',
+					'cardUrl' => $this->generateUrl('core_school_card', array('id' => $school->getId())),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($school->getGeoPoint());
 				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -395,6 +392,10 @@ class SchoolController extends Controller {
 
 			return $this->render('LadbCoreBundle:Knowledge/School:list-xhr.geojson.twig', $parameters);
 		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {

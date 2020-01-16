@@ -233,6 +233,9 @@ services:
   ladb_core.graphic_manager:
     class: Ladb\CoreBundle\Manager\Promotion\GraphicManager
     arguments: ['@service_container']
+  ladb_core.offer_manager:
+    class: Ladb\CoreBundle\Manager\Offer\OfferManager
+    arguments: ['@service_container']
 
   # Validators
   ladb_core.valid_username_validator:
@@ -472,6 +475,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_offer_offer:
+    class: Ladb\CoreBundle\Form\Type\Offer\OfferType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.localisable_utils']
   ladb_knowledge_value_picture:
     class: Ladb\CoreBundle\Form\Type\Knowledge\Value\PictureValueType
     tags:

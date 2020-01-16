@@ -579,13 +579,16 @@ class WorkshopController extends Controller {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
 		if ($workshop->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_location)');
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workshop->getUser()->getId() != $this->getUser()->getId())) {
+				throw $this->createNotFoundException('Not allowed (core_workshop_location)');
+			}
 		}
 
 		$features = array();
 		if (!is_null($workshop->getLongitude()) && !is_null($workshop->getLatitude())) {
 			$properties = array(
-				'type' => 0,
+				'color'   => 'orange',
+				'cardUrl' => $this->generateUrl('core_workshop_card', array('id' => $workshop->getId())),
 			);
 			$gerometry = new \GeoJson\Geometry\Point($workshop->getGeoPoint());
 			$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -826,10 +829,6 @@ class WorkshopController extends Controller {
 			'core_workshop_list_page'
 		);
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
-
 		$parameters = array_merge($searchParameters, array(
 			'workshops' => $searchParameters['entities'],
 		));
@@ -843,8 +842,8 @@ class WorkshopController extends Controller {
 					continue;
 				}
 				$properties = array(
-					'type'    => 0,
-					'cardUrl' => $this->generateUrl('core_workshop_card', array( 'id' => $workshop->getId() )),
+					'color'   => 'orange',
+					'cardUrl' => $this->generateUrl('core_workshop_card', array('id' => $workshop->getId())),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
 				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -858,6 +857,10 @@ class WorkshopController extends Controller {
 
 			return $this->render('LadbCoreBundle:Wonder/Workshop:list-xhr.geojson.twig', $parameters);
 		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Wonder/Workshop:list-xhr.html.twig', $parameters);

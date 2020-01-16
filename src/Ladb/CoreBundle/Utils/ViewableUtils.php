@@ -109,7 +109,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
 			$producer->publish(serialize(array(
 				'kind'       => View::KIND_LISTED,
-				'entityType' => $viewable->getType(),
+				'entityType' => $entityType,
 				'entityIds'  => $entityIds,
 				'userId'     => !is_null($user) ? $user->getId() : null,
 			)));

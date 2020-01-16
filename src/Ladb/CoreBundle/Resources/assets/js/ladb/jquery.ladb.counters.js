@@ -48,6 +48,7 @@
                 that.updateBadge('promotion-graphics', counters.unlistedPromotionGraphicCount);
                 that.updateBadge('workflow-workflows', counters.unlistedWorkflowWorkflowCount);
                 that.updateBadge('collection-collections', counters.unlistedCollectionCollectionCount);
+                that.updateBadge('offer-offers', counters.unlistedOfferOfferCount);
 
                 that.updateBadge('catalogs',
                     parseInt(counters.unlistedKnowledgeWoodCount) +
@@ -74,7 +75,8 @@
                     parseInt(counters.unlistedQaQuestionCount) +
                     parseInt(counters.unlistedPromotionGraphicCount) +
                     parseInt(counters.unlistedWorkflowWorkflowCount) +
-                    parseInt(counters.unlistedCollectionCollectionCount)
+                    parseInt(counters.unlistedCollectionCollectionCount) +
+                    parseInt(counters.unlistedOfferOfferCount)
                 );
 
             },

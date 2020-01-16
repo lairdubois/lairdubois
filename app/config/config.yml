@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "201912231729"
+        version:    "202001152303"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -456,6 +456,8 @@ fos_elastica:
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
+                        area: { type: integer }
+                        geoPoint: { type: geo_point }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
@@ -463,8 +465,6 @@ fos_elastica:
                         planCount: { type: integer }
                         howtoCount: { type: integer }
                         workflowCount: { type: integer }
-                        area: { type: integer }
-                        geoPoint: { type: geo_point }
                         user:
                             type: "object"
                             properties:
@@ -785,6 +785,37 @@ fos_elastica:
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Faq\Question
+                        provider: ~
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                offer_offer:
+                    properties:
+                        visibility: { type: integer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        kind: { type: short }
+                        category: { type: integer }
+                        rawPrice: { type: float }
+                        geoPoint: { type: geo_point }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                label: { type: text, boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Offer\Offer
                         provider: ~
                         listener:
                             insert: false

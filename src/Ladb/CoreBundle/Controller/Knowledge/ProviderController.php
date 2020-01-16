@@ -162,7 +162,8 @@ class ProviderController extends Controller {
 		$features = array();
 		if (!is_null($provider->getLongitude()) && !is_null($provider->getLatitude())) {
 			$properties = array(
-				'type' => 0,
+				'color'   => 'blue',
+				'cardUrl' => $this->generateUrl('core_provider_card', array('id' => $provider->getId())),
 			);
 			$gerometry = new \GeoJson\Geometry\Point($provider->getGeoPoint());
 			$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -405,10 +406,6 @@ class ProviderController extends Controller {
 			$routeParameters
 		);
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
-
 		$parameters = array_merge($searchParameters, array(
 			'providers'       => $searchParameters['entities'],
 			'layout'          => $layout,
@@ -420,8 +417,8 @@ class ProviderController extends Controller {
 			$features = array();
 			foreach ($searchParameters['entities'] as $provider) {
 				$properties = array(
-					'type'    => 0,
-					'cardUrl' => $this->generateUrl('core_provider_card', array( 'id' => $provider->getId() )),
+					'color'   => 'blue',
+					'cardUrl' => $this->generateUrl('core_provider_card', array('id' => $provider->getId())),
 				);
 				$gerometry = new \GeoJson\Geometry\Point($provider->getGeoPoint());
 				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
@@ -435,6 +432,10 @@ class ProviderController extends Controller {
 
 			return $this->render('LadbCoreBundle:Knowledge/Provider:list-xhr.geojson.twig', $parameters);
 		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {

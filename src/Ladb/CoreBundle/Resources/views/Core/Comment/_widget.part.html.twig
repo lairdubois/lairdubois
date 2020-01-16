@@ -45,7 +45,7 @@
                     {% for child in comment.children %}
                         {% include 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'comment':child } %}
                     {% endfor %}
-                    {% if is_granted('ROLE_USER') %}
+                    {% if is_granted('ROLE_USER') and commentContext.isCommentable %}
                         <div class="ladb-fake-new">
                             {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
                             <div class="ladb-content">
