@@ -42,6 +42,7 @@ EOT
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
 		$offerManager = $this->getContainer()->get(OfferManager::NAME);
+		$mailerUtils = $this->getContainer()->get(MailerUtils::NAME);
 
 		// Retrieve OUTDATED offers
 
@@ -124,6 +125,9 @@ EOT
 
 			// Unpublish offer
 			$offerManager->unpublish($offer, false);
+
+			// Email notification
+			$mailerUtils->sendOfferExpiredEmailMessage($offer->getUser(), $offer);
 
 			if ($verbose) {
 				if ($forced) {

@@ -159,6 +159,20 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		unset($parameters);
 	}
 
+	public function sendOfferExpiredEmailMessage(User $recipientUser, $offer) {
+		$parameters = array(
+			'recipientUser' => $recipientUser,
+			'offer'         => $offer,
+		);
+		$this->sendEmailMessage(
+			$recipientUser->getEmail(),
+			'Votre annonce a expiré',
+			$this->_renderTemplate('LadbCoreBundle:Offer/Offer:expired-email.txt.twig', $parameters),
+			$this->_renderTemplate('LadbCoreBundle:Offer/Offer:expired-email.html.twig', $parameters)
+		);
+		unset($parameters);
+	}
+
 	/////
 
 	public function sendWeekNewsEmailMessage(User &$recipientUser, &$creations, &$questions, &$plans, &$workshops, &$howtos, &$howtoArticles, &$finds, &$posts, &$woods, &$providers, &$schools) {

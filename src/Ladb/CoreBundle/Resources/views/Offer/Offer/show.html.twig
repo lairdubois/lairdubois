@@ -134,22 +134,22 @@
             <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
             <div class="ladb-meta">
                 <span class="pull-right">{{ ('offer.offer.kind_'~offer.kind)|trans }}</span>
-                <span><i class="ladb-icon-offer-kind-{{ offer.kind }} ladb-icon-fixed-center"></i> <small>{{ 'offer.offer.kind'|trans }}</small></span>
+                <span><i class="ladb-icon-offer-kind-{{ offer.kind }} ladb-icon-fixed-center"></i> {{ 'offer.offer.kind'|trans }}</span>
             </div>
             <div class="ladb-meta">
                 <span class="pull-right">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
-                <span><i class="ladb-icon-list ladb-icon-fixed-center"></i> <small>{{ 'offer.offer.category'|trans }}</small></span>
+                <span><i class="ladb-icon-list ladb-icon-fixed-center"></i> {{ 'offer.offer.category'|trans }}</span>
             </div>
             {% if offer.price %}
                 <div class="ladb-meta">
                     <span class="pull-right">{% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}</span>
-                    <span><i class="ladb-icon-funding ladb-icon-fixed-center"></i> <small>{{ 'offer.offer.price'|trans }}</small></span>
+                    <span><i class="ladb-icon-funding ladb-icon-fixed-center"></i> {{ 'offer.offer.price'|trans }}</span>
                 </div>
             {% endif %}
             {% if offer.location %}
                 <div class="ladb-meta">
                     <span class="pull-right">{% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}</span>
-                    <span><i class="ladb-icon-location ladb-icon-fixed-center"></i>&nbsp;<small>{{ 'default.location'|trans }}</small></span>
+                    <span><i class="ladb-icon-location ladb-icon-fixed-center"></i>&nbsp;{{ 'default.location'|trans }}</span>
                 </div>
             {% endif %}
             {% if not ownerUser %}

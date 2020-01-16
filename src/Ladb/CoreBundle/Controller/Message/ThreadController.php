@@ -32,7 +32,7 @@ class ThreadController extends Controller {
 	 * @Route("/thread/to/{recipientUsername}/new", requirements={"recipientUsername" = "[a-zA-Z0-9]+"}, name="core_message_thread_new_recipientusername", defaults={"announcement" = false})
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
-	public function newAction($recipientUsername, $subject = null, $message = null) {
+	public function newAction($recipientUsername, $subject = null, $message = null, $alertTemplate =  null) {
 
 		$newThreadMessage = new NewThreadMessage();
 
@@ -56,7 +56,8 @@ class ThreadController extends Controller {
 		$form = $this->createForm(NewThreadMessageType::class, $newThreadMessage);
 
 		return array(
-			'form' => $form->createView(),
+			'form'          => $form->createView(),
+			'alertTemplate' => $alertTemplate,
 		);
 	}
 

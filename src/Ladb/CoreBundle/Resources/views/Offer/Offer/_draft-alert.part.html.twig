@@ -2,7 +2,7 @@
 
 {% set entity = offer %}
 {% if offer.isExpired %}
-    {% set alertMessage = 'Cette annonce a <strong>expirée</strong>. Elle n\'est visible que par vous.<br>' %}
+    {% set alertMessage = 'Cette annonce a <strong>expiré</strong> et a été automatiquement dépubliée.<br>' %}
     {% if offer.publishCount < constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::MAX_PUBLISH_COUNT') %}
         {% set alertMessage = alertMessage~'Vous pouvez la renouvelez encore <strong>'~(constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::MAX_PUBLISH_COUNT') - offer.publishCount)~' fois</strong>.<br><br><em>Sans action de votre part, elle sera automatiquement supprimée '~(offer.oudatedDate|time_diff)~'.</em>' %}
     {% else %}

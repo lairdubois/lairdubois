@@ -409,6 +409,7 @@ class OfferController extends Controller {
 				'%RECIPIENT%' => $offer->getUser()->getDisplayName(),
 				'%SENDER%'    => $this->getUser()->getDisplayName()
 			)),
+			'alertTemplate'     => 'LadbCoreBundle:Offer/Offer:_alert-new-thread.part.html.twig',
 		));
 	}
 
