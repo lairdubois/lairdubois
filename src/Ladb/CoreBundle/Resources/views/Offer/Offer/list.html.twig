@@ -10,7 +10,7 @@
 
 {% set masonry = true %}
 {% set masonryWide = true %}
-{% set topbarTranslucent = true %}
+{% set topbarTranslucent = offers|length > 0 %}
 {% set hideHeaderContainer = false %}
 
 {% set navSection = 'offers' %}
@@ -35,7 +35,9 @@
 {% endblock %}
 
 {% block bodyHeaderContainer %}
-    {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
+    {% if offers|length > 0 %}
+        {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
+    {% endif %}
     {{ parent() }}
 {% endblock %}
 
