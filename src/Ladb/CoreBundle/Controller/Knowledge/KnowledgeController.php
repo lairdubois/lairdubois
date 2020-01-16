@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,7 @@ use Ladb\CoreBundle\Utils\PropertyUtils;
 /**
  * @Route("/knowledge")
  */
-class KnowledgeController extends Controller {
+class KnowledgeController extends AbstractController {
 
 	private function _retriveRelatedEntityRepository($entityType) {
 

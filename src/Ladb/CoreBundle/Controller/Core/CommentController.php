@@ -2,12 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
@@ -22,11 +22,12 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
+use Ladb\CoreBundle\Utils\MentionUtils;
 
 /**
  * @Route("/commentaires")
  */
-class CommentController extends Controller {
+class CommentController extends AbstractController {
 
 	private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::NAME);
@@ -86,6 +87,8 @@ class CommentController extends Controller {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
+
+		$this->createLock('core_comment_create');
 
 		// Retrieve related entity
 

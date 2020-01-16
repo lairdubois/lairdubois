@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
@@ -33,7 +34,7 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
 /**
  * @Route("/logiciels")
  */
-class SoftwareController extends Controller {
+class SoftwareController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_software_new")
@@ -56,6 +57,9 @@ class SoftwareController extends Controller {
 	 * @Template("LadbCoreBundle:Knowledge/Software:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_software_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$dispatcher = $this->get('event_dispatcher');
 

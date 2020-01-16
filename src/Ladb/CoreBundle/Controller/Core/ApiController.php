@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * @Route("/api")
  */
-class ApiController extends Controller {
+class ApiController extends AbstractController {
 
 	/**
 	 * @Route("/{network}/share.count.json", defaults={"_format" = "json"}, name="core_api_network_share_count")

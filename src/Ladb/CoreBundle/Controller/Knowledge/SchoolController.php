@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,7 +34,7 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
 /**
  * @Route("/ecoles")
  */
-class SchoolController extends Controller {
+class SchoolController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_school_new")
@@ -54,6 +55,9 @@ class SchoolController extends Controller {
 	 * @Template("LadbCoreBundle:Knowledge/School:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_school_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$dispatcher = $this->get('event_dispatcher');
 

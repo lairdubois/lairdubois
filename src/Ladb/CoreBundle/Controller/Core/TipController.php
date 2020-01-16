@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ use Ladb\CoreBundle\Event\PublicationsEvent;
 /**
  * @Route("/astuces")
  */
-class TipController extends Controller {
+class TipController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_tip_new")
@@ -46,6 +47,9 @@ class TipController extends Controller {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_TIP')", statusCode=404, message="Not allowed (core_tip_create)")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_tip_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$tip = new Tip();

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Extra;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,13 +20,16 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 /**
  * @Route("/yt")
  */
-class YoutookController extends Controller {
+class YoutookController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_youtook_create")
 	 * @Template("LadbCoreBundle:Extra/Youtook:create-xhr.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_youtook_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$took = new Took();

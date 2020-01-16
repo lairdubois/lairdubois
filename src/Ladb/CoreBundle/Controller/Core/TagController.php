@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,7 +12,7 @@ use Ladb\CoreBundle\Entity\Core\TagUsage;
 /**
  * @Route("/tags")
  */
-class TagController extends Controller {
+class TagController extends AbstractController {
 
 	/**
 	 * @Route("/usage/{id}/highlight/create", requirements={"id" = "\d+"}, defaults={"action" = "create"}, name="core_tag_usage_highlight_create")

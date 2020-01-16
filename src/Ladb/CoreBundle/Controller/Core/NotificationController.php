@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Entity\Howto\Article;
 use Ladb\CoreBundle\Entity\Qa\Answer;
@@ -17,7 +18,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 /**
  * @Route("/notifications")
  */
-class NotificationController extends Controller {
+class NotificationController extends AbstractController {
 
 	/**
 	 * @Route("/", name="core_notification_list")

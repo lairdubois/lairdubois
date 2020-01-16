@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Faq;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ use Ladb\CoreBundle\Model\HiddableInterface;
 /**
  * @Route("/faq")
  */
-class QuestionController extends Controller {
+class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_faq_question_new")
@@ -56,6 +57,9 @@ class QuestionController extends Controller {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_create)")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_faq_question_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$question = new Question();

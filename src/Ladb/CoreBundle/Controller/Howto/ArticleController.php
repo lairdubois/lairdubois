@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +22,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\Howto\ArticleManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
-class ArticleController extends Controller {
+class ArticleController extends AbstractController {
 
 	private function _updateHowtoBlockVideoCount($howto) {
 		$bodyBlockVideoCount = 0;
@@ -67,6 +68,9 @@ class ArticleController extends Controller {
 	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
+
+		$this->createLock('core_howto_article_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 

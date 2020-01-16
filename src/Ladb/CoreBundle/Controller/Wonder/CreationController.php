@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -47,7 +48,7 @@ use Ladb\CoreBundle\Entity\Find\Find;
 /**
  * @Route("/creations")
  */
-class CreationController extends Controller {
+class CreationController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_creation_new")
@@ -72,6 +73,9 @@ class CreationController extends Controller {
 	 * @Template("LadbCoreBundle:Wonder/Creation:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_creation_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$creation = new Creation();

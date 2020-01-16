@@ -38,6 +38,9 @@ class PartController extends AbstractWorkflowBasedController {
 	 * @Template("LadbCoreBundle:Workflow:Part/new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
+
+		$this->createLock('core_workflow_part_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve Workflow

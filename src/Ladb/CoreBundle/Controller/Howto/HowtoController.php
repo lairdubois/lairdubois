@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
@@ -29,7 +30,7 @@ use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Howto\HowtoManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
-class HowtoController extends Controller {
+class HowtoController extends AbstractController {
 
 	/**
 	 * @Route("/pas-a-pas/new", name="core_howto_new")
@@ -53,6 +54,9 @@ class HowtoController extends Controller {
 	 * @Template("LadbCoreBundle:Howto/Howto:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_howto_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$howto = new Howto();

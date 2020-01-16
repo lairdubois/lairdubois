@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ use Ladb\CoreBundle\Utils\ReviewableUtils;
 /**
  * @Route("/reviews")
  */
-class ReviewController extends Controller {
+class ReviewController extends AbstractController {
 
 	private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::NAME);
@@ -71,6 +72,8 @@ class ReviewController extends Controller {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
+
+		$this->createLock('core_review_create');
 
 		// Retrieve related entity
 

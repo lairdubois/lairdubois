@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Offer;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,7 +37,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * @Route("/annonces")
  */
-class OfferController extends Controller {
+class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_offer_new")
@@ -61,6 +62,9 @@ class OfferController extends Controller {
 	 * @Template("LadbCoreBundle:Offer/Offer:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_offer_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$offer = new Offer();

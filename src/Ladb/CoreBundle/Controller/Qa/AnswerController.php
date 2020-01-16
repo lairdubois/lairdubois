@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,7 +28,7 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 /**
  * @Route("/questions")
  */
-class AnswerController extends Controller {
+class AnswerController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/reponses/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
@@ -64,6 +65,8 @@ class AnswerController extends Controller {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
+
+		$this->createLock('core_qa_answer_create');
 
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);

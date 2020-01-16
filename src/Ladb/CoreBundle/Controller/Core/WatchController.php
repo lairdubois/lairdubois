@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ use Ladb\CoreBundle\Entity\Core\Watch;
 /**
  * @Route("/watches")
  */
-class WatchController extends Controller {
+class WatchController extends AbstractController {
 
 	private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::NAME);
@@ -37,6 +38,8 @@ class WatchController extends Controller {
 	 * @Template("LadbCoreBundle:Core/Watch:create-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $entityType, $entityId) {
+
+		$this->createLock('core_watch_create');
 
 		// Retrieve related entity
 

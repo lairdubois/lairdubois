@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,7 +37,7 @@ use Ladb\CoreBundle\Model\HiddableInterface;
 /**
  * @Route("/questions")
  */
-class QuestionController extends Controller {
+class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_qa_question_new")
@@ -61,6 +62,9 @@ class QuestionController extends Controller {
 	 * @Template("LadbCoreBundle:Qa/Question:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_qa_question_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$question = new Question();
@@ -96,6 +100,8 @@ class QuestionController extends Controller {
 		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
 
 		$tagUtils = $this->get(TagUtils::NAME);
+
+
 
 		return array(
 			'question'         => $question,

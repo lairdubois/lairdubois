@@ -75,7 +75,8 @@
 
         "components/jquery": "3.3.1",
         "components/jqueryui": "1.12.1",
-        "components/masonry": "3.2.2"
+        "components/masonry": "3.2.2",
+        "symfony/lock": "^3.4"
 
     },
     "require-dev": {

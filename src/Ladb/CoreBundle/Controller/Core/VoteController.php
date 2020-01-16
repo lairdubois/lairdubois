@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +20,7 @@ use Ladb\CoreBundle\Event\VotableListener;
 /**
  * @Route("/votes")
  */
-class VoteController extends Controller {
+class VoteController extends AbstractController {
 
 	private function _retriveRelatedEntityRepository($entityType) {
 
@@ -80,6 +81,8 @@ class VoteController extends Controller {
 	 * @Route("/{entityType}/{entityId}/{sign}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "sign" = "[+-]"}, name="core_vote_create")
 	 */
 	public function createAction(Request $request, $entityType, $entityId, $sign) {
+
+		$this->createLock('core_vote_create');
 
 		// Exclude vote if user is not email confirmed for score < 0
 		if (!$this->getUser()->getEmailConfirmed()) {

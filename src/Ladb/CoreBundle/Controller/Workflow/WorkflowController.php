@@ -59,6 +59,9 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Template("LadbCoreBundle:Workflow:Workflow/new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_workflow_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$workflow = new Workflow();

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,7 +24,7 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 /**
  * @Route("/likes")
  */
-class LikeController extends Controller {
+class LikeController extends AbstractController {
 
 	private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::NAME);
@@ -45,6 +46,8 @@ class LikeController extends Controller {
 	 * @Template("LadbCoreBundle:Core/Like:create-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $entityType, $entityId) {
+
+		$this->createLock('core_like_create');
 
 		// Retrieve related entity
 

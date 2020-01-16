@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +33,7 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
 /**
  * @Route("/xylotheque")
  */
-class WoodController extends Controller {
+class WoodController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_wood_new")
@@ -53,6 +54,9 @@ class WoodController extends Controller {
 	 * @Template("LadbCoreBundle:Knowledge/Wood:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_wood_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$dispatcher = $this->get('event_dispatcher');
 

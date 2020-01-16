@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Message;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ use Ladb\CoreBundle\Utils\MailerUtils;
 /**
  * @Route("/messagerie")
  */
-class ThreadController extends Controller {
+class ThreadController extends AbstractController {
 
 	/**
 	 * @Route("/thread/new", name="core_message_thread_new", defaults={"recipientUsername" = null, "announcement" = false})
@@ -66,6 +67,8 @@ class ThreadController extends Controller {
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_message_thread_create');
 
 		$newThreadMessage = new NewThreadMessage();
 		$form = $this->createForm(NewThreadMessageType::class, $newThreadMessage);

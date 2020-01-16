@@ -39,6 +39,9 @@ class LabelController extends AbstractWorkflowBasedController {
 	 * @Template("LadbCoreBundle:Workflow:Label/new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
+
+		$this->createLock('core_workflow_label_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve Workflow

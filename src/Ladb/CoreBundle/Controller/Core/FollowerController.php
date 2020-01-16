@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,13 +16,16 @@ use Ladb\CoreBundle\Utils\ActivityUtils;
 /**
  * @Route("/followers")
  */
-class FollowerController extends Controller {
+class FollowerController extends AbstractController {
 
 	/**
 	 * @Route("/{followingUserId}/create", requirements={"followingUserId" = "\d+"}, name="core_follower_create")
 	 * @Template("LadbCoreBundle:Core/Follower:create-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $followingUserId) {
+
+		$this->createLock('core_follower_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
 		$userRepository = $om->getRepository(User::CLASS_NAME);

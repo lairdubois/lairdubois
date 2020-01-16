@@ -56,6 +56,9 @@ class CollectionController extends AbstractCollectionBasedController {
 	 * @Template("LadbCoreBundle:Collection:Collection/new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_collection_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$collection = new Collection();

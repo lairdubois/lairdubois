@@ -24,6 +24,8 @@ class EntryController extends AbstractCollectionBasedController {
 	 */
 	public function createAction($id, $entityType, $entityId) {
 
+		$this->createLock('core_collection_entry_create');
+
 		// Retrieve collection
 		$collection = $this->_retrieveCollection($id);
 

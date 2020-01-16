@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,7 @@ use Ladb\CoreBundle\Utils\LocalisableUtils;
 /**
  * @Route("/ateliers")
  */
-class WorkshopController extends Controller {
+class WorkshopController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_workshop_new")
@@ -62,6 +63,9 @@ class WorkshopController extends Controller {
 	 * @Template("LadbCoreBundle:Wonder/Workshop:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_workshop_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$workshop = new Workshop();

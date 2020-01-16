@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Resource;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Entity\Qa\Question;
@@ -42,7 +43,7 @@ use Ladb\CoreBundle\Utils\StripableUtils;
 /**
  * @Route("/plans")
  */
-class PlanController extends Controller {
+class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_plan_new")
@@ -66,6 +67,9 @@ class PlanController extends Controller {
 	 * @Template("LadbCoreBundle:Wonder/Plan:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_plan_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$plan = new Plan();

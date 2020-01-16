@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +25,7 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 /**
  * @Route("/joins")
  */
-class JoinController extends Controller {
+class JoinController extends AbstractController {
 
 	private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::NAME);
@@ -46,6 +47,8 @@ class JoinController extends Controller {
 	 * @Template("LadbCoreBundle:Core/Join:create-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $entityType, $entityId) {
+
+		$this->createLock('core_join_create');
 
 		// Retrieve related entity
 

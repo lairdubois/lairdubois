@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Find;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,7 @@ use Ladb\CoreBundle\Utils\JoinableUtils;
 /**
  * @Route("/trouvailles")
  */
-class FindController extends Controller {
+class FindController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_find_new")
@@ -59,6 +60,9 @@ class FindController extends Controller {
 	 * @Template("LadbCoreBundle:Find/Find:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_find_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$find = new Find();

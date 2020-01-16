@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge\School;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +20,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 /**
  * @Route("/ecoles")
  */
-class TestimonialController extends Controller {
+class TestimonialController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/temoignages/new", requirements={"id" = "\d+"}, name="core_knowledge_school_testimonial_new")
@@ -48,6 +49,9 @@ class TestimonialController extends Controller {
 	 * @Template("LadbCoreBundle:Knowledge/School/Testimonial:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
+
+		$this->createLock('core_knowledge_school_testimonial_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$schoolRepository = $om->getRepository(School::CLASS_NAME);
 

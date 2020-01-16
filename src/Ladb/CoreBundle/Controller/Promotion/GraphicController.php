@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Promotion;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +33,7 @@ use Ladb\CoreBundle\Event\PublicationsEvent;
 /**
  * @Route("/promouvoir")
  */
-class GraphicController extends Controller {
+class GraphicController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_promotion_graphic_new")
@@ -56,6 +57,9 @@ class GraphicController extends Controller {
 	 * @Template("LadbCoreBundle:Promotion/Graphic:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_promotion_graphic_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$graphic = new Graphic();

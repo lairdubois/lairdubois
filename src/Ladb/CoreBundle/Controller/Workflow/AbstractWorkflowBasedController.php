@@ -2,10 +2,11 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
 
-abstract class AbstractWorkflowBasedController extends Controller {
+abstract class AbstractWorkflowBasedController extends AbstractController {
 
 	const TASKINFO_NONE 			= 0b0000000;
 	const TASKINFO_STATUS 			= 0b0000001;

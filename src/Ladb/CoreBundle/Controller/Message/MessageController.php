@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Message;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ use Ladb\CoreBundle\Utils\MailerUtils;
 /**
  * @Route("/messagerie")
  */
-class MessageController extends Controller {
+class MessageController extends AbstractController {
 
 	private function _retrieveThread($threadId) {
 		$om = $this->getDoctrine()->getManager();
@@ -69,6 +70,8 @@ class MessageController extends Controller {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
+
+		$this->createLock('core_message_create');
 
 		$thread = $this->_retrieveThread($threadId);
 

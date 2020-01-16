@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,7 @@ use Ladb\CoreBundle\Utils\ReviewableUtils;
 /**
  * @Route("/fournisseurs")
  */
-class ProviderController extends Controller {
+class ProviderController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_provider_new")
@@ -55,6 +56,9 @@ class ProviderController extends Controller {
 	 * @Template("LadbCoreBundle:Knowledge/Provider:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_provider_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$dispatcher = $this->get('event_dispatcher');
 

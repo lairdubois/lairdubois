@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Blog;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,7 +30,7 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 /**
  * @Route("/blog")
  */
-class PostController extends Controller {
+class PostController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_blog_post_new")
@@ -56,6 +57,9 @@ class PostController extends Controller {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_create)")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_blog_post_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$post = new Post();
@@ -86,6 +90,8 @@ class PostController extends Controller {
 		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
 
 		$tagUtils = $this->get(TagUtils::NAME);
+
+
 
 		return array(
 			'post'         => $post,

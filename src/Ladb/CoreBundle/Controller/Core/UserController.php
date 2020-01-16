@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,7 +39,7 @@ use Ladb\CoreBundle\Utils\UserUtils;
  *
  * @Route("/")
  */
-class UserController extends Controller {
+class UserController extends AbstractController {
 
 	private function _retrieveUser($username) {
 		$userManager = $this->get('fos_user.user_manager');

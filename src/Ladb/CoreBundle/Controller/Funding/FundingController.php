@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Funding;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Funding\Charge;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Form\Type\Funding\ChargeType;
@@ -19,7 +20,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 /**
  * @Route("/financement")
  */
-class FundingController extends Controller {
+class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/", name="core_funding_dashboard")

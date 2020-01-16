@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -11,7 +12,7 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 /**
  * @Route("/referer")
  */
-class RefererController extends Controller {
+class RefererController extends AbstractController {
 
 	/**
 	 * @Route("/referral/{id}/delete", requirements={"id" = "\d+"}, name="core_referer_referral_delete")

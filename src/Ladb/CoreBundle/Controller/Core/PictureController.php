@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Core;
 
 use Imagine\Gd\Imagine;
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ use Ladb\CoreBundle\Form\Type\EditPictureType;
 /**
  * @Route("/pictures")
  */
-class PictureController extends Controller {
+class PictureController extends AbstractController {
 
 	/**
 	 * @Route("/upload", name="core_picture_upload")

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ReviewableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,7 +32,7 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
 /**
  * @Route("/livres")
  */
-class BookController extends Controller {
+class BookController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_book_new")
@@ -54,6 +55,9 @@ class BookController extends Controller {
 	 * @Template("LadbCoreBundle:Knowledge/Book:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_book_create');
+
 		$om = $this->getDoctrine()->getManager();
 		$dispatcher = $this->get('event_dispatcher');
 

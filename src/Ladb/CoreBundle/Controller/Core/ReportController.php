@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,12 +14,15 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 /**
  * @Route("/reports")
  */
-class ReportController extends Controller {
+class ReportController extends AbstractController {
 
 	/**
 	 * @Route("/create", name="core_report_create")
 	 */
 	public function createAction(Request $request) {
+
+		$this->createLock('core_report_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		$entityType = intval($request->get('entity_type'));

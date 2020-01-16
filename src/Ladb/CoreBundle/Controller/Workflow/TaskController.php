@@ -142,6 +142,9 @@ class TaskController extends AbstractWorkflowBasedController {
 	 * @Template("LadbCoreBundle:Workflow:Task/new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
+
+		$this->createLock('core_workflow_task_create');
+
 		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve workflow
