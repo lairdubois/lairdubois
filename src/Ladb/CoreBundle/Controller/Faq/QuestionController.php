@@ -384,8 +384,6 @@ class QuestionController extends Controller {
 
 							$filters[] = $filter;
 
-							$couldUseDefaultSort = true;
-
 						}
 
 						break;

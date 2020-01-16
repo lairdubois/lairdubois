@@ -434,8 +434,6 @@ class FindController extends Controller {
 
 							$filters[] = $filter;
 
-							$couldUseDefaultSort = true;
-
 						}
 
 						break;

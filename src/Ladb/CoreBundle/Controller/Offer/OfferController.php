@@ -456,8 +456,6 @@ class OfferController extends Controller {
 
 							$filters[] = $filter;
 
-							$couldUseDefaultSort = true;
-
 						}
 
 						break;
@@ -467,16 +465,12 @@ class OfferController extends Controller {
 						$filter = new \Elastica\Query\MatchPhrase('kind', $facet->value);
 						$filters[] = $filter;
 
-						$couldUseDefaultSort = true;
-
 						break;
 
 					case 'category':
 
 						$filter = new \Elastica\Query\MatchPhrase('category', $facet->value);
 						$filters[] = $filter;
-
-						$couldUseDefaultSort = true;
 
 						break;
 

@@ -653,8 +653,6 @@ class WorkshopController extends Controller {
 
 							$filters[] = $filter;
 
-							$couldUseDefaultSort = true;
-
 						}
 
 						break;

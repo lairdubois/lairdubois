@@ -465,8 +465,6 @@ class CollectionController extends AbstractCollectionBasedController {
 							$filter = new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsernameCanonical());
 							$filters[] = $filter;
 
-							$couldUseDefaultSort = true;
-
 						}
 
 						break;

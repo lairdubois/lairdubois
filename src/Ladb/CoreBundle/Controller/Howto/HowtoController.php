@@ -424,8 +424,6 @@ class HowtoController extends Controller {
 
 							$filters[] = $filter;
 
-							$couldUseDefaultSort = true;
-
 						}
 
 						break;
