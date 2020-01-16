@@ -276,6 +276,8 @@ class UserController extends Controller {
 							$filter->setFields(array( 'displayname', 'fullname', 'username' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

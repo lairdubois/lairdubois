@@ -359,6 +359,8 @@ class WoodController extends Controller {
 							$filter->setFields(array( 'name^100', 'scientificname', 'englishname' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

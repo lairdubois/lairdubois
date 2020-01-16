@@ -388,6 +388,8 @@ class ProviderController extends Controller {
 							$filter->setFields(array( 'sign^100', 'geographicalAreas^50', 'products', 'services', 'description' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

@@ -214,6 +214,8 @@ class TipController extends Controller {
 							$filter->setFields(array( 'body' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

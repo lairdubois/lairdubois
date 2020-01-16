@@ -453,6 +453,31 @@ EOT
 		}
 		unset($workflows);
 
+		// Check Offers /////
+
+		$output->writeln('<info>Checking offers...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'o', 'mp' ))
+			->from('LadbCoreBundle:Offer\Offer', 'o')
+			->leftJoin('o.mainPicture', 'mp')
+		;
+
+		try {
+			$offers = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$offers = array();
+		}
+
+		foreach ($offers as $offer) {
+			$mainPicture = $offer->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($offers);
+
 		// Check Woods /////
 
 		$output->writeln('<info>Checking woods...</info>');

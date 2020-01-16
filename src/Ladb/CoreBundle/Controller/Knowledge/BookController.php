@@ -290,6 +290,8 @@ class BookController extends Controller {
 							$filter->setFields(array( 'title^100', 'authors', 'subjects', 'summary', 'toc' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

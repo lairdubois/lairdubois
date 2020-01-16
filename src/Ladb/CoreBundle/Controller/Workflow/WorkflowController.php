@@ -834,6 +834,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 							$filter->setFields(array( 'title^100', 'body', 'tags.label' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

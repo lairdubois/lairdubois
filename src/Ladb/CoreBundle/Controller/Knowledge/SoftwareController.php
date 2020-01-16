@@ -305,6 +305,8 @@ class SoftwareController extends Controller {
 							$filter->setFields(array( 'name^100', 'hostSoftwareName^50', 'publisher', 'description', 'features' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

@@ -348,6 +348,8 @@ class SchoolController extends Controller {
 							$filter->setFields(array( 'name^100', 'geographicalAreas^50', 'description' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

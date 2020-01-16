@@ -552,6 +552,8 @@ class HowtoController extends Controller {
 							$filter->setFields(array( 'title^100', 'body', 'articles.title^50', 'articles.body', 'tags.label' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}

@@ -425,6 +425,8 @@ class PostController extends Controller {
 							$filter->setFields(array( 'title^100', 'body', 'tags.label' ));
 							$filters[] = $filter;
 
+							$couldUseDefaultSort = false;
+
 						}
 
 				}
