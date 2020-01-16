@@ -45,7 +45,7 @@
     </div>
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('offer.offer.form.help.title'|trans()) } %}
-    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('offer.offer.form.help.showcase'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('offer.offer.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
     {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('offer.offer.form.help.body'|trans()) } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}

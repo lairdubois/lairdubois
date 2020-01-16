@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Manager;
 
+use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
@@ -61,7 +62,14 @@ abstract class AbstractPublicationManager extends AbstractManager {
 	protected function publishPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		$publication->setCreatedAt(new \DateTime());
+		if ($publication instanceof AbstractDraftableAuthoredPublication) {
+			if ($publication->getPublishCount() == 0) {
+				$publication->setCreatedAt(new \DateTime());
+			}
+			$publication->incrementPublishCount();
+		} else {
+			$publication->setCreatedAt(new \DateTime());
+		}
 		$publication->setChangedAt(new \DateTime());
 
 		if ($publication instanceof HiddableInterface) {

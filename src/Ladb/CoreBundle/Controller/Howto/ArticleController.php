@@ -129,6 +129,9 @@ class ArticleController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $article->getHowto()->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_howto_article_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_howto_article_publish)');
+		}
 		if ($article->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_howto_article_publish)');
 		}

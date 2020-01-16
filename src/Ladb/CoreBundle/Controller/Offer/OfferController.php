@@ -147,6 +147,9 @@ class OfferController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $offer->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_offer_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_offer_publish)');
+		}
 		if ($offer->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_offer_publish)');
 		}

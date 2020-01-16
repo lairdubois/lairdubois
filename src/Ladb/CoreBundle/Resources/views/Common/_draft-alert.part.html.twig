@@ -1,6 +1,7 @@
 
 {# set alertMessage #}
 {# set modalMessage #}
+{# set modalNoFinalDisclaimer (facultative) #}
 {# set icon (facultative) #}
 {# set btnLabel (facultative) #}
 {# set btnIcon (facultative) #}
@@ -25,7 +26,7 @@
 </div>
 {% block modal %}
     {% if not noBtn %}
-        {% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+        {% embed 'LadbCoreBundle:Common:_publish-modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()), 'noFinalDisclaimer':modalNoFinalDisclaimer|default(false) } %}
             {% block whatItIs %}{{ modalMessage|raw }}{% endblock %}
         {% endembed %}
     {% endif %}

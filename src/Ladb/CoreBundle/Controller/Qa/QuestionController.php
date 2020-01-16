@@ -149,6 +149,9 @@ class QuestionController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_qa_question_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_qa_question_publish)');
+		}
 		if ($question->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_qa_question_publish)');
 		}

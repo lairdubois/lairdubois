@@ -6,6 +6,7 @@
 {% set licenseEntity = licenseEntity is defined ? licenseEntity : entity %}
 {% set license = licenseEntity.license is defined ? licenseEntity.license : null %}
 {% set lockedLicense = lockedLicense|default(false) %}
+{% set noFinalDisclaimer = noFinalDisclaimer|default(false) %}
 
 {% block bodyInner %}
     {% if app.user.emailConfirmed %}
@@ -25,7 +26,10 @@
             {% if license is not null %}
                 <blockquote>{% include 'LadbCoreBundle:Core/License:_publish-modal.part.html.twig' %}</blockquote>
             {% endif %}
-            <p><strong class="ladb-color-dangerx"><i class="ladb-icon-warning"></i> Cette action est définitive.</strong> Confirmez l'action pour continuer.</p>
+            {% if not noFinalDisclaimer %}
+                <p><strong><i class="ladb-icon-warning"></i> Cette action est définitive.</strong></p>
+            {% endif %}
+            <p>Confirmez l'action pour continuer.</p>
         {% endif %}
     {% else %}
         <div class="media">

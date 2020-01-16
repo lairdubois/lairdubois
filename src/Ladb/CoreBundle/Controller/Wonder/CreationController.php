@@ -158,6 +158,9 @@ class CreationController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $creation->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_creation_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_creation_publish)');
+		}
 		if ($creation->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_creation_publish)');
 		}

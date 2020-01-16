@@ -154,6 +154,9 @@ class CollectionController extends AbstractCollectionBasedController {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $collection->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_collection_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_collection_publish)');
+		}
 		if ($collection->getIsPublic()) {
 			throw $this->createNotFoundException('Already published (core_collection_publish)');
 		}

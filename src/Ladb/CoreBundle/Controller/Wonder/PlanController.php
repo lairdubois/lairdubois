@@ -159,6 +159,9 @@ class PlanController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $plan->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_plan_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_plan_publish)');
+		}
 		if ($plan->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_plan_publish)');
 		}

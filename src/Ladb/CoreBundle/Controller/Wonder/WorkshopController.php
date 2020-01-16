@@ -148,6 +148,9 @@ class WorkshopController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workshop->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_workshop_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_workshop_publish)');
+		}
 		if ($workshop->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_workshop_publish)');
 		}

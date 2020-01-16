@@ -50,7 +50,7 @@ EOT
 			$output->write('<info>Retriving outdated offers...</info>');
 		}
 
-		$retrieveDate = (new \DateTime())->sub(new \DateInterval(Offer::FULL_LIFETIME));
+		$retrieveDate = (new \DateTime())->modify('-'.Offer::FULL_LIFETIME);
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
@@ -96,7 +96,7 @@ EOT
 			$output->write('<info>Retriving expired offers...</info>');
 		}
 
-		$retrieveDate = (new \DateTime())->sub(new \DateInterval(Offer::ACTIVE_LIFETIME));
+		$retrieveDate = (new \DateTime())->modify('-'.Offer::ACTIVE_LIFETIME);
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder

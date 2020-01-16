@@ -141,6 +141,9 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_workflow_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_workflow_publish)');
+		}
 		if ($workflow->getIsPublic()) {
 			throw $this->createNotFoundException('Already published (core_workflow_publish)');
 		}

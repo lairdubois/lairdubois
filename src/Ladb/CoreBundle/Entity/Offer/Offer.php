@@ -55,8 +55,8 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	const CLASS_NAME = 'LadbCoreBundle:Offer\Offer';
 	const TYPE = 122;
 
-	const ACTIVE_LIFETIME = 'P30D';	// 30 days
-	const FULL_LIFETIME = 'P60D';	// 60 days
+	const ACTIVE_LIFETIME = '30 day';
+	const FULL_LIFETIME = '60 day';
 	const MAX_PUBLISH_COUNT = 5;
 
 	const KIND_NONE = 0;
@@ -208,11 +208,6 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $tags;
 
 	/**
-	 * @ORM\Column(type="integer")
-	 */
-	private $publishCount = 0;
-
-	/**
 	 * @ORM\Column(type="integer", name="like_count")
 	 */
 	private $likeCount = 0;
@@ -257,11 +252,11 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	// Date /////
 
 	public function getExpiredDate() {
-		return (clone $this->getChangedAt())->add(new \DateInterval(self::ACTIVE_LIFETIME));
+		return (clone $this->getChangedAt())->modify('+'.self::ACTIVE_LIFETIME);
 	}
 
 	public function getOudatedDate() {
-		return (clone $this->getChangedAt())->add(new \DateInterval(self::FULL_LIFETIME));
+		return (clone $this->getChangedAt())->modify('+'.self::FULL_LIFETIME);
 	}
 
 	// Pictures /////
@@ -368,21 +363,6 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function isExpired() {
 		return $this->getIsDraft() && $this->getPublishCount() > 0;
-	}
-
-	// PublishCount /////
-
-	public function incrementPublishCount($by = 1) {
-		return $this->publishCount += intval($by);
-	}
-
-	public function setPublishCount($publishCount) {
-		$this->publishCount = $publishCount;
-		return $this;
-	}
-
-	public function getPublishCount() {
-		return $this->publishCount;
 	}
 
 }

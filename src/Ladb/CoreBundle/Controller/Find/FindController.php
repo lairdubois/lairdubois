@@ -147,6 +147,9 @@ class FindController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $find->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_find_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_find_publish)');
+		}
 		if ($find->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_find_publish)');
 		}

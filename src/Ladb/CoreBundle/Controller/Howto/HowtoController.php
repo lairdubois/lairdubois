@@ -137,6 +137,9 @@ class HowtoController extends Controller {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_howto_publish)');
 		}
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not emailConfirmed (core_howto_publish)');
+		}
 		if ($howto->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published (core_howto_publish)');
 		}
