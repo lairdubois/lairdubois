@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Offer;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\RepublishableInterface;
+use Ladb\CoreBundle\Model\RepublishableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\LocalisableExtendedInterface;
@@ -47,10 +49,10 @@ use Ladb\CoreBundle\Entity\Find\Content\Event;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Offer\OfferRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface, LocalisableExtendedInterface {
+class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, RepublishableInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface, LocalisableExtendedInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, MultiPicturedTrait, BlockBodiedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, LocalisableTrait, LocalisableExtendedTrait;
+	use RepublishableTrait, IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, LocalisableTrait, LocalisableExtendedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Offer\Offer';
 	const TYPE = 122;
@@ -143,7 +145,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	protected $price;
 
 	/**
-	 * @ORM\Column(name="raw_price", type="integer")
+	 * @ORM\Column(type="integer", name="raw_price")
 	 * @Assert\GreaterThanOrEqual(0)
 	 */
 	protected $rawPrice = 0;
@@ -154,7 +156,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	protected $currency = 'EUR';
 
 	/**
-	 * @ORM\Column(name="price_suffix", type="string", length=10, nullable=true)
+	 * @ORM\Column(type="string", length=10, name="price_suffix", nullable=true)
 	 * @Assert\Length(max=10)
 	 */
 	protected $priceSuffix;
@@ -176,7 +178,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $longitude;
 
 	/**
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\Column(type="string", name="postal_code", nullable=true)
 	 */
 	private $postalCode;
 
@@ -191,12 +193,12 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	private $country;
 
 	/**
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\Column(type="string", name="geographical_areas", nullable=true)
 	 */
 	private $geographicalAreas;
 
 	/**
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\Column(type="string", name="formatted_adress", nullable=true)
 	 */
 	private $formattedAdress;
 
@@ -206,6 +208,11 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @Assert\Count(min=2)
 	 */
 	private $tags;
+
+	/**
+	 * @ORM\Column(type="integer", name="publish_count")
+	 */
+	private $publishCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="like_count")

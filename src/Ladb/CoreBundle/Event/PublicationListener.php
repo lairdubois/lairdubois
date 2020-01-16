@@ -2,8 +2,10 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\LinkedToInterface;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
+use Ladb\CoreBundle\Model\RepublishableInterface;
 use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -338,7 +340,9 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE && $publication instanceof AuthoredInterface) {
+		if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE
+			&& $publication instanceof AuthoredInterface
+			&& !($publication instanceof RepublishableInterface && $publication->getPublishCount() > 0)) {
 
 			// Create activity
 			$activityUtils = $this->container->get(ActivityUtils::NAME);
@@ -401,7 +405,8 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE) {
+		if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE
+			&& !($publication instanceof RepublishableInterface)) {
 
 			// Delete activity
 			$activityUtils = $this->container->get(ActivityUtils::NAME);

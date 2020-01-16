@@ -14,6 +14,7 @@ use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\LikableInterface;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
+use Ladb\CoreBundle\Model\RepublishableInterface;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
@@ -62,7 +63,7 @@ abstract class AbstractPublicationManager extends AbstractManager {
 	protected function publishPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		if ($publication instanceof AbstractDraftableAuthoredPublication) {
+		if ($publication instanceof RepublishableInterface) {
 			if ($publication->getPublishCount() == 0) {
 				$publication->setCreatedAt(new \DateTime());
 			}
