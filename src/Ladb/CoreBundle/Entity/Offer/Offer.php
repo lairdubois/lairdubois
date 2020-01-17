@@ -329,7 +329,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	}
 
 	public function getCategories() {
-		return array( self::CATEGORY_JOB, self::CATEGORY_TOOL, self::CATEGORY_MATERIAL, self::CATEGORY_OTHER );
+		return array( self::CATEGORY_JOB, self::CATEGORY_TOOL, self::CATEGORY_MATERIAL, self::CATEGORY_SERVICE, self::CATEGORY_OTHER );
 	}
 
 	// Price /////
