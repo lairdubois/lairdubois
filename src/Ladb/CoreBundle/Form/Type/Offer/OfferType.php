@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
@@ -90,7 +89,7 @@ class OfferType extends AbstractType {
 
 				if ($offer->getKind() == Offer::KIND_OFFER && $offer->getCategory() != Offer::CATEGORY_JOB) {
 					if ($rawPrice > 0) {
-						$formatter = new NumberFormatter('fr_FR',  \NumberFormatter::CURRENCY);
+						$formatter = new \NumberFormatter('fr_FR',  \NumberFormatter::CURRENCY);
 						$offer->setPrice($formatter->formatCurrency($rawPrice, $currency));
 					} else {
 						$offer->setPrice('Gratuit');
