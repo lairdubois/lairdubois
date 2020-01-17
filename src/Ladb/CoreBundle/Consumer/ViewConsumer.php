@@ -160,9 +160,9 @@ class ViewConsumer implements ConsumerInterface {
 
 //			Elasticsearch update is temporarily removed due to a strange bug that remove item from index...
 
-			if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
-				$this->searchUtils->replaceEntityInIndex($viewable);
-			}
+//			if ($viewable instanceof IndexableInterface && $viewable->isIndexable()) {
+//				$this->searchUtils->replaceEntityInIndex($viewable);
+//			}
 
 		}
 
