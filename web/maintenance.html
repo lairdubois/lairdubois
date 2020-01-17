@@ -33,7 +33,20 @@
 <body>
 <div class="box">
 	<img src="/bundles/ladbcore/ladb/images/logo_big.png" width="100%" style="max-width: 403px;">
-	<div>Maintenance en cours...</div>
+	<div style="font-size: 120%;">Maintenance en cours...</div>
+	<div style="margin-top: 10px;">Si la problème persiste, aidez-nous à résoudre le problème en <a href="#" onclick="play(); return false;">cliquant ici</a>.</div>
 </div>
+<script>
+	function play() {
+		var games = [
+			'https://play2048.co/',
+			'https://hextris.io/',
+			'http://0hh1.com/',
+			'https://maxwellito.github.io/breaklock/',
+			'https://weslleyaraujo.github.io/react-simon-says/#/',
+		];
+		window.location = games[Math.floor(Math.random() * Math.floor(games.length))];
+	}
+</script>
 </body>
 </html>
