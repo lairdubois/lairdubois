@@ -47,7 +47,7 @@ class TagsToLabelsTransformer implements DataTransformerInterface {
 		$labelsArray = preg_split("/[,;]+/", $labelsString);
 		$repository = $this->om->getRepository(Tag::CLASS_NAME);
 		foreach ($labelsArray as $label) {
-			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]{2,}$/", $label)) {
+			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'-]{2,}$/", $label)) {
 				continue;
 			}
 			$label = \Gedmo\Sluggable\Util\Urlizer::urlize($label);

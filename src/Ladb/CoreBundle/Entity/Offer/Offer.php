@@ -129,13 +129,15 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	/**
 	 * @ORM\Column(type="smallint")
-	 * @Assert\GreaterThan(value=0, message="Vous devez définir un type.")
+	 * @Assert\NotBlank(message="Vous devez définir un type.")
+	 * @Assert\Choice(callback="getKinds", message="Ce type est invalide.")
 	 */
 	private $kind = self::KIND_NONE;
 
 	/**
 	 * @ORM\Column(type="smallint")
-	 * @Assert\GreaterThan(value=0, message="Vous devez définir une catégorie.")
+	 * @Assert\NotBlank(message="Vous devez définir une catégorie.")
+	 * @Assert\Choice(callback="getCategories", message="Cette catégorie est invalide.")
 	 */
 	private $category = self::CATEGORY_NONE;
 
@@ -291,6 +293,10 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 		return $this->getKind() == self::KIND_REQUEST;
 	}
 
+	public function getKinds() {
+		return array( self::KIND_OFFER, self::KIND_REQUEST );
+	}
+
 	// Category /////
 
 	public function setCategory($category) {
@@ -320,6 +326,10 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function isCategoryService() {
 		return $this->getCategory() == self::CATEGORY_SERVICE;
+	}
+
+	public function getCategories() {
+		return array( self::CATEGORY_JOB, self::CATEGORY_TOOL, self::CATEGORY_MATERIAL, self::CATEGORY_OTHER );
 	}
 
 	// Price /////

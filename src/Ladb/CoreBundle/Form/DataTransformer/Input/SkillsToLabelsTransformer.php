@@ -41,7 +41,7 @@ class SkillsToLabelsTransformer implements DataTransformerInterface {
 		$labelsArray = preg_split("/[,;]+/", $labelsString);
 		$repository = $this->om->getRepository('LadbCoreBundle:Input\Skill');
 		foreach ($labelsArray as $label) {
-			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-]{2,}$/", $label)) {
+			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'-]{2,}$/", $label)) {
 				continue;
 			}
 			$label = ucfirst(strtolower(trim($label)));
