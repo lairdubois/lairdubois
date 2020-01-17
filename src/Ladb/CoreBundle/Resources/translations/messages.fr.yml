@@ -505,7 +505,7 @@ offer:
     nav: Annonces
     other_from: Autres annonces de
     similar: Voir aussi
-    new_warning: "Une <strong>annonce</strong> doit correspondre à une <em>Offre</em> ou une <em>Demande</em> d'un Emploi, Matériel (occasion), Matière ou Service en rapport avec le travail du bois.<p style='font-weight: bold;'>Les offres commerciales de produits neufs ou services à titre professsionnel <u>ne sont pas autorisées</u>.</p><p>La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont de la responsabilité de l'annonceur.</p>"
+    new_warning: "Une <strong>annonce</strong> doit correspondre à une <em>Offre</em> ou une <em>Demande</em> d'un Emploi, Matériel (occasion), Matière ou Service en rapport avec le travail du bois.<p style='font-weight: bold;'>Les offres commerciales de produits neufs ou services à titre professsionnel <u>ne sont pas autorisées</u>.</p><p>La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont de la responsabilité de l'annonceur.</p><p><em>L'Air du Bois</em> ne fera que diffuser cette annonce.</p>"
     kind: Type
     kind_0: Non défini
     kind_1: Offre
