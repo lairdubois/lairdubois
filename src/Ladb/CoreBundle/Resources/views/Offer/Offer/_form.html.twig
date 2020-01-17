@@ -50,12 +50,12 @@
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
             <div class="form-group">
-                {{ form_label(form.kind, 'offer.offer.kind'|trans()) }}
+                {{ form_label(form.kind, 'offer.offer.kind'|trans()) }} <span class="ladb-mandatory">*</span>
                 {{ form_errors(form.kind) }}
                 {{ form_widget(form.kind) }}
             </div>
             <div class="form-group">
-                {{ form_label(form.category, 'offer.offer.category'|trans()) }}
+                {{ form_label(form.category, 'offer.offer.category'|trans()) }} <span class="ladb-mandatory">*</span>
                 {{ form_errors(form.category) }}
                 {{ form_widget(form.category) }}
             </div>
