@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\StripableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\LinkedToInterface;
@@ -48,7 +49,7 @@ use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 abstract class AbstractWonder extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface, LinkedToInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, MultiPicturedTrait, LicensedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CollectionnableTrait, CommentableTrait, EmbeddableTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CollectionnableTrait, CommentableTrait, EmbeddableTrait, StripableTrait;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -170,17 +171,6 @@ abstract class AbstractWonder extends AbstractDraftableAuthoredPublication imple
 
 	public function getMaxPictureCount() {
 		return 5;
-	}
-
-	// Strip /////
-
-	public function setStrip(\Ladb\CoreBundle\Entity\Core\Picture $strip = null) {
-		$this->strip = $strip;
-		return $this;
-	}
-
-	public function getStrip() {
-		return $this->strip;
 	}
 
 }

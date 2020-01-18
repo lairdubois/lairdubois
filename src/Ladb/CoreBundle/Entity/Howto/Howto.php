@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Howto;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\StripableInterface;
+use Ladb\CoreBundle\Model\StripableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
@@ -45,10 +47,10 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
  * @ORM\Table("tbl_howto")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Howto\HowtoRepository")
  */
-class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, LinkedToInterface {
+class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface, LinkedToInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait, LicensedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, EmbeddableTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, EmbeddableTrait, StripableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
 	const TYPE = 106;
@@ -175,6 +177,12 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @ORM\JoinColumn(name="sticker_id", nullable=true)
 	 */
 	private $sticker;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\JoinColumn(name="strip_id", nullable=true)
+	 */
+	private $strip;
 
 	/**
 	 * @ORM\Column(type="integer", name="referral_count")

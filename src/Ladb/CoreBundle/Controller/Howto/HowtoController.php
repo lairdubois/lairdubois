@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\HowtoUtils;
+use Ladb\CoreBundle\Utils\StripableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -347,6 +348,45 @@ class HowtoController extends AbstractController {
 
 		} else {
 			throw $this->createNotFoundException('No sticker');
+		}
+
+	}
+
+	/**
+	 * @Route("/{id}/strip", requirements={"id" = "\d+"}, name="core_howto_strip")
+	 */
+	public function stripAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+
+		$id = intval($id);
+
+		$howto = $howtoRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($howto)) {
+			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
+		}
+		if ($howto->getIsDraft() === true) {
+			throw $this->createNotFoundException('Not allowed (core_howto_strip)');
+		}
+
+		$strip = $howto->getStrip();
+		if (is_null($strip)) {
+			$stripableUtils = $this->get(StripableUtils::NAME);
+			$strip = $stripableUtils->generateStrip($howto);
+			if (!is_null($strip)) {
+				$om->flush();
+			} else {
+				throw $this->createNotFoundException('Error creating strip (core_howto_strip)');
+			}
+		}
+
+		if (!is_null($strip)) {
+
+			$response = $this->get('liip_imagine.controller')->filterAction($request, $strip->getWebPath(), '564w');
+			return $response;
+
+		} else {
+			throw $this->createNotFoundException('No strip');
 		}
 
 	}

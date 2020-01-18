@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository\Core;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class SpotlightRepository extends AbstractEntityRepository {
@@ -23,6 +24,22 @@ class SpotlightRepository extends AbstractEntityRepository {
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}
+	}
+
+	/////
+
+	public function findPagined($offset, $limit) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's' ))
+			->from($this->getEntityName(), 's')
+			->where('s.enabled = true')
+			->orderBy('s.createdAt', 'DESC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		return new Paginator($queryBuilder->getQuery());
 	}
 
 }

@@ -93,6 +93,8 @@ default:
   spotlight: Coup de projecteur
   spotlight_tooltip: Cette publication a mérité un coup de projecteur %age%.
   spotlight_popover: Cette publication a mérité un coup de projecteur <strong>%age%</strong>.
+  spotlights: Les coups de projecteur
+  spotlights_description: Liste des derniers coups de projecteur
 
   form:
     alert:

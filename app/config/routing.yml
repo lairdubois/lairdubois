@@ -220,6 +220,10 @@ ladb_core_offer:
     resource: "Ladb\\CoreBundle\\Controller\\Offer\\OfferController"
     type:     annotation
 
+ladb_core_spotlight:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\SpotlightController"
+    type:     annotation
+
 ladb_core_user:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\UserController"
     type:     annotation

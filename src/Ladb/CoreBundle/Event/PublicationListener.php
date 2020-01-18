@@ -473,7 +473,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 				// Force unlisted counter check in few seconds for this entity type
 				$userUtils = $this->container->get(UserUtils::NAME);
-				$userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT2S');		// 2 seconds
+				$userUtils->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT1S');		// 1 second
 
 			}
 
