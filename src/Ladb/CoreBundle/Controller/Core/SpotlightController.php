@@ -94,8 +94,8 @@ class SpotlightController extends AbstractController {
 
 			$item = new \Suin\RSSWriter\Item();
 			$item
-				->title($entity->getTitle())
-				->description($entity->getBodyExtract().'<br>#lairdubois '.implode(' ', array_map(function($tag) { return '#'.$tag->getLabel(); }, $entity->getTags()->toArray())).'<br><a href="'.$entityShowPath.'">Lire la suite...</a>')
+				->title($entity->getTitle().' '.$translator->trans('default.by').' '.$entity->getUser()->getDisplayname())
+				->description($entity->getBodyExtract().' #lairdubois '.implode(' ', array_map(function($tag) { return '#'.$tag->getLabel(); }, $entity->getTags()->toArray())))
 				->url($entityShowPath)
 				->author($entity->getUser()->getDisplayName())
 				->pubDate($entity->getChangedAt()->getTimestamp())
