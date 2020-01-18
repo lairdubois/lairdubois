@@ -497,7 +497,7 @@ class HowtoController extends AbstractController {
 
 					case 'license':
 
-						$filter = new \Elastica\Query\MatchPhrase('license.strippedname', $facet->value);
+						$filter = new \Elastica\Query\Term([ 'license.strippedname' => [ 'value' => $facet->value, 'boost' => 1.0 ] ]);
 						$filters[] = $filter;
 
 						break;

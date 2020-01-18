@@ -441,7 +441,7 @@ fos_elastica:
                         license:
                             type: "object"
                             properties:
-                                strippedname:
+                                strippedname: { analyzer: exact_lowercase_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Wonder\Creation
@@ -478,7 +478,7 @@ fos_elastica:
                         license:
                             type: "object"
                             properties:
-                                strippedname:
+                                strippedname: { analyzer: exact_lowercase_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Wonder\Workshop
@@ -524,7 +524,7 @@ fos_elastica:
                         license:
                             type: "object"
                             properties:
-                                strippedname:
+                                strippedname: { analyzer: exact_lowercase_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Wonder\Plan
@@ -611,7 +611,7 @@ fos_elastica:
                         license:
                             type: "object"
                             properties:
-                                strippedname:
+                                strippedname: { analyzer: exact_lowercase_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Howto\Howto
