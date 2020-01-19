@@ -467,15 +467,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 			// Process listed view
 			$viewableUtils = $this->container->get(ViewableUtils::NAME);
-			$viewableUtils->processListedView($publications);
-
-			if ($event->isNeedCounterResetRefreshTime()) {
-
-				// Reset unlisted counter refresh time
-				$userUtils = $this->container->get(UserUtils::NAME);
-				$userUtils->resetUnlistedCounterRefreshTimeByEntityType($entityType);
-
-			}
+			$viewableUtils->processListedView($publications, $event->isNeedCounterResetRefreshTime());
 
 		}
 
