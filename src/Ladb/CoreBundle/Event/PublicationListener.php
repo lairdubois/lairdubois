@@ -465,9 +465,24 @@ class PublicationListener implements EventSubscriberInterface {
 				}
 			}
 
+			if ($event->isNeedCounterResetRefreshTime()) {
+
+				// Compute unlisted counter for viewable entity type (if outdated) to be able to keep counter value after first list display
+				$userUtils = $this->container->get(UserUtils::NAME);
+				$userUtils->computeUnlistedCounterByEntityType($user, $entityType, true, false);
+
+			}
+
 			// Process listed view
 			$viewableUtils = $this->container->get(ViewableUtils::NAME);
-			$viewableUtils->processListedView($publications, $event->isNeedCounterResetRefreshTime());
+			$viewableUtils->processListedView($publications);
+
+			if ($event->isNeedCounterResetRefreshTime()) {
+
+				// Reset unlisted counter refresh time
+				$userUtils->resetUnlistedCounterRefreshTimeByEntityType($entityType);
+
+			}
 
 		}
 

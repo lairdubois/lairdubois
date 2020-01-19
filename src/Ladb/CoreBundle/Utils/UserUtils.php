@@ -71,7 +71,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 	}
 
-	public function computeUnlistedCounterByEntityType(User $user, $entityType, $flush = true) {
+	public function computeUnlistedCounterByEntityType(User $user, $entityType, $flush = true, $incrementUnlistedCounterRefreshTime = true) {
 		if (is_null($user)) {
 			return false;
 		}
@@ -83,7 +83,9 @@ class UserUtils extends AbstractContainerAwareUtils {
 			return false;
 		}
 
-		$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT'.mt_rand(180, 300).'S' /* = between 3 and 5 min */);
+		if ($incrementUnlistedCounterRefreshTime) {
+			$this->incrementUnlistedCounterRefreshTimeByEntityType($entityType, 'PT'.mt_rand(180, 300).'S' /* = between 3 and 5 min */);
+		}
 
 		$om = $this->getDoctrine()->getManager();
 		$viewRepository = $om->getRepository(View::CLASS_NAME);
@@ -143,7 +145,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 	}
 
 	public function resetUnlistedCounterRefreshTimeByEntityType($entityType) {
-		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, new \DateTime());
+		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, null);
 	}
 
 	/////

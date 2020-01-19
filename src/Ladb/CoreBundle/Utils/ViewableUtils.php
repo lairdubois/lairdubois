@@ -82,7 +82,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 	}
 
-	public function processListedView($viewables, $needCounterResetRefreshTime = false) {
+	public function processListedView($viewables) {
 
 		$globalUtils = $this->get(GlobalUtils::NAME);
 		$user = $globalUtils->getUser();
@@ -103,10 +103,6 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			return;
 		}
 
-		// Compute unlisted counter for viewable entity type (if outdated) to be able to keep couter after first list display
-		$userUtils = $this->get(UserUtils::NAME);
-		$userUtils->computeUnlistedCounterByEntityType($user, $entityType);
-
 		try {
 
 			// Publish a view in queue
@@ -120,13 +116,6 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		} catch (\Exception $e) {
 			$this->container->get('logger')->error('Failed to publish shown view process in queue.');
-		}
-
-		if ($needCounterResetRefreshTime) {
-
-			// Reset unlisted counter refresh time
-			$userUtils->resetUnlistedCounterRefreshTimeByEntityType($entityType);
-
 		}
 
 	}
