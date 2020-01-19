@@ -4,5 +4,5 @@
 {% set entity = ladb_entity(notification.activity.join.entityType, notification.activity.join.entityId) %}
 
 {% block body %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} participe à "<strong>{{ entity.title }}</strong>".
+    participe à "<strong>{{ entity.title }}</strong>".
 {% endblock %}

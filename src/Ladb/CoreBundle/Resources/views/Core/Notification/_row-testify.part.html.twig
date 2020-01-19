@@ -4,5 +4,5 @@
 {% set entity = notification.activity.testimonial.school %}
 
 {% block body %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a ajouté son témoignage à {{ ('notification.the.knowledge_school')|trans() }} "<strong>{{ entity.title }}</strong>".
+    a ajouté son témoignage à {{ ('notification.the.knowledge_school')|trans() }} "<strong>{{ entity.title }}</strong>".
 {% endblock %}

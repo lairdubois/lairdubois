@@ -4,7 +4,7 @@
 {% set entity = ladb_entity(notification.activity.comment.entityType, notification.activity.comment.entityId) %}
 
 {% block body %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a commenté
+    a commenté
     {% if entity.type >= 10 and entity.type < 100 %} {# Knowledge value #}
         {% set childEntity = entity %}
         {% set parentEntity = ladb_entity(childEntity.parentEntityType, childEntity.parentEntityId) %}

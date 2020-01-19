@@ -5,7 +5,7 @@
 <div id="ladb_notification_{{ notification.id }}" class="ladb-notification-row{% if notification.isListed and unlistedNotificationIds[notification.id] is not defined %} ladb-listed{% endif %}{% if notification.isShown %} ladb-shown{% endif %}" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A' && event.button == 0) { document.location = '{{ path('core_notification_show', { 'id':notification.id }) }}'; }">
     {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':notification.activity.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}
     <div class="ladb-box">
-        <div>{% block body %}{% endblock %}</div>
+        <div>{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} <a href="{{ path('core_notification_show', { 'id':notification.id }) }}" class="ladb-body-link">{% block body %}{% endblock %}</a></div>
         <div>
             {% if isYour is defined and isYour %}<span class="pull-right"><i class="ladb-icon-user"></i></span>{% endif %}
             {% if not notification.isShown %}<span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}"><i class="ladb-icon-bullet ladb-icon-lg" style="color: #f77f00;"></i></span>{% endif %}

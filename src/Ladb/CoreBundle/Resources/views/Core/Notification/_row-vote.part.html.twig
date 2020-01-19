@@ -6,7 +6,7 @@
 {% set activityEntity = ladb_entity(vote.entityType, vote.entityId) %}
 
 {% block body %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a accordé une <strong class="ladb-color-{{ vote.score > 0 ? 'positive' : 'negative' }}">{{ (vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong> à
+    a accordé une <strong class="ladb-color-{{ vote.score > 0 ? 'positive' : 'negative' }}">{{ (vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong> à
     {% if activityEntity.type >= 10 and activityEntity.type < 100 %} {# Knowledge value #}
         {% set fieldDef = entity.fieldDefs[vote.parentEntityField] %}
         {% set fieldType = fieldDef[constant('ATTRIB_TYPE', entity)] %}

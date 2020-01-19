@@ -4,5 +4,5 @@
 {% set entity = notification.activity.answer.question %}
 
 {% block body %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a répondu à {{ ('notification.'~(entity.user is defined and entity.user.id == app.user.id ? 'your' : 'the')~'.qa_question')|trans() }} "<strong>{{ entity.title }}</strong>".
+    a répondu à {{ ('notification.'~(entity.user is defined and entity.user.id == app.user.id ? 'your' : 'the')~'.qa_question')|trans() }} "<strong>{{ entity.title }}</strong>".
 {% endblock %}

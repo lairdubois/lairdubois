@@ -4,7 +4,7 @@
 {% set entity = ladb_entity(notification.activity.mention.entityType, notification.activity.mention.entityId) %}
 
 {% block body %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %} a mentionné votre nom dans
+    a mentionné votre nom dans
     {% set isYour = entity.user is defined and entity.user.id == app.user.id %}
     {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
 {% endblock %}
