@@ -17,6 +17,26 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.user_utils';
 
+	const COUNTABLE_TYPES = array(
+		\Ladb\CoreBundle\Entity\Wonder\Creation::TYPE,
+		\Ladb\CoreBundle\Entity\Wonder\Plan::TYPE,
+		\Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE,
+		\Ladb\CoreBundle\Entity\Find\Find::TYPE,
+		\Ladb\CoreBundle\Entity\Howto\Howto::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\School::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\Book::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\Software::TYPE,
+		\Ladb\CoreBundle\Entity\Blog\Post::TYPE,
+		\Ladb\CoreBundle\Entity\Faq\Question::TYPE,
+		\Ladb\CoreBundle\Entity\Qa\Question::TYPE,
+		\Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE,
+		\Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE,
+		\Ladb\CoreBundle\Entity\Collection\Collection::TYPE,
+		\Ladb\CoreBundle\Entity\Offer\Offer::TYPE,
+	);
+
 	/////
 
 	public function _getUnlistedCounterRefreshDateSessionKeyByEntityType($entityType) {
@@ -45,28 +65,8 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 	public function computeUnlistedCounters(User $user, $ignoredEntityType = null) {
 
-		$entityTypes = array(
-			\Ladb\CoreBundle\Entity\Wonder\Creation::TYPE,
-			\Ladb\CoreBundle\Entity\Wonder\Plan::TYPE,
-			\Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE,
-			\Ladb\CoreBundle\Entity\Find\Find::TYPE,
-			\Ladb\CoreBundle\Entity\Howto\Howto::TYPE,
-			\Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE,
-			\Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE,
-			\Ladb\CoreBundle\Entity\Knowledge\School::TYPE,
-			\Ladb\CoreBundle\Entity\Knowledge\Book::TYPE,
-			\Ladb\CoreBundle\Entity\Knowledge\Software::TYPE,
-			\Ladb\CoreBundle\Entity\Blog\Post::TYPE,
-			\Ladb\CoreBundle\Entity\Faq\Question::TYPE,
-			\Ladb\CoreBundle\Entity\Qa\Question::TYPE,
-			\Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE,
-			\Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE,
-			\Ladb\CoreBundle\Entity\Collection\Collection::TYPE,
-			\Ladb\CoreBundle\Entity\Offer\Offer::TYPE,
-		);
-
 		$updated = false;
-		foreach ($entityTypes as $entityType) {
+		foreach (self::COUNTABLE_TYPES as $entityType) {
 			if ($entityType == $ignoredEntityType) {
 				continue;
 			}

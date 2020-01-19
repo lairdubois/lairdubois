@@ -237,7 +237,7 @@ class TipController extends AbstractController {
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], false));
 
 		$parameters = array_merge($searchParameters, array(
 			'tips' => $searchParameters['entities'],
