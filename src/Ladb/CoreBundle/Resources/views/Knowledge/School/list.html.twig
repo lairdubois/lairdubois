@@ -8,12 +8,12 @@
 {% set pageSectionUrl = url('core_school_list') %}
 {% set pageSectionName = 'knowledge.school.list'|trans %}
 
+{% set navSection = 'schools' %}
 {% set masonry = true %}
 {% set masonryWide = true %}
 {% set topbarTranslucent = true %}
 {% set hideHeaderContainer = false %}
-
-{% set navSection = 'schools' %}
+{% set countableEntityList = true %}
 
 {% block headStylesheets %}
     {{ parent() }}

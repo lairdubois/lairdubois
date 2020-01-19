@@ -18,35 +18,53 @@ class PropertyUtils {
 
 	/////
 
-	public function getValue($object, $propertyPath) {
-		$propertyMethod = $this->_getPropertyMethod('get', $propertyPath);
-		return $object->{ $propertyMethod }();
+	public function camelCasePropertyAccessor($accessor, $propertyPath) {
+		$terms = explode('_', $propertyPath);
+		$result = $accessor;
+		foreach ($terms as $term) {
+			$result .= ucfirst($term);
+		}
+		if (empty($accessor)) {
+			$result = lcfirst($result);
+		}
+		return $result;
 	}
 
 	/////
 
-	private function _getPropertyMethod($accessor, $propertyPath) {
-		$terms = explode('_', $propertyPath);
-		$method = $accessor;
-		foreach ($terms as $term) {
-			$method .= ucfirst($term);
+	public function getValue($object, $propertyPath) {
+		$propertyMethod = $this->camelCasePropertyAccessor('get', $propertyPath);
+		if (method_exists($object, $propertyMethod)) {
+			return $object->{$propertyMethod}();
 		}
-		return $method;
+		throw new \Exception('Undefined method exception '.$propertyMethod);
 	}
 
 	public function setValue($object, $propertyPath, $value) {
-		$propertyMethod = $this->_getPropertyMethod('set', $propertyPath);
-		$object->{ $propertyMethod }($value);
+		$propertyMethod = $this->camelCasePropertyAccessor('set', $propertyPath);
+		if (method_exists($object, $propertyMethod)) {
+			$object->{ $propertyMethod }($value);
+			return;
+		}
+		throw new \Exception('Undefined method exception '.$propertyMethod);
 	}
 
 	public function addValue($object, $propertyPath, $value) {
-		$propertyMethod = $this->_getPropertyMethod('add', $propertyPath);
-		$object->{ $propertyMethod }($value);
+		$propertyMethod = $this->camelCasePropertyAccessor('add', $propertyPath);
+		if (method_exists($object, $propertyMethod)) {
+			$object->{ $propertyMethod }($value);
+			return;
+		}
+		throw new \Exception('Undefined method exception '.$propertyMethod);
 	}
 
 	public function removeValue($object, $propertyPath, $value) {
-		$propertyMethod = $this->_getPropertyMethod('remove', $propertyPath);
-		$object->{ $propertyMethod }($value);
+		$propertyMethod = $this->camelCasePropertyAccessor('remove', $propertyPath);
+		if (method_exists($object, $propertyMethod)) {
+			$object->{ $propertyMethod }($value);
+			return;
+		}
+		throw new \Exception('Undefined method exception '.$propertyMethod);
 	}
 
 }

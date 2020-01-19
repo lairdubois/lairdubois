@@ -142,6 +142,10 @@ class UserUtils extends AbstractContainerAwareUtils {
 		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, (new \DateTime())->add(new \DateInterval($inc)));
 	}
 
+	public function resetUnlistedCounterRefreshTimeByEntityType($entityType) {
+		$this->_setUnlistedCounterRefreshDateByEntityType($entityType, new \DateTime());
+	}
+
 	/////
 
 	public function createDefaultAvatar(User $user, $randomColor = true) {

@@ -8,12 +8,12 @@
 {% set pageSectionUrl = url('core_offer_list') %}
 {% set pageSectionName = 'offer.offer.list'|trans %}
 
+{% set navSection = 'offers' %}
 {% set masonry = true %}
 {% set masonryWide = true %}
 {% set topbarTranslucent = offers|length > 0 %}
 {% set hideHeaderContainer = false %}
-
-{% set navSection = 'offers' %}
+{% set countableEntityList = true %}
 
 {% block headStylesheets %}
     {{ parent() }}

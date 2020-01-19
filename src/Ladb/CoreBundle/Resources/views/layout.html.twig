@@ -5,12 +5,13 @@
 {% set bodyClass = (bodyClass is defined ? bodyClass~' ' : '')~'ladb-topbar-enabled ladb-bottombar-enabled ladb-leftbar-enabled' %}
 {% set topbarTranslucent = topbarTranslucent|default(false) %}
 {% set hideAboutAlert = hideAboutAlert|default(false) %}
+{% set listedEntityType = listedEntityType|default(null) %}
 
 {% block bodyJavascriptsInlineReady %}
     {{ parent() }}
     {% if is_granted("ROLE_USER") %}
         $('body').ladbCounters({
-            countersPath: '{{ path('core_user_counters') }}'
+            countersPath: '{{ path('core_user_counters', { 'listed_entity_type':listedEntityType }) }}'
         });
     {% endif %}
     {% if topbarTranslucent %}

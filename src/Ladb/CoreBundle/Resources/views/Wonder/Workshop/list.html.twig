@@ -8,11 +8,11 @@
 {% set pageSectionUrl = url('core_workshop_list') %}
 {% set pageSectionName = 'wonder.workshop.list'|trans %}
 
+{% set navSection = 'workshops' %}
 {% set masonry = true %}
 {% set topbarTranslucent = true %}
 {% set hideHeaderContainer = false %}
-
-{% set navSection = 'workshops' %}
+{% set countableEntityList = true %}
 
 {% block headStylesheets %}
     {{ parent() }}

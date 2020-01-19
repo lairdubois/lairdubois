@@ -4,6 +4,9 @@ namespace Ladb\CoreBundle\Controller\Core;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Offer\Offer;
+use Ladb\CoreBundle\Utils\PropertyUtils;
+use Ladb\CoreBundle\Utils\TypableUtils;
+use Symfony\Component\Debug\Exception\UndefinedMethodException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -410,31 +413,61 @@ class UserController extends AbstractController {
 		if (is_null($user)) {
 			throw $this->createNotFoundException('No current user (core_user_counters)');
 		}
+		$meta = $user->getMeta();
+
+		$listedCounterKey = null;
+		$listedCounterValue = null;
+
+		// Check if a listed entity type is provided (to retrieve counter before computing a new one)
+		$listedEntityType = $request->get('listed_entity_type', false);
+		if ($listedEntityType) {
+
+			$typableUtils = $this->get(TypableUtils::NAME);
+			$listedEntityStrippedName = $typableUtils->getStrippedNameByType($listedEntityType);
+
+			$propertyPath = 'unlisted_'.$listedEntityStrippedName.'_count';
+			$propertyUtils = $this->get(PropertyUtils::NAME);
+
+			try {
+
+				// Retrieve counter value
+				$listedCounterKey = $propertyUtils->camelCasePropertyAccessor('', $propertyPath);
+				$listedCounterValue = $propertyUtils->getValue($meta, $propertyPath);
+
+			} catch (\Exception $e) {}
+
+		}
 
 		// Compute unlisted counters
 		$userUtils = $this->container->get(UserUtils::NAME);
 		$userUtils->computeUnlistedCounters($user);
 
+		$counters = array(
+			'unlistedWonderCreationCount' => $meta->getUnlistedWonderCreationCount(),
+			'unlistedWonderPlanCount' => $meta->getUnlistedWonderPlanCount(),
+			'unlistedWonderWorkshopCount' => $meta->getUnlistedWonderWorkshopCount(),
+			'unlistedFindFindCount' => $meta->getUnlistedFindFindCount(),
+			'unlistedHowtoHowtoCount' => $meta->getUnlistedHowtoHowtoCount(),
+			'unlistedKnowledgeWoodCount' => $meta->getUnlistedKnowledgeWoodCount(),
+			'unlistedKnowledgeProviderCount' => $meta->getUnlistedKnowledgeProviderCount(),
+			'unlistedKnowledgeSchoolCount' => $meta->getUnlistedKnowledgeSchoolCount(),
+			'unlistedKnowledgeBookCount' => $meta->getUnlistedKnowledgeBookCount(),
+			'unlistedKnowledgeSoftwareCount' => $meta->getUnlistedKnowledgeSoftwareCount(),
+			'unlistedBlogPostCount' => $meta->getUnlistedBlogPostCount(),
+			'unlistedFaqQuestionCount' => $meta->getUnlistedFaqQuestionCount(),
+			'unlistedQaQuestionCount' => $meta->getUnlistedQaQuestionCount(),
+			'unlistedPromotionGraphicCount' => $meta->getUnlistedPromotionGraphicCount(),
+			'unlistedWorkflowWorkflowCount' => $meta->getUnlistedWorkflowWorkflowCount(),
+			'unlistedCollectionCollectionCount' => $meta->getUnlistedCollectionCollectionCount(),
+			'unlistedOfferOfferCount' => $meta->getUnlistedOfferOfferCount(),
+		);
+
+		if (!is_null($listedCounterKey) && !is_null($listedCounterValue)) {
+			$counters[$listedCounterKey] = $listedCounterValue;
+		}
+
 		return array(
-			'counters' => array(
-				'unlistedWonderCreationCount' => $user->getMeta()->getUnlistedWonderCreationCount(),
-				'unlistedWonderPlanCount' => $user->getMeta()->getUnlistedWonderPlanCount(),
-				'unlistedWonderWorkshopCount' => $user->getMeta()->getUnlistedWonderWorkshopCount(),
-				'unlistedFindFindCount' => $user->getMeta()->getUnlistedFindFindCount(),
-				'unlistedHowtoHowtoCount' => $user->getMeta()->getUnlistedHowtoHowtoCount(),
-				'unlistedKnowledgeWoodCount' => $user->getMeta()->getUnlistedKnowledgeWoodCount(),
-				'unlistedKnowledgeProviderCount' => $user->getMeta()->getUnlistedKnowledgeProviderCount(),
-				'unlistedKnowledgeSchoolCount' => $user->getMeta()->getUnlistedKnowledgeSchoolCount(),
-				'unlistedKnowledgeBookCount' => $user->getMeta()->getUnlistedKnowledgeBookCount(),
-				'unlistedKnowledgeSoftwareCount' => $user->getMeta()->getUnlistedKnowledgeSoftwareCount(),
-				'unlistedBlogPostCount' => $user->getMeta()->getUnlistedBlogPostCount(),
-				'unlistedFaqQuestionCount' => $user->getMeta()->getUnlistedFaqQuestionCount(),
-				'unlistedQaQuestionCount' => $user->getMeta()->getUnlistedQaQuestionCount(),
-				'unlistedPromotionGraphicCount' => $user->getMeta()->getUnlistedPromotionGraphicCount(),
-				'unlistedWorkflowWorkflowCount' => $user->getMeta()->getUnlistedWorkflowWorkflowCount(),
-				'unlistedCollectionCollectionCount' => $user->getMeta()->getUnlistedCollectionCollectionCount(),
-				'unlistedOfferOfferCount' => $user->getMeta()->getUnlistedOfferOfferCount(),
-			),
+			'counters' => $counters,
 		);
 	}
 

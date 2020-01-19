@@ -8,12 +8,12 @@
 {% set pageSectionUrl = url('core_provider_list') %}
 {% set pageSectionName = 'knowledge.provider.list'|trans %}
 
+{% set navSection = 'providers' %}
 {% set masonry = true %}
 {% set masonryWide = true %}
 {% set topbarTranslucent = true %}
 {% set hideHeaderContainer = false %}
-
-{% set navSection = 'providers' %}
+{% set countableEntityList = true %}
 
 {% block headStylesheets %}
     {{ parent() }}
