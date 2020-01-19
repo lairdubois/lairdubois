@@ -422,8 +422,6 @@ class UserController extends AbstractController {
 		$listedEntityType = $request->get('listed_entity_type', false);
 		if ($listedEntityType) {
 
-			$this->createLock('counters_lock', true);
-
 			$typableUtils = $this->get(TypableUtils::NAME);
 			$listedEntityStrippedName = $typableUtils->getStrippedNameByType($listedEntityType);
 
@@ -442,7 +440,7 @@ class UserController extends AbstractController {
 
 		// Compute unlisted counters
 		$userUtils = $this->container->get(UserUtils::NAME);
-		$userUtils->computeUnlistedCounters($user);
+		$userUtils->computeUnlistedCounters($user, $listedEntityType);
 
 		$counters = array(
 			'unlistedWonderCreationCount' => $meta->getUnlistedWonderCreationCount(),

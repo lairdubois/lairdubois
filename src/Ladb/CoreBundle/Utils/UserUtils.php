@@ -43,26 +43,35 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function computeUnlistedCounters(User $user) {
+	public function computeUnlistedCounters(User $user, $ignoredEntityType = null) {
+
+		$entityTypes = array(
+			\Ladb\CoreBundle\Entity\Wonder\Creation::TYPE,
+			\Ladb\CoreBundle\Entity\Wonder\Plan::TYPE,
+			\Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE,
+			\Ladb\CoreBundle\Entity\Find\Find::TYPE,
+			\Ladb\CoreBundle\Entity\Howto\Howto::TYPE,
+			\Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE,
+			\Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE,
+			\Ladb\CoreBundle\Entity\Knowledge\School::TYPE,
+			\Ladb\CoreBundle\Entity\Knowledge\Book::TYPE,
+			\Ladb\CoreBundle\Entity\Knowledge\Software::TYPE,
+			\Ladb\CoreBundle\Entity\Blog\Post::TYPE,
+			\Ladb\CoreBundle\Entity\Faq\Question::TYPE,
+			\Ladb\CoreBundle\Entity\Qa\Question::TYPE,
+			\Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE,
+			\Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE,
+			\Ladb\CoreBundle\Entity\Collection\Collection::TYPE,
+			\Ladb\CoreBundle\Entity\Offer\Offer::TYPE,
+		);
 
 		$updated = false;
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Find\Find::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Howto\Howto::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\School::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Book::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Blog\Post::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Faq\Question::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Qa\Question::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Collection\Collection::TYPE, false);
-		$updated |= $this->computeUnlistedCounterByEntityType($user, \Ladb\CoreBundle\Entity\Offer\Offer::TYPE, false);
+		foreach ($entityTypes as $entityType) {
+			if ($entityType == $ignoredEntityType) {
+				continue;
+			}
+			$updated |= $this->computeUnlistedCounterByEntityType($user, $entityType, false);
+		}
 
 		if ($updated) {
 			$userManager = $this->get('fos_user.user_manager');
