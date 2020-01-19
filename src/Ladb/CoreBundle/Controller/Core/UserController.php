@@ -422,6 +422,8 @@ class UserController extends AbstractController {
 		$listedEntityType = $request->get('listed_entity_type', false);
 		if ($listedEntityType) {
 
+			$this->createLock('counters_lock', true);
+
 			$typableUtils = $this->get(TypableUtils::NAME);
 			$listedEntityStrippedName = $typableUtils->getStrippedNameByType($listedEntityType);
 
