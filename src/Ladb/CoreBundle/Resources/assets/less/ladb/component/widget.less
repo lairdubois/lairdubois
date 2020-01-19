@@ -12,6 +12,7 @@
     .list-box();
     min-height: @widgetBoxMinHeight;
     box-sizing: content-box;
+    display: flex;
 
     &.ladb-box-hover {
       .list-box-hover();
@@ -40,11 +41,11 @@
     }
 
     > .ladb-image {
-      float: left;
     }
 
     > .ladb-body {
-      padding-left: @widgetBoxMinHeight + @widgetMargin;
+      padding-left: @widgetMargin;
+      flex-grow: 1;
       position: relative;
 
       > .ladb-heading {
@@ -53,6 +54,16 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow-x: hidden;
+
+        > a {
+          color: #000;
+
+          &:hover {
+            text-decoration: none;
+          }
+
+        }
+
       }
 
       > .ladb-subheading {

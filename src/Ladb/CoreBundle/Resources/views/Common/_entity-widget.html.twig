@@ -3,10 +3,10 @@
 <div class="ladb-entity-widget">
     <div class="ladb-box ladb-box-hover" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'})">
         <div class="ladb-image">
-            {% include 'LadbCoreBundle:Common:_avatar.part.html.twig' with { 'size':50, 'noLazyLoad':true, 'noRounded':true } %}
+            <a href="{{ ladb_entity_url_action(entity) }}">{% include 'LadbCoreBundle:Common:_avatar.part.html.twig' with { 'size':50, 'noLazyLoad':true, 'noRounded':true } %}</a>
         </div>
         <div class="ladb-body">
-            <div class="ladb-heading">{% block title %}{{ entity.title }}{% endblock %}</div>
+            <div class="ladb-heading">{% block title %}<a href="{{ ladb_entity_url_action(entity) }}">{{ entity.title }}</a>{% endblock %}</div>
             <div class="ladb-subheading">{% if entity.user is defined %}{% include 'LadbCoreBundle:Common:_author.part.html.twig' %}{% endif %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}</div>
             <ul class="ladb-counters ladb-hidden-mobile">{% block entityMetas %}{% endblock %}</ul>
         </div>

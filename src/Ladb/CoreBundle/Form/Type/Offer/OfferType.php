@@ -90,7 +90,7 @@ class OfferType extends AbstractType {
 				if ($offer->getKind() == Offer::KIND_OFFER && $offer->getCategory() != Offer::CATEGORY_JOB) {
 					if ($rawPrice > 0) {
 						$formatter = new \NumberFormatter('fr_FR',  \NumberFormatter::CURRENCY);
-						$offer->setPrice($formatter->formatCurrency($rawPrice, $currency));
+						$offer->setPrice(str_replace(',00', '', $formatter->formatCurrency($rawPrice, $currency)));
 					} else {
 						$offer->setPrice('Gratuit');
 					}
