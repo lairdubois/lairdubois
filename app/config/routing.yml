@@ -22,7 +22,7 @@ fos_user_profile_show:
 # Imagine Bundle
 
 _liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 
 # Webpush Bundle
 

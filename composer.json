@@ -22,6 +22,7 @@
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-imagick": "*",
+        "ext-exif": "*",
         "ext-json": "*",
 
         "doctrine/orm": "^2.5",
@@ -45,7 +46,7 @@
         "friendsofsymfony/user-bundle": "*",
         "friendsofsymfony/elastica-bundle": "*",
         "stof/doctrine-extensions-bundle": "*",
-        "liip/imagine-bundle": "~1.9",
+        "liip/imagine-bundle": "~2.3",
         "gos/web-socket-bundle": "1.8.13",
         "bentools/webpush-bundle": "^0.3",
         "php-amqplib/rabbitmq-bundle": "^1.14",

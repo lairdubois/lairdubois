@@ -19,7 +19,7 @@ class ImageOptimizerPostProcessor implements PostProcessorInterface {
 	 *
 	 * @see      Implementation taken from Assetic\Filter\JpegoptimFilter
 	 */
-	public function process(BinaryInterface $binary) {
+	public function process(BinaryInterface $binary, array $options = []): BinaryInterface {
 
 		$type = strtolower($binary->getMimeType());
 		$isJPEG = in_array($type, array('image/jpeg', 'image/jpg'));
