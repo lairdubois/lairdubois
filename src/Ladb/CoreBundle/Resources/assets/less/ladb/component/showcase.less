@@ -1,0 +1,27 @@
+//
+// Showcase
+//
+
+.ladb-showcase {
+
+  .ladb-showcase-picture-n {
+    margin-top: @ladb-gutter;
+  }
+
+  &.ladb-showcase-portrait .ladb-showcase-picture-0 + .ladb-showcase-picture-n {
+    margin-top: 0;
+  }
+
+}
+
+/* Responsive */
+
+@media screen and (max-width: @ladb-screen-phone-max) {
+  .ladb-showcase {
+
+    &.ladb-showcase-portrait .ladb-showcase-picture-0 + .ladb-showcase-picture-n {
+      margin-top: @ladb-gutter;
+    }
+
+  }
+}

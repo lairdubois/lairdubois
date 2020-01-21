@@ -64,22 +64,7 @@
         {% include 'LadbCoreBundle:Offer/Offer:_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-offer">
-        <div class="row">
-            <div class="col-xs-12">
-                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[0], 'width':'600', 'height':'450', 'filterMode':'o', 'alt':offer.title, 'aClasses':(offer.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
-            </div>
-            {% if offer.pictures.count > 1 %}
-                {% for index in 1..(offer.maxPictureCount - 1) %}
-                    <div class="col-xs-6 col-md-3{% if index >= offer.pictures.count and index > 2 and offer.pictures.count <= 3  %} ladb-hidden-mobile ladb-hidden-tablet{% endif %}">
-                        {% if index < offer.pictures.count %}
-                            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':offer.pictures[index], 'width':'128', 'height':'128', 'alt':offer.title, 'attributes':'data-pin-nopin="true"' } %}
-                        {% else %}
-                            <div class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" alt="empty" data-pin-nopin="true"></div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
+        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'pictures':offer.pictures, 'alt':offer.title } %}
         {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
         {% if offer.location is defined and offer.location is not null %}
             <div class="ladb-link">

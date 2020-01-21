@@ -65,25 +65,14 @@
             {{ ladb_video_player_frame(find.content.kind, find.content.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail', true)|raw }}
         {% endif %}
         {% if find.content.pictures is defined %}
-            <div class="row">
-                <div class="col-xs-12">
-                    {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[0], 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'aClasses':(find.content.pictures.count > 1 ? 'ladb-margin-bottom' : '') } %}
+            {% embed 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'pictures':find.content.pictures, 'alt':find.title } %}
+                {% block picture0 %}
+                    {{ parent() }}
                     {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
                         {% include 'LadbCoreBundle:Find/Find:_event-calendar.part.html.twig' with { 'event':find.content, 'topRight':true } %}
                     {% endif %}
-                </div>
-                {% if find.content.pictures.count > 1 %}
-                    {% for index in 1..4 %}
-                        <div class="col-xs-3">
-                            {% if index < find.content.pictures.count %}
-                                {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':find.content.pictures[index], 'width':'128', 'height':'128', 'alt':find.title, 'attributes':'data-pin-nopin="true"' } %}
-                            {% else %}
-                                <span class="thumbnail thumbnail-empty"><img src="{{ 'empty.png'|imagine_filter('128x128o') }}" data-pin-nopin="true"></span>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                {% endblock %}
+            {% endembed %}
         {% endif %}
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
             <div class="ladb-link">
