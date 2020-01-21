@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20200121"
+        version:    "202001212149"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -242,6 +242,11 @@ liip_imagine:
         594x294o: # Blog main picture + Feed
             filters:
                 thumbnail: { size: [594, 294], mode: outbound, allow_upscale: true }
+            post_processors:
+                ladb_imageoptimizer: {}
+        514x695o: # Showcase 4/3 portrait
+            filters:
+                thumbnail: { size: [514, 695], mode: outbound, allow_upscale: true }
             post_processors:
                 ladb_imageoptimizer: {}
         600x450o: # Block gallery (large)
