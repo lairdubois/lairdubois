@@ -464,6 +464,20 @@ class OfferController extends AbstractController {
 
 						break;
 
+					case 'period':
+
+						if ($facet->value == 'last7days') {
+
+							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-7d/d' ));
+
+						} elseif ($facet->value == 'last30days') {
+
+							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-30d/d' ));
+
+						}
+
+						break;
+
 					case 'kind':
 
 						$filter = new \Elastica\Query\MatchPhrase('kind', $facet->value);

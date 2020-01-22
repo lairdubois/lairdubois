@@ -392,6 +392,20 @@ class QuestionController extends AbstractController {
 
 						break;
 
+					case 'period':
+
+						if ($facet->value == 'last7days') {
+
+							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-7d/d' ));
+
+						} elseif ($facet->value == 'last30days') {
+
+							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-30d/d' ));
+
+						}
+
+						break;
+
 					case 'tag':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);
