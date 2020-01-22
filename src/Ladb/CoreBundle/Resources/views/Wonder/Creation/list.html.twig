@@ -89,7 +89,7 @@
         <div class="ladb-masonry-item ladb-masonry-column">
             <div class="ladb-box">
                 <div style="padding: 10px;">
-                    <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-date"></i> {{ runningFinds|length }} {{ 'find.find.choice.events'|transchoice(runningFinds|length) }} aujourd'hui !</div>
+                    <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-calendar-month"></i> {{ runningFinds|length }} {{ 'find.find.choice.events'|transchoice(runningFinds|length) }} aujourd'hui !</div>
                     <ul>
                         {% for runningFind in runningFinds %}
                          <li><a href="{{ ladb_entity_url_action(runningFind) }}">{{ runningFind.title }}</a></li>

@@ -12,7 +12,7 @@
                             <label>Année d'entrée</label>
                             {{ form_errors(form.fromYear) }}
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
                                 {{ form_widget(form.fromYear, { 'attr':{ 'class':'form-control ladb-input-year' } }) }}
                             </div>
                         </div>
@@ -20,7 +20,7 @@
                             <label>Année de sortie</label> <small>(facultatif)</small>
                             {{ form_errors(form.toYear) }}
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
                                 {{ form_widget(form.toYear, { 'attr':{ 'class':'form-control ladb-input-year' } }) }}
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" onclick="$('#{{ form.toYear.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>

@@ -36,7 +36,7 @@
             <ul id="{{ form.contentType.vars.id }}_tab" class="nav nav-tabs" role="tablist">
                 <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}" aria-controls="home" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}"><i class="ladb-icon-link"></i> {{ 'find.find.content.link.name'|trans }}</a></li>
                 <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}" aria-controls="profile" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}"><i class="ladb-icon-camera"></i> {{ 'find.find.content.gallery.name'|trans }}</a></li>
-                <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" aria-controls="messages" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}"><i class="ladb-icon-date"></i> {{ 'find.find.content.event.name'|trans }}</a></li>
+                <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" aria-controls="messages" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}"><i class="ladb-icon-calendar-month"></i> {{ 'find.find.content.event.name'|trans }}</a></li>
             </ul>
             <script>
                 $("#{{ form.contentType.vars.id }}_tab").on('shown.bs.tab', function(e) {
@@ -88,7 +88,7 @@
                             {{ form_label(form.event.startDate, 'default.start_date') }}<span class="ladb-mandatory">*</span>
                             {{ form_errors(form.event.startDate) }}
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
                                 {{ form_widget(form.event.startDate) }}
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                             {{ form_label(form.event.endDate, 'default.end_date') }}
                             {{ form_errors(form.event.endDate) }}
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-date"></i></span>
+                                <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
                                 {{ form_widget(form.event.endDate) }}
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" onclick="$('#{{ form.event.endDate.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
