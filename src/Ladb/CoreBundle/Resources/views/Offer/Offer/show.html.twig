@@ -96,7 +96,7 @@
             <div class="panel-body">
                 <div class="media">
                     <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
-                    <div class="media-body">
+                    <div class="media-body" style="font-size: 90%;">
                         {% if ownerUser %}
                             Cette annonce expirera <strong>{{ offer.expiredDate|time_diff }}</strong>.
                         {% elseif offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') %}
