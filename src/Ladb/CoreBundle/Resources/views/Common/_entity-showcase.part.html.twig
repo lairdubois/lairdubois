@@ -1,7 +1,7 @@
 {# set pictures #}
 {# set alt #}
 
-{% set isPortrait = pictures[0].heightRatio100 >= 133 %}
+{% set isPortrait = pictures[0].heightRatio100 >= 120 %}
 <div class="ladb-showcase{% if isPortrait %} ladb-showcase-portrait{% endif %} row">
     <div class="ladb-showcase-picture-0 col-xs 12 col-sm-{% if isPortrait %}9{% else %}12{% endif %}">
         {% set width = '600' %}
