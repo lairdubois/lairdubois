@@ -96,13 +96,15 @@
             <div class="panel-body">
                 <div class="media">
                     <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
-                    <div class="media-body" style="font-size: 90%;">
+                    <div class="media-body">
                         {% if ownerUser %}
                             Cette annonce expirera <strong>{{ offer.expiredDate|time_diff }}</strong>.
                         {% elseif offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') %}
-                            <p>La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont <strong>sous la seule</strong> responsabilité de l'annonceur, {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':offer.user } %}.</p>
-                            <p><em>L'Air du Bois</em> en sa qualité d'hébergeur, conformément aux articles 6.I.2. et suivants de la loi nº2004-575 du 21 juin 2004, ne saurait donc en aucun cas être tenue responsable du contenu des Annonces publiées, ainsi que des messages et contenus échangés via la Messagerie et ne donne aucune garantie, expresse ou implicite, à cet égard.</p>
-                            <p><em>L'Air du Bois</em> rappelle que les machines pour le travail du bois sont dangereuses et nécessitent d'être branchées, vérifiées, entretenues et utilisées selon les règles de l'art.</p>
+                            <div style="font-size: 90%;">
+                                <p>La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont <strong>sous la seule</strong> responsabilité de l'annonceur, {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':offer.user } %}.</p>
+                                <p><em>L'Air du Bois</em> en sa qualité d'hébergeur, conformément aux articles 6.I.2. et suivants de la loi nº2004-575 du 21 juin 2004, ne saurait donc en aucun cas être tenue responsable du contenu des Annonces publiées, ainsi que des messages et contenus échangés via la Messagerie et ne donne aucune garantie, expresse ou implicite, à cet égard.</p>
+                                <p><em>L'Air du Bois</em> rappelle que les machines pour le travail du bois sont dangereuses et nécessitent d'être branchées, vérifiées, entretenues et utilisées selon les règles de l'art.</p>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
