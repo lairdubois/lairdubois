@@ -402,6 +402,7 @@ qa:
     other_from: Autres questions de
     similar: Voir aussi
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la question (remerciements, demande de précisions, corrections, etc ...).</p><p><u>N'apportez pas votre réponse ici.</u></p><p>Pour répondre à  la question, cliquez sur <strong>Répondre à la question</strong> en bas de page.</p>
+    converttooffer: Convertir en offre
     form:
       alert:
         lock_success: La question <strong>%title%</strong> a été vérrouillée.
@@ -418,6 +419,9 @@ qa:
       entities: '[0,1]question|]1,Inf]questions'
       new_questions: '[0,1]nouvelle question|]1,Inf]nouvelles questions'
       draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
+    admin:
+      alert:
+        converttooffer_success: La question %title% a été converti en offre avec succès.
   answer:
     new: Répondre à la question
     edit: Editer ma réponse

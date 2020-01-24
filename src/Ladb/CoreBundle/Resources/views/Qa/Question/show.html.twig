@@ -45,6 +45,24 @@
 
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+        {% block adminItems %}
+            {{ parent() }}
+            <li role="separator" class="divider"></li>
+            <li><a href="#admin_converttooffer_question_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-offer"></i> {{ 'qa.question.converttooffer'|trans() }}</a></li>
+        {% endblock %}
+        {% block adminModals %}
+            {{ parent() }}
+            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'admin_converttooffer_question_modal', 'title':('qa.question.converttooffer'|trans()) } %}
+                {% block bodyInner %}
+                    <p>La convertion transformera la question <strong>{{ question.title }}</strong> de <strong>{{ question.user.displayname }}</strong> en offre.</p>
+                    <p>Confirmez l'action pour continuer.</p>
+                {% endblock %}
+                {% block footerInner %}
+                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                    <a href="{{ path('core_qa_question_admin_converttooffer', { 'id':question.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
     {% endembed %}
 {% endblock %}
 

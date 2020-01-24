@@ -2,12 +2,21 @@
 
 namespace Ladb\CoreBundle\Manager\Qa;
 
+use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Event\PublicationEvent;
+use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
-use Ladb\CoreBundle\Manager\WitnessManager;
+use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Utils\ActivityUtils;
+use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\SearchUtils;
+use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
+use Ladb\CoreBundle\Utils\LikableUtils;
+use Ladb\CoreBundle\Utils\ReportableUtils;
+use Ladb\CoreBundle\Utils\ViewableUtils;
 use Ladb\CoreBundle\Utils\VotableUtils;
+use Ladb\CoreBundle\Utils\WatchableUtils;
 
 class QuestionManager extends AbstractPublicationManager {
 
@@ -124,6 +133,86 @@ class QuestionManager extends AbstractPublicationManager {
 		}
 
 		parent::deletePublication($question, $withWitness, $flush);
+	}
+
+	public function convertToOffer(Question $question, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Create a new offer
+
+		$offer = new \Ladb\CoreBundle\Entity\Offer\Offer();
+		$offer->setCreatedAt($question->getCreatedAt());
+		$offer->setUpdatedAt($question->getUpdatedAt());
+		$offer->setChangedAt($question->getChangedAt());
+		$offer->setVisibility($question->getVisibility());
+		$offer->setIsDraft($question->getIsDraft());
+		$offer->setTitle($question->getTitle());
+		$offer->setUser($question->getUser());
+		$offer->setKind(Offer::KIND_REQUEST);
+		$offer->setPrice('');
+
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+		$blockBodiedUtils->copyBlocksTo($question, $offer);
+
+		foreach ($question->getTags() as $tag) {
+			$offer->addTag($tag);
+		}
+
+		// Setup offer's htmlBody
+		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+		$fieldPreprocessorUtils->preprocessFields($offer);
+
+		// Persist offer to generate ID
+		$om->persist($offer);
+		$om->flush();
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED_FROM_CONVERT, new PublicationEvent($offer));
+
+		// User counter
+		if ($offer->getIsDraft()) {
+			$offer->getUser()->getMeta()->incrementPrivateOfferCount(1);
+		} else {
+			$offer->getUser()->getMeta()->incrementPublicOfferCount(1);
+		}
+
+		// Transfer views
+		$viewableUtils = $this->get(ViewableUtils::NAME);
+		$viewableUtils->transferViews($question, $offer, false);
+
+		// Transfer likes
+		$likableUtils = $this->get(LikableUtils::NAME);
+		$likableUtils->transferLikes($question, $offer, false);
+
+		// Transfer comments
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$commentableUtils->transferComments($question, $offer, false);
+
+		// Transfer watches
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$watchableUtils->transferWatches($question, $offer, false);
+
+		// transfer reports
+		$reportableUtils = $this->get(ReportableUtils::NAME);
+		$reportableUtils->transferReports($question, $offer, false);
+
+		// Transfer publish activities
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->transferPublishActivities($question->getType(), $question->getId(), $offer->getType(), $offer->getId(), false);
+
+		// Create the witness
+		$witnessManager = $this->get(WitnessManager::NAME);
+		$witnessManager->createConvertedByPublication($question, $offer, false);
+
+		// Delete the creation
+		$this->delete($question, false, false);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+		return $offer;
 	}
 
 	public function computeAnswerCounters(Question $question) {

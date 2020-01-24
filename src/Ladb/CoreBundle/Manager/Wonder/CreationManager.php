@@ -169,6 +169,7 @@ class CreationManager extends AbstractWonderManager {
 		$workshop->setCreatedAt($creation->getCreatedAt());
 		$workshop->setUpdatedAt($creation->getUpdatedAt());
 		$workshop->setChangedAt($creation->getChangedAt());
+		$workshop->setVisibility($creation->getVisibility());
 		$workshop->setIsDraft($creation->getIsDraft());
 		$workshop->setTitle($creation->getTitle());
 		$workshop->setUser($creation->getUser());
@@ -217,7 +218,7 @@ class CreationManager extends AbstractWonderManager {
 		if ($workshop->getIsDraft()) {
 			$workshop->getUser()->getMeta()->incrementPrivateWorkshopCount(1);
 		} else {
-			$workshop->getUser()->getMeta()->incrementPublishedWorkshopCount(1);
+			$workshop->getUser()->getMeta()->incrementPublicWorkshopCount(1);
 		}
 
 		// Transfer views

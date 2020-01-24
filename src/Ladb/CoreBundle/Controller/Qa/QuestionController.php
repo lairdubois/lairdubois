@@ -824,4 +824,27 @@ class QuestionController extends AbstractController {
 		);
 	}
 
+	/**
+	 * @Route("/{id}/admin/converttooffer", requirements={"id" = "\d+"}, name="core_qa_question_admin_converttooffer")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_qa_question_admin_converttooffer)")
+	 */
+	public function adminConvertToOfferAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		// Convert
+		$questionManager = $this->get(QuestionManager::NAME);
+		$offer = $questionManager->convertToOffer($question);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.question.admin.alert.converttooffer_success', array( '%title%' => $question->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_offer_show', array( 'id' => $offer->getSluggedId() )));
+	}
+
 }
