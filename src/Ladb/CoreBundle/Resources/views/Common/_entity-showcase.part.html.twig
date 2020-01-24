@@ -1,19 +1,19 @@
 {# set pictures #}
 {# set alt #}
 
-{% set isPortrait = pictures[0].heightRatio100 >= 120 %}
+{% set isPortrait = picture[0].heightRatio100 >= 120 : false %}
 <div class="ladb-showcase{% if isPortrait %} ladb-showcase-portrait{% endif %} row">
     <div class="ladb-showcase-picture-0 col-xs 12 col-sm-{% if isPortrait %}9{% else %}12{% endif %}">
         {% set width = '600' %}
         {% set height = '600' %}
         {% set filterMode = 'i' %}
-        {% if isPortrait and pictures[0].heightRatio100 < 136 %}
+        {% if isPortrait and picture[0].heightRatio100 < 136 %}     {# Force 4/3 ratio #}
             {% set width = '514' %}
             {% set height = '695' %}
             {% set filterMode = 'o' %}
         {% endif %}
         {% block picture0 %}
-            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':pictures[0] } %}
+            {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':picture0 } %}
         {% endblock %}
     </div>
     {% if pictures.count > 1 or isPortrait %}

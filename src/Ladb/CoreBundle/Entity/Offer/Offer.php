@@ -123,7 +123,8 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_offer_picture")
 	 * @ORM\OrderBy({"sortIndex" = "ASC"})
-	 * @Assert\Count(min=1, max=5)
+	 * @Assert\Count(min=1, max=5, groups={"offer"})
+	 * @Assert\Count(min=0, max=5, groups={"request"})
 	 */
 	protected $pictures;
 

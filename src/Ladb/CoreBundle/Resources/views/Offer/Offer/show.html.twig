@@ -64,7 +64,9 @@
         {% include 'LadbCoreBundle:Offer/Offer:_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-offer">
-        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'pictures':offer.pictures, 'alt':offer.title } %}
+        {% if offer.pictures|length > 0 %}
+            {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'pictures':offer.pictures, 'alt':offer.title } %}
+        {% endif %}
         {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
         {% if offer.location is defined and offer.location is not null %}
             <div class="ladb-link">
@@ -76,7 +78,9 @@
                 </span>
             </div>
         {% endif %}
-        <hr>
+        {% if offer.pictures|length or offer.price or offer.location %}
+            <hr>
+        {% endif %}
         <div class="ladb-body">
             {% for block in offer.bodyBlocks %}
                 {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}

@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
@@ -106,6 +107,19 @@ class OfferType extends AbstractType {
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
 			'data_class' => 'Ladb\CoreBundle\Entity\Offer\Offer',
+			'validation_groups' => function (FormInterface $form) {
+				$offer = $form->getData();
+				switch ($offer->getKind()) {
+
+					case Offer::KIND_OFFER:
+						return array('Default', 'offer');
+
+					case Offer::KIND_REQUEST:
+						return array('Default', 'request');
+
+				}
+				return array('Default');
+			},
 		));
 	}
 

@@ -80,7 +80,7 @@ class OfferController extends AbstractController {
 			$fieldPreprocessorUtils->preprocessFields($offer);
 
 			$offer->setUser($this->getUser());
-			$offer->setMainPicture($offer->getPictures()->first());
+			$offer->setMainPicture($mainPicture = $offer->getPictures()->first() ? $mainPicture = $offer->getPictures()->first() : null);
 			$this->getUser()->getMeta()->incrementPrivateOfferCount();
 
 			$om->persist($offer);
@@ -266,7 +266,7 @@ class OfferController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($offer);
 
-			$offer->setMainPicture($offer->getPictures()->first());
+			$offer->setMainPicture($mainPicture = $offer->getPictures()->first() ? $mainPicture = $offer->getPictures()->first() : null);
 			if ($offer->getUser()->getId() == $this->getUser()->getId()) {
 				$offer->setUpdatedAt(new \DateTime());
 			}
