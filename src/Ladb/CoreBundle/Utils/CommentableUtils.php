@@ -177,4 +177,27 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
+	public function transferChildrenComments(Comment $comment, CommentableInterface $commentableSrc, CommentableInterface $commentableDest, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$children = $comment->getChildren()->toArray();
+		$childrenCount = count($children);
+		$comment->resetChildren();
+
+		// Transfer comments
+		foreach ($children as $comment) {
+			$comment->setEntityType($commentableDest->getType());
+			$comment->setEntityId($commentableDest->getId());
+			$comment->setParent(null);
+		}
+
+		// Update counters
+		$commentableDest->incrementCommentCount($childrenCount);
+		$commentableSrc->incrementCommentCount(-$childrenCount);
+
+		if ($flush) {
+			$om->flush();
+		}
+	}
+
 }

@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Entity\Qa\Question;
+use Ladb\CoreBundle\Manager\Core\CommentManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -339,11 +341,11 @@ class CommentController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/moveup", requirements={"id" = "\d+"}, name="core_comment_moveup")
+	 * @Route("/{id}/admin/moveup", requirements={"id" = "\d+"}, name="core_comment_admin_moveup")
 	 * @Template("LadbCoreBundle:Core/Comment:moveup-xhr.html.twig")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_moveup)")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_admin_moveup)")
 	 */
-	public function moveupAction($id) {
+	public function adminMoveupAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
 
@@ -364,5 +366,34 @@ class CommentController extends AbstractController {
 
 		return array();
 	}
+
+	/**
+	 * @Route("/{id}/{questionId}/admin/converttoanswer", requirements={"id" = "\d+", "questionId" = "\d+"}, name="core_comment_admin_converttoanswer")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_admin_converttoanswer)")
+	 */
+	public function adminConvertToAnswerAction($id, $questionId) {
+		$om = $this->getDoctrine()->getManager();
+		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+
+		$comment = $commentRepository->findOneById($id);
+		if (is_null($comment)) {
+			throw $this->createNotFoundException('Unable to find Comment entity (id='.$id.').');
+		}
+		$question = $questionRepository->findOneById($questionId);
+		if (is_null($question)) {
+			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
+		}
+
+		// Convert
+		$commentManager = $this->get(CommentManager::NAME);
+		$answer = $commentManager->convertToAnswer($comment, $question);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('comment.admin.alert.converttoanswer_success'));
+
+		return $this->redirect($this->generateUrl('core_qa_answer_show', array( 'id' => $answer->getId() )));
+	}
+
 
 }

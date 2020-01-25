@@ -164,6 +164,9 @@ services:
   ladb_core.user_manager:
     class: Ladb\CoreBundle\Manager\Core\UserManager
     arguments: ['@service_container']
+  ladb_core.comment_manager:
+    class: Ladb\CoreBundle\Manager\Core\CommentManager
+    arguments: ['@service_container']
   ladb_core.tip_manager:
     class: Ladb\CoreBundle\Manager\Core\TipManager
     arguments: ['@service_container']

@@ -203,7 +203,21 @@
 
             return false;
         });
-        $('.ladb-comment-moveup', $row).on('click', function() {
+        $('.ladb-admin-tool', $row).on('click', function() {
+
+            var $btn = $(this);
+            $btn.blur();
+            $btn.button('loading');
+            $('.tooltip').tooltip('hide');
+            $('.dropdown.open .dropdown-toggle').dropdown('toggle');
+
+            if (!confirm('Confirmez votre action.')) {
+                return false;
+            }
+
+            return true;
+        });
+        $('.ladb-admin-tool-moveup', $row).on('click', function() {
 
             var $btn = $(this);
             $btn.blur();

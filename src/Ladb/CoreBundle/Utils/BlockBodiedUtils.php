@@ -7,6 +7,9 @@ use Ladb\CoreBundle\Entity\Core\Block\Text;
 use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Entity\Core\Block\Video;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\MultiPicturedInterface;
+use Ladb\CoreBundle\Model\TimestampableInterface;
 
 class BlockBodiedUtils {
 
@@ -18,6 +21,40 @@ class BlockBodiedUtils {
 	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils) {
 		$this->om = $om;
 		$this->videoHostingUtils = $videoHostingUtils;
+	}
+
+	public function copyBodyTo(BodiedInterface $entitySrc, BlockBodiedInterface $entityDest) {
+
+		// Copy body to text block
+
+		$textBlock = new Text();
+		$textBlock->setBody($entitySrc->getBody());
+		if ($entitySrc instanceof TimestampableInterface) {
+			$textBlock->setCreatedAt($entitySrc->getCreatedAt());
+			$textBlock->setUpdatedAt($entitySrc->getUpdatedAt());
+		}
+		$entityDest->addBodyBlock($textBlock);
+
+		$this->preprocessBlocks($entityDest);
+
+	}
+
+	public function copyPicturesTo(MultiPicturedInterface $entitySrc, BlockBodiedInterface $entityDest) {
+
+		// Copy pictures to gallery block
+
+		$galleryBlock = new Gallery();
+		foreach ($entitySrc->getPictures() as $picture) {
+			$galleryBlock->addPicture($picture);
+		}
+		if ($entitySrc instanceof TimestampableInterface) {
+			$galleryBlock->setCreatedAt($entitySrc->getCreatedAt());
+			$galleryBlock->setUpdatedAt($entitySrc->getUpdatedAt());
+		}
+		$entityDest->addBodyBlock($galleryBlock);
+
+		$this->preprocessBlocks($entityDest);
+
 	}
 
 	public function copyBlocksTo(BlockBodiedInterface $entitySrc, BlockBodiedInterface $entityDest) {

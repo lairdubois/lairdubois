@@ -4,11 +4,18 @@
 <div id="ladb_comment_{{ comment.id }}"{% if not noMicrodata %} itemprop="comment" itemscope itemtype="http://schema.org/Comment"{% endif %} class="ladb-comment-row">
     {% block minitools %}
         <div class="ladb-minitools">
-            {% if is_granted("ROLE_ADMIN") and comment.parent %}
+            {% if is_granted("ROLE_ADMIN") and (adminTools is defined or comment.parent) %}
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ path('core_comment_moveup', { 'id':comment.id }) }}" class="ladb-comment-moveup"><i class="ladb-icon-arrow-up"></i> {{ 'default.move_up'|trans() }}</a></li>
+                        {% if comment.parent %}
+                            <li><a href="{{ path('core_comment_admin_moveup', { 'id':comment.id }) }}" class="ladb-admin-tool-moveup"><i class="ladb-icon-arrow-up"></i> {{ 'default.move_up'|trans() }}</a></li>
+                        {% endif %}
+                        {% if adminTools is defined %}
+                            {% for adminTool in adminTools %}
+                                <li><a href="{{ path(adminTool.path, adminTool.pathParams|default([])|merge({ 'id':comment.id })) }}" class="ladb-admin-tool"><i class="ladb-icon-{{ adminTool.icon }}"></i> {{ adminTool.label|trans() }}</a></li>
+                            {% endfor %}
+                        {% endif %}
                     </ul>
                 </div>
             {% endif %}

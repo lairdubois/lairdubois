@@ -1181,6 +1181,9 @@ comment:
   choice:
     entities: '[0,1]commentaire|]1,Inf]commentaires'
     children: '[0,1]réponse|]1,Inf]réponses'
+  admin:
+    alert:
+      converttoanwser_success: Le commentaire a été converti en réponse avec succès.
 
 review:
   default:
