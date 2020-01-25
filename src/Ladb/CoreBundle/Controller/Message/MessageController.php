@@ -91,7 +91,7 @@ class MessageController extends AbstractController {
 			$thread->setLastMessageDate(new \DateTime());
 
 			$message->setSender($sender);
-			$fieldPreprocessorUtils->preprocessBodyField($message);
+			$fieldPreprocessorUtils->preprocessFields($message);
 			$thread->addMessage($message);
 
 			foreach ($participants as $participant) {
@@ -199,9 +199,9 @@ class MessageController extends AbstractController {
 		if ($form->isValid()) {
 
 			$om = $this->getDoctrine()->getManager();
-			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 
-			$fieldPreprocessorUtils->preprocessBodyField($message);
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+			$fieldPreprocessorUtils->preprocessFields($message);
 
 			$om->flush();
 

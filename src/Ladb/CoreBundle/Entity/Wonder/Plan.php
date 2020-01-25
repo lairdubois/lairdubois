@@ -7,19 +7,19 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\Core\Resource;
-use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\InspirableTrait;
-use Ladb\CoreBundle\Model\BodiedInterface;
 
 /**
  * @ORM\Table("tbl_wonder_plan")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Wonder\PlanRepository")
  * @LadbAssert\PlanResourcesMaxSize()
  */
-class Plan extends AbstractWonder implements BodiedInterface, InspirableInterface {
+class Plan extends AbstractWonder implements HtmlBodiedInterface, InspirableInterface {
 
-	use BodiedTrait;
+	use HtmlBodiedTrait;
 	use InspirableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Plan';

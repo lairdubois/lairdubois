@@ -49,7 +49,7 @@ class MentionUtils extends AbstractContainerAwareUtils {
 		if ($entity instanceof HiddableInterface && !$entity->getIsPublic()) {
 			return;		// Do nothing for non public entities
 		}
-		if ($entity instanceof BlockBodiedInterface || $entity instanceof BodiedInterface) {
+		if ($entity instanceof BodiedInterface) {
 
 			// Retrieve entity body
 			$body = $entity->getBody();

@@ -44,11 +44,7 @@ EOT
 
 		$entityCount = 0;
 		foreach ($entities as $entity) {
-			if ($entity instanceof BlockBodiedInterface) {
-				$filedProcessoUtils->preprocessBodyBlocksField($entity);
-			} else if ($entity instanceof BodiedInterface) {
-				$filedProcessoUtils->preprocessBodyField($entity);
-			}
+			$filedProcessoUtils->preprocessFields($entity);
 			$entityCount++;
 		}
 

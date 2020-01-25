@@ -3,18 +3,18 @@
 namespace Ladb\CoreBundle\Entity\Core\Block;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ladb\CoreBundle\Model\BodiedInterface;
-use Ladb\CoreBundle\Model\BodiedTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
 
 /**
  * @ORM\Table("tbl_core_block_text")
  * @ORM\Entity
  */
-class Text extends AbstractBlock implements BodiedInterface {
+class Text extends AbstractBlock implements HtmlBodiedInterface {
 
-	use BodiedTrait;
+	use HtmlBodiedTrait;
 
 	/**
 	 * @ORM\Column(type="text", nullable=false)

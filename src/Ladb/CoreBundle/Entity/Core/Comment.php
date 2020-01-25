@@ -11,10 +11,10 @@ use Ladb\CoreBundle\Model\BasicTimestampableInterface;
 use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
-use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
 use Ladb\CoreBundle\Model\MultiPicturedTrait;
 use Ladb\CoreBundle\Model\TypableInterface;
-use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 
 /**
@@ -23,10 +23,10 @@ use Ladb\CoreBundle\Model\MultiPicturedInterface;
  * })
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\CommentRepository")
  */
-class Comment implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, BodiedInterface, MultiPicturedInterface, MentionSourceInterface {
+class Comment implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, HtmlBodiedInterface, MultiPicturedInterface, MentionSourceInterface {
 
 	use BasicTimestampableTrait;
-	use AuthoredTrait, BodiedTrait, MultiPicturedTrait;
+	use AuthoredTrait, HtmlBodiedTrait, MultiPicturedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Comment';
 	const TYPE = 1;

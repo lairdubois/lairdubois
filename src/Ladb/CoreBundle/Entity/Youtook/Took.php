@@ -7,8 +7,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
-use Ladb\CoreBundle\Model\BodiedInterface;
-use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
 use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Model\PicturedTrait;
 use Ladb\CoreBundle\Model\ScrapableInterface;
@@ -24,9 +24,9 @@ use Ladb\CoreBundle\Utils\VideoHostingUtils;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Youtook\TookRepository")
  * @LadbAssert\ValidTook()
  */
-class Took extends AbstractAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, ScrapableInterface {
+class Took extends AbstractAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, HtmlBodiedInterface, ScrapableInterface {
 
-	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, HtmlBodiedTrait;
 	use ScrapableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Youtook\Took';

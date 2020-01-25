@@ -2,13 +2,7 @@
 
 namespace Ladb\CoreBundle\Model;
 
-interface BlockBodiedInterface {
-
-	// Body /////
-
-	public function setBody($body);
-
-	public function getBody();
+interface BlockBodiedInterface extends BodiedInterface {
 
 	// BodyExtract /////
 

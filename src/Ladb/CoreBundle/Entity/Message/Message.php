@@ -4,22 +4,22 @@ namespace Ladb\CoreBundle\Entity\Message;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Model\BodiedInterface;
-use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 use Ladb\CoreBundle\Model\MultiPicturedTrait;
 use Ladb\CoreBundle\Model\TypableInterface;
+use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 
 /**
  * @ORM\Table("tbl_message")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Message\MessageRepository")
  */
-class Message implements TypableInterface, MultiPicturedInterface, BodiedInterface {
+class Message implements TypableInterface, MultiPicturedInterface, HtmlBodiedInterface {
 
 	use BasicTimestampableTrait;
-	use MultiPicturedTrait, BodiedTrait;
+	use MultiPicturedTrait, HtmlBodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Message\Message';
 	const TYPE = 3;

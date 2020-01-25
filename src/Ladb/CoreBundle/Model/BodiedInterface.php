@@ -10,10 +10,4 @@ interface BodiedInterface {
 
 	public function getBody();
 
-	// HtmlBody /////
-
-	public function setHtmlBody($htmlBody);
-
-	public function getHtmlBody();
-
 }

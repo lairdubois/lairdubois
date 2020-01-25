@@ -5,16 +5,18 @@ namespace Ladb\CoreBundle\Entity\Core;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Model\BodiedInterface;
-use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\IdentifiableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
 
 /**
  * @ORM\Table("tbl_core_biography")
  * @ORM\Entity
  */
-class Biography implements BodiedInterface {
+class Biography implements IdentifiableInterface, HtmlBodiedInterface {
 
-	use BodiedTrait;
+	use HtmlBodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Biography';
 

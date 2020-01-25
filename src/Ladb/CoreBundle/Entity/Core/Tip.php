@@ -4,48 +4,25 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Entity\AbstractPublication;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
-use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
-use Ladb\CoreBundle\Model\CollectionnableInterface;
-use Ladb\CoreBundle\Model\CollectionnableTrait;
-use Ladb\CoreBundle\Model\SluggedInterface;
-use Ladb\CoreBundle\Model\SluggedTrait;
-use Ladb\CoreBundle\Model\LicensedTrait;
-use Ladb\CoreBundle\Model\BodiedInterface;
-use Ladb\CoreBundle\Model\BodiedTrait;
-use Ladb\CoreBundle\Model\PicturedInterface;
-use Ladb\CoreBundle\Model\PicturedTrait;
-use Ladb\CoreBundle\Model\CommentableTrait;
+use Ladb\CoreBundle\Entity\AbstractPublication;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
 use Ladb\CoreBundle\Model\IndexableTrait;
-use Ladb\CoreBundle\Model\LikableTrait;
-use Ladb\CoreBundle\Model\ScrapableTrait;
-use Ladb\CoreBundle\Model\SitemapableInterface;
-use Ladb\CoreBundle\Model\SitemapableTrait;
-use Ladb\CoreBundle\Model\TaggableTrait;
-use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
-use Ladb\CoreBundle\Model\WatchableTrait;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\ViewableInterface;
-use Ladb\CoreBundle\Model\LikableInterface;
-use Ladb\CoreBundle\Model\WatchableInterface;
-use Ladb\CoreBundle\Model\CommentableInterface;
-use Ladb\CoreBundle\Model\ReportableInterface;
-use Ladb\CoreBundle\Model\TaggableInterface;
-use Ladb\CoreBundle\Model\ExplorableInterface;
-use Ladb\CoreBundle\Model\ScrapableInterface;
 
 /**
  * @ORM\Table("tbl_core_tip")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\TipRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Tip extends AbstractPublication implements TitledInterface, BodiedInterface, IndexableInterface, ViewableInterface {
+class Tip extends AbstractPublication implements TitledInterface, HtmlBodiedInterface, IndexableInterface, ViewableInterface {
 
-	use BodiedTrait;
+	use HtmlBodiedTrait;
 	use IndexableTrait, ViewableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Tip';

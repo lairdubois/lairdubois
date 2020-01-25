@@ -23,7 +23,9 @@ class BlockBodiedUtils {
 		$this->videoHostingUtils = $videoHostingUtils;
 	}
 
-	public function copyBodyTo(BodiedInterface $entitySrc, BlockBodiedInterface $entityDest) {
+	/////
+
+	public function copyBodyTo(BodiedInterface $entitySrc, BlockBodiedInterface $entityDest, $sortIndex = 0) {
 
 		// Copy body to text block
 
@@ -33,13 +35,17 @@ class BlockBodiedUtils {
 			$textBlock->setCreatedAt($entitySrc->getCreatedAt());
 			$textBlock->setUpdatedAt($entitySrc->getUpdatedAt());
 		}
+		$textBlock->setSortIndex($sortIndex);
 		$entityDest->addBodyBlock($textBlock);
 
 		$this->preprocessBlocks($entityDest);
 
 	}
 
-	public function copyPicturesTo(MultiPicturedInterface $entitySrc, BlockBodiedInterface $entityDest) {
+	public function copyPicturesTo(MultiPicturedInterface $entitySrc, BlockBodiedInterface $entityDest, $sortIndex = 1) {
+		if ($entitySrc->getPictures()->count() == 0) {
+			return;
+		}
 
 		// Copy pictures to gallery block
 
@@ -51,6 +57,7 @@ class BlockBodiedUtils {
 			$galleryBlock->setCreatedAt($entitySrc->getCreatedAt());
 			$galleryBlock->setUpdatedAt($entitySrc->getUpdatedAt());
 		}
+		$galleryBlock->setSortIndex($sortIndex);
 		$entityDest->addBodyBlock($galleryBlock);
 
 		$this->preprocessBlocks($entityDest);
@@ -93,6 +100,8 @@ class BlockBodiedUtils {
 		$this->preprocessBlocks($entityDest);
 
 	}
+
+	/////
 
 	public function preprocessBlocks(BlockBodiedInterface $entity, $originalBlocks = null) {
 

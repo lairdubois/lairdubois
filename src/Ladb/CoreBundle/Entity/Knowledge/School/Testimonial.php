@@ -8,17 +8,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\TypableInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
-use Ladb\CoreBundle\Model\BodiedTrait;
-use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
 
 /**
  * @ORM\Table("tbl_knowledge2_school_testimonial")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Knowledge\School\TestimonialRepository")
  * @LadbAssert\SchoolTestimonial()
  */
-class Testimonial implements TypableInterface, BodiedInterface {
+class Testimonial implements TypableInterface, HtmlBodiedInterface {
 
-	use AuthoredTrait, BodiedTrait;
+	use AuthoredTrait, HtmlBodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\School\Testimonial';
 	const TYPE = 116;

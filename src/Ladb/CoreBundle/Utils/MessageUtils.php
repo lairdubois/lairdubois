@@ -39,7 +39,7 @@ class MessageUtils {
 				$message->addPicture($picture);
 			}
 		}
-		$this->fieldPreprocessorUtils->preprocessBodyField($message);
+		$this->fieldPreprocessorUtils->preprocessFields($message);
 		$thread->addMessage($message);
 
 		foreach ($participants as $participant) {

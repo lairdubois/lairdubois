@@ -4,17 +4,17 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Model\BasicTimestampableInterface;
-use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\TypableInterface;
 use Ladb\CoreBundle\Model\AuthoredTrait;
 use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Model\TitledTrait;
-use Ladb\CoreBundle\Model\BodiedTrait;
-use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Model\BasicTimestampableInterface;
+use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 
 /**
  * @ORM\Table("tbl_core_review",
@@ -26,10 +26,10 @@ use Ladb\CoreBundle\Model\BodiedInterface;
  * 		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\ReviewRepository")
  */
-class Review implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, TitledInterface, BodiedInterface {
+class Review implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, TitledInterface, HtmlBodiedInterface {
 
 	use BasicTimestampableTrait;
-	use AuthoredTrait, TitledTrait, BodiedTrait;
+	use AuthoredTrait, TitledTrait, HtmlBodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Review';
 	const TYPE = 4;

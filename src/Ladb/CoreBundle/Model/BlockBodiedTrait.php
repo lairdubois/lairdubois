@@ -4,16 +4,7 @@ namespace Ladb\CoreBundle\Model;
 
 trait BlockBodiedTrait {
 
-	// Body /////
-
-	public function setBody($body) {
-		$this->body = $body;
-		return $this;
-	}
-
-	public function getBody() {
-		return $this->body;
-	}
+	use BodiedTrait;
 
 	// BodyExtract /////
 

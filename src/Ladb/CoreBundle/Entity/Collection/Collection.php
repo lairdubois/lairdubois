@@ -20,8 +20,8 @@ use Ladb\CoreBundle\Model\ViewableInterface;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Ladb\CoreBundle\Model\BodiedInterface;
-use Ladb\CoreBundle\Model\BodiedTrait;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedTrait;
 use Ladb\CoreBundle\Model\CommentableTrait;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\IndexableTrait;
@@ -34,9 +34,9 @@ use Ladb\CoreBundle\Model\TaggableTrait;
  * @ORM\Table("tbl_collection")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Collection\CollectionRepository")
  */
-class Collection extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, SluggedInterface, PicturedInterface, BodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, CollectionnableInterface, WatchableInterface {
+class Collection extends AbstractAuthoredPublication implements IndexableInterface, TitledInterface, SluggedInterface, PicturedInterface, HtmlBodiedInterface, TaggableInterface, ViewableInterface, LikableInterface, CommentableInterface, CollectionnableInterface, WatchableInterface {
 
-	use TitledTrait, SluggedTrait, PicturedTrait, BodiedTrait;
+	use TitledTrait, SluggedTrait, PicturedTrait, HtmlBodiedTrait;
 	use IndexableTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, CollectionnableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Collection\Collection';

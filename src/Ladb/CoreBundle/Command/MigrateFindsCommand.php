@@ -58,7 +58,7 @@ EOT
 
 			$block = new Text();
 			$block->setBody($body);
-			$fieldPreprocessorUtils->preprocessBodyField($block);
+			$fieldPreprocessorUtils->preprocessFields($block);
 
 			$find->resetBodyBlocks();
 			$find->addBodyBlock($block);

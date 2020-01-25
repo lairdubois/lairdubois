@@ -3,9 +3,10 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Manager\Core\UserManager;
-use Ladb\CoreBundle\Model\TitledInterface;
-use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\BodiedInterface;
+use Ladb\CoreBundle\Model\HtmlBodiedInterface;
+use Ladb\CoreBundle\Model\TitledInterface;
 use Ladb\CoreBundle\Parser\Markdown\LadbMarkdown;
 
 class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
@@ -18,9 +19,11 @@ class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 		}
 		if ($entity instanceof BlockBodiedInterface) {
 			$this->preprocessBodyBlocksField($entity);
-		}
-		if ($entity instanceof BodiedInterface) {
 			$this->preprocessBodyField($entity);
+		}
+		if ($entity instanceof HtmlBodiedInterface) {
+			$this->preprocessBodyField($entity);
+			$this->preprocessHtmlBodyField($entity);
 		}
 	}
 
@@ -42,6 +45,10 @@ class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 		$body = (new \Emojione\Client(new \Emojione\Ruleset()))->toShort($body);
 		$bodied->setBody($body);
 
+	}
+
+	public function preprocessHtmlBodyField(HtmlBodiedInterface $bodied) {
+
 		// Render HTML Body
 		$parser = new LadbMarkdown($this->get(UserManager::NAME), $this->get('router'));
 		$htmlBody = $parser->parse($bodied->getBody());
@@ -51,8 +58,9 @@ class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 
 	public function preprocessBodyBlocksField(BlockBodiedInterface $blockBodied) {
 		foreach ($blockBodied->getBodyBlocks() as $block) {
-			if ($block instanceof \Ladb\CoreBundle\Model\BodiedInterface) {
+			if ($block instanceof \Ladb\CoreBundle\Model\HtmlBodiedInterface) {
 				$this->preprocessBodyField($block);
+				$this->preprocessHtmlBodyField($block);
 			}
 		}
 		$firstBlock = $blockBodied->getBodyBlocks()->first();

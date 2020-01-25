@@ -93,7 +93,7 @@ class AnswerManager extends AbstractManager {
 		}
 
 		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
-		$fieldPreprocessorUtils->preprocessBodyField($comment);
+		$fieldPreprocessorUtils->preprocessFields($comment);
 
 		// Comment counters
 
