@@ -2,7 +2,7 @@
 
 {% set tiny = tiny|default(false) %}
 
-<div class="ladb-tip ladb-masonry-item ladb-masonry-column{% if massonryWide is defined and massonryWide %}-wide{% endif %}">
+<div class="ladb-tip ladb-masonry-item ladb-masonry-column{% if masonryWide is defined and masonryWide %}-wide{% endif %}">
     <div class="ladb-box ladb-box-hover" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(tip) }}'})">
         <div class="ladb-content">
             <div class="pull-right ladb-minitools">

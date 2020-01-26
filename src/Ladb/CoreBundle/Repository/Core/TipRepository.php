@@ -2,8 +2,10 @@
 
 namespace Ladb\CoreBundle\Repository\Core;
 
+use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
+use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class TipRepository extends AbstractEntityRepository {
@@ -21,7 +23,7 @@ class TipRepository extends AbstractEntityRepository {
 		// Do not retrieve user viewed tips
 		if (!is_null($user)) {
 			$queryBuilder
-				->leftJoin('LadbCoreBundle:Core\View', 'v', 'WITH', 'v.entityId = t.id AND v.entityType = 5 AND v.kind = :kind AND v.user = :user')	/* 5 = Tip::TYPE */
+				->leftJoin('LadbCoreBundle:Core\View', 'v', 'WITH', 'v.entityId = t.id AND v.entityType = '.Tip::TYPE.' AND v.kind = :kind AND v.user = :user')
 				->where('v.id IS NULL')
 				->setParameter('user', $user)
 				->setParameter('kind', View::KIND_SHOWN)

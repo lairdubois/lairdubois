@@ -1,0 +1,12 @@
+<div class="ladb-tip ladb-masonry-item ladb-masonry-column{% if masonryWide is defined and masonryWide %}-wide{% endif %}">
+    <div class="ladb-box ladb-box-hover" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(offer) }}'})">
+        <div class="ladb-content">
+            <div class="ladb-heading">
+                <i class="ladb-icon-job ladb-icon-lg"></i> Emploi
+                <i class="ladb-icon-offer-kind-{{ offer.kind }} pull-right" data-tooltip="tooltip" title="{{ ('offer.offer.kind_'~offer.kind)|trans }}"></i>
+            </div>
+            <p>{{ offer.title|raw }}</p>
+            <div class="text-right"><a href="{{ ladb_entity_url_action(offer) }}">Voir l'annonce...</a></div>
+        </div>
+    </div>
+</div>

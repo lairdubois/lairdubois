@@ -6,9 +6,6 @@
 {% if entities is defined %}{% set questions = entities %}{% endif %}
 
 {% block items %}
-    {% if highlightedTip is defined and highlightedTip %}
-        {% include 'LadbCoreBundle:Core/Tip:_list-thumbnail.part.html.twig' with { 'tip':highlightedTip, 'tiny':true, 'massonryWide':true } %}
-    {% endif %}
     {% for question in questions %}
         {% include 'LadbCoreBundle:Qa/Question:_list-thumbnail.part.html.twig' %}
     {% endfor %}

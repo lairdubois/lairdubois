@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Repository\Offer;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Ladb\CoreBundle\Entity\Core\View;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Entity\Core\User;
@@ -135,6 +137,41 @@ class OfferRepository extends AbstractEntityRepository {
 
 		try {
 			return $queryBuilder->getQuery()->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	public function findOneRandomByCategoryAndUser($category, User $user = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'o' ))
+			->from($this->getEntityName(), 'o')
+			->addSelect('RAND() as HIDDEN rand')
+			->where('o.category = :category')
+			->andWhere('o.visibility = '.HiddableInterface::VISIBILITY_PUBLIC)
+			->setParameter('category', $category)
+			->orderBy('rand')
+			->setMaxResults(1)
+		;
+
+		// Do not retrieve user viewed tips
+		if (!is_null($user)) {
+			$queryBuilder
+				->leftJoin('LadbCoreBundle:Core\View', 'v', 'WITH', 'v.entityId = o.id AND v.entityType = :entityType AND v.kind = :kind AND v.user = :user')
+				->andWhere('v.id IS NULL')
+				->setParameter('entityType', Offer::TYPE)
+				->setParameter('user', $user)
+				->setParameter('kind', View::KIND_SHOWN)
+			;
+		}
+
+		try {
+			$result = $queryBuilder->getQuery()->getResult();
+			if (count($result) > 0) {
+				return $result[0];
+			}
+			return null;
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}

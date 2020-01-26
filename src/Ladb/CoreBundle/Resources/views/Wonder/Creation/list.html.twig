@@ -99,5 +99,11 @@
             </div>
         </div>
     {% endif %}
+    {% if highlightedTip is defined and highlightedTip %}
+        {% include 'LadbCoreBundle:Core/Tip:_list-thumbnail-highlighted.part.html.twig' with { 'tip':highlightedTip, 'tiny':true } %}
+    {% endif %}
+    {% if highlightedOffer is defined and highlightedOffer %}
+        {% include 'LadbCoreBundle:Offer/Offer:_list-thumbnail-highlighted.part.html.twig' with { 'offer':highlightedOffer } %}
+    {% endif %}
     {% include 'LadbCoreBundle:Wonder/Creation:_list-n.part.html.twig' %}
 {% endblock %}

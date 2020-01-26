@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Qa;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Tip;
+use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -379,6 +380,9 @@ class QuestionController extends AbstractController {
 			if ($maybeUtils->canDoIt(0, 10, 'tip')) {
 				$tipRepository = $om->getRepository(Tip::CLASS_NAME);
 				$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
+			} else if ($maybeUtils->canDoIt(0, 5, 'offer')) {
+				$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+				$highlightedOffer = $offerRepository->findOneRandomByCategoryAndUser(Offer::CATEGORY_JOB, $this->getUser());
 			}
 
 		}
@@ -599,7 +603,6 @@ class QuestionController extends AbstractController {
 			'questions'       => $searchParameters['entities'],
 			'layout'          => $layout,
 			'routeParameters' => $routeParameters,
-			'highlightedTip'  => isset($highlightedTip) ? $highlightedTip : null,
 		));
 
 		if ($request->isXmlHttpRequest()) {
@@ -613,6 +616,11 @@ class QuestionController extends AbstractController {
 		if ($layout == 'choice') {
 			return $this->render('LadbCoreBundle:Qa/Question:list-choice.html.twig', $parameters);
 		}
+
+		$parameters = array_merge($parameters, array(
+			'highlightedTip'   => isset($highlightedTip) ? $highlightedTip : null,
+			'highlightedOffer' => isset($highlightedOffer) ? $highlightedOffer : null,
+		));
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateQuestionCount() > 0) {
 
