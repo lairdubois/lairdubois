@@ -73,7 +73,7 @@ class ReviewController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
-		$this->createLock('core_review_create');
+		$this->createLock('core_review_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		// Retrieve related entity
 

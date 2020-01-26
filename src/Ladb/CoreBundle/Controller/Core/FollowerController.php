@@ -24,7 +24,7 @@ class FollowerController extends AbstractController {
 	 */
 	public function createAction(Request $request, $followingUserId) {
 
-		$this->createLock('core_follower_create');
+		$this->createLock('core_follower_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 		$followerRepository = $om->getRepository(Follower::CLASS_NAME);

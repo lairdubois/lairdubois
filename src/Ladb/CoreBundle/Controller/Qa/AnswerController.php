@@ -66,7 +66,7 @@ class AnswerController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
-		$this->createLock('core_qa_answer_create');
+		$this->createLock('core_qa_answer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 		$questionRepository = $om->getRepository(Question::CLASS_NAME);

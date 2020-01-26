@@ -68,7 +68,7 @@ class PlanController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$this->createLock('core_plan_create');
+		$this->createLock('core_plan_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 

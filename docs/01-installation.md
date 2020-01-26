@@ -101,6 +101,18 @@ Restart PHP FPM.
     $ sudo service php7.3-fpm restart
 ```
 
+### Install [Memcached](https://memcached.org/) - *The distributed memory object caching system*
+
+``` bash
+    $ sudo apt-get install memcached
+    $ sudo apt-get install php-memcached
+```
+
+Restart PHP FPM.
+
+``` bash
+    $ sudo service php7.3-fpm restart
+```
 
 ### Install [Git](https://git-scm.com/) - *The version control system*
 

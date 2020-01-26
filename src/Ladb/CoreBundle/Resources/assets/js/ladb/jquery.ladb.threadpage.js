@@ -86,6 +86,7 @@
                 $('[type=submit]', $new).button('reset');
             },
             error:function() {
+                $('[type=submit]', $new).button('reset');
             }
         });
 

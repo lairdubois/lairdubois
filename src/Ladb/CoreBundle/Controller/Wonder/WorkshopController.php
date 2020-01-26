@@ -64,7 +64,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$this->createLock('core_workshop_create');
+		$this->createLock('core_workshop_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 

@@ -48,7 +48,7 @@ class JoinController extends AbstractController {
 	 */
 	public function createAction(Request $request, $entityType, $entityId) {
 
-		$this->createLock('core_join_create');
+		$this->createLock('core_join_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		// Retrieve related entity
 

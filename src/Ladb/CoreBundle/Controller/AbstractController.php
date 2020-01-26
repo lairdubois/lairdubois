@@ -6,14 +6,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 abstract class AbstractController extends Controller {
 
-	protected function createLock($name, $blocking = false) {
+	const LOCK_TTL_CREATE_ACTION = 3;		// 3 seconds
+
+	protected function createLock($name, $blocking = false, $ttl = 300.0, $autoRelease = true) {
 
 		// Lock / Check resource
-		$store = new \Symfony\Component\Lock\Store\SemaphoreStore();
+		if ($blocking) {
+			$store = new \Symfony\Component\Lock\Store\SemaphoreStore();
+		} else {
+			$memcached = new \Memcached();
+			$memcached->addServer($this->getParameter('memcached_host'), $this->getParameter('memcached_port'));
+			$store = new \Symfony\Component\Lock\Store\MemcachedStore($memcached);
+		}
 		$factory = new \Symfony\Component\Lock\Factory($store);
-		$lock = $factory->createLock($name.'_'.($this->getUser() ? $this->getUser()->getId() : ''));
+		$resource = $name.'_'.($this->getUser() ? $this->getUser()->getId() : '');
+		$lock = $factory->createLock($resource, $ttl, $autoRelease);
 		if (!$lock->acquire($blocking)) {
-			throw $this->createNotFoundException('Resource locked ('.$name.').');
+			throw $this->createNotFoundException('Resource locked ('.$resource.').');
 		}
 
 		return $lock;

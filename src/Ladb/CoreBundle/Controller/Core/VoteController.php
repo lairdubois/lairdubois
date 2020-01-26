@@ -82,7 +82,7 @@ class VoteController extends AbstractController {
 	 */
 	public function createAction(Request $request, $entityType, $entityId, $sign) {
 
-		$this->createLock('core_vote_create');
+		$this->createLock('core_vote_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		// Exclude vote if user is not email confirmed for score < 0
 		if (!$this->getUser()->getEmailConfirmed()) {

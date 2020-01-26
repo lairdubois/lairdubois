@@ -58,7 +58,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$this->createLock('core_faq_question_create');
+		$this->createLock('core_faq_question_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 

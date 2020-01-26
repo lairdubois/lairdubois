@@ -60,7 +60,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function createAction(Request $request) {
 
-		$this->createLock('core_workflow_create');
+		$this->createLock('core_workflow_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 

@@ -143,7 +143,7 @@ class TaskController extends AbstractWorkflowBasedController {
 	 */
 	public function createAction(Request $request, $id) {
 
-		$this->createLock('core_workflow_task_create');
+		$this->createLock('core_workflow_task_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 

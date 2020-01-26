@@ -71,7 +71,7 @@ class MessageController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
 
-		$this->createLock('core_message_create');
+		$this->createLock('core_message_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$thread = $this->_retrieveThread($threadId);
 

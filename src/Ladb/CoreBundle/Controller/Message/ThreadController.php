@@ -68,7 +68,7 @@ class ThreadController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$this->createLock('core_message_thread_create');
+		$this->createLock('core_message_thread_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$newThreadMessage = new NewThreadMessage();
 		$form = $this->createForm(NewThreadMessageType::class, $newThreadMessage);

@@ -56,7 +56,7 @@ class HowtoController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$this->createLock('core_howto_create');
+		$this->createLock('core_howto_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 

@@ -28,7 +28,7 @@ class YoutookController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$this->createLock('core_youtook_create');
+		$this->createLock('core_youtook_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 

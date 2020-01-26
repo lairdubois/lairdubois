@@ -50,7 +50,7 @@ class TestimonialController extends AbstractController {
 	 */
 	public function createAction(Request $request, $id) {
 
-		$this->createLock('core_knowledge_school_testimonial_create');
+		$this->createLock('core_knowledge_school_testimonial_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 		$schoolRepository = $om->getRepository(School::CLASS_NAME);

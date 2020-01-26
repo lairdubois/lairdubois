@@ -69,7 +69,7 @@ class ArticleController extends AbstractController {
 	 */
 	public function createAction(Request $request, $id) {
 
-		$this->createLock('core_howto_article_create');
+		$this->createLock('core_howto_article_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);

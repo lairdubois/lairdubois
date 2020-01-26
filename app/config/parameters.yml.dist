@@ -15,6 +15,9 @@ parameters:
     elasticsearch_host:             localhost
     elasticsearch_port:             9200
 
+    memcached_host:                 localhost
+    memcached_port:                 11211
+
     websocket_host:                 127.0.0.1
     websocket_port:                 8080
     websocket_uri:                  wss://www.lairdubois.fr/ws
