@@ -480,14 +480,14 @@ class OfferController extends AbstractController {
 
 					case 'kind':
 
-						$filter = new \Elastica\Query\MatchPhrase('kind', $facet->value);
+						$filter = new \Elastica\Query\Term(array( 'kind' => $facet->value ));
 						$filters[] = $filter;
 
 						break;
 
 					case 'category':
 
-						$filter = new \Elastica\Query\MatchPhrase('category', $facet->value);
+						$filter = new \Elastica\Query\Term(array( 'category' => $facet->value ));
 						$filters[] = $filter;
 
 						break;
@@ -726,7 +726,7 @@ class OfferController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
 		$userOffers = $explorableUtils->getPreviousAndNextPublishedUserExplorables($offer, $offerRepository, $offer->getUser()->getMeta()->getPublicOfferCount());
-		$similarOffers = $explorableUtils->getSimilarExplorables($offer, 'fos_elastica.index.ladb.offer_offer', Offer::CLASS_NAME, $userOffers);
+		$similarOffers = $explorableUtils->getSimilarExplorables($offer, 'fos_elastica.index.ladb.offer_offer', Offer::CLASS_NAME, $userOffers, 2, array( new \Elastica\Query\Term(array( 'kind' => $offer->getKind() )), new \Elastica\Query\Term(array( 'category' => $offer->getCategory() )) ));
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);

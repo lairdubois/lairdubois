@@ -39,7 +39,7 @@ class ExplorableUtils {
 		return $userExplorables;
 	}
 
-	public function getSimilarExplorables(ExplorableInterface $explorable, $typeName, $entityClassName, $excludedExplorables = null, $limit = 2) {
+	public function getSimilarExplorables(ExplorableInterface $explorable, $typeName, $entityClassName, $excludedExplorables = null, $limit = 2, $customFilters = null) {
 		$tags = $explorable->getTags();
 		if (count($tags) > 0) {
 
@@ -70,6 +70,9 @@ class ExplorableUtils {
 
 			} else {
 				$filters[] = $similarFilter;
+			}
+			if (!is_null($customFilters) && is_array($customFilters)) {
+				$filters = array_merge($filters, $customFilters);
 			}
 			$sort = null;
 			$searchResult = $this->searchUtils->searchEntities($filters, $sort, $typeName, $entityClassName, 0, $limit, $excludedIds);
