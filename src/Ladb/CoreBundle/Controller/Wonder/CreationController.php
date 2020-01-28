@@ -693,7 +693,7 @@ class CreationController extends AbstractController {
 
 		$id = intval($id);
 
-		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
@@ -732,7 +732,7 @@ class CreationController extends AbstractController {
 
 		$id = intval($id);
 
-		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
@@ -772,7 +772,7 @@ class CreationController extends AbstractController {
 
 		$id = intval($id);
 
-		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
@@ -1212,7 +1212,7 @@ class CreationController extends AbstractController {
 
 		$id = intval($id);
 
-		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			if ($response = $witnessManager->checkResponse(Creation::TYPE, $id)) {
 				return $response;
@@ -1277,7 +1277,7 @@ class CreationController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
@@ -1323,7 +1323,7 @@ class CreationController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
@@ -1346,7 +1346,7 @@ class CreationController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneByIdJoinedOnOptimized($id);
+		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
