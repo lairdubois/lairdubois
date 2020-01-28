@@ -601,3 +601,22 @@ The platforme uses Chromium headless in order to auto generate screenshot of sha
 ``` bash
     $ sudo apt-get install chromium chromium-l10n
 ```
+
+## Step 19 - Some useful aliases
+
+To speedup command line typing you can add some aliases on your user bash profile.
+/!\ Those aliases works only if current folder is project folder `/var/www/www.lairdubois.fr`.
+
+``` bash
+    $ nano ~/.bash_aliases
+```
+
+``` bash
+alias ladb='sudo --user=www-data bin/console --env=prod'
+alias ladb-cc='sudo --user=www-data bin/console --env=prod cache:clear --no-warmup && sudo --user=www-data bin/console --env=prod cache:warmup'
+alias ladb-maintenance-start='sudo scripts/maintenanceStart.sh'
+alias ladb-maintenance-stop='sudo scripts/maintenanceStop.sh'
+alias ladb-git-pull-master='sudo --user=www-data git pull origin master'
+alias ladb-log='sudo --user=www-data lnav var/logs/prod.log'
+alias ladb-install='sudo --user=www-data composer install'
+```
