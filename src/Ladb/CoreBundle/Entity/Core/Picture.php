@@ -103,45 +103,6 @@ class Picture {
 
 	/////
 
-	public function getAbsolutePath() {
-		$path = $this->getPath();
-		return null === $path ? null : $this->getUploadRootDir().'/'.$path;
-	}
-
-	public function getPath() {
-		if (null === $this->transformedPath) {
-			return $this->getMasterPath();
-		}
-		return $this->transformedPath;
-	}
-
-	public function getMasterPath() {
-		return $this->masterPath;
-	}
-
-	public function setMasterPath($masterPath) {
-		$this->masterPath = $masterPath;
-		return $this;
-	}
-
-	protected function getUploadRootDir() {
-		// the absolute directory path where uploaded documents should be saved
-		return __DIR__.'/../../../../../'.$this->getUploadDir();
-	}
-
-	protected function getUploadDir() {
-		return 'uploads';
-	}
-
-	public function getWebPath() {
-		$path = $this->getPath();
-		return null === $path ? null : '/'.$path;
-	}
-
-	/////
-
-	// Id /////
-
 	/**
 	 * @ORM\PostRemove()
 	 */
@@ -160,64 +121,55 @@ class Picture {
 		}
 	}
 
-	// CreatedAt /////
+	/////
 
-	public function isMaster() {
-		return is_null($this->transformedPath) || $this->transformedPath == $this->masterPath;
+	protected function getUploadDir() {
+		return 'uploads';
 	}
 
-	public function getAbsoluteTransformedPath() {
-		return null === $this->transformedPath ? null : $this->getUploadRootDir().'/'.$this->transformedPath;
+	protected function getUploadRootDir() {
+		// the absolute directory path where uploaded documents should be saved
+		return __DIR__.'/../../../../../'.$this->getUploadDir();
 	}
 
-	// Age /////
-
-	public function getAbsoluteMasterPath() {
-		return null === $this->masterPath ? null : $this->getUploadRootDir().'/'.$this->masterPath;
-	}
-
-	// User /////
+	// Id /////
 
 	public function getId() {
 		return $this->id;
 	}
 
-	public function getAge() {
-		return $this->getCreatedAt()->diff(new \DateTime());
-	}
-
-	// Legend /////
-
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
+	// CreatedAt /////
 
 	public function setCreatedAt($createdAt) {
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
-	// SourceUrl /////
-
-	public function getSourceUrl() {
-		return $this->sourceUrl;
+	public function getCreatedAt() {
+		return $this->createdAt;
 	}
 
-	public function setSourceUrl($sourceUrl) {
-		$this->sourceUrl = $sourceUrl;
+	// Age /////
+
+	public function getAge() {
+		return $this->getCreatedAt()->diff(new \DateTime());
+	}
+
+	// User /////
+
+	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
+		$this->user = $user;
 		return $this;
 	}
-
-	// IsMaster /////
 
 	public function getUser() {
 		return $this->user;
 	}
 
-	// MasterPath /////
+	// Legend /////
 
-	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
-		$this->user = $user;
+	public function setLegend($legend) {
+		$this->legend = $legend;
 		return $this;
 	}
 
@@ -225,10 +177,40 @@ class Picture {
 		return $this->legend;
 	}
 
+	// SourceUrl /////
+
+	public function setSourceUrl($sourceUrl) {
+		$this->sourceUrl = $sourceUrl;
+		return $this;
+	}
+
+	public function getSourceUrl() {
+		return $this->sourceUrl;
+	}
+
+	// MasterPath /////
+
+	public function setMasterPath($masterPath) {
+		$this->masterPath = $masterPath;
+		return $this;
+	}
+
+	public function getMasterPath() {
+		return $this->masterPath;
+	}
+
+	public function getAbsoluteMasterPath() {
+		return null === $this->masterPath ? null : $this->getUploadRootDir().'/'.$this->masterPath;
+	}
+
+	public function isMaster() {
+		return is_null($this->transformedPath) || $this->transformedPath == $this->masterPath;
+	}
+
 	// TransformedPath /////
 
-	public function setLegend($name) {
-		$this->legend = $name;
+	public function setTransformedPath($transformedPath) {
+		$this->transformedPath = $transformedPath;
 		return $this;
 	}
 
@@ -236,88 +218,104 @@ class Picture {
 		return $this->transformedPath;
 	}
 
+	public function getAbsoluteTransformedPath() {
+		return null === $this->transformedPath ? null : $this->getUploadRootDir().'/'.$this->transformedPath;
+	}
+
 	// Path /////
 
-	public function setTransformedPath($transformedPath) {
-		$this->transformedPath = $transformedPath;
-		return $this;
+	public function getPath() {
+		if (null === $this->transformedPath) {
+			return $this->getMasterPath();
+		}
+		return $this->transformedPath;
+	}
+
+	public function getAbsolutePath() {
+		$path = $this->getPath();
+		return null === $path ? null : $this->getUploadRootDir().'/'.$path;
+	}
+
+	public function getWebPath() {
+		$path = $this->getPath();
+		return null === $path ? null : '/'.$path;
 	}
 
 	// Rotation /////
-
-	public function getRotation() {
-		return $this->rotation;
-	}
 
 	public function setRotation($rotation) {
 		$this->rotation = $rotation;
 		return $this;
 	}
 
-	// SortIndex /////
-
-	public function getSortIndex() {
-		return $this->sortIndex;
+	public function getRotation() {
+		return $this->rotation;
 	}
+
+	// SortIndex /////
 
 	public function setSortIndex($sortIndex) {
 		$this->sortIndex = $sortIndex;
 		return $this;
 	}
 
-	// Width /////
-
-	public function getWidth() {
-		return $this->width;
+	public function getSortIndex() {
+		return $this->sortIndex;
 	}
+
+	// Width /////
 
 	public function setWidth($width) {
 		$this->width = $width;
 		return $this;
 	}
 
-	// Height /////
-
-	public function getHeight() {
-		return $this->height;
+	public function getWidth() {
+		return $this->width;
 	}
+
+	// Height /////
 
 	public function setHeight($height) {
 		$this->height = $height;
 		return $this;
 	}
 
-	// HeightRatio100 /////
-
-	public function getHeightRatio100() {
-		return $this->heightRatio100;
+	public function getHeight() {
+		return $this->height;
 	}
+
+	// HeightRatio100 /////
 
 	public function setHeightRatio100($heightRatio100) {
 		$this->heightRatio100 = $heightRatio100;
 		return $this;
 	}
 
-	// CenterX100 /////
-
-	public function getCenterX100() {
-		return $this->centerX100;
+	public function getHeightRatio100() {
+		return $this->heightRatio100;
 	}
+
+	// CenterX100 /////
 
 	public function setCenterX100($centerX100) {
 		$this->centerX100 = $centerX100;
 		return $this;
 	}
 
-	// CenterY100 /////
-
-	public function getCenterY100() {
-		return $this->centerY100;
+	public function getCenterX100() {
+		return $this->centerX100;
 	}
+
+	// CenterY100 /////
 
 	public function setCenterY100($centerY100) {
 		$this->centerY100 = $centerY100;
 		return $this;
+	}
+
+	public function getCenterY100() {
+		return $this->centerY100;
 	}
 
 }

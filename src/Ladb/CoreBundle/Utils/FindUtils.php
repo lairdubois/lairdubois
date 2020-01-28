@@ -32,7 +32,7 @@ class FindUtils extends AbstractContainerAwareUtils {
 						$mainPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
 
 						if (isset($ogMetas['og:description'])) {
-							$mainPicture->setLegend($ogMetas['og:description']);
+							$mainPicture->setLegend(substr($ogMetas['og:description'], 0, 255));
 						}
 
 						if (copy($ogMetas['og:image'], $mainPicture->getAbsolutePath())) {
