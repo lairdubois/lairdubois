@@ -8,6 +8,7 @@
 namespace Ladb\CoreBundle\Parser\Markdown;
 
 use cebe\markdown\Parser;
+use Ladb\CoreBundle\Utils\UrlUtils;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -19,6 +20,7 @@ class LadbMarkdown extends Parser {
 
 	private $userManager;
 	private $router;
+	private $urlUtils;
 
 	// include block element parsing using traits
 	use \cebe\markdown\block\HeadlineTrait;
@@ -63,25 +65,13 @@ class LadbMarkdown extends Parser {
 
 	/////
 
-	public function __construct($userManager, $router) {
+	public function __construct($userManager, $router, $urlUtils) {
 		$this->userManager = $userManager;
 		$this->router = $router;
+		$this->urlUtils = $urlUtils;
 	}
 
 	/////
-
-	private function _truncateUrl($value, $removeProtocol = true, $lengthL = 14, $lengthR = 15, $separator = '...', $charset = 'UTF-8') {
-		if (preg_match('/^(?:https?:|)(?:\/\/)/i', $value)) {
-			if ($removeProtocol) {
-				$value = preg_replace('/^(?:https?:|)(?:\/\/)(?:www.|)/i', '', $value);
-			}
-			$valueLength = mb_strlen($value, $charset);
-			if ($valueLength > $lengthL + $lengthR) {
-				return rtrim(mb_substr($value, 0, $lengthL, $charset)).$separator.ltrim(mb_substr($value, $valueLength - $lengthR, $lengthR, $charset));
-			}
-		}
-		return $value;
-	}
 
 	private function _isLocalUrl($url) {
 		return preg_match('/^(?:https?:|)(?:\/\/)(?:[a-z]+.|)lairdubois.fr/i', $url);
@@ -92,7 +82,7 @@ class LadbMarkdown extends Parser {
 		$textIsUrl = preg_match('/^(?:https?:|)(?:\/\/)/i', $text);
 		$decorated = empty($text) || $textIsUrl;
 		if (empty($text) || $textIsUrl /* text url are replaced by url */) {
-			$text = $this->_truncateUrl(htmlspecialchars(urldecode($url), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+			$text = $this->urlUtils->truncateUrl(htmlspecialchars(urldecode($url), ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 		}
 		if (!empty($title)) {
 			$title = htmlspecialchars($title, ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8');

@@ -1,7 +1,7 @@
 {# set provider #}
 
 <div class="ladb-knowledge-compact-infos">
-    {% if provider.website %}<div><i class="ladb-icon-globe ladb-icon-fixed-center"></i> <a href="{{ provider.website }}" target="_blank">{{ provider.website|ladb_url_trim|truncate(30) }}</a></div>{% endif %}
+    {% if provider.website %}<div><i class="ladb-icon-globe ladb-icon-fixed-center"></i> <a href="{{ provider.website }}" target="_blank">{{ provider.website|ladb_url_truncate(true, 30, 0) }}</a></div>{% endif %}
     {% if provider.phone %}<div><i class="ladb-icon-phone ladb-icon-fixed-center"></i> <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></div>{% endif %}
     {% if provider.postalCode is not null and provider.locality is not null or provider.country is not null %}
         <div><i class="ladb-icon-location ladb-icon-fixed-center"></i>{% if provider.postalCode is not null %} {{ provider.postalCode }}{% endif %}{% if provider.locality is not null %} {{ provider.locality }}{% endif %}{% if provider.country is not null %} <small>({{ provider.country }})</small>{% endif %}</div>

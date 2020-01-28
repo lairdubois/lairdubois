@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Twig;
 
+use Ladb\CoreBundle\Utils\UrlUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ladb\CoreBundle\Utils\VideoHostingUtils;
 use Ladb\CoreBundle\Parser\Markdown\LadbMarkdown;
@@ -25,6 +26,7 @@ class LadbExtension extends AbstractExtension {
 			new TwigFilter('ladb_truncate_at', array( $this, 'truncateAtFilter' )),
 			new TwigFilter('ladb_markdown', array( $this, 'markdownFilter' )),
 			new TwigFilter('ladb_url_trim', array( $this, 'urlTrimFilter' )),
+			new TwigFilter('ladb_url_truncate', array( $this, 'urlTruncateFilter' )),
 			new TwigFilter('ladb_url_beautify', array( $this, 'urlBeautifyFilter' )),
 			new TwigFilter('ladb_duration', array( $this, 'durationFilter' )),
 			new TwigFilter('ladb_hours_minutes_duration', array( $this, 'hoursMinutesDurationFilter' )),
@@ -68,13 +70,17 @@ class LadbExtension extends AbstractExtension {
 	}
 
 	public function markdownFilter($str) {
-		$parser = new LadbMarkdown($this->container->get(UserManager::NAME), $this->container->get('router'));
+		$parser = new LadbMarkdown($this->container->get(UserManager::NAME), $this->container->get('router'), $this->container->get(UrlUtils::NAME));
 		return $parser->parse($str);
 	}
 
 	public function urlTrimFilter($str) {
 		$str = preg_replace('#^https?://#', '', rtrim($str,'/'));
 		return $str;
+	}
+
+	public function urlTruncateFilter($str, $removeProtocol = true, $lengthL = 14, $lengthR = 15, $separator = '...', $charset = 'UTF-8') {
+		return $this->container->get(UrlUtils::NAME)->truncateUrl($str, $removeProtocol, $lengthL, $lengthR, $separator, $charset);
 	}
 
 	public function urlBeautifyFilter($str) {

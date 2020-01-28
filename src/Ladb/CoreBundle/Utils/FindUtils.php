@@ -19,10 +19,47 @@ class FindUtils extends AbstractContainerAwareUtils {
 
 			case Find::KIND_WEBSITE:
 				$website = $find->getContent();
+				$mainPicture = null;
 
 				if (is_null($website->getThumbnail())) {
-					$mainPicture = $webScreenshotUtils->captureToPicture($website->getUrl(), 1280, 1024, 1280, 1024);
+
+					// Try to fetch OpenGraph image
+					$openGraphUtils = $this->get(OpenGraphUtils::NAME);
+					$ogMetas = $openGraphUtils->fetchMetas($website->getUrl());
+					if ($ogMetas && isset($ogMetas['og:image'])) {
+
+						$mainPicture = new Picture();
+						$mainPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
+
+						if (isset($ogMetas['og:description'])) {
+							$mainPicture->setLegend($ogMetas['og:description']);
+						}
+
+						if (copy($ogMetas['og:image'], $mainPicture->getAbsolutePath())) {
+
+							$finfo = finfo_open(FILEINFO_MIME_TYPE);
+							if ($finfo == IMAGETYPE_JPEG || $finfo == IMAGETYPE_PNG) {
+
+								list($width, $height) = getimagesize($mainPicture->getAbsolutePath());
+								$mainPicture->setWidth($width);
+								$mainPicture->setHeight($height);
+								$mainPicture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
+
+								$om->persist($mainPicture);
+
+							}
+
+						}
+
+					}
+
+					// No picture detected capture a screenshot
+					if (is_null($mainPicture)) {
+						$mainPicture = $webScreenshotUtils->captureToPicture($website->getUrl(), 1280, 1024, 1280, 1024);
+					}
+
 					$website->setThumbnail($mainPicture);
+
 				} else {
 					$mainPicture = $website->getThumbnail();
 				}
@@ -42,12 +79,18 @@ class FindUtils extends AbstractContainerAwareUtils {
 
 						if (copy($thumbnailUrl, $mainPicture->getAbsolutePath())) {
 
-							list($width, $height) = getimagesize($mainPicture->getAbsolutePath());
-							$mainPicture->setWidth($width);
-							$mainPicture->setHeight($height);
-							$mainPicture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
+							$finfo = finfo_open(FILEINFO_MIME_TYPE);
+							if ($finfo == IMAGETYPE_JPEG || $finfo == IMAGETYPE_PNG) {
 
-							$om->persist($mainPicture);
+								list($width, $height) = getimagesize($mainPicture->getAbsolutePath());
+								$mainPicture->setWidth($width);
+								$mainPicture->setHeight($height);
+								$mainPicture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
+
+								$om->persist($mainPicture);
+
+							}
+
 						}
 
 					} else {

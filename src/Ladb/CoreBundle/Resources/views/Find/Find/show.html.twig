@@ -119,7 +119,7 @@
         {% endif %}
         {% if find.content.url is defined and find.content.url is not null %}
             <div class="ladb-link">
-                <i class="ladb-icon-link ladb-icon-fixed-center"></i> <a href="{{ find.content.url }}" target="_blank" itemprop="url">{{ find.content.url|truncate(50) }}</a>
+                <i class="ladb-icon-link ladb-icon-fixed-center"></i> <a href="{{ find.content.url }}" target="_blank" itemprop="url">{{ find.content.url|ladb_url_truncate(true, 30) }}</a>
             </div>
         {% endif %}
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') and not find.isDraft and joinContext.isJoinable %}

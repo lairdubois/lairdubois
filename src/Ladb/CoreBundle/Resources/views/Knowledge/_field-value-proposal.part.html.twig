@@ -23,7 +23,7 @@
                                     <div class="ladb-legend">{{ value.legend }}</div>
                                 {% endif %}
                                 {% set isLink = value.sourceType == constant('SOURCE_TYPE_WEBSITE', value) %}
-                                <div class="ladb-source">{{ 'knowledge.proposal_value.source'|trans() }} : {% if isLink %}<a href="{{ value.source }}" target="_blank">{% endif %}{% if value.sourceType == constant('SOURCE_TYPE_PERSONAL', value) %}Connaissances personnelles{% elseif isLink %}{{ value.source|ladb_url_trim|truncate(30) }}{% else %}{{ value.source }}{% endif %}{% if isLink %}</a>{% endif %}</div>
+                                <div class="ladb-source">{{ 'knowledge.proposal_value.source'|trans() }} : {% if isLink %}<a href="{{ value.source }}" target="_blank">{% endif %}{% if value.sourceType == constant('SOURCE_TYPE_PERSONAL', value) %}Connaissances personnelles{% elseif isLink %}{{ value.source|ladb_url_truncate }}{% else %}{{ value.source }}{% endif %}{% if isLink %}</a>{% endif %}</div>
                             </div>
                         </div>
                         <div class="ladb-footer">

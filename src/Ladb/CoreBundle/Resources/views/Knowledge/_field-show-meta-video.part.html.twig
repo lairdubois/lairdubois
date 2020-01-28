@@ -1,5 +1,5 @@
 {% if emailRendered %}
-    <span><a href="{{ value.data }}">{{ value.data|ladb_url_trim|truncate(40) }}</a></span>
+    <span><a href="{{ value.data }}">{{ value.data|ladb_url_truncate }}</a></span>
 {% else %}
     {{ ladb_video_player_frame(value.kind, value.embedIdentifier, 560, 420, 'thumbnail')|raw }}
 {% endif %}

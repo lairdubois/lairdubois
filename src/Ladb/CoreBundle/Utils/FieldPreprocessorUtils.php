@@ -50,7 +50,7 @@ class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 	public function preprocessHtmlBodyField(HtmlBodiedInterface $bodied) {
 
 		// Render HTML Body
-		$parser = new LadbMarkdown($this->get(UserManager::NAME), $this->get('router'));
+		$parser = new LadbMarkdown($this->get(UserManager::NAME), $this->get('router'), $this->get(UrlUtils::NAME));
 		$htmlBody = $parser->parse($bodied->getBody());
 		$bodied->setHtmlBody($htmlBody);
 

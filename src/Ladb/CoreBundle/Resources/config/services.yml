@@ -159,6 +159,8 @@ services:
   ladb_core.mention_utils:
     class: Ladb\CoreBundle\Utils\MentionUtils
     arguments: ['@service_container']
+  ladb_core.url_utils:
+    class: Ladb\CoreBundle\Utils\UrlUtils
 
   # Managers
   ladb_core.user_manager:
