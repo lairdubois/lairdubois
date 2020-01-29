@@ -9,9 +9,21 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AuthenticationHandler implements LogoutSuccessHandlerInterface {
 
+	protected $router;
+
+	public function __construct(\Symfony\Bundle\FrameworkBundle\Routing\Router $router) {
+		$this->router = $router;
+	}
+
+	/////
+
 	public function onLogoutSuccess(Request $request) {
-		$response = new RedirectResponse($request->headers->get('referer'));
-		return $response;
+		if ($request->headers->get('referer')) {
+			$url = $request->headers->get('referer');
+		} else {
+			$url = $this->router->generate('core_welcome');
+		}
+		return new RedirectResponse($url);
 	}
 
 }
