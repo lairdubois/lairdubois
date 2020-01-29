@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Ladb\CoreBundle\Entity\Core\Picture;
 
@@ -14,10 +15,12 @@ class PictureUploadHandler extends \UploadHandler {
 
 	private $om;
 	private $tokenStorage;
+	private $pictureManager;
 
-	function __construct(ObjectManager $om, TokenStorage $tokenStorage) {
+	function __construct(ObjectManager $om, TokenStorage $tokenStorage, PictureManager $pictureManager) {
 		$this->om = $om;
 		$this->tokenStorage = $tokenStorage;
+		$this->pictureManager = $pictureManager;
 	}
 
 	public function handle($postProcessor = null,
@@ -53,45 +56,40 @@ class PictureUploadHandler extends \UploadHandler {
 		);
 		if (empty($file->error)) {
 
-			$user = $this->tokenStorage->getToken()->getUser();
 			$fileAbsolutePath = $this->options['upload_dir'].$file->name;
 			$fileExtension = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
-			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
-			$resourceAbsolutePath = __DIR__.'/../../../../uploads/'.$resourcePath;
+
+			// Create en empty picture
+			$picture = $this->pictureManager->createEmpty($fileExtension);
 
 			// Rename uploaded file to generated uniqid and move it from tmp to uploads folder
-			rename($fileAbsolutePath, $resourceAbsolutePath);
+			rename($fileAbsolutePath, $picture->getAbsolutePath());
 
 			// Post-processors
 			switch ($this->options['post_processor']) {
 
 				case Picture::POST_PROCESSOR_SQUARE:
 
-					$imagick = new \Imagick($resourceAbsolutePath.'[0]');
+					$imagick = new \Imagick($picture->getAbsolutePath().'[0]');
 					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);					// Convert to JPG
 					$imagick->setCompressionQuality(100);										// Set max quality
 					$imagick->setBackgroundColor('#ffffff');									// Set background color to white
 					$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
 					$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);				// Merge layers
 					$imagick->thumbnailImage(1024, 1024, true, true);			// Rescale to 1024x1024 fill
-					$imagick->writeImage($resourceAbsolutePath);
+					$imagick->writeImage($picture->getAbsolutePath());
 
 					break;
 
 			}
 
 			// Compute image size
-			list($width, $height) = $this->get_image_size($resourceAbsolutePath);
+			$this->pictureManager->computeSizes($picture);
 
-			// Create the new picture
-			$picture = new Picture();
+			// Set current user as picture's user
+			$user = $this->tokenStorage->getToken()->getUser();
 			$picture->setUser($user);
-			$picture->setMasterPath($resourcePath);
-			$picture->setWidth($width);
-			$picture->setHeight($height);
-			$picture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
 
-			$this->om->persist($picture);
 			$this->om->flush();
 
 			$file->id = $picture->getId();

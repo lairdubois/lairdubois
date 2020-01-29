@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Symfony\Component\HttpFoundation\Request;
 use Imagine\Filter\Advanced\RelativeResize;
 use Imagine\Gd\Font;
@@ -58,8 +59,8 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 		$imagine = new Imagine();
 
 		// Create sticker picture
-		$sticker = new Picture();
-		$sticker->setMasterPath(sha1(uniqid(mt_rand(), true)).'.png');
+		$pictureManager = $this->get(PictureManager::NAME);
+		$sticker = $pictureManager->createEmty('png');
 
 		$hasSubtitle = $embeddable instanceof ChildInterface && $embeddable->getParentEntity() instanceof EmbeddableInterface;
 

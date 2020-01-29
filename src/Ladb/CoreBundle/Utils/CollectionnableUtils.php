@@ -7,6 +7,7 @@ use Ladb\CoreBundle\Entity\Collection\Entry;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\Collection\CollectionManager;
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
@@ -19,7 +20,7 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 
 	public function createEntry(CollectionnableInterface $collectionnable, Collection $collection) {
 		$om = $this->getDoctrine()->getManager();
-		$picturedUtils = $this->get(PicturedUtils::NAME);
+		$pictureManager = $this->get(PictureManager::NAME);
 
 		if ($collectionnable instanceof HiddableInterface && !$collectionnable->getIsPublic()) {
 			throw new \Exception('Entity must be public (entityType='.$collectionnable->getType().', entityId='.$collectionnable->getId().')');
@@ -42,7 +43,7 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 		if (is_null($collection->getMainPicture()) && $collectionnable instanceof PicturedInterface && !is_null($collectionnable->getMainPicture())) {
 
 			// Duplicate the entyt mainPicture
-			$mainPicture = $picturedUtils->duplicatePicture($collectionnable->getMainPicture());
+			$mainPicture = $pictureManager->duplicate($collectionnable->getMainPicture());
 			$mainPicture->setUser($collection->getUser());
 			$collection->setMainPicture($mainPicture);
 

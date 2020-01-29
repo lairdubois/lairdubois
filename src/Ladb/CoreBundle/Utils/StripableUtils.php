@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\StripableInterface;
 use Imagine\Filter\Advanced\RelativeResize;
@@ -43,8 +44,8 @@ class StripableUtils extends AbstractContainerAwareUtils {
 		$imagine = new Imagine();
 
 		// Create strip picture
-		$strip = new Picture();
-		$strip->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
+		$pictureManager = $this->get(PictureManager::NAME);
+		$strip = $pictureManager->createEmty();
 
 		$gutter = 5;
 		$width = 564;

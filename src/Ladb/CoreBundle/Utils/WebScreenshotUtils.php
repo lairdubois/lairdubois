@@ -10,6 +10,7 @@ use HeadlessChromium\Exception\NoResponseAvailable;
 use HeadlessChromium\Exception\OperationTimedOut;
 use HeadlessChromium\Exception\ScreenshotFailed;
 use Ladb\CoreBundle\Entity\Core\Picture;
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 
 class WebScreenshotUtils extends AbstractContainerAwareUtils {
 
@@ -45,8 +46,8 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 		$host = $urlComponents['host'];
 
 		// Create picture
-		$picture = new Picture();
-		$picture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
+		$pictureManager = $this->get(PictureManager::NAME);
+		$picture = $pictureManager->createEmpty(false);
 		$pictureFile = $picture->getAbsoluteMasterPath();
 
 		// HeadlessChromium Capture /////
@@ -97,16 +98,15 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 
 		if (is_file($pictureFile)) {
 
-			list($width, $height) = getimagesize($pictureFile);
-			$picture->setWidth($width);
-			$picture->setHeight($height);
-			$picture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
+			$pictureManager->computeSizes($picture);
 
-			$this->getDoctrine()->getManager()->persist($picture);
-			$this->getDoctrine()->getManager()->flush();
+			$om = $this->getDoctrine()->getManager();
+			$om->persist($picture);
+			$om->flush();
 
 			return $picture;
 		}
+
 		return null;
 	}
 

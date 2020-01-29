@@ -61,7 +61,7 @@ class OpenGraphUtils extends AbstractContainerAwareUtils {
 
 			libxml_use_internal_errors(true);
 			$doc = new \DOMDocument();
-			$doc->loadHTML($response);
+			$doc->loadHTML(utf8_decode($response));
 			$xpath = new \DOMXPath($doc);
 			$query = '//*/meta[starts-with(@property, \'og:\')]';
 			$metas = $xpath->query($query);

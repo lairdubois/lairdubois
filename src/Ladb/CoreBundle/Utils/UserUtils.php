@@ -11,6 +11,7 @@ use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Ladb\CoreBundle\Model\HiddableInterface;
 
 class UserUtils extends AbstractContainerAwareUtils {
@@ -167,9 +168,9 @@ class UserUtils extends AbstractContainerAwareUtils {
 		$imagine = new Imagine();
 
 		// Create avatar picture
-		$avatar = new Picture();
+		$pictureManager = $this->get(PictureManager::NAME);
+		$avatar = $pictureManager->createEmpty();
 		$avatar->setUser($user);
-		$avatar->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
 
 		$width = 512;
 		$height = 512;

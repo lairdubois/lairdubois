@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\Resource;
@@ -15,10 +16,12 @@ class ResourceUploadHandler extends \UploadHandler {
 
 	private $om;
 	private $tokenStorage;
+	private $pictureManager;
 
-	function __construct(ObjectManager $om, TokenStorage $tokenStorage) {
+	function __construct(ObjectManager $om, TokenStorage $tokenStorage, PictureManager $pictureManager) {
 		$this->om = $om;
 		$this->tokenStorage = $tokenStorage;
+		$this->pictureManager = $pictureManager;
 	}
 
 	public function handle($acceptedFileTypes = Resource::DEFAULT_ACCEPTED_FILE_TYPE, $maxFileSize = Resource::DEFAULT_MAX_FILE_SIZE) {
@@ -125,8 +128,7 @@ class ResourceUploadHandler extends \UploadHandler {
 				putenv( 'PATH=' . getenv('PATH') . ':/usr/local/bin' );
 
 				// Create thumbnail
-				$thumbnail = new Picture();
-				$thumbnail->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
+				$thumbnail = $this->pictureManager->createEmpty();
 
 				$imagick = new \Imagick($resource->getAbsolutePath().'[0]');
 				$imagick->setCompression(\Imagick::COMPRESSION_JPEG);
@@ -137,10 +139,7 @@ class ResourceUploadHandler extends \UploadHandler {
 				$imagick->thumbnailImage(1024, 1024, true, false);
 				$imagick->writeImage($thumbnail->getAbsoluteMasterPath());
 
-				list($width, $height) = $this->get_image_size($thumbnail->getAbsoluteMasterPath());
-				$thumbnail->setWidth($width);
-				$thumbnail->setHeight($height);
-				$thumbnail->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
+				$this->pictureManager->computeSizes($thumbnail);
 
 				$resource->setThumbnail($thumbnail);
 

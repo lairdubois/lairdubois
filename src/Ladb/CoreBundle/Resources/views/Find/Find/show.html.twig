@@ -58,6 +58,13 @@
             <div class="ladb-thumb">
                 <a href="{{ find.content.url }}" target="_blank" class="thumbnail">
                     {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'data-pin-nopin="true"' } %}
+                    {% if find.content.host %}
+                        <div class="ladb-find-thumbnail-caption">
+                            <div class="ladb-find-thumbnail-caption-host">{{ find.content.host }}</div>
+                            {% if find.content.title %}<div class="ladb-find-thumbnail-caption-title">{{ find.content.title }}</div>{% endif %}
+                            {% if find.content.description %}<div class="ladb-find-thumbnail-caption-description">{{ find.content.description }}</div>{% endif %}
+                        </div>
+                    {% endif %}
                 </a>
             </div>
         {% endif %}

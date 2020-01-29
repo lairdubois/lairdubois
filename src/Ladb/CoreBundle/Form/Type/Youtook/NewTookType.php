@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Form\Type\Youtook;
 
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -15,10 +16,12 @@ class NewTookType extends AbstractType {
 
 	private $om;
 	private $videoHostingUtils;
+	private $pictureManager;
 
-	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils) {
+	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils, PictureManager $pictureManager) {
 		$this->om = $om;
 		$this->videoHostingUtils = $videoHostingUtils;
+		$this->pictureManager = $pictureManager;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -46,18 +49,7 @@ class NewTookType extends AbstractType {
 							if (!is_null($thumbnailUrl)) {
 
 								// Grab picture
-								$mainPicture = new Picture();
-								$mainPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
-
-								if (copy($thumbnailUrl, $mainPicture->getAbsolutePath())) {
-
-									list($width, $height) = getimagesize($mainPicture->getAbsolutePath());
-									$mainPicture->setWidth($width);
-									$mainPicture->setHeight($height);
-									$mainPicture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
-
-									$this->om->persist($mainPicture);
-								}
+								$mainPicture = $this->pictureManager->createFromUrl($thumbnailUrl);
 
 								$took->setThumbnailUrl($thumbnailUrl);
 								$took->setMainPicture($mainPicture);

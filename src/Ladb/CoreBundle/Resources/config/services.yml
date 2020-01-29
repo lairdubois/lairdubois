@@ -166,6 +166,9 @@ services:
   ladb_core.user_manager:
     class: Ladb\CoreBundle\Manager\Core\UserManager
     arguments: ['@service_container']
+  ladb_core.picture_manager:
+    class: Ladb\CoreBundle\Manager\Core\PictureManager
+    arguments: ['@service_container']
   ladb_core.comment_manager:
     class: Ladb\CoreBundle\Manager\Core\CommentManager
     arguments: ['@service_container']
@@ -390,10 +393,10 @@ services:
     arguments: ['@router']
   ladb_core.picture_upload_handler:
     class: Ladb\CoreBundle\Handler\PictureUploadHandler
-    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@ladb_core.picture_manager']
   ladb_core.resource_upload_handler:
     class: Ladb\CoreBundle\Handler\ResourceUploadHandler
-    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@ladb_core.picture_manager']
 
   # Types
   ladb_qa_question:
@@ -560,7 +563,7 @@ services:
     class: Ladb\CoreBundle\Form\Type\Youtook\NewTookType
     tags:
       - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils']
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils', '@ladb_core.picture_manager']
   ladb_youtook_edit_took:
     class: Ladb\CoreBundle\Form\Type\Youtook\EditTookType
     tags:

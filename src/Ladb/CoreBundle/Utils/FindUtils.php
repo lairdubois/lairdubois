@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Utils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Core\Picture;
+use Ladb\CoreBundle\Manager\Core\PictureManager;
 
 class FindUtils extends AbstractContainerAwareUtils {
 
@@ -21,34 +22,28 @@ class FindUtils extends AbstractContainerAwareUtils {
 				$website = $find->getContent();
 				$mainPicture = null;
 
+				$website->setHost(parse_url($website->getUrl(), PHP_URL_HOST));
+
 				if (is_null($website->getThumbnail())) {
 
-					// Try to fetch OpenGraph image
+					// Try to fetch OpenGraph image, title and description
 					$openGraphUtils = $this->get(OpenGraphUtils::NAME);
 					$ogMetas = $openGraphUtils->fetchMetas($website->getUrl());
-					if ($ogMetas && isset($ogMetas['og:image'])) {
+					if ($ogMetas) {
 
-						$mainPicture = new Picture();
-						$mainPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
-
-						if (isset($ogMetas['og:description'])) {
-							$mainPicture->setLegend(substr($ogMetas['og:description'], 0, 255));
+						if (isset($ogMetas['og:image'])) {
+							$pictureManager = $this->get(PictureManager::NAME);
+							$mainPicture = $pictureManager->createFromUrl($ogMetas['og:image'], false);
 						}
 
-						if (copy($ogMetas['og:image'], $mainPicture->getAbsolutePath())) {
+						if (isset($ogMetas['og:title'])) {
+							$ogTitle = substr($ogMetas['og:title'], 0, 255);
+							$website->setTitle($ogTitle);
+						}
 
-							$finfo = finfo_open(FILEINFO_MIME_TYPE);
-							if ($finfo == IMAGETYPE_JPEG || $finfo == IMAGETYPE_PNG) {
-
-								list($width, $height) = getimagesize($mainPicture->getAbsolutePath());
-								$mainPicture->setWidth($width);
-								$mainPicture->setHeight($height);
-								$mainPicture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
-
-								$om->persist($mainPicture);
-
-							}
-
+						if (isset($ogMetas['og:description'])) {
+							$ogDescription = substr($ogMetas['og:description'], 0, 255);
+							$website->setDescription($ogDescription);
 						}
 
 					}
@@ -73,26 +68,8 @@ class FindUtils extends AbstractContainerAwareUtils {
 				if (is_null($video->getThumbnail())) {
 					$thumbnailUrl = $videoHostingUtils->getThumbnailUrl($video->getKind(), $video->getEmbedIdentifier());
 					if (!is_null($thumbnailUrl)) {
-
-						$mainPicture = new Picture();
-						$mainPicture->setMasterPath(sha1(uniqid(mt_rand(), true)).'.jpg');
-
-						if (copy($thumbnailUrl, $mainPicture->getAbsolutePath())) {
-
-							$finfo = finfo_open(FILEINFO_MIME_TYPE);
-							if ($finfo == IMAGETYPE_JPEG || $finfo == IMAGETYPE_PNG) {
-
-								list($width, $height) = getimagesize($mainPicture->getAbsolutePath());
-								$mainPicture->setWidth($width);
-								$mainPicture->setHeight($height);
-								$mainPicture->setHeightRatio100($width > 0 ? $height / $width * 100 : 100);
-
-								$om->persist($mainPicture);
-
-							}
-
-						}
-
+						$pictureManager = $this->get(PictureManager::NAME);
+						$mainPicture = $pictureManager->createFromUrl($thumbnailUrl, false);
 					} else {
 						$mainPicture = $webScreenshotUtils->captureToPicture($video->getUrl(), 1280, 1024, 1280, 1024);
 					}
