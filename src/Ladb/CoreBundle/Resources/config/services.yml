@@ -387,6 +387,7 @@ services:
   # Handlers
   ladb_core.authentification_handler:
     class: Ladb\CoreBundle\Handler\AuthenticationHandler
+    arguments: ['@router']
   ladb_core.picture_upload_handler:
     class: Ladb\CoreBundle\Handler\PictureUploadHandler
     arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
