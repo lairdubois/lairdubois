@@ -45,7 +45,7 @@ class StripableUtils extends AbstractContainerAwareUtils {
 
 		// Create strip picture
 		$pictureManager = $this->get(PictureManager::NAME);
-		$strip = $pictureManager->createEmty();
+		$strip = $pictureManager->createEmpty();
 
 		$gutter = 5;
 		$width = 564;
