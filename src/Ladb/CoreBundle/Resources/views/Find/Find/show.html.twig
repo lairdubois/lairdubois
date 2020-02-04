@@ -72,7 +72,7 @@
             {{ ladb_video_player_frame(find.content.kind, find.content.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail', true)|raw }}
         {% endif %}
         {% if find.content.pictures is defined %}
-            {% embed 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'pictures':find.content.pictures, 'alt':find.title } %}
+            {% embed 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':find, 'pictures':find.content.pictures, 'alt':find.title, 'isOwnerUser':ownerUser } %}
                 {% block picture0 %}
                     {{ parent() }}
                     {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}

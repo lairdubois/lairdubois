@@ -116,7 +116,7 @@
         {% include 'LadbCoreBundle:Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
     {% endif %}
     {% block wonderShowcase %}
-        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'pictures':wonder.pictures, 'alt':wonder.title } %}
+        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':wonder, 'pictures':wonder.pictures, 'alt':wonder.title, 'isOwnerUser':ownerUser } %}
         <hr>
     {% endblock %}
     <div class="ladb-wonder-body">
