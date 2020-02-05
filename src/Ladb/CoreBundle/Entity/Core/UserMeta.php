@@ -87,7 +87,7 @@ class UserMeta {
 
 	/**
 	 * @ORM\Column(type="string", length=50, nullable=true)
-	 * @Assert\Regex("/^[a-zA-Z0-9_]+$/")
+	 * @Assert\Regex("/^[a-zA-Z0-9_.]+$/")
 	 */
 	private $instagram;
 
