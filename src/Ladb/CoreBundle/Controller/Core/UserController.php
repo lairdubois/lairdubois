@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Utils\PropertyUtils;
@@ -1256,7 +1257,10 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
-		if ($user->getMeta()->getPublicCreationCount() > 0) {
+		$CrawlerDetect = new CrawlerDetect();
+		if ($CrawlerDetect->isCrawler()) {
+			$forwardController = 'LadbCoreBundle:Core/User:showAbout'; // Return about page for Crawlers
+		} else if ($user->getMeta()->getPublicCreationCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showCreations';
 		} else if ($user->getMeta()->getPublicPlanCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showPlans';
