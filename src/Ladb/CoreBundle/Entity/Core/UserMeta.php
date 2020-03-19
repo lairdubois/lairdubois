@@ -164,6 +164,11 @@ class UserMeta {
 	private $unlistedFindFindCount = 0;
 
 	/**
+	 * @ORM\Column(name="unlisted_event_event_count", type="integer")
+	 */
+	private $unlistedEventEventCount = 0;
+
+	/**
 	 * @ORM\Column(name="unlisted_howto_howto_count", type="integer")
 	 */
 	private $unlistedHowtoHowtoCount = 0;
@@ -334,6 +339,17 @@ class UserMeta {
 	 * @ORM\Column(type="integer", nullable=true, name="public_find_count")
 	 */
 	private $publicFindCount = 0;
+
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="private_event_count")
+	 */
+	private $privateEventCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="public_event_count")
+	 */
+	private $publicEventCount = 0;
 
 
 	/**
@@ -716,6 +732,17 @@ class UserMeta {
 		return $this;
 	}
 
+	// UnlistedEventEventCount /////
+
+	public function getUnlistedEventEventCount() {
+		return $this->unlistedEventEventCount;
+	}
+
+	public function setUnlistedEventEventCount($unlistedEventEventCount) {
+		$this->unlistedEventEventCount = $unlistedEventEventCount;
+		return $this;
+	}
+
 	// UnlistedHowtoHowtoCount /////
 
 	public function getUnlistedHowtoHowtoCount() {
@@ -1075,6 +1102,27 @@ class UserMeta {
 
 	public function getPublicFindCount() {
 		return $this->publicFindCount;
+	}
+
+	// PrivateEventCount /////
+
+	public function incrementPrivateEventCount($by = 1) {
+		return $this->privateEventCount += intval($by);
+	}
+
+	public function getPrivateEventCount() {
+		return $this->privateEventCount;
+	}
+
+	// PublicEventCount /////
+
+	public function incrementPublicEventCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->publicEventCount += intval($by);
+	}
+
+	public function getPublicEventCount() {
+		return $this->publicEventCount;
 	}
 
 	// PrivateQuestionCount /////

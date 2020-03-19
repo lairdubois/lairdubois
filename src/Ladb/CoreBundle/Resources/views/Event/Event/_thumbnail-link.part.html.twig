@@ -1,0 +1,7 @@
+
+{# set event #}
+{# set classes (facultative) #}
+
+<a href="{{ path('core_event_show', { 'id':event.sluggedId }) }}" class="thumbnail{% if classes is defined %} {{ classes }}{% endif %}" data-tooltip="tooltip" title="{{ event.title }} {{ 'default.by'|trans() }} {{ event.user.displayname }}">
+    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':event.mainPicture, 'width':'128', 'height':'128', 'filterMode':'o', 'alt':event.title, 'attributes':'data-pin-nopin="true"', 'noMicrodata':true } %}
+</a>

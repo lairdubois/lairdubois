@@ -461,6 +461,7 @@ class UserController extends AbstractController {
 			'unlistedWorkflowWorkflowCount' => $meta->getUnlistedWorkflowWorkflowCount(),
 			'unlistedCollectionCollectionCount' => $meta->getUnlistedCollectionCollectionCount(),
 			'unlistedOfferOfferCount' => $meta->getUnlistedOfferOfferCount(),
+			'unlistedEventEventCount' => $meta->getUnlistedEventEventCount(),
 		);
 
 		if (!is_null($listedCounterKey) && !is_null($listedCounterValue)) {

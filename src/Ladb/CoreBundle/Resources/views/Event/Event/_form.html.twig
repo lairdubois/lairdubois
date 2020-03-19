@@ -1,0 +1,175 @@
+{% extends 'LadbCoreBundle:Common:Layout/_form.html.twig' %}
+
+{% set navSection = 'events' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':5, 'sortable':true } %}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
+    <li><a href="#content"><i class="ladb-icon-calendar-month"></i> Détails</a></li>
+    {% include 'LadbCoreBundle:Core/Block:_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'event.event.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('event.event.form.help.title'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'maxPictureCount':5, 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('offer.offer.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'calendar-month', 'title':'Détails', 'formSection':'content' } %}
+        {% block body %}
+            <div>
+                <div class="form-group row">
+                    <div class="col-xs-12 col-md-6">
+                        {{ form_label(form.startDate, 'default.start_date') }}<span class="ladb-mandatory">*</span>
+                        {{ form_errors(form.startDate) }}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
+                            {{ form_widget(form.startDate) }}
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        {{ form_label(form.startTime, 'default.start_time') }}
+                        {{ form_errors(form.startTime) }}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ladb-icon-time"></i></span>
+                            {{ form_widget(form.startTime) }}
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" onclick="$('#{{ form.startTime.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xs-12 col-md-6">
+                        {{ form_label(form.endDate, 'default.end_date') }}
+                        {{ form_errors(form.endDate) }}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
+                            {{ form_widget(form.endDate) }}
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" onclick="$('#{{ form.endDate.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        {{ form_label(form.endTime, 'default.end_time') }}
+                        {{ form_errors(form.endTime) }}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ladb-icon-time"></i></span>
+                            {{ form_widget(form.endTime) }}
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" onclick="$('#{{ form.endTime.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.location, 'default.location') }}
+                    <p class="help-block"><i>{{ 'event.event.form.help.event_location'|trans() }}</i></p>
+                    {{ form_errors(form.location) }}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
+                        {{ form_widget(form.location) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.url, 'default.link') }}
+                    <p class="help-block"><i>{{ 'event.event.form.help.event_url'|trans() }}</i></p>
+                    {{ form_errors(form.url) }}
+                    <div class="input-group">
+                        <span class="input-group-addon">{% if form.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-link"></i>{% endif %}</span>
+                        {{ form_widget(form.url) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.cancelled, 'Annulation') }}
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form.cancelled) }}
+                            Cet évènement est annulé
+                        </label>
+                    </div>
+                </div>
+                <script>
+                    $(function () {
+                        $('#{{ form.startDate.vars.id }}')
+                            .datetimepicker({
+                                locale: 'fr',
+                                format: 'DD/MM/YYYY',
+                                icons: {
+                                    previous : "ladb-icon-chevron-left",
+                                    next : "ladb-icon-chevron-right"
+                                }
+                            })
+                            .on("dp.change", function (e) {
+                                if (e.date) {
+                                    var endDatePicker = $('#{{ form.endDate.vars.id }}').data("DateTimePicker");
+                                    var startDate = e.date;
+                                    var endDate = endDatePicker.date();
+                                    if (endDate) {
+                                        endDatePicker.date(moment.max(startDate, endDate));
+                                    }
+                                }
+                                markAsUnsaved();
+                            })
+                        ;
+                        $('#{{ form.startTime.vars.id }}')
+                            .datetimepicker({
+                                locale: 'fr',
+                                format: 'HH:mm',
+                                stepping: 5,
+                                icons: {
+                                    up: "ladb-icon-plus",
+                                    down: "ladb-icon-minus"
+                                }
+                            })
+                            .on("dp.change", function (e) {
+                                markAsUnsaved();
+                            })
+                        ;
+                        $('#{{ form.endDate.vars.id }}')
+                            .datetimepicker({
+                                locale: 'fr',
+                                format: 'DD/MM/YYYY',
+                                icons: {
+                                    previous : "ladb-icon-chevron-left",
+                                    next : "ladb-icon-chevron-right"
+                                }
+                            })
+                            .on("dp.change", function (e) {
+                                markAsUnsaved();
+                            })
+                        ;
+                        $('#{{ form.endTime.vars.id }}')
+                            .datetimepicker({
+                                locale: 'fr',
+                                format: 'HH:mm',
+                                stepping: 5,
+                                icons: {
+                                    up: "ladb-icon-plus",
+                                    down: "ladb-icon-minus"
+                                }
+                            })
+                            .on("dp.change", function (e) {
+                                markAsUnsaved();
+                            })
+                        ;
+                    });
+                </script>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('event.event.form.help.body'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':('event.event.form.help.tags'|trans()) } %}
+{% endblock %}

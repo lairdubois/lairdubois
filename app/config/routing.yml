@@ -64,6 +64,10 @@ ladb_core_find:
     resource: "Ladb\\CoreBundle\\Controller\\Find\\FindController"
     type:     annotation
 
+ladb_core_event:
+    resource: "Ladb\\CoreBundle\\Controller\\Event\\EventController"
+    type:     annotation
+
 ladb_core_blog:
     resource: "Ladb\\CoreBundle\\Controller\\Blog\\PostController"
     type:     annotation

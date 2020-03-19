@@ -49,7 +49,8 @@
             $masonryInner.masonry({
                 itemSelector: ".ladb-masonry-item",
                 columnWidth: ".ladb-masonry-column" + (this.options.masonryWide ? "-wide" : ""),
-                transitionDuration: 0
+                transitionDuration: 0,
+                stamp: ".ladb-masonry-stamp"
             });
         }
         lazyLoad();

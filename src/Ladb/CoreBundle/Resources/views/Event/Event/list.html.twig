@@ -1,0 +1,85 @@
+{% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
+
+{% set pageTitle = 'event.event.list'|trans() %}
+{% set pageDescription = 'event.event.description'|trans() %}
+{% set pageImage = asset('banner-events-600x376.jpg') %}
+{% set pageSectionUrl = url('core_event_list') %}
+{% set pageSectionName = 'event.event.list'|trans %}
+
+{% set navSection = 'events' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/jquery-clndr/clndr.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-clndr/clndr.min.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.eventspage.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/template" id="template-calendar">
+        <div class="clndr-controls">
+            <div class="clndr-control-button">
+                <span class="clndr-previous-button btn btn-default"><i class="ladb-icon-chevron-left"></i></span>
+            </div>
+            <div class="month"><%= month %> <%= year %></div>
+            <div class="clndr-control-button rightalign">
+                <span class="clndr-next-button btn btn-default"><i class="ladb-icon-chevron-right"></i></span>
+            </div>
+        </div>
+        <table class="clndr-table" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr class="header-days">
+                    <% for(var i = 0; i < daysOfTheWeek.length; i++) { %>
+                        <td class="header-day"><%= daysOfTheWeek[i] %></td>
+                    <% } %>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i = 0; i < numberOfRows; i++){ %>
+                    <tr>
+                        <% for(var j = 0; j < 7; j++){ %>
+                            <% var d = j + i * 7; %>
+                            <td class="<%= days[d].classes %>" data-tooltip="tooltip" data-html="true" title="<% for(var e = 0; e < days[d].events.length; e++){ %><%= days[d].events[e].title %><br><% } %>">
+                                <div class="day-contents">
+                                    <%= days[d].day %>
+                                </div>
+                            </td>
+                        <% } %>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#ladb_autopager_container').ladbEventsPage({
+                listPath: '{{ path('core_event_list_json') }}'
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Event/Event:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    <div class="ladb-masonry-item ladb-masonry-column-wide ladb-masonry-stamp" style="position: absolute; right: 0;">
+        <div class="ladb-box">
+            <div id="calendar" class="cal1" style="min-height: 270px;"></div>
+        </div>
+    </div>
+    {% include 'LadbCoreBundle:Event/Event:_list-n.part.html.twig' %}
+{% endblock %}

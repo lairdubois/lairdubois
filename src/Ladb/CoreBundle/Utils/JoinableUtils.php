@@ -78,4 +78,28 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 		);
 	}
 
+	/////
+
+	public function transferJoins(JoinableInterface $joinableSrc, JoinableInterface $joinableDest, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+
+		// Retrieve joins
+		$joins = $joinRepository->findByEntityTypeAndEntityId($joinableSrc->getType(), $joinableSrc->getId());
+
+		// Transfer joins
+		foreach ($joins as $join) {
+			$join->setEntityType($joinableDest->getType());
+			$join->setEntityId($joinableDest->getId());
+		}
+
+		// Update counters
+		$joinableDest->incrementJoinCount($joinableSrc->getJoinCount());
+		$joinableSrc->setJoinCount(0);
+
+		if ($flush) {
+			$om->flush();
+		}
+	}
+
 }

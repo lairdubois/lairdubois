@@ -121,6 +121,10 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
 				$a = array( 'offer', 'offer' );
 				break;
+			// Event
+			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
+				$a = array( 'event', 'event' );
+				break;
 
 		}
 		if ($a) {
@@ -308,6 +312,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Offer
 			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
 				return '\Ladb\CoreBundle\Entity\Offer\Offer';
+			// Event
+			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
+				return '\Ladb\CoreBundle\Entity\Event\Event';
 
 		}
 		return null;
@@ -428,6 +435,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
 				$url = $router->generate('core_offer_'.$action, $params, $referenceType);
 				break;
+			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
+				$url = $router->generate('core_event_'.$action, $params, $referenceType);
+				break;
 
 		}
 		return $url;
@@ -509,9 +519,12 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Software
 			case \Ladb\CoreBundle\Entity\Knowledge\Software::TYPE:
 				return 'software';
-			// Software
+			// Offer
 			case \Ladb\CoreBundle\Entity\Offer\Offer::TYPE:
 				return 'offer';
+			// Event
+			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
+				return 'event';
 
 		}
 		return null;

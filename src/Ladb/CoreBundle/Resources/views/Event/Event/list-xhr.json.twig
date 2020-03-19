@@ -1,0 +1,11 @@
+{
+    "events": [
+        {% for event in events %}
+            {
+                "startDate": "{{ event.startDate|date('Y-m-d') }}",
+                "endDate": "{{ (event.endDate ? event.endDate : event.startDate)|date('Y-m-d') }}",
+                "title": "{{ event.title }}"
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}

@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
+
+{% set heading = 'event.event.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'LadbCoreBundle:Event/Event:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{{ path('core_event_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'event.event.new'|trans() }}</span></a>
+{% endblock %}

@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "202001311954"
+        version:    "20200319"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -640,6 +640,35 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         kind: { type: short }
+                        user:
+                            type: "object"
+                            properties:
+                                username: { analyzer: name_analyzer }
+                                displayname: { analyzer: name_analyzer }
+                                fullname: { analyzer: name_analyzer }
+                        tags:
+                            type: "object"
+                            properties:
+                                label: { type: text, boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Find\Find
+                        provider: ~
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
+                event_event:
+                    properties:
+                        visibility: { type: integer }
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        body: { analyzer: body_analyzer }
+                        changedAt: { type: date }
+                        startAt: { type: date }
+                        endAt: { type: date }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
                         user:
                             type: "object"
                             properties:
