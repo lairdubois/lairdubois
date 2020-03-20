@@ -96,11 +96,11 @@ EOT
 
 			$queryBuilder = $om->createQueryBuilder();
 			$queryBuilder
-				->select(array( 'c', 's', '(c.likeCount * 100 + c.commentCount * 2 + c.viewCount + c.planCount * 10 + c.howtoCount * 10) as score' ))
+				->select(array( 'c', 's', '(c.likeCount * 100 + c.commentCount * 10 + c.viewCount + c.planCount * 10 + c.howtoCount * 10) as score' ))
 				->from('LadbCoreBundle:Wonder\Creation', 'c')
 				->leftJoin('c.spotlight', 's')
 				->where('c.isDraft = false')
-				->andWhere('c.likeCount > 4')		// 5 or more likes
+				->andWhere('c.likeCount >= 10')		// 10 or more likes
 				->andWhere('c.changedAt > :retrieveDate')
 				->andWhere('c.spotlight IS NULL')
 				->orderBy('score', 'DESC')
@@ -122,11 +122,11 @@ EOT
 
 			$queryBuilder = $om->createQueryBuilder();
 			$queryBuilder
-				->select(array( 'h', 's', '(h.likeCount * 100 + h.commentCount * 2 + h.viewCount + h.creationCount * 10 + h.planCount * 10 + h.workshopCount * 10) as score' ))
+				->select(array( 'h', 's', '(h.likeCount * 100 + h.commentCount * 10 + h.viewCount + h.creationCount * 10 + h.planCount * 10 + h.workshopCount * 10) as score' ))
 				->from('LadbCoreBundle:Howto\Howto', 'h')
 				->leftJoin('h.spotlight', 's')
 				->where('h.isDraft = false')
-				->andWhere('h.likeCount > 2')		// 3 or more likes
+				->andWhere('h.likeCount >= 10')		// 10 or more likes
 				->andWhere('h.changedAt > :retrieveDate')
 				->andWhere('h.spotlight IS NULL')
 				->andWhere('h.isWorkInProgress = 0')
