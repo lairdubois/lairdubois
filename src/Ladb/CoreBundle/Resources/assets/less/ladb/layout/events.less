@@ -48,3 +48,129 @@
   }
 
 }
+
+.ladb-clndr {
+  font-size: 14px;
+  margin: 6px;
+  min-height: 250px;
+
+  .clndr {
+
+    .clndr-controls {
+
+      .month {
+        text-align: center;
+        text-transform: capitalize;
+        font-size: 20px;
+      }
+
+      .clndr-control-button {
+
+        .clndr-next-button, .clndr-previous-button {
+          cursor: pointer;
+
+          &:hover {
+            background: #ddd;
+          }
+
+          &.inactive {
+            opacity: 0.5;
+
+            &:hover {
+              background: none;
+              cursor: default;
+            }
+
+          }
+
+        }
+
+      }
+    }
+
+    .clndr-table {
+      table-layout: fixed;
+      width: 100%;
+
+      .header-days {
+        height: 30px;
+        text-transform: capitalize;
+
+        .header-day {
+          vertical-align: middle;
+          text-align: center;
+        }
+      }
+
+      tr {
+        height: 30px;
+
+        td {
+          vertical-align: middle;
+          text-align: center;
+          cursor: pointer;
+        }
+
+        .day {
+          width: 100%;
+          height: inherit;
+
+          &:hover { background: #eee; }
+
+          &.today {
+            border: 2px solid @ladb-brand-primary;
+          }
+
+          &.event {
+
+            .day-contents {
+              background: @ladb-brand-info;
+              color: #fff;
+              border-radius: 13px;
+            }
+
+            &:hover .day-contents {
+              background: darken(@ladb-brand-info, 10%);
+            }
+
+            &.past .day-contents {
+              background: #999;
+            }
+
+            &.today .day-contents {
+              background: @ladb-brand-success;
+            }
+
+          }
+
+          &.past {
+            opacity: 0.5;
+          }
+
+          &.inactive {
+            background: #ddd;
+            color: #999;
+          }
+
+          .day-contents {
+            box-sizing: border-box;
+            font-size: 12px;
+            text-align: center;
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+          }
+
+        }
+
+        .empty, .adjacent-month {
+          width: 100%;
+          height: inherit;
+        }
+
+      }
+    }
+  }
+
+}

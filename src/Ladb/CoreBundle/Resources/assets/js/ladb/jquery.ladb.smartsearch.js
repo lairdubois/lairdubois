@@ -263,10 +263,14 @@
                 success: function(data, textStatus, jqXHR) {
                     var options = that.options;
                     var $container = $(options.containerSelector);
+                    var $stamps = $('.ladb-masonry-stamp', $container);     // Retrieve stamps to re-append them
+
+                    $container.parent().append($stamps);
 
                     $container.jscroll.destroy();
                     $container
                         .empty()
+                        .append($stamps)
                         .append(data);
 
                     that.grabTotalHits();
@@ -299,7 +303,11 @@
 
                     $(window).scrollTop(0);
 
+                    // Reload map
                     that.mapLoad(query);
+
+                    // Trigger search event
+                    that.$element.trigger('search.ladb.success', [ query ]);
 
                 },
                 error: function () {

@@ -8,17 +8,9 @@
 
 {% set navSection = 'events' %}
 {% set masonry = true %}
-{% set masonryWide = true %}
+{% set masonryWide = false %}
 {% set hideHeaderContainer = false %}
 {% set countableEntityList = true %}
-
-{% block headStylesheets %}
-    {{ parent() }}
-    {% stylesheets filter='less,?yui_css'
-        '@LadbCoreBundle/Resources/assets/less/jquery-clndr/clndr.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-    {% endstylesheets %}
-{% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
@@ -29,12 +21,12 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script type="text/template" id="template-calendar">
-        <div class="clndr-controls">
-            <div class="clndr-control-button">
+        <div class="clndr-controls media">
+            <div class="clndr-control-button media-left">
                 <span class="clndr-previous-button btn btn-default"><i class="ladb-icon-chevron-left"></i></span>
             </div>
-            <div class="month"><%= month %> <%= year %></div>
-            <div class="clndr-control-button rightalign">
+            <div class="month media-body"><%= month %> <%= year %></div>
+            <div class="clndr-control-button media-right">
                 <span class="clndr-next-button btn btn-default"><i class="ladb-icon-chevron-right"></i></span>
             </div>
         </div>
@@ -64,8 +56,10 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('#ladb_autopager_container').ladbEventsPage({
-                listPath: '{{ path('core_event_list_json') }}'
+            $('body').ladbEventsPage({
+                query: '{{ q is defined ? q|raw|escape('js') : '' }}',
+                jsonListPath: '{{ path('core_event_list_json') }}',
+                listPath: '{{ path('core_event_list') }}'
             });
         });
     </script>
@@ -76,9 +70,9 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    <div class="ladb-masonry-item ladb-masonry-column-wide ladb-masonry-stamp" style="position: absolute; right: 0;">
+    <div class="ladb-masonry-item ladb-masonry-column ladb-masonry-stamp" style="position: absolute; right: 0;">
         <div class="ladb-box">
-            <div id="calendar" class="cal1" style="min-height: 270px;"></div>
+            <div id="ladb_calendar" class="ladb-clndr"></div>
         </div>
     </div>
     {% include 'LadbCoreBundle:Event/Event:_list-n.part.html.twig' %}

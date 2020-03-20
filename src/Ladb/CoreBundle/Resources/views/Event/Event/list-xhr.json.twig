@@ -4,7 +4,8 @@
             {
                 "startDate": "{{ event.startDate|date('Y-m-d') }}",
                 "endDate": "{{ (event.endDate ? event.endDate : event.startDate)|date('Y-m-d') }}",
-                "title": "{{ event.title }}"
+                "title": "{{ event.title }}",
+                "showPath": "{{ ladb_entity_url_action(event, 'show', false) }}"
             }{% if not loop.last %},{% endif %}
         {% endfor %}
     ]

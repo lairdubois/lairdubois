@@ -1,30 +1,34 @@
-{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail-wide.part.html.twig' %}
+{% extends 'LadbCoreBundle:Common:_masonry-list-thumbnail.part.html.twig' %}
 
 {# set event #}
 
 {% set entity = event %}
+{% set classes = 'ladb-no-overlay-caption' %}
+{% set headingClasses = event.cancelled ? 'ladb-strikethrough' : null %}
 
 {% block title %}
     <i class="ladb-icon-date"></i> {{ parent() }}
 {% endblock %}
 
 {% block image %}
-    {{ parent() }}
-    {% include 'LadbCoreBundle:Event/Event:_event-calendar.part.html.twig' %}
+    {% if event.cancelled %}
+        <div class="label label-danger" style="display: block; border-radius: 0; font-weight: normal;"><i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}</div>
+    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_SCHEDULED') %}
+        <div class="label label-info" style="display: block; border-radius: 0; font-weight: normal;">{{ event.startAt|time_diff()|capitalize }}</div>
+    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_RUNNING') %}
+        <div class="label label-success" style="display: block; border-radius: 0; font-weight: normal;">{{ 'event.event.running'|trans() }}</div>
+    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
+        <div class="label label-default" style="display: block; border-radius: 0; font-weight: normal;">{{ 'event.event.completed'|trans() }}</div>
+    {% endif %}
+    <div style="padding-bottom: 10px; position: relative;">
+        {{ parent() }}
+        {% include 'LadbCoreBundle:Event/Event:_event-calendar.part.html.twig' with { 'topRight':true } %}
+    </div>
 {% endblock %}
 
 {% block entityMetas %}
     {{ parent() }}
     {% if entity.joinCount > 0 %}
         <li class="ladb-counter"><i class="ladb-icon-users"></i> <span>{{ entity.joinCount|number_format(0, ',', ' ') }}</span></li>
-    {% endif %}
-    {% if event.cancelled %}
-        <span class="label label-danger"><i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}</span>
-    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_SCHEDULED') %}
-        <span class="label label-info">{{ event.startAt|time_diff()|capitalize }}</span>
-    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_RUNNING') %}
-        <span class="label label-success">{{ 'event.event.running'|trans() }}</span>
-    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
-        <span class="label label-danger">{{ 'event.event.completed'|trans() }}</span>
     {% endif %}
 {% endblock %}

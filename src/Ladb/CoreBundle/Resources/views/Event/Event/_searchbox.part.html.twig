@@ -6,6 +6,10 @@
 {% set masonryWide = true %}
 
 {% block filtersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="status" data-value="running" data-label="En ce moment" data-unique="true" data-icon="running"><i class="ladb-icon-running"></i> En ce moment</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="status" data-value="scheduled" data-label="Prochainement" data-unique="true" data-icon="scheduled"><i class="ladb-icon-scheduled"></i> Prochainement</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="status" data-value="cancelled" data-label="Annulés" data-unique="true" data-icon="warning"><i class="ladb-icon-warning"></i> Annulés</a></li>
+    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
@@ -14,9 +18,10 @@
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
     <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="date" data-label="Date" data-editable="true" data-unique="true" data-icon="event"><i class="ladb-icon-event"></i> Date</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last7days" data-label="7 derniers jours" data-unique="true" data-icon="calendar-week"><i class="ladb-icon-calendar-week"></i> 7 derniers jours</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last30days" data-label="30 derniers jours" data-unique="true" data-icon="calendar-month"><i class="ladb-icon-calendar-month"></i> 30 derniers jours</a></li>
+    {# Hidden filters #}
+    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="day" data-label="Jour" data-editable="true" data-unique="true" data-icon="event"><i class="ladb-icon-event"></i> Jour</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}
@@ -25,11 +30,15 @@
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-views" data-label="Plus vues" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus vues</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-likes" data-label="Préférées" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférés</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-comments" data-label="Plus commentées" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentés</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-joins" data-label="Plus de participants" data-unique="true" data-icon="users"><i class="ladb-icon-users"></i> Plus de participants</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
 {% endblock %}
 
-{% block searchboxShortcutsOuter %}{% endblock %}
+{% block searchboxShortcuts %}
+    <li><a class="ladb-smartsearch-shortcut" data-query="@status:running"><i class="ladb-icon-running"></i> En ce moment</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@status:scheduled"><i class="ladb-icon-scheduled"></i> Prochainement</a></li>
+{% endblock %}
 
 
 

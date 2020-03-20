@@ -406,8 +406,7 @@ class EventController extends AbstractController {
 
 								$filter = (new \Elastica\Query\BoolQuery())
 									->addFilter(new \Elastica\Query\MatchPhrase('user.username', $this->getUser()->getUsername()))
-									->addFilter(new \Elastica\Query\Range('visibility', array( 'lt' => HiddableInterface::VISIBILITY_PUBLIC )))
-								;
+									->addFilter(new \Elastica\Query\Range('visibility', array('lt' => HiddableInterface::VISIBILITY_PUBLIC)));
 
 							} else {
 
@@ -424,23 +423,60 @@ class EventController extends AbstractController {
 
 						if ($facet->value == 'last7days') {
 
-							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-7d/d' ));
+							$filters[] = new \Elastica\Query\Range('changedAt', array('gte' => 'now-7d/d'));
 
 						} elseif ($facet->value == 'last30days') {
 
-							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-30d/d' ));
+							$filters[] = new \Elastica\Query\Range('changedAt', array('gte' => 'now-30d/d'));
 
 						}
 
 						break;
 
-					case 'date':
+					case 'active':
+
+						$filters[] = new \Elastica\Query\Range('cancelled', array('lt' => 1));
+
+						break;
+
+					case 'status':
+
+						if ($facet->value == 'cancelled') {
+							$filters[] = new \Elastica\Query\Range('cancelled', array('gte' => 1));
+						} else {
+							$filters[] = new \Elastica\Query\Range('cancelled', array('lt' => 1));
+							switch ($facet->value) {
+								case 'scheduled':
+									$filters[] = new \Elastica\Query\Range('startAt', array('gte' => 'now'));
+									break;
+								case 'running':
+									$filters[] = new \Elastica\Query\Range('startAt', array('lte' => 'now'));
+									break;
+							}
+							$filters[] = new \Elastica\Query\Range('endAt', array('gte' => 'now'));
+						}
+
+						break;
+
+					case 'day':
 
 						$dateValue = (new \DateTime($facet->value));
 						$formatedDateValue = $dateValue->format('Y-m-d');
 
 						$filters[] = new \Elastica\Query\Range('startAt', array( 'lte' => $formatedDateValue ));
 						$filters[] = new \Elastica\Query\Range('endAt', array( 'gte' => $formatedDateValue ));
+
+						break;
+
+					case 'month':
+
+						$startDateValue = (new \DateTime($facet->value.'-01'));
+						$formatedStartDateValue = $startDateValue->format('Y-m-d');
+						$endDateValue = $startDateValue->add(new \DateInterval('P1M'))->sub(new \DateInterval('P1D'));
+						$formatedEndDateValue = $endDateValue->format('Y-m-d');
+
+						$filters[] = new \Elastica\Query\Range('startAt', array( 'lte' => $formatedEndDateValue ));
+						$filters[] = new \Elastica\Query\Range('endAt', array( 'gte' => $formatedStartDateValue ));
 
 						break;
 
@@ -476,6 +512,10 @@ class EventController extends AbstractController {
 
 					case 'sort-popular-comments':
 						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+						break;
+
+					case 'sort-popular-joins':
+						$sort = array( 'joinCount' => array( 'order' => 'desc' ) );
 						break;
 
 					case 'sort-random':

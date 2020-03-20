@@ -77,7 +77,7 @@
                     {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_RUNNING') %}
                         <br><span class="label label-success">{{ 'event.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_ends'|trans() }} {{ event.endAt|time_diff() }}.</span>
                     {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
-                        <br><span class="label label-danger">{{ 'event.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_was_completed'|trans() }} {{ event.endAt|time_diff() }}.</span>
+                        <br><span class="label label-default">{{ 'event.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_was_completed'|trans() }} {{ event.endAt|time_diff() }}.</span>
                     {% endif %}
                 </div>
             </div>

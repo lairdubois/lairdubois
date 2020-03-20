@@ -666,9 +666,11 @@ fos_elastica:
                         changedAt: { type: date }
                         startAt: { type: date }
                         endAt: { type: date }
+                        cancelled: { type: boolean }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
+                        joinCount: { type: integer }
                         user:
                             type: "object"
                             properties:
@@ -681,7 +683,7 @@ fos_elastica:
                                 label: { type: text, boost: 2 }
                     persistence:
                         driver: orm
-                        model: Ladb\CoreBundle\Entity\Find\Find
+                        model: Ladb\CoreBundle\Entity\Event\Event
                         provider: ~
                         listener:
                             insert: false
