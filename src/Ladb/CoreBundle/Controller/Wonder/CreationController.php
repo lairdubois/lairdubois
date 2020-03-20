@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Tip;
+use Ladb\CoreBundle\Entity\Event\Event;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -841,13 +842,13 @@ class CreationController extends AbstractController {
 				}
 
 				// RunningEvents
-				$findRepository = $om->getRepository(Find::CLASS_NAME);
-				$runningFinds = $findRepository->findByRunningNow();
+				$eventRepository = $om->getRepository(Event::CLASS_NAME);
+				$runningEvents = $eventRepository->findByRunningNow();
 
 			}
 
 			// Tip
-			if (!isset($runningFinds) || empty($runningFinds)) {
+			if (!isset($runningEvents) || empty($runningEvents)) {
 
 				$maybeUtils = $this->get(MaybeUtils::NAME);
 				if ($maybeUtils->canDoIt(0, 10, 'tip')) {
@@ -1132,7 +1133,7 @@ class CreationController extends AbstractController {
 			'spotlight'        => isset($spotlight) ? $spotlight : null,
 			'spotlightEntity'  => isset($spotlightEntity) ? $spotlightEntity : null,
 			'highlightedPost'  => isset($highlightedPost) ? $highlightedPost : null,
-			'runningFinds'     => isset($runningFinds) ? $runningFinds : null,
+			'runningEvents'    => isset($runningEvents) ? $runningEvents : null,
 			'highlightedTip'   => isset($highlightedTip) ? $highlightedTip : null,
 			'highlightedOffer' => isset($highlightedOffer) ? $highlightedOffer : null,
 		));

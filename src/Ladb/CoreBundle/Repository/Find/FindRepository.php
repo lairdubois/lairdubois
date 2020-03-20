@@ -218,42 +218,6 @@ class FindRepository extends AbstractEntityRepository {
 		}
 	}
 
-	public function findByRunningNow() {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'f', 'u', 'mp', 'ct' ))
-			->from($this->getEntityName(), 'f')
-			->innerJoin('f.user', 'u')
-			->innerJoin('f.mainPicture', 'mp')
-			->innerJoin('f.content', 'ct')
-			->where('ct INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Find\\Content\\Event')
-			->andWhere('f.createdAt > :limitDate')
-			->andWhere('f.isDraft = false')
-			->setParameter('limitDate', (new \DateTime())->sub(new \DateInterval('P1Y')))	// Limit search to 1 year ago
-		;
-
-		try {
-
-			// TODO : Do the postreatment in DQL Query
-
-			$now = new \DateTime();
-			$finds = $queryBuilder->getQuery()->getResult();
-			$runningFinds = array();
-			foreach ($finds as $find) {
-				if (!$find->getContent()->getCancelled()
-					&& $find->getContent()->getStartDate() <= $now 	/* event starts today ? */
-					&& $find->getContent()->getEndAt() >= $now 		/* hide finished events */
-					&& $find->getContent()->getDuration()->d <= 3 	/* limit to 3 days long events */ ) {
-					$runningFinds[] = $find;
-				}
-			}
-
-			return $runningFinds;
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
-		}
-	}
-
 	/////
 
 	private function _applyCommonFilter(&$queryBuilder, $filter) {

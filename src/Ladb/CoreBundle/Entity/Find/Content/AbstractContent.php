@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="integer")
- * @ORM\DiscriminatorMap({1 = "Website", 2 = "Video", 3 = "Gallery", 4 = "Event"})
+ * @ORM\DiscriminatorMap({1 = "Website", 2 = "Video", 3 = "Gallery"})
  */
 abstract class AbstractContent {
 

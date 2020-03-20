@@ -85,14 +85,14 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% if homepage and runningFinds and runningFinds is not empty %}
+    {% if homepage and runningEvents and runningEvents is not empty %}
         <div class="ladb-masonry-item ladb-masonry-column">
             <div class="ladb-box">
                 <div style="padding: 10px;">
-                    <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-calendar-month"></i> {{ runningFinds|length }} {{ 'find.find.choice.events'|transchoice(runningFinds|length) }} aujourd'hui !</div>
+                    <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-event"></i> {{ runningEvents|length }} {{ 'find.find.choice.events'|transchoice(runningEvents|length) }} aujourd'hui !</div>
                     <ul>
-                        {% for runningFind in runningFinds %}
-                         <li><a href="{{ ladb_entity_url_action(runningFind) }}">{{ runningFind.title }}</a></li>
+                        {% for runningEvent in runningEvents %}
+                         <li><a href="{{ ladb_entity_url_action(runningEvent) }}">{{ runningEvent.title }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>

@@ -168,26 +168,15 @@ class EventRepository extends AbstractEntityRepository {
 			->innerJoin('f.mainPicture', 'mp')
 			->where('f.createdAt > :limitDate')
 			->andWhere('f.isDraft = false')
+			->andWhere('f.cancelled = false')
+			->andWhere('f.startAt <= :now')
+			->andWhere('f.endAt >= :now')
 			->setParameter('limitDate', (new \DateTime())->sub(new \DateInterval('P1Y')))	// Limit search to 1 year ago
+			->setParameter('now', new \DateTime())
 		;
 
 		try {
-
-			// TODO : Do the postreatment in DQL Query
-
-			$now = new \DateTime();
-			$events = $queryBuilder->getQuery()->getResult();
-			$runningEvents = array();
-			foreach ($events as $event) {
-				if (!$event->getContent()->getCancelled()
-					&& $event->getContent()->getStartDate() <= $now 	/* event starts today ? */
-					&& $event->getContent()->getEndAt() >= $now 		/* hide finished events */
-					&& $event->getContent()->getDuration()->d <= 3 	/* limit to 3 days long events */ ) {
-					$runningEvents[] = $event;
-				}
-			}
-
-			return $runningEvents;
+			return $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}
