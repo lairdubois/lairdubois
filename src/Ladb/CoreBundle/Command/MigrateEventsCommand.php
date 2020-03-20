@@ -10,6 +10,7 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Manager\Find\FindManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
@@ -113,10 +114,6 @@ EOT
 				$om->flush();
 			}
 
-			// Dispatch publications event
-			$dispatcher = $this->getContainer()->get('event_dispatcher');
-			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED_FROM_CONVERT, new PublicationEvent($event));
-
 			// User counter
 			if ($event->getIsDraft()) {
 				$event->getUser()->getMeta()->incrementPrivateFindCount(1);
@@ -144,6 +141,10 @@ EOT
 			$joinableUtils = $this->getContainer()->get(JoinableUtils::NAME);
 			$joinableUtils->transferJoins($find, $event, false);
 
+			// Transfer collections
+			$collectionnableUtils = $this->getContainer()->get(CollectionnableUtils::NAME);
+			$collectionnableUtils->transferCollections($find, $event, false);
+
 			// transfer reports
 			$reportableUtils = $this->getContainer()->get(ReportableUtils::NAME);
 			$reportableUtils->transferReports($find, $event, false);
@@ -155,6 +156,10 @@ EOT
 			// Create the witness
 			$witnessManager = $this->getContainer()->get(WitnessManager::NAME);
 			$witnessManager->createConvertedByPublication($find, $event, false);
+
+			// Dispatch publications event
+			$dispatcher = $this->getContainer()->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED_FROM_CONVERT, new PublicationEvent($event));
 
 			// Delete the find
 			$findManager = $this->getContainer()->get(FindManager::NAME);

@@ -60,10 +60,6 @@ class FindType extends AbstractType {
 				'mapped'      => false,
 				'constraints' => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
-			->add('event', Content\EventType::class, array(
-				'mapped'      => false,
-				'constraints' => array(new \Symfony\Component\Validator\Constraints\Valid())
-			))
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 				->addModelTransformer(new TagsToLabelsTransformer($this->om))

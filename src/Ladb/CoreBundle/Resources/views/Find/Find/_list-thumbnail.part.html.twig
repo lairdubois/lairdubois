@@ -5,32 +5,12 @@
 {% set entity = find %}
 
 {% block title %}
-    <i class="ladb-icon-{% if find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}video{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}camera{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}date{% else %}globe{% endif %}"></i> {{ parent() }}
+    <i class="ladb-icon-{% if find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}video{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}camera{% else %}globe{% endif %}"></i> {{ parent() }}
 {% endblock %}
 
 {% block image %}
     {{ parent() }}
     {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}
         <div style="position: absolute; top: 50%; left: 50%; margin-left: -30px; margin-top: -40px; font-size: 60px; color: #fff; opacity: 0.8;"><i class="ladb-icon-play"></i></div>
-    {% elseif find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
-        {% include 'LadbCoreBundle:Find/Find:_event-calendar.part.html.twig' with { 'event':find.content } %}
-    {% endif %}
-{% endblock %}
-
-{% block entityMetas %}
-    {{ parent() }}
-    {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
-        {% if entity.joinCount > 0 %}
-            <li class="ladb-counter"><i class="ladb-icon-users"></i> <span>{{ entity.joinCount|number_format(0, ',', ' ') }}</span></li>
-        {% endif %}
-        {% if find.content.cancelled %}
-            <span class="label label-danger"><i class="ladb-icon-warning"></i> {{ 'find.find.content.event.cancelled'|trans() }}</span>
-        {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_SCHEDULED') %}
-            <span class="label label-info">{{ find.content.startAt|time_diff()|capitalize }}</span>
-        {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_RUNNING') %}
-            <span class="label label-success">{{ 'find.find.content.event.running'|trans() }}</span>
-        {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_COMPLETED') %}
-            <span class="label label-danger">{{ 'find.find.content.event.completed'|trans() }}</span>
-        {% endif %}
     {% endif %}
 {% endblock %}

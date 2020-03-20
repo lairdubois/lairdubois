@@ -7,7 +7,9 @@
 {% set headingClasses = event.cancelled ? 'ladb-strikethrough' : null %}
 
 {% block title %}
-    <i class="ladb-icon-date"></i> {{ parent() }}
+    <div style="padding-top: 10px;">
+        <i class="ladb-icon-date"></i> {{ parent() }}
+    </div>
 {% endblock %}
 
 {% block image %}
@@ -20,9 +22,9 @@
     {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
         <div class="label label-default" style="display: block; border-radius: 0; font-weight: normal;">{{ 'event.event.completed'|trans() }}</div>
     {% endif %}
-    <div style="padding-bottom: 10px; position: relative;">
+    <div style="position: relative;">
         {{ parent() }}
-        {% include 'LadbCoreBundle:Event/Event:_event-calendar.part.html.twig' with { 'topRight':true } %}
+        {% include 'LadbCoreBundle:Event/Event:_event-calendar.part.html.twig' with { 'topRight':false } %}
     </div>
 {% endblock %}
 

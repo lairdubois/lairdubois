@@ -125,4 +125,34 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 		);
 	}
 
+	/////
+
+	public function transferCollections(CollectionnableInterface $collectionnableSrc, CollectionnableInterface $collectionnableDest, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+		$entryRepository = $om->getRepository(Entry::CLASS_NAME);
+
+		// Retrieve entries
+		$entries = $entryRepository->findByEntityTypeAndEntityId($collectionnableSrc->getType(), $collectionnableSrc->getId(), false);
+
+		// Transfer entries
+		foreach ($entries as $entry) {
+			$entry->setEntityType($collectionnableDest->getType());
+			$entry->setEntityId($collectionnableDest->getId());
+
+			// Update collectionnable collection count
+			if ($entry->getCollection()->getIsPublic()) {
+				$collectionnableSrc->incrementPublicCollectionCount(-1);
+				$collectionnableDest->incrementPublicCollectionCount(1);
+			} else {
+				$collectionnableSrc->incrementPrivateCollectionCount(-1);
+				$collectionnableDest->incrementPrivateCollectionCount(1);
+			}
+
+		}
+
+		if ($flush) {
+			$om->flush();
+		}
+	}
+
 }

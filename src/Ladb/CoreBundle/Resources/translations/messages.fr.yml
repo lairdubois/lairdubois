@@ -346,7 +346,7 @@ find:
     nav: Trouvailles
     other_from: Autres trouvailles de
     similar: Voir aussi
-    new_warning: Une <strong>trouvaille</strong> est un <strong>lien</strong> vers un <strong>site web</strong> (blog, forum, ...) ou une <strong>vidéo</strong> ou des <strong>photos</strong> ou un <strong>évènement</strong> ayant rapport avec le <strong>bois</strong>.
+    new_warning: Une <strong>trouvaille</strong> est un <strong>lien</strong> vers un <strong>site web</strong> (blog, forum, ...) ou une <strong>vidéo</strong> ou des <strong>photos</strong> ayant rapport avec le <strong>bois</strong>.
     content:
       link:
         name: Lien

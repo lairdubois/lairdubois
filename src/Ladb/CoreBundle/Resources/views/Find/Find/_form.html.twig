@@ -6,7 +6,6 @@
     {{ parent() }}
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'content_link', 'fieldId':form.link.thumbnail.vars.id, 'maxPictureCount':1 } %}
     {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'content_gallery', 'fieldId':form.gallery.pictures.vars.id, 'maxPictureCount':5, 'sortable':true } %}
-    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'formSection':'content_event', 'fieldId':form.event.pictures.vars.id, 'maxPictureCount':5 , 'sortable':true } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
 {% endblock %}
 
@@ -36,7 +35,6 @@
             <ul id="{{ form.contentType.vars.id }}_tab" class="nav nav-tabs" role="tablist">
                 <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}" aria-controls="home" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_LINK') }}"><i class="ladb-icon-link"></i> {{ 'find.find.content.link.name'|trans }}</a></li>
                 <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}" aria-controls="profile" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_GALLERY') }}"><i class="ladb-icon-camera"></i> {{ 'find.find.content.gallery.name'|trans }}</a></li>
-                <li role="presentation"{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} class="active"{% endif %}><a href="#ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" aria-controls="messages" role="tab" data-toggle="tab" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}"><i class="ladb-icon-calendar-month"></i> {{ 'find.find.content.event.name'|trans }}</a></li>
             </ul>
             <script>
                 $("#{{ form.contentType.vars.id }}_tab").on('shown.bs.tab', function(e) {
@@ -76,151 +74,6 @@
                             {{ form_widget(form.gallery.location) }}
                         </div>
                     </div>
-                </div>
-                <div id="ladb_content_tab_pane_{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') }}" class="tab-pane{% if form.contentType.vars.data == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::CONTENT_TYPE_EVENT') %} active{% endif %}">
-                    <p><span style="border: 1px solid #000; border-radius: 50%; width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; background-color: #000; color: #fff; font-size: 18px;">2</span> {{ 'find.find.form.help.event'|trans()|raw }}</p>
-                    <div class="form-group">
-                        <label>Images<span class="ladb-mandatory">*</span></label>
-                        {% include 'LadbCoreBundle:Core/Picture:_form-gallery.part.html.twig' with { 'formSection':'content_event', 'form':form.event, 'maxPictureCount':5, 'sortable':true, 'title':('default.showcase'|trans), 'help':('find.find.form.help.event_pictures'|trans()), 'hideTextOverlayWarning':true } %}
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-xs-12 col-md-6">
-                            {{ form_label(form.event.startDate, 'default.start_date') }}<span class="ladb-mandatory">*</span>
-                            {{ form_errors(form.event.startDate) }}
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
-                                {{ form_widget(form.event.startDate) }}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            {{ form_label(form.event.startTime, 'default.start_time') }}
-                            {{ form_errors(form.event.startTime) }}
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-time"></i></span>
-                                {{ form_widget(form.event.startTime) }}
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" onclick="$('#{{ form.event.startTime.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-xs-12 col-md-6">
-                            {{ form_label(form.event.endDate, 'default.end_date') }}
-                            {{ form_errors(form.event.endDate) }}
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-calendar-month"></i></span>
-                                {{ form_widget(form.event.endDate) }}
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" onclick="$('#{{ form.event.endDate.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            {{ form_label(form.event.endTime, 'default.end_time') }}
-                            {{ form_errors(form.event.endTime) }}
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="ladb-icon-time"></i></span>
-                                {{ form_widget(form.event.endTime) }}
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" onclick="$('#{{ form.event.endTime.vars.id }}').data('DateTimePicker').clear();"><i class="ladb-icon-remove ladb-icon-sm"></i></button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.event.location, 'default.location') }}
-                        <p class="help-block"><i>{{ 'find.find.form.help.event_location'|trans() }}</i></p>
-                        {{ form_errors(form.event.location) }}
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
-                            {{ form_widget(form.event.location) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.event.url, 'default.link') }}
-                        <p class="help-block"><i>{{ 'find.find.form.help.event_url'|trans() }}</i></p>
-                        {{ form_errors(form.event.url) }}
-                        <div class="input-group">
-                            <span class="input-group-addon">{% if form.event.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-link"></i>{% endif %}</span>
-                            {{ form_widget(form.event.url) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.event.cancelled, 'Annulation') }}
-                        <div class="checkbox">
-                            <label>
-                                {{ form_widget(form.event.cancelled) }}
-                                Cet évènement est annulé
-                            </label>
-                        </div>
-                    </div>
-                    <script>
-                        $(function () {
-                            $('#{{ form.event.startDate.vars.id }}')
-                                .datetimepicker({
-                                    locale: 'fr',
-                                    format: 'DD/MM/YYYY',
-                                    icons: {
-                                        previous : "ladb-icon-chevron-left",
-                                        next : "ladb-icon-chevron-right"
-                                    }
-                                })
-                                .on("dp.change", function (e) {
-                                    if (e.date) {
-                                        var endDatePicker = $('#{{ form.event.endDate.vars.id }}').data("DateTimePicker");
-                                        var startDate = e.date;
-                                        var endDate = endDatePicker.date();
-                                        if (endDate) {
-                                            endDatePicker.date(moment.max(startDate, endDate));
-                                        }
-                                    }
-                                    markAsUnsaved();
-                                })
-                            ;
-                            $('#{{ form.event.startTime.vars.id }}')
-                                .datetimepicker({
-                                    locale: 'fr',
-                                    format: 'HH:mm',
-                                    stepping: 5,
-                                    icons: {
-                                        up: "ladb-icon-plus",
-                                        down: "ladb-icon-minus"
-                                    }
-                                })
-                                .on("dp.change", function (e) {
-                                    markAsUnsaved();
-                                })
-                            ;
-                            $('#{{ form.event.endDate.vars.id }}')
-                                .datetimepicker({
-                                    locale: 'fr',
-                                    format: 'DD/MM/YYYY',
-                                    icons: {
-                                        previous : "ladb-icon-chevron-left",
-                                        next : "ladb-icon-chevron-right"
-                                    }
-                                })
-                                .on("dp.change", function (e) {
-                                    markAsUnsaved();
-                                })
-                            ;
-                            $('#{{ form.event.endTime.vars.id }}')
-                                .datetimepicker({
-                                    locale: 'fr',
-                                    format: 'HH:mm',
-                                    stepping: 5,
-                                    icons: {
-                                        up: "ladb-icon-plus",
-                                        down: "ladb-icon-minus"
-                                    }
-                                })
-                                .on("dp.change", function (e) {
-                                    markAsUnsaved();
-                                })
-                            ;
-                        });
-                    </script>
                 </div>
             </div>
         {% endblock %}

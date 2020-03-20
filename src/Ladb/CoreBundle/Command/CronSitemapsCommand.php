@@ -78,6 +78,12 @@ EOT
 				'slugged'   => true,
 			),
 			array(
+				'className' => \Ladb\CoreBundle\Entity\Event\Event::CLASS_NAME,
+				'name'      => 'event',
+				'section'   => 'event-events',
+				'slugged'   => true,
+			),
+			array(
 				'className' => \Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME,
 				'name'      => 'qa_question',
 				'section'   => 'qa-questions',
