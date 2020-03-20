@@ -667,6 +667,7 @@ fos_elastica:
                         startAt: { type: date }
                         endAt: { type: date }
                         cancelled: { type: boolean }
+                        geoPoint: { type: geo_point }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }

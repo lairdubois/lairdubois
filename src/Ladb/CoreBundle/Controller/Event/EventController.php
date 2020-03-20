@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Event;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -493,6 +494,42 @@ class EventController extends AbstractController {
 						$filter = new \Elastica\Query\QueryString($facet->value);
 						$filter->setFields(array( 'user.displayname', 'user.fullname', 'user.username'  ));
 						$filters[] = $filter;
+
+						break;
+
+					case 'around':
+
+						if (isset($facet->value)) {
+							$filter = new \Elastica\Query\GeoDistance('geoPoint', $facet->value, '100km');
+							$filters[] = $filter;
+						}
+
+						break;
+
+					case 'geocoded':
+
+						$filter = new \Elastica\Query\Exists('geoPoint');
+						$filters[] = $filter;
+
+						break;
+
+					case 'location':
+
+						$localisableUtils = $this->get(LocalisableUtils::NAME);
+						$boundsAndLocation = $localisableUtils->getBoundsAndLocation($facet->value);
+
+						if (!is_null($boundsAndLocation)) {
+							$filter = new \Elastica\Query\BoolQuery();
+							if (isset($boundsAndLocation['bounds'])) {
+								$geoQuery = new \Elastica\Query\GeoBoundingBox('geoPoint', $boundsAndLocation['bounds']);
+								$filter->addShould($geoQuery);
+							}
+							if (isset($boundsAndLocation['location'])) {
+								$geoQuery = new \Elastica\Query\GeoDistance('geoPoint', $boundsAndLocation['location'], '20km');
+								$filter->addShould($geoQuery);
+							}
+							$filters[] = $filter;
+						}
 
 						break;
 
