@@ -391,14 +391,14 @@ find:
 
 event:
   event:
-    description: Base collaborative d'évènement autours du travail du bois.
+    description: Base collaborative d'évènements autours du l'univers du bois.
     new: Ajouter un évènement
     edit: Edition de l'évènement
     list: Les évènements
     nav: Evènements
     other_from: Autres évènement de
     similar: Voir aussi
-    new_warning: Un <strong>évènement</strong> est ... ayant rapport avec le <strong>bois</strong>.
+    new_warning: Un <strong>évènement</strong> est une rencontre, un salon, une porte ouverte, etc ... ayant rapport avec le <strong>bois</strong>.
     scheduled: Prochainement
     running: En ce moment
     completed: Terminé
