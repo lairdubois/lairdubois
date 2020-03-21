@@ -473,7 +473,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				return 'workshop';
 			// Find
 			case \Ladb\CoreBundle\Entity\Find\Find::TYPE:
-				return 'globe';
+				return 'find';
 			// Plan
 			case \Ladb\CoreBundle\Entity\Wonder\Plan::TYPE:
 				return 'plan';

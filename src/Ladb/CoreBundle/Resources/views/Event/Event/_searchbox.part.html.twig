@@ -17,12 +17,9 @@
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes trouvailles" data-unique="true" data-icon="globe"><i class="ladb-icon-globe"></i> Mes évènements</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes trouvailles" data-unique="true" data-icon="event"><i class="ladb-icon-event"></i> Mes évènements</a></li>
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
     {% endif %}
-    <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last7days" data-label="7 derniers jours" data-unique="true" data-icon="calendar-week"><i class="ladb-icon-calendar-week"></i> 7 derniers jours</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last30days" data-label="30 derniers jours" data-unique="true" data-icon="calendar-month"><i class="ladb-icon-calendar-month"></i> 30 derniers jours</a></li>
     {# Hidden filters #}
     <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="day" data-label="Jour" data-editable="true" data-unique="true" data-icon="event"><i class="ladb-icon-event"></i> Jour</a></li>
 {% endblock %}

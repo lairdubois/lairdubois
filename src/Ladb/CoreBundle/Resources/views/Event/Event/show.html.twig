@@ -98,7 +98,7 @@
         {% endif %}
         {% if event.url is defined and event.url is not null %}
             <div class="ladb-link">
-                <i class="ladb-icon-link ladb-icon-fixed-center"></i> <a href="{{ event.url }}" target="_blank" itemprop="url">{{ event.url|ladb_url_truncate(true, 30) }}</a>
+                <i class="ladb-icon-globe ladb-icon-fixed-center"></i> <a href="{{ event.url }}" target="_blank" itemprop="url">{{ event.url|ladb_url_truncate(true, 30) }}</a>
             </div>
         {% endif %}
         {% if not event.isDraft and joinContext.isJoinable %}
@@ -153,7 +153,7 @@
                 {% endfor %}
                 {% if event.user.meta.publicEventCount > 2 %}
                     <div class="col-xs-12 ladb-margin-top">
-                        <a href="{{ path('core_user_show_events', { 'username':event.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
+                        <a href="{{ path('core_event_list', { 'q':('@author:'~event.user.usernamecanonical) }) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
                     </div>
                 {% endif %}
             </div>

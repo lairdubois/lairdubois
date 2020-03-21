@@ -11,7 +11,7 @@
 
 {% block sidenav %}
     {% include 'LadbCoreBundle:Common:_form-sidenav-title.part.html.twig' %}
-    <li><a href="#content"><i class="ladb-icon-globe"></i> {{ 'default.content'|trans() }}</a></li>
+    <li><a href="#content"><i class="ladb-icon-find"></i> {{ 'default.content'|trans() }}</a></li>
     {% include 'LadbCoreBundle:Core/Block:_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
     {% include 'LadbCoreBundle:Core/Tag:_form-sidenav.part.html.twig' %}
 {% endblock %}

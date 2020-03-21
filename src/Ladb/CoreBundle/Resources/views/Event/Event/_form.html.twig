@@ -88,7 +88,7 @@
                     <p class="help-block"><i>{{ 'event.event.form.help.event_url'|trans() }}</i></p>
                     {{ form_errors(form.url) }}
                     <div class="input-group">
-                        <span class="input-group-addon">{% if form.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-link"></i>{% endif %}</span>
+                        <span class="input-group-addon">{% if form.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-globe"></i>{% endif %}</span>
                         {{ form_widget(form.url) }}
                     </div>
                 </div>
