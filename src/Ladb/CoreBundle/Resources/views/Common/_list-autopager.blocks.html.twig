@@ -23,7 +23,7 @@
 {% block autopagerContainer %}
     {% set masonry = masonry|default(false) %}
     {% set masonryWide = masonryWide|default(false) %}
-    <div id="ladb_autopager_container"{% if masonry %} class="row ladb-margin-top"{% endif %}>
+    <div id="ladb_autopager_container"{% if masonry %} class="row ladb-margin-top ladb-relative"{% endif %}>
         {% block autopagerContainerInner %}{% endblock %}
     </div>
 {% endblock %}

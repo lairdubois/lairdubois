@@ -218,6 +218,13 @@
                                         <small>{{ 'find.find.choice.entities'|transchoice(user.meta.publicFindCount) }}</small>
                                     {% if user.meta.publicFindCount > 0 %}</a>{% endif %}
                                 </div>
+                                <div class="ladb-meta{% if user.meta.publicEventCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-event"></i>
+                                    {% if user.meta.publicEventCount > 0 %}<a href="{{ path('core_event_list', { 'q':('@author:'~user.usernameCanonical) }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicEventCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'event.event.choice.entities'|transchoice(user.meta.publicEventCount) }}</small>
+                                    {% if user.meta.publicEventCount > 0 %}</a>{% endif %}
+                                </div>
                                 <div class="ladb-meta{% if user.meta.publicCollectionCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-collection"></i>
                                     {% if user.meta.publicCollectionCount > 0 %}<a href="{{ path('core_collection_list', { 'q':('@author:'~user.usernameCanonical) }) }}">{% endif %}

@@ -979,6 +979,11 @@ class UserMeta {
 
 	// CommentCount /////
 
+	public function setCommentCount($commentCount) {
+		$this->commentCount = $commentCount;
+		return $this;
+	}
+
 	public function incrementCommentCount($by = 1) {
 		$this->incrementContributionCount($by);
 		return $this->commentCount += intval($by);
@@ -991,6 +996,11 @@ class UserMeta {
 
 	// ContributionCount /////
 
+	public function setContributionCount($contributionCount) {
+		$this->contributionCount = $contributionCount;
+		return $this;
+	}
+
 	public function incrementContributionCount($by = 1) {
 		return $this->contributionCount += intval($by);
 	}
@@ -1001,6 +1011,11 @@ class UserMeta {
 
 	// PrivateCreationCount /////
 
+	public function setPrivateCreationCount($privateCreationCount) {
+		$this->privateCreationCount = $privateCreationCount;
+		return $this;
+	}
+
 	public function incrementPrivateCreationCount($by = 1) {
 		return $this->privateCreationCount += intval($by);
 	}
@@ -1010,6 +1025,11 @@ class UserMeta {
 	}
 
 	// PublicCreationCount /////
+
+	public function setPublicCreationCount($publicCreationCount) {
+		$this->publicCreationCount = $publicCreationCount;
+		return $this;
+	}
 
 	public function incrementPublicCreationCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1022,6 +1042,11 @@ class UserMeta {
 
 	// PrivatePlanCount /////
 
+	public function setPrivatePlanCount($privatePlanCount) {
+		$this->privatePlanCount = $privatePlanCount;
+		return $this;
+	}
+
 	public function incrementPrivatePlanCount($by = 1) {
 		return $this->privatePlanCount += intval($by);
 	}
@@ -1031,6 +1056,11 @@ class UserMeta {
 	}
 
 	// PublicPlanCount /////
+
+	public function setPublicPlanCount($publicPlanCount) {
+		$this->publicPlanCount = $publicPlanCount;
+		return $this;
+	}
 
 	public function incrementPublicPlanCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1043,6 +1073,11 @@ class UserMeta {
 
 	// PrivateHowtoCount /////
 
+	public function setPrivateHowtoCount($privateHowtoCount) {
+		$this->privateHowtoCount = $privateHowtoCount;
+		return $this;
+	}
+
 	public function incrementPrivateHowtoCount($by = 1) {
 		return $this->privateHowtoCount += intval($by);
 	}
@@ -1052,6 +1087,11 @@ class UserMeta {
 	}
 
 	// PublicHowtoCount /////
+
+	public function setPublicHowtoCount($publicHowtoCount) {
+		$this->publicHowtoCount = $publicHowtoCount;
+		return $this;
+	}
 
 	public function incrementPublicHowtoCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1064,6 +1104,11 @@ class UserMeta {
 
 	// PrivateWorkshopCount /////
 
+	public function setPrivateWorkshopCount($privateWorkshopCount) {
+		$this->privateWorkshopCount = $privateWorkshopCount;
+		return $this;
+	}
+
 	public function incrementPrivateWorkshopCount($by = 1) {
 		return $this->privateWorkshopCount += intval($by);
 	}
@@ -1073,6 +1118,11 @@ class UserMeta {
 	}
 
 	// PublicWorkshopCount /////
+
+	public function setPublicWorkshopCount($publicWorkshopCount) {
+		$this->publicWorkshopCount = $publicWorkshopCount;
+		return $this;
+	}
 
 	public function incrementPublicWorkshopCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1085,6 +1135,11 @@ class UserMeta {
 
 	// PrivateFindCount /////
 
+	public function setPrivateFindCount($privateFindCount) {
+		$this->privateFindCount = $privateFindCount;
+		return $this;
+	}
+
 	public function incrementPrivateFindCount($by = 1) {
 		return $this->privateFindCount += intval($by);
 	}
@@ -1094,6 +1149,11 @@ class UserMeta {
 	}
 
 	// PublicFindCount /////
+
+	public function setPublicFindCount($publicFindCount) {
+		$this->publicFindCount = $publicFindCount;
+		return $this;
+	}
 
 	public function incrementPublicFindCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1106,6 +1166,11 @@ class UserMeta {
 
 	// PrivateEventCount /////
 
+	public function setPrivateEventCount($privateEventCount) {
+		$this->privateEventCount = $privateEventCount;
+		return $this;
+	}
+
 	public function incrementPrivateEventCount($by = 1) {
 		return $this->privateEventCount += intval($by);
 	}
@@ -1115,6 +1180,11 @@ class UserMeta {
 	}
 
 	// PublicEventCount /////
+
+	public function setPublicEventCount($publicEventCount) {
+		$this->publicEventCount = $publicEventCount;
+		return $this;
+	}
 
 	public function incrementPublicEventCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1127,6 +1197,11 @@ class UserMeta {
 
 	// PrivateQuestionCount /////
 
+	public function setPrivateQuestionCount($privateQuestionCount) {
+		$this->privateQuestionCount = $privateQuestionCount;
+		return $this;
+	}
+
 	public function incrementPrivateQuestionCount($by = 1) {
 		return $this->privateQuestionCount += intval($by);
 	}
@@ -1136,6 +1211,11 @@ class UserMeta {
 	}
 
 	// PublicQuestionCount /////
+
+	public function setPublicQuestionCount($publicQuestionCount) {
+		$this->publicQuestionCount = $publicQuestionCount;
+		return $this;
+	}
 
 	public function incrementPublicQuestionCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1148,6 +1228,11 @@ class UserMeta {
 
 	// AnswerCount /////
 
+	public function setAnswerCount($answerCount) {
+		$this->answerCount = $answerCount;
+		return $this;
+	}
+
 	public function incrementAnswerCount($by = 1) {
 		$this->incrementContributionCount($by);
 		return $this->answerCount += intval($by);
@@ -1159,6 +1244,11 @@ class UserMeta {
 
 	// PrivateOfferCount /////
 
+	public function setPrivateOfferCount($privateOfferCount) {
+		$this->privateOfferCount = $privateOfferCount;
+		return $this;
+	}
+
 	public function incrementPrivateOfferCount($by = 1) {
 		return $this->privateOfferCount += intval($by);
 	}
@@ -1168,6 +1258,11 @@ class UserMeta {
 	}
 
 	// PublicOfferCount /////
+
+	public function setPublicOfferCount($publicOfferCount) {
+		$this->publicOfferCount = $publicOfferCount;
+		return $this;
+	}
 
 	public function incrementPublicOfferCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1180,6 +1275,11 @@ class UserMeta {
 
 	// PrivateGraphicCount /////
 
+	public function setPrivateGraphicCount($privateGraphicCount) {
+		$this->privateGraphicCount = $privateGraphicCount;
+		return $this;
+	}
+
 	public function incrementPrivateGraphicCount($by = 1) {
 		return $this->privateGraphicCount += intval($by);
 	}
@@ -1189,6 +1289,11 @@ class UserMeta {
 	}
 
 	// PublicGraphicCount /////
+
+	public function setPublicGraphicCount($publicGraphicCount) {
+		$this->publicGraphicCount = $publicGraphicCount;
+		return $this;
+	}
 
 	public function incrementPublicGraphicCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1201,6 +1306,11 @@ class UserMeta {
 
 	// PrivateWorkflowCount /////
 
+	public function setPrivateWorkflowCount($privateWorkflowCount) {
+		$this->privateWorkflowCount = $privateWorkflowCount;
+		return $this;
+	}
+
 	public function incrementPrivateWorkflowCount($by = 1) {
 		return $this->privateWorkflowCount += intval($by);
 	}
@@ -1211,7 +1321,13 @@ class UserMeta {
 
 	// PublicWorkflowCount /////
 
+	public function setPublicWorkflowCount($publicWorkflowCount) {
+		$this->publicWorkflowCount = $publicWorkflowCount;
+		return $this;
+	}
+
 	public function incrementPublicWorkflowCount($by = 1) {
+		$this->incrementContributionCount($by);
 		return $this->publicWorkflowCount += intval($by);
 	}
 
@@ -1220,6 +1336,11 @@ class UserMeta {
 	}
 
 	// PrivateCollectionCount /////
+
+	public function setPrivateCollectionCount($privateCollectionCount) {
+		$this->privateCollectionCount = $privateCollectionCount;
+		return $this;
+	}
 
 	public function incrementPrivateCollectionCount($by = 1) {
 		return $this->privateCollectionCount += intval($by);
@@ -1231,6 +1352,11 @@ class UserMeta {
 
 	// PublicCollectionCount /////
 
+	public function setPublicCollectionCount($publicCollectionCount) {
+		$this->publicCollectionCount = $publicCollectionCount;
+		return $this;
+	}
+
 	public function incrementPublicCollectionCount($by = 1) {
 		return $this->publicCollectionCount += intval($by);
 	}
@@ -1240,6 +1366,11 @@ class UserMeta {
 	}
 
 	// ProposalCount /////
+
+	public function setProposalCount($proposalCount) {
+		$this->proposalCount = $proposalCount;
+		return $this;
+	}
 
 	public function incrementProposalCount($by = 1) {
 		$this->incrementContributionCount($by);
@@ -1252,6 +1383,11 @@ class UserMeta {
 
 	// TestimonialCount /////
 
+	public function setTestimonialCount($testimonialCount) {
+		$this->testimonialCount = $testimonialCount;
+		return $this;
+	}
+
 	public function incrementTestimonialCount($by = 1) {
 		$this->incrementContributionCount($by);
 		return $this->testimonialCount += intval($by);
@@ -1262,6 +1398,11 @@ class UserMeta {
 	}
 
 	// ReviewCount /////
+
+	public function setReviewCount($reviewCount) {
+		$this->reviewCount = $reviewCount;
+		return $this;
+	}
 
 	public function incrementReviewCount($by = 1) {
 		$this->incrementContributionCount($by);

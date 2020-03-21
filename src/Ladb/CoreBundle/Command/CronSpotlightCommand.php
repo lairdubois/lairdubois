@@ -100,7 +100,7 @@ EOT
 				->from('LadbCoreBundle:Wonder\Creation', 'c')
 				->leftJoin('c.spotlight', 's')
 				->where('c.isDraft = false')
-				->andWhere('c.likeCount >= 10')		// 10 or more likes
+				->andWhere('c.likeCount >= 15')		// 15 or more likes
 				->andWhere('c.changedAt > :retrieveDate')
 				->andWhere('c.spotlight IS NULL')
 				->orderBy('score', 'DESC')
@@ -126,7 +126,7 @@ EOT
 				->from('LadbCoreBundle:Howto\Howto', 'h')
 				->leftJoin('h.spotlight', 's')
 				->where('h.isDraft = false')
-				->andWhere('h.likeCount >= 10')		// 10 or more likes
+				->andWhere('h.likeCount >= 15')		// 15 or more likes
 				->andWhere('h.changedAt > :retrieveDate')
 				->andWhere('h.spotlight IS NULL')
 				->andWhere('h.isWorkInProgress = 0')
