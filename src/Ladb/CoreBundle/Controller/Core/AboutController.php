@@ -99,6 +99,7 @@ class AboutController extends AbstractController {
 			array( 'name' => 'jsPlumb', 'url' => 'https://jsplumbtoolkit.com', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'Lodash', 'url' => 'https://lodash.com/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'Selectize.js', 'url' => 'https://selectize.github.io/selectize.js/', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'CLNDR.js', 'url' => 'https://kylestetz.github.io/CLNDR/', 'labels' => array( 'JS' ) ),
 
 			array( 'name' => 'EmojiOne', 'url' => 'http://emojione.com/', 'labels' => array( 'PHP', 'CSS', 'JS' ) ),
 

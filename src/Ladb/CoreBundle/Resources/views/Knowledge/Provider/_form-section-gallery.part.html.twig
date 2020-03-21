@@ -27,7 +27,7 @@
         {% endfor %}
     </ul>
     <div id="linkto_provider_buttons">
-        <a href="#linkto_provider_modal" data-toggle="modal" class="btn btn-success" onclick="updateProviderChoiceModal();" data-toggle="modal"><i class="ladb-icon-link"></i> {{ 'knowledge.provider.linkto'|trans() }}</a>
+        <a href="#linkto_provider_modal" data-toggle="modal" class="btn btn-success" onclick="updateProviderChoiceModal();" data-toggle="modal"><i class="ladb-icon-globe"></i> {{ 'knowledge.provider.linkto'|trans() }}</a>
         {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'linkto_provider_modal', 'title':('knowledge.provider.linkto'|trans()), 'embeddedBody':true } %}
             {% block bodyInner %}
                 <iframe id="linkto_provider_modal_iframe" src="" frameborder="0" width="100%" height="380"></iframe>
