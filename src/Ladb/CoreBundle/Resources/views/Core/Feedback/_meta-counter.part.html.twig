@@ -1,0 +1,12 @@
+{# set entity #}
+
+{% set i18nPrefix = i18nPrefix|default(ladb_entity_type_stripped_name(entity)) %}
+
+<div class="ladb-meta{% if entity.feedbackCount == 0 %} text-muted{% endif %}">
+    <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_feedback_widget').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+    <i class="ladb-icon-feedback ladb-icon-fixed-center"></i>
+    <a href="#" onclick="$('#ladb_feedback_widget').ladbScrollTo(event);">
+        <strong>{{ entity.feedbackCount|number_format(0, ',', ' ') }}</strong>
+        <small>{{ ('feedback.default.choice.entities')|transchoice(entity.feedbackCount) }}</small>
+    </a>
+</div>

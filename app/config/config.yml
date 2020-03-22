@@ -672,6 +672,7 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         joinCount: { type: integer }
+                        feedbackCount: { type: integer }
                         user:
                             type: "object"
                             properties:

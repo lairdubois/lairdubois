@@ -1,0 +1,9 @@
+{# set entity #}
+
+{% set i18nPrefix = i18nPrefix|default(ladb_entity_type_stripped_name(entity)) %}
+
+{% if entity.feedbackCount > 0 %}
+    <li class="ladb-counter">
+        <span class="ladb-horizontal-separator-right" style="color: #888;"><i class="ladb-icon-feedback"></i> {{ entity.feedbackCount|number_format(0, ',', ' ') }} {{ ('feedback.'~i18nPrefix~'.choice.entities')|transchoice(entity.feedbackCount) }}</span>
+    </li>
+{% endif %}

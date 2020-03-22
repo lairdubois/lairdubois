@@ -1,0 +1,5 @@
+{% extends 'LadbCoreBundle:Core/Notification:_email.txt.twig' %}
+
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** a ajouté un retour d'expérience sur {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} "{{ row.entity.title|raw }}"
+{% endblock %}
+

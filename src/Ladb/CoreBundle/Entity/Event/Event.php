@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Event;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\FeedbackableInterface;
+use Ladb\CoreBundle\Model\FeedbackableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
@@ -48,10 +50,10 @@ use Ladb\CoreBundle\Model\ExplorableInterface;
  * @LadbAssert\BodyBlocks()
  * @ladbAssert\ValidEvent()
  */
-class Event extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface, JoinableInterface {
+class Event extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface, JoinableInterface, FeedbackableInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, MultiPicturedTrait, BlockBodiedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, LocalisableTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, LocalisableTrait, FeedbackableTrait;
 	use JoinableTrait {
 		getIsJoinable as getIsJoinableTrait;
 	}
@@ -221,6 +223,11 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @ORM\Column(type="integer", name="join_count")
 	 */
 	private $joinCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="feedback_count")
+	 */
+	private $feedbackCount = 0;
 
 	/////
 

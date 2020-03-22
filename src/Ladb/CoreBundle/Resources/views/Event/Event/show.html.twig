@@ -31,6 +31,14 @@
     {% if hasMap %}
         {{ block('mapAreaJavascripts') }}
     {% endif %}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Feedback Widget #}
+            $('.ladb-feedback-widget').ladbFeedbackWidget();
+
+        });
+    </script>
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
@@ -119,6 +127,7 @@
     {% if not ownerUser %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
+    {% include 'LadbCoreBundle:Core/Feedback:_widget.part.html.twig' %}
     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true } %}
 {% endblock %}
 
@@ -128,6 +137,7 @@
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-join-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Feedback:_meta-counter.part.html.twig' %}
         {% if hasMap %}
             <div class="ladb-meta">
                 {% if hasMap %}

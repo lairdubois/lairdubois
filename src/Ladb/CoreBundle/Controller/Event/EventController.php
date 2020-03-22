@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Event;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -519,6 +520,13 @@ class EventController extends AbstractController {
 
 						break;
 
+					case 'with-feedbacks':
+
+						$filter = new \Elastica\Query\Range('feedbackCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					// Sorters /////
 
 					case 'sort-recent':
@@ -663,6 +671,7 @@ class EventController extends AbstractController {
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 		$joinableUtils = $this->get(JoinableUtils::NAME);
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
 
 		if ($event instanceof LocalisableInterface) {
 			$hasMap = !is_null($event->getLatitude()) && !is_null($event->getLongitude());
@@ -680,6 +689,7 @@ class EventController extends AbstractController {
 			'collectionContext' => $collectionnableUtils->getCollectionContext($event),
 			'followerContext'   => $followerUtils->getFollowerContext($event->getUser(), $this->getUser()),
 			'joinContext'       => $joinableUtils->getJoinContext($event, $this->getUser()),
+			'feedbackContext'   => $feedbackableUtils->getFeedbackContext($event),
 			'hasMap'            => $hasMap,
 		);
 	}

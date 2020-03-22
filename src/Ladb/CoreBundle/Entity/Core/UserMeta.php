@@ -427,6 +427,11 @@ class UserMeta {
 	 */
 	private $reviewCount = 0;
 
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="feedback_count")
+	 */
+	private $feedbackCount = 0;
+
 
 	/**
 	 * @ORM\Column(name="donation_count", type="integer")
@@ -1411,6 +1416,23 @@ class UserMeta {
 
 	public function getReviewCount() {
 		return $this->reviewCount;
+	}
+
+
+	// FeedbackCount /////
+
+	public function setFeedbackCount($feedbackCount) {
+		$this->feedbackCount = $feedbackCount;
+		return $this;
+	}
+
+	public function incrementFeedbackCount($by = 1) {
+		$this->incrementContributionCount($by);
+		return $this->feedbackCount += intval($by);
+	}
+
+	public function getFeedbackCount() {
+		return $this->feedbackCount;
 	}
 
 

@@ -1270,6 +1270,20 @@ review:
     choice:
       entities: '[0,1]avis|]1,Inf]avis'
 
+feedback:
+  default:
+    choice:
+      entities: "[0,1]retour d'expérience|]1,Inf]retours d'expérience"
+  event_event:
+    new: Ajouter un retour d'expérience
+    edit: Editer le retour d'expérience
+    none: Cet évènement ne possède pour l'instant aucun retour d'expérience.<br>Ajoutez-en un !
+    form:
+      new_help: Ce retour d'expérience vous permet d'exprimer de façon synthétique votre expérience vécue lors de cet évènement
+      body: Votre retour d'expérience
+    alert:
+      delete_success: Le retour d'expérience a été supprimé.
+
 referer:
   list: On en parle ailleurs
   choice:

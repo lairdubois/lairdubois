@@ -40,6 +40,10 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Core\Tip::TYPE:
 				$a = array( 'core', 'tip' );
 				break;
+			// Feedback
+			case \Ladb\CoreBundle\Entity\Core\Feedback::TYPE:
+				$a = array( 'core', 'feeback' );
+				break;
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -202,6 +206,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Tip
 			case \Ladb\CoreBundle\Entity\Core\Tip::TYPE:
 				return '\Ladb\CoreBundle\Entity\Core\Tip';
+			// Feedback
+			case \Ladb\CoreBundle\Entity\Core\Feedback::TYPE:
+				return '\Ladb\CoreBundle\Entity\Core\Feedback';
 
 			// Text
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:
@@ -353,6 +360,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Core\Tip::TYPE:
 				$url = $router->generate('core_tip_'.$action, $params, $referenceType);
 				break;
+			case \Ladb\CoreBundle\Entity\Core\Feedback::TYPE:
+				$url = $router->generate('core_feedback_'.$action, $params, $referenceType);
+				break;
 
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Text::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Integer::TYPE:
@@ -464,6 +474,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Tip
 			case \Ladb\CoreBundle\Entity\Core\Tip::TYPE:
 				return 'tip';
+			// Feedback
+			case \Ladb\CoreBundle\Entity\Core\Feedback::TYPE:
+				return 'feedback';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:

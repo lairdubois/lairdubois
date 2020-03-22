@@ -15,6 +15,8 @@
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-feedbacks" data-label="Avec retours d'expérience" data-unique="true" data-icon="feedback"><i class="ladb-icon-feedback"></i> Avec retours d'expérience</a></li>
+    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
         <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes trouvailles" data-unique="true" data-icon="event"><i class="ladb-icon-event"></i> Mes évènements</a></li>

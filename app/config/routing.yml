@@ -140,6 +140,10 @@ ladb_core_review:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\ReviewController"
     type:     annotation
 
+ladb_core_feedback:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\FeedbackController"
+    type:     annotation
+
 ladb_core_tip:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\TipController"
     type:     annotation

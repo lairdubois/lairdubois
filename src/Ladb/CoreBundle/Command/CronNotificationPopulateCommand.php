@@ -309,6 +309,29 @@ EOT
 
 			}
 
+			// Feedback /////
+
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Feedback) {
+
+				$feedback = $activity->getFeedback();
+				$feedbackable = $typableUtils->findTypable($feedback->getEntityType(), $feedback->getEntityId());
+
+				if ($feedbackable->getWatchCount() > 0) {
+
+					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($feedbackable->getType(), $feedbackable->getId(), $actorUser);
+					if (!is_null($watches)) {
+						foreach ($watches as $watch) {
+							$this->_createNotification($om, $watch->getUser(), $activity, $notifiedUsers, $freshNotificationCounters);
+							if ($verbose) {
+								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new feedback='.mb_strimwidth($feedback->getTitle(), 0, 50, '[...]').' on='.$feedbackable->getTitle().'</info>');
+							}
+						}
+					}
+
+				}
+
+			}
+
 			// Flag activity as notified
 			$activity->setIsPendingNotifications(false);
 

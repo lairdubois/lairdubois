@@ -145,6 +145,10 @@ class NotificationController extends AbstractController {
 			$returnToUrl = $typableUtils->getUrlAction($activity->getReview());
 		}
 
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Feedback) {
+			$returnToUrl = $typableUtils->getUrlAction($activity->getFeedback());
+		}
+
 		return $this->redirect($returnToUrl);
 	}
 

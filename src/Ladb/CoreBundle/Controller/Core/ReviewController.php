@@ -14,7 +14,7 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
 use Ladb\CoreBundle\Model\ReviewableInterface;
-use Ladb\CoreBundle\Form\Type\ReviewType;
+use Ladb\CoreBundle\Form\Type\Core\ReviewType;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Entity\Core\Review;
@@ -34,7 +34,7 @@ class ReviewController extends AbstractController {
 			throw $this->createNotFoundException($e->getMessage());
 		}
 		if (!($entity instanceof ReviewableInterface)) {
-			throw $this->createNotFoundException('Entity must implements CommentableInterface.');
+			throw $this->createNotFoundException('Entity must implements ReviewableInterface.');
 		}
 		return $entity;
 	}

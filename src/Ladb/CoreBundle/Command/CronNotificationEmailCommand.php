@@ -49,6 +49,7 @@ EOT
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Answer::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Testify::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Review::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Feedback::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
 	}
 
@@ -220,6 +221,16 @@ EOT
 					$row->entity = $typableUtils->findTypable($review->getEntityType(), $review->getEntityId());
 					$row->childEntity = null;
 					$row->review = $review;
+
+				}
+
+				// Feedback
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Feedback::STRIPPED_NAME) {
+
+					$feedback = $activity->getFeedback();
+					$row->entity = $typableUtils->findTypable($feedback->getEntityType(), $feedback->getEntityId());
+					$row->childEntity = null;
+					$row->feedback = $feedback;
 
 				}
 

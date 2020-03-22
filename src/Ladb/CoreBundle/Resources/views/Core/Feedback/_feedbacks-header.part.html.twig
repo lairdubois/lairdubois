@@ -1,0 +1,10 @@
+{# set entity #}
+
+<div class="ladb-feedbacks-header">
+    {% if entity.feedbackCount > 0 %}
+        {% if is_granted("ROLE_USER") and userFeedback is defined and not userFeedback %}<button class="btn btn-default pull-right" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$('#ladb_feedback_btn').click();"><i class="ladb-icon-plus"></i> {{ 'feedback.new'|trans() }}</button>{% endif %}
+        <h2 id="ladb_feedbacks" class="ladb-margin-bottom">{{ entity.feedbackCount }} {{ ('feedback.default.choice.entities')|transchoice(entity.feedbackCount) }}</h2>
+    {% else %}
+        <h2 id="ladb_feedbacks">{{ ('feedback.default.choice.entities')|transchoice(2)|capitalize }}</h2>
+    {% endif %}
+</div>

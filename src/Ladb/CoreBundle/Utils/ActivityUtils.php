@@ -175,6 +175,19 @@ class ActivityUtils {
 		}
 	}
 
+	public function createFeedbackActivity(\Ladb\CoreBundle\Entity\Core\Feedback $feedback, $flush = true) {
+
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Feedback();
+		$activity->setUser($feedback->getUser());
+		$activity->setFeedback($feedback);
+
+		$this->om->persist($activity);
+
+		if ($flush) {
+			$this->om->flush();
+		}
+	}
+
 	// Delete /////
 
 	private function _deleteActivities($activities, $flush = true) {
@@ -249,6 +262,12 @@ class ActivityUtils {
 	public function deleteActivitiesByReview(\Ladb\CoreBundle\Entity\Core\Review $review, $flush = true) {
 		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Review::CLASS_NAME);
 		$activities = $activityRepository->findByReview($review);
+		$this->_deleteActivities($activities, $flush);
+	}
+
+	public function deleteActivitiesByFeedback(\Ladb\CoreBundle\Entity\Core\Feedback $feedback, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Feedback::CLASS_NAME);
+		$activities = $activityRepository->findByFeedback($feedback);
 		$this->_deleteActivities($activities, $flush);
 	}
 
