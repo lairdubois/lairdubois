@@ -122,7 +122,7 @@
 }
 
 // tablet
-@media screen and (min-width: @ladb-screen-tablet) {
+@media screen and (min-width: @ladb-screen-tablet) and (max-height: @ladb-leftbar-max-btn * @ladb-leftbar-height-desktop + @ladb-topbar-height) {
   body.ladb-leftbar-enabled {
     padding-left: @ladb-leftbar-width-tablet;
   }
@@ -130,12 +130,12 @@
     width: @ladb-leftbar-width-tablet;
 
     a, .ladb-toggle-handle {
-      padding-top: 12px;
+      padding-top: 8px;
       width: @ladb-leftbar-width-tablet;
       height: @ladb-leftbar-height-tablet;
 
       i {
-        font-size: 24px;
+        font-size: 22px;
       }
 
       div {
@@ -181,7 +181,7 @@
 }
 
 // desktop
-@media screen and (min-width: @ladb-screen-desktop) and (min-height: 11 * @ladb-leftbar-height-desktop + @ladb-topbar-height) {
+@media screen and (min-width: @ladb-screen-desktop) and (min-height: @ladb-leftbar-max-btn * @ladb-leftbar-height-desktop + @ladb-topbar-height) {
   body.ladb-leftbar-enabled {
     padding-left: @ladb-leftbar-width-desktop;
   }
@@ -239,7 +239,7 @@
 }
 
 // folding
-@media screen and (min-height: 11 * @ladb-leftbar-height-tablet + @ladb-topbar-height) {
+@media screen and (min-height: @ladb-leftbar-max-btn * @ladb-leftbar-height-tablet + @ladb-topbar-height) {
   .ladb-leftbar {
 
     .ladb-leftbar-subbar.ladb-leftbar-subbar-folding {
