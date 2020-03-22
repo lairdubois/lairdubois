@@ -60,9 +60,9 @@
                     parseInt(counters.unlistedKnowledgeProviderCount) +
                     parseInt(counters.unlistedKnowledgeSchoolCount));
                 that.updateBadge('plus',
+                    parseInt(counters.unlistedEventEventCount) +
                     parseInt(counters.unlistedOfferOfferCount) +
-                    parseInt(counters.unlistedFindFindCount) +
-                    parseInt(counters.unlistedEventEventCount));
+                    parseInt(counters.unlistedWorkflowWorkflowCount));
 
                 that.updateBadge('all',
                     parseInt(counters.unlistedWonderCreationCount) +
