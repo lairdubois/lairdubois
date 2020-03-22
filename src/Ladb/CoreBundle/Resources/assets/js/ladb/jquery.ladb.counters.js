@@ -59,6 +59,10 @@
                 that.updateBadge('directories',
                     parseInt(counters.unlistedKnowledgeProviderCount) +
                     parseInt(counters.unlistedKnowledgeSchoolCount));
+                that.updateBadge('plus',
+                    parseInt(counters.unlistedOfferOfferCount) +
+                    parseInt(counters.unlistedFindFindCount) +
+                    parseInt(counters.unlistedEventEventCount));
 
                 that.updateBadge('all',
                     parseInt(counters.unlistedWonderCreationCount) +

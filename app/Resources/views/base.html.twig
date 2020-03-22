@@ -155,7 +155,7 @@
                             ,{
                                 "@type": "ListItem",
                                 "position": 2,
-                                "name": "{{ pageName }}",
+                                "name": "{{ pageName|escape('js') }}",
                                 "item": "{{ pageUrl }}"
                             }
                             {% endif %}
