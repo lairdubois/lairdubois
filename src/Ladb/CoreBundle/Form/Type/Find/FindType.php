@@ -88,11 +88,6 @@ class FindType extends AbstractType {
 						$event->getForm()->get('contentType')->setData(Find::CONTENT_TYPE_GALLERY);
 						break;
 
-					case Find::KIND_EVENT:
-						$event->getForm()->get('event')->setData($find->getContent());
-						$event->getForm()->get('contentType')->setData(Find::CONTENT_TYPE_EVENT);
-						break;
-
 				}
 
 			}
@@ -136,38 +131,6 @@ class FindType extends AbstractType {
 						$find->setKind(Find::KIND_GALLERY);
 						break;
 
-					case Find::CONTENT_TYPE_EVENT:
-						$event = $event->getForm()->get('event')->getData();
-						$this->localisableUtils->geocodeLocation($event);
-						$find->setContent($event);
-						$find->setKind(Find::KIND_EVENT);
-
-						$startAt = null;
-						$endAt = null;
-						if (!is_null($event->getStartDate())) {
-							$startAt = clone $event->getStartDate();
-							if (!is_null($event->getStartTime())) {
-								$startAt->add(new \DateInterval('PT'.$event->getStartTime()->format('G').'H'.$event->getStartTime()->format('i').'M'));
-							}
-
-							if (!is_null($event->getEndDate())) {
-								$endAt = clone $event->getEndDate();
-								if (!is_null($event->getEndTime())) {
-									$endAt->add(new \DateInterval('PT'.$event->getEndTime()->format('G').'H'.$event->getEndTime()->format('i').'M'));
-								} else {
-									$endAt->add(new \DateInterval('P1D'));
-								}
-							} else {
-								$endAt = clone $event->getStartDate();
-								$endAt->add(new \DateInterval('P1D'));
-							}
-						}
-
-						$event->setStartAt($startAt);
-						$event->setEndAt($endAt);
-
-						break;
-
 				}
 
 			}
@@ -187,9 +150,6 @@ class FindType extends AbstractType {
 
 					case Find::CONTENT_TYPE_GALLERY:
 						return array('Default', 'gallery');
-
-					case Find::CONTENT_TYPE_EVENT:
-						return array('Default', 'event');
 
 				}
 				return array('Default');

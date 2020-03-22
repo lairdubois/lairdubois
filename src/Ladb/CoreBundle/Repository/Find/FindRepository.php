@@ -245,10 +245,6 @@ class FindRepository extends AbstractEntityRepository {
 			$queryBuilder
 				->andWhere('f.kind = '.Find::KIND_GALLERY)
 			;
-		} else if ('type-event' == $filter) {
-			$queryBuilder
-				->andWhere('f.kind = '.Find::KIND_EVENT)
-			;
 		}
 		$queryBuilder
 			->addOrderBy('f.changedAt', 'DESC')

@@ -45,13 +45,10 @@ use Ladb\CoreBundle\Entity\Find\Content\Event;
  * @LadbAssert\UniqueFind()
  * @LadbAssert\BodyBlocks()
  */
-class Find extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, JoinableInterface {
+class Find extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, BlockBodiedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait;
-	use JoinableTrait {
-		getIsJoinable as getIsJoinableTrait;
-	}
 
 	const CLASS_NAME = 'LadbCoreBundle:Find\Find';
 	const TYPE = 104;
@@ -59,20 +56,20 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	const CONTENT_TYPE_NONE = 0;
 	const CONTENT_TYPE_LINK = 1;
 	const CONTENT_TYPE_GALLERY = 2;
-	const CONTENT_TYPE_EVENT = 3;
 
 	const KIND_NONE = 0;
 	const KIND_WEBSITE = 1;
 	const KIND_VIDEO = 2;
 	const KIND_GALLERY = 3;
-	const KIND_EVENT = 4;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4, max=100)
 	 */
-	private $title;/**
+	private $title;
+
+	/**
 	 * @Gedmo\Slug(fields={"title"}, separator="-")
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
@@ -161,11 +158,6 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	 */
 	private $viewCount = 0;
 
-	/**
-	 * @ORM\Column(type="integer", name="join_count")
-	 */
-	private $joinCount = 0;
-
 	/////
 
 	/**
@@ -225,14 +217,6 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
 		$this->content = $content;
 		return $this;
-	}
-
-	// IsJoinable /////
-
-	public function getIsJoinable() {
-		return $this->getIsJoinableTrait()
-			&& $this->getContent() instanceof Event
-			&& $this->getContent()->getStatus() != Event::STATUS_COMPLETED;
 	}
 
 }

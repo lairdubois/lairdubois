@@ -106,6 +106,7 @@ class ValidUsernameValidator extends ConstraintValidator {
 				'logiciels',
 				'astuces',
 				'annonces',
+				'evenements',
 
 			);
 

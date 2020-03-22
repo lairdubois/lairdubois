@@ -1,18 +1,3 @@
 {% extends 'LadbCoreBundle:Common:_entity-widget.html.twig' %}
 
 {% set entity = find %}
-
-{% block entityMetas %}
-    {{ parent() }}
-    {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_EVENT') %}
-        {% if find.content.cancelled %}
-            <span class="label label-danger"><i class="ladb-icon-warning"></i> {{ 'find.find.content.event.cancelled'|trans() }}</span>
-        {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_SCHEDULED') %}
-            <span class="label label-info">{{ find.content.startAt|time_diff()|capitalize }}</span>
-        {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_RUNNING') %}
-            <span class="label label-success">{{ 'find.find.content.event.running'|trans() }}</span>
-        {% elseif find.content.status == constant('Ladb\\CoreBundle\\Entity\\Find\\Content\\Event::STATUS_COMPLETED') %}
-            <span class="label label-danger">{{ 'find.find.content.event.completed'|trans() }}</span>
-        {% endif %}
-    {% endif %}
-{% endblock %}

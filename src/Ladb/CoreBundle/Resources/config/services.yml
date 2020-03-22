@@ -324,10 +324,10 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.upper_case_ratio_validator }
     arguments: ['@validator']
-  ladb_core.find_event_validator:
-    class: Ladb\CoreBundle\Validator\Constraints\FindEventValidator
+  ladb_core.valid_event_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidEventValidator
     tags:
-      - { name: validator.constraint_validator, alias: ladb_core.find_event_validator }
+      - { name: validator.constraint_validator, alias: ladb_core.valid_event_validator }
     arguments: ['@validator']
   ladb_core.article_body_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ArticleBodyValidator

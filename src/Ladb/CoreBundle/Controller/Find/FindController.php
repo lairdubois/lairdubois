@@ -3,7 +3,6 @@
 namespace Ladb\CoreBundle\Controller\Find;
 
 use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +12,7 @@ use Ladb\CoreBundle\Form\Type\Find\FindType;
 use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Find\Content\Gallery;
 use Ladb\CoreBundle\Model\LocalisableInterface;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
@@ -30,7 +30,6 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\FindUtils;
-use Ladb\CoreBundle\Utils\JoinableUtils;
 
 /**
  * @Route("/trouvailles")
@@ -614,7 +613,6 @@ class FindController extends AbstractController {
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
-		$joinableUtils = $this->get(JoinableUtils::NAME);
 
 		if ($find->getContent() instanceof LocalisableInterface) {
 			$hasMap = !is_null($find->getContent()->getLatitude()) && !is_null($find->getContent()->getLongitude());
@@ -631,7 +629,6 @@ class FindController extends AbstractController {
 			'commentContext'    => $commentableUtils->getCommentContext($find),
 			'collectionContext' => $collectionnableUtils->getCollectionContext($find),
 			'followerContext'   => $followerUtils->getFollowerContext($find->getUser(), $this->getUser()),
-			'joinContext'       => $joinableUtils->getJoinContext($find, $this->getUser()),
 			'hasMap'            => $hasMap,
 		);
 	}

@@ -7,10 +7,10 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class FindEvent extends Constraint {
+class ValidEvent extends Constraint {
 
 	public function validatedBy() {
-		return 'ladb_core.find_event_validator';
+		return 'ladb_core.valid_event_validator';
 	}
 
 	public function getTargets() {

@@ -155,10 +155,12 @@ EOT
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'c', 'mp', 'ps' ))
+			->select(array( 'c', 'mp', 'ps', 'sk', 'sp' ))
 			->from('LadbCoreBundle:Wonder\Creation', 'c')
 			->leftJoin('c.mainPicture', 'mp')
 			->leftJoin('c.pictures', 'ps')
+			->leftJoin('c.sticker', 'sk')
+			->leftJoin('c.strip', 'sp')
 		;
 
 		try {
@@ -172,6 +174,9 @@ EOT
 			if (!is_null($mainPicture)) {
 				$pictureCounters[$mainPicture->getId()][1]++;
 			}
+			foreach ($creation->getPictures() as $picture) {
+				$pictureCounters[$picture->getId()][1]++;
+			}
 			$sticker = $creation->getSticker();
 			if (!is_null($sticker)) {
 				$pictureCounters[$sticker->getId()][1]++;
@@ -179,9 +184,6 @@ EOT
 			$strip = $creation->getStrip();
 			if (!is_null($strip)) {
 				$pictureCounters[$strip->getId()][1]++;
-			}
-			foreach ($creation->getPictures() as $picture) {
-				$pictureCounters[$picture->getId()][1]++;
 			}
 		}
 		unset($creations);
@@ -192,10 +194,12 @@ EOT
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'p', 'mp', 'ps' ))
+			->select(array( 'p', 'mp', 'ps', 'sk', 'sp' ))
 			->from('LadbCoreBundle:Wonder\Plan', 'p')
 			->leftJoin('p.mainPicture', 'mp')
 			->leftJoin('p.pictures', 'ps')
+			->leftJoin('p.sticker', 'sk')
+			->leftJoin('p.strip', 'sp')
 		;
 
 		try {
@@ -209,6 +213,9 @@ EOT
 			if (!is_null($mainPicture)) {
 				$pictureCounters[$mainPicture->getId()][1]++;
 			}
+			foreach ($plan->getPictures() as $picture) {
+				$pictureCounters[$picture->getId()][1]++;
+			}
 			$sticker = $plan->getSticker();
 			if (!is_null($sticker)) {
 				$pictureCounters[$sticker->getId()][1]++;
@@ -216,9 +223,6 @@ EOT
 			$strip = $plan->getStrip();
 			if (!is_null($strip)) {
 				$pictureCounters[$strip->getId()][1]++;
-			}
-			foreach ($plan->getPictures() as $picture) {
-				$pictureCounters[$picture->getId()][1]++;
 			}
 		}
 		unset($plans);
@@ -229,10 +233,12 @@ EOT
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'w', 'mp', 'ps' ))
+			->select(array( 'w', 'mp', 'ps', 'sk', 'sp' ))
 			->from('LadbCoreBundle:Wonder\Workshop', 'w')
 			->leftJoin('w.mainPicture', 'mp')
 			->leftJoin('w.pictures', 'ps')
+			->leftJoin('w.sticker', 'sk')
+			->leftJoin('w.strip', 'sp')
 		;
 
 		try {
@@ -246,6 +252,9 @@ EOT
 			if (!is_null($mainPicture)) {
 				$pictureCounters[$mainPicture->getId()][1]++;
 			}
+			foreach ($workshop->getPictures() as $picture) {
+				$pictureCounters[$picture->getId()][1]++;
+			}
 			$sticker = $workshop->getSticker();
 			if (!is_null($sticker)) {
 				$pictureCounters[$sticker->getId()][1]++;
@@ -253,9 +262,6 @@ EOT
 			$strip = $workshop->getStrip();
 			if (!is_null($strip)) {
 				$pictureCounters[$strip->getId()][1]++;
-			}
-			foreach ($workshop->getPictures() as $picture) {
-				$pictureCounters[$picture->getId()][1]++;
 			}
 		}
 		unset($workshops);
@@ -283,7 +289,7 @@ EOT
 				$pictureCounters[$mainPicture->getId()][1]++;
 			}
 			$content = $find->getContent();
-			if ($content instanceof \Ladb\CoreBundle\Entity\Find\Content\Gallery || $content instanceof \Ladb\CoreBundle\Entity\Find\Content\Event) {
+			if ($content instanceof \Ladb\CoreBundle\Entity\Find\Content\Gallery) {
 				foreach ($content->getPictures() as $picture) {
 					$pictureCounters[$picture->getId()][1]++;
 				}
@@ -291,17 +297,47 @@ EOT
 		}
 		unset($finds);
 
+		// Check Events /////
+
+		$output->writeln('<info>Checking events...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'e', 'mp', 'ps' ))
+			->from('LadbCoreBundle:Event\Event', 'e')
+			->leftJoin('e.mainPicture', 'mp')
+			->leftJoin('e.pictures', 'ps')
+		;
+
+		try {
+			$events = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$events = array();
+		}
+
+		foreach ($events as $event) {
+			$mainPicture = $event->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+			foreach ($event->getPictures() as $picture) {
+				$pictureCounters[$picture->getId()][1]++;
+			}
+		}
+		unset($events);
+
 		// Check Howtos and Articles /////
 
 		$output->writeln('<info>Checking howtos...</info>');
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'h', 'a', 'mp', 's' ))
+			->select(array( 'h', 'a', 'mp', 'sk', 'sp' ))
 			->from('LadbCoreBundle:Howto\Howto', 'h')
 			->leftJoin('h.articles', 'a')
 			->leftJoin('h.mainPicture', 'mp')
-			->leftJoin('h.sticker', 's')
+			->leftJoin('h.sticker', 'sk')
+			->leftJoin('h.strip', 'sp')
 		;
 
 		try {
@@ -324,6 +360,10 @@ EOT
 				if (!is_null($sticker)) {
 					$pictureCounters[$sticker->getId()][1]++;
 				}
+			}
+			$strip = $howto->getStrip();
+			if (!is_null($strip)) {
+				$pictureCounters[$strip->getId()][1]++;
 			}
 		}
 		unset($howtos);
@@ -459,9 +499,10 @@ EOT
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'o', 'mp' ))
+			->select(array( 'o', 'mp', 'ps' ))
 			->from('LadbCoreBundle:Offer\Offer', 'o')
 			->leftJoin('o.mainPicture', 'mp')
+			->leftJoin('o.pictures', 'ps')
 		;
 
 		try {
@@ -474,6 +515,9 @@ EOT
 			$mainPicture = $offer->getMainPicture();
 			if (!is_null($mainPicture)) {
 				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+			foreach ($offer->getPictures() as $picture) {
+				$pictureCounters[$picture->getId()][1]++;
 			}
 		}
 		unset($offers);
@@ -624,10 +668,10 @@ EOT
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
-			->select(array( 's', 'mp', 'src' ))
+			->select(array( 's', 'mp', 'scs' ))
 			->from('LadbCoreBundle:Knowledge\Software', 's')
 			->leftJoin('s.mainPicture', 'mp')
-			->leftJoin('s.screenshot', 'src')
+			->leftJoin('s.screenshot', 'scs')
 		;
 
 		try {
