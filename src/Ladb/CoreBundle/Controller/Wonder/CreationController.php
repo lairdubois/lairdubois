@@ -1021,7 +1021,7 @@ class CreationController extends AbstractController {
 
 						break;
 
-					case 'with-feedbacks':
+					case 'with-feedback':
 
 						$filter = new \Elastica\Query\Range('feedbackCount', array( 'gt' => 0 ));
 						$filters[] = $filter;
