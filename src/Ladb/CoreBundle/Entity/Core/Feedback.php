@@ -4,6 +4,9 @@ namespace Ladb\CoreBundle\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\BlockBodiedTrait;
+use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\TypableInterface;
@@ -18,18 +21,15 @@ use Ladb\CoreBundle\Model\BasicTimestampableTrait;
 
 /**
  * @ORM\Table("tbl_core_feedback",
- *		uniqueConstraints={
- *			@ORM\UniqueConstraint(name="ENTITY_USER_UNIQUE", columns={"entity_type", "entity_id", "user_id"})
- * 		},
  * 		indexes={
  *     		@ORM\Index(name="IDX_FEEDBACK_ENTITY", columns={"entity_type", "entity_id"})
  * 		})
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\FeedbackRepository")
  */
-class Feedback implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, TitledInterface, HtmlBodiedInterface {
+class Feedback implements TypableInterface, BasicTimestampableInterface, AuthoredInterface, TitledInterface, BlockBodiedInterface, MentionSourceInterface {
 
 	use BasicTimestampableTrait;
-	use AuthoredTrait, TitledTrait, HtmlBodiedTrait;
+	use AuthoredTrait, TitledTrait, BlockBodiedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Feedback';
 	const TYPE = 6;
@@ -77,17 +77,38 @@ class Feedback implements TypableInterface, BasicTimestampableInterface, Authore
 	protected $title;
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 * @Assert\NotBlank()
-	 * @Assert\Length(min=5, max=5000)
-	 * @LadbAssert\NoMediaLink()
+	 * @ORM\Column(type="text", nullable=false)
 	 */
 	protected $body;
 
 	/**
-	 * @ORM\Column(name="html_body", type="text", nullable=true)
+	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
-	private $htmlBody;
+	private $bodyExtract;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Block\AbstractBlock", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="tbl_core_feedback_body_block", inverseJoinColumns={@ORM\JoinColumn(name="block_id", referencedColumnName="id", unique=true, onDelete="cascade")})
+	 * @ORM\OrderBy({"sortIndex" = "ASC"})
+	 * @Assert\Count(min=1)
+	 */
+	private $bodyBlocks;
+
+	/**
+	 * @ORM\Column(type="integer", name="body_block_picture_count")
+	 */
+	private $bodyBlockPictureCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="body_block_video_count")
+	 */
+	private $bodyBlockVideoCount = 0;
+
+	/////
+
+	public function __construct() {
+		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 
 	/////
 

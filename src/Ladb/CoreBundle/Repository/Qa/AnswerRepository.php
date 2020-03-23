@@ -17,6 +17,26 @@ class AnswerRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function existsByQuestionAndUser(Question $question, User $user) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'count(a.id)' ))
+			->from($this->getEntityName(), 'a')
+			->where('f.question = :question')
+			->andWhere('f.user = :user')
+			->setParameter('question', $question)
+			->setParameter('user', $user)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleScalarResult() > 0;
+		} catch (NonUniqueResultException $e) {
+			return false;
+		}
+	}
+
+	/////
+
 	public function findOneByIdJoinedOnUser($id) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder

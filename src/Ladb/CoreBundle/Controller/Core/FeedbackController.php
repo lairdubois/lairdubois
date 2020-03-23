@@ -3,7 +3,9 @@
 namespace Ladb\CoreBundle\Controller\Core;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,6 +57,7 @@ class FeedbackController extends AbstractController {
 		}
 
 		$feedback = new Feedback();
+		$feedback->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(FeedbackType::class, $feedback);
 
 		return array(
@@ -97,6 +100,9 @@ class FeedbackController extends AbstractController {
 
 		if ($form->isValid()) {
 
+			$blockUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockUtils->preprocessBlocks($feedback);
+
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($feedback);
 
@@ -108,6 +114,10 @@ class FeedbackController extends AbstractController {
 
 			$om->persist($feedback);
 			$om->flush();
+
+			// Process mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($feedback);
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
@@ -190,6 +200,9 @@ class FeedbackController extends AbstractController {
 			// Retrieve related entity
 			$entity = $this->_retrieveRelatedEntity($feedback->getEntityType(), $feedback->getEntityId());
 
+			$blockUtils = $this->get(BlockBodiedUtils::NAME);
+			$blockUtils->preprocessBlocks($feedback);
+
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($feedback);
 
@@ -198,6 +211,10 @@ class FeedbackController extends AbstractController {
 			}
 
 			$om->flush();
+
+			// Process mentions
+			$mentionUtils = $this->get(MentionUtils::NAME);
+			$mentionUtils->processMentions($feedback);
 
 			// Search index update
 			$searchUtils = $this->container->get(SearchUtils::NAME);

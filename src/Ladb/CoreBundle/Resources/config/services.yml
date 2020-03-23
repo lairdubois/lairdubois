@@ -550,6 +550,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_core_feedback:
+    class: Ladb\CoreBundle\Form\Type\Core\FeedbackType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_comment:
     class: Ladb\CoreBundle\Form\Type\CommentType
     tags:

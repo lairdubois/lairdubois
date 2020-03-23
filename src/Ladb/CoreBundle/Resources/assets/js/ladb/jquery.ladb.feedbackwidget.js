@@ -79,6 +79,11 @@
         $row.after(this.$feedbackForm);
         this.$hiddenRow = $row;
 
+        // Bind collection
+        $("[data-form-widget=collection]", this.$feedbackForm).each(function () {
+            new window.infinite.Collection(this, $('[data-prototype]', $(this).next()));
+        });
+
         // Bind form
         var $form = $('form', this.$feedbackForm).first();
         $form.ajaxForm({
@@ -131,6 +136,11 @@
         this.$btnNewFeedback.hide();
         this.$btnNewFeedback.button('reset');
         $('.ladb-feedbacks-footer').append(this.$feedbackForm);
+
+        // Bind collection
+        $("[data-form-widget=collection]", this.$feedbackForm).each(function () {
+            new window.infinite.Collection(this, $('[data-prototype]', $(this).next()));
+        });
 
         // Bind form
         var $form = $('form', this.$feedbackForm).first();

@@ -42,7 +42,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			// Feedback
 			case \Ladb\CoreBundle\Entity\Core\Feedback::TYPE:
-				$a = array( 'core', 'feeback' );
+				$a = array( 'core', 'feedback' );
 				break;
 
 			// Creation

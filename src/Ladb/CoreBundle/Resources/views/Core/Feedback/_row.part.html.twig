@@ -1,4 +1,4 @@
-<div id="ladb_feedback_{{ feedback.id }}" class="ladb-feedback-row" itemprop="feedback" itemscope itemtype="http://schema.org/Feedback">
+<div id="ladb_feedback_{{ feedback.id }}" class="ladb-feedback-row">
     <div class="ladb-box">
         <div class="ladb-box-inner">
             <div class="ladb-content-box">
@@ -30,8 +30,10 @@
                 </div>
                 <div class="ladb-content">
                     <div class="ladb-title">{{ feedback.title }}</div>
-                    <div itemprop="feedbackBody">
-                        {{ feedback.htmlBody|raw }}
+                    <div>
+                        {% for block in feedback.bodyBlocks %}
+                            {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                        {% endfor %}
                     </div>
                     {% include 'LadbCoreBundle:Common:_published-age.part.html.twig' with { 'entity':feedback } %}
                     {% if feedback.updatedAt > feedback.createdAt %}

@@ -12,12 +12,8 @@
                         {{ form_errors(form.title) }}
                         {{ form_widget(form.title, { 'attr':{ 'class':'form-control' } }) }}
                     </div>
-                    <div class="form-group">
-                        <label>{{ ('feedback.'~i18nPrefix~'.form.body')|trans() }}</label>
-                        {{ form_errors(form.body) }}
-                        {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize' } }) }}
-                        {{ form_rest(form) }}
-                    </div>
+                    {{ form_errors(form) }}
+                    {% include 'LadbCoreBundle:Core/Block:_form-section-body-inner.part.html.twig' with { 'hideFaqHelp':true } %}
                     <div class="ladb-margin-top">
                         {% block buttons %}
                             <button class="btn btn-default ladb-btn-cancel">{{ 'default.cancel'|trans() }}</button>
@@ -27,18 +23,4 @@
             {% endblock %}
         </div>
     </div>
-    <script>
-        var init{{ form.vars.id }} = function() {
-            $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
-                mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
-            });
-        };
-        if (document.readyState === "complete") {
-            init{{ form.vars.id }}();
-        } else {
-            $(document).ready(function() {
-                init{{ form.vars.id }}();
-            });
-        }
-    </script>
 </div>
