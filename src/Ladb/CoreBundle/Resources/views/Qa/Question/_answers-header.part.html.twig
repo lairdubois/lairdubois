@@ -16,6 +16,6 @@
         </div>
     {% endif %}
     {% if question.answerCount > 0 %}
-        <h2 class="ladb-margin-bottom">{{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.entities'|transchoice(question.answerCount) }}</h2>
+        <h2 class="ladb-margin-bottom"><i class="ladb-icon-answer"></i> {{ question.answerCount|number_format(0, ',', ' ') }} {{ 'qa.answer.choice.entities'|transchoice(question.answerCount) }}</h2>
     {% endif %}
 </div>

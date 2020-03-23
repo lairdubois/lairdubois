@@ -6,6 +6,7 @@ use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Event\Event;
 use Ladb\CoreBundle\Entity\Offer\Offer;
+use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -1020,6 +1021,13 @@ class CreationController extends AbstractController {
 
 						break;
 
+					case 'with-feedbacks':
+
+						$filter = new \Elastica\Query\Range('feedbackCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'with-inspiration':
 
 						$filter = new \Elastica\Query\Range('inspirationCount', array( 'gt' => 0 ));
@@ -1251,6 +1259,7 @@ class CreationController extends AbstractController {
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
@@ -1263,6 +1272,7 @@ class CreationController extends AbstractController {
 			'similarCreations'    => $similarCreations,
 			'likeContext'         => $likableUtils->getLikeContext($creation, $this->getUser()),
 			'watchContext'        => $watchableUtils->getWatchContext($creation, $this->getUser()),
+			'feedbackContext'     => $feedbackableUtils->getFeedbackContext($creation),
 			'commentContext'      => $commentableUtils->getCommentContext($creation),
 			'collectionContext'   => $collectionnableUtils->getCollectionContext($creation),
 			'followerContext'     => $followerUtils->getFollowerContext($creation->getUser(), $this->getUser()),

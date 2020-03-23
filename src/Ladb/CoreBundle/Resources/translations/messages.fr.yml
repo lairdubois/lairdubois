@@ -1274,15 +1274,19 @@ feedback:
   default:
     new: Ajouter un retour d'expérience
     edit: Editer le retour d'expérience
+    alert:
+      delete_success: Le retour d'expérience a été supprimé.
     choice:
       entities: "[0,1]retour d'expérience|]1,Inf]retours d'expérience"
+  wonder_creation:
+    none: Cette création ne possède pour l'instant aucun retour d'expérience des participants.
+    form:
+      new_help: Ce retour vous permet d'exprimer dans le temps votre expérience par rapport à la création
   event_event:
     none: Cet évènement ne possède pour l'instant aucun retour d'expérience des participants.
     form:
-      new_help: Ce retour d'expérience vous permet d'exprimer de façon synthétique votre expérience vécue lors de cet évènement
+      new_help: Ce retour vous permet d'exprimer votre expérience vécue lors de votre participation à l'évènement
       body: Votre retour d'expérience
-    alert:
-      delete_success: Le retour d'expérience a été supprimé.
 
 referer:
   list: On en parle ailleurs
@@ -1442,7 +1446,7 @@ notification:
   nav: Notifications
   your:
     core_comment: votre commentaire
-    core_feedback: "votre retour d'expérience"
+    core_feedback: votre retour d'expérience
     wonder_creation: votre création
     wonder_workshop: votre atelier
     wonder_plan: votre plan
@@ -1460,7 +1464,7 @@ notification:
     faq_question: votre question
   the:
     core_comment: le commentaire
-    core_feedback: "le retour d'expérience"
+    core_feedback: le retour d'expérience
     wonder_creation: la création
     wonder_workshop: l'atelier
     wonder_plan: le plan
@@ -1523,7 +1527,7 @@ notification:
     answer: '[0,1]Notification de nouvelle réponse|]1,Inf]Notification de nouvelles réponses'
     testify: '[0,1]Notification de nouveau témoignage|]1,Inf]Notification de nouveaux témoignages'
     review: '[0,1]Notification de nouvel avis|]1,Inf]Notification de nouveaux avis'
-    feedback: "[0,1]Notification de nouveeau retour d'expérience|]1,Inf]Notification de nouveaux retours d'expérience"
+    feedback: "[0,1]Notification de nouveau retour d'expérience|]1,Inf]Notification de nouveaux retours d'expérience"
 
 share:
   social:

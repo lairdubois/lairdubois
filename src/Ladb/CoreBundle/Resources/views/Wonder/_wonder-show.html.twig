@@ -138,6 +138,7 @@
     {% if wonder.referralCount > 0 %}
         {% include 'LadbCoreBundle:Core/Referer:_widget.part.html.twig' with { 'referrals':wonder.referrals } %}
     {% endif %}
+    {% block contentFeedbacks %}{% endblock %}
     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext } %}
 {% endblock %}
 
@@ -145,9 +146,9 @@
     {% block wonderMetas %}
         <div class="ladb-metas">
             {% block baseMetas %}
-                {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+                {% include 'LadbCoreBundle:Core/Like:_meta-counter.part.html.twig' %}
                 {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
-                {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+                {% include 'LadbCoreBundle:Core/Comment:_meta-counter.part.html.twig' %}
                 {% if wonder.referralCount > 0 %}
                     <div class="ladb-meta">
                         <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_referer_widget').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>

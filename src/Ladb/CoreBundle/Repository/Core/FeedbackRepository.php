@@ -42,7 +42,7 @@ class FeedbackRepository extends AbstractEntityRepository {
 			->andWhere('f.entityId = :entityId')
 			->setParameter('entityType', $entityType)
 			->setParameter('entityId', $entityId)
-			->orderBy('f.createdAt', 'DESC')
+			->orderBy('f.createdAt', 'ASC')
 		;
 
 		try {

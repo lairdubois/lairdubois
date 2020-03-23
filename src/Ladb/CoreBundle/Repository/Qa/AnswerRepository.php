@@ -22,8 +22,8 @@ class AnswerRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->select(array( 'count(a.id)' ))
 			->from($this->getEntityName(), 'a')
-			->where('f.question = :question')
-			->andWhere('f.user = :user')
+			->where('a.question = :question')
+			->andWhere('a.user = :user')
 			->setParameter('question', $question)
 			->setParameter('user', $user)
 		;

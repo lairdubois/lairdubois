@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\FeedbackableInterface;
+use Ladb\CoreBundle\Model\FeedbackableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
@@ -16,10 +18,10 @@ use Ladb\CoreBundle\Model\BlockBodiedInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Wonder\CreationRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Creation extends AbstractWonder implements BlockBodiedInterface, InspirableInterface {
+class Creation extends AbstractWonder implements BlockBodiedInterface, InspirableInterface, FeedbackableInterface {
 
 	use BlockBodiedTrait;
-	use InspirableTrait;
+	use InspirableTrait, FeedbackableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Creation';
 	const TYPE = 100;
@@ -92,6 +94,11 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	 * @ORM\OrderBy({"accessCount" = "DESC"})
 	 */
 	protected $referrals;
+
+	/**
+	 * @ORM\Column(type="integer", name="feedback_count")
+	 */
+	private $feedbackCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="rebound_count")

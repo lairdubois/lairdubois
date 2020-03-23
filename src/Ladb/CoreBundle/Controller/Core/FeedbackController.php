@@ -268,7 +268,7 @@ class FeedbackController extends AbstractController {
 		$searchUtils->replaceEntityInIndex($entity);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('feedback.'.$typableUtils->getStrippedNameByType($entity->getType()).'.alert.delete_success'));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('feedback.default.alert.delete_success'));
 
 		return $this->redirect($typableUtils->getUrlAction($entity));
 	}

@@ -90,9 +90,9 @@
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Like:_meta-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
-        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Comment:_meta-counter.part.html.twig' %}
         <div class="ladb-meta">
             <i class="ladb-icon-users ladb-icon-fixed-center"></i>
             {% if wood.contributorCount > 0 %}

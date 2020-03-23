@@ -35,9 +35,9 @@
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Like:_meta-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
-        {% include 'LadbCoreBundle:Common:_meta-comment-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Comment:_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if graphic.downloadCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-unpublish ladb-icon-fixed-center"></i>
             <strong>{{ graphic.downloadCount|number_format(0, ',', ' ') }}</strong>

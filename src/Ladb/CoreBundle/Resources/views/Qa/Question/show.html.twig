@@ -88,15 +88,17 @@
             </div>
         </div>
     </div>
-    {% include 'LadbCoreBundle:Qa/Question:_answers-header.part.html.twig' %}
-    {% include 'LadbCoreBundle:Qa/Answer:_list.part.html.twig' %}
-    {% include 'LadbCoreBundle:Qa/Question:_answers-footer.part.html.twig' %}
+    <div class="ladb-show-content-section">
+        {% include 'LadbCoreBundle:Qa/Question:_answers-header.part.html.twig' %}
+        {% include 'LadbCoreBundle:Qa/Answer:_list.part.html.twig' %}
+        {% include 'LadbCoreBundle:Qa/Question:_answers-footer.part.html.twig' %}
+    </div>
     {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'LadbCoreBundle:Common:_meta-like-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Like:_meta-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Common:_meta-view-counter.part.html.twig' %}
         <div class="ladb-meta">
             <a href="#" class="ladb-scrollto-btn" onclick="$('.ladb-qa-question-answers').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>

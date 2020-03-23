@@ -667,11 +667,11 @@ class EventController extends AbstractController {
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 		$joinableUtils = $this->get(JoinableUtils::NAME);
-		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
 
 		if ($event instanceof LocalisableInterface) {
 			$hasMap = !is_null($event->getLatitude()) && !is_null($event->getLongitude());
@@ -685,11 +685,11 @@ class EventController extends AbstractController {
 			'similarEvents'     => $similarEvents,
 			'likeContext'       => $likableUtils->getLikeContext($event, $this->getUser()),
 			'watchContext'      => $watchableUtils->getWatchContext($event, $this->getUser()),
+			'feedbackContext'   => $feedbackableUtils->getFeedbackContext($event),
 			'commentContext'    => $commentableUtils->getCommentContext($event),
 			'collectionContext' => $collectionnableUtils->getCollectionContext($event),
 			'followerContext'   => $followerUtils->getFollowerContext($event->getUser(), $this->getUser()),
 			'joinContext'       => $joinableUtils->getJoinContext($event, $this->getUser()),
-			'feedbackContext'   => $feedbackableUtils->getFeedbackContext($event),
 			'hasMap'            => $hasMap,
 		);
 	}

@@ -13,6 +13,7 @@
                         {{ form_widget(form.title, { 'attr':{ 'class':'form-control' } }) }}
                     </div>
                     {{ form_errors(form) }}
+                    <label>Votre retour</label>
                     {% include 'LadbCoreBundle:Core/Block:_form-section-body-inner.part.html.twig' with { 'hideFaqHelp':true } %}
                     <div class="ladb-margin-top">
                         {% block buttons %}

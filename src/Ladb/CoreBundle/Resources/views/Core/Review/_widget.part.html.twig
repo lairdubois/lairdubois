@@ -1,7 +1,7 @@
 {# set reviewContext { 'entityType', 'entityId', 'reviewCount', 'reviews', 'isReviewable' } #}
 
 <hr class="ladb-divider">
-<div id="ladb_review_widget" class="ladb-review-widget">
+<div id="ladb_review_widget" class="ladb-review-widget ladb-show-content-section">
     {% include 'LadbCoreBundle:Core/Review:_reviews-header.part.html.twig' %}
     <div class="ladb-knowledge-book-reviews">
         {% for review in reviewContext.reviews %}
