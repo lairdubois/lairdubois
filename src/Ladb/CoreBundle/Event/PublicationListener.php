@@ -3,9 +3,11 @@
 namespace Ladb\CoreBundle\Event;
 
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
+use Ladb\CoreBundle\Model\FeedbackableInterface;
 use Ladb\CoreBundle\Model\LinkedToInterface;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\RepublishableInterface;
+use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -340,6 +342,14 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
+		if ($publication instanceof FeedbackableInterface) {
+
+			// Increment users counters
+			$feedbackableUtils = $this->container->get(FeedbackableUtils::NAME);
+			$feedbackableUtils->incrementUsersFeedbackCount($publication, 1);
+
+		}
+
 		if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE
 			&& $publication instanceof AuthoredInterface
 			&& !($publication instanceof RepublishableInterface && $publication->getPublishCount() > 0)) {
@@ -402,6 +412,14 @@ class PublicationListener implements EventSubscriberInterface {
 			// Decrement users counters
 			$likableUtils = $this->container->get(LikableUtils::NAME);
 			$likableUtils->incrementUsersLikeCount($publication, -1);
+
+		}
+
+		if ($publication instanceof FeedbackableInterface) {
+
+			// Decrement users counters
+			$feedbackableUtils = $this->container->get(FeedbackableUtils::NAME);
+			$feedbackableUtils->incrementUsersFeedbackCount($publication, -1);
 
 		}
 

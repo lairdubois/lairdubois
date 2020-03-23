@@ -14,6 +14,8 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.likable_utils';
 
+	/////
+
 	public function deleteLikes(LikableInterface $likable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$likeRepository = $om->getRepository(Like::CLASS_NAME);
@@ -71,6 +73,8 @@ class LikableUtils extends AbstractContainerAwareUtils {
 			$om->flush();
 		}
 	}
+
+	/////
 
 	public function getLikeContext(LikableInterface $likable, User $user = null) {
 		$om = $this->getDoctrine()->getManager();
