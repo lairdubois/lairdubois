@@ -1,0 +1,35 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set items #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for item in items %}
+        <div class="ladb-user-groupby-box">
+            <div class="ladb-box row">
+                <div class="ladb-content col-sm-5 col-xs-12">
+                    <div class="ladb-image">
+                        <img src="{{ (item.entity.mainPicture is defined and item.entity.mainPicture is not empty ? item.entity.mainPicture.webPath : 'avatar.png')|imagine_filter('64x64o') }}" width="64" height="64">
+                    </div>
+                    <div class="ladb-heading">
+                        {% if item.entity.title is defined %}
+                            <h3><a href="{{ ladb_entity_url_action(item.entity) }}">{{ item.entity.title }}</a></h3>
+                        {% endif %}
+                    </div>
+                    <div class="ladb-subheading">
+                        {% if item.entity.user is defined %}
+                            {{ 'default.by'|trans() }}&nbsp;<a href="{{ url('core_user_show', { 'username':item.entity.user.usernameCanonical }) }}">{{ item.entity.user.displayname }}</a>
+                        {% endif %}
+                        {% if item.entity.age is defined %}
+                            <span class="ladb-age">{{ item.entity.createdAt|time_diff }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="ladb-user-groupby-items col-sm-7 col-xs-12">
+                    {% block subitems %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+

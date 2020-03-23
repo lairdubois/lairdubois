@@ -168,53 +168,10 @@
 
 }
 
-.ladb-comment-thumbnail {
-  padding: 0 10px 20px 10px;
-
-  > .ladb-box {
-    .list-box();
-    .list-box-hover();
-
-    > .ladb-content {
-
-      > .ladb-image {
-        float: left;
-      }
-
-      > .ladb-heading {
-        margin-left: 74px;
-
-        h3 {
-          margin: 5px 0;
-        }
-
-      }
-
-    }
-
-    > .ladb-comments {
-      padding: 6px 10px;
-      border-left: 1px solid @ladb-global-border;
-      min-height: 64px;
-
-      > .ladb-comment-row:first-child {
-        border-top: none;
-      }
-
-    }
-
-  }
-
-}
-
 /* Responsive */
 
 // phone
 @media screen and (max-width: @ladb-screen-phone-max) {
-
-  .ladb-comment-thumbnail > .ladb-box > .ladb-comments {
-    border-left:none;
-  }
 
   .ladb-comment-row {
 

@@ -1,7 +1,7 @@
 
 {% set noMicrodata = noMicrodata|default(false) %}
 
-<div id="ladb_comment_{{ comment.id }}"{% if not noMicrodata %} itemprop="comment" itemscope itemtype="http://schema.org/Comment"{% endif %} class="ladb-comment-row">
+<div id="ladb_comment_{{ comment.id }}"{% if not noMicrodata %} itemprop="comment" itemscope itemtype="http://schema.org/Comment"{% endif %} class="ladb-comment-row{% if classes is defined %} {{ classes }}{% endif %}">
     {% block minitools %}
         <div class="ladb-minitools">
             {% if is_granted("ROLE_ADMIN") and (adminTools is defined or comment.parent) %}

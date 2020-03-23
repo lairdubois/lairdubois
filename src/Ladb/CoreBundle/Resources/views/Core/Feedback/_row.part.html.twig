@@ -1,32 +1,36 @@
-<div id="ladb_feedback_{{ feedback.id }}" class="ladb-feedback-row">
+{% set noMinitools = noMinitools|default(false) %}
+
+<div id="ladb_feedback_{{ feedback.id }}" class="ladb-feedback-row{% if classes is defined %} {{ classes }}{% endif %}">
     <div class="ladb-box">
         <div class="ladb-box-inner">
             <div class="ladb-content-box">
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':feedback.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
                 <div class="ladb-heading">
-                    <div class="ladb-minitools">
-                        {% if not app.request.isxmlhttprequest %}
-                            <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers le retour d\'expérience :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ url('core_feedback_show', { 'id':feedback.id }) }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
-                        {% endif %}
-                        {% if is_granted("ROLE_ADMIN") or feedback.user == app.user %}
-                            <a href="{{ path('core_feedback_edit', { 'id':feedback.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>
-                            <a href="#delete_feedback_{{ feedback.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
-                            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_feedback_'~feedback.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
-                                {% block bodyInner %}
-                                    <p>La suppression de ce retour d'expérience entrainera la perte de toutes les informations qui lui sont relatives.</p>
-                                    <p>Confirmez l'action pour continuer.</p>
-                                {% endblock %}
-                                {% block footerInner %}
-                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                                    <a href="{{ path('core_feedback_delete', { 'id':feedback.id }) }}" class="btn btn-danger ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
-                                {% endblock %}
-                            {% endembed %}
-                        {% endif %}
-                        {% if feedback.user != app.user %}
-                            {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':feedback.type, 'entityId':feedback.id } %}
-                        {% endif %}
-                    </div>
-                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':feedback, 'hideBy':true } %}
+                    {% if not noMinitools %}
+                        <div class="ladb-minitools">
+                            {% if not app.request.isxmlhttprequest %}
+                                <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers le retour d\'expérience :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ url('core_feedback_show', { 'id':feedback.id }) }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
+                            {% endif %}
+                            {% if is_granted("ROLE_ADMIN") or feedback.user == app.user %}
+                                <a href="{{ path('core_feedback_edit', { 'id':feedback.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>
+                                <a href="#delete_feedback_{{ feedback.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
+                                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_feedback_'~feedback.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+                                    {% block bodyInner %}
+                                        <p>La suppression de ce retour d'expérience entrainera la perte de toutes les informations qui lui sont relatives.</p>
+                                        <p>Confirmez l'action pour continuer.</p>
+                                    {% endblock %}
+                                    {% block footerInner %}
+                                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                        <a href="{{ path('core_feedback_delete', { 'id':feedback.id }) }}" class="btn btn-danger ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                                    {% endblock %}
+                                {% endembed %}
+                            {% endif %}
+                            {% if feedback.user != app.user %}
+                                {% include 'LadbCoreBundle:Core/Report:_widget-mini.part.html.twig' with { 'entityType':feedback.type, 'entityId':feedback.id } %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':feedback, 'hideBy':true } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':feedback, 'showEdited':true } %}
                 </div>
                 <div class="ladb-content">
                     <div class="ladb-title">{{ feedback.title }}</div>
@@ -35,10 +39,6 @@
                             {% include 'LadbCoreBundle:Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
                         {% endfor %}
                     </div>
-                    {% include 'LadbCoreBundle:Common:_published-age.part.html.twig' with { 'entity':feedback } %}
-                    {% if feedback.updatedAt > feedback.createdAt %}
-                        <span class="ladb-horizontal-separator-left">{% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':feedback } %}</span>
-                    {% endif %}
                 </div>
             </div>
         </div>

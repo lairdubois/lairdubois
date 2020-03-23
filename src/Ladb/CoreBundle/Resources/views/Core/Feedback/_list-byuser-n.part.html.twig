@@ -3,8 +3,8 @@
 {# set items #}
 
 {% block subitems %}
-    {% for comment in item.comments %}
-        {% embed 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'classes':'ladb-user-groupby-item', 'noFooter':true } %}
+    {% for feedback in item.feedbacks %}
+        {% embed 'LadbCoreBundle:Core/Feedback:_row.part.html.twig' with { 'classes':'ladb-user-groupby-item', 'noMinitools':true } %}
             {% block minitools %}{% endblock %}
         {% endembed %}
     {% endfor %}

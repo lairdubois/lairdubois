@@ -1279,7 +1279,7 @@ feedback:
     choice:
       entities: "[0,1]retour d'expérience|]1,Inf]retours d'expérience"
   wonder_creation:
-    none: Cette création ne possède pour l'instant aucun retour d'expérience des participants.
+    none: Cette création ne possède pour l'instant aucun retour d'expérience.
     form:
       new_help: Ce retour vous permet d'exprimer dans le temps votre expérience par rapport à la création
   event_event:

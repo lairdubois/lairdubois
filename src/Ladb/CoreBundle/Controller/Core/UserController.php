@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Controller\Core;
 
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Entity\Core\Feedback;
+use Ladb\CoreBundle\Entity\Core\Review;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
@@ -617,6 +619,88 @@ class UserController extends AbstractController {
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Core/Comment:list-byuser-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => '',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
+	 * @Route("/{username}/reviews", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_reviews")
+	 * @Route("/{username}/reviews/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_reviews_filter")
+	 * @Route("/{username}/reviews/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_reviews_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showReviews.html.twig")
+	 */
+	public function showReviewsAction(Request $request, $username, $filter = "recent", $page = 0) {
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_reviews', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$items = $reviewRepository->findPaginedByUserGroupByEntityType($user, $offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_reviews_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $user->getMeta()->getReviewCount());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'items'       => $items,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Review:list-byuser-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => '',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
+	 * @Route("/{username}/feedbacks", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_feedbacks")
+	 * @Route("/{username}/feedbacks/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_feedbacks_filter")
+	 * @Route("/{username}/feedbacks/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_feedbacks_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showFeedbacks.html.twig")
+	 */
+	public function showFeedbacksAction(Request $request, $username, $filter = "recent", $page = 0) {
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_feedbacks', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$items = $feedbackRepository->findPaginedByUserGroupByEntityType($user, $offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_feedbacks_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $user->getMeta()->getFeedbackCount());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'items'       => $items,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Feedback:list-byuser-xhr.html.twig', $parameters);
 		}
 
 		$followerUtils = $this->get(FollowerUtils::NAME);

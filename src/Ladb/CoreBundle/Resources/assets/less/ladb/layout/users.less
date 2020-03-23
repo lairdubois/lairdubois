@@ -93,9 +93,74 @@
   line-height: 200px;
 }
 
+.ladb-user-groupby-box {
+  padding: 0 10px 20px 10px;
+
+  > .ladb-box {
+    .list-box();
+
+    > .ladb-content {
+
+      > .ladb-image {
+        float: left;
+      }
+
+      > .ladb-heading {
+        margin-left: 74px;
+
+        h3 {
+          margin: 5px 0;
+        }
+
+      }
+
+    }
+
+    > .ladb-user-groupby-items {
+      padding: 6px 10px;
+      border-left: 1px solid @ladb-global-border;
+      min-height: 64px;
+
+      > .ladb-user-groupby-item {
+        border: none;
+        border-bottom: 1px solid @ladb-global-border;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 10px;
+
+        > .ladb-box {
+          border: none;
+          margin: 0;
+          padding: 0;
+
+          .ladb-box-inner .ladb-content-box {
+            padding: 0;
+          }
+
+        }
+
+        &:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
 /* Responsive */
 
+// phone
 @media screen and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-user-groupby-box > .ladb-box > .ladb-user-groupby-items {
+    border-left: none;
+    border-top: 1px solid @ladb-global-border;
+  }
 
   .ladb-user-banner {
     height: @ladb-user-banner-height-xs;
