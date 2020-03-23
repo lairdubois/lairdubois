@@ -51,6 +51,9 @@ class ResourceUtils {
 				case 'collada':
 					return Resource::KIND_COLLADA;
 
+				case 'edrawing':
+					return Resource::KIND_EDRAWING;
+
 			}
 		}
 		return Resource::KIND_UNKNOW;

@@ -6,7 +6,7 @@
 
 {% set formSection = formSection is defined ? formSection : 'resources' %}
 {% set acceptedFileTypes = acceptedFileTypes is defined ? acceptedFileTypes : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Resource::DEFAULT_ACCEPTED_FILE_TYPE') %}
-{% set acceptedFileTypesMessage = acceptedFileTypesMessage is defined ? acceptedFileTypesMessage : 'Type de fichier non accepté (DWF, DWG, DXF, STL, SKP, PDF, SVG, FCStd, 123DX, ODS, XLSX, XLSM et GGB seulement)' %}
+{% set acceptedFileTypesMessage = acceptedFileTypesMessage is defined ? acceptedFileTypesMessage : 'Type de fichier non accepté (DWF, DWG, DXF, STL, SKP, PDF, GGB, SVG, FCStd, 123DX, ODS, XLSX, XLSM, F3D, DAE, EASM seulement)' %}
 {% set maxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Resource::DEFAULT_MAX_FILE_SIZE') %}
 {% set sortable = sortable is defined ? sortable : false %}
 

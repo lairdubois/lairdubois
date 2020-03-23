@@ -119,6 +119,11 @@ class ResourceUploadHandler extends \UploadHandler {
 					$kind = Resource::KIND_COLLADA;
 				}
 
+				// eDrawing
+				if ($fileExtension == 'easm') {
+					$kind = Resource::KIND_EDRAWING;
+				}
+
 			}
 			$resource->setKind($kind);
 

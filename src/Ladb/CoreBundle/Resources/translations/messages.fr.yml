@@ -1394,6 +1394,7 @@ resource:
     libreoffice: LibreOffice/Excel
     fusion360: Fusion 360
     collada: Collada
+    edrawing: eDrawing
   form:
     choice:
       mandatory: "[0,1]Ce fichier est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins un fichier."

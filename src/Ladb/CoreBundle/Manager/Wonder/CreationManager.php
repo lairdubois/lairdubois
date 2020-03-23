@@ -10,6 +10,7 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\ReportableUtils;
@@ -156,6 +157,10 @@ class CreationManager extends AbstractWonderManager {
 		foreach ($creation->getInspirations() as $inspiration) {
 			$creation->removeInspiration($inspiration);
 		}
+
+		// Delete feedbacks
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
+		$feedbackableUtils->deleteFeedbacks($creation, false);
 
 		parent::deleteWonder($creation, $withWitness, $flush);
 	}

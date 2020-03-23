@@ -5,7 +5,7 @@
 {% set masonry = layout == 'view' %}
 
 {% block filtersDropdown %}
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-label="Format" data-editable="true" data-icon="info" data-proposals="autocad,sketchup,pdf,geogebra,svg,freecad,stl,123design,libreoffice,fusion360,collada"><i class="ladb-icon-info"></i> Format</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-label="Format" data-editable="true" data-icon="info" data-proposals="autocad,sketchup,pdf,geogebra,svg,freecad,stl,123design,libreoffice,fusion360,collada,edrawing"><i class="ladb-icon-info"></i> Format</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-questions" data-label="Avec question" data-unique="true" data-icon="question"><i class="ladb-icon-question"></i> Avec question</a></li>
