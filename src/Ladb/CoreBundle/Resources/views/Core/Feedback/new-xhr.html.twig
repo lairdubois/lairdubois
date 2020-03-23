@@ -3,7 +3,7 @@
 {% set i18nPrefix = i18nPrefix|default(ladb_entity_type_stripped_name(entity)) %}
 {% set formAction = path('core_feedback_create', { 'entityType':entity.type, 'entityId':entity.id }) %}
 
-{% block title %}<i class="ladb-icon-plus"></i> {{ ('feedback.'~i18nPrefix~'.new')|trans() }}{% endblock %}
+{% block title %}<i class="ladb-icon-plus"></i> {{ ('feedback.default.new')|trans() }}{% endblock %}
 
 {% block buttons %}
     <div class="alert alert-info">

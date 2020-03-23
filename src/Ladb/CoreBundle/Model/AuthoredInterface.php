@@ -8,4 +8,8 @@ interface AuthoredInterface {
 
 	public function getUser();
 
+	// IsOwner /////
+
+	public function getIsOwner(\Ladb\CoreBundle\Entity\Core\User $user = null);
+
 }

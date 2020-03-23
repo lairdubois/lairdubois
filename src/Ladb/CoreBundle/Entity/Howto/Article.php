@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Howto;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\AuthoredTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BasicEmbeddableTrait;
@@ -31,7 +32,7 @@ use Ladb\CoreBundle\Model\ChildInterface;
  */
 class Article extends AbstractPublication implements AuthoredInterface, TitledInterface, SluggedInterface, BlockBodiedInterface, DraftableInterface, WatchableChildInterface, BasicEmbeddableInterface, ChildInterface, MentionSourceInterface {
 
-	use TitledTrait, SluggedTrait, BlockBodiedTrait;
+	use AuthoredTrait, TitledTrait, SluggedTrait, BlockBodiedTrait;
 	use DraftableTrait, BasicEmbeddableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Article';
@@ -50,7 +51,9 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4, max=100)
 	 */
-	private $title;/**
+	private $title;
+
+	/**
 	 * @Gedmo\Slug(fields={"title"}, separator="-")
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
@@ -132,6 +135,10 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
     }
 
 	// User /////
+
+	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
+		throw new \Exception('Unavailable method.');
+	}
 
 	public function getUser() {
 		if (is_null($this->howto)) {

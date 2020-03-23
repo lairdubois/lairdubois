@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
 use Ladb\CoreBundle\Model\FeedbackableInterface;
@@ -75,6 +74,8 @@ class FeedbackController extends AbstractController {
 
 		$this->createLock('core_feedback_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
+		$om = $this->getDoctrine()->getManager();
+
 		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
@@ -82,11 +83,9 @@ class FeedbackController extends AbstractController {
 			throw $this->createNotFoundException('Hidden entity could not be feedbacked.');
 		}
 
-		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
-
-		if ($feedbackRepository->existsByEntityTypeAndEntityIdAndUser($entityType, $entityId, $this->getUser())) {
-			throw $this->createNotFoundException('Only one feedback is allowed by user.');
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
+		if (!$feedbackableUtils->getIsFeedbackable($entity, $this->getUser())) {
+			throw $this->createNotFoundException('Feedback are not allowed on this entity by this user.');
 		}
 
 		$feedback = new Feedback();
@@ -120,9 +119,12 @@ class FeedbackController extends AbstractController {
 
 			$om->flush();
 
+			$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
+
 			return $this->render('LadbCoreBundle:Core/Feedback:create-xhr.html.twig', array(
-				'entity' => $entity,
-				'feedback' => $feedback,
+				'entity'          => $entity,
+				'feedback'        => $feedback,
+				'feedbackContext' => $feedbackableUtils->getFeedbackContext($entity, false),
 			));
 		}
 
@@ -156,7 +158,7 @@ class FeedbackController extends AbstractController {
 
 		return array(
 			'feedback' => $feedback,
-			'form'   => $form->createView(),
+			'form'     => $form->createView(),
 		);
 	}
 
@@ -201,15 +203,18 @@ class FeedbackController extends AbstractController {
 			$searchUtils = $this->container->get(SearchUtils::NAME);
 			$searchUtils->replaceEntityInIndex($entity);
 
+			$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
+
 			return $this->render('LadbCoreBundle:Core/Feedback:update-xhr.html.twig', array(
-				'entity' => $entity,
-				'feedback' => $feedback,
+				'entity'          => $entity,
+				'feedback'        => $feedback,
+				'feedbackContext' => $feedbackableUtils->getFeedbackContext($entity, false),
 			));
 		}
 
 		return array(
 			'feedback' => $feedback,
-			'form'   => $form->createView(),
+			'form'     => $form->createView(),
 		);
 	}
 

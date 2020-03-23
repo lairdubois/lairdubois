@@ -3,9 +3,12 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\Core\Feedback;
+use Ladb\CoreBundle\Entity\Core\Join;
+use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\FeedbackableInterface;
+use Ladb\CoreBundle\Model\JoinableInterface;
 
 class FeedbackableUtils extends AbstractContainerAwareUtils {
 
@@ -51,35 +54,44 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function getFeedbackContext(FeedbackableInterface $feedbackable) {
+	public function getIsFeedbackable(FeedbackableInterface $feedbackable, $user = null) {
+
+		if ($feedbackable instanceof HiddableInterface && !$feedbackable->getIsPublic()) {
+			return false;
+		}
+		if ($feedbackable instanceof AuthoredInterface && $feedbackable->getIsOwner($user)) {
+			return true;
+		}
+		if ($feedbackable instanceof JoinableInterface && !is_null($user)) {
+			$om = $this->getDoctrine()->getManager();
+			$joinRepository = $om->getRepository(Join::CLASS_NAME);
+			return $joinRepository->existsByEntityTypeAndEntityIdAndUser($feedbackable->getType(), $feedbackable->getId(), $user);
+		}
+
+		return false;
+	}
+
+	/////
+
+	public function getFeedbackContext(FeedbackableInterface $feedbackable, $withFeedbacks = true) {
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
-		$globalUtils = $this->get(GlobalUtils::NAME);
 
-		// Retrieve feedbacks
-		$feedbacks = $feedbackRepository->findByEntityTypeAndEntityId($feedbackable->getType(), $feedbackable->getId());
+		if ($withFeedbacks) {
 
-		// Retrieve current user feedback
-		$userFeedback = null;
-		$user = $globalUtils->getUser();
-		if (!is_null($user)) {
-
-			foreach ($feedbacks as $feedback) {
-				if ($feedback->getUser() == $user) {
-					$userFeedback = $feedback;
-					break;
-				}
-			}
+			// Retrieve feedbacks
+			$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+			$feedbacks = $feedbackRepository->findByEntityTypeAndEntityId($feedbackable->getType(), $feedbackable->getId());
 
 		}
+
+		$globalUtils = $this->get(GlobalUtils::NAME);
 
 		return array(
 			'entityType'     => $feedbackable->getType(),
 			'entityId'       => $feedbackable->getId(),
 			'feedbackCount'  => $feedbackable->getFeedbackCount(),
-			'feedbacks'      => $feedbacks,
-			'userFeedback'   => $userFeedback,
-			'isFeedbackable' => $feedbackable instanceof HiddableInterface ? $feedbackable->getIsPublic() : true,
+			'feedbacks'      => isset($feedbacks) ? $feedbacks : null,
+			'isFeedbackable' => $this->getIsFeedbackable($feedbackable, $globalUtils->getUser()),
 		);
 	}
 

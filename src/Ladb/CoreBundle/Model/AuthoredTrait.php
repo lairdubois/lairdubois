@@ -15,4 +15,10 @@ trait AuthoredTrait {
 		return $this;
 	}
 
+	// IsOwner /////
+
+	public function getIsOwner(\Ladb\CoreBundle\Entity\Core\User $user = null) {
+		return $user == $this->getUser();
+	}
+
 }

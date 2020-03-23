@@ -6,6 +6,7 @@ use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\Core\Activity\Contribute;
 use Ladb\CoreBundle\Entity\Core\Activity\Publish;
 use Ladb\CoreBundle\Entity\Core\Activity\Join;
+use Ladb\CoreBundle\Entity\Core\Activity\Feedback;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class ActivityRepository extends AbstractEntityRepository {
@@ -65,6 +66,25 @@ class ActivityRepository extends AbstractEntityRepository {
 		if (!is_null($publication->getSubPublications())) {
 			foreach ($publication->getSubPublications() as $subPublication) {
 				$activities = array_merge($activities, $joinRepository->findByEntityTypeAndEntityId($subPublication->getType(), $subPublication->getId()));
+			}
+
+			usort($activities, function($a, $b) {
+				if ($a->getCreatedAt() == $b->getCreatedAt()) {
+					return 0;
+				}
+				return ($a->getCreatedAt() < $b->getCreatedAt()) ? -1 : 1;
+			});
+
+		}
+
+		// Feedback activities /////
+
+		$feedbackRepository = $this->getEntityManager()->getRepository(Feedback::CLASS_NAME);
+
+		$activities = array_merge($activities, $feedbackRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
+		if (!is_null($publication->getSubPublications())) {
+			foreach ($publication->getSubPublications() as $subPublication) {
+				$activities = array_merge($activities, $feedbackRepository->findByEntityTypeAndEntityId($subPublication->getType(), $subPublication->getId()));
 			}
 
 			usort($activities, function($a, $b) {

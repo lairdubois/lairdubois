@@ -162,6 +162,11 @@
                                     <strong>{{ user.meta.reviewCount|number_format(0, ',', ' ') }}</strong>
                                     <small>{{ 'review.default.choice.entities'|transchoice(user.meta.reviewCount) }}</small>
                                 </div>
+                                <div class="ladb-meta{% if user.meta.feedbackCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-feedback"></i>
+                                    <strong>{{ user.meta.feedbackCount|number_format(0, ',', ' ') }}</strong>
+                                    <small>{{ 'feedback.default.choice.entities'|transchoice(user.meta.feedbackCount) }}</small>
+                                </div>
                                 <div class="ladb-meta{% if user.meta.publicCreationCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-creation"></i>
                                     {% if user.meta.publicCreationCount > 0 %}<a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{% endif %}
@@ -212,7 +217,7 @@
                                         {% if user.meta.publicWorkshopCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.publicFindCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-globe"></i>
+                                    <i class="ladb-icon-find"></i>
                                     {% if user.meta.publicFindCount > 0 %}<a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.publicFindCount|number_format(0, ',', ' ') }}</strong>
                                         <small>{{ 'find.find.choice.entities'|transchoice(user.meta.publicFindCount) }}</small>

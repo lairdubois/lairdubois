@@ -13,6 +13,8 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.joinable_utils';
 
+	/////
+
 	public function deleteJoins(JoinableInterface $joinable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$joinRepository = $om->getRepository(Join::CLASS_NAME);
@@ -60,6 +62,8 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 			$om->flush();
 		}
 	}
+
+	/////
 
 	public function getJoinContext(JoinableInterface $joinable, User $user = null) {
 		$om = $this->getDoctrine()->getManager();

@@ -1272,12 +1272,12 @@ review:
 
 feedback:
   default:
+    new: Ajouter un retour d'expérience
+    edit: Editer le retour d'expérience
     choice:
       entities: "[0,1]retour d'expérience|]1,Inf]retours d'expérience"
   event_event:
-    new: Ajouter un retour d'expérience
-    edit: Editer le retour d'expérience
-    none: Cet évènement ne possède pour l'instant aucun retour d'expérience.<br>Ajoutez-en un !
+    none: Cet évènement ne possède pour l'instant aucun retour d'expérience des participants.
     form:
       new_help: Ce retour d'expérience vous permet d'exprimer de façon synthétique votre expérience vécue lors de cet évènement
       body: Votre retour d'expérience

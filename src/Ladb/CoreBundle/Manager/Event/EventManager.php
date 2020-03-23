@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Manager\Event;
 
 use Ladb\CoreBundle\Entity\Event\Event;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
+use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
 
 class EventManager extends AbstractPublicationManager {
@@ -40,6 +41,10 @@ class EventManager extends AbstractPublicationManager {
 		// Delete joins
 		$joinableUtils = $this->get(JoinableUtils::NAME);
 		$joinableUtils->deleteJoins($event, false);
+
+		// Delete feedbacks
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
+		$feedbackableUtils->deleteFeedbacks($event, false);
 
 		parent::deletePublication($event, $withWitness, $flush);
 	}

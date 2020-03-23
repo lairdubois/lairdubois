@@ -1,8 +1,9 @@
+{# set feedbackContext #}
 
 {% set noLazyLoad = true %}
 
 <div class="ladb-success">
 {% include 'LadbCoreBundle:Core/Feedback:_feedbacks-header.part.html.twig' %}
 {% include 'LadbCoreBundle:Core/Feedback:_row.part.html.twig' %}
-{% include 'LadbCoreBundle:Core/Feedback:_feedbacks-footer.part.html.twig' with { 'userFeedback':feedback } %}
+{% include 'LadbCoreBundle:Core/Feedback:_feedbacks-footer.part.html.twig' %}
 </div>
