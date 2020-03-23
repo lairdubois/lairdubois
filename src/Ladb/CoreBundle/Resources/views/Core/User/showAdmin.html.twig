@@ -28,6 +28,10 @@
         <div class="col-lg-4 col-xs-12">
             <div class="ladb-metas">
                 <div class="ladb-meta">
+                    <span class="pull-right">{{ user.id }}</span>
+                    <span>ID</span>
+                </div>
+                <div class="ladb-meta">
                     <span class="pull-right"><a href="mailto:{{ user.email }}">{{ user.email }}</a>&nbsp;<i class="ladb-icon-bullet ladb-color-{{ user.emailConfirmed ? 'positive' : 'negative' }}"></i></span>
                     <span>Email</span>
                 </div>
