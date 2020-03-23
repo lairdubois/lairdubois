@@ -33,7 +33,7 @@ EOT
 
 		// Retrieve target user ////
 
-		$targetUserId = 1; //17684;
+		$targetUserId = 17684;
 
 		$userRepository = $om->getRepository(User::class);
 		$targetUser = $userRepository->findOneById($targetUserId);
@@ -42,7 +42,7 @@ EOT
 
 		// Retrieve creation ////
 
-		$creationId = 1; //12040;
+		$creationId = 12040;
 
 		$creationRepository = $om->getRepository(Creation::class);
 		$creation = $creationRepository->findOneById($creationId);
