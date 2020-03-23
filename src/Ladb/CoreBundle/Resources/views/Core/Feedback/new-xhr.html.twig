@@ -11,7 +11,7 @@
             <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
             <div class="media-body">
                 <h4>A lire avant de publier</h4>
-                <p>{{ ('feedback.'~i18nPrefix~'.form.new_help')|trans() }} : '<strong>{{ entity.title }}</strong>'.</p>
+                <p>{{ ('feedback.'~i18nPrefix~'.form.new_help')|trans|ladb_markdown|raw }}</p>
             </div>
         </div>
     </div>

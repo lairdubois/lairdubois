@@ -1281,12 +1281,14 @@ feedback:
   wonder_creation:
     none: Cette création ne possède pour l'instant aucun retour d'expérience.
     form:
-      new_help: Ce retour vous permet d'exprimer dans le temps votre expérience par rapport à la création
+      new_help: |
+        La rédaction d'un retour vous permet d'exprimer dans le temps votre expérience et les différentes informations que vous avez pu acquérir au cours de la vie votre création.
+        Ceci, par exemple, afin de partager avec la communauté les moyens de valider ou invalider les choix techniques qui ont pu être fait.
   event_event:
     none: Cet évènement ne possède pour l'instant aucun retour d'expérience des participants.
     form:
-      new_help: Ce retour vous permet d'exprimer votre expérience vécue lors de votre participation à l'évènement
-      body: Votre retour d'expérience
+      new_help: |
+        Ce retour vous permet d'exprimer l'expérience vécue lors de votre participation à l'évènement.
 
 referer:
   list: On en parle ailleurs
