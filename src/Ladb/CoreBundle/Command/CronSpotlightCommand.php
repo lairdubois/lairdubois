@@ -101,7 +101,7 @@ EOT
 				->leftJoin('c.spotlight', 's')
 				->where('c.isDraft = false')
 				->andWhere('c.likeCount >= 15')		// 15 or more likes
-				->andWhere('c.changedAt > :retrieveDate')
+				->andWhere('c.createdAt > :retrieveDate')
 				->andWhere('c.spotlight IS NULL')
 				->orderBy('score', 'DESC')
 				->setParameter('retrieveDate', $retrieveDate)
