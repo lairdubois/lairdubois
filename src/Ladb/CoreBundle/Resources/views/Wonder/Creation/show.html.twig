@@ -63,6 +63,11 @@
     </script>
 {% endblock %}
 
+{% block contentBody %}
+    {% include 'LadbCoreBundle:Core/Feedback:_contains-panel.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
 {% block contentMetasPanel %}
     {% include 'LadbCoreBundle:Core/Spotlight:_spotlight-meta.part.html.twig' %}
     {{ parent() }}

@@ -54,6 +54,8 @@
             <a class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_event_datetime').ladbScrollTo(null, { onAfter: function() { $('#ladb_event_datetime').effect('highlight', {}, 1000);}})">
                 <i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}
             </a>
+        {% else %}
+            {% include 'LadbCoreBundle:Core/Feedback:_contains-panel.part.html.twig' %}
         {% endif %}
         {% if event.pictures is defined %}
             {% embed 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':event, 'pictures':event.pictures, 'alt':event.title, 'isOwnerUser':ownerUser } %}

@@ -1,0 +1,8 @@
+{% if entity.feedbackCount > 0 %}
+    {% set i18nPrefix = i18nPrefix|default(ladb_entity_type_stripped_name(entity)) %}
+    <div class="panel panel-default">
+        <div class="panel-body text-center">
+            <i class="ladb-icon-feedback ladb-color-rebound ladb-icon-lg"></i> {{ ('feedback.'~i18nPrefix~'.contains')|trans() }} <a href="#" onclick="$('#ladb_feedback_widget').ladbScrollTo()">{{ entity.feedbackCount }} {{ 'feedback.default.choice.entities'|transchoice(entity.feedbackCount) }}</a>.
+        </div>
+    </div>
+{% endif %}
