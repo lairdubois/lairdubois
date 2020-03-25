@@ -170,6 +170,7 @@ wonder:
     converttohowto: Convertir en pas à pas
     converttofind: Convertir en trouvaille
     converttoquestion: Convertir en question
+    converttooffer: Convertir en annonce
     form:
       inspiration_warning: En cas d'abus, l'auto-référencement en cascade pourra faire l'objet d'une modération.
       alert:
@@ -203,6 +204,7 @@ wonder:
         converttohowto_success: La création %title% a été converti en pas à pas avec succès.
         converttofind_success: La création %title% a été converti en trouvaille avec succès.
         converttoquestion_success: La création %title% a été converti en question avec succès.
+        converttooffer_success: La création %title% a été converti en annonce avec succès.
   plan:
     description: Base collaborative de plans autours du travail du bois.
     new: Ajouter un plan
@@ -440,7 +442,7 @@ qa:
     other_from: Autres questions de
     similar: Voir aussi
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la question (remerciements, demande de précisions, corrections, etc ...).</p><p><u>N'apportez pas votre réponse ici.</u></p><p>Pour répondre à  la question, cliquez sur <strong>Répondre à la question</strong> en bas de page.</p>
-    converttooffer: Convertir en offre
+    converttooffer: Convertir en annonce
     form:
       alert:
         lock_success: La question <strong>%title%</strong> a été vérrouillée.
@@ -459,7 +461,7 @@ qa:
       draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
     admin:
       alert:
-        converttooffer_success: La question %title% a été converti en offre avec succès.
+        converttooffer_success: La question %title% a été converti en annonce avec succès.
   answer:
     new: Répondre à la question
     edit: Editer ma réponse

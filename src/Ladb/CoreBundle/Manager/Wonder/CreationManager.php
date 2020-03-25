@@ -565,4 +565,91 @@ class CreationManager extends AbstractWonderManager {
 		return $question;
 	}
 
+	public function convertToOffer(Creation $creation, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Create a new offer
+
+		$offer = new \Ladb\CoreBundle\Entity\Offer\Offer();
+		$offer->setCreatedAt($creation->getCreatedAt());
+		$offer->setUpdatedAt($creation->getUpdatedAt());
+		$offer->setChangedAt($creation->getChangedAt());
+		$offer->setVisibility($creation->getVisibility());
+		$offer->setIsDraft($creation->getIsDraft());
+		$offer->setTitle($creation->getTitle());
+		$offer->setUser($creation->getUser());
+		$offer->setMainPicture($creation->getMainPicture());
+
+		$offer->setKind(\Ladb\CoreBundle\Entity\Offer\Offer::KIND_REQUEST);
+		$offer->setCategory(\Ladb\CoreBundle\Entity\Offer\Offer::CATEGORY_OTHER);
+		$offer->setPrice('');
+
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::NAME);
+		$blockBodiedUtils->copyBlocksTo($creation, $offer);
+
+		foreach ($creation->getPictures() as $picture) {
+			$offer->addPicture($picture);
+		}
+
+		foreach ($creation->getTags() as $tag) {
+			$offer->addTag($tag);
+		}
+
+		// Setup offer's htmlBody
+		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+		$fieldPreprocessorUtils->preprocessFields($offer);
+
+		// Persist offer to generate ID
+		$om->persist($offer);
+		$om->flush();
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED_FROM_CONVERT, new PublicationEvent($offer));
+
+		// User counter
+		if ($offer->getIsDraft()) {
+			$offer->getUser()->getMeta()->incrementPrivateOfferCount(1);
+		} else {
+			$offer->getUser()->getMeta()->incrementPublicOfferCount(1);
+		}
+
+		// Transfer views
+		$viewableUtils = $this->get(ViewableUtils::NAME);
+		$viewableUtils->transferViews($creation, $offer, false);
+
+		// Transfer likes
+		$likableUtils = $this->get(LikableUtils::NAME);
+		$likableUtils->transferLikes($creation, $offer, false);
+
+		// Transfer comments
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$commentableUtils->transferComments($creation, $offer, false);
+
+		// Transfer watches
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$watchableUtils->transferWatches($creation, $offer, false);
+
+		// transfer reports
+		$reportableUtils = $this->get(ReportableUtils::NAME);
+		$reportableUtils->transferReports($creation, $offer, false);
+
+		// Transfer publish activities
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->transferPublishActivities($creation->getType(), $creation->getId(), $offer->getType(), $offer->getId(), false);
+
+		// Create the witness
+		$witnessManager = $this->get(WitnessManager::NAME);
+		$witnessManager->createConvertedByPublication($creation, $offer, false);
+
+		// Delete the find
+		$this->delete($creation, false, false);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+		return $offer;
+	}
+
 }

@@ -1372,4 +1372,27 @@ class CreationController extends AbstractController {
 		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
 	}
 
+	/**
+	 * @Route("/{id}/admin/converttooffer", requirements={"id" = "\d+"}, name="core_creation_admin_converttooffer")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_creation_admin_converttooffer)")
+	 */
+	public function adminConvertToOfferAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+
+		$creation = $creationRepository->findOneById($id);
+		if (is_null($creation)) {
+			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
+		}
+
+		// Convert
+		$creationManager = $this->get(CreationManager::NAME);
+		$offer = $creationManager->convertToOffer($creation);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.admin.alert.converttooffer_success', array( '%title%' => $offer->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_offer_show', array( 'id' => $offer->getSluggedId() )));
+	}
+
 }

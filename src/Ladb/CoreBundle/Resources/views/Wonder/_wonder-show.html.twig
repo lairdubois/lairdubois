@@ -33,6 +33,7 @@
                 <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'wonder.creation.converttohowto'|trans() }}</a></li>
                 <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-find"></i> {{ 'wonder.creation.converttofind'|trans() }}</a></li>
                 <li><a href="#admin_converttoquestion_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-question"></i> {{ 'wonder.creation.converttoquestion'|trans() }}</a></li>
+                <li><a href="#admin_converttooffer_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-offer"></i> {{ 'wonder.creation.converttooffer'|trans() }}</a></li>
             {% endif %}
             {% if wonderType == 'workshop' %}
                 <li role="separator" class="divider"></li>
@@ -80,6 +81,16 @@
                     {% block footerInner %}
                         <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
                         <a href="{{ path('core_creation_admin_converttoquestion', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'admin_converttooffer_wonder_modal', 'title':('wonder.creation.converttooffer'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en annonce.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_creation_admin_converttooffer', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
                     {% endblock %}
                 {% endembed %}
             {% endif %}
