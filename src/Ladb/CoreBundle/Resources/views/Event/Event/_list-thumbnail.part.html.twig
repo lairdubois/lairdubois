@@ -34,6 +34,6 @@
         <li class="ladb-counter"><i class="ladb-icon-users"></i> <span>{{ entity.joinCount|number_format(0, ',', ' ') }}</span></li>
     {% endif %}
     {% if entity.feedbackCount > 0 %}
-        <li class="ladb-counter ladb-color-inspiration"><i class="ladb-icon-feedback"></i> <span>{{ entity.feedbackCount|number_format(0, ',', ' ') }}</span></li>
+        <li class="ladb-counter ladb-color-feedback"><i class="ladb-icon-feedback"></i> <span>{{ entity.feedbackCount|number_format(0, ',', ' ') }}</span></li>
     {% endif %}
 {% endblock %}

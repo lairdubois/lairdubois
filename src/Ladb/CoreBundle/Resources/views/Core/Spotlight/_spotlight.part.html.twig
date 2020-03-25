@@ -17,6 +17,9 @@
                         {% if entity.likeCount is defined and entity.likeCount > 0 %}
                             <li class="ladb-counter"><i class="ladb-icon-like"></i> {{ entity.likeCount|number_format(0, ',', ' ') }}</li>
                         {% endif %}
+                        {% if entity.feedbackCount is defined and entity.feedbackCount > 0 %}
+                            <li class="ladb-counter ladb-color-feedback"><i class="ladb-icon-feedback"></i> {{ entity.feedbackCount|number_format(0, ',', ' ') }}</li>
+                        {% endif %}
                     {% endblock %}
                 </ul>
                 <div class="ladb-body">
