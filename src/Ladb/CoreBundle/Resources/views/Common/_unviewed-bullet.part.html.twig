@@ -1,4 +1,6 @@
 {# set entity #}
 
-{% set newContentOnly = entity.createdAt != entity.changedAt %}
-{% if is_granted("ROLE_USER") and entity.isShown is defined and not entity.isShown %}<span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}{% if newContentOnly %} ({{ 'default.content'|trans() }}){% endif %}"><i class="ladb-icon-bullet{% if newContentOnly %}-outline{% endif %} ladb-icon-lg" style="color: #f77f00;"></i></span>{% endif %}
+{% if is_granted("ROLE_USER") and entity.isShown is defined and not entity.isShown %}
+    {% set newContentOnly = entity.createdAt != entity.changedAt %}
+    <span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}{% if newContentOnly %} ({{ 'default.content'|trans() }}){% endif %}"><i class="ladb-icon-bullet{% if newContentOnly %}-outline{% endif %} ladb-icon-lg" style="color: #f77f00;"></i></span>
+{% endif %}

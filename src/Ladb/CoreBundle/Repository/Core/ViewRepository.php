@@ -166,4 +166,34 @@ class ViewRepository extends AbstractEntityRepository {
 		}
 	}
 
+	/////
+
+	public function deleteByEntityTypeAndEntityId($entityType, $entityId) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->delete($this->getEntityName(), 'v')
+			->where('v.entityType = :entityType')
+			->andWhere('v.entityId = :entityId')
+			->setParameter('entityType', $entityType)
+			->setParameter('entityId', $entityId)
+		;
+
+		return $queryBuilder->getQuery()->execute();
+	}
+
+	public function deleteByEntityTypeAndEntityIdAndKind($entityType, $entityId, $kind) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->delete($this->getEntityName(), 'v')
+			->where('v.entityType = :entityType')
+			->andWhere('v.entityId = :entityId')
+			->andWhere('v.kind = :kind')
+			->setParameter('entityType', $entityType)
+			->setParameter('entityId', $entityId)
+			->setParameter('kind', $kind)
+		;
+
+		return $queryBuilder->getQuery()->execute();
+	}
+
 }

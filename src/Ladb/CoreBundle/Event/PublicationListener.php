@@ -195,7 +195,7 @@ class PublicationListener implements EventSubscriberInterface {
 
 			// Delete listed views
 			$viewableUtils = $this->container->get(ViewableUtils::NAME);
-			$viewableUtils->deleteViews($publication, View::KIND_LISTED);
+			$viewableUtils->deleteViews($publication);
 
 		}
 
