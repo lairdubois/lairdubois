@@ -843,18 +843,20 @@ class CreationController extends AbstractController {
 					$excludedIds = array( $spotlightEntity->getId() );
 				}
 
+				// Collection highlight
+				$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+				$highlightedCollection = $collectionRepository->findOneByIdAndUser(2465, $this->getUser());
+
 				// RunningEvents
-				$eventRepository = $om->getRepository(Event::CLASS_NAME);
-				$runningEvents = $eventRepository->findByRunningNow();
+				if (is_null($highlightedCollection)) {
+					$eventRepository = $om->getRepository(Event::CLASS_NAME);
+					$runningEvents = $eventRepository->findByRunningNow();
+				}
 
 			}
 
-			// Collection highlight
-			$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
-			$highlightedCollection = $collectionRepository->findOneByIdAndUser(2465, $this->getUser());
-
 			// Tip & Offer highlight
-			if (is_null($highlightedCollection) && (!isset($runningEvents) || empty($runningEvents))) {
+			if ((!isset($highlightedCollection) || is_null($highlightedCollection)) && (!isset($runningEvents) || empty($runningEvents))) {
 
 				$maybeUtils = $this->get(MaybeUtils::NAME);
 				if ($maybeUtils->canDoIt(0, 10, 'tip')) {
