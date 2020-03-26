@@ -642,7 +642,7 @@ class CreationManager extends AbstractWonderManager {
 		$witnessManager = $this->get(WitnessManager::NAME);
 		$witnessManager->createConvertedByPublication($creation, $offer, false);
 
-		// Delete the find
+		// Delete the creation
 		$this->delete($creation, false, false);
 
 		if ($flush) {

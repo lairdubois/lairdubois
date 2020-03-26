@@ -3,12 +3,47 @@
 namespace Ladb\CoreBundle\Repository\Collection;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Ladb\CoreBundle\Entity\Collection\Collection;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class CollectionRepository extends AbstractEntityRepository {
+
+	/////
+
+	public function findOneByIdAndUser($id, User $user = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'c' ))
+			->from($this->getEntityName(), 'c')
+			->where('c.id = :id')
+			->setParameter('id', $id)
+			->setMaxResults(1)
+		;
+
+		// Do not retrieve user viewed tips
+		if (!is_null($user)) {
+			$queryBuilder
+				->leftJoin('LadbCoreBundle:Core\View', 'v', 'WITH', 'v.entityId = c.id AND v.entityType = '.Collection::TYPE.' AND v.kind = :kind AND v.user = :user')
+				->andWhere('v.id IS NULL')
+				->setParameter('user', $user)
+				->setParameter('kind', View::KIND_LISTED)
+			;
+		}
+
+		try {
+			$result = $queryBuilder->getQuery()->getResult();
+			if (count($result) > 0) {
+				return $result[0];
+			}
+			return null;
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
 
 	/////
 

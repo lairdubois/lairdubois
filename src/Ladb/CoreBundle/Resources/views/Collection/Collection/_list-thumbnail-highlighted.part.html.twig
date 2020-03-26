@@ -1,0 +1,9 @@
+<div class="ladb-tip ladb-masonry-item ladb-masonry-column{% if masonryWide is defined and masonryWide %}-wide{% endif %}">
+    <div class="ladb-box ladb-box-hover" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(collection) }}'})">
+        <div class="ladb-content">
+            <div class="ladb-heading"><i class="ladb-icon-donate ladb-icon-lg"></i> Initiatives</div>
+            <p>{{ collection.title }}</p>
+            <div class="text-right"><a href="{{ ladb_entity_url_action(collection) }}">En savoir plus...</a></div>
+        </div>
+    </div>
+</div>

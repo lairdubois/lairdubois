@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Entity\Collection\Collection;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Event\Event;
 use Ladb\CoreBundle\Entity\Offer\Offer;
@@ -848,8 +849,12 @@ class CreationController extends AbstractController {
 
 			}
 
-			// Tip
-			if (!isset($runningEvents) || empty($runningEvents)) {
+			// Collection highlight
+			$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+			$highlightedCollection = $collectionRepository->findOneByIdAndUser(2465, $this->getUser());
+
+			// Tip & Offer highlight
+			if (is_null($highlightedCollection) && (!isset($runningEvents) || empty($runningEvents))) {
 
 				$maybeUtils = $this->get(MaybeUtils::NAME);
 				if ($maybeUtils->canDoIt(0, 10, 'tip')) {
@@ -1138,12 +1143,13 @@ class CreationController extends AbstractController {
 		}
 
 		$parameters = array_merge($parameters, array(
-			'spotlight'        => isset($spotlight) ? $spotlight : null,
-			'spotlightEntity'  => isset($spotlightEntity) ? $spotlightEntity : null,
-			'highlightedPost'  => isset($highlightedPost) ? $highlightedPost : null,
-			'runningEvents'    => isset($runningEvents) ? $runningEvents : null,
-			'highlightedTip'   => isset($highlightedTip) ? $highlightedTip : null,
-			'highlightedOffer' => isset($highlightedOffer) ? $highlightedOffer : null,
+			'spotlight'             => isset($spotlight) ? $spotlight : null,
+			'spotlightEntity'       => isset($spotlightEntity) ? $spotlightEntity : null,
+			'highlightedPost'       => isset($highlightedPost) ? $highlightedPost : null,
+			'runningEvents'         => isset($runningEvents) ? $runningEvents : null,
+			'highlightedCollection' => isset($highlightedCollection) ? $highlightedCollection : null,
+			'highlightedTip'        => isset($highlightedTip) ? $highlightedTip : null,
+			'highlightedOffer'      => isset($highlightedOffer) ? $highlightedOffer : null,
 		));
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateCreationCount() > 0) {

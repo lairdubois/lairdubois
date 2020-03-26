@@ -376,6 +376,8 @@ class QuestionController extends AbstractController {
 		if ($page == 0 && $layout == 'view') {
 			$om = $this->getDoctrine()->getManager();
 
+			// Tip & Offer highlight
+
 			$maybeUtils = $this->get(MaybeUtils::NAME);
 			if ($maybeUtils->canDoIt(0, 10, 'tip')) {
 				$tipRepository = $om->getRepository(Tip::CLASS_NAME);

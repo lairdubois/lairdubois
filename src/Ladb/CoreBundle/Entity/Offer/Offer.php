@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Offer;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\CollectionnableInterface;
+use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\RepublishableInterface;
 use Ladb\CoreBundle\Model\RepublishableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,10 +51,10 @@ use Ladb\CoreBundle\Entity\Find\Content\Event;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Offer\OfferRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, RepublishableInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface, LocalisableExtendedInterface {
+class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, RepublishableInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface, LocalisableExtendedInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, MultiPicturedTrait, BlockBodiedTrait;
-	use RepublishableTrait, IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, LocalisableTrait, LocalisableExtendedTrait;
+	use RepublishableTrait, IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, LocalisableTrait, LocalisableExtendedTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Offer\Offer';
 	const TYPE = 122;
@@ -231,6 +233,16 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 * @ORM\Column(type="integer", name="comment_count")
 	 */
 	private $commentCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="private_collection_count")
+	 */
+	private $privateCollectionCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", name="public_collection_count")
+	 */
+	private $publicCollectionCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="view_count")

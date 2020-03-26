@@ -731,19 +731,21 @@ class OfferController extends AbstractController {
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		$hasMap = !is_null($offer->getLatitude()) && !is_null($offer->getLongitude());
 
 		return array(
-			'offer'           => $offer,
-			'userOffers'      => $userOffers,
-			'similarOffers'   => $similarOffers,
-			'likeContext'     => $likableUtils->getLikeContext($offer, $this->getUser()),
-			'watchContext'    => $watchableUtils->getWatchContext($offer, $this->getUser()),
-			'commentContext'  => $commentableUtils->getCommentContext($offer),
-			'followerContext' => $followerUtils->getFollowerContext($offer->getUser(), $this->getUser()),
-			'hasMap'          => $hasMap,
+			'offer'             => $offer,
+			'userOffers'        => $userOffers,
+			'similarOffers'     => $similarOffers,
+			'likeContext'       => $likableUtils->getLikeContext($offer, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($offer, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($offer),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($offer),
+			'followerContext'   => $followerUtils->getFollowerContext($offer->getUser(), $this->getUser()),
+			'hasMap'            => $hasMap,
 		);
 	}
 

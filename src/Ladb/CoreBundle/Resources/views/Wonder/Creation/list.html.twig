@@ -99,6 +99,9 @@
             </div>
         </div>
     {% endif %}
+    {% if highlightedCollection is defined and highlightedCollection %}
+        {% include 'LadbCoreBundle:Collection/Collection:_list-thumbnail-highlighted.part.html.twig' with { 'collection':highlightedCollection } %}
+    {% endif %}
     {% if highlightedTip is defined and highlightedTip %}
         {% include 'LadbCoreBundle:Core/Tip:_list-thumbnail-highlighted.part.html.twig' with { 'tip':highlightedTip, 'tiny':true } %}
     {% endif %}
