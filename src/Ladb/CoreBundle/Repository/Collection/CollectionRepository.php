@@ -30,7 +30,7 @@ class CollectionRepository extends AbstractEntityRepository {
 				->leftJoin('LadbCoreBundle:Core\View', 'v', 'WITH', 'v.entityId = c.id AND v.entityType = '.Collection::TYPE.' AND v.kind = :kind AND v.user = :user')
 				->andWhere('v.id IS NULL')
 				->setParameter('user', $user)
-				->setParameter('kind', View::KIND_LISTED)
+				->setParameter('kind', View::KIND_SHOWN)
 			;
 		}
 
