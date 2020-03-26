@@ -382,7 +382,8 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getIsJoinable() {
 		return $this->getIsJoinableTrait()
-			&& $this->getStatus() != Event::STATUS_COMPLETED;
+			&& $this->getStatus() != Event::STATUS_COMPLETED
+			&& !$this->getCancelled();
 	}
 
 }
