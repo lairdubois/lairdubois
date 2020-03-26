@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Form\Type\Event;
 
 use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -60,6 +61,7 @@ class EventType extends AbstractType {
 			->add('endDate', DateType::class, array( 'html5' => false, 'format' => 'dd/MM/yyyy', 'widget' => 'single_text' ))
 			->add('endTime', TimeType::class, array( 'html5' => false, 'widget' => 'single_text' ))
 			->add('url')
+			->add('online')
 			->add('cancelled')
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))

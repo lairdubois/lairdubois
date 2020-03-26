@@ -25,7 +25,7 @@
     </div>
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('event.event.form.help.title'|trans()) } %}
-    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'maxPictureCount':5, 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('offer.offer.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'maxPictureCount':5, 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('event.event.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'calendar-month', 'title':'Détails', 'formSection':'content' } %}
         {% block body %}
             <div>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="form-group">
                     {{ form_label(form.location, 'default.location') }}
-                    <p class="help-block"><i>{{ 'event.event.form.help.event_location'|trans() }}</i></p>
+                    <p class="help-block"><i>{{ 'event.event.form.help.location'|trans() }}</i></p>
                     {{ form_errors(form.location) }}
                     <div class="input-group">
                         <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="form-group">
                     {{ form_label(form.url, 'default.link') }}
-                    <p class="help-block"><i>{{ 'event.event.form.help.event_url'|trans() }}</i></p>
+                    <p class="help-block"><i>{{ 'event.event.form.help.url'|trans() }}</i></p>
                     {{ form_errors(form.url) }}
                     <div class="input-group">
                         <span class="input-group-addon">{% if form.url.vars.value == '' %}http://{% else %}<i class="ladb-icon-globe"></i>{% endif %}</span>
@@ -93,9 +93,21 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="input-group">
+                        {{ form_label(form.online, 'Mode de présence') }}
+                        <div class="checkbox">
+                            <label>
+                                {{ form_widget(form.online) }}
+                                {{ 'event.event.online'|trans() }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     {{ form_label(form.cancelled, 'Annulation') }}
+                    <p class="help-block"><i>{{ 'event.event.form.help.cancelled'|trans() }}</i></p>
                     <div class="checkbox">
-                        <label>
+                        <label class="ladb-color-danger">
                             {{ form_widget(form.cancelled) }}
                             Cet évènement est annulé
                         </label>

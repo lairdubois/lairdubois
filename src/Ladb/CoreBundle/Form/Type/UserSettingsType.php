@@ -38,7 +38,8 @@ class UserSettingsType extends AbstractType {
 					User::ACCOUNT_TYPE_ASSO => 'Une association ou un collectif&nbsp;<i class="ladb-icon-badge-asso"></i>',
 					User::ACCOUNT_TYPE_HOBBYIST => 'Un-e passionné-e du travail du bois&nbsp;<i class="ladb-icon-badge-hobbyist"></i>',
 					User::ACCOUNT_TYPE_PRO => 'Un-e professionnel-le des métiers du bois&nbsp;<i class="ladb-icon-badge-pro"></i>',
-					User::ACCOUNT_TYPE_BRAND => 'Une marque&nbsp;<i class="ladb-icon-badge-brand"></i>')),
+					User::ACCOUNT_TYPE_BRAND => 'Une marque&nbsp;<i class="ladb-icon-badge-brand"></i>'
+				)),
 				'expanded' => true,
 			))
 			->add('location')

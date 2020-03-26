@@ -51,10 +51,12 @@
     {% endif %}
     <div class="ladb-event">
         {% if event.cancelled %}
+            <meta itemprop="eventStatus" content="http://schema.org/EventCancelled">
             <a class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_event_datetime').ladbScrollTo(null, { onAfter: function() { $('#ladb_event_datetime').effect('highlight', {}, 1000);}})">
                 <i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}
             </a>
         {% else %}
+            <meta itemprop="eventStatus" content="http://schema.org/EventScheduled">
             {% include 'LadbCoreBundle:Core/Feedback:_contains-panel.part.html.twig' %}
         {% endif %}
         {% if event.pictures is defined %}
@@ -88,6 +90,14 @@
                         <br><span class="label label-success">{{ 'event.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_ends'|trans() }} {{ event.endAt|time_diff() }}.</span>
                     {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
                         <br><span class="label label-default">{{ 'event.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_was_completed'|trans() }} {{ event.endAt|time_diff() }}.</span>
+                    {% endif %}
+                    {% if event.online %}
+                        <div class="ladb-event-attendence-mode">
+                            <i class="ladb-icon-software ladb-icon-lg"></i> {{ 'event.event.online'|trans() }}
+                            <meta itemprop="eventAttendanceMode" content="https://schema.org/OnlineEventAttendanceMode">
+                        </div>
+                    {% else %}
+                        <meta itemprop="eventAttendanceMode" content="https://schema.org/OfflineEventAttendanceMode">
                     {% endif %}
                 </div>
             </div>

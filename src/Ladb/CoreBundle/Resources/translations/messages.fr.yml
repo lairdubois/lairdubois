@@ -354,15 +354,6 @@ find:
         name: Lien
       gallery:
         name: Photos
-      event:
-        name: Evènement
-        scheduled: Prochainement
-        running: En ce moment
-        completed: Terminé
-        cancelled: Annulé
-        event_starts: L'évènement commence
-        event_ends: L'évènement se termine
-        event_was_completed: L'évènement s'est terminé
     form:
       alert:
         lock_success: La trouvaille <strong>%title%</strong> a été vérrouillée.
@@ -381,10 +372,6 @@ find:
         gallery: Ajoutez vos photos...
         gallery_pictures: Ajoutez jusqu'à <strong>5 photos</strong> de votre trouvaille. La première photo sera utilisée comme miniature.<br/><p class="ladb-color-danger"><i class="ladb-icon-warning"></i> N'ajoutez que des photos qui vous appartiennent. Pour des raisons de droit, si les photos sont issuent d'un autre site, utilisez le type <strong>Lien</strong> pour pointer vers ce site.</p>
         gallery_location: Indiquez le lieu géographique de prise de vos photos.
-        event: Renseignez l'évènement...
-        event_pictures: Ajoutez jusqu'à <strong>5 images</strong> de l'évènement. La première image sera utilisée comme miniature.
-        event_location: Indiquez le lieu géographique de l'évènement.
-        event_url: Indiquez, le cas échéant, le site web de l'évènement.
     choice:
       entities: '[0,1]trouvaille|]1,Inf]trouvailles'
       new_finds: '[0,1]nouvelle trouvaille|]1,Inf]nouvelles trouvailles'
@@ -404,6 +391,7 @@ event:
     scheduled: Prochainement
     running: En ce moment
     completed: Terminé
+    online: Cet évènement se déroule "en ligne"
     cancelled: Annulé
     event_starts: L'évènement commence
     event_ends: L'évènement se termine
@@ -420,10 +408,10 @@ event:
         title: Renseignez ici le titre de votre évènement.
         body: Décrivez ici votre évènement.
         tags: Indiquez les tags définissant votre évènement.
-        event: Renseignez l'évènement...
-        event_pictures: Ajoutez jusqu'à <strong>5 images</strong> de l'évènement. La première image sera utilisée comme miniature.
-        event_location: Indiquez le lieu géographique de l'évènement.
-        event_url: Indiquez, le cas échéant, le site web de l'évènement.
+        showcase: Ajoutez jusqu'à <strong>5 images</strong> de l'évènement. La première image sera utilisée comme miniature.
+        location: Indiquez le lieu géographique de l'évènement.
+        url: Indiquez, le cas échéant, le site web de l'évènement.
+        cancelled: Cochez si l'évènement est annulé.
     choice:
       entities: '[0,1]evènement|]1,Inf]evènements'
       new_events: '[0,1]nouvel evènement|]1,Inf]nouveaux evènements'

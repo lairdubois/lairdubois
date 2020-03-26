@@ -143,14 +143,14 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	/**
 	 * @ORM\Column(name="start_date", type="date")
-	 * @Assert\Date(groups={"event"})
-	 * @Assert\NotBlank(groups={"event"})
+	 * @Assert\Date()
+	 * @Assert\NotBlank()
 	 */
 	private $startDate;
 
 	/**
 	 * @ORM\Column(name="start_time", type="time", nullable=true)
-	 * @Assert\Time(groups={"event"})
+	 * @Assert\Time()
 	 */
 	private $startTime;
 
@@ -161,21 +161,26 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	/**
 	 * @ORM\Column(name="end_date", type="date", nullable=true)
-	 * @Assert\Date(groups={"event"})
+	 * @Assert\Date()
 	 */
 	private $endDate;
 
 	/**
 	 * @ORM\Column(name="end_time", type="time", nullable=true)
-	 * @Assert\Time(groups={"event"})
+	 * @Assert\Time()
 	 */
 	private $endTime;
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Assert\Url(groups={"event"})
+	 * @Assert\Url()
 	 */
 	private $url;
+
+	/**
+	 * @ORM\Column(name="online", type="boolean")
+	 */
+	private $online = false;
 
 	/**
 	 * @ORM\Column(type="boolean")
@@ -349,6 +354,17 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 
 	public function getUrl() {
 		return $this->url;
+	}
+
+	// Online /////
+
+	public function setOnline($online) {
+		$this->online = $online;
+		return $this;
+	}
+
+	public function getOnline() {
+		return $this->online;
 	}
 
 	// Cancelled /////
