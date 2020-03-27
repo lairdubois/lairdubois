@@ -2,20 +2,21 @@
 
 namespace Ladb\CoreBundle\Controller\Funding;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Entity\Funding\Charge;
-use Ladb\CoreBundle\Entity\Core\User;
-use Ladb\CoreBundle\Form\Type\Funding\ChargeType;
-use Ladb\CoreBundle\Utils\MailerUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Entity\Funding\Charge;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Funding\Donation;
 use Ladb\CoreBundle\Entity\Funding\Funding;
+use Ladb\CoreBundle\Form\Type\Funding\ChargeType;
 use Ladb\CoreBundle\Manager\Funding\FundingManager;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
+use Ladb\CoreBundle\Utils\MailerUtils;
 
 /**
  * @Route("/financement")
@@ -111,11 +112,9 @@ class FundingController extends AbstractController {
 	/**
 	 * @Route("/{year}/{month}/admin/charge/new", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_admin_charge_new")
 	 * @Template("LadbCoreBundle:Funding:charge-new-xhr.html.twig")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_new)")
 	 */
 	public function chargeNewAction(Request $request, $year = null, $month = null) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
@@ -140,11 +139,9 @@ class FundingController extends AbstractController {
 	/**
 	 * @Route("/{year}/{month}/admin/charge/create", requirements={"year" = "\d+", "month" = "\d+"}, methods={"POST"}, name="core_funding_admin_charge_create")
 	 * @Template("LadbCoreBundle:Funding:charge-new-xhr.html.twig")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_create)")
 	 */
 	public function chargeCreateAction(Request $request, $year = null, $month = null) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
@@ -187,11 +184,9 @@ class FundingController extends AbstractController {
 	/**
 	 * @Route("/admin/charge/{id}/edit", requirements={"id" = "\d+"}, name="core_funding_admin_charge_edit")
 	 * @Template("LadbCoreBundle:Funding:charge-edit-xhr.html.twig")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_edit)")
 	 */
 	public function chargeEditAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
@@ -215,11 +210,9 @@ class FundingController extends AbstractController {
 	/**
 	 * @Route("/admin/charge/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_funding_admin_charge_update")
 	 * @Template("LadbCoreBundle:Funding:charge-update-xhr.html.twig")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_update)")
 	 */
 	public function chargeUpdateAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
@@ -263,11 +256,9 @@ class FundingController extends AbstractController {
 	/**
 	 * @Route("/admin/charge/{id}/delete", requirements={"id" = "\d+"}, name="core_funding_admin_charge_delete")
 	 * @Template("LadbCoreBundle:Funding:charge-delete-xhr.html.twig")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_delete)")
 	 */
 	public function chargeDeleteAction(Request $request, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Access denied');
-		}
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed.');
 		}
