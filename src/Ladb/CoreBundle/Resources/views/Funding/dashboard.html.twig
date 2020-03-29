@@ -34,7 +34,7 @@
                     stripePublishableKey: '{{ stripe_publishable_key }}',
                     autoShow: {% if autoShow %}true{% else %}false{% endif %},
                     newUrl: '{{ path('core_funding_donation_new') }}',
-                    createUrl: '{{ path('core_funding_donation_create') }}',
+                    confirmedUrl: '{{ path('core_funding_donation_confirmed') }}',
                     dashboardUrl: '{{ path('core_funding_dashboard') }}'
                 });
             {% endif %}

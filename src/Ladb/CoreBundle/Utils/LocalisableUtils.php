@@ -187,7 +187,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 			}
 
 		} catch (\Exception $e) {
-			$this->get('logger')->err($e);
+			$this->get('logger')->error($e);
 		}
 
 		return null;

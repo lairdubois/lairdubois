@@ -9,12 +9,12 @@
             <i class="ladb-icon-donate ladb-color-positive" style="font-size: 100px;"></i>
         </div>
         <br>
-        <p>
-            Le paiement de votre don de <strong>{{ donation.amountEur|number_format(2, ',', ' ') }}€</strong> a bien été enregistré.
+        <p class="text-center">
+            Le paiement de votre don de <strong>{{ amountEur|number_format(2, ',', ' ') }}€</strong> a bien été enregistré.
             <br>
             Merci pour votre soutien au projet <em>L'Air du Bois</em> !
         </p>
-        <p><small class="help-block">Les frais réels de transaction s'élèvent à <strong>{{ donation.feeEur|number_format(2, ',', ' ') }}€</strong>. Soit un don net de <strong>{{ (donation.amountEur - donation.feeEur)|number_format(2, ',', ' ') }}€</strong></small></p>
+        <p class="text-center"><small class="help-block">Vous receverez un reçu par email à l'adresse <strong>{{ app.user.emailCanonical }}</strong></small></p>
     </div>
 {% endblock %}
 

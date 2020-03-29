@@ -2,7 +2,10 @@
 
 namespace Ladb\CoreBundle\Controller\Funding;
 
+use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -300,117 +303,196 @@ class FundingController extends AbstractController {
 			$minAmountEur = $this->getParameter('funding_min_amount_eur');
 			$maxAmountEur = $this->getParameter('funding_max_amount_eur');
 
+			// Setup Stripe API
+			\Stripe\Stripe::setApiKey($this->getParameter('stripe_secret_key'));
+
+			// Create Stripe payment intent
+			try {
+				$intent = \Stripe\PaymentIntent::create([
+					'setup_future_usage'   => 'on_session',
+					'amount'               => $amountEur * 100,
+					'currency'             => 'eur',
+					'payment_method_types' => ['card'],
+					'description'          => 'Don au profit de L\'Air du Bois',
+					'receipt_email'        => $this->getUser()->getEmailCanonical(),
+					'metadata'             => array(
+						'user_id'       => $this->getUser()->getId(),
+						'user_username' => $this->getUser()->getUsernameCanonical(),
+					),
+				]);
+			} catch (ApiErrorException $e) {
+				throw $this->createNotFoundException('ApiErrorException (core_funding_donation_new)', $e);
+			}
+
+			$customerName = $this->getUser()->getDisplayName();
+			if (!empty($this->getUser()->getFullName())) {
+				$customerName .= ' - '.$this->getUser()->getFullName();
+			}
+
 			return array(
 				'amountEur'    => $amountEur,
 				'feeEur'       => $amountEur * 0.014 + 0.25,
 				'validAmount'  => $amountEur >= $minAmountEur && $amountEur <= $maxAmountEur,
 				'minAmountEur' => $minAmountEur,
 				'maxAmountEur' => $maxAmountEur,
+				'secret'       => $intent->client_secret,
+				'customerName' => $customerName,
 			);
 		}
 
 		return $this->redirect($this->generateUrl('core_funding_dashboard', array(
 			'amount_eur' => $amountEur,
-			'auto_show' => true,
+			'auto_show'  => true,
 		)));
 	}
 
 	/**
-	 * @Route("/donation/create", name="core_funding_donation_create", methods={"POST"}, defaults={"_format" = "json"})
+	 * @Route("/donation/confirmed", name="core_funding_donation_confirmed", methods={"POST"}, defaults={"_format" = "json"})
 	 */
-	public function donationCreateAction(Request $request) {
-		$om = $this->getDoctrine()->getManager();
-
+	public function donationConfirmedAction(Request $request) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_funding_donation_create)');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_donation_confirmed)');
 		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('User email is not confirmed.');
-		}
-
-		$minAmount = $this->getParameter('funding_min_amount_eur') * 100;
-		$maxAmount = $this->getParameter('funding_max_amount_eur') * 100;
 
 		// Retrieve parameters
-		$amount = $request->get('amount');
-		$token = $request->get('token');
-
-		if (is_null($amount)) {
-			throw $this->createNotFoundException('No amount.');
-		}
-		if ($amount < $minAmount || $amount > $maxAmount) {
-			throw $this->createNotFoundException('Amount is out of range ($amount='.$amount.')');
-		}
-		if (is_null($token)) {
-			throw $this->createNotFoundException('No token.');
+		$intentId = $request->get('intent_id');
+		if (is_null($intentId)) {
+			throw $this->createNotFoundException('No intentId (core_funding_donation_confirmed)');
 		}
 
 		// Setup Stripe API
 		\Stripe\Stripe::setApiKey($this->getParameter('stripe_secret_key'));
 
-		// Create a charge: this will charge the user's card
+		// Retrieve payment intent
 		try {
-
-			// Create the Stripe charge
-			$charge = \Stripe\Charge::create(array(
-				'amount'        => $amount, // Amount in cents
-				'currency'      => 'eur',
-				'source'        => $token,
-				'metadata'      => array('user_id' => $this->getUser()->getId()),
-				"description"   => "Don au profit de L'Air du Bois",
-			));
-
-			// Retrieve the balance transaction
-			$balanceTransaction = \Stripe\BalanceTransaction::retrieve($charge['balance_transaction']);
-
-		} catch (\Stripe\Error\Card $e) {
-			return new JsonResponse(array(
-				'success' => false,
-				'error_code' => $e->getStripeCode(),
-				'message' => $this->get('translator')->trans('funding.message.pay_error.'.$e->getStripeCode()),
-			));
+			$paymentIntent = \Stripe\PaymentIntent::retrieve($intentId);
+		} catch (ApiErrorException $e) {
+			throw $this->createNotFoundException('ApiErrorException (core_funding_donation_confirmed)', $e);
 		}
 
-		// Create the Donation
-		$donation = new Donation();
-		$donation->setUser($this->getUser());
-		$donation->setAmount($amount);
-		$donation->setFee($balanceTransaction['fee']);
-		$donation->setStripeChargeId($charge['id']);
-
-		$om->persist($donation);
-
-		// Update current Funding
-		$fundingManager = $this->get(FundingManager::NAME);
-		$funding = $fundingManager->getOrCreateCurrent();
-		$funding->incrementDonationFeeBalance($donation->getFee());
-		$funding->incrementDonationBalance($donation->getAmount());
-		$funding->incrementDonationCount();
-
-		// Increment user donation stats
-		$this->getUser()->getMeta()->incrementDonationCount();
-		$this->getUser()->getMeta()->incrementDonationBalance($donation->getAmount());
-		$this->getUser()->getMeta()->incrementDonationFeeBalance($donation->getFee());
-
-		$om->flush();	// Flush to be sure that donation id is generated
-
-		// Generate donation hashid
-		$hashids = new \Hashids\Hashids($this->getParameter('secret'), 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
-		$donation->setHashid($hashids->encode($donation->getId()));
-
-		$om->flush();
-
-		// Email confirmation (after persist to have a donation id)
-		$mailerUtils = $this->get(MailerUtils::NAME);
-		$mailerUtils->sendFundingPaymentReceiptEmailMessage($this->getUser(), $donation);
-
-		// Email notification (to admin)
-		$mailerUtils->sendNewDonationNotificationEmailMessage($this->getUser(), $donation);
+		$amount = $paymentIntent->amount;
+		$fee = $paymentIntent->application_fee_amount ? $paymentIntent->application_fee_amount : 0;
 
 		return new JsonResponse(array(
 			'success' => true,
-			'content' => $this->get('templating')->render('LadbCoreBundle:Funding:donation-create.html.twig', array( 'donation' => $donation )),
+			'content' => $this->get('templating')->render('LadbCoreBundle:Funding:donation-confirmed.html.twig', array(
+				'amountEur' => $amount / 100,
+			)),
 		));
+	}
+
+	/**
+	 * @Route("/donation/webhook", name="core_funding_donation_webhook")
+	 */
+	public function donationWebhookAction(Request $request) {
+
+		// Setup Stripe API
+		\Stripe\Stripe::setApiKey($this->getParameter('stripe_secret_key'));
+
+		$payload = @file_get_contents('php://input');
+		$sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+		$event = null;
+
+		try {
+			$event = \Stripe\Webhook::constructEvent(
+				$payload,
+				$sig_header,
+				$this->getParameter('stripe_endpoint_secret')
+			);
+		} catch(\UnexpectedValueException $e) {
+			// Invalid payload
+			throw new BadRequestHttpException('Invalid payload (core_funding_donation_webhook)');
+		} catch(\Stripe\Exception\SignatureVerificationException $e) {
+			// Invalid signature
+			throw new BadRequestHttpException('Invalid signature (core_funding_donation_webhook)');
+		}
+
+		// Handle the event
+		switch ($event->type) {
+
+			case 'payment_intent.succeeded':
+
+				$paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
+
+				$amount = $paymentIntent->amount;
+				$fee = 0;
+				$userId = $paymentIntent->metadata['user_id'];
+
+				// Checks
+				if (is_null($userId)) {
+					throw new BadRequestHttpException('Invalid userId (core_funding_donation_webhook)');
+				}
+
+				// Setup Stripe API
+				\Stripe\Stripe::setApiKey($this->getParameter('stripe_secret_key'));
+
+				// Retrieve the charges to extract fees
+				$charges = \Stripe\Charge::all(array(
+					'payment_intent' => $paymentIntent->id
+				));
+				foreach ($charges as $charge) {
+
+					// Retrieve the balance transaction
+					$balanceTransaction = \Stripe\BalanceTransaction::retrieve($charge['balance_transaction']);
+
+					$fee += $balanceTransaction['fee'];
+
+				}
+
+				// Retrieve User
+				$om = $this->getDoctrine()->getManager();
+				$userRepository = $om->getRepository(User::CLASS_NAME);
+				$user = $userRepository->FindOneById($userId);
+				if (is_null($user)) {
+					throw new BadRequestHttpException('User not found (core_funding_donation_webhook)');
+				}
+
+				// Create the Donation
+				$donation = new Donation();
+				$donation->setUser($user);
+				$donation->setAmount($amount);
+				$donation->setFee($fee);
+				$donation->setStripeChargeId($paymentIntent->id);
+
+				$om->persist($donation);
+
+				// Update current Funding
+				$fundingManager = $this->get(FundingManager::NAME);
+				$funding = $fundingManager->getOrCreateCurrent();
+				$funding->incrementDonationFeeBalance($donation->getFee());
+				$funding->incrementDonationBalance($donation->getAmount());
+				$funding->incrementDonationCount();
+
+				// Increment user donation stats
+				$user->getMeta()->incrementDonationCount();
+				$user->getMeta()->incrementDonationBalance($donation->getAmount());
+				$user->getMeta()->incrementDonationFeeBalance($donation->getFee());
+
+				$om->flush();	// Flush to be sure that donation id is generated
+
+				// Generate donation hashid
+				$hashids = new \Hashids\Hashids($this->getParameter('secret'), 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+				$donation->setHashid($hashids->encode($donation->getId()));
+
+				$om->flush();
+
+				// Email confirmation (after persist to have a donation id)
+				$mailerUtils = $this->get(MailerUtils::NAME);
+				$mailerUtils->sendFundingPaymentReceiptEmailMessage($user, $donation);
+
+				// Email notification (to admin)
+				$mailerUtils->sendNewDonationNotificationEmailMessage($user, $donation);
+
+				break;
+
+			// ... handle other event types
+			default:
+				// Unexpected event type
+				throw new BadRequestHttpException('Unexpected event type (core_funding_donation_webhook)');
+
+		}
+
+		return new Response();
 	}
 
 	/**

@@ -62,6 +62,7 @@ parameters:
 
     stripe_secret_key:              YOUR_STRIPE_SECRET_KEY
     stripe_publishable_key:         YOUR_STRIPE_PUBLISHABLE_KEY
+    stripe_endpoint_secret:         YOUR_STRIPE_ENDPOINT_SECRET
 
     funding_min_amount_eur:         1
     funding_max_amount_eur:         250
