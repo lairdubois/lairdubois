@@ -3,11 +3,11 @@
 {% set placeholder = 'search.in.events'|trans() %}
 {% set searchPath = path('core_event_list') %}
 {% set masonry = true %}
-{% set masonryWide = true %}
+{% set mapSearchPath = path('core_event_list_geojson') %}
 
 {% block filtersDropdown %}
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-require-map="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-require-map="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="status" data-value="running" data-label="En ce moment" data-unique="true" data-icon="running"><i class="ladb-icon-running"></i> En ce moment</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="status" data-value="scheduled" data-label="Prochainement" data-unique="true" data-icon="scheduled"><i class="ladb-icon-scheduled"></i> Prochainement</a></li>

@@ -16,11 +16,16 @@
         this.$searchIcon = $('.ladb-search-box-top-left > i', this.$box);
         this.$textInput = $('.ladb-input > input', this.$box);
         this.$filtersBtn = $('.ladb-filters-btn', this.$box);
+        this.$mapBtn = $('.ladb-map-btn', this.$box);
         this.$shortcuts = $('.ladb-search-shortcuts', this.$element);
+
+        this.$mapArea = $('#' + this.options.mapAreaId);
+        this.$mapBanner = $('.ladb-map-banner');
 
         this.facetDefs = {};
         this.isFirstSearch = true;
         this.hasMap = this.options.mapSearchPath !== null;
+        this.requireMap = false;
 
     };
 
@@ -38,6 +43,7 @@
 
     LadbSmartSearch.prototype.parseQuery = function(query) {
         this.clear();
+        this.requireMap = false;
         if (query.length > 0) {
 
             var re = /(?:@([^\s]+):(?:\"([^\"]+)\"|([^\s]+))|@([^\s]+)|\"([^\"]+)\"|([^\s]+))/g;
@@ -80,6 +86,9 @@
                         if (facetDef.needValue && !value) {
                             continue;
                         }
+                        if (facetDef.requireMap) {
+                            this.requireMap = true;
+                        }
                         var facet = this.createFacet(facetDef);
                         if (facetDef.editable && value) {
                             facet.find('input').val(value);
@@ -96,6 +105,42 @@
             }
             this.$textInput.val(text.trim());
         }
+    };
+
+    LadbSmartSearch.prototype.generateQuery = function() {
+        var that = this;
+        var query = this.$textInput.val();
+        this.requireMap = false;
+        this.$boxBottomLeft.find('.ladb-facet').each(function(i, v) {
+            var $facet = $(v);
+            var facetDef = $facet.data('facetDef');
+            var facetQuery = ' @' + $facet.data('name');
+            var $input = $facet.find('input');
+            var value;
+            if ($input.length > 0) {
+                value = $($input).val();
+                if (!value) {
+                    that.removeFacet($facet);
+                    return;
+                }
+                facetQuery += ':"' + value + '"';
+            } else {
+                value = $facet.data('value');
+                if (value) {
+                    facetQuery += ':' + value;
+                } else {
+                    if (facetDef.needValue) {
+                        that.removeFacet($facet);
+                        return;     // No value ignore this facet
+                    }
+                }
+            }
+            query += facetQuery;
+            if (facetDef.requireMap) {
+                that.requireMap = true;
+            }
+        });
+        return query.trim();
     };
 
     LadbSmartSearch.prototype.createFacet = function(facetDef) {
@@ -202,38 +247,6 @@
         return $('.ladb-facet', this.$boxBottomLeft).length;
     };
 
-    LadbSmartSearch.prototype.generateQuery = function() {
-        var that = this;
-        var query = this.$textInput.val();
-        this.$boxBottomLeft.find('.ladb-facet').each(function(i, v) {
-            var $facet = $(v);
-            var facetQuery = ' @' + $facet.data('name');
-            var $input = $facet.find('input');
-            var value;
-            if ($input.length > 0) {
-                value = $($input).val();
-                if (!value) {
-                    that.removeFacet($facet);
-                    return;
-                }
-                facetQuery += ':"' + value + '"';
-            } else {
-                value = $facet.data('value');
-                if (value) {
-                    facetQuery += ':' + value;
-                } else {
-                    var facetDef = $facet.data('facetDef');
-                    if (facetDef.needValue) {
-                        that.removeFacet($facet);
-                        return;     // No value ignor this facet
-                    }
-                }
-            }
-            query += facetQuery;
-        });
-        return query.trim();
-    };
-
     LadbSmartSearch.prototype.generateFacetDefId = function(name, value) {
         return value ? name + ':' + value : name;
     };
@@ -303,8 +316,11 @@
 
                     $(window).scrollTop(0);
 
-                    // Reload map
-                    that.mapLoad(query);
+                    // Update map map
+                    if (that.requireMap) {
+                        that.showMap();
+                    }
+                    that.loadMap(query);
 
                     // Trigger search event
                     that.$element.trigger('search.ladb.success', [ query ]);
@@ -331,13 +347,6 @@
         }
     };
 
-    LadbSmartSearch.prototype.mapLoad = function(query) {
-        if (!this.hasMap) {
-            return;
-        }
-        $('#' + this.options.mapAreaId).ladbMapArea('load', this.options.mapSearchPath + '?q=@geocoded ' + query);
-    };
-
     LadbSmartSearch.prototype.showShortcuts = function() {
         this.$shortcuts.show();
         this.$shortcuts.closest('.ladb-list-topbar').addClass('ladb-list-topbar-with-shortcuts');
@@ -346,6 +355,37 @@
     LadbSmartSearch.prototype.hideShortcuts = function() {
         this.$shortcuts.hide();
         this.$shortcuts.closest('.ladb-list-topbar').removeClass('ladb-list-topbar-with-shortcuts');
+    };
+
+    LadbSmartSearch.prototype.loadMap = function(query) {
+        if (!this.hasMap || !this.$mapArea.is(':visible')) {
+            return;
+        }
+        this.$mapArea.ladbMapArea('load', this.options.mapSearchPath + '?q=@geocoded ' + query);
+    };
+
+    LadbSmartSearch.prototype.toggleMap = function() {
+        this.$mapBtn.toggleClass('active');
+        if (this.$mapBtn.hasClass('active')) {
+            this.showMap();
+            this.loadMap(this.generateQuery());
+        } else {
+            this.hideMap();
+        }
+    };
+
+    LadbSmartSearch.prototype.showMap = function() {
+        if (this.$mapBanner.length > 0 && this.$mapBanner.hasClass('hidden')) {
+            this.$mapBtn.addClass('active');
+            this.$mapBanner.removeClass('hidden');
+        }
+    };
+
+    LadbSmartSearch.prototype.hideMap = function() {
+        if (this.$mapBanner.length > 0 && !this.$mapBanner.hasClass('hidden')) {
+            this.$mapBtn.removeClass('active');
+            this.$mapBanner.addClass('hidden');
+        }
     };
 
     LadbSmartSearch.prototype.bind = function() {
@@ -367,6 +407,13 @@
             }
         });
 
+        // bind map button
+        this.$mapBtn.on('click', function(e) {
+            e.preventDefault();
+            $(this).blur();
+            that.toggleMap();
+        });
+
         // bind facetItems
         this.$box.find('.ladb-smartsearch-facet').each(function (i, v) {
 
@@ -383,10 +430,10 @@
             var proposalsUrl = $facetItem.data('proposals-url');
             var geolocation = $facetItem.data('geolocation');
             var random = $facetItem.data('random');
+            var requireMap = $facetItem.data('require-map');
 
             var facetDef = {
                 type: type,
-                // type: name == 'sort' ? 'sorter' : 'filter',
                 group: type === 'sorter' ? 'sort' : name,
                 name: name,
                 value: value,
@@ -398,6 +445,7 @@
                 proposalsUrl: proposalsUrl,
                 geolocation: geolocation,
                 random: random,
+                requireMap: requireMap,
                 needValue: geolocation || editable
             };
             that.facetDefs[that.generateFacetDefId(name, value)] = facetDef;
@@ -410,6 +458,9 @@
 
                 if (unique) {
                     that.removeFacetByGroup(facetDef.group);
+                }
+                if (requireMap) {
+                    that.requireMap = true;
                 }
                 that.appendFacet($facet);
                 if (editable) {
@@ -490,8 +541,10 @@
                 onToggleFullscreen: function(fullscreen) {
                     if (fullscreen) {
                         that.$box.addClass('ladb-map-overlay');
+                        that.$mapBtn.hide();
                     } else {
                         that.$box.removeClass('ladb-map-overlay');
+                        that.$mapBtn.show();
                         $(window).scrollTop(0);
                     }
                 }
@@ -508,7 +561,10 @@
     LadbSmartSearch.prototype.init = function() {
         this.bind();
         this.parseQuery(this.options.query);
-        this.mapLoad(this.options.query);
+        if (this.requireMap) {
+            this.showMap(this.options.query);
+        }
+        this.loadMap(this.options.query);
         if (this.countFacets() === 0) {
             this.showShortcuts();
         }

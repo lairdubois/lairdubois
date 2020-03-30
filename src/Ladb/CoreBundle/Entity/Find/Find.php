@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Find;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Find\Content\Gallery;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
@@ -217,6 +218,15 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	public function setContent(\Ladb\CoreBundle\Entity\Find\Content\AbstractContent $content) {
 		$this->content = $content;
 		return $this;
+	}
+
+	// GeoPoint /////
+
+	public function getGeoPoint() {
+		if ($this->getContent() instanceof Gallery) {
+			return $this->getContent()->getGeoPoint();
+		}
+		return null;
 	}
 
 }

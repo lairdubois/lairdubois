@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20200329"
+        version:    "20200330"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -637,6 +637,7 @@ fos_elastica:
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
                         changedAt: { type: date }
+                        geoPoint: { type: geo_point }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }

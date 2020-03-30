@@ -382,6 +382,7 @@ class EventController extends AbstractController {
 	 * @Route("/", name="core_event_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_event_list_page")
 	 * @Route(".json", defaults={"_format" = "json", "page"=-1, "layout"="json"}, name="core_event_list_json")
+	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_event_list_geojson")
 	 * @Template("LadbCoreBundle:Event/Event:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0, $layout = 'view') {
@@ -609,6 +610,40 @@ class EventController extends AbstractController {
 			return $this->render('LadbCoreBundle:Event/Event:list-xhr.json.twig', $parameters);
 		}
 
+		if ($layout == 'geojson') {
+
+			$features = array();
+			foreach ($searchParameters['entities'] as $event) {
+				$geoPoint = $event->getGeoPoint();
+				if (is_null($geoPoint)) {
+					continue;
+				}
+				if ($event->getCancelled()) {
+					$color = 'red';
+				} else if ($event->getStatus() == Event::STATUS_SCHEDULED) {
+					$color = 'blue';
+				} else if ($event->getStatus() == Event::STATUS_RUNNING) {
+					$color = 'green';
+				} else {
+					$color = 'grey';
+				}
+				$properties = array(
+					'color'   => $color,
+					'cardUrl' => $this->generateUrl('core_event_card', array('id' => $event->getId())),
+				);
+				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
+				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
+			}
+			$crs = new \GeoJson\CoordinateReferenceSystem\Named('urn:ogc:def:crs:OGC:1.3:CRS84');
+			$collection = new \GeoJson\Feature\FeatureCollection($features, $crs);
+
+			$parameters = array_merge($parameters, array(
+				'collection' => $collection,
+			));
+
+			return $this->render('LadbCoreBundle:Find/Find:list-xhr.geojson.twig', $parameters);
+		}
+
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
@@ -628,6 +663,30 @@ class EventController extends AbstractController {
 		}
 
 		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}/card.xhr", name="core_event_card")
+	 * @Template("LadbCoreBundle:Event/Event:card-xhr.html.twig")
+	 */
+	public function cardAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$eventRepository = $om->getRepository(Event::CLASS_NAME);
+
+		$id = intval($id);
+
+		$event = $eventRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($event)) {
+			throw $this->createNotFoundException('Unable to event Event entity.');
+		}
+
+		return array(
+			'event' => $event,
+		);
 	}
 
 	/**

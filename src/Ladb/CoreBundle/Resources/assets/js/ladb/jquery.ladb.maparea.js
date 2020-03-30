@@ -19,7 +19,6 @@
     };
 
     LadbMapArea.prototype.toggleFullScreen = function() {
-        var that = this;
         var $mapAreaOverlay = $('.ladb-map-area-overlay', this.$element);
         var $mapAreaBtnZoom = $('.ladb-map-area-btn-zoom', this.$element);
         var fullscreen = !this.$element.data('ladb-fullscreen');
@@ -41,7 +40,7 @@
             animate: false
         });
         this.fitBounds();
-        $('.ladb-topbar').ladbTopbarTranslucent(fullscreen ? 'desactivate' : 'activate');
+        // $('.ladb-topbar').ladbTopbarTranslucent(fullscreen ? 'desactivate' : 'activate');
         if (this.options.onToggleFullscreen) {
             this.options.onToggleFullscreen(fullscreen);
         }
@@ -56,6 +55,8 @@
                 paddingTopLeft: [50, 10],
                 paddingBottomRight: [10, 10]
             });
+        } else {
+            this.map.fitWorld();
         }
     };
 
@@ -85,19 +86,19 @@
 
                 // Create new markers
                 that.clusterGroup = new L.MarkerClusterGroup({
-                    maxClusterRadius: 20,
+                    maxClusterRadius: 30,
                     iconCreateFunction: function(cluster) {
                         return L.divIcon({
                             html: '<span>' + cluster.getChildCount() + '</span>',
                             className: 'marker-cluster',
-                            iconSize: L.point(35, 90)
+                            iconSize: L.point(34, 34)
                         });
                     }
                 });
                 geojsonLayer.eachLayer(function(layer) {
                     layer.setIcon(L.divIcon({
                         className: 'ladb-marker-' + layer.feature.properties.color,
-                        iconSize: L.point(30, 70),
+                        iconSize: L.point(29, 70),
                         popupAnchor: [0, -35]
                     }));
                     that.clusterGroup.addLayer(layer);

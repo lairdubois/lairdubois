@@ -6,8 +6,8 @@
 {% set masonry = layout == 'view' %}
 
 {% block filtersDropdown %}
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-require-map="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-require-map="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="diplomas" data-label="Diplômes" data-editable="true" data-icon="diploma"><i class="ladb-icon-diploma ladb-icon-fixed-center"></i> Diplômes</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="training-types" data-label="Type de formation" data-editable="true" data-icon="school-training" data-proposals="Continue,Alternance,Apprentissage,Professionnelle,Stage court,En ligne"><i class="ladb-icon-school-training ladb-icon-fixed-center"></i> Type de formation</a></li>

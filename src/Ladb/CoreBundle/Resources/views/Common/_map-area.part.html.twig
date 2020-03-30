@@ -4,11 +4,13 @@
 {# set autoInit (facultative) #}
 {# set markersUrl (facultative) #}
 {# set classes (facultative) #}
+{# set hideMapArea (facultative) #}
 
 {% set mapAreaId = mapAreaId|default('ladb_map_area') %}
 {% set autoInit = autoInit|default(false) %}
+{% set hideMapArea = hideMapArea|default(false) %}
 
-<div class="ladb-map-box{% if classes is defined %} {{ classes }}{% endif %}">
+<div class="ladb-map-box{% if classes is defined %} {{ classes }}{% endif %}{% if hideMapArea %} hidden{% endif %}">
     <div id="{{ mapAreaId }}" class="ladb-map-area">
         <div class="ladb-map-area-overlay ladb-cursor-preview"></div>
         <div class="ladb-map-area-controls">

@@ -1,5 +1,7 @@
 {% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
 
+{% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
+
 {% set pageTitle = 'event.event.list'|trans() %}
 {% set pageDescription = 'event.event.description'|trans() %}
 {% set pageImage = asset('banner-events-600x376.jpg') %}
@@ -8,12 +10,19 @@
 
 {% set navSection = 'events' %}
 {% set masonry = true %}
-{% set masonryWide = false %}
+{% set topbarTranslucent = false %}
 {% set hideHeaderContainer = false %}
 {% set countableEntityList = true %}
+{% set hideMapArea = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     {% javascripts filter='?closure'
         '@LadbCoreBundle/Resources/assets/js/jquery-clndr/clndr.min.js'
@@ -63,6 +72,11 @@
             });
         });
     </script>
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% include 'LadbCoreBundle:Common:_map-area.part.html.twig' with { 'classes':'ladb-map-banner' } %}
+    {{ parent() }}
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}

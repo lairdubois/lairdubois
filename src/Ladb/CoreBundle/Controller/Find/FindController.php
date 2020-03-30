@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Find;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -364,7 +365,7 @@ class FindController extends AbstractController {
 
 		$find = $findRepository->findOneById($id);
 		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
+			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
 		}
 		if ($find->getIsDraft() === true) {
 			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $find->getUser()->getId() != $this->getUser()->getId())) {
@@ -401,9 +402,10 @@ class FindController extends AbstractController {
 	/**
 	 * @Route("/", name="core_find_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_find_list_page")
+	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_find_list_geojson")
 	 * @Template("LadbCoreBundle:Find/Find:list.html.twig")
 	 */
-	public function listAction(Request $request, $page = 0) {
+	public function listAction(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
 		// Elasticsearch paginiation limit
@@ -478,6 +480,42 @@ class FindController extends AbstractController {
 
 						break;
 
+					case 'around':
+
+						if (isset($facet->value)) {
+							$filter = new \Elastica\Query\GeoDistance('geoPoint', $facet->value, '100km');
+							$filters[] = $filter;
+						}
+
+						break;
+
+					case 'geocoded':
+
+						$filter = new \Elastica\Query\Exists('geoPoint');
+						$filters[] = $filter;
+
+						break;
+
+					case 'location':
+
+						$localisableUtils = $this->get(LocalisableUtils::NAME);
+						$boundsAndLocation = $localisableUtils->getBoundsAndLocation($facet->value);
+
+						if (!is_null($boundsAndLocation)) {
+							$filter = new \Elastica\Query\BoolQuery();
+							if (isset($boundsAndLocation['bounds'])) {
+								$geoQuery = new \Elastica\Query\GeoBoundingBox('geoPoint', $boundsAndLocation['bounds']);
+								$filter->addShould($geoQuery);
+							}
+							if (isset($boundsAndLocation['location'])) {
+								$geoQuery = new \Elastica\Query\GeoDistance('geoPoint', $boundsAndLocation['location'], '20km');
+								$filter->addShould($geoQuery);
+							}
+							$filters[] = $filter;
+						}
+
+						break;
+
 					// Sorters /////
 
 					case 'sort-recent':
@@ -548,13 +586,38 @@ class FindController extends AbstractController {
 			'core_find_list_page'
 		);
 
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
-
 		$parameters = array_merge($searchParameters, array(
 			'finds' => $searchParameters['entities'],
 		));
+
+		if ($layout == 'geojson') {
+
+			$features = array();
+			foreach ($searchParameters['entities'] as $find) {
+				$geoPoint = $find->getGeoPoint();
+				if (is_null($geoPoint)) {
+					continue;
+				}
+				$properties = array(
+					'color'   => 'orange',
+					'cardUrl' => $this->generateUrl('core_find_card', array('id' => $find->getId())),
+				);
+				$gerometry = new \GeoJson\Geometry\Point($geoPoint);
+				$features[] = new \GeoJson\Feature\Feature($gerometry, $properties);
+			}
+			$crs = new \GeoJson\CoordinateReferenceSystem\Named('urn:ogc:def:crs:OGC:1.3:CRS84');
+			$collection = new \GeoJson\Feature\FeatureCollection($features, $crs);
+
+			$parameters = array_merge($parameters, array(
+				'collection' => $collection,
+			));
+
+			return $this->render('LadbCoreBundle:Find/Find:list-xhr.geojson.twig', $parameters);
+		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATIONS_LISTED, new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()));
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Find/Find:list-xhr.html.twig', $parameters);
@@ -571,6 +634,30 @@ class FindController extends AbstractController {
 		}
 
 		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}/card.xhr", name="core_find_card")
+	 * @Template("LadbCoreBundle:Find/Find:card-xhr.html.twig")
+	 */
+	public function cardAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed.');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$findRepository = $om->getRepository(Find::CLASS_NAME);
+
+		$id = intval($id);
+
+		$find = $findRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($find)) {
+			throw $this->createNotFoundException('Unable to find Find entity.');
+		}
+
+		return array(
+			'find' => $find,
+		);
 	}
 
 	/**

@@ -1,0 +1,8 @@
+{% extends 'LadbCoreBundle:Common:_card-thumbnail.html.twig' %}
+
+{% set entity = event %}
+
+{% block cardInner %}
+    {% include 'LadbCoreBundle:Event/Event:_status-label.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}

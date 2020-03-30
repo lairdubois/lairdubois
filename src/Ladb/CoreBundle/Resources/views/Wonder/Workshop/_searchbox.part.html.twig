@@ -5,8 +5,8 @@
 {% set mapSearchPath = path('core_workshop_list_geojson') %}
 
 {% block filtersDropdown %}
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-require-map="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-require-map="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="area-lte" data-label="Surface < ou = à" data-editable="true" data-icon="area"><i class="ladb-icon-area ladb-icon-fixed-center"></i> Surface < ou = à <small class="text-muted">(en m<sup>2</sup>)</small></a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="area-gte" data-label="Surface > ou = à" data-editable="true" data-icon="area"><i class="ladb-icon-area ladb-icon-fixed-center"></i> Surface > ou = à <small class="text-muted">(en m<sup>2</sup>)</small></a></li>

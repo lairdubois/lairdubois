@@ -39,6 +39,11 @@
                         </ul>
                     </div>
                 {% endblock %}
+                {% if mapSearchPath is defined %}
+                    <button class="ladb-map-btn btn btn-infield btn-xs" type="button">
+                        <i class="ladb-icon-location"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Carte</span></span>
+                    </button>
+                {% endif %}
             </div>
         </div>
         <div class="ladb-search-box-bottom" style="display: none;">

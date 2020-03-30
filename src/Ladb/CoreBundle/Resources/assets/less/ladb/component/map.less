@@ -15,8 +15,11 @@
 }
 
 .ladb-map-banner {
-  margin-top: -@ladb-topbar-height;
   border-bottom: 1px solid #cccccc;
+
+  &.hidden {
+    margin-top: 0 !important;
+  }
 
   .ladb-map-area-controls {
     display: none;
@@ -137,6 +140,9 @@
 @media screen and (min-width: @ladb-screen-large-desktop) and (min-height: @ladb-screen-height-md)  {
   .ladb-map-area {
     height: 400px;
+  }
+  .ladb-map-banner .ladb-map-area {
+    height: 350px;
   }
 }
 
