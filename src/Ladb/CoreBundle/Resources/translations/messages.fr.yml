@@ -1275,6 +1275,13 @@ feedback:
       new_help: |
         La rédaction d'un retour vous permet d'exprimer dans le temps votre expérience et les différentes informations que vous avez pu acquérir au cours de la vie votre création.
         Ceci, par exemple, afin de partager avec la communauté les moyens de valider ou invalider les choix techniques qui ont pu être fait.
+  wonder_workshop:
+    none: Cet atelier ne possède pour l'instant aucun retour d'expérience.
+    contains: Cet atelier contient
+    form:
+      new_help: |
+        La rédaction d'un retour vous permet d'exprimer dans le temps votre expérience et les différentes informations que vous avez pu acquérir au cours de la vie votre atelier.
+        Ceci, par exemple, afin de partager avec la communauté les moyens de valider ou invalider les choix techniques ou organisationels qui ont pu être fait.
   event_event:
     none: Cet évènement ne possède pour l'instant aucun retour d'expérience des participants.
     contains: Cet évènement contient

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -726,6 +727,13 @@ class WorkshopController extends AbstractController {
 
 						break;
 
+					case 'with-feedback':
+
+						$filter = new \Elastica\Query\Range('feedbackCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'area-lte':
 
 						$filter = new \Elastica\Query\Range('area', array( 'lte' => intval($facet->value) ));
@@ -964,6 +972,7 @@ class WorkshopController extends AbstractController {
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
@@ -974,6 +983,7 @@ class WorkshopController extends AbstractController {
 			'similarWorkshops'  => $similarWorkshops,
 			'likeContext'       => $likableUtils->getLikeContext($workshop, $this->getUser()),
 			'watchContext'      => $watchableUtils->getWatchContext($workshop, $this->getUser()),
+			'feedbackContext'   => $feedbackableUtils->getFeedbackContext($workshop),
 			'commentContext'    => $commentableUtils->getCommentContext($workshop),
 			'collectionContext' => $collectionnableUtils->getCollectionContext($workshop),
 			'followerContext'   => $followerUtils->getFollowerContext($workshop->getUser(), $this->getUser()),

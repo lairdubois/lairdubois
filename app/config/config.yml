@@ -473,6 +473,7 @@ fos_elastica:
                         likeCount: { type: integer }
                         commentCount: { type: integer }
                         bodyBlockVideoCount: { type: integer }
+                        feedbackCount: { type: integer }
                         planCount: { type: integer }
                         howtoCount: { type: integer }
                         workflowCount: { type: integer }

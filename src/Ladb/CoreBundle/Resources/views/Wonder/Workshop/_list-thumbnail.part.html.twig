@@ -13,4 +13,7 @@
         <li class="ladb-linkto"><a href="{{ path('core_workshop_workflows', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(wonder.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
     {% endif %}
     {{ parent() }}
+    {% if entity.feedbackCount > 0 %}
+        <li class="ladb-counter ladb-color-feedback"><i class="ladb-icon-feedback"></i> <span>{{ entity.feedbackCount|number_format(0, ',', ' ') }}</span></li>
+    {% endif %}
 {% endblock %}

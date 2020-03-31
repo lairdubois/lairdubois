@@ -44,6 +44,26 @@
     {% if hasMap %}
         {{ block('mapAreaJavascripts') }}
     {% endif %}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Feedback Widget #}
+            $('.ladb-feedback-widget').ladbFeedbackWidget();
+
+            setupPopovers();
+
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    {% include 'LadbCoreBundle:Core/Feedback:_contains-panel.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block baseMetas %}
+    {{ parent() }}
+    {% include 'LadbCoreBundle:Core/Feedback:_meta-counter.part.html.twig' %}
 {% endblock %}
 
 {% block characteristicsMetas %}
@@ -130,4 +150,8 @@
             {% endblock %}
         {% endembed %}
     {% endif %}
+{% endblock %}
+
+{% block contentFeedbacks %}
+    {% include 'LadbCoreBundle:Core/Feedback:_widget.part.html.twig' %}
 {% endblock %}

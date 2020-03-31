@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\FeedbackableInterface;
+use Ladb\CoreBundle\Model\FeedbackableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
@@ -16,9 +18,9 @@ use Ladb\CoreBundle\Model\LocalisableInterface;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Wonder\WorkshopRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Workshop extends AbstractWonder implements BlockBodiedInterface, LocalisableInterface {
+class Workshop extends AbstractWonder implements BlockBodiedInterface, LocalisableInterface, FeedbackableInterface {
 
-	use BlockBodiedTrait, LocalisableTrait;
+	use BlockBodiedTrait, LocalisableTrait, FeedbackableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Workshop';
 	const TYPE = 101;
@@ -87,6 +89,11 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	 * @ORM\OrderBy({"accessCount" = "DESC"})
 	 */
 	protected $referrals;
+
+	/**
+	 * @ORM\Column(type="integer", name="feedback_count")
+	 */
+	private $feedbackCount = 0;
 
 	/**
 	 * @ORM\Column(type="integer", name="plan_count")
