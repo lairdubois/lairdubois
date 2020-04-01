@@ -8,7 +8,7 @@
     <img src="{{ value.data.webPath|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px;" alt="{{ entity.title|raw }}">
 {% else %}
     {% if clickable %}
-        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':value.data, 'alt':value.legend, 'dataGallery':value.voteScore < 0 ? '#blueimp-gallery' : '#blueimp-gallery-rejected', 'noLazyLoad':true } %}
+        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':value.data, 'alt':value.legend, 'aTitle':value.legend, 'dataGallery':value.voteScore < 0 ? '#blueimp-gallery' : '#blueimp-gallery-rejected', 'noLazyLoad':true } %}
     {% else %}
         {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':value.data, 'alt':value.legend, 'imgClasses':'thumbnail', 'noLazyLoad':true } %}
     {% endif %}

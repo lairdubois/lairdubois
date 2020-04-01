@@ -716,6 +716,7 @@ knowledge:
       price: Prix
       origin: Provenance
       utilization: Utilisation
+      database_link: Fiche externe
     help:
       name: Le **Nom français** est le nom couramment utilsé en France.
       scientificname: Le **Nom scientifique** est le nom faisant référence à la classification botanique de cette essence.
@@ -732,6 +733,7 @@ knowledge:
       price: "Le **Prix** est un ordre de grandeur sur le coût d'achat de cette essence. Trois valeurs sont possibles : *Modéré*, *Moyen*, *Elevé*."
       origin: La **Provenance** est un continent, pays ou région où cette essence pousse.
       utilization: L'**Utilisation** est un domaine ou secteur dans lequel cette essence est employée.
+      database_link: La **fiche externe** est un lien vers une fiche de l'essence sur une autre base de données.
     token:
       help: Saisissez une essence et cliquez sur la flèche pour l'ajouter
     form:
@@ -774,6 +776,7 @@ knowledge:
           - N'indiquez **qu'une seule** provenance par proposition.
         utilization: |
           - N'indiquez **qu'une seule** utilisation par proposition.
+        database_link:
     texture:
       download: Télécharger cette texture
       single_picture: Simple

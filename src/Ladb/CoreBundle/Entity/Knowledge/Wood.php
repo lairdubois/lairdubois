@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
@@ -37,6 +38,7 @@ class Wood extends AbstractKnowledge {
 	const FIELD_PRICE = 'price';
 	const FIELD_ORIGIN = 'origin';
 	const FIELD_UTILIZATION = 'utilization';
+	const FIELD_DATABASE_LINK = 'database_link';
 
 	public static $FIELD_DEFS = array(
 		Wood::FIELD_NAME           => array(Wood::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => true, Wood::ATTRIB_MANDATORY => true, Wood::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueWood', array('excludedId' => '@getId'))), Wood::ATTRIB_DATA_CONSTRAINTS => array( array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul Nom français par proposition.')))),
@@ -54,6 +56,7 @@ class Wood extends AbstractKnowledge {
 		Wood::FIELD_PRICE          => array(Wood::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => false, Wood::ATTRIB_CHOICES => array(1 => 'Modéré', 2 => 'Moyen', 3 => 'Elevé')),
 		Wood::FIELD_ORIGIN         => array(Wood::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => true, Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule provenance par proposition.'))), Wood::ATTRIB_FILTER_QUERY => '@origin:"%q%"'),
 		Wood::FIELD_UTILIZATION    => array(Wood::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => true, Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule utilisation par proposition.'))), Wood::ATTRIB_FILTER_QUERY => '@utilization:"%q%"'),
+		Wood::FIELD_DATABASE_LINK  => array(Wood::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Wood::ATTRIB_MULTIPLE => true),
 	);
 
 	/**
@@ -267,6 +270,19 @@ class Wood extends AbstractKnowledge {
 
 
 	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $databaseLink;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_database_link")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $databaseLinkValues;
+
+
+	/**
 	 * @ORM\Column(name="texture_count", type="integer")
 	 */
 	private $textureCount = 0;
@@ -294,6 +310,7 @@ class Wood extends AbstractKnowledge {
 		$this->priceValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->originValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->utilizationValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->databaseLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->textures = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -846,6 +863,38 @@ class Wood extends AbstractKnowledge {
 
 	public function getUtilizationValues() {
 		return $this->utilizationValues;
+	}
+
+	// DatabaseLink /////
+
+	public function setDatabaseLink($databaseLink) {
+		$this->databaseLink = $databaseLink;
+		return $this;
+	}
+
+	public function getDatabaseLink() {
+		return $this->databaseLink;
+	}
+
+	// DatabaseLinkValues /////
+
+	public function addDatabaseLinkValue($databaseLinkValue) {
+		if (!$this->databaseLinkValues->contains($databaseLinkValue)) {
+			$this->databaseLinkValues[] = $databaseLinkValue;
+		}
+		return $this;
+	}
+
+	public function removeDatabaseLinkValue($databaseLinkValue) {
+		$this->databaseLinkValues->removeElement($databaseLinkValue);
+	}
+
+	public function setDatabaseLinkValues($databaseLinkValues) {
+		$this->databaseLinkValues = $databaseLinkValues;
+	}
+
+	public function getDatabaseLinkValues() {
+		return $this->databaseLinkValues;
 	}
 
 	// TextureCount /////

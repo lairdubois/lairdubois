@@ -4,11 +4,12 @@
 {# set dataGallery (facutative) #}
 
 {% set dataGallery = dataGallery|default('#blueimp-gallery') %}
+{% set aTitle = picture.legend|default(aTitle|default('')) %}
 {% set hasOverlay = picture.legend is not empty %}
 
 {% block img %}
     <figure class="ladb-img">
-        <a href="{{ webPath|imagine_filter('1024x1024i') }}" data-gallery="{{ dataGallery }}" title="{{ picture.legend }}" class="thumbnail ladb-cursor-preview{% if aClasses is defined %} {{ aClasses }}{% endif %}" onclick="return false;"{% if not noMicrodata %} itemprop="image"{% endif %}>
+        <a href="{{ webPath|imagine_filter('1024x1024i') }}" data-gallery="{{ dataGallery }}" title="{{ aTitle }}" class="thumbnail ladb-cursor-preview{% if aClasses is defined %} {{ aClasses }}{% endif %}" onclick="return false;"{% if not noMicrodata %} itemprop="image"{% endif %}>
             {% if hasOverlay %}<div class="uk-overlay">{% endif %}
                 {% set noMicrodata = true %}
                 {{ parent() }}
