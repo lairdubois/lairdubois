@@ -1,4 +1,4 @@
-{% if (app.user and entity.completion100 <= 50) %}
+{% if (is_granted('ROLE_USER') and entity.completion100 <= 50) %}
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="media">

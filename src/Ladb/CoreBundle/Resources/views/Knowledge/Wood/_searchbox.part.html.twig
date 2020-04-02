@@ -25,9 +25,11 @@
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-density" data-label="Plus denses" data-unique="true" data-icon="weight"><i class="ladb-icon-weight"></i> Plus denses</a></li>
     <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-completion" data-label="Remplissage" data-unique="true" data-icon="percent"><i class="ladb-icon-percent"></i> Remplissage</a></li>
-    <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
+    {% if is_granted('ROLE_USER') %}
+        <li class="divider"></li>
+        <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-completion" data-label="Remplissage" data-unique="true" data-icon="percent"><i class="ladb-icon-percent"></i> Remplissage</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block searchboxShortcutsOuter %}{% endblock %}
