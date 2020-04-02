@@ -89,11 +89,11 @@
                         if (facetDef.requireMap) {
                             this.requireMap = true;
                         }
-                        var facet = this.createFacet(facetDef);
+                        var facet = this.createFacet(facetDef, value);
                         if (facetDef.editable && value) {
                             facet.find('input').val(value);
                         }
-                        if (facetDef.geolocation && value) {
+                        if (value) {
                             facet.data('value', value);
                         }
                         this.appendFacet(facet);
@@ -143,7 +143,7 @@
         return query.trim();
     };
 
-    LadbSmartSearch.prototype.createFacet = function(facetDef) {
+    LadbSmartSearch.prototype.createFacet = function(facetDef, value) {
         var that = this;
         if (facetDef.editable) {
             var $input = $('<input/>', {
@@ -186,13 +186,27 @@
         }
         if (facetDef.random) {
             var $repeat = $('<a/>', {
-                'class': 'ladb-repeat'
+                'class': 'ladb-sorter-action'
             })
                 .append('<i class="ladb-icon-repeat"></i>')
                 .on('click', function() {
                     that.randomizeFacetValue($(this).parent());
                     that.search();
                 })
+            ;
+        } else if (facetDef.type === 'sorter') {
+            var $i = $('<i class="ladb-icon-sort-' + (value ? value : facetDef.defaultOrder) + '"></i>');
+            var $order = $('<a/>', {
+                    'class': 'ladb-sorter-action'
+                })
+                    .append($i)
+                    .on('click', function() {
+                        var $facet = $(this).parent();
+                        that.toggleSorterFacetValue($facet);
+                        $i.removeClass('ladb-icon-sort-asc ladb-icon-sort-desc');
+                        $i.addClass('ladb-icon-sort-' + $facet.data('value'));
+                        that.search();
+                    })
             ;
         }
         return $('<span/>', {
@@ -214,6 +228,7 @@
                     that.search();
                 }))
             .prepend($repeat)
+            .prepend($order)
             .prepend($input)
             .prepend('<i class="ladb-icon-' + facetDef.icon + '"></i> <span class="ladb-facet-name">' + facetDef.label + (facetDef.editable ? ' : ' : '') + '</span>')
     };
@@ -241,6 +256,11 @@
 
     LadbSmartSearch.prototype.randomizeFacetValue = function($facet) {
         $facet.data('value', Math.random().toString(36).substring(2, 15));
+    };
+
+    LadbSmartSearch.prototype.toggleSorterFacetValue = function($facet) {
+        var value = $facet.data('value');
+        $facet.data('value', value === 'desc' ? 'asc' : 'desc');
     };
 
     LadbSmartSearch.prototype.countFacets = function() {
@@ -430,13 +450,20 @@
             var proposalsUrl = $facetItem.data('proposals-url');
             var geolocation = $facetItem.data('geolocation');
             var random = $facetItem.data('random');
+            var defaultOrder = $facetItem.data('default-order');
             var requireMap = $facetItem.data('require-map');
+
+            if (!defaultOrder) {
+                defaultOrder = 'desc';
+            }
+
+            console.log();
 
             var facetDef = {
                 type: type,
                 group: type === 'sorter' ? 'sort' : name,
                 name: name,
-                value: value,
+                value: type === 'sorter' && value === undefined ? defaultOrder : value,
                 label: label,
                 editable: editable,
                 unique: unique,
@@ -445,6 +472,7 @@
                 proposalsUrl: proposalsUrl,
                 geolocation: geolocation,
                 random: random,
+                defaultOrder: defaultOrder,
                 requireMap: requireMap,
                 needValue: geolocation || editable
             };
@@ -454,7 +482,7 @@
 
                 that.hideShortcuts();
 
-                var $facet = that.createFacet(facetDef);
+                var $facet = that.createFacet(facetDef, facetDef.value);
 
                 if (unique) {
                     that.removeFacetByGroup(facetDef.group);

@@ -299,4 +299,12 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		return $result;
 	}
 
+	/////
+
+	public function getSorterOrder($facet, $defaultOrder = 'desc') {
+		if ($defaultOrder == 'desc') {
+			return isset($facet->value) && $facet->value == 'asc' ? 'asc' : $defaultOrder;
+		}
+		return isset($facet->value) && $facet->value == 'desc' ? 'desc' : $defaultOrder;
+	}
 }

@@ -30,6 +30,19 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
+	public function computeCompletionPercent(AbstractKnowledge $knowledge) {
+		$propertyUtils = $this->get(PropertyUtils::NAME);
+		$fieldDefs = $knowledge->getFieldDefs();
+		$filledFieldCount = 0;
+		foreach ($fieldDefs as $field => $fieldDef) {
+			$value = $propertyUtils->getValue($knowledge, $field);
+			if (!is_null($value)) {
+				$filledFieldCount++;
+			}
+		}
+		$knowledge->setCompletion100($filledFieldCount / count($fieldDefs) * 100);
+	}
+
 	/////
 
 	private function _getValueData(BaseValue $value, $choices, $useChoicesValue) {
@@ -96,6 +109,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 					}
 				}
 			}
+			$this->computeCompletionPercent($knowledge);
 		}
 	}
 

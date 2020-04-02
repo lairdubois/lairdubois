@@ -73,6 +73,11 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 	private $mainPicture;
 
 	/**
+	 * @ORM\Column(type="integer", name="completion_100")
+	 */
+	private $completion100 = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="contributor_count")
 	 */
 	private $contributorCount = 0;
@@ -156,6 +161,17 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 		return new \Ladb\CoreBundle\Entity\Core\License(true, true);
 	}
 
+	// Completion100 /////
+
+	public function setCompletion100($completion100) {
+		$this->completion100 = $completion100;
+		return $this;
+	}
+
+	public function getCompletion100() {
+		return $this->completion100;
+	}
+
 	// ContributorCount /////
 
 	public function incrementContributorCount($by = 1) {
@@ -170,5 +186,6 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 		$this->contributorCount = $contributorCount;
 		return $this;
 	}
+
 
 }

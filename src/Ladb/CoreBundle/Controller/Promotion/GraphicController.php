@@ -416,7 +416,7 @@ class GraphicController extends AbstractController {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) use ($searchUtils) {
 				switch ($facet->name) {
 
 					// Filters /////
@@ -485,19 +485,19 @@ class GraphicController extends AbstractController {
 					// Sorters /////
 
 					case 'sort-recent':
-						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+						$sort = array( 'changedAt' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-views':
-						$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'viewCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-likes':
-						$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'likeCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-comments':
-						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'commentCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-random':
@@ -505,7 +505,7 @@ class GraphicController extends AbstractController {
 						break;
 
 					case 'popular-downloads':
-						$sort = array( 'downloadCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'downloadCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					/////

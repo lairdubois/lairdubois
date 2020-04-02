@@ -44,6 +44,5 @@
 {% endblock %}
 
 {% block footer %}
-    {% include 'LadbCoreBundle:Common:_unviewed-bullet.part.html.twig' with { 'entity':school } %}
-    {{ school.contributorCount }} <i class="ladb-icon-users"></i>{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}
+    {% include 'LadbCoreBundle:Knowledge:_list-thumbnail-footer.part.html.twig' %}
 {% endblock %}

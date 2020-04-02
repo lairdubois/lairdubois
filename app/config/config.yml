@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "202003302018"
+        version:    "20200402"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -880,6 +880,7 @@ fos_elastica:
                         origin: { analyzer: name_analyzer }
                         utilization: { analyzer: name_analyzer }
                         changedAt: { type: date }
+                        completion100: { type: integer }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
@@ -904,6 +905,7 @@ fos_elastica:
                         woodsWorkaround: { analyzer: body_analyzer }
                         geoPoint: { type: geo_point }
                         changedAt: { type: date }
+                        completion100: { type: integer }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
@@ -933,6 +935,7 @@ fos_elastica:
                         description: { analyzer: body_analyzer }
                         geoPoint: { type: geo_point }
                         changedAt: { type: date }
+                        completion100: { type: integer }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
@@ -962,6 +965,7 @@ fos_elastica:
                         toc: { analyzer: body_analyzer }
                         language: { type: text, analyzer: name_analyzer }
                         changedAt: { type: date }
+                        completion100: { type: integer }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }
@@ -991,6 +995,7 @@ fos_elastica:
                         languages: { type: text, analyzer: name_analyzer }
                         supportedFiles: { type: text }
                         changedAt: { type: date }
+                        completion100: { type: integer }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
                         commentCount: { type: integer }

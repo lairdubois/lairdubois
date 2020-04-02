@@ -287,7 +287,7 @@ class WoodController extends AbstractController {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) use ($searchUtils) {
 				switch ($facet->name) {
 
 					// Filters /////
@@ -327,31 +327,35 @@ class WoodController extends AbstractController {
 					// Sorters /////
 
 					case 'sort-recent':
-						$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+						$sort = array( 'changedAt' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-views':
-						$sort = array( 'viewCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'viewCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-likes':
-						$sort = array( 'likeCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'likeCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-comments':
-						$sort = array( 'commentCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'commentCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
+						break;
+
+					case 'sort-density':
+						$sort = array( 'density' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
+						break;
+
+					case 'sort-alphabetical':
+						$sort = array( 'titleWorkaround' => array( 'order' => $searchUtils->getSorterOrder($facet, 'asc') ) );
+						break;
+
+					case 'sort-completion':
+						$sort = array( 'completion100' => array( 'order' =>  $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-random':
 						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
-						break;
-
-					case 'sort-density':
-						$sort = array( 'density' => array( 'order' => 'desc' ) );
-						break;
-
-					case 'sort-alphabetical':
-						$sort = array( 'titleWorkaround' => array( 'order' => 'asc' ) );
 						break;
 
 					/////
