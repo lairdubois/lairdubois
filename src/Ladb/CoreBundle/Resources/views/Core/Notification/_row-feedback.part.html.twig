@@ -5,5 +5,5 @@
 {% set isYour = entity.user is defined and entity.user.id == app.user.id %}
 
 {% block body %}
-    a ajouté un retour d'exéprience sur {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
+    a ajouté un retour d'expérience sur {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
 {% endblock %}

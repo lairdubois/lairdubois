@@ -321,6 +321,9 @@ EOT
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Review::STRIPPED_NAME) {
 			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
 		}
+		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Feedback::STRIPPED_NAME) {
+			return $recipientUser->getMeta()->getNewWatchActivityEmailNotificationEnabled();
+		}
 		else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Write::STRIPPED_NAME) {
 			return $recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled();
 		}
