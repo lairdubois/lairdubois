@@ -111,6 +111,8 @@
         <a href="#ladb_meta_field_state" class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_meta_field_state').ladbScrollTo(null, { onAfter: function() { $('#ladb_meta_field_state').effect('highlight', {}, 1000);}})">
             <i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}
         </a>
+    {% else %}
+        {% include 'LadbCoreBundle:Knowledge:_completion-panel.part.html.twig' %}
     {% endif %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', provider), 'picture':provider.logo, 'values':provider.logoValues, 'itemprop':'logo', 'pictureBoxClasses':(provider.logoRejected ? 'ladb-box-barred' : null) } %}
@@ -150,11 +152,7 @@
             <h4 class="ladb-heading">Informations</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_STATE', provider), 'data':provider.state, 'values':provider.stateValues } %}
         </div>
-        <div class="panel panel-default ladb-margin-top">
-            <div class="panel-body">
-                Cette fiche est complétée et contrôlée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}">apportez vos propositions</a> !
-            </div>
-        </div>
+        {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}
         {% if provider.updatedAt > provider.createdAt %}
             {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
         {% endif %}

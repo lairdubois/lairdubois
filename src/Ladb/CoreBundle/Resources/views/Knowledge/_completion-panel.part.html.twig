@@ -1,0 +1,10 @@
+{% if (app.user and entity.completion100 <= 50) %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="media">
+                <div class="media-left"><i class="ladb-icon-draft ladb-icon-lg"></i></div>
+                <div class="media-body">Cette fiche n'est renseignée qu'à <strong>{{ entity.completion100 }}%</strong>. <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}">Aidez-nous à la compléter</a> !</div>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -68,6 +68,7 @@
 {% endblock %}
 
 {% block contentBody %}
+    {% include 'LadbCoreBundle:Knowledge:_completion-panel.part.html.twig' %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':software, 'wide':true, 'field':constant('FIELD_ICON', software), 'picture':software.icon, 'values':software.iconValues, 'pictureBoxClasses':(software.iconRejected ? 'ladb-box-barred' : null), 'itemprop':'image' } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':software, 'wide':true, 'field':constant('FIELD_SCREENSHOT', software), 'picture':software.screenshot, 'values':software.screenshotValues, 'itemprop':'screenshot' } %}
@@ -113,11 +114,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_FEATURES', software), 'data':software.features, 'values':software.featuresValues, 'itemprop':'featureList' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SUPPORTED_FILES', software), 'data':software.supportedFiles, 'values':software.supportedFilesValues } %}
         </div>
-        <div class="panel panel-default ladb-margin-top">
-            <div class="panel-body">
-                Cette fiche est complétée et contrôlée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}">apportez vos propositions</a> !
-            </div>
-        </div>
+        {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}
         {% if software.updatedAt > software.createdAt %}
             {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
         {% endif %}

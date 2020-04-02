@@ -42,6 +42,7 @@
 {% endblock %}
 
 {% block contentBody %}
+    {% include 'LadbCoreBundle:Knowledge:_completion-panel.part.html.twig' %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':true, 'field':constant('FIELD_GRAIN', wood), 'picture':wood.grain, 'values':wood.grainValues, 'pictureBoxClasses':(wood.grainRejected ? 'ladb-box-barred' : null) } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':true, 'field':constant('FIELD_ENDGRAIN', wood), 'picture':wood.endgrain, 'values':wood.endgrainValues } %}
@@ -76,11 +77,7 @@
             <h4 class="ladb-heading">Aller plus loin</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_DATABASE_LINK', wood), 'data':wood.databaseLink, 'values':wood.databaseLinkValues } %}
         </div>
-        <div class="panel panel-default ladb-margin-top">
-            <div class="panel-body">
-                Cette fiche est complétée et contrôlée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}">apportez vos propositions</a> !
-            </div>
-        </div>
+        {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}
         {% if wood.updatedAt > wood.createdAt %}
             {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
         {% endif %}

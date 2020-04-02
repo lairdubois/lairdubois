@@ -100,6 +100,7 @@
 {% endblock %}
 
 {% block contentBody %}
+    {% include 'LadbCoreBundle:Knowledge:_completion-panel.part.html.twig' %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_LOGO', school), 'picture':school.logo, 'values':school.logoValues, 'itemprop':'logo', 'pictureBoxClasses':(school.logoRejected ? 'ladb-box-barred' : null) } %}
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'wide':true, 'field':constant('FIELD_PHOTO', school), 'picture':school.photo, 'values':school.photoValues } %}
@@ -121,11 +122,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', school), 'data':school.description, 'values':school.descriptionValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_VIDEO', school), 'data':school.video, 'values':school.videoValues } %}
         </div>
-        <div class="panel panel-default ladb-margin-top">
-            <div class="panel-body">
-                Cette fiche est complétée et contrôlée collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}">apportez vos propositions</a> !
-            </div>
-        </div>
+        {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}
         {% if school.updatedAt > school.createdAt %}
             {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
         {% endif %}

@@ -80,7 +80,6 @@ class AboutController extends AbstractController {
 			array( 'name' => 'jquery-ui-touch-punch', 'url' => 'https://github.com/furf/jquery-ui-touch-punch/issues', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-sticky', 'url' => 'http://stickyjs.com/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-readmorejs', 'url' => 'http://jedfoster.com/Readmore.js/', 'labels' => array( 'JS' ) ),
-			array( 'name' => 'jquery-payment', 'url' => 'https://github.com/stripe/jquery.payment', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-panzoom', 'url' => 'http://timmywil.github.io/jquery.panzoom/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-mousewheel', 'url' => 'https://github.com/jquery/jquery-mousewheel', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-lazy', 'url' => 'http://jquery.eisbehr.de/lazy/', 'labels' => array( 'JS' ) ),
