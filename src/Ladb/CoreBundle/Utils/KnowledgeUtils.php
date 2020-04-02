@@ -40,7 +40,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 				$filledFieldCount++;
 			}
 		}
-		$knowledge->setCompletion100($filledFieldCount / count($fieldDefs) * 100);
+		$knowledge->setCompletion100(round($filledFieldCount / count($fieldDefs) * 100));
 	}
 
 	/////
