@@ -356,6 +356,10 @@ fos_elastica:
                                 type: custom
                                 tokenizer: standard
                                 filter : [lowercase, asciifolding, my_ngram]
+                        normalizer:
+                            title_normalizer:
+                                type: custom
+                                filter : [lowercase, asciifolding, fr_elision]
                         filter:
                             fr_stop:
                                 type: stop
@@ -869,7 +873,7 @@ fos_elastica:
                             delete: false
                 knowledge_wood:
                     properties:
-                        titleWorkaround: { type: keyword }
+                        titleWorkaround: { type: keyword, normalizer: title_normalizer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         name: { type: text, boost: 3, analyzer: name_analyzer }
                         nameRejected: { type: boolean }

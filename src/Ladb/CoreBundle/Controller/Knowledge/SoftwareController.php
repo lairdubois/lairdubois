@@ -272,6 +272,8 @@ class SoftwareController extends AbstractController {
 						$filter->addShould(new \Elastica\Query\Range('iconRejected', array( 'gte' => 1 )));
 						$filters[] = $filter;
 
+						$noGlobalFilters = true;
+
 						break;
 
 					// Sorters /////
@@ -321,13 +323,15 @@ class SoftwareController extends AbstractController {
 			},
 			function(&$filters, &$sort) {
 
-				$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lt' => 1 ));
-				$filters[] = new \Elastica\Query\Range('iconRejected', array( 'lt' => 1 ));
-
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('iconRejected', array( 'lt' => 1 ));
+
+			},
 			'fos_elastica.index.ladb.knowledge_software',
 			\Ladb\CoreBundle\Entity\Knowledge\Software::CLASS_NAME,
 			'core_software_list_page'

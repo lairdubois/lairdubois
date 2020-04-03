@@ -319,6 +319,8 @@ class SchoolController extends AbstractController {
 						$filter = new \Elastica\Query\Range('nameRejected', array( 'gte' => 1 ));
 						$filters[] = $filter;
 
+						$noGlobalFilters = true;
+
 						break;
 
 					// Sorters /////
@@ -364,12 +366,14 @@ class SchoolController extends AbstractController {
 			},
 			function(&$filters, &$sort) {
 
-				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
-
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
+
+			},
 			'fos_elastica.index.ladb.knowledge_school',
 			\Ladb\CoreBundle\Entity\Knowledge\School::CLASS_NAME,
 			'core_school_list_page',

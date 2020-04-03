@@ -257,6 +257,8 @@ class BookController extends AbstractController {
 						$filter->addShould(new \Elastica\Query\Range('coverRejected', array( 'gte' => 1 )));
 						$filters[] = $filter;
 
+						$noGlobalFilters = true;
+
 						break;
 
 					// Sorters /////
@@ -306,13 +308,15 @@ class BookController extends AbstractController {
 			},
 			function(&$filters, &$sort) {
 
-				$filters[] = new \Elastica\Query\Range('titleRejected', array( 'lt' => 1 ));
-				$filters[] = new \Elastica\Query\Range('coverRejected', array( 'lt' => 1 ));
-
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$filters[] = new \Elastica\Query\Range('titleRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('coverRejected', array( 'lt' => 1 ));
+
+			},
 			'fos_elastica.index.ladb.knowledge_book',
 			\Ladb\CoreBundle\Entity\Knowledge\Book::CLASS_NAME,
 			'core_book_list_page'

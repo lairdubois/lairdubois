@@ -322,6 +322,8 @@ class WoodController extends AbstractController {
 						$filter->addShould(new \Elastica\Query\Range('grainRejected', array( 'gte' => 1 )));
 						$filters[] = $filter;
 
+						$noGlobalFilters = true;
+
 						break;
 
 					// Sorters /////
@@ -375,13 +377,15 @@ class WoodController extends AbstractController {
 			},
 			function(&$filters, &$sort) {
 
-				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
-				$filters[] = new \Elastica\Query\Range('grainRejected', array( 'lt' => 1 ));
-
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('grainRejected', array( 'lt' => 1 ));
+
+			},
 			'fos_elastica.index.ladb.knowledge_wood',
 			\Ladb\CoreBundle\Entity\Knowledge\Wood::CLASS_NAME,
 			'core_wood_list_page'

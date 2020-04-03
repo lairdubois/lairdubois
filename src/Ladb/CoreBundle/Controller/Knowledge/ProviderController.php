@@ -355,6 +355,8 @@ class ProviderController extends AbstractController {
 						$filter = new \Elastica\Query\Range('signRejected', array( 'gte' => 1 ));
 						$filters[] = $filter;
 
+						$noGlobalFilters = true;
+
 						break;
 
 					// Sorters /////
@@ -404,12 +406,14 @@ class ProviderController extends AbstractController {
 			},
 			function(&$filters, &$sort) {
 
-				$filters[] = new \Elastica\Query\Range('signRejected', array( 'lt' => 1 ));
-
 				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) {
+
+				$filters[] = new \Elastica\Query\Range('signRejected', array( 'lt' => 1 ));
+
+			},
 			'fos_elastica.index.ladb.knowledge_provider',
 			\Ladb\CoreBundle\Entity\Knowledge\Provider::CLASS_NAME,
 			'core_provider_list_page',
