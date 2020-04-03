@@ -32,7 +32,10 @@
     /////
 
     LadbFundingWidget.prototype.retrieveAmount = function() {
-        this.amountEur = this.$amountInput.val();
+        this.amountEur = parseInt(this.$amountInput.val());
+        if (isNaN(this.amountEur)) {
+            this.amountEur = this.options.defaultAmount / 100;
+        }
         this.amount = this.amountEur * 100;
     };
 
@@ -245,9 +248,6 @@
     LadbFundingWidget.prototype.init = function() {
 
         this.bind();
-
-        // Restrict amount input to numeric
-        this.$amountInput.payment('restrictNumeric');
 
         $.fn.toggleInputError = function(erred) {
             this.parent('.form-group').toggleClass('has-error', erred);

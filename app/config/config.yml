@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "20200402"
+        version:    "20200403"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -339,23 +339,23 @@ fos_elastica:
                             title_analyzer:
                                 type: custom
                                 tokenizer: standard
-                                filter : [lowercase, fr_stemmer, asciifolding, fr_elision]
+                                filter : [lowercase, asciifolding, fr_stemmer, fr_elision]
                             name_analyzer:
                                 type: custom
                                 tokenizer: standard
-                                filter : [lowercase, fr_stemmer, asciifolding, fr_elision]
+                                filter : [lowercase, asciifolding, fr_elision]
                             body_analyzer:
                                 type: custom
                                 tokenizer: standard
-                                filter : [lowercase, fr_stemmer, fr_stop, asciifolding, fr_elision]
+                                filter : [lowercase, asciifolding, fr_stemmer, fr_stop, fr_elision]
                             exact_lowercase_analyzer:
                                 type: custom
                                 tokenizer: keyword
                                 filter : [lowercase, asciifolding]
-                            ngram_analyzer:
+                            autocomplete_analyzer:
                                 type: custom
                                 tokenizer: standard
-                                filter : [lowercase, asciifolding, my_ngram]
+                                filter : [lowercase, asciifolding, autocomplete_ngram]
                         normalizer:
                             title_normalizer:
                                 type: custom
@@ -370,10 +370,10 @@ fos_elastica:
                             fr_elision:
                                 type: elision
                                 articles: [l, m, t, qu, n, s, j, d]
-                            my_ngram:
+                            autocomplete_ngram:
                                 type: nGram
                                 min_gram: 3
-                                max_gram: 5
+                                max_gram: 20
             types:
                 core_user:
                     properties:
@@ -1015,7 +1015,7 @@ fos_elastica:
                             delete: false
                 core_tag:
                     properties:
-                        label: { analyzer: ngram_analyzer }
+                        label: { analyzer: autocomplete_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Core\Tag
@@ -1023,7 +1023,7 @@ fos_elastica:
                         listener: ~
                 input_skill:
                     properties:
-                        label: { analyzer: ngram_analyzer }
+                        label: { analyzer: autocomplete_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Input\Skill
@@ -1031,7 +1031,7 @@ fos_elastica:
                         listener: ~
                 input_wood:
                     properties:
-                        label: { analyzer: ngram_analyzer }
+                        label: { analyzer: autocomplete_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Input\Wood
@@ -1039,7 +1039,7 @@ fos_elastica:
                         listener: ~
                 input_tool:
                     properties:
-                        label: { analyzer: ngram_analyzer }
+                        label: { analyzer: autocomplete_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Input\Tool
@@ -1047,7 +1047,7 @@ fos_elastica:
                         listener: ~
                 input_finish:
                     properties:
-                        label: { analyzer: ngram_analyzer }
+                        label: { analyzer: autocomplete_analyzer }
                     persistence:
                         driver: orm
                         model: Ladb\CoreBundle\Entity\Input\Finish
