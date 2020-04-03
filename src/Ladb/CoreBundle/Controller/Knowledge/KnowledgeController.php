@@ -178,7 +178,6 @@ class KnowledgeController extends AbstractController {
 		$fieldDef = $this->_retieveFieldDef($entity, $field);
 
 		$fieldType = $this->_getFieldType($fieldDef);
-		$fieldMultiple = $this->_getFieldMutltiple($fieldDef);
 		$fieldChoices = $this->_getFieldChoices($fieldDef);
 		$fieldConstraints = $this->_getFieldConstraints($fieldDef, $entity);
 		$fieldDataConstraints = $this->_getFieldConstraints($fieldDef, $entity, AbstractKnowledge::ATTRIB_DATA_CONSTRAINTS);

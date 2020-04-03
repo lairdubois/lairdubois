@@ -366,7 +366,7 @@ fos_elastica:
                                 stopwords: _french_
                             fr_stemmer:
                                 type: stemmer
-                                name: french
+                                name: light_french
                             fr_elision:
                                 type: elision
                                 articles: [l, m, t, qu, n, s, j, d]
