@@ -1,0 +1,9 @@
+{% if question.creationCount > 0 %}
+    <li class="ladb-linkto"><a href="{{ path('core_qa_question_creations', { 'id':question.id }) }}" data-tooltip="tooltip" title="{{ 'qa.question.linked_to'|trans() }} {{ question.creationCount }} {{ 'wonder.creation.choice.entities'|transchoice(question.creationCount) }}"><i class="ladb-icon-creation"></i></a></li>
+{% endif %}
+{% if question.planCount > 0 %}
+    <li class="ladb-linkto"><a href="{{ path('core_qa_question_plans', { 'id':question.id }) }}" data-tooltip="tooltip" title="{{ 'qa.question.linked_to'|trans() }} {{ question.planCount }} {{ 'wonder.plan.choice.entities'|transchoice(question.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+{% endif %}
+{% if question.howtoCount > 0 %}
+    <li class="ladb-linkto"><a href="{{ path('core_qa_question_howtos', { 'id':question.id }) }}" data-tooltip="tooltip" title="{{ 'qa.question.linked_to'|trans() }} {{ question.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(question.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
+{% endif %}

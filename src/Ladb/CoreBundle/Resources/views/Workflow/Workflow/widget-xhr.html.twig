@@ -1,3 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_entity-widget.html.twig' %}
 
 {% set entity = workflow %}
+
+{% block entityMetas %}
+    {% include 'LadbCoreBundle:Workflow/Workflow:_linkto-entity-metas.part.html.twig' %}
+{% endblock %}

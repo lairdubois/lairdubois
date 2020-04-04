@@ -42,7 +42,7 @@
             dataType: "html",
             context: document.body,
             success: function(data, textStatus, jqXHR) {
-                if ($(data).attr("class") == "ladb-edit") {
+                if ($(data).attr("class") === "ladb-edit") {
                     $edit.replaceWith(data);
                     that.bindEditComment($row);
                 } else {

@@ -4,6 +4,7 @@
 {% set emptyWebPath = 'empty_question.png' %}
 
 {% block entityMetas %}
+    {% include 'LadbCoreBundle:Qa/Question:_linkto-entity-metas.part.html.twig' %}
     {{ parent() }}
     <li class="ladb-counter">
         {% if question.bestAnswer %}

@@ -1,3 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_entity-widget.html.twig' %}
 
 {% set entity = workshop %}
+
+{% block entityMetas %}
+    {% include 'LadbCoreBundle:Wonder/Workshop:_linkto-entity-metas.part.html.twig' %}
+{% endblock %}

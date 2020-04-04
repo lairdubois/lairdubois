@@ -1,3 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_entity-widget.html.twig' %}
 
 {% set entity = creation %}
+
+{% block entityMetas %}
+    {% include 'LadbCoreBundle:Wonder/Creation:_linkto-entity-metas.part.html.twig' %}
+{% endblock %}

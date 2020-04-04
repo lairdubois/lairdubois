@@ -3,15 +3,7 @@
 {% set wonder = workshop %}
 
 {% block entityMetas %}
-    {% if wonder.planCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_workshop_plans', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.planCount }} {{ 'wonder.plan.choice.entities'|transchoice(wonder.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
-    {% endif %}
-    {% if wonder.howtoCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_workshop_howtos', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(wonder.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
-    {% endif %}
-    {% if wonder.workflowCount > 0 %}
-        <li class="ladb-linkto"><a href="{{ path('core_workshop_workflows', { 'id':wonder.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ wonder.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(wonder.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
-    {% endif %}
+    {% include 'LadbCoreBundle:Wonder/Workshop:_linkto-entity-metas.part.html.twig' %}
     {{ parent() }}
     {% if entity.feedbackCount > 0 %}
         <li class="ladb-counter ladb-color-feedback"><i class="ladb-icon-feedback"></i> <span>{{ entity.feedbackCount|number_format(0, ',', ' ') }}</span></li>

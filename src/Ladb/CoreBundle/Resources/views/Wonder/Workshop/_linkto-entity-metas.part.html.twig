@@ -1,0 +1,9 @@
+{% if workshop.planCount > 0 %}
+    <li class="ladb-linkto"><a href="{{ path('core_workshop_plans', { 'id':workshop.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ workshop.planCount }} {{ 'workshop.plan.choice.entities'|transchoice(workshop.planCount) }}"><i class="ladb-icon-plan"></i></a></li>
+{% endif %}
+{% if workshop.howtoCount > 0 %}
+    <li class="ladb-linkto"><a href="{{ path('core_workshop_howtos', { 'id':workshop.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ workshop.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(workshop.howtoCount) }}"><i class="ladb-icon-howto"></i></a></li>
+{% endif %}
+{% if workshop.workflowCount > 0 %}
+    <li class="ladb-linkto"><a href="{{ path('core_workshop_workflows', { 'id':workshop.id }) }}" data-tooltip="tooltip" title="{{ 'wonder.workshop.linked_to'|trans() }} {{ workshop.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(workshop.workflowCount) }}"><i class="ladb-icon-workflow"></i></a></li>
+{% endif %}
