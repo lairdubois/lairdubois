@@ -379,7 +379,7 @@ fos_elastica:
                     properties:
                         displayname: { type: text, boost: 2, analyzer: name_analyzer }
                         fullname: { type: text, boost: 1, analyzer: name_analyzer }
-                        username: { analyzer: name_analyzer }
+                        username: { analyzer: exact_lowercase_analyzer }
                         createdAt: { type: date }
                         accountType: { type: short }
                         location:
