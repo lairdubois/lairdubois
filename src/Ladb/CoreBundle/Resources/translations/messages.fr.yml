@@ -726,7 +726,7 @@ knowledge:
       lumber: La vue **Bois débité** est une photo de l'essence coupées en planches, plateaux ou autres coupes permettant une lecture claire.
       tree: La vue **Arbre** est une photo de l'arbre sur pied correspondant à cette essence.
       leaf: La vue **Feuillage** est une photo des feuilles ou du feuillage de l'arbre correspondant à cette essence.
-      bark: La vue **Ecorse** est une photo de l'écorse de l'arbre correspondant à cette essence.
+      bark: La vue **Ecorce** est une photo de l'écorse de l'arbre correspondant à cette essence.
       family: "La **Famille** est le groupe dans lequel se classe cette essence. Deux valeurs sont possibles : *Feuillus*, *Résineux*."
       density: La **Densité moyenne** est la masse volumique moyenne en **kg/m3** de cette essence pour un bois à moins de 15% d'humidité.
       availability: "La **Disponibilité** est une indication sur les possibilités d'approvisionnement de cette essence en France. Quatre valeurs sont possibles : *Menacée*, *Limitée*, *Importante*, *Régulière*."
