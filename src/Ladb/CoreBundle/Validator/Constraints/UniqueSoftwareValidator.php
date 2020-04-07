@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Validator\Constraints;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -27,12 +28,12 @@ class UniqueSoftwareValidator extends ConstraintValidator {
 	 */
 	public function validate($value, Constraint $constraint) {
 		if (!is_null($value)) {
-			if ($value instanceof Text) {
+			if ($value instanceof SoftwareIdentity) {
 				$data = $value->getData();
 				$softwareRepository = $this->om->getRepository(Software::CLASS_NAME);
 				if (!is_null($data) && $softwareRepository->existsByName($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
-						->atPath('name')
+						->atPath('identity')
 						->addViolation();
 				}
 			}

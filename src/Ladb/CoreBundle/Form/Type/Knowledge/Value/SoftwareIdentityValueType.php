@@ -14,7 +14,9 @@ class SoftwareIdentityValueType extends AbstractValueType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);
 		$builder
-			->add('name', TextType::class)
+			->add('name', TextType::class, array(
+				'constraints' => $options['dataConstraints'],
+			))
 			->add('isAddOn', CheckboxType::class)
 			->add('hostSoftwareName', TextType::class)
 		;

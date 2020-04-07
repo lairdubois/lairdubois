@@ -283,7 +283,7 @@ services:
       - { name: validator.constraint_validator, alias: ladb_core.unique_book_validator }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_core.unique_software_validator:
-    class: Ladb\CoreBundle\Validator\Constraints\UniqueBookValidator
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueSoftwareValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.unique_software_validator }
     arguments: ['@doctrine.orm.entity_manager']

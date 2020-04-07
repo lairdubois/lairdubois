@@ -19,9 +19,9 @@ class SoftwareRepository extends AbstractKnowledgeRepository {
 	public function existsByName($name, $excludedId = 0) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'count(b.id)' ))
+			->select(array( 'count(s.id)' ))
 			->from($this->getEntityName(), 's')
-			->where('s.name = :name')
+			->where('LOWER(s.name) = :name')
 			->setParameter('name', $name)
 		;
 
