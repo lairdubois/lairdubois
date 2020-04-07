@@ -117,6 +117,11 @@
                 </a>
             {% endif %}
         </div>
+        {% if searchableProviderCount > 0 %}
+            <div class="ladb-btn">
+                <a href="{{ path('core_provider_list', { 'q':'@woods:"'~wood.name~'"'}) }}" rel="nofollow" class="btn btn-default btn-expand btn-lg"><i class="ladb-icon-provider"></i> Où trouver ce bois ?</a>
+            </div>
+        {% endif %}
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
