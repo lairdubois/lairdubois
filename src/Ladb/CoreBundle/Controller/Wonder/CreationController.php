@@ -1263,7 +1263,8 @@ class CreationController extends AbstractController {
 		$woodsString = implode(',', $woodsLabels);
 
 		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\MatchPhrase('name', $woodsString) ), 'fos_elastica.index.ladb.knowledge_wood');
+		$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('name', $woodsString) ), 'fos_elastica.index.ladb.knowledge_wood');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
