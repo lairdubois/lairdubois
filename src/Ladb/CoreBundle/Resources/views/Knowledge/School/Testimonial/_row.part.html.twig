@@ -6,7 +6,7 @@
                 <div class="ladb-heading">
                     <div class="ladb-minitools">
                         {% if not app.request.isxmlhttprequest %}
-                            <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers le témoignage :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}#_testimonial_{{ testimonial.id }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
+                            <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers le témoignage :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ url('core_knowledge_school_testimonial_show', { 'id':testimonial.id }) }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
                         {% endif %}
                         {% if is_granted("ROLE_ADMIN") or testimonial.user == app.user %}
                             <a href="{{ path('core_knowledge_school_testimonial_edit', { 'id':testimonial.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit"><i class="ladb-icon-edit"></i></a>
