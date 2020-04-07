@@ -193,7 +193,7 @@ class BookController extends AbstractController {
 					case 'title':
 
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('title', $facet->value);
+						$filters[] = $elasticaQueryUtils->createShouldMatchPhraseQuery('title', $facet->value);
 
 						break;
 
@@ -232,7 +232,7 @@ class BookController extends AbstractController {
 					case 'language':
 
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('language', $facet->value);
+						$filters[] = $elasticaQueryUtils->createShouldMatchPhraseQuery('language', $facet->value);
 
 						break;
 

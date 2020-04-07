@@ -7,6 +7,7 @@ use Ladb\CoreBundle\Entity\Collection\Collection;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Event\Event;
 use Ladb\CoreBundle\Entity\Offer\Offer;
+use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
 use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\MaybeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -942,9 +943,8 @@ class CreationController extends AbstractController {
 
 					case 'woods':
 
-						$filter = new \Elastica\Query\QueryString($facet->value);
-						$filter->setFields(array( 'woods.label' ));
-						$filters[] = $filter;
+						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+						$filters[] = $elasticaQueryUtils->createShouldMatchPhraseQuery('woods.label', $facet->value);
 
 						break;
 
@@ -1263,7 +1263,7 @@ class CreationController extends AbstractController {
 		$woodsString = implode(',', $woodsLabels);
 
 		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('name', $woodsString) ), 'fos_elastica.index.ladb.knowledge_wood');
+		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\MatchPhrase('name', $woodsString) ), 'fos_elastica.index.ladb.knowledge_wood');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);

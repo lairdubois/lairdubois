@@ -242,7 +242,7 @@ class SoftwareController extends AbstractController {
 					case 'languages':
 
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchQuery('languages', $facet->value);
+						$filters[] = $elasticaQueryUtils->createShouldMatchPhraseQuery('languages', $facet->value);
 
 						break;
 

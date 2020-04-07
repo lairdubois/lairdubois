@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -257,7 +258,9 @@ class ProviderController extends AbstractController {
 
 						$query1 = new \Elastica\Query\QueryString('"Bois massif"');
 						$query1->setFields(array( 'products' ));
-						$query2 = new \Elastica\Query\Match('woodsWorkaround', $facet->value);
+						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+						$query2 = $elasticaQueryUtils->createShouldMatchPhraseQuery('woodsWorkaround', $facet->value);
+//						$query2 = new \Elastica\Query\MatchPhrase('woodsWorkaround', $facet->value);
 						$filter = new \Elastica\Query\BoolQuery();
 						$filter->addMust($query1);
 						$filter->addMust($query2);
@@ -597,7 +600,7 @@ class ProviderController extends AbstractController {
 
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$searchableStoreCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('brand', $provider->getBrand()) ), 'fos_elastica.index.ladb.knowledge_provider');
-		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('name', $provider->getWoods()) ), 'fos_elastica.index.ladb.knowledge_wood');
+		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\MatchPhrase('name', $provider->getWoods()) ), 'fos_elastica.index.ladb.knowledge_wood');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
