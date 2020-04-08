@@ -297,7 +297,7 @@ class BookController extends AbstractController {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100', 'authors', 'subjects', 'summary', 'toc' ));
+							$filter->setFields(array( 'title^100', 'authors^50', 'subjects', 'summary', 'toc' ));
 							$filters[] = $filter;
 
 							$couldUseDefaultSort = false;
