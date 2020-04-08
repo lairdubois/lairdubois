@@ -5,22 +5,20 @@
 {% set masonry = true %}
 
 {% block filtersDropdown %}
-    {% if app.user %}
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="authors" data-label="Auteurs" data-editable="true" data-icon="user"><i class="ladb-icon-user"></i> Auteurs</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="publisher" data-label="Editeur" data-editable="true" data-icon="software"><i class="ladb-icon-software"></i> Editeur</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="addon" data-label="Plugin" data-editable="true" data-icon="addon" data-proposals-url="{{ path('core_search_typeahead_softwares_json')|raw }}"><i class="ladb-icon-addon"></i> Plugin pour ...</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="open-source" data-label="Open source" data-editable="false" data-icon="open-source"><i class="ladb-icon-open-source"></i> Open source</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="pricings" data-label="Tarifications" data-editable="true" data-icon="funding" data-proposals="Gratuit,Gratuit pour usage personnel,Gratuit avec fonctionnalités limitées,Payant"><i class="ladb-icon-funding"></i> Tarifications</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="os" data-label="Systèmes d'exploitation" data-editable="true" data-icon="operating-system" data-proposals="Windows,Mac,Linux,Android,iOS"><i class="ladb-icon-operating-system"></i> Systèmes d'exploitation</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="features" data-label="Fonctionnalités" data-editable="true" data-icon="filter"><i class="ladb-icon-filter"></i> Fonctionnalités</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="languages" data-label="Langues" data-editable="true" data-icon="answer"><i class="ladb-icon-answer"></i> Langues</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-review" data-label="Avec avis" data-editable="false" data-icon="review"><i class="ladb-icon-review"></i> Avec avis</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
-    {% endif %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="authors" data-label="Auteurs" data-editable="true" data-icon="user"><i class="ladb-icon-user"></i> Auteurs</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="publisher" data-label="Editeur" data-editable="true" data-icon="software"><i class="ladb-icon-software"></i> Editeur</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="addon" data-label="Plugin" data-editable="true" data-icon="addon" data-proposals-url="{{ path('core_search_typeahead_softwares_json')|raw }}"><i class="ladb-icon-addon"></i> Plugin pour ...</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="open-source" data-label="Open source" data-editable="false" data-icon="open-source"><i class="ladb-icon-open-source"></i> Open source</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="pricings" data-label="Tarifications" data-editable="true" data-icon="funding" data-proposals="Gratuit,Gratuit pour usage personnel,Gratuit avec fonctionnalités limitées,Payant"><i class="ladb-icon-funding"></i> Tarifications</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="os" data-label="Systèmes d'exploitation" data-editable="true" data-icon="operating-system" data-proposals="Windows,Mac,Linux,Android,iOS"><i class="ladb-icon-operating-system"></i> Systèmes d'exploitation</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="features" data-label="Fonctionnalités" data-editable="true" data-icon="filter"><i class="ladb-icon-filter"></i> Fonctionnalités</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="languages" data-label="Langues" data-editable="true" data-icon="answer"><i class="ladb-icon-answer"></i> Langues</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-review" data-label="Avec avis" data-editable="false" data-icon="review"><i class="ladb-icon-review"></i> Avec avis</a></li>
+    <li class="divider{% if not is_granted('ROLE_USER') %} hidden{% endif %}"></li>
+    <li{% if not is_granted('ROLE_USER') %} class="hidden"{% endif %}><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
     {# Hidden filters #}
     <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="supported-files" data-label="Fichiers supportés" data-editable="true" data-icon="file"><i class="ladb-icon-file ladb-icon-fixed-center"></i> Fichiers supportés</a></li>
 {% endblock %}

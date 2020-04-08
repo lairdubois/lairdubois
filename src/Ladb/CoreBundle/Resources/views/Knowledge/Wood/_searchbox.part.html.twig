@@ -7,10 +7,8 @@
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="origin" data-label="Provenance" data-editable="true" data-icon="globe"><i class="ladb-icon-globe"></i> Provenance</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="utilization" data-label="Utilisation" data-editable="true" data-icon="creation"><i class="ladb-icon-creation"></i> Utilisation</a></li>
-    {% if app.user %}
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetées" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetées</a></li>
-    {% endif %}
+    <li class="divider{% if not is_granted('ROLE_USER') %} hidden{% endif %}"></li>
+    <li{% if not is_granted('ROLE_USER') %} class="hidden"{% endif %}><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetées" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetées</a></li>
     {# Hidden filters #}
     <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="name" data-label="Nom français" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Nom français</a></li>
 {% endblock %}

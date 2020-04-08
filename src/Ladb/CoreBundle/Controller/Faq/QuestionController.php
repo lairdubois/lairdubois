@@ -457,7 +457,11 @@ class QuestionController extends AbstractController {
 			},
 			function(&$filters, &$sort) {
 
-				$sort = array( 'weight' => array( 'order' => 'desc' ) );
+				if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getUnlistedFaqQuestionCount() > 0) {
+					$sort = array('changedAt' => array('order' => 'desc'));
+				} else {
+					$sort = array( 'weight' => array( 'order' => 'desc' ) );
+				}
 
 			},
 			function(&$filters) {

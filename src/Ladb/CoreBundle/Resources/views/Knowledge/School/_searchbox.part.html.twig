@@ -18,10 +18,8 @@
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-creations" data-label="Avec création" data-unique="true" data-icon="creation"><i class="ladb-icon-creation"></i> Avec création</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-plans" data-label="Avec plan" data-unique="true" data-icon="plan"><i class="ladb-icon-plan"></i> Avec plan</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-howtos" data-label="Avec pas à pas" data-unique="true" data-icon="howto"><i class="ladb-icon-howto"></i> Avec pas à pas</a></li>
-    {% if app.user %}
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetées" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetées</a></li>
-    {% endif %}
+    <li class="divider{% if not is_granted('ROLE_USER') %} hidden{% endif %}"></li>
+    <li{% if not is_granted('ROLE_USER') %} class="hidden"{% endif %}><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetées" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetées</a></li>
 {% endblock %}
 
 {% block sortersDropdown %}

@@ -5,19 +5,17 @@
 {% set masonry = true %}
 
 {% block filtersDropdown %}
-    {% if app.user %}
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="authors" data-label="Auteurs" data-editable="true" data-icon="user"><i class="ladb-icon-user"></i> Auteurs</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="editor" data-label="Editeur" data-editable="true" data-icon="book"><i class="ladb-icon-book"></i> Editeur</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="subjects" data-label="Sujets" data-editable="true" data-icon="list"><i class="ladb-icon-list"></i> Sujets</a></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="language" data-label="Langue" data-editable="true" data-icon="answer"><i class="ladb-icon-answer"></i> Langue</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="public-domain" data-label="Domaine public" data-editable="false" data-icon="public-domain"><i class="ladb-icon-public-domain"></i> Domaine public</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-review" data-label="Avec critique" data-editable="false" data-icon="review"><i class="ladb-icon-review"></i> Avec critique</a></li>
-        <li class="divider"></li>
-        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
-    {% endif %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="authors" data-label="Auteurs" data-editable="true" data-icon="user"><i class="ladb-icon-user"></i> Auteurs</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="editor" data-label="Editeur" data-editable="true" data-icon="book"><i class="ladb-icon-book"></i> Editeur</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="subjects" data-label="Sujets" data-editable="true" data-icon="list"><i class="ladb-icon-list"></i> Sujets</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="language" data-label="Langue" data-editable="true" data-icon="answer"><i class="ladb-icon-answer"></i> Langue</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="public-domain" data-label="Domaine public" data-editable="false" data-icon="public-domain"><i class="ladb-icon-public-domain"></i> Domaine public</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-review" data-label="Avec critique" data-editable="false" data-icon="review"><i class="ladb-icon-review"></i> Avec critique</a></li>
+    <li class="divider{% if not is_granted('ROLE_USER') %} hidden{% endif %}"></li>
+    <li{% if not is_granted('ROLE_USER') %} class="hidden"{% endif %}><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
     {# Hidden filters #}
     <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="title" data-label="Titre" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Titre</a></li>
     <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="collection" data-label="Collection" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Collection</a></li>
