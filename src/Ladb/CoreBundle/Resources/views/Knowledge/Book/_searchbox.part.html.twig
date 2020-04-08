@@ -17,7 +17,7 @@
     <li class="divider{% if not is_granted('ROLE_USER') %} hidden{% endif %}"></li>
     <li{% if not is_granted('ROLE_USER') %} class="hidden"{% endif %}><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
     {# Hidden filters #}
-    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="title" data-label="Titre" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Titre</a></li>
+    <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="work" data-label="Ouvrage" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Ouvrage</a></li>
     <li class="hidden"><a class="ladb-smartsearch-facet" data-type="filter" data-name="collection" data-label="Collection" data-editable="true" data-icon="filter"><i class="ladb-icon-filter ladb-icon-fixed-center"></i> Collection</a></li>
 {% endblock %}
 

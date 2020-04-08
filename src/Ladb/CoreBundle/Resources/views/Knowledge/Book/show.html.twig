@@ -66,6 +66,9 @@
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
         {% set headingClasses = book.titleRejected ? 'ladb-strikethrough' : null %}
+        {% block headingInner %}
+            {{ parent() }}{% if book.volume is not empty %}&nbsp;<small>({{ book.volume }})</small>{% endif %}
+        {% endblock %}
         {% block subheadingInner %}
             {% if book.publicDomain %}
                 <span data-tooltip="tooltip" title="{{ 'knowledge.book.field.public_domain'|trans() }}"><i class="ladb-icon-public-domain ladb-icon-lg"></i></span>
@@ -83,9 +86,16 @@
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':book, 'wide':true, 'field':constant('FIELD_BACK_COVER', book), 'picture':book.backCover, 'values':book.backCoverValues } %}
     </div>
     <div>
+        {% if searchableVolumeCount > 1 %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Cet ouvrage compte <a href="{{ path('core_book_list', { 'q':'@work:"'~book.work~'"'}) }}" rel="nofollow"><strong>{{ searchableVolumeCount }}</strong> {{ 'knowledge.book.choice.volumes'|transchoice(searchableVolumeCount) }}</a> référencés.</span>
+                </div>
+            </div>
+        {% endif %}
         <div class="ladb-metas">
             <h4 class="ladb-heading">Ouvrage</h4>
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_TITLE', book), 'data':book.title, 'values':book.titleValues, 'itemprop':'name' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_IDENTITY', book), 'data':book.identity, 'values':book.identityValues, 'itemprop':'name' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_AUTHORS', book), 'data':book.authors, 'values':book.authorsValues, 'itemprop':'author' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_EDITOR', book), 'data':book.editor, 'values':book.editorValues, 'itemprop':'editor' } %}
         </div>

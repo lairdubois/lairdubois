@@ -9,29 +9,29 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SignValueType extends AbstractValueType {
+class BookIdentityValueType extends AbstractValueType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);
 		$builder
-			->add('brand', TextType::class, array(
+			->add('work', TextType::class, array(
 				'constraints' => $options['dataConstraints'],
 			))
-			->add('isAffiliate', CheckboxType::class)
-			->add('store', TextType::class)
+			->add('isVolume', CheckboxType::class)
+			->add('volume', TextType::class)
 		;
 
 		$builder->addEventListener(
 			FormEvents::SUBMIT,
 			function(FormEvent $event) {
 				$value = $event->getData();
-				$value->setBrand(ucfirst($value->getBrand()));
-				if (!$value->getIsAffiliate()) {
-					$value->setStore(null);
-					$value->setData($value->getBrand());
+				$value->setWork(ucfirst($value->getWork()));
+				if (!$value->getIsVolume()) {
+					$value->setVolume(null);
+					$value->setData($value->getWork());
 				} else {
-					$value->setStore(ucfirst($value->getStore()));
-					$value->setData($value->getBrand().','.$value->getStore());
+					$value->setVolume(ucfirst($value->getVolume()));
+					$value->setData($value->getWork().','.$value->getVolume());
 				}
 			}
 		);
@@ -41,12 +41,12 @@ class SignValueType extends AbstractValueType {
 	public function configureOptions(OptionsResolver $resolver) {
 		parent::configureOptions($resolver);
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Entity\Knowledge\Value\Sign',
+			'data_class' => 'Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity',
 		));
 	}
 
 	public function getBlockPrefix() {
-		return 'ladb_knowledge_value_sign';
+		return 'ladb_knowledge_value_book_identity';
 	}
 
 }

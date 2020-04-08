@@ -957,8 +957,9 @@ fos_elastica:
                             delete: false
                 knowledge_book:
                     properties:
-                        title: { type: text, boost: 3, analyzer: title_analyzer }
-                        titleRejected: { type: boolean }
+                        identity: { type: text, boost: 2, analyzer: name_analyzer }
+                        identityRejected: { type: boolean }
+                        work: { type: text, analyzer: exact_lowercase_analyzer }
                         coverRejected: { type: boolean }
                         authors: { analyzer: name_analyzer }
                         editor: { analyzer: name_analyzer }

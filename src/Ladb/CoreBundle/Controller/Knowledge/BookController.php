@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ReviewableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -67,32 +68,32 @@ class BookController extends AbstractController {
 
 		if ($form->isValid()) {
 
-			$titleValue = $newBook->getTitleValue();
+			$identityValue = $newBook->getIdentityValue();
 			$coverValue = $newBook->getCoverValue();
 			$user = $this->getUser();
 
-			// Sanitize Name values
-			if ($titleValue instanceof Text) {
-				$titleValue->setData(trim(ucfirst($titleValue->getData())));
+			// Sanitize Identity values
+			if ($identityValue instanceof BookIdentity) {
+				$identityValue->setData(trim(ucfirst($identityValue->getData())));
 			}
 
 			$book = new Book();
-			$book->setTitle($titleValue->getData());
+			$book->setTitle($identityValue->getData());
 			$book->incrementContributorCount();
 
 			$om->persist($book);
 			$om->flush();	// Need to save book to be sure ID is generated
 
-			$book->addTitleValue($titleValue);
+			$book->addIdentityValue($identityValue);
 			$book->addCoverValue($coverValue);
 
 			// Dispatch knowledge events
-			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($book, array( 'field' => Book::FIELD_TITLE, 'value' => $titleValue )));
+			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($book, array( 'field' => Book::FIELD_IDENTITY, 'value' => $identityValue )));
 			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($book, array( 'field' => Book::FIELD_COVER, 'value' => $coverValue )));
 
-			$titleValue->setParentEntity($book);
-			$titleValue->setParentEntityField(Book::FIELD_TITLE);
-			$titleValue->setUser($user);
+			$identityValue->setParentEntity($book);
+			$identityValue->setParentEntityField(Book::FIELD_IDENTITY);
+			$identityValue->setUser($user);
 
 			$coverValue->setParentEntity($book);
 			$coverValue->setParentEntityField(Book::FIELD_COVER);
@@ -102,7 +103,7 @@ class BookController extends AbstractController {
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
-			$activityUtils->createContributeActivity($titleValue, false);
+			$activityUtils->createContributeActivity($identityValue, false);
 			$activityUtils->createContributeActivity($coverValue, false);
 
 			// Dispatch publication event
@@ -190,10 +191,10 @@ class BookController extends AbstractController {
 
 					// Filters /////
 
-					case 'title':
+					case 'work':
 
-						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-						$filters[] = $elasticaQueryUtils->createShouldMatchPhraseQuery('title', $facet->value);
+						$filter = new \Elastica\Query\Match('work', $facet->value);
+						$filters[] = $filter;
 
 						break;
 
@@ -253,7 +254,7 @@ class BookController extends AbstractController {
 					case 'rejected':
 
 						$filter = new \Elastica\Query\BoolQuery();
-						$filter->addShould(new \Elastica\Query\Range('titleRejected', array( 'gte' => 1 )));
+						$filter->addShould(new \Elastica\Query\Range('identityRejected', array( 'gte' => 1 )));
 						$filter->addShould(new \Elastica\Query\Range('coverRejected', array( 'gte' => 1 )));
 						$filters[] = $filter;
 
@@ -297,7 +298,7 @@ class BookController extends AbstractController {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100', 'authors^50', 'subjects', 'summary', 'toc' ));
+							$filter->setFields(array( 'identity^100', 'authors^50', 'subjects', 'summary', 'toc' ));
 							$filters[] = $filter;
 
 							$couldUseDefaultSort = false;
@@ -313,7 +314,7 @@ class BookController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$filters[] = new \Elastica\Query\Range('titleRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lt' => 1 ));
 				$filters[] = new \Elastica\Query\Range('coverRejected', array( 'lt' => 1 ));
 
 			},
@@ -360,6 +361,9 @@ class BookController extends AbstractController {
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($book));
 
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchableVolumeCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('work', $book->getWork()) ), 'fos_elastica.index.ladb.knowledge_book');
+
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
 		$commentableUtils = $this->get(CommentableUtils::NAME);
@@ -367,12 +371,13 @@ class BookController extends AbstractController {
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
 		return array(
-			'book'              => $book,
-			'likeContext'       => $likableUtils->getLikeContext($book, $this->getUser()),
-			'watchContext'      => $watchableUtils->getWatchContext($book, $this->getUser()),
-			'commentContext'    => $commentableUtils->getCommentContext($book),
-			'collectionContext' => $collectionnableUtils->getCollectionContext($book),
-			'reviewContext'     => $reviewableUtils->getReviewContext($book),
+			'book'                  => $book,
+			'searchableVolumeCount' => $searchableVolumeCount,
+			'likeContext'           => $likableUtils->getLikeContext($book, $this->getUser()),
+			'watchContext'          => $watchableUtils->getWatchContext($book, $this->getUser()),
+			'commentContext'        => $commentableUtils->getCommentContext($book),
+			'collectionContext'     => $collectionnableUtils->getCollectionContext($book),
+			'reviewContext'         => $reviewableUtils->getReviewContext($book),
 		);
 	}
 

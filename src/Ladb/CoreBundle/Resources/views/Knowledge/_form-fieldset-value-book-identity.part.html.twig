@@ -1,0 +1,33 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.work) }}
+    {{ form_widget(form.work, { 'attr':{ 'class':'form-control input-lg', 'placeholder':'Titre de l\'ouvrage' } }) }}
+{% endblock %}
+
+{% block dataFormGroupOuter %}
+    {{ parent() }}
+    <div class="checkbox">
+        <label>{{ form_widget(form.isVolume) }} Ce livre est l'un des volumes d'un ouvrage.</label>
+    </div>
+    <div id="{{ form.volume.vars.id }}_form_group" class="form-group ladb-margin-left"{% if form.isVolume.vars.data is empty or not form.isVolume.vars.data %} style="display: none;"{% endif %}>
+        {{ form_label(form.volume, 'Titre du volume ') }}<small> (ex: Tome 1)</small>
+        {{ form_errors(form.volume) }}
+        {{ form_widget(form.volume, { 'attr':{ 'class':'form-control' } }) }}
+    </div>
+    <script>
+        $(document).ready(function() {
+            var $isVolumeInput = $('#{{ form.isVolume.vars.id }}');
+            var $volumeInput = $('#{{ form.volume.vars.id }}');
+            var $group = $('#{{ form.volume.vars.id }}_form_group');
+            $isVolumeInput.on('click', function() {
+                if ($isVolumeInput.prop('checked')) {
+                    $group.show();
+                    $volumeInput.focus();
+                } else {
+                    $group.hide();
+                }
+            });
+        });
+    </script>
+{% endblock %}

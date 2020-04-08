@@ -2,31 +2,31 @@
 
 namespace Ladb\CoreBundle\Form\Model;
 
+use Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 
 class NewBook {
 
 	/**
 	 */
-	private $titleValue;
+	private $identityValue;
 
 	/**
 	 */
 	private $coverValue;
 
-	// NameValue /////
+	// IdentityValue /////
 
-	public function setTitleValue(Text $titleValue) {
-		$this->titleValue = $titleValue;
+	public function setIdentityValue(BookIdentity $identityValue) {
+		$this->identityValue = $identityValue;
 		return $this;
 	}
 
-	public function getTitleValue() {
-		return $this->titleValue;
+	public function getIdentityValue() {
+		return $this->identityValue;
 	}
 
-	// GrainValue /////
+	// CoverValue /////
 
 	public function setCoverValue(Picture $coverValue) {
 		$this->coverValue = $coverValue;

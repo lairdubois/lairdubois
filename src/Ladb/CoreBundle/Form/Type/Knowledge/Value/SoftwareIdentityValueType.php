@@ -26,11 +26,11 @@ class SoftwareIdentityValueType extends AbstractValueType {
 			function(FormEvent $event) {
 				$value = $event->getData();
 				$value->setName(ucfirst($value->getName()));
-				$value->setHostSoftwareName(ucfirst($value->getHostSoftwareName()));
 				if (!$value->getIsAddOn()) {
 					$value->setHostSoftwareName(null);
 					$value->setData($value->getName());
 				} else {
+					$value->setHostSoftwareName(ucfirst($value->getHostSoftwareName()));
 					$value->setData($value->getName().','.$value->getHostSoftwareName());
 				}
 			}

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Price;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
@@ -31,7 +32,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 	const STRIPPED_NAME = 'book';
 
-	const FIELD_TITLE = 'title';
+	const FIELD_IDENTITY = 'identity';
 	const FIELD_COVER = 'cover';
 	const FIELD_BACK_COVER = 'back_cover';
 	const FIELD_AUTHORS = 'authors';
@@ -50,7 +51,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_PRICE = 'price';
 
 	public static $FIELD_DEFS = array(
-		Book::FIELD_TITLE         => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueBook', array('excludedId' => '@getId')))),
+		Book::FIELD_IDENTITY      => array(Book::ATTRIB_TYPE => BookIdentity::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueBook', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('work', 'isVolume', 'volume')),
 		Book::FIELD_COVER         => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_MANDATORY => true, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Book::FIELD_BACK_COVER    => array(Book::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false, Book::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Book::FIELD_AUTHORS       => array(Book::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_FILTER_QUERY => '@authors:"%q%"', Book::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul auteur par proposition.')))),
@@ -68,6 +69,39 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 		Book::FIELD_CATALOG_LINK  => array(Book::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => true, Book::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array( 'excludedDomainPaterns' => array( '/amazon./i', '/fnac./i', '/manomano./i' ), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.' )))),
 		Book::FIELD_PRICE         => array(Book::ATTRIB_TYPE => Price::TYPE_STRIPPED_NAME, Book::ATTRIB_MULTIPLE => false),
 	);
+
+	/**
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	private $work;
+
+	/**
+	 * @ORM\Column(type="boolean", name="is_volume")
+	 */
+	private $isVolume = false;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	private $volume;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true, length=100)
+	 */
+	private $identity;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_identity")
+	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $identityValues;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=false, name="identity_rejected")
+	 */
+	private $identityRejected = false;
+
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
@@ -305,6 +339,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/////
 
 	public function __construct() {
+		$this->identityValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->titleValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->coverValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->backCoverValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -336,6 +371,88 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getType() {
 		return Book::TYPE;
+	}
+
+	// Work /////
+
+	public function setWork($work) {
+		$this->work = $work;
+		$this->setTitle($work);
+		return $this;
+	}
+
+	public function getWork() {
+		return $this->work;
+	}
+
+	// IsVolume /////
+
+	public function setIsVolume($isVolume) {
+		$this->isVolume = $isVolume;
+		return $this;
+	}
+
+	public function getIsVolume() {
+		return $this->isVolume;
+	}
+
+	// Volume /////
+
+	public function setVolume($volume) {
+		$this->volume = $volume;
+		return $this;
+	}
+
+	public function getVolume() {
+		return $this->volume;
+	}
+
+	// Identity /////
+
+	public function setIdentity($identity) {
+		$this->identity = $identity;
+		if (!is_null($identity)) {
+			$this->setTitle(explode(',', $identity)[0]);
+		} else {
+			$this->setTitle(null);
+		}
+		return $this;
+	}
+
+	public function getIdentity() {
+		return $this->identity;
+	}
+
+	// IdentityValues /////
+
+	public function addIdentityValue(\Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity $identityValue) {
+		if (!$this->identityValues->contains($identityValue)) {
+			$this->identityValues[] = $identityValue;
+		}
+		return $this;
+	}
+
+	public function removeIdentityValue(\Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity $identityValue) {
+		$this->identityValues->removeElement($identityValue);
+	}
+
+	public function setIdentityValues($identityValues) {
+		$this->identityValues = $identityValues;
+	}
+
+	public function getIdentityValues() {
+		return $this->identityValues;
+	}
+
+	// IdentityRejected /////
+
+	public function setIdentityRejected($identityRejected) {
+		$this->identityRejected = $identityRejected;
+		return $this;
+	}
+
+	public function getIdentityRejected() {
+		return $this->identityRejected;
 	}
 
 	// Title /////

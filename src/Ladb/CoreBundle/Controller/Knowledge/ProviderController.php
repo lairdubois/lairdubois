@@ -260,7 +260,6 @@ class ProviderController extends AbstractController {
 						$query1->setFields(array( 'products' ));
 						$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
 						$query2 = $elasticaQueryUtils->createShouldMatchPhraseQuery('woodsWorkaround', $facet->value);
-//						$query2 = new \Elastica\Query\MatchPhrase('woodsWorkaround', $facet->value);
 						$filter = new \Elastica\Query\BoolQuery();
 						$filter->addMust($query1);
 						$filter->addMust($query2);

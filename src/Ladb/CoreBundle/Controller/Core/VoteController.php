@@ -84,7 +84,7 @@ class VoteController extends AbstractController {
 
 		$this->createLock('core_vote_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
-		// Exclude vote if user is not email confirmed for score < 0
+		// Exclude vote if user is not email confirmed
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_vote_create)');
 		}

@@ -313,6 +313,10 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidSignValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_sign_value_validator }
+  ladb_core.valid_book_identity_value_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidBookIdentityValueValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_book_identity_value_validator }
   ladb_core.valid_software_identity_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidSoftwareIdentityValueValidator
     tags:
