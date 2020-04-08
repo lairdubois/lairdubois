@@ -946,7 +946,6 @@ knowledge:
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Livre.</p><p><u>N'apportez pas votre critique ou avis sur le livre ici.</u></p><p>Pour donner votre avis de lecteur, cliquez sur le bouton <strong>Ajouter ma critique</strong> un peu plus haut.</p>
     field:
       identity: Titre
-      title: Titre
       cover: Couverture
       back_cover: Arrière
       authors: Auteur(s)
@@ -965,7 +964,6 @@ knowledge:
       publish_year: Année de parution
     help:
       identity: "Le **Title** est le titre du livre."
-      title: "Le **Title** est le titre du livre."
       cover: "La **Couverture** est la face avant du livre."
       back_cover: "L'**Arrière** est la face arrière du livre."
       authors: "**Auteur(s)** permet de définir le ou les auteur(s) du livre."
@@ -990,8 +988,7 @@ knowledge:
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
         identity: |
           - Soyez le plus fidèle possible dans la rédaction du titre.
-        title: |
-          - Soyez le plus fidèle possible dans la rédaction du titre.
+          - Si ce livre est l'un des volumes d'un ouvrable plus vaste, cochez la case et indiquez le titre du volume.
         cover: |
           - Utilisez une image lisible et de bonne qualité.
         back_cover:
