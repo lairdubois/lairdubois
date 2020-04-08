@@ -65,7 +65,7 @@
 
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
-        {% set headingClasses = book.titleRejected ? 'ladb-strikethrough' : null %}
+        {% set headingClasses = book.identityRejected ? 'ladb-strikethrough' : null %}
         {% block headingInner %}
             {{ parent() }}{% if book.volume is not empty %}&nbsp;<small>({{ book.volume }})</small>{% endif %}
         {% endblock %}

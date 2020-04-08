@@ -598,8 +598,9 @@ class ProviderController extends AbstractController {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($provider));
 
 		$searchUtils = $this->get(SearchUtils::NAME);
+		$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
 		$searchableStoreCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('brand', $provider->getBrand()) ), 'fos_elastica.index.ladb.knowledge_provider');
-		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\MatchPhrase('name', $provider->getWoods()) ), 'fos_elastica.index.ladb.knowledge_wood');
+		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('name', $provider->getWoods()) ), 'fos_elastica.index.ladb.knowledge_wood');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);

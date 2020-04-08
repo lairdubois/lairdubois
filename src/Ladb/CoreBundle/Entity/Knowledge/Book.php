@@ -104,19 +104,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_title")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
-	 */
-	private $titleValues;
-
-	/**
-	 * @ORM\Column(type="boolean", nullable=false, name="title_rejected")
-	 */
-	private $titleRejected = false;
-
-
-	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_cover")
 	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
@@ -340,7 +327,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 	public function __construct() {
 		$this->identityValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->titleValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->coverValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->backCoverValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->authorsValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -455,12 +441,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 		return $this->identityRejected;
 	}
 
-	// Title /////
-
-	public function getTitleWorkaround() {
-		return $this->getTitle();
-	}
-
 	// Body /////
 
 	public function getBody() {
@@ -478,38 +458,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getFieldDefs() {
 		return Book::$FIELD_DEFS;
-	}
-
-	// TitleValues /////
-
-	public function addTitleValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $titleValue) {
-		if (!$this->titleValues->contains($titleValue)) {
-			$this->titleValues[] = $titleValue;
-		}
-		return $this;
-	}
-
-	public function removeTitleValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $titleValue) {
-		$this->titleValues->removeElement($titleValue);
-	}
-
-	public function setTitleValues($titleValues) {
-		$this->titleValues = $titleValues;
-	}
-
-	public function getTitleValues() {
-		return $this->titleValues;
-	}
-
-	// TitleRejected /////
-
-	public function setTitleRejected($titleRejected) {
-		$this->titleRejected = $titleRejected;
-		return $this;
-	}
-
-	public function getTitleRejected() {
-		return $this->titleRejected;
 	}
 
 	// Cover /////

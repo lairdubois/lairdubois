@@ -4,8 +4,8 @@
 
 {% set entity = book %}
 {% set classes = 'ladb-no-overlay-caption' %}
-{% set headingClasses = book.titleRejected ? 'ladb-text-barred' : null %}
-{% set imgClasses = book.titleRejected or book.coverRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set headingClasses = book.identityRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = book.identityRejected or book.coverRejected ? 'ladb-desaturate ladb-translucent' : null %}
 {% set pictureWidth = '282' %}
 {% set pictureHeight = '280' %}
 {% set pictureFilterMode = 'o' %}
