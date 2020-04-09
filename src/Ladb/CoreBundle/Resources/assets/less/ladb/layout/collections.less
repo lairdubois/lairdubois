@@ -15,6 +15,11 @@
     margin: 0;
     padding: 10px;
     border-top: 1px solid @ladb-global-border;
+    white-space: initial;
+
+    &:first-child {
+      border-top: none;
+    }
 
     .ladb-collection-entry-widget {
       width: 28px;
@@ -45,6 +50,7 @@
     line-height: 30px;
     color: #555;
     font-size: 90%;
+    border-bottom: 1px solid @ladb-global-border;
   }
 
 }
