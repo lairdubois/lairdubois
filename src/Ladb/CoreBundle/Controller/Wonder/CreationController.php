@@ -254,6 +254,8 @@ class CreationController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
+		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+
 		$creation = $creationRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
@@ -288,6 +290,9 @@ class CreationController extends AbstractController {
 			$stripableUtils->resetStrip($creation);
 
 			$creation->setMainPicture($creation->getPictures()->first());
+			if ($doUp) {
+				$creation->setChangedAt(new \DateTime());
+			}
 			if ($creation->getUser()->getId() == $this->getUser()->getId()) {
 				$creation->setUpdatedAt(new \DateTime());
 			}

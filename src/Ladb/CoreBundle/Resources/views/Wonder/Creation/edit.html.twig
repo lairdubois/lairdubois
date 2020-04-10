@@ -10,6 +10,13 @@
 {% block form_buttons %}
     <a href="{{ path('core_creation_show', { 'id':creation.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
     {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="ladb_do_up"> {{ 'default.do_up'|trans }}
+            </label>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block sections %}
