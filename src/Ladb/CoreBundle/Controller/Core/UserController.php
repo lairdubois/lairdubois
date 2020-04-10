@@ -409,7 +409,7 @@ class UserController extends AbstractController {
 	 */
 	public function countersAction(Request $request) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_user_counters)');
 		}
 
 		$user = $this->getUser();
@@ -509,7 +509,7 @@ class UserController extends AbstractController {
 	 */
 	public function cardAction(Request $request, $username) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_user_card)');
 		}
 
 		$user = $this->_retrieveUser($username);

@@ -52,7 +52,7 @@ class CommentController extends AbstractController {
 	 */
 	public function newAction(Request $request, $entityType, $entityId, $parentId = 0) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_comment_new)');
 		}
 
 		$alertTransKey = $request->get('alertTransKey', '');
@@ -87,7 +87,7 @@ class CommentController extends AbstractController {
 	 */
 	public function createAction(Request $request, $entityType, $entityId, $parentId = 0) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_comment_create)');
 		}
 
 		$this->createLock('core_comment_create', false, self::LOCK_TTL_CREATE_ACTION, false);
@@ -127,57 +127,8 @@ class CommentController extends AbstractController {
 
 			}
 
-			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
-			$fieldPreprocessorUtils->preprocessFields($comment);
-
-			// Counters
-
-			$entity->incrementCommentCount();
-			$this->getUser()->getMeta()->incrementCommentCount();
-
-			$om->persist($comment);
-
-			// Create activity
-			$activityUtils = $this->get(ActivityUtils::NAME);
-			$activityUtils->createCommentActivity($comment, false);
-
-			$om->flush();
-
-			// Process mentions
-			$mentionUtils = $this->get(MentionUtils::NAME);
-			$mentionUtils->processMentions($comment);
-
-			// Update index
-			if ($entity instanceof IndexableInterface) {
-				$searchUtils = $this->get(SearchUtils::NAME);
-				$searchUtils->replaceEntityInIndex($entity);
-			}
-
-			if ($entity instanceof WatchableInterface) {
-				$watchableUtils = $this->get(WatchableUtils::NAME);
-
-				// Auto watch
-				$watchableUtils->autoCreateWatch($entity, $this->getUser());
-
-			} else if ($entity instanceof WatchableChildInterface) {
-				$watchableUtils = $this->get(WatchableUtils::NAME);
-
-				// Retrive related parent entity
-
-				$typableUtils = $this->get(TypableUtils::NAME);
-				try {
-					$parentEntity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
-				} catch (\Exception $e) {
-					throw $this->createNotFoundException($e->getMessage());
-				}
-				if (!($parentEntity instanceof WatchableInterface)) {
-					throw $this->createNotFoundException('Parent Entity must implements WatchableInterface.');
-				}
-
-				// Auto watch
-				$watchableUtils->autoCreateWatch($parentEntity, $this->getUser());
-
-			}
+			$commentableUtils = $this->get(CommentableUtils::NAME);
+			$commentableUtils->finalizeNewComment($comment, $entity);
 
 			return $this->render('LadbCoreBundle:Core/Comment:create-xhr.html.twig', array( 'comment' => $comment ));
 		}
@@ -200,7 +151,7 @@ class CommentController extends AbstractController {
 	 */
 	public function editAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_comment_edit)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -233,7 +184,7 @@ class CommentController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_comment_update)');
 		}
 
 		$om = $this->getDoctrine()->getManager();

@@ -36,7 +36,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function newAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_new)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -63,7 +63,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function createAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_create)');
 		}
 
 		$this->createLock('core_qa_answer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
@@ -158,7 +158,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function editAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_edit)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -186,7 +186,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_update)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -347,7 +347,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function listAction(Request $request, $id, $sorter = 'score') {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_list_sorter)');
 		}
 
 		$om = $this->getDoctrine()->getManager();

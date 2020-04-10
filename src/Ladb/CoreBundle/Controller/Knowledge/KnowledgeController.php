@@ -2,12 +2,12 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Knowledge\AbstractKnowledge;
 use Ladb\CoreBundle\Event\PublicationEvent;
@@ -15,6 +15,7 @@ use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Event\KnowledgeEvent;
 use Ladb\CoreBundle\Event\KnowledgeListener;
 use Ladb\CoreBundle\Model\WatchableInterface;
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Ladb\CoreBundle\Utils\VotableUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
@@ -161,7 +162,7 @@ class KnowledgeController extends AbstractController {
 	 */
 	public function createFieldValueAction(Request $request, $entityType, $entityId, $field) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_create)');
 		}
 
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
@@ -265,7 +266,7 @@ class KnowledgeController extends AbstractController {
 	 */
 	public function editFieldValueAction(Request $request, $entityType, $entityId, $field, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_edit)');
 		}
 
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
@@ -311,11 +312,8 @@ class KnowledgeController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge:value-edit-xhr.html.twig")
 	 */
 	public function updateFieldValueAction(Request $request, $entityType, $entityId, $field, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-			throw $this->createNotFoundException('Not allowed (core_knowledge_value_update)');
-		}
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_update)');
 		}
 
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
@@ -386,9 +384,6 @@ class KnowledgeController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge:value-delete-xhr.html.twig")
 	 */
 	public function deleteFieldValueAction(Request $request, $entityType, $entityId, $field, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-			throw $this->createNotFoundException('Not allowed (core_knowledge_value_delete)');
-		}
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_delete)');
 		}
@@ -471,11 +466,9 @@ class KnowledgeController extends AbstractController {
 	/**
 	 * @Route("/{entityType}/{entityId}/{fieldSrc}/{fieldDest}/{id}/admin/move", requirements={"entityType" = "\d+","entityId" = "\d+", "fieldSrc" = "\w+", "fieldDest" = "\w+", "id" = "\d+"}, name="core_knowledge_value_admin_move")
 	 * @Template("LadbCoreBundle:Knowledge:value-move-xhr.html.twig")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_knowledge_value_admin_move)")
 	 */
 	public function adminMoveFieldValueAction(Request $request, $entityType, $entityId, $fieldSrc, $fieldDest, $id) {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('Not allowed (core_knowledge_value_admin_move)');
-		}
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_admin_move)');
 		}
@@ -548,7 +541,7 @@ class KnowledgeController extends AbstractController {
 	 */
 	public function showFieldAction(Request $request, $entityType, $entityId, $field) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_field_show)');
 		}
 
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);

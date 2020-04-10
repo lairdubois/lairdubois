@@ -1,0 +1,5 @@
+<div class="ladb-vote-badge">
+    <span class="badge badge-{{ vote.score > 0 ? 'success' : 'danger' }}">
+        <i class="ladb-icon-arrow-{{ vote.score > 0 ? 'up' : 'down' }}"></i> {{ ('vote.tooltip.vote_'~(vote.score > 0 ? 'up' : 'down'))|trans() }}
+    </span>
+</div>

@@ -2,7 +2,7 @@
 
 namespace Ladb\CoreBundle\Model;
 
-interface VotableInterface extends IdentifiableInterface, TypableInterface {
+interface VotableInterface extends IdentifiableInterface, TypableInterface, CommentableInterface {
 
 	// ParentEntity /////
 

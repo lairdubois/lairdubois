@@ -78,7 +78,7 @@ class FundingController extends AbstractController {
 	 */
 	public function infosAction(Request $request, $year = null, $month = null, $panel = null) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_infos)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -119,7 +119,7 @@ class FundingController extends AbstractController {
 	 */
 	public function chargeNewAction(Request $request, $year = null, $month = null) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_admin_charge_new)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -146,7 +146,7 @@ class FundingController extends AbstractController {
 	 */
 	public function chargeCreateAction(Request $request, $year = null, $month = null) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_admin_charge_create)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -191,7 +191,7 @@ class FundingController extends AbstractController {
 	 */
 	public function chargeEditAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_admin_charge_edit)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -217,7 +217,7 @@ class FundingController extends AbstractController {
 	 */
 	public function chargeUpdateAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_admin_charge_update)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -263,7 +263,7 @@ class FundingController extends AbstractController {
 	 */
 	public function chargeDeleteAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_funding_admin_charge_delete)');
 		}
 
 		$om = $this->getDoctrine()->getManager();

@@ -104,6 +104,12 @@ class Comment implements TypableInterface, BasicTimestampableInterface, Authored
 	 */
 	private $childCount = 0;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Vote")
+	 * @ORM\JoinColumn(name="vote_id", nullable=true)
+	 */
+	private $vote;
+
 	/////
 
 	public function __construct() {
@@ -194,6 +200,17 @@ class Comment implements TypableInterface, BasicTimestampableInterface, Authored
 
 	public function getChildCount() {
 		return $this->childCount;
+	}
+
+	// Vote /////
+
+	public function setVote(\Ladb\CoreBundle\Entity\Core\Vote $vote = null) {
+		$this->vote = $vote;
+		return $this;
+	}
+
+	public function getVote() {
+		return $this->vote;
 	}
 
 	// Title /////

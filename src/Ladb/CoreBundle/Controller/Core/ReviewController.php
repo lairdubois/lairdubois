@@ -47,7 +47,7 @@ class ReviewController extends AbstractController {
 	 */
 	public function newAction(Request $request, $entityType, $entityId) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_review_new)');
 		}
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
@@ -70,7 +70,7 @@ class ReviewController extends AbstractController {
 	 */
 	public function createAction(Request $request, $entityType, $entityId) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_review_create)');
 		}
 
 		$this->createLock('core_review_create', false, self::LOCK_TTL_CREATE_ACTION, false);
@@ -146,7 +146,7 @@ class ReviewController extends AbstractController {
 	 */
 	public function editAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_review_edit)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -174,7 +174,7 @@ class ReviewController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_review_update)');
 		}
 
 		$om = $this->getDoctrine()->getManager();

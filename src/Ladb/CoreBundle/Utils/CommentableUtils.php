@@ -10,10 +10,72 @@ use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
+use Ladb\CoreBundle\Model\IndexableInterface;
+use Ladb\CoreBundle\Model\WatchableChildInterface;
+use Ladb\CoreBundle\Model\WatchableInterface;
 
 class CommentableUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.commentable_utils';
+
+	/////
+
+	public function finalizeNewComment(Comment $comment, CommentableInterface $commentable) {
+		$om = $this->getDoctrine()->getManager();
+
+		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+		$fieldPreprocessorUtils->preprocessFields($comment);
+
+		// Counters
+
+		$commentable->incrementCommentCount();
+		$comment->getUser()->getMeta()->incrementCommentCount();
+
+		$om->persist($comment);
+
+		// Create activity
+		$activityUtils = $this->get(ActivityUtils::NAME);
+		$activityUtils->createCommentActivity($comment, false);
+
+		$om->flush();
+
+		// Process mentions
+		$mentionUtils = $this->get(MentionUtils::NAME);
+		$mentionUtils->processMentions($comment);
+
+		// Update index
+		if ($commentable instanceof IndexableInterface) {
+			$searchUtils = $this->get(SearchUtils::NAME);
+			$searchUtils->replaceEntityInIndex($commentable);
+		}
+
+		if ($commentable instanceof WatchableInterface) {
+			$watchableUtils = $this->get(WatchableUtils::NAME);
+
+			// Auto watch
+			$watchableUtils->autoCreateWatch($commentable, $comment->getUser());
+
+		} else if ($commentable instanceof WatchableChildInterface) {
+			$watchableUtils = $this->get(WatchableUtils::NAME);
+
+			// Retrive related parent entity
+
+			$typableUtils = $this->get(TypableUtils::NAME);
+			try {
+				$parentEntity = $typableUtils->findTypable($commentable->getParentEntityType(), $commentable->getParentEntityId());
+			} catch (\Exception $e) {
+				throw $this->createNotFoundException($e->getMessage());
+			}
+			if (!($parentEntity instanceof WatchableInterface)) {
+				throw $this->createNotFoundException('Parent Entity must implements WatchableInterface.');
+			}
+
+			// Auto watch
+			$watchableUtils->autoCreateWatch($parentEntity, $comment->getUser());
+
+		}
+
+	}
 
 	/////
 

@@ -48,7 +48,7 @@ class FeedbackController extends AbstractController {
 	 */
 	public function newAction(Request $request, $entityType, $entityId) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_feedback_new)');
 		}
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
@@ -72,7 +72,7 @@ class FeedbackController extends AbstractController {
 	 */
 	public function createAction(Request $request, $entityType, $entityId) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_feedback_create)');
 		}
 
 		$this->createLock('core_feedback_create', false, self::LOCK_TTL_CREATE_ACTION, false);
@@ -150,7 +150,7 @@ class FeedbackController extends AbstractController {
 	 */
 	public function editAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_feedback_edit)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -178,7 +178,7 @@ class FeedbackController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_feedback_update)');
 		}
 
 		$om = $this->getDoctrine()->getManager();

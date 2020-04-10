@@ -82,6 +82,12 @@ class Vote implements AuthoredInterface {
 	 */
 	private $score = 0;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Comment")
+	 * @ORM\JoinColumn(name="comment_id", nullable=true)
+	 */
+	private $comment;
+
 	/////
 
 	// Id /////
@@ -173,6 +179,17 @@ class Vote implements AuthoredInterface {
 	public function setScore($score) {
 		$this->score = $score;
 		return $this;
+	}
+
+	// Comment /////
+
+	public function setComment(\Ladb\CoreBundle\Entity\Core\Comment $comment = null) {
+		$this->comment = $comment;
+		return $this;
+	}
+
+	public function getComment() {
+		return $this->comment;
 	}
 
 }

@@ -3,6 +3,14 @@
 namespace Ladb\CoreBundle\Controller\Core;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Entity\Core\Comment;
+use Ladb\CoreBundle\Form\Model\NewVote;
+use Ladb\CoreBundle\Form\Type\CommentType;
+use Ladb\CoreBundle\Form\Type\Core\NewVoteType;
+use Ladb\CoreBundle\Form\Type\Core\ReviewType;
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +51,7 @@ class VoteController extends AbstractController {
 		if (!($entity instanceof VotableInterface)) {
 			throw $this->createNotFoundException('Entity must implements VotableInterface.');
 		}
-		if ($entity->getUser()->getId() == $this->getUser()->getId()) {
+		if ($entity instanceof AuthoredInterface && $entity->getUser() == $this->getUser()) {
 			throw $this->createNotFoundException('Not allowed (vote->_retriveRelatedEntity)');
 		}
 
@@ -78,9 +86,47 @@ class VoteController extends AbstractController {
 	/////
 
 	/**
-	 * @Route("/{entityType}/{entityId}/{sign}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "sign" = "[+-]"}, name="core_vote_create")
+	 * @Route("/{entityType}/{entityId}/{way}/new", requirements={"entityType" = "\d+", "entityId" = "\d+", "way" = "up|down"}, name="core_vote_new")
+	 * @Template("LadbCoreBundle:Core/Vote:new-xhr.html.twig")
 	 */
-	public function createAction(Request $request, $entityType, $entityId, $sign) {
+	public function newAction(Request $request, $entityType, $entityId, $way) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_vote_down_new)');
+		}
+
+		// Exclude vote if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_vote_create)');
+		}
+
+		// Retrieve related entity
+
+		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
+		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+
+		// Retrieve related parent entity
+
+		$parentEntityRepository = $this->_retrieveRelatedParentEntityRepository($entity);
+		$parentEntity = $this->_retrieveRelatedParentEntity($parentEntityRepository, $entity);
+
+		$newVote = new NewVote();
+		$form = $this->createForm(NewVoteType::class, $newVote);
+
+		return array(
+			'entity'       => $entity,
+			'parentEntity' => $parentEntity,
+			'way'          => $way,
+			'form'         => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/{entityType}/{entityId}/{way}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "way" = "up|down"}, name="core_vote_create")
+	 */
+	public function createAction(Request $request, $entityType, $entityId, $way) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_vote_create)');
+		}
 
 		$this->createLock('core_vote_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
@@ -100,7 +146,52 @@ class VoteController extends AbstractController {
 		$parentEntity = $this->_retrieveRelatedParentEntity($parentEntityRepository, $entity);
 
 		// Compute score
-		$score = $sign == '-' ? -1 : 1;
+		$score = $way == 'down' ? -1 : 1;
+
+		// Declare form validation function
+		$validateFormFn = function() use ($request, $way, $entity, $parentEntity) {
+
+			// Check form if it exists
+			if ($request->isMethod('post')) {
+
+				$newVote = new NewVote();
+				$form = $this->createForm(NewVoteType::class, $newVote, array(
+					'validation_groups' => array( $way )
+				));
+				$form->handleRequest($request);
+
+				if (!$form->isValid()) {
+
+					return $this->render('LadbCoreBundle:Core/Vote:new-xhr.html.twig', array(
+						'entity'       => $entity,
+						'parentEntity' => $parentEntity,
+						'way'          => $way,
+						'form'         => $form->createView(),
+					));
+
+				}
+
+				// Check if new vote contains reason
+				if (!empty($newVote->getBody())) {
+
+					$comment = new Comment();
+					$comment->setBody($newVote->getBody());
+					$comment->setEntityType($entity->getType());
+					$comment->setEntityId($entity->getId());
+					$comment->setUser($this->getUser());
+
+					$commentableUtils = $this->get(CommentableUtils::NAME);
+					$commentableUtils->finalizeNewComment($comment, $entity);
+
+					return $comment;
+				}
+
+			} else {
+				throw $this->createNotFoundException('Only POST allowed (core_vote_create)');
+			}
+
+			return null;
+		};
 
 		// Process vote
 
@@ -109,6 +200,12 @@ class VoteController extends AbstractController {
 
 		$vote = $voteRepository->findOneByEntityTypeAndEntityIdAndUser($entity->getType(), $entity->getId(), $this->getUser());
 		if (is_null($vote)) {
+
+			// Check form if it exists
+			$comment = $validateFormFn();
+			if (!($comment instanceof Comment)) {
+				return $comment;
+			};
 
 			// Create a new vote
 			$vote = new Vote();
@@ -119,6 +216,10 @@ class VoteController extends AbstractController {
 			$vote->setParentEntityField($entity->getParentEntityField());
 			$vote->setUser($this->getUser());
 			$vote->setScore($score);
+
+			// Link vote to comment
+			$vote->setComment($comment);
+			$comment->setVote($vote);
 
 			$om->persist($vote);
 
@@ -139,6 +240,12 @@ class VoteController extends AbstractController {
 		} else {
 
 			if ($score != $vote->getScore()) {
+
+				// Check form if it exists
+				$comment = $validateFormFn();
+				if (!($comment instanceof Comment)) {
+					return $comment;
+				};
 
 				// Update related entity
 				$entity->incrementVoteScore(-$vote->getScore() + $score);
@@ -163,6 +270,15 @@ class VoteController extends AbstractController {
 
 				// Update vote
 				$vote->setScore($score);
+
+				// Delete previous comment link
+				if (!is_null($vote->getComment())) {
+					$vote->getComment()->setVote(null);
+				}
+
+				// Link vote to comment
+				$vote->setComment($comment);
+				$comment->setVote($vote);
 
 				// Delete activities
 				$activityUtils = $this->get(ActivityUtils::NAME);
@@ -207,6 +323,10 @@ class VoteController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_vote_delete")
 	 */
 	public function deleteAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_vote_delete)');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
 
@@ -216,6 +336,11 @@ class VoteController extends AbstractController {
 		}
 		if ($vote->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_vote_delete)');
+		}
+
+		// Unlink comment
+		if (!is_null($vote->getComment())) {
+			$vote->getComment()->setVote(null);
 		}
 
 		$om->remove($vote);

@@ -555,7 +555,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function cardAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_school_card)');
 		}
 
 		$om = $this->getDoctrine()->getManager();

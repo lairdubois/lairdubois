@@ -39,6 +39,9 @@
             {% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':comment, 'hideBy':true, 'itemprop':'creator' } %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':comment, 'itemprop':'dateCreated', 'showEdited':true } %}
         </div>
         <div class="ladb-body">
+            {% if comment.vote %}
+                {% include 'LadbCoreBundle:Core/Vote:_badge.part.html.twig' with { 'vote':comment.vote} %}
+            {% endif %}
             <div{% if not noMicrodata %} itemprop="text"{% endif %}>{{ comment.htmlBody|raw }}</div>
             {% if comment.pictures is not empty %}
                 <div class="row" style="margin-bottom: 10px;">

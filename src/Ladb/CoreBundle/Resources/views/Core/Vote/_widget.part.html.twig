@@ -9,18 +9,20 @@
 {% set voteDownTooltip = voteDownTooltip|default('vote.tooltip.vote_down'|trans()) %}
 {% set voteDownConfirm = voteDownConfirm|default(voteDownTooltip) %}
 {% set popoverPlacement = popoverPlacement|default('right') %}
+{% set bindJs = false %}
 
 <div id="ladb_vote_widget_{{ voteContext.votable.id }}" class="ladb-vote-widget{% if voteContext.votable.voteScore > 0 %} ladb-positive{% elseif voteContext.votable.voteScore < 0 %} ladb-negative{% elseif voteContext.votable.voteScore == 0 and voteContext.votable.voteCount > 0 %} ladb-undeterminated{% endif %}">
     <div class="ladb-vote-box row">
         <div class="col-sm-12 col-xs-4">
             {% if voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
-                <a class="ladb-vote-up ladb-disabled" href="#not_connected_vote_modal" data-toggle="modal"><i class="ladb-icon-arrow-up"></i></a>
+                <a href="#not_connected_vote_modal" class="ladb-vote-up ladb-disabled" data-toggle="modal"><i class="ladb-icon-arrow-up"></i></a>
             {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}
-                <a class="ladb-vote-up ladb-disabled ladb-undecorated-link" href="#self_voting_vote_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
+                <a href="#self_voting_vote_modal" class="ladb-vote-up ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
             {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_EMAIL_CONFIRMED') %}
-                <a class="ladb-vote-up ladb-disabled ladb-undecorated-link" href="#not_email_confirmed_vote_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
+                <a href="#not_email_confirmed_vote_modal" class="ladb-vote-up ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
             {% else %}
-                <a class="ladb-vote-up{% if votedUp %} ladb-active{% endif %} ladb-enabled ladb-undecorated-link" href="#" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
+                {% set bindJs = true %}
+                <a href="#" class="ladb-vote-up{% if votedUp %} ladb-active{% endif %} ladb-enabled ladb-undecorated-link" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
             {% endif %}
         </div>
         <div class="ladb-vote-score col-sm-12 col-xs-4" data-popover="popover" data-trigger="hover" data-placement="{{ popoverPlacement }}" data-container="body" data-html="true" data-content="<div class='text-right ladb-color-positive'>{{ voteContext.votable.positiveVoteScore }}&nbsp;<i class='ladb-icon-arrow-up'></i></div><div class='text-right ladb-color-negative'>{{ voteContext.votable.negativeVoteScore }}&nbsp;<i class='ladb-icon-arrow-down'></i></div>">
@@ -28,20 +30,27 @@
         </div>
         <div class="col-sm-12 col-xs-4">
             {% if voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
-                <a class="ladb-vote-down ladb-disabled" href="#not_connected_vote_modal" data-toggle="modal"><i class="ladb-icon-arrow-down"></i></a>
+                <a href="#not_connected_vote_modal" class="ladb-vote-down ladb-disabled" data-toggle="modal"><i class="ladb-icon-arrow-down"></i></a>
             {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}
-                <a class="ladb-vote-down ladb-disabled ladb-undecorated-link" href="#self_voting_vote_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
+                <a href="#self_voting_vote_modal" class="ladb-vote-down ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
             {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_EMAIL_CONFIRMED') %}
-                <a class="ladb-vote-down ladb-disabled ladb-undecorated-link" href="#not_email_confirmed_vote_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
+                <a href="#not_email_confirmed_vote_modal" class="ladb-vote-down ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
             {% else %}
-                <a class="ladb-vote-down{% if votedDown %} ladb-active{% endif %} ladb-enabled ladb-undecorated-link" href="#" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
+                {% set bindJs = true %}
+                <a href="#" class="ladb-vote-down{% if votedDown %} ladb-active{% endif %} ladb-enabled ladb-undecorated-link" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
             {% endif %}
         </div>
-        <script>
-            $(document).ready(function () {
-                bindAjaxVoteButton({{ voteContext.votable.id }}, "up", "{{ votedUp ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'+' } ) }}");
-                bindAjaxVoteButton({{ voteContext.votable.id }}, "down", "{{ votedDown ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_create', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'sign':'-' } ) }}", "{{ voteDownConfirm }}");
-            });
-        </script>
+        {% if bindJs %}
+            <script>
+                $(document).ready(function () {
+                    $('#ladb_vote_widget_{{ voteContext.votable.id }}').ladbVoteWidget({
+                        upPath: '{{ votedUp ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_new', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'way':'up' } ) }}',
+                        upIsNew: {{ votedUp ? 'false' : 'true' }},
+                        downPath: '{{ votedDown ? path('core_vote_delete', { 'id': voteContext.vote.id }) : path('core_vote_new', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'way':'down' } ) }}',
+                        downIsNew: {{ votedDown ? 'false' : 'true' }}
+                    });
+                });
+            </script>
+        {% endif %}
     </div>
 </div>

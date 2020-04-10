@@ -24,3 +24,10 @@
         <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
     {% endblock %}
 {% endembed %}
+{% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'new_vote_modal', 'title':('vote.vote'|trans()), 'appendTo':'body' } %}
+    {% block headerInner %}
+        {{ 'default.loading'|trans() }}
+    {% endblock %}
+    {% block body %}{% endblock %}
+    {% block footer %}{% endblock %}
+{% endembed %}

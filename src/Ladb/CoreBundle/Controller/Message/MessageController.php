@@ -47,7 +47,7 @@ class MessageController extends AbstractController {
 	 */
 	public function newAction(Request $request, $threadId) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_message_new)');
 		}
 
 		// Retrieve related thread
@@ -68,7 +68,7 @@ class MessageController extends AbstractController {
 	 */
 	public function createAction(Request $request, $threadId) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_message_create)');
 		}
 
 		$this->createLock('core_message_create', false, self::LOCK_TTL_CREATE_ACTION, false);
@@ -151,7 +151,7 @@ class MessageController extends AbstractController {
 	 */
 	public function editAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_message_edit)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
@@ -179,7 +179,7 @@ class MessageController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed.');
+			throw $this->createNotFoundException('Only XML request allowed (core_message_update)');
 		}
 
 		$om = $this->getDoctrine()->getManager();
