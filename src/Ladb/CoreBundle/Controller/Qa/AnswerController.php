@@ -215,7 +215,7 @@ class AnswerController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($answer);
 
-			if ($answer->getUser()->getId() == $this->getUser()->getId()) {
+			if ($answer->getUser() == $this->getUser()) {
 				$answer->setUpdatedAt(new \DateTime());
 			}
 

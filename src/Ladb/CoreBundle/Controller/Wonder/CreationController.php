@@ -293,7 +293,7 @@ class CreationController extends AbstractController {
 			if ($doUp) {
 				$creation->setChangedAt(new \DateTime());
 			}
-			if ($creation->getUser()->getId() == $this->getUser()->getId()) {
+			if ($creation->getUser() == $this->getUser()) {
 				$creation->setUpdatedAt(new \DateTime());
 			}
 
@@ -301,6 +301,9 @@ class CreationController extends AbstractController {
 
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
+			if ($doUp) {
+				$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($creation));
+			}
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($creation, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag
@@ -926,7 +929,11 @@ class CreationController extends AbstractController {
 
 					case 'period':
 
-						if ($facet->value == 'last7days') {
+						if ($facet->value == 'last24hours') {
+
+							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-24h/h' ));
+
+						} elseif ($facet->value == 'last7days') {
 
 							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-7d/d' ));
 

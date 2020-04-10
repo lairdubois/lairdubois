@@ -271,7 +271,7 @@ class QuestionController extends AbstractController {
 				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
 			}
 
-			if ($question->getUser()->getId() == $this->getUser()->getId()) {
+			if ($question->getUser() == $this->getUser()) {
 				$question->setUpdatedAt(new \DateTime());
 			}
 

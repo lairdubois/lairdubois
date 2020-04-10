@@ -258,7 +258,7 @@ class ArticleController extends AbstractController {
 
 			$howto = $article->getHowto();
 
-			if ($howto->getUser()->getId() == $this->getUser()->getId()) {
+			if ($howto->getUser() == $this->getUser()) {
 				$article->setUpdatedAt(new \DateTime());
 				$howto->setUpdatedAt(new \DateTime());
 			}

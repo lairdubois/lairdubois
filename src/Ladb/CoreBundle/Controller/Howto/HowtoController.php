@@ -255,7 +255,7 @@ class HowtoController extends AbstractController {
 			$embaddableUtils = $this->get(EmbeddableUtils::NAME);
 			$embaddableUtils->resetSticker($howto);
 
-			if ($howto->getUser()->getId() == $this->getUser()->getId()) {
+			if ($howto->getUser() == $this->getUser()) {
 				$howto->setUpdatedAt(new \DateTime());
 			}
 

@@ -274,7 +274,7 @@ class WorkshopController extends AbstractController {
 			$stripableUtils->resetStrip($workshop);
 
 			$workshop->setMainPicture($workshop->getPictures()->first());
-			if ($workshop->getUser()->getId() == $this->getUser()->getId()) {
+			if ($workshop->getUser() == $this->getUser()) {
 				$workshop->setUpdatedAt(new \DateTime());
 			}
 

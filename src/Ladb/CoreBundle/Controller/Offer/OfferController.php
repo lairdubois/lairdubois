@@ -267,7 +267,7 @@ class OfferController extends AbstractController {
 			$fieldPreprocessorUtils->preprocessFields($offer);
 
 			$offer->setMainPicture($mainPicture = $offer->getPictures()->first() ? $mainPicture = $offer->getPictures()->first() : null);
-			if ($offer->getUser()->getId() == $this->getUser()->getId()) {
+			if ($offer->getUser() == $this->getUser()) {
 				$offer->setUpdatedAt(new \DateTime());
 			}
 

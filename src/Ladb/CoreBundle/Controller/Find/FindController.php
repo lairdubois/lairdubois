@@ -273,7 +273,7 @@ class FindController extends AbstractController {
 			if ($doUp) {
 				$find->setChangedAt(new \DateTime());
 			}
-			if ($find->getUser()->getId() == $this->getUser()->getId()) {
+			if ($find->getUser() == $this->getUser()) {
 				$find->setUpdatedAt(new \DateTime());
 			}
 
@@ -281,6 +281,9 @@ class FindController extends AbstractController {
 
 			// Dispatch publication event
 			$dispatcher = $this->get('event_dispatcher');
+			if ($doUp) {
+				$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($find));
+			}
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($find, array( 'previouslyUsedTags' => $previouslyUsedTags )));
 
 			// Flashbag

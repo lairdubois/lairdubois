@@ -241,7 +241,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($workflow);
 
-			if ($workflow->getUser()->getId() == $this->getUser()->getId()) {
+			if ($workflow->getUser() == $this->getUser()) {
 				$workflow->setUpdatedAt(new \DateTime());
 			}
 

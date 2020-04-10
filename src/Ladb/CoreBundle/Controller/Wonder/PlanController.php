@@ -283,7 +283,7 @@ class PlanController extends AbstractController {
 			$planUtils->createZipArchive($plan);
 
 			$plan->setMainPicture($plan->getPictures()->first());
-			if ($plan->getUser()->getId() == $this->getUser()->getId()) {
+			if ($plan->getUser() == $this->getUser()) {
 				$plan->setUpdatedAt(new \DateTime());
 			}
 

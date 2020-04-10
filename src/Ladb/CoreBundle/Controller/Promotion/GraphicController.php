@@ -261,7 +261,7 @@ class GraphicController extends AbstractController {
 			$graphicUtils->createZipArchive($graphic);
 
 			$graphic->setMainPicture($graphic->getResource()->getThumbnail());
-			if ($graphic->getUser()->getId() == $this->getUser()->getId()) {
+			if ($graphic->getUser() == $this->getUser()) {
 				$graphic->setUpdatedAt(new \DateTime());
 			}
 

@@ -261,7 +261,7 @@ class EventController extends AbstractController {
 			$fieldPreprocessorUtils->preprocessFields($event);
 
 			$event->setMainPicture($mainPicture = $event->getPictures()->first() ? $mainPicture = $event->getPictures()->first() : null);
-			if ($event->getUser()->getId() == $this->getUser()->getId()) {
+			if ($event->getUser() == $this->getUser()) {
 				$event->setUpdatedAt(new \DateTime());
 			}
 
