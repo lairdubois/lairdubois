@@ -13,6 +13,7 @@ use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Model\VotableInterface;
@@ -203,7 +204,7 @@ class VoteController extends AbstractController {
 
 			// Check form if it exists
 			$comment = $validateFormFn();
-			if (!($comment instanceof Comment)) {
+			if ($comment instanceof Response) {
 				return $comment;
 			};
 
@@ -219,7 +220,9 @@ class VoteController extends AbstractController {
 
 			// Link vote to comment
 			$vote->setComment($comment);
-			$comment->setVote($vote);
+			if (!is_null($comment)) {
+				$comment->setVote($vote);
+			}
 
 			$om->persist($vote);
 
@@ -243,7 +246,7 @@ class VoteController extends AbstractController {
 
 				// Check form if it exists
 				$comment = $validateFormFn();
-				if (!($comment instanceof Comment)) {
+				if ($comment instanceof Response) {
 					return $comment;
 				};
 
@@ -278,7 +281,9 @@ class VoteController extends AbstractController {
 
 				// Link vote to comment
 				$vote->setComment($comment);
-				$comment->setVote($vote);
+				if (!is_null($comment)) {
+					$comment->setVote($vote);
+				}
 
 				// Delete activities
 				$activityUtils = $this->get(ActivityUtils::NAME);
