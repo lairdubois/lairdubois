@@ -15,7 +15,7 @@ use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 class BookIdentity extends BaseValue {
 
 	const CLASS_NAME = 'LadbCoreBundle:Knowledge\Value\BookIdentity';
-	const TYPE = 24;
+	const TYPE = 25;
 
 	const TYPE_STRIPPED_NAME = 'book-identity';
 

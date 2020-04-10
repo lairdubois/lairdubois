@@ -255,7 +255,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Video
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Video::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Video';
-			// BookTitle
+			// BookIdentity
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity';
 

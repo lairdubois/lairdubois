@@ -930,6 +930,11 @@ knowledge:
           - pas de tarifs, prix, etc...
         video: |
           Saisissez dans le champ *Vidéo* un lien vers une vidéo (YouTube, Vimeo, Daylimotion)
+        public:
+        birth_year:
+        diplomas: |
+          - N'indiquez **qu'un seul** diplôme par proposition.
+        training_types:
     testimonial:
       new: Ajouter mon témoignage
       edit: Editer mon témoignage
