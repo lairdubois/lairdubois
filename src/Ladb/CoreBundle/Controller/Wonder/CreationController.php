@@ -1098,7 +1098,7 @@ class CreationController extends AbstractController {
 			},
 			function(&$filters, &$sort) use ($homepage) {
 
-				if (!$homepage || $this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getUnlistedKnowledgeWoodCount() > 0) {
+				if (!$homepage || $this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getUnlistedWonderCreationCount() > 0) {
 					$sort = array('changedAt' => array('order' => 'desc'));
 				} else {
 					$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-48h/h' ));
