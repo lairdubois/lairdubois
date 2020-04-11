@@ -71,7 +71,7 @@
     {{ parent() }}
     {% if isPublic %}
         {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
-            {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
+            {% use 'LadbCoreBundle:Common/Blocks:sharebuttons-widget.blocks.html.twig' %}
             {% block bodyInner %}
                 <h4>{{ 'share.social.heading'|trans() }}</h4>
                 {% set sbTooltipPlacement = 'top' %}

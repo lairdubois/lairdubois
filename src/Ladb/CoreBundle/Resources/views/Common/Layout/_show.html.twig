@@ -37,8 +37,8 @@
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set noStickyHeader = true %}
 
-{% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
-{% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
+{% use 'LadbCoreBundle:Common/Blocks:blueimp-gallery-widget.blocks.html.twig' %}
+{% use 'LadbCoreBundle:Common/Blocks:sharebuttons-widget.blocks.html.twig' %}
 
 {% block headPrefix %}{{ parent() }} article: http://ogp.me/ns/article#{% endblock %}
 

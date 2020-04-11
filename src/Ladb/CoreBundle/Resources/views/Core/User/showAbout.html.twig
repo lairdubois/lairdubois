@@ -1,6 +1,6 @@
 {% extends 'LadbCoreBundle:Core/User:show.html.twig' %}
 
-{% use 'LadbCoreBundle:Common:map.blocks.html.twig' %}
+{% use 'LadbCoreBundle:Common/Blocks:map.blocks.html.twig' %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set isOwner = is_granted("ROLE_USER") and user.id == app.user.id %}

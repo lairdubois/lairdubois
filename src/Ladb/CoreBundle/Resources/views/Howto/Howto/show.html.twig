@@ -158,7 +158,7 @@
                                 <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
                                 &nbsp;
                                 {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
-                                {% use 'LadbCoreBundle:Common:sharebuttons-widget.blocks.html.twig' %}
+                                {% use 'LadbCoreBundle:Common/Blocks:sharebuttons-widget.blocks.html.twig' %}
                                 {% block bodyInner %}
                                 <h4>{{ 'share.social.heading'|trans() }}</h4>
                                 {% set sbUrl = ladb_entity_url_action(article) %}

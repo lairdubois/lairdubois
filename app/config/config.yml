@@ -404,6 +404,7 @@ fos_elastica:
                     properties:
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                     persistence:
@@ -417,6 +418,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -470,6 +472,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         area: { type: integer }
                         geoPoint: { type: geo_point }
@@ -508,6 +511,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -554,6 +558,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -595,6 +600,7 @@ fos_elastica:
                     properties:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -641,6 +647,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         geoPoint: { type: geo_point }
                         viewCount: { type: integer }
@@ -670,6 +677,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         startAt: { type: date }
                         endAt: { type: date }
@@ -703,6 +711,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -735,6 +744,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -763,6 +773,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -790,6 +801,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -817,6 +829,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         viewCount: { type: integer }
                         likeCount: { type: integer }
@@ -845,6 +858,7 @@ fos_elastica:
                         visibility: { type: integer }
                         title: { type: text, boost: 3, analyzer: title_analyzer }
                         body: { analyzer: body_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         kind: { type: short }
                         category: { type: integer }
@@ -883,6 +897,7 @@ fos_elastica:
                         density: { type: integer }
                         origin: { analyzer: name_analyzer }
                         utilization: { analyzer: name_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }
                         viewCount: { type: integer }
@@ -908,6 +923,7 @@ fos_elastica:
                         services: { analyzer: body_analyzer }
                         woodsWorkaround: { analyzer: body_analyzer }
                         geoPoint: { type: geo_point }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }
                         viewCount: { type: integer }
@@ -938,6 +954,7 @@ fos_elastica:
                         geographicalAreas: { analyzer: body_analyzer }
                         description: { analyzer: body_analyzer }
                         geoPoint: { type: geo_point }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }
                         viewCount: { type: integer }
@@ -969,6 +986,7 @@ fos_elastica:
                         summary: { analyzer: body_analyzer }
                         toc: { analyzer: body_analyzer }
                         language: { type: text, analyzer: name_analyzer }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }
                         viewCount: { type: integer }
@@ -999,6 +1017,7 @@ fos_elastica:
                         features: { type: text, analyzer: name_analyzer }
                         languages: { type: text, analyzer: name_analyzer }
                         supportedFiles: { type: text }
+                        createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }
                         viewCount: { type: integer }

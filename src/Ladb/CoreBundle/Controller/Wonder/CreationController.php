@@ -824,6 +824,8 @@ class CreationController extends AbstractController {
 		$routeParameters = array();
 		if ($layout != 'view') {
 			$routeParameters['layout'] = $layout;
+		} else if ($homepage) {
+			$routeParameters['homepage'] = $homepage;
 		}
 
 		/////
@@ -929,17 +931,13 @@ class CreationController extends AbstractController {
 
 					case 'period':
 
-						if ($facet->value == 'last24hours') {
+						if ($facet->value == 'last7days') {
 
-							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-24h/h' ));
-
-						} elseif ($facet->value == 'last7days') {
-
-							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-7d/d' ));
+							$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-7d/d' ));
 
 						} elseif ($facet->value == 'last30days') {
 
-							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-30d/d' ));
+							$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-30d/d' ));
 
 						}
 
@@ -1098,9 +1096,14 @@ class CreationController extends AbstractController {
 
 				}
 			},
-			function(&$filters, &$sort) {
+			function(&$filters, &$sort) use ($homepage) {
 
-				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+				if (!$homepage || $this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getUnlistedKnowledgeWoodCount() > 0) {
+					$sort = array('changedAt' => array('order' => 'desc'));
+				} else {
+					$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-48h/h' ));
+					$sort = array('likeCount' => array('order' => 'desc'));
+				}
 
 			},
 			function(&$filters) use ($layout) {
@@ -1123,7 +1126,6 @@ class CreationController extends AbstractController {
 					$filter = $publicVisibilityFilter;
 				}
 				$filters[] = $filter;
-
 
 			},
 			'fos_elastica.index.ladb.wonder_creation',

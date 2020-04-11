@@ -1,6 +1,6 @@
 {% extends 'LadbCoreBundle::layout.html.twig' %}
 
-{% use 'LadbCoreBundle:Common:blueimp-gallery-widget.blocks.html.twig' %}
+{% use 'LadbCoreBundle:Common/Blocks:blueimp-gallery-widget.blocks.html.twig' %}
 
 {% set pageUrl = url('core_user_show', { 'username':user.usernameCanonical }) %}
 {% set pageTitle = user.displayname %}

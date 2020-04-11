@@ -476,11 +476,11 @@ class HowtoController extends AbstractController {
 
 						if ($facet->value == 'last7days') {
 
-							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-7d/d' ));
+							$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-7d/d' ));
 
 						} elseif ($facet->value == 'last30days') {
 
-							$filters[] = new \Elastica\Query\Range('changedAt', array( 'gte' => 'now-30d/d' ));
+							$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-30d/d' ));
 
 						}
 
