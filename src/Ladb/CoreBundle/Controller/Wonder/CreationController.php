@@ -1098,7 +1098,12 @@ class CreationController extends AbstractController {
 			},
 			function(&$filters, &$sort) use ($homepage) {
 
-				$sort = array('changedAt' => array('order' => 'desc'));
+				if ($homepage && !$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+					$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-48h/h' ));
+					$sort = array('likeCount' => array('order' => 'desc'));
+				} else {
+					$sort = array('changedAt' => array('order' => 'desc'));
+				}
 
 			},
 			function(&$filters) use ($layout) {
