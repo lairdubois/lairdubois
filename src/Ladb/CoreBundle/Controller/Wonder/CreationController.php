@@ -855,8 +855,8 @@ class CreationController extends AbstractController {
 				}
 
 				// Collection highlight
-				$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
-				$highlightedCollection = $collectionRepository->findOneByIdAndUser(2465, $this->getUser());
+				//$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+				$highlightedCollection = null; //$collectionRepository->findOneByIdAndUser(2465, $this->getUser());
 
 				// RunningEvents
 				if (is_null($highlightedCollection)) {
