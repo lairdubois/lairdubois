@@ -10,10 +10,11 @@
 {% set voteDownConfirm = voteDownConfirm|default(voteDownTooltip) %}
 {% set popoverPlacement = popoverPlacement|default('right') %}
 {% set bindJs = false %}
+{% set forceHorizontal = forceHorizontal|default(false) %}
 
 <div id="ladb_vote_widget_{{ voteContext.votable.id }}" class="ladb-vote-widget{% if voteContext.votable.voteScore > 0 %} ladb-positive{% elseif voteContext.votable.voteScore < 0 %} ladb-negative{% elseif voteContext.votable.voteScore == 0 and voteContext.votable.voteCount > 0 %} ladb-undeterminated{% endif %}">
     <div class="ladb-vote-box row">
-        <div class="col-sm-12 col-xs-4">
+        <div class="{% if not forceHorizontal %}col-sm-12 {% endif %}col-xs-4">
             {% if voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
                 <a href="#not_connected_vote_modal" class="ladb-vote-up ladb-disabled" data-toggle="modal"><i class="ladb-icon-arrow-up"></i></a>
             {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}
@@ -25,10 +26,10 @@
                 <a href="#" class="ladb-vote-up{% if votedUp %} ladb-active{% endif %} ladb-enabled ladb-undecorated-link" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
             {% endif %}
         </div>
-        <div class="ladb-vote-score col-sm-12 col-xs-4" data-popover="popover" data-trigger="hover" data-placement="{{ popoverPlacement }}" data-container="body" data-html="true" data-content="<div class='text-right ladb-color-positive'>{{ voteContext.votable.positiveVoteScore }}&nbsp;<i class='ladb-icon-arrow-up'></i></div><div class='text-right ladb-color-negative'>{{ voteContext.votable.negativeVoteScore }}&nbsp;<i class='ladb-icon-arrow-down'></i></div>">
+        <div class="ladb-vote-score{% if not forceHorizontal %} col-sm-12{% endif %} col-xs-4" data-popover="popover" data-trigger="hover" data-placement="{{ popoverPlacement }}" data-container="body" data-html="true" data-content="<div class='text-right ladb-color-positive'>{{ voteContext.votable.positiveVoteScore }}&nbsp;<i class='ladb-icon-arrow-up'></i></div><div class='text-right ladb-color-negative'>{{ voteContext.votable.negativeVoteScore }}&nbsp;<i class='ladb-icon-arrow-down'></i></div>">
             {{ voteContext.votable.voteScore }}
         </div>
-        <div class="col-sm-12 col-xs-4">
+        <div class="{% if not forceHorizontal %}col-sm-12 {% endif %}col-xs-4">
             {% if voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
                 <a href="#not_connected_vote_modal" class="ladb-vote-down ladb-disabled" data-toggle="modal"><i class="ladb-icon-arrow-down"></i></a>
             {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}

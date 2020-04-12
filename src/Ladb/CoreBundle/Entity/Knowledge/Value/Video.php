@@ -68,4 +68,12 @@ class Video extends BaseValue {
 		return $this;
 	}
 
+	/////
+
+	// IsDisplayGrid /////
+
+	public function getIsDisplayGrid() {
+		return true;
+	}
+
 }

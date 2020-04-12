@@ -32,7 +32,9 @@
     {% else %}
         <div class="alert alert-info">{{ 'knowledge.no_proposal'|trans() }}</div>
     {% endif %}
-    {% for value in values %}
-        {% include 'LadbCoreBundle:Knowledge:_field-value-proposal.part.html.twig' with { 'commentContext':commentContexts[value.id], 'voteContext':voteContexts[value.id] } %}
-    {% endfor %}
+    <div class="row">
+        {% for value in values %}
+            {% include 'LadbCoreBundle:Knowledge:_field-value-proposal.part.html.twig' with { 'commentContext':commentContexts[value.id], 'voteContext':voteContexts[value.id], 'noDisplayGrid':(values|length < 2) } %}
+        {% endfor %}
+    </div>
 </div>

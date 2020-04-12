@@ -222,4 +222,12 @@ abstract class BaseValue implements AuthoredInterface, WatchableChildInterface, 
 		return $this;
 	}
 
+	/////
+
+	// IsDisplayGrid /////
+
+	public function getIsDisplayGrid() {
+		return false;
+	}
+
 }

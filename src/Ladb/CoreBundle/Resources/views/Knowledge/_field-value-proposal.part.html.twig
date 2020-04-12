@@ -7,11 +7,15 @@
 {% set fieldType = fieldDef[constant('ATTRIB_TYPE', knowledge)] %}
 {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', knowledge)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', knowledge)] : null %}
 {% set fieldMandatory = fieldDef[constant('ATTRIB_MANDATORY', knowledge)] is defined and fieldDef[constant('ATTRIB_MANDATORY', knowledge)] %}
+{% set isDisplayGrid = value.isDisplayGrid and not (noDisplayGrid|default(false)) %}
 
-<div id="ladb_value_proposal_{{ value.id }}" class="ladb-value-proposal">
+<div id="ladb_value_proposal_{{ value.id }}" class="ladb-value-proposal{% if isDisplayGrid %} ladb-value-proposal-grid col-sm-6{% endif %} col-xs-12">
     <div class="ladb-box">
         <div class="ladb-box-inner row">
-            <div class="col-sm-11 col-xs-12">
+            <div class="{% if not isDisplayGrid %}col-sm-push-11 col-sm-1 {% endif %}col-xs-12">
+                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()), 'forceHorizontal':isDisplayGrid  } %}
+            </div>
+            <div class="{% if not isDisplayGrid %}col-sm-pull-1 col-sm-11 {% endif %}col-xs-12">
                 <div class="ladb-content-box">
                     <div class="ladb-editable ">
                         <div class="ladb-content">
@@ -63,11 +67,8 @@
                     </div>
                 </div>
                 <div class="ladb-comments">
-                    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'notCollapsed':(value.user == app.user) } %}
+                    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'notCollapsed':(value.user == app.user and value.commentCount > 0) } %}
                 </div>
-            </div>
-            <div class="col-sm-1 col-xs-12">
-                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()) } %}
             </div>
         </div>
     </div>

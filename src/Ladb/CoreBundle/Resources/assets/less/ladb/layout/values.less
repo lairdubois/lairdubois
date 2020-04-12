@@ -50,11 +50,15 @@
 .ladb-value-proposal {
   margin-bottom: @ladb-gutter;
 
-  >.ladb-box {
+  &.ladb-value-proposal-grid > .ladb-box> .ladb-box-inner {
+    display: block;
+  }
+
+  > .ladb-box {
     .list-box();
     padding: 4px;
 
-    >.ladb-box-inner {
+    > .ladb-box-inner {
       .flex();
       margin: 0;
     }

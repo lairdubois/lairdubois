@@ -39,4 +39,12 @@ class Picture extends BaseValue {
 		return $this->getData();
 	}
 
+	/////
+
+	// IsDisplayGrid /////
+
+	public function getIsDisplayGrid() {
+		return true;
+	}
+
 }
