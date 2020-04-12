@@ -6,6 +6,7 @@ use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Feedback;
 use Ladb\CoreBundle\Entity\Core\Review;
+use Ladb\CoreBundle\Entity\Core\Vote;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
@@ -591,11 +592,10 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/{username}/commentaires", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_comments")
-	 * @Route("/{username}/commentaires/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_comments_filter")
-	 * @Route("/{username}/commentaires/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_comments_filter_page")
+	 * @Route("/{username}/commentaires/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "page" = "\d+"}, name="core_user_show_comments_page")
 	 * @Template("LadbCoreBundle:Core/User:showComments.html.twig")
 	 */
-	public function showCommentsAction(Request $request, $username, $filter = "recent", $page = 0) {
+	public function showCommentsAction(Request $request, $username, $page = 0) {
 		$user = $this->_retrieveUser($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_comments', array( 'username' => $user->getUsernameCanonical() )));
@@ -608,10 +608,9 @@ class UserController extends AbstractController {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$items = $commentRepository->findPaginedByUserGroupByEntityType($user, $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_comments_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $user->getMeta()->getCommentCount());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_comments_page', array( 'username' => $user->getUsernameCanonical() ), $page, $user->getMeta()->getCommentCount());
 
 		$parameters = array(
-			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
 			'items'       => $items,
@@ -631,12 +630,53 @@ class UserController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{username}/votes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_votes")
+	 * @Route("/{username}/votes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "positive|negative"}, name="core_user_show_votes_filter")
+	 * @Route("/{username}/votes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "positive|negative", "page" = "\d+"}, name="core_user_show_votes_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showVotes.html.twig")
+	 */
+	public function showVotesAction(Request $request, $username, $filter = 'positive', $page = 0) {
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_votes', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$items = $voteRepository->findPaginedByUserGroupByEntityType($user, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_votes_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $filter == 'up' ? $user->getMeta()->getPositiveVoteCount() : $user->getMeta()->getNegativeVoteCount());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'items'       => $items,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Vote:list-byuser-xhr.html.twig', $parameters);
+		}
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'tab'             => '',
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
+	}
+
+	/**
 	 * @Route("/{username}/reviews", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_reviews")
 	 * @Route("/{username}/reviews/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_reviews_filter")
 	 * @Route("/{username}/reviews/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_reviews_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showReviews.html.twig")
 	 */
-	public function showReviewsAction(Request $request, $username, $filter = "recent", $page = 0) {
+	public function showReviewsAction(Request $request, $username, $filter = 'recent', $page = 0) {
 		$user = $this->_retrieveUser($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_reviews', array( 'username' => $user->getUsernameCanonical() )));

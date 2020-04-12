@@ -243,13 +243,17 @@
                                 </div>
                                 <div class="ladb-meta{% if user.meta.positiveVoteCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-arrow-up"></i>
-                                    <strong>{{ user.meta.positiveVoteCount|number_format(0, ',', ' ') }}</strong>
-                                    <small>{{ 'vote.choice.positive_votes'|transchoice(user.meta.positiveVoteCount) }}</small>
+                                    {% if user.meta.positiveVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'positive' }) }}">{% endif %}
+                                        <strong>{{ user.meta.positiveVoteCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'vote.choice.positive_votes'|transchoice(user.meta.positiveVoteCount) }}</small>
+                                    {% if user.meta.positiveVoteCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.negativeVoteCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-arrow-down"></i>
-                                    <strong>{{ user.meta.negativeVoteCount|number_format(0, ',', ' ') }}</strong>
-                                    <small>{{ 'vote.choice.negative_votes'|transchoice(user.meta.negativeVoteCount) }}</small>
+                                    {% if user.meta.negativeVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'negative' }) }}">{% endif %}
+                                        <strong>{{ user.meta.negativeVoteCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'vote.choice.negative_votes'|transchoice(user.meta.negativeVoteCount) }}</small>
+                                    {% if user.meta.negativeVoteCount > 0 %}</a>{% endif %}
                                 </div>
                                 <div class="ladb-meta{% if user.meta.proposalCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-proposal"></i>

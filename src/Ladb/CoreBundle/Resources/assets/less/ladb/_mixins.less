@@ -174,17 +174,27 @@
 
 /* list-box */
 
+.list-box-subheading() {
+  color: @ladb-global-light-color;
+  font-size: 85%;
+
+  .ladb-age {
+    .age();
+  }
+
+}
+
 .list-box() {
   border: 1px solid @ladb-global-border;
   padding: 4px;
   background-color: #fff;
   //.box-shadow(0 0 1px 1px rgba(0,0,0,.055));
 
-  >.ladb-content {
+  > .ladb-content {
     padding: 6px;
     min-height: 64px;
 
-    >.ladb-heading {
+    > .ladb-heading {
 
       h3 {
         font-size: 130%;
@@ -192,15 +202,9 @@
 
     }
 
-    >.ladb-subheading {
+    > .ladb-subheading {
+      .list-box-subheading();
       margin-left: 74px;
-      color: @ladb-global-light-color;
-      font-size: 85%;
-
-      .ladb-age {
-        .age();
-      }
-
     }
 
   }

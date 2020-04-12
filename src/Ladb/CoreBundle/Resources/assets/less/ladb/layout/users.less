@@ -98,6 +98,7 @@
 
   > .ladb-box {
     .list-box();
+    display: flex;
 
     > .ladb-content {
 
@@ -106,10 +107,26 @@
       }
 
       > .ladb-heading {
-        margin-left: 74px;
+        margin-left: 60px;
 
         h3 {
           margin: 5px 0;
+        }
+
+      }
+
+      > .ladb-subheading {
+        margin-left: 60px;
+      }
+
+      > .ladb-content-child {
+        margin-top: 15px;
+        margin-left: 10px;
+        border-left: 2px solid #ddd;
+        padding-left: 15px;
+
+        .ladb-subheading {
+          .list-box-subheading();
         }
 
       }
@@ -157,9 +174,15 @@
 // phone
 @media screen and (max-width: @ladb-screen-phone-max) {
 
-  .ladb-user-groupby-box > .ladb-box > .ladb-user-groupby-items {
-    border-left: none;
-    border-top: 1px solid @ladb-global-border;
+  .ladb-user-groupby-box > .ladb-box {
+    display: block;
+
+    > .ladb-user-groupby-items {
+      border-left: none;
+      border-top: 1px solid @ladb-global-border;
+      min-height: initial;
+    }
+
   }
 
   .ladb-user-banner {

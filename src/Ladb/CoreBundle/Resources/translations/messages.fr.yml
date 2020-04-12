@@ -1327,14 +1327,14 @@ watch:
     entities: '[0,1]boiseu surveille cette publication|]1,Inf]boiseux surveillent cette publication'
 
 vote:
-  vote: Vérification
+  vote: Vote
   tooltip:
     vote_up: Je valide
     vote_down: Je rejette
   choice:
-    entities: '[-Inf,1]vérification|]1,Inf]vérifications'
-    positive_votes: '[-Inf,1]vérification favorable|]1,Inf]vérifications favorables'
-    negative_votes: '[-Inf,1]vérification défavorable|]1,Inf]vérifications défavorables'
+    entities: '[-Inf,1]vote|]1,Inf]votes'
+    positive_votes: '[-Inf,1]vote favorable|]1,Inf]votes favorables'
+    negative_votes: '[-Inf,1]vote défavorable|]1,Inf]votes défavorables'
 
 join:
   create: Ajouter ma participation

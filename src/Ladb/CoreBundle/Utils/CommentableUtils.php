@@ -116,6 +116,12 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		// Update commentable comment count
 		$commentable->incrementCommentCount(-1);
 
+		// Unlink vote
+		if (!is_null($comment->getVote())) {
+			$comment->getVote()->setComment(null);
+			$comment->setVote(null);
+		}
+
 		// Delete mentions
 		$mentionUtils = $this->get(MentionUtils::NAME);
 		$mentionUtils->deleteMentions($comment, false);

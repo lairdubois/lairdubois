@@ -58,7 +58,7 @@ class FeedbackRepository extends AbstractEntityRepository {
 
 	public function findPaginedByUserGroupByEntityType(User $user, $offset, $limit) {
 
-		// Retrieve concat comment ids per entity
+		// Retrieve concat feedback ids per entity
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'f', 'MAX(f.createdAt) AS mx', 'f.entityType', 'f.entityId', 'count(f.id)', 'GROUP_CONCAT(f.id)' ))
@@ -106,7 +106,7 @@ class FeedbackRepository extends AbstractEntityRepository {
 			}
 
 			$items[] = array(
-				'entity'   => $entity,
+				'entity'    => $entity,
 				'feedbacks' => $feedbacks,
 			);
 
@@ -119,7 +119,7 @@ class FeedbackRepository extends AbstractEntityRepository {
 
 	/*
 	 * [
-	 * 	[ 'entity' => ENTITY, 'feedbacks' => COMMENTS ],
+	 * 	[ 'entity' => ENTITY, 'feedbacks' => FEEDBACKS ],
 	 *  ...,
 	 * ]
 	 */

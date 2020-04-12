@@ -97,12 +97,12 @@
 
     }
 
-    >.ladb-votables {
+    > .ladb-votables {
       padding: 6px 10px;
       border-left: 1px solid @ladb-global-border;
       min-height: 74px;
 
-      >.ladb-votable {
+      > .ladb-votable {
         padding: 5px 0;
         border-top: 1px solid @ladb-global-border;
 
@@ -110,6 +110,15 @@
           border-top: none;
         }
 
+        .ladb-subheading {
+          .list-box-subheading();
+        }
+
+      }
+
+      .ladb-comment-row {
+        padding: 0;
+        border: none;
       }
 
     }

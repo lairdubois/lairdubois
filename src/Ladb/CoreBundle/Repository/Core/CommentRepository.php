@@ -68,6 +68,12 @@ class CommentRepository extends AbstractEntityRepository {
 
 	/////
 
+	/*
+	 * [
+	 * 	[ 'entity' => ENTITY, 'comments' => COMMENTS ],
+	 *  ...,
+	 * ]
+	 */
 	public function findPaginedByUserGroupByEntityType(User $user, $offset, $limit) {
 
 		// Retrieve concat comment ids per entity

@@ -403,8 +403,8 @@ class VoteController extends AbstractController {
 
 	/**
 	 * @Route("/p/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_vote_list_parent_entity")
-	 * @Route("/p/{entityType}/{entityId}/{filter}", requirements={"entityType" = "\d+", "entityId" = "\d+", "filter" = "[a-z-]+"}, name="core_vote_list_parent_entity_filter")
-	 * @Route("/p/{entityType}/{entityId}/{filter}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_vote_list_parent_entity_filter_page")
+	 * @Route("/p/{entityType}/{entityId}/{filter}", requirements={"entityType" = "\d+", "entityId" = "\d+", "filter" = "positive|negative"}, name="core_vote_list_parent_entity_filter")
+	 * @Route("/p/{entityType}/{entityId}/{filter}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "filter" = "positive|negative", "page" = "\d+"}, name="core_vote_list_parent_entity_filter_page")
 	 * @Template("LadbCoreBundle:Core/Vote:list-byparent.html.twig")
 	 */
 	public function showParentVotesAction(Request $request, $entityType, $entityId, $filter = 'positive', $page = 0) {
@@ -433,6 +433,7 @@ class VoteController extends AbstractController {
 			'filter'      => $filter,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
+			'entity'      => $entity,
 			'items'       => $items,
 		);
 
@@ -440,9 +441,7 @@ class VoteController extends AbstractController {
 			return $this->render('LadbCoreBundle:Core/Vote:list-byparent-xhr.html.twig', $parameters);
 		}
 
-		return array_merge($parameters, array(
-			'entity'   => $entity,
-		));
+		return $parameters;
 	}
 
 }

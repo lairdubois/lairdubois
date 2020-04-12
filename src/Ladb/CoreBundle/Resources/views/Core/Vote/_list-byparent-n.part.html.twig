@@ -1,6 +1,6 @@
 {% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
 
-{# set likes #}
+{# set items #}
 {# set nextPageUrl #}
 
 {% block items %}
@@ -26,16 +26,17 @@
                 </div>
                 <div class="ladb-votables col-md-6 col-xs-12">
                     {% for votable in item.votables %}
-                        <div class="ladb-votable row">
-                            <div class="col-xs-1 text-center"><i class="ladb-icon-arrow-{% if filter == 'negative' %}down ladb-color-negative{% else %}up ladb-color-positive{% endif %}"></i></div>
-                            {% if votable.type >= constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
-                                    and votable.type < constant('\\Ladb\\CoreBundle\\Entity\\Wonder\\Creation::TYPE') %}
-                                {% include 'LadbCoreBundle:Knowledge:_value-votable-thumbnail.part.html.twig' with { 'knowledge':entity, 'value':votable } %}
-                            {% else %}
-                                {{ votable.title }}
-                                <small>{% include 'LadbCoreBundle:Common:_author.part.html.twig' with { 'entity':votable } %}</small>
-                            {% endif %}
-                        </div>
+                        {% include 'LadbCoreBundle:Core/Vote:_votable-row.part.html.twig' with { 'vote':item.votes[loop.index0], 'parentEntity':entity, 'votable':votable }  %}
+                        {% if item.votes[loop.index0].comment is not null %}
+                            <div class="media">
+                                <div class="media-left"><i class="ladb-icon-reply"></i></div>
+                                <div class="media-body">
+                                    {% embed 'LadbCoreBundle:Core/Comment:_row.part.html.twig' with { 'comment':item.votes[loop.index0].comment, 'classes':'ladb-user-groupby-item', 'noFooter':true } %}
+                                        {% block minitools %}{% endblock %}
+                                    {% endembed %}
+                                </div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

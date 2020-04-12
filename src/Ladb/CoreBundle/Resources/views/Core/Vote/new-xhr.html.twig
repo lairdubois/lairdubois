@@ -7,7 +7,7 @@
 
 {% block bodyInner %}
     <p>Vous êtes sur le point de {% if way == 'down' %}<strong class="ladb-color-danger">rejeter</strong>{% else %}<strong class="ladb-color-success">valider</strong>{% endif %}
-    {% if entity.type >= 10 and entity.type < 100 %} {# Knowledge value #}
+    {% if entity.type >= constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE') and entity.type < constant('\\Ladb\\CoreBundle\\Entity\\Wonder\\Creation::TYPE') %} {# Knowledge value #}
         {% set fieldDef = parentEntity.fieldDefs[entity.parentEntityField] %}
         {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
         {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}

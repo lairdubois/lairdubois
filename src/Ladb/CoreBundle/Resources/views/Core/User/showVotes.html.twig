@@ -1,0 +1,26 @@
+{% extends 'LadbCoreBundle:Core/User:_show-list.html.twig' %}
+
+{% set upFilter = filter == 'up' %}
+
+{% block bodyContainerContent %}
+    {% embed 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' with { 'classes':'ladb-margin-bottom' } %}
+        {% set filterDefs = {
+            'positive': { 'icon':'arrow-up', 'label':'Favorables', 'path':path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'positive' }) },
+            'negative': { 'icon':'arrow-down', 'label':'Défavorables', 'path':path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'negative' }) },
+        } %}
+        {% block filterbarRightContent%}
+            <span class="ladb-heading">
+                {% if upFilter %}
+                    {{ user.meta.positiveVoteCount }} {{ 'vote.choice.positive_votes'|transchoice(user.meta.positiveVoteCount) }}
+                {% else %}
+                    {{ user.meta.negativeVoteCount }} {{ 'vote.choice.negative_votes'|transchoice(user.meta.negativeVoteCount) }}
+                {% endif %}
+            </span>
+        {% endblock %}
+    {% endembed %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Core/Vote:_list-byuser-n.part.html.twig' %}
+{% endblock %}

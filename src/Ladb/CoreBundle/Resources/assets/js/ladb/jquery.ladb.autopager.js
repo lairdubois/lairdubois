@@ -50,6 +50,7 @@
                 itemSelector: ".ladb-masonry-item",
                 columnWidth: ".ladb-masonry-column" + (this.options.masonryWide ? "-wide" : ""),
                 transitionDuration: 0,
+                horizontalOrder: true,
                 stamp: ".ladb-masonry-stamp"
             });
         }
