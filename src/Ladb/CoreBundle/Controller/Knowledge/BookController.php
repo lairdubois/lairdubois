@@ -40,6 +40,12 @@ class BookController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Book:new.html.twig")
 	 */
 	public function newAction() {
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_book_new)');
+		}
+
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 
 		$newBook = new NewBook();
@@ -56,6 +62,11 @@ class BookController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Book:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_book_create)');
+		}
 
 		$this->createLock('core_book_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 

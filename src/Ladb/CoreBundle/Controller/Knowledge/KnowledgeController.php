@@ -165,7 +165,7 @@ class KnowledgeController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_create)');
 		}
 
-		// Exclude vote if user is not email confirmed
+		// Exclude if user is not email confirmed
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_knowledge_value_create)');
 		}

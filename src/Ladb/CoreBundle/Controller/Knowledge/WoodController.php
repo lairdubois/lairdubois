@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,11 +42,19 @@ class WoodController extends AbstractController {
 	 */
 	public function newAction() {
 
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_wood_new)');
+		}
+
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
+
 		$newWood = new NewWood();
 		$form = $this->createForm(NewWoodType::class, $newWood);
 
 		return array(
-			'form' => $form->createView(),
+			'form'           => $form->createView(),
+			'sourcesHistory' => $knowledgeUtils->getValueSourcesHistory(),
 		);
 	}
 
@@ -54,6 +63,11 @@ class WoodController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Wood:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_wood_create)');
+		}
 
 		$this->createLock('core_wood_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 

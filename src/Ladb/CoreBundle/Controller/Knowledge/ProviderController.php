@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Controller\Knowledge;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,11 +45,19 @@ class ProviderController extends AbstractController {
 	 */
 	public function newAction() {
 
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_provider_new)');
+		}
+
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
+
 		$newProvider = new NewProvider();
 		$form = $this->createForm(NewProviderType::class, $newProvider);
 
 		return array(
 			'form' => $form->createView(),
+			'sourcesHistory' => $knowledgeUtils->getValueSourcesHistory(),
 		);
 	}
 
@@ -57,6 +66,11 @@ class ProviderController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Provider:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_provider_new)');
+		}
 
 		$this->createLock('core_provider_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 

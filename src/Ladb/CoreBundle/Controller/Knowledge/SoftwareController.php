@@ -41,6 +41,12 @@ class SoftwareController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Software:new.html.twig")
 	 */
 	public function newAction() {
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_software_new)');
+		}
+
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 
 		$newSoftware = new NewSoftware();
@@ -57,6 +63,11 @@ class SoftwareController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Software:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_software_create)');
+		}
 
 		$this->createLock('core_software_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 

@@ -7,5 +7,8 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_school_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'knowledge.school.new'|trans() }}</span></a>
+    <a href="{% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}#not_email_confirmed_knowledge_modal" data-toggle="modal"{% else %}{{ path('core_school_new') }}"{% endif %} class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'knowledge.school.new'|trans() }}</span></a>
+    {% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}
+        {% include 'LadbCoreBundle:Knowledge:_new-not-email-confirmed-modal.part.html.twig' with { 'title':'knowledge.school.new'|trans() } %}
+    {% endif %}
 {% endblock %}

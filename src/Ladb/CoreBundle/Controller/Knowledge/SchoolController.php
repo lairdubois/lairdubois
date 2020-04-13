@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,11 +43,19 @@ class SchoolController extends AbstractController {
 	 */
 	public function newAction() {
 
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_school_new)');
+		}
+
+		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
+
 		$newSchool = new NewSchool();
 		$form = $this->createForm(NewSchoolType::class, $newSchool);
 
 		return array(
 			'form' => $form->createView(),
+			'sourcesHistory' => $knowledgeUtils->getValueSourcesHistory(),
 		);
 	}
 
@@ -55,6 +64,11 @@ class SchoolController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/School:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_school_new)');
+		}
 
 		$this->createLock('core_school_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
