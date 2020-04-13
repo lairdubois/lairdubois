@@ -165,6 +165,11 @@ class KnowledgeController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_value_create)');
 		}
 
+		// Exclude vote if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_knowledge_value_create)');
+		}
+
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 		$propertyUtils = $this->get(PropertyUtils::NAME);
 		$om = $this->getDoctrine()->getManager();
@@ -567,7 +572,7 @@ class KnowledgeController extends AbstractController {
 		$value = new $entityClass();
 
 		$form = null;
-		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getEmailConfirmed()) {
 			$form = $this->createForm($formTypeFqcn, $value, array( 'choices' => $fieldChoices, 'dataConstraints' => $fieldConstraints ));
 		}
 
