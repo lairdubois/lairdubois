@@ -6,6 +6,10 @@
 {% set classes = 'ladb-no-overlay-caption' %}
 {% set headingClasses = event.cancelled ? 'ladb-strikethrough' : null %}
 
+{% if event.cancelled or event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
+    {% set imageClasses = 'ladb-desaturate ladb-translucent' %}
+{% endif %}
+
 {% block title %}
     <div style="padding-top: 10px;">{{ parent() }}</div>
 {% endblock %}

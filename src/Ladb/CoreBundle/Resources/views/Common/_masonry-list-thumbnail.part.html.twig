@@ -2,6 +2,7 @@
 {# set entity #}
 {# set classes (facultative) #}
 {# set headingClasses (facultative) #}
+{# set imageClasses (facultative) #}
 {# set showPathAdditionalParams (facultative) #}
 
 {% set noMicrodata = true %}
@@ -19,7 +20,7 @@
                     <div class="ladb-image">
                         {% block image %}
                             <a href="{{ showPath }}">
-                                {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':pictureWidth, 'height':pictureHeight, 'filterMode':pictureFilterMode, 'alt':entity.title } %}
+                                {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':entity.mainPicture, 'width':pictureWidth, 'height':pictureHeight, 'filterMode':pictureFilterMode, 'alt':entity.title, 'imgClasses':imageClasses|default('') } %}
                             </a>
                             {% if entity.bodyBlockVideoCount is defined and entity.bodyBlockVideoCount > 0 %}
                                 <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'default.choice.contains_videos'|transchoice(entity.bodyBlockVideoCount, { '%count%':entity.bodyBlockVideoCount }) }}"><i class="ladb-icon-video"></i></div>
