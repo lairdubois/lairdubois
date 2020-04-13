@@ -448,9 +448,9 @@ class KnowledgeController extends AbstractController {
 			$om->flush();	// Flush updated entity
 		}
 
-		// Search index update
-		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchUtils->replaceEntityInIndex($entity);
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($entity));
 
 		// Reload values
 

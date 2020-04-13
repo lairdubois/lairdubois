@@ -22,7 +22,7 @@ class ApiController extends AbstractController {
 		$url = $request->get('url');
 		$count = 0;
 
-		if (strpos($url, 'https://www.lairdubois.fr/') == 0) {
+		if (strpos($url, 'https://www.lairdubois.fr/') !== 0) {
 			throw $this->createNotFoundException('Invalid URL (url='.$url.')');
 		}
 
