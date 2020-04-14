@@ -16,13 +16,13 @@ class SoftwareRepository extends AbstractKnowledgeRepository {
 
 	//////
 
-	public function existsByName($name, $excludedId = 0) {
+	public function existsByIdentity($identity, $excludedId = 0) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(s.id)' ))
 			->from($this->getEntityName(), 's')
-			->where('LOWER(s.name) = :name')
-			->setParameter('name', $name)
+			->where('LOWER(s.identity) = :identity')
+			->setParameter('identity', $identity)
 		;
 
 		if ($excludedId > 0) {

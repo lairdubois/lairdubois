@@ -99,9 +99,10 @@ doctrine:
                 enabled: true
         dql:
             string_functions:
-                GROUP_CONCAT: Ladb\CoreBundle\DoctrineExtensions\Query\Mysql\GroupConcat
+                GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
+                REGEXP: DoctrineExtensions\Query\Mysql\Regexp
             numeric_functions:
-                Rand: Ladb\CoreBundle\DoctrineExtensions\Query\Mysql\Rand
+                RAND: DoctrineExtensions\Query\Mysql\Rand
 
 # Swiftmailer Configuration
 swiftmailer:

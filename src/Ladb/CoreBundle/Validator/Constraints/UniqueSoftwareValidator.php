@@ -31,9 +31,9 @@ class UniqueSoftwareValidator extends ConstraintValidator {
 			if ($value instanceof SoftwareIdentity) {
 				$data = $value->getData();
 				$softwareRepository = $this->om->getRepository(Software::CLASS_NAME);
-				if (!is_null($data) && $softwareRepository->existsByName($data, $constraint->excludedId)) {
+				if (!is_null($data) && $softwareRepository->existsByIdentity($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
-						->atPath('identity')
+						->atPath('identityValue')
 						->addViolation();
 				}
 			}

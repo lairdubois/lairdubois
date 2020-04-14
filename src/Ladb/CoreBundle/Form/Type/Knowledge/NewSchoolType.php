@@ -11,23 +11,22 @@ use Ladb\CoreBundle\Form\Type\Knowledge\Value\TextValueType;
 
 class NewSchoolType extends AbstractType {
 
-	private $om;
-
-	public function __construct(ObjectManager $om) {
-		$this->om = $om;
-	}
-
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('nameValue', TextValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueSchool())
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+					new \Ladb\CoreBundle\Validator\Constraints\UniqueSchool(),
+				)
 			))
 			->add('logoValue', PictureValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid())
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+				)
 			))
 		;
 	}

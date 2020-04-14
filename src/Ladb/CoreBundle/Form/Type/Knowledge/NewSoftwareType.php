@@ -11,23 +11,22 @@ use Ladb\CoreBundle\Form\Type\Knowledge\Value\PictureValueType;
 
 class NewSoftwareType extends AbstractType {
 
-	private $om;
-
-	public function __construct(ObjectManager $om) {
-		$this->om = $om;
-	}
-
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('identityValue', SoftwareIdentityValueType::class, array(
-				'choices' => null,
+				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueSoftware() )
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+					new \Ladb\CoreBundle\Validator\Constraints\UniqueSoftware(),
+				)
 			))
 			->add('iconValue', PictureValueType::class, array(
-				'choices' => null,
+				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid() )
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+				)
 			))
 		;
 	}

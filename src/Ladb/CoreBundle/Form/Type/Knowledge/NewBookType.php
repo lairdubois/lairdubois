@@ -11,23 +11,22 @@ use Ladb\CoreBundle\Form\Type\Knowledge\Value\BookIdentityValueType;
 
 class NewBookType extends AbstractType {
 
-	private $om;
-
-	public function __construct(ObjectManager $om) {
-		$this->om = $om;
-	}
-
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('identityValue', BookIdentityValueType::class, array(
-				'choices' => null,
+				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueBook() )
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+					new \Ladb\CoreBundle\Validator\Constraints\UniqueBook()
+				)
 			))
 			->add('coverValue', PictureValueType::class, array(
-				'choices' => null,
+				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints' => array( new \Symfony\Component\Validator\Constraints\Valid() )
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+				)
 			))
 		;
 	}

@@ -16,13 +16,13 @@ class BookRepository extends AbstractKnowledgeRepository {
 
 	//////
 
-	public function existsByTitle($title, $excludedId = 0) {
+	public function existsByIdentity($identity, $excludedId = 0) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(b.id)' ))
 			->from($this->getEntityName(), 'b')
-			->where('b.title = :title')
-			->setParameter('title', $title)
+			->where('LOWER(b.identity) = :identity')
+			->setParameter('identity', $identity)
 		;
 
 		if ($excludedId > 0) {

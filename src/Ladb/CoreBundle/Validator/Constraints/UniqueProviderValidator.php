@@ -31,7 +31,7 @@ class UniqueProviderValidator extends ConstraintValidator {
 				$providerRepository = $this->om->getRepository(Provider::CLASS_NAME);
 				if (!is_null($data) && $providerRepository->existsBySign($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
-						->atPath('brand')
+						->atPath('signValue')
 						->addViolation();
 				}
 			}

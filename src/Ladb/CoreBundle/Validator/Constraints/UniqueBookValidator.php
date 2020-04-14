@@ -3,11 +3,10 @@
 namespace Ladb\CoreBundle\Validator\Constraints;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
+use Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Ladb\CoreBundle\Entity\Knowledge\Book;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Sign;
 
 class UniqueBookValidator extends ConstraintValidator {
 
@@ -27,12 +26,12 @@ class UniqueBookValidator extends ConstraintValidator {
 	 */
 	public function validate($value, Constraint $constraint) {
 		if (!is_null($value)) {
-			if ($value instanceof Text) {
+			if ($value instanceof BookIdentity) {
 				$data = $value->getData();
 				$bookRepository = $this->om->getRepository(Book::CLASS_NAME);
-				if (!is_null($data) && $bookRepository->existsByTitle($data, $constraint->excludedId)) {
+				if (!is_null($data) && $bookRepository->existsByIdentity($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
-						->atPath('title')
+						->atPath('identity')
 						->addViolation();
 				}
 			}

@@ -14,9 +14,7 @@ class SignValueType extends AbstractValueType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);
 		$builder
-			->add('brand', TextType::class, array(
-				'constraints' => $options['dataConstraints'],
-			))
+			->add('brand', TextType::class)
 			->add('isAffiliate', CheckboxType::class)
 			->add('store', TextType::class)
 		;

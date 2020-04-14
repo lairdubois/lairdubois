@@ -16,13 +16,13 @@ class WoodRepository extends AbstractKnowledgeRepository {
 
 	//////
 
-	public function existsByTitle($title, $excludedId = 0) {
+	public function existsByName($name, $excludedId = 0) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(w.id)' ))
 			->from($this->getEntityName(), 'w')
-			->where('w.title = :title')
-			->setParameter('title', $title)
+			->where('REGEXP(w.name, :regexp) = true')
+			->setParameter('regexp', '(^|,)('.$name.')($|,)')
 		;
 
 		if ($excludedId > 0) {

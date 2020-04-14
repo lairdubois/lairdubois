@@ -14,9 +14,7 @@ class BookIdentityValueType extends AbstractValueType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);
 		$builder
-			->add('work', TextType::class, array(
-				'constraints' => $options['dataConstraints'],
-			))
+			->add('work', TextType::class)
 			->add('isVolume', CheckboxType::class)
 			->add('volume', TextType::class)
 		;

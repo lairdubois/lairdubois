@@ -23,7 +23,7 @@
     {{ parent() }}
     <section id="title_section">
         <div class="form-section">
-            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.book.field.title'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.book.field.identity'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
                     {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-book-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_IDENTITY'), 'fieldLabel':('knowledge.book.field.title'|trans()), 'isCompact':true } %}
@@ -32,8 +32,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
                         <div class="panel-body small">
-                            {{ ('knowledge.book.help.title')|trans()|ladb_markdown|raw }}
-                            {{ ('knowledge.book.form.help.title')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.book.help.identity')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.book.form.help.identity')|trans()|ladb_markdown|raw }}
                         </div>
                     </div>
                 </div>

@@ -519,31 +519,6 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@ladb_core.video_hosting_utils']
-  ladb_knowledge_newwood:
-    class: Ladb\CoreBundle\Form\Type\Knowledge\NewWoodType
-    tags:
-      - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager']
-  ladb_knowledge_newprovider:
-    class: Ladb\CoreBundle\Form\Type\Knowledge\NewProviderType
-    tags:
-      - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager']
-  ladb_knowledge_newschool:
-    class: Ladb\CoreBundle\Form\Type\Knowledge\NewSchoolType
-    tags:
-      - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager']
-  ladb_knowledge_newbook:
-    class: Ladb\CoreBundle\Form\Type\Knowledge\NewBookType
-    tags:
-      - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager']
-  ladb_knowledge_newsoftware:
-    class: Ladb\CoreBundle\Form\Type\Knowledge\NewSoftwareType
-    tags:
-      - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager']
   ladb_message_newthread:
     class: Ladb\CoreBundle\Form\Type\Message\NewThreadMessageType
     tags:

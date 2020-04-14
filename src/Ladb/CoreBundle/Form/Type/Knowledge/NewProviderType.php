@@ -11,23 +11,22 @@ use Ladb\CoreBundle\Form\Type\Knowledge\Value\SignValueType;
 
 class NewProviderType extends AbstractType {
 
-	private $om;
-
-	public function __construct(ObjectManager $om) {
-		$this->om = $om;
-	}
-
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('signValue', SignValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid(), new \Ladb\CoreBundle\Validator\Constraints\UniqueProvider())
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+					new \Ladb\CoreBundle\Validator\Constraints\UniqueProvider(),
+				)
 			))
 			->add('logoValue', PictureValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
-				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid())
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+				)
 			))
 		;
 	}
