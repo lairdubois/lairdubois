@@ -13,7 +13,7 @@
     <div class="ladb-box">
         <div class="ladb-box-inner row">
             <div class="{% if not isDisplayGrid %}col-sm-push-11 col-sm-1 {% endif %}col-xs-12">
-                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()), 'forceHorizontal':isDisplayGrid  } %}
+                {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()), 'orientation':(isDisplayGrid ? 'horizontal' : 'auto')  } %}
             </div>
             <div class="{% if not isDisplayGrid %}col-sm-pull-1 col-sm-11 {% endif %}col-xs-12">
                 <div class="ladb-content-box">

@@ -17,7 +17,7 @@
     {% endif %}
     </p>
     <p>Expliquez votre choix : {% if way == 'down' %}<small class="ladb-color-danger">(Obligatoire)</small>{% else %}<small>(Facultatif)</small>{% endif %}</p>
-    {{ form_start(form, { 'action':path('core_vote_create', { 'entityType':entity.type, 'entityId':entity.id, 'way':way }), 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+    {{ form_start(form, { 'action':path('core_vote_create', { 'entityType':entity.type, 'entityId':entity.id, 'way':way, 'orientation':orientation }), 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
         {{ form_errors(form.body) }}
         {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize' } }) }}
     {{ form_end(form) }}

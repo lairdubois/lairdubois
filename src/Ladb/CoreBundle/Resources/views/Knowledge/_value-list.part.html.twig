@@ -35,7 +35,7 @@
     <div class="row">
         {% for value in values %}
             {% include 'LadbCoreBundle:Knowledge:_field-value-proposal.part.html.twig' with { 'commentContext':commentContexts[value.id], 'voteContext':voteContexts[value.id], 'noDisplayGrid':(values|length < 2) } %}
-            {% if loop.index is divisible by(2) %}</div>{% if not loop.last %}<div class="row">{% endif %}{% endif %}
+            {% if loop.index is divisible by(2) and not loop.last %}</div><div class="row">{% endif %}
         {% endfor %}
     </div>
 </div>

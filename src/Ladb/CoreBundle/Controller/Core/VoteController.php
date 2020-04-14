@@ -110,10 +110,14 @@ class VoteController extends AbstractController {
 		$parentEntityRepository = $this->_retrieveRelatedParentEntityRepository($entity);
 		$parentEntity = $this->_retrieveRelatedParentEntity($parentEntityRepository, $entity);
 
+		// Get orientation parameter
+		$orientation = $request->get('orientation', 'auto');
+
 		$newVote = new NewVote();
 		$form = $this->createForm(NewVoteType::class, $newVote);
 
 		return array(
+			'orientation'  => $orientation,
 			'entity'       => $entity,
 			'parentEntity' => $parentEntity,
 			'way'          => $way,
@@ -146,11 +150,14 @@ class VoteController extends AbstractController {
 		$parentEntityRepository = $this->_retrieveRelatedParentEntityRepository($entity);
 		$parentEntity = $this->_retrieveRelatedParentEntity($parentEntityRepository, $entity);
 
+		// Get orientation parameter
+		$orientation = $request->get('orientation', 'auto');
+
 		// Compute score
 		$score = $way == 'down' ? -1 : 1;
 
 		// Declare form validation function
-		$validateFormFn = function() use ($request, $way, $entity, $parentEntity) {
+		$validateFormFn = function() use ($request, $orientation, $way, $entity, $parentEntity) {
 
 			// Check form if it exists
 			if ($request->isMethod('post')) {
@@ -164,6 +171,7 @@ class VoteController extends AbstractController {
 				if (!$form->isValid()) {
 
 					return $this->render('LadbCoreBundle:Core/Vote:new-xhr.html.twig', array(
+						'orientation'  => $orientation,
 						'entity'       => $entity,
 						'parentEntity' => $parentEntity,
 						'way'          => $way,
@@ -310,6 +318,7 @@ class VoteController extends AbstractController {
 			$votableUtils = $this->get(VotableUtils::NAME);
 
 			return $this->render('LadbCoreBundle:Core/Vote:create-xhr.html.twig', array(
+				'orientation' => $orientation,
 				'voteContext' => $votableUtils->getVoteContext($entity, $this->getUser()),
 			));
 		}
@@ -331,6 +340,9 @@ class VoteController extends AbstractController {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed (core_vote_delete)');
 		}
+
+		// Get orientation parameter
+		$orientation = $request->get('orientation', 'auto');
 
 		$om = $this->getDoctrine()->getManager();
 		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
@@ -390,6 +402,7 @@ class VoteController extends AbstractController {
 			$votableUtils = $this->get(VotableUtils::NAME);
 
 			return $this->render('LadbCoreBundle:Core/Vote:delete-xhr.html.twig', array(
+				'orientation' => $orientation,
 				'voteContext' => $votableUtils->getVoteContext($entity, $this->getUser()),
 			));
 		}
