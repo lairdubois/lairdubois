@@ -49,6 +49,7 @@
                         upIsNew: {{ votedUp ? 'false' : 'true' }},
                         downPath: '{{ votedDown ? path('core_vote_delete', { 'id': voteContext.vote.id, 'orientation':orientation }) : path('core_vote_new', { 'entityType':voteContext.entityType, 'entityId':voteContext.entityId, 'way':'down', 'orientation':orientation } ) }}',
                         downIsNew: {{ votedDown ? 'false' : 'true' }},
+                        mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
                     });
                 });
             </script>
