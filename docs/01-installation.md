@@ -444,7 +444,7 @@ WantedBy=multi-user.target
 
 Load these new service files
 ``` bash
-    $ sudo systemctl daemon reload
+    $ sudo systemctl daemon-reload
 ```
 
 Enable these services on boot
