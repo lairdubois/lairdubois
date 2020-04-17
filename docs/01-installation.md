@@ -98,7 +98,7 @@ pm.max_spare_servers = 20   # Max number of spare (waiting for connections) proc
 Restart PHP FPM.
 
 ``` bash
-    $ sudo service php7.3-fpm restart
+    $ sudo systemctl restart php7.3-fpm
 ```
 
 ### Install [Memcached](https://memcached.org/) - *The distributed memory object caching system*
@@ -111,7 +111,7 @@ Restart PHP FPM.
 Restart PHP FPM.
 
 ``` bash
-    $ sudo service php7.3-fpm restart
+    $ sudo systemctl restart php7.3-fpm
 ```
 
 ### Install [Git](https://git-scm.com/) - *The version control system*
@@ -266,7 +266,7 @@ Not that the given DEV config is configured for running on MacOS.
 Restart NGINX.
 
 ``` bash
-    $ sudo service nginx restart
+    $ sudo systemctl restart nginx
 ```
 
 ## Step 7 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
@@ -309,7 +309,7 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 
 ### Build session table
 
-Execute the SQL script located at [`database/schema-sessions.sql`](database/schema-sessions.sql).
+Execute the SQL script located at [`docs/database/schema-sessions.sql`](database/schema-sessions.sql).
 
 ## Step 9 - Compile and Minimize CSS and JS
 
