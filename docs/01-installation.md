@@ -98,7 +98,7 @@ pm.max_spare_servers = 20   # Max number of spare (waiting for connections) proc
 Restart PHP FPM.
 
 ``` bash
-    $ sudo service php7.3-fpm restart
+    $ sudo systemctl restart php7.3-fpm
 ```
 
 ### Install [Memcached](https://memcached.org/) - *The distributed memory object caching system*
@@ -111,7 +111,7 @@ Restart PHP FPM.
 Restart PHP FPM.
 
 ``` bash
-    $ sudo service php7.3-fpm restart
+    $ sudo systemctl restart php7.3-fpm
 ```
 
 ### Install [Git](https://git-scm.com/) - *The version control system*
@@ -266,7 +266,7 @@ Not that the given DEV config is configured for running on MacOS.
 Restart NGINX.
 
 ``` bash
-    $ sudo service nginx restart
+    $ sudo systemctl restart nginx
 ```
 
 ## Step 7 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
@@ -309,7 +309,7 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 
 ### Build session table
 
-Execute the SQL script located at [`database/schema-sessions.sql`](database/schema-sessions.sql).
+Execute the SQL script located at [`docs/database/schema-sessions.sql`](database/schema-sessions.sql).
 
 ## Step 9 - Compile and Minimize CSS and JS
 
@@ -444,7 +444,7 @@ WantedBy=multi-user.target
 
 Load these new service files
 ``` bash
-    $ sudo systemctl daemon reload
+    $ sudo systemctl daemon-reload
 ```
 
 Enable these services on boot
@@ -470,7 +470,7 @@ But if the distant SMTP is not available or if it rejects the connection for any
 The solution is to send the email throught a local sender which will manage a mailqueue in case of problem.
 
 ``` bash
-    $ sudo aptitude install postfix libsasl2-modules
+    $ sudo apt-get install postfix libsasl2-modules
 ```
 
 In the following dialog, choose « Internet site with smarthost »
@@ -524,7 +524,7 @@ This is important so that all calls where url contains `/internal/` will be acce
 We need at least to configure a minimal firewall
 
 ``` bash
-    $ sudo aptitude install iptables-persistent
+    $ sudo apt-get install iptables-persistent
 ```
 
 Then, edit `/etc/iptables/rules.v4`, remove the content and add the following lines (be careful to replace `ens3` by your network interface name):
