@@ -470,7 +470,7 @@ But if the distant SMTP is not available or if it rejects the connection for any
 The solution is to send the email throught a local sender which will manage a mailqueue in case of problem.
 
 ``` bash
-    $ sudo aptitude install postfix libsasl2-modules
+    $ sudo apt-get install postfix libsasl2-modules
 ```
 
 In the following dialog, choose « Internet site with smarthost »
@@ -524,7 +524,7 @@ This is important so that all calls where url contains `/internal/` will be acce
 We need at least to configure a minimal firewall
 
 ``` bash
-    $ sudo aptitude install iptables-persistent
+    $ sudo apt-get install iptables-persistent
 ```
 
 Then, edit `/etc/iptables/rules.v4`, remove the content and add the following lines (be careful to replace `ens3` by your network interface name):
