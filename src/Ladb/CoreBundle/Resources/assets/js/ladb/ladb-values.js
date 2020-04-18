@@ -16,6 +16,11 @@ function bindNewValueProposalAjaxForm() {
                     setupTooltips();
                     setupPopovers();
                     $(document).trigger("updated.ladb");
+                    UIkit.notify("Proposition ajoutée !", {
+                        status: 'success',
+                        pos:'bottom-center',
+                        timeout:2000
+                    });
                 }
                 i++;
             }
@@ -77,6 +82,11 @@ function deleteValueProposal(id, url) {
             setupTooltips();
             setupPopovers();
             $(document).trigger("updated.ladb");
+            UIkit.notify("Proposition supprimée !", {
+                status: 'success',
+                pos:'bottom-center',
+                timeout:2000
+            });
         },
         error:function () {
         }
@@ -93,6 +103,11 @@ function moveValueProposal(id, url) {
             setupTooltips();
             setupPopovers();
             $(document).trigger("updated.ladb");
+            UIkit.notify("Proposition déplacée !", {
+                status: 'success',
+                pos:'bottom-center',
+                timeout:2000
+            });
         },
         error:function () {
         }
