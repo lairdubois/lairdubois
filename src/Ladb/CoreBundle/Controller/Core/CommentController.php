@@ -10,19 +10,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 use Ladb\CoreBundle\Entity\Core\Comment;
 use Ladb\CoreBundle\Form\Type\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
-use Ladb\CoreBundle\Model\WatchableInterface;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\PicturedUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
-use Ladb\CoreBundle\Utils\ActivityUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
 use Ladb\CoreBundle\Utils\MentionUtils;
 
@@ -284,7 +282,7 @@ class CommentController extends AbstractController {
 		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($comment->getEntityType(), $comment->getEntityId());
-		if ($entity instanceof WatchableChildInterface) {
+		if ($entity instanceof WatchableChildInterface && !($entity instanceof BaseValue)) {
 			$entity = $typableUtils->findTypable($entity->getParentEntityType(), $entity->getParentEntityId());
 		}
 

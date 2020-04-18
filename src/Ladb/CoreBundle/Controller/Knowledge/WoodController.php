@@ -2,19 +2,19 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Utils\CollectionnableUtils;
-use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Form\Type\Knowledge\NewWoodType;
 use Ladb\CoreBundle\Form\Model\NewWood;
 use Ladb\CoreBundle\Entity\Knowledge\Wood;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Utils\LikableUtils;

@@ -383,8 +383,8 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Video::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity::TYPE:
-				$parentTypable = $this->findTypable($typable->getParentEntityType(), $typable->getParentEntityId());
-				return $this->getUrlAction($parentTypable, $action, $absoluteUrl, $useSluggedId, $addionalParams);
+				$url = $router->generate('core_knowledge_value_'.$action, $params, $referenceType);
+				break;
 
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
 				$url = $router->generate('core_creation_'.$action, $params, $referenceType);

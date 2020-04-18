@@ -1,6 +1,7 @@
 {# set voteUpTooltip (facultative) #}
 {# set voteDownTooltip (facultative) #}
 {# set voteDownConfirm (facultative) #}
+{# set orientation (facultative) #}
 {# set popoverPlacement (facultative) #}
 
 {% set votedUp = voteContext.vote is not null and voteContext.vote.score > 0 %}
@@ -8,9 +9,9 @@
 {% set voteUpTooltip = voteUpTooltip|default('vote.tooltip.vote_up'|trans()) %}
 {% set voteDownTooltip = voteDownTooltip|default('vote.tooltip.vote_down'|trans()) %}
 {% set voteDownConfirm = voteDownConfirm|default(voteDownTooltip) %}
-{% set popoverPlacement = popoverPlacement|default('right') %}
-{% set bindJs = false %}
 {% set orientation = orientation|default('auto') %}
+{% set popoverPlacement = popoverPlacement|default(orientation == 'horizontal' ? 'top' : 'right') %}
+{% set bindJs = false %}
 
 <div id="ladb_vote_widget_{{ voteContext.votable.id }}" class="ladb-vote-widget{% if voteContext.votable.voteScore > 0 %} ladb-positive{% elseif voteContext.votable.voteScore < 0 %} ladb-negative{% elseif voteContext.votable.voteScore == 0 and voteContext.votable.voteCount > 0 %} ladb-undeterminated{% endif %}">
     <div class="ladb-vote-box row">

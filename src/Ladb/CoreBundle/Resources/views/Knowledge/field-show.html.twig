@@ -1,0 +1,60 @@
+{% extends 'LadbCoreBundle:Common/Layout:_show.html.twig' %}
+
+{% set entity = knowledge %}
+
+{% set pageTitle = entity.title~' - '~(('knowledge.proposals_of'|trans())~' '~(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())) %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            bindNewValueProposalAjaxForm();
+            setupPopovers();
+            setupTooltips();
+            $('[data-src]').Lazy();
+            {% if values is empty %}
+                $("input[type=text]").first().focus();
+            {% endif %}
+            {% if highlightedValueId is not null %}
+                if (!window.location.hash) {
+                    setTimeout(function() {
+                        var selector = '#ladb_value_proposal_{{ highlightedValueId }}';
+                        var $target = $(selector);
+                        $target.parents('.collapse').addClass('in');
+                        $target.ladbScrollTo(null, {
+                            onAfter: function() {
+                                var $box = $('.ladb-box', $target);
+                                var $effectTarget = $box.length > 0 ? $box : $target;
+                                $effectTarget.effect('highlight', {}, 1500);
+                            }
+                        });
+                    }, 1000);
+                }
+            {% endif %}
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' %}
+{% endblock %}
+
+{% block contentBody %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 style="font-size: 20px; margin: 0;">{{ (('knowledge.proposals_of'|trans())~' <em>'~(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())~'</em>')|raw }}</h2>
+        </div>
+        <div class="panel-body">
+            {% include 'LadbCoreBundle:Knowledge:_field-show-content.part.html.twig' %}
+        </div>
+    </div>
+    {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':knowledge.license } %}
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +31,7 @@ use Ladb\CoreBundle\Utils\PropertyUtils;
  */
 class KnowledgeController extends AbstractController {
 
-	private function _retriveRelatedEntityRepository($entityType) {
+	private function _retrieveRelatedEntityRepository($entityType) {
 
 		$typableUtils = $this->get(TypableUtils::NAME);
 		try {
@@ -42,7 +43,7 @@ class KnowledgeController extends AbstractController {
 		return $entityRepository;
 	}
 
-	private function _retriveRelatedEntity($entityRepository, $entityId) {
+	private function _retrieveRelatedEntity($entityRepository, $entityId) {
 
 		$entity = $entityRepository->findOneById($entityId);
 		if (is_null($entity)) {
@@ -132,8 +133,8 @@ class KnowledgeController extends AbstractController {
 
 		// Retrieve related entity
 
-		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
-		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
 
 		// Retrive contributors
 
@@ -176,8 +177,8 @@ class KnowledgeController extends AbstractController {
 
 		// Retrieve related entity
 
-		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
-		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
 
 		// Process field
 
@@ -279,8 +280,8 @@ class KnowledgeController extends AbstractController {
 
 		// Retrieve related entity
 
-		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
-		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
 
 		// Process field
 
@@ -326,8 +327,8 @@ class KnowledgeController extends AbstractController {
 
 		// Retrieve related entity
 
-		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
-		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
 
 		// Process field
 
@@ -398,8 +399,8 @@ class KnowledgeController extends AbstractController {
 
 		// Retrieve related entity
 
-		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
-		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
 
 		// Process field
 
@@ -486,8 +487,8 @@ class KnowledgeController extends AbstractController {
 
 		// Retrieve related entity
 
-		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
-		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
 
 		// Process field
 
@@ -541,21 +542,17 @@ class KnowledgeController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{entityType}/{entityId}/{field}.xhr", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+"}, name="core_knowledge_field_show")
-	 * @Template("LadbCoreBundle:Knowledge:field-show-xhr.html.twig")
+	 * @Route("/{entityType}/{entityId}/{field}.xhr", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "[a-z_]+"}, name="core_knowledge_field_show")
+	 * @Template("LadbCoreBundle:Knowledge:field-show.html.twig")
 	 */
-	public function showFieldAction(Request $request, $entityType, $entityId, $field) {
-		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_knowledge_field_show)');
-		}
-
+	public function showFieldAction(Request $request, $entityType, $entityId, $field, $highlightedValueId = null) {
 		$knowledgeUtils = $this->get(KnowledgeUtils::NAME);
 		$propertyUtils = $this->get(PropertyUtils::NAME);
 
 		// Retrieve related entity
 
-		$entityRepository = $this->_retriveRelatedEntityRepository($entityType);
-		$entity = $this->_retriveRelatedEntity($entityRepository, $entityId);
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
 
 		// Process field
 
@@ -579,15 +576,42 @@ class KnowledgeController extends AbstractController {
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$votableUtils = $this->get(VotableUtils::NAME);
 
-		return array(
-			'knowledge'       => $entity,
-			'field'           => $field,
-			'values'          => $values,
-			'commentContexts' => $commentableUtils->getCommentContexts($values),
-			'voteContexts'    => $votableUtils->getVoteContexts($values, $this->getUser()),
-			'form'            => is_null($form) ? null : $form->createView(),
-			'sourcesHistory'  => $knowledgeUtils->getValueSourcesHistory(),
+		$parameters = array(
+			'knowledge'          => $entity,
+			'field'              => $field,
+			'values'             => $values,
+			'commentContexts'    => $commentableUtils->getCommentContexts($values),
+			'voteContexts'       => $votableUtils->getVoteContexts($values, $this->getUser()),
+			'form'               => is_null($form) ? null : $form->createView(),
+			'sourcesHistory'     => $knowledgeUtils->getValueSourcesHistory(),
+			'highlightedValueId' => $highlightedValueId,
 		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Knowledge:field-show-xhr.html.twig', $parameters);
+		}
+
+		return $parameters;
+	}
+
+	/**
+	 * @Route("/value/{id}", requirements={"id" = "\d+"}, name="core_knowledge_value_show")
+	 */
+	public function valueShowAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$valueRepository = $om->getRepository(BaseValue::CLASS_NAME);
+
+		$value = $valueRepository->findOneById($id);
+		if (is_null($value)) {
+			throw $this->createNotFoundException('Unable to find Value entity (id='.$id.').');
+		}
+
+		return $this->forward('LadbCoreBundle:Knowledge/Knowledge:showField', array(
+			'entityType'         => $value->getParentEntityType(),
+			'entityId'           => $value->getParentEntityId(),
+			'field'              => $value->getParentEntityField(),
+			'highlightedValueId' => $value->getId(),
+		));
 	}
 
 }

@@ -52,7 +52,7 @@ class VotableListener implements EventSubscriberInterface {
 
 				} else {
 
-					// Create texture if it doen't exist
+					// Create texture if it doesn't exist
 					$textureUtils->createTexture($votableParent, $votable, false);
 
 				}
