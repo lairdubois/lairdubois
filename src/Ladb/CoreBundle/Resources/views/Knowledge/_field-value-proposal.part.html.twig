@@ -8,6 +8,7 @@
 {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', knowledge)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', knowledge)] : null %}
 {% set fieldMandatory = fieldDef[constant('ATTRIB_MANDATORY', knowledge)] is defined and fieldDef[constant('ATTRIB_MANDATORY', knowledge)] %}
 {% set isDisplayGrid = value.isDisplayGrid and not (noDisplayGrid|default(false)) %}
+{% set noMicrodata = true %}
 
 <div id="ladb_value_proposal_{{ value.id }}" class="ladb-value-proposal{% if isDisplayGrid %} ladb-value-proposal-grid col-sm-6{% endif %} col-xs-12">
     <div class="ladb-box">

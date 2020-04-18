@@ -40,7 +40,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' %}
+    {% include 'LadbCoreBundle:Common/Header:_entity-header.part.html.twig' with { 'backBtnLabel':('knowledge.back_to'|trans()) } %}
 {% endblock %}
 
 {% block contentBody %}
@@ -50,6 +50,9 @@
         </div>
         <div class="panel-body">
             {% include 'LadbCoreBundle:Knowledge:_field-show-content.part.html.twig' %}
+        </div>
+        <div class="panel-footer text-center">
+            <a href="{{ ladb_entity_url_action(knowledge) }}" class="btn btn-default">{{ 'knowledge.back_to'|trans() }}</a>
         </div>
     </div>
     {% include 'LadbCoreBundle:Core/Vote:_modals.part.html.twig' %}

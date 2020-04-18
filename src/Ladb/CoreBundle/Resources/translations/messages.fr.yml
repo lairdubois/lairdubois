@@ -672,6 +672,7 @@ knowledge:
   source_type_1: Connaissances personnelles
   source_type_2: Site web
   source_type_3: Autre
+  back_to: Voir la fiche complète
   tooltip:
     vote_up: Je valide cette proposition
     vote_down: Je rejette cette proposition

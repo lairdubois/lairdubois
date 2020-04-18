@@ -8,6 +8,7 @@
 {% set noMicrodata = noMicrodata|default(false) %}
 {% set noMicrodataAuthor = noMicrodata or noMicrodataAuthor|default(false) %}
 {% set noAuthorAvatar = noAuthorAvatar|default(false) %}
+{% set backBtnLabel = backBtnLabel|default('default.back'|trans()) %}
 
 <div class="ladb-avatar-header">
     {% block headerInner %}
@@ -32,7 +33,7 @@
         {% block headerTools %}
             <div class="ladb-header-tools">
                 {% block headerToolsInner %}
-                    <a href="{{ ladb_entity_url_action(entity) }}" class="btn btn-default">{{ 'default.back'|trans() }}</a>
+                    <a href="{{ ladb_entity_url_action(entity) }}" class="btn btn-default">{{ backBtnLabel|raw }}</a>
                 {% endblock %}
             </div>
         {% endblock %}
