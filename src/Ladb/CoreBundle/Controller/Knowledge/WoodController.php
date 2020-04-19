@@ -435,7 +435,7 @@ class WoodController extends AbstractController {
 
 		$id = intval($id);
 
-		$wood = $woodRepository->findOneByIdJoinedOnOptimized($id);
+		$wood = $woodRepository->findOneById($id);
 		if (is_null($wood)) {
 			if ($response = $witnessManager->checkResponse(Wood::TYPE, $id)) {
 				return $response;
