@@ -1374,7 +1374,14 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show")
+	 * @Route("/{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_old")
+	 */
+	public function oldShowAction($username) {
+		return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $username )));
+	}
+
+	/**
+	 * @Route("/@{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show")
 	 */
 	public function showAction($username) {
 		$user = $this->_retrieveUser($username);

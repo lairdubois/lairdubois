@@ -744,30 +744,30 @@ knowledge:
         legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
         grain: |
-          - Utilisez un bois raboté.
+          - Utilisez un bois raboté et **sans finition**.
           - Préférez l'utilisation d'un **scanner** plutôt que d'un appareil photo.
-          - Le type de coupe peut-être indiqué dans la légende.
-          - Pensez à indiquer les dimensions réelles de l'image dans la légende
-          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+          - Le type de coupe peut-être indiqué dans la légende (dosse, quartier, ...).
+          - Pensez à indiquer les dimensions réelles de l'image dans la légende.
+          - N'utilisez pas une image pour laquelle vous ne vous êtes pas assurés d'un droit de copie !
         endgrain: |
-          - Utilisez un bois avec une couper nette et propre.
-          - Préférez l'utilisation d'un **scanner** plutôt que d'un appareil photo
+          - Utilisez un bois avec une couper **nette** et **propre**.
+          - Préférez l'utilisation d'un **scanner** plutôt que d'un appareil photo.
           - Préférez une lumière neutre (blanche) pour conserver au mieux les couleurs d'origines de l'essence.
-          - Pensez à indiquer les dimensions réelles de l'image dans la légende
-          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+          - Pensez à indiquer les dimensions réelles de l'image dans la légende.
+          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie !
         lumber: |
           - Préférez une lumière neutre (blanche) pour conserver au mieux les couleurs d'origines de l'essence.
-          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+          - N'utilisez pas une image pour laquelle vous ne vous êtes pas assurés d'un droit de copie !
         tree: |
           - Préférez les images haute définition.
           - Il doit être facile de le distinguer sur la photo.
-          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+          - N'utilisez pas une image pour laquelle vous ne vous êtes pas assurés d'un droit de copie !
         leaf: |
           - Préférez les images haute définition.
-          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+          - N'utilisez pas une image pour laquelle vous ne vous êtes pas assurés d'un droit de copie !
         bark: |
           - Préférez les images haute définition.
-          - N'utilisez pas des images pour lesquelles vous ne vous êtes pas assurés d'un droit de copie.
+          - N'utilisez pas une image pour laquelle vous ne vous êtes pas assurés d'un droit de copie !
         name: |
           - N'indiquez **qu'un seul** nom par proposition.
         scientificname: |
