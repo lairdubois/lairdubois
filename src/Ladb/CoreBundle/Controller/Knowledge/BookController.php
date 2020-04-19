@@ -360,7 +360,7 @@ class BookController extends AbstractController {
 
 		$id = intval($id);
 
-		$book = $bookRepository->findOneByIdJoinedOnOptimized($id);
+		$book = $bookRepository->findOneById($id);
 		if (is_null($book)) {
 			if ($response = $witnessManager->checkResponse(Book::TYPE, $id)) {
 				return $response;

@@ -598,7 +598,7 @@ class SchoolController extends AbstractController {
 
 		$id = intval($id);
 
-		$school = $schoolRepository->findOneByIdJoinedOnOptimized($id);
+		$school = $schoolRepository->findOneById($id);
 		if (is_null($school)) {
 			if ($response = $witnessManager->checkResponse(School::TYPE, $id)) {
 				return $response;

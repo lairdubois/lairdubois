@@ -599,7 +599,7 @@ class ProviderController extends AbstractController {
 
 		$id = intval($id);
 
-		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
+		$provider = $providerRepository->findOneById($id);
 		if (is_null($provider)) {
 			if ($response = $witnessManager->checkResponse(Provider::TYPE, $id)) {
 				return $response;

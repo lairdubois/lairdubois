@@ -374,7 +374,7 @@ class SoftwareController extends AbstractController {
 
 		$id = intval($id);
 
-		$software = $softwareRepository->findOneByIdJoinedOnOptimized($id);
+		$software = $softwareRepository->findOneById($id);
 		if (is_null($software)) {
 			if ($response = $witnessManager->checkResponse(Software::TYPE, $id)) {
 				return $response;
