@@ -88,7 +88,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Sign", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_sign")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $signValues;
 
@@ -101,7 +101,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_logo")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $logoValues;
 
@@ -121,7 +121,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_photo")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $photoValues;
 
@@ -134,7 +134,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_website")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $websiteValues;
 	
@@ -177,7 +177,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Location", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_address")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $addressValues;
 
@@ -190,7 +190,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Phone", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_phone")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $phoneValues;
 
@@ -203,7 +203,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Longtext", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_description")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $descriptionValues;
 
@@ -216,7 +216,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_in_store_selling")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $inStoreSellingValues;
 
@@ -229,7 +229,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_mail_order_selling")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $mailOrderSellingValues;
 
@@ -242,7 +242,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_sale_to_individuals")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $saleToIndividualsValues;
 
@@ -255,7 +255,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_products")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $productsValues;
 
@@ -267,7 +267,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_services")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $servicesValues;
 
@@ -279,7 +279,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_woods")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $woodsValues;
 
@@ -291,7 +291,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_state")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $stateValues;
 

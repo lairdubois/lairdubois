@@ -683,6 +683,7 @@ knowledge:
     data: Valeur
     legend: Légende
     source: Source
+    moderation_score: Score de modération
     country: Pays
     currency: Devise
     of_value: de la valeur <em>%fieldLabel%</em>

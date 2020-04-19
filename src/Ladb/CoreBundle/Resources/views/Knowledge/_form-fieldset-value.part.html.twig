@@ -47,6 +47,12 @@
         <input type="text"{% if form.source.vars.data is not null and form.sourceType.vars.data == 3 %} value="{{ form.source.vars.data }}"{% endif %} placeholder="Nom de la source" class="form-control">
     </div>
     {% block sourceWarning %}{% endblock %}
+    <div{% if not is_granted('ROLE_ADMIN') %} style="display: none;"{% endif %}>
+        <hr>
+        <i class="ladb-icon-admin"></i>&nbsp;{{ form_label(form.source, 'knowledge.proposal_value.moderation_score'|trans()) }}
+        {{ form_errors(form.moderationScore) }}
+        {{ form_widget(form.moderationScore, { 'attr':{ 'class':'form-control' } }) }}
+    </div>
     <script>
         {% if isCompact %}
             $("#{{ form.sourceType.vars.id }}").val('1');   {# Set source to 1 = "Connaissances personnelles" #}

@@ -96,7 +96,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_identity")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $identityValues;
 
@@ -109,7 +109,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_icon")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $iconValues;
 
@@ -129,7 +129,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_screenshot")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $screenshotValues;
 
@@ -142,7 +142,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_authors")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $authorsValues;
 
@@ -155,7 +155,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_last_version")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $lastVersionValues;
 
@@ -168,7 +168,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_publisher")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $publisherValues;
 
@@ -181,7 +181,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_website")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $websiteValues;
 
@@ -194,7 +194,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Longtext", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_description")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $descriptionValues;
 
@@ -207,7 +207,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_open_source")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $openSourceValues;
 
@@ -220,7 +220,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_source_code_repository")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $sourceCodeRepositoryValues;
 
@@ -233,7 +233,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_docs")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $docsValues;
 
@@ -246,7 +246,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Video", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_video")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $videoValues;
 
@@ -259,7 +259,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_operating_systems")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $operatingSystemsValues;
 
@@ -272,7 +272,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_license_type")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $licenseTypeValues;
 
@@ -285,7 +285,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_pricings")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $pricingsValues;
 
@@ -298,7 +298,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_features")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $featuresValues;
 
@@ -311,7 +311,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Language", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_languages")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $languagesValues;
 
@@ -324,7 +324,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\FileExtension", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_software_value_supported_files")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $supportedFilesValues;
 

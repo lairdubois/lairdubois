@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Form\Type\Knowledge\Value;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,6 +21,7 @@ abstract class AbstractValueType extends AbstractType {
 				'choices'     => array_flip(BaseValue::$SOURCE_TYPES),
 			))
 			->add('source', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
+			->add('moderationScore', NumberType::class)
 		;
 	}
 

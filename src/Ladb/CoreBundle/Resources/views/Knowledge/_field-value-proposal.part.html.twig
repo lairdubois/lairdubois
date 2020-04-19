@@ -29,6 +29,9 @@
                                 {% endif %}
                                 {% set isLink = value.sourceType == constant('SOURCE_TYPE_WEBSITE', value) %}
                                 <div class="ladb-source">{{ 'knowledge.proposal_value.source'|trans() }} : {% if isLink %}<a href="{{ value.source }}" target="_blank">{% endif %}{% if value.sourceType == constant('SOURCE_TYPE_PERSONAL', value) %}Connaissances personnelles{% elseif isLink %}{{ value.source|ladb_url_truncate }}{% else %}{{ value.source }}{% endif %}{% if isLink %}</a>{% endif %}</div>
+                                {% if is_granted('ROLE_ADMIN') and value.moderationScore != 0 %}
+                                    <div class="ladb-source"><i class="ladb-icon-admin"></i> {{ 'knowledge.proposal_value.moderation_score'|trans() }} : <strong>{{ value.moderationScore }}</strong></div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="ladb-footer">

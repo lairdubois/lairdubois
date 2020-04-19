@@ -111,6 +111,11 @@ abstract class BaseValue implements AuthoredInterface, WatchableChildInterface, 
 	private $source;
 
 	/**
+	 * @ORM\Column(name="moderation_score", type="integer")
+	 */
+	protected $moderationScore = 0;
+
+	/**
 	 * @ORM\Column(type="integer", name="positive_vote_score")
 	 */
 	private $positiveVoteScore = 0;
@@ -208,6 +213,16 @@ abstract class BaseValue implements AuthoredInterface, WatchableChildInterface, 
 	public function setSourceType($sourceType) {
 		$this->sourceType = $sourceType;
 		return $this;
+	}
+
+	// ModerationScore /////
+
+	public function getModerationScore() {
+		return $this->moderationScore;
+	}
+
+	public function setModerationScore($moderationScore) {
+		$this->moderationScore = $moderationScore;
 	}
 
 	// Data /////

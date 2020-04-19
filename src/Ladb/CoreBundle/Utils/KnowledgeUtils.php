@@ -18,13 +18,16 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 			$values = $propertyUtils->getValue($knowledge, $field.'_values');
 			$iterator = $values->getIterator();
 			$iterator->uasort(function ($a, $b) {
-				if ($a->getVoteScore() == $b->getVoteScore()) {
-					if ($a->getCreatedAt() == $b->getCreatedAt()) {
-						return 0;
+				if ($a->getModerationScore() == $b->getModerationScore()) {
+					if ($a->getVoteScore() == $b->getVoteScore()) {
+						if ($a->getCreatedAt() == $b->getCreatedAt()) {
+							return 0;
+						}
+						return ($a->getCreatedAt() > $b->getCreatedAt()) ? -1 : 1;	// CreateAt DESC
 					}
-					return ($a->getCreatedAt() > $b->getCreatedAt()) ? -1 : 1;	// Date DESC
+					return ($a->getVoteScore() > $b->getVoteScore()) ? -1 : 1;	// VoteScore DESC
 				}
-				return ($a->getVoteScore() > $b->getVoteScore()) ? -1 : 1;	// VoteScore DESC
+				return ($a->getModerationScore() > $b->getModerationScore()) ? -1 : 1;	// ModerationScore DESC
 			});
 			$propertyUtils->setValue($knowledge, $field.'_values', new \Doctrine\Common\Collections\ArrayCollection(iterator_to_array($iterator)));
 		}

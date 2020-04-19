@@ -67,7 +67,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_name")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $nameValues;
 
@@ -85,7 +85,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_scientificname")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $scientificnameValues;
 
@@ -98,7 +98,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_englishname")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $englishnameValues;
 
@@ -106,7 +106,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_grain")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $grainValues;
 
@@ -126,7 +126,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_endgrain")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $endgrainValues;
 
@@ -141,7 +141,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_lumber")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $lumberValues;
 
@@ -156,7 +156,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_tree")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $treeValues;
 
@@ -171,7 +171,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_leaf")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $leafValues;
 
@@ -186,7 +186,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_bark")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $barkValues;
 
@@ -199,7 +199,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_family")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $familyValues;
 
@@ -212,7 +212,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_density")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $densityValues;
 
@@ -225,7 +225,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_availability")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $availabilityValues;
 
@@ -238,7 +238,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_price")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $priceValues;
 
@@ -251,7 +251,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_origin")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $originValues;
 
@@ -264,7 +264,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_utilization")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $utilizationValues;
 
@@ -277,7 +277,7 @@ class Wood extends AbstractKnowledge {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_wood_value_database_link")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $databaseLinkValues;
 

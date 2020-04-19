@@ -93,7 +93,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_identity")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $identityValues;
 
@@ -106,7 +106,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_cover")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $coverValues;
 
@@ -126,7 +126,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Picture", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_back_cover")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $backCoverValues;
 
@@ -139,7 +139,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_authors")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $authorsValues;
 
@@ -152,7 +152,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_editor")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $editorValues;
 
@@ -165,7 +165,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Longtext", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_summary")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $summaryValues;
 
@@ -178,7 +178,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Longtext", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_toc")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $tocValues;
 
@@ -191,7 +191,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_subjects")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $subjectsValues;
 
@@ -204,7 +204,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_collection")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $collectionValues;
 
@@ -217,7 +217,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Language", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_language")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $languageValues;
 
@@ -230,7 +230,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_translated")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $translatedValues;
 
@@ -243,7 +243,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_page_count")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $pageCountValues;
 
@@ -256,7 +256,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Isbn", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_isbn")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $isbnValues;
 
@@ -269,7 +269,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_publish_year")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $publishYearValues;
 
@@ -282,7 +282,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_public_domain")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $publicDomainValues;
 
@@ -295,7 +295,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_catalog_link")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $catalogLinkValues;
 
@@ -308,7 +308,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Price", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_book_value_price")
-	 * @ORM\OrderBy({"voteScore" = "DESC", "createdAt" = "DESC"})
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $priceValues;
 
