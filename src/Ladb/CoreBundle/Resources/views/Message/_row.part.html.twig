@@ -17,7 +17,7 @@
                 {% if message.pictures is not empty %}
                     <div class="row">
                         {% for picture in message.pictures %}
-                            <div class="col-xs-6 col-md-3">
+                            <div class="col-xs-6 col-md-2">
                                 {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'width':'128', 'height':'128' } %}
                             </div>
                         {% endfor %}
