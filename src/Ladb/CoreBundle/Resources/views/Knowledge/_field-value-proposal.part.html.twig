@@ -43,6 +43,7 @@
                                         </ul>
                                     </div>
                                 {% endif %}
+                                <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers la proposition :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ url('core_knowledge_value_show', { 'id':value.id }) }}\' onclick=\'$(this).focus(); $(this).select();\'><span class=\'input-group-btn\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
                                 {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 %}
                                     <a href="#" onclick="editValueProposal({{ value.id }}, '{{ path('core_knowledge_value_edit', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
                                 {% endif %}
