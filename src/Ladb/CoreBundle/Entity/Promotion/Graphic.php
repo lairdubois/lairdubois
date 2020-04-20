@@ -57,7 +57,9 @@ class Graphic extends AbstractDraftableAuthoredPublication implements TitledInte
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=4, max=100)
 	 */
-	private $title;/**
+	private $title;
+
+	/**
 	 * @Gedmo\Slug(fields={"title"}, separator="-")
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
