@@ -7,6 +7,8 @@ use Ladb\CoreBundle\Entity\Core\Activity\Contribute;
 use Ladb\CoreBundle\Entity\Core\Activity\Publish;
 use Ladb\CoreBundle\Entity\Core\Activity\Join;
 use Ladb\CoreBundle\Entity\Core\Activity\Feedback;
+use Ladb\CoreBundle\Model\FeedbackableInterface;
+use Ladb\CoreBundle\Model\JoinableInterface;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class ActivityRepository extends AbstractEntityRepository {
@@ -58,41 +60,49 @@ class ActivityRepository extends AbstractEntityRepository {
 
 		}
 
-		// Join activities /////
+		if ($publication instanceof JoinableInterface) {
 
-		$joinRepository = $this->getEntityManager()->getRepository(Join::CLASS_NAME);
+			// Join activities /////
 
-		$activities = array_merge($activities, $joinRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
-		if (!is_null($publication->getSubPublications())) {
-			foreach ($publication->getSubPublications() as $subPublication) {
-				$activities = array_merge($activities, $joinRepository->findByEntityTypeAndEntityId($subPublication->getType(), $subPublication->getId()));
-			}
+			$joinRepository = $this->getEntityManager()->getRepository(Join::CLASS_NAME);
 
-			usort($activities, function($a, $b) {
-				if ($a->getCreatedAt() == $b->getCreatedAt()) {
-					return 0;
+			$activities = array_merge($activities, $joinRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
+			if (!is_null($publication->getSubPublications())) {
+				foreach ($publication->getSubPublications() as $subPublication) {
+					$activities = array_merge($activities, $joinRepository->findByEntityTypeAndEntityId($subPublication->getType(), $subPublication->getId()));
 				}
-				return ($a->getCreatedAt() < $b->getCreatedAt()) ? -1 : 1;
-			});
+
+				usort($activities, function ($a, $b) {
+					if ($a->getCreatedAt() == $b->getCreatedAt()) {
+						return 0;
+					}
+					return ($a->getCreatedAt() < $b->getCreatedAt()) ? -1 : 1;
+				});
+
+			}
 
 		}
 
-		// Feedback activities /////
+		if ($publication instanceof FeedbackableInterface) {
 
-		$feedbackRepository = $this->getEntityManager()->getRepository(Feedback::CLASS_NAME);
+			// Feedback activities /////
 
-		$activities = array_merge($activities, $feedbackRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
-		if (!is_null($publication->getSubPublications())) {
-			foreach ($publication->getSubPublications() as $subPublication) {
-				$activities = array_merge($activities, $feedbackRepository->findByEntityTypeAndEntityId($subPublication->getType(), $subPublication->getId()));
-			}
+			$feedbackRepository = $this->getEntityManager()->getRepository(Feedback::CLASS_NAME);
 
-			usort($activities, function($a, $b) {
-				if ($a->getCreatedAt() == $b->getCreatedAt()) {
-					return 0;
+			$activities = array_merge($activities, $feedbackRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
+			if (!is_null($publication->getSubPublications())) {
+				foreach ($publication->getSubPublications() as $subPublication) {
+					$activities = array_merge($activities, $feedbackRepository->findByEntityTypeAndEntityId($subPublication->getType(), $subPublication->getId()));
 				}
-				return ($a->getCreatedAt() < $b->getCreatedAt()) ? -1 : 1;
-			});
+
+				usort($activities, function ($a, $b) {
+					if ($a->getCreatedAt() == $b->getCreatedAt()) {
+						return 0;
+					}
+					return ($a->getCreatedAt() < $b->getCreatedAt()) ? -1 : 1;
+				});
+
+			}
 
 		}
 
