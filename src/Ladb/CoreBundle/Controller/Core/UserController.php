@@ -201,7 +201,7 @@ class UserController extends AbstractController {
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) use ($searchUtils) {
 				switch ($facet->name) {
 
 					// Filters /////
@@ -260,15 +260,15 @@ class UserController extends AbstractController {
 					// Sorters /////
 
 					case 'sort-recent':
-						$sort = array( 'createdAt' => array( 'order' => 'desc' ) );
+						$sort = array( 'createdAt' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-followers':
-						$sort = array( 'meta.followerCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'meta.followerCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-popular-likes':
-						$sort = array( 'meta.recievedLikeCount' => array( 'order' => 'desc' ) );
+						$sort = array( 'meta.recievedLikeCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
 					case 'sort-random':
