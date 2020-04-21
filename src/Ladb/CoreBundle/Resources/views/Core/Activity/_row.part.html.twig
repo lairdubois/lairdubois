@@ -1,11 +1,10 @@
 {# set activity #}
 {# set icon (faciltative) #}
 {# set scrollToId (faciltative) #}
-{# set scrollToOnAfterFn (faciltative) #}
 
 <div id="ladb_activity_{{ activity.id }}" class="ladb-activity-row"{% if activitiesHidden is defined and activitiesHidden %} style="display: none;"{% endif %}>
     {% if scrollToId is defined %}
-        <a href="#" class="ladb-scrollto-btn pull-right" onclick="$('#{{ scrollToId }}').ladbScrollTo(event{% if scrollToOnAfterFn is defined %}, { onAfter: {{ scrollToOnAfterFn }} }{% endif %});"><i class="ladb-icon-arrow-up"></i></a>
+        <a href="#" class="ladb-scrollto-btn pull-right" onclick="$('#{{ scrollToId }}').ladbScrollTo(event, { onAfterHighlight: true });"><i class="ladb-icon-arrow-up"></i></a>
     {% endif %}
     <div class="ladb-icon">{% if icon is defined %}<i class="ladb-icon-{{ icon }}"></i>{% endif %}</div>
     <div class="ladb-body">{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':activity.user, 'noBadge':true, 'noMicrodata':true } %} {% block body %}{% endblock %}.{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':activity, 'noMicrodata':true } %}</div>

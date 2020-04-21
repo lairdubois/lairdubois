@@ -108,7 +108,7 @@
 
 {% block contentBody %}
     {% if provider.state > 0 %}
-        <a href="#ladb_meta_field_state" class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_meta_field_state').ladbScrollTo(null, { onAfter: function() { $('#ladb_meta_field_state').effect('highlight', {}, 1000);}})">
+        <a href="#ladb_meta_field_state" class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_meta_field_state').ladbScrollTo(null, { onAfterHighlight: true })">
             <i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}
         </a>
     {% else %}

@@ -89,11 +89,7 @@
                     var $target = $(selector);
                     $target.parents('.collapse').addClass('in');
                     $target.ladbScrollTo(null, {
-                        onAfter: function() {
-                            var $box = $('.ladb-box', $target);
-                            var $effectTarget = $box.length > 0 ? $box : $target;
-                            $effectTarget.effect('highlight', {}, 1500);
-                        }
+                        onAfterHighlight: true
                     });
                 }, 1000);
             }

@@ -11,7 +11,7 @@
 {% set noMicrodata = true %}
 
 <div id="ladb_value_proposal_{{ value.id }}" class="ladb-value-proposal{% if isDisplayGrid %} ladb-value-proposal-grid col-sm-6{% endif %} col-xs-12">
-    <div class="ladb-box">
+    <div class="ladb-box ladb-highlightable">
         <div class="ladb-box-inner row">
             <div class="{% if not isDisplayGrid %}col-sm-push-11 col-sm-1 {% endif %}col-xs-12">
                 {% include 'LadbCoreBundle:Core/Vote:_widget.part.html.twig' with { 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()), 'orientation':(isDisplayGrid ? 'horizontal' : 'auto')  } %}

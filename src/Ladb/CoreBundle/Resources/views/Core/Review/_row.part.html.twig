@@ -3,7 +3,7 @@
 {% set noContactBtn = noContactBtn|default(false) %}
 
 <div id="ladb_review_{{ review.id }}" class="ladb-review-row{% if classes is defined %} {{ classes }}{% endif %}"{% if not noMicrodata %} itemprop="review" itemscope itemtype="http://schema.org/Review"{% endif %}>
-    <div class="ladb-box">
+    <div class="ladb-box ladb-highlightable">
         <div class="ladb-box-inner">
             <div class="ladb-content-box">
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':review.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}

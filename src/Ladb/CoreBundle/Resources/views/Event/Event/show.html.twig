@@ -52,7 +52,7 @@
     <div class="ladb-event">
         {% if event.cancelled %}
             <meta itemprop="eventStatus" content="http://schema.org/EventCancelled">
-            <a class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_event_datetime').ladbScrollTo(null, { onAfter: function() { $('#ladb_event_datetime').effect('highlight', {}, 1000);}})">
+            <a class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_event_datetime').ladbScrollTo(null, { onAfterHighlight: true })">
                 <i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}
             </a>
         {% else %}

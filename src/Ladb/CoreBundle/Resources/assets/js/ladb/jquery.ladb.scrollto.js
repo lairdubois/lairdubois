@@ -5,7 +5,8 @@
         var settings = $.extend({
             smoothScroll: true,
             offset: 100,
-            onAfter: null
+            onAfter: null,
+            onAfterHighlight: false
         }, options );
 
         var $target = this;
@@ -23,6 +24,12 @@
             return (visibleArea >= objEndPos && scrollPosition <= objEndPos);
         };
 
+        var highlightFn = function($target) {
+            var $highlightable = $('.ladb-highlightable', $target);
+            var $effectTarget = $highlightable.length > 0 ? $highlightable.first() : $target;
+            $effectTarget.effect('highlight', {}, 1500);
+        }
+
         var targetTop = $target.offset().top;
         var scrollTop = $(window).scrollTop();
         var scrollMax = $(document).height() - $(window).height();
@@ -34,11 +41,17 @@
                     if (typeof(settings.onAfter) == 'function') {
                         settings.onAfter($target);
                     }
+                    if (settings.onAfterHighlight) {
+                        highlightFn($target);
+                    }
                 }
             });
         } else {
             if (typeof(settings.onAfter) == 'function') {
                 settings.onAfter($target);
+            }
+            if (settings.onAfterHighlight) {
+                highlightFn($target);
             }
         }
 

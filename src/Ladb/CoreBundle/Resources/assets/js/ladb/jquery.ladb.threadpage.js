@@ -189,9 +189,7 @@
                 var selector = window.location.hash.replace('#', '#ladb');   // Change to a valid element ID like #ladb_XXX
                 var $target = $(selector);
                 $target.ladbScrollTo(null, {
-                    onAfter: function() {
-                        $target.effect('highlight', {}, 1500);
-                    }
+                    onAfterHighlight: true
                 });
             }, 1000);
         } else {

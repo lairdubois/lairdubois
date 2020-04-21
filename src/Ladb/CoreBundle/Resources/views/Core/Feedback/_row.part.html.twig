@@ -1,7 +1,7 @@
 {% set noMinitools = noMinitools|default(false) %}
 
 <div id="ladb_feedback_{{ feedback.id }}" class="ladb-feedback-row{% if classes is defined %} {{ classes }}{% endif %}">
-    <div class="ladb-box">
+    <div class="ladb-box ladb-highlightable">
         <div class="ladb-box-inner">
             <div class="ladb-content-box">
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':feedback.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}

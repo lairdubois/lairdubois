@@ -4,7 +4,7 @@
     {% if not question.isDraft %}
         {% if userAnswer %}
             <div class="alert alert-info text-center">
-                <p>Vous avez déjà répondu à cette question. <a href="#" onclick="$('#ladb_answer_{{ userAnswer.id }}').ladbScrollTo(event, { onAfter: function($target) { $('.ladb-box', $target).first().effect('highlight', {}, 1500); } }); return false;" class="alert-link">(Voir ma réponse)</a></p>
+                <p>Vous avez déjà répondu à cette question. <a href="#" onclick="$('#ladb_answer_{{ userAnswer.id }}').ladbScrollTo(event, { onAfterHighlight: true }); return false;" class="alert-link">(Voir ma réponse)</a></p>
             </div>
         {% else %}
             {% if question.answerCount == 0 %}

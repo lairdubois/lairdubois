@@ -2,7 +2,7 @@
 
 {% set icon = 'feedback' %}
 {% set scrollToId = 'ladb_feedback_'~activity.feedback.id %}
-{% set scrollToOnAfterFn = 'function($target) { $(".ladb-box", $target).first().effect("highlight", {}, 1500); }' %}
+{% set scrollToOnAfterHighlightSelector = '.ladb-box' %}
 {% set entity = ladb_entity(activity.feedback.entityType, activity.feedback.entityId) %}
 
 {% block body %}a ajouté un retour d'expérience "<strong>{{ activity.feedback.title }}</strong>"{% endblock %}

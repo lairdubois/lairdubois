@@ -6,7 +6,7 @@
 <div class="ladb-reviews-footer">
     {% if userReview %}
         <div class="alert alert-info text-center">
-            <p>{{ ('review.'~i18nPrefix~'.already')|trans }} <a href="#" onclick="$('#ladb_review_{{ userReview.id }}').ladbScrollTo(event, { onAfter: function($target) { $('.ladb-box', $target).first().effect('highlight', {}, 1500); } }); return false;" class="alert-link">({{ ('review.'~i18nPrefix~'.show_mine')|trans }})</a></p>
+            <p>{{ ('review.'~i18nPrefix~'.already')|trans }} <a href="#" onclick="$('#ladb_review_{{ userReview.id }}').ladbScrollTo(event, { onAfterHighlight: true }); return false;" class="alert-link">({{ ('review.'~i18nPrefix~'.show_mine')|trans }})</a></p>
         </div>
     {% else %}
         {% if entity.reviewCount == 0 %}

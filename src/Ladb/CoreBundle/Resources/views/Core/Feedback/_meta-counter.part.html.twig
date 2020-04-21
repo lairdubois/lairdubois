@@ -4,9 +4,9 @@
 
 {% if feedbackContext is not null and (feedbackContext.isFeedbackable or feedbackContext.feedbacks|length > 0) %}
     <div class="ladb-meta{% if entity.feedbackCount == 0 %} text-muted{% endif %}">
-        <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_feedback_widget').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+        <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_feedback_widget').ladbScrollTo(event, { onAfterHighlight: true });"><i class="ladb-icon-arrow-down"></i></a>
         <i class="ladb-icon-feedback ladb-icon-fixed-center"></i>
-        <a href="#" onclick="$('#ladb_feedback_widget').ladbScrollTo(event);">
+        <a href="#" onclick="$('#ladb_feedback_widget').ladbScrollTo(event, { onAfterHighlight: true });">
             <strong>{{ entity.feedbackCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ ('feedback.default.choice.entities')|transchoice(entity.feedbackCount) }}</small>
         </a>

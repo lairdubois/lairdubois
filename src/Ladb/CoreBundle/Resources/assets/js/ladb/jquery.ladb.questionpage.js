@@ -195,6 +195,8 @@
         this.$answerForm.ladbScrollTo(null, {
             onAfter: function() {
 
+                setupTextareas();
+
                 // Focus the first textarea
                 $('textarea', $form).first().focus();
 
