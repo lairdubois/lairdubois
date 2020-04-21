@@ -52,7 +52,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 					}
 					return ($a->getModerationScore() > $b->getModerationScore()) ? -1 : 1;	// ModerationScore DESC
 				});
-				$valuesArray = iterator_to_array($valuesIterator);
+				$valuesArray = iterator_to_array($valuesIterator, false);
 
 				// Check values
 				$mandatory = isset($fieldDef[AbstractKnowledge::ATTRIB_MANDATORY]) && $fieldDef[AbstractKnowledge::ATTRIB_MANDATORY];
@@ -72,7 +72,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 					$rejectedValue = count($validValuesData) == 0;
 
 					if ($mandatory && $rejectedValue) {
-						$text = $this->_getValueData($values[0], $choices, $useChoicesValue);
+						$text = $this->_getValueData($valuesArray[0], $choices, $useChoicesValue);
 					} else {
 						$text = implode(',', $validValuesData);
 					}
@@ -81,7 +81,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 					$propertyUtils->setValue($knowledge, $field, $noValue ? null : $text);
 
 				} else {
-					$value = $values[0];
+					$value = $valuesArray[0];
 					$rejectedValue = $value->getVoteScore() < 0;
 
 					$noValue = $rejectedValue && !$mandatory;
