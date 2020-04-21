@@ -160,7 +160,7 @@
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
         {% include 'LadbCoreBundle:Core/Review:_widget.part.html.twig' %}
-        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':true, 'alertTransKey':'knowledge.provider.comment_alert' } %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.provider.comment_alert' } %}
     </div>
     {{ parent() }}
 {% endblock %}
