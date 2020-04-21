@@ -2,5 +2,8 @@
 
 {% set icon = 'plus' %}
 {% set entity = ladb_entity(activity.entityType, activity.entityId) %}
+{% if entity is ladb_instanceof('Ladb\\CoreBundle\\Model\\ChildInterface') %}
+    {% set activityScrollToId = 'ladb_'~(ladb_entity_type_stripped_name(entity))~'_'~entity.id %}
+{% endif %}
 
 {% block body %}a publié {{ ('notification.the.'~ladb_entity_type_stripped_name(entity))|trans() }}{% if entity.title is defined %} "<strong>{{ entity.title }}</strong>"{% endif %}{% endblock %}

@@ -151,7 +151,7 @@
             {% for article in howto.articles if not article.isDraft or article.isDraft and showDraft %}
                 <hr>
                 <a id="{{ article.sluggedId }}" class="ladb-offsetted-anchor"></a>
-                <div class="ladb-howto-article">
+                <div id="ladb_howto_article_{{ article.id }}" class="ladb-howto-article">
                     <div>
                         <div class="pull-right">
                             {% if not howto.isDraft and not article.isDraft %}

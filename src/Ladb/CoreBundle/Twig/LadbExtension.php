@@ -11,6 +11,7 @@ use Ladb\CoreBundle\Manager\Core\UserManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Twig\TwigTest;
 
 class LadbExtension extends AbstractExtension {
 
@@ -43,6 +44,12 @@ class LadbExtension extends AbstractExtension {
 			new TwigFunction('ladb_estimate_row_count', array( $this, 'estimateRowCountFunction' )),
 			new TwigFunction('ladb_video_player_frame', array( $this, 'videoPlayerFrameFunction' )),
 			new TwigFunction('ladb_video_icon_class', array( $this, 'videoIconClassFunction' )),
+		);
+	}
+
+	public function getTests() {
+		return array(
+			new TwigTest('ladb_instanceof', array( $this, 'isInstanceof' )),
 		);
 	}
 
@@ -148,8 +155,6 @@ class LadbExtension extends AbstractExtension {
 		return $str;
 	}
 
-	// Functions /////
-
 	public function entityFunction($type, $id) {
 		$typableUtils = $this->container->get(TypableUtils::NAME);
 		$typable = $typableUtils->findTypable($type, $id);
@@ -221,7 +226,14 @@ class LadbExtension extends AbstractExtension {
 		return $videoHostingUtils->getIconClass($kind, $prefix);
 	}
 
-    public function getName() {
+	// Tests /////
+
+	public function isInstanceof($object, $class) {
+		$reflectionClass = new \ReflectionClass($class);
+		return $reflectionClass->isInstance($object);
+	}
+
+	public function getName() {
 		return 'ladb_extension';
 	}
 
