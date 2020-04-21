@@ -11,28 +11,6 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public function reorderKnowledgeFieldValues(AbstractKnowledge $knowledge, $field) {
-		$propertyUtils = $this->get(PropertyUtils::NAME);
-		$fieldDef = $knowledge->getFieldDefs()[$field];
-		if (!is_null($fieldDef)) {
-			$values = $propertyUtils->getValue($knowledge, $field.'_values');
-			$iterator = $values->getIterator();
-			$iterator->uasort(function ($a, $b) {
-				if ($a->getModerationScore() == $b->getModerationScore()) {
-					if ($a->getVoteScore() == $b->getVoteScore()) {
-						if ($a->getCreatedAt() == $b->getCreatedAt()) {
-							return 0;
-						}
-						return ($a->getCreatedAt() > $b->getCreatedAt()) ? -1 : 1;	// CreateAt DESC
-					}
-					return ($a->getVoteScore() > $b->getVoteScore()) ? -1 : 1;	// VoteScore DESC
-				}
-				return ($a->getModerationScore() > $b->getModerationScore()) ? -1 : 1;	// ModerationScore DESC
-			});
-			$propertyUtils->setValue($knowledge, $field.'_values', new \Doctrine\Common\Collections\ArrayCollection(iterator_to_array($iterator)));
-		}
-	}
-
 	public function computeCompletionPercent(AbstractKnowledge $knowledge) {
 		$propertyUtils = $this->get(PropertyUtils::NAME);
 		$fieldDefs = $knowledge->getFieldDefs();
@@ -56,10 +34,27 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 		$propertyUtils = $this->get(PropertyUtils::NAME);
 		$fieldDef = $knowledge->getFieldDefs()[$field];
 		if (!is_null($fieldDef)) {
-			$this->reorderKnowledgeFieldValues($knowledge, $field);
+
 			$values = $propertyUtils->getValue($knowledge, $field.'_values');
 			if (!$values->isEmpty()) {
 
+				// Reorder values
+				$valuesIterator = $values->getIterator();
+				$valuesIterator->uasort(function ($a, $b) {
+					if ($a->getModerationScore() == $b->getModerationScore()) {
+						if ($a->getVoteScore() == $b->getVoteScore()) {
+							if ($a->getCreatedAt() == $b->getCreatedAt()) {
+								return 0;
+							}
+							return ($a->getCreatedAt() > $b->getCreatedAt()) ? -1 : 1;	// CreateAt DESC
+						}
+						return ($a->getVoteScore() > $b->getVoteScore()) ? -1 : 1;	// VoteScore DESC
+					}
+					return ($a->getModerationScore() > $b->getModerationScore()) ? -1 : 1;	// ModerationScore DESC
+				});
+				$valuesArray = iterator_to_array($valuesIterator);
+
+				// Check values
 				$mandatory = isset($fieldDef[AbstractKnowledge::ATTRIB_MANDATORY]) && $fieldDef[AbstractKnowledge::ATTRIB_MANDATORY];
 				$choices = isset($fieldDef[AbstractKnowledge::ATTRIB_CHOICES]) ? $fieldDef[AbstractKnowledge::ATTRIB_CHOICES] : array();
 				$useChoicesValue = isset($fieldDef[AbstractKnowledge::ATTRIB_USE_CHOICES_VALUE]) && $fieldDef[AbstractKnowledge::ATTRIB_USE_CHOICES_VALUE];
@@ -67,7 +62,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 				if ($fieldDef[AbstractKnowledge::ATTRIB_MULTIPLE]) {
 
 					$validValuesData = array();
-					foreach ($values as $value) {
+					foreach ($valuesArray as $value) {
 						if ($value->getVoteScore() >= 0) {
 							$validValuesData[] = $this->_getValueData($value, $choices, $useChoicesValue);
 						} else {
@@ -77,7 +72,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 					$rejectedValue = count($validValuesData) == 0;
 
 					if ($mandatory && $rejectedValue) {
-						$text = $this->_getValueData($values->first(), $choices, $useChoicesValue);
+						$text = $this->_getValueData($values[0], $choices, $useChoicesValue);
 					} else {
 						$text = implode(',', $validValuesData);
 					}
@@ -86,7 +81,7 @@ class KnowledgeUtils extends AbstractContainerAwareUtils {
 					$propertyUtils->setValue($knowledge, $field, $noValue ? null : $text);
 
 				} else {
-					$value = $values->first();
+					$value = $values[0];
 					$rejectedValue = $value->getVoteScore() < 0;
 
 					$noValue = $rejectedValue && !$mandatory;
