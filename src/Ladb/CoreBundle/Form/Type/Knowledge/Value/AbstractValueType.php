@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 
@@ -23,6 +25,17 @@ abstract class AbstractValueType extends AbstractType {
 			->add('source', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
 			->add('moderationScore', NumberType::class)
 		;
+
+		$builder->addEventListener(
+			FormEvents::SUBMIT,
+			function(FormEvent $event) {
+				$value = $event->getData();
+				if (is_null($value->getModerationScore())) {
+					$value->setModerationScore(0);
+				}
+			}
+		);
+
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
