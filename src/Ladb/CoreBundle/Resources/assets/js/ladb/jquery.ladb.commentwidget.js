@@ -322,10 +322,12 @@
         var that = this;
 
         // Bind
-        this.$showActivities.on('click', function() {
+        this.$showActivities.on('click', function(e) {
+            e.preventDefault();
             that.toggleActivities();
         });
-        this.$hideActivities.on('click', function() {
+        this.$hideActivities.on('click', function(e) {
+            e.preventDefault();
             that.toggleActivities();
         });
         $('.ladb-comment-new', this.$element).on('click', function() {

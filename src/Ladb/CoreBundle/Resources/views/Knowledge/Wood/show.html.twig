@@ -84,7 +84,7 @@
         <div style="padding: 10px; text-align: center;">
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
-        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'commentContext':commentContext, 'noMicrodata':true, 'activitiesHidden':true } %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')) } %}
     </div>
     {{ parent() }}
 {% endblock %}
