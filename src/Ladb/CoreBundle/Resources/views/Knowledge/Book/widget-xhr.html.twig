@@ -2,6 +2,10 @@
 
 {% set entity = book %}
 
+{% block subheading %}
+    {{ book.editor }}
+{% endblock %}
+
 {% block entityMetas %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Core/Review:_thumbnail-meta-counter.part.html.twig' %}

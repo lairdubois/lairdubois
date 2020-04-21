@@ -6,8 +6,8 @@
             <a href="{{ ladb_entity_url_action(entity) }}">{% include 'LadbCoreBundle:Common:_avatar.part.html.twig' with { 'size':50, 'noLazyLoad':true, 'noRounded':true } %}</a>
         </div>
         <div class="ladb-body">
-            <div class="ladb-heading">{% block title %}<a href="{{ ladb_entity_url_action(entity) }}">{{ entity.title }}</a>{% endblock %}</div>
-            <div class="ladb-subheading">{% if entity.user is defined %}{% include 'LadbCoreBundle:Common:_author.part.html.twig' %}{% endif %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}</div>
+            <div class="ladb-heading">{% block heading %}<a href="{{ ladb_entity_url_action(entity) }}">{{ entity.title }}</a>{% endblock %}</div>
+            <div class="ladb-subheading">{% block subheading %}{% if entity.user is defined %}{% include 'LadbCoreBundle:Common:_author.part.html.twig' %}{% endif %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}{% endblock %}</div>
             <ul class="ladb-counters ladb-hidden-mobile">{% block entityMetas %}{% endblock %}</ul>
         </div>
     </div>

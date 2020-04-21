@@ -2,6 +2,10 @@
 
 {% set entity = provider %}
 
+{% block subheading %}
+    {{ provider.postalCode }} {{ provider.locality }}
+{% endblock %}
+
 {% block entityMetas %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Core/Review:_thumbnail-meta-counter.part.html.twig' %}

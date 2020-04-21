@@ -2,6 +2,17 @@
 
 {% set entity = software %}
 
+{% block heading %}
+    {{ parent() }}
+    {% if software.isAddOn %}
+        <span style="font-size: 70%; font-weight: normal; color: #aaa;"><i class="ladb-icon-addon"></i> Plugin {{ software.hostSoftwareName }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block subheading %}
+    {{ software.publisher }}
+{% endblock %}
+
 {% block entityMetas %}
     {{ parent() }}
     {% include 'LadbCoreBundle:Core/Review:_thumbnail-meta-counter.part.html.twig' %}

@@ -2,6 +2,10 @@
 
 {% set entity = school %}
 
+{% block subheading %}
+    {{ school.postalCode }} {{ school.locality }}
+{% endblock %}
+
 {% block entityMetas %}
     {{ parent() }}
     {% if school.testimonialCount > 0 %}
