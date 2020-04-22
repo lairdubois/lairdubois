@@ -41,7 +41,7 @@
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
                                         <ul class="dropdown-menu">
                                             {% for fieldDest, fieldDestDef in knowledge.fieldDefs if fieldDestDef[constant('ATTRIB_TYPE', knowledge)] == fieldType and fieldDest != field %}
-                                                <li><a href="#" onclick="moveValueProposal({{ value.id }}, '{{ path('core_knowledge_value_admin_move', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'fieldSrc':value.parentEntityField, 'fieldDest':fieldDest, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.move'|trans() }}"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} '{{ ('knowledge.'~knowledge.strippedName~'.field.'~fieldDest)|trans() }}'</a></li>
+                                                <li><a href="#" onclick="moveValueProposal({{ value.id }}, '{{ path('core_knowledge_value_admin_move', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'fieldSrc':value.parentEntityField, 'fieldDest':fieldDest, 'id':value.id }) }}');return false;"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} '{{ ('knowledge.'~knowledge.strippedName~'.field.'~fieldDest)|trans() }}'</a></li>
                                             {% endfor %}
                                         </ul>
                                     </div>

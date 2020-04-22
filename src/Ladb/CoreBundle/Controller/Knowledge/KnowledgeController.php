@@ -370,9 +370,9 @@ class KnowledgeController extends AbstractController {
 
 			$om->flush();
 
-			// Search index update
-			$searchUtils = $this->get(SearchUtils::NAME);
-			$searchUtils->replaceEntityInIndex($entity);
+			// Dispatch publication event
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(PublicationListener::PUBLICATION_UPDATED, new PublicationEvent($entity));
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
 			$votableUtils = $this->get(VotableUtils::NAME);
@@ -607,6 +607,10 @@ class KnowledgeController extends AbstractController {
 		$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($entity, array('field' => $fieldDest, 'value' => $value)));
 
 		$om->flush();
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_CHANGED, new PublicationEvent($entity));
 
 		// Reload values
 
