@@ -246,6 +246,10 @@ class CreationManager extends AbstractWonderManager {
 		$reportableUtils = $this->get(ReportableUtils::NAME);
 		$reportableUtils->transferReports($creation, $workshop, false);
 
+		// Transfer feedbacks
+		$feedbackableUtils = $this->get(FeedbackableUtils::NAME);
+		$feedbackableUtils->transferFeedbacks($creation, $workshop, false);
+
 		// Transfer publish activities
 		$activityUtils = $this->get(ActivityUtils::NAME);
 		$activityUtils->transferPublishActivities($creation->getType(), $creation->getId(), $workshop->getType(), $workshop->getId(), false);
@@ -254,7 +258,7 @@ class CreationManager extends AbstractWonderManager {
 		$witnessManager = $this->get(WitnessManager::NAME);
 		$witnessManager->createConvertedByPublication($creation, $workshop, false);
 
-		// Delete the find
+		// Delete the creation
 		$this->delete($creation, false, false);
 
 		if ($flush) {

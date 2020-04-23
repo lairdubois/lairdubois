@@ -993,6 +993,29 @@ class WorkshopController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/admin/converttocreation", requirements={"id" = "\d+"}, name="core_workshop_admin_converttocreation")
+	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workshop_admin_converttocreation)")
+	 */
+	public function adminConvertToCreationAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+
+		$workshop = $workshopRepository->findOneById($id);
+		if (is_null($workshop)) {
+			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
+		}
+
+		// Convert
+		$workshopManager = $this->get(WorkshopManager::NAME);
+		$creation = $workshopManager->convertToCreation($workshop);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.admin.alert.converttocreation_success', array( '%title%' => $workshop->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/admin/converttohowto", requirements={"id" = "\d+"}, name="core_workshop_admin_converttohowto")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workshop_admin_converttohowto)")
 	 */

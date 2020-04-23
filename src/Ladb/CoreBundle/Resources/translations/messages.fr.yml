@@ -252,6 +252,7 @@ wonder:
     similar: Voir aussi
     linked_to: Cet atelier est associé à
     new_warning: Un <strong>atelier</strong> est un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>.
+    converttocreation: Convertir en création
     converttohowto: Convertir en pas à pas
     form:
       alert:
@@ -275,6 +276,7 @@ wonder:
       draft_alert: '[0,1]Vous avez 1 atelier en brouillon.|]1,Inf]Vous avez %count% ateliers en brouillon.'
     admin:
       alert:
+        converttocreation_success: L'atelier %title% a été converti en création avec succès.
         converttohowto_success: L'atelier %title% a été converti en pas à pas avec succès.
 
 howto:

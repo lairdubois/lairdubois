@@ -37,6 +37,7 @@
             {% endif %}
             {% if wonderType == 'workshop' %}
                 <li role="separator" class="divider"></li>
+                <li><a href="#admin_converttocreation_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-creation"></i> {{ 'wonder.workshop.converttocreation'|trans() }}</a></li>
                 <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'wonder.workshop.converttohowto'|trans() }}</a></li>
             {% endif %}
         {% endblock %}
@@ -95,6 +96,16 @@
                 {% endembed %}
             {% endif %}
             {% if wonderType == 'workshop' %}
+                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'admin_converttocreation_wonder_modal', 'title':('wonder.workshop.converttocreation'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera l'atelier <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en création.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_workshop_admin_converttocreation', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
                 {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('wonder.workshop.converttohowto'|trans()) } %}
                     {% block bodyInner %}
                         <p>La convertion transformera l'atelier <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en pas à pas.</p>

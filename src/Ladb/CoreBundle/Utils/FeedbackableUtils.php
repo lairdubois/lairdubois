@@ -108,4 +108,30 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 		);
 	}
 
+	/////
+
+	/////
+
+	public function transferFeedbacks(FeedbackableInterface $feedbackableSrc, FeedbackableInterface $feedbackableDest, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+
+		// Retrieve feedbacks
+		$feedbacks = $feedbackRepository->findByEntityTypeAndEntityId($feedbackableSrc->getType(), $feedbackableSrc->getId(), false);
+
+		// Transfer feedbacks
+		foreach ($feedbacks as $feedback) {
+			$feedback->setEntityType($feedbackableDest->getType());
+			$feedback->setEntityId($feedbackableDest->getId());
+		}
+
+		// Update counters
+		$feedbackableDest->incrementFeedbackCount($feedbackableSrc->getFeedbackCount());
+		$feedbackableSrc->setFeedbackCount(0);
+
+		if ($flush) {
+			$om->flush();
+		}
+	}
+
 }

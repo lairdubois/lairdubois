@@ -8,7 +8,7 @@ interface FeedbackableInterface extends IdentifiableInterface, TypableInterface,
 
 	public function incrementFeedbackCount($by = 1);
 
-	public function setFeedbackCount($reviewCount);
+	public function setFeedbackCount($feedbackCount);
 
 	public function getFeedbackCount();
 
