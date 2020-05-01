@@ -23,11 +23,7 @@ class PictureUploadHandler extends \UploadHandler {
 		$this->pictureManager = $pictureManager;
 	}
 
-	public function handle($postProcessor = null,
-						   $acceptFileTypes = Picture::DEFAULT_ACCEPTED_FILE_TYPE,
-						   $maxFileSize = Picture::DEFAULT_MAX_FILE_SIZE,
-						   $imageMaxWidth = Picture::DEFAULT_IMAGE_MAX_WIDTH,
-						   $imageMaxHeight = Picture::DEFAULT_IMAGE_MAX_HEIGHT) {
+	public function handle($quality = Picture::QUALITY_SD, $postProcessor = Picture::POST_PROCESSOR_NONE) {
 		parent::__construct(array(
 			'script_url'                   => '',
 			'upload_dir'                   => sys_get_temp_dir().DIRECTORY_SEPARATOR,
@@ -35,17 +31,19 @@ class PictureUploadHandler extends \UploadHandler {
 			'access_control_allow_methods' => array(
 				'POST',
 			),
-			'accept_file_types'            => $acceptFileTypes,
-			'max_file_size'                => $maxFileSize,
+			'accept_file_types'            => Picture::ACCEPTED_FILE_TYPE,
+			'max_file_size'                => Picture::MAX_FILE_SIZE,
 			'image_library'                => 1,    // imagick
-			'image_file_types'             => '/\.(jpe?g|png)$/i',
+			'image_file_types'             => Picture::ACCEPTED_FILE_TYPE,
 			'image_versions' => array(
 				'' => array(
-					'auto_orient' => true,
-					'max_width'   => $imageMaxWidth,
-					'max_height'  => $imageMaxHeight,
+					'auto_orient'  => true,
+					'max_width'    => Picture::VERSION_IMAGE_SIZE,
+					'max_height'   => Picture::VERSION_IMAGE_SIZE,
+					'jpeg_quality' => 100,
 				),
 			),
+			'quality' => $quality,
 			'post_processor' => $postProcessor,
 		));
 	}
@@ -99,12 +97,23 @@ class PictureUploadHandler extends \UploadHandler {
 		return $file;
 	}
 
-	protected function validate($uploaded_file, $file, $error, $index) {
-		if (parent::validate($uploaded_file, $file, $error, $index)) {
+	protected function validate($uploaded_file, $file, $error, $index, $content_range) {
+		if (parent::validate($uploaded_file, $file, $error, $index, $content_range)) {
 
 			list($img_width, $img_height) = $this->get_image_size($uploaded_file);
+			$minSize = $this->options['quality'] == Picture::QUALITY_HD ? Picture::QUALITY_HD_MIN_SIZE : Picture::QUALITY_SD_MIN_SIZE;
 
-			if ($this->options['post_processor'] != Picture::POST_PROCESSOR_SQUARE) {	// Do not block 1/3 aspect ratio if post processor is SQUARE
+			// Check image size
+			if ($img_width < $minSize) {
+				$file->error = "L'image est trop petite. La largeur de l'image doit être suppérieure à ".$minSize." pixels.";
+				return false;
+			}
+			if ($img_height < $minSize) {
+				$file->error = "L'image est trop petite. La hauteur de l'image doit être suppérieure à ".$minSize." pixels.";
+				return false;
+			}
+
+			if ($this->options['post_processor'] != Picture::POST_PROCESSOR_SQUARE) {	// Do not block 1/4 aspect ratio if post processor is SQUARE
 
 				// Check image ratio
 				$ratio = $img_width / $img_height;

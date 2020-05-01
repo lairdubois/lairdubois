@@ -15,14 +15,18 @@ class Picture {
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Picture';
 
-	const DEFAULT_ACCEPTED_FILE_TYPE = '/\.(jpe?g|png)$/i';
-	const DEFAULT_LOAD_MAX_FILE_SIZE = 8388608; // 8Mo
-	const DEFAULT_MAX_FILE_SIZE = 8388608; // 8Mo
-	const DEFAULT_IMAGE_MIN_WIDTH = 256;
-	const DEFAULT_IMAGE_MIN_HEIGHT = 256;
-	const DEFAULT_IMAGE_MAX_WIDTH = 1024;
-	const DEFAULT_IMAGE_MAX_HEIGHT = 1024;
+	const ACCEPTED_FILE_TYPE = '/\.(jpe?g|png)$/i';
+	const LOAD_MAX_FILE_SIZE = 8388608; // 8Mo
+	const MAX_FILE_SIZE = 8388608; // 8Mo
+	const VERSION_IMAGE_SIZE = 1024;
 
+	const QUALITY_SD = 'sd';
+	const QUALITY_HD = 'hd';
+
+	const QUALITY_SD_MIN_SIZE = 256;
+	const QUALITY_HD_MIN_SIZE = 512;
+
+	const POST_PROCESSOR_NONE = 'none';
 	const POST_PROCESSOR_SQUARE = 'square';
 
 	/**

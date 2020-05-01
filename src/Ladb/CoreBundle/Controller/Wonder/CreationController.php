@@ -1101,31 +1101,7 @@ class CreationController extends AbstractController {
 			},
 			function(&$filters, &$sort) use ($homepage) {
 
-				if ($homepage && !$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-					$filters[] = new \Elastica\Query\Range('createdAt', array( 'gte' => 'now-48h/h' ));
-					$sort = array('likeCount' => array('order' => 'desc'));
-
-//					$fs = new FunctionScore();
-//					$fs->setQuery(new MatchAll());
-//
-//					$scriptCode = "decayDateGauss(params.d_origin, params.d_scale, params.d_offset, params.d_decay, doc['createdAt'].value) * decayNumericExp(params.l_origin, params.l_scale, params.l_offset, params.l_decay, 5000/(doc['likeCount'].value + 1))";
-//					$script = new Script($scriptCode, array(
-//						'd_origin' => '2020-01-01T01:00:00Z',
-//						'd_scale' => '3650d',
-//						'd_offset' => '0',
-//						'd_decay' => 0.5,
-//						'l_origin' => 0,
-//						'l_scale' => 1000,
-//						'l_offset' => 0,
-//						'l_decay' => 0.5,
-//					));
-//					$fs->addScriptScoreFunction($script);
-//
-//					$filters[] = $fs;
-
-				} else {
-					$sort = array('changedAt' => array('order' => 'desc'));
-				}
+				$sort = array('changedAt' => array('order' => 'desc'));
 
 			},
 			function(&$filters) use ($layout) {

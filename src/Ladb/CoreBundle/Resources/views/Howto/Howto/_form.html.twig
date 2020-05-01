@@ -37,7 +37,7 @@
     </div>
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('howto.howto.form.help.title'|trans()) } %}
-    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('howto.howto.form.help.main_picture'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_HD'), 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('howto.howto.form.help.main_picture'|trans()) } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
             <div class="form-group">

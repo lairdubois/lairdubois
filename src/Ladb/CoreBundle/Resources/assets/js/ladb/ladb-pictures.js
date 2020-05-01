@@ -68,8 +68,6 @@ function pictureGalleryInit(options) {
         dataType: "json",
         loadImageMaxFileSize: options.maxFileSize,
         disableImageResize: true, // /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
-        imageMaxWidth: options.imageMaxWidth,
-        imageMaxHeight: options.imageMaxHeight,
         acceptFileTypes: options.acceptedFileTypes,
         maxFileSize: options.maxFileSize,
         sequentialUploads: true,

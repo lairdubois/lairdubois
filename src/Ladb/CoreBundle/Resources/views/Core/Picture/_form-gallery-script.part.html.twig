@@ -5,11 +5,9 @@
 {# set sortable (facultative) #}
 
 {% set formSection = formSection is defined ? formSection : 'pictures' %}
-{% set imageMaxWidth = imageMaxWidth is defined ? imageMaxWidth : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::DEFAULT_IMAGE_MAX_WIDTH') %}
-{% set imageMaxHeight = imageMaxHeight is defined ? imageMaxHeight : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::DEFAULT_IMAGE_MAX_HEIGHT') %}
-{% set acceptedFileTypes = acceptedFileTypes is defined ? acceptedFileTypes : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::DEFAULT_ACCEPTED_FILE_TYPE') %}
-{% set loadMaxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::DEFAULT_LOAD_MAX_FILE_SIZE') %}
-{% set maxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::DEFAULT_MAX_FILE_SIZE') %}
+{% set acceptedFileTypes = acceptedFileTypes is defined ? acceptedFileTypes : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::ACCEPTED_FILE_TYPE') %}
+{% set loadMaxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::LOAD_MAX_FILE_SIZE') %}
+{% set maxFileSize = maxFileSize is defined ? maxFileSize : constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::MAX_FILE_SIZE') %}
 {% set editable = editable is defined ? editable : true %}
 {% set sortable = sortable is defined ? sortable : false %}
 
@@ -19,8 +17,6 @@
             formSection: "{{ formSection }}",
             fieldId: "{{ fieldId }}",
             maxPictureCount: {{ maxPictureCount }},
-            imageMaxWidth: {{ imageMaxWidth }},
-            imageMaxHeight: {{ imageMaxHeight }},
             acceptedFileTypes: {{ acceptedFileTypes }},
             loadMaxFileSize: {{ loadMaxFileSize }},
             maxFileSize: {{ maxFileSize }},

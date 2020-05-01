@@ -82,7 +82,7 @@ EOT
 			}
 
 			$used = false;
-			if (preg_match(Picture::DEFAULT_ACCEPTED_FILE_TYPE, $file)) {
+			if (preg_match(Picture::ACCEPTED_FILE_TYPE, $file)) {
 				foreach ($pictures as $picture) {
 					if ($picture->getMasterPath() == $file) {
 						$used = true;
