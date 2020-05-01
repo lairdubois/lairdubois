@@ -45,7 +45,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.software.field.icon'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'icon', 'form':form.iconValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_ICON'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE'), 'fieldLabel':('knowledge.software.field.icon'|trans()) } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'icon', 'form':form.iconValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_ICON'), 'fieldLabel':('knowledge.software.field.icon'|trans()), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

@@ -45,7 +45,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.wood.field.grain'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'grain', 'form':form.grainValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Wood::FIELD_GRAIN'), 'fieldLabel':('knowledge.wood.field.grain'|trans()) } %}
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-picture.part.html.twig' with { 'formSection':'grain', 'form':form.grainValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Wood::FIELD_GRAIN'), 'fieldLabel':('knowledge.wood.field.grain'|trans()), 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_HD') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

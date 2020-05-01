@@ -52,7 +52,8 @@ abstract class AbstractKnowledge extends AbstractPublication implements TitledIn
 	const ATTRIB_FILTER_QUERY = 7;
 	const ATTRIB_LINKED_FIELDS = 8;
 	const ATTRIB_MANDATORY = 9;
-	const ATTRIB_POST_PROCESSOR = 10;
+	const ATTRIB_QUALITY = 10;
+	const ATTRIB_POST_PROCESSOR = 11;
 
 	/**
 	 * @ORM\Column(type="string", length=100)

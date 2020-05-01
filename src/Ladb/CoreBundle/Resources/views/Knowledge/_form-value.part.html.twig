@@ -15,9 +15,14 @@
 
 <form action="{{ actionPath }}" method="post" novalidate class="ladb-value-proposal-form">
     <fieldset>
-        {# Add post-processor parameter if fieldType is picture and post-processor is defined. Variable used in the following include. #}
-        {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') and knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] is defined %}
-            {% set postProcessor = knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] %}
+        {# Add quality and/or post-processor parameter if fieldType is picture and quality and/or post-processor is defined. Variable used in the following include. #}
+        {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') %}
+            {% if knowledge.fieldDefs[field][constant('ATTRIB_QUALITY', knowledge)] is defined %}
+                {% set quality = knowledge.fieldDefs[field][constant('ATTRIB_QUALITY', knowledge)] %}
+            {% endif %}
+            {% if knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] is defined %}
+                {% set postProcessor = knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] %}
+            {% endif %}
         {% endif %}
         {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-'~fieldType~'.part.html.twig' with { 'fieldLabel':fieldLabel } %}
     </fieldset>

@@ -20,9 +20,11 @@ class Picture {
 	const MAX_FILE_SIZE = 8388608; // 8Mo
 	const VERSION_IMAGE_SIZE = 1024;
 
+	const QUALITY_LD = 'ld';
 	const QUALITY_SD = 'sd';
 	const QUALITY_HD = 'hd';
 
+	const QUALITY_LD_MIN_SIZE = 64;
 	const QUALITY_SD_MIN_SIZE = 256;
 	const QUALITY_HD_MIN_SIZE = 512;
 

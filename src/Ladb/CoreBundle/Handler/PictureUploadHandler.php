@@ -101,7 +101,7 @@ class PictureUploadHandler extends \UploadHandler {
 		if (parent::validate($uploaded_file, $file, $error, $index, $content_range)) {
 
 			list($img_width, $img_height) = $this->get_image_size($uploaded_file);
-			$minSize = $this->options['quality'] == Picture::QUALITY_HD ? Picture::QUALITY_HD_MIN_SIZE : Picture::QUALITY_SD_MIN_SIZE;
+			$minSize = $this->options['quality'] == Picture::QUALITY_HD ? Picture::QUALITY_HD_MIN_SIZE : $this->options['quality'] == Picture::QUALITY_SD ? Picture::QUALITY_SD_MIN_SIZE : Picture::QUALITY_LD_MIN_SIZE;
 
 			// Check image size
 			if ($img_width < $minSize) {

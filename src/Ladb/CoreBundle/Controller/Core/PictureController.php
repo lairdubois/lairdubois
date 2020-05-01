@@ -19,7 +19,7 @@ use Ladb\CoreBundle\Form\Type\EditPictureType;
 class PictureController extends AbstractController {
 
 	/**
-	 * @Route("/{quality}/{postProcessor}/upload", requirements={"quality" = "sd|hd", "postProcessor" = "none|square"}, name="core_picture_upload")
+	 * @Route("/{quality}/{postProcessor}/upload", requirements={"quality" = "ld|sd|hd", "postProcessor" = "none|square"}, name="core_picture_upload")
 	 */
 	public function uploadAction(Request $request, $quality, $postProcessor) {
 		$uploadHandler = $this->get(PictureUploadHandler::NAME);
