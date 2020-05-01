@@ -1242,7 +1242,7 @@ review:
     none: Ce fournisseur ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
     your_review: votre avis
     form:
-      new_help: Cet avis vous permet d'exprimer de façon synthétique votre expérience de client auprès du fournisseur
+      new_help: Cet avis vous permet d'exprimer votre expérience de client auprès du fournisseur
       new_warning: N'utilisez pas cet avis pour poser des questions sur le fournisseur.
       body: Votre avis
     alert:
@@ -1257,7 +1257,7 @@ review:
     none: Ce livre ne possède pour l'instant aucune critique de lecteur.<br>Soyez le premier à ajouter la votre !
     your_review: votre critique
     form:
-      new_help: Cette critique vous permet d'exprimer de façon synthétique votre avis de lecteur sur le livre
+      new_help: Cette critique vous permet d'exprimer votre avis de lecteur sur le livre
       new_warning: N'utilisez pas cet avis pour poser des questions sur le livre.
       body: Votre critique
     alert:
@@ -1272,7 +1272,7 @@ review:
     none: Ce logiciel ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
     your_review: votre avis
     form:
-      new_help: Cet avis vous permet d'exprimer de façon synthétique votre avis d'utilisateur du logiciel
+      new_help: Cet avis vous permet d'exprimer votre avis d'utilisateur du logiciel
       new_warning: N'utilisez pas cet avis pour poser des questions sur le logiciel.
       body: Votre avis
     alert:
