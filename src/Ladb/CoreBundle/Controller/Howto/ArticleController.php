@@ -59,7 +59,7 @@ class ArticleController extends AbstractController {
 
 		return array(
 			'howto' => $howto,
-			'form'    => $form->createView(),
+			'form'  => $form->createView(),
 		);
 	}
 
@@ -95,6 +95,7 @@ class ArticleController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($article);
 
+			$article->setSortIndex($howto->getArticleMaxSortIndex() + 1);	// Default sort index is max value = new articles at the end of the list
 			$howto->addArticle($article);
 			if ($howto->getIsDraft()) {
 				$article->setIsDraft(false);
@@ -102,7 +103,6 @@ class ArticleController extends AbstractController {
 			} else {
 				$howto->incrementDraftArticleCount();
 			}
-			$article->setSortIndex(Article::MAX_SORT_INDEX);	// Default sort index is max value = new articles at the end of the list
 
 			$om->persist($article);
 			$om->flush();
@@ -115,7 +115,7 @@ class ArticleController extends AbstractController {
 
 		return array(
 			'howto' => $howto,
-			'form'    => $form->createView(),
+			'form'  => $form->createView(),
 		);
 	}
 

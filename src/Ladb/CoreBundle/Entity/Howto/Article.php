@@ -38,8 +38,6 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Article';
 	const TYPE = 107;
 
-	const MAX_SORT_INDEX = 2147483647;
-
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Howto\Howto", inversedBy="articles")
 	 * @ORM\JoinColumn(nullable=false)

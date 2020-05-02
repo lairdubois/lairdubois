@@ -314,7 +314,6 @@ class CreationManager extends AbstractWonderManager {
 		} else {
 			$howto->incrementDraftArticleCount();
 		}
-		$article->setSortIndex(Article::MAX_SORT_INDEX);	// Default sort index is max value = new articles at the end of the list
 
 		foreach ($creation->getTags() as $tag) {
 			$howto->addTag($tag);

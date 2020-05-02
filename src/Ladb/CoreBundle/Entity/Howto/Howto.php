@@ -390,6 +390,16 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 		$this->articles = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	// ArticleMaxSortIndex /////
+
+	public function getArticleMaxSortIndex() {
+		$maxSortIndex = -1;
+		foreach ($this->getArticles() as $article) {
+			$maxSortIndex = max($maxSortIndex, $article->getSortIndex());
+		}
+		return $maxSortIndex;
+	}
+
 	// Spotlight /////
 
 	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
