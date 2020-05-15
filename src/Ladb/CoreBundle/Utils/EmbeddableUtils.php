@@ -60,7 +60,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 
 		// Create sticker picture
 		$pictureManager = $this->get(PictureManager::NAME);
-		$sticker = $pictureManager->createEmty('png');
+		$sticker = $pictureManager->createEmpty('png');
 
 		$hasSubtitle = $embeddable instanceof ChildInterface && $embeddable->getParentEntity() instanceof EmbeddableInterface;
 
