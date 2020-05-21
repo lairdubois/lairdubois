@@ -73,6 +73,11 @@ class ReviewController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_review_create)');
 		}
 
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_knowledge_value_create)');
+		}
+
 		$this->createLock('core_review_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		// Retrieve related entity

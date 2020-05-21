@@ -1,54 +1,72 @@
 {% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' 'LadbCoreBundle:Core/Block:_form-theme.html.twig' %}
 
+{% set i18nPrefix = i18nPrefix|default(ladb_entity_type_stripped_name(entity)) %}
+
 <div class="ladb-review-form">
-    <div class="ladb-box">
-        <div class="ladb-box-inner">
-            <h4>{% block title %}{% endblock %}</h4>
-            {% block formOuter %}
-                {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
-                    {{ form_errors(form) }}
-                    <div class="form-group">
-                        <label>Titre</label>
-                        {{ form_errors(form.title) }}
-                        {{ form_widget(form.title, { 'attr':{ 'class':'form-control' } }) }}
+    {% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-warning ladb-icon-lg"></i></div>
+                    <div class="media-body">
+                        l'adresse e-mail associée à votre compte doit être confirmée avant de pouvoir ajouter {{ ('review.'~i18nPrefix~'.your_review')|trans }}.
                     </div>
-                    <div class="form-group">
-                        <label>Evaluation</label> (facultatif)
-                        {{ form_errors(form.rating) }}
-                        {{ form_widget(form.rating, { 'attr':{ 'class':'form-control' } }) }}
-                    </div>
-                    <div class="form-group">
-                        <label>{{ ('review.'~i18nPrefix~'.form.body')|trans() }}</label>
-                        {{ form_errors(form.body) }}
-                        {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize' } }) }}
-                        {{ form_rest(form) }}
-                    </div>
-                    <div class="ladb-margin-top">
-                        {% block buttons %}
-                            <button class="btn btn-default ladb-btn-cancel">{{ 'default.cancel'|trans() }}</button>
-                        {% endblock %}
-                    </div>
-                {{ form_end(form) }}
-            {% endblock %}
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+            </div>
         </div>
-    </div>
-    <script>
-        var init{{ form.vars.id }} = function() {
-            $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
-                mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
-            });
-            $('#{{ form.rating.vars.id }}').barrating({
-                theme: 'ladb-stars',
-                allowEmpty: true,
-                emptyValue: 0
-            });
-        };
-        if (document.readyState === "complete") {
-            init{{ form.vars.id }}();
-        } else {
-            $(document).ready(function() {
+    {% else %}
+        <div class="ladb-box">
+            <div class="ladb-box-inner">
+                <h4>{% block title %}{% endblock %}</h4>
+                {% block formOuter %}
+                    {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+                        {{ form_errors(form) }}
+                        <div class="form-group">
+                            <label>Titre</label>
+                            {{ form_errors(form.title) }}
+                            {{ form_widget(form.title, { 'attr':{ 'class':'form-control' } }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Evaluation</label> (facultatif)
+                            {{ form_errors(form.rating) }}
+                            {{ form_widget(form.rating, { 'attr':{ 'class':'form-control' } }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>{{ ('review.'~i18nPrefix~'.form.body')|trans() }}</label>
+                            {{ form_errors(form.body) }}
+                            {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize' } }) }}
+                            {{ form_rest(form) }}
+                        </div>
+                        <div class="ladb-margin-top">
+                            {% block buttons %}
+                                <button class="btn btn-default ladb-btn-cancel">{{ 'default.cancel'|trans() }}</button>
+                            {% endblock %}
+                        </div>
+                    {{ form_end(form) }}
+                {% endblock %}
+            </div>
+        </div>
+        <script>
+            var init{{ form.vars.id }} = function() {
+                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                    mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                });
+                $('#{{ form.rating.vars.id }}').barrating({
+                    theme: 'ladb-stars',
+                    allowEmpty: true,
+                    emptyValue: 0
+                });
+            };
+            if (document.readyState === "complete") {
                 init{{ form.vars.id }}();
-            });
-        }
-    </script>
+            } else {
+                $(document).ready(function() {
+                    init{{ form.vars.id }}();
+                });
+            }
+        </script>
+    {% endif %}
 </div>

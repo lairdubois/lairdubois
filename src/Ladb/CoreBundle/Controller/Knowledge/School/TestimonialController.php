@@ -26,7 +26,11 @@ class TestimonialController extends AbstractController {
 	 * @Route("/{id}/temoignages/new", requirements={"id" = "\d+"}, name="core_knowledge_school_testimonial_new")
 	 * @Template("LadbCoreBundle:Knowledge/School/Testimonial:new-xhr.html.twig")
 	 */
-	public function newAction($id) {
+	public function newAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_review_new)');
+		}
+
 		$om = $this->getDoctrine()->getManager();
 		$schoolRepository = $om->getRepository(School::CLASS_NAME);
 
@@ -49,15 +53,27 @@ class TestimonialController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/School/Testimonial:new-xhr.html.twig")
 	 */
 	public function createAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_review_create)');
+		}
+
+		// Exclude if user is not email confirmed
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw $this->createNotFoundException('Not allowed - User email not confirmed (core_knowledge_value_create)');
+		}
 
 		$this->createLock('core_knowledge_school_testimonial_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
 		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$testimonialRepository = $om->getRepository(School\Testimonial::CLASS_NAME);
 
 		$school = $schoolRepository->findOneById($id);
 		if (is_null($school)) {
 			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
+		}
+		if ($testimonialRepository->existsBySchoolAndUser($school, $this->getUser())) {
+			throw $this->createNotFoundException('Only one testimonial is allowed by user.');
 		}
 
 		$testimonial = new School\Testimonial();
