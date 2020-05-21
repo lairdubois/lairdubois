@@ -12,12 +12,21 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class License {
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\License';
+
+	const SUPPORTED_VERSIONS = [ '3.0', '4.0' ];
+	const DEFAULT_VERSION = '4.0';
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
+	/**
+	 * @ORM\Column(type="string", nullable=false)
+	 */
+	private $version = self::DEFAULT_VERSION;
 
 	/**
 	 * @ORM\Column(type="boolean", nullable=true, name="allow_derivs")
@@ -48,6 +57,20 @@ class License {
 
 	public function getId() {
 		return $this->id;
+	}
+
+	// Version /////
+
+	public function getVersion() {
+		return $this->version;
+	}
+
+	public function setVersion($version) {
+		if (!in_array($version, self::SUPPORTED_VERSIONS)) {
+			$version = self::DEFAULT_VERSION;
+		}
+		$this->version = $version;
+		return $this;
 	}
 
 	// AllowDerivs /////
@@ -89,7 +112,7 @@ class License {
 		return '/bundles/ladbcore/ladb/images/cc/88x31/'.$this->getStrippedName().'.png';
 	}
 
-	// BadgeUrl /////
+	// StrippedName /////
 
 	public function getStrippedName() {
 		$strippedName = 'by';
@@ -113,7 +136,7 @@ class License {
 	// ContentUrl /////
 
 	public function getContentUrl($locale = 'fr') {
-		return 'http://creativecommons.org/licenses/'.$this->getStrippedName().'/3.0/deed.'.$locale;
+		return 'http://creativecommons.org/licenses/'.$this->getStrippedName().'/'.$this->getVersion().'/deed.'.$locale;
 	}
 
 }

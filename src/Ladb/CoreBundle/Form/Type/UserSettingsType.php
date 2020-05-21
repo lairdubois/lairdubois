@@ -34,11 +34,11 @@ class UserSettingsType extends AbstractType {
 			->add('email')
 			->add('accountType', ChoiceType::class, array(
 				'choices' => array_flip(array(
-					User::ACCOUNT_TYPE_NONE => 'Un-e curieu-se',
-					User::ACCOUNT_TYPE_ASSO => 'Une association ou un collectif&nbsp;<i class="ladb-icon-badge-asso"></i>',
+					User::ACCOUNT_TYPE_NONE     => 'Un-e curieu-se',
+					User::ACCOUNT_TYPE_ASSO     => 'Une association ou un collectif&nbsp;<i class="ladb-icon-badge-asso"></i>',
 					User::ACCOUNT_TYPE_HOBBYIST => 'Un-e passionné-e du travail du bois&nbsp;<i class="ladb-icon-badge-hobbyist"></i>',
-					User::ACCOUNT_TYPE_PRO => 'Un-e professionnel-le des métiers du bois&nbsp;<i class="ladb-icon-badge-pro"></i>',
-					User::ACCOUNT_TYPE_BRAND => 'Une marque&nbsp;<i class="ladb-icon-badge-brand"></i>'
+					User::ACCOUNT_TYPE_PRO      => 'Un-e professionnel-le des métiers du bois&nbsp;<i class="ladb-icon-badge-pro"></i>',
+					User::ACCOUNT_TYPE_BRAND    => 'Une marque&nbsp;<i class="ladb-icon-badge-brand"></i>'
 				)),
 				'expanded' => true,
 			))

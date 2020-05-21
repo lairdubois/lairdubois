@@ -18,7 +18,7 @@ use Ladb\CoreBundle\Form\DataTransformer\Howto\ArticlesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Knowledge\ProvidersToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
-use Ladb\CoreBundle\Form\Type\LicenseType;
+use Ladb\CoreBundle\Form\Type\Core\LicenseType;
 
 class HowtoType extends AbstractType {
 

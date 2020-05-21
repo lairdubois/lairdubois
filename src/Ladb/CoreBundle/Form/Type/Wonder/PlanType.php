@@ -15,7 +15,7 @@ use Ladb\CoreBundle\Form\DataTransformer\PicturesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\ResourcesToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
-use Ladb\CoreBundle\Form\Type\LicenseType;
+use Ladb\CoreBundle\Form\Type\Core\LicenseType;
 
 class PlanType extends AbstractType {
 

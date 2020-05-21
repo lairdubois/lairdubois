@@ -1449,12 +1449,20 @@ license:
   allow_derivs: J'autorise les modifications.
   share_alike: J'autorise les modifications, sous condition de partage dans les mêmes conditions.
   allow_commercial: J'autorise les utilisations commerciales.
-  by: Licence Creative Commons Attribution 3.0 non transposé
-  by-sa: Licence Creative Commons Attribution - Partage dans les Mêmes Conditions 3.0 non transposé
-  by-nd: Licence Creative Commons Attribution - Pas de Modification 3.0 non transposé
-  by-nc: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale 3.0 non transposé
-  by-nc-sa: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 non transposé
-  by-nc-nd: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Pas de Modification 3.0 non transposé
+  v3.0:
+    by: Licence Creative Commons Attribution 3.0 non transposé
+    by-sa: Licence Creative Commons Attribution - Partage dans les Mêmes Conditions 3.0 non transposé
+    by-nd: Licence Creative Commons Attribution - Pas de Modification 3.0 non transposé
+    by-nc: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale 3.0 non transposé
+    by-nc-sa: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 non transposé
+    by-nc-nd: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Pas de Modification 3.0 non transposé
+  v4.0:
+    by: Licence Creative Commons Attribution 4.0 International
+    by-sa: Licence Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International
+    by-nd: Licence Creative Commons Attribution - Pas de Modification 4.0 International
+    by-nc: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale 4.0 Internationalé
+    by-nc-sa: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International
+    by-nc-nd: Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Pas de Modification 4.0 International
 
 block:
   text: bloc de texte

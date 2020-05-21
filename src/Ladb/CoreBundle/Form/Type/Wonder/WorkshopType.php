@@ -16,7 +16,7 @@ use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Howto\HowtosToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
-use Ladb\CoreBundle\Form\Type\LicenseType;
+use Ladb\CoreBundle\Form\Type\Core\LicenseType;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 
 class WorkshopType extends AbstractType {

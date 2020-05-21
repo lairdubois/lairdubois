@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\DataTransformer\TagsToLabelsTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Wonder\PlansToIdsTransformer;
-use Ladb\CoreBundle\Form\Type\LicenseType;
+use Ladb\CoreBundle\Form\Type\Core\LicenseType;
 
 class WorkflowType extends AbstractType {
 
