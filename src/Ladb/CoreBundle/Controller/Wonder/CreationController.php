@@ -1062,6 +1062,13 @@ class CreationController extends AbstractController {
 
 						break;
 
+					case 'with-spotlight':
+
+						$filter = new \Elastica\Query\Range('withEnabledSpotlight', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					// Sorters /////
 
 					case 'sort-recent':

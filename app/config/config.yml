@@ -434,6 +434,7 @@ fos_elastica:
                         schoolCount: { type: integer }
                         inspirationCount: { type: integer }
                         reboundCount: { type: integer }
+                        withEnabledSpotlight: { type: boolean }
                         user:
                             type: "object"
                             properties:
@@ -616,6 +617,7 @@ fos_elastica:
                         schoolCount: { type: integer }
                         kind: { type: short }
                         isWorkInProgress: { type: boolean }
+                        withEnabledSpotlight: { type: boolean }
                         articles:
                             type: "object"
                             properties:

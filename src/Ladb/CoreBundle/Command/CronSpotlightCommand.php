@@ -5,7 +5,9 @@ namespace Ladb\CoreBundle\Command;
 use DirkGroenen\Pinterest\Pinterest;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
+use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\StripableInterface;
+use Ladb\CoreBundle\Utils\SearchUtils;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -223,6 +225,14 @@ EOT
 				}
 				if ($verbose) {
 					$output->writeln('<info>New spotlight : <fg=cyan>"'.$entity->getTitle().'" (type='.$entity->getType().')</fg=cyan>'.($forced ? ' created' : ' to create').'</info>');
+				}
+
+				if ($entity instanceof IndexableInterface && $entity->isIndexable()) {
+
+					// Search index update
+					$searchUtils = $this->getContainer()->get(SearchUtils::NAME);
+					$searchUtils->replaceEntityInIndex($entity);
+
 				}
 
 				// Publish on social networks

@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Entity\Howto;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Model\SpotlightableInterface;
+use Ladb\CoreBundle\Model\SpotlightableTrait;
 use Ladb\CoreBundle\Model\StripableInterface;
 use Ladb\CoreBundle\Model\StripableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,10 +49,10 @@ use Ladb\CoreBundle\Model\ScrapableInterface;
  * @ORM\Table("tbl_howto")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Howto\HowtoRepository")
  */
-class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, HtmlBodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface, LinkedToInterface {
+class Howto extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, HtmlBodiedInterface, LicensedInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, EmbeddableInterface, StripableInterface, LinkedToInterface, SpotlightableInterface {
 
 	use TitledTrait, SluggedTrait, PicturedTrait, HtmlBodiedTrait, LicensedTrait;
-	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, EmbeddableTrait, StripableTrait;
+	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, EmbeddableTrait, StripableTrait, SpotlightableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Howto\Howto';
 	const TYPE = 106;
@@ -398,17 +400,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 			$maxSortIndex = max($maxSortIndex, $article->getSortIndex());
 		}
 		return $maxSortIndex;
-	}
-
-	// Spotlight /////
-
-	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
-		$this->spotlight = $spotlight;
-		return $this;
-	}
-
-	public function getSpotlight() {
-		return $this->spotlight;
 	}
 
 	// LinkedEntities /////

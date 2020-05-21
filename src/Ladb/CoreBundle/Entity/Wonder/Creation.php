@@ -4,24 +4,26 @@ namespace Ladb\CoreBundle\Entity\Wonder;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Model\FeedbackableInterface;
-use Ladb\CoreBundle\Model\FeedbackableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\BlockBodiedTrait;
 use Ladb\CoreBundle\Model\InspirableInterface;
 use Ladb\CoreBundle\Model\InspirableTrait;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\FeedbackableInterface;
+use Ladb\CoreBundle\Model\FeedbackableTrait;
+use Ladb\CoreBundle\Model\SpotlightableInterface;
+use Ladb\CoreBundle\Model\SpotlightableTrait;
 
 /**
  * @ORM\Table("tbl_wonder_creation")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Wonder\CreationRepository")
  * @LadbAssert\BodyBlocks()
  */
-class Creation extends AbstractWonder implements BlockBodiedInterface, InspirableInterface, FeedbackableInterface {
+class Creation extends AbstractWonder implements BlockBodiedInterface, InspirableInterface, FeedbackableInterface, SpotlightableInterface {
 
 	use BlockBodiedTrait;
-	use InspirableTrait, FeedbackableTrait;
+	use InspirableTrait, FeedbackableTrait, SpotlightableTrait;
 
 	const CLASS_NAME = 'LadbCoreBundle:Wonder\Creation';
 	const TYPE = 100;
@@ -269,17 +271,6 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getFinishes() {
 		return $this->finishes;
-	}
-
-	// Spotlight /////
-
-	public function getSpotlight() {
-		return $this->spotlight;
-	}
-
-	public function setSpotlight(\Ladb\CoreBundle\Entity\Core\Spotlight $spotlight = null) {
-		$this->spotlight = $spotlight;
-		return $this;
 	}
 
 	// LinkedEntities /////
