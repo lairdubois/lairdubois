@@ -36,11 +36,12 @@
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('wonder.plan.form.help.title'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Resource:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formResources':form.resources, 'resources':form.vars.data.resources, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources', 'title':('default.choice.files'|transchoice(2)|capitalize), 'help':('wonder.plan.form.help.resource'|trans()) } %}
-    {% embed 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('wonder.plan.form.help.showcase'|trans()) } %}
+    {% embed 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('wonder.plan.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
         {% block body %}
             {{ parent() }}
             <hr>
             <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-exporter-une-capture-d-un-plan-sketchup' }) }}">Comment exporter une capture d'un plan Sketchup ?</a> </p>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-associer-un-plan-a-une-creation' }) }}">Comment associer un plan à une Création ?</a> </p>
         {% endblock %}
     {% endembed %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'3d', 'title':'3D Warehouse', 'formSection':'3dwarehouse' } %}
