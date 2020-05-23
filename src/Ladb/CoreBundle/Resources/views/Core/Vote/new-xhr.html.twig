@@ -6,7 +6,7 @@
 {% set title = ('vote.tooltip.vote_'~way)|trans() %}
 
 {% block bodyInner %}
-    <p>Vous êtes sur le point de {% if way == 'down' %}<strong class="ladb-color-danger">rejeter</strong>{% else %}<strong class="ladb-color-success">valider</strong>{% endif %}
+    <p>Vous êtes sur le point d'indiquer votre {% if way == 'down' %}<strong class="ladb-color-danger">désaccord</strong>{% else %}<strong class="ladb-color-success">accord</strong>{% endif %} avec
     {% if entity.type >= constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE') and entity.type < constant('\\Ladb\\CoreBundle\\Entity\\Wonder\\Creation::TYPE') %} {# Knowledge value #}
         {% set fieldDef = parentEntity.fieldDefs[entity.parentEntityField] %}
         {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}

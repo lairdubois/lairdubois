@@ -458,8 +458,8 @@ qa:
     best: Meilleure réponse
     set_as_best: Choisir comme meilleure réponse
     best_tooltip: L'auteur de la question a choisi cette réponse comme étant la meilleure
-    vote_up_tooltip: Je valide cette réponse
-    vote_down_tooltip: Je rejette cette réponse
+    vote_up_tooltip: Je suis d'accord avec cette réponse
+    vote_down_tooltip: Je ne suis pas d'accord avec cette réponse
     sort: Tri des réponses
     sort_score: Mieux notées
     sort_recent: Plus récentes
@@ -676,8 +676,8 @@ knowledge:
   source_type_3: Autre
   back_to: Voir la fiche complète
   tooltip:
-    vote_up: Je valide cette proposition
-    vote_down: Je rejette cette proposition
+    vote_up: Je suis d'accord avec cette proposition
+    vote_down: Je ne suis pas d'accord avec cette proposition
   info:
     single_proposal: Ce champ ne permet qu'une seule valeur. La proposition la plus récente ou avec le meilleur score positif ou nul sera sélectionnée.
     multiple_proposal: Ce champ permet plusieurs valeurs. Les propositions les plus récentes ou avec les meilleurs scores positifs ou nuls seront sélectionnées.
@@ -693,8 +693,8 @@ knowledge:
     not_verified: Cette proposition n'a pas été vérifiée
     undetermined: Les avis divergent sur la validation de cette proposition.
     choice:
-      rejected: '[0,1]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;vérification défavorable|]1,Inf]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;vérifications défavorables'
-      verified: '[0,1]Cette proposition a été validée par %count%&nbsp;vérification favorable|]1,Inf]Cette proposition a été validée par %count%&nbsp;vérifications favorables'
+      rejected: '[0,1]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;vote défavorable|]1,Inf]Ce champ contient au moins une proposition ayant été rejettée par %count%&nbsp;votes défavorables'
+      verified: '[0,1]Cette proposition a été validée par %count%&nbsp;vote favorable|]1,Inf]Cette proposition a été validée par %count%&nbsp;votes favorables'
   wood:
     description: Xylothèque collaborative d'essences de bois.
     new: Ajouter une essence
@@ -1339,8 +1339,8 @@ watch:
 vote:
   vote: Vote
   tooltip:
-    vote_up: Je valide
-    vote_down: Je rejette
+    vote_up: Je suis d'accord
+    vote_down: Je ne suis pas d'accord
   choice:
     entities: '[-Inf,1]vote|]1,Inf]votes'
     positive_votes: '[-Inf,1]vote favorable|]1,Inf]votes favorables'

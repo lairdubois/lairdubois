@@ -135,7 +135,7 @@
             {% include 'LadbCoreBundle:Knowledge/School/Testimonial:_list.part.html.twig' with { 'testimonials':school.testimonials } %}
             {% include 'LadbCoreBundle:Knowledge/School:_testimonials-footer.part.html.twig' %}
         </div>
-        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':true, 'alertTransKey':'knowledge.school.comment_alert' } %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.school.comment_alert' } %}
     </div>
     {{ parent() }}
 {% endblock %}
