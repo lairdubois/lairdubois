@@ -100,6 +100,14 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
+	public function sendSpamThreadNotificationEmailMessage(User $sender, $recipients, $subject, $body) {
+		$this->sendEmailMessage(
+			'contact@lairdubois.fr',
+			'Notification de détection de SPAM',
+			$this->_renderTemplate('LadbCoreBundle:Message:spam-email-notification.txt.twig', array( 'sender' => $sender, 'recipients' => $recipients, 'subject' => $subject, 'body' => $body ))
+		);
+	}
+
 	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess, $mastodonSuccess) {
 		if ($recipientUser->getMeta()->getNewSpotlightEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
 			$parameters = array(

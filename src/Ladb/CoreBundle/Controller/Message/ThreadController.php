@@ -79,6 +79,18 @@ class ThreadController extends AbstractController {
 			$sender = $this->getUser();
 			$recipients = $newThreadMessage->getRecipients()->toArray();
 
+			// Exclude "SPAM" threads
+			$om = $this->getDoctrine()->getManager();
+			$threadRepository = $om->getRepository(Thread::CLASS_NAME);
+			if ($threadRepository->existsBySenderAndSubjectAndBody($sender, $newThreadMessage->getSubject(), $newThreadMessage->getBody())) {
+
+				// Email notification
+				$mailerUtils = $this->get(MailerUtils::NAME);
+				$mailerUtils->sendSpamThreadNotificationEmailMessage($sender, $recipients, $newThreadMessage->getSubject(), $newThreadMessage->getBody());
+
+				throw $this->createNotFoundException('SPAM thread detected (sender='.$sender->getUsername().', subject='.$newThreadMessage->getSubject().').');
+			}
+
 			$messageUtils = $this->get(MessageUtils::NAME);
 			$thread = $messageUtils->composeThread($sender, $recipients, $newThreadMessage->getSubject(), $newThreadMessage->getBody(), $newThreadMessage->getPictures());
 

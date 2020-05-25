@@ -2,11 +2,37 @@
 
 namespace Ladb\CoreBundle\Repository\Message;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class ThreadRepository extends AbstractEntityRepository {
+
+	/////
+
+	public function existsBySenderAndSubjectAndBody($sender, $subject, $body, $backwardDaysInterval = 1) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'count(t.id)' ))
+			->from($this->getEntityName(), 't')
+			->innerJoin('t.messages', 'm')
+			->where('m.sender = :sender')
+			->andWhere('LOWER(t.subject) = :subject')
+			->andWhere('LOWER(m.body) = :body')
+			->andWhere('t.createdAt >= :minDate')
+			->setParameter('sender', $sender)
+			->setParameter('subject', strtolower(trim($subject)))
+			->setParameter('body', strtolower(trim($body)))
+			->setParameter('minDate', (new \DateTime())->sub(new \DateInterval('P'.$backwardDaysInterval.'D')))
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getSingleScalarResult() > 0;
+		} catch (NonUniqueResultException $e) {
+			return false;
+		}
+	}
 
 	/////
 
