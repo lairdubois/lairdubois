@@ -1,4 +1,4 @@
 
 {# set me (facultative) #}
 
-{% if not user.enabled %}<del>{% endif %}{{ user == app.user and me is defined ? 'Moi' : user.displayname }}{% if not user.enabled %}</del>{% endif %}
+{% if not user.enabled %}<span title="Ce compte a été désactivé pour utilisation abusive de la plateforme." data-tooltip="tooltip"><i class="ladb-icon-warning ladb-color-danger"></i> <del>{% endif %}{{ user == app.user and me is defined ? 'Moi' : user.displayname }}{% if not user.enabled %}</del></span>{% endif %}

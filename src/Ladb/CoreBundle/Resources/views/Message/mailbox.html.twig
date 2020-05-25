@@ -10,6 +10,14 @@
 {% block bodyJavascripts %}
     {{ parent() }}
     {{ block('autopagerScript') }}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Tooltips #}
+            setupTooltips();
+
+        });
+    </script>
 {% endblock %}
 
 {% block bodyContainerContent %}
