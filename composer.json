@@ -79,7 +79,7 @@
         "suin/php-rss-writer": "^1.6",
         "chrome-php/chrome": "^0.7.0",
 
-        "components/jquery": "3.3.1",
+        "components/jquery": "3.5.1",
         "components/jqueryui": "1.12.1",
         "components/masonry": "3.2.2"
 
