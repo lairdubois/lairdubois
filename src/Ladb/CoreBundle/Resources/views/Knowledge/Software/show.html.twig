@@ -147,7 +147,7 @@
         {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':software } %}
         {% if software.website %}
             <div class="ladb-btn">
-                <a href="{{ software.website }}" target="_blank" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-globe"></i> {{ 'knowledge.software.field.website'|trans() }}</a>
+                <a href="{{ software.website }}" target="_blank" rel="noreferrer noopener" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-globe"></i> {{ 'knowledge.software.field.website'|trans() }}</a>
             </div>
         {% endif %}
         {% if software.docs %}
@@ -159,7 +159,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         {% for doc in software.docs|split(',') %}
-                            <li><a href="{{ doc }}" target="_blank">{{ doc|ladb_url_beautify|raw }}</a></li>
+                            <li><a href="{{ doc }}" target="_blank" rel="noreferrer noopener">{{ doc|ladb_url_beautify|raw }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>

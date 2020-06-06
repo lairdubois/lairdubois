@@ -28,9 +28,9 @@ function formatFileSize(fileSizeInBytes) {
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
 }
 function lazyLoad() {
-    $('[data-src]').Lazy({
-        effect: "fadeIn",
-        effectTime: 500,
-        threshold: 0
-    });
+    // $('[data-src]').Lazy({
+    //     effect: "fadeIn",
+    //     effectTime: 500,
+    //     threshold: 0
+    // });
 }

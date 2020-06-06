@@ -115,7 +115,7 @@ class LadbMarkdown extends Parser {
 			}
 		}
 		return '<a href="'.$href.'"'
-			.($isLocalUrl ? '' : ' target="_blank"')
+			.($isLocalUrl ? '' : ' target="_blank"  rel="noreferrer noopener"')
 			.(empty($title) ? '' : ' title="'.$title.'" data-tooltip="tooltip"')
 			.($decorated ? ' class="ladb-link ladb-link-'.($isLocalUrl ? 'intern' : 'extern').'"' : '')
 			.'><span>'.$text.'</span></a>';
