@@ -57,7 +57,7 @@ abstract class AbstractPublicationManager extends AbstractManager {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_UNLOCKED, new PublicationEvent($publication));
 
 	}
-
+	
 	/////
 
 	protected function publishPublication(AbstractPublication $publication, $flush = true) {

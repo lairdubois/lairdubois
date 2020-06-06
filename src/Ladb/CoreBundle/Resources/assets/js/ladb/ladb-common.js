@@ -16,7 +16,7 @@ function setupPopovers() {
     $("[data-popover=popover]").popover();
 }
 function setupTextareas() {
-    $("textarea.ladb-autosize").autosize();
+    autosize($("textarea.ladb-autosize"));
 }
 function formatFileSize(fileSizeInBytes) {
     var i = -1;

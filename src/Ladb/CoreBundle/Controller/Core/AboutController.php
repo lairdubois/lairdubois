@@ -71,7 +71,6 @@ class AboutController extends AbstractController {
 			array( 'name' => 'jQuery UI', 'url' => 'http://jqueryui.com/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-file-upload', 'url' => 'https://blueimp.github.io/jQuery-File-Upload/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-autocomplete', 'url' => 'https://github.com/devbridge/jQuery-Autocomplete', 'labels' => array( 'JS' ) ),
-			array( 'name' => 'jquery-autosize', 'url' => 'http://www.jacklmoore.com/autosize', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-cornerslider', 'url' => 'https://github.com/reshetech/cornerSlider', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-form', 'url' => 'https://github.com/malsup/form', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'jquery-jscroll', 'url' => 'http://jscroll.com/', 'labels' => array( 'JS' ) ),
@@ -99,6 +98,7 @@ class AboutController extends AbstractController {
 			array( 'name' => 'Lodash', 'url' => 'https://lodash.com/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'Selectize.js', 'url' => 'https://selectize.github.io/selectize.js/', 'labels' => array( 'JS' ) ),
 			array( 'name' => 'CLNDR.js', 'url' => 'https://kylestetz.github.io/CLNDR/', 'labels' => array( 'JS' ) ),
+			array( 'name' => 'autosize', 'url' => 'http://www.jacklmoore.com/autosize', 'labels' => array( 'JS' ) ),
 
 			array( 'name' => 'EmojiOne', 'url' => 'http://emojione.com/', 'labels' => array( 'PHP', 'CSS', 'JS' ) ),
 

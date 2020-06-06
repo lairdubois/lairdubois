@@ -442,7 +442,7 @@ qa:
         update_success: La question <strong>%title%</strong> a été mise à jour.
         delete_success: La question <strong>%title%</strong> a été supprimée.
       help:
-        title: Renseignez ici le titre de votre question.<br>Essayez au maximum de le formuler comme une question (...?). Ce titre est <strong>très important</strong> pour la visibilité de votre question.<br>Ecrivez le avec les mêmes termes que ceux que vous utiliseriez si vous recherchiez votre question.
+        title: Renseignez ici le titre de votre question.<br><br><span class='ladb-color-danger'>Ce titre est <strong>très important</strong> pour la visibilité de votre question. <strong>Formulez-le comme une question (...?).</strong><br>Ecrivez le avec les mêmes termes que ceux que vous utiliseriez si vous recherchiez votre question.</span>
         body: Détaillez ici plus en profondeur votre question.
         tags: Indiquez les tags définissant votre question.
     choice:
