@@ -29,8 +29,8 @@ function formatFileSize(fileSizeInBytes) {
 }
 function lazyLoad() {
     $('[data-src]').Lazy({
-        effect: "fadeIn",
-        effectTime: 500,
+        effect: "show",
+        effectTime: 0,
         threshold: 0
     });
 }

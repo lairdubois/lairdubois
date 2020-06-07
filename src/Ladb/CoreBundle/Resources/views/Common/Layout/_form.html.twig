@@ -5,6 +5,7 @@
 {% form_theme form 'LadbCoreBundle:Common:_form-theme.twig.twig' 'LadbCoreBundle:Core/Block:_form-theme.html.twig' %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set noLazyLoad = true %}
 
 {% block bodyJavascripts %}
     {{ parent() }}

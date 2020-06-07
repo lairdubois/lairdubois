@@ -6,6 +6,7 @@
 {# set pageContentNameItemprop (facultative) #}
 {# set pageContentDescriptionItemprop (facultative) #}
 {# set pageFeedRoute (facultative) #}
+{# set noLazyLoad (facultative) #}
 
 {% set pageUrl = pageUrl|default(app.request.uri) %}
 {% set pageType = pageType|default('website') %}
@@ -28,6 +29,7 @@
 {% set pageContentDescriptionItemprop = pageContentDescriptionItemprop|default('description') %}
 {% set pageFeedRoute = pageFeedRoute|default('') %}
 {% set titleSuffixHidden = titleSuffixHidden|default(false) %}
+{% set noLazyLoad = noLazyLoad|default(false) %}
 
 {% endspaceless %}
 <!DOCTYPE html>
@@ -273,7 +275,9 @@
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
             <script>
-                $(window).on('load orientationchange resize scroll touchmove focus', lazyLoad);
+                {% if not noLazyLoad %}
+                    $(window).on('load orientationchange resize scroll', lazyLoad);
+                {% endif %}
                 $(document).ready(function() {
                     {% block bodyJavascriptsInlineReady %}
                         setupTextareas();
