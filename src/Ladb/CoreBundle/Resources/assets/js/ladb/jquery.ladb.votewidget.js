@@ -62,7 +62,6 @@
             })
             .on('hidden.bs.modal', function (e) {
                 var $modal = $(e.target);
-                var $modalContent = $modal.find('.modal-content');
                 $modal
                     .removeData('bs.modal')
                     .off('loaded.bs.modal')
@@ -101,9 +100,9 @@
 
         // Bind textarea
         $('textarea', this.$newModal)
-            .autosize()
             .markdown({ autofocus:true })
             .ladbTextcompletify({ maxCount: 5, mentionQueryPath: this.options.mentionQueryPath });
+        autosize($('textarea', this.$newModal));
 
         // Bind button
         $validateBtn.on('click', function(e) {
