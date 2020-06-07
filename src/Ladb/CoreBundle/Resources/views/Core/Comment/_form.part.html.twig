@@ -2,6 +2,7 @@
 {# set galleryClasses (facultative) #}
 
 {{ form_start(form, { 'action':action, 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
+    {{ form_errors(form) }}
     <fieldset>
         {{ form_errors(form.body) }}
         {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize' } }) }}

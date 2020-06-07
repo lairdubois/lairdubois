@@ -25,6 +25,8 @@ framework:
     session:
         handler_id: session.handler.pdo
         save_path: "%kernel.root_dir%/sessions"
+        cookie_lifetime: 0
+        cookie_samesite: 'strict'
     fragments:       ~
 
 services:
