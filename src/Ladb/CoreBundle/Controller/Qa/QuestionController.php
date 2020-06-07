@@ -554,7 +554,7 @@ class QuestionController extends AbstractController {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'title^100', 'body', 'tags.label' ));
+							$filter->setFields(array( 'title^100', 'body', 'tags.label', 'answers.body' ));
 							$filters[] = $filter;
 
 							$couldUseDefaultSort = false;
