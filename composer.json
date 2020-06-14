@@ -40,6 +40,7 @@
         "symfony/symfony": "3.4.*",
         "symfony/intl": "^3.3",
         "symfony/lock": "^3.4",
+        "symfony/webpack-encore-bundle": "^1.7",
         "twig/twig": "^2.0",
         "monolog/monolog": "^1.0",
 
@@ -79,7 +80,7 @@
         "suin/php-rss-writer": "^1.6",
         "chrome-php/chrome": "^0.7.0",
 
-        "components/jquery": "3.5.1",
+        "components/jquery": "3.4.1",
         "components/jqueryui": "1.12.1",
         "components/masonry": "3.2.2"
 

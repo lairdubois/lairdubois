@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c68d1a98513d1e1a66d622b78e0bb458",
+    "content-hash": "336a585a1c609ec77d4841173be79e8a",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -626,16 +626,16 @@
         },
         {
             "name": "components/jquery",
-            "version": "3.5.1",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jquery.git",
-                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b"
+                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jquery/zipball/b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
-                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
+                "url": "https://api.github.com/repos/components/jquery/zipball/459648cda77875519c5da3ae1dd0ed5d170aa649",
+                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649",
                 "shasum": ""
             },
             "type": "component",
@@ -664,7 +664,7 @@
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2020-05-05T13:21:02+00:00"
+            "time": "2018-03-04T13:23:48+00:00"
         },
         {
             "name": "components/jqueryui",
@@ -4715,63 +4715,59 @@
         },
         {
             "name": "pagerfanta/pagerfanta",
-            "version": "v2.1.3",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/whiteoctober/Pagerfanta.git",
-                "reference": "a53ff01d521648d9dbca19b93ac6bc75a59b0972"
+                "url": "https://github.com/BabDev/Pagerfanta.git",
+                "reference": "fd00eb74632fecc0265327e9fe0eddc08c72b238"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/a53ff01d521648d9dbca19b93ac6bc75a59b0972",
-                "reference": "a53ff01d521648d9dbca19b93ac6bc75a59b0972",
+                "url": "https://api.github.com/repos/BabDev/Pagerfanta/zipball/fd00eb74632fecc0265327e9fe0eddc08c72b238",
+                "reference": "fd00eb74632fecc0265327e9fe0eddc08c72b238",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0"
+                "ext-json": "*",
+                "php": "^7.2",
+                "symfony/deprecation-contracts": "^2.1"
             },
             "require-dev": {
-                "doctrine/orm": "~2.3",
-                "doctrine/phpcr-odm": "1.*",
-                "jackalope/jackalope-doctrine-dbal": "1.*",
-                "jmikola/geojson": "~1.0",
-                "mandango/mandango": "~1.0@dev",
-                "mandango/mondator": "~1.0@dev",
-                "phpunit/phpunit": "^6.5",
-                "propel/propel": "~2.0@dev",
-                "propel/propel1": "~1.6",
-                "ruflin/elastica": "~1.3",
-                "solarium/solarium": "~3.1"
+                "doctrine/collections": "^1.4",
+                "doctrine/dbal": "^2.5",
+                "doctrine/orm": "^2.5",
+                "doctrine/phpcr-odm": "^1.3",
+                "friendsofphp/php-cs-fixer": "^2.16.3",
+                "jackalope/jackalope-doctrine-dbal": "^1.3",
+                "mandango/mandango": "^1.0@dev",
+                "phpunit/phpunit": "^8.5 || ^9.0",
+                "propel/propel": "^2.0@dev",
+                "propel/propel1": "^1.7",
+                "ruflin/elastica": "^1.3 || ^2.0 || ^3.0 || ^5.0 || ^6.0",
+                "solarium/solarium": "^2.3 || ^3.0 || ^4.0 || ^5.0"
             },
             "suggest": {
-                "doctrine/mongodb-odm": "To use the DoctrineODMMongoDBAdapter.",
-                "doctrine/orm": "To use the DoctrineORMAdapter.",
-                "doctrine/phpcr-odm": "To use the DoctrineODMPhpcrAdapter. >= 1.1.0",
-                "mandango/mandango": "To use the MandangoAdapter.",
-                "propel/propel": "To use the Propel2Adapter",
-                "propel/propel1": "To use the PropelAdapter",
+                "doctrine/collections": "To use the Doctrine Collection and Selectable adapter.",
+                "doctrine/dbal": "To use the Doctrine DBAL adapters.",
+                "doctrine/mongodb-odm": "To use the Doctrine MongoDB ODM Adapter.",
+                "doctrine/orm": "To use the Doctrine ORM Adapter.",
+                "doctrine/phpcr-odm": "To use the Doctrine PHPCR ODM Adapter.",
                 "solarium/solarium": "To use the SolariumAdapter."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-2.x": "2.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Pagerfanta\\": "src/Pagerfanta/"
+                    "Pagerfanta\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pablo Díez",
-                    "email": "pablodip@gmail.com"
-                }
             ],
             "description": "Pagination for PHP",
             "keywords": [
@@ -4780,7 +4776,13 @@
                 "paginator",
                 "paging"
             ],
-            "time": "2019-07-17T20:56:16+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/mbabker",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-06-09T15:25:12+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -6431,16 +6433,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.36.2",
+            "version": "v7.37.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "a8981c169e6842fc6a4d4e7028b706b8291ad4ec"
+                "reference": "e3e29131a131785c3d2f85556b0154e8170e9bba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/a8981c169e6842fc6a4d4e7028b706b8291ad4ec",
-                "reference": "a8981c169e6842fc6a4d4e7028b706b8291ad4ec",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/e3e29131a131785c3d2f85556b0154e8170e9bba",
+                "reference": "e3e29131a131785c3d2f85556b0154e8170e9bba",
                 "shasum": ""
             },
             "require": {
@@ -6484,7 +6486,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2020-06-03T19:16:18+00:00"
+            "time": "2020-06-11T16:27:35+00:00"
         },
         {
             "name": "suin/php-rss-writer",
@@ -6661,17 +6663,77 @@
             "time": "2018-05-17T08:40:15+00:00"
         },
         {
-            "name": "symfony/http-client",
-            "version": "v5.1.0",
+            "name": "symfony/deprecation-contracts",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/http-client.git",
-                "reference": "63342eabdc6fc6c12e6b18506a207d16687aa33f"
+                "url": "https://github.com/symfony/deprecation-contracts.git",
+                "reference": "dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/63342eabdc6fc6c12e6b18506a207d16687aa33f",
-                "reference": "63342eabdc6fc6c12e6b18506a207d16687aa33f",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337",
+                "reference": "dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "function.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "A generic function and convention to trigger deprecation notices",
+            "homepage": "https://symfony.com",
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-05-27T08:34:37+00:00"
+        },
+        {
+            "name": "symfony/http-client",
+            "version": "v5.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-client.git",
+                "reference": "aae28b613d7a88e529df46e617f046be0236ab54"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/aae28b613d7a88e529df46e617f046be0236ab54",
+                "reference": "aae28b613d7a88e529df46e617f046be0236ab54",
                 "shasum": ""
             },
             "require": {
@@ -6744,7 +6806,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-30T21:52:37+00:00"
+            "time": "2020-06-11T21:20:02+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -6819,16 +6881,16 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "56261f89385f9d13cf843a5101ac72131190bc91"
+                "reference": "c0c418f05e727606e85b482a8591519c4712cf45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/56261f89385f9d13cf843a5101ac72131190bc91",
-                "reference": "56261f89385f9d13cf843a5101ac72131190bc91",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/c0c418f05e727606e85b482a8591519c4712cf45",
+                "reference": "c0c418f05e727606e85b482a8591519c4712cf45",
                 "shasum": ""
             },
             "require": {
@@ -6892,7 +6954,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-25T12:33:44+00:00"
+            "time": "2020-06-09T15:07:35+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -7879,16 +7941,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.41",
+            "version": "v3.4.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "a72c510fb3bc67d3ba67981178d78be80360ede2"
+                "reference": "79b0cc53dfc1bc69509d91c4a967b659a9540910"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/a72c510fb3bc67d3ba67981178d78be80360ede2",
-                "reference": "a72c510fb3bc67d3ba67981178d78be80360ede2",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/79b0cc53dfc1bc69509d91c4a967b659a9540910",
+                "reference": "79b0cc53dfc1bc69509d91c4a967b659a9540910",
                 "shasum": ""
             },
             "require": {
@@ -8045,7 +8107,60 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-31T05:14:34+00:00"
+            "time": "2020-06-12T10:57:23+00:00"
+        },
+        {
+            "name": "symfony/webpack-encore-bundle",
+            "version": "v1.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/webpack-encore-bundle.git",
+                "reference": "5c0f659eceae87271cce54bbdfb05ed8ec9007bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/webpack-encore-bundle/zipball/5c0f659eceae87271cce54bbdfb05ed8ec9007bd",
+                "reference": "5c0f659eceae87271cce54bbdfb05ed8ec9007bd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/asset": "^3.4 || ^4.0 || ^5.0",
+                "symfony/config": "^3.4 || ^4.0 || ^5.0",
+                "symfony/dependency-injection": "^3.4 || ^4.0 || ^5.0",
+                "symfony/http-kernel": "^3.4 || ^4.0 || ^5.0",
+                "symfony/service-contracts": "^1.0 || ^2.0"
+            },
+            "require-dev": {
+                "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0",
+                "symfony/phpunit-bridge": "^4.3.5 || ^5.0",
+                "symfony/twig-bundle": "^3.4 || ^4.0 || ^5.0",
+                "symfony/web-link": "^3.4 || ^4.0 || ^5.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "thanks": {
+                    "name": "symfony/webpack-encore",
+                    "url": "https://github.com/symfony/webpack-encore"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\WebpackEncoreBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Integration with your Symfony app & Webpack Encore!",
+            "time": "2020-01-31T15:31:59+00:00"
         },
         {
             "name": "twig/extensions",
@@ -8308,16 +8423,16 @@
         },
         {
             "name": "wrench/wrench",
-            "version": "v2.0.8",
+            "version": "v2.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/varspool/Wrench.git",
-                "reference": "92fb5d1c5d7a6f65884ade658b6271de93edafc2"
+                "reference": "db89efbece7e8b7649e3bdd01f8133d2812163f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/varspool/Wrench/zipball/92fb5d1c5d7a6f65884ade658b6271de93edafc2",
-                "reference": "92fb5d1c5d7a6f65884ade658b6271de93edafc2",
+                "url": "https://api.github.com/repos/varspool/Wrench/zipball/db89efbece7e8b7649e3bdd01f8133d2812163f1",
+                "reference": "db89efbece7e8b7649e3bdd01f8133d2812163f1",
                 "shasum": ""
             },
             "require": {
@@ -8325,7 +8440,7 @@
                 "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit": "^8.0",
                 "squizlabs/php_codesniffer": "*"
             },
             "type": "library",
@@ -8367,7 +8482,7 @@
                 "hybi",
                 "websocket"
             ],
-            "time": "2017-02-12T02:08:51+00:00"
+            "time": "2020-06-09T13:10:49+00:00"
         },
         {
             "name": "zendframework/zend-code",
@@ -8604,16 +8719,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.4.41",
+            "version": "v3.4.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "f926812c6b3d456dfbd13c706293f49e9a10bc2a"
+                "reference": "ac355e1e9ebde4cf6ef5187f5cf4b43001f9a29f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/f926812c6b3d456dfbd13c706293f49e9a10bc2a",
-                "reference": "f926812c6b3d456dfbd13c706293f49e9a10bc2a",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/ac355e1e9ebde4cf6ef5187f5cf4b43001f9a29f",
+                "reference": "ac355e1e9ebde4cf6ef5187f5cf4b43001f9a29f",
                 "shasum": ""
             },
             "require": {
@@ -8679,7 +8794,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-21T18:33:26+00:00"
+            "time": "2020-06-04T15:36:03+00:00"
         }
     ],
     "aliases": [],
