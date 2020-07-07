@@ -3,7 +3,7 @@
 
 {% set noMicrodata = noMicrodata|default(false) %}
 
-{% if user.location %}<span class="ladb-subblock"><i class="ladb-icon-location"></i> <a href="https://maps.google.fr/maps?q={{ user.location|url_encode }}" target="_blank" rel="noreferrer noopener"><span{% if not noMicrodata %} itemprop="homeLocation"{% endif %}>{{ user.location }}</span></a></span> {% endif %}
+{% if user.location %}<span class="ladb-subblock"><i class="ladb-icon-location"></i> <a href="https://www.openstreetmap.org/search?query={{ user.location|url_encode }}" target="_blank" rel="noreferrer noopener"><span{% if not noMicrodata %} itemprop="homeLocation"{% endif %}>{{ user.location }}</span></a></span> {% endif %}
 {% if user.meta.website %}<span class="ladb-subblock"><i class="ladb-icon-globe"></i> <a href="{{ user.meta.website }}"{% if not noMicrodata %} target="_blank" rel="noreferrer noopener" itemprop="sameAs"{% endif %}>{{ user.meta.website|ladb_url_truncate(true, 30, 0) }}</a></span> {% endif %}
 <span class="ladb-subblock">
     {% if user.meta.facebook %}<a href="https://www.facebook.com/{{ user.meta.facebook }}" target="_blank" rel="noreferrer noopener" data-tooltip="tooltip" title="Retrouvez {{ user.displayname }} sur Facebook"{% if not noMicrodata %} itemprop="sameAs"{% endif %}><i class="ladb-icon-facebook-square ladb-icon-lg"></i></a> {% endif %}
