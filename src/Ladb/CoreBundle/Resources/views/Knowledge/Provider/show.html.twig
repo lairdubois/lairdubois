@@ -131,7 +131,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_SERVICES', provider), 'data':provider.services, 'values':provider.servicesValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PRODUCTS', provider), 'data':provider.products, 'values':provider.productsValues } %}
             {% if provider.woodsValues is not empty or 'Bois massifs' in provider.products %}
-                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_WOODS', provider), 'data':provider.woods, 'values':provider.woodsValues, 'disabled':not ('Bois massif' in provider.products), 'indented':true } %}
+                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_WOODS', provider), 'data':provider.woods, 'values':provider.woodsValues, 'disabled':(not ('Bois massif' in provider.products)), 'indented':true } %}
             {% endif %}
         </div>
         <div class="ladb-metas">
