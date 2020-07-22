@@ -30,8 +30,8 @@ function formatFileSize(fileSizeInBytes) {
 var $lazy = null;
 function lazyLoadReset() {
     $lazy = $('[data-src]').Lazy({
-        effect: "fadeIn",
-        effectTime: 500,
+        effect: 'show',
+        effectTime: 0,
         threshold: 0,
         chainable: false
     });
