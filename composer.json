@@ -53,7 +53,7 @@
         "friendsofsymfony/elastica-bundle": "*",
         "stof/doctrine-extensions-bundle": "*",
         "liip/imagine-bundle": "~2.3",
-        "gos/web-socket-bundle": "1.8.13",
+        "gos/web-socket-bundle": "1.10.4",
         "bentools/webpush-bundle": "^0.3",
         "php-amqplib/rabbitmq-bundle": "^1.14",
 
@@ -80,7 +80,7 @@
         "suin/php-rss-writer": "^1.6",
         "chrome-php/chrome": "^0.7.0",
 
-        "components/jquery": "3.4.1",
+        "components/jquery": "3.3.1",
         "components/jqueryui": "1.12.1",
         "components/masonry": "3.2.2"
 

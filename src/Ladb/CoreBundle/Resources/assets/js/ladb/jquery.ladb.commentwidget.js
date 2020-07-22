@@ -50,7 +50,7 @@
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
                     setupTooltips();
-                    lazyLoad();
+                    lazyLoadReset();
                 }
             },
             error:function() {
@@ -286,7 +286,7 @@
                     $('.ladb-form-gallery-section', $new).collapse('hide');
                     that.bindRow($row.first());
                     setupTooltips();
-                    lazyLoad();
+                    lazyLoadReset();
                 }
                 $('[type=submit]', $new).button('reset');
             },
@@ -344,7 +344,7 @@
 
         });
         $('.collapse').on('shown.bs.collapse', function () {
-            lazyLoad();
+            lazyLoadUpdate();
         });
         this.layoutActivities();
 

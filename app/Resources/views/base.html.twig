@@ -276,7 +276,7 @@
             {% endjavascripts %}
             <script>
                 {% if not noLazyLoad %}
-                    $(window).on('load orientationchange scroll', lazyLoad);
+                    $(window).on('load orientationchange scroll', lazyLoadUpdate);
                 {% endif %}
                 $(document).ready(function() {
                     {% block bodyJavascriptsInlineReady %}
