@@ -94,7 +94,7 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LICENSE_TYPE', software), 'data':software.licenseType, 'values':software.licenseTypeValues, 'itemprop':'license' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_OPEN_SOURCE', software), 'data':software.openSource, 'values':software.openSourceValues } %}
             {% if software.sourceCodeRepositoryValues is not empty or software.opensource %}
-                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SOURCE_CODE_REPOSITORY', software), 'data':software.sourceCodeRepository, 'values':software.sourceCodeRepositoryValues, 'disabled':not software.opensource, 'indented':true } %}
+                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SOURCE_CODE_REPOSITORY', software), 'data':software.sourceCodeRepository, 'values':software.sourceCodeRepositoryValues, 'disabled':(not software.opensource), 'indented':true } %}
             {% endif %}
         </div>
         <div class="ladb-metas">
