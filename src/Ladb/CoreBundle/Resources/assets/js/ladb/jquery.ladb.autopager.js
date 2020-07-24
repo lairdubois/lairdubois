@@ -54,7 +54,7 @@
                 stamp: ".ladb-masonry-stamp"
             });
         }
-        lazyLoadReset($masonryInner);
+        lazyLoadReset();
 
     };
     
