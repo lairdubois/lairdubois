@@ -110,7 +110,7 @@
                     $row.replaceWith($newRow);
                     that.$hiddenRow = null;
                     that.bindAnswerRow($newRow);
-                    lazyLoadReset();
+                    lazyLoadReset($newRow);
                 } else {
                     that.bindEditAnswerBox($row, data);
                 }
@@ -171,6 +171,7 @@
                     that.removeAnswerForm();
                     that.bindAnswerRow($row);
                     that.bindSorters();
+                    lazyLoadReset($row);
                 } else {
                     that.bindNewAnswerBox(data);
                 }
@@ -230,7 +231,7 @@
                     $('.ladb-answers-header', that.$element).replaceWith($header);
                     that.bindSorters();
                     that.bindRows();
-                    lazyLoadReset();
+                    lazyLoadReset($answers);
                 },
                 error: function () {
                     console.log('error');

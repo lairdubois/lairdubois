@@ -28,8 +28,8 @@ function formatFileSize(fileSizeInBytes) {
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
 }
 var $lazy = null;
-function lazyLoadReset() {
-    $lazy = $('[data-src]').Lazy({
+function lazyLoadReset($container) {
+    $lazy = $('[data-src]', $container).Lazy({
         effect: 'show',
         effectTime: 0,
         threshold: 0,

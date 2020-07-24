@@ -44,6 +44,7 @@
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
                     setupTooltips();
+                    lazyLoadReset($newRow);
                 }
             },
             error:function() {
@@ -79,6 +80,7 @@
                     $('ul.alert-danger', $new).remove();
                     $('.ladb-form-gallery-section', $new).collapse('hide');
                     setupTooltips();
+                    lazyLoadReset($row);
                     $new.ladbScrollTo();
                     $('textarea', $new).focus();
                     that.bindRow($row);

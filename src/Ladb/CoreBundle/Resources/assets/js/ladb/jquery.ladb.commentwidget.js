@@ -50,7 +50,7 @@
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
                     setupTooltips();
-                    lazyLoadReset();
+                    lazyLoadReset($newRow);
                 }
             },
             error:function() {
@@ -286,7 +286,7 @@
                     $('.ladb-form-gallery-section', $new).collapse('hide');
                     that.bindRow($row.first());
                     setupTooltips();
-                    lazyLoadReset();
+                    lazyLoadReset($row);
                 }
                 $('[type=submit]', $new).button('reset');
             },
