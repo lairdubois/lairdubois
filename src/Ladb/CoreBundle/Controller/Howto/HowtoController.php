@@ -353,7 +353,7 @@ class HowtoController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/strip", requirements={"id" = "\d+"}, name="core_howto_strip")
+	 * @Route("/pas-a-pas/{id}/strip", requirements={"id" = "\d+"}, name="core_howto_strip")
 	 */
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -392,7 +392,7 @@ class HowtoController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_widget")
+	 * @Route("/pas-a-pas/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_widget")
 	 * @Template("LadbCoreBundle:Howto/Howto:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {

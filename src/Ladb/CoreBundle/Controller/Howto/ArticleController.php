@@ -331,7 +331,7 @@ class ArticleController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_article_widget")
+	 * @Route("/pas-a-pas/articles/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_article_widget")
 	 * @Template("LadbCoreBundle:Howto/Article:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
