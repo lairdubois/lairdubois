@@ -37,10 +37,6 @@ class FindManager extends AbstractPublicationManager {
 			$find->getUser()->getMeta()->incrementPublicFindCount(-1);
 		}
 
-		// Delete joins
-		$joinableUtils = $this->get(JoinableUtils::NAME);
-		$joinableUtils->deleteJoins($find, false);
-
 		parent::deletePublication($find, $withWitness, $flush);
 	}
 
