@@ -46,7 +46,7 @@
         {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') %}
             <div class="ladb-thumb">
                 <a href="{{ find.content.url }}" target="_blank" rel="noreferrer noopener" class="thumbnail">
-                    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'data-pin-nopin="true"' } %}
+                    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'data-pin-nopin="true"', 'emptyWebPath':'empty_find.png' } %}
                     {% if find.content.host %}
                         <div class="ladb-find-thumbnail-caption">
                             <div class="ladb-find-thumbnail-caption-host">{{ find.content.host }}</div>
