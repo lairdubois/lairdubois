@@ -48,6 +48,11 @@
 {% endblock %}
 
 {% block sections %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-et-pourquoi-bien-renseigner-son-profil' }) }}">Comment (et pourquoi) bien renseigner son profil ?</a>
+        </div>
+    </div>
     {{ form_errors(form) }}
     {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'formSection':'avatar', 'formPictures':form.avatar, 'pictures':(form.vars.data.avatar is null ? [] : [ form.vars.data.avatar ]), 'maxPictureCount':1, 'title':('user.avatar'|trans()), 'help':('user.avatar_help'|trans()), 'hideTextOverlayWarning':true } %}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'user', 'title':('user.account'|trans()), 'formSection':'account' } %}
