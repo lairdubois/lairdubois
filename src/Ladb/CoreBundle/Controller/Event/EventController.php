@@ -550,6 +550,10 @@ class EventController extends AbstractController {
 						$sort = array( 'joinCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
+					case 'sort-date':
+						$sort = array( 'startAt' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
+						break;
+
 					case 'sort-random':
 						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
 						break;
@@ -571,7 +575,15 @@ class EventController extends AbstractController {
 			},
 			function(&$filters, &$sort) {
 
-				$sort = array( 'changedAt' => array( 'order' => 'desc' ) );
+				if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getUnlistedEventEventCount() > 0) {
+					$sort = array('changedAt' => array('order' => 'desc'));
+				} else {
+
+					// By default (without new publication) it displays only rugging and scheduled events in startAt ASC order
+					$sort = array( 'startAt' => array( 'order' => 'asc' ) );
+					$filters[] = new \Elastica\Query\Range('endAt', array('gte' => 'now'));
+
+				}
 
 			},
 			function(&$filters) {
@@ -594,7 +606,6 @@ class EventController extends AbstractController {
 					$filter = $publicVisibilityFilter;
 				}
 				$filters[] = $filter;
-
 
 			},
 			'fos_elastica.index.ladb.event_event',
