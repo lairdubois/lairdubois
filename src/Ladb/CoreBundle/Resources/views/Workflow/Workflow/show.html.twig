@@ -181,7 +181,7 @@
         {% if workflow.howtoCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-howto"></i>
-                <a href="{{ workflow.howtoCount == 1 ? path('core_howto_show', { 'id':workflow.howtos[0].sluggedId }) : path('core_workflow_hotos', { 'id':workflow.id }) }}">
+                <a href="{{ workflow.howtoCount == 1 ? path('core_howto_show', { 'id':workflow.howtos[0].sluggedId }) : path('core_workflow_howtos', { 'id':workflow.id }) }}">
                     <strong>{{ workflow.howtoCount }}</strong>
                     <small>{{ 'howto.howto.choice.entities'|transchoice(workflow.howtoCount) }}</small>
                 </a>
