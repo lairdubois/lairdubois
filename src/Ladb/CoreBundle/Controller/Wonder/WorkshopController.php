@@ -559,7 +559,7 @@ class WorkshopController extends AbstractController {
 
 		$id = intval($id);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
+		$workshop = $workshopRepository->findOneBy($id);
 		if (is_null($workshop)) {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}

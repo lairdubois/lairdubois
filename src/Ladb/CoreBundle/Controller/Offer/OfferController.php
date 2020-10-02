@@ -334,7 +334,7 @@ class OfferController extends AbstractController {
 
 		$id = intval($id);
 
-		$offer = $offerRepository->findOneByIdJoinedOnOptimized($id);
+		$offer = $offerRepository->findOneBy($id);
 		if (is_null($offer)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
 		}

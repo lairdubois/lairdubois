@@ -317,7 +317,7 @@ class QuestionController extends AbstractController {
 
 		$id = intval($id);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
+		$question = $questionRepository->findOneBy($id);
 		if (is_null($question)) {
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}

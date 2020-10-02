@@ -172,7 +172,7 @@ class SoftwareController extends AbstractController {
 
 		$id = intval($id);
 
-		$software = $softwareRepository->findOneByIdJoinedOnOptimized($id);
+		$software = $softwareRepository->findOneBy($id);
 		if (is_null($software)) {
 			throw $this->createNotFoundException('Unable to find Software entity (id='.$id.').');
 		}

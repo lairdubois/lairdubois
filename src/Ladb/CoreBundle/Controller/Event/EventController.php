@@ -328,7 +328,7 @@ class EventController extends AbstractController {
 
 		$id = intval($id);
 
-		$event = $eventRepository->findOneByIdJoinedOnOptimized($id);
+		$event = $eventRepository->findOneBy($id);
 		if (is_null($event)) {
 			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
 		}

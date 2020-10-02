@@ -317,7 +317,7 @@ class PostController extends AbstractController {
 
 		$id = intval($id);
 
-		$post = $postRepository->findOneByIdJoinedOnOptimized($id);
+		$post = $postRepository->findOneBy($id);
 		if (is_null($post)) {
 			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
 		}

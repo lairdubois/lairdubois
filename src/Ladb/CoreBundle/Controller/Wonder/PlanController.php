@@ -813,7 +813,7 @@ class PlanController extends AbstractController {
 
 		$id = intval($id);
 
-		$plan = $planRepository->findOneByIdJoinedOnOptimized($id);
+		$plan = $planRepository->findOneBy($id);
 		if (is_null($plan)) {
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
 		}

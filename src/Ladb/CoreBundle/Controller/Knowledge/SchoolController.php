@@ -202,7 +202,7 @@ class SchoolController extends AbstractController {
 
 		$id = intval($id);
 
-		$school = $schoolRepository->findOneByIdJoinedOnOptimized($id);
+		$school = $schoolRepository->findOneBy($id);
 		if (is_null($school)) {
 			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
 		}
