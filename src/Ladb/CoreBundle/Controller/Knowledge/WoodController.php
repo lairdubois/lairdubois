@@ -268,7 +268,7 @@ class WoodController extends AbstractController {
 
 		$id = intval($id);
 
-		$wood = $woodRepository->findOneByIdJoinedOnOptimized($id);
+		$wood = $woodRepository->findOneById($id);
 		if (is_null($wood)) {
 			throw $this->createNotFoundException('Unable to find Wood entity (id='.$id.').');
 		}
