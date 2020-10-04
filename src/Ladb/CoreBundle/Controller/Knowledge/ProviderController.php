@@ -206,7 +206,7 @@ class ProviderController extends AbstractController {
 
 		$id = intval($id);
 
-		$provider = $providerRepository->findOneBy($id);
+		$provider = $providerRepository->findOneById($id);
 		if (is_null($provider)) {
 			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
 		}

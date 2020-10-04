@@ -171,7 +171,7 @@ class BookController extends AbstractController {
 
 		$id = intval($id);
 
-		$book = $bookRepository->findOneBy($id);
+		$book = $bookRepository->findOneById($id);
 		if (is_null($book)) {
 			throw $this->createNotFoundException('Unable to find Book entity (id='.$id.').');
 		}

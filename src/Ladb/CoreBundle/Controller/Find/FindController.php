@@ -343,7 +343,7 @@ class FindController extends AbstractController {
 
 		$id = intval($id);
 
-		$find = $findRepository->findOneBy($id);
+		$find = $findRepository->findOneById($id);
 		if (is_null($find)) {
 			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
 		}

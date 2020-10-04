@@ -340,7 +340,7 @@ class ArticleController extends AbstractController {
 
 		$id = intval($id);
 
-		$article = $articleRepository->findOneBy($id);
+		$article = $articleRepository->findOneById($id);
 		if (is_null($article)) {
 			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
 		}

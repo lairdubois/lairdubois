@@ -401,7 +401,7 @@ class HowtoController extends AbstractController {
 
 		$id = intval($id);
 
-		$howto = $howtoRepository->findOneBy($id);
+		$howto = $howtoRepository->findOneById($id);
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
 		}
