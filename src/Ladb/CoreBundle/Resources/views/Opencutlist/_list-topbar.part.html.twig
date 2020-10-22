@@ -1,3 +1,7 @@
 {% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
 
 {% set heading = 'OpenCutList updates' %}
+
+{% block listTopbarRightInner %}
+    {{ downloads.count }}&nbsp;downloads
+{% endblock %}
