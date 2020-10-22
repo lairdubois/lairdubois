@@ -25,6 +25,11 @@ class Download {
 	protected $createdAt;
 
 	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $env;
+
+	/**
 	 * @ORM\Column(name="client_ip4", type="string")
 	 */
 	private $clientIp4;
@@ -51,6 +56,17 @@ class Download {
 
 	public function getAge() {
 		return $this->getCreatedAt()->diff(new \DateTime());
+	}
+
+	// Env /////
+
+	public function setEnv($env) {
+		$this->env = $env;
+		return $this;
+	}
+
+	public function getEnv() {
+		return $this->env;
 	}
 
 	// ClientIp4 /////

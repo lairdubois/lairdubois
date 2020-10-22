@@ -228,12 +228,12 @@ ladb_core_offer:
     resource: "Ladb\\CoreBundle\\Controller\\Offer\\OfferController"
     type:     annotation
 
-ladb_core_spotlight:
-    resource: "Ladb\\CoreBundle\\Controller\\Core\\SpotlightController"
+ladb_core_opencutlist:
+    resource: "Ladb\\CoreBundle\\Controller\\Opencutlist\\OpencutlistController"
     type:     annotation
 
-ladb_core_opencutlist:
-    resource: "Ladb\\CoreBundle\\Controller\\Core\\OpencutlistController"
+ladb_core_spotlight:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\SpotlightController"
     type:     annotation
 
 ladb_core_user:

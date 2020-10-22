@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Controller\Core;
+namespace Ladb\CoreBundle\Controller\Opencutlist;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,6 +29,7 @@ class OpencutlistController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 
 		$download = new Download();
+		$download->setEnv($env);
 		$download->setClientIp4($request->getClientIp());
 		$download->setClientUserAgent($request->server->get('HTTP_USER_AGENT'));
 
