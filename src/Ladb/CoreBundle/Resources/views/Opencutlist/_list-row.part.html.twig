@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block headingInner %}
-    {{ download.location }}{% if download.clientSketchupFamily > 0 %} / Sketchup {{ download.clientSketchupFamily == 1 ? 'Make' : 'Pro' }} {{ download.clientSketchupVersion }} / {{ download.clientOS == 1 ? 'Win' : 'Mac' }}{% endif %}
+    {{ download.location }}{% if download.clientSketchupVersion %} / Sketchup {{ download.clientSketchupFamily == 1 ? 'Make' : 'Pro' }} {{ download.clientSketchupVersion }} / {{ download.clientOS == 1 ? 'Win' : 'Mac' }}{% endif %}
     <span class="label label-default pull-right">{{ download.env }}</span>
 {% endblock %}
 

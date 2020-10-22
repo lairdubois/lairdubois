@@ -68,7 +68,7 @@ EOT
 
 			// Extract OS, Sketchp Family and Sketchup Version
 
-			$re = '/\sSketchUp (Pro|Make)\/(\d*.\d) \((PC|Mac)\)\s/';
+			$re = '/\sSketchUp\s*(Pro|Make|)\/(\d*.\d) \((PC|Mac)\)\s/';
 			preg_match_all($re, $download->getClientUserAgent(), $matches, PREG_SET_ORDER, 0);
 
 			if (!empty($matches)) {
