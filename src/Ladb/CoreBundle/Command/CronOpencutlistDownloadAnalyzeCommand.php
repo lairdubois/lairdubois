@@ -72,9 +72,9 @@ EOT
 			preg_match_all($re, $download->getClientUserAgent(), $matches, PREG_SET_ORDER, 0);
 
 			if (!empty($matches)) {
-				$download->setClientSketchupFamily($matches[0][1] == 'Pro' ? Download::SKETCHUP_FAMILY_PRO : $matches[0][1] == 'Make' ? Download::SKETCHUP_FAMILY_MAKE : Download::SKETCHUP_FAMILY_UNKNOW);
+				$download->setClientSketchupFamily($matches[0][1] == 'Pro' ? Download::SKETCHUP_FAMILY_PRO : ($matches[0][1] == 'Make' ? Download::SKETCHUP_FAMILY_MAKE : Download::SKETCHUP_FAMILY_UNKNOW));
 				$download->setClientSketchupVersion($matches[0][2]);
-				$download->setClientOS($matches[0][3] == 'PC' ? Download::OS_WIN : $matches[0][3] == 'Mac' ? Download::OS_MAC : Download::OS_UNKNOW);
+				$download->setClientOS($matches[0][3] == 'PC' ? Download::OS_WIN : ($matches[0][3] == 'Mac' ? Download::OS_MAC : Download::OS_UNKNOW));
 			}
 
 			// Extract Location, Latitude and Longitude with ip-api.com web service
