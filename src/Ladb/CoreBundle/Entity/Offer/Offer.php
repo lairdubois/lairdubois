@@ -4,12 +4,12 @@ namespace Ladb\CoreBundle\Entity\Offer;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\CollectionnableInterface;
 use Ladb\CoreBundle\Model\CollectionnableTrait;
 use Ladb\CoreBundle\Model\RepublishableInterface;
 use Ladb\CoreBundle\Model\RepublishableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\LocalisableExtendedInterface;
 use Ladb\CoreBundle\Model\LocalisableExtendedTrait;
 use Ladb\CoreBundle\Model\LocalisableInterface;
