@@ -232,6 +232,10 @@ ladb_core_spotlight:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\SpotlightController"
     type:     annotation
 
+ladb_core_opencutlist:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\OpenCutListController"
+    type:     annotation
+
 ladb_core_user:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\UserController"
     type:     annotation

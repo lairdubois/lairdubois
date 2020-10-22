@@ -107,6 +107,7 @@ class ValidUsernameValidator extends ConstraintValidator {
 				'astuces',
 				'annonces',
 				'evenements',
+				'opencutlist'
 
 			);
 
