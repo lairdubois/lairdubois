@@ -52,6 +52,7 @@ EOT
 			->select(array( 'd' ))
 			->from('LadbCoreBundle:Opencutlist\Download', 'd')
 			->where('d.analyzed = false')
+			->setMaxResults(20)
 		;
 
 		try {
