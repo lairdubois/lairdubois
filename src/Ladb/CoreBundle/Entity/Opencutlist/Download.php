@@ -11,6 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Download {
 
+	const CLASS_NAME = 'LadbCoreBundle:Opencutlist\Download';
+
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
@@ -40,6 +42,12 @@ class Download {
 	private $clientUserAgent;
 
 	/////
+
+	// Id /////
+
+	public function getId() {
+		return $this->id;
+	}
 
 	// CreatedAt /////
 
@@ -89,6 +97,10 @@ class Download {
 
 	public function getClientUserAgent() {
 		return $this->clientUserAgent;
+	}
+
+	public function getTitle() {
+		return $this->env;
 	}
 
 }

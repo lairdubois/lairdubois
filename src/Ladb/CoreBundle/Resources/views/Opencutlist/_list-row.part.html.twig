@@ -1,0 +1,16 @@
+{% extends 'LadbCoreBundle:Common:_list-row.part.html.twig' %}
+
+{% set entity = download %}
+{% set title = download.env %}
+
+{% block rowInner %}
+    {{ parent() }}
+{% endblock %}
+
+{% block headingInner %}
+    {{ download.clientUserAgent }}
+{% endblock %}
+
+{% block subheadingInner %}
+    <a href="https://ip-api.com/#{{ download.clientIp4 }}" target="_blank">{{ download.clientIp4 }}</a>{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
+{% endblock %}

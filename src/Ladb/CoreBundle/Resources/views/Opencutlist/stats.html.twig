@@ -1,0 +1,11 @@
+{% extends 'LadbCoreBundle:Common:Layout/_list.html.twig' %}
+
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'LadbCoreBundle:Opencutlist:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'LadbCoreBundle:Opencutlist:_list-n.part.html.twig' %}
+{% endblock %}

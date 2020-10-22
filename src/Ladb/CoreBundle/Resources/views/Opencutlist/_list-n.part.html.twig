@@ -1,0 +1,12 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{% use 'LadbCoreBundle:Common/Blocks:list-autopager.blocks.html.twig' %}
+
+{# set downloads #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for download in downloads %}
+        {% include 'LadbCoreBundle:Opencutlist:_list-row.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

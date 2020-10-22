@@ -299,7 +299,6 @@ class GraphicController extends AbstractController {
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
 		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
-		$graphicUtils = $this->get(GraphicUtils::NAME);
 
 		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
 		if (is_null($graphic)) {
