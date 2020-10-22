@@ -233,7 +233,7 @@ ladb_core_spotlight:
     type:     annotation
 
 ladb_core_opencutlist:
-    resource: "Ladb\\CoreBundle\\Controller\\Core\\OpenCutListController"
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\OpencutlistController"
     type:     annotation
 
 ladb_core_user:
