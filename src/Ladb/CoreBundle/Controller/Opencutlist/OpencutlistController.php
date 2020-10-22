@@ -67,7 +67,7 @@ class OpencutlistController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Core/Comment:list-byuser-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Opencutlist:list-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
