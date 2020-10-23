@@ -364,6 +364,7 @@ And add the following lines
 0 3 * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:sitemaps --force &> /dev/null
 */5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:workflow:thumbnails --force &> /dev/null
 0 3 * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:offers --force &> /dev/null
+*/5 * * * * php /var/www/www.lairdubois.fr/bin/console --env=prod ladb:cron:opencutlist:download:analyze --force &> /dev/null
 ```
 
 ## Step 14 - Create services and launch it for background process
@@ -519,7 +520,7 @@ This is important so that all calls where url contains `/internal/` will be acce
 
 ## Step 17 - Security
 
-## Firewall
+### Firewall
 
 We need at least to configure a minimal firewall
 
