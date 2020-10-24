@@ -63,6 +63,7 @@ EOT
 		foreach ($downloads as $download) {
 
 			$access = new Access();
+			$access->setCreatedAt($download->getCreatedAt());
 			$access->setKind(Access::KIND_DOWNLOAD);
 			$access->setEnv($download->getEnv());
 			$access->setClientIp4($download->getClientIp4());
