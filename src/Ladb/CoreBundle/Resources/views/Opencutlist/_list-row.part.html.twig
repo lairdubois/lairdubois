@@ -4,14 +4,15 @@
 {% set title = access.env %}
 
 {% block rowInner %}
-    <span class="label label-default pull-right">{{ access.kindStrippedName }} | {{ access.envStrippedName }}</span>
+    <span class="label label-{{ access.kind == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::KIND_DOWNLOAD') ? 'default' : 'info' }} pull-right">{{ access.kindStrippedName }} | {{ access.envStrippedName }}</span>
     {{ parent() }}
 {% endblock %}
 
 {% block headingInner %}
-    {% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}{% if access.clientSketchupVersion %} / Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} / {{ access.clientOSStrippedName|capitalize }}{% endif %}
+    <div>{% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}</div>
+    <small>{% if access.clientOclVersion %}OpenCutList {{ access.clientOclVersion }}{% if access.clientSketchupVersion %} | {% endif %}{% endif %}{% if access.clientSketchupVersion %}Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} | {{ access.clientOSStrippedName|capitalize }}{% endif %}</small>
 {% endblock %}
 
 {% block subheadingInner %}
-    <a href="https://ip-api.com/#{{ access.clientIp4 }}" target="_blank">{{ access.clientIp4 }}</a>{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
+    {% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
 {% endblock %}
