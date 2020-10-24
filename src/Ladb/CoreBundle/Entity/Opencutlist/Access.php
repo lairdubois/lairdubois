@@ -4,19 +4,26 @@ namespace Ladb\CoreBundle\Entity\Opencutlist;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\LocalisableInterface;
 use Ladb\CoreBundle\Model\LocalisableTrait;
 
 /**
- * @ORM\Table("tbl_opencutlist_download")
- * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Opencutlist\DownloadRepository")
+ * @ORM\Table("tbl_opencutlist_access")
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Opencutlist\AccessRepository")
  */
-class Download implements LocalisableInterface {
+class Access implements LocalisableInterface {
 
 	use LocalisableTrait;
 
-	const CLASS_NAME = 'LadbCoreBundle:Opencutlist\Download';
+	const CLASS_NAME = 'LadbCoreBundle:Opencutlist\Access';
+
+	const KIND_UNKNOW = 0;
+	const KIND_MANIFEST = 1;
+	const KIND_DOWNLOAD = 2;
+
+	const ENV_UNKNOW = 0;
+	const ENV_DEV = 1;
+	const ENV_PROD = 2;
 
 	const SKETCHUP_FAMILY_UNKNOW = 0;
 	const SKETCHUP_FAMILY_MAKE = 1;
@@ -31,7 +38,7 @@ class Download implements LocalisableInterface {
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * @ORM\Column(name="created_at", type="datetime")
@@ -40,55 +47,69 @@ class Download implements LocalisableInterface {
 	protected $createdAt;
 
 	/**
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\Column(type="smallint")
 	 */
-	private $env;
+	protected $kind = self::KIND_UNKNOW;
+
+	/**
+	 * @ORM\Column(type="smallint")
+	 */
+	protected $env = self::ENV_UNKNOW;
 
 	/**
 	 * @ORM\Column(name="client_ip4", type="string")
 	 */
-	private $clientIp4;
+	protected $clientIp4;
 
 	/**
 	 * @ORM\Column(name="client_user_agent", type="string", nullable=true)
 	 */
-	private $clientUserAgent;
+	protected $clientUserAgent;
+
+	/**
+	 * @ORM\Column(name="client_ocl_version", type="string", length=15, nullable=true)
+	 */
+	protected $clientOclVersion;
 
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	private $analyzed = false;
+	protected $analyzed = false;
+
+	/**
+	 * @ORM\Column(name="count_code", type="string", length=2, nullable=true)
+	 */
+	protected $countryCode;
 
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
-	 * @Assert\Length(max=100)
 	 */
-	private $location;
+	protected $location;
 
 	/**
 	 * @ORM\Column(type="float", nullable=true)
 	 */
-	private $latitude;
+	protected $latitude;
 
 	/**
 	 * @ORM\Column(type="float", nullable=true)
 	 */
-	private $longitude;
+	protected $longitude;
 
 	/**
 	 * @ORM\Column(name="client_os", type="smallint")
 	 */
-	private $clientOS = self::OS_UNKNOW;
+	protected $clientOS = self::OS_UNKNOW;
 
 	/**
 	 * @ORM\Column(name="client_sketchup_family", type="smallint")
 	 */
-	private $clientSketchupFamily = self::SKETCHUP_FAMILY_UNKNOW;
+	protected $clientSketchupFamily = self::SKETCHUP_FAMILY_UNKNOW;
 
 	/**
 	 * @ORM\Column(name="client_sketchup_version", type="string", nullable=true)
 	 */
-	private $clientSketchupVersion;
+	protected $clientSketchupVersion;
 
 	/////
 
@@ -115,15 +136,67 @@ class Download implements LocalisableInterface {
 		return $this->getCreatedAt()->diff(new \DateTime());
 	}
 
+	// Kind /////
+
+	public function setKind($kind) {
+		$this->kind = $kind;
+		return $this;
+	}
+
+	public function getKind() {
+		return $this->kind;
+	}
+
+	public function getKindStrippedName() {
+		switch ($this->kind) {
+			case self::KIND_MANIFEST:
+				return 'manifest';
+			case self::KIND_DOWNLOAD:
+				return 'download';
+			default:
+				return '';
+		}
+	}
 	// Env /////
 
 	public function setEnv($env) {
+		if (is_string($env)) {
+			switch ($env) {
+				case 'dev':
+					$env = self::ENV_DEV;
+					break;
+				case 'prod':
+					$env = self::ENV_PROD;
+					break;
+				default:
+					$env = self::ENV_UNKNOW;
+			}
+		}
 		$this->env = $env;
 		return $this;
 	}
 
 	public function getEnv() {
 		return $this->env;
+	}
+
+	public function getEnvStrippedName() {
+		switch ($this->env) {
+			case self::ENV_DEV:
+				return 'dev';
+			case self::ENV_PROD:
+				return 'prod';
+			default:
+				return '';
+		}
+	}
+
+	public function getIsEnvDev() {
+		return $this->env == self::ENV_DEV;
+	}
+
+	public function getIsEnvProd() {
+		return $this->env == self::ENV_PROD;
 	}
 
 	// ClientIp4 /////
@@ -148,6 +221,17 @@ class Download implements LocalisableInterface {
 		return $this->clientUserAgent;
 	}
 
+	// ClientOclVersion /////
+
+	public function setClientOclVersion($clientOclVersion) {
+		$this->clientOclVersion = $clientOclVersion;
+		return $this;
+	}
+
+	public function getClientOclVersion() {
+		return $this->clientOclVersion;
+	}
+
 	public function getTitle() {
 		return $this->env;
 	}
@@ -163,6 +247,17 @@ class Download implements LocalisableInterface {
 		return $this->analyzed;
 	}
 
+	// CountryCode /////
+
+	public function setCountryCode($countryCode) {
+		$this->countryCode = $countryCode;
+		return $this;
+	}
+
+	public function getCountryCode() {
+		return $this->countryCode;
+	}
+
 	// ClientOS /////
 
 	public function setClientOS($clientOS) {
@@ -174,6 +269,17 @@ class Download implements LocalisableInterface {
 		return $this->clientOS;
 	}
 
+	public function getClientOSStrippedName() {
+		switch ($this->env) {
+			case self::OS_WIN:
+				return 'win';
+			case self::OS_MAC:
+				return 'mac';
+			default:
+				return '';
+		}
+	}
+
 	// ClientSketchupFamily /////
 
 	public function setClientSketchupFamily($clientSketchupFamily) {
@@ -183,6 +289,17 @@ class Download implements LocalisableInterface {
 
 	public function getClientSketchupFamily() {
 		return $this->clientSketchupFamily;
+	}
+
+	public function getClientSketchupFamilyStrippedName() {
+		switch ($this->env) {
+			case self::SKETCHUP_FAMILY_MAKE:
+				return 'make';
+			case self::SKETCHUP_FAMILY_PRO:
+				return 'pro';
+			default:
+				return '';
+		}
 	}
 
 	// ClientSketchupVersion /////

@@ -5,13 +5,13 @@ namespace Ladb\CoreBundle\Repository\Opencutlist;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
-class DownloadRepository extends AbstractEntityRepository {
+class AccessRepository extends AbstractEntityRepository {
 
 	public function findPagined($offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'd' ))
-			->from($this->getEntityName(), 'd')
+			->select(array( 'a' ))
+			->from($this->getEntityName(), 'a')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
@@ -23,7 +23,7 @@ class DownloadRepository extends AbstractEntityRepository {
 
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		$queryBuilder
-			->addOrderBy('d.createdAt', 'DESC');
+			->addOrderBy('a.createdAt', 'DESC');
 	}
 
 }

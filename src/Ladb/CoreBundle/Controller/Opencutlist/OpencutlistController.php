@@ -2,19 +2,37 @@
 
 namespace Ladb\CoreBundle\Controller\Opencutlist;
 
-use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Entity\Opencutlist\Download;
+use Ladb\CoreBundle\Entity\Opencutlist\Access;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 
 /**
  * @Route("/opencutlist")
  */
 class OpencutlistController extends AbstractController {
+
+	private function _createAccess(Request $request, $env, $kind) {
+		$om = $this->getDoctrine()->getManager();
+
+		$access = new Access();
+		$access->setKind($kind);
+		$access->setEnv($env);
+		$access->setClientIp4($request->getClientIp());
+		$access->setClientUserAgent($request->server->get('HTTP_USER_AGENT'));
+		$access->setClientOclVersion($request->get('v'));
+
+		$om->persist($access);
+		$om->flush();
+
+		return $access;
+	}
+
+	/////
 
 	/**
 	 * @Route("/", name="core_opencutlist_ew")
@@ -25,21 +43,26 @@ class OpencutlistController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/manifest", name="core_opencutlist_manifest")
+	 * @Route("/manifest-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_manifest_env")
+	 */
+	public function manifestAction(Request $request, $env = 'prod') {
+
+		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
+
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/master/dist/manifest'.($access->getIsEnvDev() ? '-dev' : '').'.json');
+		return $response;
+	}
+
+	/**
 	 * @Route("/download", name="core_opencutlist_download")
-	 * @Route("/download/{env}", requirements={"env" = "dev"}, name="core_opencutlist_download_env")
+	 * @Route("/download-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_download_env")
 	 */
 	public function downloadAction(Request $request, $env = 'prod') {
-		$om = $this->getDoctrine()->getManager();
 
-		$download = new Download();
-		$download->setEnv($env);
-		$download->setClientIp4($request->getClientIp());
-		$download->setClientUserAgent($request->server->get('HTTP_USER_AGENT'));
+		$access = $this->_createAccess($request, $env, Access::KIND_DOWNLOAD);
 
-		$om->persist($download);
-		$om->flush();
-
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/master/dist/ladb_opencutlist'.($env == 'dev' ? '-dev' : '').'.rbz');
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/master/dist/ladb_opencutlist'.($access->getIsEnvDev() ? '-dev' : '').'.rbz');
 		return $response;
 	}
 
@@ -52,7 +75,7 @@ class OpencutlistController extends AbstractController {
 	public function statsAction(Request $request, $page = 0) {
 
 		$om = $this->getDoctrine()->getManager();
-		$downloadRepository = $om->getRepository(Download::CLASS_NAME);
+		$downloadRepository = $om->getRepository(Access::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -63,7 +86,7 @@ class OpencutlistController extends AbstractController {
 		$parameters = array(
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'downloads'   => $paginator,
+			'accesses'    => $paginator,
 		);
 
 		if ($request->isXmlHttpRequest()) {

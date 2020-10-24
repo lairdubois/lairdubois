@@ -2,11 +2,11 @@
 
 {% use 'LadbCoreBundle:Common/Blocks:list-autopager.blocks.html.twig' %}
 
-{# set downloads #}
+{# set accesses #}
 {# set nextPageUrl #}
 
 {% block items %}
-    {% for download in downloads %}
+    {% for access in accesses %}
         {% include 'LadbCoreBundle:Opencutlist:_list-row.part.html.twig' %}
     {% endfor %}
 {% endblock %}
