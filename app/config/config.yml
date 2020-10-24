@@ -103,6 +103,9 @@ doctrine:
             string_functions:
                 GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
                 REGEXP: DoctrineExtensions\Query\Mysql\Regexp
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                DAY: DoctrineExtensions\Query\Mysql\Day
             numeric_functions:
                 RAND: DoctrineExtensions\Query\Mysql\Rand
 

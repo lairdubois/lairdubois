@@ -2,10 +2,66 @@
 
 {% set hideHeaderContainer = false %}
 
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script>
+        var ctx = $('#myChart');
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Downloads',
+                    data: [
+                        {% for row in downloadsByDay %}
+                            {
+                                t: new Date('{{ row.year }}-{{ row.month }}-{{ row.day }} 00:00'),
+                                y: {{ row.count }}
+                            }{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    borderColor: '#FD6586',
+                    fill: false,
+                    lineTension: 0
+                },{
+                    label: 'Manifests',
+                    data: [
+                        {% for row in manifestsByDay %}
+                            {
+                                t: new Date('{{ row.year }}-{{ row.month }}-{{ row.day }} 00:00'),
+                                y: {{ row.count }}
+                            }{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    borderColor: '#3DA4E8',
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        }
+                    }],
+                    yAxes: [{
+                        type: 'linear',
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
 {% block bodyHeaderContainerContent %}
     {% include 'LadbCoreBundle:Opencutlist:_list-topbar.part.html.twig' %}
 {% endblock %}
 
 {% block autopagerContainerInner %}
+    <canvas id="myChart"></canvas>
     {% include 'LadbCoreBundle:Opencutlist:_list-n.part.html.twig' %}
 {% endblock %}

@@ -7,6 +7,37 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class AccessRepository extends AbstractEntityRepository {
 
+	public function countGroupByDay($kind = null, $env = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'count(a.id) as count, YEAR(a.createdAt) as year, MONTH(a.createdAt) as month, DAY(a.createdAt) as day' ))
+			->from($this->getEntityName(), 'a')
+			->groupBy('year')
+			->addGroupBy('month')
+			->addGroupBy('day')
+			->orderBy('a.createdAt')
+		;
+
+		if (!is_null($kind)) {
+			$queryBuilder->where('a.kind = :kind');
+			$queryBuilder->setParameter('kind', $kind);
+		}
+		if (!is_null($env)) {
+			if (!is_null($kind)) {
+				$queryBuilder->andWhere('a.env = :env');
+			} else {
+				$queryBuilder->andWhere('a.env = :env');
+			}
+			$queryBuilder->setParameter('env', $env);
+		}
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
 	public function findPagined($offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder

@@ -75,18 +75,23 @@ class OpencutlistController extends AbstractController {
 	public function statsAction(Request $request, $page = 0) {
 
 		$om = $this->getDoctrine()->getManager();
-		$downloadRepository = $om->getRepository(Access::CLASS_NAME);
+		$accessRepository = $om->getRepository(Access::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $downloadRepository->findPagined($offset, $limit);
+		$paginator = $accessRepository->findPagined($offset, $limit);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_opencutlist_stats_page', array(), $page, $paginator->count());
 
+		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD);
+		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST);
+
 		$parameters = array(
-			'prevPageUrl' => $pageUrls->prev,
-			'nextPageUrl' => $pageUrls->next,
-			'accesses'    => $paginator,
+			'prevPageUrl'    => $pageUrls->prev,
+			'nextPageUrl'    => $pageUrls->next,
+			'accesses'       => $paginator,
+			'downloadsByDay' => $downloadsByDay,
+			'manifestsByDay' => $manifestsByDay,
 		);
 
 		if ($request->isXmlHttpRequest()) {
