@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block headingInner %}
-    {{ access.location }}({{ access.countryCode }}){% if access.clientSketchupVersion %} / Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} / {{ access.clientOSStrippedName|capitalize }}{% endif %}
+    {% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}{% if access.clientSketchupVersion %} / Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} / {{ access.clientOSStrippedName|capitalize }}{% endif %}
 {% endblock %}
 
 {% block subheadingInner %}
