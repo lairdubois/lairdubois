@@ -74,19 +74,21 @@ class OpencutlistController extends AbstractController {
 	 */
 	public function statsAction(Request $request, $page = 0) {
 
+		$env = $request->get('env', 'prod') == 'dev' ? Access::ENV_DEV : Access::ENV_PROD;
+
 		$om = $this->getDoctrine()->getManager();
 		$accessRepository = $om->getRepository(Access::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $accessRepository->findPagined($offset, $limit);
+		$paginator = $accessRepository->findPagined($offset, $limit, $env);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_opencutlist_stats_page', array(), $page, $paginator->count());
 
-		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD);
-		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST);
+		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD, $env);
+		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST, $env);
 
-		$downloadsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_DOWNLOAD);
+		$downloadsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_DOWNLOAD, $env);
 		$downloadsByCountry = array();
 		foreach ($downloadsByCountryCode as $row) {
 			$downloadsByCountry[] = array(
@@ -96,7 +98,7 @@ class OpencutlistController extends AbstractController {
 			);
 		}
 
-		$manifestsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_MANIFEST);
+		$manifestsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_MANIFEST, $env);
 		$manifestsByCountry = array();
 		foreach ($manifestsByCountryCode as $row) {
 			$manifestsByCountry[] = array(
@@ -107,6 +109,7 @@ class OpencutlistController extends AbstractController {
 		}
 
 		$parameters = array(
+			'env'                => $env,
 			'prevPageUrl'        => $pageUrls->prev,
 			'nextPageUrl'        => $pageUrls->next,
 			'accesses'           => $paginator,

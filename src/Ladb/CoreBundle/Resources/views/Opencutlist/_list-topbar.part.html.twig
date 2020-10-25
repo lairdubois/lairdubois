@@ -1,7 +1,17 @@
 {% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
 
-{% set heading = '<i class="ladb-icon-statistics"></i> OpenCutList Stats' %}
+{% set isDev = env == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::ENV_DEV') ? true : false %}
+{% set heading = '<i class="ladb-icon-statistics"></i> OpenCutList Stats ('~(isDev ? 'dev' : 'prod')~')' %}
 
 {% block listTopbarRightInner %}
-    {{ accesses.count }}&nbsp;accesses
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <i class="ladb-icon-bug"></i> Environnement
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':'dev' }) }}">DEV</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':'prod' }) }}">PROD</a></li>
+        </ul>
+    </div>
 {% endblock %}

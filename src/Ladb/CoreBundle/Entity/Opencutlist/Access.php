@@ -270,7 +270,7 @@ class Access implements LocalisableInterface {
 	}
 
 	public function getClientOSStrippedName() {
-		switch ($this->env) {
+		switch ($this->clientOS) {
 			case self::OS_WIN:
 				return 'win';
 			case self::OS_MAC:
@@ -292,7 +292,7 @@ class Access implements LocalisableInterface {
 	}
 
 	public function getClientSketchupFamilyStrippedName() {
-		switch ($this->env) {
+		switch ($this->clientSketchupFamily) {
 			case self::SKETCHUP_FAMILY_MAKE:
 				return 'make';
 			case self::SKETCHUP_FAMILY_PRO:

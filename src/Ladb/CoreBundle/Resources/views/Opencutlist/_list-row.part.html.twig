@@ -4,13 +4,17 @@
 {% set title = access.env %}
 
 {% block rowInner %}
-    <span class="label label-{{ access.kind == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::KIND_DOWNLOAD') ? 'default' : 'info' }} pull-right">{{ access.kindStrippedName }} | {{ access.envStrippedName }}</span>
+    <span class="label label-{{ access.kind == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::KIND_DOWNLOAD') ? 'default' : 'info' }} pull-right">{{ access.kindStrippedName }}</span>
     {{ parent() }}
 {% endblock %}
 
 {% block headingInner %}
-    <div>{% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}</div>
-    <small>{% if access.clientOclVersion %}OpenCutList {{ access.clientOclVersion }}{% if access.clientSketchupVersion %} | {% endif %}{% endif %}{% if access.clientSketchupVersion %}Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} | {{ access.clientOSStrippedName|capitalize }}{% endif %}</small>
+    <div{% if not access.clientSketchupVersion %} class="ladb-strikethrough"{% endif %}>{% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}</div>
+    {% if access.clientSketchupVersion %}
+        <small>{% if access.clientOclVersion %}OpenCutList {{ access.clientOclVersion }}{% if access.clientSketchupVersion %} | {% endif %}{% endif %}{% if access.clientSketchupVersion %}Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} | {{ access.clientOSStrippedName|capitalize }}{% endif %}</small>
+    {% else %}
+        <small>{{ access.clientUserAgent }}</small>
+    {% endif %}
 {% endblock %}
 
 {% block subheadingInner %}

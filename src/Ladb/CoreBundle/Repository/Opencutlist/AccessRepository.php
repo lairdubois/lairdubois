@@ -12,6 +12,8 @@ class AccessRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->select(array( 'count(a.id) as count, YEAR(a.createdAt) as year, MONTH(a.createdAt) as month, DAY(a.createdAt) as day' ))
 			->from($this->getEntityName(), 'a')
+			->where('a.analyzed = true')
+			->andWhere('a.clientSketchupVersion IS NOT NULL')
 			->groupBy('year')
 			->addGroupBy('month')
 			->addGroupBy('day')
@@ -39,6 +41,8 @@ class AccessRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->select(array( 'count(a.id) as count, a.countryCode' ))
 			->from($this->getEntityName(), 'a')
+			->where('a.analyzed = true')
+			->andWhere('a.clientSketchupVersion IS NOT NULL')
 			->groupBy('a.countryCode')
 			->orderBy('count', 'DESC')
 		;
@@ -48,11 +52,7 @@ class AccessRepository extends AbstractEntityRepository {
 			$queryBuilder->setParameter('kind', $kind);
 		}
 		if (!is_null($env)) {
-			if (!is_null($kind)) {
-				$queryBuilder->andWhere('a.env = :env');
-			} else {
-				$queryBuilder->andWhere('a.env = :env');
-			}
+			$queryBuilder->andWhere('a.env = :env');
 			$queryBuilder->setParameter('env', $env);
 		}
 
@@ -65,23 +65,22 @@ class AccessRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findPagined($offset, $limit, $filter = 'recent') {
+	public function findPagined($offset, $limit, $env = null) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))
 			->from($this->getEntityName(), 'a')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
+			->addOrderBy('a.createdAt', 'DESC')
 		;
 
-		$this->_applyCommonFilter($queryBuilder, $filter);
+		if (!is_null($env)) {
+			$queryBuilder->andWhere('a.env = :env');
+			$queryBuilder->setParameter('env', $env);
+		}
 
 		return new Paginator($queryBuilder->getQuery());
-	}
-
-	private function _applyCommonFilter(&$queryBuilder, $filter) {
-		$queryBuilder
-			->addOrderBy('a.createdAt', 'DESC');
 	}
 
 }
