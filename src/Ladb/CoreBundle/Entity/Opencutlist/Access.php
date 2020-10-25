@@ -150,9 +150,9 @@ class Access implements LocalisableInterface {
 	public function getKindStrippedName() {
 		switch ($this->kind) {
 			case self::KIND_MANIFEST:
-				return 'manifest';
+				return 'ma';
 			case self::KIND_DOWNLOAD:
-				return 'download';
+				return 'dl';
 			default:
 				return '';
 		}

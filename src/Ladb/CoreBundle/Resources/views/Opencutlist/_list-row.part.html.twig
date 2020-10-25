@@ -4,7 +4,7 @@
 {% set title = access.env %}
 
 {% block rowInner %}
-    <span class="label label-{{ access.kind == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::KIND_DOWNLOAD') ? 'default' : 'info' }} pull-right">{{ access.kindStrippedName }}</span>
+    <div style="float: left; background: #{% if access.kind == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::KIND_MANIFEST') %}3DA4E8{% else %}FD6586{% endif %}; width: 64px; height: 64px; line-height: 64px; text-align: center; border-radius: 5px; color: #fff;">{{ access.kindStrippedName|upper }}</div>
     {{ parent() }}
 {% endblock %}
 
