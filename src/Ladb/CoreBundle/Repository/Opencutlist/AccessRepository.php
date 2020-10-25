@@ -13,7 +13,7 @@ class AccessRepository extends AbstractEntityRepository {
 			->select(array( 'count(a.id) as count, YEAR(a.createdAt) as year, MONTH(a.createdAt) as month, DAY(a.createdAt) as day' ))
 			->from($this->getEntityName(), 'a')
 			->where('a.analyzed = true')
-			->andWhere('a.clientSketchupVersion IS NOT NULL')
+			->andWhere('a.clientSketchupVersion IS NOT NULL OR a.clientOclVersion IS NOT NULL')
 			->groupBy('year')
 			->addGroupBy('month')
 			->addGroupBy('day')
@@ -48,7 +48,7 @@ class AccessRepository extends AbstractEntityRepository {
 			->select(array( 'count(a.id) as count, a.countryCode' ))
 			->from($this->getEntityName(), 'a')
 			->where('a.analyzed = true')
-			->andWhere('a.clientSketchupVersion IS NOT NULL')
+			->andWhere('a.clientSketchupVersion IS NOT NULL OR a.clientOclVersion IS NOT NULL')
 			->groupBy('a.countryCode')
 			->orderBy('count', 'DESC')
 		;
