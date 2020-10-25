@@ -23,11 +23,7 @@ class AccessRepository extends AbstractEntityRepository {
 			$queryBuilder->setParameter('kind', $kind);
 		}
 		if (!is_null($env)) {
-			if (!is_null($kind)) {
-				$queryBuilder->andWhere('a.env = :env');
-			} else {
-				$queryBuilder->andWhere('a.env = :env');
-			}
+			$queryBuilder->andWhere('a.env = :env');
 			$queryBuilder->setParameter('env', $env);
 		}
 
@@ -43,7 +39,7 @@ class AccessRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->select(array( 'count(a.id) as count, a.countryCode' ))
 			->from($this->getEntityName(), 'a')
-			->addGroupBy('a.countryCode')
+			->groupBy('a.countryCode')
 			->orderBy('count', 'DESC')
 		;
 
