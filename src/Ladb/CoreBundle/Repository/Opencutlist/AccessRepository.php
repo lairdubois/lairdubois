@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class AccessRepository extends AbstractEntityRepository {
 
-	public function countGroupByDay($kind = null, $env = null) {
+	public function countGroupByDay($kind = null, $env = null, $backwardDays = 28) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(a.id) as count, YEAR(a.createdAt) as year, MONTH(a.createdAt) as month, DAY(a.createdAt) as day' ))
@@ -20,8 +20,14 @@ class AccessRepository extends AbstractEntityRepository {
 			->orderBy('a.createdAt', 'DESC')
 		;
 
+		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
+		$queryBuilder
+			->where('a.createdAt >= :startAt')
+			->setParameter('startAt', $startAt)
+		;
+
 		if (!is_null($kind)) {
-			$queryBuilder->where('a.kind = :kind');
+			$queryBuilder->andWhere('a.kind = :kind');
 			$queryBuilder->setParameter('kind', $kind);
 		}
 		if (!is_null($env)) {
@@ -36,7 +42,7 @@ class AccessRepository extends AbstractEntityRepository {
 		}
 	}
 
-	public function countGroupByCountryCode($kind = null, $env = null) {
+	public function countGroupByCountryCode($kind = null, $env = null, $backwardDays = 28) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'count(a.id) as count, a.countryCode' ))
@@ -47,8 +53,14 @@ class AccessRepository extends AbstractEntityRepository {
 			->orderBy('count', 'DESC')
 		;
 
+		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
+		$queryBuilder
+			->where('a.createdAt >= :startAt')
+			->setParameter('startAt', $startAt)
+		;
+
 		if (!is_null($kind)) {
-			$queryBuilder->where('a.kind = :kind');
+			$queryBuilder->andWhere('a.kind = :kind');
 			$queryBuilder->setParameter('kind', $kind);
 		}
 		if (!is_null($env)) {
@@ -65,7 +77,7 @@ class AccessRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findPagined($offset, $limit, $env = null) {
+	public function findPagined($offset, $limit, $env = null, $backwardDays = 28) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))
@@ -73,6 +85,12 @@ class AccessRepository extends AbstractEntityRepository {
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 			->addOrderBy('a.createdAt', 'DESC')
+		;
+
+		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
+		$queryBuilder
+			->where('a.createdAt >= :startAt')
+			->setParameter('startAt', $startAt)
 		;
 
 		if (!is_null($env)) {

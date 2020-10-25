@@ -1,22 +1,17 @@
-{% extends 'LadbCoreBundle:Common:_list-row.part.html.twig' %}
-
 {% set entity = access %}
-{% set title = access.env %}
 
-{% block rowInner %}
-    <div style="float: left; background: #{% if access.kind == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::KIND_MANIFEST') %}3DA4E8{% else %}FD6586{% endif %}; width: 64px; height: 64px; line-height: 64px; text-align: center; border-radius: 5px; color: #fff;">{{ access.kindStrippedName|upper }}</div>
-    {{ parent() }}
-{% endblock %}
+<div class="ladb-list-row">
+    <div style="float: left; background: #{% if access.kind == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::KIND_MANIFEST') %}3DA4E8{% else %}FD6586{% endif %}; width: 64px; height: 64px; line-height: 64px; text-align: center; border-radius: 5px; color: #fff;{% if not access.analyzed %} opacity: 0.5{% endif %}">{{ access.kindStrippedName|upper }}</div>
+    <div class="ladb-body" style="padding-top: 0;">
+        <h3 class="ladb-heading" style="font-size: 20px; line-height: 20px;">
+            <div{% if not access.clientSketchupVersion %} class="ladb-strikethrough"{% endif %}>{% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}</div>
+            {% if access.clientSketchupVersion %}
+                <small>{% if access.clientOclVersion %}OpenCutList {{ access.clientOclVersion }}{% if access.clientSketchupVersion %} | {% endif %}{% endif %}{% if access.clientSketchupVersion %}Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} | {{ access.clientOSStrippedName|capitalize }}{% endif %}</small>
+            {% else %}
+                <small>{{ access.clientUserAgent }}</small>
+            {% endif %}
+        </h3>
+        <span class="ladb-subheading">{% include 'LadbCoreBundle:Common:_age.part.html.twig' %}</span>
+    </div>
+</div>
 
-{% block headingInner %}
-    <div{% if not access.clientSketchupVersion %} class="ladb-strikethrough"{% endif %}>{% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}</div>
-    {% if access.clientSketchupVersion %}
-        <small>{% if access.clientOclVersion %}OpenCutList {{ access.clientOclVersion }}{% if access.clientSketchupVersion %} | {% endif %}{% endif %}{% if access.clientSketchupVersion %}Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} | {{ access.clientOSStrippedName|capitalize }}{% endif %}</small>
-    {% else %}
-        <small>{{ access.clientUserAgent }}</small>
-    {% endif %}
-{% endblock %}
-
-{% block subheadingInner %}
-    {% include 'LadbCoreBundle:Common:_age.part.html.twig' %}
-{% endblock %}

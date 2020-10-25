@@ -75,6 +75,7 @@ class OpencutlistController extends AbstractController {
 	public function statsAction(Request $request, $page = 0) {
 
 		$env = $request->get('env', 'prod') == 'dev' ? Access::ENV_DEV : Access::ENV_PROD;
+		$days = intval($request->get('days', '28'));
 
 		$om = $this->getDoctrine()->getManager();
 		$accessRepository = $om->getRepository(Access::CLASS_NAME);
@@ -82,13 +83,13 @@ class OpencutlistController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $accessRepository->findPagined($offset, $limit, $env);
+		$paginator = $accessRepository->findPagined($offset, $limit, $env, $days);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_opencutlist_stats_page', array(), $page, $paginator->count());
 
-		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD, $env);
-		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST, $env);
+		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD, $env, $days);
+		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST, $env, $days);
 
-		$downloadsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_DOWNLOAD, $env);
+		$downloadsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days);
 		$downloadsByCountry = array();
 		foreach ($downloadsByCountryCode as $row) {
 			$downloadsByCountry[] = array(
@@ -98,7 +99,7 @@ class OpencutlistController extends AbstractController {
 			);
 		}
 
-		$manifestsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_MANIFEST, $env);
+		$manifestsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_MANIFEST, $env, $days);
 		$manifestsByCountry = array();
 		foreach ($manifestsByCountryCode as $row) {
 			$manifestsByCountry[] = array(
@@ -110,6 +111,7 @@ class OpencutlistController extends AbstractController {
 
 		$parameters = array(
 			'env'                => $env,
+			'days'               => $days,
 			'prevPageUrl'        => $pageUrls->prev,
 			'nextPageUrl'        => $pageUrls->next,
 			'accesses'           => $paginator,
