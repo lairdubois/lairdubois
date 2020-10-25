@@ -15,7 +15,7 @@ class AccessRepository extends AbstractEntityRepository {
 			->groupBy('year')
 			->addGroupBy('month')
 			->addGroupBy('day')
-			->orderBy('a.createdAt')
+			->orderBy('a.createdAt', 'DESC')
 		;
 
 		if (!is_null($kind)) {
@@ -37,6 +37,37 @@ class AccessRepository extends AbstractEntityRepository {
 			return null;
 		}
 	}
+
+	public function countGroupByCountryCode($kind = null, $env = null) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'count(a.id) as count, a.countryCode' ))
+			->from($this->getEntityName(), 'a')
+			->addGroupBy('a.countryCode')
+			->orderBy('count', 'DESC')
+		;
+
+		if (!is_null($kind)) {
+			$queryBuilder->where('a.kind = :kind');
+			$queryBuilder->setParameter('kind', $kind);
+		}
+		if (!is_null($env)) {
+			if (!is_null($kind)) {
+				$queryBuilder->andWhere('a.env = :env');
+			} else {
+				$queryBuilder->andWhere('a.env = :env');
+			}
+			$queryBuilder->setParameter('env', $env);
+		}
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+	}
+
+	/////
 
 	public function findPagined($offset, $limit, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();

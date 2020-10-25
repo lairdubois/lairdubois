@@ -6,8 +6,7 @@
     {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script>
-        var ctx = $('#myChart');
-        var myLineChart = new Chart(ctx, {
+        var byDayChart = new Chart($('#ladb_by_day_chart'), {
             type: 'line',
             data: {
                 datasets: [{
@@ -20,6 +19,7 @@
                             }{% if not loop.last %},{% endif %}
                         {% endfor %}
                     ],
+                    backgroundColor: '#FD6586',
                     borderColor: '#FD6586',
                     fill: false,
                     lineTension: 0
@@ -33,11 +33,13 @@
                             }{% if not loop.last %},{% endif %}
                         {% endfor %}
                     ],
+                    backgroundColor: '#3DA4E8',
                     borderColor: '#3DA4E8',
                     fill: false
                 }]
             },
             options: {
+                aspectRatio: 2,
                 scales: {
                     xAxes: [{
                         type: 'time',
@@ -54,6 +56,64 @@
                 }
             }
         });
+        var downloadsByCountryChart = new Chart($('#ladb_downloads_by_country_chart'), {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    label: 'Downloads',
+                    data: [
+                        {% for row in downloadsByCountry %}
+                            {{ row.count }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        {% for row in downloadsByCountry %}
+                            '#FD6586'{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                }],
+                labels: [
+                    {% for row in downloadsByCountry %}
+                        '{{ row.country }} ({{ row.countryCode }})'{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ]
+            },
+            options: {
+                aspectRatio: 1,
+                legend: {
+                    display: false
+                }
+            }
+        });
+        var manifestsbyCountryChart = new Chart($('#ladb_manifests_by_country_chart'), {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    label: 'Manifests',
+                    data: [
+                        {% for row in manifestsByCountry %}
+                            {{ row.count }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        {% for row in manifestsByCountry %}
+                            '#3DA4E8'{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                }],
+                labels: [
+                    {% for row in manifestsByCountry %}
+                        '{{ row.countryCode }}'{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ]
+            },
+            options: {
+                aspectRatio: 1,
+                legend: {
+                    display: false
+                }
+            }
+        });
     </script>
 {% endblock %}
 
@@ -61,7 +121,44 @@
     {% include 'LadbCoreBundle:Opencutlist:_list-topbar.part.html.twig' %}
 {% endblock %}
 
+{% block bodyContainerContent %}
+    <div class="row ladb-margin-top">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Acccès dans le temps</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas id="ladb_by_day_chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Downloads - Répartition par pays</strong>
+                    <span class="pull-right">{{ downloadsByCountry|length }} pays</span>
+                </div>
+                <div class="panel-body">
+                    <canvas id="ladb_downloads_by_country_chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Manifests - Répartition par pays</strong>
+                    <span class="pull-right">{{ manifestsByCountry|length }} pays</span>
+                </div>
+                <div class="panel-body">
+                    <canvas id="ladb_manifests_by_country_chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
 {% block autopagerContainerInner %}
-    <canvas id="myChart"></canvas>
     {% include 'LadbCoreBundle:Opencutlist:_list-n.part.html.twig' %}
 {% endblock %}

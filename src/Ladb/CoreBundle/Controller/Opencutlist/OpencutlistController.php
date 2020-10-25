@@ -86,12 +86,34 @@ class OpencutlistController extends AbstractController {
 		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD);
 		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST);
 
+		$downloadsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_DOWNLOAD);
+		$downloadsByCountry = array();
+		foreach ($downloadsByCountryCode as $row) {
+			$downloadsByCountry[] = array(
+				'count' => $row['count'],
+				'countryCode' => $row['countryCode'],
+				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
+			);
+		}
+
+		$manifestsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_MANIFEST);
+		$manifestsByCountry = array();
+		foreach ($manifestsByCountryCode as $row) {
+			$manifestsByCountry[] = array(
+				'count' => $row['count'],
+				'countryCode' => $row['countryCode'],
+				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
+			);
+		}
+
 		$parameters = array(
-			'prevPageUrl'    => $pageUrls->prev,
-			'nextPageUrl'    => $pageUrls->next,
-			'accesses'       => $paginator,
-			'downloadsByDay' => $downloadsByDay,
-			'manifestsByDay' => $manifestsByDay,
+			'prevPageUrl'        => $pageUrls->prev,
+			'nextPageUrl'        => $pageUrls->next,
+			'accesses'           => $paginator,
+			'downloadsByDay'     => $downloadsByDay,
+			'manifestsByDay'     => $manifestsByDay,
+			'downloadsByCountry' => $downloadsByCountry,
+			'manifestsByCountry' => $manifestsByCountry,
 		);
 
 		if ($request->isXmlHttpRequest()) {

@@ -6,7 +6,7 @@
     <div class="ladb-list-topbar-left ladb-hidden-mobile ladb-hidden-tablet">
         {% block listTopbarMiddleLeft %}
             {% set headingLevel = headingLevel|default(1) %}
-            <h{{ headingLevel }}>{{ heading }}</h{{ headingLevel }}>
+            <h{{ headingLevel }}>{{ heading|raw }}</h{{ headingLevel }}>
         {% endblock %}
     </div>
     <div class="ladb-list-topbar-middle">{% block listTopbarMiddleInner %}{% endblock %}</div>
