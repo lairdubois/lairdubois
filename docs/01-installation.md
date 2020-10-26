@@ -205,6 +205,8 @@ Now you are ready to setup the website itself !
 
 ## Step 2 - Setup the GIT repository
 
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+
 ``` bash
     $ sudo git init
     $ sudo git remote add origin https://github.com/lairdubois/lairdubois.git
@@ -212,11 +214,15 @@ Now you are ready to setup the website itself !
 
 ## Step 3 - Clone repository
 
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+
 ``` bash
     $ sudo git pull origin master
 ```
 
 ## Step 4 - Run composer to retrieve vendor dependencies
+
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 L'Air du Bois uses a lot of external libs and bundles. This step permits to automaticaly download them.
 
@@ -271,7 +277,7 @@ Restart NGINX.
 
 ## Step 7 - Generate and configure DKIM keys (Not necessary on the **DEV** server)
 
-*⚠️ Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 Emails sended by L'Air du Bois uses DKIM (DomainKeys Identified Mail) email authentication method.
 But as you need to add parameter on the DNS record, it may be usefull only on **PROD** server.
@@ -297,7 +303,7 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 
 ## Step 8 - Setup the database
 
-*⚠️ Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 ### Create the database
 
@@ -317,7 +323,7 @@ Execute the SQL script located at [`docs/database/schema-sessions.sql`](database
 
 ## Step 9 - Compile and Minimize CSS and JS
 
-*⚠️ Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 This step will create `web/js` and `web/css` folders and fill them with compiled and minimized assets. 
 
@@ -327,7 +333,7 @@ This step will create `web/js` and `web/css` folders and fill them with compiled
 
 ## Step 10 - Install bundle's assets
 
-*⚠️ Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 This step will install base assets (fonts, base images, ...) in `web/bundles` folder.
 
@@ -337,7 +343,7 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
 
 ## Step 11 - Initialize Elasticsearch index
 
-*⚠️ Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 This step will create the initial Elasticsearch index.
 
@@ -347,7 +353,7 @@ This step will create the initial Elasticsearch index.
 
 ## Step 12 - Create a first admin user
 
-*⚠️ Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
+*⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 This step will create an admin user for the platform. It will prompt you for :
   - a username
