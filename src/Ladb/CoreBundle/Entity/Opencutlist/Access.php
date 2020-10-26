@@ -77,7 +77,7 @@ class Access implements LocalisableInterface {
 	protected $analyzed = false;
 
 	/**
-	 * @ORM\Column(name="count_code", type="string", length=2, nullable=true)
+	 * @ORM\Column(name="country_code", type="string", length=2, nullable=true)
 	 */
 	protected $countryCode;
 

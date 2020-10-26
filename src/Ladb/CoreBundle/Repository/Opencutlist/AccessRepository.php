@@ -42,37 +42,34 @@ class AccessRepository extends AbstractEntityRepository {
 		}
 	}
 
-	public function countGroupByCountryCode($kind = null, $env = null, $backwardDays = 28) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'count(a.id) as count, a.countryCode' ))
-			->from($this->getEntityName(), 'a')
-			->where('a.analyzed = true')
-			->andWhere('a.clientSketchupVersion IS NOT NULL OR a.clientOclVersion IS NOT NULL')
-			->groupBy('a.countryCode')
-			->orderBy('count', 'DESC')
-		;
-
-		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
-		$queryBuilder
-			->where('a.createdAt >= :startAt')
-			->setParameter('startAt', $startAt)
-		;
-
+	public function countUniqueGroupByCountryCode($kind = null, $env = null, $backwardDays = 28) {
+		$sql = 	'SELECT count(*) as count, country_code as countryCode ';
+		$sql .= 'FROM (';
+		$sql .= 	'SELECT * FROM tbl_opencutlist_access GROUP BY client_ip4';
+		$sql .= ') t0 ';
+		$sql .= 'WHERE created_at > ? ';
 		if (!is_null($kind)) {
-			$queryBuilder->andWhere('a.kind = :kind');
-			$queryBuilder->setParameter('kind', $kind);
+			$sql .= 'AND kind = ? ';
 		}
 		if (!is_null($env)) {
-			$queryBuilder->andWhere('a.env = :env');
-			$queryBuilder->setParameter('env', $env);
+			$sql .= 'AND env = ? ';
 		}
+		$sql .= 'GROUP BY countryCode';
 
-		try {
-			return $queryBuilder->getQuery()->getResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
+
+		$conn = $this->getEntityManager()->getConnection();
+		$stmt = $conn->prepare($sql);
+		$stmt->bindValue(1, $startAt->format('Y-m-d H:i:s'));
+		if (!is_null($kind)) {
+			$stmt->bindValue(2, $kind);
 		}
+		if (!is_null($env)) {
+			$stmt->bindValue(is_null($kind) ? 2 : 3, $env);
+		}
+		$stmt->execute();
+
+		return $stmt->fetchAll();
 	}
 
 	/////

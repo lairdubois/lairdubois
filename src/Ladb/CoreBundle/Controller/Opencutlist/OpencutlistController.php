@@ -89,7 +89,7 @@ class OpencutlistController extends AbstractController {
 		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD, $env, $days);
 		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST, $env, $days);
 
-		$downloadsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days);
+		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days);
 		$downloadsByCountry = array();
 		foreach ($downloadsByCountryCode as $row) {
 			$downloadsByCountry[] = array(
@@ -99,7 +99,7 @@ class OpencutlistController extends AbstractController {
 			);
 		}
 
-		$manifestsByCountryCode = $accessRepository->countGroupByCountryCode(Access::KIND_MANIFEST, $env, $days);
+		$manifestsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_MANIFEST, $env, $days);
 		$manifestsByCountry = array();
 		foreach ($manifestsByCountryCode as $row) {
 			$manifestsByCountry[] = array(
