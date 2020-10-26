@@ -298,13 +298,13 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 ### Create the database
 
 ``` bash
-    $ bin/console doctrine:database:create
+    $ ./bin/console doctrine:database:create
 ```
 
 ### Build the schema (tables, etc ...)
 
 ``` bash
-    $ bin/console doctrine:schema:update --force
+    $ ./bin/console doctrine:schema:update --force
 ```
 
 ### Build session table
@@ -316,7 +316,7 @@ Execute the SQL script located at [`docs/database/schema-sessions.sql`](database
 This step will create `web/js` and `web/css` folders and fill them with compiled and minimized assets. 
 
 ``` bash
-    $ bin/console assetic:dump
+    $ ./bin/console assetic:dump
 ```
 
 ## Step 10 - Install bundle's assets
@@ -324,7 +324,7 @@ This step will create `web/js` and `web/css` folders and fill them with compiled
 This step will install base assets (fonts, base images, ...) in `web/bundles` folder.
 
 ``` bash
-    $ bin/console assets:install
+    $ ./bin/console assets:install
 ```
 
 ## Step 11 - Initialize Elasticsearch index
@@ -332,7 +332,7 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
 This step will create the initial Elasticsearch index.
 
 ```bash
-    $ bin/console fos:elastica:populate
+    $ ./bin/console fos:elastica:populate
 ```
 
 ## Step 12 - Create a first admin user
@@ -343,7 +343,7 @@ This step will create an admin user for the platform. It will prompt you for :
   - a password
 
 ```bash
-    $ bin/console fos:user:create
+    $ ./bin/console fos:user:create
 ```
 
 ## Step 13 - Activate cron commands (Not necessary on the **DEV** server)
