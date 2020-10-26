@@ -67,6 +67,18 @@ class OpencutlistController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/tutorials", name="core_opencutlist_tutorials")
+	 * @Route("/tutorials-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_tutorials_env")
+	 */
+	public function tutorialsAction(Request $request, $env = 'prod') {
+
+		$access = $this->_createAccess($request, $env, Access::KIND_TUTORIALS);
+
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/master/docs/json/tutorials.json');
+		return $response;
+	}
+
+	/**
 	 * @Route("/stats", name="core_opencutlist_stats")
 	 * @Route("/stats/{page}", requirements={"page" = "\d+"}, name="core_opencutlist_stats_page")
 	 * @Template("LadbCoreBundle:Opencutlist:stats.html.twig")

@@ -20,6 +20,7 @@ class Access implements LocalisableInterface {
 	const KIND_UNKNOW = 0;
 	const KIND_MANIFEST = 1;
 	const KIND_DOWNLOAD = 2;
+	const KIND_TUTORIALS = 3;
 
 	const ENV_UNKNOW = 0;
 	const ENV_DEV = 1;
@@ -153,6 +154,8 @@ class Access implements LocalisableInterface {
 				return 'ma';
 			case self::KIND_DOWNLOAD:
 				return 'dl';
+			case self::KIND_TUTORIALS:
+				return 'tu';
 			default:
 				return '';
 		}

@@ -54,9 +54,10 @@
                     yAxes: [{
                         type: 'linear',
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            stepSize: 1
                         },
-                        position: 'right'
+                        position: 'right',
                     }]
                 }
             }
@@ -79,7 +80,7 @@
                 }],
                 labels: [
                     {% for row in downloadsByCountry %}
-                        '({{ row.countryCode }}) {{ row.country }}'{% if not loop.last %},{% endif %}
+                        '({{ row.countryCode }}) {{ row.country }} '{% if not loop.last %},{% endif %}
                     {% endfor %}
                 ]
             },
