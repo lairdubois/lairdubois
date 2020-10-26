@@ -45,15 +45,17 @@ class AccessRepository extends AbstractEntityRepository {
 	public function countUniqueGroupByCountryCode($kind = null, $env = null, $backwardDays = 28) {
 		$sql = 	'SELECT count(*) as count, country_code as countryCode ';
 		$sql .= 'FROM (';
-		$sql .= 	'SELECT * FROM tbl_opencutlist_access GROUP BY client_ip4';
+		$sql .= 	'SELECT * FROM tbl_opencutlist_access ';
+		$sql .= 	'WHERE created_at > ? ';
+			if (!is_null($kind)) {
+				$sql .= 'AND kind = ? ';
+			}
+			if (!is_null($env)) {
+				$sql .= 'AND env = ? ';
+			}
+		$sql .= 	'AND analyzed = 1 AND (client_sketchup_version IS NOT NULL OR client_ocl_version IS NOT NULL) ';
+		$sql .= 	'GROUP BY client_ip4';
 		$sql .= ') t0 ';
-		$sql .= 'WHERE created_at > ? ';
-		if (!is_null($kind)) {
-			$sql .= 'AND kind = ? ';
-		}
-		if (!is_null($env)) {
-			$sql .= 'AND env = ? ';
-		}
 		$sql .= 'GROUP BY countryCode ';
 		$sql .= 'ORDER BY count DESC';
 
