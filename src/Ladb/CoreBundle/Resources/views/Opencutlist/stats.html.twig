@@ -144,7 +144,7 @@
             type: 'doughnut',
             data: {
                 datasets: [{
-                    label: 'Manifests',
+                    label: 'Tutorials',
                     data: [
                         {% for row in tutorialsByCountry %}
                             {{ row.count }}{% if not loop.last %},{% endif %}

@@ -122,7 +122,7 @@ class OpencutlistController extends AbstractController {
 			);
 		}
 
-		$tutorialsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_MANIFEST, $env, $days);
+		$tutorialsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_TUTORIALS, $env, $days);
 		$tutorialsByCountry = array();
 		foreach ($tutorialsByCountryCode as $row) {
 			$tutorialsByCountry[] = array(
