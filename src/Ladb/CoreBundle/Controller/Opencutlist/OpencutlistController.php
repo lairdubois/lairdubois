@@ -100,6 +100,7 @@ class OpencutlistController extends AbstractController {
 
 		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD, $env, $days);
 		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST, $env, $days);
+		$tutorialsByDay = $accessRepository->countGroupByDay(Access::KIND_TUTORIALS, $env, $days);
 
 		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days);
 		$downloadsByCountry = array();
@@ -121,6 +122,16 @@ class OpencutlistController extends AbstractController {
 			);
 		}
 
+		$tutorialsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_MANIFEST, $env, $days);
+		$tutorialsByCountry = array();
+		foreach ($tutorialsByCountryCode as $row) {
+			$tutorialsByCountry[] = array(
+				'count' => $row['count'],
+				'countryCode' => $row['countryCode'],
+				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
+			);
+		}
+
 		$parameters = array(
 			'env'                => $env,
 			'days'               => $days,
@@ -129,8 +140,10 @@ class OpencutlistController extends AbstractController {
 			'accesses'           => $paginator,
 			'downloadsByDay'     => $downloadsByDay,
 			'manifestsByDay'     => $manifestsByDay,
+			'tutorialsByDay'     => $tutorialsByDay,
 			'downloadsByCountry' => $downloadsByCountry,
 			'manifestsByCountry' => $manifestsByCountry,
+			'tutorialsByCountry' => $tutorialsByCountry,
 		);
 
 		if ($request->isXmlHttpRequest()) {
