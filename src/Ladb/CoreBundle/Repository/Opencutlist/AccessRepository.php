@@ -54,7 +54,8 @@ class AccessRepository extends AbstractEntityRepository {
 		if (!is_null($env)) {
 			$sql .= 'AND env = ? ';
 		}
-		$sql .= 'GROUP BY countryCode';
+		$sql .= 'GROUP BY countryCode ';
+		$sql .= 'ORDER BY count DESC';
 
 		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
 
