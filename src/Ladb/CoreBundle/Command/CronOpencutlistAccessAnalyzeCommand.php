@@ -56,15 +56,23 @@ EOT
 
 		foreach ($accesses as $access) {
 
-			// Extract OS, Sketchp Family and Sketchup Version
+			// Extract OS
 
-			$re = '/\sSketchUp\s*(Pro|Make|)\/(\d*.\d) \((PC|Mac)\)\s/';
+			$re = '/^Mozilla\/5.0 \((Windows|Macintosh)/';
+			preg_match_all($re, $access->getClientUserAgent(), $matches, PREG_SET_ORDER, 0);
+
+			if (!empty($matches)) {
+				$access->setClientOS($matches[0][1] == 'Windows' ? Access::OS_WIN : ($matches[0][3] == 'Macintosh' ? Access::OS_MAC : Access::OS_UNKNOW));
+			}
+
+			// Sketchp Family and Sketchup Version
+
+			$re = '/\sSketchUp\s*(Pro|Make|)\/(\d*.\d)\s/';
 			preg_match_all($re, $access->getClientUserAgent(), $matches, PREG_SET_ORDER, 0);
 
 			if (!empty($matches)) {
 				$access->setClientSketchupFamily($matches[0][1] == 'Pro' ? Access::SKETCHUP_FAMILY_PRO : ($matches[0][1] == 'Make' ? Access::SKETCHUP_FAMILY_MAKE : Access::SKETCHUP_FAMILY_UNKNOW));
 				$access->setClientSketchupVersion($matches[0][2]);
-				$access->setClientOS($matches[0][3] == 'PC' ? Access::OS_WIN : ($matches[0][3] == 'Mac' ? Access::OS_MAC : Access::OS_UNKNOW));
 			}
 
 			// Extract Location, Latitude and Longitude with ip-api.com web service
