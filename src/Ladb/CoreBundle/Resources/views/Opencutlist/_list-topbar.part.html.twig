@@ -1,6 +1,5 @@
 {% extends 'LadbCoreBundle:Common:_list-topbar.part.html.twig' %}
 
-{% set isDev = env == constant('\\Ladb\\CoreBundle\\Entity\\Opencutlist\\Access::ENV_DEV') ? true : false %}
 {% set heading = '<i class="ladb-icon-statistics"></i> OpenCutList Stats' %}
 
 {% block listTopbarRightInner %}
@@ -11,19 +10,35 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':(isDev ? 'dev' : 'prod'), 'days':7 }) }}">7 derniers jours</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':(isDev ? 'dev' : 'prod'), 'days':28 }) }}">28 derniers jours</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':(isDev ? 'dev' : 'prod'), 'days':365 }) }}">365 derniers jours</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':7, 'continent':continent }) }}">7 derniers jours</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':28, 'continent':continent }) }}">28 derniers jours</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':365, 'continent':continent }) }}">365 derniers jours</a></li>
         </ul>
     </div>
     <div class="btn-group">
         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i class="ladb-icon-bug"></i> {% if isDev %}DEV{% else %}PROD{% endif %}
+            <i class="ladb-icon-globe"></i> {{ continent }}
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':'dev', 'days':days }) }}">DEV</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':'prod', 'days':days }) }}">PROD</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':null }) }}">Monde</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AF' }) }}">Afrique</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'NA' }) }}">Amérique du Nord</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'SA' }) }}">Amérique du Sud</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AN' }) }}">Antarctique</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AS' }) }}">Asie</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'EU' }) }}">Europe</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'OC' }) }}">Océanie</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <i class="ladb-icon-bug"></i> {{ env|upper }}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':'dev', 'days':days, 'continent':continent }) }}">DEV</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':'prod', 'days':days, 'continent':continent }) }}">PROD</a></li>
         </ul>
     </div>
     </div>

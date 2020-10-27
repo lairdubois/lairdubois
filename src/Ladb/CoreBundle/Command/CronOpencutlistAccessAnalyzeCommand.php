@@ -40,8 +40,9 @@ EOT
 		$queryBuilder
 			->select(array( 'a' ))
 			->from(Access::CLASS_NAME, 'a')
-			->where('a.analyzed = false')
-			->setMaxResults(20)
+//			->where('a.analyzed = false')
+			->where('a.continentCode IS NULL')
+			->setMaxResults(40)		// ip-api.com endpoint is limited to 45 requests per minute from an IP address.
 		;
 
 		try {
@@ -77,15 +78,17 @@ EOT
 
 			// Extract Location, Latitude and Longitude with ip-api.com web service
 
-			$hash = json_decode(file_get_contents('http://ip-api.com/json/'.$access->getClientIp4().'?lang=fr'), true);
+			$hash = json_decode(file_get_contents('http://ip-api.com/json/'.$access->getClientIp4().'?lang=fr&fields=status,message,continentCode,country,countryCode,city,lat,lon'), true);
 			if ($hash && isset($hash['status']) && $hash['status'] == 'success') {
 
+				$continentCode = $hash['continentCode'];
 				$countryCode = $hash['countryCode'];
 				$country = $hash['country'];
 				$city = $hash['city'];
 				$latitude = $hash['lat'];
 				$longitude = $hash['lon'];
 
+				$access->setContinentCode($continentCode);
 				$access->setCountryCode($countryCode);
 				$access->setLocation($city.', '.$country);
 				$access->setLatitude($latitude);

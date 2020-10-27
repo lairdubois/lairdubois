@@ -78,6 +78,11 @@ class Access implements LocalisableInterface {
 	protected $analyzed = false;
 
 	/**
+	 * @ORM\Column(name="continent_code", type="string", length=2, nullable=true)
+	 */
+	protected $continentCode;
+
+	/**
 	 * @ORM\Column(name="country_code", type="string", length=2, nullable=true)
 	 */
 	protected $countryCode;
@@ -274,6 +279,17 @@ class Access implements LocalisableInterface {
 
 	public function getAnalyzed() {
 		return $this->analyzed;
+	}
+
+	// ContinentCode /////
+
+	public function setContinentCode($continentCode) {
+		$this->continentCode = $continentCode;
+		return $this;
+	}
+
+	public function getContinentCode() {
+		return $this->continentCode;
 	}
 
 	// CountryCode /////

@@ -88,6 +88,7 @@ class OpencutlistController extends AbstractController {
 
 		$env = $request->get('env', 'prod');
 		$days = intval($request->get('days', '28'));
+		$continent = $request->get('continent', null);
 
 		$om = $this->getDoctrine()->getManager();
 		$accessRepository = $om->getRepository(Access::CLASS_NAME);
@@ -95,14 +96,14 @@ class OpencutlistController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $accessRepository->findPagined($offset, $limit, $env, $days);
+		$paginator = $accessRepository->findPagined($offset, $limit, $env, $days, $continent);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_opencutlist_stats_page', array( 'env' => $env, 'days' => $days ), $page, $paginator->count());
 
-		$downloadsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOWNLOAD, $env, $days);
-		$manifestsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_MANIFEST, $env, $days);
-		$tutorialsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_TUTORIALS, $env, $days);
+		$downloadsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOWNLOAD, $env, $days, $continent);
+		$manifestsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_MANIFEST, $env, $days, $continent);
+		$tutorialsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_TUTORIALS, $env, $days, $continent);
 
-		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days);
+		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days, $continent);
 		$downloadsByCountry = array();
 		$downloadsCount = 0;
 		foreach ($downloadsByCountryCode as $row) {
@@ -114,7 +115,7 @@ class OpencutlistController extends AbstractController {
 			$downloadsCount += $row['count'];
 		}
 
-		$manifestsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_MANIFEST, $env, $days);
+		$manifestsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_MANIFEST, $env, $days, $continent);
 		$manifestsByCountry = array();
 		$manifestsCount = 0;
 		foreach ($manifestsByCountryCode as $row) {
@@ -126,7 +127,7 @@ class OpencutlistController extends AbstractController {
 			$manifestsCount += $row['count'];
 		}
 
-		$tutorialsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_TUTORIALS, $env, $days);
+		$tutorialsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_TUTORIALS, $env, $days, $continent);
 		$tutorialsByCountry = array();
 		$tutorialsCount = 0;
 		foreach ($tutorialsByCountryCode as $row) {
@@ -141,6 +142,7 @@ class OpencutlistController extends AbstractController {
 		$parameters = array(
 			'env'                => $env,
 			'days'               => $days,
+			'continent'          => $continent,
 			'prevPageUrl'        => $pageUrls->prev,
 			'nextPageUrl'        => $pageUrls->next,
 			'accesses'           => $paginator,
