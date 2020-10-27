@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Repository\Opencutlist;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Ladb\CoreBundle\Entity\Opencutlist\Access;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class AccessRepository extends AbstractEntityRepository {
@@ -30,10 +31,10 @@ class AccessRepository extends AbstractEntityRepository {
 		$stmt = $conn->prepare($sql);
 		$stmt->bindValue(1, $startAt->format('Y-m-d H:i:s'));
 		if (!is_null($kind)) {
-			$stmt->bindValue(2, $kind);
+			$stmt->bindValue(2, Access::validKind($kind));
 		}
 		if (!is_null($env)) {
-			$stmt->bindValue(is_null($kind) ? 2 : 3, $env);
+			$stmt->bindValue(is_null($kind) ? 2 : 3, Access::validEnv($env));
 		}
 		$stmt->execute();
 
@@ -63,10 +64,10 @@ class AccessRepository extends AbstractEntityRepository {
 		$stmt = $conn->prepare($sql);
 		$stmt->bindValue(1, $startAt->format('Y-m-d H:i:s'));
 		if (!is_null($kind)) {
-			$stmt->bindValue(2, $kind);
+			$stmt->bindValue(2, Access::validKind($kind));
 		}
 		if (!is_null($env)) {
-			$stmt->bindValue(is_null($kind) ? 2 : 3, $env);
+			$stmt->bindValue(is_null($kind) ? 2 : 3, Access::validEnv($env));
 		}
 		$stmt->execute();
 
@@ -93,7 +94,7 @@ class AccessRepository extends AbstractEntityRepository {
 
 		if (!is_null($env)) {
 			$queryBuilder->andWhere('a.env = :env');
-			$queryBuilder->setParameter('env', $env);
+			$queryBuilder->setParameter('env', Access::validEnv($env));
 		}
 
 		return new Paginator($queryBuilder->getQuery());

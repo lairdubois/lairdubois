@@ -139,8 +139,28 @@ class Access implements LocalisableInterface {
 
 	// Kind /////
 
+	public static function validKind($kind) {
+		if (is_string($kind)) {
+			switch ($kind) {
+				case 'ma':
+					return self::KIND_MANIFEST;
+				case 'dl':
+					return self::KIND_DOWNLOAD;
+				case 'tu':
+					return self::KIND_TUTORIALS;
+				default:
+					return self::KIND_UNKNOW;
+			}
+		}
+		$kind = intval($kind);
+		if ($kind < 0 || $kind > self::KIND_TUTORIALS) {
+			return self::KIND_UNKNOW;
+		}
+		return $kind;
+	}
+
 	public function setKind($kind) {
-		$this->kind = $kind;
+		$this->kind = self::validKind($kind);
 		return $this;
 	}
 
@@ -162,20 +182,26 @@ class Access implements LocalisableInterface {
 	}
 	// Env /////
 
-	public function setEnv($env) {
+	public static function validEnv($env) {
 		if (is_string($env)) {
 			switch ($env) {
 				case 'dev':
-					$env = self::ENV_DEV;
-					break;
+					return self::ENV_DEV;
 				case 'prod':
-					$env = self::ENV_PROD;
-					break;
+					return self::ENV_PROD;
 				default:
-					$env = self::ENV_UNKNOW;
+					return self::ENV_UNKNOW;
 			}
 		}
-		$this->env = $env;
+		$env = intval($env);
+		if ($env < 0 || $env > self::ENV_PROD) {
+			return self::ENV_UNKNOW;
+		}
+		return $env;
+	}
+
+	public function setEnv($env) {
+		$this->env = self::validEnv($env);
 		return $this;
 	}
 

@@ -86,7 +86,7 @@ class OpencutlistController extends AbstractController {
 	 */
 	public function statsAction(Request $request, $page = 0) {
 
-		$env = $request->get('env', 'prod') == 'dev' ? Access::ENV_DEV : Access::ENV_PROD;
+		$env = $request->get('env', 'prod');
 		$days = intval($request->get('days', '28'));
 
 		$om = $this->getDoctrine()->getManager();
@@ -96,7 +96,7 @@ class OpencutlistController extends AbstractController {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $accessRepository->findPagined($offset, $limit, $env, $days);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_opencutlist_stats_page', array(), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_opencutlist_stats_page', array( 'env' => $env, 'days' => $days ), $page, $paginator->count());
 
 		$downloadsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOWNLOAD, $env, $days);
 		$manifestsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_MANIFEST, $env, $days);
