@@ -40,8 +40,7 @@ EOT
 		$queryBuilder
 			->select(array( 'a' ))
 			->from(Access::CLASS_NAME, 'a')
-//			->where('a.analyzed = false')
-			->where('a.continentCode IS NULL')
+			->where('a.analyzed = false')
 			->setMaxResults(40)		// ip-api.com endpoint is limited to 45 requests per minute from an IP address.
 		;
 
