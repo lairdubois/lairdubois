@@ -98,9 +98,9 @@ class OpencutlistController extends AbstractController {
 		$paginator = $accessRepository->findPagined($offset, $limit, $env, $days);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_opencutlist_stats_page', array(), $page, $paginator->count());
 
-		$downloadsByDay = $accessRepository->countGroupByDay(Access::KIND_DOWNLOAD, $env, $days);
-		$manifestsByDay = $accessRepository->countGroupByDay(Access::KIND_MANIFEST, $env, $days);
-		$tutorialsByDay = $accessRepository->countGroupByDay(Access::KIND_TUTORIALS, $env, $days);
+		$downloadsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOWNLOAD, $env, $days);
+		$manifestsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_MANIFEST, $env, $days);
+		$tutorialsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_TUTORIALS, $env, $days);
 
 		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days);
 		$downloadsByCountry = array();

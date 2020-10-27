@@ -6,6 +6,10 @@
     {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script>
+        $('.ladb-readmore').readmore({
+            moreLink: '<a href="#" class="ladb-readmore-more"><i class="ladb-icon-two-chevron-down"></i></a>',
+            lessLink: '<a href="#" class="ladb-readmore-less"><i class="ladb-icon-two-chevron-up"></i></a>',
+        });
         var byDayChart = new Chart($('#ladb_by_day_chart'), {
             type: 'line',
             data: {
@@ -14,7 +18,7 @@
                     data: [
                         {% for row in downloadsByDay %}
                             {
-                                t: new Date('{{ row.year }}-{{ row.month }}-{{ row.day }} 00:00'),
+                                t: new Date('{{ row.day }} 00:00'),
                                 y: {{ row.count }}
                             }{% if not loop.last %},{% endif %}
                         {% endfor %}
@@ -28,7 +32,7 @@
                     data: [
                         {% for row in manifestsByDay %}
                             {
-                                t: new Date('{{ row.year }}-{{ row.month }}-{{ row.day }} 00:00'),
+                                t: new Date('{{ row.day }} 00:00'),
                                 y: {{ row.count }}
                             }{% if not loop.last %},{% endif %}
                         {% endfor %}
@@ -42,7 +46,7 @@
                     data: [
                         {% for row in tutorialsByDay %}
                             {
-                                t: new Date('{{ row.year }}-{{ row.month }}-{{ row.day }} 00:00'),
+                                t: new Date('{{ row.day }} 00:00'),
                                 y: {{ row.count }}
                             }{% if not loop.last %},{% endif %}
                         {% endfor %}
@@ -76,102 +80,6 @@
                 }
             }
         });
-        var downloadsByCountryChart = new Chart($('#ladb_downloads_by_country_chart'), {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    label: 'Downloads',
-                    data: [
-                        {% for row in downloadsByCountry %}
-                            {{ row.count }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                    backgroundColor: [
-                        {% for row in downloadsByCountry %}
-                            '#FD6586'{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                }],
-                labels: [
-                    {% for row in downloadsByCountry %}
-                        '({{ row.countryCode }}) {{ row.country }} '{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                ]
-            },
-            options: {
-                animation: {
-                    duration: 0 // general animation time
-                },
-                aspectRatio: 1,
-                legend: {
-                    display: false
-                }
-            }
-        });
-        var manifestsbyCountryChart = new Chart($('#ladb_manifests_by_country_chart'), {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    label: 'Manifests',
-                    data: [
-                        {% for row in manifestsByCountry %}
-                            {{ row.count }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                    backgroundColor: [
-                        {% for row in manifestsByCountry %}
-                            '#3DA4E8'{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                }],
-                labels: [
-                    {% for row in manifestsByCountry %}
-                        '({{ row.countryCode }}) {{ row.country }}'{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                ]
-            },
-            options: {
-                animation: {
-                    duration: 0 // general animation time
-                },
-                aspectRatio: 1,
-                legend: {
-                    display: false
-                }
-            }
-        });
-        var tutorialsbyCountryChart = new Chart($('#ladb_tutorials_by_country_chart'), {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    label: 'Tutorials',
-                    data: [
-                        {% for row in tutorialsByCountry %}
-                            {{ row.count }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                    backgroundColor: [
-                        {% for row in tutorialsByCountry %}
-                            '#71D4A9'{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                }],
-                labels: [
-                    {% for row in tutorialsByCountry %}
-                        '({{ row.countryCode }}) {{ row.country }}'{% if not loop.last %},{% endif %}
-                    {% endfor %}
-                ]
-            },
-            options: {
-                animation: {
-                    duration: 0 // general animation time
-                },
-                aspectRatio: 1,
-                legend: {
-                    display: false
-                }
-            }
-        });
     </script>
 {% endblock %}
 
@@ -184,7 +92,7 @@
         <div class="col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Acccès dans le temps</strong>
+                    <strong>Utilisateurs / jour</strong>
                 </div>
                 <div class="panel-body">
                     <canvas id="ladb_by_day_chart"></canvas>
@@ -197,8 +105,18 @@
                     <strong>Downloads - Utilisateurs / pays</strong>
                     <span class="pull-right">{{ downloadsByCountry|length }} pays</span>
                 </div>
-                <div class="panel-body">
-                    <canvas id="ladb_downloads_by_country_chart"></canvas>
+                <div class="panel-body ladb-readmore">
+                    <table>
+                        {% for row in downloadsByCountry %}
+                            <tr>
+                                <td width="50%">({{ row.countryCode }}) {{ row.country }}</td>
+                                <td width="30px" style="text-align: right; padding-right: 5px;">{{ row.count }}</td>
+                                <td width="100%">
+                                    <div style="background-color: #FD6586; margin: 2px; width: {{ row.count / downloadsByCountry[0].count * 100 }}%; height: 20px;"></div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
         </div>
@@ -208,8 +126,18 @@
                     <strong>Manifests - Utilisateurs / pays</strong>
                     <span class="pull-right">{{ manifestsByCountry|length }} pays</span>
                 </div>
-                <div class="panel-body">
-                    <canvas id="ladb_manifests_by_country_chart"></canvas>
+                <div class="panel-body ladb-readmore">
+                    <table>
+                        {% for row in manifestsByCountry %}
+                            <tr>
+                                <td width="50%">({{ row.countryCode }}) {{ row.country }}</td>
+                                <td width="30px" style="text-align: right; padding-right: 5px;">{{ row.count }}</td>
+                                <td width="100%">
+                                    <div style="background-color: #3DA4E8; margin: 2px; width: {{ row.count / manifestsByCountry[0].count * 100 }}%; height: 20px;"></div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
         </div>
@@ -220,7 +148,17 @@
                     <span class="pull-right">{{ tutorialsByCountry|length }} pays</span>
                 </div>
                 <div class="panel-body">
-                    <canvas id="ladb_tutorials_by_country_chart"></canvas>
+                    <table>
+                        {% for row in tutorialsByCountry %}
+                            <tr>
+                                <td width="50%">({{ row.countryCode }}) {{ row.country }}</td>
+                                <td width="30px" style="text-align: right; padding-right: 5px;">{{ row.count }}</td>
+                                <td width="100%">
+                                    <div style="background-color: #71D4A9; margin: 2px; width: {{ row.count / tutorialsByCountry[0].count * 100 }}%; height: 20px;"></div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
         </div>

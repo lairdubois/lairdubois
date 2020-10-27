@@ -7,39 +7,37 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class AccessRepository extends AbstractEntityRepository {
 
-	public function countGroupByDay($kind = null, $env = null, $backwardDays = 28) {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 'count(a.id) as count, YEAR(a.createdAt) as year, MONTH(a.createdAt) as month, DAY(a.createdAt) as day' ))
-			->from($this->getEntityName(), 'a')
-			->where('a.analyzed = true')
-			->andWhere('a.clientSketchupVersion IS NOT NULL OR a.clientOclVersion IS NOT NULL')
-			->groupBy('year')
-			->addGroupBy('month')
-			->addGroupBy('day')
-			->orderBy('a.createdAt', 'DESC')
-		;
-
-		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
-		$queryBuilder
-			->where('a.createdAt >= :startAt')
-			->setParameter('startAt', $startAt)
-		;
-
+	public function countUniqueGroupByDay($kind = null, $env = null, $backwardDays = 28) {
+		$sql = 	'SELECT count(id) AS count, day ';
+		$sql .= 'FROM (';
+		$sql .= 	'SELECT id, DATE_FORMAT(created_at, "%Y-%m-%d") AS day, client_ip4 FROM tbl_opencutlist_access ';
+		$sql .= 	'WHERE created_at > ? ';
 		if (!is_null($kind)) {
-			$queryBuilder->andWhere('a.kind = :kind');
-			$queryBuilder->setParameter('kind', $kind);
+			$sql .= 'AND kind = ? ';
 		}
 		if (!is_null($env)) {
-			$queryBuilder->andWhere('a.env = :env');
-			$queryBuilder->setParameter('env', $env);
+			$sql .= 'AND env = ? ';
 		}
+		$sql .= 	'AND analyzed = 1 AND (client_sketchup_version IS NOT NULL OR client_ocl_version IS NOT NULL) ';
+		$sql .= 	'GROUP BY day, client_ip4';
+		$sql .= ') t0 ';
+		$sql .= 'GROUP BY day ';
+		$sql .= 'ORDER BY day ASC';
 
-		try {
-			return $queryBuilder->getQuery()->getResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
+
+		$conn = $this->getEntityManager()->getConnection();
+		$stmt = $conn->prepare($sql);
+		$stmt->bindValue(1, $startAt->format('Y-m-d H:i:s'));
+		if (!is_null($kind)) {
+			$stmt->bindValue(2, $kind);
 		}
+		if (!is_null($env)) {
+			$stmt->bindValue(is_null($kind) ? 2 : 3, $env);
+		}
+		$stmt->execute();
+
+		return $stmt->fetchAll();
 	}
 
 	public function countUniqueGroupByCountryCode($kind = null, $env = null, $backwardDays = 28) {
@@ -53,11 +51,11 @@ class AccessRepository extends AbstractEntityRepository {
 			if (!is_null($env)) {
 				$sql .= 'AND env = ? ';
 			}
-		$sql .= 	'AND analyzed = 1 AND (client_sketchup_version IS NOT NULL OR client_ocl_version IS NOT NULL) ';
+		$sql .= 	'AND analyzed = 1 AND country_code IS NOT NULL AND (client_sketchup_version IS NOT NULL OR client_ocl_version IS NOT NULL) ';
 		$sql .= 	'GROUP BY client_ip4';
 		$sql .= ') t0 ';
 		$sql .= 'GROUP BY countryCode ';
-		$sql .= 'ORDER BY count DESC';
+		$sql .= 'ORDER BY count DESC, country_code ASC';
 
 		$startAt = (new \DateTime())->sub(new \DateInterval('P'.$backwardDays.'D'));
 
