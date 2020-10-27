@@ -62,7 +62,7 @@ EOT
 			preg_match_all($re, $access->getClientUserAgent(), $matches, PREG_SET_ORDER, 0);
 
 			if (!empty($matches)) {
-				$access->setClientOS($matches[0][1] == 'Windows' ? Access::OS_WIN : ($matches[0][3] == 'Macintosh' ? Access::OS_MAC : Access::OS_UNKNOW));
+				$access->setClientOS($matches[0][1] == 'Windows' ? Access::OS_WIN : ($matches[0][1] == 'Macintosh' ? Access::OS_MAC : Access::OS_UNKNOW));
 			}
 
 			// Sketchp Family and Sketchup Version
