@@ -99,68 +99,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>Downloads - Utilisateurs / pays</strong>
-                    <span class="pull-right">{{ downloadsByCountry|length }} pays</span>
-                </div>
-                <div class="panel-body ladb-readmore">
-                    <table>
-                        {% for row in downloadsByCountry %}
-                            <tr>
-                                <td width="50%">({{ row.countryCode }}) {{ row.country }}</td>
-                                <td width="30px" style="text-align: right; padding-right: 5px;">{{ row.count }}</td>
-                                <td width="100%">
-                                    <div style="background-color: #FD6586; margin: 2px; width: {{ row.count / downloadsByCountry[0].count * 100 }}%; height: 20px;"></div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
+        <div class="col-md-4 col-xs-12">
+            {% include 'LadbCoreBundle:Opencutlist:_country-panel.part.html.twig' with { 'title':'Downloads', 'data':downloadsByCountry, 'totalCount':downloadsCount , 'color':'FD6586' } %}
         </div>
-        <div class="col-sm-4 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>Manifests - Utilisateurs / pays</strong>
-                    <span class="pull-right">{{ manifestsByCountry|length }} pays</span>
-                </div>
-                <div class="panel-body ladb-readmore">
-                    <table>
-                        {% for row in manifestsByCountry %}
-                            <tr>
-                                <td width="50%">({{ row.countryCode }}) {{ row.country }}</td>
-                                <td width="30px" style="text-align: right; padding-right: 5px;">{{ row.count }}</td>
-                                <td width="100%">
-                                    <div style="background-color: #3DA4E8; margin: 2px; width: {{ row.count / manifestsByCountry[0].count * 100 }}%; height: 20px;"></div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
+        <div class="col-md-4 col-xs-12">
+            {% include 'LadbCoreBundle:Opencutlist:_country-panel.part.html.twig' with { 'title':'Manifests', 'data':manifestsByCountry, 'totalCount':manifestsCount, 'color':'3DA4E8' } %}
         </div>
-        <div class="col-sm-4 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>Tutorials - Utilisateurs / pays</strong>
-                    <span class="pull-right">{{ tutorialsByCountry|length }} pays</span>
-                </div>
-                <div class="panel-body">
-                    <table>
-                        {% for row in tutorialsByCountry %}
-                            <tr>
-                                <td width="50%">({{ row.countryCode }}) {{ row.country }}</td>
-                                <td width="30px" style="text-align: right; padding-right: 5px;">{{ row.count }}</td>
-                                <td width="100%">
-                                    <div style="background-color: #71D4A9; margin: 2px; width: {{ row.count / tutorialsByCountry[0].count * 100 }}%; height: 20px;"></div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
+        <div class="col-md-4 col-xs-12">
+            {% include 'LadbCoreBundle:Opencutlist:_country-panel.part.html.twig' with { 'title':'Tutorials', 'data':tutorialsByCountry, 'totalCount':tutorialsCount, 'color':'71D4A9' } %}
         </div>
     </div>
     {{ parent() }}

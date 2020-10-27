@@ -1,0 +1,24 @@
+{# set title #}
+{# set data #}
+{# set color #}
+{# set totalCount #}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>{{ title }} - Utilisateurs / pays</strong>
+        <div style="margin-top: 5px; font-size: 90%;">{{ totalCount }} utilisateurs | {{ data|length }} pays</div>
+    </div>
+    <div class="panel-body ladb-readmore">
+        <table>
+            {% for row in data %}
+                <tr>
+                    <td width="50%">{{ row.country }}</td>
+                    <td width="30px" style="text-align: right; padding-right: 5px;">{{ row.count }}</td>
+                    <td width="100%">
+                        <div style="background-color: #{{ color }}; margin: 2px; width: {{ row.count / data[0].count * 100 }}%; height: 20px;"></div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

@@ -104,32 +104,38 @@ class OpencutlistController extends AbstractController {
 
 		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days);
 		$downloadsByCountry = array();
+		$downloadsCount = 0;
 		foreach ($downloadsByCountryCode as $row) {
 			$downloadsByCountry[] = array(
 				'count' => $row['count'],
 				'countryCode' => $row['countryCode'],
 				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
 			);
+			$downloadsCount += $row['count'];
 		}
 
 		$manifestsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_MANIFEST, $env, $days);
 		$manifestsByCountry = array();
+		$manifestsCount = 0;
 		foreach ($manifestsByCountryCode as $row) {
 			$manifestsByCountry[] = array(
 				'count' => $row['count'],
 				'countryCode' => $row['countryCode'],
 				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
 			);
+			$manifestsCount += $row['count'];
 		}
 
 		$tutorialsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_TUTORIALS, $env, $days);
 		$tutorialsByCountry = array();
+		$tutorialsCount = 0;
 		foreach ($tutorialsByCountryCode as $row) {
 			$tutorialsByCountry[] = array(
 				'count' => $row['count'],
 				'countryCode' => $row['countryCode'],
 				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
 			);
+			$tutorialsCount += $row['count'];
 		}
 
 		$parameters = array(
@@ -144,6 +150,9 @@ class OpencutlistController extends AbstractController {
 			'downloadsByCountry' => $downloadsByCountry,
 			'manifestsByCountry' => $manifestsByCountry,
 			'tutorialsByCountry' => $tutorialsByCountry,
+			'downloadsCount'     => $downloadsCount,
+			'manifestsCount'     => $manifestsCount,
+			'tutorialsCount'     => $tutorialsCount,
 		);
 
 		if ($request->isXmlHttpRequest()) {
