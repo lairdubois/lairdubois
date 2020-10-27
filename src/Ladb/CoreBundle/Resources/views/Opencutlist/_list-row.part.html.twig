@@ -6,7 +6,7 @@
         <h3 class="ladb-heading" style="font-size: 20px; line-height: 20px;">
             <div{% if not access.clientSketchupVersion and not access.clientOclVersion %} class="ladb-strikethrough"{% endif %}>{% if access.countryCode %}({{ access.countryCode }}) {% endif %}{{ access.location }}</div>
             {% if access.clientSketchupVersion or access.clientOclVersion %}
-                <small>{% if access.clientOclVersion %}OpenCutList {{ access.clientOclVersion }}{% if access.clientSketchupVersion %} | {% endif %}{% endif %}{% if access.clientSketchupVersion %}Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} {{ access.clientSketchupVersion }} | {{ access.clientOSStrippedName|capitalize }}{% endif %}</small>
+                <small>{% if access.clientOclVersion %}OpenCutList <span style="color: #888;">{{ access.clientOclVersion }}</span>{% if access.clientSketchupVersion %} | {% endif %}{% endif %}{% if access.clientSketchupVersion %}Sketchup {{ access.clientSketchupFamilyStrippedName|capitalize }} <span style="color: #888;">{{ access.clientSketchupVersion }}</span> | {{ access.clientOSStrippedName|capitalize }}{% endif %}</small>
             {% else %}
                 <small>{{ access.clientUserAgent }}</small>
             {% endif %}
