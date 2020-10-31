@@ -73,6 +73,11 @@ class Access implements LocalisableInterface {
 	protected $clientOclVersion;
 
 	/**
+	 * @ORM\Column(name="client_ocl_language", type="string", length=2, nullable=true)
+	 */
+	protected $clientOclLanguage;
+
+	/**
 	 * @ORM\Column(type="boolean")
 	 */
 	protected $analyzed = false;
@@ -266,8 +271,15 @@ class Access implements LocalisableInterface {
 		return $this->clientOclVersion;
 	}
 
-	public function getTitle() {
-		return $this->env;
+	// ClientOclLanguage /////
+
+	public function setClientOclLanguage($clientOclLanguage) {
+		$this->clientOclLanguage = $clientOclLanguage;
+		return $this;
+	}
+
+	public function getClientOclLanguage() {
+		return $this->clientOclLanguage;
 	}
 
 	// Analyzed /////
@@ -356,6 +368,10 @@ class Access implements LocalisableInterface {
 
 	public function getClientSketchupVersion() {
 		return $this->clientSketchupVersion;
+	}
+
+	public function getTitle() {
+		return $this->env;
 	}
 
 }

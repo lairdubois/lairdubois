@@ -25,6 +25,7 @@ class OpencutlistController extends AbstractController {
 		$access->setClientIp4($request->getClientIp());
 		$access->setClientUserAgent($request->server->get('HTTP_USER_AGENT'));
 		$access->setClientOclVersion($request->get('v'));
+		$access->setClientOclLanguage($request->get('l'));
 
 		$om->persist($access);
 		$om->flush();
