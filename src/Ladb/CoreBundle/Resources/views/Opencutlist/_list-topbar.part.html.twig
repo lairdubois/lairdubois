@@ -6,13 +6,13 @@
     <div class="ladb-header-tools" style="padding-top: 0;">
     <div class="btn-group">
         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i class="ladb-icon-history"></i> {{ days }} derniers jours
+            <i class="ladb-icon-history"></i> {{ days }}<span class="ladb-hidden-mobile"> derniers jours</span>
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':7, 'continent':continent }) }}">7 derniers jours</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':28, 'continent':continent }) }}">28 derniers jours</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':365, 'continent':continent }) }}">365 derniers jours</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':7, 'continent':continent, 'language':language }) }}">7 derniers jours</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':28, 'continent':continent, 'language':language }) }}">28 derniers jours</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':365, 'continent':continent, 'language':language }) }}">365 derniers jours</a></li>
         </ul>
     </div>
     <div class="btn-group">
@@ -21,14 +21,14 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':null }) }}">Monde</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AF' }) }}">Afrique</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'NA' }) }}">Amérique du Nord</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'SA' }) }}">Amérique du Sud</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AN' }) }}">Antarctique</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AS' }) }}">Asie</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'EU' }) }}">Europe</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'OC' }) }}">Océanie</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':null, 'language':language }) }}">Monde</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AF', 'language':language }) }}">Afrique</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'NA', 'language':language }) }}">Amérique du Nord</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'SA', 'language':language }) }}">Amérique du Sud</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AN', 'language':language }) }}">Antarctique</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'AS', 'language':language }) }}">Asie</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'EU', 'language':language }) }}">Europe</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':'OC', 'language':language }) }}">Océanie</a></li>
         </ul>
     </div>
     <div class="btn-group">
@@ -37,8 +37,8 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':'dev', 'days':days, 'continent':continent }) }}">DEV</a></li>
-            <li><a href="{{ path('core_opencutlist_stats', { 'env':'prod', 'days':days, 'continent':continent }) }}">PROD</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':'dev', 'days':days, 'continent':continent, 'language':language }) }}">DEV</a></li>
+            <li><a href="{{ path('core_opencutlist_stats', { 'env':'prod', 'days':days, 'continent':continent, 'language':language }) }}">PROD</a></li>
         </ul>
     </div>
     </div>
