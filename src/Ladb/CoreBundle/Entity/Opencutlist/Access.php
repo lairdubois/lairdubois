@@ -58,6 +58,11 @@ class Access implements LocalisableInterface {
 	protected $env = self::ENV_UNKNOW;
 
 	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $analyzed = false;
+
+	/**
 	 * @ORM\Column(name="client_ip4", type="string")
 	 */
 	protected $clientIp4;
@@ -76,11 +81,6 @@ class Access implements LocalisableInterface {
 	 * @ORM\Column(name="client_ocl_language", type="string", length=2, nullable=true)
 	 */
 	protected $clientOclLanguage;
-
-	/**
-	 * @ORM\Column(type="boolean")
-	 */
-	protected $analyzed = false;
 
 	/**
 	 * @ORM\Column(name="continent_code", type="string", length=2, nullable=true)
@@ -121,6 +121,11 @@ class Access implements LocalisableInterface {
 	 * @ORM\Column(name="client_sketchup_version", type="string", nullable=true)
 	 */
 	protected $clientSketchupVersion;
+
+	/**
+	 * @ORM\Column(name="client_sketchup_locale", type="string", length=5, nullable=true)
+	 */
+	protected $clientSketchupLocale;
 
 	/////
 
@@ -190,6 +195,7 @@ class Access implements LocalisableInterface {
 				return '';
 		}
 	}
+
 	// Env /////
 
 	public static function validEnv($env) {
@@ -238,6 +244,17 @@ class Access implements LocalisableInterface {
 		return $this->env == self::ENV_PROD;
 	}
 
+	// Analyzed /////
+
+	public function setAnalyzed($analyzed) {
+		$this->analyzed = $analyzed;
+		return $this;
+	}
+
+	public function getAnalyzed() {
+		return $this->analyzed;
+	}
+
 	// ClientIp4 /////
 
 	public function setClientIp4($clientIp4) {
@@ -280,17 +297,6 @@ class Access implements LocalisableInterface {
 
 	public function getClientOclLanguage() {
 		return $this->clientOclLanguage;
-	}
-
-	// Analyzed /////
-
-	public function setAnalyzed($analyzed) {
-		$this->analyzed = $analyzed;
-		return $this;
-	}
-
-	public function getAnalyzed() {
-		return $this->analyzed;
 	}
 
 	// ContinentCode /////
@@ -368,6 +374,17 @@ class Access implements LocalisableInterface {
 
 	public function getClientSketchupVersion() {
 		return $this->clientSketchupVersion;
+	}
+
+	// ClientSketchupLocale /////
+
+	public function setClientSketchupLocale($clientSketchupLocale) {
+		$this->clientSketchupLocale = $clientSketchupLocale;
+		return $this;
+	}
+
+	public function getClientSketchupLocale() {
+		return $this->clientSketchupLocale;
 	}
 
 	public function getTitle() {

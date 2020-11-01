@@ -8,7 +8,7 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class AccessRepository extends AbstractEntityRepository {
 
-	public function countUniqueGroupByDay($kind = null, $env = null, $backwardDays = 28, $continentCode = null, $language = null) {
+	public function countUniqueGroupByDay($kind = null, $env = null, $backwardDays = 28, $continentCode = null, $language = null, $locale = null) {
 		$sql = 	'SELECT count(id) AS count, day ';
 		$sql .= 'FROM (';
 		$sql .= 	'SELECT id, DATE_FORMAT(created_at, "%Y-%m-%d") AS day, client_ip4 FROM tbl_opencutlist_access ';
@@ -24,6 +24,9 @@ class AccessRepository extends AbstractEntityRepository {
 			}
 			if (!is_null($language)) {
 				$sql .= 'AND client_ocl_language = ? ';
+			}
+			if (!is_null($locale)) {
+				$sql .= 'AND client_sketchup_locale = ? ';
 			}
 		$sql .= 	'AND analyzed = 1 AND (client_sketchup_version IS NOT NULL OR client_ocl_version IS NOT NULL) ';
 		$sql .= 	'GROUP BY day, client_ip4';
@@ -53,12 +56,16 @@ class AccessRepository extends AbstractEntityRepository {
 			$valueIndex += 1;
 			$stmt->bindValue($valueIndex, $language);
 		}
+		if (!is_null($locale)) {
+			$valueIndex += 1;
+			$stmt->bindValue($valueIndex, $locale);
+		}
 		$stmt->execute();
 
 		return $stmt->fetchAll();
 	}
 
-	public function countUniqueGroupByCountryCode($kind = null, $env = null, $backwardDays = 28, $continentCode = null, $language = null) {
+	public function countUniqueGroupByCountryCode($kind = null, $env = null, $backwardDays = 28, $continentCode = null, $language = null, $locale = null) {
 		$sql = 	'SELECT count(*) as count, country_code as countryCode ';
 		$sql .= 'FROM (';
 		$sql .= 	'SELECT * FROM tbl_opencutlist_access ';
@@ -74,6 +81,9 @@ class AccessRepository extends AbstractEntityRepository {
 			}
 			if (!is_null($language)) {
 				$sql .= 'AND client_ocl_language = ? ';
+			}
+			if (!is_null($locale)) {
+				$sql .= 'AND client_sketchup_locale = ? ';
 			}
 		$sql .= 	'AND analyzed = 1 AND country_code IS NOT NULL AND (client_sketchup_version IS NOT NULL OR client_ocl_version IS NOT NULL) ';
 		$sql .= 	'GROUP BY client_ip4';
@@ -103,6 +113,10 @@ class AccessRepository extends AbstractEntityRepository {
 			$valueIndex += 1;
 			$stmt->bindValue($valueIndex, $language);
 		}
+		if (!is_null($locale)) {
+			$valueIndex += 1;
+			$stmt->bindValue($valueIndex, $locale);
+		}
 		$stmt->execute();
 
 		return $stmt->fetchAll();
@@ -110,7 +124,7 @@ class AccessRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findPagined($offset, $limit, $env = null, $backwardDays = 28, $continentCode = null, $language = null) {
+	public function findPagined($offset, $limit, $env = null, $backwardDays = 28, $continentCode = null, $language = null, $locale = null) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))
@@ -139,6 +153,11 @@ class AccessRepository extends AbstractEntityRepository {
 		if (!is_null($language)) {
 			$queryBuilder->andWhere('a.clientOclLanguage = :language');
 			$queryBuilder->setParameter('language', $language);
+		}
+
+		if (!is_null($locale)) {
+			$queryBuilder->andWhere('a.clientSketchupLocale = :locale');
+			$queryBuilder->setParameter('locale', $locale);
 		}
 
 		return new Paginator($queryBuilder->getQuery());
