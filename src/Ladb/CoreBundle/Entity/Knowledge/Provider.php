@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Video;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Model\ReviewableInterface;
 use Ladb\CoreBundle\Model\ReviewableTrait;
@@ -40,6 +41,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	const FIELD_ADDRESS  = 'address';
 	const FIELD_PHONE  = 'phone';
 	const FIELD_DESCRIPTION  = 'description';
+	const FIELD_VIDEO = 'video';
 	const FIELD_IN_STORE_SELLING  = 'in_store_selling';
 	const FIELD_MAIL_ORDER_SELLING  = 'mail_order_selling';
 	const FIELD_SALE_TO_INDIVIDUALS  = 'sale_to_individuals';
@@ -55,13 +57,14 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 		Provider::FIELD_WEBSITE             => array(Provider::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_ADDRESS             => array(Provider::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),
 		Provider::FIELD_PHONE               => array(Provider::ATTRIB_TYPE => Phone::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
+		Provider::FIELD_DESCRIPTION         => array(Provider::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
+		Provider::FIELD_VIDEO    		 	=> array(Provider::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_IN_STORE_SELLING    => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Provider::FIELD_MAIL_ORDER_SELLING  => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Provider::FIELD_SALE_TO_INDIVIDUALS => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Provider::FIELD_PRODUCTS            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Bois massifs', 1 => 'Bois panneaux', 2 => 'Bois placages', 11 => 'Bois de construction', 3 => 'Outillage', 4 => 'Quincaillerie', 5 => 'Produits de finition', 6 => 'Colle et Fixation', 8 => 'Consommables', 7 => 'Miroiterie - Vitrerie', 9 => 'Equipements', 10 => 'Librairie' /* MAX = 11 */ ), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@products:"%q%"'),
 		Provider::FIELD_SERVICES            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Formations', 1 => 'Affûtage', 2 => 'Découpe', 3 => 'Location d\'atelier', 4 => 'Location d\'établi', 5 => 'Réparations', 6 => 'Atelier partagé', 7 => 'Recyclerie'), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@services:"%q%"'),
 		Provider::FIELD_WOODS               => array(Provider::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_FILTER_QUERY => '@woods:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule essence par proposition.')))),
-		Provider::FIELD_DESCRIPTION         => array(Provider::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_STATE         		=> array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(0 => 'En activité', 1 => 'En cours de redressement', 2 => 'En cours de liquidattion', 3 => 'Définitivement fermé')),
 	);
 
@@ -206,6 +209,19 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $descriptionValues;
+
+
+	/**
+	 * @ORM\Column(type="string", nullable=true, length=255)
+	 */
+	private $video;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Video", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_video")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $videoValues;
 
 
 	/**
@@ -722,6 +738,38 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 
 	public function getDescriptionValues() {
 		return $this->descriptionValues;
+	}
+
+	// Video /////
+
+	public function setVideo($video) {
+		$this->video = $video;
+		return $this;
+	}
+
+	public function getVideo() {
+		return $this->video;
+	}
+
+	// VideoValues /////
+
+	public function addVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		if (!$this->videoValues->contains($videoValue)) {
+			$this->videoValues[] = $videoValue;
+		}
+		return $this;
+	}
+
+	public function removeVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		$this->videoValues->removeElement($videoValue);
+	}
+
+	public function setVideoValues($videoValues) {
+		$this->videoValues = $videoValues;
+	}
+
+	public function getVideoValues() {
+		return $this->videoValues;
 	}
 
 	// InsStoreSelling /////

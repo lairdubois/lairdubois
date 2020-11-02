@@ -814,6 +814,7 @@ knowledge:
       address: Adresse
       phone: Téléphone
       description: Descriptif
+      video: Video
       in_store_selling: Vente en boutique
       mail_order_selling: Vente par correspondance
       sale_to_individuals: Vente aux particuliers
@@ -830,6 +831,7 @@ knowledge:
       address: "L'**Adresse** est l'adresse postale du fournisseur."
       phone: "Le **Téléphone** est le numéro de téléphone du fournisseur."
       description: "Le **Descriptif** décrit succintement ce fournisseur."
+      video: "La **Vidéo** permet de présenter ce fournisseur."
       in_store_selling: "**Vente en boutique** indique si ce fournisseur vend en boutique ou magasin."
       mail_order_selling: "**Vente par correspondance** indique si ce fournisseur vend par correspondance."
       sale_to_individuals: "**Vente aux particuliers** indique si ce fournisseur vend aux particuliers."
@@ -861,6 +863,8 @@ knowledge:
           - pas de d'avis personnels
           - pas de formulations publicitaires
           - pas de tarifs, prix, etc...
+        video: |
+          Saisissez dans le champ *Vidéo* un lien vers une vidéo (YouTube, Vimeo, Daylimotion)
         in_store_selling:
         mail_order_selling:
         sale_to_individuals:
