@@ -822,6 +822,7 @@ knowledge:
       products: Type de produits
       services: Type de services
       woods: Essences
+      branches: Secteurs d'activités
       state: Etat de l'activité
     help:
       sign: "L'**Enseigne** comprend la marque du fournisseur ainsi que facultativement le nom de l'agence ou de la boutique."
@@ -840,6 +841,9 @@ knowledge:
       woods: |
         Le champ **Essences** permet, le cas échéant, de lister les principales essences de bois proposées par ce fournisseur.
         *Ce champs n'est disponible que si le type de produits **Bois massifs** est actif sur ce fournisseur.*
+      branches: |
+        Les **Secteurs d'activités** permettent d'indiquer les métiers pouvant avoir recours à ce fournisseur.
+        (ex: *Menuiserie*, *Ebénisterie*, *Charpente*, *Lutherie*, ...).
       state: "L'**Etat de l'activité** permet d'indiquer la santé administrative de ce fournisseur."
     form:
       alert:
@@ -874,6 +878,8 @@ knowledge:
           - Ajoutez plusieurs propositions pour faire apparaitre plusieurs types de services.
         woods: |
           - Ajoutez **UNE** proposition par essence.
+        branches: |
+          - N'indiquez **qu'un seul** secteur d'activité par proposition.
         state:
     choice:
       entities: '[0,1]fournisseur|]1,Inf]fournisseurs'

@@ -48,6 +48,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	const FIELD_PRODUCTS  = 'products';
 	const FIELD_SERVICES  = 'services';
 	const FIELD_WOODS  = 'woods';
+	const FIELD_BRANCHES  = 'branches';
 	const FIELD_STATE  = 'state';
 
 	public static $FIELD_DEFS = array(
@@ -58,14 +59,15 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 		Provider::FIELD_ADDRESS             => array(Provider::ATTRIB_TYPE => Location::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_LINKED_FIELDS => array('latitude', 'longitude', 'geographicalAreas', 'postalCode', 'locality', 'country')),
 		Provider::FIELD_PHONE               => array(Provider::ATTRIB_TYPE => Phone::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_DESCRIPTION         => array(Provider::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
-		Provider::FIELD_VIDEO    		 	=> array(Provider::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
+		Provider::FIELD_VIDEO               => array(Provider::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false),
 		Provider::FIELD_IN_STORE_SELLING    => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Provider::FIELD_MAIL_ORDER_SELLING  => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		Provider::FIELD_SALE_TO_INDIVIDUALS => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
-		Provider::FIELD_PRODUCTS            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Bois massifs', 1 => 'Bois panneaux', 2 => 'Bois placages', 11 => 'Bois de construction', 3 => 'Outillage', 4 => 'Quincaillerie', 5 => 'Produits de finition', 6 => 'Colle et Fixation', 8 => 'Consommables', 7 => 'Miroiterie - Vitrerie', 9 => 'Equipements', 10 => 'Librairie' /* MAX = 11 */ ), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@products:"%q%"'),
+		Provider::FIELD_PRODUCTS            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Bois massifs', 1 => 'Bois panneaux', 2 => 'Bois placages', 11 => 'Bois de construction', 3 => 'Outillage', 4 => 'Quincaillerie', 5 => 'Produits de finition', 6 => 'Colle et Fixation', 8 => 'Consommables', 7 => 'Miroiterie - Vitrerie', 9 => 'Equipements', 10 => 'Librairie' /* MAX = 11 */), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@products:"%q%"'),
 		Provider::FIELD_SERVICES            => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_CHOICES => array(0 => 'Formations', 1 => 'Affûtage', 2 => 'Découpe', 3 => 'Location d\'atelier', 4 => 'Location d\'établi', 5 => 'Réparations', 6 => 'Atelier partagé', 7 => 'Recyclerie'), Provider::ATTRIB_USE_CHOICES_VALUE => true, Provider::ATTRIB_FILTER_QUERY => '@services:"%q%"'),
-		Provider::FIELD_WOODS               => array(Provider::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_FILTER_QUERY => '@woods:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule essence par proposition.')))),
-		Provider::FIELD_STATE         		=> array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(0 => 'En activité', 1 => 'En cours de redressement', 2 => 'En cours de liquidattion', 3 => 'Définitivement fermé')),
+		Provider::FIELD_WOODS               => array(Provider::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_FILTER_QUERY => '@woods:"%q%"', Provider::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule essence par proposition.')))),
+		Provider::FIELD_BRANCHES  			=> array(Provider::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => true, Provider::ATTRIB_FILTER_QUERY => '@branches:"%q%"', Provider::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul secteur d\'activité par proposition.')))),
+		Provider::FIELD_STATE               => array(Provider::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Provider::ATTRIB_MULTIPLE => false, Provider::ATTRIB_CHOICES => array(0 => 'En activité', 1 => 'En cours de redressement', 2 => 'En cours de liquidattion', 3 => 'Définitivement fermé')),
 	);
 
 	/**
@@ -275,6 +277,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	 */
 	private $productsValues;
 
+
 	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 */
@@ -287,6 +290,7 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	 */
 	private $servicesValues;
 
+
 	/**
 	 * @ORM\Column(type="text", nullable=true)
 	 */
@@ -298,6 +302,20 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $woodsValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $branches;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_provider_value_branches")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $branchesValues;
+
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true)
@@ -352,12 +370,14 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 		$this->addressValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->phoneValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->videoValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inStoreSellingValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->mailOrderSellingValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->saleToIndividualsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->productsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->servicesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->woodsValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->branchesValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->stateValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->creations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->howtos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -998,6 +1018,38 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 
 	public function getStateValues() {
 		return $this->stateValues;
+	}
+
+	// Branches /////
+
+	public function setBranches($branches) {
+		$this->branches = $branches;
+		return $this;
+	}
+
+	public function getBranches() {
+		return $this->branches;
+	}
+
+	// BranchesValues /////
+
+	public function addBranchesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $branchesValue) {
+		if (!$this->branchesValues->contains($branchesValue)) {
+			$this->branchesValues[] = $branchesValue;
+		}
+		return $this;
+	}
+
+	public function removeBranchesValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $branchesValue) {
+		$this->branchesValues->removeElement($branchesValue);
+	}
+
+	public function setBranchesValues($branchesValues) {
+		$this->branchesValues = $branchesValues;
+	}
+
+	public function getBranchesValues() {
+		return $this->branchesValues;
 	}
 
 	// CreationCount /////

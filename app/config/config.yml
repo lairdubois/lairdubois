@@ -930,6 +930,7 @@ fos_elastica:
                         products: { analyzer: body_analyzer }
                         services: { analyzer: body_analyzer }
                         woodsWorkaround: { analyzer: body_analyzer }
+                        branches: { analyzer: body_analyzer }
                         geoPoint: { type: geo_point }
                         createdAt: { type: date }
                         changedAt: { type: date }

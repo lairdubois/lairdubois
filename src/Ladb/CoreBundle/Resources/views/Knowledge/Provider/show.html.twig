@@ -151,6 +151,7 @@
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Informations</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_BRANCHES', provider), 'data':provider.branches, 'values':provider.branchesValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_STATE', provider), 'data':provider.state, 'values':provider.stateValues } %}
         </div>
         {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}

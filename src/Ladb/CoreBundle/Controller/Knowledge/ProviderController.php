@@ -281,6 +281,14 @@ class ProviderController extends AbstractController {
 
 						break;
 
+					case 'branches':
+
+						$filter = new \Elastica\Query\QueryString('"'.$facet->value.'"');
+						$filter->setFields(array( 'branches' ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'in-store-selling':
 
 						$filter = new \Elastica\Query\Range('inStoreSelling', array( 'gte' => 1 ));
