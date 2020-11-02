@@ -879,7 +879,7 @@ knowledge:
         woods: |
           - Ajoutez **UNE** proposition par essence.
         branches: |
-          - N'indiquez **qu'un seul** secteur d'activité par proposition.
+          - N'indiquez **qu'un seul** secteur d'activités par proposition.
         state:
     choice:
       entities: '[0,1]fournisseur|]1,Inf]fournisseurs'
