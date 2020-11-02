@@ -27,8 +27,10 @@
                                 {% if value.legend is not null %}
                                     <div class="ladb-legend">{{ value.legend }}</div>
                                 {% endif %}
-                                {% set isLink = value.sourceType == constant('SOURCE_TYPE_WEBSITE', value) %}
-                                <div class="ladb-source">{{ 'knowledge.proposal_value.source'|trans() }} : {% if isLink %}<a href="{{ value.source }}" target="_blank" rel="noreferrer noopener">{% endif %}{% if value.sourceType == constant('SOURCE_TYPE_PERSONAL', value) %}Connaissances personnelles{% elseif isLink %}{{ value.source|ladb_url_truncate }}{% else %}{{ value.source }}{% endif %}{% if isLink %}</a>{% endif %}</div>
+                                {% if value.source %}
+                                    {% set isLink = value.sourceType == constant('SOURCE_TYPE_WEBSITE', value) %}
+                                    <div class="ladb-source">{{ 'knowledge.proposal_value.source'|trans() }} : {% if isLink %}<a href="{{ value.source }}" target="_blank" rel="noreferrer noopener">{% endif %}{% if value.sourceType == constant('SOURCE_TYPE_PERSONAL', value) %}Connaissances personnelles{% elseif isLink %}{{ value.source|ladb_url_truncate }}{% else %}{{ value.source }}{% endif %}{% if isLink %}</a>{% endif %}</div>
+                                {% endif %}
                                 {% if is_granted('ROLE_ADMIN') and value.moderationScore != 0 %}
                                     <div class="ladb-moderation-score"><i class="ladb-icon-admin"></i> {{ 'knowledge.proposal_value.moderation_score'|trans() }} : <strong>{{ value.moderationScore }}</strong></div>
                                 {% endif %}

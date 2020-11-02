@@ -847,8 +847,7 @@ knowledge:
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
         sign: |
           Utilisez le champ **Nom d'Agence ou de Boutique** pour préciser la boutique à laquelle vous faites référence dans cette fiche si le fournisseur fait partie d'une chaîne avec plusieurs points de ventes.
-        logo: |
-          - Préférez les images carrées.
+        logo:
         photo:
         website:
         address:
@@ -918,8 +917,7 @@ knowledge:
       help:
         legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
-        logo: |
-          - Préférez les images carrées.
+        logo:
         photo:
         name: |
           Dans le cas d'une structure possédant plusieurs établissements, indiquez bien ici le nom de l'établissement que vous souhaitez référencer.

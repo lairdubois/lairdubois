@@ -24,7 +24,7 @@ class Picture {
 	const QUALITY_SD = 'sd';
 	const QUALITY_HD = 'hd';
 
-	const QUALITY_LD_MIN_SIZE = 64;
+	const QUALITY_LD_MIN_SIZE = 32;
 	const QUALITY_SD_MIN_SIZE = 256;
 	const QUALITY_HD_MIN_SIZE = 512;
 

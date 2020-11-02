@@ -26,11 +26,7 @@ class ValueSourceValidator extends ConstraintValidator {
 	public function validate($value, Constraint $constraint) {
 		if ($value instanceof BaseValue) {
 			$sourceType = $value->getSourceType();
-			if ($sourceType < BaseValue::SOURCE_TYPE_PERSONAL) {
-				$this->context->buildViolation('Vous devez préciser une source')
-					->atPath('source')
-					->addViolation();
-			} else if ($sourceType > BaseValue::SOURCE_TYPE_PERSONAL) {
+			if ($sourceType > BaseValue::SOURCE_TYPE_PERSONAL) {
 				$validationGroup = array();
 				if ($sourceType == BaseValue::SOURCE_TYPE_WEBSITE) {
 					$validationGroup[] = 'website';
