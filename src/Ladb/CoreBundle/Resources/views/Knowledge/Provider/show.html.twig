@@ -146,11 +146,11 @@
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_WEBSITE', provider), 'data':provider.website, 'values':provider.websiteValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_ADDRESS', provider), 'data':provider.address, 'values':provider.addressValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_PHONE', provider), 'data':provider.phone, 'values':provider.phoneValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', provider), 'data':provider.description, 'values':provider.descriptionValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_VIDEO', provider), 'data':provider.video, 'values':provider.videoValues } %}
         </div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Informations</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_DESCRIPTION', provider), 'data':provider.description, 'values':provider.descriptionValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_VIDEO', provider), 'data':provider.video, 'values':provider.videoValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_BRANCHES', provider), 'data':provider.branches, 'values':provider.branchesValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'field':constant('FIELD_STATE', provider), 'data':provider.state, 'values':provider.stateValues } %}
         </div>
