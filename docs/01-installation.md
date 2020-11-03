@@ -15,7 +15,7 @@ L'Air du Bois uses some important tools you need to install first.
     $ sudo apt-get install curl apt-transport-https ghostscript librsvg2-bin lnav unzip
 ```
 
-### Install [MySQL](https://www.mysql.com/) - *The database*
+### Install [MariaDB](https://mariadb.org/) - *The database*
 
 ``` bash
     $ sudo apt-get install mariadb-server mariadb-client
@@ -169,7 +169,7 @@ Configure Elasticsearch to automatically start during bootup.
 If you want to monitor RabbitMQ, enable the management plugin
 
 ``` bash
-    $ rabbitmq-plugins enable rabbitmq_management
+    $ sudo rabbitmq-plugins enable rabbitmq_management
 ```
 
 ### Install [ImageMagick](http://www.imagemagick.org/) - *The image manipulation library*
@@ -199,7 +199,7 @@ Now you are ready to setup the website itself !
 > If you are on the **DEV** server :
 
 ``` bash
-    $ mkdir /var/www/dev.lairdubois.fr
+    $ sudo mkdir /var/www/dev.lairdubois.fr
     $ cd /var/www/dev.lairdubois.fr
 ```
 
