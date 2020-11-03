@@ -184,22 +184,61 @@ If you want to monitor RabbitMQ, enable the management plugin
     $ sudo apt-get install pngquant optipng jpegoptim
 ```
 
-Now you are ready to setup the website itself !
+## Install [Chromium](https://www.chromium.org/) - *To capture external websites*
 
+The platform uses Chromium headless in order to auto generate screenshot of shared links in "Trouvailles".
+
+``` bash
+    $ sudo apt-get install chromium chromium-l10n
+```
+
+## Step 0.1 - Some useful aliases
+
+To speedup command line typing you can add some aliases on your user bash profile.
+
+> ⚠️&nbsp;️&nbsp;Those aliases works only if current folder is project folder `/var/www/www.lairdubois.fr`.
+
+``` bash
+    $ nano ~/.bash_aliases
+```
+
+> If you are on the **PROD** server :
+
+``` bash
+alias ladb='sudo --user=www-data bin/console --env=prod'
+alias ladb-cc='sudo --user=www-data bin/console --env=prod cache:clear --no-warmup && sudo --user=www-data bin/console --env=prod cache:warmup'
+alias ladb-maintenance-start='sudo scripts/maintenanceStart.sh'
+alias ladb-maintenance-stop='sudo scripts/maintenanceStop.sh'
+alias ladb-git-pull-master='sudo --user=www-data git pull origin master'
+alias ladb-log='sudo --user=www-data lnav var/logs/prod.log'
+alias ladb-install='sudo --user=www-data composer install'
+```
+
+> If you are on the **DEV** server :
+
+``` bash
+alias ladb='sudo --user=www-data bin/console --env=dev'
+alias ladb-cc='sudo --user=www-data bin/console --env=prod cache:clear --no-warmup && sudo --user=www-data bin/console --env=dev cache:warmup'
+alias ladb-git-pull-master='sudo --user=www-data git pull origin master'
+alias ladb-log='sudo --user=www-data lnav var/logs/dev.log'
+alias ladb-install='sudo --user=www-data composer install'
+```
+
+Now you are ready to setup the website itself !
 
 ## Step 1 - Create the website root directory
 
 > If you are on the **PROD** server :
 
 ``` bash
-    $ sudo mkdir /var/www/www.lairdubois.fr
+    $ sudo --user=www-data mkdir /var/www/www.lairdubois.fr
     $ cd /var/www/www.lairdubois.fr
 ```
 
 > If you are on the **DEV** server :
 
 ``` bash
-    $ sudo mkdir /var/www/dev.lairdubois.fr
+    $ sudo --user=www-data mkdir /var/www/dev.lairdubois.fr
     $ cd /var/www/dev.lairdubois.fr
 ```
 
@@ -208,8 +247,8 @@ Now you are ready to setup the website itself !
 *⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 ``` bash
-    $ sudo git init
-    $ sudo git remote add origin https://github.com/lairdubois/lairdubois.git
+    $ sudo --user=www-data git init
+    $ sudo --user=www-data git remote add origin https://github.com/lairdubois/lairdubois.git
 ```
 
 ## Step 3 - Clone repository
@@ -217,7 +256,7 @@ Now you are ready to setup the website itself !
 *⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
 
 ``` bash
-    $ sudo git pull origin master
+    $ ladb-git-pull-master
 ```
 
 ## Step 4 - Run composer to retrieve vendor dependencies
@@ -227,7 +266,7 @@ Now you are ready to setup the website itself !
 L'Air du Bois uses a lot of external libs and bundles. This step permits to automaticaly download them.
 
 ``` bash
-    $ sudo composer install
+    $ ladb-install
 ```
 
 At the end of the download process, you will be invite to enter configuration parameters (like database server, etc ...).
@@ -308,13 +347,13 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 ### Create the database
 
 ``` bash
-    $ bin/console doctrine:database:create
+    $ ladb doctrine:database:create
 ```
 
 ### Build the schema (tables, etc ...)
 
 ``` bash
-    $ bin/console doctrine:schema:update --force
+    $ ladb doctrine:schema:update --force
 ```
 
 ### Build session table
@@ -328,7 +367,7 @@ Execute the SQL script located at [`docs/database/schema-sessions.sql`](database
 This step will create `web/js` and `web/css` folders and fill them with compiled and minimized assets. 
 
 ``` bash
-    $ bin/console assetic:dump
+    $ ladb assetic:dump
 ```
 
 ## Step 10 - Install bundle's assets
@@ -338,7 +377,7 @@ This step will create `web/js` and `web/css` folders and fill them with compiled
 This step will install base assets (fonts, base images, ...) in `web/bundles` folder.
 
 ``` bash
-    $ bin/console assets:install
+    $ ladb assets:install
 ```
 
 ## Step 11 - Initialize Elasticsearch index
@@ -348,7 +387,7 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
 This step will create the initial Elasticsearch index.
 
 ```bash
-    $ bin/console fos:elastica:populate
+    $ ladb fos:elastica:populate
 ```
 
 ## Step 12 - Create a first admin user
@@ -361,7 +400,7 @@ This step will create an admin user for the platform. It will prompt you for :
   - a password
 
 ```bash
-    $ bin/console fos:user:create
+    $ ladb fos:user:create
 ```
 
 ## Step 13 - Activate cron commands (Not necessary on the **DEV** server)
@@ -612,29 +651,3 @@ COMMIT
     $ sudo service netfilter-persistent restart
 ```
 
-## Step 18 - Installing Chromium
-
-The platforme uses Chromium headless in order to auto generate screenshot of shared links in "Trouvailles".
-
-``` bash
-    $ sudo apt-get install chromium chromium-l10n
-```
-
-## Step 19 - Some useful aliases
-
-To speedup command line typing you can add some aliases on your user bash profile.
-/!\ Those aliases works only if current folder is project folder `/var/www/www.lairdubois.fr`.
-
-``` bash
-    $ nano ~/.bash_aliases
-```
-
-``` bash
-alias ladb='sudo --user=www-data bin/console --env=prod'
-alias ladb-cc='sudo --user=www-data bin/console --env=prod cache:clear --no-warmup && sudo --user=www-data bin/console --env=prod cache:warmup'
-alias ladb-maintenance-start='sudo scripts/maintenanceStart.sh'
-alias ladb-maintenance-stop='sudo scripts/maintenanceStop.sh'
-alias ladb-git-pull-master='sudo --user=www-data git pull origin master'
-alias ladb-log='sudo --user=www-data lnav var/logs/prod.log'
-alias ladb-install='sudo --user=www-data composer install'
-```
