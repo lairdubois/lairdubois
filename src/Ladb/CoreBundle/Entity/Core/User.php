@@ -64,14 +64,14 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	protected $username;
 
 	/**
-	 * @Assert\NotBlank()
-	 * @Assert\Email(strict=true)
+	 * @Assert\NotBlank(groups={"settings"})
+	 * @Assert\Email(strict=true, groups={"settings"})
 	 */
 	protected $email;
 
 	/**
 	 * @ORM\Column(type="string", length=25, unique=true)
-	 * @Assert\Length(min=3, max=25)
+	 * @Assert\Length(min=3, max=25, groups={"settings"})
 	 * @Assert\NotBlank(groups={"settings"})
 	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’°-]+$/")
 	 */
@@ -79,7 +79,7 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
-	 * @Assert\Length(min=3, max=100)
+	 * @Assert\Length(min=3, max=100, groups={"settings"})
 	 * @Assert\Regex("/^[A-Za-z][ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’-]+$/")
 	 */
 	private $fullname;
@@ -122,6 +122,37 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	 */
 	private $meta = null;
 
+	// Team /////
+
+	/**
+	 * @ORM\Column(type="boolean", name="is_team", nullable=false)
+	 */
+	private $isTeam = false;
+
+	/**
+	 * @ORM\Column(type="integer", name="team_count")
+	 */
+	private $teamCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\User", mappedBy="members")
+	 */
+	private $teams;
+
+	/**
+	 * @ORM\Column(type="integer", name="member_count")
+	 */
+	private $memberCount = 0;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\User", inversedBy="teams", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_core_user_member",
+	 *      	joinColumns={ @ORM\JoinColumn(name="user_id", referencedColumnName="id") },
+	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="member_user_id", referencedColumnName="id") }
+	 *      )
+	 */
+	private $members;
+
 	/////
 
 	/**
@@ -138,6 +169,7 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	public function __construct() {
 		parent::__construct();
 		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->members = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// ID /////
@@ -271,6 +303,64 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 			$this->meta = new UserMeta();
 		}
 		return $this->meta;
+	}
+	
+	// Team /////
+
+	// IsTeam /////
+
+	public function setIsTeam($isTeam) {
+		$this->isTeam = $isTeam;
+		return $this;
+	}
+
+	public function getIsTeam() {
+		return $this->isTeam;
+	}
+
+	// TeamCount /////
+
+	public function incrementTeamCount($by = 1) {
+		return $this->teamCount += intval($by);
+	}
+
+	public function getTeamCount() {
+		return $this->teamCount;
+	}
+
+	// Teams /////
+
+	public function getTeams() {
+		return $this->teams;
+	}
+
+	// MemberCount /////
+
+	public function getMemberCount() {
+		return $this->memberCount;
+	}
+
+	// Members /////
+
+	public function addMember(User $member) {
+		assert($member !== $this, 'Member can\'t be itself.');
+		if (!$this->members->contains($member)) {
+			$this->members[] = $member;
+			$this->memberCount = count($this->members);
+			$member->incrementTeamCount();
+		}
+		return $this;
+	}
+
+	public function removeMember(User $member) {
+		if ($this->members->removeElement($member)) {
+			$this->memberCount = count($this->members);
+			$member->incrementTeamCount(-1);
+		}
+	}
+
+	public function getMembers() {
+		return $this->members;
 	}
 
 }

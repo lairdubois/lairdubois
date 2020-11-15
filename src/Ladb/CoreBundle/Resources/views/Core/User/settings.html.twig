@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common:Layout/_form.html.twig' %}
 
 {% set pageTitle = 'user.settings'|trans() %}
-{% set formAction = path('core_user_settings') %}
+{% set formAction = path('core_user_settings', { 'username':user.usernameCanonical }) %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
@@ -38,12 +38,14 @@
     <li><a href="#skills"><i class="ladb-icon-skills"></i> {{ 'skill.skills'|trans() }}</a></li>
     <li><a href="#location"><i class="ladb-icon-location"></i> {{ 'user.location'|trans() }}</a></li>
     <li><a href="#social"><i class="ladb-icon-social"></i> {{ 'user.social'|trans() }}</a></li>
-    <li><a href="#options"><i class="ladb-icon-list"></i> {{ 'user.options'|trans() }}</a></li>
-    <li><a href="#notifications"><i class="ladb-icon-notifications"></i> {{ 'user.notifications'|trans() }}</a></li>
+    {% if not user.isTeam %}
+        <li><a href="#options"><i class="ladb-icon-list"></i> {{ 'user.options'|trans() }}</a></li>
+        <li><a href="#notifications"><i class="ladb-icon-notifications"></i> {{ 'user.notifications'|trans() }}</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block form_buttons %}
-    <a href="{{ path('core_user_show', { 'username' : user.usernameCanonical }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
+    <a href="{{ path('core_user_show', { 'username':user.usernameCanonical }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
     {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
 {% endblock %}
 
@@ -73,19 +75,19 @@
                 {{ form_errors(form.fullname) }}
                 {{ form_widget(form.fullname, { 'attr': { 'class':'form-control' } }) }}
             </div>
-            <div class="form-group">
+            <div class="form-group{% if user.isTeam %} hidden{% endif %}">
                 {{ form_label(form.email, 'Adresse e-mail') }}
                 {{ form_errors(form.email) }}
                 {{ form_widget(form.email, { 'attr': { 'class':'form-control' } }) }}
                 <p class="help-block"><em>Votre adresse e-mail ne sera jamais rendue publique, ni utilisée à d'autres fins que de permettre à L'Air du Bois de communiquer avec vous (mot de passe oublié, notifications, lettre d'information).</em></p>
             </div>
-            <div class="form-group">
+            <div class="form-group{% if user.isTeam %} hidden{% endif %}">
                 <label>Mot de passe</label>
                 <div>
                     <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Changer le mot de passe</a>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group{% if user.isTeam %} hidden{% endif %}">
                 <label>Type de compte</label>
                 <span class="help-block"><em>Indiquez qui se cache derrière ce compte.</em></span>
                 {{ form_errors(form.accountType) }}
@@ -110,9 +112,9 @@
                         </ul>
                     </div>
                 </div>
+                <hr>
+                <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'quels-sont-les-differents-types-de-comptes' }) }}">Quel sont les différents type de comptes ?</a> </p>
             </div>
-            <hr>
-            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'quels-sont-les-differents-types-de-comptes' }) }}">Quel sont les différents type de comptes ?</a> </p>
         {% endblock %}
     {% endembed %}
     {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'formSection':'banner', 'formPictures':form.meta.banner, 'pictures':(form.vars.data.meta.banner is null ? [] : [ form.vars.data.meta.banner ]), 'maxPictureCount':1, 'title':('user.banner'|trans()), 'help':('user.banner_help'|trans()), 'hideTextOverlayWarning':true } %}

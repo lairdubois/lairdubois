@@ -37,7 +37,7 @@
                         {% if hasBiography %}
                             {{ user.meta.biography.htmlBody|raw }}
                         {% elseif isOwner %}
-                            <a href="{{ path('core_user_settings') }}#biography" class="ladb-fake-biography hidden-xs"><i class="ladb-icon-plus"></i> {{ 'user.add_biography'|trans() }}</a>
+                            <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}#biography" class="ladb-fake-biography hidden-xs"><i class="ladb-icon-plus"></i> {{ 'user.add_biography'|trans() }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                             </div>
                         {% elseif isOwner %}
                             <div style="margin: 15px;">
-                                <a href="{{ path('core_user_settings') }}#location" class="ladb-fake-location visible-lg"><i class="ladb-icon-plus"></i> {{ 'user.add_location'|trans() }}</a>
+                                <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}#location" class="ladb-fake-location visible-lg"><i class="ladb-icon-plus"></i> {{ 'user.add_location'|trans() }}</a>
                             </div>
                         {% endif %}
                     </div>
@@ -99,10 +99,12 @@
                                     <span class="pull-right">{{ user.createdAt|time_diff() }}</span>
                                     <span><i class="ladb-icon-time"></i>&nbsp;Inscrit</span>
                                 </div>
-                                <div class="ladb-meta">
-                                    <span class="pull-right">{{ user.lastLogin|time_diff() }}</span>
-                                    <span><i class="ladb-icon-play"></i>&nbsp;Dernière connexion</span>
-                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta">
+                                        <span class="pull-right">{{ user.lastLogin|time_diff() }}</span>
+                                        <span><i class="ladb-icon-play"></i>&nbsp;Dernière connexion</span>
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="ladb-metas">
                                 <h4 class="ladb-heading">{{ 'skill.skills'|trans() }}</h4>
@@ -120,12 +122,29 @@
                             </div>
                             <div class="ladb-metas">
                                 <h4 class="ladb-heading">Relations</h4>
-                                <div class="ladb-meta{% if user.meta.followingCount == 0 %} text-muted{% endif %}">
-                                    {% if user.meta.followingCount > 0 %}<a href="{{ path('core_user_show_following', { 'username':user.usernameCanonical }) }}">{% endif %}
-                                        <strong>{{ user.meta.followingCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'follower.choice.following'|transchoice(user.meta.followingCount) }}</small>
-                                    {% if user.meta.followingCount > 0 %}</a>{% endif %}
-                                </div>
+                                {% if user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.memberCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.memberCount > 0 %}<a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.memberCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'team.choice.members'|transchoice(user.meta.memberCount) }}</small>
+                                            {% if user.meta.memberCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% else %}
+                                    <div class="ladb-meta{% if user.meta.teamCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.teamCount > 0 %}<a href="{{ path('core_user_show_teams', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.teamCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'team.choice.entities'|transchoice(user.meta.teamCount) }}</small>
+                                            {% if user.meta.teamCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.followingCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.followingCount > 0 %}<a href="{{ path('core_user_show_following', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.followingCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'follower.choice.following'|transchoice(user.meta.followingCount) }}</small>
+                                        {% if user.meta.followingCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
                                 <div class="ladb-meta{% if user.meta.followerCount == 0 %} text-muted{% endif %}">
                                     {% if user.meta.followerCount > 0 %}<a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}">{% endif %}
                                         <strong>{{ user.meta.followerCount|number_format(0, ',', ' ') }}</strong>
@@ -141,36 +160,40 @@
                                         <small>{{ 'like.choice.recieved_likes'|transchoice(user.meta.recievedLikeCount) }}</small>
                                     {% if user.meta.recievedLikeCount > 0 %}</a>{% endif %}
                                 </div>
-                                <div class="ladb-meta{% if user.meta.sentLikeCount == 0 %} text-muted{% endif %}">
-                                    {% if user.meta.sentLikeCount > 0 %}<a href="{{ path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'sent' }) }}">{% endif %}
-                                        <strong>{{ user.meta.sentLikeCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'like.choice.sent_likes'|transchoice(user.meta.sentLikeCount) }}</small>
-                                    {% if user.meta.sentLikeCount > 0 %}</a>{% endif %}
-                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.sentLikeCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.sentLikeCount > 0 %}<a href="{{ path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'sent' }) }}">{% endif %}
+                                            <strong>{{ user.meta.sentLikeCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'like.choice.sent_likes'|transchoice(user.meta.sentLikeCount) }}</small>
+                                        {% if user.meta.sentLikeCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="ladb-metas">
                                 <h4 class="ladb-heading">Contributions</h4>
-                                <div class="ladb-meta{% if user.meta.commentCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-comment"></i>
-                                    {% if user.meta.commentCount > 0 %}<a href="{{ path('core_user_show_comments', { 'username':user.usernameCanonical }) }}">{% endif %}
-                                        <strong>{{ user.meta.commentCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'comment.choice.entities'|transchoice(user.meta.commentCount) }}</small>
-                                    {% if user.meta.commentCount > 0 %}</a>{% endif %}
-                                </div>
-                                <div class="ladb-meta{% if user.meta.reviewCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-review"></i>
-                                    {% if user.meta.reviewCount > 0 %}<a href="{{ path('core_user_show_reviews', { 'username':user.usernameCanonical }) }}">{% endif %}
-                                        <strong>{{ user.meta.reviewCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'review.default.choice.entities'|transchoice(user.meta.reviewCount) }}</small>
-                                    {% if user.meta.reviewCount > 0 %}</a>{% endif %}
-                                </div>
-                                <div class="ladb-meta{% if user.meta.feedbackCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-feedback"></i>
-                                    {% if user.meta.feedbackCount > 0 %}<a href="{{ path('core_user_show_feedbacks', { 'username':user.usernameCanonical }) }}">{% endif %}
-                                        <strong>{{ user.meta.feedbackCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'feedback.default.choice.entities'|transchoice(user.meta.feedbackCount) }}</small>
-                                    {% if user.meta.feedbackCount > 0 %}</a>{% endif %}
-                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.commentCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-comment"></i>
+                                        {% if user.meta.commentCount > 0 %}<a href="{{ path('core_user_show_comments', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.commentCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'comment.choice.entities'|transchoice(user.meta.commentCount) }}</small>
+                                        {% if user.meta.commentCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.reviewCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-review"></i>
+                                        {% if user.meta.reviewCount > 0 %}<a href="{{ path('core_user_show_reviews', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.reviewCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'review.default.choice.entities'|transchoice(user.meta.reviewCount) }}</small>
+                                        {% if user.meta.reviewCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.feedbackCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-feedback"></i>
+                                        {% if user.meta.feedbackCount > 0 %}<a href="{{ path('core_user_show_feedbacks', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.feedbackCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'feedback.default.choice.entities'|transchoice(user.meta.feedbackCount) }}</small>
+                                        {% if user.meta.feedbackCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
                                 <div class="ladb-meta{% if user.meta.publicCreationCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-creation"></i>
                                     {% if user.meta.publicCreationCount > 0 %}<a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{% endif %}
@@ -185,13 +208,15 @@
                                         <small>{{ 'qa.question.choice.entities'|transchoice(user.meta.publicQuestionCount) }}</small>
                                     {% if user.meta.publicQuestionCount > 0 %}</a>{% endif %}
                                 </div>
-                                <div class="ladb-meta{% if user.meta.answerCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-answer"></i>
-                                    {% if user.meta.answerCount > 0 %}<a href="{{ path('core_user_show_answers', { 'username':user.usernameCanonical }) }}">{% endif %}
-                                        <strong>{{ user.meta.answerCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'qa.answer.choice.entities'|transchoice(user.meta.answerCount) }}</small>
-                                    {% if user.meta.answerCount > 0 %}</a>{% endif %}
-                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.answerCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-answer"></i>
+                                        {% if user.meta.answerCount > 0 %}<a href="{{ path('core_user_show_answers', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.answerCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'qa.answer.choice.entities'|transchoice(user.meta.answerCount) }}</small>
+                                        {% if user.meta.answerCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
                                 <div class="ladb-meta{% if user.meta.publicPlanCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-plan"></i>
                                     {% if user.meta.publicPlanCount > 0 %}<a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{% endif %}
@@ -234,32 +259,34 @@
                                         <small>{{ 'event.event.choice.entities'|transchoice(user.meta.publicEventCount) }}</small>
                                     {% if user.meta.publicEventCount > 0 %}</a>{% endif %}
                                 </div>
-                                <div class="ladb-meta{% if user.meta.publicCollectionCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-collection"></i>
-                                    {% if user.meta.publicCollectionCount > 0 %}<a href="{{ path('core_collection_list', { 'q':('@author:'~user.usernameCanonical) }) }}">{% endif %}
-                                        <strong>{{ user.meta.publicCollectionCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'collection.collection.choice.entities'|transchoice(user.meta.publicCollectionCount) }}</small>
-                                    {% if user.meta.publicCollectionCount > 0 %}</a>{% endif %}
-                                </div>
-                                <div class="ladb-meta{% if user.meta.positiveVoteCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-arrow-up"></i>
-                                    {% if user.meta.positiveVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'positive' }) }}">{% endif %}
-                                        <strong>{{ user.meta.positiveVoteCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'vote.choice.positive_votes'|transchoice(user.meta.positiveVoteCount) }}</small>
-                                    {% if user.meta.positiveVoteCount > 0 %}</a>{% endif %}
-                                </div>
-                                <div class="ladb-meta{% if user.meta.negativeVoteCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-arrow-down"></i>
-                                    {% if user.meta.negativeVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'negative' }) }}">{% endif %}
-                                        <strong>{{ user.meta.negativeVoteCount|number_format(0, ',', ' ') }}</strong>
-                                        <small>{{ 'vote.choice.negative_votes'|transchoice(user.meta.negativeVoteCount) }}</small>
-                                    {% if user.meta.negativeVoteCount > 0 %}</a>{% endif %}
-                                </div>
-                                <div class="ladb-meta{% if user.meta.proposalCount == 0 %} text-muted{% endif %}">
-                                    <i class="ladb-icon-proposal"></i>
-                                    <strong>{{ user.meta.proposalCount|number_format(0, ',', ' ') }}</strong>
-                                    <small>{{ 'default.choice.proposals'|transchoice(user.meta.proposalCount) }}</small>
-                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.publicCollectionCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-collection"></i>
+                                        {% if user.meta.publicCollectionCount > 0 %}<a href="{{ path('core_collection_list', { 'q':('@author:'~user.usernameCanonical) }) }}">{% endif %}
+                                            <strong>{{ user.meta.publicCollectionCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'collection.collection.choice.entities'|transchoice(user.meta.publicCollectionCount) }}</small>
+                                        {% if user.meta.publicCollectionCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.positiveVoteCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-arrow-up"></i>
+                                        {% if user.meta.positiveVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'positive' }) }}">{% endif %}
+                                            <strong>{{ user.meta.positiveVoteCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'vote.choice.positive_votes'|transchoice(user.meta.positiveVoteCount) }}</small>
+                                        {% if user.meta.positiveVoteCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.negativeVoteCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-arrow-down"></i>
+                                        {% if user.meta.negativeVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'negative' }) }}">{% endif %}
+                                            <strong>{{ user.meta.negativeVoteCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'vote.choice.negative_votes'|transchoice(user.meta.negativeVoteCount) }}</small>
+                                        {% if user.meta.negativeVoteCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.proposalCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-proposal"></i>
+                                        <strong>{{ user.meta.proposalCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'default.choice.proposals'|transchoice(user.meta.proposalCount) }}</small>
+                                    </div>
+                                {% endif %}
                                 <div class="ladb-meta{% if user.meta.publicOfferCount == 0 %} text-muted{% endif %}">
                                     <i class="ladb-icon-offer"></i>
                                     {% if user.meta.publicOfferCount > 0 %}<a href="{{ path('core_offer_list', { 'q':'@author:'~user.usernameCanonical }) }}">{% endif %}

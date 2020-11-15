@@ -5,9 +5,13 @@ namespace Ladb\CoreBundle\Controller\Core;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Feedback;
+use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Entity\Core\Review;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\Vote;
 use Ladb\CoreBundle\Entity\Offer\Offer;
+use Ladb\CoreBundle\Form\Type\UserTeamType;
+use Ladb\CoreBundle\Utils\MemberUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
 use Symfony\Component\Debug\Exception\UndefinedMethodException;
@@ -42,8 +46,6 @@ use Ladb\CoreBundle\Utils\LikableUtils;
 use Ladb\CoreBundle\Utils\UserUtils;
 
 /**
- * Creation controller.
- *
  * @Route("/")
  */
 class UserController extends AbstractController {
@@ -70,6 +72,28 @@ class UserController extends AbstractController {
 		}
 
 		return $user;
+	}
+
+	private function _isMemberOf($user) {
+		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+			$om = $this->getDoctrine()->getManager();
+			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			return $memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser());
+
+		}
+		return false;
+	}
+
+	private function _fillCommonShowParameters($user, $parameters) {
+
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		return array_merge($parameters, array(
+			'user'            => $user,
+			'isMember'        => $this->_isMemberOf($user),
+			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
+		));
 	}
 
 	/////
@@ -193,9 +217,12 @@ class UserController extends AbstractController {
 	 * @Route("/boiseux", name="core_user_list")
 	 * @Route("/boiseux/{page}", requirements={"page" = "\d+"}, name="core_user_list_page")
 	 * @Route("/boiseux.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_user_list_geojson")
+	 * @Route("/collectifs", defaults={"family"="team"}, name="core_user_team_list")
+	 * @Route("/collectifs/{page}", defaults={"family"="team"}, requirements={"page" = "\d+"}, name="core_userteam_list_page_")
+	 * @Route("/collectifs.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson", "family"="team"}, name="core_user_team_list_geojson")
 	 * @Template("LadbCoreBundle:Core/User:list.html.twig")
 	 */
-	public function listAction(Request $request, $page = 0, $layout = 'view') {
+	public function listAction(Request $request, $page = 0, $layout = 'view', $family = 'user') {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
 		$searchParameters = $searchUtils->searchPaginedEntities(
@@ -295,14 +322,23 @@ class UserController extends AbstractController {
 				$sort = array( 'meta.recievedLikeCount' => array( 'order' => 'desc' ) );
 
 			},
-			null,
+			function(&$filters) use ($family) {
+				if ($family == 'team') {
+					$filter = new \Elastica\Query\Term([ 'isTeam' => [ 'value' => true, 'boost' => 1.0 ] ]);
+					$filters[] = $filter;
+				} else {
+					$filter = new \Elastica\Query\Term([ 'isTeam' => [ 'value' => false, 'boost' => 1.0 ] ]);
+					$filters[] = $filter;
+				}
+			},
 			'fos_elastica.index.ladb.core_user',
 			\Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
 			'core_user_list_page'
 		);
 
 		$parameters = array_merge($searchParameters, array(
-			'users' => $searchParameters['entities'],
+			'family' => $family,
+			'users'  => $searchParameters['entities'],
 		));
 
 		if ($layout == 'geojson') {
@@ -334,13 +370,34 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/parametres", name="core_user_settings")
+	 * @Route("/parametres", name="core_user_settings_me_old")
+	 * @Route("/@me/parametres", name="core_user_settings_me")
+	 */
+	public function oldSettingsAction(Request $request, $username = null) {
+		$username = $this->getUser()->getUsernameCanonical();
+
+		return $this->redirect($this->generateUrl('core_user_settings', array( 'username' => $username )));
+	}
+
+	/**
+	 * @Route("/@{username}/parametres", name="core_user_settings")
 	 * @Template("LadbCoreBundle:Core/User:settings.html.twig")
 	 */
-	public function settingsAction(Request $request) {
+	public function settingsAction(Request $request, $username) {
 		$om = $this->getDoctrine()->getManager();
 
-		$user = $this->getUser();
+		$user = $this->_retrieveUser($username);
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			if ($user->getIsTeam()) {
+				$memberRepository = $om->getRepository(Member::class);
+				if (!$memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser())) {
+					throw $this->createNotFoundException('Access denied');
+				}
+			} else if (!($user->getId() == $this->getUser()->getId())) {
+				throw $this->createNotFoundException('Access denied');
+			}
+		}
+
 		$oldUsername = $user->getUsernameCanonical();
 		$form = $this->createForm(UserSettingsType::class, $user);
 
@@ -405,17 +462,17 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/counters.json", name="core_user_counters", defaults={"_format" = "json"})
+	 * @Route("/@me/counters.json", name="core_user_counters_me", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Core/User:counters-xhr.json.twig")
 	 */
 	public function countersAction(Request $request) {
 		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_user_counters)');
+			throw $this->createNotFoundException('Only XML request allowed (core_user_counters_me)');
 		}
 
 		$user = $this->getUser();
 		if (is_null($user)) {
-			throw $this->createNotFoundException('No current user (core_user_counters)');
+			throw $this->createNotFoundException('No current user (core_user_counters_me)');
 		}
 		$meta = $user->getMeta();
 
@@ -545,15 +602,11 @@ class UserController extends AbstractController {
 		$testimonialRepository = $om->getRepository(Testimonial::CLASS_NAME);
 		$testimonials = $testimonialRepository->findByUser($user);
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array(
-			'user'            => $user,
+		return $this->_fillCommonShowParameters($user, array(
 			'tab'             => 'about',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 			'hasMap'          => !is_null($user->getLatitude()) && !is_null($user->getLongitude()),
 			'testimonials'    => $testimonials,
-		);
+		));
 	}
 
 	/**
@@ -595,13 +648,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Core/Like:list-byuser-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => '',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
 	}
 
 	/**
@@ -641,13 +690,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Core/Comment:list-byuser-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => '',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
 	}
 
 	/**
@@ -689,13 +734,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Core/Vote:list-byuser-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => '',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
 	}
 
 	/**
@@ -737,13 +778,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Core/Review:list-byuser-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => '',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
 	}
 
 	/**
@@ -787,11 +824,9 @@ class UserController extends AbstractController {
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => '',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
 	}
 
 	/**
@@ -845,13 +880,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Wonder/Creation:list-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'creations',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'creations',
+		)));
 	}
 
 	/**
@@ -907,11 +938,9 @@ class UserController extends AbstractController {
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'workshops',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'workshops',
+		)));
 	}
 
 	/**
@@ -965,13 +994,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Wonder/Plan:list-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'plans',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'plans',
+		)));
 	}
 
 	/**
@@ -1025,13 +1050,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Howto/Howto:list-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'howtos',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'howtos',
+		)));
 	}
 
 	/**
@@ -1085,13 +1106,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Find/Find:list-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab'             => 'finds',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		)));
 	}
 
 	/**
@@ -1145,13 +1162,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Qa/Question:list-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'questions',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'questions',
+		)));
 	}
 
 	/**
@@ -1195,11 +1208,9 @@ class UserController extends AbstractController {
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => '',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
 	}
 
 	/**
@@ -1253,13 +1264,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Promotion/Graphic:list-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'graphics',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'graphics',
+		)));
 	}
 
 	/**
@@ -1315,11 +1322,9 @@ class UserController extends AbstractController {
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'workflows',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'workflows',
+		)));
 	}
 
 	/**
@@ -1373,13 +1378,9 @@ class UserController extends AbstractController {
 			return $this->render('LadbCoreBundle:Offer/Offer:list-xhr.html.twig', $parameters);
 		}
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'offers',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'offers',
+		)));
 	}
 
 	/**
@@ -1425,11 +1426,9 @@ class UserController extends AbstractController {
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
-		return array_merge($parameters, array(
-			'user'            => $user,
-			'tab'             => 'following',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'following',
+		)));
 	}
 
 	/**
@@ -1475,16 +1474,92 @@ class UserController extends AbstractController {
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
-		return array_merge($parameters, array(
-			'user'            => $user,
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'followers'       => $paginator,
 			'tab'             => 'followers',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		));
+		)));
 	}
 
 	/**
-	 * @Route("/me", name="core_user_show_me")
+	 * @Route("/@{username}/members", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_members")
+	 * @Route("/@{username}/members/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_members_filter")
+	 * @Route("/@{username}/members/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_members_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showMembers.html.twig")
+	 */
+	public function showMembersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_following', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		// Member
+
+		$om = $this->getDoctrine()->getManager();
+		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $memberRepository->findPaginedByTeam($user, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_member_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'members'     => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Follower:member-list-xhr.html.twig', $parameters);
+		}
+
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
+	}
+
+	/**
+	 * @Route("/@{username}/collectifs", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_teams")
+	 * @Route("/@{username}/collectifs/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_teams_filter")
+	 * @Route("/@{username}/collectifs/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_teams_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showTeams.html.twig")
+	 */
+	public function showTeamsAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
+		$user = $this->_retrieveUser($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_teams', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		// Teams
+
+		$om = $this->getDoctrine()->getManager();
+		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $memberRepository->findPaginedByUser($user, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_teams_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'members'     => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Follower:teams-list-xhr.html.twig', $parameters);
+		}
+
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => '',
+		)));
+	}
+
+	/**
+	 * @Route("/@me", name="core_user_show_me")
 	 */
 	public function showMeAction() {
 		$username = $this->getUser()->getUsernameCanonical();
@@ -1525,10 +1600,92 @@ class UserController extends AbstractController {
 			$forwardController = 'LadbCoreBundle:Core/User:showAbout';
 		}
 
+		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+			$om = $this->getDoctrine()->getManager();
+			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$isMember = $memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser());
+
+		} else {
+			$isMember = false;
+		}
+
 		$response = $this->forward($forwardController, array(
-			'username'  => $username,
+			'username' => $username,
+			'isMember' => $isMember,
 		));
 		return $response;
+	}
+
+	// Team /////
+
+	/**
+	 * @Route("/collectifs/new", name="core_user_team_new")
+	 * @Template("LadbCoreBundle:Core/User/Team:new.html.twig")
+	 */
+	public function teamNewAction() {
+
+		$team = new User();
+		$form = $this->createForm(UserTeamType::class, $team);
+
+		return array(
+			'form' => $form->createView(),
+		);
+	}
+
+	/**
+	 * @Route("/collectifs/create", methods={"POST"}, name="core_user_team_create")
+	 * @Template("LadbCoreBundle:Core/User/Team:new.html.twig")
+	 */
+	public function teamCreateAction(Request $request) {
+
+		$this->createLock('core_user_team_create', false, self::LOCK_TTL_CREATE_ACTION, false);
+
+		$om = $this->getDoctrine()->getManager();
+		$userManager = $this->get('fos_user.user_manager');
+
+		$team = $userManager->createUser(); //new User();
+		$form = $this->createForm(UserTeamType::class, $team);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			// Default avatar
+			if (is_null($team->getAvatar())) {
+				$userUtils = $this->get(UserUtils::NAME);
+				$userUtils->createDefaultAvatar($team);
+			}
+
+			$team->setIsTeam(true);
+			$team->setEmail($team->getUsernameCanonical().'-team@lairdubois.fr');
+			$team->setEmailCanonical($team->getEmail());
+			$team->setEnabled(true);
+			$team->setPlainPassword(random_bytes(20));	// Put a random password
+			$userManager->updateUser($team);
+
+			// Add team's creator as first member
+			$memberUtils = $this->get(MemberUtils::NAME);
+			$memberUtils->create($team, $this->getUser());
+
+			$om->flush();
+
+			// Search index update
+			$searchUtils = $this->get(SearchUtils::NAME);
+			$searchUtils->insertEntityToIndex($team);
+
+			// Flashbag
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.form.alert.team_success'));
+
+			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical()) ));
+		}
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.form.alert.error'));
+
+		return array(
+			'user' => $team,
+			'form' => $form->createView(),
+		);
 	}
 
 	// Admin /////

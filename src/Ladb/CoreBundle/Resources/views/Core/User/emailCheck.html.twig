@@ -15,7 +15,7 @@
                     <h1 class="panel-title">{{ 'user.email_confirmation.title'|trans() }}</h1>
                 </div>
                 <div class="panel-body">
-                    {{ 'user.email_confirmation.check.body'|trans({ '%email%':user.email, '%path%':(path('core_user_settings')~'#account') })|ladb_markdown|raw }}
+                    {{ 'user.email_confirmation.check.body'|trans({ '%email%':user.email, '%path%':(path('core_user_settings_me')~'#account') })|ladb_markdown|raw }}
                 </div>
                 <div class="panel-footer">
                     <a href="{{ path('core_welcome') }}" class="btn btn-default">Retour à l'accueil</a>

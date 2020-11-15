@@ -24,7 +24,7 @@
                                 {{ 'user.email_unsubscribe.confirm.invalid_email'|trans() }}
                             {% else %}
                                 <p>{{ ('user.email_unsubscribe.confirm.success_'~list)|trans({ '%email%':email })|raw }}</p>
-                                <p>Vous pouvez réactiver ces envois depuis vos <a href="{{ url('core_user_settings') }}#notifications">paramètres d'utilisateurs</a>.</p>
+                                <p>Vous pouvez réactiver ces envois depuis vos <a href="{{ url('core_user_settings_me') }}#notifications">paramètres d'utilisateurs</a>.</p>
                             {% endif %}
                         </div>
                     </div>

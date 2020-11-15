@@ -14,9 +14,9 @@
     {% set pageImageHeight = '400' %}
 {% endif %}
 
-{% set navSection = 'users' %}
+{% set navSection = user.isTeam ? 'teams' : 'users' %}
 {% set searchPath = path('core_user_list') %}
-{% set isOwner = is_granted("ROLE_USER") and app.user.id == user.id %}
+{% set isOwner = is_granted("ROLE_USER") and app.user.id == user.id or isMember %}
 {% set isDraftVisible = is_granted("ROLE_ADMIN") or isOwner %}
 {% set hasBanner = user.meta.banner is not null %}
 {% set topbarTranslucent = hasBanner %}
@@ -62,13 +62,20 @@
         </div>
         <div class="ladb-header-tools">
             {% block headerToolsInner %}
-                {% if followerContext is not null %}
+                {% if followerContext is not null and not isMember %}
                     {% include 'LadbCoreBundle:Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext } %}
+                {% endif %}
+                {% if user.isTeam %}
+                    {% if isMember %}
+                        <a href="{{ path('core_member_delete', { 'teamId':user.id }) }}" class="btn btn-default" data-tooltip="tooltip" title="Quitter"><i class="ladb-icon-join"></i> Quitter</a>
+                    {% else %}
+                        <a href="{{ path('core_member_create', { 'teamId':user.id }) }}" class="btn btn-default" data-tooltip="tooltip" title="Rejoindre"><i class="ladb-icon-join"></i> Rejoindre</a>
+                    {% endif %}
                 {% endif %}
                 &nbsp;
                 {% if isOwner %}
-                    <a href="{{ path('core_user_settings') }}" class="btn btn-default"><i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}</a>
-                {% else %}
+                    <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}" class="btn btn-default"><i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}</a>
+                {% elseif not isMember %}
                     <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }}</a>
                 {% endif %}
             {% endblock %}

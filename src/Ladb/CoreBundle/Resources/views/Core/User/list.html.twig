@@ -6,7 +6,7 @@
 {% set pageDescription = 'user.description'|trans() %}
 {% set pageImage = asset('banner-users-600x376.jpg') %}
 
-{% set navSection = 'users' %}
+{% set navSection = family == 'team' ? 'teams' : 'users' %}
 {% set topbarTranslucent = false %}
 {% set hideHeaderContainer = false %}
 {% set hideMapArea = true %}

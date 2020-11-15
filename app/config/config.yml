@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     assets:
-        version:    "202008310907"
+        version:    "20201115"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
@@ -383,6 +383,7 @@ fos_elastica:
             types:
                 core_user:
                     properties:
+                        isTeam: { type: boolean }
                         displayname: { type: text, boost: 2, analyzer: name_analyzer }
                         fullname: { type: text, boost: 1, analyzer: name_analyzer }
                         username: { analyzer: exact_lowercase_analyzer }

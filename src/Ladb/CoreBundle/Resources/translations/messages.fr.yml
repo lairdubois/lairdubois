@@ -1142,6 +1142,15 @@ message:
       new: Nouvelle annonce
     new: Nouveau message
 
+team:
+  description: Liste des collectifs créés sur la plateforme de partage collaborative L'Air du Bois.
+  list: Les collectifs
+  nav: Collectifs
+  new: Créer un collectif
+  choice:
+    entities: '[0,1]collectif|]1,Inf]collectifs'
+    members: '[0,1]membre|]1,Inf]membres'
+
 user:
   description: Liste des boiseux inscrits à la plateforme de partage collaborative L'Air du Bois.
   list: Les boiseux
@@ -1442,6 +1451,7 @@ search:
     finds: Recherche dans les trouvailles
     events: Recherche dans les évènements
     users: Recherche dans les boiseaux
+    teams: Recherche dans les collectifs
     posts: Recherche dans le blog
     questions: Recherche dans la FAQ
     qa_questions: Recherche dans les questions

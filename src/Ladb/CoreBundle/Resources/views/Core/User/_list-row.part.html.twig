@@ -48,10 +48,17 @@
             <span class="ladb-subheading">{{ 'like.choice.entities'|transchoice(user.meta.recievedLikeCount)|capitalize }}</span>
         </div>
     {% else %}
-        <a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
-            <div class="ladb-heading">{{ user.meta.followerCount }}</div>
-            <span class="ladb-subheading">{{ 'follower.choice.entities'|transchoice(user.meta.followerCount)|capitalize }}</span>
-        </a>
+        {% if user.isTeam %}
+            <a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+                <div class="ladb-heading">{{ user.meta.memberCount }}</div>
+                <span class="ladb-subheading">{{ 'team.choice.members'|transchoice(user.meta.memberCount)|capitalize }}</span>
+            </a>
+        {% else %}
+            <a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}" class="ladb-counter ladb-hidden-mobile">
+                <div class="ladb-heading">{{ user.meta.followerCount }}</div>
+                <span class="ladb-subheading">{{ 'follower.choice.entities'|transchoice(user.meta.followerCount)|capitalize }}</span>
+            </a>
+        {% endif %}
     {% endif %}
     {{ parent() }}
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'LadbCoreBundle:Common:Layout/_form.html.twig' %}
+
+{% set pageTitle = 'user.settings'|trans() %}
+{% set formAction = path('core_user_team_create') %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}
+{% endblock %}
+
+{% block sidenav %}
+    <li><a href="#account"><i class="ladb-icon-user"></i> {{ 'user.account'|trans() }}</a></li>
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'LadbCoreBundle:Common:_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sections %}
+    {{ form_errors(form) }}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'user', 'title':('user.account'|trans()), 'formSection':'account' } %}
+        {% block body %}
+            <div class="form-group">
+                {{ form_label(form.username, 'Nom du collectif') }}
+                {{ form_errors(form.username) }}
+                {{ form_widget(form.username, { 'attr': { 'class':'form-control' } }) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+

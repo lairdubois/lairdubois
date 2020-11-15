@@ -104,6 +104,10 @@ ladb_core_follower:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\FollowerController"
     type:     annotation
 
+ladb_core_member:
+    resource: "Ladb\\CoreBundle\\Controller\\Core\\MemberController"
+    type:     annotation
+
 ladb_core_like:
     resource: "Ladb\\CoreBundle\\Controller\\Core\\LikeController"
     type:     annotation

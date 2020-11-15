@@ -235,6 +235,16 @@ class UserMeta {
 
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true, name="member_count")
+	 */
+	private $memberCount = 0;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true, name="team_count")
+	 */
+	private $teamCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", nullable=true, name="follower_count")
 	 */
 	private $followerCount = 0;
@@ -447,6 +457,7 @@ class UserMeta {
 	 * @ORM\Column(name="donation_fee_balance", type="integer")
 	 */
 	private $donationFeeBalance = 0;
+
 
 	/////
 
@@ -891,6 +902,26 @@ class UserMeta {
 		return $this;
 	}
 
+
+	// MemberCount /////
+
+	public function incrementMemberCount($by = 1) {
+		return $this->memberCount += intval($by);
+	}
+
+	public function getMemberCount() {
+		return $this->memberCount;
+	}
+
+	// TeamCount /////
+
+	public function incrementTeamCount($by = 1) {
+		return $this->teamCount += intval($by);
+	}
+
+	public function getTeamCount() {
+		return $this->teamCount;
+	}
 
 	// FollowerCount /////
 

@@ -132,8 +132,8 @@ class ValidUsernameValidator extends ConstraintValidator {
 					->addViolation();
 			}
 
-			$globalUtils = $this->container->get(GlobalUtils::NAME);
-			$currentUser = $globalUtils->getUser();
+			$userRepository = $this->container->get('doctrine')->getRepository(User::class);
+			$currentUser = $value->getId() ? $userRepository->findOneById($value->getId()) : null;
 
 			$userManager = $this->container->get('fos_user.user_manager');
 			$user = $userManager->findUserByUsername($value->getUsername());
