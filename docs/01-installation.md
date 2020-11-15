@@ -184,7 +184,7 @@ If you want to monitor RabbitMQ, enable the management plugin
     $ sudo apt-get install pngquant optipng jpegoptim
 ```
 
-## Install [Chromium](https://www.chromium.org/) - *To capture external websites*
+### Install [Chromium](https://www.chromium.org/) - *To capture external websites*
 
 The platform uses Chromium headless in order to auto generate screenshot of shared links in "Trouvailles".
 
