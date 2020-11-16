@@ -43,7 +43,7 @@ Create MariaDB user.
 
 ``` sql
     $ > CREATE USER 'ladb' IDENTIFIED BY 'ladb';
-    $ > GRANT USAGE ON *.* TO 'ladb'@localhost IDENTIFIED BY 'ladb';
+    $ > GRANT ALL PRIVILEGES ON *.* TO 'ladb'@localhost IDENTIFIED BY 'ladb';
     $ > FLUSH PRIVILEGES;
     $ > quit
 ```
