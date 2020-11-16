@@ -219,6 +219,7 @@ alias ladb-install='sudo --user=www-data composer install'
 ``` bash
 alias ladb='sudo --user=www-data bin/console --env=dev'
 alias ladb-cc='sudo --user=www-data bin/console --env=dev cache:clear --no-warmup && sudo --user=www-data bin/console --env=dev cache:warmup'
+alias ladb-git='sudo --user=www-data git'
 alias ladb-git-pull-master='sudo --user=www-data git pull origin master'
 alias ladb-log='sudo --user=www-data lnav var/logs/dev.log'
 alias ladb-install='sudo --user=www-data composer install'
@@ -231,14 +232,16 @@ Now you are ready to setup the website itself !
 > If you are on the **PROD** server :
 
 ``` bash
-    $ sudo --user=www-data mkdir /var/www/www.lairdubois.fr
+    $ sudo mkdir /var/www/www.lairdubois.fr
+    $ sudo chown www-data:www-data /var/www/www.lairdubois.fr
     $ cd /var/www/www.lairdubois.fr
 ```
 
 > If you are on the **DEV** server :
 
 ``` bash
-    $ sudo --user=www-data mkdir /var/www/dev.lairdubois.fr
+    $ sudo mkdir /var/www/dev.lairdubois.fr
+    $ sudo chown www-data:www-data /var/www/dev.lairdubois.fr
     $ cd /var/www/dev.lairdubois.fr
 ```
 
