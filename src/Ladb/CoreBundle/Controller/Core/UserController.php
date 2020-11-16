@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Core;
 
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\UserControllerTrait;
 use Ladb\CoreBundle\Entity\Core\Feedback;
 use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Entity\Core\Review;
@@ -50,31 +51,9 @@ use Ladb\CoreBundle\Utils\UserUtils;
  */
 class UserController extends AbstractController {
 
-	private function _retrieveUser($username) {
-		$userManager = $this->get('fos_user.user_manager');
+	use UserControllerTrait;
 
-		$user = $userManager->findUserByUsername($username);
-		if (is_null($user)) {
-
-			// Try to load user witness
-			$om = $this->getDoctrine()->getManager();
-			$userWitnessRepository = $om->getRepository(UserWitness::class);
-			$userWitness = $userWitnessRepository->findOneByUsername($username);
-			if (is_null($userWitness) || is_null($userWitness->getUser())) {
-				throw $this->createNotFoundException('User not found (username='.$username.')');
-			}
-
-			$user = $userWitness->getUser();
-
-		}
-		if (!$user->isEnabled() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-			throw $this->createNotFoundException('User not enabled (username='.$username.')');
-		}
-
-		return $user;
-	}
-
-	private function _isMemberOf($user) {
+	private function _isMemberOf(User $user) {
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 			$om = $this->getDoctrine()->getManager();
@@ -85,7 +64,7 @@ class UserController extends AbstractController {
 		return false;
 	}
 
-	private function _fillCommonShowParameters($user, $parameters) {
+	private function _fillCommonShowParameters(User $user, $parameters) {
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
@@ -386,7 +365,7 @@ class UserController extends AbstractController {
 	public function settingsAction(Request $request, $username) {
 		$om = $this->getDoctrine()->getManager();
 
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			if ($user->getIsTeam()) {
 				$memberRepository = $om->getRepository(Member::class);
@@ -538,7 +517,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:location.geojson.twig")
 	 */
 	public function locationAction(Request $request, $username) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_location', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -570,7 +549,7 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_user_card)');
 		}
 
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_card', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -592,7 +571,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showAbout.html.twig")
 	 */
 	public function showAboutAction($username) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_about', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -623,7 +602,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showLikes.html.twig")
 	 */
 	public function showLikesAction(Request $request, $username, $filter = "sent", $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_likes', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -666,7 +645,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showComments.html.twig")
 	 */
 	public function showCommentsAction(Request $request, $username, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_comments', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -709,7 +688,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showVotes.html.twig")
 	 */
 	public function showVotesAction(Request $request, $username, $filter = 'positive', $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_votes', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -753,7 +732,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showReviews.html.twig")
 	 */
 	public function showReviewsAction(Request $request, $username, $filter = 'recent', $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_reviews', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -797,7 +776,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showFeedbacks.html.twig")
 	 */
 	public function showFeedbacksAction(Request $request, $username, $filter = "recent", $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_feedbacks', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -843,7 +822,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showCreations.html.twig")
 	 */
 	public function showCreationsAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_creations', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -899,7 +878,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showWorkshops.html.twig")
 	 */
 	public function showWorkshopsAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_workshops', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -957,7 +936,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showPlans.html.twig")
 	 */
 	public function showPlansAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_plans', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1013,7 +992,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showHowtos.html.twig")
 	 */
 	public function showHowtosAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_howtos', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1069,7 +1048,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showFinds.html.twig")
 	 */
 	public function showFindsAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_finds', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1125,7 +1104,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showQuestions.html.twig")
 	 */
 	public function showQuestionsAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_questions', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1181,7 +1160,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showAnswers.html.twig")
 	 */
 	public function showAnswersAction(Request $request, $username, $filter = "recent", $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_answers', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1227,7 +1206,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showGraphics.html.twig")
 	 */
 	public function showGraphicsAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_graphics', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1283,7 +1262,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showWorkflows.html.twig")
 	 */
 	public function showWorkflowsAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_workflows', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1341,7 +1320,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showOffers.html.twig")
 	 */
 	public function showOffersAction(Request $request, $username, $filter = null, $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_offers', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1397,7 +1376,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showFollowing.html.twig")
 	 */
 	public function showFollowingAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_following', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1445,7 +1424,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showFollowers.html.twig")
 	 */
 	public function showFollowersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_followers', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1487,7 +1466,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showMembers.html.twig")
 	 */
 	public function showMembersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_following', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1526,7 +1505,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:showTeams.html.twig")
 	 */
 	public function showTeamsAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show_teams', array( 'username' => $user->getUsernameCanonical() )));
 		}
@@ -1578,7 +1557,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show")
 	 */
 	public function showAction($username) {
-		$user = $this->_retrieveUser($username);
+		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
 			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $user->getUsernameCanonical() )));
 		}

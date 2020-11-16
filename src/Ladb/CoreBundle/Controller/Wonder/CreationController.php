@@ -6,6 +6,7 @@ use Elastica\Query\FunctionScore;
 use Elastica\Query\MatchAll;
 use Elastica\Script\Script;
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\UserControllerTrait;
 use Ladb\CoreBundle\Entity\Collection\Collection;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Event\Event;
@@ -58,6 +59,8 @@ use Ladb\CoreBundle\Entity\Find\Find;
  */
 class CreationController extends AbstractController {
 
+	use UserControllerTrait;
+
 	/**
 	 * @Route("/new", name="core_creation_new")
 	 * @Template("LadbCoreBundle:Wonder/Creation:new.html.twig")
@@ -72,7 +75,7 @@ class CreationController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
-			'asUser'       => $this->retrieveAsUser($request),
+			'asUser'       => $this->getAsUser($request),
 			'tagProposals' => $tagUtils->getProposals($creation),
 		);
 	}
@@ -83,7 +86,7 @@ class CreationController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$asUser = $this->retrieveAsUser($request);
+		$asUser = $this->getAsUser($request);
 
 		$this->createLock('core_creation_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 

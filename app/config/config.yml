@@ -182,6 +182,11 @@ liip_imagine:
 
         # Outbound
 
+        20x20o:
+            filters:
+                thumbnail: { size: [20, 20], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: {}
         32x32o:
             filters:
                 thumbnail: { size: [32, 32], mode: outbound }

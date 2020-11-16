@@ -82,15 +82,13 @@
 {% block bodyHeaderContainer %}{% endblock %}
 
 {% block bodyContainerContent %}
-    {% if asUser is defined %}
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <i class="ladb-icon-info"></i> Vous agisser en tant que : {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':asUser, 'size':32 } %} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':asUser } %}.
-            </div>
+    {% if asUser is defined and asUser is not null %}
+        <div style="font-size: 120%; margin: 0 0 20px 0;">
+            Vous agisser en tant que <span style="color:#f77f00; font-weight: bold;">{% include 'LadbCoreBundle:Core/User:_displayname.part.html.twig' with { 'user':asUser } %}</span>
         </div>
     {% endif %}
     {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
-        {% if asUser is defined %}
+        {% if asUser is defined and asUser is not null %}
             <input type="hidden" name="as" value="{{ asUser.usernameCanonical }}">
         {% endif %}
         <div class="row">
