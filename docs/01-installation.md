@@ -128,7 +128,7 @@ Restart PHP FPM.
 
 ### Install [NodeJS](https://nodejs.org) and **[Less](http://lesscss.org/) package** - *The CSS pre-processor*
 
-As root :
+Caution that node.js version > 10.x are not compatible with assetic. Try to install node.js 10.x.
 
 ``` bash
     $ sudo apt-get install nodejs npm

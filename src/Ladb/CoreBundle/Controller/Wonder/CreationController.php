@@ -62,7 +62,7 @@ class CreationController extends AbstractController {
 	 * @Route("/new", name="core_creation_new")
 	 * @Template("LadbCoreBundle:Wonder/Creation:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$creation = new Creation();
 		$creation->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -72,6 +72,7 @@ class CreationController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'asUser'       => $this->retrieveAsUser($request),
 			'tagProposals' => $tagUtils->getProposals($creation),
 		);
 	}
@@ -81,6 +82,8 @@ class CreationController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Creation:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$asUser = $this->retrieveAsUser($request);
 
 		$this->createLock('core_creation_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
@@ -92,15 +95,17 @@ class CreationController extends AbstractController {
 
 		if ($form->isValid()) {
 
+			$user = is_null($asUser) ? $this->getUser() : $asUser;
+
 			$blockUtils = $this->get(BlockBodiedUtils::NAME);
 			$blockUtils->preprocessBlocks($creation);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($creation);
 
-			$creation->setUser($this->getUser());
+			$creation->setUser($user);
 			$creation->setMainPicture($creation->getPictures()->first());
-			$this->getUser()->getMeta()->incrementPrivateCreationCount();
+			$user->getMeta()->incrementPrivateCreationCount();
 
 			$om->persist($creation);
 			$om->flush();
@@ -120,6 +125,7 @@ class CreationController extends AbstractController {
 		return array(
 			'creation'     => $creation,
 			'form'         => $form->createView(),
+			'asUser'       => $asUser,
 			'tagProposals' => $tagUtils->getProposals($creation),
 			'hideWarning'  => true,
 		);

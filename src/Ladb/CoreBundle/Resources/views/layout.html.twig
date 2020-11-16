@@ -112,7 +112,7 @@
                 <li class="uk-nav-divider"></li>
                 <li><a href="{{ path('core_provider_list') }}"{% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{{ 'knowledge.provider.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-providers pull-right' } %}</a></li>
                 <li><a href="{{ path('core_school_list') }}"{% if navSection is defined and navSection == 'schools' %} class="ladb-active"{% endif %}><i class="ladb-icon-school"></i>{{ 'knowledge.school.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-schools pull-right' } %}</a></li>
-                <li><a href="{{ path('core_user_list') }}"{% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i>{{ 'user.nav'|trans() }}</a></li>
+                <li><a href="{{ path('core_user_list') }}"{% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-user"></i>{{ 'user.nav'|trans() }}</a></li>
                 <li><a href="{{ path('core_user_team_list') }}"{% if navSection is defined and navSection == 'teams' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i>{{ 'team.nav'|trans() }}</a></li>
                 <li class="uk-nav-divider"></li>
                 <li><a href="{{ path('core_find_list') }}"{% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-find"></i>{{ 'find.find.nav'|trans() }}{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-find-finds pull-right' } %}</a></li>
@@ -154,7 +154,7 @@
             <div class="ladb-subbar-panel">
                 <a href="{{ path('core_provider_list') }}"{% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-providers' } %}<div>{{ 'knowledge.provider.nav'|trans() }}</div></a>
                 <a href="{{ path('core_school_list') }}"{% if navSection is defined and navSection == 'schools' %} class="ladb-active"{% endif %}><i class="ladb-icon-school"></i>{% include 'LadbCoreBundle:Common:_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-schools' } %}<div>Ecoles</div></a>
-                <a href="{{ path('core_user_list') }}"{% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'user.nav'|trans() }}</div></a>
+                <a href="{{ path('core_user_list') }}"{% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-user"></i><div>{{ 'user.nav'|trans() }}</div></a>
                 <a href="{{ path('core_user_team_list') }}"{% if navSection is defined and navSection == 'teams' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'team.nav'|trans() }}</div></a>
             </div>
         </div>

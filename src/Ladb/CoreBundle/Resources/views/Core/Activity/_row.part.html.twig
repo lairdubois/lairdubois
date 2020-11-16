@@ -10,5 +10,5 @@
         <a href="{{ activityShowPath }}" class="ladb-btn-action"><i class="ladb-icon-arrow-right"></i></a>
     {% endif %}
     <div class="ladb-icon">{% if icon is defined %}<i class="ladb-icon-{{ icon }}"></i>{% endif %}</div>
-    <div class="ladb-body">{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':activity.user, 'noBadge':true, 'noMicrodata':true } %} {% block body %}{% endblock %}.{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':activity, 'noMicrodata':true } %}</div>
+    <div class="ladb-body">{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':activity.user, 'noMicrodata':true } %} {% block body %}{% endblock %}.{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':activity, 'noMicrodata':true } %}</div>
 </div>
