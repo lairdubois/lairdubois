@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
+use Ladb\CoreBundle\Controller\RightsControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,11 +43,14 @@ use Ladb\CoreBundle\Utils\LocalisableUtils;
  */
 class WorkshopController extends AbstractController {
 
+	use CustomOwnerControllerTrait;
+	use RightsControllerTrait;
+
 	/**
 	 * @Route("/new", name="core_workshop_new")
 	 * @Template("LadbCoreBundle:Wonder/Workshop:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$workshop = new Workshop();
 		$workshop->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -55,6 +60,7 @@ class WorkshopController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($workshop),
 		);
 	}
@@ -64,6 +70,8 @@ class WorkshopController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Workshop:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$owner = $this->retrieveOwner($request);
 
 		$this->createLock('core_workshop_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
@@ -81,9 +89,9 @@ class WorkshopController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($workshop);
 
-			$workshop->setUser($this->getUser());
+			$workshop->setUser($owner);
 			$workshop->setMainPicture($workshop->getPictures()->first());
-			$this->getUser()->getMeta()->incrementPrivateWorkshopCount();
+			$owner->getMeta()->incrementPrivateWorkshopCount();
 
 			$om->persist($workshop);
 			$om->flush();
@@ -103,6 +111,7 @@ class WorkshopController extends AbstractController {
 		return array(
 			'workshop'     => $workshop,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($workshop),
 			'hideWarning'  => true,
 		);
@@ -150,9 +159,7 @@ class WorkshopController extends AbstractController {
 		if (is_null($workshop)) {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workshop->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_publish)');
-		}
+		$this->checkWriteAccessOn($workshop, false, 'core_workshop_publish');
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('Not emailConfirmed (core_workshop_publish)');
 		}
@@ -217,9 +224,7 @@ class WorkshopController extends AbstractController {
 		if (is_null($workshop)) {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workshop->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_edit)');
-		}
+		$this->checkWriteAccessOn($workshop, false, 'core_workshop_edit');
 
 		$form = $this->createForm(WorkshopType::class, $workshop);
 
@@ -244,9 +249,7 @@ class WorkshopController extends AbstractController {
 		if (is_null($workshop)) {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workshop->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_update)');
-		}
+		$this->checkWriteAccessOn($workshop, false, 'core_workshop_update');
 
 		$originalBodyBlocks = $workshop->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $workshop->getTags()->toArray();	// Need to be an array to copy values
@@ -951,12 +954,7 @@ class WorkshopController extends AbstractController {
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
 		if ($workshop->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workshop->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Workshop::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_workshop_show)');
-			}
+			$this->checkWriteAccessOn($workshop, true, 'core_workshop_show');
 		}
 
 		$embaddableUtils = $this->get(EmbeddableUtils::NAME);

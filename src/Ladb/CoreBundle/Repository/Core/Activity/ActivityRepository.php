@@ -43,10 +43,10 @@ class ActivityRepository extends AbstractEntityRepository {
 
 			$publishRepository = $this->getEntityManager()->getRepository(Publish::CLASS_NAME);
 
-			$activities = array_merge($activities, $publishRepository->findByUserAndEntityTypeAndEntityId($publication->getUser(), $publication->getType(), $publication->getId()));
+			$activities = array_merge($activities, $publishRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
 			if (!is_null($publication->getSubPublications())) {
 				foreach ($publication->getSubPublications() as $subPublication) {
-					$activities = array_merge($activities, $publishRepository->findByUserAndEntityTypeAndEntityId($publication->getUser(), $subPublication->getType(), $subPublication->getId()));
+					$activities = array_merge($activities, $publishRepository->findByEntityTypeAndEntityId($subPublication->getType(), $subPublication->getId()));
 				}
 
 				usort($activities, function($a, $b) {

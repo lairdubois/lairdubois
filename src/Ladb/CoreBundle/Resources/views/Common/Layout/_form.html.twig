@@ -82,14 +82,14 @@
 {% block bodyHeaderContainer %}{% endblock %}
 
 {% block bodyContainerContent %}
-    {% if asUser is defined and asUser is not null %}
+    {% if owner is defined and owner is not null %}
         <div style="font-size: 120%; margin: 0 0 20px 0;">
-            Vous agisser en tant que <span style="color:#f77f00; font-weight: bold;">{% include 'LadbCoreBundle:Core/User:_displayname.part.html.twig' with { 'user':asUser } %}</span>
+            Vous agisser en tant que <span style="color:#f77f00; font-weight: bold;">{% include 'LadbCoreBundle:Core/User:_displayname.part.html.twig' with { 'user':owner } %}</span>
         </div>
     {% endif %}
     {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
-        {% if asUser is defined and asUser is not null %}
-            <input type="hidden" name="as" value="{{ asUser.usernameCanonical }}">
+        {% if owner is defined and owner is not null %}
+            <input type="hidden" name="owner" value="{{ owner.usernameCanonical }}">
         {% endif %}
         <div class="row">
             <div class="col-md-3 col-md-push-9 col-xs-12">

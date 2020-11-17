@@ -354,9 +354,9 @@ class PublicationListener implements EventSubscriberInterface {
 			&& $publication instanceof AuthoredInterface
 			&& !($publication instanceof RepublishableInterface && $publication->getPublishCount() > 0)) {
 
-			// Create activity
+			// Create activity (with session user)
 			$activityUtils = $this->container->get(ActivityUtils::NAME);
-			$activityUtils->createPublishActivity($publication->getUser(), $publication->getType(), $publication->getId());
+			$activityUtils->createPublishActivity($this->container->get(GlobalUtils::NAME)->getUser(), $publication->getType(), $publication->getId());
 
 		}
 

@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
+use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
+use Ladb\CoreBundle\Controller\RightsControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,11 +46,14 @@ use Ladb\CoreBundle\Utils\StripableUtils;
  */
 class PlanController extends AbstractController {
 
+	use CustomOwnerControllerTrait;
+	use RightsControllerTrait;
+
 	/**
 	 * @Route("/new", name="core_plan_new")
 	 * @Template("LadbCoreBundle:Wonder/Plan:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$plan = new Plan();
 		$form = $this->createForm(PlanType::class, $plan);
@@ -57,6 +62,7 @@ class PlanController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($plan),
 		);
 	}
@@ -66,6 +72,8 @@ class PlanController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Plan:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$owner = $this->retrieveOwner($request);
 
 		$this->createLock('core_plan_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
@@ -80,9 +88,9 @@ class PlanController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($plan);
 
-			$plan->setUser($this->getUser());
+			$plan->setUser($owner);
 			$plan->setMainPicture($plan->getPictures()->first());
-			$this->getUser()->getMeta()->incrementPrivatePlanCount();
+			$owner->getMeta()->incrementPrivatePlanCount();
 
 			$planUtils = $this->get(PlanUtils::NAME);
 			$planUtils->generateKinds($plan);
@@ -112,6 +120,7 @@ class PlanController extends AbstractController {
 		return array(
 			'plan'         => $plan,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($plan),
 			'hideWarning'  => true,
 		);
@@ -159,9 +168,7 @@ class PlanController extends AbstractController {
 		if (is_null($plan)) {
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $plan->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_plan_publish)');
-		}
+		$this->checkWriteAccessOn($plan, false, 'core_plan_publish');
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('Not emailConfirmed (core_plan_publish)');
 		}
@@ -226,9 +233,7 @@ class PlanController extends AbstractController {
 		if (is_null($plan)) {
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $plan->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_plan_edit)');
-		}
+		$this->checkWriteAccessOn($plan, false, 'core_plan_edit');
 
 		$form = $this->createForm(PlanType::class, $plan);
 
@@ -253,9 +258,7 @@ class PlanController extends AbstractController {
 		if (is_null($plan)) {
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $plan->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_plan_update)');
-		}
+		$this->checkWriteAccessOn($plan, false, 'core_plan_update');
 
 		$picturedUtils = $this->get(PicturedUtils::NAME);
 		$picturedUtils->resetPictures($plan); // Reset pictures array to consider form pictures order
@@ -1123,12 +1126,7 @@ class PlanController extends AbstractController {
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
 		}
 		if ($plan->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $plan->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Plan::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_plan_show)');
-			}
+			$this->checkWriteAccessOn($plan, true, 'core_plan_show');
 		}
 
 		$embaddableUtils = $this->get(EmbeddableUtils::NAME);

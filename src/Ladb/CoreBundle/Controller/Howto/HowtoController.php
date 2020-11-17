@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Controller\Howto;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
+use Ladb\CoreBundle\Controller\RightsControllerTrait;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
@@ -33,11 +35,14 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class HowtoController extends AbstractController {
 
+	use CustomOwnerControllerTrait;
+	use RightsControllerTrait;
+
 	/**
 	 * @Route("/pas-a-pas/new", name="core_howto_new")
 	 * @Template("LadbCoreBundle:Howto/Howto:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$howto = new Howto();
 		$form = $this->createForm(HowtoType::class, $howto);
@@ -46,6 +51,7 @@ class HowtoController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($howto),
 		);
 	}
@@ -55,6 +61,8 @@ class HowtoController extends AbstractController {
 	 * @Template("LadbCoreBundle:Howto/Howto:new.html.twig")
 	 */
 	public function createAction(Request $request) {
+
+		$owner = $this->retrieveOwner($request);
 
 		$this->createLock('core_howto_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
@@ -69,8 +77,8 @@ class HowtoController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($howto);
 
-			$howto->setUser($this->getUser());
-			$this->getUser()->getMeta()->incrementPrivateHowtoCount();
+			$howto->setUser($owner);
+			$owner->getMeta()->incrementPrivateHowtoCount();
 
 			$om->persist($howto);
 			$om->flush();
@@ -79,7 +87,7 @@ class HowtoController extends AbstractController {
 			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($howto));
 
-			return $this->redirect($this->generateUrl('core_howto_article_new', array('id' => $howto->getId())));
+			return $this->redirect($this->generateUrl('core_howto_article_new', array( 'id' => $howto->getId(), 'owner' => $owner->getUsernameCanonical() )));
 		}
 
 		// Flashbag
@@ -90,6 +98,7 @@ class HowtoController extends AbstractController {
 		return array(
 			'howto'        => $howto,
 			'form'         => $form->createView(),
+			'owner'		   => $owner,
 			'tagProposals' => $tagUtils->getProposals($howto),
 			'hideWarning'  => true,
 		);
@@ -139,9 +148,7 @@ class HowtoController extends AbstractController {
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_publish)');
-		}
+		$this->checkWriteAccessOn($howto, false, 'core_howto_publish');
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('Not emailConfirmed (core_howto_publish)');
 		}
@@ -209,9 +216,7 @@ class HowtoController extends AbstractController {
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_edit)');
-		}
+		$this->checkWriteAccessOn($howto, false, 'core_howto_edit');
 
 		$form = $this->createForm(HowtoType::class, $howto);
 
@@ -236,9 +241,7 @@ class HowtoController extends AbstractController {
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_update)');
-		}
+		$this->checkWriteAccessOn($howto, false, 'core_howto_edit');
 
 		$howto->resetArticles();	// Reset articles array to consider form articles order
 
@@ -998,12 +1001,7 @@ class HowtoController extends AbstractController {
             throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
         }
 		if ($howto->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $howto->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Howto::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_howto_show)');
-			}
+			$this->checkWriteAccessOn($howto, true, 'core_howto_show');
 		}
 
 		$howtoUtils = $this->get(HowtoUtils::NAME);

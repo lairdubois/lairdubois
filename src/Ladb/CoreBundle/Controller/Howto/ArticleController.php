@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Controller\Howto;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
+use Ladb\CoreBundle\Controller\RightsControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +26,9 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class ArticleController extends AbstractController {
 
+	use CustomOwnerControllerTrait;
+	use RightsControllerTrait;
+
 	private function _updateHowtoBlockVideoCount($howto) {
 		$bodyBlockVideoCount = 0;
 		foreach ($howto->getArticles() as $article) {
@@ -41,7 +46,7 @@ class ArticleController extends AbstractController {
 	 * @Route("/pas-a-pas/{id}/articles/new", requirements={"id" = "\d+"}, name="core_howto_article_new")
 	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
 	 */
-	public function newAction($id) {
+	public function newAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
@@ -49,9 +54,7 @@ class ArticleController extends AbstractController {
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_new)');
-		}
+		$this->checkWriteAccessOn($howto, false, 'core_howto_article_new');
 
 		$article = new Article();
 		$article->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -59,6 +62,7 @@ class ArticleController extends AbstractController {
 
 		return array(
 			'howto' => $howto,
+			'owner' => $this->retrieveOwner($request),
 			'form'  => $form->createView(),
 		);
 	}
@@ -78,9 +82,7 @@ class ArticleController extends AbstractController {
 		if (is_null($howto)) {
 			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $howto->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_create)');
-		}
+		$this->checkWriteAccessOn($howto, false, 'core_howto_article_create');
 
 		$article = new Article();
 		$article->setHowto($howto);	// Used by ArticleBodyValidator
@@ -116,6 +118,7 @@ class ArticleController extends AbstractController {
 		return array(
 			'howto' => $howto,
 			'form'  => $form->createView(),
+			'owner' => $this->retrieveOwner($request),
 		);
 	}
 
@@ -201,9 +204,7 @@ class ArticleController extends AbstractController {
 		if (is_null($article)) {
 			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $article->getHowto()->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_edit)');
-		}
+		$this->checkWriteAccessOn($article->getHowto(), false, 'core_howto_article_edit');
 
 		$form = $this->createForm(HowtoArticleType::class, $article);
 
@@ -380,12 +381,7 @@ class ArticleController extends AbstractController {
 		}
 		$howto = $article->getHowto();
 		if ($howto->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $howto->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Howto::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_howto_article_show)');
-			}
+			$this->checkWriteAccessOn($howto, true, 'core_howto_article_show');
 		}
 
 		$mainPicture = null;

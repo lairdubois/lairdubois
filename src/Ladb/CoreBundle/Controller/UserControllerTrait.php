@@ -2,9 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller;
 
-use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Entity\Core\UserWitness;
-use Symfony\Component\HttpFoundation\Request;
 
 trait UserControllerTrait {
 
@@ -30,32 +28,6 @@ trait UserControllerTrait {
 		}
 
 		return $user;
-	}
-
-	protected function getAsUser(Request $request) {
-
-		$as = $request->get('as');
-		if (!is_null($as)) {
-			$asUser = $this->retrieveUserByUsername($as);
-			if (!is_null($asUser)) {
-
-				// Only team allowed
-				if (!$asUser->getIsTeam()) {
-					throw $this->createNotFoundException('As user must be a team.');
-				}
-
-				// Only members allowed
-				$om = $this->getDoctrine()->getManager();
-				$memberRepository = $om->getRepository(Member::class);
-				if (!$memberRepository->existsByTeamIdAndUser($asUser->getId(), $this->getUser())) {
-					throw $this->createNotFoundException('Access denied');
-				}
-
-			}
-			return $asUser;
-		}
-
-		return null;
 	}
 
 }

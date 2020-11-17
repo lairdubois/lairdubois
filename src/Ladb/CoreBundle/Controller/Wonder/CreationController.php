@@ -6,8 +6,11 @@ use Elastica\Query\FunctionScore;
 use Elastica\Query\MatchAll;
 use Elastica\Script\Script;
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
+use Ladb\CoreBundle\Controller\RightsControllerTrait;
 use Ladb\CoreBundle\Controller\UserControllerTrait;
 use Ladb\CoreBundle\Entity\Collection\Collection;
+use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Event\Event;
 use Ladb\CoreBundle\Entity\Offer\Offer;
@@ -52,14 +55,14 @@ use Ladb\CoreBundle\Entity\Core\Spotlight;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Core\View;
-use Ladb\CoreBundle\Entity\Find\Find;
 
 /**
  * @Route("/creations")
  */
 class CreationController extends AbstractController {
 
-	use UserControllerTrait;
+	use CustomOwnerControllerTrait;
+	use RightsControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_creation_new")
@@ -75,7 +78,7 @@ class CreationController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
-			'asUser'       => $this->getAsUser($request),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($creation),
 		);
 	}
@@ -86,7 +89,7 @@ class CreationController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
-		$asUser = $this->getAsUser($request);
+		$owner = $this->retrieveOwner($request);
 
 		$this->createLock('core_creation_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
@@ -98,17 +101,15 @@ class CreationController extends AbstractController {
 
 		if ($form->isValid()) {
 
-			$user = is_null($asUser) ? $this->getUser() : $asUser;
-
 			$blockUtils = $this->get(BlockBodiedUtils::NAME);
 			$blockUtils->preprocessBlocks($creation);
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($creation);
 
-			$creation->setUser($user);
+			$creation->setUser($owner);
 			$creation->setMainPicture($creation->getPictures()->first());
-			$user->getMeta()->incrementPrivateCreationCount();
+			$owner->getMeta()->incrementPrivateCreationCount();
 
 			$om->persist($creation);
 			$om->flush();
@@ -128,7 +129,7 @@ class CreationController extends AbstractController {
 		return array(
 			'creation'     => $creation,
 			'form'         => $form->createView(),
-			'asUser'       => $asUser,
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($creation),
 			'hideWarning'  => true,
 		);
@@ -176,9 +177,7 @@ class CreationController extends AbstractController {
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $creation->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_creation_publish)');
-		}
+		$this->checkWriteAccessOn($creation, false, 'core_creation_publish');
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('Not emailConfirmed (core_creation_publish)');
 		}
@@ -243,9 +242,7 @@ class CreationController extends AbstractController {
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $creation->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_creation_edit)');
-		}
+		$this->checkWriteAccessOn($creation, false, 'core_creation_edit');
 
 		$form = $this->createForm(CreationType::class, $creation);
 
@@ -272,9 +269,7 @@ class CreationController extends AbstractController {
 		if (is_null($creation)) {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $creation->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_creation_update)');
-		}
+		$this->checkWriteAccessOn($creation, false, 'core_creation_update');
 
 		$originalBodyBlocks = $creation->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $creation->getTags()->toArray();	// Need to be an array to copy values
@@ -1136,6 +1131,21 @@ class CreationController extends AbstractController {
 							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
 					);
 
+					if ($this->getUser()->getMeta()->getTeamCount() > 0) {
+
+						$memberRepository = $this->getDoctrine()->getRepository(Member::CLASS_NAME);
+						$members = $memberRepository->findPaginedByUser($this->getUser(), 0, 50);
+
+						foreach ($members as $member) {
+							$filter->addShould(
+								(new \Elastica\Query\BoolQuery())
+									->addFilter(new \Elastica\Query\MatchPhrase('user.username', $member->getTeam()->getUsername()))
+									->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+							);
+						}
+
+					}
+
 				} else {
 					$filter = $publicVisibilityFilter;
 				}
@@ -1265,12 +1275,7 @@ class CreationController extends AbstractController {
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
 		if ($creation->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $creation->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Creation::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_creation_show)');
-			}
+			$this->checkWriteAccessOn($creation, true, 'core_creation_show');
 		}
 
 		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
