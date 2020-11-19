@@ -85,6 +85,11 @@
         <li{% if tab == 'about' %} class="active"{% endif %}>
             <a href="{{ path('core_user_show_about', { 'username':user.usernameCanonical }) }}">{{ 'user.about'|trans() }}</a>
         </li>
+        {% if user.isTeam %}
+            <li{% if tab == 'members' %} class="active"{% endif %}>
+                <a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.members'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.memberCount > 0 %} badge-black{% endif %}">{{ user.meta.memberCount }}</span></a>
+            </li>
+        {% endif %}
         <li{% if tab == 'creations' %} class="active"{% endif %}>
             <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'wonder.creation.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicCreationCount > 0 %} badge-black{% endif %}">{{ user.meta.publicCreationCount }}</span>{% if isDraftVisible and user.meta.privateCreationCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateCreationCount }}</span>{% endif %}</a>
         </li>

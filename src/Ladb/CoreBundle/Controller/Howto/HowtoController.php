@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Controller\Howto;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
-use Ladb\CoreBundle\Controller\RightsControllerTrait;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
@@ -35,8 +35,7 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class HowtoController extends AbstractController {
 
-	use CustomOwnerControllerTrait;
-	use RightsControllerTrait;
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/pas-a-pas/new", name="core_howto_new")
@@ -112,16 +111,9 @@ class HowtoController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_howto_lock or core_howto_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if ($howto->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_howto_lock or core_howto_unlock)');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertLockUnlockable($howto, $lock);
 
 		// Lock or Unlock
 		$howtoManager = $this->get(HowtoManager::NAME);
@@ -141,26 +133,9 @@ class HowtoController extends AbstractController {
 	 * @Route("/pas-a-pas/{id}/publish", requirements={"id" = "\d+"}, name="core_howto_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($howto, false, 'core_howto_publish');
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_howto_publish)');
-		}
-		if ($howto->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_howto_publish)');
-		}
-		if ($howto->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_howto_publish)');
-		}
-		if ($howto->getPublishedArticleCount() == 0) {
-			throw $this->createNotFoundException('Not enough published articles');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertPublishable($howto);
 
 		// Publish
 		$howtoManager = $this->get(HowtoManager::NAME);
@@ -177,16 +152,9 @@ class HowtoController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_howto_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if ($howto->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_howto_unpublish)');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertUnpublishable($howto);
 
 		// Unpublish
 		$howtoManager = $this->get(HowtoManager::NAME);
@@ -209,14 +177,9 @@ class HowtoController extends AbstractController {
 	 * @Template("LadbCoreBundle:Howto/Howto:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($howto, false, 'core_howto_edit');
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertEditabable($howto);
 
 		$form = $this->createForm(HowtoType::class, $howto);
 
@@ -234,14 +197,9 @@ class HowtoController extends AbstractController {
 	 * @Template("LadbCoreBundle:Howto/Howto:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($howto, false, 'core_howto_edit');
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertEditabable($howto);
 
 		$howto->resetArticles();	// Reset articles array to consider form articles order
 
@@ -294,16 +252,9 @@ class HowtoController extends AbstractController {
 	 * @Route("/pas-a-pas/{id}/delete", requirements={"id" = "\d+"}, name="core_howto_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($howto->getIsDraft() === true && $howto->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_howto_delete)');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertDeletable($howto);
 
 		// Delete
 		$howtoManager = $this->get(HowtoManager::NAME);
@@ -321,17 +272,11 @@ class HowtoController extends AbstractController {
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
 		$id = intval($id);
 
-		$howto = $howtoRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if ($howto->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_howto_sticker)');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto, true);
 
 		$sticker = $howto->getSticker();
 		if (is_null($sticker)) {
@@ -360,17 +305,11 @@ class HowtoController extends AbstractController {
 	 */
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
 		$id = intval($id);
 
-		$howto = $howtoRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if ($howto->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_howto_strip)');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto, true);
 
 		$strip = $howto->getStrip();
 		if (is_null($strip)) {
@@ -399,18 +338,11 @@ class HowtoController extends AbstractController {
 	 * @Template("LadbCoreBundle:Howto/Howto:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
 		$id = intval($id);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if ($howto->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_howto_widget)');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto, true);
 
 		return array(
 			'howto' => $howto,
@@ -703,12 +635,9 @@ class HowtoController extends AbstractController {
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto);
 
 		// Creations
 
@@ -744,12 +673,9 @@ class HowtoController extends AbstractController {
 	 */
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto);
 
 		// Workshops
 
@@ -785,12 +711,9 @@ class HowtoController extends AbstractController {
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto);
 
 		// Plans
 
@@ -826,12 +749,9 @@ class HowtoController extends AbstractController {
 	 */
 	public function questionsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto);
 
 		// Plans
 
@@ -867,14 +787,11 @@ class HowtoController extends AbstractController {
 	 */
 	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto);
 
-		// Providers
+		// Workflows
 
 		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
@@ -908,12 +825,9 @@ class HowtoController extends AbstractController {
 	 */
 	public function providersAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto);
 
 		// Providers
 
@@ -949,14 +863,11 @@ class HowtoController extends AbstractController {
 	 */
 	public function schoolsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertShowable($howto);
 
-		// Providers
+		// Schools
 
 		$schoolRepository = $om->getRepository(School::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
@@ -1000,9 +911,7 @@ class HowtoController extends AbstractController {
 			}
             throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
         }
-		if ($howto->getIsDraft() === true) {
-			$this->checkWriteAccessOn($howto, true, 'core_howto_show');
-		}
+		$this->assertShowable($howto);
 
 		$howtoUtils = $this->get(HowtoUtils::NAME);
 		$embaddableUtils = $this->get(EmbeddableUtils::NAME);

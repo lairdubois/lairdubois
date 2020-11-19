@@ -2,14 +2,15 @@
 
 namespace Ladb\CoreBundle\Controller\Wonder;
 
-use Elastica\Query\FunctionScore;
-use Elastica\Query\MatchAll;
-use Elastica\Script\Script;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
-use Ladb\CoreBundle\Controller\RightsControllerTrait;
-use Ladb\CoreBundle\Controller\UserControllerTrait;
-use Ladb\CoreBundle\Entity\Collection\Collection;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Event\Event;
@@ -17,12 +18,6 @@ use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
 use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\MaybeUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Entity\Knowledge\School;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
@@ -61,8 +56,7 @@ use Ladb\CoreBundle\Entity\Core\View;
  */
 class CreationController extends AbstractController {
 
-	use CustomOwnerControllerTrait;
-	use RightsControllerTrait;
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_creation_new")
@@ -141,16 +135,9 @@ class CreationController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_creation_lock or core_creation_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if ($creation->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_creation_lock or core_creation_unlock)');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertLockUnlockable($creation, $lock);
 
 		// Lock or Unlock
 		$creationManager = $this->get(CreationManager::NAME);
@@ -170,23 +157,9 @@ class CreationController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_creation_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($creation, false, 'core_creation_publish');
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_creation_publish)');
-		}
-		if ($creation->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_creation_publish)');
-		}
-		if ($creation->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_creation_publish)');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertPublishable($creation);
 
 		// Publish
 		$creationManager = $this->get(CreationManager::NAME);
@@ -203,16 +176,9 @@ class CreationController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_creation_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if ($creation->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_creation_unpublish)');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertUnpublishable($creation);
 
 		// Unpublish
 		$creationManager = $this->get(CreationManager::NAME);
@@ -235,14 +201,9 @@ class CreationController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Creation:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($creation, false, 'core_creation_edit');
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertEditabable($creation);
 
 		$form = $this->createForm(CreationType::class, $creation);
 
@@ -261,15 +222,11 @@ class CreationController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
 		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
-		$creation = $creationRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($creation, false, 'core_creation_update');
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertEditabable($creation);
 
 		$originalBodyBlocks = $creation->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $creation->getTags()->toArray();	// Need to be an array to copy values
@@ -339,16 +296,9 @@ class CreationController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_creation_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($creation->getIsDraft() === true && $creation->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_creation_delete)');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertDeletable($creation);
 
 		// Delete
 		$creationManager = $this->get(CreationManager::NAME);
@@ -371,12 +321,9 @@ class CreationController extends AbstractController {
 	 */
 	public function questionsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Questions
 
@@ -412,12 +359,9 @@ class CreationController extends AbstractController {
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Plans
 
@@ -460,12 +404,9 @@ class CreationController extends AbstractController {
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Howtos
 
@@ -501,12 +442,9 @@ class CreationController extends AbstractController {
 	 */
 	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Workflows
 
@@ -542,12 +480,9 @@ class CreationController extends AbstractController {
 	 */
 	public function providersAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Providers
 
@@ -583,12 +518,9 @@ class CreationController extends AbstractController {
 	 */
 	public function schoolsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Schools
 
@@ -626,10 +558,8 @@ class CreationController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Inspirations
 
@@ -666,10 +596,8 @@ class CreationController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation);
 
 		// Rebounds
 
@@ -708,17 +636,11 @@ class CreationController extends AbstractController {
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
 		$id = intval($id);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if ($creation->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_creation_sticker)');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation, true);
 
 		$sticker = $creation->getSticker();
 		if (is_null($sticker)) {
@@ -747,17 +669,11 @@ class CreationController extends AbstractController {
 	 */
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
 		$id = intval($id);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if ($creation->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_creation_strip)');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation, true);
 
 		$strip = $creation->getStrip();
 		if (is_null($strip)) {
@@ -786,18 +702,11 @@ class CreationController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Creation:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
 
 		$id = intval($id);
 
-		$creation = $creationRepository->findOneById($id);
-		if (is_null($creation)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if ($creation->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_creation_widget)');
-		}
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertShowable($creation, true);
 
 		return array(
 			'creation' => $creation,
@@ -1274,9 +1183,7 @@ class CreationController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
 		}
-		if ($creation->getIsDraft() === true) {
-			$this->checkWriteAccessOn($creation, true, 'core_creation_show');
-		}
+		$this->assertShowable($creation);
 
 		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
 		$referral = $embaddableUtils->processReferer($creation, $request);

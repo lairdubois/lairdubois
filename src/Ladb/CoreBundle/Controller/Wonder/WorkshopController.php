@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
-use Ladb\CoreBundle\Controller\RightsControllerTrait;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,8 +43,7 @@ use Ladb\CoreBundle\Utils\LocalisableUtils;
  */
 class WorkshopController extends AbstractController {
 
-	use CustomOwnerControllerTrait;
-	use RightsControllerTrait;
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_workshop_new")
@@ -123,16 +122,9 @@ class WorkshopController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workshop_lock or core_workshop_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneById($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if ($workshop->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_workshop_lock or core_workshop_unlock)');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertLockUnlockable($workshop, $lock);
 
 		// Lock or Unlock
 		$workshopManager = $this->get(WorkshopManager::NAME);
@@ -152,23 +144,9 @@ class WorkshopController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_workshop_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($workshop, false, 'core_workshop_publish');
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_workshop_publish)');
-		}
-		if ($workshop->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_workshop_publish)');
-		}
-		if ($workshop->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_workshop_publish)');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertPublishable($workshop);
 
 		// Publish
 		$workshopManager = $this->get(WorkshopManager::NAME);
@@ -185,16 +163,9 @@ class WorkshopController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_workshop_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if ($workshop->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_workshop_unpublish)');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertUnpublishable($workshop);
 
 		// Unpublish
 		$workshopManager = $this->get(WorkshopManager::NAME);
@@ -217,14 +188,9 @@ class WorkshopController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Workshop:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($workshop, false, 'core_workshop_edit');
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertEditabable($workshop);
 
 		$form = $this->createForm(WorkshopType::class, $workshop);
 
@@ -242,14 +208,9 @@ class WorkshopController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Workshop:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($workshop, false, 'core_workshop_update');
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertEditabable($workshop);
 
 		$originalBodyBlocks = $workshop->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $workshop->getTags()->toArray();	// Need to be an array to copy values
@@ -313,16 +274,9 @@ class WorkshopController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_workshop_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($workshop->getIsDraft() === true && $workshop->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_delete)');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertDeletable($workshop);
 
 		// Delete
 		$workshopManager = $this->get(WorkshopManager::NAME);
@@ -345,12 +299,9 @@ class WorkshopController extends AbstractController {
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop);
 
 		// Plans
 
@@ -393,12 +344,9 @@ class WorkshopController extends AbstractController {
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop);
 
 		// Howtos
 
@@ -434,12 +382,9 @@ class WorkshopController extends AbstractController {
 	 */
 	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop);
 
 		// Howtos
 
@@ -479,17 +424,11 @@ class WorkshopController extends AbstractController {
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
 		$id = intval($id);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if ($workshop->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_sticker)');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop, true);
 
 		$sticker = $workshop->getSticker();
 		if (is_null($sticker)) {
@@ -518,17 +457,11 @@ class WorkshopController extends AbstractController {
 	 */
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
 		$id = intval($id);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if ($workshop->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_strip)');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop, true);
 
 		$strip = $workshop->getStrip();
 		if (is_null($strip)) {
@@ -557,18 +490,11 @@ class WorkshopController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Workshop:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
 		$id = intval($id);
 
-		$workshop = $workshopRepository->findOneById($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if ($workshop->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_workshop_widget)');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop, true);
 
 		return array(
 			'workshop' => $workshop,
@@ -580,20 +506,11 @@ class WorkshopController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Workshop:location.geojson.twig")
 	 */
 	public function locationAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
 
 		$id = intval($id);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
-		}
-		if ($workshop->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workshop->getUser()->getId() != $this->getUser()->getId())) {
-				throw $this->createNotFoundException('Not allowed (core_workshop_location)');
-			}
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop);
 
 		$features = array();
 		if (!is_null($workshop->getLongitude()) && !is_null($workshop->getLatitude())) {
@@ -920,15 +837,10 @@ class WorkshopController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_workshop_card)');
 		}
 
-		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
-
 		$id = intval($id);
 
-		$workshop = $workshopRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($workshop)) {
-			throw $this->createNotFoundException('Unable to find Workshop entity.');
-		}
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop);
 
 		return array(
 			'workshop' => $workshop,
@@ -953,9 +865,7 @@ class WorkshopController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Workshop entity (id='.$id.').');
 		}
-		if ($workshop->getIsDraft() === true) {
-			$this->checkWriteAccessOn($workshop, true, 'core_workshop_show');
-		}
+		$this->assertShowable($workshop);
 
 		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
 		$referral = $embaddableUtils->processReferer($workshop, $request);

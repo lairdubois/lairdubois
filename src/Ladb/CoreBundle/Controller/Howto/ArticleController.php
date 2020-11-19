@@ -4,7 +4,7 @@ namespace Ladb\CoreBundle\Controller\Howto;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
-use Ladb\CoreBundle\Controller\RightsControllerTrait;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,8 +26,7 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class ArticleController extends AbstractController {
 
-	use CustomOwnerControllerTrait;
-	use RightsControllerTrait;
+	use PublicationControllerTrait;
 
 	private function _updateHowtoBlockVideoCount($howto) {
 		$bodyBlockVideoCount = 0;
@@ -47,14 +46,9 @@ class ArticleController extends AbstractController {
 	 * @Template("LadbCoreBundle:Howto/Article:new.html.twig")
 	 */
 	public function newAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($howto, false, 'core_howto_article_new');
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertEditabable($howto);
 
 		$article = new Article();
 		$article->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -76,13 +70,9 @@ class ArticleController extends AbstractController {
 		$this->createLock('core_howto_article_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
-		$howto = $howtoRepository->findOneById($id);
-		if (is_null($howto)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($howto, false, 'core_howto_article_create');
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertEditabable($howto);
 
 		$article = new Article();
 		$article->setHowto($howto);	// Used by ArticleBodyValidator
@@ -126,22 +116,9 @@ class ArticleController extends AbstractController {
 	 * @Route("/pas-a-pas/articles/{id}/publish", requirements={"id" = "\d+"}, name="core_howto_article_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
 
-		$article = $articleRepository->findOneById($id);
-		if (is_null($article)) {
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $article->getHowto()->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_howto_article_publish)');
-		}
-		if ($article->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_howto_article_publish)');
-		}
+		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$this->assertPublishable($article->getHowto());
 
 		// Publish
 		$articleManager = $this->get(ArticleManager::NAME);
@@ -165,16 +142,9 @@ class ArticleController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_howto_article_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
 
-		$article = $articleRepository->findOneById($id);
-		if (is_null($article)) {
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		if ($article->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_howto_article_unpublish)');
-		}
+		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$this->assertUnpublishable($article->getHowto(), true);
 
 		// Unpublish
 		$articleManager = $this->get(ArticleManager::NAME);
@@ -197,14 +167,9 @@ class ArticleController extends AbstractController {
 	 * @Template("LadbCoreBundle:Howto/Article:edit.html.twig")
 	 */
 	public function editAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
 
-		$article = $articleRepository->findOneById($id);
-		if (is_null($article)) {
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($article->getHowto(), false, 'core_howto_article_edit');
+		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$this->assertEditabable($article->getHowto());
 
 		$form = $this->createForm(HowtoArticleType::class, $article);
 
@@ -229,15 +194,9 @@ class ArticleController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
 
-		$article = $articleRepository->findOneById($id);
-		if (is_null($article)) {
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $article->getHowto()->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_update)');
-		}
+		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$this->assertEditabable($article->getHowto());
 
 		$originalBodyBlocks = $article->getBodyBlocks()->toArray();	// Need to be an array to copy values
 
@@ -301,15 +260,9 @@ class ArticleController extends AbstractController {
 	 */
 	public function deleteAction($id) {
 		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
 
-		$article = $articleRepository->findOneById($id);
-		if (is_null($article)) {
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $article->getHowto()->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_delete)');
-		}
+		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$this->assertDeletable($article->getHowto(), true);
 
 		$howto = $article->getHowto();
 
@@ -336,71 +289,15 @@ class ArticleController extends AbstractController {
 	 * @Template("LadbCoreBundle:Howto/Article:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
 
 		$id = intval($id);
 
-		$article = $articleRepository->findOneById($id);
-		if (is_null($article)) {
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		if ($article->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_howto_article_widget)');
-		}
+		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$this->assertShowable($article->getHowto(), true);
 
 		return array(
 			'article' => $article,
 		);
-	}
-
-	/**
-	 * @Route("/pas-a-pas/article/{id}.html", name="core_howto_article_show_bc")
-	 */
-	public function bcShowAction(Request $request, $id) {
-		return $this->redirect($this->generateUrl('core_howto_article_show', array( 'id' => $id )));
-	}
-
-	/**
-	 * @Route("/pas-a-pas/articles/{id}.html", name="core_howto_article_show")
-	 * @Template("LadbCoreBundle:Howto/Article:show.html.twig")
-	 */
-	public function showAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
-		$witnessManager = $this->get(WitnessManager::NAME);
-
-		$id = intval($id);
-
-		$article = $articleRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($article)) {
-			if ($response = $witnessManager->checkResponse(Article::TYPE, $id)) {
-				return $response;
-			}
-			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
-		}
-		$howto = $article->getHowto();
-		if ($howto->getIsDraft() === true) {
-			$this->checkWriteAccessOn($howto, true, 'core_howto_article_show');
-		}
-
-		$mainPicture = null;
-
-		$howtoUtils = $this->get(HowtoUtils::NAME);
-		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
-		$referral = $embaddableUtils->processReferer($howto, $request);
-
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($howto));
-
-		$parameters = $howtoUtils->computeShowParameters($howto, $referral);
-		$parameters = array_merge($parameters, array(
-			'article'     => $article,
-			'mainPicture' => $mainPicture,
-		));
-
-		return $parameters;
 	}
 
 	/**
@@ -450,6 +347,53 @@ class ArticleController extends AbstractController {
 			throw $this->createNotFoundException('No sticker');
 		}
 
+	}
+
+	/**
+	 * @Route("/pas-a-pas/article/{id}.html", name="core_howto_article_show_bc")
+	 */
+	public function bcShowAction(Request $request, $id) {
+		return $this->redirect($this->generateUrl('core_howto_article_show', array( 'id' => $id )));
+	}
+
+	/**
+	 * @Route("/pas-a-pas/articles/{id}.html", name="core_howto_article_show")
+	 * @Template("LadbCoreBundle:Howto/Article:show.html.twig")
+	 */
+	public function showAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
+		$articleRepository = $om->getRepository(Article::CLASS_NAME);
+		$witnessManager = $this->get(WitnessManager::NAME);
+
+		$id = intval($id);
+
+		$article = $articleRepository->findOneByIdJoinedOnOptimized($id);
+		if (is_null($article)) {
+			if ($response = $witnessManager->checkResponse(Article::TYPE, $id)) {
+				return $response;
+			}
+			throw $this->createNotFoundException('Unable to find Article entity (id='.$id.').');
+		}
+		$howto = $article->getHowto();
+		$this->assertShowable($article->getHowto());
+
+		$mainPicture = null;
+
+		$howtoUtils = $this->get(HowtoUtils::NAME);
+		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
+		$referral = $embaddableUtils->processReferer($howto, $request);
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($howto));
+
+		$parameters = $howtoUtils->computeShowParameters($howto, $referral);
+		$parameters = array_merge($parameters, array(
+			'article'     => $article,
+			'mainPicture' => $mainPicture,
+		));
+
+		return $parameters;
 	}
 
 }

@@ -31,7 +31,13 @@
             {% if hasBiography or isOwner %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong><i class="ladb-icon-user ladb-icon-lg"></i> Qui suis-je ?</strong>
+                        <strong>
+                            {% if user.isTeam %}
+                                <i class="ladb-icon-users ladb-icon-lg"></i> Qui sommes-nous ?
+                            {% else %}
+                               <i class="ladb-icon-user ladb-icon-lg"></i> Qui suis-je ?
+                            {% endif %}
+                        </strong>
                     </div>
                     <div class="panel-body">
                         {% if hasBiography %}
@@ -45,7 +51,13 @@
             {% if hasMap or isOwner %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong><i class="ladb-icon-locate ladb-icon-lg"></i> Où suis-je ?</strong>
+                        <strong><i class="ladb-icon-locate ladb-icon-lg"></i>
+                            {% if user.isTeam %}
+                                Où sommes-nous ?
+                            {% else %}
+                                Où suis-je ?
+                            {% endif %}
+                        </strong>
                     </div>
                     <div>
                         {% if hasMap %}

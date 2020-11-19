@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use FOS\UserBundle\Model\UserInterface;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\UserControllerTrait;
@@ -1460,9 +1461,9 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/members", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_members")
-	 * @Route("/@{username}/members/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_members_filter")
-	 * @Route("/@{username}/members/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_members_filter_page")
+	 * @Route("/@{username}/membres", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_members")
+	 * @Route("/@{username}/membres/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_members_filter")
+	 * @Route("/@{username}/membres/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_members_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showMembers.html.twig")
 	 */
 	public function showMembersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
@@ -1494,7 +1495,7 @@ class UserController extends AbstractController {
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'members',
 		)));
 	}
 
@@ -1640,6 +1641,7 @@ class UserController extends AbstractController {
 			$team->setEmailCanonical($team->getEmail());
 			$team->setEnabled(true);
 			$team->setPlainPassword(random_bytes(20));	// Put a random password
+			$team->addRole('ROLE_TEAM');
 			$userManager->updateUser($team);
 
 			// Add team's creator as first member
@@ -1689,14 +1691,10 @@ class UserController extends AbstractController {
 		$registrationRepository = $om->getRepository(Registration::CLASS_NAME);
 		$registration = $registrationRepository->findOneByUser($user);
 
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		return array(
-			'user'            => $user,
-			'registration'    => $registration,
-			'tab'             => 'admin',
-			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
-		);
+		return $this->_fillCommonShowParameters($user, array(
+			'registration' => $registration,
+			'tab'          => 'admin',
+		));
 	}
 
 	/**

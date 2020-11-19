@@ -3,7 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Wonder;
 
 use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
-use Ladb\CoreBundle\Controller\RightsControllerTrait;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,8 +46,7 @@ use Ladb\CoreBundle\Utils\StripableUtils;
  */
 class PlanController extends AbstractController {
 
-	use CustomOwnerControllerTrait;
-	use RightsControllerTrait;
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_plan_new")
@@ -132,16 +131,9 @@ class PlanController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_plan_lock or core_plan_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneById($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if ($plan->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_plan_lock or core_plan_unlock)');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertLockUnlockable($plan, $lock);
 
 		// Lock or Unlock
 		$planManager = $this->get(PlanManager::NAME);
@@ -161,23 +153,9 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_plan_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($plan, false, 'core_plan_publish');
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_plan_publish)');
-		}
-		if ($plan->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_plan_publish)');
-		}
-		if ($plan->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_plan_publish)');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertPublishable($plan);
 
 		// Publish
 		$planManager = $this->get(PlanManager::NAME);
@@ -194,16 +172,9 @@ class PlanController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_plan_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if ($plan->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_plan_unpublish)');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertUnpublishable($plan);
 
 		// Unpublish
 		$planManager = $this->get(PlanManager::NAME);
@@ -226,14 +197,9 @@ class PlanController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Plan:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($plan, false, 'core_plan_edit');
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertEditabable($plan);
 
 		$form = $this->createForm(PlanType::class, $plan);
 
@@ -252,13 +218,9 @@ class PlanController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		$this->checkWriteAccessOn($plan, false, 'core_plan_update');
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertEditabable($plan);
 
 		$picturedUtils = $this->get(PicturedUtils::NAME);
 		$picturedUtils->resetPictures($plan); // Reset pictures array to consider form pictures order
@@ -322,17 +284,9 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_plan_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
-		$planUtils = $this->get(PlanUtils::NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($plan->getIsDraft() === true && $plan->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_plan_delete)');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertDeletable($plan);
 
 		// Delete
 		$planManager = $this->get(PlanManager::NAME);
@@ -352,17 +306,9 @@ class PlanController extends AbstractController {
 	 */
 	public function downloadAction($id) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneById($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if ($plan->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $plan->getUser()->getId() != $this->getUser()->getId())) {
-				throw $this->createNotFoundException('Not allowed (core_plan_download)');
-			}
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		$planUtils = $this->get(PlanUtils::NAME);
 		$zipAbsolutePath = $planUtils->getZipAbsolutePath($plan);
@@ -403,12 +349,9 @@ class PlanController extends AbstractController {
 	 */
 	public function questionsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneById($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Questions
 
@@ -444,12 +387,9 @@ class PlanController extends AbstractController {
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Howtos
 
@@ -485,12 +425,9 @@ class PlanController extends AbstractController {
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Creations
 
@@ -526,12 +463,9 @@ class PlanController extends AbstractController {
 	 */
 	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Workflows
 
@@ -567,12 +501,9 @@ class PlanController extends AbstractController {
 	 */
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Workshops
 
@@ -608,12 +539,9 @@ class PlanController extends AbstractController {
 	 */
 	public function schoolsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneById($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Schools
 
@@ -651,10 +579,8 @@ class PlanController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Inspirations
 
@@ -691,10 +617,8 @@ class PlanController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
-		$plan = $planRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan);
 
 		// Rebounds
 
@@ -733,17 +657,11 @@ class PlanController extends AbstractController {
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
 		$id = intval($id);
 
-		$plan = $planRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if ($plan->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_plan_sticker)');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan, true);
 
 		$sticker = $plan->getSticker();
 		if (is_null($sticker)) {
@@ -772,17 +690,11 @@ class PlanController extends AbstractController {
 	 */
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
 		$id = intval($id);
 
-		$plan = $planRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Creation entity (id='.$id.').');
-		}
-		if ($plan->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_plan_strip)');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan, true);
 
 		$strip = $plan->getStrip();
 		if (is_null($strip)) {
@@ -812,17 +724,11 @@ class PlanController extends AbstractController {
 	 */
 	public function widgetAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
 
 		$id = intval($id);
 
-		$plan = $planRepository->findOneById($id);
-		if (is_null($plan)) {
-			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
-		}
-		if ($plan->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_plan_widget)');
-		}
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertShowable($plan, true);
 
 		return array(
 			'plan' => $plan,
@@ -1125,9 +1031,7 @@ class PlanController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Plan entity (id='.$id.').');
 		}
-		if ($plan->getIsDraft() === true) {
-			$this->checkWriteAccessOn($plan, true, 'core_plan_show');
-		}
+		$this->assertShowable($plan);
 
 		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
 		$referral = $embaddableUtils->processReferer($plan, $request);
