@@ -125,7 +125,6 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_workflow_tag")
-	 * @Assert\Count(min=2, groups={"public"})
 	 */
 	private $tags;
 

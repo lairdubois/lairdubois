@@ -18,5 +18,5 @@
     {{ parent() }}
     {% include 'LadbCoreBundle:Common:_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('qa.question.form.help.title'|trans()) } %}
     {% include 'LadbCoreBundle:Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('qa.question.form.help.body'|trans()) } %}
-    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':('qa.question.form.help.tags'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'help':('qa.question.form.help.tags'|trans()) } %}
 {% endblock %}

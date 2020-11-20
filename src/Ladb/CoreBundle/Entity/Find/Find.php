@@ -125,7 +125,6 @@ class Find extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_find_tag")
-	 * @Assert\Count(min=2)
 	 */
 	private $tags;
 

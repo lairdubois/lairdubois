@@ -129,7 +129,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_howto_tag")
-	 * @Assert\Count(min=2)
 	 */
 	private $tags;
 

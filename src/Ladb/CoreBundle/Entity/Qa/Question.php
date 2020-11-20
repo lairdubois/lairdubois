@@ -139,7 +139,6 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_qa_question_tag")
-	 * @Assert\Count(min=2)
 	 */
 	private $tags;
 

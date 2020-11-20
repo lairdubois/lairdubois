@@ -89,7 +89,6 @@ class Plan extends AbstractWonder implements HtmlBodiedInterface, InspirableInte
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_plan_tag")
-	 * @Assert\Count(min=2)
 	 */
 	protected $tags;
 
