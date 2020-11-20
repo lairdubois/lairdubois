@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\PublicationInterface;
+use Ladb\CoreBundle\Model\RepublishableInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 trait PublicationControllerTrait {
@@ -73,7 +74,7 @@ trait PublicationControllerTrait {
 	protected function retrievePublication($id, $className) {
 		$om = $this->getDoctrine()->getManager();
 		$publicationRepository = $om->getRepository($className);
-		$publication = $publicationRepository->findOneById($id);
+		$publication = $publicationRepository->findOneById(intval($id));
 		if (is_null($publication)) {
 			throw $this->createNotFoundException('Unable to find '.$className.' entity (id='.$id.').');
 		}
@@ -127,7 +128,7 @@ trait PublicationControllerTrait {
 		}
 	}
 
-	protected function assertPublishable(PublicationInterface $publication, $context = '') {
+	protected function assertPublishable(PublicationInterface $publication, $maxPublishCount = 0, $context = '') {
 		$this->assertWriteAccessGranted($publication, $context);
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw $this->createNotFoundException('Not emailConfirmed ('.$context.')');
@@ -138,6 +139,10 @@ trait PublicationControllerTrait {
 		if ($publication->getIsLocked() === true) {
 			throw $this->createNotFoundException('Locked ('.$context.')');
 		}
+		if ($publication instanceof RepublishableInterface && $maxPublishCount > 0 && $publication->getPublishCount() >= $maxPublishCount) {
+			throw $this->createNotFoundException('Max publish count reached ('.$context.')');
+		}
+
 	}
 
 	protected function assertUnpublishable(PublicationInterface $publication, $ownerAllowed = false, $context = '') {

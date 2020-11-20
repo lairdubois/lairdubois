@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Qa;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Core\Tip;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Utils\MaybeUtils;
@@ -39,6 +40,8 @@ use Ladb\CoreBundle\Model\HiddableInterface;
  * @Route("/questions")
  */
 class QuestionController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_qa_question_new")
@@ -117,16 +120,9 @@ class QuestionController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_qa_question_lock or core_qa_question_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if ($question->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_qa_question_lock or core_qa_question_unlock)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertLockUnlockable($question, $lock);
 
 		// Lock or Unlock
 		$questionManager = $this->get(QuestionManager::NAME);
@@ -146,25 +142,9 @@ class QuestionController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_qa_question_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_qa_question_publish)');
-		}
-		if ($question->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_qa_question_publish)');
-		}
-		if ($question->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_qa_question_publish)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertPublishable($question);
 
 		// Publish
 		$questionManager = $this->get(QuestionManager::NAME);
@@ -181,16 +161,9 @@ class QuestionController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_qa_question_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if ($question->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_qa_question_unpublish)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertUnpublishable($question);
 
 		// Unpublish
 		$questionManager = $this->get(QuestionManager::NAME);
@@ -213,16 +186,9 @@ class QuestionController extends AbstractController {
 	 * @Template("LadbCoreBundle:Qa/Question:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_edit)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertEditabable($question);
 
 		$form = $this->createForm(QuestionType::class, $question);
 
@@ -241,15 +207,9 @@ class QuestionController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $question->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_update)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertEditabable($question);
 
 		$originalBodyBlocks = $question->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $question->getTags()->toArray();	// Need to be an array to copy values
@@ -307,16 +267,9 @@ class QuestionController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_qa_question_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Qa\Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($question->getIsDraft() === true && $question->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_qa_question_delete)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertDeletable($question);
 
 		// Delete
 		$questionManager = $this->get(QuestionManager::NAME);
@@ -332,19 +285,10 @@ class QuestionController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_qa_question_widget")
 	 * @Template("LadbCoreBundle:Qa/Question:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if ($question->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_question_widget)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertShowable($question, true);
 
 		return array(
 			'question' => $question,
@@ -645,12 +589,9 @@ class QuestionController extends AbstractController {
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertShowable($question);
 
 		// Creations
 
@@ -686,12 +627,9 @@ class QuestionController extends AbstractController {
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertShowable($question);
 
 		// Plans
 
@@ -727,12 +665,9 @@ class QuestionController extends AbstractController {
 	 */
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertShowable($question);
 
 		// Howtos
 
@@ -818,19 +753,20 @@ class QuestionController extends AbstractController {
 		$votableUtils = $this->get(VotableUtils::NAME);
 
 		return array(
-			'question'         => $question,
-			'userQuestions'    => $userQuestions,
-			'similarQuestions' => $similarQuestions,
-			'likeContext'      => $likableUtils->getLikeContext($question, $this->getUser()),
-			'watchContext'     => $watchableUtils->getWatchContext($question, $this->getUser()),
-			'commentContext'   => $commentableUtils->getCommentContext($question, false),
-			'followerContext'  => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
-			'voteContexts'     => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
-			'commentContexts'  => $commentableUtils->getCommentContexts($question->getAnswers(), false),
-			'collectionContext'   => $collectionnableUtils->getCollectionContext($question),
-			'answers'          => $answers,
-			'userAnswer'       => $userAnswer,
-			'sorter'           => $sorter,
+			'question'          => $question,
+			'permissionContext' => $this->getPermissionContext($question),
+			'userQuestions'     => $userQuestions,
+			'similarQuestions'  => $similarQuestions,
+			'likeContext'       => $likableUtils->getLikeContext($question, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($question, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($question, false),
+			'followerContext'   => $followerUtils->getFollowerContext($question->getUser(), $this->getUser()),
+			'voteContexts'      => $votableUtils->getVoteContexts($question->getAnswers(), $this->getUser()),
+			'commentContexts'   => $commentableUtils->getCommentContexts($question->getAnswers(), false),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($question),
+			'answers'           => $answers,
+			'userAnswer'        => $userAnswer,
+			'sorter'            => $sorter,
 		);
 	}
 

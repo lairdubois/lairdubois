@@ -637,8 +637,6 @@ class CreationController extends AbstractController {
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$id = intval($id);
-
 		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
 		$this->assertShowable($creation, true);
 
@@ -670,8 +668,6 @@ class CreationController extends AbstractController {
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$id = intval($id);
-
 		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
 		$this->assertShowable($creation, true);
 
@@ -701,9 +697,7 @@ class CreationController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_creation_widget")
 	 * @Template("LadbCoreBundle:Wonder/Creation:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-
-		$id = intval($id);
+	public function widgetAction($id) {
 
 		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
 		$this->assertShowable($creation, true);

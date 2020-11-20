@@ -1,14 +1,24 @@
 <?php
 
-namespace Ladb\CoreBundle\Utils;
+namespace Ladb\CoreBundle\Controller\Howto;
 
+use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Howto\Howto;
+use Ladb\CoreBundle\Utils\CollectionnableUtils;
+use Ladb\CoreBundle\Utils\CommentableUtils;
+use Ladb\CoreBundle\Utils\EmbeddableUtils;
+use Ladb\CoreBundle\Utils\ExplorableUtils;
+use Ladb\CoreBundle\Utils\FollowerUtils;
+use Ladb\CoreBundle\Utils\GlobalUtils;
+use Ladb\CoreBundle\Utils\LikableUtils;
+use Ladb\CoreBundle\Utils\WatchableUtils;
 
-class HowtoUtils extends AbstractContainerAwareUtils {
+abstract class AbstractHowtoBasedController extends AbstractController {
 
-	const NAME = 'ladb_core.howto_utils';
+	use PublicationControllerTrait;
 
-	public function computeShowParameters(Howto $howto, $referral = null) {
+	protected function computeShowParameters(Howto $howto, $request) {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
 
@@ -22,11 +32,13 @@ class HowtoUtils extends AbstractContainerAwareUtils {
 		$commentableUtils = $this->get(CommentableUtils::NAME);
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 		$followerUtils = $this->get(FollowerUtils::NAME);
+		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
 
 		$user = $globalUtils->getUser();
 
 		return array(
 			'howto'             => $howto,
+			'permissionContext' => $this->getPermissionContext($howto),
 			'userHowtos'        => $userHowtos,
 			'similarHowtos'     => $similarHowtos,
 			'likeContext'       => $likableUtils->getLikeContext($howto, $user),
@@ -34,9 +46,8 @@ class HowtoUtils extends AbstractContainerAwareUtils {
 			'commentContext'    => $commentableUtils->getCommentContext($howto),
 			'collectionContext' => $collectionnableUtils->getCollectionContext($howto),
 			'followerContext'   => $followerUtils->getFollowerContext($howto->getUser(), $user),
-			'referral'          => $referral,
+			'referral'          => $embaddableUtils->processReferer($howto, $request),
 		);
 	}
 
 }
-

@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Find;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,8 @@ use Ladb\CoreBundle\Utils\FindUtils;
  * @Route("/trouvailles")
  */
 class FindController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_find_new")
@@ -112,16 +115,9 @@ class FindController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_find_lock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
 
-		$find = $findRepository->findOneById($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if ($find->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_find_lock or core_find_unlock)');
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertLockUnlockable($find, $lock);
 
 		// Lock or Unlock
 		$findManager = $this->get(FindManager::NAME);
@@ -141,25 +137,9 @@ class FindController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_find_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
 
-		$find = $findRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $find->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_find_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_find_publish)');
-		}
-		if ($find->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_find_publish)');
-		}
-		if ($find->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_find_publish)');
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertPublishable($find);
 
 		// Publish
 		$findManager = $this->get(FindManager::NAME);
@@ -176,16 +156,9 @@ class FindController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_find_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
 
-		$find = $findRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if ($find->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_find_unpublish)');
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertUnpublishable($find);
 
 		// Unpublish
 		$findManager = $this->get(FindManager::NAME);
@@ -208,16 +181,9 @@ class FindController extends AbstractController {
 	 * @Template("LadbCoreBundle:Find/Find:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
 
-		$find = $findRepository->findOneById($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $find->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_find_edit)');
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertEditabable($find);
 
 		$form = $this->createForm(FindType::class, $find);
 
@@ -236,17 +202,11 @@ class FindController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
 
 		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
-		$find = $findRepository->findOneById($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $find->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_find_update)');
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertEditabable($find);
 
 		if ($find->getContent() instanceof Gallery) {
 			$picturedUtils = $this->get(PicturedUtils::NAME);
@@ -312,16 +272,9 @@ class FindController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_find_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
 
-		$find = $findRepository->findOneById($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($find->getIsDraft() === true && $find->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_find_delete)');
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertDeletable($find);
 
 		// Delete
 		$findManager = $this->get(FindManager::NAME);
@@ -337,19 +290,10 @@ class FindController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_find_widget")
 	 * @Template("LadbCoreBundle:Find/Find:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$find = $findRepository->findOneById($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if ($find->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_find_widget)');
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertShowable($find, true);
 
 		return array(
 			'find' => $find,
@@ -360,21 +304,10 @@ class FindController extends AbstractController {
 	 * @Route("/{id}/location.geojson", name="core_find_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Find/Find:location.geojson.twig")
 	 */
-	public function locationAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
+	public function locationAction($id) {
 
-		$id = intval($id);
-
-		$find = $findRepository->findOneById($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
-		}
-		if ($find->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $find->getUser()->getId() != $this->getUser()->getId())) {
-				throw $this->createNotFoundException('Not allowed (core_find_location)');
-			}
-		}
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertShowable($find);
 
 		$features = array();
 		$content = $find->getContent();
@@ -391,6 +324,23 @@ class FindController extends AbstractController {
 
 		return array(
 			'collection' => $collection,
+		);
+	}
+
+	/**
+	 * @Route("/{id}/card.xhr", name="core_find_card")
+	 * @Template("LadbCoreBundle:Find/Find:card-xhr.html.twig")
+	 */
+	public function cardAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_find_card-');
+		}
+
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertShowable($find);
+
+		return array(
+			'find' => $find,
 		);
 	}
 
@@ -640,30 +590,6 @@ class FindController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/card.xhr", name="core_find_card")
-	 * @Template("LadbCoreBundle:Find/Find:card-xhr.html.twig")
-	 */
-	public function cardAction(Request $request, $id) {
-		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_find_card-');
-		}
-
-		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
-
-		$id = intval($id);
-
-		$find = $findRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($find)) {
-			throw $this->createNotFoundException('Unable to find Find entity.');
-		}
-
-		return array(
-			'find' => $find,
-		);
-	}
-
-	/**
 	 * @Route("/{id}.html", name="core_find_show")
 	 * @Template("LadbCoreBundle:Find/Find:show.html.twig")
 	 */
@@ -712,6 +638,7 @@ class FindController extends AbstractController {
 
 		return array(
 			'find'              => $find,
+			'permissionContext' => $this->getPermissionContext($find),
 			'userFinds'         => $userFinds,
 			'similarFinds'      => $similarFinds,
 			'likeContext'       => $likableUtils->getLikeContext($find, $this->getUser()),

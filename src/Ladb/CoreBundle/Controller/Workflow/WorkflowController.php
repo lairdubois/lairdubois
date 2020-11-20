@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Workflow;
 
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -35,7 +36,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
  */
 class WorkflowController extends AbstractWorkflowBasedController {
 
-	/////
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_workflow_new")
@@ -112,12 +113,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function lockUnlockAction($id, $lock) {
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if ($workflow->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_workflow_lock or core_workflow_unlock)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertLockUnlockable($workflow, $lock);
 
 		// Lock or Unlock
 		$workflowManager = $this->get(WorkflowManager::NAME);
@@ -138,21 +135,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function publishAction($id) {
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_workflow_publish)');
-		}
-		if ($workflow->getIsPublic()) {
-			throw $this->createNotFoundException('Already published (core_workflow_publish)');
-		}
-		if ($workflow->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_workflow_publish)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertPublishable($workflow);
 
 		// Publish
 		$workflowManager = $this->get(WorkflowManager::NAME);
@@ -170,12 +154,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function unpublishAction(Request $request, $id) {
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if (!$workflow->getIsPublic()) {
-			throw $this->createNotFoundException('Already unpublished (core_workflow_publish)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertUnpublishable($workflow);
 
 		// Unpublish
 		$workflowManager = $this->get(WorkflowManager::NAME);
@@ -199,12 +179,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function editAction($id) {
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_edit)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertEditabable($workflow);
 
 		$form = $this->createForm(WorkflowType::class, $workflow);
 
@@ -224,12 +200,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_update)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertEditabable($workflow);
 
 		$previouslyUsedTags = $workflow->getTags()->toArray();	// Need to be an array to copy values
 
@@ -278,12 +250,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function deleteAction($id) {
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_delete)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertDeletable($workflow);
 
 		// Delete
 		$workflowManager = $this->get(WorkflowManager::NAME);
@@ -299,19 +267,10 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_workflow_widget")
 	 * @Template("LadbCoreBundle:Workflow/Workflow:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$workflow = $workflowRepository->findOneById($id);
-		if (is_null($workflow)) {
-			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
-		}
-		if (!$workflow->getIsPublic()) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_widget)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow, true);
 
 		return array(
 			'workflow' => $workflow,
@@ -327,8 +286,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function howtosAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Howtos
 
@@ -365,8 +324,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Creations
 
@@ -403,8 +362,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Plans
 
@@ -441,8 +400,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Workshops
 
@@ -480,10 +439,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$om = $this->getDoctrine()->getManager();
 		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 
-		$workflow = $workflowRepository->findOneById($id);
-		if (is_null($workflow)) {
-			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Inspirations
 
@@ -520,10 +477,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$om = $this->getDoctrine()->getManager();
 		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
 
-		$workflow = $workflowRepository->findOneById($id);
-		if (is_null($workflow)) {
-			throw $this->createNotFoundException('Unable to find Workflow entity (id='.$id.').');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Rebounds
 
@@ -556,8 +511,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function restartConfirmAction(Request $request, $id) {
 
-		// Retrieve Workflow
-		$workflow = $this->_retrieveWorkflow($id);
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		return array(
 			'workflow' => $workflow,
@@ -569,12 +524,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function restartAction($id) {
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_workflow_restart)');
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Restart
 		$workflowManager = $this->get(WorkflowManager::NAME);
@@ -593,8 +544,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function copyAction($id) {
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Copy
 		$workflowManager = $this->get(WorkflowManager::NAME);
@@ -614,8 +565,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$om = $this->getDoctrine()->getManager();
 		$taskRepository = $om->getRepository(Task::CLASS_NAME);
 
-		// Retrieve Workflow
-		$workflow = $this->_retrieveWorkflow($id);
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		$dataDurationsPerLabel = array();
 		foreach ($workflow->getLabels() as $label) {
@@ -666,11 +617,12 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		$likableUtils = $this->get(LikableUtils::NAME);
 
 		$parameters = array(
-			'workflow'        => $workflow,
-			'readOnly'        => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
-			'durationsHidden' => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
-			'followerContext' => $followerUtils->getFollowerContext($workflow->getUser(), $this->getUser()),
-			'likeContext'     => $likableUtils->getLikeContext($workflow, $this->getUser()),
+			'workflow'          => $workflow,
+			'permissionContext' => $this->getPermissionContext($workflow),
+			'readOnly'          => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
+			'durationsHidden'   => !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $this->getUser(),
+			'followerContext'   => $followerUtils->getFollowerContext($workflow->getUser(), $this->getUser()),
+			'likeContext'       => $likableUtils->getLikeContext($workflow, $this->getUser()),
 		);
 
 		if ($layout == 'workspace') {

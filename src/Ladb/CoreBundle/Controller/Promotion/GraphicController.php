@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Promotion;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,8 @@ use Ladb\CoreBundle\Event\PublicationsEvent;
  * @Route("/promouvoir")
  */
 class GraphicController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_promotion_graphic_new")
@@ -110,16 +113,9 @@ class GraphicController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_promotion_graphic_lock or core_promotion_graphic_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
 
-		$graphic = $graphicRepository->findOneById($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if ($graphic->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_promotion_graphic_lock or core_promotion_graphic_unlock)');
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertLockUnlockable($graphic, $lock);
 
 		// Lock or Unlock
 		$graphicManager = $this->get(GraphicManager::NAME);
@@ -139,25 +135,9 @@ class GraphicController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_promotion_graphic_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
 
-		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $graphic->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_promotion_graphic_publish)');
-		}
-		if ($graphic->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_promotion_graphic_publish)');
-		}
-		if ($graphic->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_promotion_graphic_publish)');
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertPublishable($graphic);
 
 		// Publish
 		$graphicManager = $this->get(GraphicManager::NAME);
@@ -174,16 +154,9 @@ class GraphicController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_promotion_graphic_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
 
-		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if ($graphic->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_promotion_graphic_unpublish)');
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertUnpublishable($graphic);
 
 		// Unpublish
 		$graphicManager = $this->get(GraphicManager::NAME);
@@ -206,16 +179,9 @@ class GraphicController extends AbstractController {
 	 * @Template("LadbCoreBundle:Promotion/Graphic:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
 
-		$graphic = $graphicRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $graphic->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_edit)');
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertEditabable($graphic);
 
 		$form = $this->createForm(GraphicType::class, $graphic);
 
@@ -234,15 +200,9 @@ class GraphicController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
 
-		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $graphic->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_update)');
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertEditabable($graphic);
 
 		$picturedUtils = $this->get(PicturedUtils::NAME);
 		$picturedUtils->resetPictures($graphic); // Reset pictures array to consider form pictures order
@@ -297,16 +257,9 @@ class GraphicController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_promotion_graphic_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
 
-		$graphic = $graphicRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($graphic->getIsDraft() === true && $graphic->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_promotion_graphic_delete)');
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertDeletable($graphic);
 
 		// Delete
 		$graphicManager = $this->get(GraphicManager::NAME);
@@ -325,19 +278,10 @@ class GraphicController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_promotion_graphic_widget")
 	 * @Template("LadbCoreBundle:Promotion/Graphic:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$graphic = $graphicRepository->findOneById($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to graphic Graphic entity (id='.$id.').');
-		}
-		if ($graphic->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_graphic_widget)');
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertShowable($graphic, true);
 
 		return array(
 			'graphic' => $graphic,
@@ -349,17 +293,9 @@ class GraphicController extends AbstractController {
 	 */
 	public function downloadAction($id) {
 		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
 
-		$graphic = $graphicRepository->findOneById($id);
-		if (is_null($graphic)) {
-			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
-		}
-		if ($graphic->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $graphic->getUser()->getId() != $this->getUser()->getId())) {
-				throw $this->createNotFoundException('Not allowed (core_promotion_graphic_download)');
-			}
-		}
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertShowable($graphic);
 
 		$graphicUtils = $this->get(GraphicUtils::NAME);
 		$zipAbsolutePath = $graphicUtils->getZipAbsolutePath($graphic);
@@ -626,6 +562,7 @@ class GraphicController extends AbstractController {
 
 		return array(
 			'graphic'           => $graphic,
+			'permissionContext' => $this->getPermissionContext($graphic),
 			'userGraphics'      => $userGraphics,
 			'similarGraphics'   => $similarGraphics,
 			'likeContext'       => $likableUtils->getLikeContext($graphic, $this->getUser()),

@@ -425,8 +425,6 @@ class WorkshopController extends AbstractController {
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$id = intval($id);
-
 		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
 		$this->assertShowable($workshop, true);
 
@@ -458,8 +456,6 @@ class WorkshopController extends AbstractController {
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$id = intval($id);
-
 		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
 		$this->assertShowable($workshop, true);
 
@@ -489,9 +485,7 @@ class WorkshopController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_workshop_widget")
 	 * @Template("LadbCoreBundle:Wonder/Workshop:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-
-		$id = intval($id);
+	public function widgetAction($id) {
 
 		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
 		$this->assertShowable($workshop, true);
@@ -505,9 +499,7 @@ class WorkshopController extends AbstractController {
 	 * @Route("/{id}/location.geojson", name="core_workshop_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Wonder/Workshop:location.geojson.twig")
 	 */
-	public function locationAction(Request $request, $id) {
-
-		$id = intval($id);
+	public function locationAction($id) {
 
 		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
 		$this->assertShowable($workshop);
@@ -527,6 +519,23 @@ class WorkshopController extends AbstractController {
 
 		return array(
 			'collection' => $collection,
+		);
+	}
+
+	/**
+	 * @Route("/{id}/card.xhr", name="core_workshop_card")
+	 * @Template("LadbCoreBundle:Wonder/Workshop:card-xhr.html.twig")
+	 */
+	public function cardAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_workshop_card)');
+		}
+
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertShowable($workshop);
+
+		return array(
+			'workshop' => $workshop,
 		);
 	}
 
@@ -829,25 +838,6 @@ class WorkshopController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/card.xhr", name="core_workshop_card")
-	 * @Template("LadbCoreBundle:Wonder/Workshop:card-xhr.html.twig")
-	 */
-	public function cardAction(Request $request, $id) {
-		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_workshop_card)');
-		}
-
-		$id = intval($id);
-
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
-		$this->assertShowable($workshop);
-
-		return array(
-			'workshop' => $workshop,
-		);
-	}
-
-	/**
 	 * @Route("/{id}.html", name="core_workshop_show")
 	 * @Template("LadbCoreBundle:Wonder/Workshop:show.html.twig")
 	 */
@@ -887,6 +877,7 @@ class WorkshopController extends AbstractController {
 
 		return array(
 			'workshop'          => $workshop,
+			'permissionContext' => $this->getPermissionContext($workshop),
 			'userWorkshops'     => $userWorkshops,
 			'similarWorkshops'  => $similarWorkshops,
 			'likeContext'       => $likableUtils->getLikeContext($workshop, $this->getUser()),

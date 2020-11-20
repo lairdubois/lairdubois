@@ -2,14 +2,11 @@
 
 namespace Ladb\CoreBundle\Controller\Howto;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Controller\CustomOwnerControllerTrait;
-use Ladb\CoreBundle\Controller\PublicationControllerTrait;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Howto\Howto;
 use Ladb\CoreBundle\Entity\Howto\Article;
 use Ladb\CoreBundle\Form\Type\Howto\HowtoArticleType;
@@ -17,14 +14,13 @@ use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\BlockBodiedUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\EmbeddableUtils;
-use Ladb\CoreBundle\Utils\HowtoUtils;
 use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
 use Ladb\CoreBundle\Manager\Howto\ArticleManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
-class ArticleController extends AbstractController {
+class ArticleController extends AbstractHowtoBasedController {
 
 	use PublicationControllerTrait;
 
@@ -379,16 +375,11 @@ class ArticleController extends AbstractController {
 
 		$mainPicture = null;
 
-		$howtoUtils = $this->get(HowtoUtils::NAME);
-		$embaddableUtils = $this->get(EmbeddableUtils::NAME);
-		$referral = $embaddableUtils->processReferer($howto, $request);
-
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($howto));
 
-		$parameters = $howtoUtils->computeShowParameters($howto, $referral);
-		$parameters = array_merge($parameters, array(
+		$parameters = array_merge($this->computeShowParameters($howto, $request), array(
 			'article'     => $article,
 			'mainPicture' => $mainPicture,
 		));

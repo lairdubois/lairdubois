@@ -1057,6 +1057,7 @@ class PlanController extends AbstractController {
 
 		return array(
 			'plan'                    => $plan,
+			'permissionContext'       => $this->getPermissionContext($plan),
 			'searchableSoftwareCount' => $searchableSoftwareCount,
 			'userPlans'               => $userPlans,
 			'similarPlans'            => $similarPlans,

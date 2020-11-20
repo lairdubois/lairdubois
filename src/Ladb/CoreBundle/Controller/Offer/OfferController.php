@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Offer;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,6 +39,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @Route("/annonces")
  */
 class OfferController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_offer_new")
@@ -112,16 +115,9 @@ class OfferController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_offer_lock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
 
-		$offer = $offerRepository->findOneById($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if ($offer->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_offer_lock or core_offer_unlock)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertLockUnlockable($offer, $lock);
 
 		// Lock or Unlock
 		$offerManager = $this->get(OfferManager::NAME);
@@ -141,28 +137,9 @@ class OfferController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_offer_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
 
-		$offer = $offerRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $offer->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_offer_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_offer_publish)');
-		}
-		if ($offer->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_offer_publish)');
-		}
-		if ($offer->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_offer_publish)');
-		}
-		if ($offer->getPublishCount() >= Offer::MAX_PUBLISH_COUNT) {
-			throw $this->createNotFoundException('Max publish count reached (core_offer_publish)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertPublishable($offer, Offer::MAX_PUBLISH_COUNT);
 
 		// Publish
 		$offerManager = $this->get(OfferManager::NAME);
@@ -179,16 +156,9 @@ class OfferController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_offer_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
 
-		$offer = $offerRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if ($offer->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_offer_unpublish)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertUnpublishable($offer);
 
 		// Unpublish
 		$offerManager = $this->get(OfferManager::NAME);
@@ -211,16 +181,9 @@ class OfferController extends AbstractController {
 	 * @Template("LadbCoreBundle:Offer/Offer:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
 
-		$offer = $offerRepository->findOneById($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $offer->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_offer_edit)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertEditabable($offer);
 
 		$form = $this->createForm(OfferType::class, $offer);
 
@@ -239,15 +202,9 @@ class OfferController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
 
-		$offer = $offerRepository->findOneById($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $offer->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_offer_update)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertEditabable($offer);
 
 		$picturedUtils = $this->get(PicturedUtils::NAME);
 		$picturedUtils->resetPictures($offer); // Reset pictures array to consider form pictures order
@@ -303,16 +260,9 @@ class OfferController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_offer_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
 
-		$offer = $offerRepository->findOneById($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$offer->getUser()->getId() == $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_offer_delete)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertDeletable($offer);
 
 		// Delete
 		$offerManager = $this->get(OfferManager::NAME);
@@ -328,19 +278,10 @@ class OfferController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_offer_widget")
 	 * @Template("LadbCoreBundle:Offer/Offer:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$offer = $offerRepository->findOneById($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Howto entity (id='.$id.').');
-		}
-		if ($offer->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_offer_widget)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertShowable($offer, true);
 
 		return array(
 			'offer' => $offer,
@@ -351,21 +292,10 @@ class OfferController extends AbstractController {
 	 * @Route("/{id}/location.geojson", name="core_offer_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Offer/Offer:location.geojson.twig")
 	 */
-	public function locationAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+	public function locationAction($id) {
 
-		$id = intval($id);
-
-		$offer = $offerRepository->findOneById($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if ($offer->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $offer->getUser()->getId() != $this->getUser()->getId())) {
-				throw $this->createNotFoundException('Not allowed (core_offer_location)');
-			}
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertShowable($offer);
 
 		$features = array();
 		if (!is_null($offer->getLongitude()) && !is_null($offer->getLatitude())) {
@@ -386,21 +316,29 @@ class OfferController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/card.xhr", name="core_offer_card")
+	 * @Template("LadbCoreBundle:Offer/Offer:card-xhr.html.twig")
+	 */
+	public function cardAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_offer_card)');
+		}
+
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertShowable($offer);
+
+		return array(
+			'offer' => $offer,
+		);
+	}
+
+	/**
 	 * @Route("/{id}/message/new", name="core_offer_message_new")
 	 */
 	public function messageNewAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
 
-		$id = intval($id);
-
-		$offer = $offerRepository->findOneById($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
-		}
-		if ($offer->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_offer_message_new)');
-		}
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertShowable($offer, true);
 		if ($offer->getUser() === $this->getUser()) {
 			throw $this->createNotFoundException('Unable to send to yourself (core_offer_message_new)');
 		}
@@ -666,30 +604,6 @@ class OfferController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/card.xhr", name="core_offer_card")
-	 * @Template("LadbCoreBundle:Offer/Offer:card-xhr.html.twig")
-	 */
-	public function cardAction(Request $request, $id) {
-		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_offer_card)');
-		}
-
-		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
-
-		$id = intval($id);
-
-		$offer = $offerRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($offer)) {
-			throw $this->createNotFoundException('Unable to find Offer entity.');
-		}
-
-		return array(
-			'offer' => $offer,
-		);
-	}
-
-	/**
 	 * @Route("/{id}.html", name="core_offer_show")
 	 * @Template("LadbCoreBundle:Offer/Offer:show.html.twig")
 	 */
@@ -734,6 +648,7 @@ class OfferController extends AbstractController {
 
 		return array(
 			'offer'             => $offer,
+			'permissionContext' => $this->getPermissionContext($offer),
 			'userOffers'        => $userOffers,
 			'similarOffers'     => $similarOffers,
 			'likeContext'       => $likableUtils->getLikeContext($offer, $this->getUser()),

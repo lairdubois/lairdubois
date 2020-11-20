@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Event;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
@@ -38,6 +39,8 @@ use Ladb\CoreBundle\Utils\JoinableUtils;
  * @Route("/evenements")
  */
 class EventController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_event_new")
@@ -112,16 +115,9 @@ class EventController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_event_lock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
 
-		$event = $eventRepository->findOneById($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
-		}
-		if ($event->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_event_lock or core_event_unlock)');
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertLockUnlockable($event, $lock);
 
 		// Lock or Unlock
 		$eventManager = $this->get(EventManager::NAME);
@@ -141,25 +137,9 @@ class EventController extends AbstractController {
 	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_event_publish")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
 
-		$event = $eventRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $event->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_event_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_event_publish)');
-		}
-		if ($event->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_event_publish)');
-		}
-		if ($event->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_event_publish)');
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertPublishable($event);
 
 		// Publish
 		$eventManager = $this->get(EventManager::NAME);
@@ -176,16 +156,9 @@ class EventController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_event_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
 
-		$event = $eventRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
-		}
-		if ($event->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_event_unpublish)');
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertUnpublishable($event);
 
 		// Unpublish
 		$eventManager = $this->get(EventManager::NAME);
@@ -208,16 +181,9 @@ class EventController extends AbstractController {
 	 * @Template("LadbCoreBundle:Event/Event:edit.html.twig")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
 
-		$event = $eventRepository->findOneById($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $event->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_event_edit)');
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertEditabable($event);
 
 		$form = $this->createForm(EventType::class, $event);
 
@@ -236,15 +202,9 @@ class EventController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
 
-		$event = $eventRepository->findOneById($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $event->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_event_update)');
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertEditabable($event);
 
 		$originalBodyBlocks = $event->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $event->getTags()->toArray();	// Need to be an array to copy values
@@ -297,16 +257,9 @@ class EventController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_event_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
 
-		$event = $eventRepository->findOneById($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($event->getIsDraft() === true && $event->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_event_delete)');
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertDeletable($event);
 
 		// Delete
 		$eventManager = $this->get(EventManager::NAME);
@@ -322,19 +275,10 @@ class EventController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_event_widget")
 	 * @Template("LadbCoreBundle:Event/Event:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$event = $eventRepository->findOneById($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
-		}
-		if ($event->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_event_widget)');
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertShowable($event, true);
 
 		return array(
 			'event' => $event,
@@ -345,21 +289,10 @@ class EventController extends AbstractController {
 	 * @Route("/{id}/location.geojson", name="core_event_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Event/Event:location.geojson.twig")
 	 */
-	public function locationAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
+	public function locationAction($id) {
 
-		$id = intval($id);
-
-		$event = $eventRepository->findOneById($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Workshop entity (id='.$id.').');
-		}
-		if ($event->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $event->getUser()->getId() != $this->getUser()->getId())) {
-				throw $this->createNotFoundException('Not allowed (core_event_location)');
-			}
-		}
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertShowable($event);
 
 		$features = array();
 		if (!is_null($event->getLongitude()) && !is_null($event->getLatitude())) {
@@ -375,6 +308,23 @@ class EventController extends AbstractController {
 
 		return array(
 			'collection' => $collection,
+		);
+	}
+
+	/**
+	 * @Route("/{id}/card.xhr", name="core_event_card")
+	 * @Template("LadbCoreBundle:Event/Event:card-xhr.html.twig")
+	 */
+	public function cardAction(Request $request, $id) {
+		if (!$request->isXmlHttpRequest()) {
+			throw $this->createNotFoundException('Only XML request allowed (core_event_card)');
+		}
+
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertShowable($event);
+
+		return array(
+			'event' => $event,
 		);
 	}
 
@@ -677,30 +627,6 @@ class EventController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/card.xhr", name="core_event_card")
-	 * @Template("LadbCoreBundle:Event/Event:card-xhr.html.twig")
-	 */
-	public function cardAction(Request $request, $id) {
-		if (!$request->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Only XML request allowed (core_event_card)');
-		}
-
-		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
-
-		$id = intval($id);
-
-		$event = $eventRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($event)) {
-			throw $this->createNotFoundException('Unable to event Event entity.');
-		}
-
-		return array(
-			'event' => $event,
-		);
-	}
-
-	/**
 	 * @Route("/{id}.html", name="core_event_show")
 	 * @Template("LadbCoreBundle:Event/Event:show.html.twig")
 	 */
@@ -751,6 +677,7 @@ class EventController extends AbstractController {
 
 		return array(
 			'event'             => $event,
+			'permissionContext' => $this->getPermissionContext($event),
 			'userEvents'        => $userEvents,
 			'similarEvents'     => $similarEvents,
 			'likeContext'       => $likableUtils->getLikeContext($event, $this->getUser()),

@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Faq;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,8 @@ use Ladb\CoreBundle\Model\HiddableInterface;
  * @Route("/faq")
  */
 class QuestionController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_faq_question_new")
@@ -108,16 +111,9 @@ class QuestionController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (faq_question_lock or core_faq_question_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
-		if ($question->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_faq_question_lock or core_faq_question_unlock)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertLockUnlockable($question, $lock);
 
 		// Lock or Unlock
 		$postManager = $this->get(QuestionManager::NAME);
@@ -138,16 +134,9 @@ class QuestionController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_publish)")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if ($question->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_faq_question_publish)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertPublishable($question);
 
 		// Publish
 		$questionManager = $this->get(QuestionManager::NAME);
@@ -164,16 +153,9 @@ class QuestionController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_faq_question_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if ($question->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_faq_question_unpublish)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertUnpublishable($question);
 
 		// Unpublish
 		$questionManager = $this->get(QuestionManager::NAME);
@@ -197,13 +179,9 @@ class QuestionController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_edit)")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertEditabable($question);
 
 		$form = $this->createForm(QuestionType::class, $question);
 
@@ -223,12 +201,9 @@ class QuestionController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertEditabable($question);
 
 		$originalBodyBlocks = $question->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $question->getTags()->toArray();	// Need to be an array to copy values
@@ -286,16 +261,9 @@ class QuestionController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_faq_question_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
 
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($question->getIsDraft() === true && $question->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_faq_question_delete)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertDeletable($question);
 
 		// Delete
 		$questionManager = $this->get(QuestionManager::NAME);
@@ -311,19 +279,10 @@ class QuestionController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_faq_question_widget")
 	 * @Template("LadbCoreBundle:Faq/Question:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-		if ($question->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_question_widget)');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertShowable($question, true);
 
 		return array(
 			'question' => $question,
@@ -552,6 +511,7 @@ class QuestionController extends AbstractController {
 
 		return array(
 			'question'          => $question,
+			'permissionContext' => $this->getPermissionContext($question),
 			'similarQuestions'  => $similarQuestions,
 			'likeContext'       => $likableUtils->getLikeContext($question, $this->getUser()),
 			'watchContext'      => $watchableUtils->getWatchContext($question, $this->getUser()),

@@ -98,9 +98,6 @@ services:
   ladb_core.graphic_utils:
     class: Ladb\CoreBundle\Utils\GraphicUtils
     arguments: ['@service_container']
-  ladb_core.howto_utils:
-    class: Ladb\CoreBundle\Utils\HowtoUtils
-    arguments: ['@service_container']
   ladb_core.find_utils:
     class: Ladb\CoreBundle\Utils\FindUtils
     arguments: ['@service_container']

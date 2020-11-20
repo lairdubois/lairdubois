@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Blog;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,6 +32,8 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
  * @Route("/blog")
  */
 class PostController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_blog_post_new")
@@ -106,16 +109,9 @@ class PostController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (blog_post_lock or core_blog_post_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
-		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(Post::CLASS_NAME);
 
-		$post = $postRepository->findOneById($id);
-		if (is_null($post)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
-		if ($post->getIsLocked() === $lock) {
-			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_blog_post_lock or core_blog_post_unlock)');
-		}
+		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$this->assertLockUnlockable($post, $lock);
 
 		// Lock or Unlock
 		$postManager = $this->get(PostManager::NAME);
@@ -136,16 +132,9 @@ class PostController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_publish)")
 	 */
 	public function publishAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
-		$post = $postRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($post)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
-		if ($post->getIsDraft() === false) {
-			throw $this->createNotFoundException('Already published (core_blog_post_publish)');
-		}
+		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$this->assertPublishable($post);
 
 		// Publish
 		$postManager = $this->get(PostManager::NAME);
@@ -162,16 +151,9 @@ class PostController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
-		$post = $postRepository->findOneByIdJoinedOnUser($id);
-		if (is_null($post)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
-		if ($post->getIsDraft() === true) {
-			throw $this->createNotFoundException('Already draft (core_blog_post_unpublish)');
-		}
+		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$this->assertUnpublishable($post);
 
 		// Unpublish
 		$postManager = $this->get(PostManager::NAME);
@@ -195,13 +177,9 @@ class PostController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_edit)")
 	 */
 	public function editAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
-		$post = $postRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($post)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
+		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$this->assertEditabable($post);
 
 		$form = $this->createForm(PostType::class, $post);
 
@@ -221,14 +199,11 @@ class PostController extends AbstractController {
 	 */
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
 		$doUp = $request->get('ladb_do_up', false);
 
-		$post = $postRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($post)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
+		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$this->assertEditabable($post);
 
 		$originalBodyBlocks = $post->getBodyBlocks()->toArray();	// Need to be an array to copy values
 		$previouslyUsedTags = $post->getTags()->toArray();	// Need to be an array to copy values
@@ -286,16 +261,9 @@ class PostController extends AbstractController {
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_blog_post_delete")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(\Ladb\CoreBundle\Entity\Blog\Post::CLASS_NAME);
 
-		$post = $postRepository->findOneById($id);
-		if (is_null($post)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !($post->getIsDraft() === true && $post->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_blog_post_delete)');
-		}
+		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$this->assertDeletable($post);
 
 		// Delete
 		$postManager = $this->get(PostManager::NAME);
@@ -311,19 +279,10 @@ class PostController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_blog_post_widget")
 	 * @Template("LadbCoreBundle:Blog/Post:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(Post::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$post = $postRepository->findOneById($id);
-		if (is_null($post)) {
-			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
-		}
-		if ($post->getIsDraft() === true) {
-			throw $this->createNotFoundException('Not allowed (core_post_widget)');
-		}
+		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$this->assertShowable($post, true);
 
 		return array(
 			'post' => $post,
@@ -541,6 +500,7 @@ class PostController extends AbstractController {
 
 		return array(
 			'post'              => $post,
+			'permissionContext' => $this->getPermissionContext($post),
 			'similarPosts'      => $similarPosts,
 			'likeContext'       => $likableUtils->getLikeContext($post, $this->getUser()),
 			'watchContext'      => $watchableUtils->getWatchContext($post, $this->getUser()),
