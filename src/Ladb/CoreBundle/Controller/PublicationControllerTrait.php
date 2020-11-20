@@ -18,22 +18,25 @@ trait PublicationControllerTrait {
 
 	protected function getPermissionContext(PublicationInterface $publication) {
 
-		$isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+		$isGrantedUser = $this->get('security.authorization_checker')->isGranted('ROLE_USER');
+		$isGrantedAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 		$isOwner = $publication instanceof AuthoredInterface && $publication->getUser() == $this->getUser();
-		$isOwnerMember = $this->get('security.authorization_checker')->isGranted('ROLE_USER') && $publication instanceof AuthoredInterface && $this->getDoctrine()->getManager()->getRepository(Member::class)->existsByTeamIdAndUser($publication->getUser()->getId(), $this->getUser());
-		$isPublic = $publication instanceof HiddableInterface && $publication->getIsPublic() || true;
+		$isOwnerMember = $isGrantedUser && $publication instanceof AuthoredInterface && $this->getDoctrine()->getManager()->getRepository(Member::class)->existsByTeamIdAndUser($publication->getUser()->getId(), $this->getUser());
+		$isGrantedOwner = $isOwner || $isOwnerMember;
+		$isPublic = $publication instanceof HiddableInterface && $publication->getIsPublic() || !($publication instanceof HiddableInterface);
 
 		return array(
-			'isAdmin'       => $isAdmin,
-			'isOwner'       => $isOwner,
-			'isOwnerMember' => $isOwnerMember,
+			'isGrantedUser'  => $isGrantedUser,
+			'isGrantedAdmin' => $isGrantedAdmin,
+			'isGrantedOwner' => $isGrantedOwner,
+			'isOwner'        => $isOwner,
+			'isOwnerMember'  => $isOwnerMember,
 
-			'editable'      => $isAdmin || $isOwner || $isOwnerMember,
-			'lockable'      => $isAdmin && !$publication->getIsLocked(),
-			'unlockable'    => $isAdmin && $publication->getIsLocked(),
-			'publishable'   => ($isAdmin || $isOwner || $isOwnerMember) && !$isPublic,
-			'unpublishable' => $isAdmin && $isPublic,
-			'deletable'     => $isAdmin || ($isOwner && !$isPublic),
+			'editable'      => $isGrantedAdmin || $isOwner || $isOwnerMember,
+			'publishable'   => ($isGrantedAdmin || $isOwner || $isOwnerMember) && !$isPublic,
+			'unpublishable' => $isGrantedAdmin && $isPublic,
+			'deletable'     => $isGrantedAdmin || (($isOwner || $isOwnerMember) && !$isPublic),
+			'likable'       => !($isOwner || $isOwnerMember),
 		);
 	}
 

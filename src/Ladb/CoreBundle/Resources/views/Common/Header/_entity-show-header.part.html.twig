@@ -14,10 +14,10 @@
 
 {% block headerToolsInner %}
     {% block headerToolsButtons %}
-        {% if likeContext is defined and not ownerUser %}
+        {% if likeContext is defined and permissionContext.likable %}
             {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
         {% endif %}
-        {% if authored and ownerUser %}
+        {% if permissionContext.editable and permissionContext.isGrantedOwner %}
             <a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
         {% endif %}
         {% if collectionContext is defined %}
@@ -30,29 +30,25 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             {% block headerToolsItems %}
-                {% if is_granted("ROLE_ADMIN") or (ownerUser and ownerCanAlwaysDelete) or (ownerUser and not isPublic) %}
-                    {% if authored and not ownerUser %}
-                        <li><a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
-                    {% endif %}
-                    {% if is_granted("ROLE_ADMIN") or (ownerUser and ownerCanAlwaysDelete) or (ownerUser and not isPublic) %}
-                        <li class="dropdown-item-danger"><a href="#delete_entity_modal" data-toggle="modal"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}...</a></li>
-                    {% endif %}
-                    {% if isPublic %}
-                        <li role="separator" class="divider"></li>
-                    {% endif %}
+                {% if permissionContext.editable and not permissionContext.isGrantedOwner %}
+                    <li><a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
+                {% endif %}
+                {% if permissionContext.deletable %}
+                    <li class="dropdown-item-danger"><a href="#delete_entity_modal" data-toggle="modal"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}...</a></li>
                 {% endif %}
                 {% if isPublic %}
+                    <li role="separator" class="divider"></li>
                     <li><a href="#share_modal" data-toggle="modal"><i class="ladb-icon-share"></i> {{ 'default.share'|trans() }}...</a></li>
-                    {% if not ownerUser %}
+                    {% if not permissionContext.isGrantedOwner %}
                         <li>{% include 'LadbCoreBundle:Core/Report:_widget-item.part.html.twig' with { 'entityType':entity.type, 'entityId':entity.id } %}</li>
                     {% endif %}
                 {% endif %}
-                {% if watchContext is defined and watchContext is not null and is_granted("ROLE_USER") %}
+                {% if watchContext is defined and watchContext is not null and permissionContext.isGrantedUser %}
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-header"><i class="ladb-icon-notifications"></i> {{ 'notification.nav'|trans }}</li>
                     <li class="text-center">{% include 'LadbCoreBundle:Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}</li>
                 {% endif %}
-                {% if is_granted("ROLE_ADMIN") and authored %}
+                {% if permissionContext.isGrantedAdmin and authored %}
                     {% block adminItems %}
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-header"><i class="ladb-icon-admin"></i> Admin</li>
@@ -85,10 +81,10 @@
             {% endblock %}
         {% endembed %}
     {% endif %}
-    {% if is_granted("ROLE_ADMIN") or (ownerUser and ownerCanAlwaysDelete) or (ownerUser and not isPublic) %}
+    {% if permissionContext.deletable %}
         {% include 'LadbCoreBundle:Common:_delete-entity-modal.part.html.twig' with { 'id':'delete_entity_modal', 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', false, false) } %}
     {% endif %}
-    {% if is_granted("ROLE_ADMIN") and authored %}
+    {% if permissionContext.isGrantedAdmin and authored %}
         {% block adminModals %}
             {% if isPublic %}
                 {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_entity_modal', 'title':('default.unpublishing'|trans()) } %}
