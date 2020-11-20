@@ -3,6 +3,8 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
+use Ladb\CoreBundle\Entity\Knowledge\Provider;
 use Ladb\CoreBundle\Utils\KnowledgeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +38,8 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
  * @Route("/ecoles")
  */
 class SchoolController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_school_new")
@@ -140,14 +144,9 @@ class SchoolController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_school_delete)")
 	 */
 	public function deleteAction($id) {
-		$propertyUtils = $this->get(PropertyUtils::NAME);
-		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
 
-		$school = $schoolRepository->findOneById($id);
-		if (is_null($school)) {
-			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
-		}
+		$school = $this->retrievePublication($id, School::CLASS_NAME);
+		$this->assertDeletable($school);
 
 		// Delete
 		$schoolManager = $this->get(SchoolManager::NAME);
@@ -164,15 +163,9 @@ class SchoolController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/School:location.geojson.twig")
 	 */
 	public function locationAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
 
-		$id = intval($id);
-
-		$school = $schoolRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($school)) {
-			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
-		}
+		$school = $this->retrievePublication($id, School::CLASS_NAME);
+		$this->assertShowable($school);
 
 		$features = array();
 		if (!is_null($school->getLongitude()) && !is_null($school->getLatitude())) {
@@ -197,15 +190,9 @@ class SchoolController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/School:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
 
-		$id = intval($id);
-
-		$school = $schoolRepository->findOneById($id);
-		if (is_null($school)) {
-			throw $this->createNotFoundException('Unable to find School entity (id='.$id.').');
-		}
+		$school = $this->retrievePublication($id, School::CLASS_NAME);
+		$this->assertShowable($school, true);
 
 		return array(
 			'school' => $school,
@@ -628,6 +615,7 @@ class SchoolController extends AbstractController {
 
 		return array(
 			'school'            => $school,
+			'permissionContext' => $this->getPermissionContext($school),
 			'likeContext'       => $likableUtils->getLikeContext($school, $this->getUser()),
 			'watchContext'      => $watchableUtils->getWatchContext($school, $this->getUser()),
 			'commentContext'    => $commentableUtils->getCommentContext($school),

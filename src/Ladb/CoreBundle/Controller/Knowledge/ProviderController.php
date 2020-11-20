@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ElasticaQueryUtils;
 use Ladb\CoreBundle\Utils\KnowledgeUtils;
@@ -38,6 +39,8 @@ use Ladb\CoreBundle\Utils\ReviewableUtils;
  * @Route("/fournisseurs")
  */
 class ProviderController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_provider_new")
@@ -144,14 +147,9 @@ class ProviderController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_provider_delete)")
 	 */
 	public function deleteAction($id) {
-		$propertyUtils = $this->get(PropertyUtils::NAME);
-		$om = $this->getDoctrine()->getManager();
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
 
-		$provider = $providerRepository->findOneById($id);
-		if (is_null($provider)) {
-			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
-		}
+		$provider = $this->retrievePublication($id, Provider::CLASS_NAME);
+		$this->assertDeletable($provider);
 
 		// Delete
 		$providerManager = $this->get(ProviderManager::NAME);
@@ -168,15 +166,9 @@ class ProviderController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Provider:location.geojson.twig")
 	 */
 	public function locationAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
 
-		$id = intval($id);
-
-		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($provider)) {
-			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
-		}
+		$provider = $this->retrievePublication($id, Provider::CLASS_NAME);
+		$this->assertShowable($provider);
 
 		$features = array();
 		if (!is_null($provider->getLongitude()) && !is_null($provider->getLatitude())) {
@@ -201,15 +193,9 @@ class ProviderController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Provider:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
 
-		$id = intval($id);
-
-		$provider = $providerRepository->findOneById($id);
-		if (is_null($provider)) {
-			throw $this->createNotFoundException('Unable to find Provider entity (id='.$id.').');
-		}
+		$provider = $this->retrievePublication($id, Provider::CLASS_NAME);
+		$this->assertShowable($provider, true);
 
 		return array(
 			'provider' => $provider,
@@ -632,6 +618,7 @@ class ProviderController extends AbstractController {
 
 		return array(
 			'provider'             => $provider,
+			'permissionContext'    => $this->getPermissionContext($provider),
 			'searchableStoreCount' => $searchableStoreCount,
 			'searchableWoodCount'  => $searchableWoodCount,
 			'likeContext'          => $likableUtils->getLikeContext($provider, $this->getUser()),

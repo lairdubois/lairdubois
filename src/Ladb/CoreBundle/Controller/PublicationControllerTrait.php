@@ -15,7 +15,7 @@ trait PublicationControllerTrait {
 
 	use UserControllerTrait;
 
-	// Rights /////
+	// Permissions /////
 
 	protected function getPermissionContext(PublicationInterface $publication) {
 
@@ -33,7 +33,7 @@ trait PublicationControllerTrait {
 			'isOwner'        => $isOwner,
 			'isOwnerMember'  => $isOwnerMember,
 
-			'editable'      => $isGrantedAdmin || $isOwner || $isOwnerMember,
+			'editable'      => $publication instanceof AuthoredInterface && ($isGrantedAdmin || $isOwner || $isOwnerMember),
 			'publishable'   => ($isGrantedAdmin || $isOwner || $isOwnerMember) && !$isPublic,
 			'unpublishable' => $isGrantedAdmin && $isPublic,
 			'deletable'     => $isGrantedAdmin || (($isOwner || $isOwnerMember) && !$isPublic),

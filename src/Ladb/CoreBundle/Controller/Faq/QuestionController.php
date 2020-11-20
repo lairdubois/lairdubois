@@ -40,7 +40,7 @@ class QuestionController extends AbstractController {
 	 * @Template("LadbCoreBundle:Faq/Question:new.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_new)")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$question = new Question();
 		$question->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block

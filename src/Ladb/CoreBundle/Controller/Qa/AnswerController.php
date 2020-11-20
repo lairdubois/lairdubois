@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Qa;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,6 +31,8 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
  */
 class AnswerController extends AbstractController {
 
+	use PublicationControllerTrait;
+
 	/**
 	 * @Route("/{id}/reponses/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
 	 * @Template("LadbCoreBundle:Qa/Answer:new-xhr.html.twig")
@@ -39,13 +42,7 @@ class AnswerController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_new)');
 		}
 
-		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
-
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
 
 		$answer = new Answer();
 		$answer->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -68,14 +65,9 @@ class AnswerController extends AbstractController {
 
 		$this->createLock('core_qa_answer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
-
-		$question = $questionRepository->findOneById($id);
-		if (is_null($question)) {
-			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
-		}
-
 		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
 		if ($answerRepository->existsByQuestionAndUser($question, $this->getUser())) {
 			throw $this->createNotFoundException('Only one answer allowed (id='.$id.').');

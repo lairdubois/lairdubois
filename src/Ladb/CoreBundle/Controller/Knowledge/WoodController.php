@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,8 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
  * @Route("/xylotheque")
  */
 class WoodController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_wood_new")
@@ -145,13 +148,9 @@ class WoodController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_wood_delete)")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$woodRepository = $om->getRepository(Wood::CLASS_NAME);
 
-		$wood = $woodRepository->findOneById($id);
-		if (is_null($wood)) {
-			throw $this->createNotFoundException('Unable to find Wood entity (id='.$id.').');
-		}
+		$wood = $this->retrievePublication($id, Wood::CLASS_NAME);
+		$this->assertDeletable($wood);
 
 		// Delete
 		$woodMananger = $this->get(WoodManager::NAME);
@@ -161,6 +160,41 @@ class WoodController extends AbstractController {
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('knowledge.wood.form.alert.delete_success', array( '%title%' => $wood->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_wood_list'));
+	}
+
+	/**
+	 * @Route("/{id}/textures", requirements={"id" = "\d+"}, name="core_wood_texture_list")
+	 * @Route("/{id}/textures/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_wood_texture_list_filter")
+	 * @Route("/{id}/textures/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_wood_texture_list_filter_page")
+	 * @Template("LadbCoreBundle:Knowledge/Wood:texture-list.html.twig")
+	 */
+	public function textureListAction(Request $request, $id, $page = 0, $filter = 'all') {
+		$om = $this->getDoctrine()->getManager();
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$wood = $this->retrievePublication($id, Wood::CLASS_NAME);
+		$this->assertShowable($wood);
+
+		$textureRepository = $om->getRepository(Wood\Texture::CLASS_NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $textureRepository->findPaginedByWood($wood, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_wood_texture_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'wood'        => $wood,
+			'textures'   => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Knowledge/Wood:texture-list-xhr.html.twig', $parameters);
+		}
+
+		return $parameters;
 	}
 
 	/**
@@ -203,44 +237,6 @@ class WoodController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{id}/textures", requirements={"id" = "\d+"}, name="core_wood_texture_list")
-	 * @Route("/{id}/textures/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_wood_texture_list_filter")
-	 * @Route("/{id}/textures/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_wood_texture_list_filter_page")
-	 * @Template("LadbCoreBundle:Knowledge/Wood:texture-list.html.twig")
-	 */
-	public function textureListAction(Request $request, $id, $page = 0, $filter = 'all') {
-		$om = $this->getDoctrine()->getManager();
-		$woodRepository = $om->getRepository(Wood::CLASS_NAME);
-		$paginatorUtils = $this->get(PaginatorUtils::NAME);
-
-		$wood = $woodRepository->findOneById($id);
-		if (is_null($wood)) {
-			throw $this->createNotFoundException('Unable to find Wood entity (id='.$id.').');
-		}
-
-		$textureRepository = $om->getRepository(Wood\Texture::CLASS_NAME);
-
-		$offset = $paginatorUtils->computePaginatorOffset($page);
-		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $textureRepository->findPaginedByWood($wood, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_wood_texture_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
-
-		$parameters = array(
-			'filter'      => $filter,
-			'prevPageUrl' => $pageUrls->prev,
-			'nextPageUrl' => $pageUrls->next,
-			'wood'        => $wood,
-			'textures'   => $paginator,
-		);
-
-		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Knowledge/Wood:texture-list-xhr.html.twig', $parameters);
-		}
-
-		return $parameters;
-	}
-
-	/**
 	 * @Route("/textures/{id}", requirements={"id" = "\d+"}, name="core_wood_texture_show")
 	 * @Template("LadbCoreBundle:Knowledge/Wood:texture-show-xhr.html.twig")
 	 */
@@ -263,15 +259,9 @@ class WoodController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Wood:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$woodRepository = $om->getRepository(Wood::CLASS_NAME);
 
-		$id = intval($id);
-
-		$wood = $woodRepository->findOneById($id);
-		if (is_null($wood)) {
-			throw $this->createNotFoundException('Unable to find Wood entity (id='.$id.').');
-		}
+		$wood = $this->retrievePublication($id, Wood::CLASS_NAME);
+		$this->assertShowable($wood, true);
 
 		return array(
 			'wood' => $wood,
@@ -460,6 +450,7 @@ class WoodController extends AbstractController {
 
 		return array(
 			'wood'                    => $wood,
+			'permissionContext'       => $this->getPermissionContext($wood),
 			'searchableCreationCount' => $searchableCreationCount,
 			'searchableProviderCount' => $searchableProviderCount,
 			'likeContext'             => $likableUtils->getLikeContext($wood, $this->getUser()),

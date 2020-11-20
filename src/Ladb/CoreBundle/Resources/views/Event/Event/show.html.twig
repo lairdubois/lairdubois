@@ -60,7 +60,7 @@
             {% include 'LadbCoreBundle:Core/Feedback:_contains-panel.part.html.twig' %}
         {% endif %}
         {% if event.pictures is defined %}
-            {% embed 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':event, 'pictures':event.pictures, 'alt':event.title, 'isOwnerUser':ownerUser } %}
+            {% embed 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':event, 'pictures':event.pictures, 'alt':event.title, 'editable':permissionContext.editable } %}
                 {% block picture0 %}
                     {{ parent() }}
                     {% include 'LadbCoreBundle:Event/Event:_event-calendar.part.html.twig' with { 'event':event, 'topRight':true } %}
@@ -136,7 +136,7 @@
     {% if event.updatedAt > event.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':event } %}
     {% endif %}
-    {% if not ownerUser %}
+    {% if not permissionContext.isGrantedOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% include 'LadbCoreBundle:Core/Feedback:_widget.part.html.twig' %}

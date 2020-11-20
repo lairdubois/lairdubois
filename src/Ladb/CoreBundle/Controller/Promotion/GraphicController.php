@@ -42,7 +42,7 @@ class GraphicController extends AbstractController {
 	 * @Route("/new", name="core_promotion_graphic_new")
 	 * @Template("LadbCoreBundle:Promotion/Graphic:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$graphic = new Graphic();
 		$form = $this->createForm(GraphicType::class, $graphic);
@@ -51,6 +51,7 @@ class GraphicController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($graphic),
 		);
 	}

@@ -138,7 +138,7 @@
         {% include 'LadbCoreBundle:Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
     {% endif %}
     {% block wonderShowcase %}
-        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':wonder, 'pictures':wonder.pictures, 'alt':wonder.title, 'isOwnerUser':ownerUser } %}
+        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':wonder, 'pictures':wonder.pictures, 'alt':wonder.title, 'editable':permissionContext.editable } %}
         <hr>
     {% endblock %}
     <div class="ladb-wonder-body">
@@ -153,7 +153,7 @@
     {% if wonder.updatedAt > wonder.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':wonder } %}
     {% endif %}
-    {% if not ownerUser %}
+    {% if not permissionContext.isGrantedOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% block contentLinkedTo %}{% endblock %}

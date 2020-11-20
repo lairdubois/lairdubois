@@ -61,7 +61,7 @@
             {{ ladb_video_player_frame(find.content.kind, find.content.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail', true)|raw }}
         {% endif %}
         {% if find.content.pictures is defined %}
-            {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':find, 'pictures':find.content.pictures, 'alt':find.title, 'isOwnerUser':ownerUser } %}
+            {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':find, 'pictures':find.content.pictures, 'alt':find.title, 'editable':permissionContext.editable } %}
         {% endif %}
         {% if find.content.location is defined and find.content.location is not null %}
             <div class="ladb-link">
@@ -92,7 +92,7 @@
     {% if find.updatedAt > find.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':find } %}
     {% endif %}
-    {% if not ownerUser %}
+    {% if not permissionContext.isGrantedOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}

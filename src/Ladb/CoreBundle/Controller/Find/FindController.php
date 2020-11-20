@@ -44,7 +44,7 @@ class FindController extends AbstractController {
 	 * @Route("/new", name="core_find_new")
 	 * @Template("LadbCoreBundle:Find/Find:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$find = new Find();
 		$find->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -54,6 +54,7 @@ class FindController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($find),
 		);
 	}

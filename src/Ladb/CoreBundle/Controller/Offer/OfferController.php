@@ -46,7 +46,7 @@ class OfferController extends AbstractController {
 	 * @Route("/new", name="core_offer_new")
 	 * @Template("LadbCoreBundle:Offer/Offer:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$offer = new Offer();
 		$offer->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -56,6 +56,7 @@ class OfferController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($offer),
 		);
 	}

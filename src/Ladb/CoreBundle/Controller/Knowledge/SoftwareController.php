@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\SoftwareIdentity;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
@@ -35,6 +36,8 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
  * @Route("/logiciels")
  */
 class SoftwareController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_software_new")
@@ -144,13 +147,9 @@ class SoftwareController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_software_delete)")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$softwareRepository = $om->getRepository(Software::CLASS_NAME);
 
-		$software = $softwareRepository->findOneById($id);
-		if (is_null($software)) {
-			throw $this->createNotFoundException('Unable to find Software entity (id='.$id.').');
-		}
+		$software = $this->retrievePublication($id, Software::CLASS_NAME);
+		$this->assertDeletable($software);
 
 		// Delete
 		$softwareMananger = $this->get(SoftwareManager::NAME);
@@ -167,15 +166,9 @@ class SoftwareController extends AbstractController {
 	 * @Template("LadbCoreBundle:Knowledge/Software:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$softwareRepository = $om->getRepository(Software::CLASS_NAME);
 
-		$id = intval($id);
-
-		$software = $softwareRepository->findOneById($id);
-		if (is_null($software)) {
-			throw $this->createNotFoundException('Unable to find Software entity (id='.$id.').');
-		}
+		$software = $this->retrievePublication($id, Software::CLASS_NAME);
+		$this->assertShowable($software, true);
 
 		return array(
 			'software' => $software,
@@ -406,6 +399,7 @@ class SoftwareController extends AbstractController {
 
 		return array(
 			'software'             => $software,
+			'permissionContext'    => $this->getPermissionContext($software),
 			'hostSoftware'         => $hostSoftware,
 			'searchableAddonCount' => $searchableAddonCount,
 			'searchablePlanCount'  => $searchablePlanCount,

@@ -1,14 +1,12 @@
 {% extends 'LadbCoreBundle:Common/Header:_entity-avatar-header.part.html.twig' %}
 
 {# set entity #}
-{# set ownerUser (facultative) #}
 {# set likeContext (facultative) #}
 {# set collectionContext (facultative) #}
 {# set watchContext (facultative) #}
 {# set ownerCanDelete (facultative) #}
 
 {% set authored = entity.user is defined %}
-{% set ownerUser = ownerUser is defined ? ownerUser : false %}
 {% set ownerCanAlwaysDelete = ownerCanAlwaysDelete|default(false) %}
 {% set isPublic = entity.isPublic is defined ? entity.isPublic : true %}
 

@@ -47,7 +47,7 @@ class QuestionController extends AbstractController {
 	 * @Route("/new", name="core_qa_question_new")
 	 * @Template("LadbCoreBundle:Qa/Question:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$question = new Question();
 		$question->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -57,6 +57,7 @@ class QuestionController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($question),
 		);
 	}

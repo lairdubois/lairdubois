@@ -46,7 +46,7 @@ class EventController extends AbstractController {
 	 * @Route("/new", name="core_event_new")
 	 * @Template("LadbCoreBundle:Event/Event:new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$event = new Event();
 		$event->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
@@ -56,6 +56,7 @@ class EventController extends AbstractController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($event),
 		);
 	}

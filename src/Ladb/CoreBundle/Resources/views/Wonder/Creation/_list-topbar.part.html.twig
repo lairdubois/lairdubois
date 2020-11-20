@@ -7,5 +7,13 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_creation_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'wonder.creation.new'|trans() }}</span></a>
+    <a href="{{ path('core_creation_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'wonder.creation.new'|trans() }}</span></a><div class="dropdown" style="display: inline-block; margin-left: -1px;">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <i class="ladb-icon-users"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+            <li class="dropdown-header"><i class="ladb-icon-plus"></i> {{ 'wonder.creation.new'|trans() }} avec</li>
+            <li><a href="#">{% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true } %}&nbsp;{% include 'LadbCoreBundle:Core/User:_displayname.part.html.twig' with { 'user':app.user } %}</a></li>
+        </ul>
+    </div>
 {% endblock %}

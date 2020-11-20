@@ -65,7 +65,7 @@
     {% endif %}
     <div class="ladb-offer">
         {% if offer.pictures|length > 0 %}
-            {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':offer, 'pictures':offer.pictures, 'alt':offer.title, 'isOwnerUser':ownerUser } %}
+            {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':offer, 'pictures':offer.pictures, 'alt':offer.title, 'editable':permissionContext.editable } %}
         {% endif %}
         {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
         {% if offer.location is defined and offer.location is not null %}

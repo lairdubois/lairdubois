@@ -6,6 +6,7 @@
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set noLazyLoad = true %}
+{% set owner = owner|default((form.vars.data and form.vars.data.user is defined) ? form.vars.data.user : app.user) %}
 
 {% block bodyJavascripts %}
     {{ parent() }}

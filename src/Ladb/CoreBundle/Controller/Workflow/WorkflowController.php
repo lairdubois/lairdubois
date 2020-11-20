@@ -42,7 +42,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/new", name="core_workflow_new")
 	 * @Template("LadbCoreBundle:Workflow:Workflow/new.html.twig")
 	 */
-	public function newAction() {
+	public function newAction(Request $request) {
 
 		$workflow = new Workflow();
 		$form = $this->createForm(WorkflowType::class, $workflow);
@@ -51,6 +51,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		return array(
 			'form'         => $form->createView(),
+			'owner'        => $this->retrieveOwner($request),
 			'tagProposals' => $tagUtils->getProposals($workflow),
 		);
 	}

@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\ReviewableUtils;
@@ -34,6 +35,8 @@ use Ladb\CoreBundle\Event\KnowledgeListener;
  * @Route("/livres")
  */
 class BookController extends AbstractController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_book_new")
@@ -143,13 +146,9 @@ class BookController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_book_delete)")
 	 */
 	public function deleteAction($id) {
-		$om = $this->getDoctrine()->getManager();
-		$bookRepository = $om->getRepository(Book::CLASS_NAME);
 
-		$book = $bookRepository->findOneById($id);
-		if (is_null($book)) {
-			throw $this->createNotFoundException('Unable to find Book entity (id='.$id.').');
-		}
+		$book = $this->retrievePublication($id, Book::CLASS_NAME);
+		$this->assertDeletable($book);
 
 		// Delete
 		$bookMananger = $this->get(BookManager::NAME);
@@ -165,16 +164,10 @@ class BookController extends AbstractController {
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_book_widget")
 	 * @Template("LadbCoreBundle:Knowledge/Book:widget-xhr.html.twig")
 	 */
-	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$bookRepository = $om->getRepository(Book::CLASS_NAME);
+	public function widgetAction($id) {
 
-		$id = intval($id);
-
-		$book = $bookRepository->findOneById($id);
-		if (is_null($book)) {
-			throw $this->createNotFoundException('Unable to find Book entity (id='.$id.').');
-		}
+		$book = $this->retrievePublication($id, Book::CLASS_NAME);
+		$this->assertShowable($book, true);
 
 		return array(
 			'book' => $book,
@@ -383,6 +376,7 @@ class BookController extends AbstractController {
 
 		return array(
 			'book'                  => $book,
+			'permissionContext'     => $this->getPermissionContext($book),
 			'searchableVolumeCount' => $searchableVolumeCount,
 			'likeContext'           => $likableUtils->getLikeContext($book, $this->getUser()),
 			'watchContext'          => $watchableUtils->getWatchContext($book, $this->getUser()),
