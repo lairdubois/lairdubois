@@ -23,12 +23,18 @@ class Member implements IdentifiableInterface {
 	protected $id;
 
 	/**
+	 * @ORM\Column(name="created_at", type="datetime")
+	 * @Gedmo\Timestampable(on="create")
+	 */
+	private $createdAt;
+
+	/**
 	 * @ORM\Column(name="team_id", type="integer")
 	 */
 	private $teamId;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User", inversedBy="members")
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="team_id", nullable=false)
 	 */
 	private $team;
@@ -43,6 +49,17 @@ class Member implements IdentifiableInterface {
 
 	public function getId() {
 		return $this->id;
+	}
+
+	// CreatedAt /////
+
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
+
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+		return $this;
 	}
 
 	// TeamId /////

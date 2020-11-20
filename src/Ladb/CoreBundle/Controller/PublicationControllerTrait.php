@@ -4,13 +4,38 @@ namespace Ladb\CoreBundle\Controller;
 
 use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
+use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
+use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\PublicationInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 trait PublicationControllerTrait {
 
 	use UserControllerTrait;
+
+	// Rights /////
+
+	protected function getPermissionContext(PublicationInterface $publication) {
+
+		$isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+		$isOwner = $publication instanceof AuthoredInterface && $publication->getUser() == $this->getUser();
+		$isOwnerMember = $this->get('security.authorization_checker')->isGranted('ROLE_USER') && $publication instanceof AuthoredInterface && $this->getDoctrine()->getManager()->getRepository(Member::class)->existsByTeamIdAndUser($publication->getUser()->getId(), $this->getUser());
+		$isPublic = $publication instanceof HiddableInterface && $publication->getIsPublic() || true;
+
+		return array(
+			'isAdmin'       => $isAdmin,
+			'isOwner'       => $isOwner,
+			'isOwnerMember' => $isOwnerMember,
+
+			'editable'      => $isAdmin || $isOwner || $isOwnerMember,
+			'lockable'      => $isAdmin && !$publication->getIsLocked(),
+			'unlockable'    => $isAdmin && $publication->getIsLocked(),
+			'publishable'   => ($isAdmin || $isOwner || $isOwnerMember) && !$isPublic,
+			'unpublishable' => $isAdmin && $isPublic,
+			'deletable'     => $isAdmin || ($isOwner && !$isPublic),
+		);
+	}
 
 	// Data /////
 

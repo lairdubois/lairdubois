@@ -8,6 +8,12 @@ interface PublicationInterface extends IdentifiableInterface, TypableInterface, 
 	const NOTIFICATION_STRATEGY_FOLLOWER 	= 1;	// 0x01
 	const NOTIFICATION_STRATEGY_WATCH 		= 2;	// 0x10
 
+	// IsLocked /////
+
+	public function setIsLocked($isLocked);
+
+	public function getIsLocked();
+
 	// NotificationStrategy /////
 
 	public function getNotificationStrategy();

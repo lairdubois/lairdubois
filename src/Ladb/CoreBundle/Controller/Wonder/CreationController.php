@@ -1215,6 +1215,7 @@ class CreationController extends AbstractController {
 
 		return array(
 			'creation'            => $creation,
+			'permissionContext'   => $this->getPermissionContext($creation),
 			'searchableWoodQuery' => $woodsString,
 			'searchableWoodCount' => $searchableWoodCount,
 			'userCreations'       => $userCreations,
