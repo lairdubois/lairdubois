@@ -86,7 +86,6 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_creation_tag")
-	 * @Assert\Count(min=2)
 	 */
 	protected $tags;
 

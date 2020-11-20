@@ -85,7 +85,6 @@ class Graphic extends AbstractDraftableAuthoredPublication implements TitledInte
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_promotion_graphic_tag")
-	 * @Assert\Count(min=2)
 	 */
 	private $tags;
 

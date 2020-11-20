@@ -88,5 +88,5 @@
             <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-bien-rediger-son-annonce-de-recherche-demploi-apprentissage-ou-stage' }) }}">Comment bien rédiger son annonce de recherche d'Emploi, Apprentissage ou Stage ?</a> </p>
         {% endblock %}
     {% endembed %}
-    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'mandatory':true, 'help':('offer.offer.form.help.tags'|trans()) } %}
+    {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'help':('offer.offer.form.help.tags'|trans()) } %}
 {% endblock %}

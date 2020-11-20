@@ -79,7 +79,6 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 	/**
 	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Tag", cascade={"persist"})
 	 * @ORM\JoinTable(name="tbl_wonder_workshop_tag")
-	 * @Assert\Count(min=2)
 	 */
 	protected $tags;
 
