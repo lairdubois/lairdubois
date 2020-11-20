@@ -218,7 +218,8 @@ alias ladb-install='sudo --user=www-data composer install'
 
 ``` bash
 alias ladb='sudo --user=www-data bin/console --env=dev'
-alias ladb-cc='sudo --user=www-data bin/console --env=prod cache:clear --no-warmup && sudo --user=www-data bin/console --env=dev cache:warmup'
+alias ladb-cc='sudo --user=www-data bin/console --env=dev cache:clear --no-warmup && sudo --user=www-data bin/console --env=dev cache:warmup'
+alias ladb-git='sudo --user=www-data git'
 alias ladb-git-pull-master='sudo --user=www-data git pull origin master'
 alias ladb-log='sudo --user=www-data lnav var/logs/dev.log'
 alias ladb-install='sudo --user=www-data composer install'
@@ -231,14 +232,16 @@ Now you are ready to setup the website itself !
 > If you are on the **PROD** server :
 
 ``` bash
-    $ sudo --user=www-data mkdir /var/www/www.lairdubois.fr
+    $ sudo mkdir /var/www/www.lairdubois.fr
+    $ sudo chown www-data:www-data /var/www/www.lairdubois.fr
     $ cd /var/www/www.lairdubois.fr
 ```
 
 > If you are on the **DEV** server :
 
 ``` bash
-    $ sudo --user=www-data mkdir /var/www/dev.lairdubois.fr
+    $ sudo mkdir /var/www/dev.lairdubois.fr
+    $ sudo chown www-data:www-data /var/www/dev.lairdubois.fr
     $ cd /var/www/dev.lairdubois.fr
 ```
 
@@ -360,6 +363,10 @@ value   = k=rsa; p=[PUBLIC KEY HERE]
 
 Execute the SQL script located at [`docs/database/schema-sessions.sql`](database/schema-sessions.sql).
 
+``` bash
+    $ sudo mysql db_fr_lairdubois_www < docs/database/schema-sessions.sql
+```
+
 ## Step 9 - Compile and Minimize CSS and JS
 
 *⚠️&nbsp;️&nbsp;Note : Be sure that the current directory is the project's root directory. (ie: `/var/www/www.lairdubois.fr` for PROD environment)*
@@ -378,6 +385,12 @@ This step will install base assets (fonts, base images, ...) in `web/bundles` fo
 
 ``` bash
     $ ladb assets:install
+```
+
+Copy some useful empty pictures to `uploads` folder.
+
+``` bash
+    $ sudo --user=www-data cp src/Ladb/CoreBundle/Resources/fixtures/empty*.png uploads
 ```
 
 ## Step 11 - Initialize Elasticsearch index
@@ -518,7 +531,7 @@ Start these services
     $ sudo systemctl start ladb_websocket.service
 ```
 
-## Step 15 - Sending emails
+## Step 15 - Sending emails (Not necessary on the **DEV** server)
 
 Note : The application is able to connect to any SMTP to send emails. See https://github.com/lairdubois/lairdubois/blob/master/app/config/parameters.yml.dist
 
@@ -563,7 +576,7 @@ Now, you have a SMTP server accessible in localhost without authentication. You 
 
 And don't forget to change the `mailer_host`, `mailer_user` and `mailer_password` in symfony configuration `/app/config/parameters.yml`.
 
-## Step 16 - System configuration tuning
+## Step 16 - System configuration tuning (Not necessary on the **DEV** server)
 
 ### Local host
 
@@ -574,7 +587,7 @@ This is important so that all calls where url contains `/internal/` will be acce
 127.0.0.1 lairdubois.fr www.lairdubois.fr
 ```
 
-## Step 17 - Security
+## Step 17 - Security (Not necessary on the **DEV** server)
 
 ### Firewall
 

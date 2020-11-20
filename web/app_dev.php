@@ -15,13 +15,14 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
         '192.168.0.11',
         '192.168.0.12',
         '192.168.0.20',
+        '192.168.0.47',
         '10.0.2.2',
         '127.0.0.1',
         '::1',
     ))
 ) {
     header('HTTP/1.0 403 Forbidden');
-    exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
+    exit(@$_SERVER['REMOTE_ADDR'].' is not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
 /** @var \Composer\Autoload\ClassLoader $loader */
