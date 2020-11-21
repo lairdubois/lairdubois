@@ -4,11 +4,11 @@
 {% set formAction = path('core_user_team_create') %}
 
 {% block sidenavHeading %}
-    <i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}
+    <i class="ladb-icon-settings"></i> {{ 'team.new'|trans() }}
 {% endblock %}
 
 {% block sidenav %}
-    <li><a href="#account"><i class="ladb-icon-user"></i> {{ 'user.account'|trans() }}</a></li>
+    <li><a href="#account"><i class="ladb-icon-users"></i> {{ 'user.account'|trans() }}</a></li>
 {% endblock %}
 
 {% block form_buttons %}
@@ -17,12 +17,23 @@
 
 {% block sections %}
     {{ form_errors(form) }}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'user', 'title':('user.account'|trans()), 'formSection':'account' } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'users', 'title':('user.account'|trans()), 'formSection':'account' } %}
         {% block body %}
             <div class="form-group">
-                {{ form_label(form.username, 'Nom du collectif') }}
+                {{ form_label(form.username, 'Nom d\'utilisateur du collectif') }}
+                <p class="help-block">
+                    Choissez bien le nom d'utilisateur de votre collectif. Il ne pourra être changé que 2 fois.
+                </p>
+                <p class="help-block">
+                    Il donnera accès à la page du collectif.<br>
+                    Exemple : https://www.lairdubois.fr/@<strong>lescopains</strong>
+                </p>
                 {{ form_errors(form.username) }}
-                {{ form_widget(form.username, { 'attr': { 'class':'form-control' } }) }}
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">@</span>
+                    {{ form_widget(form.username, { 'attr': { 'class':'form-control input-lg' } }) }}
+                </div>
+                <p class="help-block"><i class="ladb-icon-info"></i> Seules les lettres non accentuées et les tirets sont permis ici.</p>
             </div>
         {% endblock %}
     {% endembed %}

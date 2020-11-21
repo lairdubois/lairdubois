@@ -30,43 +30,6 @@
     {% include 'LadbCoreBundle:Core/User:_list-topbar.part.html.twig' %}
 {% endblock %}
 
-{% block bodyContainerContent %}
-    {#{% include 'LadbCoreBundle:Core/User:_list-topbar.part.html.twig' %}#}
-    {#{% include 'LadbCoreBundle:Common:_map-area.part.html.twig' %}#}
-
-    {#{% embed 'LadbCoreBundle:Core/User:_list-filterbar.part.html.twig' %}#}
-        {#{% set heading = 'user.list'|trans() %}#}
-        {#{% set customFilterDefs = {#}
-            {#'social':       { 'label':'Réseaux', 'path':null,#}
-                                {#'subFilterDefs': {#}
-                                    {#'social-facebook':          { 'label':'Facebook', 'icon':'facebook-square', 'path':path('core_user_list_filter', { 'filter':'social-facebook' }) },#}
-                                    {#'social-twitter':           { 'label':'Twitter', 'icon':'twitter-square', 'path':path('core_user_list_filter', { 'filter':'social-twitter' }) },#}
-                                    {#'social-googleplus':        { 'label':'Google+', 'icon':'google-plus-square', 'path':path('core_user_list_filter', { 'filter':'social-googleplus' }) },#}
-                                    {#'social-youtube':           { 'label':'YouTube', 'icon':'youtube-square', 'path':path('core_user_list_filter', { 'filter':'social-youtube' }) },#}
-                                    {#'social-vimeo':             { 'label':'Vimeo', 'icon':'vimeo-square', 'path':path('core_user_list_filter', { 'filter':'social-vimeo' }) },#}
-                                    {#'social-dailymotion':       { 'label':'Dailymotion', 'icon':'dailymotion-square', 'path':path('core_user_list_filter', { 'filter':'social-dailymotion' }) },#}
-                                    {#'social-pinterest':         { 'label':'Pinterest', 'icon':'pinterest-square', 'path':path('core_user_list_filter', { 'filter':'social-pinterest' }) },#}
-                                    {#'social-instagram':         { 'label':'Instagram', 'icon':'instagram-square', 'path':path('core_user_list_filter', { 'filter':'social-instagram' }) },#}
-                                {#}#}
-                            {#},#}
-            {#'admin':       { 'label':'Admin', 'path':null, 'hidden':(not is_granted("ROLE_ADMIN")),#}
-                                {#'subFilterDefs': {#}
-                                    {#'admin-not-enabled':        { 'label':'Compte désactivés', 'path':path('core_user_list_filter', { 'filter':'admin-not-enabled' }) },#}
-                                    {#'admin-not-email-confirmed':{ 'label':'Email non confirmés', 'path':path('core_user_list_filter', { 'filter':'admin-not-email-confirmed' }) },#}
-                                {#}#}
-                            {#},#}
-        {#} %}#}
-        {#{% block filterbarRightContent%}#}
-            {#{% if is_granted("ROLE_USER") %}#}
-                {#<span class="ladb-heading">{{ users.count }} {{ 'user.choice.users'|transchoice(users.count) }}</span>#}
-            {#{% else %}#}
-                {#<a href="{{ path('fos_user_registration_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>#}
-            {#{% endif %}#}
-        {#{% endblock %}#}
-    {#{% endembed %}#}
-    {{ parent() }}
-{% endblock %}
-
 {% block autopagerContainerInner %}
     {% include 'LadbCoreBundle:Core/User:_list-n.part.html.twig' %}
 {% endblock %}

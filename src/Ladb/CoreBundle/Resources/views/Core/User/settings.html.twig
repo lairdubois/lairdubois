@@ -2,6 +2,7 @@
 
 {% set pageTitle = 'user.settings'|trans() %}
 {% set formAction = path('core_user_settings', { 'username':user.usernameCanonical }) %}
+{% set owner = user %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
@@ -32,7 +33,7 @@
 
 {% block sidenav %}
     {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'formSection':'avatar', 'title':('user.avatar'|trans()) } %}
-    <li><a href="#account"><i class="ladb-icon-user"></i> {{ 'user.account'|trans() }}</a></li>
+    <li><a href="#account"><i class="ladb-icon-{% if user.isTeam %}users{% else %}user{% endif %}"></i> {{ 'user.account'|trans() }}</a></li>
     {% include 'LadbCoreBundle:Core/Picture:_form-sidenav-gallery.part.html.twig' with { 'formSection':'banner', 'title':('user.banner'|trans()) } %}
     {% include 'LadbCoreBundle:Common:_form-sidenav-body.part.html.twig' with { 'formSection':'biography', 'title':('biography.biography'|trans()) } %}
     <li><a href="#skills"><i class="ladb-icon-skills"></i> {{ 'skill.skills'|trans() }}</a></li>
@@ -50,14 +51,16 @@
 {% endblock %}
 
 {% block sections %}
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-et-pourquoi-bien-renseigner-son-profil' }) }}">Comment (et pourquoi) bien renseigner son profil ?</a>
+    {% if not user.isTeam %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-et-pourquoi-bien-renseigner-son-profil' }) }}">Comment (et pourquoi) bien renseigner son profil ?</a>
+            </div>
         </div>
-    </div>
+    {% endif %}
     {{ form_errors(form) }}
     {% include 'LadbCoreBundle:Core/Picture:_form-section-gallery.part.html.twig' with { 'formSection':'avatar', 'formPictures':form.avatar, 'pictures':(form.vars.data.avatar is null ? [] : [ form.vars.data.avatar ]), 'maxPictureCount':1, 'title':('user.avatar'|trans()), 'help':('user.avatar_help'|trans()), 'hideTextOverlayWarning':true } %}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'user', 'title':('user.account'|trans()), 'formSection':'account' } %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':(user.isTeam ? 'users' : 'user'), 'title':('user.account'|trans()), 'formSection':'account' } %}
         {% block body %}
             <div class="form-group">
                 {{ form_label(form.username, 'Nom d\'utilisateur') }}
@@ -75,19 +78,21 @@
                 {{ form_errors(form.fullname) }}
                 {{ form_widget(form.fullname, { 'attr': { 'class':'form-control' } }) }}
             </div>
-            <div class="form-group{% if user.isTeam %} hidden{% endif %}">
-                {{ form_label(form.email, 'Adresse e-mail') }}
-                {{ form_errors(form.email) }}
-                {{ form_widget(form.email, { 'attr': { 'class':'form-control' } }) }}
-                <p class="help-block"><em>Votre adresse e-mail ne sera jamais rendue publique, ni utilisée à d'autres fins que de permettre à L'Air du Bois de communiquer avec vous (mot de passe oublié, notifications, lettre d'information).</em></p>
-            </div>
-            <div class="form-group{% if user.isTeam %} hidden{% endif %}">
-                <label>Mot de passe</label>
-                <div>
-                    <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Changer le mot de passe</a>
+            {% if not user.isTeam %}
+                <div class="form-group{% if user.isTeam %} hidden{% endif %}">
+                    {{ form_label(form.email, 'Adresse e-mail') }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email, { 'attr': { 'class':'form-control' } }) }}
+                    <p class="help-block"><em>Votre adresse e-mail ne sera jamais rendue publique, ni utilisée à d'autres fins que de permettre à L'Air du Bois de communiquer avec vous (mot de passe oublié, notifications, lettre d'information).</em></p>
                 </div>
-            </div>
-            <div class="form-group{% if user.isTeam %} hidden{% endif %}">
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <div>
+                        <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Changer le mot de passe</a>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="form-group">
                 <label>Type de compte</label>
                 <span class="help-block"><em>Indiquez qui se cache derrière ce compte.</em></span>
                 {{ form_errors(form.accountType) }}
@@ -253,89 +258,91 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'list', 'title':('user.options'|trans()), 'formSection':'options' } %}
-        {% block body %}
-            <div class="checkbox">
-                <label class="checkbox">
-                    {{ form_widget(form.meta.autoWatchEnabled) }}
-                    Surveiller automatiquement les publications auxquelles je contribue<br><small>(commentaire, coups de coeur, réponse, participation)</small>
-                </label>
-            </div>
-        {% endblock %}
-    {% endembed %}
-    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'notifications', 'title':('user.notifications'|trans()), 'formSection':'notifications' } %}
-        {% block body %}
-            <span class="help-block">Envoyer un e-mail de notification :</span>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.incomingMessageEmailNotificationEnabled) }}
-                    lorsque je reçois un message privé
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.newFollowerEmailNotificationEnabled) }}
-                    lorsqu'un j'ai un nouvel abonné
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.newMentionEmailNotificationEnabled) }}
-                    lorsqu'un utilisateur mentionne mon nom
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.newLikeEmailNotificationEnabled) }}
-                    lorsqu'un utilisateur aime l'une de mes publications
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.newVoteEmailNotificationEnabled) }}
-                    lorsqu'un utilisateur vote pour l'une de mes publications
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.newFollowingPostEmailNotificationEnabled) }}
-                    lorsqu'un utilisateur auquel je suis abonné ajoute une nouvelle publication
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.newWatchActivityEmailNotificationEnabled) }}
-                    lorsqu'une activité est détectée sur une publication que je surveille
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.newSpotlightEmailNotificationEnabled) }}
-                    lorsque l'une de mes publications reçoit un coup de projecteur
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    {{ form_widget(form.meta.weekNewsEmailEnabled) }}
-                    avec les nouveautés de chaque semaine
-                </label>
-            </div>
-            <hr>
-            <div>
-                <div class="media">
-                    <div class="media-body">
-                        <span id="ladb_webpush_active_span" style="display: none;" class="ladb-color-success"><i class="ladb-icon-check"></i> Les notifications "push" sont activées sur cet appareil.</span>
-                        <span id="ladb_webpush_inactive_span" style="display: none;"><i class="ladb-icon-plus"></i> Activez les notifications "push" sur cet appareil.</span>
-                        <span id="ladb_webpush_denied_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Vous avez bloqué les notifications "push" sur cet appareil.</span>
-                        <span id="ladb_webpush_disabled_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Les notifications "push" ne sont pas disponibles sur cet appareil.</span>
-                        <span id="ladb_webpush_help_span" class="help-block">Les notifications "push" <em>(nouveaux message, nouveaux coups de coeur et nouvelle réponse à vos question)</em> s'affichent dans un coin de votre écran, même quand L'Air du Bois est fermé.</span>
-                    </div>
-                    <div class="media-right">
-                        <a id="ladb_webpush_subscribe_btn" class="btn btn-success" style="display: none;">Activer</a>
-                        <a id="ladb_webpush_revoke_btn" class="btn btn-default" style="display: none;">Désactiver</a>
+    {% if not user.isTeam %}
+        {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'list', 'title':('user.options'|trans()), 'formSection':'options' } %}
+            {% block body %}
+                <div class="checkbox">
+                    <label class="checkbox">
+                        {{ form_widget(form.meta.autoWatchEnabled) }}
+                        Surveiller automatiquement les publications auxquelles je contribue<br><small>(commentaire, coups de coeur, réponse, participation)</small>
+                    </label>
+                </div>
+            {% endblock %}
+        {% endembed %}
+        {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'notifications', 'title':('user.notifications'|trans()), 'formSection':'notifications' } %}
+            {% block body %}
+                <span class="help-block">Envoyer un e-mail de notification :</span>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.incomingMessageEmailNotificationEnabled) }}
+                        lorsque je reçois un message privé
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.newFollowerEmailNotificationEnabled) }}
+                        lorsqu'un j'ai un nouvel abonné
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.newMentionEmailNotificationEnabled) }}
+                        lorsqu'un utilisateur mentionne mon nom
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.newLikeEmailNotificationEnabled) }}
+                        lorsqu'un utilisateur aime l'une de mes publications
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.newVoteEmailNotificationEnabled) }}
+                        lorsqu'un utilisateur vote pour l'une de mes publications
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.newFollowingPostEmailNotificationEnabled) }}
+                        lorsqu'un utilisateur auquel je suis abonné ajoute une nouvelle publication
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.newWatchActivityEmailNotificationEnabled) }}
+                        lorsqu'une activité est détectée sur une publication que je surveille
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.newSpotlightEmailNotificationEnabled) }}
+                        lorsque l'une de mes publications reçoit un coup de projecteur
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.meta.weekNewsEmailEnabled) }}
+                        avec les nouveautés de chaque semaine
+                    </label>
+                </div>
+                <hr>
+                <div>
+                    <div class="media">
+                        <div class="media-body">
+                            <span id="ladb_webpush_active_span" style="display: none;" class="ladb-color-success"><i class="ladb-icon-check"></i> Les notifications "push" sont activées sur cet appareil.</span>
+                            <span id="ladb_webpush_inactive_span" style="display: none;"><i class="ladb-icon-plus"></i> Activez les notifications "push" sur cet appareil.</span>
+                            <span id="ladb_webpush_denied_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Vous avez bloqué les notifications "push" sur cet appareil.</span>
+                            <span id="ladb_webpush_disabled_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Les notifications "push" ne sont pas disponibles sur cet appareil.</span>
+                            <span id="ladb_webpush_help_span" class="help-block">Les notifications "push" <em>(nouveaux message, nouveaux coups de coeur et nouvelle réponse à vos question)</em> s'affichent dans un coin de votre écran, même quand L'Air du Bois est fermé.</span>
+                        </div>
+                        <div class="media-right">
+                            <a id="ladb_webpush_subscribe_btn" class="btn btn-success" style="display: none;">Activer</a>
+                            <a id="ladb_webpush_revoke_btn" class="btn btn-default" style="display: none;">Désactiver</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endblock %}
-    {% endembed %}
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
 {% endblock %}

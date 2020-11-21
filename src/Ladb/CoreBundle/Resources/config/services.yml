@@ -554,6 +554,16 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_userteamsettings:
+    class: Ladb\CoreBundle\Form\Type\UserTeamSettingsType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
+  ladb_userteammetasettings:
+    class: Ladb\CoreBundle\Form\Type\UserTeamMetaSettingsType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_userteam:
     class: Ladb\CoreBundle\Form\Type\UserTeamType
     tags:

@@ -14,7 +14,7 @@ use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\SkillsToLabelsTransformer;
 use Symfony\Component\Validator\Constraints\Valid;
 
-class UserTeamType extends AbstractType {
+class UserTeamMetaSettingsType extends AbstractType {
 
 	private $om;
 
@@ -24,20 +24,36 @@ class UserTeamType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('username', TextType::class)
+			->add($builder
+					->create('banner', HiddenType::class)
+					->addModelTransformer(new PictureToIdTransformer($this->om))
+			)
+			->add('biography', BiographyType::class)
+			->add($builder
+				->create('skills', HiddenType::class, array('required' => false))
+				->addModelTransformer(new SkillsToLabelsTransformer($this->om))
+			)
+			->add('website')
+			->add('facebook')
+			->add('twitter')
+			->add('youtube')
+			->add('vimeo')
+			->add('dailymotion')
+			->add('pinterest')
+			->add('instagram')
 		;
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Entity\Core\User',
+			'data_class' => 'Ladb\CoreBundle\Entity\Core\UserMeta',
 			'constraints' => new Valid(),
-			'validation_groups' => array( 'Default', 'register' ),
+			'validation_groups' => array( 'Default', 'settings' ),
 		));
 	}
 
 	public function getBlockPrefix() {
-		return 'ladb_userteam';
+		return 'ladb_userteammetasettings';
 	}
 
 }

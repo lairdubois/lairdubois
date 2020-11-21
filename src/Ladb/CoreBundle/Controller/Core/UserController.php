@@ -12,6 +12,7 @@ use Ladb\CoreBundle\Entity\Core\Review;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\Vote;
 use Ladb\CoreBundle\Entity\Offer\Offer;
+use Ladb\CoreBundle\Form\Type\UserTeamSettingsType;
 use Ladb\CoreBundle\Form\Type\UserTeamType;
 use Ladb\CoreBundle\Utils\MemberUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
@@ -313,7 +314,7 @@ class UserController extends AbstractController {
 			},
 			'fos_elastica.index.ladb.core_user',
 			\Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
-			'core_user_list_page'
+			$family == 'team' ? 'core_team_list_page' : 'core_user_list_page'
 		);
 
 		$parameters = array_merge($searchParameters, array(
@@ -373,13 +374,13 @@ class UserController extends AbstractController {
 				if (!$memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser())) {
 					throw $this->createNotFoundException('Access denied');
 				}
-			} else if (!($user->getId() == $this->getUser()->getId())) {
+			} else if ($user != $this->getUser()) {
 				throw $this->createNotFoundException('Access denied');
 			}
 		}
 
 		$oldUsername = $user->getUsernameCanonical();
-		$form = $this->createForm(UserSettingsType::class, $user);
+		$form = $this->createForm($user->getIsTeam() ? UserTeamSettingsType::class : UserSettingsType::class, $user);
 
 		if ($request->isMethod('post')) {
 			$form->handleRequest($request);
