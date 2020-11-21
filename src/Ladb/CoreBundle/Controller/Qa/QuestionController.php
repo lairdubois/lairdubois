@@ -700,14 +700,7 @@ class QuestionController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Question entity (id='.$id.').');
 		}
-		if ($question->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $question->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Question::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_qa_question_show)');
-			}
-		}
+		$this->assertShowable($question);
 
 		$sorter = 'score';
 		$answers = $answerRepository->findByQuestion($question, $sorter);

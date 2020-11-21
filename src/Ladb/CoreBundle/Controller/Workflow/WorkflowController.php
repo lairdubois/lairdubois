@@ -601,17 +601,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		$layout = $request->get('layout', 'page');
 
-		// Retrieve workflow
-		$workflow = $this->_retrieveWorkflow($id);
-
-		if (!$workflow->getIsPublic()) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $workflow->getUser() != $this->getUser())) {
-				if ($response = $witnessManager->checkResponse(Workflow::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_workflow_show)');
-			}
-		}
+		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$this->assertShowable($workflow);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

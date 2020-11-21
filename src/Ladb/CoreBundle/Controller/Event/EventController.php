@@ -632,14 +632,7 @@ class EventController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to event Event entity (id='.$id.').');
 		}
-		if ($event->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $event->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Event::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_event_show)');
-			}
-		}
+		$this->assertShowable($event);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

@@ -83,10 +83,11 @@ class ActivityUtils {
 		}
 	}
 
-	public function createPublishActivity(\Ladb\CoreBundle\Entity\Core\User $user, $entityType, $entityId, $flush = true) {
+	public function createPublishActivity(\Ladb\CoreBundle\Entity\Core\User $user, $entityType, $entityId, \Ladb\CoreBundle\Entity\Core\User $publisherUser = null, $flush = true) {
 
 		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Publish();
 		$activity->setUser($user);
+		$activity->setPublisherUser($publisherUser);
 		$activity->setEntityType($entityType);
 		$activity->setEntityId($entityId);
 

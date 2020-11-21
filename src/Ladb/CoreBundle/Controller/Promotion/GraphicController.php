@@ -523,14 +523,7 @@ class GraphicController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Graphic entity (id='.$id.').');
 		}
-		if ($graphic->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $graphic->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Graphic::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_promotion_graphic_show)');
-			}
-		}
+		$this->assertShowable($graphic);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

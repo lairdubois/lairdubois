@@ -458,14 +458,7 @@ class PostController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Post entity (id='.$id.').');
 		}
-		if ($post->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $post->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Post::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_blog_post_show)');
-			}
-		}
+		$this->assertShowable($post);
 
 		$explorableUtils = $this->get(ExplorableUtils::NAME);
 		$similarPosts = $explorableUtils->getSimilarExplorables($post, 'fos_elastica.index.ladb.blog_post', Post::CLASS_NAME);

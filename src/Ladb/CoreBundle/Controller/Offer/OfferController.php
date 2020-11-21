@@ -610,14 +610,7 @@ class OfferController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Offer entity (id='.$id.').');
 		}
-		if ($offer->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $offer->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Offer::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_offer_show)');
-			}
-		}
+		$this->assertShowable($offer);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

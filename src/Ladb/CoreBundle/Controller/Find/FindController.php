@@ -594,14 +594,7 @@ class FindController extends AbstractController {
 			}
 			throw $this->createNotFoundException('Unable to find Find entity (id='.$id.').');
 		}
-		if ($find->getIsDraft() === true) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $find->getUser()->getId() != $this->getUser()->getId())) {
-				if ($response = $witnessManager->checkResponse(Find::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_find_show)');
-			}
-		}
+		$this->assertShowable($find);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

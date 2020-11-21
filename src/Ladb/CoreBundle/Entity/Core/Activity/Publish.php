@@ -15,6 +15,12 @@ class Publish extends AbstractActivity {
 	const STRIPPED_NAME = 'publish';
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
+	 * @ORM\JoinColumn(name="publisher_user", nullable=true)
+	 */
+	protected $publisherUser;
+
+	/**
 	 * @ORM\Column(name="entity_type", type="smallint", nullable=false)
 	 */
 	private $entityType;
@@ -30,6 +36,17 @@ class Publish extends AbstractActivity {
 
 	public function getStrippedName() {
 		return self::STRIPPED_NAME;
+	}
+
+	// PublisherUser /////
+
+	public function setPublisherUser(\Ladb\CoreBundle\Entity\Core\User $user = null) {
+		$this->publisherUser = $user;
+		return $this;
+	}
+
+	public function getPublisherUser() {
+		return is_null($this->publisherUser) ? $this->getUser() : $this->publisherUser;
 	}
 
 	// EntityType /////
