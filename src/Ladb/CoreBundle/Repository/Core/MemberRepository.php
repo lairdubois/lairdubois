@@ -62,7 +62,7 @@ class MemberRepository extends AbstractEntityRepository {
 
 	//////
 
-	public function findPaginedByUser(User $user, $offset, $limit, $filter = 'recent') {
+	public function findPaginedByUser(User $user, $offset = 0, $limit = 0, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'e', 'u', 'm' ))
@@ -71,9 +71,14 @@ class MemberRepository extends AbstractEntityRepository {
 			->innerJoin('u.meta', 'm')
 			->where('e.user = :user')
 			->setParameter('user', $user)
-			->setFirstResult($offset)
-			->setMaxResults($limit)
 		;
+
+		if ($offset > 0) {
+			$queryBuilder->setFirstResult($offset);
+		}
+		if ($limit > 0) {
+			$queryBuilder->setMaxResults($limit);
+		}
 
 		$this->_applyCommonFilter($queryBuilder, $filter);
 
@@ -86,7 +91,7 @@ class MemberRepository extends AbstractEntityRepository {
 		;
 	}
 
-	public function findPaginedByTeam(User $team, $offset, $limit, $filter = 'recent') {
+	public function findPaginedByTeam(User $team, $offset = 0, $limit = 0, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'e', 'u', 'm' ))
@@ -95,9 +100,14 @@ class MemberRepository extends AbstractEntityRepository {
 			->innerJoin('u.meta', 'm')
 			->where('e.team = :team')
 			->setParameter('team', $team)
-			->setFirstResult($offset)
-			->setMaxResults($limit)
 		;
+
+		if ($offset > 0) {
+			$queryBuilder->setFirstResult($offset);
+		}
+		if ($limit > 0) {
+			$queryBuilder->setMaxResults($limit);
+		}
 
 		$this->_applyCommonFilter($queryBuilder, $filter);
 

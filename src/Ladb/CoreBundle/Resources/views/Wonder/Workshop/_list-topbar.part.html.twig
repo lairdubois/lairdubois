@@ -7,5 +7,5 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_workshop_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'wonder.workshop.new'|trans() }}</span></a>
+    <a href="{{ path('core_workshop_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'wonder.workshop.new'|trans() }}</span></a>{% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleKey':'wonder.workshop.new', 'route':'core_workshop_new' } %}
 {% endblock %}

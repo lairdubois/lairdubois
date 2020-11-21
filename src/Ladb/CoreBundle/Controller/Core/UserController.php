@@ -1566,6 +1566,8 @@ class UserController extends AbstractController {
 		$CrawlerDetect = new CrawlerDetect();
 		if ($CrawlerDetect->isCrawler()) {
 			$forwardController = 'LadbCoreBundle:Core/User:showAbout'; // Return about page for Crawlers
+		} else if ($user->getIsTeam()) {
+			$forwardController = 'LadbCoreBundle:Core/User:showMembers';
 		} else if ($user->getMeta()->getPublicCreationCount() > 0) {
 			$forwardController = 'LadbCoreBundle:Core/User:showCreations';
 		} else if ($user->getMeta()->getPublicPlanCount() > 0) {

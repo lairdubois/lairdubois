@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Core;
 
 use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -79,4 +80,33 @@ class MemberController extends AbstractController {
 		return $this->redirect($returnToUrl);
 	}
 
+	/**
+	 * @Route("/", name="core_member_list_session_teams")
+	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_member_list_session_teams_page")
+	 * @Template("LadbCoreBundle:Core/Member:list-session-teams-xhr.html.twig")
+	 */
+	public function listSessionTeamsAction(Request $request, $page = 0) {
+
+		$titleKey = $request->get('title-key');
+		$route = $request->get('route');
+
+		$om = $this->getDoctrine()->getManager();
+		$memberRepository = $om->getRepository(Member::class);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
+		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
+		$paginator = $memberRepository->findPaginedByUser($this->getUser(), $offset, $limit);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_member_list_session_teams_page', array(), $page, $paginator->count());
+
+		$members = $memberRepository->findPaginedByUser($this->getUser(), 0, 50);
+
+		return array(
+			'members'     => $members,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'titleKey'    => $titleKey,
+			'route'       => $route,
+		);
+	}
 }

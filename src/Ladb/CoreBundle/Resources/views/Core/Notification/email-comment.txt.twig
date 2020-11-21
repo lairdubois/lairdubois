@@ -7,9 +7,9 @@
     {% set fieldDef = parentEntity.fieldDefs[childEntity.parentEntityField] %}
     {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
     {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}
-    {% if childEntity.user is defined and childEntity.user.id == recipientUser.id %}votre{% else %}la{% endif %} proposition pour le champ "{{ ('knowledge.'~parentEntity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}" de {{ ('notification.the.'~ladb_entity_type_stripped_name(parentEntity))|trans() }} "{{ parentEntity.title|raw }}".
+    {% if childEntity.user is defined and childEntity.user == recipientUser %}votre{% else %}la{% endif %} proposition pour le champ "{{ ('knowledge.'~parentEntity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}" de {{ ('notification.the.'~ladb_entity_type_stripped_name(parentEntity))|trans() }} "{{ parentEntity.title|raw }}".
 {% else %}
-    {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} "{{ row.entity.title|raw }}"
+    {{ ('notification.'~(row.entity.user is defined and row.entity.user == recipientUser ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} "{{ row.entity.title|raw }}"
 {% endif %}
 {% endblock %}
 

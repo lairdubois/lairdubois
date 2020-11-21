@@ -7,5 +7,5 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_offer_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'offer.offer.new'|trans() }}</span></a>
+    <a href="{{ path('core_offer_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'offer.offer.new'|trans() }}</span></a>{% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleKey':'offer.offer.new', 'route':'core_offer_new' } %}
 {% endblock %}

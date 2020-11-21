@@ -4,7 +4,7 @@
 
 {% block rowContent %}
     <p style="margin: 5px 0 5px 0;">
-        <strong>{{ row.actorUser.displayname }}</strong> participe à <em>{{ row.entity.title }}</em>.
+        <strong>{{ row.actorUser.displayname }}</strong> participe à {{ ('notification.'~(row.entity.user is defined and row.entity.user == recipientUser ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title }}</em>.
     </p>
     <table cellspacing="10" cellpadding="0">
         <tbody>

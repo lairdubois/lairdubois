@@ -1,0 +1,17 @@
+{% spaceless %}
+
+{# set titleKey #}
+{# set route #}
+
+{% if is_granted('ROLE_USER') and app.user.meta.teamCount > 0 %}
+    <a class="btn btn-default ladb-member-widget" onclick="$('#members_modal').modal({ remote:'{{ path('core_member_list_session_teams', { 'title-key':titleKey, 'route':route }) }}'});" title="{{ (titleKey|trans())~' au nom d\'un collectif' }}" data-tooltip="tooltip"><i class="ladb-icon-users"></i></a>
+    {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'members_modal', 'title':'<i class="ladb-icon-plus"></i>&nbsp;'~(titleKey|trans()), 'classes':'modal-infinit' } %}
+        {% block bodyInner %}
+            {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true } %}
+        {% endblock %}
+        {% block footerInner %}
+            Blop
+        {% endblock %}
+    {% endembed %}
+{% endif %}
+{% endspaceless %}

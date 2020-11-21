@@ -4,7 +4,7 @@
 
 {% block rowContent %}
     <p style="margin: 15px 0 5px 0;">
-        <strong>{{ row.actorUser.displayname }}</strong> a répondu à {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.qa_question')|trans() }} <em>{{ row.entity.title|raw }}</em>.
+        <strong>{{ row.actorUser.displayname }}</strong> a répondu à {{ ('notification.'~(row.entity.user is defined and row.entity.user == recipientUser ? 'your' : 'the')~'.qa_question')|trans() }} <em>{{ row.entity.title|raw }}</em>.
     </p>
     <table cellspacing="10" cellpadding="0">
         <tbody>

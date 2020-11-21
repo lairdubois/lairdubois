@@ -53,7 +53,7 @@ trait PublicationControllerTrait {
 
 				// Only team allowed
 				if (!$user->getIsTeam()) {
-					throw $this->createNotFoundException('As user must be a team.');
+					throw $this->createNotFoundException('Owner user must be a team.');
 				}
 
 				// Only members allowed
@@ -167,6 +167,46 @@ trait PublicationControllerTrait {
 			}
 			$this->assertWriteAccessGranted($publication, $context, true);
 		}
+	}
+
+	// Filters /////
+
+	protected function pushGlobalVisibilityFilter(&$filters, $includePrivates = false, $includeTeamsPrivates = false) {
+
+		$user = $this->getUser();
+		$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
+		if (!is_null($user) && $includePrivates) {
+
+			$filter = new \Elastica\Query\BoolQuery();
+			$filter->addShould(
+				$publicVisibilityFilter
+			);
+			$filter->addShould(
+				(new \Elastica\Query\BoolQuery())
+					->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
+					->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+			);
+
+			if ($includeTeamsPrivates && $this->getUser()->getMeta()->getTeamCount() > 0) {
+
+				$memberRepository = $this->getDoctrine()->getRepository(Member::CLASS_NAME);
+				$members = $memberRepository->findPaginedByUser($this->getUser(), 0, 20);
+
+				foreach ($members as $member) {
+					$filter->addShould(
+						(new \Elastica\Query\BoolQuery())
+							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $member->getTeam()->getUsername()))
+							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
+					);
+				}
+
+			}
+
+		} else {
+			$filter = $publicVisibilityFilter;
+		}
+		$filters[] = $filter;
+
 	}
 
 }

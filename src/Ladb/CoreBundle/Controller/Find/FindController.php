@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Find;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\PublicationControllerTrait;
+use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +66,8 @@ class FindController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
+		$owner = $this->retrieveOwner($request);
+
 		$this->createLock('core_find_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
@@ -84,8 +87,8 @@ class FindController extends AbstractController {
 			$findUtils = $this->get(FindUtils::NAME);
 			$findUtils->generateMainPicture($find);
 
-			$find->setUser($this->getUser());
-			$this->getUser()->getMeta()->incrementPrivateFindCount();
+			$find->setUser($owner);
+			$owner->getMeta()->incrementPrivateFindCount();
 
 			$om->persist($find);
 			$om->flush();
@@ -105,6 +108,7 @@ class FindController extends AbstractController {
 		return array(
 			'find'         => $find,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($find),
 			'hideWarning'  => true,
 		);
@@ -514,25 +518,7 @@ class FindController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
-
+				$this->pushGlobalVisibilityFilter($filters, true, true);
 
 			},
 			'fos_elastica.index.ladb.find_find',

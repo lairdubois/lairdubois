@@ -1,0 +1,71 @@
+//
+// LADB Notifications
+//
+
+@boxMarginLeft: 42px;
+@boxMinHeight: 32px;
+
+.ladb-member-widget {
+  display: inline-block;
+  margin-left: -1px;
+  border-left-style: dashed;
+}
+
+#members_modal {
+
+  .modal-body {
+    max-height: 500px;
+    overflow-y: auto;
+
+    .ladb-member-row {
+      padding: 10px;
+      border-bottom: solid 1px @ladb-global-border;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      .ladb-avatar {
+        float: left;
+      }
+
+      .ladb-box {
+        margin-left: @boxMarginLeft;
+        min-height: @boxMinHeight;
+        font-size: 120%;
+        line-height: 32px;
+      }
+
+    }
+
+  }
+
+  .modal-footer {
+    display: none;
+
+    .ladb-member-webpush-tip {
+      text-align: left;
+      font-size: 80%;
+
+      .media-right {
+        white-space: nowrap;
+      }
+
+    }
+
+  }
+
+  .ladb-help-block {
+    padding-left: 20px;
+    background-color: #fff;
+    line-height: 30px;
+    color: #555;
+    font-size: 90%;
+    border-bottom: 1px solid @ladb-global-border;
+  }
+
+}
+
+
+

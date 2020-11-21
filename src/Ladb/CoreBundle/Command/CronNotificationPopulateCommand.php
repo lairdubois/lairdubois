@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Command;
 
+use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -357,9 +358,25 @@ EOT
 
 	/////
 
-	private function _createNotification($om, $user, $activity, &$notifiedUsers, &$freshNotificationCount) {
+	private function _createNotification($om, $targetUser, $activity, &$notifiedUsers, &$freshNotificationCount) {
+		if ($targetUser->getIsTeam()) {
+
+			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$members = $memberRepository->findPaginedByTeam($targetUser);
+
+			foreach ($members as $member) {
+				$this->_createTargetedNotification($om, $targetUser, $member->getUser(), $activity, $notifiedUsers, $freshNotificationCount);
+			}
+
+		} else {
+			$this->_createTargetedNotification($om, null, $targetUser, $activity, $notifiedUsers, $freshNotificationCount);
+		}
+	}
+
+	private function _createTargetedNotification($om, $targetedUser, $user, $activity, &$notifiedUsers, &$freshNotificationCount) {
 
 		$notification = new Notification();
+		$notification->setTargetedUser($targetedUser);
 		$notification->setUser($user);
 		$notification->setActivity($activity);
 

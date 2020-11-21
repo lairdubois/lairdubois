@@ -68,6 +68,8 @@ class QuestionController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
+		$owner = $this->retrieveOwner($request);
+
 		$this->createLock('core_qa_question_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
@@ -88,8 +90,8 @@ class QuestionController extends AbstractController {
 				$question->setMainPicture($blockBodiedUtils->getFirstPicture($question));
 			}
 
-			$question->setUser($this->getUser());
-			$this->getUser()->getMeta()->incrementPrivateQuestionCount();
+			$question->setUser($owner);
+			$owner->getMeta()->incrementPrivateQuestionCount();
 
 			$om->persist($question);
 			$om->flush();
@@ -111,6 +113,7 @@ class QuestionController extends AbstractController {
 		return array(
 			'question'         => $question,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($question),
 		);
 	}
@@ -515,25 +518,7 @@ class QuestionController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
-
+				$this->pushGlobalVisibilityFilter($filters, true, true);
 
 			},
 			'fos_elastica.index.ladb.qa_question',

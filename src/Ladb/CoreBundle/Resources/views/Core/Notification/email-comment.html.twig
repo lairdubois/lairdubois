@@ -12,12 +12,12 @@
                 {% set fieldDef = parentEntity.fieldDefs[childEntity.parentEntityField] %}
                 {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
                 {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}
-                {% if childEntity.user is defined and childEntity.user.id == recipientUser.id %}votre{% else %}la{% endif %} proposition pour le champ <em>{{ ('knowledge.'~parentEntity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(parentEntity))|trans() }} <em>{{ parentEntity.title|raw }}</em>.
+                {% if childEntity.user is defined and childEntity.user == recipientUser %}votre{% else %}la{% endif %} proposition pour le champ <em>{{ ('knowledge.'~parentEntity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(parentEntity))|trans() }} <em>{{ parentEntity.title|raw }}</em>.
             {% else %}
-                {{ ('notification.'~(row.childEntity.user is defined and row.childEntity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.childEntity))|trans() }} <em>{{ row.childEntity.title|raw }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
+                {{ ('notification.'~(row.childEntity.user is defined and row.childEntity.user == recipientUser ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.childEntity))|trans() }} <em>{{ row.childEntity.title|raw }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
             {% endif %}
         {% else %}
-            {{ ('notification.'~(row.entity.user is defined and row.entity.user.id == recipientUser.id ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
+            {{ ('notification.'~(row.entity.user is defined and row.entity.user == recipientUser ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
         {% endif %}
     </p>
     <table cellspacing="10" cellpadding="0">

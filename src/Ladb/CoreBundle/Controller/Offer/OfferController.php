@@ -67,6 +67,8 @@ class OfferController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
+		$owner = $this->retrieveOwner($request);
+
 		$this->createLock('core_offer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
@@ -83,9 +85,9 @@ class OfferController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($offer);
 
-			$offer->setUser($this->getUser());
+			$offer->setUser($owner);
 			$offer->setMainPicture($mainPicture = $offer->getPictures()->first() ? $mainPicture = $offer->getPictures()->first() : null);
-			$this->getUser()->getMeta()->incrementPrivateOfferCount();
+			$owner->getMeta()->incrementPrivateOfferCount();
 
 			$om->persist($offer);
 			$om->flush();
@@ -105,6 +107,7 @@ class OfferController extends AbstractController {
 		return array(
 			'offer'        => $offer,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($offer),
 			'hideWarning'  => true,
 		);
@@ -531,22 +534,7 @@ class OfferController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould($publicVisibilityFilter);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
+				$this->pushGlobalVisibilityFilter($filters, true, true);
 
 			},
 			'fos_elastica.index.ladb.offer_offer',

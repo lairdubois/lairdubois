@@ -62,6 +62,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function createAction(Request $request) {
 
+		$owner = $this->retrieveOwner($request);
+
 		$this->createLock('core_workflow_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
@@ -75,8 +77,8 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($workflow);
 
-			$workflow->setUser($this->getUser());
-			$this->getUser()->getMeta()->incrementPrivateWorkflowCount();
+			$workflow->setUser($owner);
+			$owner->getMeta()->incrementPrivateWorkflowCount();
 
 			// Append a default root task
 			$task = new Task();
@@ -103,6 +105,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		return array(
 			'workflow'     => $workflow,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($workflow),
 		);
 	}
@@ -817,24 +820,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			},
 			function(&$filters) use ($layout) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user) && $layout != 'choice') {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
+				$this->pushGlobalVisibilityFilter($filters, $layout != 'choice', true);
 
 			},
 			'fos_elastica.index.ladb.workflow_workflow',

@@ -1,4 +1,4 @@
 {% extends 'LadbCoreBundle:Core/Notification:_email.txt.twig' %}
 
-{% block rowContent %}**{{ row.actorUser.displayname|raw }}** participe à "{{ row.entity.title|raw }}"
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** participe à {{ ('notification.'~(row.entity.user is defined and row.entity.user == recipientUser ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} "{{ row.entity.title|raw }}"
 {% endblock %}

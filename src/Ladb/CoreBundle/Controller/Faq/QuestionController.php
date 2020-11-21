@@ -425,25 +425,7 @@ class QuestionController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
-
+				$this->pushGlobalVisibilityFilter($filters, true, false);
 
 			},
 			'fos_elastica.index.ladb.faq_question',

@@ -4,5 +4,5 @@
 {% set entity = notification.activity.answer.question %}
 
 {% block body %}
-    a répondu à {{ ('notification.'~(entity.user is defined and entity.user.id == app.user.id ? 'your' : 'the')~'.qa_question')|trans() }} "<strong>{{ entity.title }}</strong>".
+    a répondu à {{ ('notification.'~(entity.user is defined and entity.user == app.user ? 'your' : 'the')~'.qa_question')|trans() }} "<strong>{{ entity.title }}</strong>".
 {% endblock %}

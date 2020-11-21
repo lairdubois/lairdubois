@@ -11,10 +11,10 @@
         {% set fieldDef = parentEntity.fieldDefs[childEntity.parentEntityField] %}
         {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
         {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}
-        {% set isYour = childEntity.user is defined and childEntity.user.id == app.user.id %}
+        {% set isYour = childEntity.user is defined and childEntity.user == app.user %}
         {% if isYour %}votre{% else %}la{% endif %} proposition pour le champ <em>{{ ('knowledge.'~parentEntity.strippedName~'.field.'~childEntity.parentEntityField)|trans() }}</em> de {{ ('notification.the.'~ladb_entity_type_stripped_name(parentEntity))|trans() }} "<strong>{{ parentEntity.title|raw }}</strong>".
     {% else %}
-        {% set isYour = entity.user is defined and entity.user.id == app.user.id %}
+        {% set isYour = entity.user is defined and entity.user == app.user %}
         {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
     {% endif %}
 {% endblock %}

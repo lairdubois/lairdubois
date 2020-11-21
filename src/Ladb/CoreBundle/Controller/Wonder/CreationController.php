@@ -1020,39 +1020,7 @@ class CreationController extends AbstractController {
 			},
 			function(&$filters) use ($layout) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user) && $layout != 'choice') {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-					if ($this->getUser()->getMeta()->getTeamCount() > 0) {
-
-						$memberRepository = $this->getDoctrine()->getRepository(Member::CLASS_NAME);
-						$members = $memberRepository->findPaginedByUser($this->getUser(), 0, 50);
-
-						foreach ($members as $member) {
-							$filter->addShould(
-								(new \Elastica\Query\BoolQuery())
-									->addFilter(new \Elastica\Query\MatchPhrase('user.username', $member->getTeam()->getUsername()))
-									->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-							);
-						}
-
-					}
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
+				$this->pushGlobalVisibilityFilter($filters, $layout != 'choice', true);
 
 			},
 			'fos_elastica.index.ladb.wonder_creation',

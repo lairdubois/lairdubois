@@ -7,5 +7,5 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_howto_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'howto.howto.new'|trans() }}</span></a>
+    <a href="{{ path('core_howto_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'howto.howto.new'|trans() }}</span></a>{% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleKey':'howto.howto.new', 'route':'core_howto_new' } %}
 {% endblock %}

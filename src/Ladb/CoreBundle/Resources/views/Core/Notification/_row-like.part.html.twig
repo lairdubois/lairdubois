@@ -4,5 +4,6 @@
 {% set entity = ladb_entity(notification.activity.like.entityType, notification.activity.like.entityId) %}
 
 {% block body %}
-    aime {{ ('notification.your.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
+    {% set isYour = entity.user is defined and entity.user == app.user %}
+    aime {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
 {% endblock %}

@@ -62,6 +62,8 @@ class GraphicController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
+		$owner = $this->retrieveOwner($request);
+
 		$this->createLock('core_promotion_graphic_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
@@ -75,9 +77,9 @@ class GraphicController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($graphic);
 
-			$graphic->setUser($this->getUser());
+			$graphic->setUser($owner);
 			$graphic->setMainPicture($graphic->getResource()->getThumbnail());
-			$this->getUser()->getMeta()->incrementPrivateGraphicCount();
+			$owner->getMeta()->incrementPrivateGraphicCount();
 
 			$om->persist($graphic);
 			$om->flush();
@@ -103,6 +105,7 @@ class GraphicController extends AbstractController {
 		return array(
 			'graphic'         => $graphic,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($graphic),
 			'hideWarning'  => true,
 		);
@@ -466,25 +469,7 @@ class GraphicController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
-
+				$this->pushGlobalVisibilityFilter($filters, true, true);
 
 			},
 			'fos_elastica.index.ladb.promotion_graphic',

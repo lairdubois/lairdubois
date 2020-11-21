@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Controller\Event;
 
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\PublicationControllerTrait;
+use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\LocalisableUtils;
@@ -67,6 +68,8 @@ class EventController extends AbstractController {
 	 */
 	public function createAction(Request $request) {
 
+		$owner = $this->retrieveOwner($request);
+
 		$this->createLock('core_event_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
@@ -83,9 +86,9 @@ class EventController extends AbstractController {
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($event);
 
-			$event->setUser($this->getUser());
+			$event->setUser($owner);
 			$event->setMainPicture($mainPicture = $event->getPictures()->first() ? $mainPicture = $event->getPictures()->first() : null);
-			$this->getUser()->getMeta()->incrementPrivateEventCount();
+			$owner->getMeta()->incrementPrivateEventCount();
 
 			$om->persist($event);
 			$om->flush();
@@ -105,6 +108,7 @@ class EventController extends AbstractController {
 		return array(
 			'event'        => $event,
 			'form'         => $form->createView(),
+			'owner'        => $owner,
 			'tagProposals' => $tagUtils->getProposals($event),
 			'hideWarning'  => true,
 		);
@@ -539,24 +543,7 @@ class EventController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$user = $this->getUser();
-				$publicVisibilityFilter = new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PUBLIC ));
-				if (!is_null($user)) {
-
-					$filter = new \Elastica\Query\BoolQuery();
-					$filter->addShould(
-						$publicVisibilityFilter
-					);
-					$filter->addShould(
-						(new \Elastica\Query\BoolQuery())
-							->addFilter(new \Elastica\Query\MatchPhrase('user.username', $user->getUsername()))
-							->addFilter(new \Elastica\Query\Range('visibility', array( 'gte' => HiddableInterface::VISIBILITY_PRIVATE )))
-					);
-
-				} else {
-					$filter = $publicVisibilityFilter;
-				}
-				$filters[] = $filter;
+				$this->pushGlobalVisibilityFilter($filters, true, true);
 
 			},
 			'fos_elastica.index.ladb.event_event',

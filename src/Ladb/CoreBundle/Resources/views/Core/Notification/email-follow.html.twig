@@ -4,7 +4,7 @@
 
 {% block rowContent %}
     <p style="margin: 15px 0 5px 0;">
-        <strong>{{ row.actorUser.displayname }}</strong> s'est abonné à suivre vos publications.
+        <strong>{{ row.actorUser.displayname }}</strong> s'est abonné à suivre {% if row.follower.followingUser == recipientUser %}vos publications{% else %}les publications de <em>{{ row.follower.followingUser.displayName }}</em>{% endif%}.
     </p>
     <table cellspacing="10" cellpadding="0">
         <tbody>
