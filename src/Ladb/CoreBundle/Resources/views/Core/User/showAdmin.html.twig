@@ -21,6 +21,17 @@
             <a href="{{ path('core_user_admin_empty', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}</a>
         {% endblock %}
     {% endembed %}
+    <a href="#delete_user_admin_modal" class="btn btn-danger" data-toggle="modal" ><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+    {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'delete_user_admin_modal', 'title':('default.deleting'|trans()) } %}
+        {% block bodyInner %}
+            <p>La suppression du compte <strong>{{ user.displayname }}</strong> effacera toutes ces publications.</p>
+            <p>Confirmez l'action pour continuer.</p>
+        {% endblock %}
+        {% block footerInner %}
+            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+            <a href="{{ path('core_user_admin_delete', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block bodyContainerContent %}

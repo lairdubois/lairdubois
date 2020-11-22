@@ -28,13 +28,13 @@ class MemberRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findOneByTeamIdAndUser($teamId, User $user) {
+	public function findOneByTeamAndUser(User $team, User $user) {
 		$query = $this->getEntityManager()
 			->createQuery('
                 SELECT e FROM LadbCoreBundle:Core\Member e
-                WHERE e.teamId = :teamId AND e.user = :user
+                WHERE e.team = :team AND e.user = :user
             ')
-			->setParameter('teamId', $teamId)
+			->setParameter('team', $team)
 			->setParameter('user', $user);
 
 		try {

@@ -23,7 +23,7 @@ class UserMeta {
 
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(name="banner_id", nullable=true)
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */

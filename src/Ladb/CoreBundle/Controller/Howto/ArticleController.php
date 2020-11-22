@@ -114,7 +114,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	public function publishAction($id) {
 
 		$article = $this->retrievePublication($id, Article::CLASS_NAME);
-		$this->assertPublishable($article->getHowto());
+		$this->assertPublishable($article);
 
 		// Publish
 		$articleManager = $this->get(ArticleManager::NAME);

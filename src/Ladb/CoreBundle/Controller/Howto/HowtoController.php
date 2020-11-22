@@ -193,6 +193,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Template("LadbCoreBundle:Howto/Howto:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
+		$om = $this->getDoctrine()->getManager();
 
 		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
 		$this->assertEditabable($howto);

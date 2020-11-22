@@ -56,7 +56,7 @@ class UserController extends AbstractController {
 
 	use UserControllerTrait;
 
-	private function _isMemberOf(User $user) {
+	private function _isGrantedOwner(User $user) {
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 			$om = $this->getDoctrine()->getManager();
@@ -64,7 +64,7 @@ class UserController extends AbstractController {
 			return $memberRepository->existsByTeamAndUser($user, $this->getUser());
 
 		}
-		return false;
+		return $user == $this->getUser();
 	}
 
 	private function _getInvitation(User $user) {
@@ -78,7 +78,7 @@ class UserController extends AbstractController {
 		return null;
 	}
 
-	private function _fillCommonShowParameters(User $user, $parameters) {
+	private function _fillCommonShowParameters(User $user, $parameters, $isGrantedOwner = null) {
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
@@ -98,7 +98,7 @@ class UserController extends AbstractController {
 
 		return array_merge($parameters, array(
 			'user'            => $user,
-			'isMember'        => $this->_isMemberOf($user),
+			'isGrantedOwner'  => is_null($isGrantedOwner) ? $this->_isGrantedOwner($user) : $isGrantedOwner,
 			'invitation'      => $this->_getInvitation($user),
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 		));
@@ -856,10 +856,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_creations', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -874,7 +876,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $creationRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $creationRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_creations_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -890,7 +892,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'creations',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -912,10 +914,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_workshops', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -930,7 +934,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $workshopRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $workshopRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_workshops_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -948,7 +952,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'workshops',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -970,10 +974,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_plans', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -988,7 +994,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $planRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $planRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_plans_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1004,7 +1010,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'plans',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1026,10 +1032,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_howtos', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -1044,7 +1052,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $howtoRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $howtoRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_howtos_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1060,7 +1068,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'howtos',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1082,10 +1090,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_finds', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -1100,7 +1110,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $findRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $findRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_finds_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1115,8 +1125,8 @@ class UserController extends AbstractController {
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab'             => 'finds',
-		)));
+			'tab' => 'finds',
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1138,10 +1148,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_questions', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -1156,7 +1168,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $questionRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $questionRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_questions_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1172,7 +1184,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'questions',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1240,10 +1252,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_graphics', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -1258,7 +1272,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $graphicRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $graphicRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_graphics_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1274,7 +1288,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'graphics',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1296,10 +1310,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_workflows', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -1314,7 +1330,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $workflowRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $workflowRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_workflows_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1332,7 +1348,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'workflows',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1354,10 +1370,12 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_offers', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+
 		// Default filter
 
 		if (is_null($filter)) {
-			if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $user->getId() == $this->getUser()->getId()) {
+			if ($isGrantedOwner) {
 				$filter = 'recent';
 			} else {
 				$filter = 'popular-likes';
@@ -1372,7 +1390,7 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $offerRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !is_null($this->getUser()) && $user->getId() == $this->getUser()->getId());
+		$paginator = $offerRepository->findPaginedByUser($user, $offset, $limit, $filter, $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $isGrantedOwner);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_offers_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1388,7 +1406,7 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'offers',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1658,8 +1676,8 @@ class UserController extends AbstractController {
 
 		$team = $userManager->createUser();
 		$team->setEnabled(true);
-		$team->setEmail($team->getUsernameCanonical().'-team@lairdubois.fr');	// Fake email - to bypass Registration validation on this field
-		$team->setPlainPassword(bin2hex(random_bytes(20)));						// Put a random password - to bypass Registration validation on this field AND avoid logon on this account
+		$team->setEmail(uniqid('', true).'-team@lairdubois.fr');		// Fake email - to bypass Registration validation on this field
+		$team->setPlainPassword(bin2hex(random_bytes(20)));									// Put a random password - to bypass Registration validation on this field AND avoid logon on this account
 		$form = $this->createForm(UserTeamType::class, $team);
 		$form->handleRequest($request);
 
@@ -1687,7 +1705,7 @@ class UserController extends AbstractController {
 			$searchUtils->insertEntityToIndex($team);
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.form.alert.team_success'));
+			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.form.alert.team_success', array( '%displayname%' => $team->getDisplayname() )));
 
 			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical()) ));
 		}
@@ -1822,6 +1840,49 @@ class UserController extends AbstractController {
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.admin.alert.empty_success', array( '%displayname%' => $user->getDisplayname() )));
 
 		return $this->redirect($this->generateUrl('core_user_show_admin', array( 'username' => $username )));
+	}
+
+	/**
+	 * @Route("/@{username}/admin/delete", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_delete")
+	 */
+	public function adminDeleteAction($username) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$userManager = $this->get('fos_user.user_manager');
+
+		$user = $userManager->findUserByUsername($username);
+		if (is_null($user)) {
+			throw $this->createNotFoundException('User not found');
+		}
+
+		$avatar = $user->getAvatar();
+		$banner = $user->getMeta()->getBanner();
+
+		$user->setAvatar(null);
+		$user->getMeta()->setBanner(null);
+
+		if (!is_null($avatar)) {
+			$om->remove($avatar);
+		}
+		if (!is_null($banner)) {
+			$om->remove($banner);
+		}
+		$om->flush();
+
+		$om->remove($user);
+		$om->flush();
+
+		// Search index update
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->deleteEntityFromIndex($user);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.admin.alert.delete_success', array( '%displayname%' => $user->getDisplayname() )));
+
+		return $this->redirect($this->generateUrl('core_welcome'));
 	}
 
 }

@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Controller;
 use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Model\ChildInterface;
 use Ladb\CoreBundle\Model\DraftableInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\PublicationInterface;
@@ -136,13 +137,15 @@ trait PublicationControllerTrait {
 		if ($publication instanceof DraftableInterface && $publication->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published ('.$context.')');
 		}
+		if ($publication instanceof ChildInterface) {
+			$publication = $publication->getParentEntity();
+		}
 		if ($publication->getIsLocked() === true) {
 			throw $this->createNotFoundException('Locked ('.$context.')');
 		}
 		if ($publication instanceof RepublishableInterface && $maxPublishCount > 0 && $publication->getPublishCount() >= $maxPublishCount) {
 			throw $this->createNotFoundException('Max publish count reached ('.$context.')');
 		}
-
 	}
 
 	protected function assertUnpublishable(PublicationInterface $publication, $ownerAllowed = false, $context = '') {

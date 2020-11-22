@@ -16,7 +16,7 @@
 
 {% set navSection = user.isTeam ? 'teams' : 'users' %}
 {% set searchPath = path('core_user_list') %}
-{% set isOwner = is_granted("ROLE_USER") and app.user.id == user.id or isMember %}
+{% set isOwner = is_granted("ROLE_USER") and app.user.id == user.id or isGrantedOwner %}
 {% set isDraftVisible = is_granted("ROLE_ADMIN") or isOwner %}
 {% set hasBanner = user.meta.banner is not null %}
 {% set topbarTranslucent = hasBanner %}
@@ -68,10 +68,10 @@
         </div>
         <div class="ladb-header-tools">
             {% block headerToolsInner %}
-                {% if followerContext is not null and not isMember %}
+                {% if followerContext is not null and not isGrantedOwner %}
                     {% include 'LadbCoreBundle:Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext } %}
                 {% endif %}
-                {% if user.isTeam and isMember %}
+                {% if user.isTeam and isGrantedOwner %}
                     <a class="btn btn-default"  onclick="$('#member_invitation_modal').modal({ remote:'{{ path('core_member_invitation_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="Inviter un nouveau membre"><i class="ladb-icon-invite"></i> Inviter...</a>
                     {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'member_invitation_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;Inviter', 'classes':'modal-infinit' } %}
                         {% block bodyInner %}
@@ -83,11 +83,10 @@
                 &nbsp;
                 {% if isOwner %}
                     <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}" class="btn btn-default"><i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}</a>
-                {% elseif not isMember %}
+                {% elseif not isGrantedOwner %}
                     <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }}</a>
                 {% endif %}
-                {% if user.isTeam and isMember %}
-                    &nbsp;
+                {% if user.isTeam and isGrantedOwner %}
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="ladb-icon-more"></i> <span class="caret"></span>
@@ -109,32 +108,32 @@
                 <a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.members'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.memberCount > 0 %} badge-black{% endif %}">{{ user.meta.memberCount }}</span></a>
             </li>
         {% endif %}
-        {% if tab == 'creations' or user.meta.publicCreationCount > 0 %}
+        {% if tab == 'creations' or user.meta.publicCreationCount > 0 or isGrantedOwner and user.meta.privateCreationCount > 0 %}
             <li{% if tab == 'creations' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'wonder.creation.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicCreationCount > 0 %} badge-black{% endif %}">{{ user.meta.publicCreationCount }}</span>{% if isDraftVisible and user.meta.privateCreationCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateCreationCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
-        {% if tab == 'questions' or user.meta.publicQuestionCount > 0 %}
+        {% if tab == 'questions' or user.meta.publicQuestionCount > 0 or isGrantedOwner and user.meta.privateQuestionCount > 0 %}
             <li{% if tab == 'questions' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{{ 'qa.question.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicQuestionCount > 0 %} badge-black{% endif %}">{{ user.meta.publicQuestionCount }}</span>{% if isDraftVisible and user.meta.privateQuestionCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateQuestionCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
-        {% if tab == 'plans' or user.meta.publicPlanCount > 0 %}
+        {% if tab == 'plans' or user.meta.publicPlanCount > 0 or isGrantedOwner and user.meta.privatePlanCount > 0 %}
             <li{% if tab == 'plans' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{{ 'wonder.plan.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicPlanCount > 0 %} badge-black{% endif %}">{{ user.meta.publicPlanCount }}</span>{% if isDraftVisible and user.meta.privatePlanCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privatePlanCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
-        {% if tab == 'howtos' or user.meta.publicHowtoCount > 0 %}
+        {% if tab == 'howtos' or user.meta.publicHowtoCount > 0 or isGrantedOwner and user.meta.privateHowtoCount > 0 %}
             <li{% if tab == 'howtos' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{{ 'howto.howto.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicHowtoCount > 0 %} badge-black{% endif %}">{{ user.meta.publicHowtoCount }}</span>{% if isDraftVisible and user.meta.privateHowtoCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateHowtoCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
-        {% if tab == 'workshops' or user.meta.publicWorkshopCount > 0 %}
+        {% if tab == 'workshops' or user.meta.publicWorkshopCount > 0 or isGrantedOwner and user.meta.privateWorkshopCount > 0 %}
             <li{% if tab == 'workshops' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{{ 'wonder.workshop.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicWorkshopCount > 0 %} badge-black{% endif %}">{{ user.meta.publicWorkshopCount }}</span>{% if isDraftVisible and user.meta.privateWorkshopCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateWorkshopCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
-        {% if tab == 'finds' or user.meta.publicFindCount > 0 %}
+        {% if tab == 'finds' or user.meta.publicFindCount > 0 or isGrantedOwner and user.meta.privateFindCount > 0 %}
             <li{% if tab == 'finds' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{{ 'find.find.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicFindCount > 0 %} badge-black{% endif %}">{{ user.meta.publicFindCount }}</span>{% if isDraftVisible and user.meta.privateFindCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateFindCount }}</span>{% endif %}</a>
             </li>

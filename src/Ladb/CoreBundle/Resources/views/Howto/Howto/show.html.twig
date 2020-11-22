@@ -11,8 +11,7 @@
 {% set navSection = 'howtos' %}
 {% set searchPath = path('core_howto_list') %}
 
-{% set ownerUser = is_granted("ROLE_USER") and app.user.id == howto.user.id %}
-{% set showDraft = is_granted("ROLE_ADMIN") or ownerUser %}
+{% set showDraft = is_granted("ROLE_ADMIN") or permissionContext.isGrantedOwner %}
 
 {% block headOpenGraphMetas %}
     {{ parent() }}
@@ -158,67 +157,67 @@
                                 <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
                                 &nbsp;
                                 {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
-                                {% use 'LadbCoreBundle:Common/Blocks:sharebuttons-widget.blocks.html.twig' %}
-                                {% block bodyInner %}
-                                <h4>{{ 'share.social.heading'|trans() }}</h4>
-                                {% set sbUrl = ladb_entity_url_action(article) %}
-                                {% set sbTitle = article.title %}
-                                {% set sbDescription = article.body|striptags|truncate(200, true, '...') %}
-                                {% if article.mainPicture is not null %}
-                                    {% set sbImage = (article.mainPicture.webPath|imagine_filter('600x600i')) %}
-                                {% endif %}
-                                {% set sbTooltip = 'l\'article' %}
-                                {% set sbTooltipPlacement = 'top' %}
-                                {{ block('sharebuttonsInlineHorizontal') }}
-                            <hr>
-                                <h4>Partage par lien direct vers l'article</h4>
-                            <input type="text" class="form-control" style="font-family: courier;" onclick="$(this).focus(); $(this).select();" value="{{ sbUrl }}" />
-                            {% if article.bodyBlockPictureCount > 0 %}
-                            <hr>
-                                <h4>{{ 'share.sticker.heading'|trans() }}</h4>
-                                <p>{{ 'share.sticker.help.article'|trans()|raw }}</p>
-                                <p>{{ 'share.sticker.help.common'|trans()|raw }}</p>
-                                <ul class="nav nav-pills">
-                                    <li class="active"><a href="#ladb_article_{{ article.id }}_sticker_bbcode" data-toggle="tab">BBCode</a></li>
-                                    <li><a href="#ladb_article_{{ article.id }}_sticker_html" data-toggle="tab">HTML</a></li>
-                                    <li><a href="#ladb_article_{{ article.id }}_sticker_preview" data-toggle="tab">Aperçu</a></li>
-                                </ul>
-                                <div class="tab-content ladb-margin-top">
-                                    <div class="tab-pane active" id="ladb_article_{{ article.id }}_sticker_bbcode">
-                                        <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
-                                    </div>
-                                    <div class="tab-pane" id="ladb_article_{{ article.id }}_sticker_html">
-                                        <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
-                                    </div>
-                                    <div class="tab-pane" id="ladb_article_{{ article.id }}_sticker_preview" style="height: 300px;">
-                                        {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true} %}
-                                        <p class="text-center"><img src="" height="300"></p>
-                                    </div>
-                                </div>
-                                <script>
-                                    $('#share_article_{{ article.id }}_modal').on('show.bs.modal', function (e) {
-                                        $("#ladb_article_{{ article.id }}_sticker_bbcode textarea").val("{{ include('LadbCoreBundle:Howto/Article:_sticker.bbcode.twig')|escape('js') }}");
-                                        $("#ladb_article_{{ article.id }}_sticker_html textarea").val("{{ include('LadbCoreBundle:Howto/Article:_sticker.html.twig')|escape('js') }}");
-                                    })
-                                    $('a[href="#ladb_article_{{ article.id }}_sticker_preview"]').on("shown.bs.tab", function (e) {
-                                        var img = $("#ladb_article_{{ article.id }}_sticker_preview img");
-                                        if (img.attr("src") == "") {
-                                            var src = "{{ path('core_howto_article_sticker', { 'id':article.id }) }}";
-                                            img.on("load", function() {
-                                                $("#ladb_article_{{ article.id }}_sticker_preview .ladb-loading").remove();
-                                            });
-                                            img.attr("src", src);
-                                        }
-                                    });
-                                </script>
-                            {% endif %}
-                                {% endblock %}
-                                {% block footerInner %}
-                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
-                                {% endblock %}
+                                    {% use 'LadbCoreBundle:Common/Blocks:sharebuttons-widget.blocks.html.twig' %}
+                                    {% block bodyInner %}
+                                        <h4>{{ 'share.social.heading'|trans() }}</h4>
+                                        {% set sbUrl = ladb_entity_url_action(article) %}
+                                        {% set sbTitle = article.title %}
+                                        {% set sbDescription = article.body|striptags|truncate(200, true, '...') %}
+                                        {% if article.mainPicture is not null %}
+                                            {% set sbImage = (article.mainPicture.webPath|imagine_filter('600x600i')) %}
+                                        {% endif %}
+                                        {% set sbTooltip = 'l\'article' %}
+                                        {% set sbTooltipPlacement = 'top' %}
+                                        {{ block('sharebuttonsInlineHorizontal') }}
+                                        <hr>
+                                        <h4>Partage par lien direct vers l'article</h4>
+                                        <input type="text" class="form-control" style="font-family: courier;" onclick="$(this).focus(); $(this).select();" value="{{ sbUrl }}" />
+                                        {% if article.bodyBlockPictureCount > 0 %}
+                                            <hr>
+                                            <h4>{{ 'share.sticker.heading'|trans() }}</h4>
+                                            <p>{{ 'share.sticker.help.article'|trans()|raw }}</p>
+                                            <p>{{ 'share.sticker.help.common'|trans()|raw }}</p>
+                                            <ul class="nav nav-pills">
+                                                <li class="active"><a href="#ladb_article_{{ article.id }}_sticker_bbcode" data-toggle="tab">BBCode</a></li>
+                                                <li><a href="#ladb_article_{{ article.id }}_sticker_html" data-toggle="tab">HTML</a></li>
+                                                <li><a href="#ladb_article_{{ article.id }}_sticker_preview" data-toggle="tab">Aperçu</a></li>
+                                            </ul>
+                                            <div class="tab-content ladb-margin-top">
+                                                <div class="tab-pane active" id="ladb_article_{{ article.id }}_sticker_bbcode">
+                                                    <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
+                                                </div>
+                                                <div class="tab-pane" id="ladb_article_{{ article.id }}_sticker_html">
+                                                    <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
+                                                </div>
+                                                <div class="tab-pane" id="ladb_article_{{ article.id }}_sticker_preview" style="height: 300px;">
+                                                    {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true} %}
+                                                    <p class="text-center"><img src="" height="300"></p>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                $('#share_article_{{ article.id }}_modal').on('show.bs.modal', function (e) {
+                                                    $("#ladb_article_{{ article.id }}_sticker_bbcode textarea").val("{{ include('LadbCoreBundle:Howto/Article:_sticker.bbcode.twig')|escape('js') }}");
+                                                    $("#ladb_article_{{ article.id }}_sticker_html textarea").val("{{ include('LadbCoreBundle:Howto/Article:_sticker.html.twig')|escape('js') }}");
+                                                })
+                                                $('a[href="#ladb_article_{{ article.id }}_sticker_preview"]').on("shown.bs.tab", function (e) {
+                                                    var img = $("#ladb_article_{{ article.id }}_sticker_preview img");
+                                                    if (img.attr("src") == "") {
+                                                        var src = "{{ path('core_howto_article_sticker', { 'id':article.id }) }}";
+                                                        img.on("load", function() {
+                                                            $("#ladb_article_{{ article.id }}_sticker_preview .ladb-loading").remove();
+                                                        });
+                                                        img.attr("src", src);
+                                                    }
+                                                });
+                                            </script>
+                                        {% endif %}
+                                    {% endblock %}
+                                    {% block footerInner %}
+                                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+                                    {% endblock %}
                                 {% endembed %}
                             {% endif %}
-                            {% if is_granted("ROLE_ADMIN") or ownerUser %}
+                            {% if is_granted("ROLE_ADMIN") or permissionContext.isGrantedOwner %}
                                 <a href="{{ path('core_howto_article_edit', { 'id':article.id }) }}" class="btn btn-default btn-sm" title="{{ 'howto.article.edit'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
                             {% endif %}
                             {% if is_granted("ROLE_ADMIN") and not article.isDraft %}

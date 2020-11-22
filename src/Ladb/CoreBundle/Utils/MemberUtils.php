@@ -41,7 +41,7 @@ class MemberUtils extends AbstractContainerAwareUtils {
 		$om = $this->getDoctrine()->getManager();
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
 
-		$member = $memberRepository->findOneByTeamIdAndUser($team->getId(), $user);
+		$member = $memberRepository->findOneByTeamAndUser($team, $user);
 		if (!is_null($member)) {
 
 			$om->remove($member);

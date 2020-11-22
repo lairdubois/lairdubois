@@ -1220,9 +1220,11 @@ user:
       activate_success: Le compte <strong>%displayname%</strong> a été activé avec succès.
       deactivate_success: Le compte <strong>%displayname%</strong> a été désactivé avec succès.
       empty_success: Le compte <strong>%displayname%</strong> a été vidé avec succès.
+      delete_success: Le compte <strong>%displayname%</strong> a été supprimé avec succès.
   form:
     alert:
       settings_success: Vos paramètres ont été enregistrés.
+      team_success: Le collectif <strong>%displayname%</strong> a créé avec succès.
   choice:
     entities: '[0,1]boiseu|]1,Inf]boiseux'
     contributors: '[0,1]contributeur|]1,Inf]contributeurs'
