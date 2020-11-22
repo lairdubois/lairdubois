@@ -285,9 +285,6 @@ class WorkshopController extends AbstractController {
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.form.alert.delete_success', array( '%title%' => $workshop->getTitle() )));
 
-		if ($workshop->getIsDraft()) {
-			return $this->redirect($this->generateUrl('core_user_show_workshops', array( 'username' => $this->getUser()->getUsernameCanonical() )));
-		}
 		return $this->redirect($this->generateUrl('core_workshop_list'));
 	}
 

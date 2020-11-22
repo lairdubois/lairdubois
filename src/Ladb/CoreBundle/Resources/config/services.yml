@@ -535,7 +535,7 @@ services:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_comment:
-    class: Ladb\CoreBundle\Form\Type\CommentType
+    class: Ladb\CoreBundle\Form\Type\Core\CommentType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
@@ -555,7 +555,7 @@ services:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_userteamsettings:
-    class: Ladb\CoreBundle\Form\Type\UserTeamSettingsType
+    class: Ladb\CoreBundle\Form\Type\Core\UserTeamSettingsType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']

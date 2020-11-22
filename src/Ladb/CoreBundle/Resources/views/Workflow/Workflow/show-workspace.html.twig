@@ -192,10 +192,10 @@
                 {% endblock %}
             {% endembed %}
         </div>
-        {% include 'LadbCoreBundle:Common:Modal/_modal-empty-loading.part.html.twig' with { 'id':'workflow_modal' } %}
+        {% include 'LadbCoreBundle:Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'workflow_modal' } %}
     </div>
     {% if readOnly %}
-        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'readonly_modal', 'title':workflow.title } %}
+        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'readonly_modal', 'title':workflow.title } %}
             {% block bodyInner %}
                 <div class="media">
                     <div class="media-left"><i class="ladb-icon-info ladb-icon-xl"></i></div>

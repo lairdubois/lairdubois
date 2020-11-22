@@ -6,7 +6,7 @@
 {% block body %}
     {{ parent() }}
     {% if not form.vars.submitted and howto.articles|length == 0 %}
-        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'warning_article_modal', 'title':('howto.article.new'|trans()) } %}
+        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'warning_article_modal', 'title':('howto.article.new'|trans()) } %}
             {% block bodyInner %}
                 <p>{{ 'howto.article.new_warning'|trans()|raw }}</p>
             {% endblock %}

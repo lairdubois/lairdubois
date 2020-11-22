@@ -9,7 +9,7 @@
     {% if workflow.body is not empty %}
         {{ parent() }}
     {% else %}
-        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
             {% block bodyInner %}
                 <div class="media">
                     <div class="media-left"><i class="ladb-icon-warning ladb-icon-xl"></i></div>

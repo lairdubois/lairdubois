@@ -6,10 +6,25 @@
 // Base styles
 // -------------------------
 
+.alert {
+
+  &.alert-default {
+    background-color: #fff;
+  }
+
+}
+
 .ladb-alerts-translucent {
 
   .alert {
-    border: none;
+
+    &:last-child {
+      border: none;
+    }
+
+    &.alert-default {
+      background-color: fade(#fff, 85%);
+    }
 
     &.alert-success {
       background-color: @state-success-translucent-bg;

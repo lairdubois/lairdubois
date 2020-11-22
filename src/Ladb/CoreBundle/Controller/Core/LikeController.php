@@ -61,7 +61,7 @@ class LikeController extends AbstractController {
 
 		if (!$likeRepository->existsByEntityTypeAndEntityIdAndUser($entityType, $entityId, $this->getUser())) {
 
-			$selfLike = $entity instanceof AuthoredInterface && $entity->getUser()->getId() == $this->getUser()->getId();
+			$selfLike = $entity instanceof AuthoredInterface && $entity->getUser() == $this->getUser();
 			if (!$selfLike) {
 
 				$entity->incrementLikeCount();

@@ -23,7 +23,7 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 			$connection->close();
 			return null;
 		}
-		if (!$user instanceof UserInterface || !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser()->getId() != $user->getId()) {
+		if (!$user instanceof UserInterface || !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $workflow->getUser() != $user) {
 			$this->get('logger')->error('Not allowed');
 			$connection->close();
 			return null;

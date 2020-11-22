@@ -17,7 +17,7 @@ class MemberUtils extends AbstractContainerAwareUtils {
 		$om = $this->getDoctrine()->getManager();
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
 
-		if (!$memberRepository->existsByTeamIdAndUser($team->getId(), $user) && $team !== $user) {
+		if (!$memberRepository->existsByTeamAndUser($team, $user) && $team !== $user) {
 
 			$member = new Member();
 			$member->setTeam($team);

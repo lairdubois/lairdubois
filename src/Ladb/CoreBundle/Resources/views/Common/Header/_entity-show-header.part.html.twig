@@ -64,7 +64,7 @@
 {% block headerInner %}
     {{ parent() }}
     {% if isPublic %}
-        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
             {% use 'LadbCoreBundle:Common/Blocks:sharebuttons-widget.blocks.html.twig' %}
             {% block bodyInner %}
                 <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -85,7 +85,7 @@
     {% if permissionContext.isGrantedAdmin and authored %}
         {% block adminModals %}
             {% if isPublic %}
-                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'unpublish_entity_modal', 'title':('default.unpublishing'|trans()) } %}
+                {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'unpublish_entity_modal', 'title':('default.unpublishing'|trans()) } %}
                     {% block bodyInner %}
                         <p>La dépublication de <strong>{{ entity.title }}</strong> la rendra invisible pour les autres utilisateurs.</p>
                         <p>Confirmez l'action pour continuer.</p>

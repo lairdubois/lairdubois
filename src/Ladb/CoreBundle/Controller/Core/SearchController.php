@@ -38,6 +38,8 @@ class SearchController extends AbstractController {
 			$page,
 			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
 				$bool = new \Elastica\Query\BoolQuery();
+				$q0 = new \Elastica\Query\Term([ 'isTeam' => [ 'value' => false, 'boost' => 1.0 ] ]);
+				$bool->addMust($q0);
 				$q1 = new \Elastica\Query\QueryString('*'.$facet->value.'*');
 				$q1->setFields(array( 'displayname^10', 'username^5', 'fullname' ));
 				$bool->addMust($q1);

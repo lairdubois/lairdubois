@@ -9,7 +9,6 @@
 }
 
 .selectize-control {
-  height: 34px !important;
 
   &::before {
     -moz-transition: opacity 0.2s;
@@ -38,10 +37,18 @@
 .selectize-input {
   border-radius: 0 !important;
   box-shadow: none !important;
+
+  imput {
+    float: left;
+    line-height: 30px;
+    height: 30px;
+  }
+
 }
 
 .ladb-selectize-item {
   padding: 4px !important;
+  float: left;
 
   .ladb-selectize-displayname {
     padding: 0 5px;

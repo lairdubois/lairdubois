@@ -50,7 +50,7 @@
         <div class="ladb-header-tools">
             {% if ownerUser or is_granted("ROLE_ADMIN") %}
                 <a href="#share_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>&nbsp;
-                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+                {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
                     {% use 'LadbCoreBundle:Common/Blocks:sharebuttons-widget.blocks.html.twig' %}
                     {% block bodyInner %}
                         <h4>{{ 'share.social.heading'|trans() }}</h4>

@@ -28,7 +28,7 @@
     </ul>
     <div id="linkto_provider_buttons">
         <a href="#linkto_provider_modal" data-toggle="modal" class="btn btn-success" onclick="updateProviderChoiceModal();" data-toggle="modal"><i class="ladb-icon-globe"></i> {{ 'knowledge.provider.linkto'|trans() }}</a>
-        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'linkto_provider_modal', 'title':('knowledge.provider.linkto'|trans()), 'embeddedBody':true } %}
+        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'linkto_provider_modal', 'title':('knowledge.provider.linkto'|trans()), 'embeddedBody':true } %}
             {% block bodyInner %}
                 <iframe id="linkto_provider_modal_iframe" src="" frameborder="0" width="100%" height="380"></iframe>
             {% endblock %}
@@ -36,7 +36,7 @@
         {% endembed %}
         {{ 'default.or'|trans() }}
         <a href="#new_provider_modal" data-toggle="modal" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'knowledge.provider.create'|trans() }}</a>
-        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'new_provider_modal', 'title':('knowledge.provider.create'|trans()) } %}
+        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'new_provider_modal', 'title':('knowledge.provider.create'|trans()) } %}
             {% block bodyInner %}
                 <p>Vous allez être redirigé vers une nouvelle fenêtre pour <strong>créer un nouveau fournisseurs</strong>. Il est conseillé d'enregistrer vos modifications avant de continuer.</p>
                 <p>Le fournisseur devra être publié avant de pouvoir être associé.</p>

@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
 use Ladb\CoreBundle\Entity\Core\Comment;
-use Ladb\CoreBundle\Form\Type\CommentType;
+use Ladb\CoreBundle\Form\Type\Core\CommentType;
 use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\WatchableChildInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;

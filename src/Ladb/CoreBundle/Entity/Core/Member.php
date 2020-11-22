@@ -29,11 +29,6 @@ class Member implements IdentifiableInterface {
 	private $createdAt;
 
 	/**
-	 * @ORM\Column(name="team_id", type="integer")
-	 */
-	private $teamId;
-
-	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(name="team_id", nullable=false)
 	 */
@@ -62,17 +57,6 @@ class Member implements IdentifiableInterface {
 		return $this;
 	}
 
-	// TeamId /////
-
-	public function getTeamId() {
-		return $this->teamId;
-	}
-
-	public function setTeamId($teamId) {
-		$this->teamId = $teamId;
-		return $this;
-	}
-
 	// Team /////
 
 	public function getTeam() {
@@ -81,9 +65,6 @@ class Member implements IdentifiableInterface {
 
 	public function setTeam($team) {
 		$this->team = $team;
-		if (!is_null($team)) {
-			$this->teamId = $team->getId();
-		}
 		return $this;
 	}
 

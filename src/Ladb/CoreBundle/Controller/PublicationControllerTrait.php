@@ -22,7 +22,7 @@ trait PublicationControllerTrait {
 		$isGrantedUser = $this->get('security.authorization_checker')->isGranted('ROLE_USER');
 		$isGrantedAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 		$isOwner = $publication instanceof AuthoredInterface && $publication->getUser() == $this->getUser();
-		$isOwnerMember = $isGrantedUser && $publication instanceof AuthoredInterface && $this->getDoctrine()->getManager()->getRepository(Member::class)->existsByTeamIdAndUser($publication->getUser()->getId(), $this->getUser());
+		$isOwnerMember = $isGrantedUser && $publication instanceof AuthoredInterface && $this->getDoctrine()->getManager()->getRepository(Member::class)->existsByTeamAndUser($publication->getUser(), $this->getUser());
 		$isGrantedOwner = $isOwner || $isOwnerMember;
 		$isPublic = $publication instanceof HiddableInterface && $publication->getIsPublic() || !($publication instanceof HiddableInterface);
 
@@ -59,7 +59,7 @@ trait PublicationControllerTrait {
 				// Only members allowed
 				$om = $this->getDoctrine()->getManager();
 				$memberRepository = $om->getRepository(Member::class);
-				if (!$memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser())) {
+				if (!$memberRepository->existsByTeamAndUser($user, $this->getUser())) {
 					throw $this->createNotFoundException('Access denied');
 				}
 
@@ -98,7 +98,7 @@ trait PublicationControllerTrait {
 			// Only members allowed
 			$om = $this->getDoctrine()->getManager();
 			$memberRepository = $om->getRepository(Member::class);
-			$allowed = $memberRepository->existsByTeamIdAndUser($publication->getUser()->getId(), $this->getUser());
+			$allowed = $memberRepository->existsByTeamAndUser($publication->getUser(), $this->getUser());
 
 		} else {
 			$allowed = $publication->getUser() == $this->getUser();
@@ -155,8 +155,17 @@ trait PublicationControllerTrait {
 	}
 
 	protected function assertDeletable(PublicationInterface $publication, $ownerAllowed = false, $context = '') {
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !(($publication->getIsDraft() === true || $ownerAllowed) && $publication->getUser()->getId() == $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed ('.$context.')');
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+			$isGrantedUser = $this->get('security.authorization_checker')->isGranted('ROLE_USER');
+			$isOwner = $publication instanceof AuthoredInterface && $publication->getUser() == $this->getUser();
+			$isOwnerMember = $isGrantedUser && $publication instanceof AuthoredInterface && $this->getDoctrine()->getManager()->getRepository(Member::class)->existsByTeamAndUser($publication->getUser(), $this->getUser());
+			$isGrantedOwner = $isOwner || $isOwnerMember;
+
+			if (!(($publication->getIsDraft() === true || $ownerAllowed) && $isGrantedOwner)) {
+				throw $this->createNotFoundException('Not allowed ('.$context.')');
+			}
+
 		}
 	}
 

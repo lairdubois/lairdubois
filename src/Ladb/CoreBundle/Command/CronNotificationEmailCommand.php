@@ -50,6 +50,7 @@ EOT
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Testify::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Review::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Feedback::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Invite::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
 	}
 
@@ -231,6 +232,14 @@ EOT
 					$row->entity = $typableUtils->findTypable($feedback->getEntityType(), $feedback->getEntityId());
 					$row->childEntity = null;
 					$row->feedback = $feedback;
+
+				}
+
+				// Invite
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Invite::STRIPPED_NAME) {
+
+					$invitation = $activity->getInvitation();
+					$row->invitation = $invitation;
 
 				}
 

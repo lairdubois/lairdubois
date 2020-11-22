@@ -8,6 +8,24 @@ use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
 class MemberRepository extends AbstractEntityRepository {
 
+	//////
+
+	public function existsByTeamAndUser(User $team, User $user) {
+		$query = $this->getEntityManager()
+			->createQuery('
+                SELECT count(e.id) FROM LadbCoreBundle:Core\Member e
+                WHERE e.team = :team AND e.user = :user
+            ')
+			->setParameter('team', $team)
+			->setParameter('user', $user);
+
+		try {
+			return $query->getSingleScalarResult() > 0;
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return false;
+		}
+	}
+
 	/////
 
 	public function findOneByTeamIdAndUser($teamId, User $user) {
@@ -39,24 +57,6 @@ class MemberRepository extends AbstractEntityRepository {
 			return $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
-		}
-	}
-
-	//////
-
-	public function existsByTeamIdAndUser($teamId, User $user) {
-		$query = $this->getEntityManager()
-			->createQuery('
-                SELECT count(e.id) FROM LadbCoreBundle:Core\Member e
-                WHERE e.teamId = :teamId AND e.user = :user
-            ')
-			->setParameter('teamId', $teamId)
-			->setParameter('user', $user);
-
-		try {
-			return $query->getSingleScalarResult() > 0;
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return false;
 		}
 	}
 

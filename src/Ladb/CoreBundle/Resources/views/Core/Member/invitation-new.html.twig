@@ -1,0 +1,64 @@
+{% extends 'LadbCoreBundle:Common/Modal:_modal-content.part.html.twig' %}
+
+{% set id = 'member_invitation_modal' %}
+{% set title = '<i class=\'ladb-icon-invite\'></i> Inviter des membres' %}
+
+{% block bodyInner %}
+    <p class="help-block">Saisissez la liste des noms des boiseux que vous souhaitez inviter.</p>
+    <textarea id="ladb_member_invitation_modal_recipients"></textarea>
+    <script>
+        $('#ladb_member_invitation_modal_recipients')
+            .selectize({
+                plugins: ['remove_button'],
+                valueField: 'username',
+                searchField: [ 'displayname', 'username' ],
+                create: false,
+                maxItems: 20,
+                closeAfterSelect: true,
+                selectOnTab: true,
+                render: {
+                    item: function(item) {
+                        return '<div class="ladb-selectize-item"><img src="' + item.avatar + '" width="20" height="20"><span class="ladb-selectize-displayname">' + item.displayname + '</span></div>';
+                    },
+                    option: function(item, escape) {
+                        return '<div class="ladb-selectize-option media">' +
+                            '<div class="media-left"><img src="' + item.avatar + '" width="32" height="32"></div>' +
+                            '<div class="media-body">' +
+                            '<div class="ladb-selectize-displayname">' + escape(item.displayname) + '</div> ' +
+                            '<div class="ladb-selectize-username">@' + escape(item.username) + '</div>' +
+                            '</div>' +
+                            '</div>';
+                    }
+                },
+                load: function(query, callback) {
+                    if (!query.length) return callback();
+                    $.ajax({
+                        url: '{{ path('core_search_typeahead_users_json') }}',
+                        type: 'GET',
+                        data: {
+                            q: query,
+                        },
+                        error: function(e) {
+                            callback();
+                        },
+                        success: function(res) {
+                            callback(res.suggestions);
+                        }
+                    });
+                }
+            })[0].selectize.focus();
+    </script>
+{% endblock %}
+
+{% block footerInner %}
+    <a class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    <a id="ladb_member_invitation_modal_submit_btn" class="btn btn-primary">Envoyer</a>
+    <script>
+        $('#ladb_member_invitation_modal_submit_btn').on('click', function() {
+            var recipients = $('#ladb_member_invitation_modal_recipients').val();
+            if (recipients) {
+                window.location = '{{ path('core_member_invitation_create', { 'teamId':team.id }) }}' + '?recipients=' + recipients;
+            }
+        });
+    </script>
+{% endblock %}

@@ -8,6 +8,7 @@ use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\UserControllerTrait;
 use Ladb\CoreBundle\Entity\Core\Feedback;
 use Ladb\CoreBundle\Entity\Core\Member;
+use Ladb\CoreBundle\Entity\Core\MemberInvitation;
 use Ladb\CoreBundle\Entity\Core\Review;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\Vote;
@@ -60,19 +61,45 @@ class UserController extends AbstractController {
 
 			$om = $this->getDoctrine()->getManager();
 			$memberRepository = $om->getRepository(Member::CLASS_NAME);
-			return $memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser());
+			return $memberRepository->existsByTeamAndUser($user, $this->getUser());
 
 		}
 		return false;
 	}
 
+	private function _getInvitation(User $user) {
+		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+			$om = $this->getDoctrine()->getManager();
+			$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+			return $memberInvitationRepository->findOneByTeamAndRecipient($user, $this->getUser());
+
+		}
+		return null;
+	}
+
 	private function _fillCommonShowParameters(User $user, $parameters) {
+
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+			$invitation = $this->_getInvitation($user, $this->getUser());
+			if (!is_null($invitation)) {
+
+				// Flashbag
+				$this->get('session')->getFlashBag()->add('info', $this->get('templating')->render('LadbCoreBundle:Core/Member:_invitation-alert.part.html.twig', array(
+					'invitation' => $invitation,
+				)));
+
+			}
+
+		}
 
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return array_merge($parameters, array(
 			'user'            => $user,
 			'isMember'        => $this->_isMemberOf($user),
+			'invitation'      => $this->_getInvitation($user),
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 		));
 	}
@@ -371,7 +398,7 @@ class UserController extends AbstractController {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			if ($user->getIsTeam()) {
 				$memberRepository = $om->getRepository(Member::class);
-				if (!$memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser())) {
+				if (!$memberRepository->existsByTeamAndUser($user, $this->getUser())) {
 					throw $this->createNotFoundException('Access denied');
 				}
 			} else if ($user != $this->getUser()) {
@@ -1587,7 +1614,7 @@ class UserController extends AbstractController {
 
 			$om = $this->getDoctrine()->getManager();
 			$memberRepository = $om->getRepository(Member::CLASS_NAME);
-			$isMember = $memberRepository->existsByTeamIdAndUser($user->getId(), $this->getUser());
+			$isMember = $memberRepository->existsByTeamAndUser($user, $this->getUser());
 
 		} else {
 			$isMember = false;

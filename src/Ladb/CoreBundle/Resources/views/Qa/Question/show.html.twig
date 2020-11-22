@@ -52,7 +52,7 @@
         {% endblock %}
         {% block adminModals %}
             {{ parent() }}
-            {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'admin_converttooffer_question_modal', 'title':('qa.question.converttooffer'|trans()) } %}
+            {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'admin_converttooffer_question_modal', 'title':('qa.question.converttooffer'|trans()) } %}
                 {% block bodyInner %}
                     <p>La convertion transformera la question <strong>{{ question.title }}</strong> de <strong>{{ question.user.displayname }}</strong> en offre.</p>
                     <p>Confirmez l'action pour continuer.</p>

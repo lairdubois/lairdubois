@@ -149,6 +149,10 @@ class NotificationController extends AbstractController {
 			$returnToUrl = $typableUtils->getUrlAction($activity->getFeedback());
 		}
 
+		else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Invite) {
+			$returnToUrl = $this->generateUrl('core_user_show', array( 'username' => $activity->getInvitation()->getTeam()->getUsernameCanonical() ));
+		}
+
 		return $this->redirect($returnToUrl);
 	}
 

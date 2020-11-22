@@ -295,9 +295,6 @@ class PlanController extends AbstractController {
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.plan.form.alert.delete_success', array( '%title%' => $plan->getTitle() )));
 
-		if ($plan->getIsDraft()) {
-			return $this->redirect($this->generateUrl('core_user_show_plans', array( 'username' => $this->getUser()->getUsernameCanonical() )));
-		}
 		return $this->redirect($this->generateUrl('core_plan_list'));
 	}
 

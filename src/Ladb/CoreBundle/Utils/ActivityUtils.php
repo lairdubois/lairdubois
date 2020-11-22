@@ -189,6 +189,19 @@ class ActivityUtils {
 		}
 	}
 
+	public function createInviteActivity(\Ladb\CoreBundle\Entity\Core\MemberInvitation $invitation, $flush = true) {
+
+		$activity = new \Ladb\CoreBundle\Entity\Core\Activity\Invite();
+		$activity->setUser($invitation->getSender());
+		$activity->setInvitation($invitation);
+
+		$this->om->persist($activity);
+
+		if ($flush) {
+			$this->om->flush();
+		}
+	}
+
 	// Delete /////
 
 	private function _deleteActivities($activities, $flush = true) {
@@ -269,6 +282,12 @@ class ActivityUtils {
 	public function deleteActivitiesByFeedback(\Ladb\CoreBundle\Entity\Core\Feedback $feedback, $flush = true) {
 		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Feedback::CLASS_NAME);
 		$activities = $activityRepository->findByFeedback($feedback);
+		$this->_deleteActivities($activities, $flush);
+	}
+
+	public function deleteActivitiesByInvitation(\Ladb\CoreBundle\Entity\Core\MemberInvitation $invitation, $flush = true) {
+		$activityRepository = $this->om->getRepository(\Ladb\CoreBundle\Entity\Core\Activity\Invite::CLASS_NAME);
+		$activities = $activityRepository->findByInvitation($invitation);
 		$this->_deleteActivities($activities, $flush);
 	}
 

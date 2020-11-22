@@ -360,6 +360,18 @@ EOT
 
 			}
 
+			// Invite /////
+
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Invite) {
+
+				$invitation = $activity->getInvitation();
+				$this->_forwardNotification($om, $invitation->getRecipient(), $activity, $notifiedUsers, $freshNotificationCounters);
+				if ($verbose) {
+					$output->writeln('<info>--> Notifying <fg=white>@'.$invitation->getRecipient()->getUsername(). '</fg=white> for new invitation sender=@'.$invitation->getSender()->getUsername().' team=@'.$invitation->getTeam()->getUsername().'</info>');
+				}
+
+			}
+
 			// Flag activity as notified
 			$activity->setIsPendingNotifications(false);
 

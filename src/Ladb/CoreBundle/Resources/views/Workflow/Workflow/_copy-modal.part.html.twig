@@ -1,4 +1,4 @@
-{% extends 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' %}
+{% extends 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' %}
 
 {% set duplicate = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
 

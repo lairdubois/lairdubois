@@ -36,7 +36,7 @@
     <div class="ladb-header-tools pull-right">
         {% include 'LadbCoreBundle:Core/Report:_widget-button.part.html.twig' with { 'entityType':thread.type, 'entityId':thread.id } %}
         <a href="#delete_thread_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-hidden-mobile"> {{ 'default.delete'|trans() }}</span></a>
-        {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'delete_thread_modal', 'title':('default.deletion'|trans()) } %}
+        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'delete_thread_modal', 'title':('default.deletion'|trans()) } %}
             {% block bodyInner %}
                 <p>La suppression de la conversation "<strong>{{ thread.subject }}</strong>" entrainera l'effacement de tous les messages qu'elle contient.</p>
                 <p>Confirmez l'action pour continuer.</p>

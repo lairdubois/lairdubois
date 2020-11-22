@@ -78,6 +78,7 @@
                     <li><a href="{{ path('core_message_mailbox') }}">{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}<i class="ladb-icon-message"></i> {{ 'message.nav'|trans() }}</a></li>
                     <li><a href="{{ path('core_user_settings_me') }}"><i class="ladb-icon-settings ladb-icon-fixed-center"></i> {{ 'user.settings'|trans() }}</a></li>
                     <li class="uk-nav-divider"></li>
+                    <li><a href="{{ path('core_user_show_teams', { 'username':app.user.usernameCanonical }) }}"><i class="ladb-icon-users ladb-icon-fixed-center"></i> Mes collectifs</a></li>
                     <li><a href="{{ path('core_workflow_list', { 'q':'@mine' }) }}"><i class="ladb-icon-workflow ladb-icon-fixed-center"></i> {{ 'workflow.workflow.user_list'|trans }}</a></li>
                     <li><a href="{{ path('core_collection_list', { 'q':'@mine' }) }}"><i class="ladb-icon-collection ladb-icon-fixed-center"></i> {{ 'collection.collection.user_list'|trans }}</a></li>
                     <li><a href="{{ path('core_funding_user_donation_list') }}"><i class="ladb-icon-funding ladb-icon-fixed-center"></i> Mes dons</a></li>
@@ -196,7 +197,7 @@
                         <a href="{{ path('core_user_email_check') }}" class="alert-link">{{ 'user.email_confirmation.check.action'|trans() }}</a> {{ 'default.or'|trans }} <a href="#email_check_modal" class="alert-link" data-toggle="modal">{{ 'user.email_confirmation.check.modal_action'|trans() }}</a>
                     </p>
                 </div>
-                {% embed 'LadbCoreBundle:Common:Modal/_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
+                {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
                     {% block bodyInner %}
                         {{ 'user.email_confirmation.check.modal_body'|trans()|ladb_markdown|raw }}
                     {% endblock %}
