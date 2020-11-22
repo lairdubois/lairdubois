@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\Type;
+namespace Ladb\CoreBundle\Form\Type\Core;
 
 use Ladb\CoreBundle\Entity\Core\User;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +14,7 @@ use Ladb\CoreBundle\Form\DataTransformer\PictureToIdTransformer;
 use Ladb\CoreBundle\Form\DataTransformer\Input\SkillsToLabelsTransformer;
 use Symfony\Component\Validator\Constraints\Valid;
 
-class UserTeamMetaSettingsType extends AbstractType {
+class UserMetaSettingsType extends AbstractType {
 
 	private $om;
 
@@ -41,6 +41,16 @@ class UserTeamMetaSettingsType extends AbstractType {
 			->add('dailymotion')
 			->add('pinterest')
 			->add('instagram')
+			->add('autoWatchEnabled')
+			->add('incomingMessageEmailNotificationEnabled')
+			->add('newFollowerEmailNotificationEnabled')
+			->add('newMentionEmailNotificationEnabled')
+			->add('newLikeEmailNotificationEnabled')
+			->add('newVoteEmailNotificationEnabled')
+			->add('newFollowingPostEmailNotificationEnabled')
+			->add('newWatchActivityEmailNotificationEnabled')
+			->add('newSpotlightEmailNotificationEnabled')
+			->add('weekNewsEmailEnabled')
 		;
 	}
 
@@ -53,7 +63,7 @@ class UserTeamMetaSettingsType extends AbstractType {
 	}
 
 	public function getBlockPrefix() {
-		return 'ladb_userteammetasettings';
+		return 'ladb_usermetasettings';
 	}
 
 }

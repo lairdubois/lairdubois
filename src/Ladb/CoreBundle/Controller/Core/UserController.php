@@ -12,8 +12,8 @@ use Ladb\CoreBundle\Entity\Core\Review;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\Vote;
 use Ladb\CoreBundle\Entity\Offer\Offer;
-use Ladb\CoreBundle\Form\Type\UserTeamSettingsType;
-use Ladb\CoreBundle\Form\Type\UserTeamType;
+use Ladb\CoreBundle\Form\Type\Core\UserTeamSettingsType;
+use Ladb\CoreBundle\Form\Type\Core\UserTeamType;
 use Ladb\CoreBundle\Utils\MemberUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
@@ -37,7 +37,7 @@ use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Entity\Core\Registration;
-use Ladb\CoreBundle\Form\Type\UserSettingsType;
+use Ladb\CoreBundle\Form\Type\Core\UserSettingsType;
 use Ladb\CoreBundle\Utils\CryptoUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\FollowerUtils;
@@ -1608,7 +1608,9 @@ class UserController extends AbstractController {
 	 */
 	public function teamNewAction() {
 
-		$team = new User();
+		$userManager = $this->get('fos_user.user_manager');
+
+		$team = $userManager->createUser();
 		$form = $this->createForm(UserTeamType::class, $team);
 
 		return array(
@@ -1627,7 +1629,10 @@ class UserController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$userManager = $this->get('fos_user.user_manager');
 
-		$team = $userManager->createUser(); //new User();
+		$team = $userManager->createUser();
+		$team->setEnabled(true);
+		$team->setEmail($team->getUsernameCanonical().'-team@lairdubois.fr');	// Fake email - to bypass Registration validation on this field
+		$team->setPlainPassword(bin2hex(random_bytes(20)));						// Put a random password - to bypass Registration validation on this field AND avoid logon on this account
 		$form = $this->createForm(UserTeamType::class, $team);
 		$form->handleRequest($request);
 
@@ -1640,10 +1645,7 @@ class UserController extends AbstractController {
 			}
 
 			$team->setIsTeam(true);
-			$team->setEmail($team->getUsernameCanonical().'-team@lairdubois.fr');
 			$team->setEmailCanonical($team->getEmail());
-			$team->setEnabled(true);
-			$team->setPlainPassword(random_bytes(20));	// Put a random password
 			$team->addRole('ROLE_TEAM');
 			$userManager->updateUser($team);
 

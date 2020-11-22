@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\Type;
+namespace Ladb\CoreBundle\Form\Type\Core;
 
 use Ladb\CoreBundle\Entity\Core\User;
 use Symfony\Component\Form\AbstractType;

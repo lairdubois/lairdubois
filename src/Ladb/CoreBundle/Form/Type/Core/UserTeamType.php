@@ -1,6 +1,6 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\Type;
+namespace Ladb\CoreBundle\Form\Type\Core;
 
 use Ladb\CoreBundle\Entity\Core\User;
 use Symfony\Component\Form\AbstractType;
@@ -32,7 +32,7 @@ class UserTeamType extends AbstractType {
 		$resolver->setDefaults(array(
 			'data_class' => 'Ladb\CoreBundle\Entity\Core\User',
 			'constraints' => new Valid(),
-			'validation_groups' => array( 'Default', 'register' ),
+			'validation_groups' => array( 'Default', 'Registration' ),
 		));
 	}
 

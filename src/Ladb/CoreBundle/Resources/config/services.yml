@@ -545,12 +545,12 @@ services:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_usersettings:
-    class: Ladb\CoreBundle\Form\Type\UserSettingsType
+    class: Ladb\CoreBundle\Form\Type\Core\UserSettingsType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_usermetasettings:
-    class: Ladb\CoreBundle\Form\Type\UserMetaSettingsType
+    class: Ladb\CoreBundle\Form\Type\Core\UserMetaSettingsType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
@@ -560,12 +560,12 @@ services:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_userteammetasettings:
-    class: Ladb\CoreBundle\Form\Type\UserTeamMetaSettingsType
+    class: Ladb\CoreBundle\Form\Type\Core\UserTeamMetaSettingsType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
   ladb_userteam:
-    class: Ladb\CoreBundle\Form\Type\UserTeamType
+    class: Ladb\CoreBundle\Form\Type\Core\UserTeamType
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']

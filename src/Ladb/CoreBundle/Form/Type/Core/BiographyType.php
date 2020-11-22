@@ -1,32 +1,27 @@
 <?php
 
-namespace Ladb\CoreBundle\Form\Type;
+namespace Ladb\CoreBundle\Form\Type\Core;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditPictureType extends AbstractType {
+class BiographyType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('legend')
-			->add('sourceUrl')
-			->add('rotation', HiddenType::class)
-			->add('centerX100')
-			->add('centerY100')
+			->add('body')
 		;
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ladb\CoreBundle\Form\Model\EditPicture'
+			'data_class' => 'Ladb\CoreBundle\Entity\Core\Biography'
 		));
 	}
 
 	public function getBlockPrefix() {
-		return 'ladb_editpicture';
+		return 'ladb_biography';
 	}
 
 }
