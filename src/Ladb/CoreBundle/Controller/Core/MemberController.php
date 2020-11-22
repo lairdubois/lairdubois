@@ -94,19 +94,23 @@ class MemberController extends AbstractController {
 		$memberRepository = $om->getRepository(Member::class);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
-		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
-		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $memberRepository->findPaginedByUser($this->getUser(), $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_member_list_session_teams_page', array(), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_member_list_session_teams_page', array('titleKey' => $titleKey, 'route' => $route ), $page, $paginator->count());
 
-		$members = $memberRepository->findPaginedByUser($this->getUser(), 0, 50);
-
-		return array(
-			'members'     => $members,
+		$parameters = array(
+			'members'     => $paginator,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
 			'titleKey'    => $titleKey,
 			'route'       => $route,
 		);
+
+		if ($page > 0) {
+			return $this->render('LadbCoreBundle:Core/Member:list-session-teams-n-xhr.html.twig', $parameters);
+		}
+
+		return $parameters;
 	}
 }

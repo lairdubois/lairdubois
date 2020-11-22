@@ -62,6 +62,12 @@ class MemberRepository extends AbstractEntityRepository {
 
 	//////
 
+	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		$queryBuilder
+			->addOrderBy('u.createdAt', 'DESC')
+		;
+	}
+
 	public function findPaginedByUser(User $user, $offset = 0, $limit = 0, $filter = 'recent') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -83,12 +89,6 @@ class MemberRepository extends AbstractEntityRepository {
 		$this->_applyCommonFilter($queryBuilder, $filter);
 
 		return new Paginator($queryBuilder->getQuery());
-	}
-
-	private function _applyCommonFilter(&$queryBuilder, $filter) {
-		$queryBuilder
-			->addOrderBy('u.createdAt', 'DESC')
-		;
 	}
 
 	public function findPaginedByTeam(User $team, $offset = 0, $limit = 0, $filter = 'recent') {

@@ -34,7 +34,7 @@ class NotificationController extends AbstractController {
 		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
 		$limit = $paginatorUtils->computePaginatorLimit($page, 9, 5);
 		$paginator = $notificationRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_notification_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_notification_list_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 9, 5);
 
 		// Flag notification as listed
 

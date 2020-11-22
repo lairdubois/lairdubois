@@ -18,7 +18,7 @@
 
 {% block bodyInner %}
     {% if members|length == 0 %}
-        <p>Aucune notification pour le moment.</p>
+        <p>Vous n'êtes membre d'aucun collectif.</p>
     {% endif %}
     {% include 'LadbCoreBundle:Core/Member:_list-session-teams-n.part.html.twig' %}
     {{ block('autopagerScript') }}
