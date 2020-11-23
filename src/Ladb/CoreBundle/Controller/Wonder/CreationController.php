@@ -827,8 +827,6 @@ class CreationController extends AbstractController {
 		$routeParameters = array();
 		if ($layout != 'view') {
 			$routeParameters['layout'] = $layout;
-		} else if ($homepage) {
-			$routeParameters['homepage'] = $homepage;
 		}
 
 		/////
