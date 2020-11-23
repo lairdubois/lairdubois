@@ -45,6 +45,13 @@ class MemberController extends AbstractController {
 
 		$team = $this->_retrieveTeam($teamId);
 
+		$om = $this->getDoctrine()->getManager();
+		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+
+		if (!$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
+			throw $this->createNotFoundException('Not allowed (core_member_invitation_new)');
+		}
+
 		return array(
 			'team' => $team,
 		);
@@ -63,6 +70,10 @@ class MemberController extends AbstractController {
 		$userManager = $this->get('fos_user.user_manager');
 		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+
+		if (!$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
+			throw $this->createNotFoundException('Not allowed (core_member_invitation_create)');
+		}
 
 		$recipientUsernames = $request->get('recipients');
 
@@ -97,6 +108,11 @@ class MemberController extends AbstractController {
 			$invitation->setRecipient($recipient);
 
 			$om->persist($invitation);
+
+			// Update counters
+
+			$team->getMeta()->incrementInvitationCount();
+			$recipient->getMeta()->incrementInvitationCount();
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
@@ -137,6 +153,12 @@ class MemberController extends AbstractController {
 		$activityUtils->deleteActivitiesByInvitation($invitation);
 
 		$om->remove($invitation);
+
+		// Update counters
+
+		$invitation->getTeam()->getMeta()->incrementInvitationCount(-1);
+		$invitation->getRecipient()->getMeta()->incrementInvitationCount(-1);
+
 		$om->flush();
 
 		// Flashbag

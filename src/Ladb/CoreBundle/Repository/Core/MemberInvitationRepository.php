@@ -78,4 +78,26 @@ class MemberInvitationRepository extends AbstractEntityRepository {
 		return new Paginator($queryBuilder->getQuery());
 	}
 
+	public function findPaginedByRecipient(User $recipient, $offset = 0, $limit = 0, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'e', 'u' ))
+			->from($this->getEntityName(), 'e')
+			->innerJoin('e.team', 'u')
+			->where('e.recipient = :recipient')
+			->setParameter('recipient', $recipient)
+		;
+
+		if ($offset > 0) {
+			$queryBuilder->setFirstResult($offset);
+		}
+		if ($limit > 0) {
+			$queryBuilder->setMaxResults($limit);
+		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 }

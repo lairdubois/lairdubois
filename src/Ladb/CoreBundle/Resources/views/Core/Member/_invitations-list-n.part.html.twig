@@ -1,15 +1,17 @@
 {% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
 
+{# set user (the context user) #}
 {# set invitations #}
 {# set nextPageUrl #}
 
 {% block items %}
     {% for invitation in invitations %}
-        {% embed 'LadbCoreBundle:Core/User:_list-row.part.html.twig' with { 'user':invitation.recipient } %}
+        {% embed 'LadbCoreBundle:Core/User:_list-row.part.html.twig' with { 'user':user.isTeam ? invitation.recipient : invitation.team } %}
             {% block counters %}
                 <div class="pull-right" style="line-height: 64px;">
-                    <small class="ladb-horizontal-separator-right text-muted">Invité par <strong>{{ invitation.sender.displayname }}</strong></small>
-                    <a href="{{ path('core_member_invitation_delete', { 'id':invitation.id }) }}" class="btn btn-danger btn-sm"><i class="ladb-icon-delete"></i> Supprimer</a>
+                    <small class="text-muted" style="margin-right: 10px;">{% if user.isTeam %}Reçue de{% else %} Envoyée par{% endif%} <strong>{{ invitation.sender.displayname }}</strong></small>
+                    {% if user.isTeam %}<a href="{{ path('core_member_create', { 'teamId':invitation.team.id }) }}" class="btn btn-primary btn-sm">Accepter</a>{% endif %}
+                    <a href="{{ path('core_member_invitation_delete', { 'id':invitation.id }) }}" class="btn btn-default btn-sm">Supprimer</a>
                 </div>
             {% endblock %}
         {% endembed %}

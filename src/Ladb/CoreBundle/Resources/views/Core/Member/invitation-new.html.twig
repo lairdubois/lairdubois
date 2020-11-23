@@ -1,10 +1,10 @@
 {% extends 'LadbCoreBundle:Common/Modal:_modal-content.part.html.twig' %}
 
 {% set id = 'member_invitation_modal' %}
-{% set title = '<i class=\'ladb-icon-invite\'></i> Inviter des membres' %}
+{% set title = '<i class=\'ladb-icon-invite\'></i> Inviter des nouveaux membres' %}
 
 {% block bodyInner %}
-    <p class="help-block">Saisissez la liste des noms des boiseux que vous souhaitez inviter.</p>
+    <p class="help-block" style="white-space: normal;">Saisissez la liste des noms des boiseux que vous souhaitez inviter à devenir membres du collectif <strong>{{ team.displayname }}</strong>.</p>
     <textarea id="ladb_member_invitation_modal_recipients"></textarea>
     <script>
         $('#ladb_member_invitation_modal_recipients')

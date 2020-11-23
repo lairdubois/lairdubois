@@ -402,7 +402,7 @@ class UserController extends AbstractController {
 					throw $this->createNotFoundException('Access denied');
 				}
 			} else if ($user != $this->getUser()) {
-				throw $this->createNotFoundException('Access denied');
+				throw $this->createNotFoundException('Access denied (core_user_settings)');
 			}
 		}
 
@@ -657,7 +657,7 @@ class UserController extends AbstractController {
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'likes',
 		)));
 	}
 
@@ -699,7 +699,7 @@ class UserController extends AbstractController {
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'comments',
 		)));
 	}
 
@@ -743,7 +743,7 @@ class UserController extends AbstractController {
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'votes',
 		)));
 	}
 
@@ -787,7 +787,7 @@ class UserController extends AbstractController {
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'reviews',
 		)));
 	}
 
@@ -833,7 +833,7 @@ class UserController extends AbstractController {
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'feedbacks',
 		)));
 	}
 
@@ -1229,7 +1229,7 @@ class UserController extends AbstractController {
 		$followerUtils = $this->get(FollowerUtils::NAME);
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'answers',
 		)));
 	}
 
@@ -1557,6 +1557,11 @@ class UserController extends AbstractController {
 			return $this->redirect($this->generateUrl('core_user_show_invitations', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$isGrantedOwner) {
+			throw $this->createNotFoundException('Access denied (core_user_show_invitations)');
+		}
+
 		// Member
 
 		$om = $this->getDoctrine()->getManager();
@@ -1565,7 +1570,11 @@ class UserController extends AbstractController {
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
-		$paginator = $memberInvitationRepository->findPaginedByTeam($user, $offset, $limit, $filter);
+		if ($user->getIsTeam()) {
+			$paginator = $memberInvitationRepository->findPaginedByTeam($user, $offset, $limit, $filter);
+		} else {
+			$paginator = $memberInvitationRepository->findPaginedByRecipient($user, $offset, $limit, $filter);
+		}
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_invitations_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
@@ -1576,12 +1585,12 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Core/Member:invitations-list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Core/Member:invitations-list-xhr.html.twig', array_merge(array( 'user' => $user ), $parameters));
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'invitations',
-		)));
+		)), $isGrantedOwner);
 	}
 
 	/**
@@ -1619,7 +1628,7 @@ class UserController extends AbstractController {
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
-			'tab' => '',
+			'tab' => 'teams',
 		)));
 	}
 

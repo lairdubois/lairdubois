@@ -179,39 +179,41 @@
 {% block bodyHeader %}
     <header>
         <div class="ladb-alerts{% if topbarTranslucent %} ladb-alerts-translucent{% endif %}">
-            {% if not is_granted("ROLE_USER") %}
-                {% if not topbarTranslucent and not hideAboutAlert %}
+            {% block alertsInner %}
+                {% if not is_granted("ROLE_USER") %}
+                    {% if not topbarTranslucent and not hideAboutAlert %}
+                        <div class="alert alert-info">
+                            <p style="margin-top: 5px;"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
+                            <p>
+                                <a href="{{ path('fos_user_registration_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
+                                <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>
+                            </p>
+                        </div>
+                    {% endif %}
+                {% elseif not app.user.emailConfirmed %}
                     <div class="alert alert-info">
-                        <p style="margin-top: 5px;"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
                         <p>
-                            <a href="{{ path('fos_user_registration_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
-                            <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>
+                            {{ 'user.email_confirmation.body'|trans() }}
+                            <br>
+                            <a href="{{ path('core_user_email_check') }}" class="alert-link">{{ 'user.email_confirmation.check.action'|trans() }}</a> {{ 'default.or'|trans }} <a href="#email_check_modal" class="alert-link" data-toggle="modal">{{ 'user.email_confirmation.check.modal_action'|trans() }}</a>
                         </p>
                     </div>
+                    {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
+                        {% block bodyInner %}
+                            {{ 'user.email_confirmation.check.modal_body'|trans()|ladb_markdown|raw }}
+                        {% endblock %}
+                        {% block footerInner %}
+                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                            <a href="{{ path('core_user_email_check') }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+                        {% endblock %}
+                    {% endembed %}
                 {% endif %}
-            {% elseif not app.user.emailConfirmed %}
-                <div class="alert alert-info">
-                    <p>
-                        {{ 'user.email_confirmation.body'|trans() }}
-                        <br>
-                        <a href="{{ path('core_user_email_check') }}" class="alert-link">{{ 'user.email_confirmation.check.action'|trans() }}</a> {{ 'default.or'|trans }} <a href="#email_check_modal" class="alert-link" data-toggle="modal">{{ 'user.email_confirmation.check.modal_action'|trans() }}</a>
-                    </p>
-                </div>
-                {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
-                    {% block bodyInner %}
-                        {{ 'user.email_confirmation.check.modal_body'|trans()|ladb_markdown|raw }}
-                    {% endblock %}
-                    {% block footerInner %}
-                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                        <a href="{{ path('core_user_email_check') }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'user.email_confirmation.check.action'|trans() }}</a>
-                    {% endblock %}
-                {% endembed %}
-            {% endif %}
-            {% for key, message in app.session.flashbag.all %}
-                <div class="alert alert-{{ key }}">
-                    {{ message[0]|raw }}
-                </div>
-            {% endfor %}
+                {% for key, message in app.session.flashbag.all %}
+                    <div class="alert alert-{{ key }}">
+                        {{ message[0]|raw }}
+                    </div>
+                {% endfor %}
+            {% endblock %}
         </div>
         {% block bodyHeaderContainer %}
             <div class="ladb-header">

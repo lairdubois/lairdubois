@@ -132,7 +132,6 @@ class CreationController extends AbstractController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_creation_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_creation_unlock")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_creation_lock or core_creation_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -173,7 +172,6 @@ class CreationController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_creation_unpublish")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_creation_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 

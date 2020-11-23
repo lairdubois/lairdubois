@@ -10,7 +10,7 @@
             {% set filterPath = 'core_user_show_invitations_filter' %}
             {% set filterPathParameters = { 'username':user.usernameCanonical } %}
             {% block filterbarRightContent%}
-                <span class="ladb-heading">{{ user.meta.memberCount }} {{ 'team.choice.invitations'|transchoice(user.meta.memberCount) }}</span>
+                <span class="ladb-heading">{{ user.meta.invitationCount }} {{ 'team.choice.invitations'|transchoice(user.meta.invitationCount) }}</span>
             {% endblock %}
         {% endembed %}
     {% endif %}

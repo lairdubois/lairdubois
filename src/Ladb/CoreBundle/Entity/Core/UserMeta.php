@@ -240,6 +240,11 @@ class UserMeta {
 	private $memberCount = 0;
 
 	/**
+	 * @ORM\Column(type="integer", nullable=true, name="invitation_count")
+	 */
+	private $invitationCount = 0;
+
+	/**
 	 * @ORM\Column(type="integer", nullable=true, name="team_count")
 	 */
 	private $teamCount = 0;
@@ -911,6 +916,16 @@ class UserMeta {
 
 	public function getMemberCount() {
 		return $this->memberCount;
+	}
+
+	// InvitationCount /////
+
+	public function incrementInvitationCount($by = 1) {
+		return $this->invitationCount += intval($by);
+	}
+
+	public function getInvitationCount() {
+		return $this->invitationCount;
 	}
 
 	// TeamCount /////

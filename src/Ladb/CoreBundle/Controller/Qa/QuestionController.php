@@ -121,7 +121,6 @@ class QuestionController extends AbstractController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_qa_question_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_qa_question_unlock")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_qa_question_lock or core_qa_question_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -162,7 +161,6 @@ class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_qa_question_unpublish")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_qa_question_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 

@@ -73,7 +73,7 @@
                 {% endif %}
                 {% if user.isTeam and isGrantedOwner %}
                     <a class="btn btn-default"  onclick="$('#member_invitation_modal').modal({ remote:'{{ path('core_member_invitation_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="Inviter un nouveau membre"><i class="ladb-icon-invite"></i> Inviter...</a>
-                    {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'member_invitation_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;Inviter', 'classes':'modal-infinit' } %}
+                    {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'member_invitation_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;Inviter des nouveaux membres', 'classes':'modal-infinit' } %}
                         {% block bodyInner %}
                             {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true } %}
                         {% endblock %}
@@ -108,6 +108,16 @@
         {% if user.isTeam %}
             <li{% if tab == 'members' %} class="active"{% endif %}>
                 <a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.members'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.memberCount > 0 %} badge-black{% endif %}">{{ user.meta.memberCount }}</span></a>
+            </li>
+        {% endif %}
+        {% if isGrantedOwner and user.meta.invitationCount > 0 %}
+            <li{% if tab == 'invitations' %} class="active"{% endif %}>
+                <a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.invitations'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.invitationCount > 0 %} badge-black{% endif %}">{{ user.meta.invitationCount }}</span></a>
+            </li>
+        {% endif %}
+        {% if tab == 'teams' %}
+            <li class="active">
+                <a href="{{ path('core_user_show_teams', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.teamCount > 0 %} badge-black{% endif %}">{{ user.meta.teamCount }}</span></a>
             </li>
         {% endif %}
         {% if tab == 'creations' or user.meta.publicCreationCount > 0 or isGrantedOwner and user.meta.privateCreationCount > 0 %}

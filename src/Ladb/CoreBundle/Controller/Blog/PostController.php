@@ -106,7 +106,6 @@ class PostController extends AbstractController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_blog_post_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_blog_post_unlock")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (blog_post_lock or core_blog_post_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -148,7 +147,6 @@ class PostController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_blog_post_unpublish")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_blog_post_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 

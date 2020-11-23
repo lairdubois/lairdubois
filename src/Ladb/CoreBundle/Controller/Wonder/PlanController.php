@@ -128,7 +128,6 @@ class PlanController extends AbstractController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_plan_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_plan_unlock")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_plan_lock or core_plan_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -169,7 +168,6 @@ class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_plan_unpublish")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_plan_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 

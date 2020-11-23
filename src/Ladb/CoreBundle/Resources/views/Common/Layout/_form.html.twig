@@ -82,12 +82,16 @@
 
 {% block bodyHeaderContainer %}{% endblock %}
 
-{% block bodyContainerContent %}
-    {% if owner is defined and owner is not null %}
-        <div style="font-size: 120%; margin: 0 0 20px 0;">
-            Vous agisser en tant que <span style="color:#f77f00; font-weight: bold;">{% include 'LadbCoreBundle:Core/User:_displayname.part.html.twig' with { 'user':owner } %}</span>
+{% block alertsInner %}
+    {% if owner is defined and owner is not null and owner != app.user %}
+        <div class="alert alert-info" style="line-height: 30px; height: 40px;">
+            Vous agissez en tant que {% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':owner, 'size':20 } %} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':owner, 'linkClasses':'alert-link', 'noBadge':true } %}
         </div>
     {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyContainerContent %}
     {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
         {% if owner is defined and owner is not null and owner != app.user %}
             <input type="hidden" name="owner" value="{{ owner.usernameCanonical }}">

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Collection;
 
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Collection\Entry;
 use Ladb\CoreBundle\Utils\CollectionnableUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
@@ -31,6 +32,8 @@ use Ladb\CoreBundle\Form\Type\Collection\CollectionType;
  * @Route("/collections")
  */
 class CollectionController extends AbstractCollectionBasedController {
+
+	use PublicationControllerTrait;
 
 	/**
 	 * @Route("/new", name="core_collection_new")
@@ -121,12 +124,11 @@ class CollectionController extends AbstractCollectionBasedController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_collection_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_collection_unlock")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_collection_lock or core_collection_unlock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$this->assertLockUnlockable($collection, $lock);
 
 		if ($collection->getIsLocked() === $lock) {
 			throw $this->createNotFoundException('Already '.($lock ? '' : 'un').'locked (core_collection_lock or core_collection_unlock)');
@@ -151,21 +153,8 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function publishAction($id) {
 
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $collection->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_collection_publish)');
-		}
-		if (!$this->getUser()->getEmailConfirmed()) {
-			throw $this->createNotFoundException('Not emailConfirmed (core_collection_publish)');
-		}
-		if ($collection->getIsPublic()) {
-			throw $this->createNotFoundException('Already published (core_collection_publish)');
-		}
-		if ($collection->getIsLocked() === true) {
-			throw $this->createNotFoundException('Locked (core_collection_publish)');
-		}
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$this->assertPublishable($collection);
 
 		// Publish
 		$collectionManager = $this->get(CollectionManager::NAME);
@@ -179,16 +168,11 @@ class CollectionController extends AbstractCollectionBasedController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_collection_unpublish")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_collection_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
-
-		if (!$collection->getIsPublic()) {
-			throw $this->createNotFoundException('Already unpublished (core_collection_publish)');
-		}
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$this->assertUnpublishable($collection);
 
 		// Unpublish
 		$collectionManager = $this->get(CollectionManager::NAME);
@@ -212,12 +196,8 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function editAction($id) {
 
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $collection->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_collection_edit)');
-		}
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$this->assertEditabable($collection);
 
 		$form = $this->createForm(CollectionType::class, $collection);
 
@@ -237,12 +217,8 @@ class CollectionController extends AbstractCollectionBasedController {
 	public function updateAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $collection->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_collection_update)');
-		}
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$this->assertEditabable($collection);
 
 		$previouslyUsedTags = $collection->getTags()->toArray();	// Need to be an array to copy values
 
@@ -291,12 +267,8 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function deleteAction($id) {
 
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
-
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $collection->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_collection_delete)');
-		}
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$this->assertDeletable($collection);
 
 		// Delete
 		$collectionManager = $this->get(CollectionManager::NAME);
@@ -313,18 +285,9 @@ class CollectionController extends AbstractCollectionBasedController {
 	 * @Template("LadbCoreBundle:Collection/Collection:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
-		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
 
-		$id = intval($id);
-
-		$collection = $collectionRepository->findOneById($id);
-		if (is_null($collection)) {
-			throw $this->createNotFoundException('Unable to find Collection entity (id='.$id.').');
-		}
-		if (!$collection->getIsPublic()) {
-			throw $this->createNotFoundException('Not allowed (core_collection_widget)');
-		}
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$this->assertShowable($collection, true);
 
 		return array(
 			'collection' => $collection,
@@ -336,11 +299,10 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function addAction($id, $entityType, $entityId) {
 
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
+		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
 
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $collection->getUser()->getId() != $this->getUser()->getId()) {
-			throw $this->createNotFoundException('Not allowed (core_collection_delete)');
+			throw $this->createNotFoundException('Not allowed (core_collection_add)');
 		}
 
 		// Delete
@@ -351,82 +313,6 @@ class CollectionController extends AbstractCollectionBasedController {
 		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('collection.collection.form.alert.delete_success', array( '%title%' => $collection->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_collection_list'));
-	}
-
-	/**
-	 * @Route("/{id}.html", name="core_collection_show")
-	 * @Route("/{id}/tab/{entityType}", requirements={"id" = "\d+", "entityType" = "\d+"}, name="core_collection_show_type")
-	 * @Route("/{id}/tab/{entityType}/{page}", requirements={"id" = "\d+", "entityType" = "\d+", "page" = "\d+"}, name="core_collection_show_type_page")
-	 * @Template("LadbCoreBundle:Collection:Collection/showAbout.html.twig")
-	 */
-	public function showAction(Request $request, $id, $entityType = 0, $page = 0) {
-		$witnessManager = $this->get(WitnessManager::NAME);
-
-		// Retrieve collection
-		$collection = $this->_retrieveCollection($id);
-
-		if (!$collection->getIsPublic()) {
-			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $collection->getUser() != $this->getUser())) {
-				if ($response = $witnessManager->checkResponse(Collection::TYPE, $id)) {
-					return $response;
-				}
-				throw $this->createNotFoundException('Not allowed (core_collection_show)');
-			}
-		}
-
-		// Dispatch publication event
-		$dispatcher = $this->get('event_dispatcher');
-		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($collection));
-
-		$likableUtils = $this->get(LikableUtils::NAME);
-		$watchableUtils = $this->get(WatchableUtils::NAME);
-		$commentableUtils = $this->get(CommentableUtils::NAME);
-		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
-		$followerUtils = $this->get(FollowerUtils::NAME);
-
-		$parameters = array(
-			'entityType'        => $entityType,
-			'collection'        => $collection,
-			'likeContext'       => $likableUtils->getLikeContext($collection, $this->getUser()),
-			'watchContext'      => $watchableUtils->getWatchContext($collection, $this->getUser()),
-			'commentContext'    => $commentableUtils->getCommentContext($collection),
-			'collectionContext' => $collectionnableUtils->getCollectionContext($collection),
-			'followerContext'   => $followerUtils->getFollowerContext($collection->getUser(), $this->getUser()),
-		);
-
-		if ($entityType > 0) {
-
-			$om = $this->getDoctrine()->getManager();
-			$entryRepository = $om->getRepository(Entry::CLASS_NAME);
-			$paginatorUtils = $this->get(PaginatorUtils::NAME);
-			$typableUtils = $this->get(TypableUtils::NAME);
-
-			$offset = $paginatorUtils->computePaginatorOffset($page);
-			$limit = $paginatorUtils->computePaginatorLimit($page);
-			$paginator = $entryRepository->findPaginedByEntityTypeAndCollection($entityType, $collection, $offset, $limit);
-			$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_collection_show_type_page', array( 'id' => $collection->getId(), 'entityType' => $entityType ), $page, $paginator->count());
-
-			$entityIds = array();
-			foreach ($paginator as $entry) {
-				$entityIds[] = $entry->getEntityId();
-			}
-			$entities = $typableUtils->findTypables($entityType, $entityIds);
-
-			$parameters = array_merge($parameters, array(
-				'prevPageUrl' => $pageUrls->prev,
-				'nextPageUrl' => $pageUrls->next,
-				'entries'     => $paginator,
-				'entities'    => $entities,
-			));
-
-			if ($request->isXmlHttpRequest()) {
-				return $this->render('LadbCoreBundle:Collection:Collection/showEntities-xhr.html.twig', $parameters);
-			}
-			return $this->render('LadbCoreBundle:Collection:Collection/showEntities.html.twig', $parameters);
-
-		}
-
-		return $parameters;
 	}
 
 	/**
@@ -654,6 +540,82 @@ class CollectionController extends AbstractCollectionBasedController {
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->render('LadbCoreBundle:Collection/Collection:list-byentity-n-xhr.html.twig', $parameters);
+		}
+
+		return $parameters;
+	}
+
+	/**
+	 * @Route("/{id}.html", name="core_collection_show")
+	 * @Route("/{id}/tab/{entityType}", requirements={"id" = "\d+", "entityType" = "\d+"}, name="core_collection_show_type")
+	 * @Route("/{id}/tab/{entityType}/{page}", requirements={"id" = "\d+", "entityType" = "\d+", "page" = "\d+"}, name="core_collection_show_type_page")
+	 * @Template("LadbCoreBundle:Collection:Collection/showAbout.html.twig")
+	 */
+	public function showAction(Request $request, $id, $entityType = 0, $page = 0) {
+		$witnessManager = $this->get(WitnessManager::NAME);
+
+		// Retrieve collection
+		$collection = $this->_retrieveCollection($id);
+
+		if (!$collection->getIsPublic()) {
+			if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($this->getUser()) || $collection->getUser() != $this->getUser())) {
+				if ($response = $witnessManager->checkResponse(Collection::TYPE, $id)) {
+					return $response;
+				}
+				throw $this->createNotFoundException('Not allowed (core_collection_show)');
+			}
+		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($collection));
+
+		$likableUtils = $this->get(LikableUtils::NAME);
+		$watchableUtils = $this->get(WatchableUtils::NAME);
+		$commentableUtils = $this->get(CommentableUtils::NAME);
+		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
+		$followerUtils = $this->get(FollowerUtils::NAME);
+
+		$parameters = array(
+			'entityType'        => $entityType,
+			'collection'        => $collection,
+			'likeContext'       => $likableUtils->getLikeContext($collection, $this->getUser()),
+			'watchContext'      => $watchableUtils->getWatchContext($collection, $this->getUser()),
+			'commentContext'    => $commentableUtils->getCommentContext($collection),
+			'collectionContext' => $collectionnableUtils->getCollectionContext($collection),
+			'followerContext'   => $followerUtils->getFollowerContext($collection->getUser(), $this->getUser()),
+		);
+
+		if ($entityType > 0) {
+
+			$om = $this->getDoctrine()->getManager();
+			$entryRepository = $om->getRepository(Entry::CLASS_NAME);
+			$paginatorUtils = $this->get(PaginatorUtils::NAME);
+			$typableUtils = $this->get(TypableUtils::NAME);
+
+			$offset = $paginatorUtils->computePaginatorOffset($page);
+			$limit = $paginatorUtils->computePaginatorLimit($page);
+			$paginator = $entryRepository->findPaginedByEntityTypeAndCollection($entityType, $collection, $offset, $limit);
+			$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_collection_show_type_page', array( 'id' => $collection->getId(), 'entityType' => $entityType ), $page, $paginator->count());
+
+			$entityIds = array();
+			foreach ($paginator as $entry) {
+				$entityIds[] = $entry->getEntityId();
+			}
+			$entities = $typableUtils->findTypables($entityType, $entityIds);
+
+			$parameters = array_merge($parameters, array(
+				'prevPageUrl' => $pageUrls->prev,
+				'nextPageUrl' => $pageUrls->next,
+				'entries'     => $paginator,
+				'entities'    => $entities,
+			));
+
+			if ($request->isXmlHttpRequest()) {
+				return $this->render('LadbCoreBundle:Collection:Collection/showEntities-xhr.html.twig', $parameters);
+			}
+			return $this->render('LadbCoreBundle:Collection:Collection/showEntities.html.twig', $parameters);
+
 		}
 
 		return $parameters;

@@ -117,7 +117,6 @@ class EventController extends AbstractController {
 	/**
 	 * @Route("/{id}/lock", requirements={"id" = "\d+"}, defaults={"lock" = true}, name="core_event_lock")
 	 * @Route("/{id}/unlock", requirements={"id" = "\d+"}, defaults={"lock" = false}, name="core_event_unlock")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_event_lock)")
 	 */
 	public function lockUnlockAction($id, $lock) {
 
@@ -158,7 +157,6 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_event_unpublish")
-	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_event_unpublish)")
 	 */
 	public function unpublishAction(Request $request, $id) {
 
