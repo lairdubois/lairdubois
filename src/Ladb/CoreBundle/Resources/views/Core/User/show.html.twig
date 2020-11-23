@@ -92,6 +92,8 @@
                             <i class="ladb-icon-more"></i> <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-invite"></i> Voir les invitations en attente</a></li>
+                            <li role="separator" class="divider"></li>
                             <li class="dropdown-item-danger"><a href="{{ path('core_member_delete', { 'teamId':user.id }) }}"><i class="ladb-icon-exit"></i> Quitter le collectif...</a></li>
                         </ul>
                     </div>

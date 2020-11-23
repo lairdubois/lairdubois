@@ -33,7 +33,7 @@
                 load: function(query, callback) {
                     if (!query.length) return callback();
                     $.ajax({
-                        url: '{{ path('core_search_typeahead_users_json') }}',
+                        url: '{{ path('core_search_typeahead_users_json', { 'family':'users' }) }}',
                         type: 'GET',
                         data: {
                             q: query,

@@ -1515,7 +1515,7 @@ class UserController extends AbstractController {
 	public function showMembersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
 		if ($user->getUsernameCanonical() != $username) {
-			return $this->redirect($this->generateUrl('core_user_show_following', array( 'username' => $user->getUsernameCanonical() )));
+			return $this->redirect($this->generateUrl('core_user_show_members', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Member
@@ -1527,7 +1527,7 @@ class UserController extends AbstractController {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $memberRepository->findPaginedByTeam($user, $offset, $limit, $filter);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_member_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_members_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
 
 		$parameters = array(
 			'filter'      => $filter,
@@ -1537,11 +1537,50 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Core/Follower:member-list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Core/Member:member-list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'members',
+		)));
+	}
+
+	/**
+	 * @Route("/@{username}/invitations", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_invitations")
+	 * @Route("/@{username}/invitations/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_invitations_filter")
+	 * @Route("/@{username}/invitations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_invitations_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showInvitations.html.twig")
+	 */
+	public function showInvitationsAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
+		$user = $this->retrieveUserByUsername($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_invitations', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		// Member
+
+		$om = $this->getDoctrine()->getManager();
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		$paginator = $memberInvitationRepository->findPaginedByTeam($user, $offset, $limit, $filter);
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_invitations_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'invitations' => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Member:invitations-list-xhr.html.twig', $parameters);
+		}
+
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'invitations',
 		)));
 	}
 

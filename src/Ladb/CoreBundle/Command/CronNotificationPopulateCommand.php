@@ -404,6 +404,9 @@ EOT
 			$members = $memberRepository->findPaginedByTeam($user);
 
 			foreach ($members as $member) {
+				if ($member->getUser() == $activity->getUser()) {
+					continue;	// Exclude activity user
+				}
 				$this->_createNotification($om, $member->getUser(), $activity, $notifiedUsers, $freshNotificationCount);
 			}
 

@@ -10,7 +10,7 @@
 
 {% block bodyInner %}
     {% if app.user.emailConfirmed %}
-        {% if entity.isLocked %}
+        {% if entity.isLocked or entity.parentEntity is defined and entity.parentEntity.isLocked %}
             <div class="media">
                 <div class="media-left" style="padding-top: 5px;">
                     <i class="ladb-icon-lock ladb-icon-lg"></i>

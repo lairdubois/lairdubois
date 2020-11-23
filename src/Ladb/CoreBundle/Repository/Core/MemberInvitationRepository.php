@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Repository\Core;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
@@ -45,6 +46,36 @@ class MemberInvitationRepository extends AbstractEntityRepository {
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return null;
 		}
+	}
+
+	//////
+
+	private function _applyCommonFilter(&$queryBuilder, $filter) {
+		$queryBuilder
+			->addOrderBy('u.createdAt', 'DESC')
+		;
+	}
+
+	public function findPaginedByTeam(User $team, $offset = 0, $limit = 0, $filter = 'recent') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'e', 'u' ))
+			->from($this->getEntityName(), 'e')
+			->innerJoin('e.recipient', 'u')
+			->where('e.team = :team')
+			->setParameter('team', $team)
+		;
+
+		if ($offset > 0) {
+			$queryBuilder->setFirstResult($offset);
+		}
+		if ($limit > 0) {
+			$queryBuilder->setMaxResults($limit);
+		}
+
+		$this->_applyCommonFilter($queryBuilder, $filter);
+
+		return new Paginator($queryBuilder->getQuery());
 	}
 
 }

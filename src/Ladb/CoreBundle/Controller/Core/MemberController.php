@@ -110,13 +110,13 @@ class MemberController extends AbstractController {
 		// Flashbag
 		$this->get('session')->getFlashBag()->add($invitationCount > 0 ? 'success' : 'error', $invitationCount.' invitation envoyée');	// TODO
 
-		return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical() )));
+		return $this->redirect($this->generateUrl('core_user_show_invitations', array( 'username' => $team->getUsernameCanonical() )));
 	}
 
 	/**
 	 * @Route("/invitation/{id}/delete", requirements={"id" = "\d+"}, name="core_member_invitation_delete")
 	 */
-	public function deleteInvitationAction($id) {
+	public function deleteInvitationAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
@@ -128,7 +128,7 @@ class MemberController extends AbstractController {
 
 		$team = $invitation->getTeam();
 
-		if ($invitation->getRecipient() != $this->getUser() || !$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
+		if ($invitation->getRecipient() != $this->getUser() && !$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
 			throw $this->createNotFoundException('Not allowed (core_member_invitation_delete)');
 		}
 
@@ -137,11 +137,21 @@ class MemberController extends AbstractController {
 		$activityUtils->deleteActivitiesByInvitation($invitation);
 
 		$om->remove($invitation);
+		$om->flush();
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', 'Invitation supprimée.');
 
-		return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical() )));
+		// Return to
+		$returnToUrl = $request->get('rtu');
+		if (is_null($returnToUrl)) {
+			$returnToUrl = $request->headers->get('referer');
+			if (is_null($returnToUrl)) {
+				$returnToUrl = $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical() )));
+			}
+		}
+
+		return $this->redirect($returnToUrl);
 	}
 
 	/**

@@ -1150,6 +1150,7 @@ team:
   choice:
     entities: '[0,1]collectif|]1,Inf]collectifs'
     members: '[0,1]membre|]1,Inf]membres'
+    invitations: '[0,1]invitation|]1,Inf]invitations'
 
 user:
   description: Liste des boiseux inscrits à la plateforme de partage collaborative L'Air du Bois.

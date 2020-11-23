@@ -1,0 +1,17 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set invitations #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for invitation in invitations %}
+        {% embed 'LadbCoreBundle:Core/User:_list-row.part.html.twig' with { 'user':invitation.recipient } %}
+            {% block counters %}
+                <div class="pull-right" style="line-height: 64px;">
+                    <small class="ladb-horizontal-separator-right text-muted">Invité par <strong>{{ invitation.sender.displayname }}</strong></small>
+                    <a href="{{ path('core_member_invitation_delete', { 'id':invitation.id }) }}" class="btn btn-danger btn-sm"><i class="ladb-icon-delete"></i> Supprimer</a>
+                </div>
+            {% endblock %}
+        {% endembed %}
+    {% endfor %}
+{% endblock %}

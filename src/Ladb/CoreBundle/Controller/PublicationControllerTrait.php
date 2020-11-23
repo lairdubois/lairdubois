@@ -137,14 +137,20 @@ trait PublicationControllerTrait {
 		if ($publication instanceof DraftableInterface && $publication->getIsDraft() === false) {
 			throw $this->createNotFoundException('Already published ('.$context.')');
 		}
-		if ($publication instanceof ChildInterface) {
-			$publication = $publication->getParentEntity();
-		}
 		if ($publication->getIsLocked() === true) {
 			throw $this->createNotFoundException('Locked ('.$context.')');
 		}
 		if ($publication instanceof RepublishableInterface && $maxPublishCount > 0 && $publication->getPublishCount() >= $maxPublishCount) {
 			throw $this->createNotFoundException('Max publish count reached ('.$context.')');
+		}
+		if ($publication instanceof ChildInterface && $publication->getParentEntity() instanceof PublicationInterface) {
+			$parentPublication = $publication->getParentEntity();
+			if ($parentPublication->getIsLocked() === true) {
+				throw $this->createNotFoundException('Locked ('.$context.')');
+			}
+			if ($parentPublication instanceof RepublishableInterface && $maxPublishCount > 0 && $parentPublication->getPublishCount() >= $maxPublishCount) {
+				throw $this->createNotFoundException('Max publish count reached ('.$context.')');
+			}
 		}
 	}
 

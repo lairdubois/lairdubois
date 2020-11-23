@@ -25,7 +25,7 @@
         <div class="col-md-8 col-xs-12">
             {% if not isOwner and not hasBiography and not hasMap and testimonials is empty %}
                 <div style="font-size: 200px; text-align: center; color: #ddd;">
-                    <i class="ladb-icon-user"></i>
+                    <i class="ladb-icon-{% if user.isTeam %}users{% else %}user{% endif %}"></i>
                 </div>
             {% endif %}
             {% if hasBiography or isOwner %}
@@ -109,7 +109,7 @@
                             <div class="ladb-metas">
                                 <div class="ladb-meta">
                                     <span class="pull-right">{{ user.createdAt|time_diff() }}</span>
-                                    <span><i class="ladb-icon-time"></i>&nbsp;Inscrit</span>
+                                    <span><i class="ladb-icon-time"></i>&nbsp;{% if user.isTeam %}Créé{% else %}Inscrit{% endif %}</span>
                                 </div>
                                 {% if not user.isTeam %}
                                     <div class="ladb-meta">

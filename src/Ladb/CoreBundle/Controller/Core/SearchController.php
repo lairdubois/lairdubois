@@ -32,14 +32,26 @@ class SearchController extends AbstractController {
 	public function searchTypeaheadUsersAction(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::NAME);
 
+		$family = $request->get('family');
 
 		$searchParameters = $searchUtils->searchPaginedEntities(
 			$request,
 			$page,
-			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) use ($family) {
 				$bool = new \Elastica\Query\BoolQuery();
-				$q0 = new \Elastica\Query\Term([ 'isTeam' => [ 'value' => false, 'boost' => 1.0 ] ]);
-				$bool->addMust($q0);
+				if (!is_null($family)) {
+					switch ($family) {
+						case 'users':
+							$q0 = new \Elastica\Query\Term([ 'isTeam' => [ 'value' => false, 'boost' => 1.0 ] ]);
+							$bool->addMust($q0);
+							break;
+						case 'teams':
+							$q0 = new \Elastica\Query\Term([ 'isTeam' => [ 'value' => true, 'boost' => 1.0 ] ]);
+							$bool->addMust($q0);
+							break;
+					}
+				}
+
 				$q1 = new \Elastica\Query\QueryString('*'.$facet->value.'*');
 				$q1->setFields(array( 'displayname^10', 'username^5', 'fullname' ));
 				$bool->addMust($q1);
