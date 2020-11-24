@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Elastica\Exception\NotFoundException;
 use FOS\UserBundle\Model\UserInterface;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Ladb\CoreBundle\Controller\AbstractController;
@@ -1709,6 +1710,9 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User/Team:new.html.twig")
 	 */
 	public function teamNewAction() {
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw new NotFoundException('Not allowed (core_user_team_new)');
+		}
 
 		$userManager = $this->get('fos_user.user_manager');
 
@@ -1725,6 +1729,9 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User/Team:new.html.twig")
 	 */
 	public function teamCreateAction(Request $request) {
+		if (!$this->getUser()->getEmailConfirmed()) {
+			throw new NotFoundException('Not allowed (core_user_team_create)');
+		}
 
 		$this->createLock('core_user_team_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
