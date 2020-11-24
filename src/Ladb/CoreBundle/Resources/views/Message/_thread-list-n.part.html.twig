@@ -16,15 +16,12 @@
                         {% endif %}
                     </div>
                     <div class="ladb-participants">
-                        {% for participant in thread.participants %}
-                            <strong>{% include 'LadbCoreBundle:Core/User:_displayname.part.html.twig' with { 'user':participant, 'me':true } %}</strong>{% if not loop.last %}, {% endif %}
+                        {% for participant in thread.participants if participant != app.user %}
+                            <div class="ladb-participant">{% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':participant, 'size':20 } %} {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':participant, 'noBadge':true } %}</div>
                         {% endfor %}
                     </div>
                 </div>
                 <div class="col-sm-9 col-xs-12">
-                    <div class="ladb-message-count ladb-hidden-mobile">
-                        <span class="label label-default">{{ thread.messageCount }} <i class="ladb-icon-comment"></i></span>
-                    </div>
                     <div class="ladb-age">
                         {{ thread.lastMessageDate|time_diff() }}
                     </div>

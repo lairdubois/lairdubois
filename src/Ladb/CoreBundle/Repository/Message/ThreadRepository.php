@@ -84,44 +84,18 @@ class ThreadRepository extends AbstractEntityRepository {
 			->innerJoin('m.metas', 'mm')
 			->where('t = :thread')
 			->andWhere('mm.participant = :participant')
-			->andWhere('mm.isRead = false')
+			->andWhere('mm.isRead = true')
 			->setParameter('thread', $thread)
 			->setParameter('participant', $participant);
 
 		try {
-			return $queryBuilder->getQuery()->getSingleScalarResult();
+			return $thread->getMessageCount() - $queryBuilder->getQuery()->getSingleScalarResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
 			return 0;
 		}
 	}
 
 	/////
-
-	public function findPaginedByUser($user, $offset, $limit, $filter = 'all') {
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
-		$queryBuilder
-			->select(array( 't' ))
-			->from($this->getEntityName(), 't')
-			->innerJoin('t.metas', 'tm')
-			->innerJoin('tm.participant', 'p')
-			->where('p = :user')
-			->andWhere('tm.isDeleted = false')
-			->setParameter('user', $user)
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-		;
-
-		if ($filter == 'sent') {
-			$queryBuilder
-				->andWhere('t.createdBy = :createdBy')
-				->setParameter('createdBy', $user);
-		}
-
-		$queryBuilder
-			->addOrderBy('t.lastMessageDate', 'DESC');
-
-		return new Paginator($queryBuilder->getQuery());
-	}
 
 	public function findPaginedByUsers(array $users, $offset, $limit, $filter = 'all') {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
@@ -136,6 +110,12 @@ class ThreadRepository extends AbstractEntityRepository {
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
+
+		if ($filter == 'sent' && count($users) > 0) {
+			$queryBuilder
+				->andWhere('t.createdBy = :createdBy')
+				->setParameter('createdBy', $users[0]);
+		}
 
 		$queryBuilder
 			->addOrderBy('t.lastMessageDate', 'DESC');

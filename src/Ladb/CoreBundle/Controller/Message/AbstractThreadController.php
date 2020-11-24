@@ -74,6 +74,9 @@ abstract class AbstractThreadController extends AbstractController {
 					// Webpush notification
 					$webpushNotificationUtils->enqueueIncomingMessageNotification($member->getUser(), $sender, $thread);
 
+					// Increment unread message count
+					$member->getUser()->getMeta()->incrementUnreadMessageCount();
+
 					$notifiedRecipients[] = $member->getUser();
 				}
 			} else {
@@ -87,6 +90,9 @@ abstract class AbstractThreadController extends AbstractController {
 
 				// Webpush notification
 				$webpushNotificationUtils->enqueueIncomingMessageNotification($recipient, $sender, $thread);
+
+				// Increment unread message count
+				$recipient->getMeta()->incrementUnreadMessageCount();
 
 				$notifiedRecipients[] = $recipient;
 			}

@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Message;
 
+use Ladb\CoreBundle\Entity\Message\MessageMeta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -157,6 +158,7 @@ class ThreadController extends AbstractThreadController {
 	 */
 	public function showAction($id) {
 		$om = $this->getDoctrine()->getManager();
+		$messageMetaRepository = $om->getRepository(MessageMeta::CLASS_NAME);
 
 		$thread = $this->retrieveThread($id);
 		$this->assertShowable($thread);
@@ -167,16 +169,32 @@ class ThreadController extends AbstractThreadController {
 
 		$unreadMessageCount = 0;
 		foreach ($thread->getMessages() as $message) {
-			foreach ($message->getMetas() as $messageMeta) {
-				if (!$messageMeta->getIsRead() && $messageMeta->getParticipant() === $this->getUser()) {
-					$message->setIsRead(false);	// used to view only
+
+			$messageMeta = $messageMetaRepository->findOneByMessageAndParticipant($message, $participant);
+			if (is_null($messageMeta)) {
+
+				$message->setIsRead(false);	// used to view only
+
+				$messageMeta = new MessageMeta();
+				$messageMeta->setParticipant($participant);
+				$messageMeta->setIsRead(true);
+				$message->addMeta($messageMeta);
+
+				$om->persist($messageMeta);
+
+				$unreadMessageCount++;
+			} else {
+				if (!$messageMeta->getIsRead()) {
 					$messageMeta->setIsRead(true);
 					$unreadMessageCount++;
 				}
 			}
+
 		}
 
 		if ($unreadMessageCount > 0) {
+
+			// Decrement unread message count
 			$participant->getMeta()->incrementUnreadMessageCount(-$unreadMessageCount);
 
 			$om->flush();

@@ -79,21 +79,16 @@ class MessageController extends AbstractThreadController {
 			$fieldPreprocessorUtils->preprocessFields($message);
 			$thread->addMessage($message);
 
+			// Flag message as read for sender
+			$messageMeta = new MessageMeta();
+			$messageMeta->setParticipant($sender);
+			$messageMeta->setIsRead(true);
+			$message->addMeta($messageMeta);
+
+			// Populate recipients list
 			foreach ($participants as $participant) {
-
-				$messageMeta = new MessageMeta();
-				$messageMeta->setParticipant($participant);
-				$messageMeta->setIsRead($participant == $sender);
-				$message->addMeta($messageMeta);
-
 				if ($participant != $sender) {
-
-					// Increment unread message count (if participant is not a team)
-					$participant->getMeta()->incrementUnreadMessageCount();
-
-					// Populate recipients list
 					$recipients[] = $participant;
-
 				}
 			}
 
@@ -102,14 +97,14 @@ class MessageController extends AbstractThreadController {
 				$threadMeta->setIsDeleted(false);
 			}
 
-			$om->flush();
-
 			if (!$sender->getEmailConfirmed() && $sender->getMeta()->getIncomingMessageEmailNotificationEnabled()) {
 				$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('default.alert.email_not_confirmed_error'));
 			}
 
 			// Notifications (after flush to have a thread id)
 			$this->notifyRecipientsForIncomingMessage($recipients, $sender, $thread, $message);
+
+			$om->flush();
 
 			return $this->render('LadbCoreBundle:Message:create-xhr.html.twig', array( 'message' => $message ));
 		}

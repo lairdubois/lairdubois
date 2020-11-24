@@ -26,7 +26,7 @@
             maxItems: 20,
             closeAfterSelect: true,
             selectOnTab: true,
-            placeholder: 'Saisissez le nom d\'un boiseu',
+            placeholder: 'Saisissez le nom d\'un boiseu ou d\'un collectif',
             {% if form.vars.data.recipients|length > 0 %}
                 options: [
                     {% for recipent in form.vars.data.recipients %}

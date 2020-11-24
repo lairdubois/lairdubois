@@ -15,13 +15,29 @@
   border-bottom: 1px solid @ladb-global-border;
   cursor: pointer;
   padding: 5px 0 5px 0;
+  background: none;
+  color: #777;
+
+  &.ladb-unread {
+    background-color: #eee;
+    color: @ladb-global-color;
+  }
+
+  &.ladb-announcement {
+    background-color: #fff0f0;
+    font-style: italic;
+  }
 
   &:hover {
     background-color: lighten(@ladb-brand-primary, 45%);
   }
 
+  a {
+    color: inherit;
+  }
+
   .ladb-unread-message-count {
-    float: left;
+    float: right;
     line-height: 32px;
     width: 30px;
     text-align: center;
@@ -35,42 +51,28 @@
     display: inline-block;
     margin-left: 5px;
     line-height: 32px;
+
+    .ladb-participant {
+      display: inline-block;
+      margin-right: 5px;
+    }
+
   }
 
   .ladb-subject {
     line-height: 32px;
-
-    > a {
-      color: @ladb-global-color;
-    }
-
+    font-size: 110%;
+    font-weight: bold;
   }
 
   .ladb-age {
     float: right;
     line-height: 32px;
-    width: 80px;
-    text-align: right;
     font-size: 80%;
     color: @ladb-global-light-color;
     margin-right: 10px;
   }
 
-  .ladb-message-count {
-    float: right;
-    line-height: 32px;
-    width: 40px;
-  }
-
-}
-
-.ladb-unread {
-  font-weight: bold;
-}
-
-.ladb-announcement {
-  background-color: #fff0f0;
-  font-style: italic;
 }
 
 .ladb-thread {

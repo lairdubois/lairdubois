@@ -301,6 +301,7 @@
                     $container.parent().append($stamps);
 
                     $container.jscroll.destroy();
+                    $container.removeData('jscroll');
                     $container
                         .empty()
                         .append($stamps)

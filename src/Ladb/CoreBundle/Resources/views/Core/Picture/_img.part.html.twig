@@ -24,6 +24,6 @@
 
 {% block img %}
     {% if not noSizer %}<div class="ladb-img-sizer{% if not autoSizer %} ladb-img-sizer-{{ filter }}{% endif %}"{% if autoSizer %} style="padding-top:{{ min(135.2, filterMode != 'i' and (picture.width < width or picture.height < height) ? min(picture.height, height) / min(picture.width, width) * 100 : (picture ? picture.heightRatio100 : 100)) }}%;"{% endif %}>{% endif %}
-        <img {% if not noLazyLoad %}src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-{% endif %}src="{{ webPath|imagine_filter(filter) }}" alt="{{ alt }}"{% if attributes is defined %} {{ attributes|raw }}{% endif %}{% if not noMicrodata %} itemprop="{{ itemprop|default('image') }}"{% endif %}{% if imgClasses is defined %} class="{{ imgClasses }}"{% endif %}>
+        <img {% if not noLazyLoad %}src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-{% endif %}src="{{ webPath|imagine_filter(filter) }}" alt="{{ alt }}"{% if attributes is defined %} {{ attributes|raw }}{% endif %}{% if not noMicrodata %} itemprop="{{ itemprop|default('image') }}"{% endif %}{% if imgClasses is defined %} class="{{ imgClasses }}"{% endif %}{% if noSizer %} width="{{ width }}"{% endif %}>
     {% if not noSizer %}</div>{% endif %}
 {% endblock %}

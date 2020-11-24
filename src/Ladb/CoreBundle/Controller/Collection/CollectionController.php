@@ -579,6 +579,7 @@ class CollectionController extends AbstractCollectionBasedController {
 		$parameters = array(
 			'entityType'        => $entityType,
 			'collection'        => $collection,
+			'permissionContext' => $this->getPermissionContext($collection),
 			'likeContext'       => $likableUtils->getLikeContext($collection, $this->getUser()),
 			'watchContext'      => $watchableUtils->getWatchContext($collection, $this->getUser()),
 			'commentContext'    => $commentableUtils->getCommentContext($collection),
