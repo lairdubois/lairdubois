@@ -12,51 +12,6 @@ class MemberUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.member_utils';
 
-	public function create(User $team, User $user) {
-
-		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
-
-		if (!$memberRepository->existsByTeamAndUser($team, $user) && $team !== $user) {
-
-			$member = new Member();
-			$member->setTeam($team);
-			$member->setUser($user);
-
-			$om->persist($member);
-
-			// Update counters
-
-			$user->getMeta()->incrementTeamCount();
-			$team->getMeta()->incrementMemberCount();
-
-			$om->flush();
-
-		}
-
-	}
-
-	public function delete(User $team, User $user) {
-
-		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
-
-		$member = $memberRepository->findOneByTeamAndUser($team, $user);
-		if (!is_null($member)) {
-
-			$om->remove($member);
-
-			// Update counters
-
-			$user->getMeta()->incrementTeamCount(-1);
-			$team->getMeta()->incrementMemberCount(-1);
-
-			$om->flush();
-
-		}
-
-	}
-
 	public function deleteMembersByTeam(User $team, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);

@@ -1580,6 +1580,7 @@ notification:
     testify: '[0,1]Notification de nouveau témoignage|]1,Inf]Notification de nouveaux témoignages'
     review: '[0,1]Notification de nouvel avis|]1,Inf]Notification de nouveaux avis'
     feedback: "[0,1]Notification de nouveau retour d'expérience|]1,Inf]Notification de nouveaux retours d'expérience"
+    invite: "[0,1]Notification de nouvelle invitation|]1,Inf]Notification de nouvelles invitations"
 
 share:
   social:

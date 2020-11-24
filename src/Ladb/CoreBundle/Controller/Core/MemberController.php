@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Manager\Core\MemberInvitationManager;
+use Ladb\CoreBundle\Manager\Core\MemberManager;
 use Ladb\CoreBundle\Utils\FollowerUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -101,22 +103,9 @@ class MemberController extends AbstractController {
 				continue;
 			}
 
-			// Create the invitation
-			$invitation = new MemberInvitation();
-			$invitation->setTeam($team);
-			$invitation->setSender($this->getUser());
-			$invitation->setRecipient($recipient);
-
-			$om->persist($invitation);
-
-			// Update counters
-
-			$team->getMeta()->incrementInvitationCount();
-			$recipient->getMeta()->incrementInvitationCount();
-
-			// Create activity
-			$activityUtils = $this->get(ActivityUtils::NAME);
-			$activityUtils->createInviteActivity($invitation, false);
+			// Create invitation
+			$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
+			$memberInvitationManager->create($team, $this->getUser(), $recipient, false);
 
 			$invitationCount++;
 		}
@@ -148,18 +137,9 @@ class MemberController extends AbstractController {
 			throw $this->createNotFoundException('Not allowed (core_member_invitation_delete)');
 		}
 
-		// Delete activities
-		$activityUtils = $this->get(ActivityUtils::NAME);
-		$activityUtils->deleteActivitiesByInvitation($invitation);
-
-		$om->remove($invitation);
-
-		// Update counters
-
-		$invitation->getTeam()->getMeta()->incrementInvitationCount(-1);
-		$invitation->getRecipient()->getMeta()->incrementInvitationCount(-1);
-
-		$om->flush();
+		// Delete invitation
+		$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
+		$memberInvitationManager->delete($invitation);
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', 'Invitation supprimée.');
@@ -195,12 +175,9 @@ class MemberController extends AbstractController {
 			throw $this->createNotFoundException('Not allowed - User not invited (core_member_create)');
 		}
 
-		// Delete invitation activities
-		$activityUtils = $this->get(ActivityUtils::NAME);
-		$activityUtils->deleteActivitiesByInvitation($invitation);
-
-		// Remove invitation
-		$om->remove($invitation);
+		// Delete invitation
+		$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
+		$memberInvitationManager->delete($invitation);
 
 		// Follow management /////
 
@@ -210,8 +187,8 @@ class MemberController extends AbstractController {
 
 		// Member management /////
 
-		$memberUtils = $this->get(MemberUtils::NAME);
-		$memberUtils->create($team, $this->getUser());
+		$memberManager = $this->get(MemberManager::NAME);
+		$memberManager->create($team, $this->getUser());
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', 'Bienvenue dans le collectif <strong>'.$team->getDisplayName().'</strong>.');
@@ -226,8 +203,17 @@ class MemberController extends AbstractController {
 
 		$team = $this->_retrieveTeam($teamId);
 
-		$memberUtils = $this->get(MemberUtils::NAME);
-		$memberUtils->delete($team, $this->getUser());
+		$om = $this->getDoctrine()->getManager();
+		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+
+		$member = $memberRepository->findOneByTeamAndUser($team, $this->getUser());
+		if (!is_null($member)) {
+
+			// Delete member
+			$memberManager = $this->get(MemberManager::NAME);
+			$memberManager->delete($member);
+
+		}
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', 'Vous avez quitté le collectif <strong>'.$team->getDisplayName().'</strong>.');

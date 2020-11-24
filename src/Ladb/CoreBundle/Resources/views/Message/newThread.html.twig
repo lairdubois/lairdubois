@@ -21,7 +21,7 @@
         $('#{{ form.recipients.vars.id }}').selectize({
             plugins: ['remove_button'],
             valueField: 'username',
-            searchField: 'displayname',
+            searchField: [ 'displayname', 'username' ],
             create: false,
             maxItems: 20,
             closeAfterSelect: true,

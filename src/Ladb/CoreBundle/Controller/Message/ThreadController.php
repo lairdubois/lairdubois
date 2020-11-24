@@ -2,31 +2,23 @@
 
 namespace Ladb\CoreBundle\Controller\Message;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ladb\CoreBundle\Entity\Message\Message;
-use Ladb\CoreBundle\Entity\Message\MessageMeta;
+use Ladb\CoreBundle\Entity\Core\Member;
+use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Ladb\CoreBundle\Entity\Message\Thread;
-use Ladb\CoreBundle\Entity\Core\User;
-use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\PaginatorUtils;
 use Ladb\CoreBundle\Utils\MessageUtils;
 use Ladb\CoreBundle\Form\Type\Message\NewThreadMessageType;
-use Ladb\CoreBundle\Form\Type\Message\NewThreadAnnouncementMessageType;
-use Ladb\CoreBundle\Form\Type\Message\ReplyMessageType;
 use Ladb\CoreBundle\Form\Model\NewThreadMessage;
-use Ladb\CoreBundle\Form\Model\NewThreadAnnouncementMessage;
-use Ladb\CoreBundle\Form\Model\ReplyMessage;
 use Ladb\CoreBundle\Utils\MailerUtils;
 
 /**
  * @Route("/messagerie")
  */
-class ThreadController extends AbstractController {
+class ThreadController extends AbstractThreadController {
 
 	/**
 	 * @Route("/thread/new", name="core_message_thread_new", defaults={"recipientUsername" = null, "announcement" = false})
@@ -34,6 +26,9 @@ class ThreadController extends AbstractController {
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
 	public function newAction($recipientUsername, $subject = null, $message = null, $alertTemplate =  null) {
+		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
+			throw $this->createNotFoundException('Team not allowed (core_message_thread_new)');
+		}
 
 		$newThreadMessage = new NewThreadMessage();
 
@@ -67,6 +62,9 @@ class ThreadController extends AbstractController {
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
 	public function createAction(Request $request) {
+		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
+			throw $this->createNotFoundException('Team not allowed (core_message_thread_create)');
+		}
 
 		$this->createLock('core_message_thread_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
@@ -109,17 +107,7 @@ class ThreadController extends AbstractController {
 			}
 
 			// Notifications (after flush to have a thread id)
-			$mailerUtils = $this->get(MailerUtils::NAME);
-			$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
-			foreach ($recipients as $recipient) {
-
-				// Email notification
-				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
-
-				// Webpush notification
-				$webpushNotificationUtils->enqueueIncomingMessageNotification($recipient, $sender, $thread);
-
-			}
+			$this->notifyRecipientsForIncomingMessage($recipients, $sender, $thread, $thread->getMessages()->last());
 
 			return $this->redirect($this->generateUrl('core_message_thread_show', array( 'id' => $thread->getId())));
 		}
@@ -138,13 +126,8 @@ class ThreadController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
 
-		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($id);
-		if (is_null($thread)) {
-			throw $this->createNotFoundException('Unable to find Thread entity (id='.$id.').');
-		}
-		if (!$thread->getParticipants()->contains($this->getUser())) {
-			throw $this->createNotFoundException('Not allowed (core_message_thread_delete)');
-		}
+		$thread = $this->retrieveThread($id);
+		$this->assertDeletable($thread);
 
 		$unreadMessageCount = $threadRepository->countUnreadMessageByThreadAndUser($thread, $this->getUser());
 		if ($unreadMessageCount > 0) {
@@ -174,15 +157,9 @@ class ThreadController extends AbstractController {
 	 */
 	public function showAction($id) {
 		$om = $this->getDoctrine()->getManager();
-		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
 
-		$thread = $threadRepository->findOneByIdJoinedOnOptimized($id);
-		if (is_null($thread)) {
-			throw $this->createNotFoundException('Unable to find Thread entity (id='.$id.').');
-		}
-		if (!$thread->getParticipants()->contains($this->getUser())) {
-			throw $this->createNotFoundException('Not allowed (core_message_thread_show)');
-		}
+		$thread = $this->retrieveThread($id);
+		$this->assertShowable($thread);
 
 		// Flag messages as read
 
@@ -222,9 +199,19 @@ class ThreadController extends AbstractController {
 		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
 		$paginatorUtils = $this->get(PaginatorUtils::NAME);
 
+		// Compute allowed user list by adding user's teams
+		$users = array( $this->getUser() );
+		if ($this->getUser()->getMeta()->getTeamCount() > 0) {
+			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$members = $memberRepository->findPaginedByUser($this->getUser());
+			foreach ($members as $member) {
+				$users[] = $member->getTeam();
+			}
+		}
+
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
 		$limit = $paginatorUtils->computePaginatorLimit($page, 20, 20);
-		$paginator = $threadRepository->findPaginedByUser($this->getUser(), $offset, $limit, $filter);
+		$paginator = $threadRepository->findPaginedByUsers($users, $offset, $limit, $filter);
 		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_message_mailbox_filter_page', array( 'filter' => $filter ), $page, $paginator->count(), 20, 20);
 
 		// Compute unreadMessageCount

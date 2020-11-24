@@ -123,4 +123,24 @@ class ThreadRepository extends AbstractEntityRepository {
 		return new Paginator($queryBuilder->getQuery());
 	}
 
+	public function findPaginedByUsers(array $users, $offset, $limit, $filter = 'all') {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 't' ))
+			->from($this->getEntityName(), 't')
+			->innerJoin('t.metas', 'tm')
+			->innerJoin('tm.participant', 'p')
+			->where('p IN (:users)')
+			->andWhere('tm.isDeleted = false')
+			->setParameter('users', $users)
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+		;
+
+		$queryBuilder
+			->addOrderBy('t.lastMessageDate', 'DESC');
+
+		return new Paginator($queryBuilder->getQuery());
+	}
+
 }

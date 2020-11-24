@@ -81,9 +81,10 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		}
 	}
 
-	public function sendIncomingMessageNotificationEmailMessage(User $recipientUser, User $actorUser, Thread $thread, Message $message) {
+	public function sendIncomingMessageNotificationEmailMessage(User $originRecipientUser, User $recipientUser, User $actorUser, Thread $thread, Message $message) {
 		if ($recipientUser->getMeta()->getIncomingMessageEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
 			$parameters = array(
+				'originRecipientUser' => $originRecipientUser,
 				'recipientUser'       => $recipientUser,
 				'actorUser'           => $actorUser,
 				'thread'              => $thread,

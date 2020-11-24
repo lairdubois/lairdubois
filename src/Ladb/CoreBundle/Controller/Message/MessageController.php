@@ -2,44 +2,21 @@
 
 namespace Ladb\CoreBundle\Controller\Message;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ladb\CoreBundle\Entity\Message\Message;
 use Ladb\CoreBundle\Entity\Message\MessageMeta;
-use Ladb\CoreBundle\Entity\Message\Thread;
-use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
-use Ladb\CoreBundle\Utils\PaginatorUtils;
-use Ladb\CoreBundle\Utils\MessageUtils;
-use Ladb\CoreBundle\Form\Type\Message\NewThreadMessageType;
-use Ladb\CoreBundle\Form\Type\Message\NewThreadAnnouncementMessageType;
 use Ladb\CoreBundle\Form\Type\Message\ReplyMessageType;
-use Ladb\CoreBundle\Form\Model\NewThreadMessage;
-use Ladb\CoreBundle\Form\Model\NewThreadAnnouncementMessage;
-use Ladb\CoreBundle\Form\Model\ReplyMessage;
 use Ladb\CoreBundle\Utils\MailerUtils;
+use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 
 /**
  * @Route("/messagerie")
  */
-class MessageController extends AbstractController {
-
-	private function _retrieveThread($threadId) {
-		$om = $this->getDoctrine()->getManager();
-		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
-		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($threadId);
-		if (is_null($thread)) {
-			throw $this->createNotFoundException('Unable to find Thread entity (id='.$id.').');
-		}
-		if (!$thread->getParticipants()->contains($this->getUser())) {
-			throw $this->createNotFoundException('Not allowed (core_message_thread_update)');
-		}
-		return $thread;
-	}
+class MessageController extends AbstractThreadController {
 
 	/**
 	 * @Route("/thread/{threadId}/new", requirements={"threadId" = "\d+"}, name="core_message_new")
@@ -49,9 +26,13 @@ class MessageController extends AbstractController {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed (core_message_new)');
 		}
+		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
+			throw $this->createNotFoundException('Team not allowed (core_message_new)');
+		}
 
 		// Retrieve related thread
-		$thread = $this->_retrieveThread($threadId);
+		$thread = $this->retrieveThread($threadId);
+		$this->assertShowable($thread);
 
 		$message = new Message();
 		$form = $this->createForm(ReplyMessageType::class, $message);
@@ -70,10 +51,14 @@ class MessageController extends AbstractController {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed (core_message_create)');
 		}
+		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
+			throw $this->createNotFoundException('Team not allowed (core_message_create)');
+		}
 
 		$this->createLock('core_message_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
-		$thread = $this->_retrieveThread($threadId);
+		$thread = $this->retrieveThread($threadId);
+		$this->assertShowable($thread);
 
 		$message = new Message();
 		$form = $this->createForm(ReplyMessageType::class, $message);
@@ -103,7 +88,7 @@ class MessageController extends AbstractController {
 
 				if ($participant != $sender) {
 
-					// Increment unread message count
+					// Increment unread message count (if participant is not a team)
 					$participant->getMeta()->incrementUnreadMessageCount();
 
 					// Populate recipients list
@@ -124,17 +109,7 @@ class MessageController extends AbstractController {
 			}
 
 			// Notifications (after flush to have a thread id)
-			$mailerUtils = $this->get(MailerUtils::NAME);
-			$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
-			foreach ($recipients as $recipient) {
-
-				// Email notification
-				$mailerUtils->sendIncomingMessageNotificationEmailMessage($recipient, $sender, $thread, $thread->getMessages()->last());
-
-				// Webpush notification
-				$webpushNotificationUtils->enqueueIncomingMessageNotification($recipient, $sender, $thread);
-
-			}
+			$this->notifyRecipientsForIncomingMessage($recipients, $sender, $thread, $message);
 
 			return $this->render('LadbCoreBundle:Message:create-xhr.html.twig', array( 'message' => $message ));
 		}

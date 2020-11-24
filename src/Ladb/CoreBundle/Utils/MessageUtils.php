@@ -49,7 +49,7 @@ class MessageUtils {
 			$threadMeta->setIsDeleted($announcement && $participant === $sender);
 			$thread->addMeta($threadMeta);
 
-			if ($announcement && $participant === $sender) {
+			if ($announcement && $participant === $sender || $participant->getIsTeam()) {
 				continue;
 			}
 
