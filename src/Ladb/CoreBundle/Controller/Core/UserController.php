@@ -15,6 +15,7 @@ use Ladb\CoreBundle\Entity\Core\Vote;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Form\Type\Core\UserTeamSettingsType;
 use Ladb\CoreBundle\Form\Type\Core\UserTeamType;
+use Ladb\CoreBundle\Manager\Core\MemberManager;
 use Ladb\CoreBundle\Utils\MemberUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
@@ -306,6 +307,10 @@ class UserController extends AbstractController {
 						$sort = array( 'meta.recievedLikeCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
 						break;
 
+					case 'sort-popular-members':
+						$sort = array( 'meta.memberCount' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
+						break;
+
 					case 'sort-random':
 						$sort = array( 'randomSeed' => isset($facet->value) ? $facet->value : '' );
 						break;
@@ -325,9 +330,13 @@ class UserController extends AbstractController {
 
 				}
 			},
-			function(&$filters, &$sort) {
+			function(&$filters, &$sort) use ($family) {
 
-				$sort = array( 'meta.recievedLikeCount' => array( 'order' => 'desc' ) );
+				if ($family == 'team') {
+					$sort = array('meta.memberCount' => array('order' => 'desc'));
+				} else {
+					$sort = array( 'meta.recievedLikeCount' => array( 'order' => 'desc' ) );
+				}
 
 			},
 			function(&$filters) use ($family) {
@@ -1743,8 +1752,8 @@ class UserController extends AbstractController {
 			$userManager->updateUser($team);
 
 			// Add team's creator as first member
-			$memberUtils = $this->get(MemberUtils::NAME);
-			$memberUtils->create($team, $this->getUser());
+			$memberManager = $this->get(MemberManager::NAME);
+			$memberManager->create($team, $this->getUser());
 
 			$om->flush();
 

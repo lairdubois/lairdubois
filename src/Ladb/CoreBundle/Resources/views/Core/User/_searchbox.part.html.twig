@@ -21,6 +21,9 @@
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-followers" data-label="Plus suivis" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus suivis</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-likes" data-label="Préférés" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférés</a></li>
+    {% if family == 'team' %}
+        <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-members" data-label="Plus de membres" data-unique="true" data-icon="users"><i class="ladb-icon-users"></i> Plus de membres</a></li>
+    {% endif %}
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
 {% endblock %}

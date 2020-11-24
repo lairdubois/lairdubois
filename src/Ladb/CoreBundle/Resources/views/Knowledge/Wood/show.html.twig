@@ -95,7 +95,7 @@
         {% include 'LadbCoreBundle:Core/View:_meta-counter.part.html.twig' %}
         {% include 'LadbCoreBundle:Core/Comment:_meta-counter.part.html.twig' %}
         <div class="ladb-meta">
-            <i class="ladb-icon-users ladb-icon-fixed-center"></i>
+            <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
             {% if wood.contributorCount > 0 %}
                 <a href="{{ path('core_knowledge_contributors', { 'entityType':wood.type, 'entityId':wood.id }) }}">
             {% endif %}

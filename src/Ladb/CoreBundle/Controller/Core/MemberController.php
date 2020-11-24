@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Elastica\Exception\NotFoundException;
 use Ladb\CoreBundle\Manager\Core\MemberInvitationManager;
 use Ladb\CoreBundle\Manager\Core\MemberManager;
 use Ladb\CoreBundle\Utils\FollowerUtils;
@@ -202,6 +203,9 @@ class MemberController extends AbstractController {
 	public function deleteAction(Request $request, $teamId) {
 
 		$team = $this->_retrieveTeam($teamId);
+		if ($team->getMeta()->getMemberCount() <= 1 ) {
+			throw new NotFoundException('Not allowed - last survivor (core_member_delete)');
+		}
 
 		$om = $this->getDoctrine()->getManager();
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);

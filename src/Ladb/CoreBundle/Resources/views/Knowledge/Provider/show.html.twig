@@ -173,7 +173,7 @@
         {% include 'LadbCoreBundle:Core/View:_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
         {% include 'LadbCoreBundle:Core/Comment:_meta-counter.part.html.twig' with { 'noMicrodata':true }  %}
         <div class="ladb-meta">
-            <i class="ladb-icon-users ladb-icon-fixed-center"></i>
+            <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
             {% if provider.contributorCount > 0 %}
                 <a href="{{ path('core_knowledge_contributors', { 'entityType':provider.type, 'entityId':provider.id }) }}">
             {% endif %}

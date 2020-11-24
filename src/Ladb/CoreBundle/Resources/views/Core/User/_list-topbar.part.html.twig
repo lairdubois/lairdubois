@@ -8,8 +8,8 @@
 
 {% block listTopbarRightInner %}
     {% if family == 'team' %}
-        <a href="{{ path('core_user_team_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'team.new'|trans() }}</a>
+        <a href="{{ path('core_user_team_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'team.new'|trans() }}</span></a>
     {% elseif not is_granted("ROLE_USER") %}
-        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
+        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'user.register'|trans() }}</span></a>
     {% endif %}
 {% endblock %}
