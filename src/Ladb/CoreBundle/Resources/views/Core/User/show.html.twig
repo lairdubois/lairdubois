@@ -71,49 +71,86 @@
                 {% if followerContext is not null and not isGrantedOwner %}
                     {% include 'LadbCoreBundle:Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext } %}
                 {% endif %}
-                {% if user.isTeam and not isGrantedOwner and invitation is null and request is null %}
-                    <a class="btn btn-default" onclick="$('#member_request_modal').modal({ remote:'{{ path('core_member_request_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="Rejoindre le collectif"><i class="ladb-icon-invite"></i> Rejoindre...</a>
-                    {% include 'LadbCoreBundle:Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'member_request_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;Rejoindre le collectif', 'classes':'modal-infinit' } %}
+                {% if is_granted('ROLE_USER') and user.isTeam and not isGrantedOwner and invitation is null and request is null %}
+                    <a class="btn btn-default" onclick="$('#member_request_modal').modal({ remote:'{{ path('core_member_request_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="{{ 'team.member_request'|trans() }}"><i class="ladb-icon-request"></i><span{% if is_granted('ROLE_ADMIN') %} class="ladb-hidden-mobile"{% endif %}> {{ 'team.request'|trans() }}...</span></a>
+                    {% include 'LadbCoreBundle:Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'member_request_modal', 'title':'<i class="ladb-icon-request"></i>&nbsp;'~('team.member_request'|trans()), 'classes':'modal-infinit' } %}
                 {% endif %}
                 {% if user.isTeam and isGrantedOwner %}
-                    <a class="btn btn-default" onclick="$('#member_invitation_modal').modal({ remote:'{{ path('core_member_invitation_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="Inviter un nouveau membre"><i class="ladb-icon-invite"></i> Inviter...</a>
-                    {% include 'LadbCoreBundle:Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'member_invitation_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;Inviter des nouveaux membres', 'classes':'modal-infinit' } %}
+                    <a class="btn btn-default" onclick="$('#member_invitation_modal').modal({ remote:'{{ path('core_member_invitation_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="{{ 'team.member_invite'|trans() }}"><i class="ladb-icon-invite"></i> {{ 'team.invite'|trans() }}...</a>
+                    {% include 'LadbCoreBundle:Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'member_invitation_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;'~('team.member_invite'|trans()), 'classes':'modal-infinit' } %}
                 {% endif %}
-                &nbsp;
                 {% if isOwner %}
                     <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}" class="btn btn-default"><i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}</a>
                 {% elseif not isGrantedOwner %}
-                    <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }}</a>
+                    <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':user.usernameCanonical }) }}" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':user.displayname }) }}"><i class="ladb-icon-message"></i><span{% if is_granted('ROLE_ADMIN') %} class="ladb-hidden-mobile"{% endif %}> {{ 'message.contact'|trans() }}</span></a>
                 {% endif %}
-                {% if user.isTeam and isGrantedOwner %}
+                {% if is_granted('ROLE_ADMIN') or user.isTeam and isGrantedOwner %}
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="ladb-icon-more"></i> <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-invite"></i> Voir les invitations en attente</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-item-danger"><a href="#member_member_delete" data-toggle="modal"><i class="ladb-icon-exit"></i> Quitter le collectif...</a></li>
+                            {% if user.isTeam and isGrantedOwner %}
+                                <li><a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-invite"></i> Voir les invitations en attente</a></li>
+                                <li><a href="{{ path('core_user_show_requests', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-request"></i> Voir les demandes en attente</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-item-danger"><a href="#member_member_delete" data-toggle="modal"><i class="ladb-icon-exit"></i> Quitter le collectif...</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header"><i class="ladb-icon-admin"></i> Admin</li>
+                                {% if user.enabled %}
+                                    <li><a href="{{ path('core_user_admin_deactivate', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-lock"></i> Désactiver</a></li>
+                                {% else %}
+                                    <li><a href="{{ path('core_user_admin_activate', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-lock"></i> Activer</a></li>
+                                {% endif %}
+                                <li class="dropdown-item-danger"><a href="#empty_user_admin_modal" data-toggle="modal" ><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}...</a></li>
+                                <li class="dropdown-item-danger"><a href="#delete_user_admin_modal" data-toggle="modal" ><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}...</a></li>
+                            {% endif %}
                         </ul>
                     </div>
-                    {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'member_member_delete', 'title':'Quitter le collectif' } %}
-                        {% block bodyInner %}
-                            {% if user.meta.memberCount > 1 %}
-                                <p style="white-space: normal;">En quittant le collectif <strong>{{ user.displayname }}</strong> vous perdrez tous les droits de modification aux publications et à la messagerie du collectif.</p>
+                    {% if user.isTeam and isGrantedOwner %}
+                        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'member_member_delete', 'title':'Quitter le collectif' } %}
+                            {% block bodyInner %}
+                                {% if user.meta.memberCount > 1 %}
+                                    <p style="white-space: normal;">En quittant le collectif <strong>{{ user.displayname }}</strong> vous perdrez tous les droits de modification aux publications et à la messagerie du collectif.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% else %}
+                                    <p>Vous ne pouvez pas quitter ce collectif. Vous en êtes le dernier survivant !</p>
+                                {% endif %}
+                            {% endblock %}
+                            {% block footerInner %}
+                                {% if user.meta.memberCount > 1 %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_member_delete', { 'teamId':user.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-exit"></i> Quitter le collectif</a>
+                                {% else %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+                                {% endif %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'empty_user_admin_modal', 'title':('default.emptying'|trans()) } %}
+                            {% block bodyInner %}
+                                <p>La vidange du compte <strong>{{ user.displayname }}</strong> effacera toutes ces publications.</p>
                                 <p>Confirmez l'action pour continuer.</p>
-                            {% else %}
-                                <p>Vous ne pouvez pas quitter ce collectif. Vous en êtes le dernier survivant !</p>
-                            {% endif %}
-                        {% endblock %}
-                        {% block footerInner %}
-                            {% if user.meta.memberCount > 1 %}
+                            {% endblock %}
+                            {% block footerInner %}
                                 <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                                <a href="{{ path('core_member_delete', { 'teamId':user.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-exit"></i> Quitter le collectif</a>
-                            {% else %}
-                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
-                            {% endif %}
-                        {% endblock %}
-                    {% endembed %}
+                                <a href="{{ path('core_user_admin_empty', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}</a>
+                            {% endblock %}
+                        {% endembed %}
+                        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'delete_user_admin_modal', 'title':('default.deleting'|trans()) } %}
+                            {% block bodyInner %}
+                                <p>La suppression du compte <strong>{{ user.displayname }}</strong> effacera toutes ces publications.</p>
+                                <p>Confirmez l'action pour continuer.</p>
+                            {% endblock %}
+                            {% block footerInner %}
+                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                <a href="{{ path('core_user_admin_delete', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
                 {% endif %}
             {% endblock %}
         </div>

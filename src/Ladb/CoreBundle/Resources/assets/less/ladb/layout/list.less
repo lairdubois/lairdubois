@@ -18,6 +18,8 @@
     .ladb-heading {
       margin: 0;
       line-height: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       small {
         color: @ladb-global-light-color;
@@ -54,4 +56,23 @@
     }
   }
 
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+  .ladb-list-row {
+
+    .ladb-body {
+
+      .ladb-heading {
+        font-size: 16px;
+        line-height: 16px;
+        padding-bottom: 3px;
+      }
+
+    }
+
+  }
 }

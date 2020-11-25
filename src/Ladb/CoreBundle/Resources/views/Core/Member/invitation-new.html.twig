@@ -1,7 +1,7 @@
 {% extends 'LadbCoreBundle:Common/Modal:_modal-content.part.html.twig' %}
 
 {% set id = 'member_invitation_modal' %}
-{% set title = '<i class=\'ladb-icon-invite\'></i> Inviter des nouveaux membres' %}
+{% set title = '<i class=\'ladb-icon-invite\'></i>&nbsp;'~('team.member_invite'|trans()) %}
 
 {% block bodyInner %}
     <p class="help-block" style="white-space: normal;">Saisissez la liste des noms des boiseux que vous souhaitez inviter à devenir membres du collectif <strong>{{ team.displayname }}</strong>.</p>
@@ -52,11 +52,12 @@
 
 {% block footerInner %}
     <a class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-    <a id="ladb_member_invitation_modal_submit_btn" class="btn btn-primary">{{ 'default.send'|trans() }}</a>
+    <a id="ladb_member_invitation_modal_submit_btn" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}">{{ 'default.send'|trans() }}</a>
     <script>
         $('#ladb_member_invitation_modal_submit_btn').on('click', function() {
             var recipients = $('#ladb_member_invitation_modal_recipients').val();
             if (recipients) {
+                $(this).button('loading');
                 window.location = '{{ path('core_member_invitation_create', { 'teamId':team.id }) }}' + '?recipients=' + recipients;
             }
         });

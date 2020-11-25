@@ -123,7 +123,7 @@ class MemberController extends AbstractController {
 		// Flashbag
 		$this->get('session')->getFlashBag()->add($invitationCount > 0 ? 'success' : 'error', $invitationCount.' invitation envoyée');	// TODO
 
-		return $this->redirect($this->generateUrl('core_user_show_invitations', array( 'username' => $team->getUsernameCanonical() )));
+		return $this->redirect($this->generateUrl($invitationCount > 0 ? 'core_user_show_invitations' : 'core_user_show', array( 'username' => $team->getUsernameCanonical() )));
 	}
 
 	/**

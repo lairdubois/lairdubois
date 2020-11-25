@@ -3,7 +3,7 @@
 <div style="margin: 20px 0;">
     <p>{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':invitation.sender, 'linkClasses':'alert-link', 'noBadge':true } %} vous invite à rejoindre le collectif <strong>{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':invitation.team, 'linkClasses':'alert-link', 'noBadge':true } %}</strong>.</p>
     <div>
-        <a href="{{ path('core_member_create', { 'teamId':invitation.team.id }) }}" class="btn btn-primary">Accepter</a>
-        <a href="{{ path('core_member_invitation_delete', { 'id':invitation.id }) }}" class="btn btn-default">Supprimer</a>
+        <a href="{{ path('core_member_create', { 'teamId':invitation.team.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">Accepter</a>
+        <a href="{{ path('core_member_invitation_delete', { 'id':invitation.id }) }}" class="btn btn-default" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">Supprimer</a>
     </div>
 </div>
