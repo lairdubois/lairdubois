@@ -2,14 +2,13 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Utils\BlockBodiedUtils;
-use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\MentionUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Utils\BlockBodiedUtils;
+use Ladb\CoreBundle\Utils\MentionUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
 use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
 use Ladb\CoreBundle\Utils\ActivityUtils;

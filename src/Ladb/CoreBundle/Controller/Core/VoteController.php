@@ -2,20 +2,16 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Controller\AbstractController;
-use Ladb\CoreBundle\Entity\Core\Comment;
-use Ladb\CoreBundle\Form\Model\NewVote;
-use Ladb\CoreBundle\Form\Type\CommentType;
-use Ladb\CoreBundle\Form\Type\Core\NewVoteType;
-use Ladb\CoreBundle\Form\Type\Core\ReviewType;
-use Ladb\CoreBundle\Model\AuthoredInterface;
-use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\FieldPreprocessorUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ladb\CoreBundle\Controller\AbstractController;
+use Ladb\CoreBundle\Entity\Core\Comment;
+use Ladb\CoreBundle\Form\Model\NewVote;
+use Ladb\CoreBundle\Form\Type\Core\NewVoteType;
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Utils\CommentableUtils;
 use Ladb\CoreBundle\Model\VotableInterface;
 use Ladb\CoreBundle\Model\VotableParentInterface;
 use Ladb\CoreBundle\Utils\VotableUtils;
