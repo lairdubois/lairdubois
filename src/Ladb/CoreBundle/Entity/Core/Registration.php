@@ -29,6 +29,12 @@ class Registration {
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
+	 * @ORM\JoinColumn(nullable=true)
+	 */
+	private $creator;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\User")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $user;
@@ -71,6 +77,17 @@ class Registration {
 
 	public function getAge() {
 		return $this->getCreatedAt()->diff(new \DateTime());
+	}
+
+	// Creator /////
+
+	public function setCreator(\Ladb\CoreBundle\Entity\Core\User $creator) {
+		$this->creator = $creator;
+		return $this;
+	}
+
+	public function getCreator() {
+		return $this->creator;
 	}
 
 	// User /////

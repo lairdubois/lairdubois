@@ -68,9 +68,15 @@
                         <span class="pull-right">{{ registration.createdAt|date('d/m/Y H:i:s') }}</span>
                         <span>createdAt</span>
                     </div>
+                    {% if registration.creator is not null %}
+                        <div class="ladb-meta">
+                            <span class="pull-right">{% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':registration.creator } %}</span>
+                            <span>creator</span>
+                        </div>
+                    {% endif %}
                     <div class="ladb-meta">
                         <span class="pull-right"></span>
-                        <span class="pull-right"><span>{{ registration.clientIp4 }}</span> <a href="http://ip-api.com/#{{ registration.clientIp4 }}" class="ladb-horizontal-separator-left" target="_blank" rel="noreferrer noopener">GeoIP</a> <a href="https://cleantalk.org/blacklists/{{ registration.clientIp4 }}" class="ladb-horizontal-separator-left" target="_blank">CleanTalk</a></span>
+                        <span class="pull-right"><span>{{ registration.clientIp4 }}</span> <a href="http://ip-api.com/#{{ registration.clientIp4 }}" class="ladb-horizontal-separator-left" target="_blank" rel="noreferrer noopener">GeoIP</a>{% if not user.isTeam %} <a href="https://cleantalk.org/blacklists/{{ registration.clientIp4 }}" class="ladb-horizontal-separator-left" target="_blank">CleanTalk</a>{% endif %}</span>
                         <span>clientIp4</span>
                     </div>
                     <div class="ladb-meta">

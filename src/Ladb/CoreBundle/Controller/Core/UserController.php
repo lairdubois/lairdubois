@@ -1771,6 +1771,21 @@ class UserController extends AbstractController {
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.form.alert.team_success', array( '%displayname%' => $team->getDisplayname() )));
 
+			/////
+
+			$registration = new Registration();
+			$registration->setCreator($this->getUser());
+			$registration->setUser($team);
+			$registration->setClientIp4($request->getClientIp());
+			$registration->setClientUserAgent($request->server->get('HTTP_USER_AGENT'));
+
+			$om->persist($registration);
+			$om->flush();
+
+			// Send admin email notification
+			$mailerUtils = $this->container->get(MailerUtils::NAME);
+			$mailerUtils->sendNewTeamNotificationEmailMessage($this->getUser(), $team);
+
 			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical()) ));
 		}
 

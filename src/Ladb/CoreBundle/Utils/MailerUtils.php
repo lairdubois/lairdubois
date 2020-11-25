@@ -146,6 +146,14 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		);
 	}
 
+	public function sendNewTeamNotificationEmailMessage(User $actorUser, User $team) {
+		$this->sendEmailMessage(
+			'contact@lairdubois.fr',
+			'Notification de nouveau collectif',
+			$this->_renderTemplate('LadbCoreBundle:Core/User/Team:new-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'team' => $team ))
+		);
+	}
+
 	public function sendNewDonationNotificationEmailMessage(User $actorUser, Donation $donation) {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
