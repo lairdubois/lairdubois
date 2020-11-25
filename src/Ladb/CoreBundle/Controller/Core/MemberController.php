@@ -6,6 +6,7 @@ use Elastica\Exception\NotFoundException;
 use Ladb\CoreBundle\Manager\Core\MemberInvitationManager;
 use Ladb\CoreBundle\Manager\Core\MemberManager;
 use Ladb\CoreBundle\Utils\FollowerUtils;
+use Ladb\CoreBundle\Utils\SearchUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -189,7 +190,11 @@ class MemberController extends AbstractController {
 		// Member management /////
 
 		$memberManager = $this->get(MemberManager::NAME);
-		$memberManager->create($team, $this->getUser());
+		$member = $memberManager->create($team, $this->getUser());
+
+		// Search index update
+		$searchUtils = $this->container->get(SearchUtils::NAME);
+		$searchUtils->replaceEntityInIndex($member->getTeam());
 
 		// Flashbag
 		$this->get('session')->getFlashBag()->add('success', 'Bienvenue dans le collectif <strong>'.$team->getDisplayName().'</strong>.');
@@ -216,6 +221,10 @@ class MemberController extends AbstractController {
 			// Delete member
 			$memberManager = $this->get(MemberManager::NAME);
 			$memberManager->delete($member);
+
+			// Search index update
+			$searchUtils = $this->container->get(SearchUtils::NAME);
+			$searchUtils->replaceEntityInIndex($member->getTeam());
 
 		}
 

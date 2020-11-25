@@ -3,9 +3,7 @@
 namespace Ladb\CoreBundle\Manager\Core;
 
 use Ladb\CoreBundle\Entity\Core\Member;
-use Ladb\CoreBundle\Entity\Core\MemberInvitation;
 use Ladb\CoreBundle\Manager\AbstractManager;
-use Ladb\CoreBundle\Utils\ActivityUtils;
 
 class MemberManager extends AbstractManager {
 
@@ -15,11 +13,11 @@ class MemberManager extends AbstractManager {
 		$om = $this->getDoctrine()->getManager();
 
 		// Create the invitation
-		$invitation = new Member();
-		$invitation->setTeam($team);
-		$invitation->setUser($user);
+		$member = new Member();
+		$member->setTeam($team);
+		$member->setUser($user);
 
-		$om->persist($invitation);
+		$om->persist($member);
 
 		// Update counters
 
@@ -30,7 +28,7 @@ class MemberManager extends AbstractManager {
 			$om->flush();
 		}
 
-		return $invitation;
+		return $member;
 	}
 
 	public function delete(Member $member, $flush = true) {
