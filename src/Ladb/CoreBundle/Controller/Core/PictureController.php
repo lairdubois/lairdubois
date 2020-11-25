@@ -2,16 +2,16 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Imagine\Gd\Imagine;
-use Ladb\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Imagine\Gd\Imagine;
+use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Form\Model\EditPicture;
 use Ladb\CoreBundle\Handler\PictureUploadHandler;
-use Ladb\CoreBundle\Form\Type\EditPictureType;
+use Ladb\CoreBundle\Form\Type\Core\EditPictureType;
 
 /**
  * @Route("/pictures")

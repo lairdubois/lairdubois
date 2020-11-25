@@ -21,7 +21,7 @@
     {% endif %}
     <div class="ladb-minitools">
         {% if editable %}
-            <a href="#edit_{{ formSection }}_modal" data-toggle="modal" onclick="pictureGalleryEditPicture('{{ formSection }}', {{ id }}, '{{ path('core_picture_edit', { 'id':id, 'formSection':formSection, 'sortable':sortable }) }}');" class="ladb-edit ladb-minitools" data-tooltip="tooltip" title="{{ 'picture.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
+            <a href="#edit_{{ formSection }}_modal" data-toggle="modal" onclick="console.log('hop');pictureGalleryEditPicture('{{ formSection }}', {{ id }}, '{{ path('core_picture_edit', { 'id':id, 'formSection':formSection, 'sortable':sortable }) }}');" class="ladb-edit ladb-minitools" data-tooltip="tooltip" title="{{ 'picture.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
         {% endif %}
         {% if sortable %}
             <span class="ladb-sortable-handle" data-tooltip="tooltip" title="{{ 'picture.reorder'|trans() }}"><i class="ladb-icon-move"></i></span>
