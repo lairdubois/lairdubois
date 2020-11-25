@@ -71,7 +71,7 @@
                 {% if followerContext is not null and not isGrantedOwner %}
                     {% include 'LadbCoreBundle:Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext } %}
                 {% endif %}
-                {% if user.isTeam and not isGrantedOwner %}
+                {% if user.isTeam and not isGrantedOwner and invitation is null and request is null %}
                     <a class="btn btn-default" onclick="$('#member_request_modal').modal({ remote:'{{ path('core_member_request_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="Rejoindre le collectif"><i class="ladb-icon-invite"></i> Rejoindre...</a>
                     {% include 'LadbCoreBundle:Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'member_request_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;Rejoindre le collectif', 'classes':'modal-infinit' } %}
                 {% endif %}

@@ -73,6 +73,7 @@ class MemberController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$userManager = $this->get('fos_user.user_manager');
 		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
 
 		if (!$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
@@ -97,6 +98,11 @@ class MemberController extends AbstractController {
 			// Check if recipient already invited
 			if ($memberInvitationRepository->existsByTeamAndRecipient($team, $recipient)) {
 				$this->get('session')->getFlashBag()->add('error', '<i class="ladb-icon-warning"></i> '.$recipient.' est déjà invité.');
+				continue;
+			}
+			// Check if recipient already requested
+			if ($memberRequestRepository->existsByTeamAndSender($team, $recipient)) {
+				$this->get('session')->getFlashBag()->add('error', '<i class="ladb-icon-warning"></i> '.$recipient.' a déjà envoyé une demande.');
 				continue;
 			}
 			// Check if recipient already member
@@ -190,11 +196,15 @@ class MemberController extends AbstractController {
 		$this->createLock('core_member_request_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
 		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
 
 		if ($memberRepository->existsByTeamAndUser($team, $this->getUser())) {
 			throw $this->createNotFoundException('Not allowed - Already member (core_member_request_create)');
+		}
+		if ($memberInvitationRepository->existsByTeamAndRecipient($team, $this->getUser())) {
+			throw $this->createNotFoundException('Not allowed - Already invited (core_member_request_create)');
 		}
 		if ($memberRequestRepository->existsByTeamAndSender($team, $this->getUser())) {
 			throw $this->createNotFoundException('Not allowed - Already requested (core_member_request_create)');
