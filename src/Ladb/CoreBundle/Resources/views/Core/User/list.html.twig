@@ -30,6 +30,17 @@
     {% include 'LadbCoreBundle:Core/User:_list-topbar.part.html.twig' %}
 {% endblock %}
 
+{% block bodyContainerContent %}
+    {% if family == 'team' %}
+        <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+            <div class="panel-body">
+                Cet annuaire référence les <strong>collectifs</strong> de boiseux enregistrés sur <em>L'Air du Bois</em>. <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quun-collectif' }) }}">Qu'est-ce qu'un Collectif ?</a>
+            </div>
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
 {% block autopagerContainerInner %}
     {% include 'LadbCoreBundle:Core/User:_list-n.part.html.twig' %}
 {% endblock %}
