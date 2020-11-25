@@ -1147,6 +1147,9 @@ team:
   list: Les collectifs
   nav: Collectifs
   new: Créer un collectif
+  new_warning: |
+    Un <strong>collectif</strong> un groupement de boiseux qui a pour principal objectif de pouvoir publier d'une seule voix sur L'Air du Bois.<br>
+    Le nom, l'avatar et les membres d'un collectif sont visibles <strong>publiquement</strong>.
   choice:
     entities: '[0,1]collectif|]1,Inf]collectifs'
     members: '[0,1]membre|]1,Inf]membres'

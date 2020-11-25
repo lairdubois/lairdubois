@@ -16,6 +16,11 @@
 {% endblock %}
 
 {% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'team.new_warning'|trans()|raw }}</p>
+        </div>
+    </div>
     {{ form_errors(form) }}
     {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'mandatory':true, 'icon':'users', 'title':('user.account'|trans()), 'formSection':'account' } %}
         {% block body %}
@@ -34,6 +39,8 @@
                     {{ form_widget(form.username, { 'attr': { 'class':'form-control input-lg' } }) }}
                 </div>
                 <p class="help-block"><i class="ladb-icon-info"></i> Seules les lettres non accentuées et les chiffres sont permis ici.</p>
+                <hr>
+                <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quun-collectif' }) }}">Qu'est-ce qu'un Collectif ?</a> </p>
             </div>
         {% endblock %}
     {% endembed %}
