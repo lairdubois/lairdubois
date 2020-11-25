@@ -1,0 +1,30 @@
+{% extends 'LadbCoreBundle:Core/Notification:_email.html.twig' %}
+
+{# set row #}
+
+{% block rowContent %}
+    <p style="margin: 5px 0 5px 0;">
+        <strong>{{ row.actorUser.displayname }}</strong> a envoyé une demande pour devenir membre du collectif <em>{{ row.request.team.displayName }}</em>.
+    </p>
+    <table cellspacing="10" cellpadding="0">
+        <tbody>
+        <tr>
+            <td height="74" width="74">
+                <a href="{{ url('core_user_show', { 'username':row.request.sender.usernameCanonical }) }}"  style="color: #333;">
+                    <img src="{{ (row.request.sender.avatar is empty ? 'avatar.png' : row.request.sender.avatar.webPath)|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px;" alt="{{ row.request.sender.displayname }}">
+                </a>
+            </td>
+            <td>
+                <a href="{{ url('core_user_show', { 'username':row.request.sender.usernameCanonical }) }}" style="font-size: 130%; font-weight: bold; color: #f77f00; text-decoration: none;">{{ row.request.sender.displayname }}</a>{% if row.request.sender.fullname is not empty %}&nbsp;<span style="color: #999; font-size: 90%;">({{ row.request.sender.fullname }})</span>{% endif %}
+                {% if row.request.sender.location is not empty %}
+                    <p style="margin:5px 0 0 0; font-size: 90%"><a href="https://maps.google.fr/maps?q={{ row.request.sender.location|url_encode }}" style="color: #f77f00; text-decoration: none;">{{ row.request.sender.location }}</a></p>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td height="30"><a href="{{ url('core_user_show_requests', { 'username':row.request.team.usernameCanonical }) }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Gérer</a></td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

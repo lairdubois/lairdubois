@@ -10,6 +10,7 @@ use Ladb\CoreBundle\Controller\UserControllerTrait;
 use Ladb\CoreBundle\Entity\Core\Feedback;
 use Ladb\CoreBundle\Entity\Core\Member;
 use Ladb\CoreBundle\Entity\Core\MemberInvitation;
+use Ladb\CoreBundle\Entity\Core\MemberRequest;
 use Ladb\CoreBundle\Entity\Core\Review;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\Vote;
@@ -80,16 +81,37 @@ class UserController extends AbstractController {
 		return null;
 	}
 
+	private function _getRequest(User $user) {
+		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+			$om = $this->getDoctrine()->getManager();
+			$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
+			return $memberRequestRepository->findOneByTeamAndSender($user, $this->getUser());
+
+		}
+		return null;
+	}
+
 	private function _fillCommonShowParameters(User $user, $parameters, $isGrantedOwner = null) {
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
-			$invitation = $this->_getInvitation($user, $this->getUser());
-			if (!is_null($invitation)) {
+			$memberInvitation = $this->_getInvitation($user, $this->getUser());
+			if (!is_null($memberInvitation)) {
 
 				// Flashbag
 				$this->get('session')->getFlashBag()->add('info', $this->get('templating')->render('LadbCoreBundle:Core/Member:_invitation-alert.part.html.twig', array(
-					'invitation' => $invitation,
+					'invitation' => $memberInvitation,
+				)));
+
+			}
+
+			$memberRequest = $this->_getRequest($user, $this->getUser());
+			if (!is_null($memberRequest)) {
+
+				// Flashbag
+				$this->get('session')->getFlashBag()->add('info', $this->get('templating')->render('LadbCoreBundle:Core/Member:_request-alert.part.html.twig', array(
+					'request' => $memberRequest,
 				)));
 
 			}
@@ -102,6 +124,7 @@ class UserController extends AbstractController {
 			'user'            => $user,
 			'isGrantedOwner'  => is_null($isGrantedOwner) ? $this->_isGrantedOwner($user) : $isGrantedOwner,
 			'invitation'      => $this->_getInvitation($user),
+			'request'         => $this->_getRequest($user),
 			'followerContext' => $followerUtils->getFollowerContext($user, $this->getUser()),
 		));
 	}
@@ -1569,7 +1592,7 @@ class UserController extends AbstractController {
 
 		$isGrantedOwner = $this->_isGrantedOwner($user);
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$isGrantedOwner) {
-			throw $this->createNotFoundException('Access denied (core_user_show_invitations)');
+			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $user->getUsernameCanonical() )));
 		}
 
 		// Member
@@ -1600,6 +1623,54 @@ class UserController extends AbstractController {
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
 			'tab' => 'invitations',
+		)), $isGrantedOwner);
+	}
+
+	/**
+	 * @Route("/@{username}/demandes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_requests")
+	 * @Route("/@{username}/demandes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_requests_filter")
+	 * @Route("/@{username}/demandes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_requests_filter_page")
+	 * @Template("LadbCoreBundle:Core/User:showRequests.html.twig")
+	 */
+	public function showRequestsAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
+		$user = $this->retrieveUserByUsername($username);
+		if ($user->getUsernameCanonical() != $username) {
+			return $this->redirect($this->generateUrl('core_user_show_requests', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		$isGrantedOwner = $this->_isGrantedOwner($user);
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$isGrantedOwner) {
+			return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $user->getUsernameCanonical() )));
+		}
+
+		// Member
+
+		$om = $this->getDoctrine()->getManager();
+		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
+		$paginatorUtils = $this->get(PaginatorUtils::NAME);
+
+		$offset = $paginatorUtils->computePaginatorOffset($page);
+		$limit = $paginatorUtils->computePaginatorLimit($page);
+		if ($user->getIsTeam()) {
+			$paginator = $memberRequestRepository->findPaginedByTeam($user, $offset, $limit, $filter);
+		} else {
+			$paginator = $memberRequestRepository->findPaginedBySender($user, $offset, $limit, $filter);
+		}
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_user_show_requests_filter_page', array( 'username' => $user->getUsernameCanonical(), 'filter' => $filter ), $page, $paginator->count());
+
+		$parameters = array(
+			'filter'      => $filter,
+			'prevPageUrl' => $pageUrls->prev,
+			'nextPageUrl' => $pageUrls->next,
+			'requests'    => $paginator,
+		);
+
+		if ($request->isXmlHttpRequest()) {
+			return $this->render('LadbCoreBundle:Core/Member:requests-list-xhr.html.twig', array_merge(array( 'user' => $user ), $parameters));
+		}
+
+		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
+			'tab' => 'requests',
 		)), $isGrantedOwner);
 	}
 

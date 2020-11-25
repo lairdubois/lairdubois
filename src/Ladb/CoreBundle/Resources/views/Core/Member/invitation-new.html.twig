@@ -52,7 +52,7 @@
 
 {% block footerInner %}
     <a class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-    <a id="ladb_member_invitation_modal_submit_btn" class="btn btn-primary">Envoyer</a>
+    <a id="ladb_member_invitation_modal_submit_btn" class="btn btn-primary">{{ 'default.send'|trans() }}</a>
     <script>
         $('#ladb_member_invitation_modal_submit_btn').on('click', function() {
             var recipients = $('#ladb_member_invitation_modal_recipients').val();

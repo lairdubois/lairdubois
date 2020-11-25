@@ -372,6 +372,18 @@ EOT
 
 			}
 
+			// Request /////
+
+			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Request) {
+
+				$request = $activity->getRequest();
+				$this->_forwardNotification($om, $request->getTeam(), $activity, $notifiedUsers, $freshNotificationCounters);
+				if ($verbose) {
+					$output->writeln('<info>--> Notifying <fg=white>@'.$request->getTeam()->getUsername(). '</fg=white> for new request sender=@'.$request->getSender()->getUsername().'</info>');
+				}
+
+			}
+
 			// Flag activity as notified
 			$activity->setIsPendingNotifications(false);
 

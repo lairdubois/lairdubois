@@ -4,17 +4,17 @@ namespace Ladb\CoreBundle\Repository\Core\Activity;
 
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 
-class InviteRepository extends AbstractEntityRepository {
+class RequestRepository extends AbstractEntityRepository {
 
 	/////
 
-	public function findByInvitation(\Ladb\CoreBundle\Entity\Core\MemberInvitation $invitation) {
+	public function findByRequest(\Ladb\CoreBundle\Entity\Core\MemberRequest $request) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))
 			->from($this->getEntityName(), 'a')
-			->where('a.invitation = :invitation')
-			->setParameter('invitation', $invitation)
+			->where('a.request = :request')
+			->setParameter('request', $request)
 		;
 
 		try {

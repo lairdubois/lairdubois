@@ -256,6 +256,9 @@ services:
   ladb_core.member_invitation_manager:
     class: Ladb\CoreBundle\Manager\Core\MemberInvitationManager
     arguments: ['@service_container']
+  ladb_core.member_request_manager:
+    class: Ladb\CoreBundle\Manager\Core\MemberRequestManager
+    arguments: ['@service_container']
 
   # Validators
   ladb_core.valid_username_validator:

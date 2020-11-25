@@ -1154,6 +1154,7 @@ team:
     entities: '[0,1]collectif|]1,Inf]collectifs'
     members: '[0,1]membre|]1,Inf]membres'
     invitations: '[0,1]invitation|]1,Inf]invitations'
+    requests: '[0,1]demande|]1,Inf]demandes'
 
 user:
   description: Liste des boiseux inscrits à la plateforme de partage collaborative L'Air du Bois.
@@ -1584,6 +1585,7 @@ notification:
     review: '[0,1]Notification de nouvel avis|]1,Inf]Notification de nouveaux avis'
     feedback: "[0,1]Notification de nouveau retour d'expérience|]1,Inf]Notification de nouveaux retours d'expérience"
     invite: "[0,1]Notification de nouvelle invitation|]1,Inf]Notification de nouvelles invitations"
+    request: "[0,1]Notification de nouvelle demande|]1,Inf]Notification de nouvelles demandes"
 
 share:
   social:

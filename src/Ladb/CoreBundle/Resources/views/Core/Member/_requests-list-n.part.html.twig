@@ -1,0 +1,18 @@
+{% extends 'LadbCoreBundle:Common:_list-n.part.html.twig' %}
+
+{# set user (the context user) #}
+{# set requests #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for request in requests %}
+        {% embed 'LadbCoreBundle:Core/User:_list-row.part.html.twig' with { 'user':user.isTeam ? request.sender : request.team } %}
+            {% block counters %}
+                <div class="pull-right" style="line-height: 64px;">
+                    {% if not user.isTeam %}<a href="{{ path('core_member_create', { 'teamId':request.team.id, 'username':request.sender.usernameCanonical }) }}" class="btn btn-primary btn-sm">Accepter</a>{% endif %}
+                    <a href="{{ path('core_member_request_delete', { 'id':request.id }) }}" class="btn btn-default btn-sm">Supprimer</a>
+                </div>
+            {% endblock %}
+        {% endembed %}
+    {% endfor %}
+{% endblock %}

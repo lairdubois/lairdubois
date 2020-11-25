@@ -51,6 +51,7 @@ EOT
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Review::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Feedback::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Invite::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
+		$this->_processActivityByActivityStrippedName(\Ladb\CoreBundle\Entity\Core\Activity\Request::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
 	}
 
@@ -240,6 +241,14 @@ EOT
 
 					$invitation = $activity->getInvitation();
 					$row->invitation = $invitation;
+
+				}
+
+				// Request
+				else if ($activityStrippedName == \Ladb\CoreBundle\Entity\Core\Activity\Request::STRIPPED_NAME) {
+
+					$request = $activity->getRequest();
+					$row->request = $request;
 
 				}
 
