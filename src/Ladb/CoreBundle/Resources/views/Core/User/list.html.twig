@@ -2,9 +2,9 @@
 
 {% use 'LadbCoreBundle:Common/Blocks:map.blocks.html.twig' %}
 
-{% set pageTitle = 'user.list'|trans() %}
+{% set pageTitle = (family == 'team' ? 'team.list' : 'user.list')|trans() %}
 {% set pageDescription = 'user.description'|trans() %}
-{% set pageImage = asset('banner-users-600x376.jpg') %}
+{% set pageImage = asset('banner-'~(family == 'team' ? 'teams' : 'users')~'-600x376.jpg') %}
 
 {% set navSection = family == 'team' ? 'teams' : 'users' %}
 {% set topbarTranslucent = false %}
