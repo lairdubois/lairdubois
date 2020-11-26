@@ -4,7 +4,7 @@
 {% set title = '<i class=\'ladb-icon-invite\'></i>&nbsp;'~('team.member_invite'|trans()) %}
 
 {% block bodyInner %}
-    <p class="help-block" style="white-space: normal;">Saisissez la liste des noms des boiseux que vous souhaitez inviter à devenir membres du collectif <strong>{{ team.displayname }}</strong>.</p>
+    <p class="help-block">Saisissez la liste des noms des boiseux que vous souhaitez inviter à devenir membres du collectif <strong>{{ team.displayname }}</strong>.</p>
     <textarea id="ladb_member_invitation_modal_recipients"></textarea>
     <script>
         $('#ladb_member_invitation_modal_recipients')

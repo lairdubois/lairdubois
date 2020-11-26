@@ -1226,6 +1226,7 @@ user:
   admin:
     tab: Admin
     alert:
+      converttoteam_success: Le compte <strong>%displayname%</strong> a été converti en collectif avec succès.
       activate_success: Le compte <strong>%displayname%</strong> a été activé avec succès.
       deactivate_success: Le compte <strong>%displayname%</strong> a été désactivé avec succès.
       empty_success: Le compte <strong>%displayname%</strong> a été vidé avec succès.

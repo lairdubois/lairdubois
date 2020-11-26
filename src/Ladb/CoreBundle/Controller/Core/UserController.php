@@ -17,7 +17,9 @@ use Ladb\CoreBundle\Entity\Core\Vote;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Form\Type\Core\UserTeamSettingsType;
 use Ladb\CoreBundle\Form\Type\Core\UserTeamType;
+use Ladb\CoreBundle\Manager\Core\MemberInvitationManager;
 use Ladb\CoreBundle\Manager\Core\MemberManager;
+use Ladb\CoreBundle\Manager\Core\MemberRequestManager;
 use Ladb\CoreBundle\Utils\MemberUtils;
 use Ladb\CoreBundle\Utils\PropertyUtils;
 use Ladb\CoreBundle\Utils\TypableUtils;
@@ -1895,6 +1897,65 @@ class UserController extends AbstractController {
 			'registration' => $registration,
 			'tab'          => 'admin',
 		));
+	}
+
+	/**
+	 * @Route("/@{username}/admin/converttoteam", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_converttoteam")
+	 */
+	public function adminConvertToTeamAction($username) {
+		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Access denied');
+		}
+
+		$om = $this->getDoctrine()->getManager();
+		$userManager = $this->get('fos_user.user_manager');
+
+		$user = $userManager->findUserByUsername($username);
+		if (is_null($user)) {
+			throw $this->createNotFoundException('User not found');
+		}
+
+		// Remove all pending invitations
+		$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+		$memberInvitations = $memberInvitationRepository->findPaginedByRecipient($user);
+		foreach ($memberInvitations as $memberInvitation) {
+			$memberInvitationManager->delete($memberInvitation);
+		}
+
+		// Remove all pending requests
+		$memberRequestManager = $this->get(MemberRequestManager::NAME);
+		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
+		$memberRequests = $memberRequestRepository->findPaginedBySender($user);
+		foreach ($memberRequests as $memberRequest) {
+			$memberRequestManager->delete($memberRequest);
+		}
+
+		// Remove all members
+		$memberManager = $this->get(MemberManager::NAME);
+		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$members = $memberRepository->findPaginedByUser($user);
+		foreach ($members as $member) {
+			$memberManager->delete($member);
+		}
+
+		// Convert
+		$user->setIsTeam(true);
+		$user->setEmail(uniqid('', true).'-team@lairdubois.fr');		// Fake email
+		$user->setEmailCanonical($user->getEmail());
+		$user->setPlainPassword(bin2hex(random_bytes(20)));									// Put a random password - to avoid logon on this account
+		$user->getMeta()->incrementMemberCount($user->getMeta()->getMemberCount());
+
+		$om->flush();
+
+		// Search index update
+		$searchUtils = $this->get(SearchUtils::NAME);
+		$searchUtils->insertEntityToIndex($user);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.admin.alert.converttoteam_success', array( '%displayname%' => $user->getDisplayname() )));
+
+		return $this->redirect($this->generateUrl('core_user_show_admin', array( 'username' => $username )));
 	}
 
 	/**

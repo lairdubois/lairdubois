@@ -104,8 +104,12 @@
                                 {% else %}
                                     <li><a href="{{ path('core_user_admin_activate', { 'username':user.usernameCanonical }) }}"><i class="ladb-icon-lock"></i> Activer</a></li>
                                 {% endif %}
-                                <li class="dropdown-item-danger"><a href="#empty_user_admin_modal" data-toggle="modal" ><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}...</a></li>
-                                <li class="dropdown-item-danger"><a href="#delete_user_admin_modal" data-toggle="modal" ><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}...</a></li>
+                                <li class="dropdown-item-danger"><a href="#empty_user_admin_modal" data-toggle="modal"><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}...</a></li>
+                                <li class="dropdown-item-danger"><a href="#delete_user_admin_modal" data-toggle="modal"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}...</a></li>
+                                {% if not user.isTeam %}
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#converttoteam_user_admin_modal"  data-toggle="modal"><i class="ladb-icon-arrow-right"></i><i class="ladb-icon-users"></i> Convertir en collectif...</a></li>
+                                {% endif %}
                             {% endif %}
                         </ul>
                     </div>
@@ -113,7 +117,7 @@
                         {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'member_member_delete', 'title':'Quitter le collectif' } %}
                             {% block bodyInner %}
                                 {% if user.meta.memberCount > 1 %}
-                                    <p style="white-space: normal;">En quittant le collectif <strong>{{ user.displayname }}</strong> vous perdrez tous les droits de modification aux publications et à la messagerie du collectif.</p>
+                                    <p>En quittant le collectif <strong>{{ user.displayname }}</strong> vous perdrez tous les droits de modification aux publications et à la messagerie du collectif.</p>
                                     <p>Confirmez l'action pour continuer.</p>
                                 {% else %}
                                     <p>Vous ne pouvez pas quitter ce collectif. Vous en êtes le dernier survivant !</p>
@@ -150,6 +154,16 @@
                                 <a href="{{ path('core_user_admin_delete', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
                             {% endblock %}
                         {% endembed %}
+                        {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'converttoteam_user_admin_modal', 'title':'Convertir en collectif' } %}
+                            {% block bodyInner %}
+                                <p>La convertion du compte <strong>{{ user.displayname }}</strong> en collectif effacera toutes ces invitations et demandes et lui fera quitter tous les collectifs dont il est membre.</p>
+                                <p>Confirmez l'action pour continuer.</p>
+                            {% endblock %}
+                            {% block footerInner %}
+                                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                <a href="{{ path('core_user_admin_converttoteam', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                            {% endblock %}
+                        {% endembed %}
                     {% endif %}
                 {% endif %}
             {% endblock %}
@@ -164,14 +178,14 @@
                 <a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.members'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.memberCount > 0 %} badge-black{% endif %}">{{ user.meta.memberCount }}</span></a>
             </li>
         {% endif %}
-        {% if isGrantedOwner and user.meta.invitationCount > 0 %}
+        {% if (is_granted('ROLE_ADMIN') or isGrantedOwner) and user.meta.invitationCount > 0 %}
             <li{% if tab == 'invitations' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.invitations'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.invitationCount > 0 %} badge-black{% endif %}">{{ user.meta.invitationCount }}</span></a>
+                <a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.invitations'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.invitationCount > 0 %} badge-{% if user.isTeam %}black{% else %}danger{% endif %}{% endif %}">{{ user.meta.invitationCount }}</span></a>
             </li>
         {% endif %}
-        {% if isGrantedOwner and user.meta.requestCount > 0 %}
+        {% if (is_granted('ROLE_ADMIN') or isGrantedOwner) and user.meta.requestCount > 0 %}
             <li{% if tab == 'requests' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_requests', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.requests'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.requestCount > 0 %} badge-danger{% endif %}">{{ user.meta.requestCount }}</span></a>
+                <a href="{{ path('core_user_show_requests', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.requests'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.requestCount > 0 %} badge-{% if user.isTeam %}danger{% else %}black{% endif %}{% endif %}">{{ user.meta.requestCount }}</span></a>
             </li>
         {% endif %}
         {% if tab == 'teams' %}
