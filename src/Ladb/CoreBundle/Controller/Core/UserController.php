@@ -1946,6 +1946,7 @@ class UserController extends AbstractController {
 		$user->setEmailCanonical($user->getEmail());
 		$user->setPlainPassword(bin2hex(random_bytes(20)));									// Put a random password - to avoid logon on this account
 		$user->getMeta()->incrementMemberCount($user->getMeta()->getMemberCount());
+		$user->getMeta()->setRequestEnabled(true);
 
 		$om->flush();
 
