@@ -1829,6 +1829,7 @@ class UserController extends AbstractController {
 			$team->setIsTeam(true);
 			$team->setEmailCanonical($team->getEmail());
 			$team->addRole('ROLE_TEAM');
+			$team->getMeta()->setRequestEnabled(true);
 			$userManager->updateUser($team);
 
 			// Add team's creator as first member

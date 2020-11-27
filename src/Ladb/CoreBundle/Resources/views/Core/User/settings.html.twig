@@ -39,8 +39,8 @@
     <li><a href="#skills"><i class="ladb-icon-skills"></i> {{ 'skill.skills'|trans() }}</a></li>
     <li><a href="#location"><i class="ladb-icon-location"></i> {{ 'user.location'|trans() }}</a></li>
     <li><a href="#social"><i class="ladb-icon-social"></i> {{ 'user.social'|trans() }}</a></li>
+    <li><a href="#options"><i class="ladb-icon-list"></i> {{ 'user.options'|trans() }}</a></li>
     {% if not user.isTeam %}
-        <li><a href="#options"><i class="ladb-icon-list"></i> {{ 'user.options'|trans() }}</a></li>
         <li><a href="#notifications"><i class="ladb-icon-notifications"></i> {{ 'user.notifications'|trans() }}</a></li>
     {% endif %}
 {% endblock %}
@@ -258,17 +258,26 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% if not user.isTeam %}
-        {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'list', 'title':('user.options'|trans()), 'formSection':'options' } %}
-            {% block body %}
+    {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'list', 'title':('user.options'|trans()), 'formSection':'options' } %}
+        {% block body %}
+            {% if user.isTeam %}
+                <div class="checkbox">
+                    <label class="checkbox">
+                        {{ form_widget(form.meta.requestEnabled) }}
+                        Permettre les <strong>demandes</strong> pour rejoindre le collectif.
+                    </label>
+                </div>
+            {% else %}
                 <div class="checkbox">
                     <label class="checkbox">
                         {{ form_widget(form.meta.autoWatchEnabled) }}
                         Surveiller automatiquement les publications auxquelles je contribue<br><small>(commentaire, coups de coeur, réponse, participation)</small>
                     </label>
                 </div>
-            {% endblock %}
-        {% endembed %}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+    {% if not user.isTeam %}
         {% embed 'LadbCoreBundle:Common:_form-section.part.html.twig' with { 'icon':'notifications', 'title':('user.notifications'|trans()), 'formSection':'notifications' } %}
             {% block body %}
                 <span class="help-block">Envoyer un e-mail de notification :</span>

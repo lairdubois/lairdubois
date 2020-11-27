@@ -93,6 +93,11 @@ class UserMeta {
 
 
 	/**
+	 * @ORM\Column(type="boolean", nullable=true, name="request_enabled")
+	 */
+	private $requestEnabled = false;
+
+	/**
 	 * @ORM\Column(type="boolean", nullable=true, name="auto_watch_enabled")
 	 */
 	private $autoWatchEnabled = true;
@@ -602,6 +607,17 @@ class UserMeta {
 		return $this->instagram;
 	}
 
+
+	// RequestEnabled /////
+
+	public function setRequestEnabled($requestEnabled) {
+		$this->requestEnabled = $requestEnabled;
+		return $this;
+	}
+
+	public function getRequestEnabled() {
+		return $this->requestEnabled;
+	}
 
 	// AutoWatchEnabled /////
 

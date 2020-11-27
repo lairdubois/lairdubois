@@ -173,6 +173,9 @@ class MemberController extends AbstractController {
 	public function newRequestAction($teamId) {
 
 		$team = $this->_retrieveTeam($teamId);
+		if (!$team->getMeta()->getRequestEnabled()) {
+			throw $this->createNotFoundException('Not allowed - Request disabled (core_member_request_new)');
+		}
 
 		$om = $this->getDoctrine()->getManager();
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
@@ -192,6 +195,9 @@ class MemberController extends AbstractController {
 	public function createRequestAction(Request $request, $teamId) {
 
 		$team = $this->_retrieveTeam($teamId);
+		if (!$team->getMeta()->getRequestEnabled()) {
+			throw $this->createNotFoundException('Not allowed - Request disabled (core_member_request_create)');
+		}
 
 		$this->createLock('core_member_request_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 

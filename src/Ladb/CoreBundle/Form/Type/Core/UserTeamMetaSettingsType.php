@@ -41,6 +41,7 @@ class UserTeamMetaSettingsType extends AbstractType {
 			->add('dailymotion')
 			->add('pinterest')
 			->add('instagram')
+			->add('requestEnabled')
 		;
 	}
 
