@@ -8,5 +8,5 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_qa_question_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'qa.question.new'|trans() }}</span></a>{% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleKey':'qa.question.new', 'route':'core_qa_question_new' } %}
+    {% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleTransKey':'qa.question.new', 'route':'core_qa_question_new' } %}
 {% endblock %}

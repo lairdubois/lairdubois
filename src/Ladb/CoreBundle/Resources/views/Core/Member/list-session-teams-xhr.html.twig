@@ -3,7 +3,7 @@
 {% use 'LadbCoreBundle:Common/Blocks:list-autopager.blocks.html.twig' %}
 
 {% set id = 'members_modal' %}
-{% set title = '<i class="ladb-icon-plus"></i>&nbsp;'~(titleKey|trans()) %}
+{% set title = '<i class="ladb-icon-plus"></i>&nbsp;'~(titleTransKey|trans()) %}
 {% set classes = 'modal-infinit' %}
 {% set embeddedBody = members|length > 0  %}
 
@@ -11,7 +11,7 @@
 
 {% block body %}
     {% if members|length > 0 %}
-        <div class="ladb-help-block"><i class="ladb-icon-arrow-down"></i> Choisissez le collectif pour lequel vous allez publier</div>
+        <div class="ladb-help-block"><i class="ladb-icon-arrow-down"></i> Choisissez sous quelle identité vous allez publier</div>
     {% endif %}
     {{ parent() }}
 {% endblock %}

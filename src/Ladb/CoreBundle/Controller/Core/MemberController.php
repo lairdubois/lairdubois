@@ -378,7 +378,7 @@ class MemberController extends AbstractController {
 	 */
 	public function listSessionTeamsAction(Request $request, $page = 0) {
 
-		$titleKey = $request->get('title-key');
+		$titleTransKey = $request->get('title-trans-key');
 		$route = $request->get('route');
 
 		$om = $this->getDoctrine()->getManager();
@@ -388,13 +388,13 @@ class MemberController extends AbstractController {
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
 		$paginator = $memberRepository->findPaginedByUser($this->getUser(), $offset, $limit);
-		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_member_list_session_teams_page', array('titleKey' => $titleKey, 'route' => $route ), $page, $paginator->count());
+		$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl('core_member_list_session_teams_page', array('titleTransKey' => $titleTransKey, 'route' => $route ), $page, $paginator->count());
 
 		$parameters = array(
 			'members'     => $paginator,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'titleKey'    => $titleKey,
+			'titleTransKey'    => $titleTransKey,
 			'route'       => $route,
 		);
 

@@ -7,5 +7,5 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_promotion_graphic_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'promotion.graphic.new'|trans() }}</span></a>{% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleKey':'promotion.graphic.new', 'route':'core_promotion_graphic_new' } %}
+    {% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleTransKey':'promotion.graphic.new', 'route':'core_promotion_graphic_new' } %}
 {% endblock %}

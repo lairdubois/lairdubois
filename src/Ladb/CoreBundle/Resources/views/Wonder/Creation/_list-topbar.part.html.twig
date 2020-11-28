@@ -7,5 +7,5 @@
 {% endblock %}
 
 {% block listTopbarRightInner %}
-    <a href="{{ path('core_creation_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'wonder.creation.new'|trans() }}</span></a>{% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleKey':'wonder.creation.new', 'route':'core_creation_new' } %}
+    {% include 'LadbCoreBundle:Core/Member:_widget.part.html.twig' with { 'titleTransKey':'wonder.creation.new', 'route':'core_creation_new' } %}
 {% endblock %}
