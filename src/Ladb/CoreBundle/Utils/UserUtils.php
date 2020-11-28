@@ -11,6 +11,7 @@ use Ladb\CoreBundle\Entity\AbstractPublication;
 use Ladb\CoreBundle\Entity\Core\Picture;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Core\View;
+use Ladb\CoreBundle\Fos\UserManager;
 use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Ladb\CoreBundle\Model\HiddableInterface;
 
@@ -75,7 +76,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		}
 
 		if ($updated) {
-			$userManager = $this->get('fos_user.user_manager');
+			$userManager = $this->get(UserManager::NAME);
 			$userManager->updateUser($user);
 		}
 
@@ -137,7 +138,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 					$propertyUtils->setValue($meta, $propertyPath, $count);
 
 					if ($flush) {
-						$userManager = $this->get('fos_user.user_manager');
+						$userManager = $this->get(UserManager::NAME);
 						$userManager->updateUser($user);
 					}
 

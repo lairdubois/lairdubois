@@ -28,7 +28,7 @@ class BookIdentity extends BaseValue {
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank
 	 * @Assert\Length(max=100)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:«»&+-]+$/")
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’’#,.:«»&+-]+$/")
 	 */
 	private $work;
 
@@ -40,7 +40,7 @@ class BookIdentity extends BaseValue {
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 * @Assert\Length(max=100)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’ʼ#,.:«»&+-]+$/")
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’’#,.:«»&+-]+$/")
 	 */
 	private $volume;
 

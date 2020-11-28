@@ -3,11 +3,12 @@
 namespace Ladb\CoreBundle\Controller;
 
 use Ladb\CoreBundle\Entity\Core\UserWitness;
+use Ladb\CoreBundle\Fos\UserManager;
 
 trait UserControllerTrait {
 
 	protected function retrieveUserByUsername($username) {
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {

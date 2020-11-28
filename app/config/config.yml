@@ -148,6 +148,8 @@ fos_user:
     firewall_name: main
     user_class: Ladb\CoreBundle\Entity\Core\User
     use_listener: false
+    service:
+        user_manager: ladb_core.fos.user_manager
     from_email:
         address:        noreply@lairdubois.fr
         sender_name:    L'Air du Bois
@@ -399,6 +401,7 @@ fos_elastica:
                         meta:
                             type: "object"
                             properties:
+                                contributionCount: { type: integer }
                                 followerCount: { type: integer }
                                 recievedLikeCount: { type: integer }
                                 memberCount: { type: integer }

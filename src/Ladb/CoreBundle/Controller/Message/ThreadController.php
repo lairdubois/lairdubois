@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Message;
 
 use Ladb\CoreBundle\Entity\Message\MessageMeta;
+use Ladb\CoreBundle\Fos\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +35,7 @@ class ThreadController extends AbstractThreadController {
 		$newThreadMessage = new NewThreadMessage();
 
 		if (!is_null($recipientUsername)) {
-			$userManager = $this->get('fos_user.user_manager');
+			$userManager = $this->get(UserManager::NAME);
 			$recipient = $userManager->findUserByUsername($recipientUsername);
 			if (is_null($recipient)) {
 				throw $this->createNotFoundException('User not found (core_message_thread_new_recipientusername)');

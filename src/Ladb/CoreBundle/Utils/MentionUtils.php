@@ -3,8 +3,7 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Ladb\CoreBundle\Entity\Core\Mention;
-use Ladb\CoreBundle\Manager\Core\UserManager;
-use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Fos\UserManager;
 use Ladb\CoreBundle\Model\BodiedInterface;
 use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\MentionSourceInterface;

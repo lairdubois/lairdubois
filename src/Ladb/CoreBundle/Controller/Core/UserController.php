@@ -17,6 +17,8 @@ use Ladb\CoreBundle\Entity\Core\Vote;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Form\Type\Core\UserTeamSettingsType;
 use Ladb\CoreBundle\Form\Type\Core\UserTeamType;
+use Ladb\CoreBundle\Fos\DisplaynameCanonicalizer;
+use Ladb\CoreBundle\Fos\UserManager;
 use Ladb\CoreBundle\Manager\Core\MemberInvitationManager;
 use Ladb\CoreBundle\Manager\Core\MemberManager;
 use Ladb\CoreBundle\Manager\Core\MemberRequestManager;
@@ -138,7 +140,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:emailCheck.html.twig")
 	 */
 	public function emailCheckAction() {
-		$userManager = $this->container->get('fos_user.user_manager');
+		$userManager = $this->container->get(UserManager::NAME);
 		$tokenGenerator = $this->get('fos_user.util.token_generator');
 
 		$user = $this->getUser();
@@ -163,7 +165,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:emailConfirm.html.twig")
 	 */
 	public function emailConfirmAction($token) {
-		$userManager = $this->container->get('fos_user.user_manager');
+		$userManager = $this->container->get(UserManager::NAME);
 
 		$invalidToken = false;
 		$invalidUser = false;
@@ -199,7 +201,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:emailUnsubscribe.html.twig")
 	 */
 	public function emailUnsubscribeAction($list, $encryptedEmail) {
-		$userManager = $this->container->get('fos_user.user_manager');
+		$userManager = $this->container->get(UserManager::NAME);
 
 		$invalidEmail = false;
 
@@ -358,11 +360,7 @@ class UserController extends AbstractController {
 			},
 			function(&$filters, &$sort) use ($family) {
 
-				if ($family == 'team') {
-					$sort = array('meta.memberCount' => array('order' => 'desc'));
-				} else {
-					$sort = array( 'meta.recievedLikeCount' => array( 'order' => 'desc' ) );
-				}
+				$sort = array('meta.contributionCount' => array('order' => 'desc'));
 
 			},
 			function(&$filters) use ($family) {
@@ -481,7 +479,9 @@ class UserController extends AbstractController {
 					$userUtils->createDefaultAvatar($user);
 				}
 
-				$om->flush();
+				// Final update of user entity
+				$userManager = $this->get(UserManager::NAME);
+				$userManager->updateUser($user, true);
 
 				// Search index update
 				$searchUtils = $this->get(SearchUtils::NAME);
@@ -1741,8 +1741,8 @@ class UserController extends AbstractController {
 		}
 
 		$CrawlerDetect = new CrawlerDetect();
-		if ($CrawlerDetect->isCrawler()) {
-			$forwardController = 'LadbCoreBundle:Core/User:showAbout'; // Return about page for Crawlers
+		if ($CrawlerDetect->isCrawler() || $user->getIsTeam() && !is_null($user->getMeta()->getBiography())) {	 /* Return about page for Crawlers */
+			$forwardController = 'LadbCoreBundle:Core/User:showAbout';
 		} else if ($user->getIsTeam()) {
 			$forwardController = 'LadbCoreBundle:Core/User:showMembers';
 		} else if ($user->getMeta()->getPublicCreationCount() > 0) {
@@ -1787,7 +1787,7 @@ class UserController extends AbstractController {
 			throw new NotFoundException('Not allowed (core_user_team_new)');
 		}
 
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 
 		$team = $userManager->createUser();
 		$form = $this->createForm(UserTeamType::class, $team);
@@ -1809,7 +1809,7 @@ class UserController extends AbstractController {
 		$this->createLock('core_user_team_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 
 		$team = $userManager->createUser();
 		$team->setEnabled(true);
@@ -1883,7 +1883,7 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
@@ -1909,7 +1909,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
@@ -1968,7 +1968,7 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 		$manipulator = $this->get('fos_user.util.user_manipulator');
 
 		$user = $userManager->findUserByUsername($username);
@@ -1996,7 +1996,7 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 		$manipulator = $this->get('fos_user.util.user_manipulator');
 
 		$user = $userManager->findUserByUsername($username);
@@ -2025,7 +2025,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {
@@ -2064,7 +2064,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 
 		$user = $userManager->findUserByUsername($username);
 		if (is_null($user)) {

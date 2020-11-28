@@ -19,8 +19,8 @@ use Ladb\CoreBundle\Model\SitemapableTrait;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\UserRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("email")
- * @UniqueEntity("displayname")
  * @LadbAssert\ValidUsername()
+ * @LadbAssert\ValidDisplayname()
  */
 class User extends \FOS\UserBundle\Model\User implements IndexableInterface, SitemapableInterface, LocalisableInterface {
 
@@ -73,14 +73,19 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	 * @ORM\Column(type="string", length=25, unique=true)
 	 * @Assert\Length(min=3, max=25, groups={"settings"})
 	 * @Assert\NotBlank(groups={"settings"})
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’°-]+$/")
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'°’’-]+$/")
 	 */
 	private $displayname;
 
 	/**
+	 * @ORM\Column(type="string", length=25)
+	 */
+	private $displaynameCanonical;
+
+	/**
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 * @Assert\Length(min=3, max=100, groups={"settings"})
-	 * @Assert\Regex("/^[A-Za-z][ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'’-]+$/")
+	 * @Assert\Regex("/^[A-Za-z][ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'°’’-]+$/")
 	 */
 	private $fullname;
 
@@ -128,41 +133,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	 * @ORM\Column(type="boolean", name="is_team", nullable=false)
 	 */
 	private $isTeam = false;
-
-	/**
-	 * @ORM\Column(type="integer", name="team_count")
-	 */
-	private $teamCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\User", mappedBy="members")
-	 */
-	private $teams;
-
-	/**
-	 * @ORM\Column(type="integer", name="member_count")
-	 */
-	private $memberCount = 0;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Core\User", inversedBy="teams", cascade={"persist"})
-	 * @ORM\JoinTable(name="tbl_core_user_member",
-	 *      	joinColumns={ @ORM\JoinColumn(name="user_id", referencedColumnName="id") },
-	 *      	inverseJoinColumns={ @ORM\JoinColumn(name="member_user_id", referencedColumnName="id") }
-	 *      )
-	 */
-	private $members;
-
-	/////
-
-	/**
-	 * @ORM\PrePersist()
-	 */
-	public function prePersist() {
-		if (is_null($this->displayname)) {
-			$this->displayname = $this->username;
-		}
-	}
 
 	/////
 
@@ -237,6 +207,17 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	public function getTitle() {
 		return $this->getDisplayname();
+	}
+
+	// DisplaynameCanonical /////
+
+	public function setDisplaynameCanonical($displaynameCanonical) {
+		$this->displaynameCanonical = $displaynameCanonical;
+		return $this;
+	}
+
+	public function getDisplaynameCanonical() {
+		return $this->displaynameCanonical;
 	}
 
 	// Fullname /////

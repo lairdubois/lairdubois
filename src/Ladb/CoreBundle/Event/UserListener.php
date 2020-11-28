@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Event;
 
+use Ladb\CoreBundle\Fos\UserManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
@@ -30,7 +31,7 @@ class UserListener implements EventSubscriberInterface {
 	/////
 
 	public function onRegistrationCompleted(FilterUserResponseEvent $event) {
-		$userManager = $this->container->get('fos_user.user_manager');
+		$userManager = $this->container->get(UserManager::NAME);
 		$templating = $this->container->get('templating');
 		$messageUtils = $this->container->get(MessageUtils::NAME);
 		$mailerUtils = $this->container->get(MailerUtils::NAME);

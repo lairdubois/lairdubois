@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Manager\Wonder;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Howto\Article;
 use Ladb\CoreBundle\Entity\Wonder\Workshop;
 use Ladb\CoreBundle\Event\PublicationEvent;
@@ -302,6 +303,16 @@ class WorkshopManager extends AbstractWonderManager {
 		}
 
 		return $howto;
+	}
+
+	//////
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivatePlanCount($by);
+		} else {
+			$user->getMeta()->incrementPublicPlanCount($by);
+		}
 	}
 
 }

@@ -11,6 +11,8 @@ use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\PublicationInterface;
 use Ladb\CoreBundle\Model\RepublishableInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
 trait PublicationControllerTrait {
 

@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Validator\Constraints;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Entity\Core\UserWitness;
+use Ladb\CoreBundle\Fos\UserManager;
 use Ladb\CoreBundle\Utils\GlobalUtils;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Constraint;
@@ -11,6 +12,89 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Ladb\CoreBundle\Entity\Core\User;
 
 class ValidUsernameValidator extends ConstraintValidator {
+
+	const UNAUTHORIZED_USERNAMES = array(
+
+		'announcement',
+		'admin',
+		'administrator',
+		'administrateur',
+		'administrateurs',
+		'modo',
+		'moderateur',
+		'moderateurs',
+		'lairdubois',
+
+		'login',
+		'smartlogin',
+		'register',
+		'rejoindre',
+		'resetting',
+		'email',
+		'likes',
+		'comments',
+		'reports',
+		'watches',
+		'followers',
+		'tags',
+		'knowledge',
+		'notifications',
+		'referer',
+
+		'new',
+		'create',
+		'publish',
+		'unpublish',
+		'update',
+		'edit',
+		'delete',
+		'upload',
+		'copy',
+
+		'activate',
+		'deactivate',
+		'empty',
+
+		'uploads',
+		'media',
+		'sitemap',
+
+		'rechercher',
+		'a-propos',
+		'faq',
+		'me',
+		'parametres',
+		'messages',
+		'messagerie',
+		'creations',
+		'ateliers',
+		'boiseux',
+		'projets',
+		'pas-a-pas',
+		'plans',
+		'questions',
+		'processus',
+		'trouvailles',
+		'blog',
+		'xylotheque',
+		'fournisseurs',
+		'ecoles',
+		'livres',
+		'financement',
+		'outils',
+		'api',
+		'youtook',
+		'questions',
+		'promouvoir',
+		'collections',
+		'logiciels',
+		'astuces',
+		'annonces',
+		'evenements',
+		'opencutlist',
+		'collectifs',
+
+	);
 
 	protected $container;
 
@@ -29,90 +113,8 @@ class ValidUsernameValidator extends ConstraintValidator {
 	public function validate($value, Constraint $constraint) {
 		if ($value instanceof User) {
 
-			$unauthorizedUsernames = array(
 
-				'announcement',
-				'admin',
-				'administrator',
-				'administrateur',
-				'administrateurs',
-				'modo',
-				'moderateur',
-				'moderateurs',
-				'lairdubois',
-
-				'login',
-				'smartlogin',
-				'register',
-				'rejoindre',
-				'resetting',
-				'email',
-				'likes',
-				'comments',
-				'reports',
-				'watches',
-				'followers',
-				'tags',
-				'knowledge',
-				'notifications',
-				'referer',
-
-				'new',
-				'create',
-				'publish',
-				'unpublish',
-				'update',
-				'edit',
-				'delete',
-				'upload',
-				'copy',
-
-				'activate',
-				'deactivate',
-				'empty',
-
-				'uploads',
-				'media',
-				'sitemap',
-
-				'rechercher',
-				'a-propos',
-				'faq',
-				'me',
-				'parametres',
-				'messages',
-				'messagerie',
-				'creations',
-				'ateliers',
-				'boiseux',
-				'projets',
-				'pas-a-pas',
-				'plans',
-				'questions',
-				'processus',
-				'trouvailles',
-				'blog',
-				'xylotheque',
-				'fournisseurs',
-				'ecoles',
-				'livres',
-				'financement',
-				'outils',
-				'api',
-				'youtook',
-				'questions',
-				'promouvoir',
-				'collections',
-				'logiciels',
-				'astuces',
-				'annonces',
-				'evenements',
-				'opencutlist',
-				'collectifs',
-
-			);
-
-			if (in_array($value->getUsernameCanonical(), $unauthorizedUsernames)) {
+			if (in_array($value->getUsernameCanonical(), self::UNAUTHORIZED_USERNAMES)) {
 				$this->context->buildViolation('Ce nom d\'utilisateur n\'est pas autorisé.')
 					->atPath('username')
 					->addViolation();
@@ -136,7 +138,7 @@ class ValidUsernameValidator extends ConstraintValidator {
 			$userRepository = $this->container->get('doctrine')->getRepository(User::class);
 			$currentUser = $value->getId() ? $userRepository->findOneById($value->getId()) : null;
 
-			$userManager = $this->container->get('fos_user.user_manager');
+			$userManager = $this->container->get(UserManager::NAME);
 			$user = $userManager->findUserByUsername($value->getUsername());
 
 			$exists = !is_null($user) && !is_null($currentUser) && $user !== $currentUser;

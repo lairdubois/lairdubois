@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Controller\Core;
 
 use Elastica\Exception\NotFoundException;
+use Ladb\CoreBundle\Fos\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,7 +72,7 @@ class MemberController extends AbstractController {
 		$this->createLock('core_member_invitation_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get('fos_user.user_manager');
+		$userManager = $this->get(UserManager::NAME);
 		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
 		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
@@ -296,7 +297,7 @@ class MemberController extends AbstractController {
 
 		} else {
 
-			$userManager = $this->get('fos_user.user_manager');
+			$userManager = $this->get(UserManager::NAME);
 
 			$user = $userManager->findUserByUsername($username);
 			if (is_null($user)) {

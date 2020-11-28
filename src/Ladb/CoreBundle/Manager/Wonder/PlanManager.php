@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Manager\Wonder;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Wonder\Plan;
 
 class PlanManager extends AbstractWonderManager {
@@ -116,6 +117,16 @@ class PlanManager extends AbstractWonderManager {
 		}
 
 		parent::deleteWonder($plan, $withWitness, $flush);
+	}
+
+	//////
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivatePlanCount($by);
+		} else {
+			$user->getMeta()->incrementPublicPlanCount($by);
+		}
 	}
 
 }

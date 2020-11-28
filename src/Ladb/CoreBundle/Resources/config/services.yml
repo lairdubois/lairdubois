@@ -29,6 +29,16 @@ services:
     tags:
       - { name: liip_imagine.filter.post_processor, post_processor: ladb_imageoptimizer }
 
+  # Fos
+  ladb_core.fos.displayname_canonicalizer:
+    class: Ladb\CoreBundle\Fos\DisplaynameCanonicalizer
+  ladb_core.fos.canonical_fields_updater:
+    class: Ladb\CoreBundle\Fos\CanonicalFieldsUpdater
+    arguments: ['@fos_user.util.username_canonicalizer', '@fos_user.util.email_canonicalizer', '@ladb_core.fos.displayname_canonicalizer']
+  ladb_core.fos.user_manager:
+    class: Ladb\CoreBundle\Fos\UserManager
+    arguments: ['@fos_user.util.password_updater', '@ladb_core.fos.canonical_fields_updater', '@doctrine.orm.entity_manager', %fos_user.model.user.class%]
+
   # Utils
   ladb_core.global_utils:
     class: Ladb\CoreBundle\Utils\GlobalUtils
@@ -265,6 +275,11 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidUsernameValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_username_validator }
+    arguments: ['@service_container']
+  ladb_core.valid_displayname_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidDisplaynameValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_displayname_validator }
     arguments: ['@service_container']
   ladb_core.self_recipient_validator:
     class: Ladb\CoreBundle\Validator\Constraints\SelfRecipientValidator

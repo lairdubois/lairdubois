@@ -353,7 +353,7 @@ find:
     new_warning: Une <strong>trouvaille</strong> est un <strong>lien</strong> vers un <strong>site web</strong> (blog, forum, ...) ou une <strong>vidéo</strong> ou des <strong>photos</strong> ayant rapport avec le <strong>bois</strong>.
     content:
       link:
-        name: Lien
+        name: Lien (ou Vidéo)
       gallery:
         name: Photos
     form:

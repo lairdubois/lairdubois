@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Manager\Wonder;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Howto\Article;
 use Ladb\CoreBundle\Entity\Wonder\Creation;
 use Ladb\CoreBundle\Event\PublicationEvent;
@@ -653,6 +654,20 @@ class CreationManager extends AbstractWonderManager {
 		}
 
 		return $offer;
+	}
+
+	//////
+
+	public function changeOwner(Creation $creation, User $user, $flush = false) {
+		$this->changeOwnerPublication($creation, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateCreationCount($by);
+		} else {
+			$user->getMeta()->incrementPublicCreationCount($by);
+		}
 	}
 
 }

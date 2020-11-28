@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
+use Ladb\CoreBundle\Controller\PublicationControllerTrait;
+use Ladb\CoreBundle\Entity\Core\Member;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,12 +20,41 @@ use Ladb\CoreBundle\Form\Type\Core\EditPictureType;
  */
 class PictureController extends AbstractController {
 
+	use PublicationControllerTrait;
+
+	private function assertEditableGranted(Picture $picture, $context = '') {
+
+		if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			$allowed = true;
+		} else if ($picture->getUser()->getIsTeam() && !is_null($this->getUser())) {
+
+			// Only members allowed
+			$om = $this->getDoctrine()->getManager();
+			$memberRepository = $om->getRepository(Member::class);
+			$allowed = $memberRepository->existsByTeamAndUser($picture->getUser(), $this->getUser());
+
+		} else {
+			$allowed = $picture->getUser() == $this->getUser();
+		}
+
+		if (!$allowed) {
+			throw $this->createNotFoundException('Not allowed ('.$context.')');
+		}
+
+		return true;
+	}
+
+	/////
+
 	/**
 	 * @Route("/{quality}/{postProcessor}/upload", requirements={"quality" = "ld|sd|hd", "postProcessor" = "none|square"}, name="core_picture_upload")
 	 */
 	public function uploadAction(Request $request, $quality, $postProcessor) {
+
+		$owner = $this->retrieveOwner($request);
+
 		$uploadHandler = $this->get(PictureUploadHandler::NAME);
-		$uploadHandler->handle($quality, $postProcessor);
+		$uploadHandler->handle($quality, $postProcessor, $owner);
 		exit(0);
 	}
 
@@ -43,9 +74,7 @@ class PictureController extends AbstractController {
 		if (is_null($picture)) {
 			throw $this->createNotFoundException('Unable to find Picture entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($picture->getUser()) || $picture->getUser()->getId() != $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_picture_edit)');
-		}
+		$this->assertEditableGranted($picture, 'core_picture_edit');
 
 		$editPicture = new EditPicture();
 		$editPicture->setLegend($picture->getLegend());
@@ -80,9 +109,7 @@ class PictureController extends AbstractController {
 		if (is_null($picture)) {
 			throw $this->createNotFoundException('Unable to find Picture entity (id='.$id.').');
 		}
-		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && (is_null($picture->getUser()) || $picture->getUser()->getId() != $this->getUser()->getId())) {
-			throw $this->createNotFoundException('Not allowed (core_picture_update)');
-		}
+		$this->assertEditableGranted($picture, 'core_picture_edit');
 
 		$editPicture = new EditPicture();
 

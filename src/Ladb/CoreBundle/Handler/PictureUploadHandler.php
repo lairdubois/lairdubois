@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Manager\Core\PictureManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Ladb\CoreBundle\Entity\Core\Picture;
@@ -23,7 +24,7 @@ class PictureUploadHandler extends \UploadHandler {
 		$this->pictureManager = $pictureManager;
 	}
 
-	public function handle($quality = Picture::QUALITY_SD, $postProcessor = Picture::POST_PROCESSOR_NONE) {
+	public function handle($quality = Picture::QUALITY_SD, $postProcessor = Picture::POST_PROCESSOR_NONE, User $owner = null) {
 		parent::__construct(array(
 			'script_url'                   => '',
 			'upload_dir'                   => sys_get_temp_dir().DIRECTORY_SEPARATOR,
@@ -45,6 +46,7 @@ class PictureUploadHandler extends \UploadHandler {
 			),
 			'quality' => $quality,
 			'post_processor' => $postProcessor,
+			'owner' => $owner,
 		));
 	}
 
@@ -84,9 +86,8 @@ class PictureUploadHandler extends \UploadHandler {
 			// Compute image size
 			$this->pictureManager->computeSizes($picture);
 
-			// Set current user as picture's user
-			$user = $this->tokenStorage->getToken()->getUser();
-			$picture->setUser($user);
+			// Set "owner" as picture's user
+			$picture->setUser($this->options['owner']);
 
 			$this->om->flush();
 

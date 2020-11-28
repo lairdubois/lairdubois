@@ -28,7 +28,7 @@ class SoftwareIdentity extends BaseValue {
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank
 	 * @Assert\Length(max=100)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ\-.'&]+$/")
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ\-.'’’&]+$/")
 	 */
 	private $name;
 
@@ -40,7 +40,7 @@ class SoftwareIdentity extends BaseValue {
 	/**
 	 * @ORM\Column(type="string", length=100, nullable=true, name="host_software_name")
 	 * @Assert\Length(max=100)
-	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ\-.'&]+$/")
+	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ\-.'’’&]+$/")
 	 */
 	private $hostSoftwareName;
 
