@@ -215,7 +215,6 @@ class PlanController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Plan:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
 		$this->assertEditabable($plan);
@@ -250,6 +249,7 @@ class PlanController extends AbstractController {
 				$plan->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

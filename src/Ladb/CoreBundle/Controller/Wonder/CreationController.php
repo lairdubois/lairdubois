@@ -219,7 +219,6 @@ class CreationController extends AbstractController {
 	 * @Template("LadbCoreBundle:Wonder/Creation:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
@@ -259,6 +258,7 @@ class CreationController extends AbstractController {
 				$creation->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

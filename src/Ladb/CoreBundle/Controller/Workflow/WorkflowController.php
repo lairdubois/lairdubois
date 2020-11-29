@@ -200,7 +200,6 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Template("LadbCoreBundle:Workflow:Workflow/edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
 		$this->assertEditabable($workflow);
@@ -219,6 +218,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 				$workflow->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

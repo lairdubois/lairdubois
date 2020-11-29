@@ -204,7 +204,6 @@ class FindController extends AbstractController {
 	 * @Template("LadbCoreBundle:Find/Find:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
@@ -240,6 +239,7 @@ class FindController extends AbstractController {
 				$find->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

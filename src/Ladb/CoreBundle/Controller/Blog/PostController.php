@@ -196,7 +196,6 @@ class PostController extends AbstractController {
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BLOG')", statusCode=404, message="Not allowed (core_blog_post_update)")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$doUp = $request->get('ladb_do_up', false);
 
@@ -224,6 +223,7 @@ class PostController extends AbstractController {
 			}
 			$post->setUpdatedAt(new \DateTime());
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

@@ -189,7 +189,6 @@ class ArticleController extends AbstractHowtoBasedController {
 	 * @Template("LadbCoreBundle:Howto/Article:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$article = $this->retrievePublication($id, Article::CLASS_NAME);
 		$this->assertEditabable($article->getHowto());
@@ -220,6 +219,7 @@ class ArticleController extends AbstractHowtoBasedController {
 			}
 			$this->_updateHowtoBlockVideoCount($howto);
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Process mentions

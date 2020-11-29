@@ -208,7 +208,6 @@ class QuestionController extends AbstractController {
 	 * @Template("LadbCoreBundle:Qa/Question:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$question = $this->retrievePublication($id, Question::CLASS_NAME);
 		$this->assertEditabable($question);
@@ -237,6 +236,7 @@ class QuestionController extends AbstractController {
 				$question->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

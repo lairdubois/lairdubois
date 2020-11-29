@@ -203,7 +203,6 @@ class OfferController extends AbstractController {
 	 * @Template("LadbCoreBundle:Offer/Offer:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
 		$this->assertEditabable($offer);
@@ -230,6 +229,7 @@ class OfferController extends AbstractController {
 				$offer->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

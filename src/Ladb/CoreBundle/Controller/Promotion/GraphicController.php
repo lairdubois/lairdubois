@@ -201,7 +201,6 @@ class GraphicController extends AbstractController {
 	 * @Template("LadbCoreBundle:Promotion/Graphic:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
 		$this->assertEditabable($graphic);
@@ -227,6 +226,7 @@ class GraphicController extends AbstractController {
 				$graphic->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

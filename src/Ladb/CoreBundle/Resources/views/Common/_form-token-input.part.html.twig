@@ -1,9 +1,10 @@
 
 {# set help #}
+{# set maxLength #}
 
 <div id="{{ fieldId }}_token_widget" class="row">
     <div class="col-xs-5">
-        <input id="{{ fieldId }}_token_input" type="text" class="ladb-token-input form-control">
+        <input id="{{ fieldId }}_token_input" type="text" class="ladb-token-input form-control" maxlength="{{ maxLength|default(25) }}">
     </div>
     <div class="col-xs-1">
         <button class="btn btn-success" type="button" onclick="add{{ fieldId|capitalize }}Token($('#{{ fieldId }}_token_input').val());" data-tooltip="tooltip" title="Ajouter à la liste">

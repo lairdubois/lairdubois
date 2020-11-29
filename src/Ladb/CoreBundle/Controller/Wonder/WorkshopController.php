@@ -240,6 +240,7 @@ class WorkshopController extends AbstractController {
 				$workshop->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event

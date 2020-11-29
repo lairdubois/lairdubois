@@ -204,7 +204,6 @@ class EventController extends AbstractController {
 	 * @Template("LadbCoreBundle:Event/Event:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
-		$om = $this->getDoctrine()->getManager();
 
 		$event = $this->retrievePublication($id, Event::CLASS_NAME);
 		$this->assertEditabable($event);
@@ -228,6 +227,7 @@ class EventController extends AbstractController {
 				$event->setUpdatedAt(new \DateTime());
 			}
 
+			$om = $this->getDoctrine()->getManager();
 			$om->flush();
 
 			// Dispatch publication event
