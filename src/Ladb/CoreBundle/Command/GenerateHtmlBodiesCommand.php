@@ -79,6 +79,8 @@ EOT
 		$entityCount += $this->_process('LadbCoreBundle:Workflow\Workflow', $om, $output, $filedProcessoUtils, $om, $forced);
 		$entityCount += $this->_process('LadbCoreBundle:Qa\Question', $om, $output, $filedProcessoUtils, $om, $forced);
 		$entityCount += $this->_process('LadbCoreBundle:Qa\Answer', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Event\Event', $om, $output, $filedProcessoUtils, $om, $forced);
+		$entityCount += $this->_process('LadbCoreBundle:Offer\Offer', $om, $output, $filedProcessoUtils, $om, $forced);
 
 		if ($forced) {
 			$output->writeln('<info>'.$entityCount.' generated</info>');

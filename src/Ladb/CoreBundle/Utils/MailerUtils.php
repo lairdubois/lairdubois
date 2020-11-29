@@ -109,14 +109,13 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		);
 	}
 
-	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess, $pinterestSuccess, $mastodonSuccess) {
+	public function sendNewSpotlightNotificationEmailMessage(User $recipientUser, Spotlight $spotlight, $entity, $twitterSuccess, $facebookSuccess, $mastodonSuccess) {
 		if ($recipientUser->getMeta()->getNewSpotlightEmailNotificationEnabled() && $recipientUser->getEmailConfirmed()) {
 			$parameters = array(
 				'recipientUser'       => $recipientUser,
 				'entity'              => $entity,
 				'twitterSuccess'      => $twitterSuccess,
 				'facebookSuccess'     => $facebookSuccess,
-				'pinterestSuccess'    => $pinterestSuccess,
 				'mastodonSuccess'     => $mastodonSuccess,
 				'listUnsubscribeLink' => $this->generateListUnsubscribeLink($recipientUser, self::LIST_NOTIFICATIONS),
 			);

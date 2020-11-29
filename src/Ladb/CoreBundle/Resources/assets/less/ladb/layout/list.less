@@ -4,15 +4,20 @@
 
 .ladb-list-row {
   .row();
+  display: table;
 
   .ladb-avatar {
-    margin-top: 5px;
-    float: left;
+    vertical-align: top;
+    padding-top: 5px;
+    display: table-cell;
   }
 
   .ladb-body {
     .row-body();
-    margin-left: 74px;
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+    padding-left: 10px;
     padding-top: 10px;
 
     .ladb-heading {
@@ -56,6 +61,12 @@
     }
   }
 
+  .ladb-row-metas {
+    display: table-cell;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
 }
 
 /* Responsive */
@@ -72,6 +83,13 @@
         padding-bottom: 3px;
       }
 
+    }
+
+    .ladb-row-metas {
+      display: table-caption;
+      caption-side: bottom;
+      text-align: right;
+      padding-bottom: 10px;
     }
 
   }

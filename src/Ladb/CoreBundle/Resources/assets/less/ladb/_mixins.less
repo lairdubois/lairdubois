@@ -256,16 +256,21 @@
   min-height: 81px;
   padding-top: 5px;
   padding-bottom: 5px;
-  border-bottom: 1px solid @ladb-global-border;
+  border-top: 1px solid @ladb-global-border;
   position: relative;
+
+  &:first-child {
+    border-top: none;
+  }
+
 }
 .row-body {
 
   .ladb-heading {
     font-weight: bold;
     margin-top: 2px;
-    margin-bottom: 0px;
-    margin-left: 0px;
+    margin-bottom: 0;
+    margin-left: 0;
 
     small {
       display: inline-block;
@@ -289,7 +294,7 @@
 
 }
 .row-counter() {
-  float: right;
+  display: inline-block;
   margin: 5px 0 5px 15px;
   border-left: 1px solid @ladb-global-border;
   padding-left: 10px;
