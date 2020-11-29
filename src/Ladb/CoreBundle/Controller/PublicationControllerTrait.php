@@ -54,15 +54,16 @@ trait PublicationControllerTrait {
 			$user = $this->retrieveUserByUsername($username);
 			if (!is_null($user)) {
 
-				// Only team allowed
-				if (!$user->getIsTeam()) {
-					throw $this->createNotFoundException('Owner user must be a team.');
-				}
+				if ($user->getIsTeam()) {
 
-				// Only members allowed
-				$om = $this->getDoctrine()->getManager();
-				$memberRepository = $om->getRepository(Member::class);
-				if (!$memberRepository->existsByTeamAndUser($user, $this->getUser())) {
+					// Only members allowed
+					$om = $this->getDoctrine()->getManager();
+					$memberRepository = $om->getRepository(Member::class);
+					if (!$memberRepository->existsByTeamAndUser($user, $this->getUser())) {
+						throw $this->createNotFoundException('Access denied');
+					}
+
+				} else if ($user != $this->getUser()) {
 					throw $this->createNotFoundException('Access denied');
 				}
 
