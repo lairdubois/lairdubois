@@ -3,7 +3,7 @@
 {% use 'LadbCoreBundle:Common/Blocks:map.blocks.html.twig' %}
 
 {% set pageTitle = (family == 'team' ? 'team.list' : 'user.list')|trans() %}
-{% set pageDescription = 'user.description'|trans() %}
+{% set pageDescription = (family == 'team' ? 'team.description' : 'user.description')|trans() %}
 {% set pageImage = asset('banner-'~(family == 'team' ? 'teams' : 'users')~'-600x376.jpg') %}
 
 {% set navSection = family == 'team' ? 'teams' : 'users' %}

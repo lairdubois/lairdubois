@@ -307,6 +307,10 @@ class WorkshopManager extends AbstractWonderManager {
 
 	//////
 
+	public function changeOwner(Workshop $workshop, User $user, $flush = false) {
+		$this->changeOwnerPublication($workshop, $user, $flush);
+	}
+
 	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
 		if ($isPrivate) {
 			$user->getMeta()->incrementPrivatePlanCount($by);

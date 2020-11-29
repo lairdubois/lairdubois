@@ -1741,7 +1741,7 @@ class UserController extends AbstractController {
 		}
 
 		$CrawlerDetect = new CrawlerDetect();
-		if ($CrawlerDetect->isCrawler() || $user->getIsTeam() && !is_null($user->getMeta()->getBiography())) {	 /* Return about page for Crawlers */
+		if ($CrawlerDetect->isCrawler() || $user->getIsTeam() && !is_null($user->getMeta()->getBiography()) && !empty($user->getMeta()->getBiography()->getHtmlBody())) {	 /* Return about page for Crawlers */
 			$forwardController = 'LadbCoreBundle:Core/User:showAbout';
 		} else if ($user->getIsTeam()) {
 			$forwardController = 'LadbCoreBundle:Core/User:showMembers';

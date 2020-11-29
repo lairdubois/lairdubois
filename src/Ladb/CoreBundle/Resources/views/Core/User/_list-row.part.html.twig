@@ -3,6 +3,7 @@
 {% set entity = user %}
 {% set classes = 'ladb-user-row' %}
 {% set showPath = path('core_user_show', { 'username':user.usernameCanonical }) %}
+{% set noMicrodata = true %}
 
 {% block rowInner %}
     {% block counters %}
@@ -66,7 +67,7 @@
 {% endblock %}
 
 {% block headingInner %}
-    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' %}{% if user.isFullnameDisplayble %}&nbsp;<small>(<span itemprop="familyName">{{ user.fullname }}</span>)</small>{% endif %}
+    {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' %}{% if user.isFullnameDisplayble %}&nbsp;<small>({{ user.fullname }})</small>{% endif %}
 {% endblock %}
 
 {% block subheadingInner %}

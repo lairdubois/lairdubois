@@ -1143,7 +1143,7 @@ message:
     new: Nouveau message
 
 team:
-  description: Liste des collectifs créés sur la plateforme de partage collaborative L'Air du Bois.
+  description: Liste des collectifs de boiseux créés sur la plateforme de partage collaborative L'Air du Bois.
   list: Les collectifs
   nav: Collectifs
   new: Créer un collectif

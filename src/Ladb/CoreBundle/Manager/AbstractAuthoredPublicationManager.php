@@ -2,39 +2,18 @@
 
 namespace Ladb\CoreBundle\Manager;
 
-use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
-use Ladb\CoreBundle\Entity\AbstractPublication;
+use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Entity\Core\User;
-use Ladb\CoreBundle\Event\PublicationEvent;
-use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
-use Ladb\CoreBundle\Model\CollectionnableInterface;
-use Ladb\CoreBundle\Model\CommentableInterface;
-use Ladb\CoreBundle\Model\DraftableInterface;
-use Ladb\CoreBundle\Model\HiddableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
-use Ladb\CoreBundle\Model\LikableInterface;
-use Ladb\CoreBundle\Model\LinkedToInterface;
-use Ladb\CoreBundle\Model\MentionSourceInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
-use Ladb\CoreBundle\Model\ReportableInterface;
-use Ladb\CoreBundle\Model\RepublishableInterface;
-use Ladb\CoreBundle\Model\WatchableInterface;
-use Ladb\CoreBundle\Utils\ActivityUtils;
-use Ladb\CoreBundle\Utils\CollectionnableUtils;
-use Ladb\CoreBundle\Utils\CommentableUtils;
-use Ladb\CoreBundle\Utils\LikableUtils;
-use Ladb\CoreBundle\Utils\MentionUtils;
-use Ladb\CoreBundle\Utils\ReportableUtils;
 use Ladb\CoreBundle\Utils\SearchUtils;
-use Ladb\CoreBundle\Utils\WatchableUtils;
 
 abstract class AbstractAuthoredPublicationManager extends AbstractPublicationManager {
 
-	protected function changeOwnerPublication(AbstractPublication $publication, User $targetUser, $flush = true) {
+	protected function changeOwnerPublication(AbstractAuthoredPublication $publication, User $targetUser, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
 		$originUser = null;
@@ -57,11 +36,10 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 			}
 		}
 
-		$isPrivate = $publication instanceof HiddableInterface && $publication->getIsPrivate();
 		if (!is_null($originUser)) {
-			$this->updateUserCounterAfterChangeOwner($originUser, -1, $isPrivate);
+			$this->updateUserCounterAfterChangeOwner($originUser, -1, $publication->getIsPrivate());
 		}
-		$this->updateUserCounterAfterChangeOwner($targetUser, 1, $isPrivate);
+		$this->updateUserCounterAfterChangeOwner($targetUser, 1, $publication->getIsPrivate());
 
 		if ($publication instanceof IndexableInterface && $publication->isIndexable()) {
 
