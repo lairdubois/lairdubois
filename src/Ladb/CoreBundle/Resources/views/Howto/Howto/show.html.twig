@@ -145,6 +145,13 @@
     {% if howto.updatedAt > howto.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':howto } %}
     {% endif %}
+    {% block newArticleShortcutBlock %}
+        {% if permissionContext.isGrantedOwner and permissionContext.editable %}
+            <div class="text-center">
+                <a href="{{ path('core_howto_edit', { 'id':howto.id }) }}#articles" class="btn btn-success"><i class="ladb-icon-plus"></i> {{ 'howto.article.new'|trans() }}...</a>
+            </div>
+        {% endif %}
+    {% endblock %}
     <div id="ladb_tocable">
         <div id="ladb_articles">
             {% for article in howto.articles if not article.isDraft or article.isDraft and showDraft %}
@@ -252,6 +259,7 @@
                 </div>
             {% endfor %}
         </div>
+        {{ block('newArticleShortcutBlock') }}
         <br/>
         {% include 'LadbCoreBundle:Howto/Howto:_wip-alert.part.html.twig' %}
         {% if not permissionContext.isGrantedOwner %}
