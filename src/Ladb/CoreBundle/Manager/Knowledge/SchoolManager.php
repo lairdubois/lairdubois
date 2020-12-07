@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager;
 
 class SchoolManager extends AbstractKnowledgeManager {
 
-	const NAME = 'ladb_core.school_manager';
+	const NAME = 'ladb_core.knowledge_school_manager';
 
 	public function delete(School $school, $withWitness = true, $flush = true) {
 

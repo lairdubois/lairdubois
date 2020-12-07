@@ -25,8 +25,9 @@ class ChangeOwnerCommand extends ContainerAwareCommand {
 	protected function configure() {
 		$this
 			->setName('ladb:change:owner')
-			->addOption('target-username', 't', InputOption::VALUE_REQUIRED, 'Target username')
-			->addOption('creation-id', 'cid', InputOption::VALUE_REQUIRED, 'Creation ID')
+			->addOption('target-username', null, InputOption::VALUE_REQUIRED, 'Target username')
+			->addOption('entity-type', null, InputOption::VALUE_REQUIRED, 'Entity type')
+			->addOption('entity-id', null, InputOption::VALUE_REQUIRED, 'Entity ID')
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force removing')
 			->setDescription('Change owner')
 			->setHelp(<<<EOT
@@ -39,7 +40,8 @@ EOT
 
 		$forced = $input->getOption('force');
 		$targetUsername = $input->getOption('target-username');
-		$creationId = $input->getOption('creation-id');
+		$entityType = $input->getOption('entity-type');
+		$entityId = $input->getOption('entity-id');
 
 		$om = $this->getContainer()->get('doctrine')->getManager();
 
@@ -53,25 +55,23 @@ EOT
 			return;
 		}
 
-		$output->writeln('<info>targetUser='.$targetUser->getDisplayName().'</info>');
-
 		// Retrieve creation ////
 
 		$typableUtils = $this->getContainer()->get(TypableUtils::NAME);
-		$typable = $typableUtils->findTypable(Creation::TYPE, $creationId);
+		$typable = $typableUtils->findTypable($entityType, $entityId);
 
-		if (is_null($typable)) {
-			$output->writeln('<error>Unknow Creation creationId='.$creationId.'</error>', 0);
-			return;
+		$output->write('<info>Changing Owner of typable="'.$typable->getTitle().'" to targetUser='.$targetUser->getDisplayName().'...</info>');
+
+		$manager = $typableUtils->getManagerByType($entityType);
+		if (!is_null($manager)) {
+			$manager->changeOwner($typable, $targetUser, false);
 		}
-
-		$output->writeln('<info>typable='.$typable->getTitle().'</info>');
-
-		$creationManager = $this->getContainer()->get(CreationManager::NAME);
-		$creationManager->changeOwner($typable, $targetUser, false);
 
 		if ($forced) {
 			$om->flush();
+			$output->writeln('<fg=cyan>[Done]</fg=cyan>');
+		} else {
+			$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
 		}
 
 	}

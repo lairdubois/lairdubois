@@ -16,7 +16,7 @@ use Ladb\CoreBundle\Utils\SearchUtils;
 
 class WorkflowManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.workflow_manager';
+	const NAME = 'ladb_core.workflow_workflow_manager';
 
 	/////
 

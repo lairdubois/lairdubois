@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Manager\AbstractPublicationManager;
 
 class QuestionManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.question_manager';
+	const NAME = 'ladb_core.faq_question_manager';
 
 	/////
 

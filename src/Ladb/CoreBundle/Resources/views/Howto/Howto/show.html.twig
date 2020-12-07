@@ -145,10 +145,10 @@
     {% if howto.updatedAt > howto.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':howto } %}
     {% endif %}
-    {% block newArticleShortcutBlock %}
+    {% block manageArticlesShortcutBlock %}
         {% if permissionContext.isGrantedOwner and permissionContext.editable %}
             <div class="text-center">
-                <a href="{{ path('core_howto_edit', { 'id':howto.id }) }}#articles" class="btn btn-success"><i class="ladb-icon-plus"></i> {{ 'howto.article.new'|trans() }}...</a>
+                <a href="{{ path('core_howto_edit', { 'id':howto.id }) }}#articles" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'howto.article.manage'|trans() }}...</a>
             </div>
         {% endif %}
     {% endblock %}
@@ -259,7 +259,7 @@
                 </div>
             {% endfor %}
         </div>
-        {{ block('newArticleShortcutBlock') }}
+        {{ block('manageArticlesShortcutBlock') }}
         <br/>
         {% include 'LadbCoreBundle:Howto/Howto:_wip-alert.part.html.twig' %}
         {% if not permissionContext.isGrantedOwner %}

@@ -8,7 +8,7 @@ use Ladb\CoreBundle\Utils\JoinableUtils;
 
 class OfferManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.offer_manager';
+	const NAME = 'ladb_core.offer_offer_manager';
 
 	/////
 

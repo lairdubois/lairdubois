@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Entity\Core\Picture;
 
 class PictureManager extends AbstractManager {
 
-	const NAME = 'ladb_core.picture_manager';
+	const NAME = 'ladb_core.core_picture_manager';
 
 	/////
 

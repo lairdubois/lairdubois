@@ -9,7 +9,7 @@ use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
 class HowtoManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.howto_manager';
+	const NAME = 'ladb_core.howto_howto_manager';
 
 	/////
 

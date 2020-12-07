@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Entity\Wonder\Plan;
 
 class PlanManager extends AbstractWonderManager {
 
-	const NAME = 'ladb_core.plan_manager';
+	const NAME = 'ladb_core.wonder_plan_manager';
 
 	/////
 

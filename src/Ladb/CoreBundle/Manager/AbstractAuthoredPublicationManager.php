@@ -7,6 +7,7 @@ use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
+use Ladb\CoreBundle\Model\FeedbackableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
 use Ladb\CoreBundle\Model\PicturedInterface;
@@ -64,6 +65,10 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 				}
 
 			}
+		}
+
+		if ($publication instanceof FeedbackableInterface) {
+			// TODO
 		}
 
 		// Change publication user

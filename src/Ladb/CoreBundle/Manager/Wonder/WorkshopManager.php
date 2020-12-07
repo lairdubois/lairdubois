@@ -20,7 +20,7 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 
 class WorkshopManager extends AbstractWonderManager {
 
-	const NAME = 'ladb_core.workshop_manager';
+	const NAME = 'ladb_core.wonder_workshop_manager';
 
 	/////
 

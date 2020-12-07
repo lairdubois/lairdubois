@@ -10,7 +10,7 @@ use Ladb\CoreBundle\Utils\SearchUtils;
 
 class ArticleManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.article_manager';
+	const NAME = 'ladb_core.howto_article_manager';
 
 	/////
 

@@ -11,7 +11,7 @@ use Ladb\CoreBundle\Utils\JoinableUtils;
 
 class FundingManager extends AbstractManager {
 
-	const NAME = 'ladb_core.funding_manager';
+	const NAME = 'ladb_core.funding_funding_manager';
 
 	/////
 

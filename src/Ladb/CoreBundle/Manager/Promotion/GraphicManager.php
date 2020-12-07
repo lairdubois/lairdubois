@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Manager\AbstractPublicationManager;
 
 class GraphicManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.graphic_manager';
+	const NAME = 'ladb_core.promotion_graphic_manager';
 
 	/////
 

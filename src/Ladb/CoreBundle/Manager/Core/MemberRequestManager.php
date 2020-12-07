@@ -8,7 +8,7 @@ use Ladb\CoreBundle\Utils\ActivityUtils;
 
 class MemberRequestManager extends AbstractManager {
 
-	const NAME = 'ladb_core.member_request_manager';
+	const NAME = 'ladb_core.core_member_request_manager';
 
 	public function create(\Ladb\CoreBundle\Entity\Core\User $team, \Ladb\CoreBundle\Entity\Core\User $sender, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

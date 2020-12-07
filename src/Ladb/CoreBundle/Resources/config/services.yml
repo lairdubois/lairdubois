@@ -176,77 +176,83 @@ services:
     arguments: ['@service_container']
 
   # Managers
-  ladb_core.user_manager:
+  ladb_core.core_user_manager:
     class: Ladb\CoreBundle\Manager\Core\UserManager
     arguments: ['@service_container']
-  ladb_core.picture_manager:
+  ladb_core.core_picture_manager:
     class: Ladb\CoreBundle\Manager\Core\PictureManager
     arguments: ['@service_container']
-  ladb_core.comment_manager:
+  ladb_core.core_comment_manager:
     class: Ladb\CoreBundle\Manager\Core\CommentManager
     arguments: ['@service_container']
-  ladb_core.tip_manager:
+  ladb_core.core_tip_manager:
     class: Ladb\CoreBundle\Manager\Core\TipManager
     arguments: ['@service_container']
-  ladb_core.creation_manager:
+  ladb_core.core_witness_manager:
+    class: Ladb\CoreBundle\Manager\Core\WitnessManager
+    arguments: ['@service_container']
+  ladb_core.core_member_manager:
+    class: Ladb\CoreBundle\Manager\Core\MemberManager
+    arguments: ['@service_container']
+  ladb_core.core_member_invitation_manager:
+    class: Ladb\CoreBundle\Manager\Core\MemberInvitationManager
+    arguments: ['@service_container']
+  ladb_core.core_member_request_manager:
+    class: Ladb\CoreBundle\Manager\Core\MemberRequestManager
+    arguments: ['@service_container']
+  ladb_core.wonder_creation_manager:
     class: Ladb\CoreBundle\Manager\Wonder\CreationManager
     arguments: ['@service_container']
-  ladb_core.plan_manager:
+  ladb_core.wonder_plan_manager:
     class: Ladb\CoreBundle\Manager\Wonder\PlanManager
     arguments: ['@service_container']
-  ladb_core.workshop_manager:
+  ladb_core.wonder_workshop_manager:
     class: Ladb\CoreBundle\Manager\Wonder\WorkshopManager
     arguments: ['@service_container']
-  ladb_core.post_manager:
+  ladb_core.blog_post_manager:
     class: Ladb\CoreBundle\Manager\Blog\PostManager
     arguments: ['@service_container']
-  ladb_core.question_manager:
+  ladb_core.faq_question_manager:
     class: Ladb\CoreBundle\Manager\Faq\QuestionManager
     arguments: ['@service_container']
-  ladb_core.find_manager:
+  ladb_core.find_find_manager:
     class: Ladb\CoreBundle\Manager\Find\FindManager
     arguments: ['@service_container']
-  ladb_core.event_manager:
+  ladb_core.event_event_manager:
     class: Ladb\CoreBundle\Manager\Event\EventManager
     arguments: ['@service_container']
-  ladb_core.howto_manager:
+  ladb_core.howto_howto_manager:
     class: Ladb\CoreBundle\Manager\Howto\HowtoManager
     arguments: ['@service_container']
-  ladb_core.article_manager:
+  ladb_core.howto_article_manager:
     class: Ladb\CoreBundle\Manager\Howto\ArticleManager
     arguments: ['@service_container']
-  ladb_core.provider_manager:
+  ladb_core.knowledge_provider_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\ProviderManager
     arguments: ['@service_container']
-  ladb_core.school_manager:
+  ladb_core.knowledge_school_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\SchoolManager
     arguments: ['@service_container']
   ladb_core.knowledge_school_testimonial_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager
     arguments: ['@service_container']
-  ladb_core.book_manager:
+  ladb_core.knowledge_book_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\BookManager
     arguments: ['@service_container']
-  ladb_core.wood_manager:
+  ladb_core.knowledge_wood_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\WoodManager
     arguments: ['@service_container']
-  ladb_core.software_manager:
+  ladb_core.knowledge_software_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\SoftwareManager
     arguments: ['@service_container']
-  ladb_core.workflow_manager:
+  ladb_core.workflow_workflow_manager:
     class: Ladb\CoreBundle\Manager\Workflow\WorkflowManager
     arguments: ['@service_container']
-  ladb_core.collection_manager:
+  ladb_core.collection_collection_manager:
     class: Ladb\CoreBundle\Manager\Collection\CollectionManager
     arguments: ['@service_container']
-  ladb_core.witness_manager:
-    class: Ladb\CoreBundle\Manager\Core\WitnessManager
-    arguments: ['@service_container']
-  ladb_core.funding_manager:
+  ladb_core.funding_funding_manager:
     class: Ladb\CoreBundle\Manager\Funding\FundingManager
-    arguments: ['@service_container']
-  ladb_core.took_manager:
-    class: Ladb\CoreBundle\Manager\Youtook\TookManager
     arguments: ['@service_container']
   ladb_core.qa_question_manager:
     class: Ladb\CoreBundle\Manager\Qa\QuestionManager
@@ -254,20 +260,14 @@ services:
   ladb_core.qa_answer_manager:
     class: Ladb\CoreBundle\Manager\Qa\AnswerManager
     arguments: ['@service_container']
-  ladb_core.graphic_manager:
+  ladb_core.promotion_graphic_manager:
     class: Ladb\CoreBundle\Manager\Promotion\GraphicManager
     arguments: ['@service_container']
-  ladb_core.offer_manager:
+  ladb_core.offer_offer_manager:
     class: Ladb\CoreBundle\Manager\Offer\OfferManager
     arguments: ['@service_container']
-  ladb_core.member_manager:
-    class: Ladb\CoreBundle\Manager\Core\MemberManager
-    arguments: ['@service_container']
-  ladb_core.member_invitation_manager:
-    class: Ladb\CoreBundle\Manager\Core\MemberInvitationManager
-    arguments: ['@service_container']
-  ladb_core.member_request_manager:
-    class: Ladb\CoreBundle\Manager\Core\MemberRequestManager
+  ladb_core.took_manager:
+    class: Ladb\CoreBundle\Manager\Youtook\TookManager
     arguments: ['@service_container']
 
   # Validators
@@ -427,10 +427,10 @@ services:
     arguments: ['@router']
   ladb_core.picture_upload_handler:
     class: Ladb\CoreBundle\Handler\PictureUploadHandler
-    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@ladb_core.picture_manager']
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@ladb_core.core_picture_manager']
   ladb_core.resource_upload_handler:
     class: Ladb\CoreBundle\Handler\ResourceUploadHandler
-    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@ladb_core.picture_manager']
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@ladb_core.core_picture_manager']
 
   # Types
   ladb_qa_question:
@@ -597,7 +597,7 @@ services:
     class: Ladb\CoreBundle\Form\Type\Youtook\NewTookType
     tags:
       - { name: form.type }
-    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils', '@ladb_core.picture_manager']
+    arguments: ['@doctrine.orm.entity_manager', '@ladb_core.video_hosting_utils', '@ladb_core.core_picture_manager']
   ladb_youtook_edit_took:
     class: Ladb\CoreBundle\Form\Type\Youtook\EditTookType
     tags:

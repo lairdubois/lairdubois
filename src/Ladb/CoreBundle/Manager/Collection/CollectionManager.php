@@ -13,7 +13,7 @@ use Ladb\CoreBundle\Utils\TypableUtils;
 
 class CollectionManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.collection_manager';
+	const NAME = 'ladb_core.collection_collection_manager';
 
 	/////
 

@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Manager\AbstractPublicationManager;
 
 class PostManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.post_manager';
+	const NAME = 'ladb_core.blog_post_manager';
 
 	/////
 

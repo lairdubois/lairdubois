@@ -13,7 +13,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 	/////
 
 	public static function getStrippedName(TypableInterface $typable, $delimiter = '_', $capitalize = false) {
-		return self::getStrippedNameByType($typable->getType(), $delimiter);
+		return self::getStrippedNameByType($typable->getType(), $delimiter, $capitalize);
 	}
 
 	public static function getStrippedNameByType($type, $delimiter = '_', $capitalize = false) {
@@ -174,6 +174,15 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			$om = $this->get('doctrine.orm.entity_manager');
 			$repository = $om->getRepository($className);
 			return $repository;
+		}
+		return null;
+	}
+
+	public function getManagerByType($type) {
+		$strippedName = $this->getStrippedNameByType($type);
+		if (!is_null($strippedName)) {
+			$manager = $this->get('ladb_core.'.$strippedName.'_manager');
+			return $manager;
 		}
 		return null;
 	}

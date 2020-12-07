@@ -22,7 +22,7 @@ use Ladb\CoreBundle\Utils\VotableUtils;
 
 class CommentManager extends AbstractManager {
 
-	const NAME = 'ladb_core.comment_manager';
+	const NAME = 'ladb_core.core_comment_manager';
 
 	public function delete(Comment $comment, $flush = true) {
 		parent::deleteEntity($comment, $flush);

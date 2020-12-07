@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Utils\ReviewableUtils;
 
 class ProviderManager extends AbstractKnowledgeManager {
 
-	const NAME = 'ladb_core.provider_manager';
+	const NAME = 'ladb_core.knowledge_provider_manager';
 
 	public function delete(Provider $provider, $withWitness = true, $flush = true) {
 

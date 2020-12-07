@@ -8,7 +8,7 @@ use Ladb\CoreBundle\Utils\ActivityUtils;
 
 class MemberInvitationManager extends AbstractManager {
 
-	const NAME = 'ladb_core.member_invitation_manager';
+	const NAME = 'ladb_core.core_member_invitation_manager';
 
 	public function create(\Ladb\CoreBundle\Entity\Core\User $team, \Ladb\CoreBundle\Entity\Core\User $sender, \Ladb\CoreBundle\Entity\Core\User $recipient, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

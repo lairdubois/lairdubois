@@ -20,7 +20,7 @@ use Ladb\CoreBundle\Utils\WatchableUtils;
 
 class CreationManager extends AbstractWonderManager {
 
-	const NAME = 'ladb_core.creation_manager';
+	const NAME = 'ladb_core.wonder_creation_manager';
 
 	/////
 

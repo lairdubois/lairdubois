@@ -12,7 +12,7 @@ use Ladb\CoreBundle\Manager\AbstractManager;
 
 class WitnessManager extends AbstractManager {
 
-	const NAME = 'ladb_core.witness_manager';
+	const NAME = 'ladb_core.core_witness_manager';
 
 	public function deleteByPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

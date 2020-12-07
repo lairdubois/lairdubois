@@ -8,7 +8,7 @@ use Ladb\CoreBundle\Utils\JoinableUtils;
 
 class FindManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.find_manager';
+	const NAME = 'ladb_core.find_find_manager';
 
 	/////
 

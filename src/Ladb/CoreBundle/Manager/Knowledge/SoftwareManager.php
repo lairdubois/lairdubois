@@ -7,7 +7,7 @@ use Ladb\CoreBundle\Utils\ReviewableUtils;
 
 class SoftwareManager extends AbstractKnowledgeManager {
 
-	const NAME = 'ladb_core.software_manager';
+	const NAME = 'ladb_core.knowledge_software_manager';
 
 	public function delete(Software $software, $withWitness = true, $flush = true) {
 

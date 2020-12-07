@@ -326,6 +326,7 @@ howto:
     edit: Edition de l'article
     unpublish: Dépublication de l'article
     list: Liste des articles
+    manage: Gérer les articles
     share: Partage de l'article
     new_warning: Votre <strong>pas à pas</strong> est enregistré.<br/>Vous pouvez maintenant ajouter son contenu dans ce premier <strong>article</strong>.
     form:

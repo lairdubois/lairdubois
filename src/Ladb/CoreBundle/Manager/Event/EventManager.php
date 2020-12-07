@@ -9,7 +9,7 @@ use Ladb\CoreBundle\Utils\JoinableUtils;
 
 class EventManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.event_manager';
+	const NAME = 'ladb_core.event_event_manager';
 
 	/////
 
