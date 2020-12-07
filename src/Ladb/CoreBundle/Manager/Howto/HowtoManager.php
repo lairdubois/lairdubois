@@ -2,11 +2,12 @@
 
 namespace Ladb\CoreBundle\Manager\Howto;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Howto\Howto;
-use Ladb\CoreBundle\Manager\AbstractPublicationManager;
+use Ladb\CoreBundle\Manager\AbstractAuthoredPublicationManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
-class HowtoManager extends AbstractPublicationManager {
+class HowtoManager extends AbstractAuthoredPublicationManager {
 
 	const NAME = 'ladb_core.howto_manager';
 
@@ -163,6 +164,20 @@ class HowtoManager extends AbstractPublicationManager {
 		}
 
 		parent::deletePublication($howto, $withWitness, $flush);
+	}
+
+	/////
+
+	public function changeOwner(Howto $howto, User $user, $flush = true) {
+		parent::changeOwnerPublication($howto, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateHowtoCount($by);
+		} else {
+			$user->getMeta()->incrementPublicHowtoCount($by);
+		}
 	}
 
 }

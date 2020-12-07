@@ -309,6 +309,26 @@ class CreationController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_creation_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$this->assertChownable($creation);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$creationManager = $this->get(CreationManager::NAME);
+		$creationManager->changeOwner($creation, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.creation.form.alert.chown_success', array( '%title%' => $creation->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_creation_show', array( 'id' => $creation->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/questions", requirements={"id" = "\d+"}, name="core_creation_questions")
 	 * @Route("/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_creation_questions_filter")
 	 * @Route("/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_creation_questions_filter_page")

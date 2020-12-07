@@ -4,12 +4,12 @@ namespace Ladb\CoreBundle\Entity\Howto;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Model\SpotlightableInterface;
 use Ladb\CoreBundle\Model\SpotlightableTrait;
 use Ladb\CoreBundle\Model\StripableInterface;
 use Ladb\CoreBundle\Model\StripableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Validator\Constraints as LadbAssert;
 use Ladb\CoreBundle\Entity\AbstractDraftableAuthoredPublication;
 use Ladb\CoreBundle\Model\LinkedToInterface;
 use Ladb\CoreBundle\Model\CollectionnableInterface;

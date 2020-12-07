@@ -121,8 +121,8 @@ class PlanManager extends AbstractWonderManager {
 
 	//////
 
-	public function changeOwner(Plan $plan, User $user, $flush = false) {
-		$this->changeOwnerPublication($plan, $user, $flush);
+	public function changeOwner(Plan $plan, User $user, $flush = true) {
+		parent::changeOwnerPublication($plan, $user, $flush);
 	}
 
 	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {

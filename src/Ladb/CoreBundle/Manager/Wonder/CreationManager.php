@@ -166,6 +166,8 @@ class CreationManager extends AbstractWonderManager {
 		parent::deleteWonder($creation, $withWitness, $flush);
 	}
 
+	/////
+
 	public function convertToWorkshop(Creation $creation, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
@@ -658,8 +660,8 @@ class CreationManager extends AbstractWonderManager {
 
 	//////
 
-	public function changeOwner(Creation $creation, User $user, $flush = false) {
-		$this->changeOwnerPublication($creation, $user, $flush);
+	public function changeOwner(Creation $creation, User $user, $flush = true) {
+		parent::changeOwnerPublication($creation, $user, $flush);
 	}
 
 	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {

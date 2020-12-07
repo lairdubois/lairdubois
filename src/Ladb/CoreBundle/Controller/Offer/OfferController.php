@@ -264,7 +264,7 @@ class OfferController extends AbstractController {
 	public function deleteAction($id) {
 
 		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
-		$this->assertDeletable($offer);
+		$this->assertDeletable($offer, true);
 
 		// Delete
 		$offerManager = $this->get(OfferManager::NAME);

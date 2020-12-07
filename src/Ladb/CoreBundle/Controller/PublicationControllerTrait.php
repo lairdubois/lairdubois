@@ -39,7 +39,8 @@ trait PublicationControllerTrait {
 			'editable'      => $publication instanceof AuthoredInterface && ($isGrantedAdmin || $isOwner || $isOwnerMember),
 			'publishable'   => ($isGrantedAdmin || $isOwner || $isOwnerMember) && !$isPublic,
 			'unpublishable' => $isGrantedAdmin && $isPublic,
-			'deletable'     => $isGrantedAdmin || (($isOwner || $isOwnerMember) && !$isPublic),
+			'deletable'     => $isGrantedAdmin || (($isOwner || $isOwnerMember) && (!$isPublic || $publication instanceof RepublishableInterface)),
+			'chownable'     => $publication instanceof AuthoredInterface && ($isGrantedAdmin || $isOwner || $isOwnerMember),
 			'likable'       => !($isOwner || $isOwnerMember),
 		);
 	}
@@ -179,6 +180,10 @@ trait PublicationControllerTrait {
 			}
 
 		}
+	}
+
+	protected function assertChownable(PublicationInterface $publication, $context = '') {
+		$this->assertWriteAccessGranted($publication, $context);
 	}
 
 	protected function assertShowable(PublicationInterface $publication, $publicly = false, $context = '') {

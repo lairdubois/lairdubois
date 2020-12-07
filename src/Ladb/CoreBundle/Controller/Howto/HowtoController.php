@@ -262,6 +262,26 @@ class HowtoController extends AbstractHowtoBasedController {
     }
 
 	/**
+	 * @Route("/pas-a-pas/{id}/chown", requirements={"id" = "\d+"}, name="core_howto_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$this->assertChownable($howto);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$howtoManager = $this->get(HowtoManager::NAME);
+		$howtoManager->changeOwner($howto, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.howto.form.alert.chown_success', array( '%title%' => $howto->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/pas-a-pas/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_sticker_png")
 	 * @Route("/pas-a-pas/{id}/sticker", requirements={"id" = "\d+"}, name="core_howto_sticker")
 	 */

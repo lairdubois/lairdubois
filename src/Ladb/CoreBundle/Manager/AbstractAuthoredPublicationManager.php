@@ -9,6 +9,7 @@ use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\MultiPicturedInterface;
+use Ladb\CoreBundle\Model\PicturedInterface;
 use Ladb\CoreBundle\Utils\SearchUtils;
 
 abstract class AbstractAuthoredPublicationManager extends AbstractPublicationManager {
@@ -16,16 +17,22 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 	protected function changeOwnerPublication(AbstractAuthoredPublication $publication, User $targetUser, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		$originUser = null;
-		if ($publication instanceof AuthoredInterface) {
-			$originUser = $publication->getUser();
-			$publication->setUser($targetUser);
+		$originUser = $publication->getUser();
+
+		// Change publication's main picture user
+		if ($publication instanceof PicturedInterface) {
+			if (!is_null($publication->getMainPicture())) {
+				$publication->getMainPicture()->setUser($targetUser);
+			}
 		}
+		// Change publication's pictures user
 		if ($publication instanceof MultiPicturedInterface) {
 			foreach ($publication->getPictures() as $picture) {
 				$picture->setUser($targetUser);
 			}
 		}
+
+		// Change publication body blocks picture's user
 		if ($publication instanceof BlockBodiedInterface) {
 			foreach ($publication->getBodyBlocks() as $bodyBlock) {
 				if ($bodyBlock instanceof Gallery) {
@@ -35,6 +42,32 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 				}
 			}
 		}
+
+		// Change sub publications user
+		$subPublications = $publication->getSubPublications();
+		if (!is_null($subPublications)) {
+			foreach ($publication->getSubPublications() as $subPublication) {
+
+				if ($publication instanceof AuthoredInterface && $publication->getUser() != $originUser) {
+					continue;	// Skip if owner is not the same as parent user
+				}
+
+				// Change sub publication body blocks picture's user
+				if ($subPublication instanceof BlockBodiedInterface) {
+					foreach ($subPublication->getBodyBlocks() as $bodyBlock) {
+						if ($bodyBlock instanceof Gallery) {
+							foreach ($bodyBlock->getPictures() as $picture) {
+								$picture->setUser($targetUser);
+							}
+						}
+					}
+				}
+
+			}
+		}
+
+		// Change publication user
+		$publication->setUser($targetUser);
 
 		if (!is_null($originUser)) {
 			$this->updateUserCounterAfterChangeOwner($originUser, -1, $publication->getIsPrivate());
