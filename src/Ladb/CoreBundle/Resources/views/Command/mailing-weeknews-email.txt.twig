@@ -12,7 +12,7 @@ Voici les nouveautés L'Air du Bois de la semaine.
 {% endif %}
 {% if questions is not empty %}
 
-{% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.txt.twig' with { 'entities':questions, 'type':'question', 'typePrefix':'qa_', 'transPrefix':'qa.question' } %}
+{% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.txt.twig' with { 'entities':questions, 'type':'question', 'typePrefix':'qa_', 'transPrefix':'qa.question', 'listSorter':'@sort-popular-answers:asc' } %}
 {% endif %}
 {% if plans is not empty %}
 

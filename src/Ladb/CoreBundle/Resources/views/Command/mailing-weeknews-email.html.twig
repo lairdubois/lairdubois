@@ -9,7 +9,7 @@
         {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':creations, 'type':'creation', 'transPrefix':'wonder.creation' } %}
     {% endif %}
     {% if questions is not empty %}
-        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':questions, 'type':'question', 'typePrefix':'qa_', 'transPrefix':'qa.question' } %}
+        {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':questions, 'type':'question', 'typePrefix':'qa_', 'transPrefix':'qa.question', 'listSorter':'@sort-popular-answers:asc' } %}
     {% endif %}
     {% if plans is not empty %}
         {% include 'LadbCoreBundle:Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':plans, 'type':'plan', 'transPrefix':'wonder.plan' } %}

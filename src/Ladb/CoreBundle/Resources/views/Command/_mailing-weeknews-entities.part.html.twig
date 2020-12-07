@@ -6,6 +6,7 @@
 {% set typePrefix = typePrefix|default('') %}
 {% set transPrefix = transPrefix|default(type) %}
 {% set noShowMore = noShowMore|default(false) %}
+{% set listSorter = listSorter|default('@sort-popular-likes:desc') %}
 
 <p style="border-top: 1px solid #ddd; padding: 10px 0 0 10px;">
     <strong>{{ entities|length }} {{ (transPrefix~'.choice.new_'~type~'s')|transchoice((entities|length)) }}</strong>
@@ -16,7 +17,7 @@
         {% endfor %}
         {% if entities|length > maxResults and not noShowMore %}
             <tr>
-                <td><a href="{{ url('core_'~typePrefix~type~'_list') }}" style="color: #f77f00; font-size: 90%;">Voir la suite...</a></td>
+                <td colspan="2"><a href="{{ url('core_'~typePrefix~type~'_list', { 'q':'@period:last7days '~listSorter}) }}" style="color: #f77f00; font-size: 90%;">Voir la suite...</a></td>
             </tr>
         {% endif %}
         </tbody>

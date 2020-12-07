@@ -7,6 +7,7 @@
 {% set typePrefix = typePrefix|default('') %}
 {% set transPrefix = transPrefix|default(type) %}
 {% set noShowMore = noShowMore|default(false) %}
+{% set listSorter = listSorter|default('@sort-popular-likes:desc') %}
 
 {% endspaceless %}
 ----------
@@ -17,5 +18,5 @@
 {% endfor %}
 {% if entities|length > maxResults and not noShowMore %}
 
-  Voir la suite... {{ url('core_'~typePrefix~type~'_list') }}
+  Voir la suite... {{ url('core_'~typePrefix~type~'_list', { 'q':'@period:last7days '~listSorter}) }}
 {% endif %}
