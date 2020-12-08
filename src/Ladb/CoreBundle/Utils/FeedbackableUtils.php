@@ -110,8 +110,6 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	/////
-
 	public function transferFeedbacks(FeedbackableInterface $feedbackableSrc, FeedbackableInterface $feedbackableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);

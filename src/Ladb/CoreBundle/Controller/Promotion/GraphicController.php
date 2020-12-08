@@ -274,6 +274,26 @@ class GraphicController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_promotion_graphic_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$this->assertChownable($graphic);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$graphicManager = $this->get(GraphicManager::NAME);
+		$graphicManager->changeOwner($graphic, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('promotion.graphic.form.alert.chown_success', array( '%title%' => $graphic->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_promotion_graphic_show', array( 'id' => $graphic->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_promotion_graphic_widget")
 	 * @Template("LadbCoreBundle:Promotion/Graphic:widget-xhr.html.twig")
 	 */

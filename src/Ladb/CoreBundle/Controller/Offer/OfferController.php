@@ -277,6 +277,26 @@ class OfferController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_offer_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$this->assertChownable($offer);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$offerManager = $this->get(OfferManager::NAME);
+		$offerManager->changeOwner($offer, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('offer.offer.form.alert.chown_success', array( '%title%' => $offer->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_offer_show', array( 'id' => $offer->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_offer_widget")
 	 * @Template("LadbCoreBundle:Offer/Offer:widget-xhr.html.twig")
 	 */

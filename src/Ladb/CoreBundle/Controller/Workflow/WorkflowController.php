@@ -266,6 +266,26 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_workflow_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$workflow = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertChownable($workflow);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$workflowManager = $this->get(WorkflowManager::NAME);
+		$workflowManager->changeOwner($workflow, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('workflow.workflow.form.alert.chown_success', array( '%title%' => $workflow->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_workflow_show', array( 'id' => $workflow->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_workflow_widget")
 	 * @Template("LadbCoreBundle:Workflow/Workflow:widget-xhr.html.twig")
 	 */

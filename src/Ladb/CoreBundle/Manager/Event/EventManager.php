@@ -2,12 +2,13 @@
 
 namespace Ladb\CoreBundle\Manager\Event;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Event\Event;
-use Ladb\CoreBundle\Manager\AbstractPublicationManager;
+use Ladb\CoreBundle\Manager\AbstractAuthoredPublicationManager;
 use Ladb\CoreBundle\Utils\FeedbackableUtils;
 use Ladb\CoreBundle\Utils\JoinableUtils;
 
-class EventManager extends AbstractPublicationManager {
+class EventManager extends AbstractAuthoredPublicationManager {
 
 	const NAME = 'ladb_core.event_event_manager';
 
@@ -47,6 +48,20 @@ class EventManager extends AbstractPublicationManager {
 		$feedbackableUtils->deleteFeedbacks($event, false);
 
 		parent::deletePublication($event, $withWitness, $flush);
+	}
+
+	//////
+
+	public function changeOwner(Event $event, User $user, $flush = true) {
+		parent::changeOwnerPublication($event, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateEventCount($by);
+		} else {
+			$user->getMeta()->incrementPublicEventCount($by);
+		}
 	}
 
 }

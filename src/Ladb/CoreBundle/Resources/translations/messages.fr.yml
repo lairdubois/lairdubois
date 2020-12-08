@@ -180,6 +180,7 @@ wonder:
         unpublish_success: La création <strong>%title%</strong> a été dépubliée.
         update_success: La création <strong>%title%</strong> a été mise à jour.
         delete_success: La création <strong>%title%</strong> a été supprimée.
+        chown_success: Le propriétaire de la création <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre création.
         showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre création. La première photo sera utilisée comme miniature.
@@ -227,6 +228,7 @@ wonder:
         unpublish_success: Le plan <strong>%title%</strong> a été dépublié.
         update_success: Le plan <strong>%title%</strong> a été mis à jour.
         delete_success: Le plan <strong>%title%</strong> a été supprimé.
+        chown_success: Le propriétaire du plan <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre plan.
         body: Décrivez ici votre plan.
@@ -262,6 +264,7 @@ wonder:
         unpublish_success: L'atelier <strong>%title%</strong> a été dépublié.
         update_success: L'atelier <strong>%title%</strong> a été mis à jour.
         delete_success: L'atelier <strong>%title%</strong> a été supprimé.
+        chown_success: Le propriétaire de l'atelier' <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre atelier.
         showcase: Ajoutez jusqu'à <strong>5 photos</strong> de votre atelier. La première photo sera utilisée comme miniature.
@@ -306,6 +309,7 @@ howto:
         unpublish_success: Le pas à pas <strong>%title%</strong> a été dépublié.
         update_success: Le pas à pas <strong>%title%</strong> a été mis à jour.
         delete_success: Le pas à pas <strong>%title%</strong> a été supprimé.
+        chown_success: Le propriétaire du pas à pas <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre pas à pas.
         main_picture: Ajoutez ici une image qui sera à la fois utilisée en miniature et en bannière de votre pas à pas.
@@ -365,6 +369,7 @@ find:
         unpublish_success: La trouvaille <strong>%title%</strong> a été dépubliée.
         update_success: La trouvaille <strong>%title%</strong> a été mise à jour.
         delete_success: La trouvaille <strong>%title%</strong> a été supprimée.
+        chown_success: Le propriétaire de la trouvaille <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre trouvaille.
         body: Décrivez ici votre trouvaille.
@@ -407,6 +412,7 @@ event:
         unpublish_success: L'évènement <strong>%title%</strong> a été dépublié.
         update_success: L'évènement <strong>%title%</strong> a été mis à jour.
         delete_success: L'évènement <strong>%title%</strong> a été supprimé.
+        chown_success: Le propriétaire de l'évènement <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre évènement.
         body: Décrivez ici votre évènement.
@@ -442,6 +448,7 @@ qa:
         unpublish_success: La question <strong>%title%</strong> a été dépubliée.
         update_success: La question <strong>%title%</strong> a été mise à jour.
         delete_success: La question <strong>%title%</strong> a été supprimée.
+        chown_success: Le propriétaire de la question <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre question.<br><br><span class='ladb-color-danger'>Ce titre est <strong>très important</strong> pour la visibilité de votre question. <strong>Formulez-le comme une question (...?).</strong><br>Ecrivez le avec les mêmes termes que ceux que vous utiliseriez si vous recherchiez votre question.</span>
         body: Détaillez ici plus en profondeur votre question.
@@ -493,6 +500,7 @@ workflow:
         unpublish_success: Le processus <strong>%title%</strong> a été dépublié.
         update_success: Le processus <strong>%title%</strong> a été mis à jour.
         delete_success: Le processus <strong>%title%</strong> a été supprimé.
+        chown_success: Le propriétaire du processus <strong>%title%</strong> a été changé.
         copy_success: Le processus <strong>%title%</strong> a été copié.
       help:
         title: Renseignez ici le titre de votre processus.
@@ -576,6 +584,7 @@ offer:
         unpublish_success: L'annonce <strong>%title%</strong> a été dépubliée.
         update_success: L'annonce <strong>%title%</strong> a été mise à jour.
         delete_success: L'annonce <strong>%title%</strong> a été supprimée.
+        chown_success: Le propriétaire de l'annonce <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre annonce.
         showcase: Ajoutez jusqu'à <strong>5 photos</strong> à votre annonce. La première photo sera utilisée comme miniature.
@@ -1663,6 +1672,7 @@ promotion:
         unpublish_success: Le graphisme <strong>%title%</strong> a été dépublié.
         update_success: Le graphisme <strong>%title%</strong> a été mis à jour.
         delete_success: Le graphisme <strong>%title%</strong> a été supprimé.
+        chown_success: Le propriétaire du graphisme <strong>%title%</strong> a été changé.
       help:
         title: Renseignez ici le titre de votre graphisme.
         resource: "Ajoutez ici votre fichier graphique.<br><em>Les formats autorisés sont : PDF, SVG</em>."

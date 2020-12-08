@@ -288,6 +288,26 @@ class WorkshopController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_workshop_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$this->assertChownable($workshop);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$workshopManager = $this->get(WorkshopManager::NAME);
+		$workshopManager->changeOwner($workshop, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.workshop.form.alert.chown_success', array( '%title%' => $workshop->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_workshop_show', array( 'id' => $workshop->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_workshop_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workshop_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workshop_plans_filter_page")

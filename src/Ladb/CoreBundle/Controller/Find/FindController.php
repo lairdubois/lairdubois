@@ -290,6 +290,26 @@ class FindController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_find_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$this->assertChownable($find);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$findManager = $this->get(FindManager::NAME);
+		$findManager->changeOwner($find, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('find.find.form.alert.chown_success', array( '%title%' => $find->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_find_show', array( 'id' => $find->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_find_widget")
 	 * @Template("LadbCoreBundle:Find/Find:widget-xhr.html.twig")
 	 */

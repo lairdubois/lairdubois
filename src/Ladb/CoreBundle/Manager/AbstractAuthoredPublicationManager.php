@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Manager;
 
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\Core\Block\Gallery;
+use Ladb\CoreBundle\Entity\Core\Feedback;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
@@ -65,10 +66,6 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 				}
 
 			}
-		}
-
-		if ($publication instanceof FeedbackableInterface) {
-			// TODO
 		}
 
 		// Change publication user

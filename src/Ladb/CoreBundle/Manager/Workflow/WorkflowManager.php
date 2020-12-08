@@ -11,10 +11,10 @@ use Ladb\CoreBundle\Entity\Workflow\Task;
 use Ladb\CoreBundle\Entity\Workflow\Workflow;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
-use Ladb\CoreBundle\Manager\AbstractPublicationManager;
+use Ladb\CoreBundle\Manager\AbstractAuthoredPublicationManager;
 use Ladb\CoreBundle\Utils\SearchUtils;
 
-class WorkflowManager extends AbstractPublicationManager {
+class WorkflowManager extends AbstractAuthoredPublicationManager {
 
 	const NAME = 'ladb_core.workflow_workflow_manager';
 
@@ -311,6 +311,20 @@ class WorkflowManager extends AbstractPublicationManager {
 			$om->flush();
 		}
 
+	}
+
+	//////
+
+	public function changeOwner(Workflow $workflow, User $user, $flush = true) {
+		parent::changeOwnerPublication($workflow, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateWorkflowCount($by);
+		} else {
+			$user->getMeta()->incrementPublicWorkflowCount($by);
+		}
 	}
 
 }

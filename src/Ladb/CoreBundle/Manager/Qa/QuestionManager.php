@@ -2,10 +2,12 @@
 
 namespace Ladb\CoreBundle\Manager\Qa;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Offer\Offer;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Event\PublicationEvent;
 use Ladb\CoreBundle\Event\PublicationListener;
+use Ladb\CoreBundle\Manager\AbstractAuthoredPublicationManager;
 use Ladb\CoreBundle\Manager\AbstractPublicationManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 use Ladb\CoreBundle\Utils\ActivityUtils;
@@ -18,7 +20,7 @@ use Ladb\CoreBundle\Utils\ViewableUtils;
 use Ladb\CoreBundle\Utils\VotableUtils;
 use Ladb\CoreBundle\Utils\WatchableUtils;
 
-class QuestionManager extends AbstractPublicationManager {
+class QuestionManager extends AbstractAuthoredPublicationManager {
 
 	const NAME = 'ladb_core.qa_question_manager';
 
@@ -134,6 +136,22 @@ class QuestionManager extends AbstractPublicationManager {
 
 		parent::deletePublication($question, $withWitness, $flush);
 	}
+
+	//////
+
+	public function changeOwner(Question $question, User $user, $flush = true) {
+		parent::changeOwnerPublication($question, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateQuestionCount($by);
+		} else {
+			$user->getMeta()->incrementPublicQuestionCount($by);
+		}
+	}
+
+	/////
 
 	public function convertToOffer(Question $question, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

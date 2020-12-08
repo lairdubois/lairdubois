@@ -297,6 +297,26 @@ class PlanController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_plan_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$this->assertChownable($plan);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$planManager = $this->get(PlanManager::NAME);
+		$planManager->changeOwner($plan, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.plan.form.alert.chown_success', array( '%title%' => $plan->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_plan_show', array( 'id' => $plan->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/download", requirements={"id" = "\d+"}, name="core_plan_download")
 	 */
 	public function downloadAction($id) {

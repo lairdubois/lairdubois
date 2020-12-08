@@ -284,6 +284,26 @@ class QuestionController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_qa_question_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$this->assertChownable($question);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$questionManager = $this->get(QuestionManager::NAME);
+		$questionManager->changeOwner($question, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('qa.question.form.alert.chown_success', array( '%title%' => $question->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_qa_question_show', array( 'id' => $question->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_qa_question_widget")
 	 * @Template("LadbCoreBundle:Qa/Question:widget-xhr.html.twig")
 	 */

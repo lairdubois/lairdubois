@@ -2,10 +2,11 @@
 
 namespace Ladb\CoreBundle\Manager\Promotion;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Promotion\Graphic;
-use Ladb\CoreBundle\Manager\AbstractPublicationManager;
+use Ladb\CoreBundle\Manager\AbstractAuthoredPublicationManager;
 
-class GraphicManager extends AbstractPublicationManager {
+class GraphicManager extends AbstractAuthoredPublicationManager {
 
 	const NAME = 'ladb_core.promotion_graphic_manager';
 
@@ -37,6 +38,20 @@ class GraphicManager extends AbstractPublicationManager {
 		}
 
 		parent::deletePublication($graphic, $withWitness, $flush);
+	}
+
+	//////
+
+	public function changeOwner(Graphic $graphic, User $user, $flush = true) {
+		parent::changeOwnerPublication($graphic, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateGraphicCount($by);
+		} else {
+			$user->getMeta()->incrementPublicGraphicCount($by);
+		}
 	}
 
 }

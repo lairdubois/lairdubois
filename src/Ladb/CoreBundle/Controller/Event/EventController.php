@@ -275,6 +275,26 @@ class EventController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_event_chown")
+	 */
+	public function chownAction(Request $request, $id) {
+
+		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$this->assertChownable($event);
+
+		$targetUser = $this->retrieveOwner($request);
+
+		// Change owner
+		$eventManager = $this->get(EventManager::NAME);
+		$eventManager->changeOwner($event, $targetUser);
+
+		// Flashbag
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('event.event.form.alert.chown_success', array( '%title%' => $event->getTitle() )));
+
+		return $this->redirect($this->generateUrl('core_event_show', array( 'id' => $event->getSluggedId() )));
+	}
+
+	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_event_widget")
 	 * @Template("LadbCoreBundle:Event/Event:widget-xhr.html.twig")
 	 */

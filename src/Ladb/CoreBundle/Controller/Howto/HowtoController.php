@@ -29,12 +29,15 @@ use Ladb\CoreBundle\Event\PublicationsEvent;
 use Ladb\CoreBundle\Manager\Howto\HowtoManager;
 use Ladb\CoreBundle\Manager\Core\WitnessManager;
 
+/**
+ * @Route("/pas-a-pas")
+ */
 class HowtoController extends AbstractHowtoBasedController {
 
 	use PublicationControllerTrait;
 
 	/**
-	 * @Route("/pas-a-pas/new", name="core_howto_new")
+	 * @Route("/new", name="core_howto_new")
 	 * @Template("LadbCoreBundle:Howto/Howto:new.html.twig")
 	 */
 	public function newAction(Request $request) {
@@ -52,7 +55,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/create", methods={"POST"}, name="core_howto_create")
+	 * @Route("/create", methods={"POST"}, name="core_howto_create")
 	 * @Template("LadbCoreBundle:Howto/Howto:new.html.twig")
 	 */
 	public function createAction(Request $request) {
@@ -125,7 +128,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/publish", requirements={"id" = "\d+"}, name="core_howto_publish")
+	 * @Route("/{id}/publish", requirements={"id" = "\d+"}, name="core_howto_publish")
 	 */
 	public function publishAction($id) {
 
@@ -143,7 +146,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_unpublish")
+	 * @Route("/{id}/unpublish", requirements={"id" = "\d+"}, name="core_howto_unpublish")
 	 */
 	public function unpublishAction(Request $request, $id) {
 
@@ -167,7 +170,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_edit")
+	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_edit")
 	 * @Template("LadbCoreBundle:Howto/Howto:edit.html.twig")
 	 */
 	public function editAction($id) {
@@ -187,7 +190,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_update")
+	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_update")
 	 * @Template("LadbCoreBundle:Howto/Howto:edit.html.twig")
 	 */
 	public function updateAction(Request $request, $id) {
@@ -244,7 +247,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/delete", requirements={"id" = "\d+"}, name="core_howto_delete")
+	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_howto_delete")
 	 */
 	public function deleteAction($id) {
 
@@ -262,7 +265,7 @@ class HowtoController extends AbstractHowtoBasedController {
     }
 
 	/**
-	 * @Route("/pas-a-pas/{id}/chown", requirements={"id" = "\d+"}, name="core_howto_chown")
+	 * @Route("/{id}/chown", requirements={"id" = "\d+"}, name="core_howto_chown")
 	 */
 	public function chownAction(Request $request, $id) {
 
@@ -282,8 +285,8 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_sticker_png")
-	 * @Route("/pas-a-pas/{id}/sticker", requirements={"id" = "\d+"}, name="core_howto_sticker")
+	 * @Route("/{id}/sticker.png", requirements={"id" = "\d+"}, name="core_howto_sticker_png")
+	 * @Route("/{id}/sticker", requirements={"id" = "\d+"}, name="core_howto_sticker")
 	 */
 	public function stickerAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -316,7 +319,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/strip", requirements={"id" = "\d+"}, name="core_howto_strip")
+	 * @Route("/{id}/strip", requirements={"id" = "\d+"}, name="core_howto_strip")
 	 */
 	public function stripAction(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -349,7 +352,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_widget")
+	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_widget")
 	 * @Template("LadbCoreBundle:Howto/Howto:widget-xhr.html.twig")
 	 */
 	public function widgetAction(Request $request, $id) {
@@ -365,16 +368,16 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_howto_list_filter")
-	 * @Route("/pas-a-pas/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_list_filter_page")
+	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_howto_list_filter")
+	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_list_filter_page")
 	 */
 	public function goneListAction(Request $request, $filter, $page = 0) {
 		throw new \Symfony\Component\HttpKernel\Exception\GoneHttpException();
 	}
 
 	/**
-	 * @Route("/pas-a-pas/", name="core_howto_list")
-	 * @Route("/pas-a-pas/{page}", requirements={"page" = "\d+"}, name="core_howto_list_page")
+	 * @Route("/", name="core_howto_list")
+	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_howto_list_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:list.html.twig")
 	 */
 	public function listAction(Request $request, $page = 0) {
@@ -625,9 +628,9 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/creations", requirements={"id" = "\d+"}, name="core_howto_creations")
-	 * @Route("/pas-a-pas/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_creations_filter")
-	 * @Route("/pas-a-pas/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_creations_filter_page")
+	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_howto_creations")
+	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_creations_filter")
+	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_creations_filter_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:creations.html.twig")
 	 */
 	public function creationsAction(Request $request, $id, $filter = "recent", $page = 0) {
@@ -663,9 +666,9 @@ class HowtoController extends AbstractHowtoBasedController {
     }
 
 	/**
-	 * @Route("/pas-a-pas/{id}/ateliers", requirements={"id" = "\d+"}, name="core_howto_workshops")
-	 * @Route("/pas-a-pas/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workshops_filter")
-	 * @Route("/pas-a-pas/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workshops_filter_page")
+	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_howto_workshops")
+	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workshops_filter")
+	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workshops_filter_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:workshops.html.twig")
 	 */
 	public function workshopsAction(Request $request, $id, $filter = "recent", $page = 0) {
@@ -701,9 +704,9 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/plans", requirements={"id" = "\d+"}, name="core_howto_plans")
-	 * @Route("/pas-a-pas/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_plans_filter")
-	 * @Route("/pas-a-pas/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_plans_filter_page")
+	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_howto_plans")
+	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_plans_filter")
+	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_plans_filter_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:plans.html.twig")
 	 */
 	public function plansAction(Request $request, $id, $filter = "recent", $page = 0) {
@@ -739,9 +742,9 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/questions", requirements={"id" = "\d+"}, name="core_howto_questions")
-	 * @Route("/pas-a-pas/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_questions_filter")
-	 * @Route("/pas-a-pas/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_questions_filter_page")
+	 * @Route("/{id}/questions", requirements={"id" = "\d+"}, name="core_howto_questions")
+	 * @Route("/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_questions_filter")
+	 * @Route("/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_questions_filter_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:questions.html.twig")
 	 */
 	public function questionsAction(Request $request, $id, $filter = "recent", $page = 0) {
@@ -777,9 +780,9 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/processus", requirements={"id" = "\d+"}, name="core_howto_workflows")
-	 * @Route("/pas-a-pas/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workflows_filter")
-	 * @Route("/pas-a-pas/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workflows_filter_page")
+	 * @Route("/{id}/processus", requirements={"id" = "\d+"}, name="core_howto_workflows")
+	 * @Route("/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workflows_filter")
+	 * @Route("/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workflows_filter_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:workflows.html.twig")
 	 */
 	public function workflowsAction(Request $request, $id, $filter = "recent", $page = 0) {
@@ -815,9 +818,9 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/fournisseurs", requirements={"id" = "\d+"}, name="core_howto_providers")
-	 * @Route("/pas-a-pas/{id}/fournisseurs/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_providers_filter")
-	 * @Route("/pas-a-pas/{id}/fournisseurs/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_providers_filter_page")
+	 * @Route("/{id}/fournisseurs", requirements={"id" = "\d+"}, name="core_howto_providers")
+	 * @Route("/{id}/fournisseurs/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_providers_filter")
+	 * @Route("/{id}/fournisseurs/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_providers_filter_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:providers.html.twig")
 	 */
 	public function providersAction(Request $request, $id, $filter = "recent", $page = 0) {
@@ -853,9 +856,9 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}/ecoles", requirements={"id" = "\d+"}, name="core_howto_schools")
-	 * @Route("/pas-a-pas/{id}/ecoles/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_schools_filter")
-	 * @Route("/pas-a-pas/{id}/ecoles/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_schools_filter_page")
+	 * @Route("/{id}/ecoles", requirements={"id" = "\d+"}, name="core_howto_schools")
+	 * @Route("/{id}/ecoles/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_schools_filter")
+	 * @Route("/{id}/ecoles/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_schools_filter_page")
 	 * @Template("LadbCoreBundle:Howto/Howto:schools.html.twig")
 	 */
 	public function schoolsAction(Request $request, $id, $filter = "recent", $page = 0) {
@@ -891,7 +894,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	}
 
 	/**
-	 * @Route("/pas-a-pas/{id}.html", name="core_howto_show")
+	 * @Route("/{id}.html", name="core_howto_show")
 	 * @Template("LadbCoreBundle:Howto/Howto:show.html.twig")
 	 */
 	public function showAction(Request $request, $id) {
@@ -915,50 +918,6 @@ class HowtoController extends AbstractHowtoBasedController {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($howto));
 
 		return $this->computeShowParameters($howto, $request);
-	}
-
-	// Backward compatibilities /////
-
-	/**
-	 * @Route("/projets/article/{id}.html", name="core_project_article_show")
-	 */
-	public function projectShowArticleAction($id) {
-		return $this->redirect($this->generateUrl('core_howto_article_show', array( 'id' => $id )) );
-	}
-
-	/**
-	 * @Route("/projets/", name="core_project_list")
-	 */
-	public function projectListAction() {
-		return $this->redirect($this->generateUrl('core_howto_list') );
-	}
-
-	/**
-	 * @Route("/projets/{id}/plans", name="core_project_plans")
-	 */
-	public function projectPlansAction($id) {
-		return $this->redirect($this->generateUrl('core_howto_plans', array( 'id' => $id )) );
-	}
-
-	/**
-	 * @Route("/projets/{id}/creations", name="core_project_creations")
-	 */
-	public function projectCreationsAction($id) {
-		return $this->redirect($this->generateUrl('core_howto_creations', array( 'id' => $id )) );
-	}
-
-	/**
-	 * @Route("/projets/{id}/ateliers", name="core_project_workshops")
-	 */
-	public function projectWorkshopsAction($id) {
-		return $this->redirect($this->generateUrl('core_howto_workshops', array( 'id' => $id )) );
-	}
-
-	/**
-	 * @Route("/projets/{id}.html", name="core_project_show")
-	 */
-	public function projectShowAction($id) {
-		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $id )) );
 	}
 
 }

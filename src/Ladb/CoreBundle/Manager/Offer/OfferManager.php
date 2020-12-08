@@ -2,11 +2,11 @@
 
 namespace Ladb\CoreBundle\Manager\Offer;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Entity\Offer\Offer;
-use Ladb\CoreBundle\Manager\AbstractPublicationManager;
-use Ladb\CoreBundle\Utils\JoinableUtils;
+use Ladb\CoreBundle\Manager\AbstractAuthoredPublicationManager;
 
-class OfferManager extends AbstractPublicationManager {
+class OfferManager extends AbstractAuthoredPublicationManager {
 
 	const NAME = 'ladb_core.offer_offer_manager';
 
@@ -38,6 +38,20 @@ class OfferManager extends AbstractPublicationManager {
 		}
 
 		parent::deletePublication($offer, $withWitness, $flush);
+	}
+
+	//////
+
+	public function changeOwner(Offer $offer, User $user, $flush = true) {
+		parent::changeOwnerPublication($offer, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateOfferCount($by);
+		} else {
+			$user->getMeta()->incrementPublicOfferCount($by);
+		}
 	}
 
 }
