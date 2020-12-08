@@ -279,7 +279,7 @@ class HowtoController extends AbstractHowtoBasedController {
 		$howtoManager->changeOwner($howto, $targetUser);
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('wonder.howto.form.alert.chown_success', array( '%title%' => $howto->getTitle() )));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('howto.howto.form.alert.chown_success', array( '%title%' => $howto->getTitle() )));
 
 		return $this->redirect($this->generateUrl('core_howto_show', array( 'id' => $howto->getSluggedId() )));
 	}
