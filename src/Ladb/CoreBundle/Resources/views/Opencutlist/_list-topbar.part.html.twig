@@ -29,6 +29,7 @@
             <li{% if language == 'ru' %} class="active"{% endif %}><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':continent, 'language':'ru', 'locale':locale }) }}">Russe</a></li>
             <li{% if language == 'it' %} class="active"{% endif %}><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':continent, 'language':'it', 'locale':locale }) }}">Italien</a></li>
             <li{% if language == 'pt' %} class="active"{% endif %}><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':continent, 'language':'pt', 'locale':locale }) }}">Portugais</a></li>
+            <li{% if language == 'es' %} class="active"{% endif %}><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':continent, 'language':'es', 'locale':locale }) }}">Espagnol</a></li>
             <li role="separator" class="divider"></li>
             <li class="dropdown-header">Langue SU</li>
             <li{% if locale is null %} class="active"{% endif %}><a href="{{ path('core_opencutlist_stats', { 'env':env, 'days':days, 'continent':continent, 'language':language, 'locale':null }) }}">Toutes</a></li>
