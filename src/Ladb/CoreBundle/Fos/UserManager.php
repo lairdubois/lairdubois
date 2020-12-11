@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Fos;
 
 use FOS\UserBundle\Model\UserInterface;
 use Ladb\CoreBundle\Entity\Core\User;
+use Ladb\CoreBundle\Utils\MailerUtils;
 
 class UserManager extends \FOS\UserBundle\Doctrine\UserManager {
 

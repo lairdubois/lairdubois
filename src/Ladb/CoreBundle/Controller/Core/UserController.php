@@ -140,7 +140,7 @@ class UserController extends AbstractController {
 	 * @Template("LadbCoreBundle:Core/User:emailCheck.html.twig")
 	 */
 	public function emailCheckAction() {
-		$userManager = $this->container->get(UserManager::NAME);
+		$userManager = $this->get(UserManager::NAME);
 		$tokenGenerator = $this->get('fos_user.util.token_generator');
 
 		$user = $this->getUser();
@@ -1572,7 +1572,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('LadbCoreBundle:Core/Member:member-list-xhr.html.twig', $parameters);
+			return $this->render('LadbCoreBundle:Core/Member:members-list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
