@@ -53,7 +53,7 @@ trait PublicationControllerTrait {
 		$username = $request->get('owner');
 		if (!is_null($username)) {
 			$user = $this->retrieveUserByUsername($username);
-			if (!is_null($user)) {
+			if (!is_null($user) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
 				if ($user->getIsTeam()) {
 
