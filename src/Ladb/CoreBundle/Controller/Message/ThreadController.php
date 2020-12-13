@@ -159,7 +159,7 @@ class ThreadController extends AbstractThreadController {
 	 */
 	public function showAction($id) {
 
-		$this->createLock('core_message_thread_show', false, 3, false);
+		$this->createLock('core_message_thread_show', true, 3, false);
 
 		$om = $this->getDoctrine()->getManager();
 		$messageMetaRepository = $om->getRepository(MessageMeta::CLASS_NAME);
