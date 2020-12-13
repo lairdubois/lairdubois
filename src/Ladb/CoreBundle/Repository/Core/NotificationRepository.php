@@ -158,6 +158,14 @@ class NotificationRepository extends AbstractEntityRepository {
 			$queryBuilder
 				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Feedback')
 			;
+		} elseif ('activity-invite' == $filter) {
+			$queryBuilder
+				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Invite')
+			;
+		} elseif ('activity-request' == $filter) {
+			$queryBuilder
+				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Request')
+			;
 		}
 		$queryBuilder
 			->addOrderBy('a.createdAt', 'DESC')

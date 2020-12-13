@@ -1164,6 +1164,9 @@ team:
   member_invite: Inviter des nouveaux membres
   request: Rejoindre
   member_request: Rejoindre le collectif
+  member_create: Accepter
+  member_invitation_delete: Supprimer
+  member_request_delete: Supprimer
   choice:
     entities: '[0,1]collectif|]1,Inf]collectifs'
     members: '[0,1]membre|]1,Inf]membres'
@@ -1585,6 +1588,8 @@ notification:
     testify: Notifications de témoignages
     review: Notifications d'avis
     feedback: Notifications de retour d'expérience
+    invite: Notifications d'invitation à rejoindre un collectif
+    request: Notifications de demande pour rejoindre un collectif
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
