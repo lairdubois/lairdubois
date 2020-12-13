@@ -158,6 +158,9 @@ class ThreadController extends AbstractThreadController {
 	 * @Template("LadbCoreBundle:Message:showThread.html.twig")
 	 */
 	public function showAction($id) {
+
+		$this->createLock('core_message_thread_show', false, 3, false);
+
 		$om = $this->getDoctrine()->getManager();
 		$messageMetaRepository = $om->getRepository(MessageMeta::CLASS_NAME);
 

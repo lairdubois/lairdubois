@@ -6,7 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table("tbl_message_meta")
+ * @ORM\Table("tbl_message_meta",
+ *		uniqueConstraints={
+ *			@ORM\UniqueConstraint(name="ENTITY_MESSAGE_META_UNIQUE", columns={"participant_user_id", "message_id"})
+ * 		}
+ * )
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Message\MessageMetaRepository")
  */
 class MessageMeta {
