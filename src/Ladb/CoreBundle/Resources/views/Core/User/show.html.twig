@@ -9,7 +9,7 @@
     {% set pageDescription = user.meta.biography.htmlBody|striptags|truncate(200, true, '...') %}
 {% endif %}
 {% if user.avatar is not null %}
-    {% set pageImage = 'http://www.lairdubois.fr'~(user.avatar.webPath|imagine_filter('400x400o')) %}
+    {% set pageImage = user.avatar.webPath|imagine_filter('400x400o') %}
     {% set pageImageWidth = '400' %}
     {% set pageImageHeight = '400' %}
 {% endif %}
