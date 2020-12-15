@@ -142,7 +142,7 @@ class MemberController extends AbstractController {
 
 		$team = $memberInvitation->getTeam();
 
-		if ($memberInvitation->getRecipient() != $this->getUser() && !$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
+		if ($memberInvitation->getRecipient() != $this->getUser() && !$memberRepository->existsByTeamAndUser($team, $this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('Not allowed (core_member_invitation_delete)');
 		}
 
@@ -241,7 +241,7 @@ class MemberController extends AbstractController {
 
 		$team = $memberRequest->getTeam();
 
-		if ($memberRequest->getSender() != $this->getUser() && !$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
+		if ($memberRequest->getSender() != $this->getUser() && !$memberRepository->existsByTeamAndUser($team, $this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('Not allowed (core_member_request_delete)');
 		}
 
@@ -283,34 +283,40 @@ class MemberController extends AbstractController {
 
 		$username = $request->get('username');
 		if (is_null($username)) {
+			$user = $this->getUser();
+		} else {
 
-			$memberInvitation = $memberInvitationRepository->findOneByTeamAndRecipient($team, $this->getUser());
-			if (is_null($memberInvitation)) {
-				throw $this->createNotFoundException('Not allowed - User not invited (core_member_create)');
+			$userManager = $this->get(UserManager::NAME);
+			$user = $userManager->findUserByUsername($username);
+			if (is_null($user)) {
+				throw $this->createNotFoundException('Not allowed - User not found (core_member_create)');
+			}
+
+		}
+
+		$memberInvitation = $memberInvitationRepository->findOneByTeamAndRecipient($team, $user);
+		if (!is_null($memberInvitation)) {
+
+			if ($user != $this->getUser() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+				throw $this->createNotFoundException('Not allowed (core_member_create)');
 			}
 
 			// Delete invitation
 			$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
 			$memberInvitationManager->delete($memberInvitation);
 
-			$user = $this->getUser();
-
 		} else {
 
-			$userManager = $this->get(UserManager::NAME);
-
-			$user = $userManager->findUserByUsername($username);
-			if (is_null($user)) {
-				throw $this->createNotFoundException('Not allowed - User not found (core_member_create)');
-			}
 			$memberRequest = $memberRequestRepository->findOneByTeamAndSender($team, $user);
-			if (is_null($memberRequest)) {
-				throw $this->createNotFoundException('Not allowed - User not requested (core_member_create)');
-			}
+			if (!is_null($memberRequest)) {
 
-			// Delete request
-			$memberRequestManager = $this->get(MemberRequestManager::NAME);
-			$memberRequestManager->delete($memberRequest);
+				// Delete request
+				$memberRequestManager = $this->get(MemberRequestManager::NAME);
+				$memberRequestManager->delete($memberRequest);
+
+			} else {
+				throw $this->createNotFoundException('Not allowed - User ('.$user->getUsernameCanonical().') not invited or requested (core_member_create)');
+			}
 
 		}
 
