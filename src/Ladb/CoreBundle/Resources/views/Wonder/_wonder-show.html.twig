@@ -138,7 +138,7 @@
         {% include 'LadbCoreBundle:Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
     {% endif %}
     {% block wonderShowcase %}
-        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':wonder, 'pictures':wonder.pictures, 'alt':wonder.title, 'editable':permissionContext.editable } %}
+        {% include 'LadbCoreBundle:Common:_entity-showcase.part.html.twig' with { 'entity':wonder, 'pictures':wonder.pictures, 'alt':wonder.title, 'editable':(permissionContext.editable and permissionContext.isGrantedOwner) } %}
         <hr>
     {% endblock %}
     <div class="ladb-wonder-body">
