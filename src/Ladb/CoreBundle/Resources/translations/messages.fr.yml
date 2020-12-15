@@ -870,7 +870,7 @@ knowledge:
         phone: |
           Le **Pays** permet un formatage automatique du numéro.
         description: |
-          Ce champ peut être utilisé pour définir plus précisément un fournisseur.
+          Ce champ peut être utilisé pour définir plus précisément le fournisseur.
           *(ex : Boutique en ligne de roulettes)*
 
           **Ce descriptif doit rester purement encyclopédique.**
@@ -1108,7 +1108,14 @@ knowledge:
         publisher:
         last_version:
         website:
-        description:
+        description: |
+          Ce champ peut être utilisé pour définir plus précisément le logiciel.
+          *(ex : Logiciel de modélisation 3D)*
+
+          **Ce descriptif doit rester purement encyclopédique.**
+          - pas de d'avis personnels
+          - pas de formulations publicitaires
+          - pas de tarifs, prix, etc...
         open_source:
         source_code_repository:
         docs:
