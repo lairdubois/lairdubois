@@ -1147,7 +1147,7 @@ knowledge:
     choice:
       entities: '[0,1]finition|]1,Inf]finitions'
   hardware:
-    list: Finitions
+    list: Quincailleries
     token:
       help: Saisissez une quincaillerie et cliquez sur la flèche pour l'ajouter
     choice:
