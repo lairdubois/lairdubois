@@ -897,6 +897,14 @@ class CreationController extends AbstractController {
 
 						break;
 
+					case 'hardwares':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'hardwares.label' ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'author':
 
 						$filter = new \Elastica\Query\QueryString($facet->value);

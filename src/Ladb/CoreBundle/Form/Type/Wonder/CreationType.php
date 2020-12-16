@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Form\Type\Wonder;
 
+use Ladb\CoreBundle\Form\DataTransformer\Input\HardwaresToLabelsTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -63,6 +64,10 @@ class CreationType extends AbstractType {
 			->add($builder
 				->create('finishes', HiddenType::class, array( 'required' => false ))
 				->addModelTransformer(new FinishesToLabelsTransformer($this->om))
+			)
+			->add($builder
+				->create('hardwares', HiddenType::class, array( 'required' => false ))
+				->addModelTransformer(new HardwaresToLabelsTransformer($this->om))
 			)
 			->add($builder
 				->create('tags', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))

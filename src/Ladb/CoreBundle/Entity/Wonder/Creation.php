@@ -78,6 +78,12 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	private $finishes;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Input\Hardware", cascade={"persist"})
+	 * @ORM\JoinTable(name="tbl_wonder_creation_hardware")
+	 */
+	private $hardwares;
+
+	/**
 	 * @ORM\OneToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Spotlight", cascade={"remove"})
 	 * @ORM\JoinColumn(name="spotlight_id", referencedColumnName="id")
 	 */
@@ -204,8 +210,9 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 		parent::__construct();
 		$this->bodyBlocks = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->woods = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->finishes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->tools = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->finishes = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->hardwares = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->inspirations = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->questions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->plans = new \Doctrine\Common\Collections\ArrayCollection();
@@ -270,6 +277,23 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 
 	public function getFinishes() {
 		return $this->finishes;
+	}
+
+	// Hardwares /////
+
+	public function addHardware(\Ladb\CoreBundle\Entity\Input\Hardware $hardware) {
+		if (!$this->hardwares->contains($hardware)) {
+			$this->hardwares[] = $hardware;
+		}
+		return $this;
+	}
+
+	public function removeHardware(\Ladb\CoreBundle\Entity\Input\Hardware $hardware) {
+		$this->hardwares->removeElement($hardware);
+	}
+
+	public function getHardwares() {
+		return $this->hardwares;
 	}
 
 	// LinkedEntities /////

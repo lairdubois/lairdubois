@@ -1146,6 +1146,12 @@ knowledge:
       help: Saisissez une finition et cliquez sur la flèche pour l'ajouter
     choice:
       entities: '[0,1]finition|]1,Inf]finitions'
+  hardware:
+    list: Finitions
+    token:
+      help: Saisissez une quincaillerie et cliquez sur la flèche pour l'ajouter
+    choice:
+      entities: '[0,1]quincaillerie|]1,Inf]quincailleries'
 
 message:
   list: Messagerie

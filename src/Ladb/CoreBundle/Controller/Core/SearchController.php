@@ -203,6 +203,32 @@ class SearchController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/typeahead/input-hardwares.json", defaults={"_format" = "json"}, name="core_search_typeahead_input_hardwares_json")
+	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadInputHardwares.json.twig")
+	 */
+	public function searchTypeaheadInputHardwaresAction(Request $request, $page = 0) {
+		$searchUtils = $this->get(SearchUtils::NAME);
+
+		$searchParameters = $searchUtils->searchPaginedEntities(
+			$request,
+			$page,
+			function($facet, &$filters, &$sort, &$noGlobalFilters, &$couldUseDefaultSort) {
+				$filters[] = new \Elastica\Query\Match('label', $facet->value);
+			},
+			null,
+			null,
+			'fos_elastica.index.ladb.input_hardware',
+			\Ladb\CoreBundle\Entity\Input\Hardware::CLASS_NAME,
+			null
+		);
+
+		$parameters = array_merge($searchParameters,  array(
+			'hardwares'  => $searchParameters['entities'],
+		));
+		return $parameters;
+	}
+
+	/**
 	 * @Route("/typeahead/softwares.json", defaults={"_format" = "json"}, name="core_search_typeahead_softwares_json")
 	 * @Template("LadbCoreBundle:Core/Search:searchTypeaheadSoftwares.json.twig")
 	 */

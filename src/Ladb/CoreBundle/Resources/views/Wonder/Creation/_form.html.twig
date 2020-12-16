@@ -14,6 +14,7 @@
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.woods.vars.id, 'help':('knowledge.wood.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_woods_json')|raw) } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tools.vars.id, 'help':('knowledge.tool.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_tools_json')|raw) } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.finishes.vars.id, 'help':('knowledge.finish.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_finishes_json')|raw) } %}
+    {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.hardwares.vars.id, 'help':('knowledge.hardware.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_hardwares_json')|raw) } %}
     {% include 'LadbCoreBundle:Common:_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
 {% endblock %}
 
@@ -59,6 +60,10 @@
             {{ form_errors(form.finishes) }}
             <p class="help-block">Indiquez la/les finitions utilisées. <i>Exemple : <strong>Teinte,Vernis</strong></i></p>
             {{ form_widget(form.finishes) }}
+            {{ form_label(form.hardwares, ('knowledge.harware.choice.entities'|transchoice(2)|capitalize)) }}
+            {{ form_errors(form.hardwares) }}
+            <p class="help-block">Indiquez la/les quincailleries utilisées. <i>Exemple : <strong>Coulisse,Charnière</strong></i></p>
+            {{ form_widget(form.hardwares) }}
         {% endblock %}
     {% endembed %}
     {% include 'LadbCoreBundle:Core/Tag:_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre création.' } %}

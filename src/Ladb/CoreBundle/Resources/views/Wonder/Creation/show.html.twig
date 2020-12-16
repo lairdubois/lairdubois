@@ -111,6 +111,14 @@
             {% endfor %}
         </ul>
     </div>
+    <div class="ladb-meta{% if creation.hardwares.count == 0 %} text-muted{% endif %}">
+        <span><i class="ladb-icon-hardware ladb-icon-fixed-center"></i>&nbsp;<strong>{{ creation.hardwares.count }}</strong> {{ 'knowledge.hardware.choice.entities'|transchoice(creation.hardwares.count) }}</span>
+        <ul>
+            {% for hardware in creation.hardwares %}
+                <li class="ladb-value"><a href="{{ path('core_creation_list', { 'q':'@hardwares:"'~hardware.label~'"' }) }}" class="ladb-cursor-filter" rel="nofollow">{{ hardware.label }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
 
 {% block linksMetas %}
