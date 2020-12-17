@@ -110,7 +110,7 @@ class WitnessManager extends AbstractManager {
 			switch ($witness->getKind()) {
 
 				case Witness::KIND_UNPUBLISHED:
-					throw new GoneHttpException();
+					throw new GoneHttpException('Unpublished entity (type='.$entityType.' id='.$entityId.').');
 
 				case Witness::KIND_CONVERTED:
 					if (is_null($witness->getMeta()) || !is_array($witness->getMeta()) && count($witness->getMeta()) < 2) {
@@ -127,7 +127,7 @@ class WitnessManager extends AbstractManager {
 					return new RedirectResponse($typableUtils->getUrlAction($typable), 301);	// 301 = Moved Permanently
 
 				case Witness::KIND_DELETED:
-					throw new GoneHttpException();
+					throw new GoneHttpException('Deleted entity (type='.$entityType.' id='.$entityId.').');
 
 			}
 
