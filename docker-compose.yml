@@ -15,3 +15,8 @@ services:
       MYSQL_ROOT_PASSWORD: toor
     volumes:
       - .docker/database:/var/lib/mysql
+
+  elastic:
+    image: elasticsearch:5.6
+    environment:
+      - discovery.type=single-node
