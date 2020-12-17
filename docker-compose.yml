@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/app/Dockerfile
+    working_dir: /var/www/app
+    volumes:
+      - ./:/var/www/app
