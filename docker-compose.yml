@@ -8,3 +8,10 @@ services:
     working_dir: /var/www/app
     volumes:
       - ./:/var/www/app
+
+  database:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+    volumes:
+      - .docker/database:/var/lib/mysql
