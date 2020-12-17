@@ -4,6 +4,8 @@ namespace Ladb\CoreBundle\Controller\Core;
 
 use Elastica\Exception\NotFoundException;
 use Ladb\CoreBundle\Fos\UserManager;
+use Ladb\CoreBundle\Model\AuthoredInterface;
+use Ladb\CoreBundle\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -114,7 +116,11 @@ class MemberController extends AbstractController {
 
 			// Create invitation
 			$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
-			$memberInvitationManager->create($team, $this->getUser(), $recipient, false);
+			$memberInvitation = $memberInvitationManager->create($team, $this->getUser(), $recipient, false);
+
+			// Publish a webpush notification in queue
+			$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
+			$webpushNotificationUtils->enqueueNewMemberInvitationNotification($memberInvitation);
 
 			$invitationCount++;
 		}
@@ -125,6 +131,28 @@ class MemberController extends AbstractController {
 		$this->get('session')->getFlashBag()->add($invitationCount > 0 ? 'success' : 'error', $invitationCount.' invitation envoyée');	// TODO
 
 		return $this->redirect($this->generateUrl($invitationCount > 0 ? 'core_user_show_invitations' : 'core_user_show', array( 'username' => $team->getUsernameCanonical() )));
+	}
+
+	/**
+	 * @Route("/invitation/{id}/accept", requirements={"id" = "\d+"}, name="core_member_invitation_accept")
+	 */
+	public function acceptInvitationAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+
+		$memberInvitation = $memberInvitationRepository->findOneById($id);
+		if (is_null($memberInvitation)) {
+			throw $this->createNotFoundException('Invitation entity not found (id='.$id.')');
+		}
+		if ($memberInvitation->getRecipient() != $this->getUser() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_member_invitation_accept)');
+		}
+
+		// Delete invitation
+		$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
+		$memberInvitationManager->delete($memberInvitation);
+
+		return $this->createAction($memberInvitation->getTeam(), $memberInvitation->getRecipient());
 	}
 
 	/**
@@ -139,10 +167,7 @@ class MemberController extends AbstractController {
 		if (is_null($memberInvitation)) {
 			throw $this->createNotFoundException('Invitation entity not found (id='.$id.')');
 		}
-
-		$team = $memberInvitation->getTeam();
-
-		if ($memberInvitation->getRecipient() != $this->getUser() && !$memberRepository->existsByTeamAndUser($team, $this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+		if ($memberInvitation->getRecipient() != $this->getUser() && !$memberRepository->existsByTeamAndUser($memberInvitation->getTeam(), $this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('Not allowed (core_member_invitation_delete)');
 		}
 
@@ -158,7 +183,7 @@ class MemberController extends AbstractController {
 		if (is_null($returnToUrl)) {
 			$returnToUrl = $request->headers->get('referer');
 			if (is_null($returnToUrl)) {
-				$returnToUrl = $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical() )));
+				$returnToUrl = $this->redirect($this->generateUrl('core_user_show', array( 'username' => $memberInvitation->getTeam()->getUsernameCanonical() )));
 			}
 		}
 
@@ -227,6 +252,29 @@ class MemberController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/request/{id}/accept", requirements={"id" = "\d+"}, name="core_member_request_accept")
+	 */
+	public function acceptRequestAction($id) {
+		$om = $this->getDoctrine()->getManager();
+		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+
+		$memberRequest = $memberRequestRepository->findOneById($id);
+		if (is_null($memberRequest)) {
+			throw $this->createNotFoundException('Request entity not found (id='.$id.')');
+		}
+		if ($memberRequest->getSender() != $this->getUser() && !$memberRepository->existsByTeamAndUser($memberRequest->getTeam(), $this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			throw $this->createNotFoundException('Not allowed (core_member_request_accept)');
+		}
+
+		// Delete request
+		$memberRequestManager = $this->get(MemberRequestManager::NAME);
+		$memberRequestManager->delete($memberRequest);
+
+		return $this->createAction($memberRequest->getTeam(), $memberRequest->getSender());
+	}
+
+	/**
 	 * @Route("/request/{id}/delete", requirements={"id" = "\d+"}, name="core_member_request_delete")
 	 */
 	public function deleteRequestAction(Request $request, $id) {
@@ -238,10 +286,7 @@ class MemberController extends AbstractController {
 		if (is_null($memberRequest)) {
 			throw $this->createNotFoundException('Request entity not found (id='.$id.')');
 		}
-
-		$team = $memberRequest->getTeam();
-
-		if ($memberRequest->getSender() != $this->getUser() && !$memberRepository->existsByTeamAndUser($team, $this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+		if ($memberRequest->getSender() != $this->getUser() && !$memberRepository->existsByTeamAndUser($memberRequest->getTeam(), $this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 			throw $this->createNotFoundException('Not allowed (core_member_request_delete)');
 		}
 
@@ -257,7 +302,7 @@ class MemberController extends AbstractController {
 		if (is_null($returnToUrl)) {
 			$returnToUrl = $request->headers->get('referer');
 			if (is_null($returnToUrl)) {
-				$returnToUrl = $this->redirect($this->generateUrl('core_user_show', array( 'username' => $team->getUsernameCanonical() )));
+				$returnToUrl = $this->redirect($this->generateUrl('core_user_show', array( 'username' => $memberRequest->getTeam()->getUsernameCanonical() )));
 			}
 		}
 
@@ -266,59 +311,9 @@ class MemberController extends AbstractController {
 
 	/////
 
-	/**
-	 * @Route("/{teamId}/create", requirements={"teamId" = "\d+"}, name="core_member_create")
-	 */
-	public function createAction(Request $request, $teamId) {
+	public function createAction(User $team, User $user) {
 
 		$this->createLock('core_member_create', false, self::LOCK_TTL_CREATE_ACTION, false);
-
-		$team = $this->_retrieveTeam($teamId);
-
-		$om = $this->getDoctrine()->getManager();
-		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
-		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
-
-		// Invitation / Request management /////
-
-		$username = $request->get('username');
-		if (is_null($username)) {
-			$user = $this->getUser();
-		} else {
-
-			$userManager = $this->get(UserManager::NAME);
-			$user = $userManager->findUserByUsername($username);
-			if (is_null($user)) {
-				throw $this->createNotFoundException('Not allowed - User not found (core_member_create)');
-			}
-
-		}
-
-		$memberInvitation = $memberInvitationRepository->findOneByTeamAndRecipient($team, $user);
-		if (!is_null($memberInvitation)) {
-
-			if ($user != $this->getUser() && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-				throw $this->createNotFoundException('Not allowed (core_member_create)');
-			}
-
-			// Delete invitation
-			$memberInvitationManager = $this->get(MemberInvitationManager::NAME);
-			$memberInvitationManager->delete($memberInvitation);
-
-		} else {
-
-			$memberRequest = $memberRequestRepository->findOneByTeamAndSender($team, $user);
-			if (!is_null($memberRequest)) {
-
-				// Delete request
-				$memberRequestManager = $this->get(MemberRequestManager::NAME);
-				$memberRequestManager->delete($memberRequest);
-
-			} else {
-				throw $this->createNotFoundException('Not allowed - User ('.$user->getUsernameCanonical().') not invited or requested (core_member_create)');
-			}
-
-		}
 
 		// Follow management /////
 

@@ -388,6 +388,7 @@ EOT
 					->from('LadbCoreBundle:Core\User', 'u')
 					->innerJoin('u.meta', 'm')
 					->where('u.enabled = true')
+					->andWhere('u.isTeam = false')
 					->andWhere('u.emailConfirmed = true')
 					->andWhere('m.weekNewsEmailEnabled = true')
 					->setFirstResult($batchIndex * $batchSize)

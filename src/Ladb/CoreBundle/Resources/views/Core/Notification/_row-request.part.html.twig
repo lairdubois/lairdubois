@@ -8,7 +8,7 @@
 
 {% block footer %}
     <div style="text-align: center; margin-top: 5px;">
-        <a href="{{ path('core_member_create', { 'teamId':notification.activity.request.team.id, 'username':notification.activity.request.sender.usernameCanonical }) }}" class="btn btn-primary btn-sm" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'team.member_create'|trans }}</a>
+        <a href="{{ path('core_member_request_accept', { 'id':notification.activity.request.id }) }}" class="btn btn-primary btn-sm" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'team.member_create'|trans }}</a>
         <a href="{{ path('core_member_request_delete', { 'id':notification.activity.request.id }) }}" class="btn btn-default btn-sm" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'team.member_request_delete'|trans }}</a>
     </div>
 {% endblock %}

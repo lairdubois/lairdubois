@@ -139,7 +139,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	public function __construct() {
 		parent::__construct();
 		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->members = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	// ID /////
@@ -286,8 +285,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 		return $this->meta;
 	}
 	
-	// Team /////
-
 	// IsTeam /////
 
 	public function setIsTeam($isTeam) {
@@ -297,51 +294,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 
 	public function getIsTeam() {
 		return $this->isTeam;
-	}
-
-	// TeamCount /////
-
-	public function incrementTeamCount($by = 1) {
-		return $this->teamCount += intval($by);
-	}
-
-	public function getTeamCount() {
-		return $this->teamCount;
-	}
-
-	// Teams /////
-
-	public function getTeams() {
-		return $this->teams;
-	}
-
-	// MemberCount /////
-
-	public function getMemberCount() {
-		return $this->memberCount;
-	}
-
-	// Members /////
-
-	public function addMember(User $member) {
-		assert($member !== $this, 'Member can\'t be itself.');
-		if (!$this->members->contains($member)) {
-			$this->members[] = $member;
-			$this->memberCount = count($this->members);
-			$member->incrementTeamCount();
-		}
-		return $this;
-	}
-
-	public function removeMember(User $member) {
-		if ($this->members->removeElement($member)) {
-			$this->memberCount = count($this->members);
-			$member->incrementTeamCount(-1);
-		}
-	}
-
-	public function getMembers() {
-		return $this->members;
 	}
 
 }

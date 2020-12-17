@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Utils;
 
+use Ladb\CoreBundle\Entity\Core\MemberInvitation;
+use Ladb\CoreBundle\Entity\Core\MemberRequest;
 use Minishlink\WebPush\WebPush;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use BenTools\WebPushBundle\Model\Message\Notification;
@@ -30,6 +32,15 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 			'Nouveau coup de coeur de '.$like->getUser()->getDisplayname(),
 			$this->get('liip_imagine.cache.manager')->getBrowserPath($like->getUser()->getAvatar()->getWebPath(), '128x128o'),
 			$this->get(TypableUtils::NAME)->getUrlAction($likable)
+		);
+	}
+
+	public function enqueueNewMemberInvitationNotification(MemberInvitation $memberInvitation) {
+		$this->enqueueNotification(
+			$memberInvitation->getRecipient(),
+			$memberInvitation->getSender()->getDisplayname().' vous invite à rejoindre le collectif '.$memberInvitation->getTeam()->getDisplayname(),
+			$this->get('liip_imagine.cache.manager')->getBrowserPath($memberInvitation->getTeam()->getAvatar()->getWebPath(), '128x128o'),
+			$this->get('router')->generate('core_user_show', array( 'username' => $memberInvitation->getTeam()->getUsernameCanonical()), UrlGeneratorInterface::ABSOLUTE_URL)
 		);
 	}
 
