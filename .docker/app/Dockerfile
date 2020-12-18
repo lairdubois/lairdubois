@@ -17,5 +17,5 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
 
 RUN pecl install imagick memcached zip
-RUN docker-php-ext-install exif gmp pdo pdo_mysql sockets zip
+RUN docker-php-ext-install exif gmp opcache pdo pdo_mysql sockets zip
 RUN docker-php-ext-enable imagick memcached
