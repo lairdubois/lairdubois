@@ -31,3 +31,6 @@ services:
     image: elasticsearch:5.6
     environment:
       - discovery.type=single-node
+
+  memcached:
+    image: memcached
