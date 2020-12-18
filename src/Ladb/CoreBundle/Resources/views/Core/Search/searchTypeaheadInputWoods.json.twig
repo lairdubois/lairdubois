@@ -1,1 +1,1 @@
-{"suggestions":[{% for wood in woods %}"{{ wood.label }}"{% if loop.last == false %},{% endif %}{% endfor %}]}
+{"suggestions":[{% if woods is empty %}""{% else %}{% for wood in woods %}"{{ wood.label }}"{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}]}

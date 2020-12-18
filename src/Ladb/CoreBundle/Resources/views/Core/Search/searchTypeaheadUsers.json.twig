@@ -1,1 +1,1 @@
-{"suggestions":[{% for user in users %}{"username":"{{ user.usernameCanonical }}","displayname":"{{ user.displayname }}","avatar":"{{ user.avatar.webPath|imagine_filter('32x32o') }}"}{% if loop.last == false %},{% endif %}{% endfor %}]}
+{"suggestions":[{% if users is empty %}""{% else %}{% for user in users %}{"username":"{{ user.usernameCanonical }}","displayname":"{{ user.displayname }}","avatar":"{{ user.avatar.webPath|imagine_filter('32x32o') }}"}{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}]}

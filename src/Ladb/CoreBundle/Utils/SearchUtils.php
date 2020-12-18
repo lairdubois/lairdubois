@@ -3,6 +3,7 @@
 namespace Ladb\CoreBundle\Utils;
 
 use Elastica\Document;
+use Ladb\CoreBundle\Entity\Stats\Search;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -25,6 +26,37 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		return null;
 	}
 
+	private function _logSearch($context, $query, $totalHits) {
+
+		// Exclude empty query
+		if (empty($query)) {
+			return;
+		}
+
+		$globalUtils = $this->get(GlobalUtils::NAME);
+		$om = $this->getDoctrine()->getEntityManager();
+
+		// Retrieve search session identifier
+		$session = $globalUtils->getSession();
+		$key = '_ladb_search_session';
+		$sessionIdentifier = $session->get($key);
+		if (is_null($sessionIdentifier)) {
+			$sessionIdentifier = uniqid();
+			$session->set($key, $sessionIdentifier);
+		}
+
+		// Create log entry
+		$search = new Search();
+		$search->setSessionIdentifier($sessionIdentifier);
+		$search->setContext($context);
+		$search->setQuery($query);
+		$search->setTotalHits($totalHits);
+
+		$om->persist($search);
+		$om->flush();
+
+	}
+
 	/////
 
 	public function insertEntityToIndex(IndexableInterface $entity) {
@@ -34,7 +66,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 				try {
 					$objectPersister->insertOne($entity);
 				} catch (\Exception $e) {
-					$logger = $this->container->get('logger');
+					$logger = $this->get('logger');
 					$logger->error('SearchUtils/insertEntityToIndex', array( 'exception' => $e ));
 				}
 			}
@@ -48,7 +80,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 				try {
 					$objectPersister->replaceOne($entity);
 				} catch (\Exception $e) {
-					$logger = $this->container->get('logger');
+					$logger = $this->get('logger');
 					$logger->error('SearchUtils/replaceEntityInIndex', array( 'exception' => $e ));
 				}
 			}
@@ -61,7 +93,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			try {
 				$objectPersister->deleteOne($entity);
 			} catch (\Exception $e) {
-				$logger = $this->container->get('logger');
+				$logger = $this->get('logger');
 				$logger->error('SearchUtils/deleteEntityFromIndex', array( 'exception' => $e ));
 			}
 		}
@@ -189,12 +221,19 @@ class SearchUtils extends AbstractContainerAwareUtils {
 			$pageUrls = $paginatorUtils->generatePrevAndNextPageUrl($route, array_merge($parameters, array( 'q' => $q, 'ex' => $ex )), $page, $searchResult->resultSet->getTotalHits());
 		}
 
+		$totalHits = $defaults ? -1 : (is_null($searchResult->resultSet) ? 0 : $searchResult->resultSet->getTotalHits());
+
+		// Log search
+		if ($page == 0) {
+			$this->_logSearch($request->get('_route'), $q, $totalHits);
+		}
+
 		return array(
 			'q'           => $q,
 			'ex'          => $ex,
 			'prevPageUrl' => $pageUrls->prev,
 			'nextPageUrl' => $pageUrls->next,
-			'totalHits'   => $defaults ? -1 : (is_null($searchResult->resultSet) ? 0 : $searchResult->resultSet->getTotalHits()),
+			'totalHits'   => $totalHits,
 			'resultSet'   => $searchResult->resultSet,
 			'entities'    => $searchResult->entities,
 		);

@@ -1,1 +1,1 @@
-{"suggestions":[{% for skill in skills %}"{{ skill.label }}"{% if loop.last == false %},{% endif %}{% endfor %}]}
+{"suggestions":[{% if skills is empty %}""{% else %}{% for skill in skills %}"{{ skill.label }}"{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}]}

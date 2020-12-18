@@ -1,1 +1,1 @@
-{"suggestions":[{% for tool in tools %}"{{ tool.label }}"{% if loop.last == false %},{% endif %}{% endfor %}]}
+{"suggestions":[{% if tools is empty %}""{% else %}{% for tool in tools %}"{{ tool.label }}"{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}]}

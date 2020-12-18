@@ -160,7 +160,7 @@
                     paramName: "q",
                     minChars: 2,
                     triggerSelectOnValidInput: false,
-                    autoSelectFirst: true,
+                    autoSelectFirst: false,
                     width: 180,
                     onSelect: function(suggestion) {
                         $input.blur();

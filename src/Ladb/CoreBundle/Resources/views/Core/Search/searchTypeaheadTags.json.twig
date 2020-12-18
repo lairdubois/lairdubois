@@ -1,1 +1,1 @@
-{"suggestions":[{% for tag in tags %}"{{ tag.label }}"{% if loop.last == false %},{% endif %}{% endfor %}]}
+{"suggestions":[{% if tags is empty %}""{% else %}{% for tag in tags %}"{{ tag.label }}"{% if loop.last == false %},{% endif %}{% endfor %}{% endif %}]}
