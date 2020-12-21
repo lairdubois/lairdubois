@@ -259,7 +259,9 @@
                 </div>
             {% endfor %}
         </div>
-        {{ block('manageArticlesShortcutBlock') }}
+        {% if howto.articles|length > 0 %}
+            {{ block('manageArticlesShortcutBlock') }}
+        {% endif %}
         <br/>
         {% include 'LadbCoreBundle:Howto/Howto:_wip-alert.part.html.twig' %}
         {% if not permissionContext.isGrantedOwner %}

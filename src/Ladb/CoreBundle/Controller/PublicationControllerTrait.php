@@ -175,7 +175,7 @@ trait PublicationControllerTrait {
 			$isOwnerMember = $isGrantedUser && $publication instanceof AuthoredInterface && $this->getDoctrine()->getManager()->getRepository(Member::class)->existsByTeamAndUser($publication->getUser(), $this->getUser());
 			$isGrantedOwner = $isOwner || $isOwnerMember;
 
-			if (!(($publication->getIsDraft() === true || $ownerAllowed) && $isGrantedOwner)) {
+			if (!(($publication instanceof HiddableInterface && $publication->getIsPrivate() === true || $ownerAllowed) && $isGrantedOwner)) {
 				throw $this->createNotFoundException('Not allowed ('.$context.')');
 			}
 

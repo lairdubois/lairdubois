@@ -108,7 +108,7 @@
                             {% if not readOnly %}
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
-                                <li><a href="#delete_workflow_modal" data-toggle="modal"><i class="ladb-icon-delete"></i>  {{ 'default.delete'|trans() }}</a></li>
+                                <li class="dropdown-item-danger"><a href="#delete_workflow_modal" data-toggle="modal"><i class="ladb-icon-delete"></i>  {{ 'default.delete'|trans() }}</a></li>
                             {% endif %}
                         </ul>
                     </div>
