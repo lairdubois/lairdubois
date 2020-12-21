@@ -39,7 +39,7 @@ services:
     image: memcached
 
   mail:
-    image: maildev/maildev
+    image: djfarrelly/maildev
     ports:
-      - 1080:1080
-      - 1025:1025
+      - 1080:80
+      - 1025:25
