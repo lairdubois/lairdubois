@@ -32,5 +32,8 @@ services:
     environment:
       - discovery.type=single-node
 
+  queue:
+    image: rabbitmq
+
   memcached:
     image: memcached
