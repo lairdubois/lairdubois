@@ -8,7 +8,7 @@ services:
     volumes:
       - ./web:/var/www/dev.lairdubois.fr/web
     ports:
-      - 8080:80
+      - 80:80
     links:
       - app
 
