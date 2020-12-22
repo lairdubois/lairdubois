@@ -132,7 +132,7 @@ Caution that node.js version > 10.x are not compatible with assetic. Try to inst
 
 ``` bash
     $ sudo apt-get install nodejs npm
-    $ sudo npm install -g less
+    $ sudo npm install -g less@3.13.1
 ```
 
 ### Install *Java8* - *Used to run Elesticsearch*
