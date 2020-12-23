@@ -78,7 +78,7 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	private $displayname;
 
 	/**
-	 * @ORM\Column(type="string", length=25)
+	 * @ORM\Column(type="string", length=25, name="displayname_canonical")
 	 */
 	private $displaynameCanonical;
 

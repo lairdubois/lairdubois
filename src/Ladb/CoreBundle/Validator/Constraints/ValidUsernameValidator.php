@@ -140,8 +140,11 @@ class ValidUsernameValidator extends ConstraintValidator {
 
 			$userManager = $this->container->get(UserManager::NAME);
 			$user = $userManager->findUserByUsername($value->getUsername());
+			if (is_null($user)) {
+				$user = $userManager->findUserByDisplayname($value->getUsername());
+			}
 
-			$exists = !is_null($user) && !is_null($currentUser) && $user !== $currentUser;
+			$exists = !is_null($user) && is_null($currentUser) || !is_null($user) && !is_null($currentUser) && $user !== $currentUser;
 			if (is_null($user)) {
 
 				$userWitnessRepository = $this->container->get('doctrine')->getRepository(UserWitness::class);

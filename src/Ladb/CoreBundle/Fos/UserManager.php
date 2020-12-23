@@ -10,6 +10,10 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager {
 
 	const NAME = 'ladb_core.fos.user_manager';
 
+	public function findUserByDisplayname($displayname) {
+		return $this->findUserBy(array('displaynameCanonical' => $this->getCanonicalFieldsUpdater()->canonicalizeUsername($displayname)));
+	}
+
 	public function updateUser(UserInterface $user, $andFlush = true) {
 
 		// Populate displayname if null
