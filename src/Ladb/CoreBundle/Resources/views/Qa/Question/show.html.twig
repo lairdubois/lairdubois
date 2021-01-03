@@ -120,6 +120,15 @@
                 </a>
             </div>
         {% endif %}
+        {% if question.planCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-plan"></i>
+                <a href="{{ question.planCount == 1 ? path('core_howto_show', { 'id':question.plans[0].sluggedId }) : path('core_qa_question_plans', { 'id':question.id }) }}">
+                    <strong>{{ question.planCount }}</strong>
+                    <small>{{ 'wonder.plan.choice.entities'|transchoice(question.planCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
         {% if question.howtoCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-howto"></i>
