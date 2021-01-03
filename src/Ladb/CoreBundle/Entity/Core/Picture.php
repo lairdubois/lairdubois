@@ -163,7 +163,7 @@ class Picture {
 
 	// User /////
 
-	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user) {
+	public function setUser(\Ladb\CoreBundle\Entity\Core\User $user = null) {
 		$this->user = $user;
 		return $this;
 	}
