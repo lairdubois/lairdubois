@@ -19,14 +19,25 @@ class OpencutlistController extends AbstractController {
 	private function _createAccess(Request $request, $env, $kind) {
 		$om = $this->getDoctrine()->getManager();
 
+		$oclVersion = $request->get('v');
+		$oclLanguage = $request->get('language');
+		$sketchupLocale = $request->get('locale');
+
+		if (strlen($oclLanguage) != 2) {
+			$oclLanguage = null;
+		}
+		if (strlen($sketchupLocale) > 5) {
+			$sketchupLocale = null;
+		}
+
 		$access = new Access();
 		$access->setKind($kind);
 		$access->setEnv($env);
 		$access->setClientIp4($request->getClientIp());
 		$access->setClientUserAgent($request->server->get('HTTP_USER_AGENT'));
-		$access->setClientOclVersion($request->get('v'));
-		$access->setClientOclLanguage($request->get('language'));
-		$access->setClientSketchupLocale($request->get('locale'));
+		$access->setClientOclVersion($oclVersion);
+		$access->setClientOclLanguage($oclLanguage);
+		$access->setClientSketchupLocale($sketchupLocale);
 
 		$om->persist($access);
 		$om->flush();
