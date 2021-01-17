@@ -71,6 +71,30 @@ class NotificationRepository extends AbstractEntityRepository {
 
 	/////
 
+	public function findByNewerThanAndGroupIdentifierAndUser($date, $groupIdentifier, $user) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		$queryBuilder
+			->select(array( 'n', 'a', 'u' ))
+			->from($this->getEntityName(), 'n')
+			->innerJoin('n.user', 'u')
+			->innerJoin('n.activity', 'a')
+			->where('n.createdAt > :date')
+			->andWhere('n.groupIdentifier = :groupIdentifier')
+			->andWhere('n.user = :user')
+			->orderBy('n.createdAt', 'DESC')
+			->setParameter('date', $date)
+			->setParameter('groupIdentifier', $groupIdentifier)
+			->setParameter('user', $user)
+		;
+
+		try {
+			return $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
+
+	}
+
 	public function findByPendingEmailAndActivityInstanceOf($activityInstanceOf) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
@@ -102,6 +126,7 @@ class NotificationRepository extends AbstractEntityRepository {
 			->innerJoin('n.activity', 'a')
 			->innerJoin('a.user', 'au')
 			->where('n.user = :user')
+			->andWhere('n.folder IS NULL')
 			->setParameter('user', $user)
 			->orderBy('a.createdAt', 'DESC')
 			->setFirstResult($offset)

@@ -7,8 +7,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table("tbl_core_notification")
+ * @ORM\Table("tbl_core_notification", indexes={
+ *     @ORM\Index(name="IDX_NOTIFICATION_ENTITY", columns={"group_identifier"})
+ * })
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\NotificationRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Notification {
 
@@ -40,7 +43,12 @@ class Notification {
 	private $activity;
 
 	/**
-	 * @ORM\Column(name="is_pending_email", type="boolean")
+	 * @ORM\Column(type="string", length=30, name="group_identifier", nullable=true)
+	 */
+	private $groupIdentifier;
+
+	/**
+	 * @ORM\Column(type="boolean", name="is_pending_email")
 	 */
 	private $isPendingEmail = true;
 
@@ -53,6 +61,23 @@ class Notification {
 	 * @ORM\Column(type="boolean", name="is_shown")
 	 */
 	private $isShown = false;
+
+	/**
+	 * @ORM\Column(type="boolean", name="is_folder")
+	 */
+	private $isFolder = false;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Notification", inversedBy="children")
+	 * @ORM\JoinColumn(nullable=true)
+	 */
+	private $folder;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Notification", mappedBy="folder")
+	 * @ORM\OrderBy({"id" = "DESC"})
+	 */
+	private $children;
 
 	/////
 
@@ -101,6 +126,17 @@ class Notification {
 		return $this->activity;
 	}
 
+	// GroupIdentifier /////
+
+	public function setGroupIdentifier($groupIdentifier) {
+		$this->groupIdentifier = $groupIdentifier;
+		return $this;
+	}
+
+	public function getGroupIdentifier() {
+		return $this->groupIdentifier;
+	}
+
 	// EmailedAt /////
 
 	public function setIsPendingEmail($isPendingEmail) {
@@ -132,6 +168,77 @@ class Notification {
 
 	public function getIsShown() {
 		return $this->isShown;
+	}
+
+	// IsFolder /////
+
+	public function setIsFolder($isFolder) {
+		$this->isFolder = $isFolder;
+		return $this;
+	}
+
+	public function getIsFolder() {
+		return $this->isFolder;
+	}
+
+	// Folder /////
+
+	public function setFolder($folder = null) {
+		$this->folder = $folder;
+		return $this;
+	}
+
+	public function getFolder() {
+		return $this->folder;
+	}
+
+	// Children /////
+
+	public function getChildren() {
+		return $this->children;
+	}
+
+	/////
+
+	public function getOtherChildrenActivityUsers() {
+		$users = array();
+		foreach ($this->getChildren() as $child) {
+			$user = $child->getActivity()->getUser();
+			if ($user == $this->getActivity()->getUser()) {
+				continue;	// Exclude folder activity user
+			}
+			$users[] = $user;
+		}
+		return array_unique($users);
+	}
+
+	/**
+	 * @ORM\preRemove
+	 */
+	public function preRemove() {
+		if ($this->getIsFolder()) {
+			$children = $this->getChildren();
+			if (count($children) == 1) {
+
+				$children[0]->setIsFolder(false);
+				$children[0]->setFolder(null);
+
+			} else if (count($children) > 1) {
+
+				$folder = $children[0];
+				$folder->setIsFolder(true);
+				$folder->setFolder(null);
+
+				foreach ($children as $child) {
+					if ($child == $folder) {
+						continue;
+					}
+					$child->setIsFolder(false);
+					$child->setFolder($folder);
+				}
+
+			}
+		}
 	}
 
 }

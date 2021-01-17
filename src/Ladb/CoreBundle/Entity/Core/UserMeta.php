@@ -259,6 +259,7 @@ class UserMeta {
 	 */
 	private $teamCount = 0;
 
+
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="follower_count")
 	 */
@@ -268,6 +269,7 @@ class UserMeta {
 	 * @ORM\Column(type="integer", nullable=true, name="following_count")
 	 */
 	private $followingCount = 0;
+
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="recieved_like_count")
@@ -279,6 +281,7 @@ class UserMeta {
 	 */
 	private $sentLikeCount = 0;
 
+
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="positive_vote_count")
 	 */
@@ -289,6 +292,7 @@ class UserMeta {
 	 */
 	private $negativeVoteCount = 0;
 
+
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="unread_message_count")
 	 */
@@ -298,6 +302,12 @@ class UserMeta {
 	 * @ORM\Column(type="integer", nullable=true, name="fresh_notification_count")
 	 */
 	private $freshNotificationCount = 0;
+
+	/**
+	 * @ORM\Column(type="datetime", nullable=true, name="notifications_folding_since")
+	 */
+	private $notificationsFoldingSince;
+
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true, name="comment_count")
@@ -969,6 +979,7 @@ class UserMeta {
 		return $this->teamCount;
 	}
 
+
 	// FollowerCount /////
 
 	public function incrementFollowerCount($by = 1) {
@@ -988,6 +999,7 @@ class UserMeta {
 	public function getFollowingCount() {
 		return $this->followingCount;
 	}
+
 
 	// RecievedLikeCount /////
 
@@ -1009,6 +1021,7 @@ class UserMeta {
 		return $this->sentLikeCount;
 	}
 
+
 	// PositiveVoteCount /////
 
 	public function incrementPositiveVoteCount($by = 1) {
@@ -1028,6 +1041,7 @@ class UserMeta {
 	public function getNegativeVoteCount() {
 		return $this->negativeVoteCount;
 	}
+
 
 	// UnreadMessageCount /////
 
@@ -1058,6 +1072,18 @@ class UserMeta {
 	public function getFreshNotificationCount() {
 		return $this->freshNotificationCount;
 	}
+
+	// NotificationsFoldingSince /////
+
+	public function setNotificationsFoldingSince($notificationsFoldingSince) {
+		$this->notificationsFoldingSince = $notificationsFoldingSince;
+		return $this;
+	}
+
+	public function getNotificationsFoldingSince() {
+		return $this->notificationsFoldingSince;
+	}
+
 
 	// CommentCount /////
 

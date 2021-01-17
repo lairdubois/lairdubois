@@ -1264,6 +1264,7 @@ user:
   choice:
     entities: '[0,1]boiseu|]1,Inf]boiseux'
     contributors: '[0,1]contributeur|]1,Inf]contributeurs'
+    other_users: '[0,1]autre boiseu|]1,Inf]autres boiseux'
 
 follower:
   follow: S'abonner
