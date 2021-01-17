@@ -105,7 +105,7 @@ class ResourceUploadHandler extends \UploadHandler {
 				}
 
 				// libreOffice
-				if ($fileExtension == 'xlsx' || $fileExtension == 'xlsm' || $fileExtension == 'ods') {
+				if ($fileExtension == 'xlsx' || $fileExtension == 'xlsm' || $fileExtension == 'ods' || $fileExtension == 'odg' || $fileExtension == 'odt') {
 					$kind = Resource::KIND_LIBREOFFICE;
 				}
 

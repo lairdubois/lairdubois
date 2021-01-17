@@ -15,7 +15,7 @@ class Resource {
 
 	const CLASS_NAME = 'LadbCoreBundle:Core\Resource';
 
-	const DEFAULT_ACCEPTED_FILE_TYPE = '/(\.|\/)(dwf|dwg|dxf|stl|skp|pdf|ggb|svg|fcstd|123dx|ods|xlsx|xlsm|f3d|dae|easm)$/i';
+	const DEFAULT_ACCEPTED_FILE_TYPE = '/(\.|\/)(dwf|dwg|dxf|stl|skp|pdf|ggb|svg|fcstd|123dx|ods|odg|odt|xlsx|xlsm|f3d|dae|easm)$/i';
 	const DEFAULT_MAX_FILE_SIZE = 62914560;	// 60Mo
 
 	const KIND_UNKNOW = 0;
