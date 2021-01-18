@@ -44,6 +44,12 @@ class NotificationController extends AbstractController {
 				$unlistedNotificationIds[$notification->getId()] = true;
 			}
 			$notification->setIsListed(true);
+			foreach ($notification->getChildren() as $child) {
+				if (!$child->getIsListed()) {
+					$unlistedNotificationIds[$child->getId()] = true;
+				}
+				$child->setIsListed(true);
+			}
 		}
 
 		$om->flush();
