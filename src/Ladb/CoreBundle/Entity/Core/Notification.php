@@ -213,7 +213,7 @@ class Notification {
 	}
 
 	/**
-	 * @ORM\preRemove
+	 * @ORM\PreRemove
 	 */
 	public function preRemove() {
 		if ($this->getIsFolder()) {
