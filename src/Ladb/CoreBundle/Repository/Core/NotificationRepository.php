@@ -74,10 +74,9 @@ class NotificationRepository extends AbstractEntityRepository {
 	public function findByNewerThanAndGroupIdentifierAndUser($date, $groupIdentifier, $user) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'n', 'a', 'u' ))
+			->select(array( 'n', 'u' ))
 			->from($this->getEntityName(), 'n')
 			->innerJoin('n.user', 'u')
-			->innerJoin('n.activity', 'a')
 			->where('n.createdAt > :date')
 			->andWhere('n.groupIdentifier = :groupIdentifier')
 			->andWhere('n.user = :user')

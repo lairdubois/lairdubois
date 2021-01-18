@@ -426,7 +426,7 @@ EOT
 
 			// Maximize folding since to 1 day
 			if (is_null($notificationsFoldingSince) || $notificationsFoldingSince < $oneDayBefore) {
-				$notificationsFoldingSince = $oneDayBefore;
+				$notificationsFoldingSince = new \DateTime();
 				$user->getMeta()->setNotificationsFoldingSince($notificationsFoldingSince);
 			}
 
