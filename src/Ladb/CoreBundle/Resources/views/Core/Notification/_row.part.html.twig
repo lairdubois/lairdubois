@@ -18,7 +18,7 @@
             </div>
             <div class="ladb-box-footer">
                 {% if isYour is defined and isYour %}<span class="pull-right"><i class="ladb-icon-user"></i></span>{% endif %}
-                {% if icon is defined %}<i class="ladb-icon-{{ icon }}"></i>{% endif %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':notification } %}
+                {% if icon is defined %}<i class="ladb-notification-icon ladb-icon-{{ icon }}"></i>{% endif %}{% include 'LadbCoreBundle:Common:_age.part.html.twig' with { 'entity':notification } %}
                 {% if notification.isFolder %}<a class="ladb-notification-children-collapse-btn pull-right" data-toggle="collapse" href="#ladb_notification_children_{{ notification.id }}">+ <strong>{{ notification.children|length }}</strong> <i class="ladb-icon-notifications"></i> <span class="caret"></span></a>{% endif %}
             </div>
         </div>
