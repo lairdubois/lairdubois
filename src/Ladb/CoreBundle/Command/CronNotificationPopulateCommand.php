@@ -449,6 +449,11 @@ EOT
 					$groupNotification->setFolder($folder);
 				}
 
+				// Need to flush to be sure that next request contains newly modified notifications
+				if ($forced) {
+					$om->flush();
+				}
+
 			}
 
 			$user->getMeta()->incrementFreshNotificationCount($freshNotificationCounters[$userId]);
