@@ -421,11 +421,8 @@ EOT
 		foreach ($notifiedUsers as $userId => $user) {
 
 			// Notification folding
-			$oneDayBefore = (new \DateTime())->sub(new \DateInterval('P1D'));
 			$notificationsFoldingSince = $user->getMeta()->getNotificationsFoldingSince();
-
-			// Maximize folding since to 1 day
-			if (is_null($notificationsFoldingSince) || $notificationsFoldingSince < $oneDayBefore) {
+			if (is_null($notificationsFoldingSince) || $notificationsFoldingSince < (new \DateTime())->sub(new \DateInterval('P1D'))) {		// Maximize folding since to 1 day
 				$notificationsFoldingSince = new \DateTime();
 				$user->getMeta()->setNotificationsFoldingSince($notificationsFoldingSince);
 			}
@@ -447,11 +444,6 @@ EOT
 					}
 					$groupNotification->setIsFolder(false);
 					$groupNotification->setFolder($folder);
-				}
-
-				// Need to flush to be sure that next request contains newly modified notifications
-				if ($forced) {
-					$om->flush();
 				}
 
 			}
