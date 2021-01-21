@@ -1602,8 +1602,8 @@ notification:
     testify: Témoignages
     review: Avis
     feedback: Retours d'expérience
-    invite: Invitations à rejoindre un collectif
-    request: Demandes pour rejoindre un collectif
+    invite: Invitations (collectif)
+    request: Demandes (collectif)
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
