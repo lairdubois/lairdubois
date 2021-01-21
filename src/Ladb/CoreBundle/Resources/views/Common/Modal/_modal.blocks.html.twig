@@ -14,7 +14,13 @@
                         {% block header %}
                             <div class="modal-header">
                                 {% block headerInner %}
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    {% block headerMinitoolsOuter %}
+                                        <div class="ladb-minitools pull-right">
+                                            {% block headerMinitoolsInner %}
+                                                <a type="button" class="ladb-minitools-btn" data-dismiss="modal" aria-hidden="true"><i class="ladb-icon-remove"></i></a>
+                                            {% endblock %}
+                                        </div>
+                                    {% endblock %}
                                     {% if title is defined %}<h3 id="{{ id }}_label" class="modal-title">{{ title|raw }}</h3>{% endif %}
                                 {% endblock %}
                             </div>

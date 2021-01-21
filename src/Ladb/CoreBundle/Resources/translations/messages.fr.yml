@@ -1587,23 +1587,23 @@ notification:
     collection_collection: une nouvelle collection
     offer_offer: une nouvelle annonce
     blog_post: un nouveau sujet
-  tooltip:
+  dropdown:
     all: Toutes les notifications
-    comment: Notifications de commentaires
-    contribute: Notifications de contributions
-    follow: Notifications d'abonnements
-    like: Notifications de coups de coeur
-    mention: Notifications de mentions
-    publish: Notifications de publications
-    vote: Notifications de vérification
-    join: Notifications de participation
-    write: Notifications de messages
-    answer: Notifications de réponses
-    testify: Notifications de témoignages
-    review: Notifications d'avis
-    feedback: Notifications de retour d'expérience
-    invite: Notifications d'invitation à rejoindre un collectif
-    request: Notifications de demande pour rejoindre un collectif
+    comment: Commentaires
+    contribute: Contributions
+    follow: Abonnements
+    like: Coups de coeur
+    mention: Mentions
+    publish: Publications
+    vote: Vérification
+    join: Participation
+    write: Messages
+    answer: Réponses
+    testify: Témoignages
+    review: Avis
+    feedback: Retour d'expérience
+    invite: Invitation à rejoindre un collectif
+    request: Demande pour rejoindre un collectif
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
