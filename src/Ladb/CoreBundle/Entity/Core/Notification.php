@@ -63,6 +63,11 @@ class Notification {
 	private $isShown = false;
 
 	/**
+	 * @ORM\Column(type="boolean", name="is_children_shown")
+	 */
+	private $isChildrenShown = false;
+
+	/**
 	 * @ORM\Column(type="boolean", name="is_folder")
 	 */
 	private $isFolder = false;
@@ -168,6 +173,17 @@ class Notification {
 
 	public function getIsShown() {
 		return $this->isShown;
+	}
+
+	// IsChildrenShown /////
+
+	public function setIsChildrenShown($isChildrenShown) {
+		$this->isChildrenShown = $isChildrenShown;
+		return $this;
+	}
+
+	public function getIsChildrenShown() {
+		return $this->isChildrenShown;
 	}
 
 	// IsFolder /////

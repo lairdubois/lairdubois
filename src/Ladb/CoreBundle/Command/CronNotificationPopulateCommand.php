@@ -48,6 +48,7 @@ EOT
 		$typableUtils = $this->getContainer()->get(TypableUtils::NAME);
 
 		$notifiedUsers = array();
+		$groupIdentifiers = array();
 		$freshNotificationCounters = array();
 		$activites = $activityRepository->findByPendingNotifications();
 		if ($verbose) {
@@ -78,7 +79,7 @@ EOT
 						$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($watchable->getType(), $watchable->getId(), $actorUser);
 						if (!is_null($watches)) {
 							foreach ($watches as $watch) {
-								$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+								$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 								if ($verbose) {
 									$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new comment='.mb_strimwidth($comment->getBody(), 0, 50, '[...]').' on='.$watchable->getTitle().'</info>');
 								}
@@ -106,7 +107,7 @@ EOT
 				$follower = $activity->getFollower();
 
 				// Notification
-				$this->_forwardNotification($om, $follower->getFollowingUser(), $activity, null, $notifiedUsers, $freshNotificationCounters);
+				$this->_forwardNotification($om, $follower->getFollowingUser(), $activity, null, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 				if ($verbose) {
 					$output->writeln('<info>--> Notifying <fg=white>@'.$follower->getFollowingUser()->getUsername(). '</fg=white> for new follower=@'.$actorUser->getUsername().'</info>');
 				}
@@ -123,7 +124,7 @@ EOT
 
 					$groupIdentifier = $this->_generateGroupIdentifierFromActivityAndEntity($om, $activity, $likeEntity);
 
-					$this->_forwardNotification($om, $likeEntity->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+					$this->_forwardNotification($om, $likeEntity->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 					if ($verbose) {
 						$output->writeln('<info>--> Notifying <fg=white>@'.$likeEntity->getUser()->getUsername(). '</fg=white> for new like from=@'.$actorUser->getUsername().' on='.$likeEntity->getTitle().'</info>');
 					}
@@ -141,7 +142,7 @@ EOT
 
 					$groupIdentifier = $this->_generateGroupIdentifierFromActivityAndEntity($om, $activity, $mentionEntity);
 
-					$this->_forwardNotification($om, $mention->getMentionedUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+					$this->_forwardNotification($om, $mention->getMentionedUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 					if ($verbose) {
 						$output->writeln('<info>--> Notifying <fg=white>@'.$mention->getMentionedUser()->getUsername(). '</fg=white> for new mention from=@'.$actorUser->getUsername().' on='.$mentionEntity->getId().'</info>');
 					}
@@ -173,7 +174,7 @@ EOT
 									if (in_array($member->getUser()->getId(), $excludedUserIds)) {
 										continue;
 									}
-									$this->_createNotification($om, $member->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+									$this->_createNotification($om, $member->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 									$excludedUserIds[] = $member->getUser()->getId();
 									if ($verbose) {
 										$output->writeln('<info>--> Notifying <fg=white>@'.$member->getUser()->getUsername(). '</fg=white> for new publication='.$publication->getTitle().' (member)</info>');
@@ -197,7 +198,7 @@ EOT
 									if (in_array($follower->getUser()->getId(), $excludedUserIds)) {
 										continue;
 									}
-									$this->_createNotification($om, $follower->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+									$this->_createNotification($om, $follower->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 									$excludedUserIds[] = $follower->getUser()->getId();
 									if ($verbose) {
 										$output->writeln('<info>--> Notifying <fg=white>@'.$follower->getUser()->getUsername(). '</fg=white> for new publication='.$publication->getTitle().' (follower)</info>');
@@ -227,7 +228,7 @@ EOT
 									if (in_array($watch->getUser()->getId(), $excludedUserIds)) {
 										continue;
 									}
-									$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+									$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 									if ($verbose) {
 										$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new publication='.$publication->getTitle().' (watch)</info>');
 									}
@@ -249,7 +250,7 @@ EOT
 				$vote = $activity->getVote();
 				$voteEntity = $typableUtils->findTypable($vote->getEntityType(), $vote->getEntityId());
 				$groupIdentifier = $this->_generateGroupIdentifierFromActivityAndEntity($om, $activity, $voteEntity, array( $vote->getScore() ));
-				$this->_forwardNotification($om, $voteEntity->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+				$this->_forwardNotification($om, $voteEntity->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 				if ($verbose) {
 					$output->writeln('<info>--> Notifying <fg=white>@'.$voteEntity->getUser()->getUsername(). '</fg=white> for new vote from=@'.$actorUser->getUsername().'</info>');
 				}
@@ -273,7 +274,7 @@ EOT
 							if ($watch->getUser()->getId() == $join->getUser()->getId()) {
 								continue;
 							}
-							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 							if ($verbose) {
 								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new join from=@'.$actorUser->getUsername().'</info>');
 							}
@@ -298,7 +299,7 @@ EOT
 					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($question->getType(), $question->getId(), $actorUser);
 					if (!is_null($watches)) {
 						foreach ($watches as $watch) {
-							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 							if ($verbose) {
 								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new answer='.mb_strimwidth($answer->getBody(), 0, 50, '[...]').' on='.$question->getTitle().'</info>');
 							}
@@ -323,7 +324,7 @@ EOT
 					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($school->getType(), $school->getId(), $actorUser);
 					if (!is_null($watches)) {
 						foreach ($watches as $watch) {
-							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 							if ($verbose) {
 								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new testimonial='.mb_strimwidth($testimonial->getBody(), 0, 50, '[...]').' on='.$school->getTitle().'</info>');
 							}
@@ -348,7 +349,7 @@ EOT
 					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($reviewable->getType(), $reviewable->getId(), $actorUser);
 					if (!is_null($watches)) {
 						foreach ($watches as $watch) {
-							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 							if ($verbose) {
 								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new review='.mb_strimwidth($review->getBody(), 0, 50, '[...]').' on='.$reviewable->getTitle().'</info>');
 							}
@@ -373,7 +374,7 @@ EOT
 					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($feedbackable->getType(), $feedbackable->getId(), $actorUser);
 					if (!is_null($watches)) {
 						foreach ($watches as $watch) {
-							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCounters);
+							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 							if ($verbose) {
 								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new feedback='.mb_strimwidth($feedback->getTitle(), 0, 50, '[...]').' on='.$feedbackable->getTitle().'</info>');
 							}
@@ -389,7 +390,7 @@ EOT
 			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Invite) {
 
 				$invitation = $activity->getInvitation();
-				$this->_forwardNotification($om, $invitation->getRecipient(), $activity, null, $notifiedUsers, $freshNotificationCounters);
+				$this->_forwardNotification($om, $invitation->getRecipient(), $activity, null, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 				if ($verbose) {
 					$output->writeln('<info>--> Notifying <fg=white>@'.$invitation->getRecipient()->getUsername(). '</fg=white> for new invitation sender=@'.$invitation->getSender()->getUsername().' team=@'.$invitation->getTeam()->getUsername().'</info>');
 				}
@@ -401,7 +402,7 @@ EOT
 			else if ($activity instanceof \Ladb\CoreBundle\Entity\Core\Activity\Request) {
 
 				$request = $activity->getRequest();
-				$this->_forwardNotification($om, $request->getTeam(), $activity, null, $notifiedUsers, $freshNotificationCounters);
+				$this->_forwardNotification($om, $request->getTeam(), $activity, null, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 				if ($verbose) {
 					$output->writeln('<info>--> Notifying <fg=white>@'.$request->getTeam()->getUsername(). '</fg=white> for new request sender=@'.$request->getSender()->getUsername().'</info>');
 				}
@@ -427,23 +428,28 @@ EOT
 				$user->getMeta()->setNotificationsFoldingSince($notificationsFoldingSince);
 			}
 
-			$groupNotifications = $notificationRepository->findByNewerThanAndGroupIdentifierAndUser($notificationsFoldingSince, $groupIdentifier, $user);
-			if (!is_null($groupNotifications) && count($groupNotifications) > 1) {
+			foreach ($groupIdentifiers[$userId] as $userGroupIdentifiers) {
 
-				$folder = $groupNotifications[0];
-				$folder->setIsFolder(true);
-				$folder->setFolder(null);
+				$groupNotifications = $notificationRepository->findByNewerThanAndGroupIdentifierAndUser($notificationsFoldingSince, $userGroupIdentifiers, $user);
 
-				if ($verbose) {
-					$output->write('foldable count='.count($groupNotifications).' folder_id='.$folder->getId().' - ');
-				}
+				if (!is_null($groupNotifications) && count($groupNotifications) > 1) {
 
-				foreach ($groupNotifications as $groupNotification) {
-					if ($groupNotification == $folder) {
-						continue;
+					$folder = $groupNotifications[0];
+					$folder->setIsFolder(true);
+					$folder->setFolder(null);
+
+					if ($verbose) {
+						$output->write('foldable count='.count($groupNotifications).' folder_id='.$folder->getId().' - ');
 					}
-					$groupNotification->setIsFolder(false);
-					$groupNotification->setFolder($folder);
+
+					foreach ($groupNotifications as $groupNotification) {
+						if ($groupNotification == $folder) {
+							continue;
+						}
+						$groupNotification->setIsFolder(false);
+						$groupNotification->setFolder($folder);
+					}
+
 				}
 
 			}
@@ -452,6 +458,7 @@ EOT
 			if ($verbose) {
 				$output->writeln('<info>'.$user->getDisplayname().' <fg=yellow>['.$user->getMeta()->getFreshNotificationCount().' fresh ('.$freshNotificationCounters[$userId].' new)]</fg=yellow></info>');
 			}
+
 		}
 
 		if ($forced) {
@@ -477,7 +484,7 @@ EOT
 		return $hashids->encode($data);
 	}
 
-	private function _forwardNotification($om, $user, $activity, $groupIdentifier, &$notifiedUsers, &$freshNotificationCount) {
+	private function _forwardNotification($om, $user, $activity, $groupIdentifier, &$notifiedUsers, &$groupIdentifiers, &$freshNotificationCount) {
 		if ($user->getIsTeam()) {
 
 			$memberRepository = $om->getRepository(Member::CLASS_NAME);
@@ -487,27 +494,35 @@ EOT
 				if ($member->getUser() == $activity->getUser()) {
 					continue;	// Exclude activity user
 				}
-				$this->_createNotification($om, $member->getUser(), $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCount);
+				$this->_createNotification($om, $member->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCount);
 			}
 
 		} else {
-			$this->_createNotification($om, $user, $activity, $groupIdentifier, $notifiedUsers, $freshNotificationCount);
+			$this->_createNotification($om, $user, $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCount);
 		}
 	}
 
-	private function _createNotification($om, $user, $activity, $groupIdentifier, &$notifiedUsers, &$freshNotificationCount) {
+	private function _createNotification($om, $user, $activity, $groupIdentifier, &$notifiedUsers, &$groupIdentifiers, &$freshNotificationCount) {
 
 		$notification = new Notification();
 		$notification->setUser($user);
 		$notification->setActivity($activity);
 		$notification->setGroupIdentifier($groupIdentifier);
 
+		// Keep notified user
 		$notifiedUsers[$user->getId()] = $user;
-		if (isset($freshNotificationCount[$user->getId()])) {
-			$freshNotificationCount[$user->getId()]++;
-		} else {
-			$freshNotificationCount[$user->getId()] = 1;
+
+		// Keep groupIdentifier for user
+		if (!isset($groupIdentifiers[$user->getId()])) {
+			$groupIdentifiers[$user->getId()] = array();
 		}
+		$groupIdentifiers[$user->getId()][] = $groupIdentifier;
+
+		// Keep fresh notification count for user
+		if (!isset($freshNotificationCount[$user->getId()])) {
+			$freshNotificationCount[$user->getId()] = 0;
+		}
+		$freshNotificationCount[$user->getId()]++;
 
 		$om->persist($notification);
 	}

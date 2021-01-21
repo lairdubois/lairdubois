@@ -13,7 +13,7 @@
                     {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %}{% if notification.isFolder %}{% set otherChildrenActivityUsers = notification.otherChildrenActivityUsers|length %}{% if otherChildrenActivityUsers > 0 %} et <a data-toggle="collapse" href="#ladb_notification_children_{{ notification.id }}">{{ otherChildrenActivityUsers }} {{ 'user.choice.other_users'|transchoice(otherChildrenActivityUsers) }}</a>{% endif %}{% endif %} <a href="{{ path('core_notification_show', { 'id':notification.id }) }}" class="ladb-body-link">{% block body %}{% endblock %}</a>
                 </div>
                 <div class="media-right">
-                    {% if not notification.isShown %}<span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}"><i class="ladb-icon-bullet ladb-icon-lg" style="color: #f77f00;"></i></span>{% endif %}
+                    {% if not notification.isShown %}<span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}"><i class="ladb-icon-bullet{% if notification.isChildrenShown %}-outline{% endif %} ladb-icon-lg" style="color: #f77f00;"></i></span>{% endif %}
                 </div>
             </div>
             <div class="ladb-box-footer">

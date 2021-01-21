@@ -92,6 +92,9 @@ class NotificationController extends AbstractController {
 		// Update notification
 
 		$notification->setIsShown(true);
+		if (!is_null($notification->getFolder())) {
+			$notification->getFolder()->setIsChildrenShown(true);
+		}
 
 		$om->flush();
 
