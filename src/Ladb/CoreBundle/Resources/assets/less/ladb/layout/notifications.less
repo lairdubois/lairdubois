@@ -13,12 +13,13 @@
     .ladb-notification-row {
       padding: 10px;
       background-color: #fff;
+      border-left: 4px solid @ladb-brand-primary;
       border-bottom: solid 1px @ladb-global-border;
       cursor: pointer;
 
-      //&.ladb-listed {
-      //  color: #777;
-      //}
+      &.ladb-listed {
+        border-left: none;
+      }
 
       &.ladb-shown {
         color: #999;

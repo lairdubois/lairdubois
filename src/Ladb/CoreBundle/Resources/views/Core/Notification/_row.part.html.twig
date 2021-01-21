@@ -2,7 +2,7 @@
 {# set icon (faciltative) #}
 {# set url (faciltative) #}
 
-<div id="ladb_notification_{{ notification.id }}" class="ladb-notification-row{% if notification.isListed and unlistedNotificationIds[notification.id] is not defined %} ladb-listed{% endif %}{% if notification.isShown %} ladb-shown{% endif %}" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A' && event.button == 0) { document.location = '{{ path('core_notification_show', { 'id':notification.id }) }}'; }">
+<div id="ladb_notification_{{ notification.id }}" class="ladb-notification-row{% if notification.isListed and unlistedNotificationIds[notification.id] is not defined or notification.folder is not null %} ladb-listed{% endif %}{% if notification.isShown %} ladb-shown{% endif %}" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A' && event.button == 0) { document.location = '{{ path('core_notification_show', { 'id':notification.id }) }}'; }">
     <div class="media">
         <div class="media-left">
             {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':notification.activity.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}

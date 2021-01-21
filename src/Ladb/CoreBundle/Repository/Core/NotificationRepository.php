@@ -80,7 +80,7 @@ class NotificationRepository extends AbstractEntityRepository {
 			->where('n.createdAt > :date')
 			->andWhere('n.groupIdentifier = :groupIdentifier')
 			->andWhere('n.user = :user')
-			->orderBy('n.createdAt', 'DESC')
+			->orderBy('n.id', 'DESC')
 			->setParameter('date', $date)
 			->setParameter('groupIdentifier', $groupIdentifier)
 			->setParameter('user', $user)
@@ -127,7 +127,7 @@ class NotificationRepository extends AbstractEntityRepository {
 			->where('n.user = :user')
 			->andWhere('n.folder IS NULL')
 			->setParameter('user', $user)
-			->orderBy('a.createdAt', 'DESC')
+			->orderBy('a.id', 'DESC')
 			->setFirstResult($offset)
 			->setMaxResults($limit)
 		;
