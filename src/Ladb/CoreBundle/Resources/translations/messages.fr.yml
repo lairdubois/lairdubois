@@ -1595,15 +1595,15 @@ notification:
     like: Coups de coeur
     mention: Mentions
     publish: Publications
-    vote: Vérification
-    join: Participation
+    vote: Votes
+    join: Participations
     write: Messages
     answer: Réponses
     testify: Témoignages
     review: Avis
-    feedback: Retour d'expérience
-    invite: Invitation à rejoindre un collectif
-    request: Demande pour rejoindre un collectif
+    feedback: Retours d'expérience
+    invite: Invitations à rejoindre un collectif
+    request: Demandes pour rejoindre un collectif
   choice:
     comment: '[0,1]Notification de nouveau commentaire|]1,Inf]Notification de nouveaux commentaires'
     contribute: '[0,1]Notification de nouvelle contribution|]1,Inf]Notification de nouvelles contributions'
