@@ -5,7 +5,7 @@
 
 <div class="ladb-like-and-follow-row">
     {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' %}
-    {% if followerContext is not null %}
+    {% if not permissionContext.isGrantedOwner and followerContext is not null %}
         &nbsp;{% include 'LadbCoreBundle:Core/Follower:_widget.part.html.twig' %}
     {% endif %}
 </div>

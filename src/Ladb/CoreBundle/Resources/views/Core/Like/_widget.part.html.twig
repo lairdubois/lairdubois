@@ -1,14 +1,17 @@
 
 {# set likeContext #}
+{# set noTextOnMobile (facultative #}
+
+{% set noTextOnMobile = noTextOnMobile|default(false) %}
 
 {% if likeContext is not null and likeContext.isLikable %}
     {% if likeContext.id is null %}
-        <a rel="nofollow" href="{{ path('core_like_create', { 'entityType':likeContext.entityType, 'entityId':likeContext.entityId, 'rtu':app.request.requesturi }) }}" class="btn btn-default ladb-like-widget" data-tooltip="tooltip" title="{{ 'like.create'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'like.like'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-like-widget' });{% else %}$(this).button('loading');{% endif %}">
-            <i class="ladb-icon-like"></i> {{ 'like.like'|trans() }}
+        <a rel="nofollow" href="{{ path('core_like_create', { 'entityType':likeContext.entityType, 'entityId':likeContext.entityId, 'rtu':app.request.requesturi, 'noTextOnMobile':noTextOnMobile }) }}" class="btn btn-default ladb-like-widget" data-tooltip="tooltip" title="{{ 'like.create'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'like.like'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-like-widget' });{% else %}$(this).button('loading');{% endif %}">
+            <i class="ladb-icon-like"></i><span{% if noTextOnMobile %} class="ladb-hidden-mobile"{% endif %}> {{ 'like.like'|trans() }}</span>
         </a>
     {%  else %}
-        <a rel="nofollow" href="{{ path('core_like_delete', { 'id':likeContext.id }) }}" class="btn btn-default active ladb-like-widget" data-tooltip="tooltip" title="{{ 'like.delete'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'like.like'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-like-widget' });{% else %}$(this).button('loading');{% endif %}">
-            <i class="ladb-icon-check-square"></i> {{ 'like.like'|trans() }}
+        <a rel="nofollow" href="{{ path('core_like_delete', { 'id':likeContext.id, 'noTextOnMobile':noTextOnMobile }) }}" class="btn btn-default active ladb-like-widget" data-tooltip="tooltip" title="{{ 'like.delete'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i> {{ 'like.like'|trans() }}" onclick="{% if is_granted("ROLE_USER") %}$(this).ladbHrefAjax(event, { targetSelector:'.ladb-like-widget' });{% else %}$(this).button('loading');{% endif %}">
+            <i class="ladb-icon-like ladb-color-like"></i><span{% if noTextOnMobile %} class="ladb-hidden-mobile"{% endif %}> {{ 'like.like'|trans() }}</span>
         </a>
     {% endif %}
 {% endif %}

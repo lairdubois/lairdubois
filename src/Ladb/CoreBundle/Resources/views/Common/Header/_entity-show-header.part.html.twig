@@ -13,10 +13,10 @@
 {% block headerToolsInner %}
     {% block headerToolsButtons %}
         {% if likeContext is defined and permissionContext.likable %}
-            {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+            {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext, 'noTextOnMobile':permissionContext.editable } %}
         {% endif %}
         {% if permissionContext.editable and permissionContext.isGrantedOwner %}
-            <a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
+            <a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span{% if permissionContext.likable %} class="ladb-hidden-mobile"{% endif %}> {{ 'default.edit'|trans() }}</span></a>
         {% endif %}
         {% if collectionContext is defined %}
             {% include 'LadbCoreBundle:Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}

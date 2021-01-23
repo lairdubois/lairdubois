@@ -153,7 +153,7 @@
     {% if wonder.updatedAt > wonder.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':wonder } %}
     {% endif %}
-    {% if not permissionContext.isGrantedOwner %}
+    {% if not permissionContext.isOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% block contentLinkedTo %}{% endblock %}

@@ -27,7 +27,7 @@
             {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':graphic } %}
         {% endif %}
     </div>
-    {% if not permissionContext.isGrantedOwner %}
+    {% if not permissionContext.isOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}

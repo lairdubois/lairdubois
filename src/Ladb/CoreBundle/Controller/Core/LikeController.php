@@ -123,7 +123,8 @@ class LikeController extends AbstractController {
 		$likableUtils = $this->get(LikableUtils::NAME);
 
 		return array(
-			'likeContext' => $likableUtils->getLikeContext($entity, $this->getUser()),
+			'likeContext'    => $likableUtils->getLikeContext($entity, $this->getUser()),
+			'noTextOnMobile' => $request->get('noTextOnMobile', false),
 		);
 	}
 
@@ -186,7 +187,8 @@ class LikeController extends AbstractController {
 		$likableUtils = $this->get(LikableUtils::NAME);
 
 		return array(
-			'likeContext' => $likableUtils->getLikeContext($entity, $this->getUser()),
+			'likeContext'    => $likableUtils->getLikeContext($entity, $this->getUser()),
+			'noTextOnMobile' => $request->get('noTextOnMobile', false),
 		);
 	}
 

@@ -41,7 +41,7 @@ trait PublicationControllerTrait {
 			'unpublishable' => $isGrantedAdmin && $isPublic,
 			'deletable'     => $isGrantedAdmin || (($isOwner || $isOwnerMember) && (!$isPublic || $publication instanceof RepublishableInterface)),
 			'chownable'     => $publication instanceof AuthoredInterface && ($isGrantedAdmin || $isOwner || $isOwnerMember),
-			'likable'       => !($isOwner || $isOwnerMember),
+			'likable'       => !$isOwner,
 		);
 	}
 

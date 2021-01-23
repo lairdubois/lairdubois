@@ -136,7 +136,7 @@
     {% if event.updatedAt > event.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':event } %}
     {% endif %}
-    {% if not permissionContext.isGrantedOwner %}
+    {% if not permissionContext.isOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% include 'LadbCoreBundle:Core/Feedback:_widget.part.html.twig' %}

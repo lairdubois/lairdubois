@@ -82,7 +82,7 @@
     {% if workflow.updatedAt > workflow.createdAt %}
         {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' with { 'entity':workflow } %}
     {% endif %}
-    {% if not permissionContext.isGrantedOwner %}
+    {% if not permissionContext.isOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% if workflow.planCount > 0 or workflow.creationCount > 0 or workflow.howtoCount > 0 or workflow.workshopCount > 0 %}

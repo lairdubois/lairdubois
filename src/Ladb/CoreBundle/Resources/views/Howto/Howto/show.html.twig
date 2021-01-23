@@ -264,7 +264,7 @@
         {% endif %}
         <br/>
         {% include 'LadbCoreBundle:Howto/Howto:_wip-alert.part.html.twig' %}
-        {% if not permissionContext.isGrantedOwner %}
+        {% if not permissionContext.isOwner %}
             {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
         {% endif %}
         {% if howto.questionCount > 0 or howto.planCount > 0 or howto.creationCount > 0 or howto.workflowCount > 0 or howto.workshopCount > 0 or howto.providerCount > 0 or howto.schoolCount > 0 %}
