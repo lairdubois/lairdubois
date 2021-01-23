@@ -72,12 +72,15 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 		// Change publication user
 		$publication->setUser($targetUser);
 
-		// Update likes entityUser
+		// Update likes
 		$likeRepository = $om->getRepository(Like::CLASS_NAME);
 		$likes = $likeRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId());
+		$likeCount = count($likes);
 		foreach ($likes as $like) {
 			$like->setEntityUser($targetUser);
 		}
+		$originUser->getMeta()->incrementRecievedLikeCount(-$likeCount);
+		$targetUser->getMeta()->incrementRecievedLikeCount($likeCount);
 
 		if (!is_null($originUser)) {
 			$this->updateUserCounterAfterChangeOwner($originUser, -1, $publication->getIsPrivate());
