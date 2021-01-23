@@ -93,57 +93,149 @@ class UserMeta {
 
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="request_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="request_enabled", options={"default":true})
 	 */
 	private $requestEnabled = false;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="auto_watch_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="auto_watch_enabled", options={"default":true})
 	 */
 	private $autoWatchEnabled = true;
 
+
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="incoming_message_email_notification_enabled")
+	 * @ORM\Column(type="boolean", name="wonder_creations_badge_enabled", options={"default":true})
+	 */
+	private $wonderCreationsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="qa_questions_badge_enabled", options={"default":true})
+	 */
+	private $qaQuestionsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="wonder_plans_badge_enabled", options={"default":true})
+	 */
+	private $wonderPlansBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="howto_howtos_badge_enabled", options={"default":true})
+	 */
+	private $howtoHowtosBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="wonder_workshops_badge_enabled", options={"default":true})
+	 */
+	private $wonderWorkshopsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="knowledge_woods_badge_enabled", options={"default":true})
+	 */
+	private $knowledgeWoodsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="knowledge_books_badge_enabled", options={"default":true})
+	 */
+	private $knowledgeBooksBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="knowledge_softwares_badge_enabled", options={"default":true})
+	 */
+	private $knowledgeSoftwaresBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="collection_collections_badge_enabled", options={"default":true})
+	 */
+	private $collectionCollectionsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="knowledgeproviders_badge_enabled", options={"default":true})
+	 */
+	private $knowledgeProvidersBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="knowledge_schools_badge_enabled", options={"default":true})
+	 */
+	private $knowledgeSchoolsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="find_finds_badge_enabled", options={"default":true})
+	 */
+	private $findFindsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="event_events_badge_enabled", options={"default":true})
+	 */
+	private $eventEventsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="offer_offers_badge_enabled", options={"default":true})
+	 */
+	private $offerOffersBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="workflow_workflows_badge_enabled", options={"default":true})
+	 */
+	private $workflowWorkflowsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="promotion_graphics_badge_enabled", options={"default":true})
+	 */
+	private $promotionGraphicsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="blog_posts_badge_enabled", options={"default":true})
+	 */
+	private $blogPostsBadgeEnabled = true;
+
+	/**
+	 * @ORM\Column(type="boolean", name="faq_questions_badge_enabled", options={"default":true})
+	 */
+	private $faqQuestionsBadgeEnabled = true;
+
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=true, name="incoming_message_email_notification_enabled", options={"default":true})
 	 */
 	private $incomingMessageEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="new_follower_email_notification_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="new_follower_email_notification_enabled", options={"default":true})
 	 */
 	private $newFollowerEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="new_mention_email_notification_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="new_mention_email_notification_enabled", options={"default":true})
 	 */
 	private $newMentionEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="new_like_email_notification_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="new_like_email_notification_enabled", options={"default":true})
 	 */
 	private $newLikeEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="new_vote_email_notification_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="new_vote_email_notification_enabled", options={"default":true})
 	 */
 	private $newVoteEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="new_following_post_email_notification_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="new_following_post_email_notification_enabled", options={"default":true})
 	 */
 	private $newFollowingPostEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="new_watch_activity_email_notification_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="new_watch_activity_email_notification_enabled", options={"default":true})
 	 */
 	private $newWatchActivityEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="new_spotlight_email_notification_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="new_spotlight_email_notification_enabled", options={"default":true})
 	 */
 	private $newSpotlightEmailNotificationEnabled = true;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=true, name="week_news_email_enabled")
+	 * @ORM\Column(type="boolean", nullable=true, name="week_news_email_enabled", options={"default":true})
 	 */
 	private $weekNewsEmailEnabled = true;
 
@@ -639,6 +731,206 @@ class UserMeta {
 	public function getAutoWatchEnabled() {
 		return $this->autoWatchEnabled;
 	}
+
+
+	// WonderCreationsBadgeEnabled /////
+
+	public function setWonderCreationsBadgeEnabled($wonderCreationsBadgeEnabled) {
+		$this->wonderCreationsBadgeEnabled = $wonderCreationsBadgeEnabled;
+		return $this;
+	}
+
+	public function getWonderCreationsBadgeEnabled() {
+		return $this->wonderCreationsBadgeEnabled;
+	}
+
+	// QaQuestionsBadgeEnabled /////
+
+	public function setQaQuestionsBadgeEnabled($qaQuestionsBadgeEnabled) {
+		$this->qaQuestionsBadgeEnabled = $qaQuestionsBadgeEnabled;
+		return $this;
+	}
+
+	public function getQaQuestionsBadgeEnabled() {
+		return $this->qaQuestionsBadgeEnabled;
+	}
+
+	// WonderPlansBadgeEnabled /////
+
+	public function setWonderPlansBadgeEnabled($wonderPlansBadgeEnabled) {
+		$this->wonderPlansBadgeEnabled = $wonderPlansBadgeEnabled;
+		return $this;
+	}
+
+	public function getWonderPlansBadgeEnabled() {
+		return $this->wonderPlansBadgeEnabled;
+	}
+
+	// HowtoHowtosBadgeEnabled /////
+
+	public function setHowtoHowtosBadgeEnabled($howtoHowtosBadgeEnabled) {
+		$this->howtoHowtosBadgeEnabled = $howtoHowtosBadgeEnabled;
+		return $this;
+	}
+
+	public function getHowtoHowtosBadgeEnabled() {
+		return $this->howtoHowtosBadgeEnabled;
+	}
+
+	// WonderWorkshopsBadgeEnabled /////
+
+	public function setWonderWorkshopsBadgeEnabled($wonderWorkshopsBadgeEnabled) {
+		$this->wonderWorkshopsBadgeEnabled = $wonderWorkshopsBadgeEnabled;
+		return $this;
+	}
+
+	public function getWonderWorkshopsBadgeEnabled() {
+		return $this->wonderWorkshopsBadgeEnabled;
+	}
+
+	// KnowledgeWoodsBadgeEnabled /////
+
+	public function setKnowledgeWoodsBadgeEnabled($knowledgeWoodsBadgeEnabled) {
+		$this->knowledgeWoodsBadgeEnabled = $knowledgeWoodsBadgeEnabled;
+		return $this;
+	}
+
+	public function getKnowledgeWoodsBadgeEnabled() {
+		return $this->knowledgeWoodsBadgeEnabled;
+	}
+
+	// KnowledgeBooksBadgeEnabled /////
+
+	public function setKnowledgeBooksBadgeEnabled($knowledgeBooksBadgeEnabled) {
+		$this->knowledgeBooksBadgeEnabled = $knowledgeBooksBadgeEnabled;
+		return $this;
+	}
+
+	public function getKnowledgeBooksBadgeEnabled() {
+		return $this->knowledgeBooksBadgeEnabled;
+	}
+
+	// KnowledgeSoftwaresBadgeEnabled /////
+
+	public function setKnowledgeSoftwaresBadgeEnabled($knowledgeSoftwaresBadgeEnabled) {
+		$this->knowledgeSoftwaresBadgeEnabled = $knowledgeSoftwaresBadgeEnabled;
+		return $this;
+	}
+
+	public function getKnowledgeSoftwaresBadgeEnabled() {
+		return $this->knowledgeSoftwaresBadgeEnabled;
+	}
+
+	// CollectionCollectionsBadgeEnabled /////
+
+	public function setCollectionCollectionsBadgeEnabled($collectionCollectionsBadgeEnabled) {
+		$this->collectionCollectionsBadgeEnabled = $collectionCollectionsBadgeEnabled;
+		return $this;
+	}
+
+	public function getCollectionCollectionsBadgeEnabled() {
+		return $this->collectionCollectionsBadgeEnabled;
+	}
+
+	// KnowledgeProvidersBadgeEnabled /////
+
+	public function setKnowledgeProvidersBadgeEnabled($knowledgeProvidersBadgeEnabled) {
+		$this->knowledgeProvidersBadgeEnabled = $knowledgeProvidersBadgeEnabled;
+		return $this;
+	}
+
+	public function getKnowledgeProvidersBadgeEnabled() {
+		return $this->knowledgeProvidersBadgeEnabled;
+	}
+
+	// SchoolSchoolsBadgeEnabled /////
+
+	public function setKnowledgeSchoolsBadgeEnabled($knowledgeSchoolsBadgeEnabled) {
+		$this->knowledgeSchoolsBadgeEnabled = $knowledgeSchoolsBadgeEnabled;
+		return $this;
+	}
+
+	public function getKnowledgeSchoolsBadgeEnabled() {
+		return $this->knowledgeSchoolsBadgeEnabled;
+	}
+
+	// FindFindsBadgeEnabled /////
+
+	public function setFindFindsBadgeEnabled($findFindsBadgeEnabled) {
+		$this->findFindsBadgeEnabled = $findFindsBadgeEnabled;
+		return $this;
+	}
+
+	public function getFindFindsBadgeEnabled() {
+		return $this->findFindsBadgeEnabled;
+	}
+
+	// EventEventsBadgeEnabled /////
+
+	public function setEventEventsBadgeEnabled($eventEventsBadgeEnabled) {
+		$this->eventEventsBadgeEnabled = $eventEventsBadgeEnabled;
+		return $this;
+	}
+
+	public function getEventEventsBadgeEnabled() {
+		return $this->eventEventsBadgeEnabled;
+	}
+
+	// OfferOffersBadgeEnabled /////
+
+	public function setOfferOffersBadgeEnabled($offerOffersBadgeEnabled) {
+		$this->offerOffersBadgeEnabled = $offerOffersBadgeEnabled;
+		return $this;
+	}
+
+	public function getOfferOffersBadgeEnabled() {
+		return $this->offerOffersBadgeEnabled;
+	}
+
+	// WorkflowWorkflowsBadgeEnabled /////
+
+	public function setWorkflowWorkflowsBadgeEnabled($workflowWorkflowsBadgeEnabled) {
+		$this->workflowWorkflowsBadgeEnabled = $workflowWorkflowsBadgeEnabled;
+		return $this;
+	}
+
+	public function getWorkflowWorkflowsBadgeEnabled() {
+		return $this->workflowWorkflowsBadgeEnabled;
+	}
+
+	// PromotionGraphicsBadgeEnabled /////
+
+	public function setPromotionGraphicsBadgeEnabled($promotionGraphicsBadgeEnabled) {
+		$this->promotionGraphicsBadgeEnabled = $promotionGraphicsBadgeEnabled;
+		return $this;
+	}
+
+	public function getPromotionGraphicsBadgeEnabled() {
+		return $this->promotionGraphicsBadgeEnabled;
+	}
+
+	// BlogPostsBadgeEnabled /////
+
+	public function setBlogPostsBadgeEnabled($blogPostsBadgeEnabled) {
+		$this->blogPostsBadgeEnabled = $blogPostsBadgeEnabled;
+		return $this;
+	}
+
+	public function getBlogPostsBadgeEnabled() {
+		return $this->blogPostsBadgeEnabled;
+	}
+
+	// FaqQuestionsBadgeEnabled /////
+
+	public function setFaqQuestionsBadgeEnabled($faqQuestionsBadgeEnabled) {
+		$this->faqQuestionsBadgeEnabled = $faqQuestionsBadgeEnabled;
+		return $this;
+	}
+
+	public function getFaqQuestionsBadgeEnabled() {
+		return $this->faqQuestionsBadgeEnabled;
+	}
+
 
 	// IncomingMessageEmailNotificationEnabled /////
 

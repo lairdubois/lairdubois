@@ -21,22 +21,23 @@ class UserUtils extends AbstractContainerAwareUtils {
 
 	const COUNTABLE_TYPES = array(
 		\Ladb\CoreBundle\Entity\Wonder\Creation::TYPE,
+		\Ladb\CoreBundle\Entity\Qa\Question::TYPE,
 		\Ladb\CoreBundle\Entity\Wonder\Plan::TYPE,
 		\Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE,
-		\Ladb\CoreBundle\Entity\Find\Find::TYPE,
 		\Ladb\CoreBundle\Entity\Howto\Howto::TYPE,
 		\Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE,
-		\Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE,
-		\Ladb\CoreBundle\Entity\Knowledge\School::TYPE,
 		\Ladb\CoreBundle\Entity\Knowledge\Book::TYPE,
 		\Ladb\CoreBundle\Entity\Knowledge\Software::TYPE,
+		\Ladb\CoreBundle\Entity\Collection\Collection::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\Provider::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\School::TYPE,
+		\Ladb\CoreBundle\Entity\Find\Find::TYPE,
+		\Ladb\CoreBundle\Entity\Event\Event::TYPE,
+		\Ladb\CoreBundle\Entity\Offer\Offer::TYPE,
+		\Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE,
+		\Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE,
 		\Ladb\CoreBundle\Entity\Blog\Post::TYPE,
 		\Ladb\CoreBundle\Entity\Faq\Question::TYPE,
-		\Ladb\CoreBundle\Entity\Qa\Question::TYPE,
-		\Ladb\CoreBundle\Entity\Promotion\Graphic::TYPE,
-		\Ladb\CoreBundle\Entity\Workflow\Workflow::TYPE,
-		\Ladb\CoreBundle\Entity\Collection\Collection::TYPE,
-		\Ladb\CoreBundle\Entity\Offer\Offer::TYPE,
 	);
 
 	/////
@@ -87,6 +88,27 @@ class UserUtils extends AbstractContainerAwareUtils {
 			return false;
 		}
 
+		$typableUtils = $this->get(TypableUtils::NAME);
+		$propertyUtils = $this->get(PropertyUtils::NAME);
+
+		$meta = $user->getMeta();
+		$entityStrippedName = $typableUtils->getStrippedNameByType($entityType);
+
+		$badgeEnabledPropertyPath = $entityStrippedName.'s_badge_enabled';
+		$unlistedCountPropertyPath = 'unlisted_'.$entityStrippedName.'_count';
+
+		// Check if badge is enabled for this entity type
+		if (!$propertyUtils->getValue($meta, $badgeEnabledPropertyPath)) {
+
+			// Reset (if necessary) count to 0 and returns
+			if ($propertyUtils->getValue($meta, $unlistedCountPropertyPath) > 0) {
+				$propertyUtils->setValue($meta, $unlistedCountPropertyPath, 0);
+				return true;
+			}
+
+			return false;
+		}
+
 		// Check refresh date
 		$now = new \DateTime();
 		$refreshDate = $this->_getUnlistedCounterRefreshDateByEntityType($entityType, $now);
@@ -111,8 +133,6 @@ class UserUtils extends AbstractContainerAwareUtils {
 			$entityRepository = $typableUtils->getRepositoryByType($entityType);
 			if (!is_null($entityRepository)) {
 
-				$meta = $user->getMeta();
-				$entityStrippedName = $typableUtils->getStrippedNameByType($entityType);
 				$entityClass = $typableUtils->getClassByType($entityType);
 				$andWheres = array();
 				$parameters = array();
@@ -130,12 +150,9 @@ class UserUtils extends AbstractContainerAwareUtils {
 				$count = $entityRepository->countNewerByDate($lastViewDate, $andWheres, $parameters);
 
 				// Update count value on user entity
-				$propertyPath = 'unlisted_'.$entityStrippedName.'_count';
-				$propertyUtils = $this->get(PropertyUtils::NAME);
+				if ($count != $propertyUtils->getValue($meta, $unlistedCountPropertyPath)) {
 
-				if ($count != $propertyUtils->getValue($meta, $propertyPath)) {
-
-					$propertyUtils->setValue($meta, $propertyPath, $count);
+					$propertyUtils->setValue($meta, $unlistedCountPropertyPath, $count);
 
 					if ($flush) {
 						$userManager = $this->get(UserManager::NAME);

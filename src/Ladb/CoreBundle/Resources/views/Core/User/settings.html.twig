@@ -277,6 +277,154 @@
                         Surveiller automatiquement les publications auxquelles je contribue<br><small>(commentaire, coups de coeur, réponse, participation)</small>
                     </label>
                 </div>
+                <hr>
+                <span class="help-block">Afficher une pastille du nombre de nouvelles publications depuis votre dernière visite pour les rubriques suivantes :</span>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.wonderCreationsBadgeEnabled) }}
+                                <i class="ladb-icon-creation"></i> {{ 'wonder.creation.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.qaQuestionsBadgeEnabled) }}
+                                <i class="ladb-icon-question"></i> {{ 'qa.question.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.wonderPlansBadgeEnabled) }}
+                                <i class="ladb-icon-plan"></i> {{ 'wonder.plan.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.howtoHowtosBadgeEnabled) }}
+                                <i class="ladb-icon-howto"></i> {{ 'howto.howto.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.wonderWorkshopsBadgeEnabled) }}
+                                <i class="ladb-icon-workshop"></i> {{ 'wonder.workshop.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.knowledgeWoodsBadgeEnabled) }}
+                                <i class="ladb-icon-wood"></i> {{ 'knowledge.wood.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.knowledgeBooksBadgeEnabled) }}
+                                <i class="ladb-icon-book"></i> {{ 'knowledge.book.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.knowledgeSoftwaresBadgeEnabled) }}
+                                <i class="ladb-icon-software"></i> {{ 'knowledge.software.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.collectionCollectionsBadgeEnabled) }}
+                                <i class="ladb-icon-collection"></i> {{ 'collection.collection.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.knowledgeProvidersBadgeEnabled) }}
+                                <i class="ladb-icon-provider"></i> {{ 'knowledge.provider.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.knowledgeSchoolsBadgeEnabled) }}
+                                <i class="ladb-icon-school"></i> {{ 'knowledge.school.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.findFindsBadgeEnabled) }}
+                                <i class="ladb-icon-software"></i> {{ 'find.find.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.eventEventsBadgeEnabled) }}
+                                <i class="ladb-icon-event"></i> {{ 'event.event.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.offerOffersBadgeEnabled) }}
+                                <i class="ladb-icon-offer"></i> {{ 'offer.offer.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.workflowWorkflowsBadgeEnabled) }}
+                                <i class="ladb-icon-workflow"></i> {{ 'workflow.workflow.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.promotionGraphicsBadgeEnabled) }}
+                                <i class="ladb-icon-promote"></i> {{ 'promotion.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.blogPostsBadgeEnabled) }}
+                                <i class="ladb-icon-blog"></i> {{ 'blog.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
+                                {{ form_widget(form.meta.faqQuestionsBadgeEnabled) }}
+                                <i class="ladb-icon-help"></i> {{ 'faq.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
             {% endif %}
         {% endblock %}
     {% endembed %}
@@ -346,7 +494,7 @@
                             <span id="ladb_webpush_inactive_span" style="display: none;"><i class="ladb-icon-plus"></i> Activez les notifications "push" sur cet appareil.</span>
                             <span id="ladb_webpush_denied_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Vous avez bloqué les notifications "push" sur cet appareil.</span>
                             <span id="ladb_webpush_disabled_span" class="ladb-color-danger" style="display: none;"><i class="ladb-icon-warning"></i> Les notifications "push" ne sont pas disponibles sur cet appareil.</span>
-                            <span id="ladb_webpush_help_span" class="help-block">Les notifications "push" <em>(nouveaux message, nouveaux coups de coeur et nouvelle réponse à vos question)</em> s'affichent dans un coin de votre écran, même quand L'Air du Bois est fermé.</span>
+                            <span id="ladb_webpush_help_span" class="help-block">Les notifications "push" <em>(nouveaux message, nouveaux coups de coeur et nouvelle réponse à vos questions)</em> s'affichent dans un coin de votre écran, même quand L'Air du Bois est fermé.</span>
                         </div>
                         <div class="media-right">
                             <a id="ladb_webpush_subscribe_btn" class="btn btn-success" style="display: none;">Activer</a>

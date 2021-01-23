@@ -5,6 +5,7 @@ namespace Ladb\CoreBundle\Manager;
 use Ladb\CoreBundle\Entity\AbstractAuthoredPublication;
 use Ladb\CoreBundle\Entity\Core\Block\Gallery;
 use Ladb\CoreBundle\Entity\Core\Feedback;
+use Ladb\CoreBundle\Entity\Core\Like;
 use Ladb\CoreBundle\Entity\Core\User;
 use Ladb\CoreBundle\Model\AuthoredInterface;
 use Ladb\CoreBundle\Model\BlockBodiedInterface;
@@ -70,6 +71,13 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 
 		// Change publication user
 		$publication->setUser($targetUser);
+
+		// Update likes entityUser
+		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likes = $likeRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId());
+		foreach ($likes as $like) {
+			$like->setEntityUser($targetUser);
+		}
 
 		if (!is_null($originUser)) {
 			$this->updateUserCounterAfterChangeOwner($originUser, -1, $publication->getIsPrivate());

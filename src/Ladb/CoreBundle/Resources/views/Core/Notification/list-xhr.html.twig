@@ -14,7 +14,7 @@
         <a class="ladb-minitools-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="ladb-icon-filter"></i> <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-scrollable">
             <li{% if filter == 'recent' %} class="active"{% endif %}><a href="{{ path('core_notification_list') }}" onclick="$(this).ladbHrefAjax(event, { targetSelector:'#notifications_modal .modal-content', replaceTargetInnerOnly:true });" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-notification-icon ladb-icon-notifications"></i> {{ 'notification.dropdown.all'|trans }}</a></li>
             <li{% if filter == 'activity-mention' %} class="active"{% endif %}><a href="{{ path('core_notification_list_filter', { 'filter':'activity-mention' }) }}" onclick="$(this).ladbHrefAjax(event, { targetSelector:'#notifications_modal .modal-content', replaceTargetInnerOnly:true });" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-notification-icon ladb-icon-mention"></i> {{ 'notification.dropdown.mention'|trans }}</a></li>
             <li{% if filter == 'activity-like' %} class="active"{% endif %}><a href="{{ path('core_notification_list_filter', { 'filter':'activity-like' }) }}" onclick="$(this).ladbHrefAjax(event, { targetSelector:'#notifications_modal .modal-content', replaceTargetInnerOnly:true });" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-notification-icon ladb-icon-like"></i> {{ 'notification.dropdown.like'|trans }}</a></li>
