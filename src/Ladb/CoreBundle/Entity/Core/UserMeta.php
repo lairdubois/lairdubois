@@ -134,6 +134,11 @@ class UserMeta {
 	private $knowledgeWoodsBadgeEnabled = true;
 
 	/**
+	 * @ORM\Column(type="boolean", name="knowledge_tools_badge_enabled", options={"default":true})
+	 */
+	private $knowledgeToolsBadgeEnabled = true;
+
+	/**
 	 * @ORM\Column(type="boolean", name="knowledge_books_badge_enabled", options={"default":true})
 	 */
 	private $knowledgeBooksBadgeEnabled = true;
@@ -294,6 +299,11 @@ class UserMeta {
 	 * @ORM\Column(name="unlisted_knowledge_software_count", type="integer")
 	 */
 	private $unlistedKnowledgeSoftwareCount = 0;
+
+	/**
+	 * @ORM\Column(name="unlisted_knowledge_tool_count", type="integer")
+	 */
+	private $unlistedKnowledgeToolCount = 0;
 
 	/**
 	 * @ORM\Column(name="unlisted_blog_post_count", type="integer")
@@ -799,6 +809,17 @@ class UserMeta {
 		return $this->knowledgeWoodsBadgeEnabled;
 	}
 
+	// KnowledgeToolsBadgeEnabled /////
+
+	public function setKnowledgeToolsBadgeEnabled($knowledgeToolsBadgeEnabled) {
+		$this->knowledgeToolsBadgeEnabled = $knowledgeToolsBadgeEnabled;
+		return $this;
+	}
+
+	public function getKnowledgeToolsBadgeEnabled() {
+		return $this->knowledgeToolsBadgeEnabled;
+	}
+
 	// KnowledgeBooksBadgeEnabled /////
 
 	public function setKnowledgeBooksBadgeEnabled($knowledgeBooksBadgeEnabled) {
@@ -1150,6 +1171,17 @@ class UserMeta {
 
 	public function setUnlistedKnowledgeSoftwareCount($unlistedKnowledgeSoftwareCount) {
 		$this->unlistedKnowledgeSoftwareCount = $unlistedKnowledgeSoftwareCount;
+		return $this;
+	}
+
+	// UnlistedKnowledgeToolCount /////
+
+	public function getUnlistedKnowledgeToolCount() {
+		return $this->unlistedKnowledgeToolCount;
+	}
+
+	public function setUnlistedKnowledgeToolCount($unlistedKnowledgeToolCount) {
+		$this->unlistedKnowledgeToolCount = $unlistedKnowledgeToolCount;
 		return $this;
 	}
 

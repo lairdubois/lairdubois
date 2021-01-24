@@ -1,0 +1,111 @@
+{% extends 'LadbCoreBundle:Knowledge:_show.html.twig' %}
+
+{% set entity = tool %}
+
+{% set pageTitle = tool.title %}
+{% set pageContentItemType = 'Tool' %}
+{% set pageType = 'tool' %}
+{% set pageSectionUrl = url('core_tool_list') %}
+{% set pageSectionName = 'knowledge.tool.list'|trans %}
+{% set pageDescription = tool.title %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set navSection = 'tools' %}
+{% set searchPath = path('core_tool_list') %}
+
+{% block headPrefix %}{{ parent() }} tool: http://ogp.me/ns/tool#{% endblock %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+{% endblock %}
+
+{% block headOpenGraphArticleMetas %}{% endblock %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/jquery-barrating/ladb-stars.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyMetas %}{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-barrating/jquery.barrating.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Review Widget #}
+            $('.ladb-review-widget').ladbReviewWidget();
+
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
+        {% set headingClasses = tool.identityRejected ? 'ladb-strikethrough' : null %}
+        {% block headingInner %}
+            {{ parent() }}{% if tool.productName is not empty %}&nbsp;<small>({{ tool.productName }})</small>{% endif %}
+        {% endblock %}
+        {% block subheadingInner %}
+            {% if tool.brand %}<span class="ladb-subblock"><em>{{ tool.brand }}</em></span>{% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% include 'LadbCoreBundle:Knowledge:_completion-panel.part.html.twig' %}
+    <div class="ladb-knowledge-showcase row">
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_PHOTO', tool), 'picture':tool.photo, 'values':tool.photoValues, 'pictureBoxClasses':(tool.photoRejected ? 'ladb-box-barred' : null) } %}
+    </div>
+    <div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Ouvrage</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_IDENTITY', tool), 'data':tool.identity, 'values':tool.identityValues, 'itemprop':'name' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_BRAND', tool), 'data':tool.brand, 'values':tool.brandValues } %}
+        </div>
+        {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}
+        {% if tool.updatedAt > tool.createdAt %}
+            {% include 'LadbCoreBundle:Common:_updated-age.part.html.twig' %}
+        {% endif %}
+        <div style="padding: 10px; text-align: center;">
+            {% include 'LadbCoreBundle:Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+        </div>
+        {% include 'LadbCoreBundle:Core/Review:_widget.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.tool.comment_alert' } %}
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'LadbCoreBundle:Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/View:_meta-counter.part.html.twig' %}
+        {% include 'LadbCoreBundle:Core/Comment:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
+            {% if tool.contributorCount > 0 %}
+                <a href="{{ path('core_knowledge_contributors', { 'entityType':tool.type, 'entityId':tool.id }) }}">
+            {% endif %}
+                <strong>{{ tool.contributorCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'user.choice.contributors'|transchoice(tool.contributorCount) }}</small>
+            {% if tool.contributorCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':tool } %}
+        {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':tool } %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+    </div>
+    {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':tool.license, 'noMicrodata':true } %}
+{% endblock %}

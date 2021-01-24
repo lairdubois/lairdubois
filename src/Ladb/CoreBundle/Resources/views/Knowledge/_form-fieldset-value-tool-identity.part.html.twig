@@ -1,0 +1,33 @@
+{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.name) }}
+    {{ form_widget(form.name, { 'attr':{ 'class':'form-control input-lg', 'placeholder':'Titre de l\'ouvrage' } }) }}
+{% endblock %}
+
+{% block dataFormGroupOuter %}
+    {{ parent() }}
+    <div class="checkbox">
+        <label>{{ form_widget(form.isProduct) }} Ce livre est l'un des productNames d'un ouvrage.</label>
+    </div>
+    <div id="{{ form.productName.vars.id }}_form_group" class="form-group ladb-margin-left"{% if form.isProduct.vars.data is empty or not form.isProduct.vars.data %} style="display: none;"{% endif %}>
+        {{ form_label(form.productName, 'Titre du productName ') }}<small> (ex: Tome 1)</small>
+        {{ form_errors(form.productName) }}
+        {{ form_widget(form.productName, { 'attr':{ 'class':'form-control' } }) }}
+    </div>
+    <script>
+        $(document).ready(function() {
+            var $isProductInput = $('#{{ form.isProduct.vars.id }}');
+            var $productNameInput = $('#{{ form.productName.vars.id }}');
+            var $group = $('#{{ form.productName.vars.id }}_form_group');
+            $isProductInput.on('click', function() {
+                if ($isProductInput.prop('checked')) {
+                    $group.show();
+                    $productNameInput.focus();
+                } else {
+                    $group.hide();
+                }
+            });
+        });
+    </script>
+{% endblock %}

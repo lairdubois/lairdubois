@@ -1135,11 +1135,38 @@ knowledge:
       entities: '[0,1]logiciel|]1,Inf]logiciels'
       addons: '[0,1]plugin|]1,Inf]plugins'
   tool:
-    list: Outils
-    token:
-      help: Saisissez un outil et cliquez sur la flèche pour l'ajouter
+    description: Catalogue collaboratif de outils pour le travail du bois.
+    new: Ajouter un outil
+    list: Les outils
+    nav: Outils
+    new_warning: Un <strong>outil</strong> ...
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Outil.</p><p><u>N'apportez pas votre avis sur l'outil' ici.</u></p><p>Pour donner votre avis, cliquez sur le bouton <strong>Ajouter un avis</strong> un peu plus haut.</p>
+    field:
+      identity: Nom
+      photo: Photo
+      brand: Marque
+    help:
+      identity: "Le **Nom** est le nom générique de l'outil."
+      photo: "La **Photo** est ..."
+      brand: "La **Marque** est ..."
+    form:
+      alert:
+        delete_success: L'outil <strong>%name%</strong> a été supprimé.
+      help:
+        legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
+        source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
+        identity: ~
+        photo: |
+          - Utilisez une image lisible et de bonne qualité.
+        brand: ~
     choice:
       entities: '[0,1]outil|]1,Inf]outils'
+#  tool:
+#    list: Outils
+#    token:
+#      help: Saisissez un outil et cliquez sur la flèche pour l'ajouter
+#    choice:
+#      entities: '[0,1]outil|]1,Inf]outils'
   finish:
     list: Finitions
     token:
@@ -1330,6 +1357,21 @@ review:
     form:
       new_help: Cet avis vous permet d'exprimer votre avis d'utilisateur du logiciel
       new_warning: N'utilisez pas cet avis pour poser des questions sur le logiciel.
+      body: Votre avis
+    alert:
+      delete_success: L'avis a été supprimé.
+    choice:
+      entities: '[0,1]avis|]1,Inf]avis'
+  knowledge_tool:
+    new: Ajouter mon avis
+    edit: Editer mon avis
+    already: Vous avez déjà apporté votre avis.
+    show_mine: Voir mon avis.
+    none: Cet outil ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
+    your_review: votre avis
+    form:
+      new_help: Cet avis vous permet d'exprimer votre avis d'utilisateur de l'outil
+      new_warning: N'utilisez pas cet avis pour poser des questions sur l'outil'.
       body: Votre avis
     alert:
       delete_success: L'avis a été supprimé.

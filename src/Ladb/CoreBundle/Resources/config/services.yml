@@ -236,6 +236,9 @@ services:
   ladb_core.knowledge_school_testimonial_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\School\TestimonialManager
     arguments: ['@service_container']
+  ladb_core.knowledge_tool_manager:
+    class: Ladb\CoreBundle\Manager\Knowledge\ToolManager
+    arguments: ['@service_container']
   ladb_core.knowledge_book_manager:
     class: Ladb\CoreBundle\Manager\Knowledge\BookManager
     arguments: ['@service_container']
@@ -301,6 +304,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.unique_school_validator }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_core.unique_tool_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\UniqueToolValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.unique_tool_validator }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_core.unique_book_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UniqueBookValidator
     tags:
@@ -337,6 +345,10 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidSignValueValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_sign_value_validator }
+  ladb_core.valid_tool_identity_value_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidToolIdentityValueValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_tool_identity_value_validator }
   ladb_core.valid_book_identity_value_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ValidBookIdentityValueValidator
     tags:

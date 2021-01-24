@@ -1056,6 +1056,28 @@ fos_elastica:
                             insert: false
                             update: false
                             delete: false
+                knowledge_tool:
+                    properties:
+                        identity: { type: text, boost: 2, analyzer: name_analyzer }
+                        identityRejected: { type: boolean }
+                        name: { type: text, analyzer: exact_lowercase_analyzer }
+                        photoRejected: { type: boolean }
+                        createdAt: { type: date }
+                        changedAt: { type: date }
+                        completion100: { type: integer }
+                        viewCount: { type: integer }
+                        likeCount: { type: integer }
+                        commentCount: { type: integer }
+                        reviewCount: { type: integer }
+                        averageRating: { type: float }
+                    persistence:
+                        driver: orm
+                        model: Ladb\CoreBundle\Entity\Knowledge\Tool
+                        provider: ~
+                        listener:
+                            insert: false
+                            update: false
+                            delete: false
                 core_tag:
                     properties:
                         label: { analyzer: autocomplete_analyzer }

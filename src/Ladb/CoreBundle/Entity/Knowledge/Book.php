@@ -350,13 +350,32 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	// IsRejected /////
 
 	public function getIsRejected() {
-		return $this->getTitleRejected() || $this->getCoverRejected();
+		return $this->getIdentityRejected() || $this->getCoverRejected();
 	}
 
 	// Type /////
 
 	public function getType() {
 		return Book::TYPE;
+	}
+
+	// Body /////
+
+	public function getBody() {
+		$terms = array($this->getTitle());
+		return implode($terms, ',');
+	}
+
+	// StrippedName /////
+
+	public function getStrippedName() {
+		return Book::STRIPPED_NAME;
+	}
+
+	// FieldDefs /////
+
+	public function getFieldDefs() {
+		return Book::$FIELD_DEFS;
 	}
 
 	// Work /////
@@ -439,25 +458,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getIdentityRejected() {
 		return $this->identityRejected;
-	}
-
-	// Body /////
-
-	public function getBody() {
-		$terms = array($this->getTitle());
-		return implode($terms, ',');
-	}
-
-	// StrippedName /////
-
-	public function getStrippedName() {
-		return Book::STRIPPED_NAME;
-	}
-
-	// FieldDefs /////
-
-	public function getFieldDefs() {
-		return Book::$FIELD_DEFS;
 	}
 
 	// Cover /////

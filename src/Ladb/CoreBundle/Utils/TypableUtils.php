@@ -129,6 +129,10 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
 				$a = array( 'event', 'event' );
 				break;
+			// Tool
+			case \Ladb\CoreBundle\Entity\Knowledge\Tool::TYPE:
+				$a = array( 'knowledge', 'tool' );
+				break;
 
 		}
 		if ($a) {
@@ -267,6 +271,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// BookIdentity
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity';
+			// BookIdentity
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -334,6 +341,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Event
 			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
 				return '\Ladb\CoreBundle\Entity\Event\Event';
+			// Tool
+			case \Ladb\CoreBundle\Entity\Knowledge\Tool::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Tool';
 
 		}
 		return null;
@@ -392,6 +402,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Video::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity::TYPE:
 				$url = $router->generate('core_knowledge_value_'.$action, $params, $referenceType);
 				break;
 
@@ -460,6 +471,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 				break;
 			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
 				$url = $router->generate('core_event_'.$action, $params, $referenceType);
+				break;
+			case \Ladb\CoreBundle\Entity\Knowledge\Tool::TYPE:
+				$url = $router->generate('core_tool_'.$action, $params, $referenceType);
 				break;
 
 		}
@@ -551,6 +565,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Event
 			case \Ladb\CoreBundle\Entity\Event\Event::TYPE:
 				return 'event';
+			// Event
+			case \Ladb\CoreBundle\Entity\Knowledge\Tool::TYPE:
+				return 'tool';
 
 		}
 		return null;
