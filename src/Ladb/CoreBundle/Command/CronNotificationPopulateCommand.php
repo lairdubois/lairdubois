@@ -124,7 +124,19 @@ EOT
 
 					$groupIdentifier = $this->_generateGroupIdentifierFromActivityAndEntity($om, $activity, $likeEntity);
 
-					$this->_forwardNotification($om, $likeEntity->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
+					if ($likeEntity instanceof WatchableInterface && $likeEntity->getWatchCount() > 0) {
+
+						$allowedUsers = array();
+						$watches = $watchRepository->findByEntityTypeAndEntityId($likeEntity->getType(), $likeEntity->getId());
+						if (!is_null($watches)) {
+							foreach ($watches as $watch) {
+								$allowedUsers[] = $watch->getUser();
+							}
+						}
+
+					}
+
+					$this->_forwardNotification($om, $likeEntity->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters, $allowedUsers);
 					if ($verbose) {
 						$output->writeln('<info>--> Notifying <fg=white>@'.$likeEntity->getUser()->getUsername(). '</fg=white> for new like from=@'.$actorUser->getUsername().' on='.$likeEntity->getTitle().'</info>');
 					}
@@ -271,9 +283,6 @@ EOT
 					$watches = $watchRepository->findByEntityTypeAndEntityIdExcludingUser($joinEntity->getType(), $joinEntity->getId(), $actorUser);
 					if (!is_null($watches)) {
 						foreach ($watches as $watch) {
-							if ($watch->getUser()->getId() == $join->getUser()->getId()) {
-								continue;
-							}
 							$this->_forwardNotification($om, $watch->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCounters);
 							if ($verbose) {
 								$output->writeln('<info>--> Notifying <fg=white>@'.$watch->getUser()->getUsername(). '</fg=white> for new join from=@'.$actorUser->getUsername().'</info>');
@@ -342,7 +351,7 @@ EOT
 				$review = $activity->getReview();
 				$reviewable = $typableUtils->findTypable($review->getEntityType(), $review->getEntityId());
 
-				if ($reviewable->getWatchCount() > 0) {
+				if ($reviewable instanceof WatchableInterface && $reviewable->getWatchCount() > 0) {
 
 					$groupIdentifier = $this->_generateGroupIdentifierFromActivityAndEntity($om, $activity, $reviewable);
 
@@ -484,7 +493,7 @@ EOT
 		return $hashids->encode($data);
 	}
 
-	private function _forwardNotification($om, $user, $activity, $groupIdentifier, &$notifiedUsers, &$groupIdentifiers, &$freshNotificationCount) {
+	private function _forwardNotification($om, $user, $activity, $groupIdentifier, &$notifiedUsers, &$groupIdentifiers, &$freshNotificationCount, $allowedUsers = null) {
 		if ($user->getIsTeam()) {
 
 			$memberRepository = $om->getRepository(Member::CLASS_NAME);
@@ -494,10 +503,16 @@ EOT
 				if ($member->getUser() == $activity->getUser()) {
 					continue;	// Exclude activity user
 				}
+				if (!is_null($allowedUsers) && !in_array($member->getUser(), $allowedUsers)) {
+					continue;
+				}
 				$this->_createNotification($om, $member->getUser(), $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCount);
 			}
 
 		} else {
+			if (!is_null($allowedUsers) && !in_array($user, $allowedUsers)) {
+				return;
+			}
 			$this->_createNotification($om, $user, $activity, $groupIdentifier, $notifiedUsers, $groupIdentifiers, $freshNotificationCount);
 		}
 	}
