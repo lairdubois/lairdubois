@@ -32,4 +32,7 @@
     {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') %}
         {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.data.vars.id, 'maxPictureCount':1, 'editable':true } %}
     {% endif %}
+    {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Pdf::TYPE_STRIPPED_NAME') %}
+        {% include 'LadbCoreBundle:Core/Resource:_form-gallery-script.part.html.twig' with { 'fieldId':form.data.vars.id, 'maxResourceCount':1 } %}
+    {% endif %}
 </form>

@@ -64,6 +64,7 @@
     {% include 'LadbCoreBundle:Knowledge:_completion-panel.part.html.twig' %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_PHOTO', tool), 'picture':tool.photo, 'values':tool.photoValues, 'pictureBoxClasses':(tool.photoRejected ? 'ladb-box-barred' : null) } %}
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-pdf.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_USER_GUIDE', tool), 'resource':tool.userGuide, 'values':tool.userGuideValues } %}
     </div>
     <div>
         <div class="ladb-metas">

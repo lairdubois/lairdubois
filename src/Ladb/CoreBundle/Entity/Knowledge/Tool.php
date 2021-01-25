@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Pdf;
 use Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Price;
@@ -35,11 +36,13 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_IDENTITY = 'identity';
 	const FIELD_PHOTO = 'photo';
 	const FIELD_BRAND = 'brand';
+	const FIELD_USER_GUIDE = 'user_guide';
 
 	public static $FIELD_DEFS = array(
-		Tool::FIELD_IDENTITY => array(Tool::ATTRIB_TYPE => ToolIdentity::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueTool', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('name', 'isProduct', 'productName')),
-		Tool::FIELD_PHOTO    => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Tool::FIELD_BRAND    => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
+		Tool::FIELD_IDENTITY   => array(Tool::ATTRIB_TYPE => ToolIdentity::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueTool', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('name', 'isProduct', 'productName')),
+		Tool::FIELD_PHOTO      => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
+		Tool::FIELD_BRAND      => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
+		Tool::FIELD_USER_GUIDE => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
 	);
 
 	/**
@@ -102,6 +105,21 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
+	 * @ORM\JoinColumn(name="user_guide_id", nullable=true)
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Resource")
+	 */
+	private $userGuide;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Pdf", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_user_guide")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $userGuideValues;
+
+
+	/**
 	 * @ORM\Column(name="review_count", type="integer")
 	 */
 	private $reviewCount = 0;
@@ -116,6 +134,8 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	public function __construct() {
 		$this->identityValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->photoValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->brandValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->userGuideValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -123,7 +143,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	// IsRejected /////
 
 	public function getIsRejected() {
-		return $this->getTitleRejected() || $this->getPhotoRejected();
+		return $this->getIdentityRejected() || $this->getPhotoRejected();
 	}
 
 	// Type /////
@@ -288,15 +308,15 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	// BrandValues /////
 
-	public function addBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $editorValue) {
-		if (!$this->brandValues->contains($editorValue)) {
-			$this->brandValues[] = $editorValue;
+	public function addBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $brand) {
+		if (!$this->brandValues->contains($brand)) {
+			$this->brandValues[] = $brand;
 		}
 		return $this;
 	}
 
-	public function removeBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $editorValue) {
-		$this->brandValues->removeElement($editorValue);
+	public function removeBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $brand) {
+		$this->brandValues->removeElement($brand);
 	}
 
 	public function setBrandValues($brandValues) {
@@ -305,6 +325,38 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getBrandValues() {
 		return $this->brandValues;
+	}
+
+	// UserGuides /////
+
+	public function setUserGuide($userGuide) {
+		$this->userGuide = $userGuide;
+		return $this;
+	}
+
+	public function getUserGuide() {
+		return $this->userGuide;
+	}
+
+	// UserGuideValues /////
+
+	public function addUserGuideValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf $userGuide) {
+		if (!$this->userGuideValues->contains($userGuide)) {
+			$this->userGuideValues[] = $userGuide;
+		}
+		return $this;
+	}
+
+	public function removeUserGuideValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf $userGuide) {
+		$this->userGuideValues->removeElement($userGuide);
+	}
+
+	public function setUserGuideValues($userGuideValues) {
+		$this->userGuideValues = $userGuideValues;
+	}
+
+	public function getUserGuideValues() {
+		return $this->userGuideValues;
 	}
 
 }

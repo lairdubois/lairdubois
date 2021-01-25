@@ -1,0 +1,28 @@
+
+{# set wide #}
+{# set knowledge #}
+{# set field #}
+{# set resource #}
+{# set values #}
+{# set itemprop (facultative) #}
+
+<div class="{% if wide %}col-xs-6{% else %}col-md-3 col-xs-6{% endif %}">
+    <div class="thumbnail ladb-margin-bottom" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}' });">
+        <div class="ladb-picture-box" style="position: relative;">
+            {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with {  'picture':(resource ? resource.thumbnail : null), 'width':(wide ? '282' : '126'), 'height':(wide ? '280' : '170'), 'alt':knowledge.title, 'emptyWebPath':'empty_add.png', 'autoSizer':false } %}
+            {% if values|length %}
+                {% set resourceCount = 0 %}
+                {% for value in values if value.voteScore >= 0 %}
+                    {% set resourceCount = resourceCount + 1 %}
+                {% endfor %}
+                {% if resourceCount > 1 %}
+                    <div class="ladb-picture-counter">+ {{ resourceCount - 1 }} <i class="ladb-icon-file"></i></div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="caption">
+            <div class="ladb-minitools pull-right"><a href="{{ path('core_knowledge_field_show', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field}) }}" data-toggle="modal" data-target="#proposals_modal" data-tooltip="tooltip" title="Voir les propositions"><i class="ladb-icon-chevron-right"></i></a></div>
+            {% include 'LadbCoreBundle:Knowledge:_field-bullet.part.html.twig' with { 'valueIndex':0 } %}&nbsp;<span{% if values|length == 0 %} class="ladb-color-null"{% endif %} data-popover="popover" data-trigger="hover" data-placement="top" data-html="true" data-container="body" data-content="{{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}">{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</span>
+        </div>
+    </div>
+</div>

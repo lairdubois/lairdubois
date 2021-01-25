@@ -545,6 +545,11 @@ services:
     tags:
       - { name: form.type }
     arguments: ['@doctrine.orm.entity_manager']
+  ladb_knowledge_value_pdf:
+    class: Ladb\CoreBundle\Form\Type\Knowledge\Value\PdfValueType
+    tags:
+      - { name: form.type }
+    arguments: ['@doctrine.orm.entity_manager']
   ladb_knowledge_value_location:
     class: Ladb\CoreBundle\Form\Type\Knowledge\Value\LocationValueType
     tags:

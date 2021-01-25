@@ -1,0 +1,18 @@
+
+{% set clickable = clickable is defined ? clickable : true %}
+{% set width = size|default('400') %}
+{% set height = size|default('400') %}
+{% set fullHtmlStyle = fullHtmlStyle|default(false) %}
+
+{% if fullHtmlStyle %}
+    <img src="{{ value.data.webPath|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px;" alt="{{ entity.title|raw }}">
+{% else %}
+    {% if clickable %}
+        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':value.data.thumbnail, 'dataGallery':value.voteScore < 0 ? '#blueimp-gallery' : '#blueimp-gallery-rejected', 'noLazyLoad':true } %}
+    {% else %}
+        {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':value.data.thumbnail, 'imgClasses':'thumbnail', 'noLazyLoad':true } %}
+    {% endif %}
+    <div class="text-center" style="margin-top: 10px;">
+        <button class="btn btn-default"><i class="ladb-icon-eye"></i> Consulter</button> <button class="btn btn-primary"><i class="ladb-icon-unpublish"></i> Télécharger</button>
+    </div>
+{% endif %}
