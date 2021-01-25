@@ -41,8 +41,8 @@ class PostRepository extends AbstractEntityRepository {
 			->innerJoin('p.user', 'u')
 			->innerJoin('u.avatar', 'uav')
 			->innerJoin('p.mainPicture', 'mp')
-			->innerJoin('p.bodyBlocks', 'bbs')
-			->innerJoin('p.tags', 'tgs')
+			->leftJoin('p.bodyBlocks', 'bbs')
+			->leftJoin('p.tags', 'tgs')
 			->where('p.id = :id')
 			->setParameter('id', $id)
 		;

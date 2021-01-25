@@ -1062,6 +1062,7 @@ fos_elastica:
                         identityRejected: { type: boolean }
                         name: { type: text, analyzer: exact_lowercase_analyzer }
                         photoRejected: { type: boolean }
+                        brand: { analyzer: name_analyzer }
                         createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }

@@ -141,7 +141,7 @@ class ResourceUploadHandler extends \UploadHandler {
 				$imagick->setBackgroundColor('#ffffff');
 				$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
 				$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
-				$imagick->thumbnailImage(1024, 1024, true, false);
+				$imagick->thumbnailImage(1024, 1024, true, true);
 				$imagick->writeImage($thumbnail->getAbsoluteMasterPath());
 
 				$this->pictureManager->computeSizes($thumbnail);

@@ -37,7 +37,7 @@ class GraphicRepository extends AbstractEntityRepository {
 			->innerJoin('g.user', 'u')
 			->innerJoin('u.avatar', 'uav')
 			->innerJoin('g.mainPicture', 'mp')
-			->innerJoin('g.tags', 'tgs')
+			->leftJoin('g.tags', 'tgs')
 			->innerJoin('g.license', 'l')
 			->where('g.id = :id')
 			->setParameter('id', $id)

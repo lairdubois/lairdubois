@@ -44,9 +44,9 @@ class PictureUploadHandler extends \UploadHandler {
 					'jpeg_quality' => 100,
 				),
 			),
-			'quality' => $quality,
+			'quality'        => $quality,
 			'post_processor' => $postProcessor,
-			'owner' => $owner,
+			'owner'          => $owner,
 		));
 	}
 
@@ -73,10 +73,10 @@ class PictureUploadHandler extends \UploadHandler {
 					$imagick = new \Imagick($picture->getAbsolutePath().'[0]');
 					$imagick->setCompression(\Imagick::COMPRESSION_JPEG);					// Convert to JPG
 					$imagick->setCompressionQuality(100);										// Set max quality
-					$imagick->setBackgroundColor('#ffffff');									// Set background color to white
+					$imagick->setBackgroundColor('#ffffff');								// Set background color to white
 					$imagick->setImageAlphaChannel(11 /*/ \Imagick::ALPHACHANNEL_REMOVE */);
 					$imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);				// Merge layers
-					$imagick->thumbnailImage(1024, 1024, true, true);			// Rescale to 1024x1024 fill
+					$imagick->thumbnailImage(1024, 1024, true, true);		// Rescale to 1024x1024 fill
 					$imagick->writeImage($picture->getAbsolutePath());
 
 					break;

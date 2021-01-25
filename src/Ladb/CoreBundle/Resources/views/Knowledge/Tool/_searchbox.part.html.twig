@@ -5,10 +5,9 @@
 {% set masonry = true %}
 
 {% block filtersDropdown %}
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="authors" data-label="Auteurs" data-editable="true" data-icon="user"><i class="ladb-icon-user"></i> Auteurs</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="editor" data-label="Editeur" data-editable="true" data-icon="tool"><i class="ladb-icon-tool"></i> Editeur</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="brand" data-label="Marque" data-editable="true" data-icon="tool"><i class="ladb-icon-tool"></i> Marque</a></li>
     <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-review" data-label="Avec critique" data-editable="false" data-icon="review"><i class="ladb-icon-review"></i> Avec critique</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-review" data-label="Avec avis" data-editable="false" data-icon="review"><i class="ladb-icon-review"></i> Avec avis</a></li>
     <li class="divider{% if not is_granted('ROLE_USER') %} hidden{% endif %}"></li>
     <li{% if not is_granted('ROLE_USER') %} class="hidden"{% endif %}><a class="ladb-smartsearch-facet" data-type="filter" data-name="rejected" data-label="Rejetés" data-icon="thumb-down"><i class="ladb-icon-thumb-down"></i> Rejetés</a></li>
 {% endblock %}

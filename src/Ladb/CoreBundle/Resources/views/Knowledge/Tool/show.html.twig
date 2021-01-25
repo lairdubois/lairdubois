@@ -64,13 +64,21 @@
     {% include 'LadbCoreBundle:Knowledge:_completion-panel.part.html.twig' %}
     <div class="ladb-knowledge-showcase row">
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-picture.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_PHOTO', tool), 'picture':tool.photo, 'values':tool.photoValues, 'pictureBoxClasses':(tool.photoRejected ? 'ladb-box-barred' : null) } %}
-        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-pdf.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_USER_GUIDE', tool), 'resource':tool.userGuide, 'values':tool.userGuideValues } %}
+        {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-pdf.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_MANUAL', tool), 'resource':tool.manual, 'values':tool.manualValues } %}
     </div>
     <div>
         <div class="ladb-metas">
-            <h4 class="ladb-heading">Ouvrage</h4>
+            <h4 class="ladb-heading">Outil</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_IDENTITY', tool), 'data':tool.identity, 'values':tool.identityValues, 'itemprop':'name' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_BRAND', tool), 'data':tool.brand, 'values':tool.brandValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_FAMILY', tool), 'data':tool.family, 'values':tool.familyValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Ressources</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_VIDEO', tool), 'data':tool.video, 'values':tool.videoValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Caractéristiques</h4>
         </div>
         {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}
         {% if tool.updatedAt > tool.createdAt %}

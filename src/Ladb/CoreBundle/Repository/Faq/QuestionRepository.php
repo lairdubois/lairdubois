@@ -39,8 +39,8 @@ class QuestionRepository extends AbstractEntityRepository {
 			->from($this->getEntityName(), 'q')
 			->innerJoin('q.user', 'u')
 			->innerJoin('u.avatar', 'uav')
-			->innerJoin('q.bodyBlocks', 'bbs')
-			->innerJoin('q.tags', 'tgs')
+			->leftJoin('q.bodyBlocks', 'bbs')
+			->leftJoin('q.tags', 'tgs')
 			->where('q.id = :id')
 			->setParameter('id', $id)
 		;

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Pdf;
 use Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Video;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Price;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
@@ -35,14 +36,19 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	const FIELD_IDENTITY = 'identity';
 	const FIELD_PHOTO = 'photo';
+	const FIELD_MANUAL = 'manual';
 	const FIELD_BRAND = 'brand';
-	const FIELD_USER_GUIDE = 'user_guide';
+	const FIELD_FAMILY = 'family';
+	const FIELD_VIDEO = 'video';
+	const FIELD_POWER = 'power';
 
 	public static $FIELD_DEFS = array(
-		Tool::FIELD_IDENTITY   => array(Tool::ATTRIB_TYPE => ToolIdentity::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueTool', array('excludedId' => '@getId'))), Software::ATTRIB_LINKED_FIELDS => array('name', 'isProduct', 'productName')),
-		Tool::FIELD_PHOTO      => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Tool::FIELD_BRAND      => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
-		Tool::FIELD_USER_GUIDE => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_IDENTITY => array(Tool::ATTRIB_TYPE => ToolIdentity::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueTool', array('excludedId' => '@getId'))), Tool::ATTRIB_LINKED_FIELDS => array('name', 'isProduct', 'productName')),
+		Tool::FIELD_PHOTO    => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
+		Tool::FIELD_MANUAL   => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_BRAND    => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
+		Tool::FIELD_FAMILY   => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Electroportatif', 3 => 'Machine stationnaire', 4 => 'Gabarit')),
+		Tool::FIELD_VIDEO    => array(Tool::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
 	);
 
 	/**
@@ -92,6 +98,21 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
+	 * @ORM\JoinColumn(name="manual_id", nullable=true)
+	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Resource")
+	 */
+	private $manual;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Pdf", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_manual")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $manualValues;
+
+
+	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $brand;
@@ -105,18 +126,29 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
-	 * @ORM\JoinColumn(name="user_guide_id", nullable=true)
-	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Resource")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
-	private $userGuide;
+	private $family;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Pdf", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_user_guide")
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_family")
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $userGuideValues;
+	private $familyValues;
+
+
+	/**
+	 * @ORM\Column(type="string", nullable=true, length=255, name="video")
+	 */
+	private $video;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Video", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_video")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $videoValues;
 
 
 	/**
@@ -134,8 +166,10 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	public function __construct() {
 		$this->identityValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->photoValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->manualValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->brandValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->userGuideValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->familyValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->videoValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -295,6 +329,38 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->photoRejected;
 	}
 
+	// Manuals /////
+
+	public function setManual($manual) {
+		$this->manual = $manual;
+		return $this;
+	}
+
+	public function getManual() {
+		return $this->manual;
+	}
+
+	// ManualValues /////
+
+	public function addManualValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf $manual) {
+		if (!$this->manualValues->contains($manual)) {
+			$this->manualValues[] = $manual;
+		}
+		return $this;
+	}
+
+	public function removeManualValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf $manual) {
+		$this->manualValues->removeElement($manual);
+	}
+
+	public function setManualValues($manualValues) {
+		$this->manualValues = $manualValues;
+	}
+
+	public function getManualValues() {
+		return $this->manualValues;
+	}
+
 	// Brand /////
 
 	public function setBrand($brand) {
@@ -327,36 +393,68 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->brandValues;
 	}
 
-	// UserGuides /////
+	// Family /////
 
-	public function setUserGuide($userGuide) {
-		$this->userGuide = $userGuide;
+	public function setFamily($family) {
+		$this->family = $family;
 		return $this;
 	}
 
-	public function getUserGuide() {
-		return $this->userGuide;
+	public function getFamily() {
+		return $this->family;
 	}
 
-	// UserGuideValues /////
+	// FamilyValues /////
 
-	public function addUserGuideValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf $userGuide) {
-		if (!$this->userGuideValues->contains($userGuide)) {
-			$this->userGuideValues[] = $userGuide;
+	public function addFamilyValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $familyValue) {
+		if (!$this->familyValues->contains($familyValue)) {
+			$this->familyValues[] = $familyValue;
 		}
 		return $this;
 	}
 
-	public function removeUserGuideValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf $userGuide) {
-		$this->userGuideValues->removeElement($userGuide);
+	public function removeFamilyValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $familyValue) {
+		$this->familyValues->removeElement($familyValue);
 	}
 
-	public function setUserGuideValues($userGuideValues) {
-		$this->userGuideValues = $userGuideValues;
+	public function setFamilyValues($familyValues) {
+		$this->familyValues = $familyValues;
 	}
 
-	public function getUserGuideValues() {
-		return $this->userGuideValues;
+	public function getFamilyValues() {
+		return $this->familyValues;
+	}
+
+	// Video /////
+
+	public function setVideo($video) {
+		$this->video = $video;
+		return $this;
+	}
+
+	public function getVideo() {
+		return $this->video;
+	}
+
+	// VideoValues /////
+
+	public function addVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		if (!$this->videoValues->contains($videoValue)) {
+			$this->videoValues[] = $videoValue;
+		}
+		return $this;
+	}
+
+	public function removeVideoValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Video $videoValue) {
+		$this->videoValues->removeElement($videoValue);
+	}
+
+	public function setVideoValues($videoValues) {
+		$this->videoValues = $videoValues;
+	}
+
+	public function getVideoValues() {
+		return $this->videoValues;
 	}
 
 }

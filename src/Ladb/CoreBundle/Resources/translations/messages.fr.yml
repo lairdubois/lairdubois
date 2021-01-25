@@ -1144,11 +1144,17 @@ knowledge:
     field:
       identity: Nom
       photo: Photo
+      manual: Notice
       brand: Marque
+      family: Famille
+      video: Vidéo
     help:
       identity: "Le **Nom** est le nom générique de l'outil."
       photo: "La **Photo** est ..."
+      manual: "La **Notice** est ..."
       brand: "La **Marque** est ..."
+      family: "La **Famille** est ..."
+      video: "La **Vidéo** est ..."
     form:
       alert:
         delete_success: L'outil <strong>%name%</strong> a été supprimé.
@@ -1158,7 +1164,10 @@ knowledge:
         identity: ~
         photo: |
           - Utilisez une image lisible et de bonne qualité.
+        manual: ~
         brand: ~
+        family: ~
+        video: ~
     choice:
       entities: '[0,1]outil|]1,Inf]outils'
 #  tool:
@@ -1541,6 +1550,7 @@ search:
     collections: Recherche dans les collections
     tips: Recherche dans les astuces
     offers: Recherche dans les annonces
+    tools: Recherche dans les outils
   choices:
     results: '[0,1]résultat|]1,Inf]résultats'
 

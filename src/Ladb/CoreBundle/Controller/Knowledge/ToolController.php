@@ -202,6 +202,31 @@ class ToolController extends AbstractController {
 
 						break;
 
+					case 'brand':
+
+						$filter = new \Elastica\Query\Match('brand', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
+					case 'with-review':
+
+						$filter = new \Elastica\Query\Range('reviewCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
+					case 'rejected':
+
+						$filter = new \Elastica\Query\BoolQuery();
+						$filter->addShould(new \Elastica\Query\Range('identityRejected', array( 'gte' => 1 )));
+						$filter->addShould(new \Elastica\Query\Range('photoRejected', array( 'gte' => 1 )));
+						$filters[] = $filter;
+
+						$noGlobalFilters = true;
+
+						break;
+
 					// Sorters /////
 
 					case 'sort-recent':
@@ -238,7 +263,7 @@ class ToolController extends AbstractController {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'identity^100' ));
+							$filter->setFields(array( 'identity^100', 'brand' ));
 							$filters[] = $filter;
 
 							$couldUseDefaultSort = false;

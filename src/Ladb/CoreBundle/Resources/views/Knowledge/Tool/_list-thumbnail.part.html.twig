@@ -11,7 +11,7 @@
 {% set pictureFilterMode = 'o' %}
 
 {% block title %}
-    {{ parent() }}{% if tool.productName is not empty %}&nbsp;<div><small>({{ tool.productName }})</small></div>{% endif %}
+    {{ parent() }}{% if tool.brand is not empty or tool.productName is not empty %}&nbsp;<div><small>({% if tool.brand is not empty %}{{ tool.brand }}{% endif %} {% if tool.productName is not empty %}{{ tool.productName }}{% endif %})</small></div>{% endif %}
 {% endblock %}
 
 {% block image %}
