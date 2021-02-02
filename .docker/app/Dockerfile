@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.3-fpm AS php
 
 RUN apt-get update -y && apt-get install -y \
     git \
@@ -19,3 +19,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 RUN pecl install apcu imagick memcached zip
 RUN docker-php-ext-install exif gmp opcache pdo pdo_mysql sockets zip
 RUN docker-php-ext-enable apcu imagick memcached
+
+# Increase memory limit
+RUN echo 'memory_limit = 4G' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+
+COPY --from=node:10 /usr/local/bin/node /usr/bin/node
+RUN apt-get install -y npm && npm install -g less
