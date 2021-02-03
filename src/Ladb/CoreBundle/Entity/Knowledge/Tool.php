@@ -38,17 +38,30 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_PHOTO = 'photo';
 	const FIELD_MANUAL = 'manual';
 	const FIELD_BRAND = 'brand';
+	const FIELD_MODEL = 'model';
 	const FIELD_FAMILY = 'family';
-	const FIELD_VIDEO = 'video';
+	const FIELD_DESCRIPTION = 'description';
+	const FIELD_POWER_SUPPLY = 'power_supply';
 	const FIELD_POWER = 'power';
+	const FIELD_WEIGHT = 'weight';
+	const FIELD_VIDEO = 'video';
+	const FIELD_DOCS_LINK = 'docs_link';
+	const FIELD_CATALOG_LINK = 'catalog_link';
 
 	public static $FIELD_DEFS = array(
-		Tool::FIELD_IDENTITY => array(Tool::ATTRIB_TYPE => ToolIdentity::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueTool', array('excludedId' => '@getId'))), Tool::ATTRIB_LINKED_FIELDS => array('name', 'isProduct', 'productName')),
-		Tool::FIELD_PHOTO    => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
-		Tool::FIELD_MANUAL   => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
-		Tool::FIELD_BRAND    => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
-		Tool::FIELD_FAMILY   => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Electroportatif', 3 => 'Machine stationnaire', 4 => 'Gabarit')),
-		Tool::FIELD_VIDEO    => array(Tool::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_IDENTITY     => array(Tool::ATTRIB_TYPE => ToolIdentity::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueTool', array('excludedId' => '@getId'))), Tool::ATTRIB_LINKED_FIELDS => array('name', 'isProduct', 'productName')),
+		Tool::FIELD_PHOTO        => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
+		Tool::FIELD_MANUAL       => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_BRAND        => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
+		Tool::FIELD_MODEL        => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@model:"%q%"'),
+		Tool::FIELD_FAMILY       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Electroportatif', 3 => 'Machine stationnaire', 4 => 'Gabarit')),
+		Tool::FIELD_DESCRIPTION  => array(Tool::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_POWER_SUPPLY => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Filaire', 2 => 'Batterie')),
+		Tool::FIELD_POWER        => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'W'),
+		Tool::FIELD_WEIGHT       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'kg'),
+		Tool::FIELD_VIDEO        => array(Tool::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_DOCS_LINK    => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
+		Tool::FIELD_CATALOG_LINK => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array('excludedDomainPaterns' => array('/amazon./i', '/fnac./i', '/manomano./i'), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.')))),
 	);
 
 	/**
@@ -139,6 +152,19 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $description;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Longtext", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_description")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $descriptionValues;
+
+
+	/**
 	 * @ORM\Column(type="string", nullable=true, length=255, name="video")
 	 */
 	private $video;
@@ -169,6 +195,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		$this->manualValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->brandValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->familyValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->videoValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -423,6 +450,38 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getFamilyValues() {
 		return $this->familyValues;
+	}
+
+	// Description /////
+
+	public function setDescription($description) {
+		$this->description = $description;
+		return $this;
+	}
+
+	public function getDescription() {
+		return $this->description;
+	}
+
+	// DescriptionValues /////
+
+	public function addDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
+		if (!$this->descriptionValues->contains($descriptionValue)) {
+			$this->descriptionValues[] = $descriptionValue;
+		}
+		return $this;
+	}
+
+	public function removeDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
+		$this->descriptionValues->removeElement($descriptionValue);
+	}
+
+	public function setDescriptionValues($descriptionValues) {
+		$this->descriptionValues = $descriptionValues;
+	}
+
+	public function getDescriptionValues() {
+		return $this->descriptionValues;
 	}
 
 	// Video /////
