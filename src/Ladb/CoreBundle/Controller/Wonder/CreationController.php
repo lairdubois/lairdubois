@@ -784,7 +784,7 @@ class CreationController extends AbstractController {
 				// RunningEvents
 				if (is_null($highlightedCollection)) {
 					$eventRepository = $om->getRepository(Event::CLASS_NAME);
-					$runningEvents = $eventRepository->findByRunningNow();
+					$runningEvents = $eventRepository->findByRunningNowByUser($this->getUser());
 				}
 
 			}

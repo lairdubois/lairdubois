@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Repository\Event;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Ladb\CoreBundle\Entity\Core\View;
 use Ladb\CoreBundle\Repository\AbstractEntityRepository;
 use Ladb\CoreBundle\Entity\Event\Event;
 use Ladb\CoreBundle\Entity\Core\User;
@@ -159,21 +160,31 @@ class EventRepository extends AbstractEntityRepository {
 		}
 	}
 
-	public function findByRunningNow() {
+	public function findByRunningNowByUser(User $user = null) {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder
-			->select(array( 'f', 'u', 'mp' ))
-			->from($this->getEntityName(), 'f')
-			->innerJoin('f.user', 'u')
-			->innerJoin('f.mainPicture', 'mp')
-			->where('f.createdAt > :limitDate')
-			->andWhere('f.isDraft = false')
-			->andWhere('f.cancelled = false')
-			->andWhere('f.startAt <= :now')
-			->andWhere('f.endAt >= :now')
+			->select(array( 'e', 'u', 'mp' ))
+			->from($this->getEntityName(), 'e')
+			->innerJoin('e.user', 'u')
+			->innerJoin('e.mainPicture', 'mp')
+			->where('e.createdAt > :limitDate')
+			->andWhere('e.isDraft = false')
+			->andWhere('e.cancelled = false')
+			->andWhere('e.startAt <= :now')
+			->andWhere('e.endAt >= :now')
 			->setParameter('limitDate', (new \DateTime())->sub(new \DateInterval('P1Y')))	// Limit search to 1 year ago
 			->setParameter('now', new \DateTime())
 		;
+
+		// Do not retrieve user viewed tips
+		if (!is_null($user)) {
+			$queryBuilder
+				->leftJoin('LadbCoreBundle:Core\View', 'v', 'WITH', 'v.entityId = e.id AND v.entityType = '.Event::TYPE.' AND v.kind = :kind AND v.user = :user')
+				->andWhere('v.id IS NULL')
+				->setParameter('user', $user)
+				->setParameter('kind', View::KIND_SHOWN)
+			;
+		}
 
 		try {
 			return $queryBuilder->getQuery()->getResult();
