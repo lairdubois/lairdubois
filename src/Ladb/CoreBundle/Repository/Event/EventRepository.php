@@ -168,6 +168,7 @@ class EventRepository extends AbstractEntityRepository {
 			->innerJoin('e.user', 'u')
 			->innerJoin('e.mainPicture', 'mp')
 			->where('e.createdAt > :limitDate')
+			->andWhere('e.highlightable = true')
 			->andWhere('e.isDraft = false')
 			->andWhere('e.cancelled = false')
 			->andWhere('e.startAt <= :now')
