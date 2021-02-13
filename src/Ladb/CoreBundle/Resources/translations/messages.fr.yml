@@ -459,7 +459,7 @@ qa:
       draft_alert: '[0,1]Vous avez 1 question en brouillon.|]1,Inf]Vous avez %count% questions en brouillon.'
     admin:
       alert:
-        converttooffer_success: La question %title% a été converti en annonce avec succès.
+        converttooffer_success: La question %title% a été convertie en annonce avec succès.
   answer:
     new: Répondre à la question
     edit: Editer ma réponse
@@ -576,6 +576,7 @@ offer:
 
         Cordialement,
         %SENDER%
+    converttoquestion: Convertir en question
     form:
       alert:
         lock_success: L'annonce <strong>%title%</strong> a été vérrouillée.
@@ -593,6 +594,9 @@ offer:
     choice:
       entities: '[0,1]annonce|]1,Inf]annonces'
       draft_alert: '[0,1]Vous avez 1 annonce en brouillon.|]1,Inf]Vous avez %count% annonces en brouillon.'
+    admin:
+      alert:
+        converttoquestion_success: L'annonce %title% a été convertie en question avec succès.
 
 collection:
   description: Retrouvez ici toutes les collections partagées par la communauté.

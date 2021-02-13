@@ -223,7 +223,7 @@ class QuestionManager extends AbstractAuthoredPublicationManager {
 		$witnessManager = $this->get(WitnessManager::NAME);
 		$witnessManager->createConvertedByPublication($question, $offer, false);
 
-		// Delete the creation
+		// Delete the question
 		$this->delete($question, false, false);
 
 		if ($flush) {
