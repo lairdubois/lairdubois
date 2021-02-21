@@ -20,6 +20,7 @@ class OpencutlistController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 
 		$oclVersion = $request->get('v');
+		$oclBuild = $request->get('build');
 		$oclLanguage = $request->get('language');
 		$sketchupLocale = $request->get('locale');
 
@@ -36,6 +37,7 @@ class OpencutlistController extends AbstractController {
 		$access->setClientIp4($request->getClientIp());
 		$access->setClientUserAgent($request->server->get('HTTP_USER_AGENT'));
 		$access->setClientOclVersion($oclVersion);
+		$access->setClientOclBuild($oclBuild);
 		$access->setClientOclLanguage($oclLanguage);
 		$access->setClientSketchupLocale($sketchupLocale);
 

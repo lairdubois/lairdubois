@@ -8,7 +8,9 @@ use Ladb\CoreBundle\Model\LocalisableInterface;
 use Ladb\CoreBundle\Model\LocalisableTrait;
 
 /**
- * @ORM\Table("tbl_opencutlist_access")
+ * @ORM\Table("tbl_opencutlist_access", indexes={
+ *     @ORM\Index(name="IDX_ACCESS_ENTITY", columns={"client_ip4"})
+ * })
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Opencutlist\AccessRepository")
  */
 class Access implements LocalisableInterface {
@@ -76,6 +78,11 @@ class Access implements LocalisableInterface {
 	 * @ORM\Column(name="client_ocl_version", type="string", length=15, nullable=true)
 	 */
 	protected $clientOclVersion;
+
+	/**
+	 * @ORM\Column(name="client_ocl_build", type="string", length=12, nullable=true)
+	 */
+	protected $clientOclBuild;
 
 	/**
 	 * @ORM\Column(name="client_ocl_language", type="string", length=2, nullable=true)
@@ -286,6 +293,17 @@ class Access implements LocalisableInterface {
 
 	public function getClientOclVersion() {
 		return $this->clientOclVersion;
+	}
+
+	// ClientOclBuild /////
+
+	public function setClientOclBuild($clientOclBuild) {
+		$this->clientOclBuild = $clientOclBuild;
+		return $this;
+	}
+
+	public function getClientOclBuild() {
+		return $this->clientOclBuild;
 	}
 
 	// ClientOclLanguage /////
