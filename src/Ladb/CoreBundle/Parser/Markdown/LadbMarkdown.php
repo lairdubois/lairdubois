@@ -23,6 +23,7 @@ class LadbMarkdown extends Parser {
 	private $urlUtils;
 
 	// include block element parsing using traits
+	use \cebe\markdown\block\TableTrait;
 	use \cebe\markdown\block\HeadlineTrait;
 	use \cebe\markdown\block\ListTrait {
 		// Check Ul List before headline
@@ -122,6 +123,10 @@ class LadbMarkdown extends Parser {
 	}
 
 	/////
+
+	protected function composeTable($head, $body) {
+		return "<table class='table table-bordered'>\n<thead>\n$head</thead>\n<tbody>\n$body</tbody>\n</table>\n";
+	}
 
 	/**
 	 * Consume lines for a paragraph

@@ -233,6 +233,11 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 	 */
 	private $feedbackCount = 0;
 
+	/**
+	 * @ORM\Column(type="boolean", options={"default":true})
+	 */
+	private $highlightable = true;
+
 	/////
 
 	public function __construct() {
@@ -383,6 +388,17 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 		return $this->getIsJoinableTrait()
 			&& $this->getStatus() != Event::STATUS_COMPLETED
 			&& !$this->getCancelled();
+	}
+
+	// Highlightable /////
+
+	public function setHighlightable($highlightable) {
+		$this->highlightable = $highlightable;
+		return $this;
+	}
+
+	public function getHighlightable() {
+		return $this->highlightable;
 	}
 
 }

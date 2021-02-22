@@ -56,7 +56,26 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' with { 'ownerCanAlwaysDelete':true, 'noMicrodataAge':true } %}
+    {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' with { 'ownerCanAlwaysDelete':true, 'noMicrodataAge':true } %}
+        {% block adminItems %}
+            {{ parent() }}
+            <li role="separator" class="divider"></li>
+            <li><a href="#admin_converttoquestion_offer_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-question"></i> {{ 'offer.offer.converttoquestion'|trans() }}</a></li>
+        {% endblock %}
+        {% block adminModals %}
+            {{ parent() }}
+            {% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'admin_converttoquestion_offer_modal', 'title':('offer.offer.converttoquestion'|trans()) } %}
+                {% block bodyInner %}
+                    <p>La convertion transformera l'annonce <strong>{{ offer.title }}</strong> de <strong>{{ offer.user.displayname }}</strong> en question.</p>
+                    <p>Confirmez l'action pour continuer.</p>
+                {% endblock %}
+                {% block footerInner %}
+                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                    <a href="{{ path('core_offer_offer_admin_converttoquestion', { 'id':offer.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block contentBody %}
