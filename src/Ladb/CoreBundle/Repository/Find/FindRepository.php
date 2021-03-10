@@ -233,18 +233,6 @@ class FindRepository extends AbstractEntityRepository {
 			$queryBuilder
 				->addOrderBy('f.commentCount', 'DESC')
 			;
-		} else if ('type-website' == $filter) {
-			$queryBuilder
-				->andWhere('f.kind = '.Find::KIND_WEBSITE)
-			;
-		} else if ('type-video' == $filter) {
-			$queryBuilder
-				->andWhere('f.kind = '.Find::KIND_VIDEO)
-			;
-		} else if ('type-gallery' == $filter) {
-			$queryBuilder
-				->andWhere('f.kind = '.Find::KIND_GALLERY)
-			;
 		}
 		$queryBuilder
 			->addOrderBy('f.changedAt', 'DESC')
