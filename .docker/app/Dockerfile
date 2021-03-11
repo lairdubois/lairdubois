@@ -23,5 +23,6 @@ RUN docker-php-ext-enable apcu imagick memcached
 # Increase memory limit
 RUN echo 'memory_limit = 4G' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
-COPY --from=node:10 /usr/local/bin/node /usr/bin/node
+# Install Node in order to build assets with AsseticBundle
+COPY --from=node:10.24.0 /usr/local/bin/node /usr/bin/node
 RUN apt-get install -y npm && npm install -g less
