@@ -25,4 +25,4 @@ RUN echo 'memory_limit = 4G' >> /usr/local/etc/php/conf.d/docker-php-memlimit.in
 
 # Install Node in order to build assets with AsseticBundle
 COPY --from=node:10.24.0 /usr/local/bin/node /usr/bin/node
-RUN apt-get install -y npm && npm install -g less
+RUN apt-get install -y npm && npm install -g less@3.13.1
