@@ -1,6 +1,8 @@
 FROM php:7.3-fpm AS php
 
-RUN apt-get update -y && apt-get install -y \
+RUN apt-get update -y --fix-missing && apt-get install -y \
+    chromium \
+    chromium-l10n \
     git \
     imagemagick \
     libgmp-dev \
