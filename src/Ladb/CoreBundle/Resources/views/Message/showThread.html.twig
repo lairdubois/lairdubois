@@ -51,14 +51,13 @@
 
 {% block bodyContainerContent %}
     <div class="ladb-thread">
-        <div class="ladb-participants pull-right">
-            <span class="label label-default">{{ thread.messageCount }} <i class="ladb-icon-comment"></i></span>
+        <h2 class="ladb-subject">{{ thread.subject }}</h2>
+        <div class="ladb-participants">
             <span><strong>{{ thread.participants|length }}</strong> participants</span>
             {% for participant in thread.participants %}
                 {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':participant } %}
             {% endfor %}
         </div>
-        <h2 class="ladb-subject">{{ thread.subject }}</h2>
         <div class="ladb-messages">
             {% for message in thread.messages %}
                 {% include 'LadbCoreBundle:Message:_row.part.html.twig' %}
