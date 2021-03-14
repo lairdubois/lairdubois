@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Controller\Opencutlist;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,8 +110,7 @@ class OpencutlistController extends AbstractController {
 				break;
 		}
 
-		$response = $this->redirect('https://docs.opencutlist.org'.$path);
-		return $response;
+		return JsonResponse::fromJsonString('{ "url": "https://docs.opencutlist.org'.$path.'" }');
 	}
 
 	/**
