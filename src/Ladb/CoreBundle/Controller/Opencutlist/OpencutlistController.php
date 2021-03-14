@@ -94,6 +94,26 @@ class OpencutlistController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/docs", name="core_opencutlist_docs")
+	 * @Route("/docs-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_docs_env")
+	 */
+	public function docsAction(Request $request, $env = 'prod') {
+
+		$access = $this->_createAccess($request, $env, Access::KIND_DOCS);
+
+		$oclLanguage = $access->getClientOclLanguage();
+		$path = '';
+		switch ($oclLanguage) {
+			case 'fr':
+				$path = '/v/fr';
+				break;
+		}
+
+		$response = $this->redirect('https://docs.opencutlist.org'.$path);
+		return $response;
+	}
+
+	/**
 	 * @Route("/stats", name="core_opencutlist_stats")
 	 * @Route("/stats/{page}", requirements={"page" = "\d+"}, name="core_opencutlist_stats_page")
 	 * @Template("LadbCoreBundle:Opencutlist:stats.html.twig")
@@ -119,6 +139,7 @@ class OpencutlistController extends AbstractController {
 		$downloadsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOWNLOAD, $env, $days, $continent, $language, $locale);
 		$manifestsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_MANIFEST, $env, $days, $continent, $language, $locale);
 		$tutorialsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_TUTORIALS, $env, $days, $continent, $language, $locale);
+		$docssByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOCS, $env, $days, $continent, $language, $locale);
 
 		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days, $continent, $language, $locale);
 		$downloadsByCountry = array();
@@ -156,6 +177,18 @@ class OpencutlistController extends AbstractController {
 			$tutorialsCount += $row['count'];
 		}
 
+		$docsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOCS, $env, $days, $continent, $language, $locale);
+		$docsByCountry = array();
+		$docsCount = 0;
+		foreach ($docsByCountryCode as $row) {
+			$docsByCountry[] = array(
+				'count' => $row['count'],
+				'countryCode' => $row['countryCode'],
+				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
+			);
+			$docsCount += $row['count'];
+		}
+
 		$parameters = array(
 			'env'                => $env,
 			'days'               => $days,
@@ -168,12 +201,15 @@ class OpencutlistController extends AbstractController {
 			'downloadsByDay'     => $downloadsByDay,
 			'manifestsByDay'     => $manifestsByDay,
 			'tutorialsByDay'     => $tutorialsByDay,
+			'docsByDay'     	 => $docssByDay,
 			'downloadsByCountry' => $downloadsByCountry,
 			'manifestsByCountry' => $manifestsByCountry,
 			'tutorialsByCountry' => $tutorialsByCountry,
+			'docsByCountry' 	 => $docsByCountry,
 			'downloadsCount'     => $downloadsCount,
 			'manifestsCount'     => $manifestsCount,
 			'tutorialsCount'     => $tutorialsCount,
+			'docsCount'     	 => $docsCount,
 		);
 
 		if ($request->isXmlHttpRequest()) {

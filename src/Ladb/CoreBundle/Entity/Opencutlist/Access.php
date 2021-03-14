@@ -23,6 +23,7 @@ class Access implements LocalisableInterface {
 	const KIND_MANIFEST = 1;
 	const KIND_DOWNLOAD = 2;
 	const KIND_TUTORIALS = 3;
+	const KIND_DOCS = 4;
 
 	const ENV_UNKNOW = 0;
 	const ENV_DEV = 1;
@@ -170,12 +171,14 @@ class Access implements LocalisableInterface {
 					return self::KIND_DOWNLOAD;
 				case 'tu':
 					return self::KIND_TUTORIALS;
+				case 'dc':
+					return self::KIND_DOCS;
 				default:
 					return self::KIND_UNKNOW;
 			}
 		}
 		$kind = intval($kind);
-		if ($kind < 0 || $kind > self::KIND_TUTORIALS) {
+		if ($kind < 0 || $kind > self::KIND_DOCS) {
 			return self::KIND_UNKNOW;
 		}
 		return $kind;
@@ -198,6 +201,8 @@ class Access implements LocalisableInterface {
 				return 'dl';
 			case self::KIND_TUTORIALS:
 				return 'tu';
+			case self::KIND_DOCS:
+				return 'dc';
 			default:
 				return '';
 		}
