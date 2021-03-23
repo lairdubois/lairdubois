@@ -449,7 +449,7 @@ class PostController extends AbstractController {
 
 		$id = intval($id);
 
-		$post = $postRepository->findOneByIdJoinedOnOptimized($id);
+		$post = $postRepository->findOneById($id);
 		if (is_null($post)) {
 			if ($response = $witnessManager->checkResponse(Post::TYPE, $id)) {
 				return $response;
