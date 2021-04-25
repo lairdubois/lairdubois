@@ -34,9 +34,10 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	const STRIPPED_NAME = 'tool';
 
-	const FIELD_IDENTITY = 'identity';
+	const FIELD_NAME = 'name';
 	const FIELD_PHOTO = 'photo';
 	const FIELD_MANUAL = 'manual';
+	const FIELD_PRODUCT_NAME = 'product_name';
 	const FIELD_BRAND = 'brand';
 	const FIELD_FAMILY = 'family';
 	const FIELD_DESCRIPTION = 'description';
@@ -48,9 +49,10 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_CATALOG_LINK = 'catalog_link';
 
 	public static $FIELD_DEFS = array(
-		Tool::FIELD_IDENTITY     => array(Tool::ATTRIB_TYPE => ToolIdentity::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueTool', array('excludedId' => '@getId'))), Tool::ATTRIB_LINKED_FIELDS => array('name', 'isProduct', 'productName')),
+		Tool::FIELD_NAME    	 => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true),
 		Tool::FIELD_PHOTO        => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Tool::FIELD_MANUAL       => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_PRODUCT_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
 		Tool::FIELD_BRAND        => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
 		Tool::FIELD_FAMILY       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Electroportatif', 3 => 'Machine stationnaire', 4 => 'Gabarit')),
 		Tool::FIELD_DESCRIPTION  => array(Tool::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
@@ -63,36 +65,21 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	);
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $name;
 
 	/**
-	 * @ORM\Column(type="boolean", name="is_product")
-	 */
-	private $isProduct = false;
-
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=100, name="product_name")
-	 */
-	private $productName;
-
-	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
-	 */
-	private $identity;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_identity")
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_name")
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $identityValues;
+	private $nameValues;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=false, name="identity_rejected")
+	 * @ORM\Column(type="boolean", nullable=false, name="name_rejected")
 	 */
-	private $identityRejected = false;
+	private $nameRejected = false;
 
 
 	/**
@@ -121,6 +108,19 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $manualValues;
+
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $productName;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_product_name")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $productNameValues;
 
 
 	/**
@@ -188,9 +188,10 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	/////
 
 	public function __construct() {
-		$this->identityValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->nameValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->photoValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->manualValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->productNameValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->brandValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->familyValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -202,7 +203,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	// IsRejected /////
 
 	public function getIsRejected() {
-		return $this->getIdentityRejected() || $this->getPhotoRejected();
+		return $this->getNameRejected() || $this->getPhotoRejected();
 	}
 
 	// Type /////
@@ -234,7 +235,11 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function setName($name) {
 		$this->name = $name;
-		$this->setTitle($name);
+		if (!is_null($name)) {
+			$this->setTitle(explode(',', $name)[0]);
+		} else {
+			$this->setTitle(null);
+		}
 		return $this;
 	}
 
@@ -242,74 +247,36 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->name;
 	}
 
-	// IsProduct /////
+	// NameValues /////
 
-	public function setIsProduct($isProduct) {
-		$this->isProduct = $isProduct;
-		return $this;
-	}
-
-	public function getIsProduct() {
-		return $this->isProduct;
-	}
-
-	// productName /////
-
-	public function setProductName($productName) {
-		$this->productName = $productName;
-		return $this;
-	}
-
-	public function getProductName() {
-		return $this->productName;
-	}
-
-	// Identity /////
-
-	public function setIdentity($identity) {
-		$this->identity = $identity;
-		if (!is_null($identity)) {
-			$this->setTitle(explode(',', $identity)[0]);
-		} else {
-			$this->setTitle(null);
+	public function addNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $nameValue) {
+		if (!$this->nameValues->contains($nameValue)) {
+			$this->nameValues[] = $nameValue;
 		}
 		return $this;
 	}
 
-	public function getIdentity() {
-		return $this->identity;
+	public function removeNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $nameValue) {
+		$this->nameValues->removeElement($nameValue);
 	}
 
-	// IdentityValues /////
+	public function setNameValues($nameValues) {
+		$this->nameValues = $nameValues;
+	}
 
-	public function addIdentityValue(\Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity $identityValue) {
-		if (!$this->identityValues->contains($identityValue)) {
-			$this->identityValues[] = $identityValue;
-		}
+	public function getNameValues() {
+		return $this->nameValues;
+	}
+
+	// NameRejected /////
+
+	public function setNameRejected($nameRejected) {
+		$this->nameRejected = $nameRejected;
 		return $this;
 	}
 
-	public function removeIdentityValue(\Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity $identityValue) {
-		$this->identityValues->removeElement($identityValue);
-	}
-
-	public function setIdentityValues($identityValues) {
-		$this->identityValues = $identityValues;
-	}
-
-	public function getIdentityValues() {
-		return $this->identityValues;
-	}
-
-	// IdentityRejected /////
-
-	public function setIdentityRejected($identityRejected) {
-		$this->identityRejected = $identityRejected;
-		return $this;
-	}
-
-	public function getIdentityRejected() {
-		return $this->identityRejected;
+	public function getNameRejected() {
+		return $this->nameRejected;
 	}
 
 	// Photo /////
@@ -384,6 +351,38 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getManualValues() {
 		return $this->manualValues;
+	}
+
+	// ProductName /////
+
+	public function setProductName($productName) {
+		$this->productName = $productName;
+		return $this;
+	}
+
+	public function getProductName() {
+		return $this->productName;
+	}
+
+	// ProductNameValues /////
+
+	public function addProductNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $productName) {
+		if (!$this->productNameValues->contains($productName)) {
+			$this->productNameValues[] = $productName;
+		}
+		return $this;
+	}
+
+	public function removeProductNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $productName) {
+		$this->productNameValues->removeElement($productName);
+	}
+
+	public function setProductNameValues($productNameValues) {
+		$this->productNameValues = $productNameValues;
+	}
+
+	public function getProductNameValues() {
+		return $this->productNameValues;
 	}
 
 	// Brand /////

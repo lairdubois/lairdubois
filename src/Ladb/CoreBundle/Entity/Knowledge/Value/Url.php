@@ -19,7 +19,7 @@ class Url extends BaseValue {
 
 	/**
 	 * @ORM\Column(type="string", length=255)
-	 * @Assert\NotBlank
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 * @Assert\Length(max=255)
 	 * @Assert\Url()
 	 */

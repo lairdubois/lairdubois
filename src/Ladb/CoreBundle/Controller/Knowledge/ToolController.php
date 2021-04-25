@@ -82,43 +82,68 @@ class ToolController extends AbstractController {
 
 		if ($form->isValid()) {
 
-			$identityValue = $newTool->getIdentityValue();
+			$nameValue = $newTool->getNameValue();
 			$photoValue = $newTool->getPhotoValue();
+			$productNameValue = $newTool->getProductNameValue();
+			$brandValue = $newTool->getBrandValue();
 			$user = $this->getUser();
 
+			$productNameDefined = !empty($productNameValue->getData());
+			$brandDefined = !empty($brandValue->getData());
+
 			// Sanitize Identity values
-			if ($identityValue instanceof ToolIdentity) {
-				$identityValue->setData(trim(ucfirst($identityValue->getData())));
+			if ($nameValue instanceof Text) {
+				$nameValue->setData(trim(ucfirst($nameValue->getData())));
 			}
 
 			$tool = new Tool();
-			$tool->setTitle($identityValue->getData());
+			$tool->setTitle($nameValue->getData());
 			$tool->incrementContributorCount();
 
 			$om->persist($tool);
 			$om->flush();	// Need to save tool to be sure ID is generated
 
-			$tool->addIdentityValue($identityValue);
+			$tool->addNameValue($nameValue);
 			$tool->addPhotoValue($photoValue);
+			if ($productNameDefined) $tool->addProductNameValue($productNameValue);
+			if ($brandDefined) $tool->addBrandValue($brandValue);
 
 			// Dispatch knowledge events
-			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($tool, array( 'field' => Tool::FIELD_IDENTITY, 'value' => $identityValue )));
+			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($tool, array( 'field' => Tool::FIELD_NAME, 'value' => $nameValue )));
 			$dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($tool, array( 'field' => Tool::FIELD_PHOTO, 'value' => $photoValue )));
+			if ($productNameDefined) $dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($tool, array( 'field' => Tool::FIELD_PRODUCT_NAME, 'value' => $productNameValue )));
+			if ($brandDefined) $dispatcher->dispatch(KnowledgeListener::FIELD_VALUE_ADDED, new KnowledgeEvent($tool, array( 'field' => Tool::FIELD_BRAND, 'value' => $brandValue )));
 
-			$identityValue->setParentEntity($tool);
-			$identityValue->setParentEntityField(Tool::FIELD_IDENTITY);
-			$identityValue->setUser($user);
+			$nameValue->setParentEntity($tool);
+			$nameValue->setParentEntityField(Tool::FIELD_NAME);
+			$nameValue->setUser($user);
 
 			$photoValue->setParentEntity($tool);
 			$photoValue->setParentEntityField(Tool::FIELD_PHOTO);
 			$photoValue->setUser($user);
 
-			$user->getMeta()->incrementProposalCount(2);	// Identity and Photo of this new tool
+			if ($productNameDefined) {
+				$productNameValue->setParentEntity($tool);
+				$productNameValue->setParentEntityField(Tool::FIELD_PRODUCT_NAME);
+				$productNameValue->setUser($user);
+			}
+
+			if ($brandDefined) {
+				$brandValue->setParentEntity($tool);
+				$brandValue->setParentEntityField(Tool::FIELD_BRAND);
+				$brandValue->setUser($user);
+			}
+
+			$user->getMeta()->incrementProposalCount(2);	// Name and Photo of this new tool
+			if ($productNameDefined) $user->getMeta()->incrementProposalCount(1);
+			if ($brandDefined) $user->getMeta()->incrementProposalCount(1);
 
 			// Create activity
 			$activityUtils = $this->get(ActivityUtils::NAME);
-			$activityUtils->createContributeActivity($identityValue, false);
+			$activityUtils->createContributeActivity($nameValue, false);
 			$activityUtils->createContributeActivity($photoValue, false);
+			if ($productNameDefined) $activityUtils->createContributeActivity($productNameValue, false);
+			if ($brandDefined) $activityUtils->createContributeActivity($brandValue, false);
 
 			// Dispatch publication event
 			$dispatcher->dispatch(PublicationListener::PUBLICATION_CREATED, new PublicationEvent($tool));

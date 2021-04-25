@@ -20,7 +20,7 @@ class Pdf extends BaseValue {
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Resource", cascade={"persist"})
 	 * @ORM\JoinColumn(name="resource_id", nullable=false)
-	 * @Assert\NotNull
+	 * @Assert\NotNull(groups={"mandatory"})
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Resource")
 	 */
 	protected $data;

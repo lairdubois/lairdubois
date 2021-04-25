@@ -26,7 +26,7 @@ class Phone extends BaseValue {
 
 	/**
 	 * @ORM\Column(type="string", length=20)
-	 * @Assert\NotBlank
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 * @Assert\Length(max=20)
 	 */
 	protected $rawPhoneNumber;

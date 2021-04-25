@@ -195,7 +195,7 @@ class KnowledgeController extends AbstractController {
 		$value = new $entityClass();
 		$value->setParentEntity($entity);
 		$value->setParentEntityField($field);    // Before form validation because it was used for the uniqueness
-		$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints));
+		$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints, 'validation_groups' => array( 'mandatory' )));
 		$form->handleRequest($request);
 		if ($form->isValid()) {
 

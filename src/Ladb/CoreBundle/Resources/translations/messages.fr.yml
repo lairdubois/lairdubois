@@ -1146,18 +1146,22 @@ knowledge:
     new_warning: Un <strong>outil</strong> ...
     comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Outil.</p><p><u>N'apportez pas votre avis sur l'outil' ici.</u></p><p>Pour donner votre avis, cliquez sur le bouton <strong>Ajouter un avis</strong> un peu plus haut.</p>
     field:
-      identity: Nom
+      name: Nom générique
       photo: Photo
       manual: Notice
+      product_name: Modèle
       brand: Marque
       family: Famille
+      description: Descriptif
       video: Vidéo
     help:
-      identity: "Le **Nom** est le nom générique de l'outil."
+      name: "Le **Nom générique** est le nom usuel de l'outil."
       photo: "La **Photo** est ..."
       manual: "La **Notice** est ..."
+      product_name: "Le **Modèle** est ..."
       brand: "La **Marque** est ..."
       family: "La **Famille** est ..."
+      description: "Le **Descriptif** est ..."
       video: "La **Vidéo** est ..."
     form:
       alert:
@@ -1165,12 +1169,17 @@ knowledge:
       help:
         legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
-        identity: ~
+        name: |
+          - Il ne doit pas inclure le modèle
+          - Il ne doit pas inclure la marque
         photo: |
           - Utilisez une image lisible et de bonne qualité.
         manual: ~
+        product_name: |
+          - Il ne doit pas inclure la marque
         brand: ~
         family: ~
+        description: ~
         video: ~
     choice:
       entities: '[0,1]outil|]1,Inf]outils'

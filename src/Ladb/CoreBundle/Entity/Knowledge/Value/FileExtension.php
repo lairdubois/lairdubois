@@ -19,7 +19,7 @@ class FileExtension extends BaseValue {
 
 	/**
 	 * @ORM\Column(type="string", length=10)
-	 * @Assert\NotBlank
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 * @Assert\Length(max=10)
 	 * @Assert\Regex("/^[a-zA-Z0-9]+$/")
 	 */

@@ -4,8 +4,8 @@
 
 {% set entity = tool %}
 {% set classes = 'ladb-no-overlay-caption' %}
-{% set headingClasses = tool.identityRejected ? 'ladb-text-barred' : null %}
-{% set imgClasses = tool.identityRejected or tool.photoRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set headingClasses = tool.nameRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = tool.nameRejected or tool.photoRejected ? 'ladb-desaturate ladb-translucent' : null %}
 {% set pictureWidth = '282' %}
 {% set pictureHeight = '280' %}
 {% set pictureFilterMode = 'o' %}

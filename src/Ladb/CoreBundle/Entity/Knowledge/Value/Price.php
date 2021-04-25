@@ -25,7 +25,7 @@ class Price extends BaseValue {
 
 	/**
 	 * @ORM\Column(type="float")
-	 * @Assert\NotBlank
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 */
 	protected $rawPrice;
 

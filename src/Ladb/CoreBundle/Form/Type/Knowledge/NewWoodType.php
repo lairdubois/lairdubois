@@ -19,14 +19,16 @@ class NewWoodType extends AbstractType {
 				'constraints'     => array(
 					new \Symfony\Component\Validator\Constraints\Valid(),
 					new \Ladb\CoreBundle\Validator\Constraints\UniqueWood(),
-				)
+				),
+				'validation_groups' => array( 'mandatory' )
 			))
 			->add('grainValue', PictureValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
 				'constraints'     => array(
 					new \Symfony\Component\Validator\Constraints\Valid(),
-				)
+				),
+				'validation_groups' => array( 'mandatory' )
 			))
 		;
 	}

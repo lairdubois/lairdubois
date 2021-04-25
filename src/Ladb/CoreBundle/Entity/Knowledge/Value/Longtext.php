@@ -19,7 +19,7 @@ class Longtext extends BaseValue {
 
 	/**
 	 * @ORM\Column(type="text")
-	 * @Assert\NotBlank
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 * @Assert\Length(max=10000)
 	 */
 	protected $data;

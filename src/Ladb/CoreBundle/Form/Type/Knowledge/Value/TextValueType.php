@@ -32,7 +32,7 @@ class TextValueType extends AbstractValueType {
 			FormEvents::POST_SUBMIT,
 			function(FormEvent $event) {
 				$value = $event->getForm()->getData();
-				$value->setData(ucfirst($value->getData()));
+				$value->setData(trim(ucfirst($value->getData())));
 			}
 		);
 

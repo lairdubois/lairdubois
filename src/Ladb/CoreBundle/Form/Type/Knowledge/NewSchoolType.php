@@ -19,14 +19,16 @@ class NewSchoolType extends AbstractType {
 				'constraints'     => array(
 					new \Symfony\Component\Validator\Constraints\Valid(),
 					new \Ladb\CoreBundle\Validator\Constraints\UniqueSchool(),
-				)
+				),
+				'validation_groups' => array( 'mandatory' )
 			))
 			->add('logoValue', PictureValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
 				'constraints'     => array(
 					new \Symfony\Component\Validator\Constraints\Valid(),
-				)
+				),
+				'validation_groups' => array( 'mandatory' )
 			))
 		;
 	}

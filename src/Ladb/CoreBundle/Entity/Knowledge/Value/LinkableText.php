@@ -19,6 +19,7 @@ class LinkableText extends Text {
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 * @Assert\Length(max=255)
 	 * @Assert\Url()
 	 */

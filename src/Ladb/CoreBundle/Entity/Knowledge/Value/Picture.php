@@ -20,7 +20,7 @@ class Picture extends BaseValue {
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ladb\CoreBundle\Entity\Core\Picture", cascade={"persist"})
 	 * @ORM\JoinColumn(name="picture_id", nullable=false)
-	 * @Assert\NotNull
+	 * @Assert\NotNull(groups={"mandatory"})
 	 * @Assert\Type(type="Ladb\CoreBundle\Entity\Core\Picture")
 	 */
 	protected $data;

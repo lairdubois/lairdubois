@@ -50,7 +50,7 @@
 
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
-        {% set headingClasses = tool.identityRejected ? 'ladb-strikethrough' : null %}
+        {% set headingClasses = tool.nameRejected ? 'ladb-strikethrough' : null %}
         {% block headingInner %}
             {{ parent() }}{% if tool.productName is not empty %}&nbsp;<small>({{ tool.productName }})</small>{% endif %}
         {% endblock %}
@@ -69,16 +69,18 @@
     <div>
         <div class="ladb-metas">
             <h4 class="ladb-heading">Outil</h4>
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_IDENTITY', tool), 'data':tool.identity, 'values':tool.identityValues, 'itemprop':'name' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_NAME', tool), 'data':tool.name, 'values':tool.nameValues, 'itemprop':'name' } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_PRODUCT_NAME', tool), 'data':tool.productName, 'values':tool.productNameValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_BRAND', tool), 'data':tool.brand, 'values':tool.brandValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_FAMILY', tool), 'data':tool.family, 'values':tool.familyValues } %}
         </div>
         <div class="ladb-metas">
-            <h4 class="ladb-heading">Ressources</h4>
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_VIDEO', tool), 'data':tool.video, 'values':tool.videoValues } %}
+            <h4 class="ladb-heading">Caractéristiques</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_DESCRIPTION', tool), 'data':tool.description, 'values':tool.descriptionValues } %}
         </div>
         <div class="ladb-metas">
-            <h4 class="ladb-heading">Caractéristiques</h4>
+            <h4 class="ladb-heading">Ressources</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_VIDEO', tool), 'data':tool.video, 'values':tool.videoValues } %}
         </div>
         {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}
         {% if tool.updatedAt > tool.createdAt %}

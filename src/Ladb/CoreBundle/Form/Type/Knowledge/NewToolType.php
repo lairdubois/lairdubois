@@ -2,26 +2,40 @@
 
 namespace Ladb\CoreBundle\Form\Type\Knowledge;
 
+use Ladb\CoreBundle\Form\Type\Knowledge\Value\TextValueType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Form\Type\Knowledge\Value\PictureValueType;
-use Ladb\CoreBundle\Form\Type\Knowledge\Value\ToolIdentityValueType;
 
 class NewToolType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('identityValue', ToolIdentityValueType::class, array(
+			->add('nameValue', TextValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
 				'constraints'     => array(
 					new \Symfony\Component\Validator\Constraints\Valid(),
-					new \Ladb\CoreBundle\Validator\Constraints\UniqueTool()
-				)
+				),
+				'validation_groups' => array( 'mandatory' )
 			))
 			->add('photoValue', PictureValueType::class, array(
+				'choices'         => null,
+				'dataConstraints' => null,
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+				),
+				'validation_groups' => array( 'mandatory' )
+			))
+			->add('productNameValue', TextValueType::class, array(
+				'choices'         => null,
+				'dataConstraints' => null,
+				'constraints'     => array(
+					new \Symfony\Component\Validator\Constraints\Valid(),
+				)
+			))
+			->add('brandValue', TextValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
 				'constraints'     => array(

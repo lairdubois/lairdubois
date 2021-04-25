@@ -31,7 +31,7 @@ class Location extends BaseValue implements LocalisableExtendedInterface {
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=false)
-	 * @Assert\NotBlank
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 * @Assert\Length(max=255)
 	 */
 	private $location;

@@ -19,14 +19,16 @@ class NewBookType extends AbstractType {
 				'constraints'     => array(
 					new \Symfony\Component\Validator\Constraints\Valid(),
 					new \Ladb\CoreBundle\Validator\Constraints\UniqueBook()
-				)
+				),
+				'validation_groups' => array( 'mandatory' )
 			))
 			->add('coverValue', PictureValueType::class, array(
 				'choices'         => null,
 				'dataConstraints' => null,
 				'constraints'     => array(
 					new \Symfony\Component\Validator\Constraints\Valid(),
-				)
+				),
+				'validation_groups' => array( 'mandatory' )
 			))
 		;
 	}

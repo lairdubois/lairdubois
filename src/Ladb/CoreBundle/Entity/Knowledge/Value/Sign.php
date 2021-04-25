@@ -26,7 +26,7 @@ class Sign extends BaseValue {
 
 	/**
 	 * @ORM\Column(type="string", length=100)
-	 * @Assert\NotBlank
+	 * @Assert\NotBlank(groups={"mandatory"})
 	 * @Assert\Length(max=100)
 	 * @Assert\Regex("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ\-.'’’&]+$/")
 	 */
