@@ -11,14 +11,6 @@
                         'popular-comments': { 'label':'Plus commentées', 'icon':'comment', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-comments' }))) },
                     }
                 },
-    'type':     { 'label':'Type', 'path':null,
-                    'subFilterDefs': {
-                        'type-website':     { 'label':'Sites web', 'icon':'globe', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'type-website' }))) },
-                        'type-video':       { 'label':'Vidéos', 'icon':'video', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'type-video' }))) },
-                        'type-gallery':     { 'label':'Photos', 'icon':'camera', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'type-gallery' }))) },
-                        'type-event':       { 'label':'Evènements', 'icon':'date', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'type-event' }))) },
-                    }
-                },
 } %}
 {% set filterDefs = customFilterDefs is defined ? baseFilterDefs|merge(customFilterDefs) : baseFilterDefs %}
 

@@ -9,6 +9,11 @@
 // Core styles
 .btn {
   font-weight: normal;
+  user-select: all;
+  -webkit-user-select: text; /* Safari fallback only */
+  -webkit-user-select: all; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
 
   &:active,
   &.active {

@@ -23,6 +23,7 @@ class Access implements LocalisableInterface {
 	const KIND_MANIFEST = 1;
 	const KIND_DOWNLOAD = 2;
 	const KIND_TUTORIALS = 3;
+	const KIND_DOCS = 4;
 
 	const ENV_UNKNOW = 0;
 	const ENV_DEV = 1;
@@ -80,7 +81,7 @@ class Access implements LocalisableInterface {
 	protected $clientOclVersion;
 
 	/**
-	 * @ORM\Column(name="client_ocl_build", type="string", length=12, nullable=true)
+	 * @ORM\Column(name="client_ocl_build", type="string", length=16, nullable=true)
 	 */
 	protected $clientOclBuild;
 
@@ -170,12 +171,14 @@ class Access implements LocalisableInterface {
 					return self::KIND_DOWNLOAD;
 				case 'tu':
 					return self::KIND_TUTORIALS;
+				case 'dc':
+					return self::KIND_DOCS;
 				default:
 					return self::KIND_UNKNOW;
 			}
 		}
 		$kind = intval($kind);
-		if ($kind < 0 || $kind > self::KIND_TUTORIALS) {
+		if ($kind < 0 || $kind > self::KIND_DOCS) {
 			return self::KIND_UNKNOW;
 		}
 		return $kind;
@@ -198,6 +201,8 @@ class Access implements LocalisableInterface {
 				return 'dl';
 			case self::KIND_TUTORIALS:
 				return 'tu';
+			case self::KIND_DOCS:
+				return 'dc';
 			default:
 				return '';
 		}
@@ -287,7 +292,7 @@ class Access implements LocalisableInterface {
 	// ClientOclVersion /////
 
 	public function setClientOclVersion($clientOclVersion) {
-		$this->clientOclVersion = $clientOclVersion;
+		$this->clientOclVersion = substr($clientOclVersion, 0, 15);
 		return $this;
 	}
 
@@ -298,7 +303,7 @@ class Access implements LocalisableInterface {
 	// ClientOclBuild /////
 
 	public function setClientOclBuild($clientOclBuild) {
-		$this->clientOclBuild = $clientOclBuild;
+		$this->clientOclBuild = substr($clientOclBuild, 0, 16);
 		return $this;
 	}
 
@@ -309,7 +314,7 @@ class Access implements LocalisableInterface {
 	// ClientOclLanguage /////
 
 	public function setClientOclLanguage($clientOclLanguage) {
-		$this->clientOclLanguage = $clientOclLanguage;
+		$this->clientOclLanguage = substr($clientOclLanguage, 0, 2);
 		return $this;
 	}
 
@@ -397,7 +402,7 @@ class Access implements LocalisableInterface {
 	// ClientSketchupLocale /////
 
 	public function setClientSketchupLocale($clientSketchupLocale) {
-		$this->clientSketchupLocale = $clientSketchupLocale;
+		$this->clientSketchupLocale = substr($clientSketchupLocale, 0, 5);
 		return $this;
 	}
 

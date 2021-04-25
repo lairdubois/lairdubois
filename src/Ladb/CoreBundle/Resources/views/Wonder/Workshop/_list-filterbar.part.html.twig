@@ -11,23 +11,6 @@
                                 'popular-comments': { 'label':'Plus commentés', 'icon':'comment', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-comments' }))) },
                             }
                         },
-    'content':          { 'label':'Contenu', 'path':null,
-                            'subFilterDefs': {
-                                'content-plans':    { 'label':'Avec plan', 'icon':'plan', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-plans' }))) },
-                                'content-howtos':   { 'label':'Avec pas à pas', 'icon':'howto', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-howtos' }))) },
-                                'content-videos':   { 'label':'Avec vidéo', 'icon':'video', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'content-videos' }))) },
-                            }
-                        },
-    'license':          { 'label':'Licence', 'path':null,
-                            'subFilterDefs': {
-                                'license-by':         { 'label':'by', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by' }))) },
-                                'license-by-nc':      { 'label':'by-nc', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc' }))) },
-                                'license-by-nc-nd':   { 'label':'by-nc-nd', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc-nd' }))) },
-                                'license-by-nc-sa':   { 'label':'by-nc-sa', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc-sa' }))) },
-                                'license-by-nd':      { 'label':'by-nd', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nd' }))) },
-                                'license-by-sa':      { 'label':'by-sa', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-sa' }))) },
-                            }
-                        },
 } %}
 {% set filterDefs = customFilterDefs is defined ? baseFilterDefs|merge(customFilterDefs) : baseFilterDefs %}
 

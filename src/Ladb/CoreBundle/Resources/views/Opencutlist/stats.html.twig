@@ -56,6 +56,20 @@
                     borderColor: '#71D4A9',
                     fill: false,
                     lineTension: 0
+                },{
+                    label: 'Docs',
+                    data: [
+                        {% for row in docsByDay %}
+                            {
+                                t: new Date('{{ row.day }} 00:00'),
+                                y: {{ row.count }}
+                            }{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: '#FED06E',
+                    borderColor: '#FED06E',
+                    fill: false,
+                    lineTension: 0
                 }]
             },
             options: {
@@ -100,14 +114,17 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
             {% include 'LadbCoreBundle:Opencutlist:_country-panel.part.html.twig' with { 'title':'Upgrades', 'data':downloadsByCountry, 'totalCount':downloadsCount , 'color':'FD6586' } %}
         </div>
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
             {% include 'LadbCoreBundle:Opencutlist:_country-panel.part.html.twig' with { 'title':'Manifests', 'data':manifestsByCountry, 'totalCount':manifestsCount, 'color':'3DA4E8' } %}
         </div>
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
             {% include 'LadbCoreBundle:Opencutlist:_country-panel.part.html.twig' with { 'title':'Tutorials', 'data':tutorialsByCountry, 'totalCount':tutorialsCount, 'color':'71D4A9' } %}
+        </div>
+        <div class="col-md-3 col-xs-12">
+            {% include 'LadbCoreBundle:Opencutlist:_country-panel.part.html.twig' with { 'title':'Docs', 'data':docsByCountry, 'totalCount':docsCount, 'color':'FED06E' } %}
         </div>
     </div>
     {{ parent() }}

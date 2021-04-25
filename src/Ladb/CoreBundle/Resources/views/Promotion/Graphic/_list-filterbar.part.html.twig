@@ -12,16 +12,6 @@
                                 'popular-downloads':    { 'label':'Plus téléchargés', 'icon':'unpublish', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-downloads' }))) },
                             }
                         },
-    'license':          { 'label':'Licence', 'path':null,
-                            'subFilterDefs': {
-                                'license-by':         { 'label':'by', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by' }))) },
-                                'license-by-nc':      { 'label':'by-nc', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc' }))) },
-                                'license-by-nc-nd':   { 'label':'by-nc-nd', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc-nd' }))) },
-                                'license-by-nc-sa':   { 'label':'by-nc-sa', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nc-sa' }))) },
-                                'license-by-nd':      { 'label':'by-nd', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-nd' }))) },
-                                'license-by-sa':      { 'label':'by-sa', 'icon':'cc', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'license-by-sa' }))) },
-                            }
-                        },
 } %}
 {% set filterDefs = customFilterDefs is defined ? baseFilterDefs|merge(customFilterDefs) : baseFilterDefs %}
 
