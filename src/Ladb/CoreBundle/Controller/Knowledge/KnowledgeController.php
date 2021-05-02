@@ -512,7 +512,7 @@ class KnowledgeController extends AbstractController {
 		$response = new Response();
 		$response->headers->set('Content-Type', 'mime/type');
 		$response->headers->set('Content-Length', filesize($resource->getAbsolutePath()));
-		$response->headers->set('Content-Disposition', 'attachment;filename="lairdubois_'.$resource->getFilename().'.pdf"');
+		$response->headers->set('Content-Disposition', 'attachment;filename="lairdubois_'.$resource->getFilename().'"');
 		$response->headers->set('Expires', 0);
 		$response->headers->set('Cache-Control', 'no-cache, must-revalidate');
 		$response->headers->set('Pragma', 'no-cache');
