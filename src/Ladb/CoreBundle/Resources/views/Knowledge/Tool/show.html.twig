@@ -87,6 +87,9 @@
             {% if tool.powerValues is not empty or tool.family == 'Electroportatif' or tool.family == 'Machine stationnaire' %}
                 {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_POWER', tool), 'data':tool.power, 'values':tool.powerValues, 'indented':true } %}
             {% endif %}
+            {% if tool.voltageValues is not empty or tool.family == 'Electroportatif' or tool.family == 'Machine stationnaire' %}
+                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_VOLTAGE', tool), 'data':tool.voltage, 'values':tool.voltageValues, 'indented':true } %}
+            {% endif %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_WEIGHT', tool), 'data':tool.weight, 'values':tool.weightValues } %}
         </div>
         <div class="ladb-metas">

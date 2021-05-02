@@ -1155,6 +1155,7 @@ knowledge:
       family: Famille
       power_supply: Alimentation
       power: Puisssance
+      voltage: Tension
       weight: Poids
       docs: Documentations
       catalog_link: Lien catalogue
@@ -1169,6 +1170,7 @@ knowledge:
       family: "La **Famille** est ..."
       power_supply: "L'**Alimentation** permet d'indiquer le mode d'alimentation électrique de l'outil."
       power: "La **Puisssance** est la puissance en Watt (W) de l'outil."
+      voltage: "La **Tension** est la tension en Volt (V) à fournir à l'outil."
       weight: "Le **Poids** est le poids en kilogrammes (kg) de l'outil."
       docs: "**Documentations** permet de préciser les liens vers les pages de documentation et d'aide à l'utilisation de l'outil."
       catalog_link: "Le **Lien catalogue** est le lien internet vers la page du catalogue du fabricant relative à l'outil."
@@ -1199,6 +1201,7 @@ knowledge:
         family: ~
         power_supply: ~
         power: ~
+        voltage: ~
         weight: ~
         docs: ~
         catalog_link: |
