@@ -1058,11 +1058,11 @@ fos_elastica:
                             delete: false
                 knowledge_tool:
                     properties:
-                        identity: { type: text, boost: 2, analyzer: name_analyzer }
-                        identityRejected: { type: boolean }
-                        name: { type: text, analyzer: exact_lowercase_analyzer }
+                        name: { type: text, boost: 3, analyzer: name_analyzer }
+                        nameRejected: { type: boolean }
                         photoRejected: { type: boolean }
-                        brand: { analyzer: name_analyzer }
+                        brand: { type: text, analyzer: exact_lowercase_analyzer }
+                        family: { analyzer: body_analyzer }
                         createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }

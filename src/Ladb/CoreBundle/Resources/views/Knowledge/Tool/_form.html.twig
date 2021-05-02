@@ -42,25 +42,6 @@
             </div>
         </div>
     </section>
-    <section id="product_name_section">
-        <div class="form-section">
-            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.product_name'|trans() }}</p>
-            <div class="row">
-                <div class="col-sm-7 col-xs-12">
-                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-text.part.html.twig' with { 'form':form.productNameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_PRODUCT_NAME'), 'fieldLabel':('knowledge.tool.field.product_name'|trans()), 'isCompact':true } %}
-                </div>
-                <div class="col-sm-5 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
-                        <div class="panel-body small">
-                            {{ ('knowledge.tool.help.product_name')|trans()|ladb_markdown|raw }}
-                            {{ ('knowledge.tool.form.help.product_name')|trans()|ladb_markdown|raw }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <section id="brand_section">
         <div class="form-section">
             <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.brand'|trans() }}</p>
@@ -74,6 +55,25 @@
                         <div class="panel-body small">
                             {{ ('knowledge.tool.help.brand')|trans()|ladb_markdown|raw }}
                             {{ ('knowledge.tool.form.help.brand')|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="product_name_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.product_name'|trans() }}</p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'LadbCoreBundle:Knowledge:_form-fieldset-value-text.part.html.twig' with { 'form':form.productNameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_PRODUCT_NAME'), 'fieldLabel':('knowledge.tool.field.product_name'|trans()), 'isCompact':true } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ ('knowledge.tool.help.product_name')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.tool.form.help.product_name')|trans()|ladb_markdown|raw }}
                         </div>
                     </div>
                 </div>

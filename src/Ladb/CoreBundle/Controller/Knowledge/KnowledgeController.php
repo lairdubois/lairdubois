@@ -3,8 +3,10 @@
 namespace Ladb\CoreBundle\Controller\Knowledge;
 
 use Ladb\CoreBundle\Entity\Knowledge\Value\BaseValue;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -477,6 +479,47 @@ class KnowledgeController extends AbstractController {
 			'commentContexts' => $commentableUtils->getCommentContexts($values),
 			'voteContexts'    => $votableUtils->getVoteContexts($values, $this->getUser()),
 		);
+	}
+
+	/**
+	 * @Route("/{entityType}/{entityId}/{field}/{id}/download", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+","id" = "\d+"}, name="core_knowledge_value_download")
+	 */
+	public function downloadFieldValueAction(Request $request, $entityType, $entityId, $field, $id) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve related entity
+
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
+
+		// Process field
+
+		$fieldDef = $this->_retieveFieldDef($entity, $field);
+
+		$fieldType = $fieldDef[AbstractKnowledge::ATTRIB_TYPE];
+
+		$entityClass = $this->_computeEntityClass($fieldType);
+
+		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$value = $this->_retrieveValue($valueRepository, $id);
+		if (!$value instanceof Pdf) {
+			throw $this->createNotFoundException('Only Pdf values allowed to download (core_knowledge_value_download)');
+		}
+
+		$resource = $value->getData();
+		$content = file_get_contents($resource->getAbsolutePath());
+
+		$response = new Response();
+		$response->headers->set('Content-Type', 'mime/type');
+		$response->headers->set('Content-Length', filesize($resource->getAbsolutePath()));
+		$response->headers->set('Content-Disposition', 'attachment;filename="lairdubois_'.$resource->getFilename().'.pdf"');
+		$response->headers->set('Expires', 0);
+		$response->headers->set('Cache-Control', 'no-cache, must-revalidate');
+		$response->headers->set('Pragma', 'no-cache');
+
+		$response->setContent($content);
+
+		return $response;
 	}
 
 	/**

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table("tbl_core_resource")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\ResourceRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Resource {

@@ -70,16 +70,25 @@
         <div class="ladb-metas">
             <h4 class="ladb-heading">Outil</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_NAME', tool), 'data':tool.name, 'values':tool.nameValues, 'itemprop':'name' } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_PRODUCT_NAME', tool), 'data':tool.productName, 'values':tool.productNameValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_BRAND', tool), 'data':tool.brand, 'values':tool.brandValues } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_FAMILY', tool), 'data':tool.family, 'values':tool.familyValues } %}
-        </div>
-        <div class="ladb-metas">
-            <h4 class="ladb-heading">Caractéristiques</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_PRODUCT_NAME', tool), 'data':tool.productName, 'values':tool.productNameValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_DESCRIPTION', tool), 'data':tool.description, 'values':tool.descriptionValues } %}
         </div>
         <div class="ladb-metas">
+            <h4 class="ladb-heading">Caractéristiques</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_FAMILY', tool), 'data':tool.family, 'values':tool.familyValues } %}
+            {% if tool.powerSupplyValues is not empty or tool.family == 'Electroportatif' %}
+                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_POWER_SUPPLY', tool), 'data':tool.powerSupply, 'values':tool.powerSupplyValues, 'indented':true } %}
+            {% endif %}
+            {% if tool.powerValues is not empty or tool.family == 'Electroportatif' or tool.family == 'Machine stationnaire' %}
+                {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_POWER', tool), 'data':tool.power, 'values':tool.powerValues, 'indented':true } %}
+            {% endif %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_WEIGHT', tool), 'data':tool.weight, 'values':tool.weightValues } %}
+        </div>
+        <div class="ladb-metas">
             <h4 class="ladb-heading">Ressources</h4>
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_DOCS', tool), 'data':tool.docs, 'values':tool.docsValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_CATALOG_LINK', tool), 'data':tool.catalogLink, 'values':tool.catalogLinkValues } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_VIDEO', tool), 'data':tool.video, 'values':tool.videoValues } %}
         </div>
         {% include 'LadbCoreBundle:Knowledge:_disclaimer-panel.part.html.twig' %}

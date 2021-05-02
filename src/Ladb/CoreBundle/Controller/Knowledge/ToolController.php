@@ -234,6 +234,13 @@ class ToolController extends AbstractController {
 
 						break;
 
+					case 'family':
+
+						$filter = new \Elastica\Query\Match('family', $facet->value);
+						$filters[] = $filter;
+
+						break;
+
 					case 'with-review':
 
 						$filter = new \Elastica\Query\Range('reviewCount', array( 'gt' => 0 ));
@@ -244,7 +251,7 @@ class ToolController extends AbstractController {
 					case 'rejected':
 
 						$filter = new \Elastica\Query\BoolQuery();
-						$filter->addShould(new \Elastica\Query\Range('identityRejected', array( 'gte' => 1 )));
+						$filter->addShould(new \Elastica\Query\Range('nameRejected', array( 'gte' => 1 )));
 						$filter->addShould(new \Elastica\Query\Range('photoRejected', array( 'gte' => 1 )));
 						$filters[] = $filter;
 
@@ -304,7 +311,7 @@ class ToolController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
 				$filters[] = new \Elastica\Query\Range('photoRejected', array( 'lt' => 1 ));
 
 			},

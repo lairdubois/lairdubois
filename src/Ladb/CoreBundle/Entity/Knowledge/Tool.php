@@ -4,11 +4,9 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Pdf;
-use Ladb\CoreBundle\Entity\Knowledge\Value\ToolIdentity;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Video;
 use Symfony\Component\Validator\Constraints as Assert;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Price;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Pdf;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Video;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Ladb\CoreBundle\Model\ReviewableInterface;
 use Ladb\CoreBundle\Model\ReviewableTrait;
@@ -16,8 +14,6 @@ use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Longtext;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Language;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Isbn;
 
 /**
  * Ladb\CoreBundle\Entity\Knowledge\Tool
@@ -39,29 +35,29 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_MANUAL = 'manual';
 	const FIELD_PRODUCT_NAME = 'product_name';
 	const FIELD_BRAND = 'brand';
-	const FIELD_FAMILY = 'family';
 	const FIELD_DESCRIPTION = 'description';
+	const FIELD_FAMILY = 'family';
 	const FIELD_POWER_SUPPLY = 'power_supply';
 	const FIELD_POWER = 'power';
 	const FIELD_WEIGHT = 'weight';
-	const FIELD_VIDEO = 'video';
-	const FIELD_DOCS_LINK = 'docs_link';
+	const FIELD_DOCS = 'docs';
 	const FIELD_CATALOG_LINK = 'catalog_link';
+	const FIELD_VIDEO = 'video';
 
 	public static $FIELD_DEFS = array(
-		Tool::FIELD_NAME    	 => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true),
+		Tool::FIELD_NAME         => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true),
 		Tool::FIELD_PHOTO        => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Tool::FIELD_MANUAL       => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
 		Tool::FIELD_PRODUCT_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
 		Tool::FIELD_BRAND        => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
-		Tool::FIELD_FAMILY       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Electroportatif', 3 => 'Machine stationnaire', 4 => 'Gabarit')),
 		Tool::FIELD_DESCRIPTION  => array(Tool::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
-//		Tool::FIELD_POWER_SUPPLY => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Filaire', 2 => 'Batterie')),
-//		Tool::FIELD_POWER        => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'W'),
-//		Tool::FIELD_WEIGHT       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'kg'),
+		Tool::FIELD_FAMILY       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Electroportatif', 3 => 'Machine stationnaire', 4 => 'Gabarit'), Tool::ATTRIB_USE_CHOICES_VALUE => true, Tool::ATTRIB_FILTER_QUERY => '@family:"%q%"'),
+		Tool::FIELD_POWER_SUPPLY => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Filaire', 2 => 'Batterie')),
+		Tool::FIELD_POWER        => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'W'),
+		Tool::FIELD_WEIGHT       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'kg'),
+		Tool::FIELD_DOCS         => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
+		Tool::FIELD_CATALOG_LINK => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array('excludedDomainPaterns' => array('/amazon./i', '/fnac./i', '/manomano./i'), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.')))),
 		Tool::FIELD_VIDEO        => array(Tool::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
-//		Tool::FIELD_DOCS_LINK    => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
-//		Tool::FIELD_CATALOG_LINK => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array('excludedDomainPaterns' => array('/amazon./i', '/fnac./i', '/manomano./i'), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.')))),
 	);
 
 	/**
@@ -77,7 +73,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	private $nameValues;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=false, name="name_rejected")
+	 * @ORM\Column(name="name_rejected", type="boolean", nullable=false)
 	 */
 	private $nameRejected = false;
 
@@ -90,7 +86,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	private $photoValues;
 
 	/**
-	 * @ORM\Column(type="boolean", nullable=false, name="photo_rejected")
+	 * @ORM\Column(name="photo_rejected", type="boolean", nullable=false)
 	 */
 	private $photoRejected = false;
 
@@ -113,19 +109,6 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 */
-	private $productName;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_product_name")
-	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
-	 */
-	private $productNameValues;
-
-
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
 	private $brand;
 
 	/**
@@ -137,16 +120,16 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="integer", nullable=true)
+	 * @ORM\Column(name="product_name", type="string", nullable=true)
 	 */
-	private $family;
+	private $productName;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
-	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_family")
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_product_name")
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
-	private $familyValues;
+	private $productNameValues;
 
 
 	/**
@@ -160,6 +143,84 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $descriptionValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $family;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_family")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $familyValues;
+
+
+	/**
+	 * @ORM\Column(name="power_supply", type="text", nullable=true)
+	 */
+	private $powerSupply;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_power_supply")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $powerSupplyValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $power;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_power")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $powerValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $weight;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_weight")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $weightValues;
+
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $docs;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_docs")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $docsValues;
+
+
+	/**
+	 * @ORM\Column(name="catalog_link", type="text", nullable=true)
+	 */
+	private $catalogLink;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Url", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_catalog_link")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $catalogLinkValues;
 
 
 	/**
@@ -191,10 +252,15 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		$this->nameValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->photoValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->manualValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->productNameValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->brandValues = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->familyValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->productNameValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->familyValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->powerSupplyValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->powerValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->weightValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->docsValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->videoValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -353,6 +419,38 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->manualValues;
 	}
 
+	// Brand /////
+
+	public function setBrand($brand) {
+		$this->brand = $brand;
+		return $this;
+	}
+
+	public function getBrand() {
+		return $this->brand;
+	}
+
+	// BrandValues /////
+
+	public function addBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $brand) {
+		if (!$this->brandValues->contains($brand)) {
+			$this->brandValues[] = $brand;
+		}
+		return $this;
+	}
+
+	public function removeBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $brand) {
+		$this->brandValues->removeElement($brand);
+	}
+
+	public function setBrandValues($brandValues) {
+		$this->brandValues = $brandValues;
+	}
+
+	public function getBrandValues() {
+		return $this->brandValues;
+	}
+
 	// ProductName /////
 
 	public function setProductName($productName) {
@@ -385,36 +483,36 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->productNameValues;
 	}
 
-	// Brand /////
+	// Description /////
 
-	public function setBrand($brand) {
-		$this->brand = $brand;
+	public function setDescription($description) {
+		$this->description = $description;
 		return $this;
 	}
 
-	public function getBrand() {
-		return $this->brand;
+	public function getDescription() {
+		return $this->description;
 	}
 
-	// BrandValues /////
+	// DescriptionValues /////
 
-	public function addBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $brand) {
-		if (!$this->brandValues->contains($brand)) {
-			$this->brandValues[] = $brand;
+	public function addDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
+		if (!$this->descriptionValues->contains($descriptionValue)) {
+			$this->descriptionValues[] = $descriptionValue;
 		}
 		return $this;
 	}
 
-	public function removeBrandValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $brand) {
-		$this->brandValues->removeElement($brand);
+	public function removeDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
+		$this->descriptionValues->removeElement($descriptionValue);
 	}
 
-	public function setBrandValues($brandValues) {
-		$this->brandValues = $brandValues;
+	public function setDescriptionValues($descriptionValues) {
+		$this->descriptionValues = $descriptionValues;
 	}
 
-	public function getBrandValues() {
-		return $this->brandValues;
+	public function getDescriptionValues() {
+		return $this->descriptionValues;
 	}
 
 	// Family /////
@@ -449,36 +547,164 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->familyValues;
 	}
 
-	// Description /////
+	// PowerSupply /////
 
-	public function setDescription($description) {
-		$this->description = $description;
+	public function setPowerSupply($powerSupply) {
+		$this->powerSupply = $powerSupply;
 		return $this;
 	}
 
-	public function getDescription() {
-		return $this->description;
+	public function getPowerSupply() {
+		return $this->powerSupply;
 	}
 
-	// DescriptionValues /////
+	// PowerSupplyValues /////
 
-	public function addDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
-		if (!$this->descriptionValues->contains($descriptionValue)) {
-			$this->descriptionValues[] = $descriptionValue;
+	public function addPowerSupplyValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $powerSupplyValue) {
+		if (!$this->powerSupplyValues->contains($powerSupplyValue)) {
+			$this->powerSupplyValues[] = $powerSupplyValue;
 		}
 		return $this;
 	}
 
-	public function removeDescriptionValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Longtext $descriptionValue) {
-		$this->descriptionValues->removeElement($descriptionValue);
+	public function removePowerSupplyValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $powerSupplyValue) {
+		$this->powerSupplyValues->removeElement($powerSupplyValue);
 	}
 
-	public function setDescriptionValues($descriptionValues) {
-		$this->descriptionValues = $descriptionValues;
+	public function setPowerSupplyValues($powerSupplyValues) {
+		$this->powerSupplyValues = $powerSupplyValues;
 	}
 
-	public function getDescriptionValues() {
-		return $this->descriptionValues;
+	public function getPowerSupplyValues() {
+		return $this->powerSupplyValues;
+	}
+
+	// Power /////
+
+	public function setPower($power) {
+		$this->power = $power;
+		return $this;
+	}
+
+	public function getPower() {
+		return $this->power;
+	}
+
+	// PowerValues /////
+
+	public function addPowerValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $powerValue) {
+		if (!$this->powerValues->contains($powerValue)) {
+			$this->powerValues[] = $powerValue;
+		}
+		return $this;
+	}
+
+	public function removePowerValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $powerValue) {
+		$this->powerValues->removeElement($powerValue);
+	}
+
+	public function setPowerValues($powerValues) {
+		$this->powerValues = $powerValues;
+	}
+
+	public function getPowerValues() {
+		return $this->powerValues;
+	}
+
+	// Weight /////
+
+	public function setWeight($weight) {
+		$this->weight = $weight;
+		return $this;
+	}
+
+	public function getWeight() {
+		return $this->weight;
+	}
+
+	// WeightValues /////
+
+	public function addWeightValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $weightValue) {
+		if (!$this->weightValues->contains($weightValue)) {
+			$this->weightValues[] = $weightValue;
+		}
+		return $this;
+	}
+
+	public function removeWeightValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $weightValue) {
+		$this->weightValues->removeElement($weightValue);
+	}
+
+	public function setWeightValues($weightValues) {
+		$this->weightValues = $weightValues;
+	}
+
+	public function getWeightValues() {
+		return $this->weightValues;
+	}
+
+	// Docs /////
+
+	public function setDocs($docs) {
+		$this->docs = $docs;
+		return $this;
+	}
+
+	public function getDocs() {
+		return $this->docs;
+	}
+
+	// DocsValues /////
+
+	public function addDocsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $docsValue) {
+		if (!$this->docsValues->contains($docsValue)) {
+			$this->docsValues[] = $docsValue;
+		}
+		return $this;
+	}
+
+	public function removeDocsValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $docsValue) {
+		$this->docsValues->removeElement($docsValue);
+	}
+
+	public function setDocsValues($docsValues) {
+		$this->docsValues = $docsValues;
+	}
+
+	public function getDocsValues() {
+		return $this->docsValues;
+	}
+
+	// CatalogLink /////
+
+	public function setCatalogLink($catalogLink) {
+		$this->catalogLink = $catalogLink;
+		return $this;
+	}
+
+	public function getCatalogLink() {
+		return $this->catalogLink;
+	}
+
+	// CatalogLinkValues /////
+
+	public function addCatalogLinkValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $catalogLinkValue) {
+		if (!$this->catalogLinkValues->contains($catalogLinkValue)) {
+			$this->catalogLinkValues[] = $catalogLinkValue;
+		}
+		return $this;
+	}
+
+	public function removeCatalogLinkValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Url $catalogLinkValue) {
+		$this->catalogLinkValues->removeElement($catalogLinkValue);
+	}
+
+	public function setCatalogLinkValues($catalogLinkValues) {
+		$this->catalogLinkValues = $catalogLinkValues;
+	}
+
+	public function getCatalogLinkValues() {
+		return $this->catalogLinkValues;
 	}
 
 	// Video /////

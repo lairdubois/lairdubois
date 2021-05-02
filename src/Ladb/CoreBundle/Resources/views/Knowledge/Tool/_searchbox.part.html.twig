@@ -6,6 +6,7 @@
 
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="brand" data-label="Marque" data-editable="true" data-icon="tool"><i class="ladb-icon-tool"></i> Marque</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="family" data-label="Famille" data-editable="true" data-icon="filter" data-proposals="Outils à main,Electroportatif,Machine stationnaire,Gabarit"><i class="ladb-icon-filter"></i> Famille</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="with-review" data-label="Avec avis" data-editable="false" data-icon="review"><i class="ladb-icon-review"></i> Avec avis</a></li>
     <li class="divider{% if not is_granted('ROLE_USER') %} hidden{% endif %}"></li>
@@ -28,5 +29,7 @@
 {% endblock %}
 
 {% block searchboxShortcuts %}
-    <li><a class="ladb-smartsearch-shortcut" data-query="@with-review"><i class="ladb-icon-review"></i> Avec avis</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query='@family:"Outil à main"'><i class="ladb-icon-filter"></i> Outils à main</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query='@family:Electroportatif'><i class="ladb-icon-filter"></i> Electroportatif</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query='@family:"Machine stationnaire"'><i class="ladb-icon-filter"></i> Machines stationnaire</a></li>
 {% endblock %}

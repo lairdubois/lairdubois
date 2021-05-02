@@ -13,6 +13,6 @@
         {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':value.data.thumbnail, 'imgClasses':'thumbnail', 'noLazyLoad':true } %}
     {% endif %}
     <div class="text-center" style="margin-top: 10px;">
-        <button class="btn btn-default"><i class="ladb-icon-eye"></i> Consulter</button> <button class="btn btn-primary"><i class="ladb-icon-unpublish"></i> Télécharger</button>
+        <a href="{{ path('core_knowledge_value_download', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}" class="btn btn-primary btn-lg"><i class="ladb-icon-unpublish"></i> Télécharger</a>
     </div>
 {% endif %}
