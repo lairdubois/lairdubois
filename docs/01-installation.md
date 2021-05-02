@@ -177,6 +177,20 @@ If you want to monitor RabbitMQ, enable the management plugin
 ``` bash
     $ sudo apt-get install imagemagick
 ```
+Allow ImageMagick to read PDFs : Depending ImageMagick versions, the default configuration may block access to PDFs. Open config file /etc/ImageMagick-6/policy.xml and if you find uncommented line :
+```
+    <policy domain="coder" rights="none" pattern="PDF" />
+```
+So you must change it :
+
+```
+    <policy domain="coder" rights="read" pattern="PDF" />
+```
+and restart php-fpm:
+```
+    bash
+    $ sudo systemctl restart php7.3-fpm
+```
 
 ### Install [pngquant](https://pngquant.org/), [optipng](http://optipng.sourceforge.net/) and [jpegoptim](https://github.com/tjko/jpegoptim) - *The image optimizers*
 
