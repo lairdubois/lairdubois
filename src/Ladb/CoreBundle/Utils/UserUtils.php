@@ -26,6 +26,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		\Ladb\CoreBundle\Entity\Wonder\Workshop::TYPE,
 		\Ladb\CoreBundle\Entity\Howto\Howto::TYPE,
 		\Ladb\CoreBundle\Entity\Knowledge\Wood::TYPE,
+		\Ladb\CoreBundle\Entity\Knowledge\Tool::TYPE,
 		\Ladb\CoreBundle\Entity\Knowledge\Book::TYPE,
 		\Ladb\CoreBundle\Entity\Knowledge\Software::TYPE,
 		\Ladb\CoreBundle\Entity\Collection\Collection::TYPE,

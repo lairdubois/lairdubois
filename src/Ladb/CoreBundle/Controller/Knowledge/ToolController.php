@@ -295,7 +295,7 @@ class ToolController extends AbstractController {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'identity^100', 'brand' ));
+							$filter->setFields(array( 'name^100', 'productName', 'brand' ));
 							$filters[] = $filter;
 
 							$couldUseDefaultSort = false;
@@ -359,7 +359,9 @@ class ToolController extends AbstractController {
 		$dispatcher->dispatch(PublicationListener::PUBLICATION_SHOWN, new PublicationEvent($tool));
 
 		$searchUtils = $this->get(SearchUtils::NAME);
-		$searchableVolumeCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('name', $tool->getName()) ), 'fos_elastica.index.ladb.knowledge_tool');
+		$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
+		$searchableBrotherCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('name', $tool->getName()) ), 'fos_elastica.index.ladb.knowledge_tool');
+		$searchableCreationCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('tools.label', $tool->getName()) ), 'fos_elastica.index.ladb.wonder_creation');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
@@ -368,14 +370,15 @@ class ToolController extends AbstractController {
 		$collectionnableUtils = $this->get(CollectionnableUtils::NAME);
 
 		return array(
-			'tool'                  => $tool,
-			'permissionContext'     => $this->getPermissionContext($tool),
-			'searchableVolumeCount' => $searchableVolumeCount,
-			'likeContext'           => $likableUtils->getLikeContext($tool, $this->getUser()),
-			'watchContext'          => $watchableUtils->getWatchContext($tool, $this->getUser()),
-			'commentContext'        => $commentableUtils->getCommentContext($tool),
-			'collectionContext'     => $collectionnableUtils->getCollectionContext($tool),
-			'reviewContext'         => $reviewableUtils->getReviewContext($tool),
+			'tool'                    => $tool,
+			'permissionContext'       => $this->getPermissionContext($tool),
+			'searchableBrotherCount'  => $searchableBrotherCount,
+			'searchableCreationCount' => $searchableCreationCount,
+			'likeContext'             => $likableUtils->getLikeContext($tool, $this->getUser()),
+			'watchContext'            => $watchableUtils->getWatchContext($tool, $this->getUser()),
+			'commentContext'          => $commentableUtils->getCommentContext($tool),
+			'collectionContext'       => $collectionnableUtils->getCollectionContext($tool),
+			'reviewContext'           => $reviewableUtils->getReviewContext($tool),
 		);
 	}
 

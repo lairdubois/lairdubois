@@ -51,9 +51,6 @@
 {% block bodyHeaderContainerContent %}
     {% embed 'LadbCoreBundle:Common/Header:_entity-show-header.part.html.twig' %}
         {% set headingClasses = tool.nameRejected ? 'ladb-strikethrough' : null %}
-        {% block headingInner %}
-            {{ parent() }}{% if tool.productName is not empty %}&nbsp;<small>({{ tool.productName }})</small>{% endif %}
-        {% endblock %}
         {% block subheadingInner %}
             {% if tool.brand %}<span class="ladb-subblock"><em>{{ tool.brand }}</em></span>{% endif %}
         {% endblock %}
@@ -67,6 +64,13 @@
         {% include 'LadbCoreBundle:Knowledge:_field-show-showcase-pdf.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_MANUAL', tool), 'resource':tool.manual, 'values':tool.manualValues } %}
     </div>
     <div>
+        {% if searchableBrotherCount > 1 %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Le catalogue compte <a href="{{ path('core_tool_list', { 'q':'@name:"'~tool.name~'"'}) }}" rel="nofollow"><strong>{{ searchableBrotherCount }}</strong> {{ 'knowledge.tool.choice.entities'|transchoice(searchableBrotherCount) }}</a> similaires.</span>
+                </div>
+            </div>
+        {% endif %}
         <div class="ladb-metas">
             <h4 class="ladb-heading">Outil</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_NAME', tool), 'data':tool.name, 'values':tool.nameValues, 'itemprop':'name' } %}
@@ -126,6 +130,17 @@
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'LadbCoreBundle:Collection/Collection:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta{% if searchableCreationCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-creation ladb-icon-fixed-center"></i>
+            {% if searchableCreationCount > 0 %}
+                <a href="{{ path('core_creation_list', { 'q':'@tools:"'~tool.name~'"'}) }}" rel="nofollow">
+            {% endif %}
+                <strong>{{ searchableCreationCount }}</strong>
+                <small>{{ 'wonder.creation.choice.entities'|transchoice(searchableCreationCount) }}</small>
+            {% if searchableCreationCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
     </div>
     {% include 'LadbCoreBundle:Core/License:_metas.part.html.twig' with { 'license':tool.license, 'noMicrodata':true } %}
 {% endblock %}

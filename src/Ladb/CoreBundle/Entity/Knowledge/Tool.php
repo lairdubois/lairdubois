@@ -45,7 +45,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_VIDEO = 'video';
 
 	public static $FIELD_DEFS = array(
-		Tool::FIELD_NAME         => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true),
+		Tool::FIELD_NAME         => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_FILTER_QUERY => '@name:"%q%"'),
 		Tool::FIELD_PHOTO        => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Tool::FIELD_MANUAL       => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
 		Tool::FIELD_PRODUCT_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
@@ -266,6 +266,23 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	/////
 
+	private function _updateTitle() {
+		$words = array();
+		$name = $this->getName();
+		if (!is_null($name)) {
+			$words[] = explode(',', $name)[0];
+		}
+		$productName = $this->getProductName();
+		if (!is_null($productName)) {
+			$words[] = explode(',', $productName)[0];
+		}
+		if (!empty($words)) {
+			$this->setTitle(implode(' ', $words));
+		} else {
+			$this->setTitle(null);
+		}
+	}
+
 	// IsRejected /////
 
 	public function getIsRejected() {
@@ -301,11 +318,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function setName($name) {
 		$this->name = $name;
-		if (!is_null($name)) {
-			$this->setTitle(explode(',', $name)[0]);
-		} else {
-			$this->setTitle(null);
-		}
+		$this->_updateTitle();
 		return $this;
 	}
 
@@ -455,6 +468,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function setProductName($productName) {
 		$this->productName = $productName;
+		$this->_updateTitle();
 		return $this;
 	}
 

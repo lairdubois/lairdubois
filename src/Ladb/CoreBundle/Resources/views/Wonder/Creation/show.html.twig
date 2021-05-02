@@ -96,7 +96,15 @@
         </ul>
     </div>
     <div class="ladb-meta{% if creation.tools.count == 0 %} text-muted{% endif %}">
-        <span><i class="ladb-icon-tool ladb-icon-fixed-center"></i>&nbsp;<strong>{{ creation.tools.count }}</strong> {{ 'knowledge.tool.choice.entities'|transchoice(creation.tools.count) }}</span>
+        <i class="ladb-icon-tool ladb-icon-fixed-center"></i>
+        {% if searchableToolCount > 0 %}
+            <a href="{{ path('core_tool_list', { 'q':'@name:"'~searchableToolQuery~'"' }) }}" rel="nofollow">
+        {% endif %}
+            <strong>{{ creation.tools.count }}</strong>
+            {{ 'knowledge.tool.choice.entities'|transchoice(creation.tools.count) }}
+        {% if searchableToolCount > 0 %}
+            </a>
+        {% endif %}
         <ul>
             {% for tool in creation.tools %}
                 <li class="ladb-value"><a href="{{ path('core_creation_list', { 'q':'@tools:"'~tool.label~'"' }) }}" class="ladb-cursor-filter" rel="nofollow">{{ tool.label }}</a></li>

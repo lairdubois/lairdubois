@@ -331,6 +331,14 @@
                     <div class="col-xs-12 col-sm-4">
                         <div class="checkbox">
                             <label class="checkbox">
+                                {{ form_widget(form.meta.knowledgeToolsBadgeEnabled) }}
+                                <i class="ladb-icon-tool"></i> {{ 'knowledge.tool.nav'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="checkbox">
+                            <label class="checkbox">
                                 {{ form_widget(form.meta.knowledgeBooksBadgeEnabled) }}
                                 <i class="ladb-icon-book"></i> {{ 'knowledge.book.nav'|trans }}
                             </label>

@@ -1143,8 +1143,8 @@ knowledge:
     new: Ajouter un outil
     list: Les outils
     nav: Outils
-    new_warning: Un <strong>outil</strong> ...
-    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Outil.</p><p><u>N'apportez pas votre avis sur l'outil' ici.</u></p><p>Pour donner votre avis, cliquez sur le bouton <strong>Ajouter un avis</strong> un peu plus haut.</p>
+    new_warning: Un <strong>outil</strong> est un équipement destiné à travailler le bois. Il peut être <em>manuel</em>, <em>électroportatif</em>, <em>stationnaire</em> ou avoir la fonction passive de <em>gabarit</em>.
+    comment_alert: <h4>A lire avant de publier</h4><p>Cette zone de commentaires vous permet d'échanger autour de la rédaction de la fiche Outil.</p><p><u>N'apportez pas votre avis sur l'outil ici.</u></p><p>Pour donner votre avis, cliquez sur le bouton <strong>Ajouter un avis</strong> un peu plus haut.</p>
     field:
       name: Nom générique
       photo: Photo
@@ -1160,7 +1160,7 @@ knowledge:
       catalog_link: Lien catalogue
       video: Vidéo
     help:
-      name: "Le **Nom générique** est le nom usuel de l'outil."
+      name: "Le **Nom générique** est le nom usuel de l'outil. *(Exemple: Rabot, Scie plongeante, ...)*"
       photo: "La **Photo** est une photo complète de l'outil."
       manual: "La **Notice** est un fichier PDF numérisé ou fourni par le fabricant et décrivant le fonctionnement de l'outil."
       brand: "La **Marque** est est le nom du fabricant de l'outil."
@@ -1173,6 +1173,8 @@ knowledge:
       docs: "**Documentations** permet de préciser les liens vers les pages de documentation et d'aide à l'utilisation de l'outil."
       catalog_link: "Le **Lien catalogue** est le lien internet vers la page du catalogue du fabricant relative à l'outil."
       video: "La **Vidéo** permet de présenter l'outil."
+    token:
+      help: Saisissez un outil et cliquez sur la flèche pour l'ajouter
     form:
       alert:
         delete_success: L'outil <strong>%name%</strong> a été supprimé.
@@ -1185,7 +1187,8 @@ knowledge:
         photo: |
           - Utilisez une image lisible et de bonne qualité.
         manual: ~
-        brand: ~
+        brand: |
+          - Elle ne doit pas inclure le modèle
         product_name: |
           - Il ne doit pas inclure la marque
         description: |
@@ -1205,20 +1208,12 @@ knowledge:
         video: ~
     choice:
       entities: '[0,1]outil|]1,Inf]outils'
-#  tool:
-#    list: Outils
-#    token:
-#      help: Saisissez un outil et cliquez sur la flèche pour l'ajouter
-#    choice:
-#      entities: '[0,1]outil|]1,Inf]outils'
   finish:
-    list: Finitions
     token:
       help: Saisissez une finition et cliquez sur la flèche pour l'ajouter
     choice:
       entities: '[0,1]finition|]1,Inf]finitions'
   hardware:
-    list: Quincailleries
     token:
       help: Saisissez une quincaillerie et cliquez sur la flèche pour l'ajouter
     choice:
@@ -1651,6 +1646,7 @@ notification:
     knowledge_school: l'école
     knowledge_book: le livre
     knowledge_software: le logiciel
+    knowledge_tool: l'outil
     qa_question: la question
     qa_answer: la réponse
     promotion_graphic: le graphisme

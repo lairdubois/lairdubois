@@ -1184,10 +1184,16 @@ class CreationController extends AbstractController {
 			$woodsLabels[] = $wood->getLabel();
 		}
 		$woodsString = implode(',', $woodsLabels);
+		$toolsLabels = array();
+		foreach ($creation->getTools() as $tool) {
+			$toolsLabels[] = $tool->getLabel();
+		}
+		$toolsString = implode(',', $toolsLabels);
 
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
 		$searchableWoodCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('name', $woodsString) ), 'fos_elastica.index.ladb.knowledge_wood');
+		$searchableToolCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('name', $toolsString) ), 'fos_elastica.index.ladb.knowledge_tool');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);
@@ -1201,6 +1207,8 @@ class CreationController extends AbstractController {
 			'permissionContext'   => $this->getPermissionContext($creation),
 			'searchableWoodQuery' => $woodsString,
 			'searchableWoodCount' => $searchableWoodCount,
+			'searchableToolQuery' => $toolsString,
+			'searchableToolCount' => $searchableToolCount,
 			'userCreations'       => $userCreations,
 			'similarCreations'    => $similarCreations,
 			'likeContext'         => $likableUtils->getLikeContext($creation, $this->getUser()),

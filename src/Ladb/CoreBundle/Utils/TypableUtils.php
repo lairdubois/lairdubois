@@ -271,6 +271,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// BookIdentity
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity';
+			// Pdf
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Pdf::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -399,6 +402,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\LinkableText::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Video::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Pdf::TYPE:
 				$url = $router->generate('core_knowledge_value_'.$action, $params, $referenceType);
 				break;
 

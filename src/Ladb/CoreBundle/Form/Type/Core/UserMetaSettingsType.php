@@ -48,6 +48,7 @@ class UserMetaSettingsType extends AbstractType {
 			->add('howtoHowtosBadgeEnabled')
 			->add('wonderWorkshopsBadgeEnabled')
 			->add('knowledgeWoodsBadgeEnabled')
+			->add('knowledgeToolsBadgeEnabled')
 			->add('knowledgeBooksBadgeEnabled')
 			->add('knowledgeSoftwaresBadgeEnabled')
 			->add('collectionCollectionsBadgeEnabled')

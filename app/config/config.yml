@@ -1062,6 +1062,7 @@ fos_elastica:
                         nameRejected: { type: boolean }
                         photoRejected: { type: boolean }
                         brand: { type: text, analyzer: exact_lowercase_analyzer }
+                        productName: { type: text, analyzer: name_analyzer }
                         family: { analyzer: body_analyzer }
                         createdAt: { type: date }
                         changedAt: { type: date }

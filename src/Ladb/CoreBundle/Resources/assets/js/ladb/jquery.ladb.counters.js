@@ -42,6 +42,7 @@
                 that.updateBadge('knowledge-schools', counters.unlistedKnowledgeSchoolCount);
                 that.updateBadge('knowledge-books', counters.unlistedKnowledgeBookCount);
                 that.updateBadge('knowledge-softwares', counters.unlistedKnowledgeSoftwareCount);
+                that.updateBadge('knowledge-tools', counters.unlistedKnowledgeToolCount);
                 that.updateBadge('blog-posts', counters.unlistedBlogPostCount);
                 that.updateBadge('faq-questions', counters.unlistedFaqQuestionCount);
                 that.updateBadge('qa-questions', counters.unlistedQaQuestionCount);
@@ -53,6 +54,7 @@
 
                 that.updateBadge('catalogs',
                     parseInt(counters.unlistedKnowledgeWoodCount) +
+                    parseInt(counters.unlistedKnowledgeToolCount) +
                     parseInt(counters.unlistedKnowledgeBookCount) +
                     parseInt(counters.unlistedKnowledgeSoftwareCount) +
                     parseInt(counters.unlistedCollectionCollectionCount));
@@ -71,16 +73,17 @@
                     parseInt(counters.unlistedFindFindCount) +
                     parseInt(counters.unlistedHowtoHowtoCount) +
                     parseInt(counters.unlistedKnowledgeWoodCount) +
-                    parseInt(counters.unlistedKnowledgeProviderCount) +
-                    parseInt(counters.unlistedKnowledgeSchoolCount) +
+                    parseInt(counters.unlistedKnowledgeToolCount) +
                     parseInt(counters.unlistedKnowledgeBookCount) +
                     parseInt(counters.unlistedKnowledgeSoftwareCount) +
+                    parseInt(counters.unlistedCollectionCollectionCount) +
+                    parseInt(counters.unlistedKnowledgeProviderCount) +
+                    parseInt(counters.unlistedKnowledgeSchoolCount) +
                     parseInt(counters.unlistedBlogPostCount) +
                     parseInt(counters.unlistedFaqQuestionCount) +
                     parseInt(counters.unlistedQaQuestionCount) +
                     parseInt(counters.unlistedPromotionGraphicCount) +
                     parseInt(counters.unlistedWorkflowWorkflowCount) +
-                    parseInt(counters.unlistedCollectionCollectionCount) +
                     parseInt(counters.unlistedOfferOfferCount) +
                     parseInt(counters.unlistedEventEventCount)
                 );

@@ -304,11 +304,6 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.unique_school_validator }
     arguments: ['@doctrine.orm.entity_manager']
-  ladb_core.unique_tool_validator:
-    class: Ladb\CoreBundle\Validator\Constraints\UniqueToolValidator
-    tags:
-      - { name: validator.constraint_validator, alias: ladb_core.unique_tool_validator }
-    arguments: ['@doctrine.orm.entity_manager']
   ladb_core.unique_book_validator:
     class: Ladb\CoreBundle\Validator\Constraints\UniqueBookValidator
     tags:
