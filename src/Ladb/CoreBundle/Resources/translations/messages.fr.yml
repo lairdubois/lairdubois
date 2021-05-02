@@ -1139,7 +1139,7 @@ knowledge:
       entities: '[0,1]logiciel|]1,Inf]logiciels'
       addons: '[0,1]plugin|]1,Inf]plugins'
   tool:
-    description: Catalogue collaboratif de outils pour le travail du bois.
+    description: Catalogue collaboratif d'outils pour le travail du bois.
     new: Ajouter un outil
     list: Les outils
     nav: Outils
@@ -1154,7 +1154,7 @@ knowledge:
       description: Descriptif
       family: Famille
       power_supply: Alimentation
-      power: Puisssance
+      power: Puissance
       voltage: Tension
       weight: Poids
       docs: Documentations
@@ -1169,7 +1169,7 @@ knowledge:
       description: "Le **Descriptif** est ..."
       family: "La **Famille** est ..."
       power_supply: "L'**Alimentation** permet d'indiquer le mode d'alimentation électrique de l'outil."
-      power: "La **Puisssance** est la puissance en Watt (W) de l'outil."
+      power: "La **Puissance** est la puissance nominale en Watt (W) de l'outil."
       voltage: "La **Tension** est la tension en Volt (V) à fournir à l'outil."
       weight: "Le **Poids** est le poids en kilogrammes (kg) de l'outil."
       docs: "**Documentations** permet de préciser les liens vers les pages de documentation et d'aide à l'utilisation de l'outil."

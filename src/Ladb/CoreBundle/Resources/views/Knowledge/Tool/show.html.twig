@@ -3,8 +3,7 @@
 {% set entity = tool %}
 
 {% set pageTitle = tool.title %}
-{% set pageContentItemType = 'Tool' %}
-{% set pageType = 'tool' %}
+{% set pageContentItemType = 'Product' %}
 {% set pageSectionUrl = url('core_tool_list') %}
 {% set pageSectionName = 'knowledge.tool.list'|trans %}
 {% set pageDescription = tool.title %}
@@ -13,7 +12,7 @@
 {% set navSection = 'tools' %}
 {% set searchPath = path('core_tool_list') %}
 
-{% block headPrefix %}{{ parent() }} tool: http://ogp.me/ns/tool#{% endblock %}
+{% block headPrefix %}{{ parent() }} tool: http://ogp.me/ns/product#{% endblock %}
 
 {% block headOpenGraphMetas %}
     {{ parent() }}
