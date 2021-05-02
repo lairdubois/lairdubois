@@ -342,6 +342,10 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->name;
 	}
 
+	public function getNameExact() {
+		return $this->getName();
+	}
+
 	// NameValues /////
 
 	public function addNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $nameValue) {
