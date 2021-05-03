@@ -74,7 +74,7 @@
             <h4 class="ladb-heading">Outil</h4>
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_NAME', tool), 'data':tool.name, 'values':tool.nameValues, 'itemprop':'name' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_BRAND', tool), 'data':tool.brand, 'values':tool.brandValues, 'itemprop':'brand' } %}
-            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_PRODUCT_NAME', tool), 'data':tool.productName, 'values':tool.productNameValues } %}
+            {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_PRODUCT_NAME', tool), 'data':tool.productName, 'values':tool.productNameValues, 'itemprop':'sku' } %}
             {% include 'LadbCoreBundle:Knowledge:_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_DESCRIPTION', tool), 'data':tool.description, 'values':tool.descriptionValues, 'itemprop':'description' } %}
         </div>
         <div class="ladb-metas">
