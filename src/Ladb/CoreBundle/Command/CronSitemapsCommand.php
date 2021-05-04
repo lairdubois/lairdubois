@@ -132,6 +132,12 @@ EOT
 				'slugged'   => true,
 			),
 			array(
+				'className' => \Ladb\CoreBundle\Entity\Knowledge\Tool::CLASS_NAME,
+				'name'      => 'tool',
+				'section'   => 'knowledge-tools',
+				'slugged'   => true,
+			),
+			array(
 				'className' => \Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
 				'name'      => 'user',
 				'section'   => 'core-users',
