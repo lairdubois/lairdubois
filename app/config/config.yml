@@ -1059,7 +1059,7 @@ fos_elastica:
                 knowledge_tool:
                     properties:
                         name: { type: text, boost: 3, analyzer: name_analyzer }
-                        nameExact: { type: string, analyzer: exact_lowercase_analyzer }
+                        nameKeyword: { type: keyword }
                         nameRejected: { type: boolean }
                         photoRejected: { type: boolean }
                         brand: { type: string, analyzer: exact_lowercase_analyzer }

@@ -342,7 +342,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->name;
 	}
 
-	public function getNameExact() {
+	public function getNameKeyword() {
 		return $this->getName();
 	}
 

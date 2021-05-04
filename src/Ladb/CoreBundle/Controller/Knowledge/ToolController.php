@@ -222,7 +222,7 @@ class ToolController extends AbstractController {
 
 					case 'name':
 
-						$filter = new \Elastica\Query\Match('nameExact', $facet->value);
+						$filter = new \Elastica\Query\Match('nameKeyword', $facet->value);
 						$filters[] = $filter;
 
 						break;
@@ -279,6 +279,10 @@ class ToolController extends AbstractController {
 
 					case 'sort-popular-rating':
 						$sort = array( 'averageRating' => array( 'order' => $searchUtils->getSorterOrder($facet) ) );
+						break;
+
+					case 'sort-alphabetical':
+						$sort = array( 'nameKeyword' => array( 'order' => $searchUtils->getSorterOrder($facet, 'asc') ) );
 						break;
 
 					case 'sort-completion':
@@ -360,7 +364,7 @@ class ToolController extends AbstractController {
 
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
-		$searchableBrotherCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('nameExact', $tool->getName()) ), 'fos_elastica.index.ladb.knowledge_tool');
+		$searchableBrotherCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('nameKeyword', $tool->getName()) ), 'fos_elastica.index.ladb.knowledge_tool');
 		$searchableCreationCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('tools.label', $tool->getName()) ), 'fos_elastica.index.ladb.wonder_creation');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
