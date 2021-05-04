@@ -274,6 +274,9 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			// Pdf
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Pdf::TYPE:
 				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Pdf';
+			// Decimal
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Decimal::TYPE:
+				return '\Ladb\CoreBundle\Entity\Knowledge\Value\Decimal';
 
 			// Creation
 			case \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE:
@@ -403,6 +406,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Video::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity::TYPE:
 			case \Ladb\CoreBundle\Entity\Knowledge\Value\Pdf::TYPE:
+			case \Ladb\CoreBundle\Entity\Knowledge\Value\Decimal::TYPE:
 				$url = $router->generate('core_knowledge_value_'.$action, $params, $referenceType);
 				break;
 

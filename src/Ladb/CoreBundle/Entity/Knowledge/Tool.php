@@ -4,6 +4,7 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Decimal;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Pdf;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Video;
@@ -59,7 +60,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		Tool::FIELD_POWER_SUPPLY => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Filaire', 2 => 'Batterie')),
 		Tool::FIELD_POWER        => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'W'),
 		Tool::FIELD_VOLTAGE      => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'V'),
-		Tool::FIELD_WEIGHT       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'kg'),
+		Tool::FIELD_WEIGHT       => array(Tool::ATTRIB_TYPE => Decimal::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'kg'),
 		Tool::FIELD_DOCS         => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
 		Tool::FIELD_CATALOG_LINK => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array('excludedDomainPaterns' => array('/amazon./i', '/fnac./i', '/manomano./i'), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.')))),
 		Tool::FIELD_VIDEO        => array(Tool::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
@@ -165,7 +166,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="string", nullable=true, length=100)
 	 */
 	private $family;
 
@@ -178,7 +179,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(name="power_supply", type="text", nullable=true)
+	 * @ORM\Column(name="power_supply", type="integer", nullable=true)
 	 */
 	private $powerSupply;
 
@@ -191,7 +192,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $power;
 
@@ -204,7 +205,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $voltage;
 
@@ -217,12 +218,12 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="decimal", precision=10, scale=3, nullable=true)
 	 */
 	private $weight;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Integer", cascade={"all"})
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Decimal", cascade={"all"})
 	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_weight")
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
@@ -243,7 +244,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(name="catalog_link", type="text", nullable=true)
+	 * @ORM\Column(name="catalog_link", type="string", nullable=true, length=255)
 	 */
 	private $catalogLink;
 
@@ -755,14 +756,14 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	// WeightValues /////
 
-	public function addWeightValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $weightValue) {
+	public function addWeightValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Decimal $weightValue) {
 		if (!$this->weightValues->contains($weightValue)) {
 			$this->weightValues[] = $weightValue;
 		}
 		return $this;
 	}
 
-	public function removeWeightValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Integer $weightValue) {
+	public function removeWeightValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Decimal $weightValue) {
 		$this->weightValues->removeElement($weightValue);
 	}
 
