@@ -1059,12 +1059,12 @@ fos_elastica:
                 knowledge_tool:
                     properties:
                         name: { type: text, boost: 3, analyzer: name_analyzer }
-                        nameExact: { type: keyword, analyzer: exact_lowercase_analyzer }
+                        nameExact: { type: string, analyzer: exact_lowercase_analyzer }
                         nameRejected: { type: boolean }
                         photoRejected: { type: boolean }
-                        brand: { type: text, analyzer: exact_lowercase_analyzer }
+                        brand: { type: string, analyzer: exact_lowercase_analyzer }
                         productName: { type: text, analyzer: name_analyzer }
-                        family: { type: text, analyzer: exact_lowercase_analyzer }
+                        family: { type: string, analyzer: exact_lowercase_analyzer }
                         createdAt: { type: date }
                         changedAt: { type: date }
                         completion100: { type: integer }
