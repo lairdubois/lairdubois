@@ -33,6 +33,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_NAME = 'name';
 	const FIELD_PHOTO = 'photo';
 	const FIELD_MANUAL = 'manual';
+	const FIELD_ENGLISH_NAME = 'english_name';
 	const FIELD_PRODUCT_NAME = 'product_name';
 	const FIELD_BRAND = 'brand';
 	const FIELD_DESCRIPTION = 'description';
@@ -44,11 +45,13 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	const FIELD_DOCS = 'docs';
 	const FIELD_CATALOG_LINK = 'catalog_link';
 	const FIELD_VIDEO = 'video';
+	const FIELD_UTILIZATION = 'utilization';
 
 	public static $FIELD_DEFS = array(
 		Tool::FIELD_NAME         => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_FILTER_QUERY => '@name:"%q%"'),
 		Tool::FIELD_PHOTO        => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \Ladb\CoreBundle\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Tool::FIELD_MANUAL       => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_ENGLISH_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul nom anglais par proposition.')))),
 		Tool::FIELD_PRODUCT_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
 		Tool::FIELD_BRAND        => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
 		Tool::FIELD_DESCRIPTION  => array(Tool::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
@@ -60,6 +63,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		Tool::FIELD_DOCS         => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
 		Tool::FIELD_CATALOG_LINK => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array('excludedDomainPaterns' => array('/amazon./i', '/fnac./i', '/manomano./i'), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.')))),
 		Tool::FIELD_VIDEO        => array(Tool::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
+		Tool::FIELD_UTILIZATION  => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule utilisation par proposition.'))), Tool::ATTRIB_FILTER_QUERY => '@utilization:"%q%"'),
 	);
 
 	/**
@@ -119,6 +123,19 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
 	 */
 	private $brandValues;
+
+
+	/**
+	 * @ORM\Column(name="english_name", type="string", nullable=true)
+	 */
+	private $englishName;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_english_name")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $englishNameValues;
 
 
 	/**
@@ -252,6 +269,19 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $utilization;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Ladb\CoreBundle\Entity\Knowledge\Value\Text", cascade={"all"})
+	 * @ORM\JoinTable(name="tbl_knowledge2_tool_value_utilization")
+	 * @ORM\OrderBy({"moderationScore" = "DESC", "voteScore" = "DESC", "createdAt" = "DESC"})
+	 */
+	private $utilizationValues;
+
+
+	/**
 	 * @ORM\Column(name="review_count", type="integer")
 	 */
 	private $reviewCount = 0;
@@ -268,6 +298,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		$this->photoValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->manualValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->brandValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->englishNameValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->productNameValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->descriptionValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->familyValues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -278,6 +309,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		$this->docsValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->catalogLinkValues = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->videoValues = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->utilizationValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/////
@@ -482,6 +514,39 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getBrandValues() {
 		return $this->brandValues;
+	}
+
+	// EnglishName /////
+
+	public function setEnglishName($englishName) {
+		$this->englishName = $englishName;
+		$this->_updateTitle();
+		return $this;
+	}
+
+	public function getEnglishName() {
+		return $this->englishName;
+	}
+
+	// EnglishNameValues /////
+
+	public function addEnglishNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $englishName) {
+		if (!$this->englishNameValues->contains($englishName)) {
+			$this->englishNameValues[] = $englishName;
+		}
+		return $this;
+	}
+
+	public function removeEnglishNameValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $englishName) {
+		$this->englishNameValues->removeElement($englishName);
+	}
+
+	public function setEnglishNameValues($englishNameValues) {
+		$this->englishNameValues = $englishNameValues;
+	}
+
+	public function getEnglishNameValues() {
+		return $this->englishNameValues;
 	}
 
 	// ProductName /////
@@ -803,6 +868,38 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	public function getVideoValues() {
 		return $this->videoValues;
+	}
+
+	// Utilization /////
+
+	public function setUtilization($utilization) {
+		$this->utilization = $utilization;
+		return $this;
+	}
+
+	public function getUtilization() {
+		return $this->utilization;
+	}
+
+	// UtilizationValues /////
+
+	public function addUtilizationValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $utilizationValue) {
+		if (!$this->utilizationValues->contains($utilizationValue)) {
+			$this->utilizationValues[] = $utilizationValue;
+		}
+		return $this;
+	}
+
+	public function removeUtilizationValue(\Ladb\CoreBundle\Entity\Knowledge\Value\Text $utilizationValue) {
+		$this->utilizationValues->removeElement($utilizationValue);
+	}
+
+	public function setUtilizationValues($utilizationValues) {
+		$this->utilizationValues = $utilizationValues;
+	}
+
+	public function getUtilizationValues() {
+		return $this->utilizationValues;
 	}
 
 }

@@ -1149,6 +1149,7 @@ knowledge:
       name: Nom générique
       photo: Photo
       manual: Notice
+      english_name: Nom anglais
       product_name: Modèle
       brand: Marque
       description: Descriptif
@@ -1160,11 +1161,13 @@ knowledge:
       docs: Documentations
       catalog_link: Lien catalogue
       video: Vidéo
+      utilization: Utilisation
     help:
       name: "Le **Nom générique** est le nom usuel de l'outil. *(Exemple: Rabot, Scie plongeante, ...)*"
       photo: "La **Photo** est une photo complète de l'outil."
       manual: "La **Notice** est un fichier PDF numérisé ou fourni par le fabricant et décrivant le fonctionnement de l'outil."
       brand: "La **Marque** est est le nom du fabricant de l'outil."
+      english_name: "Le **Nom anglais** est le nom générique de l'outil traduit en anglais."
       product_name: "Le **Modèle** est le nom commercial attribué à l'outil par le fabricant."
       description: "Le **Descriptif** décrit succintement l'outil."
       family: "La **Famille** permet d'indiquer le type de l'outil."
@@ -1175,6 +1178,7 @@ knowledge:
       docs: "**Documentations** permet de préciser les liens vers les pages de documentation et d'aide à l'utilisation de l'outil."
       catalog_link: "Le **Lien catalogue** est le lien internet vers la page du catalogue du fabricant relative à l'outil."
       video: "La **Vidéo** permet de présenter l'outil."
+      utilization: "L'**Utilisation** est un domaine ou secteur dans lequel l'outil est employé *(ex: Menuiserie, Sculpture, ...)*."
     token:
       help: Saisissez un outil et cliquez sur la flèche pour l'ajouter
     form:
@@ -1184,6 +1188,7 @@ knowledge:
         legend: La **légende** vous permet d'apporter un complément d'information à la valeur du champ *%field%*.
         source: La **source** vous permet d'indiquer l'origine de votre information (connaissances personnelles, site web ou autre document référent).
         name: |
+          - Il doit être uniquement en français
           - Il ne doit pas inclure le modèle
           - Il ne doit pas inclure la marque
         photo: |
@@ -1191,6 +1196,7 @@ knowledge:
         manual: ~
         brand: |
           - Elle ne doit pas inclure le modèle
+        english_name: ~
         product_name: |
           - Il ne doit pas inclure la marque
         description: |
@@ -1210,6 +1216,7 @@ knowledge:
           - Les liens vers les sites de revendeurs/distributeurs sont **interdits**.
           - Les liens affiliés sont **interdits**.
         video: ~
+        utilization: ~
     choice:
       entities: '[0,1]outil|]1,Inf]outils'
   finish:

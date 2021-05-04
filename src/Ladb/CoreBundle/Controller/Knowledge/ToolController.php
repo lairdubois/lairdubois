@@ -252,6 +252,14 @@ class ToolController extends AbstractController {
 
 						break;
 
+					case 'utilization':
+
+						$filter = new \Elastica\Query\QueryString($facet->value);
+						$filter->setFields(array( 'utilization' ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'rejected':
 
 						$filter = new \Elastica\Query\BoolQuery();
@@ -303,7 +311,7 @@ class ToolController extends AbstractController {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'name^100', 'productName', 'brand', 'description' ));
+							$filter->setFields(array( 'name^100', 'englishName^50', 'productName^50', 'brand', 'description' ));
 							$filters[] = $filter;
 
 							$couldUseDefaultSort = false;
