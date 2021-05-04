@@ -303,7 +303,7 @@ class ToolController extends AbstractController {
 						if (is_null($facet->name)) {
 
 							$filter = new \Elastica\Query\QueryString($facet->value);
-							$filter->setFields(array( 'name^100', 'productName', 'brand' ));
+							$filter->setFields(array( 'name^100', 'productName', 'brand', 'description' ));
 							$filters[] = $filter;
 
 							$couldUseDefaultSort = false;

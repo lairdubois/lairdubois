@@ -1166,8 +1166,8 @@ knowledge:
       manual: "La **Notice** est un fichier PDF numérisé ou fourni par le fabricant et décrivant le fonctionnement de l'outil."
       brand: "La **Marque** est est le nom du fabricant de l'outil."
       product_name: "Le **Modèle** est le nom commercial attribué à l'outil par le fabricant."
-      description: "Le **Descriptif** est ..."
-      family: "La **Famille** est ..."
+      description: "Le **Descriptif** décrit succintement l'outil."
+      family: "La **Famille** permet d'indiquer le type de l'outil."
       power_supply: "L'**Alimentation** permet d'indiquer le mode d'alimentation électrique de l'outil."
       power: "La **Puissance** est la puissance nominale en Watt (W) de l'outil."
       voltage: "La **Tension** est la tension en Volt (V) à fournir à l'outil."
@@ -1197,6 +1197,7 @@ knowledge:
           **Ce descriptif doit rester purement encyclopédique.**
           - pas de d'avis personnels
           - pas de formulations publicitaires
+          - pas de liens
           - pas de tarifs, revendeurs, etc...
         family: ~
         power_supply: ~
