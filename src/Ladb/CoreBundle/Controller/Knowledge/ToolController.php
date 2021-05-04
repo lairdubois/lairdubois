@@ -377,7 +377,7 @@ class ToolController extends AbstractController {
 		$searchUtils = $this->get(SearchUtils::NAME);
 		$elasticaQueryUtils = $this->get(ElasticaQueryUtils::NAME);
 		$searchableBrotherCount = $searchUtils->searchEntitiesCount(array( new \Elastica\Query\Match('nameKeyword', $tool->getName()) ), 'fos_elastica.index.ladb.knowledge_tool');
-		$searchableCreationCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('tools.label', $tool->getName()) ), 'fos_elastica.index.ladb.wonder_creation');
+		$searchableCreationCount = $searchUtils->searchEntitiesCount(array( $elasticaQueryUtils->createShouldMatchPhraseQuery('tools.label', $tool->getTitle()) ), 'fos_elastica.index.ladb.wonder_creation');
 
 		$likableUtils = $this->get(LikableUtils::NAME);
 		$watchableUtils = $this->get(WatchableUtils::NAME);

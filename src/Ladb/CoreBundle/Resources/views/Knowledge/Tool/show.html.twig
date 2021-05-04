@@ -155,7 +155,7 @@
         <div class="ladb-meta{% if searchableCreationCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-creation ladb-icon-fixed-center"></i>
             {% if searchableCreationCount > 0 %}
-                <a href="{{ path('core_creation_list', { 'q':'@tools:"'~tool.name~'"'}) }}" rel="nofollow">
+                <a href="{{ path('core_creation_list', { 'q':'@tools:"'~tool.title~'"'}) }}" rel="nofollow">
             {% endif %}
                 <strong>{{ searchableCreationCount }}</strong>
                 <small>{{ 'wonder.creation.choice.entities'|transchoice(searchableCreationCount) }}</small>
