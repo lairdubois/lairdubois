@@ -133,6 +133,21 @@
         </div>
         {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':tool } %}
         {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':tool } %}
+        {% if tool.docs %}
+            <div class="ladb-btn">
+                <div class="btn-group" style="display: flex;">
+                    <a class="btn btn-default btn-expand btn-lg" style="flex: 1;" href="{{ tool.docs|split(',')[0] }}">{{ 'knowledge.tool.field.docs'|trans() }}</a>
+                    <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for doc in tool.docs|split(',') %}
+                            <li><a href="{{ doc }}" target="_blank" rel="noreferrer noopener">{{ doc|ladb_url_beautify|raw }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
