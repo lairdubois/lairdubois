@@ -233,7 +233,12 @@ class ToolController extends AbstractController {
 
 					case 'brand':
 
-						$filter = new \Elastica\Query\Match('brand', $facet->value);
+						if (strpos($facet->value, '*')) {
+							$filter = new \Elastica\Query\QueryString($facet->value);
+							$filter->setFields(array( 'brand' ));
+						} else {
+							$filter = new \Elastica\Query\Match('brand', $facet->value);
+						}
 						$filters[] = $filter;
 
 						break;
