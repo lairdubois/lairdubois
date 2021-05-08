@@ -1,0 +1,16 @@
+{% extends 'LadbCoreBundle:Common:_list-filterbar.part.html.twig' %}
+
+{% set filterPath = filterPath|default('core_howto_list_filter') %}
+{% set filterPathParameters = filterPathParameters|default({}) %}
+{% set baseFilterDefs = {
+    'recent':           { 'label':'Récentes', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'recent' }))) },
+    'popular':          { 'label':'Populaires', 'path':null,
+                            'subFilterDefs': {
+                                'popular-views':        { 'label':'Plus vues', 'icon':'eye', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-views' }))) },
+                                'popular-likes':        { 'label':'Préférées', 'icon':'like', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-likes' }))) },
+                                'popular-comments':     { 'label':'Plus commentées', 'icon':'comment', 'path':path(filterPath, (filterPathParameters|merge({ 'filter':'popular-comments' }))) },
+                            }
+                        },
+} %}
+{% set filterDefs = customFilterDefs is defined ? baseFilterDefs|merge(customFilterDefs) : baseFilterDefs %}
+
