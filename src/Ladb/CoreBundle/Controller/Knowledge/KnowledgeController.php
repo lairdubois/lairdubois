@@ -197,7 +197,7 @@ class KnowledgeController extends AbstractController {
 		$value = new $entityClass();
 		$value->setParentEntity($entity);
 		$value->setParentEntityField($field);    // Before form validation because it was used for the uniqueness
-		$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints, 'validation_groups' => array( 'mandatory' )));
+		$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints, 'validation_groups' => array( 'Default', 'mandatory' )));
 		$form->handleRequest($request);
 		if ($form->isValid()) {
 
@@ -246,7 +246,7 @@ class KnowledgeController extends AbstractController {
 
 			// Regenerate en empty form
 			$value = new $entityClass();
-			$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints));
+			$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints, 'validation_groups' => array( 'Default', 'mandatory' )));
 			$values = $propertyUtils->getValue($entity, $field.'_values');
 
 			$commentableUtils = $this->get(CommentableUtils::NAME);
