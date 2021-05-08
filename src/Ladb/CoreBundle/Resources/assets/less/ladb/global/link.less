@@ -15,9 +15,23 @@ a.ladb-link {
 
   }
 
-  &.ladb-link-intern:before, &.ladb-link-extern:before {
+  &.ladb-link-search:before, &.ladb-link-intern:before, &.ladb-link-extern:before {
     color: #999;
     margin-right: 2px;
+  }
+
+  &.ladb-link-search:before {
+    font-family: 'ladbicons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    font-size: 80%;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\e64b";
   }
 
   &.ladb-link-intern:before {

@@ -78,6 +78,10 @@ class LadbMarkdown extends Parser {
 		return preg_match('/^(?:https?:|)(?:\/\/)(?:[a-z]+.|)lairdubois.fr/i', $url);
 	}
 
+	private function _isSearchQueryUrl($url) {
+		return preg_match('/[?&]q=/i', $url);
+	}
+
 	private function _renderDecoratedLink($url, $text = null, $title = null) {
 		$href = htmlspecialchars($url, ENT_COMPAT | ENT_HTML401, 'UTF-8');
 		$textIsUrl = preg_match('/^(?:https?:|)(?:\/\/)/i', $text);
@@ -89,6 +93,7 @@ class LadbMarkdown extends Parser {
 			$title = htmlspecialchars($title, ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8');
 		}
 		$isLocalUrl = $this->_isLocalUrl($href);
+		$isSearchQueryUrl = $this->_isSearchQueryUrl($href);
 		if ($isLocalUrl && $decorated) {
 			try {
 
@@ -118,7 +123,7 @@ class LadbMarkdown extends Parser {
 		return '<a href="'.$href.'"'
 			.($isLocalUrl ? '' : ' target="_blank"  rel="noreferrer noopener"')
 			.(empty($title) ? '' : ' title="'.$title.'" data-tooltip="tooltip"')
-			.($decorated ? ' class="ladb-link ladb-link-'.($isLocalUrl ? 'intern' : 'extern').'"' : '')
+			.($decorated ? ' class="ladb-link ladb-link-'.($isSearchQueryUrl ? 'search' : ($isLocalUrl ? 'intern' : 'extern')).'"' : '')
 			.'><span>'.$text.'</span></a>';
 	}
 
