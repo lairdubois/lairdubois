@@ -574,7 +574,7 @@ EOT
 
 		// Check Providers /////
 
-		$output->writeln('<info>Checking Providers...</info>');
+		$output->writeln('<info>Checking providers...</info>');
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
@@ -604,7 +604,7 @@ EOT
 
 		// Check Schools /////
 
-		$output->writeln('<info>Checking Schools...</info>');
+		$output->writeln('<info>Checking schools...</info>');
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
@@ -634,7 +634,7 @@ EOT
 
 		// Check Books /////
 
-		$output->writeln('<info>Checking Books...</info>');
+		$output->writeln('<info>Checking books...</info>');
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
@@ -664,7 +664,7 @@ EOT
 
 		// Check Softwares /////
 
-		$output->writeln('<info>Checking Softwares...</info>');
+		$output->writeln('<info>Checking softwares...</info>');
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
@@ -690,7 +690,32 @@ EOT
 				$pictureCounters[$screenshot->getId()][1]++;
 			}
 		}
-		unset($books);
+		unset($softwares);
+
+		// Check Tools /////
+
+		$output->writeln('<info>Checking tools...</info>');
+
+		$queryBuilder = $om->createQueryBuilder();
+		$queryBuilder
+			->select(array( 's', 'mp' ))
+			->from('LadbCoreBundle:Knowledge\Software', 's')
+			->leftJoin('s.mainPicture', 'mp')
+		;
+
+		try {
+			$tools = $queryBuilder->getQuery()->getResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			$tools = array();
+		}
+
+		foreach ($tools as $tool) {
+			$mainPicture = $tool->getMainPicture();
+			if (!is_null($mainPicture)) {
+				$pictureCounters[$mainPicture->getId()][1]++;
+			}
+		}
+		unset($tool);
 
 		// Check Knowledge/Value/Pictures /////
 
@@ -769,7 +794,7 @@ EOT
 
 		// Check Tooks /////
 
-		$output->writeln('<info>Checking Tooks...</info>');
+		$output->writeln('<info>Checking tooks...</info>');
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
@@ -794,7 +819,7 @@ EOT
 
 		// Check Collections /////
 
-		$output->writeln('<info>Checking Collections...</info>');
+		$output->writeln('<info>Checking collections...</info>');
 
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
