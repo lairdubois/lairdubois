@@ -39,7 +39,7 @@ parameters:
     node:                           /usr/bin/node
     node_paths:                     [/usr/local/lib/node_modules/]
 
-    chromium:                       /urs/bin/chromium
+    chromium:                       /usr/bin/chromium
 
     google_api_key:                 YOUR_GOOGLE_API_KEY
 
