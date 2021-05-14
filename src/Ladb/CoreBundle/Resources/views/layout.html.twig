@@ -66,7 +66,7 @@
         {% endblock %}
     {% endembed %}
     {% if is_granted("ROLE_USER") %}
-        <div id="ladb_offcanvas_logged_user_nav" class="uk-offcanvas">
+        <div id="ladb_offcanvas_logged_user_nav" class="uk-offcanvas ladb-no-print">
             <div class="uk-offcanvas-bar uk-offcanvas-bar-flip">
                 <div class="uk-panel uk-margin-bottom-remove">
                     <h3 class="uk-panel-title">{% include 'LadbCoreBundle:Core/User:_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %} {{ app.user.displayname }}</h3>
@@ -93,7 +93,7 @@
             </div>
         </div>
     {% endif %}
-    <div id="ladb_offcanvas_leftbar" class="uk-offcanvas">
+    <div id="ladb_offcanvas_leftbar" class="uk-offcanvas ladb-no-print">
         <div class="uk-offcanvas-bar">
             <div class="uk-panel">
                 {% include 'LadbCoreBundle:Core/Search:_widget.part.html.twig' with { 'searchFormClasses':'ladb-search-expended' } %}

@@ -10,7 +10,7 @@
     };
 
     LadbAppendScrollToTopBtn.DEFAULTS = {
-        btn: '<a id="ladb_scrollto_btn_top" class="ladb-scrollto-btn ladb-scrollto-btn-top"><i class="ladb-icon-arrow-up"></i></a>',
+        btn: '<a id="ladb_scrollto_btn_top" class="ladb-scrollto-btn ladb-scrollto-btn-top ladb-no-print"><i class="ladb-icon-arrow-up"></i></a>',
         smoothScroll: true
     };
 
