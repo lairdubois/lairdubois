@@ -10,7 +10,7 @@
 {% set autoInit = autoInit|default(false) %}
 {% set hideMapArea = hideMapArea|default(false) %}
 
-<div class="ladb-map-box{% if classes is defined %} {{ classes }}{% endif %}{% if hideMapArea %} hidden{% endif %}">
+<div class="ladb-map-box{% if classes is defined %} {{ classes }}{% endif %}{% if hideMapArea %} hidden{% endif %} ladb-no-print">
     <div id="{{ mapAreaId }}" class="ladb-map-area">
         <div class="ladb-map-area-overlay ladb-cursor-preview"></div>
         <div class="ladb-map-area-controls">
