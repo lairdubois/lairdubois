@@ -28,13 +28,23 @@ function formatFileSize(fileSizeInBytes) {
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
 }
 var $lazy = null;
+function lazyLoadAll() {
+    if ($lazy) {
+        $lazy.loadAll();
+    }
+}
 function lazyLoadReset($container) {
+    if ($lazy) {
+        $lazy.destroy();
+        window.removeEventListener('beforeprint', lazyLoadAll);
+    }
     $lazy = $('[data-src]', $container).Lazy({
         effect: 'show',
         effectTime: 0,
         threshold: 0,
         chainable: false
     });
+    window.addEventListener('beforeprint', lazyLoadAll);
 }
 var lazyTimer = null;
 function lazyLoadUpdate() {
