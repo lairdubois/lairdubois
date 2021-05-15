@@ -174,7 +174,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255)
+	 * @ORM\Column(type="string", nullable=true, length=2048)
 	 */
 	private $website;
 
@@ -213,7 +213,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255, name="source_core_repository")
+	 * @ORM\Column(type="string", nullable=true, length=2048, name="source_core_repository")
 	 */
 	private $sourceCodeRepository;
 
@@ -226,7 +226,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255, name="source_docs")
+	 * @ORM\Column(type="text", nullable=true, name="source_docs")
 	 */
 	private $docs;
 

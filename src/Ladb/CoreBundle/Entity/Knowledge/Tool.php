@@ -244,7 +244,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(name="catalog_link", type="string", nullable=true, length=255)
+	 * @ORM\Column(name="catalog_link", type="text", nullable=true)
 	 */
 	private $catalogLink;
 

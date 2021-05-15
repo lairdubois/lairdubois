@@ -4,8 +4,8 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Entity\Knowledge\Value\BookIdentity;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Price;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Ladb\CoreBundle\Model\ReviewableInterface;
@@ -288,7 +288,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255)
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $catalogLink;
 

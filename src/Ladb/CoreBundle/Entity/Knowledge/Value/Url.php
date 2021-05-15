@@ -18,9 +18,9 @@ class Url extends BaseValue {
 	const TYPE_STRIPPED_NAME = 'url';
 
 	/**
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(type="string", length=2048)
 	 * @Assert\NotBlank(groups={"mandatory"})
-	 * @Assert\Length(max=255)
+	 * @Assert\Length(max=2048)
 	 * @Assert\Url()
 	 */
 	protected $data;

@@ -4,8 +4,8 @@ namespace Ladb\CoreBundle\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ladb\CoreBundle\Entity\Knowledge\Value\Url;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Text;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Integer;
 use Ladb\CoreBundle\Entity\Knowledge\Value\Picture;

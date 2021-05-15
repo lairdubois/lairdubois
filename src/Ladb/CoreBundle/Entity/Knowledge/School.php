@@ -106,7 +106,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255)
+	 * @ORM\Column(type="string", nullable=true, length=2048)
 	 */
 	private $website;
 
