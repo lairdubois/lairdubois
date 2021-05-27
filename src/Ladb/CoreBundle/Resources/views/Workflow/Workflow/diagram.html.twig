@@ -6,7 +6,7 @@
     {{ parent() }}
     {% stylesheets filter='less,?yui_css'
         '@LadbCoreBundle/Resources/assets/less/ladb/layout/workflow.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen,print" />
     {% endstylesheets %}
 {% endblock %}
 
