@@ -1,5 +1,4 @@
 
-{% set clickable = clickable is defined ? clickable : true %}
 {% set width = size|default('400') %}
 {% set height = size|default('400') %}
 {% set fullHtmlStyle = fullHtmlStyle|default(false) %}
@@ -7,12 +6,11 @@
 {% if fullHtmlStyle %}
     <img src="{{ value.data.webPath|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px;" alt="{{ entity.title|raw }}">
 {% else %}
-    {% if clickable %}
-        {% include 'LadbCoreBundle:Core/Picture:_img-link.part.html.twig' with { 'picture':value.data.thumbnail, 'dataGallery':value.voteScore < 0 ? '#blueimp-gallery' : '#blueimp-gallery-rejected', 'noLazyLoad':true } %}
-    {% else %}
+    <a href="{{ path('core_knowledge_value_view', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}" target="_blank" class="thumbnail ladb-cursor-preview">
         {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':value.data.thumbnail, 'imgClasses':'thumbnail', 'noLazyLoad':true } %}
-    {% endif %}
+    </a>
     <div class="text-center" style="margin-top: 10px;">
         <a href="{{ path('core_knowledge_value_download', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}" class="btn btn-primary btn-lg"><i class="ladb-icon-unpublish"></i> Télécharger</a>
+        <a href="{{ path('core_knowledge_value_view', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}" target="_blank" class="btn btn-default btn-lg"><i class="ladb-icon-eye"></i> Consulter</a>
     </div>
 {% endif %}

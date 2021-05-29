@@ -523,6 +523,37 @@ class KnowledgeController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/{entityType}/{entityId}/{field}/{id}/view", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+","id" = "\d+"}, name="core_knowledge_value_view")
+	 * @Template("LadbCoreBundle:Knowledge:value-view.html.twig")
+	 */
+	public function viewFieldValueAction(Request $request, $entityType, $entityId, $field, $id) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve related entity
+
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
+
+		// Process field
+
+		$fieldDef = $this->_retieveFieldDef($entity, $field);
+
+		$fieldType = $fieldDef[AbstractKnowledge::ATTRIB_TYPE];
+
+		$entityClass = $this->_computeEntityClass($fieldType);
+
+		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$value = $this->_retrieveValue($valueRepository, $id);
+		if (!$value instanceof Pdf) {
+			throw $this->createNotFoundException('Only Pdf values allowed to view (core_knowledge_value_view)');
+		}
+
+		return array(
+			'pdfPath' => $this->generateUrl('core_knowledge_value_download', array( 'entityType' => $entityType, 'entityId' => $entityId, 'field' => $field, 'id' => $id )),
+		);
+	}
+
+	/**
 	 * @Route("/{entityType}/{entityId}/{field}.xhr", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "[a-z_]+"}, name="core_knowledge_field_show")
 	 * @Template("LadbCoreBundle:Knowledge:field-show.html.twig")
 	 */

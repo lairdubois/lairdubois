@@ -1220,6 +1220,7 @@ knowledge:
     choice:
       entities: '[0,1]outil|]1,Inf]outils'
       contains_manuals: '[0,1]Cette fiche outil contient %count% notice|]1,Inf]Cette fiche outil contient %count% notices'
+      show_manuals: '[0,1]Consulter la notice|]1,Inf]Consulter les notices'
   finish:
     token:
       help: Saisissez une finition et cliquez sur la flèche pour l'ajouter
