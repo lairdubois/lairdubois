@@ -485,6 +485,12 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		return $this->manualValues;
 	}
 
+	// ManualCount /////
+
+	public function getManualCount() {
+		return $this->getManualValues()->count();
+	}
+
 	// Brand /////
 
 	public function setBrand($brand) {

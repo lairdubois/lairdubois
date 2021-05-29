@@ -1062,6 +1062,7 @@ fos_elastica:
                         nameKeyword: { type: keyword }
                         nameRejected: { type: boolean }
                         photoRejected: { type: boolean }
+                        manualCount: { type: integer }
                         brand: { type: string, analyzer: exact_lowercase_analyzer }
                         englishName: { type: text, analyzer: name_analyzer }
                         productName: { type: text, analyzer: name_analyzer }
