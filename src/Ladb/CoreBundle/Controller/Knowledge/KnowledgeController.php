@@ -513,9 +513,8 @@ class KnowledgeController extends AbstractController {
 		$response->headers->set('Content-Type', 'mime/type');
 		$response->headers->set('Content-Length', filesize($resource->getAbsolutePath()));
 		$response->headers->set('Content-Disposition', 'attachment;filename="lairdubois_'.$resource->getFilename().'"');
-		$response->headers->set('Expires', 0);
-		$response->headers->set('Cache-Control', 'no-cache, must-revalidate');
-		$response->headers->set('Pragma', 'no-cache');
+		$response->headers->set('Cache-Control', 'max-age=300');
+		$response->headers->set('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 30000));
 
 		$response->setContent($content);
 
