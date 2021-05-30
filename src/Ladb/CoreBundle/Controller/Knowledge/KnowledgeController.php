@@ -549,6 +549,9 @@ class KnowledgeController extends AbstractController {
 		}
 
 		return array(
+			'knowledge' => $entity,
+			'value' => $value,
+			'field' => $field,
 			'pdfPath' => $this->generateUrl('core_knowledge_value_download', array( 'entityType' => $entityType, 'entityId' => $entityId, 'field' => $field, 'id' => $id )),
 		);
 	}
