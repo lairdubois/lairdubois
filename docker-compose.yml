@@ -23,9 +23,11 @@ services:
   database:
     image: mariadb
     environment:
+      MYSQL_DATABASE: db_fr_lairdubois_www
       MYSQL_ROOT_PASSWORD: toor
     volumes:
-      - .docker/database:/var/lib/mysql
+      - db_data:/var/lib/mysql/data:rw
+      - ./docs/database:/docker-entrypoint-initdb.d
 
   elastic:
     image: elasticsearch:5.6
@@ -44,3 +46,6 @@ services:
     ports:
       - 1080:80
       - 1025:25
+
+volumes:
+  db_data:

@@ -6,8 +6,10 @@ help:
 clean:
 	@docker-compose down --remove-orphans
 
+clean.all: ## Kill containers and remove volumes
+	@docker-compose down --remove-orphans --volumes
+
 start: ## Initialize project & start all containers
-	mkdir -p .docker/database
 	@docker-compose up -d --build --force-recreate
 	@docker-compose exec app composer install -o -n
 	@docker-compose exec app bin/console doctrine:database:create --if-not-exists
@@ -15,6 +17,5 @@ start: ## Initialize project & start all containers
 	@docker-compose exec app bin/console fos:elastica:populate
 
 dev: clean ## Starts dev stack
-	sudo chmod -R 777 .docker/database
 	@docker-compose up -d --build --force-recreate
 	@docker-compose exec app bin/console fos:elastica:populate
