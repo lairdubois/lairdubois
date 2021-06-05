@@ -21,7 +21,7 @@ services:
       - ./:/var/www/dev.lairdubois.fr
 
   database:
-    image: mariadb
+    image: mariadb:10.3.27
     environment:
       MYSQL_DATABASE: db_fr_lairdubois_www
       MYSQL_ROOT_PASSWORD: toor
