@@ -14,6 +14,8 @@ start: ## Initialize project & start all containers
 	@docker-compose exec app composer install -o -n
 	@docker-compose exec app bin/console doctrine:database:create --if-not-exists
 	@docker-compose exec app bin/console doctrine:schema:update --force
+	@docker-compose exec app bin/console assetic:dump
+	@docker-compose exec app bin/console assets:install
 	@docker-compose exec app bin/console fos:elastica:populate
 
 dev: clean ## Starts dev stack
