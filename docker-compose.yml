@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: .docker/server/Dockerfile
+    volumes:
+      - ./web:/var/www/dev.lairdubois.fr/web
+    ports:
+      - 80:80
+    links:
+      - app
+
+  app:
+    build:
+      context: .
+      dockerfile: .docker/app/Dockerfile
+    working_dir: /var/www/dev.lairdubois.fr
+    depends_on:
+      - database
+    volumes:
+      - ./:/var/www/dev.lairdubois.fr
+
+  database:
+    image: mariadb:10.3.27
+    environment:
+      MYSQL_DATABASE: db_fr_lairdubois_www
+      MYSQL_ROOT_PASSWORD: toor
+    volumes:
+      - db_data:/var/lib/mysql/data:rw
+      - ./docs/database:/docker-entrypoint-initdb.d
+
+  elastic:
+    image: elasticsearch:5.6
+    environment:
+      - discovery.type=single-node
+
+  queue:
+    image: rabbitmq
+
+  memcached:
+    image: memcached
+
+  mail:
+    image: djfarrelly/maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    ports:
+      - 1080:80
+      - 1025:25
+
+volumes:
+  db_data:

@@ -3,8 +3,8 @@ parameters:
     database_host:                  localhost
     database_port:                  3306
     database_name:                  db_fr_lairdubois_www
-    database_user:                  YOUR_DATABASE_USER
-    database_password:              YOUR_DATABASE_PASSWORD
+    database_user:                  root
+    database_password:              toor
     database_path:                  null
 
     mailer_transport:               smtp
@@ -12,20 +12,20 @@ parameters:
     mailer_user:                    null
     mailer_password:                null
 
-    elasticsearch_host:             localhost
+    elasticsearch_host:             elastic
     elasticsearch_port:             9200
 
-    memcached_host:                 localhost
+    memcached_host:                 memcached
     memcached_port:                 11211
 
     websocket_host:                 127.0.0.1
     websocket_port:                 8080
     websocket_uri:                  wss://www.lairdubois.fr/ws
 
-    rabbitmq_host:                  localhost
+    rabbitmq_host:                  queue
     rabbitmq_port:                  5672
-    rabbitmq_user:                  YOUR_RABBITMQ_USER
-    rabbitmq_password:              YOUR_RABBITMQ_PASSWORD
+    rabbitmq_user:                  guest
+    rabbitmq_password:              guest
     rabbitmq_vhost:                 /
 
     locale:                         fr

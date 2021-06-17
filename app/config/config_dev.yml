@@ -45,3 +45,5 @@ assetic:
 
 swiftmailer:
     delivery_address: dev@lairdubois.fr
+    spool:
+        type: memory
