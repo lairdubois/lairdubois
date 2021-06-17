@@ -8,14 +8,16 @@ RUN apt-get update -y --fix-missing && apt-get install -y \
     libgmp-dev \
     libmemcached-dev \
     libmagickwand-dev --no-install-recommends \
+    libpng-dev \
     libzip-dev \
     memcached
 
 # Get composer
 COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 RUN pecl install apcu imagick memcached zip
-RUN docker-php-ext-install exif gmp opcache pdo pdo_mysql sockets zip
+RUN docker-php-ext-install exif gd gmp opcache pdo pdo_mysql sockets zip
 RUN docker-php-ext-enable apcu imagick memcached
 
 # Increase memory limit
