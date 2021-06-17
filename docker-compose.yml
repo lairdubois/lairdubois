@@ -17,6 +17,8 @@ services:
       context: .
       dockerfile: .docker/app/Dockerfile
     working_dir: /var/www/dev.lairdubois.fr
+    depends_on:
+      - database
     volumes:
       - ./:/var/www/dev.lairdubois.fr
 
