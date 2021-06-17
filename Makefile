@@ -17,6 +17,7 @@ start: ## Initialize project & start all containers
 	@docker-compose exec app bin/console assetic:dump
 	@docker-compose exec app bin/console assets:install
 	@docker-compose exec app bin/console fos:elastica:populate
+	@docker-compose exec app chown -R www-data:www-data var
 
 dev: clean ## Starts dev stack
 	@docker-compose up -d --build --force-recreate
