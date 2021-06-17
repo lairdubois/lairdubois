@@ -17,7 +17,9 @@ start: ## Initialize project & start all containers
 	@docker-compose exec app bin/console assetic:dump
 	@docker-compose exec app bin/console assets:install
 	@docker-compose exec app bin/console fos:elastica:populate
-	@docker-compose exec app chown -R www-data:www-data var
+	@docker-compose exec app openssl genrsa -out keys/private.pem 1024
+	@docker-compose exec app openssl rsa -in keys/private.pem -outform PEM -pubout -out keys/public.pem
+	@docker-compose exec app chown -R www-data:www-data keys uploads var
 
 dev: clean ## Starts dev stack
 	@docker-compose up -d --build --force-recreate
