@@ -11,6 +11,7 @@ framework:
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
+    trusted_hosts: ['^(dev|www)\.lairdubois\.fr$']
     assets:
         version:    "20210529"
         version_format: '%%s?v=%%s'
