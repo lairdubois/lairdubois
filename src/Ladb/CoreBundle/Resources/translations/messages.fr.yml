@@ -253,7 +253,7 @@ wonder:
     other_from: Autres ateliers de
     similar: Voir aussi
     linked_to: Cet atelier est associé à
-    new_warning: Un <strong>atelier</strong> est un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>.
+    new_warning: Un <strong>atelier</strong> est un lieu ou un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>. Est attendu ici la présentation du lieu, de son agencement ou de sa machinerie. L'entreprise ou ce qui peut y être fait ne doit pas être présenté ici.
     converttocreation: Convertir en création
     converttohowto: Convertir en pas à pas
     form:
