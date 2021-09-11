@@ -15,7 +15,7 @@
         </div>
         <div class="ladb-flex-footer">
             {% include 'LadbCoreBundle:Offer/Offer:_price.part.html.twig' %}
-            <span style="font-style: italic;">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
+            <span style="font-style: italic;{% if offer.category == 2 %} background-color: #cc197c; color: #fff; padding: 2px 10px; border-radius: 4px;{% endif %}">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
             {% if offer.location is defined and offer.location is not null %}
                 <div>
                     {% include 'LadbCoreBundle:Offer/Offer:_location.part.html.twig' %}
