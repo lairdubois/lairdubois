@@ -1,0 +1,7 @@
+{% extends ':email-layout.txt.twig' %}
+
+{% block content %}
+    {% for row in rows %}
+        {% block rowContent %}{% endblock %}
+    {% endfor %}
+{% endblock %}

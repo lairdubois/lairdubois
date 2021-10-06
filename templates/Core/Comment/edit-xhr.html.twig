@@ -1,0 +1,23 @@
+{% form_theme form 'Common/_form-theme.twig.twig' %}
+
+{# set comment #}
+{# set mentionStrategy #}
+
+{% set noLazyLoad = true %}
+{% set formSection = 'ladb_comment_'~comment.entityType~'_'~comment.entityId~'_edit' %}
+
+<div class="ladb-edit">
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'sortable':true } %}
+    {% embed 'Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_update', { 'id':comment.id }), 'showButtons':true } %}
+        {% block buttons %}
+            <a href="#" class="btn btn-default ladb-comment-cancel-edit">{{ 'default.cancel'|trans() }}</a>
+            {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
+        {% endblock %}
+    {% endembed %}
+    <script>
+        setupTextareas();
+        $("#{{ form.body.vars.id }}")
+            .markdown({ autofocus:true })
+            .ladbTextcompletify({ maxCount: 5, mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}', mentionStrategy: {{ mentionStrategy|raw }} })
+    </script>
+</div>

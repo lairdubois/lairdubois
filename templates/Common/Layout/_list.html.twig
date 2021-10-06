@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
+
+{# set masonry (facultative) #}
+{# set masonryWide (facultative) #}
+{# set hideHeaderContainer (facultative) #}
+{# set countableEntityList (facultative) #}
+
+{% set listedEntityType = (countableEntityList|default(false) and entities and entities|length > 0) ? entities[0].type : null %}
+
+{% block bodyJavascriptsInlineReady %}
+    {{ parent() }}
+    {{ block('autopagerScriptCall') }}
+    setupTooltips();
+{% endblock %}
+
+{% block bodyHeaderContainer %}{% if hideHeaderContainer is defined and not hideHeaderContainer %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block bodyContainerContent %}
+    {{ block('autopagerContainer') }}
+{% endblock %}

@@ -1,0 +1,54 @@
+{% apply spaceless %}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    {% for url in urls %}
+        <url>
+            <loc>{{ url.loc }}</loc>
+            <lastmod>{{ url.lastmod }}</lastmod>
+            <changefreq>{{ url.changefreq }}</changefreq>
+            {% if url.images is not empty %}
+                {% for image in url.images %}
+                    <image:image>
+                        <image:loc>{{ image.loc }}</image:loc>
+                        {% if image.caption is not empty %}
+                            <image:caption><![CDATA[{{ image.caption }}]]></image:caption>
+                        {% endif %}
+                        {% if url.license is not null %}
+                            <image:license><![CDATA[{{ url.license.contentUrl }}]]></image:license>
+                        {% endif %}
+                    </image:image>
+                {% endfor %}
+            {% endif %}
+            {% if url.videos is not empty %}
+                {% for video in url.videos %}
+                    <video:video>
+                        <video:thumbnail_loc><![CDATA[{{ video.thumbnail_loc }}]]></video:thumbnail_loc>
+                        <video:title><![CDATA[{{ video.title }}]]></video:title>
+                        <video:description><![CDATA[{{ video.description }}]]></video:description>
+                        {% if video.content_loc is not empty %}
+                            <video:content_loc><![CDATA[{{ video.content_loc }}]]></video:content_loc>
+                        {% endif %}
+                        <video:player_loc allow_embed="Yes"><![CDATA[{{ video.player_loc }}]]></video:player_loc>
+                        <video:duration>{{ video.duration }}</video:duration>
+                        {% if video.rating is not empty %}
+                            <video:rating>{{ video.rating }}</video:rating>
+                        {% endif %}
+                        {% if video.view_count is not empty %}
+                            <video:view_count>{{ video.view_count }}</video:view_count>
+                        {% endif %}
+                        {% if video.publication_date is not empty %}
+                            <video:publication_date>{{ video.publication_date }}</video:publication_date>
+                        {% endif %}
+                        {% if video.category is not empty %}
+                            <video:category>{{ video.category }}</video:category>
+                        {% endif %}
+                        {% if video.uploader is not empty %}
+                            <video:uploader>{{ video.uploader }}</video:uploader>
+                        {% endif %}
+                    </video:video>
+                {% endfor %}
+            {% endif %}
+        </url>
+    {% endfor %}
+</urlset>
+{% endapply %}

@@ -1,0 +1,26 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set donations #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for donation in donations %}
+        <div class="ladb-donation-row ladb-list-row">
+            <div class="ladb-donation-row-left">
+                <div class="media">
+                    <div class="media-left">
+                        {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':donation.user } %}
+                    </div>
+                    <div class="media-body">
+                        {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':donation.user } %}{% include 'Common/_age.part.html.twig' with { 'entity':donation } %}
+                        <div class="ladb-ref">N° de don: <span>{{ donation.hashid }}</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ladb-donation-row-right">
+                <div class="ladb-amount ladb-amount-lg">{{ donation.amountEur|number_format(2, ',', ' ') }}€</div>
+                <div class="ladb-fee">Frais: <span class="ladb-amount">{{ donation.feeEur|number_format(2, ',', ' ') }}€</span></div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

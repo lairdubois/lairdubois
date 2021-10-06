@@ -1,0 +1,13 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set books #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set books = entities %}{% endif %}
+
+{% block items %}
+    {% for book in books %}
+        {% include 'Knowledge/Book/_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

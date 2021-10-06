@@ -1,0 +1,14 @@
+{# set activity #}
+{# set icon (facultative) #}
+{# set activityScrollToId (facultative) #}
+{# set activityShowPath (facultative) #}
+
+<div id="ladb_activity_{{ activity.id }}" class="ladb-activity-row"{% if activitiesHidden is defined and activitiesHidden %} style="display: none;"{% endif %}>
+    {% if activityScrollToId is defined %}
+        <a href="#" class="ladb-btn-action" onclick="$('#{{ activityScrollToId }}').ladbScrollTo(event, { onAfterHighlight: true });"><i class="ladb-icon-arrow-up"></i></a>
+    {% elseif activityShowPath is defined %}
+        <a href="{{ activityShowPath }}" class="ladb-btn-action"><i class="ladb-icon-arrow-right"></i></a>
+    {% endif %}
+    <div class="ladb-icon">{% if icon is defined %}<i class="ladb-icon-{{ icon }}"></i>{% endif %}</div>
+    <div class="ladb-body">{% include 'Core/User:_displayname-link.part.html.twig' with { 'user':activity.user, 'noMicrodata':true } %} {% block body %}{% endblock %}.{% include 'Common/_age.part.html.twig' with { 'entity':activity, 'noMicrodata':true } %}</div>
+</div>

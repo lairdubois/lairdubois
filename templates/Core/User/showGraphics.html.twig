@@ -1,0 +1,41 @@
+{% extends 'Core/User:_show-list.html.twig' %}
+
+{% set masonry = true %}
+{% set masonryWide = false %}
+
+{% block bodyContainerContent %}
+    {% if graphics.count == 0 and filter != 'draft' %}
+        <div class="alert alert-info ladb-margin-top">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                <p>Vous n'avez pas encore publié de <strong>graphique</strong> !</p>
+                <p><a href="{{ path('core_promotion_graphic_new') }}" class="btn btn-primary"><i class="ladb-icon-plus"></i> {{ 'promotion.graphic.new'|trans() }}</a></p>
+            {% else %}
+                <strong>{{ user.username }}</strong> n'a pas encore publié de graphisme.
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'Promotion/Graphic:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_user_show_graphics_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% set customFilterDefs = {
+                'draft':    { 'label':('default.choice.draft'|trans({'count': 2})|capitalize), 'path':path('core_user_show_graphics_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
+            } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">
+                    {% if filter == 'draft' and isDraftVisible %}
+                        {{ user.meta.privateGraphicCount~' '~('default.choice.draft'|transchoice(user.meta.privateGraphicCount)) }}
+                    {% elseif filter|slice(0,4) == 'type' %}
+                        {{ graphics.count~' '~('promotion.graphic.choice.entities'|transchoice(graphics.count)) }}
+                    {% else %}
+                        {{ user.meta.publicGraphicCount }} {{ 'promotion.graphic.choice.entities'|transchoice(user.meta.publicGraphicCount) }}{% if isDraftVisible and user.meta.privateGraphicCount > 0 %} (+{{ user.meta.privateGraphicCount~' '~('default.choice.draft'|transchoice(user.meta.privateGraphicCount)) }}){% endif %}
+                    {% endif %}
+                </span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Promotion/Graphic:_list-n.part.html.twig' %}
+{% endblock %}

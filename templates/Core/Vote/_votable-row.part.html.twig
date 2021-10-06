@@ -1,0 +1,22 @@
+{# vote #}
+{# parentEntity #}
+{# votable #}
+
+<div class="ladb-votable">
+    <div class="media">
+        <div class="media-left">
+            <i class="ladb-icon-arrow-{% if vote.score > 0 %}up ladb-color-positive{% else %}down ladb-color-negative{% endif %}"></i>
+        </div>
+        <div class="media-body">
+            {% if votable.type >= constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE')
+                and votable.type < constant('\\Ladb\\CoreBundle\\Entity\\Wonder\\Creation::TYPE') %}
+                <div class="row">
+                    {% include 'Knowledge/_value-votable-thumbnail.part.html.twig' with { 'knowledge':parentEntity, 'value':votable } %}
+                </div>
+            {% else %}
+                <div class="ladb-heading"><i class="ladb-icon-{{ ladb_entity_type_icon(votable) }}"></i> <a href="{{ ladb_entity_url_action(votable) }}">{{ votable.title }}</a></div>
+                <div class="ladb-subheading">{% include 'Common/_author.part.html.twig' with { 'entity':votable } %}</div>
+            {% endif %}
+        </div>
+    </div>
+</div>

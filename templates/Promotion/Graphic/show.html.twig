@@ -1,0 +1,88 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% set entity = graphic %}
+
+{% set pageSectionUrl = url('core_promotion_graphic_list') %}
+{% set pageSectionName = 'promotion.graphic.list'|trans %}
+
+{% set navSection = 'promotion' %}
+{% set searchPath = path('core_promotion_graphic_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == graphic.user.id %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header:_entity-show-header.part.html.twig' %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if graphic.isDraft %}
+        {% include 'Promotion/Graphic:_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-graphic">
+        {% include 'Core/Picture/_img-link.part.html.twig' with { 'picture':graphic.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':graphic.title } %}
+        <div class="ladb-body ladb-margin-top" itemprop="articleBody">
+            {{ graphic.htmlBody|raw }}
+        </div>
+        {% if graphic.updatedAt > graphic.createdAt %}
+            {% include 'Common/_updated-age.part.html.twig' with { 'entity':graphic } %}
+        {% endif %}
+    </div>
+    {% if not permissionContext.isOwner %}
+        {% include 'Common/_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% include 'Core/Comment:_widget.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta{% if graphic.downloadCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-unpublish ladb-icon-fixed-center"></i>
+            <strong>{{ graphic.downloadCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'default.choice.downloads'|transchoice(graphic.downloadCount) }}</small>
+            <meta itemprop="interactionCount" content="UserDownloads:{{ graphic.downloadCount }}"/>
+        </div>
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+        <div class="ladb-meta">
+            <span class="pull-right">
+                {% include 'Core/Resource:_meta-kind-'~graphic.resource.kind~'.part.html.twig' %}
+            </span>
+            <span><i class="ladb-icon-info ladb-icon-fixed-center"></i>&nbsp;Format</span>
+        </div>
+        <div class="ladb-meta">
+            <span class="pull-right">{{ graphic.zipArchiveSize|ladb_file_size_format }}</span>
+            <span><i class="ladb-icon-weight ladb-icon-fixed-center"></i>&nbsp;Taille</span>
+        </div>
+        <div class="ladb-btn">
+            <a href="{{ path('core_promotion_graphic_download', { 'id':graphic.id }) }}" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-unpublish ladb-icon-lg"></i> {{ 'promotion.graphic.download'|trans() }}</a>
+        </div>
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+    </div>
+    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':graphic.tags, 'type':'graphics' } %}
+    {% include 'Core/License:_metas.part.html.twig' with { 'license':graphic.license } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if similarGraphics is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('promotion.graphic.similar')|trans() }}
+            </div>
+            <div class="panel-body row">
+                {% for similarGraphic in similarGraphics %}
+                    <div class="col-xs-6">
+                        {% include 'Promotion/Graphic:_thumbnail-link.part.html.twig' with { 'graphic':similarGraphic, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

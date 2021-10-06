@@ -1,0 +1,199 @@
+{% extends 'Knowledge/_show.html.twig' %}
+
+{% set entity = software %}
+
+{% set pageTitle = software.name %}
+{% set pageContentItemType = 'SoftwareApplication' %}
+{% set pageSectionUrl = url('core_software_list') %}
+{% set pageSectionName = 'knowledge.software.list'|trans %}
+{% if software.description %}
+    {% set pageDescription = software.description|striptags|truncate(200, true, '...') %}
+{% else %}
+    {% set pageDescription = software.name %}
+{% endif %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set navSection = 'softwares' %}
+{% set searchPath = path('core_software_list') %}
+
+{% block headPrefix %}{{ parent() }} software: http://ogp.me/ns/software#{% endblock %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+{% endblock %}
+
+{% block headOpenGraphArticleMetas %}{% endblock %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/jquery-barrating/ladb-stars.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyMetas %}
+    {{ parent() }}
+    <meta itemprop="applicationCategory" content="Woodworking, Menuiserie"/>
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-barrating/jquery.barrating.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Review Widget #}
+            $('.ladb-review-widget').ladbReviewWidget();
+
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+        {% set headingClasses = software.identityRejected ? 'ladb-strikethrough' : null %}
+        {% block subheadingInner %}
+            {% if software.isAddOn %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.software.addon_of'|trans() }} {{ software.hostSoftwareName }}"><i class="ladb-icon-addon ladb-icon-lg"></i></span>&nbsp;
+            {% endif %}
+            {% if software.authors %}<span class="ladb-subblock">créé par {% for author in software.authors|split(',') %}<a href="{{ path('core_software_list') }}?q=@authors:%22{{ author }}%22">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</span> {% endif %}
+            {% if software.publisher %}<span class="ladb-subblock{% if software.authors %} ladb-horizontal-separator-left{% endif %}"><em>{{ software.publisher }}</em></span>{% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% include 'Knowledge/_completion-panel.part.html.twig' %}
+    <div class="ladb-knowledge-showcase row">
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':software, 'wide':true, 'field':constant('FIELD_ICON', software), 'picture':software.icon, 'values':software.iconValues, 'pictureBoxClasses':(software.iconRejected ? 'ladb-box-barred' : null), 'itemprop':'image' } %}
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':software, 'wide':true, 'field':constant('FIELD_SCREENSHOT', software), 'picture':software.screenshot, 'values':software.screenshotValues, 'itemprop':'screenshot' } %}
+    </div>
+    <div>
+        {% if hostSoftware %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Ce logiciel est un plugin pour <a href="{{ ladb_entity_url_action(hostSoftware) }}">{{ hostSoftware.name }}</a>.</span>
+                </div>
+            </div>
+        {% elseif searchableAddonCount > 0 %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Ce logiciel compte <a href="{{ path('core_software_list', { 'q':'@addon:"'~software.name~'"'}) }}" rel="nofollow"><strong>{{ searchableAddonCount }}</strong> {{ 'knowledge.software.choice.addons'|transchoice(searchableAddonCount) }}</a> au catalogue.</span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Distribution</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_WEBSITE', software), 'data':software.website, 'values':software.websiteValues, 'itemprop':'url' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_PRICINGS', software), 'data':software.pricings, 'values':software.pricingsValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LICENSE_TYPE', software), 'data':software.licenseType, 'values':software.licenseTypeValues, 'itemprop':'license' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_OPEN_SOURCE', software), 'data':software.openSource, 'values':software.openSourceValues } %}
+            {% if software.sourceCodeRepositoryValues is not empty or software.opensource %}
+                {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SOURCE_CODE_REPOSITORY', software), 'data':software.sourceCodeRepository, 'values':software.sourceCodeRepositoryValues, 'disabled':(not software.opensource), 'indented':true } %}
+            {% endif %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Ressources</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_DOCS', software), 'data':software.docs, 'values':software.docsValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_VIDEO', software), 'data':software.video, 'values':software.videoValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Caractéristiques</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_IDENTITY', software), 'data':software.identity, 'values':software.identityValues, 'itemprop':'name' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_AUTHORS', software), 'data':software.authors, 'values':software.authorsValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_PUBLISHER', software), 'data':software.publisher, 'values':software.publisherValues } %}
+{#            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LAST_VERSION', software), 'data':software.lastVersion, 'values':software.lastVersionValues, 'itemprop':'softwareVersion' } %}#}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_DESCRIPTION', software), 'data':software.description, 'values':software.descriptionValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_OPERATING_SYSTEMS', software), 'data':software.operatingSystems, 'values':software.operatingSystemsValues, 'itemprop':'operatingSystem' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_LANGUAGES', software), 'data':software.languages, 'values':software.languagesValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_FEATURES', software), 'data':software.features, 'values':software.featuresValues, 'itemprop':'featureList' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':software, 'field':constant('FIELD_SUPPORTED_FILES', software), 'data':software.supportedFiles, 'values':software.supportedFilesValues } %}
+        </div>
+        {% include 'Knowledge/_disclaimer-panel.part.html.twig' %}
+        {% if software.updatedAt > software.createdAt %}
+            {% include 'Common/_updated-age.part.html.twig' %}
+        {% endif %}
+        <div style="padding: 10px; text-align: center;">
+            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+        </div>
+        {% include 'Core/Review/_widget.part.html.twig' %}
+        {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.software.comment_alert' } %}
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
+            {% if software.contributorCount > 0 %}
+                <a href="{{ path('core_knowledge_contributors', { 'entityType':software.type, 'entityId':software.id }) }}">
+            {% endif %}
+                <strong>{{ software.contributorCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'user.choice.contributors'|transchoice(software.contributorCount) }}</small>
+            {% if software.contributorCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':software } %}
+        {% include 'Core/Review/_meta-counter.part.html.twig' with { 'entity':software } %}
+        {% if software.website %}
+            <div class="ladb-btn">
+                <a href="{{ software.website }}" target="_blank" rel="noreferrer noopener" class="btn btn-primary btn-expand btn-lg"><i class="ladb-icon-globe"></i> {{ 'knowledge.software.field.website'|trans() }}</a>
+            </div>
+        {% endif %}
+        {% if software.docs %}
+            <div class="ladb-btn">
+                <div class="btn-group" style="display: flex;">
+                    <a class="btn btn-default btn-expand btn-lg" style="flex: 1;" href="{{ software.docs|split(',')[0] }}">{{ 'knowledge.software.field.docs'|trans() }}</a>
+                    <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for doc in software.docs|split(',') %}
+                            <li><a href="{{ doc }}" target="_blank" rel="noreferrer noopener">{{ doc|ladb_url_beautify|raw }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% if hostSoftware %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-software ladb-icon-fixed-center"></i>
+                <a href="{{ ladb_entity_url_action(hostSoftware) }}">
+                    <strong>1</strong>
+                    <small>{{ 'knowledge.software.choice.entities'|transchoice(1) }}</small>
+                </a>
+            </div>
+        {% elseif searchableAddonCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-addon ladb-icon-fixed-center"></i>
+                <a href="{{ path('core_software_list', { 'q':'@addon:"'~software.name~'"'}) }}" rel="nofollow">
+                    <strong>{{ searchableAddonCount }}</strong>
+                    <small>{{ 'knowledge.software.choice.addons'|transchoice(searchableAddonCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if searchablePlanCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
+                <a href="{{ path('core_plan_list', { 'q':'@file-extension:"'~software.supportedFiles~'"'}) }}" rel="nofollow">
+                    <strong>{{ searchablePlanCount }}</strong>
+                    <small>{{ 'wonder.plan.choice.entities'|transchoice(searchablePlanCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

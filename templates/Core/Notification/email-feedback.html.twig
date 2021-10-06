@@ -1,0 +1,38 @@
+{% extends 'Core/Notification:_email.html.twig' %}
+
+{# set row #}
+
+{% block rowContent %}
+    <p style="margin: 15px 0 5px 0;">
+        <strong>{{ row.actorUser.displayname }}</strong> a ajouté un retour d'expérience sur {{ ('notification.'~(row.entity.user is defined and row.entity.user == recipientUser ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(row.entity))|trans() }} <em>{{ row.entity.title|raw }}</em>.
+    </p>
+    <table cellspacing="10" cellpadding="0">
+        <tbody>
+        {% include 'Common/_entity-email-row.part.html.twig' with { 'entity':row.entity } %}
+        </tbody>
+    </table>
+    <p style="margin: 5px 0 5px 0;">
+        <table cellpadding="0" cellspacing="10" border="0" width="100%">
+            <tbody>
+            <tr>
+                <td width="32" valign="top">
+                    <img src="{{ (row.actorUser.avatar ? row.actorUser.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32">
+                </td>
+                <td>
+                    <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none; font-weight: bold;">{{ row.actorUser.displayname }}</a>
+                    <p style="margin: 5px 0 0 0; padding: 0;">
+                        <strong>{{ row.feedback.title|raw }}</strong>
+                        {% for block in row.feedback.bodyBlocks %}
+                            {% include 'Core/Block:_email-'~block.strippedName~'.part.html.twig' %}
+                        {% endfor %}
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td height="30"><a href="{{ ladb_entity_url_action(row.feedback) }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Voir le retour d'expérience</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+{% endblock %}

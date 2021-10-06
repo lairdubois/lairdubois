@@ -1,0 +1,15 @@
+{% use 'Common/Modal:_modal.blocks.html.twig' %}
+
+{# set id #}
+{# set title #}
+{# set embeddedBody (facultative) #}
+{# set bodyClasses (facultative) #}
+{# set appendTo (facultative) #}
+
+{{ block('modal') }}
+{% if appendTo is defined %}
+    <script>
+        $("#{{ id }}").appendTo("{{ appendTo }}");
+    </script>
+{% endif %}
+

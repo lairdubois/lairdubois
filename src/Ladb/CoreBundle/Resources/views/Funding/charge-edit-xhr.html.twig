@@ -1,8 +1,0 @@
-{% extends 'LadbCoreBundle:Funding:_charge-row-form.html.twig' %}
-
-{% set actionPath = path('core_funding_admin_charge_update', { 'id':charge.id }) %}
-
-{% block buttons %}
-    {{ parent() }}
-    <button class="btn btn-danger pull-right ladb-charge-delete-btn" data-href="{{ path('core_funding_admin_charge_delete', { 'id':charge.id }) }}"><i class="ladb-icon-delete"></i> Supprimer</button>
-{% endblock %}

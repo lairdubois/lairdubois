@@ -1,0 +1,34 @@
+{% extends 'Common/Layout/_form.html.twig' %}
+
+{% set pageTitle = 'youtook.edit'|trans() %}
+{% set formAction = path('core_youtook_update', { 'id':took.id }) %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'formSection':'mainPicture', 'fieldId':form.mainPicture.vars.id, 'maxPictureCount':1, 'editable':false } %}
+{% endblock %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'youtook.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_youtook_show', { 'id':took.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sidenav %}
+    {% include 'Common/_form-sidenav-title.part.html.twig' %}
+    {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'formSection':'mainPicture', 'title':('default.thumbnail'|trans()) } %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            {{ 'youtook.new_warning'|trans()|raw }}
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('youtook.form.help.title'|trans()) } %}
+    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'formSection':'mainPicture', 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.thumbnail'|trans()), 'help':('youtook.form.help.thumbnail'|trans()), 'hideTextOverlayWarning':true, 'editable':false } %}
+{% endblock %}

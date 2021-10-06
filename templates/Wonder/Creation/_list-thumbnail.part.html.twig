@@ -1,0 +1,17 @@
+{% extends 'Wonder:_wonder-list-thumbnail.part.html.twig' %}
+
+{% set wonder = creation %}
+
+{% block entityMetas %}
+    {% include 'Wonder/Creation/_linkto-entity-metas.part.html.twig' %}
+    {{ parent() }}
+    {% if entity.feedbackCount > 0 %}
+        <li class="ladb-counter ladb-color-feedback"><i class="ladb-icon-feedback"></i> <span>{{ entity.feedbackCount|number_format(0, ',', ' ') }}</span></li>
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+    {% include 'Core/Spotlight:_spotlight-star.part.html.twig' %}
+{% endblock %}
+

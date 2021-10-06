@@ -1,0 +1,15 @@
+{% extends 'Common/Layout/_form.html.twig' %}
+
+{% set navSection = 'howtos' %}
+
+{% block sidenav %}
+    {% include 'Common/_form-sidenav-title.part.html.twig' %}
+    {% include 'Core/Block:_form-sidenav-body.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="form-untitled-section">{% block sectionsHeader %}{% endblock %}</div>
+    {{ parent() }}
+    {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('howto.article.form.help.title'|trans()) } %}
+    {% include 'Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('howto.article.form.help.body'|trans()) } %}
+{% endblock %}

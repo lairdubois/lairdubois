@@ -1,0 +1,4 @@
+{% extends 'Core/Notification:_email.txt.twig' %}
+
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** a mentionné {% if row.mention.mentionedUser == recipientUser %}votre nom{% else %}{{ row.mention.mentionedUser.displayName }}{% endif%}.
+{% endblock %}

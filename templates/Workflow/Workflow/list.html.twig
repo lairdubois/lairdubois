@@ -1,0 +1,30 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageTitle = 'workflow.workflow.list'|trans() %}
+{% set pageDescription = 'workflow.description'|trans() %}
+{% set pageImage = asset('banner-workflows-600x376.jpg') %}
+{% set pageImageWidth = '600' %}
+{% set pageImageHeight = '376' %}
+{% set pageSectionUrl = url('core_workflow_list') %}
+{% set pageSectionName = ('workflow.workflow.list')|trans %}
+
+{% set navSection = 'workflows' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Workflow:Workflow/_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
+        <div class="panel-body">{{ 'workflow.description'|trans() }} <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quun-processus' }) }}">En savoir plus</a>.</div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Workflow:Workflow/_list-n.part.html.twig' %}
+{% endblock %}

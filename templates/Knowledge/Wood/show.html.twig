@@ -1,0 +1,153 @@
+{% extends 'Knowledge/_show.html.twig' %}
+
+{% set entity = wood %}
+
+{% set pageContentItemType = 'TechArticle' %}
+{% set pageSectionUrl = url('core_wood_list') %}
+{% set pageSectionName = 'knowledge.wood.list'|trans %}
+{% set pageDescription = ('knowledge.wood.field.name'|trans)~': '~wood.name %}
+{% if wood.scientificname is not empty %}
+    {% set pageDescription = pageDescription~' '~('knowledge.wood.field.scientificname'|trans)~': '~wood.scientificname %}
+{% endif %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set navSection = 'woods' %}
+{% set searchPath = path('core_wood_list') %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+        {% set headingClasses = wood.nameRejected ? 'ladb-strikethrough' : null %}
+        {% block subheadingInner %}
+            {% if wood.availability == 1 %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.wood.red_list'|trans() }}"><i class="ladb-icon-warning ladb-icon-lg ladb-color-negative"></i></span>&nbsp;
+            {% endif %}
+            {% if wood.family == 1 %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.wood.hardwood'|trans() }}"><i class="ladb-icon-hardwood ladb-icon-lg"></i></span>&nbsp;
+            {% elseif wood.family == 2 %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.wood.resinous'|trans() }}"><i class="ladb-icon-resinous ladb-icon-lg"></i></span>&nbsp;
+            {% endif %}
+            {% if wood.scientificname is not empty or wood.englishname is not empty %}
+                {% if wood.scientificname is not empty %}<em>{{ (wood.scientificname|split(','))[0] }}</em>{% endif %}{% if wood.englishname is not empty %}{% if wood.scientificname is not empty %} / {% endif %}{{ (wood.englishname|split(','))[0] }}{% endif %}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% include 'Knowledge/_completion-panel.part.html.twig' %}
+    <div class="ladb-knowledge-showcase row">
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':true, 'field':constant('FIELD_GRAIN', wood), 'picture':wood.grain, 'values':wood.grainValues, 'pictureBoxClasses':(wood.grainRejected ? 'ladb-box-barred' : null) } %}
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':true, 'field':constant('FIELD_ENDGRAIN', wood), 'picture':wood.endgrain, 'values':wood.endgrainValues } %}
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':false, 'field':constant('FIELD_LUMBER', wood), 'picture':wood.lumber, 'values':wood.lumberValues } %}
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':false, 'field':constant('FIELD_TREE', wood), 'picture':wood.tree, 'values':wood.treeValues } %}
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':false, 'field':constant('FIELD_LEAF', wood), 'picture':wood.leaf, 'values':wood.leafValues } %}
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':wood, 'wide':false, 'field':constant('FIELD_BARK', wood), 'picture':wood.bark, 'values':wood.barkValues } %}
+    </div>
+    <div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Appellation</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_NAME', wood), 'data':wood.name, 'values':wood.nameValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_SCIENTIFICNAME', wood), 'data':wood.scientificname, 'values':wood.scientificnameValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_ENGLISHNAME', wood), 'data':wood.englishname, 'values':wood.englishnameValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Caractéristiques</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_FAMILY', wood), 'data':wood.family, 'values':wood.familyValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_DENSITY', wood), 'data':wood.density, 'values':wood.densityValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Marché</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_AVAILABILITY', wood), 'data':wood.availability, 'values':wood.availabilityValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_PRICE', wood), 'data':wood.price, 'values':wood.priceValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_ORIGIN', wood), 'data':wood.origin, 'values':wood.originValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Divers</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_UTILIZATION', wood), 'data':wood.utilization, 'values':wood.utilizationValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Aller plus loin</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':wood, 'field':constant('FIELD_DATABASE_LINK', wood), 'data':wood.databaseLink, 'values':wood.databaseLinkValues } %}
+        </div>
+        {% include 'Knowledge/_disclaimer-panel.part.html.twig' %}
+        {% if wood.updatedAt > wood.createdAt %}
+            {% include 'Common/_updated-age.part.html.twig' %}
+        {% endif %}
+        <div style="padding: 10px; text-align: center;">
+            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+        </div>
+        {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')) } %}
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
+            {% if wood.contributorCount > 0 %}
+                <a href="{{ path('core_knowledge_contributors', { 'entityType':wood.type, 'entityId':wood.id }) }}">
+            {% endif %}
+                <strong>{{ wood.contributorCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'user.choice.contributors'|transchoice(wood.contributorCount) }}</small>
+            {% if wood.contributorCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':wood } %}
+        <div class="ladb-meta{% if wood.textureCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-texture ladb-icon-fixed-center"></i>
+            {% if wood.textureCount > 0 %}
+                <a href="{{ path('core_wood_texture_list', { 'id':wood.id }) }}">
+            {% endif %}
+                <strong>{{ wood.textureCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'knowledge.wood.texture.choice.textures'|transchoice(wood.textureCount) }}</small>
+            {% if wood.textureCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        {% if searchableProviderCount > 0 %}
+            <div class="ladb-btn">
+                <a href="{{ path('core_provider_list', { 'q':'@woods:"'~wood.name~'"'}) }}" rel="nofollow" class="btn btn-default btn-expand btn-lg"><i class="ladb-icon-provider"></i> Où trouver ce bois ?</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta{% if searchableCreationCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-creation ladb-icon-fixed-center"></i>
+            {% if searchableCreationCount > 0 %}
+                <a href="{{ path('core_creation_list', { 'q':'@woods:"'~wood.name~'"'}) }}" rel="nofollow">
+            {% endif %}
+                <strong>{{ searchableCreationCount }}</strong>
+                <small>{{ 'wonder.creation.choice.entities'|transchoice(searchableCreationCount) }}</small>
+            {% if searchableCreationCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        <div class="ladb-meta{% if searchableProviderCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-provider ladb-icon-fixed-center"></i>
+            {% if searchableProviderCount > 0 %}
+                <a href="{{ path('core_provider_list', { 'q':'@woods:"'~wood.name~'"'}) }}" rel="nofollow">
+            {% endif %}
+                <strong>{{ searchableProviderCount }}</strong>
+                <small>{{ 'knowledge.provider.choice.entities'|transchoice(searchableProviderCount) }}</small>
+            {% if searchableProviderCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    {% include 'Core/License:_metas.part.html.twig' with { 'license':wood.license } %}
+{% endblock %}

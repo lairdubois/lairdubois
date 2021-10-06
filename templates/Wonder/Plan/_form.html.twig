@@ -1,0 +1,83 @@
+{% extends 'Wonder:_wonder-form.html.twig' %}
+
+{% set navSection = 'plans' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Resource:_form-gallery-script.part.html.twig' with { 'fieldId':form.resources.vars.id, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources' } %}
+    {% include 'Wonder/Plan:_form-gallery-script.part.html.twig' with { 'fieldId':form.inspirations.vars.id, 'maxPlanCount':4, 'excludedId':(plan is defined ? plan.id : null) } %}
+    {% include 'Qa/Question/_form-gallery-script.part.html.twig' with { 'fieldId':form.questions.vars.id, 'maxQuestionCount':4 } %}
+    {% include 'Knowledge/School:_form-gallery-script.part.html.twig' with { 'fieldId':form.schools.vars.id, 'maxSchoolCount':4 } %}
+    {% include 'Common/_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    {% include 'Common/_form-sidenav-title.part.html.twig' %}
+    {% include 'Core/Resource:_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.files'|trans({'count': 2})|capitalize) } %}
+    {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
+    <li><a href="#3dwarehouse"><i class="ladb-icon-3d"></i> 3D Warehouse</a></li>
+    <li><a href="#fusion360"><i class="ladb-icon-3d"></i> Fusion 360</a></li>
+    {% include 'Common/_form-sidenav-body.part.html.twig' %}
+    {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+    {% include 'Wonder/Plan:_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'icon':'ladb-icon-inspiration' } %}
+    {% include 'Qa/Question/_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Knowledge/School:_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Core/License:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            Un <strong>plan</strong> est un ensemble de <strong>fichiers numériques</strong> (modélisation 3D ou dessin technique 2D) permettant une réalisation majoritairement constituée de <strong>bois</strong>.<br>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('wonder.plan.form.help.title'|trans()) } %}
+    {% include 'Core/Resource:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formResources':form.resources, 'resources':form.vars.data.resources, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources', 'title':('default.choice.files'|trans({'count': 2})|capitalize), 'help':('wonder.plan.form.help.resource'|trans()) } %}
+    {% embed 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('wonder.plan.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
+        {% block body %}
+            {{ parent() }}
+            <hr>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-exporter-une-capture-d-un-plan-sketchup' }) }}">Comment exporter une capture d'un plan Sketchup ?</a> </p>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-associer-un-plan-a-une-creation' }) }}">Comment associer un Plan à une Création ?</a> </p>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'Common/_form-section.part.html.twig' with { 'icon':'3d', 'title':'3D Warehouse', 'formSection':'3dwarehouse' } %}
+        {% block body %}
+            <div class="media ladb-margin-remove ladb-margin-bottom">
+                <div class="media-left"><img src="{{ asset('bundles/ladbcore/ladb/images/logo-3dwarehouse.png') }}"></div>
+                <div class="media-body">
+                    <p class="help-block ladb-margin-remove">Si le fichier principal de votre plan est au format <a href="https://www.sketchup.com/">Sketchup</a> et que vous souhaitez avoir une visualisation en 3D directement dans la fiche du plan. Vous pouvez le publier également sur <a href="https://3dwarehouse.sketchup.com">3D Warehouse</a> et placer le lien vers la page correspondante de se dernier dans le champs suivant.</p>
+                </div>
+            </div>
+            {{ form_errors(form.sketchup3DWarehouseUrl) }}
+            <div class="input-group">
+                <span class="input-group-addon"><i class="ladb-icon-link"></i></span>
+                {{ form_widget(form.sketchup3DWarehouseUrl, { 'attr': { 'placeholder':'https://3dwarehouse.sketchup.com/model/...' } }) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'Common/_form-section.part.html.twig' with { 'icon':'3d', 'title':'Fusion 360', 'formSection':'fusion360' } %}
+        {% block body %}
+            <div class="media ladb-margin-remove ladb-margin-bottom">
+                <div class="media-left"><img src="{{ asset('bundles/ladbcore/ladb/images/logo-fusion360.png') }}"></div>
+                <div class="media-body">
+                    <p class="help-block ladb-margin-remove">Si le fichier principal de votre plan est au format <a href="https://www.autodesk.com/products/fusion-360">Fusion 360</a> et que vous souhaitez avoir une visualisation en 3D directement dans la fiche du plan. Vous pouvez placer ici le <strong>lien public</strong> dans le champs suivant.</p>
+                </div>
+            </div>
+            {{ form_errors(form.a360Url) }}
+            <div class="input-group">
+                <span class="input-group-addon"><i class="ladb-icon-link"></i></span>
+                {{ form_widget(form.a360Url, { 'attr': { 'placeholder':'https://a360.co/...' } }) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% include 'Common/_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('wonder.plan.form.help.body'|trans()) } %}
+    {% include 'Core/Tag:_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre plan.' } %}
+    {% include 'Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'help':('wonder.plan.form.help.inspirations'|trans()), 'icon':'ladb-icon-inspiration', 'addButtonHidden':true, 'formPlans':form.inspirations, 'plans':form.vars.data.inspirations, 'showInspirationWarning':true } %}
+    {% include 'Qa/Question/_form-section-gallery.part.html.twig' with { 'maxQuestionCount':4, 'help':('wonder.plan.form.help.questions'|trans()) } %}
+    {% include 'Knowledge/School:_form-section-gallery.part.html.twig' with { 'maxSchoolCount':4, 'help':('wonder.plan.form.help.schools'|trans()) } %}
+    {% include 'Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
+{% endblock %}

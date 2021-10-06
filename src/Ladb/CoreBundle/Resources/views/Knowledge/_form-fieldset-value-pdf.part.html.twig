@@ -1,9 +1,0 @@
-{% extends 'LadbCoreBundle:Knowledge:_form-fieldset-value.part.html.twig' %}
-
-{% block dataFormGroup %}
-    {% include 'LadbCoreBundle:Core/Resource:_form-gallery.part.html.twig' with { 'formResources':form.data, 'resources':(form.vars.data is null or form.vars.data.data is null ? [] : [ form.vars.data.data ]), 'maxResourceCount':1 } %}
-{% endblock %}
-
-{% block sourceWarning %}
-    <small class="help-block"><i class="ladb-icon-warning"></i> Si votre document PDF provient d'un autre site. Il est important de bien indiquer sa source.</small>
-{% endblock %}

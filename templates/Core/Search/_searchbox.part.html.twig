@@ -1,0 +1,77 @@
+
+{# set q (facultative) #}
+{# set searchPath #}
+{# set noAjax (facultative) #}
+{# set masonry (facultative) #}
+{# set masonryWide (facultative) #}
+{# set placeholder (facultative) #}
+{# set mapSearchPath (facultative) #}
+{# set mapAreaId (facultative) #}
+
+<div class="ladb-search-widget">
+    <div class="ladb-search-box">
+        <div class="ladb-search-box-top">
+            <div class="ladb-search-box-top-left">
+                <i class="ladb-icon-search"></i>
+            </div>
+            <div class="ladb-input">
+                <input type="text"{% if placeholder is defined %} placeholder="{{ placeholder }}"{% endif %}/>
+            </div>
+            <div class="ladb-minitools">
+                <a class="ladb-btn-clear"><i class="ladb-icon-clear"></i></a>
+                {% block filtersBtnOuter %}
+                    <div class="btn-group">
+                        <button class="ladb-filters-btn btn btn-infield btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-filter"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Filtres</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% block filtersDropdown %}{% endblock %}
+                        </ul>
+                    </div>
+                {% endblock %}
+                {% block sortersBtnOuter %}
+                    <div class="btn-group">
+                        <button class="ladb-sorters-btn btn btn-infield btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-sort"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Tri</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% block sortersDropdown %}{% endblock %}
+                        </ul>
+                    </div>
+                {% endblock %}
+                {% if mapSearchPath is defined %}
+                    <button class="ladb-map-btn btn btn-infield btn-xs" type="button">
+                        <i class="ladb-icon-location"></i><span class="ladb-hidden-mobile ladb-hidden-tablet"> Carte</span></span>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="ladb-search-box-bottom" style="display: none;">
+            <div class="ladb-search-box-bottom-left"></div>
+            <div class="ladb-search-box-bottom-right"></div>
+        </div>
+    </div>
+    {% block searchboxShortcutsOuter %}
+        <div class="ladb-search-shortcuts ladb-hidden-tablet ladb-hidden-mobile" style="display: none;">
+            <ul class="nav nav-pills">
+                {% block searchboxShortcuts %}{% endblock %}
+                <li><a class="ladb-smartsearch-shortcut-more"><i class="ladb-icon-filter"></i> Plus...</a></li>
+            </ul>
+        </div>
+    {% endblock %}
+</div>
+<script>
+    $(document).ready(function () {
+        $(".ladb-search-widget").ladbSmartSearch({
+            query: '{{ q is defined ? q|raw|escape('js') : '' }}',
+            searchPath: '{{ searchPath|raw }}',
+            noAjax: {{ noAjax|default(false) ? 'true' : 'false' }},
+            loadingHtml: '{{ include('Common/_loading.part.html.twig', { 'float':true, 'noHidden':true })|escape('js') }}',
+            masonry: {{ masonry|default(false) ? 'true' : 'false' }},
+            masonryWide: {{ masonryWide|default(false) ? 'true' : 'false' }},
+            mapSearchPath: {{ mapSearchPath is defined ? ("'"~mapSearchPath~"'")|raw : 'null' }},
+            mapAreaId: '{{ mapAreaId is defined ? mapAreaId : 'ladb_map_area' }}',
+        });
+    });
+</script>
+

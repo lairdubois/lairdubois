@@ -1,0 +1,12 @@
+{% extends 'Common/_masonry-list-thumbnail.part.html.twig' %}
+
+{# set graphic #}
+
+{% set entity = graphic %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    {% if graphic.downloadCount > 0 %}
+        <li class="ladb-counter"><i class="ladb-icon-unpublish"></i> <span>{{ graphic.downloadCount|number_format(0, ',', ' ') }}</span></li>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+workflow_show_topic:
+    channel: workflow/{id}
+    handler: 'workflow.topic'
+    requirements:
+        id: "[0-9]+"
+
+workflow_task_topic:
+    channel: workflow/{id}/task/{action}
+    handler: 'workflow.topic'
+    requirements:
+        id: "[0-9]+"
+        action: "new|create|edit|update|position_update|status_update|delete|connection_create|connection_delete"
+
+workflow_rpc:
+    channel: workflow/{method}
+    handler: 'workflow.rpc'
+    requirements:
+        method: "[a-z_]+"

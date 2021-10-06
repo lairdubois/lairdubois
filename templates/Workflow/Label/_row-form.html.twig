@@ -1,0 +1,28 @@
+{# set actionPath #}
+
+{% form_theme form 'Common/_form-theme.twig.twig' %}
+
+<tr class="ladb-workflow-label-row-form">
+    <td>
+        {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+            <div class="form-group col-xs-12 col-sm-4">
+                {{ form_label(form.color) }}
+                {{ form_errors(form.color) }}
+                {{ form_widget(form.color, { 'attr':{ 'class':'form-control ladb-input-color' } }) }}
+            </div>
+            <div class="form-group col-xs-12 col-sm-8">
+                {{ form_label(form.name) }}
+                {{ form_errors(form.name) }}
+                {{ form_widget(form.name, { 'attr':{ 'class':'form-control ladb-input-name' } }) }}
+            </div>
+        {{ form_end(form) }}
+        <div class="pull-right">
+            {% block buttons %}
+                <button class="btn btn-default ladb-label-cancel-btn">{{ 'default.cancel'|trans() }}</button>
+                <button class="btn btn-primary ladb-label-save-btn">{{ 'default.save'|trans() }}</button>
+            {% endblock %}
+        </div>
+        {% include 'Common/_loading-panel.part.html.twig' %}
+    </td>
+</tr>
+

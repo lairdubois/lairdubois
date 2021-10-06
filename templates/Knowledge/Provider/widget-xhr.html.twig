@@ -1,0 +1,12 @@
+{% extends 'Common/_entity-widget.html.twig' %}
+
+{% set entity = provider %}
+
+{% block subheading %}
+    {{ provider.postalCode }} {{ provider.locality }}
+{% endblock %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    {% include 'Core/Review/_thumbnail-meta-counter.part.html.twig' %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'Common/_form-section.part.html.twig' %}
+
+{# set mandatory (facultative) #}
+{# set help (facultative) #}
+{# set title (facultative) #}
+{# set formSection (facultative) #}
+
+{% set icon = 'title' %}
+{% set title = title|default('Titre') %}
+{% set formSection = formSection|default('title') %}
+
+{% block body %}
+    {% if help is defined %}<p class="help-block"><i>{{ help|raw }}</i></p>{% endif %}
+    <div class="form-group">
+        {{ form_errors(form.title) }}
+        {{ form_widget(form.title, { 'attr':{ 'class':'form-control input-lg' } }) }}
+    </div>
+{% endblock %}
+

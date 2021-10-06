@@ -1,0 +1,33 @@
+{% extends 'Core/Search/_searchbox.part.html.twig' %}
+
+{% set placeholder = 'search.in.promotion_graphic'|trans() %}
+{% set searchPath = path('core_promotion_graphic_list', routeParameters) %}
+{% set masonry = layout == 'view' %}
+
+{% block filtersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="license" data-label="Licence" data-editable="true" data-unique="true" data-icon="cc" data-proposals="by,by-nc,by-nc-nd,by-nc-sa,by-nd,by-sa"><i class="ladb-icon-cc"></i> Licence</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
+    {% if is_granted("ROLE_USER") %}
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes graphismes" data-unique="true" data-icon="promote"><i class="ladb-icon-promote"></i> Mes graphismes</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
+    {% endif %}
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last7days" data-label="7 derniers jours" data-unique="true" data-icon="calendar-week"><i class="ladb-icon-calendar-week"></i> 7 derniers jours</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last30days" data-label="30 derniers jours" data-unique="true" data-icon="calendar-month"><i class="ladb-icon-calendar-month"></i> 30 derniers jours</a></li>
+{% endblock %}
+
+{% block sortersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-recent" data-label="Récents" data-unique="true" data-icon="time"><i class="ladb-icon-time"></i> Récents</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-views" data-label="Plus vus" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus vus</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-likes" data-label="Préférés" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférés</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-comments" data-label="Plus commentés" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentés</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-downloads" data-label="Plus téléchargés" data-unique="true" data-icon="unpublish"><i class="ladb-icon-unpublish"></i> Plus téléchargés</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
+{% endblock %}
+
+{% block searchboxShortcutsOuter %}{% endblock %}

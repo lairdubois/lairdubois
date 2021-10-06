@@ -1,0 +1,13 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set questions #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set questions = entities %}{% endif %}
+
+{% block items %}
+    {% for question in questions %}
+        {% include 'Qa/Question/_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

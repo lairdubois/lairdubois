@@ -1,0 +1,12 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'qa.question.list'|trans() %}
+{% set headingLevel = 2 %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Qa/Question/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% include 'Core/Member/_widget.part.html.twig' with { 'titleTransKey':'qa.question.new', 'route':'core_qa_question_new' } %}
+{% endblock %}

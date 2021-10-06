@@ -1,0 +1,11 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'wonder.creation.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Wonder/Creation/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% include 'Core/Member/_widget.part.html.twig' with { 'titleTransKey':'wonder.creation.new', 'route':'core_creation_new' } %}
+{% endblock %}

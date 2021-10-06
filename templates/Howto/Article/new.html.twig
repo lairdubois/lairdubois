@@ -1,0 +1,42 @@
+{% extends 'Howto/Article:_form.html.twig' %}
+
+{% set pageTitle = 'howto.article.new'|trans() %}
+{% set formAction = path('core_howto_article_create', { 'id':howto.id }) %}
+
+{% block body %}
+    {{ parent() }}
+    {% if not form.vars.submitted and howto.articles|length == 0 %}
+        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'warning_article_modal', 'title':('howto.article.new'|trans()) } %}
+            {% block bodyInner %}
+                <p>{{ 'howto.article.new_warning'|trans()|raw }}</p>
+            {% endblock %}
+            {% block footerInner %}
+                <a href="#" class="btn btn-primary" data-dismiss="modal">{{ 'default.continue'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if not form.vars.submitted and howto.articles|length == 0 %}
+        <script>
+            $(document).ready(function() {
+                $("#warning_article_modal").modal();
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'howto.article.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sectionsHeader %}
+    Cet article sera publié dans le pas à pas : <strong>{{ howto.title }}</strong>
+{% endblock %}
+

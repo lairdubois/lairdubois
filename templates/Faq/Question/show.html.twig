@@ -1,0 +1,113 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% set entity = question %}
+
+{% set pageSectionUrl = url('core_faq_question_list') %}
+{% set pageSectionName = 'faq.question.list'|trans %}
+
+{% set navSection = 'faq' %}
+{% set searchPath = path('core_faq_question_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == question.user.id %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% if question.hasToc %}
+        {% stylesheets filter='?yui_css'
+            '@LadbCoreBundle/Resources/assets/css/jquery-tocify/jquery.tocify.css' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+        {% endstylesheets %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if question.hasToc %}
+        {% javascripts filter='?closure'
+            '@LadbCoreBundle/Resources/assets/js/jquery-tocify/jquery.tocify.js' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            $(function() {
+                if ($(window).width() >= 768) {
+                    $("#tocify_toc").tocify({
+                        context: ".ladb-question",
+                        ignoreSelector: ".modal-title",
+                        selectors: "h3,h4",
+                        theme: "none",
+                        smoothScroll: false,
+                        showEffect: "none",
+                        hideEffect: "none",
+                        extendPage: false,
+                        hashGenerator: "pretty",
+                        history: false,
+                        scrollTo: 100
+                    });
+                    $("#ladb_toc_panel").sticky({
+                        topSpacing: 70
+                    });
+                }
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header:_entity-show-header.part.html.twig' %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if question.isDraft %}
+        {% include 'Faq/Question:_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-question">
+        <div class="ladb-body" itemprop="articleBody">
+            {% for block in question.bodyBlocks %}
+                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% if question.updatedAt > question.createdAt %}
+        {% include 'Common/_updated-age.part.html.twig' with { 'entity':question } %}
+    {% endif %}
+    {% if not permissionContext.isOwner %}
+        {% include 'Common/_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% if similarQuestions is not empty %}
+        <div class="panel panel-default ladb-linkedto-panel ladb-margin-top">
+            <div class="panel-heading">{{ 'faq.question.links'|trans() }}</div>
+            <div class="panel-body">
+                <ul>
+                    {% for similarQuestion in similarQuestions %}
+                        <li>{% if similarQuestion.icon is not empty %}<i class="ladb-icon-{{ similarQuestion.icon }}"></i>&nbsp;{% endif %}<a href="{{ path('core_faq_question_show', { 'id':similarQuestion.sluggedId }) }}">{{ similarQuestion.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+    {% include 'Core/Comment:_widget.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+    </div>
+    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if question.hasToc %}
+        <div id="ladb_toc_panel" class="panel panel-default ladb-toc-panel ladb-hidden-mobile">
+            <div class="panel-heading">{{ 'default.toc'|trans() }}</div>
+            <div class="panel-body">
+                <div id="tocify_toc"></div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

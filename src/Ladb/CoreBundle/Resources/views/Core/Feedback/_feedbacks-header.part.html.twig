@@ -1,9 +1,0 @@
-{# set feedbackContext #}
-
-<div class="ladb-feedbacks-header">
-    {% if feedbackContext.feedbackCount > 0 %}
-        <h2 id="ladb_feedbacks" class="ladb-margin-bottom"><i class="ladb-icon-feedback"></i> {{ feedbackContext.feedbackCount }} {{ ('feedback.default.choice.entities')|transchoice(feedbackContext.feedbackCount) }}</h2>
-    {% else %}
-        <h2 id="ladb_feedbacks"><i class="ladb-icon-feedback"></i> {{ ('feedback.default.choice.entities')|transchoice(2)|capitalize }}</h2>
-    {% endif %}
-</div>

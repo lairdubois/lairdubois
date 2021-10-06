@@ -1,0 +1,13 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set providers #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set providers = entities %}{% endif %}
+
+{% block items %}
+    {% for provider in providers %}
+        {% include 'Knowledge/Provider:_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

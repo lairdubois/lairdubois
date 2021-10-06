@@ -1,0 +1,46 @@
+{% form_theme form 'Common/_form-theme.twig.twig' %}
+
+{# set form #}
+{# set entityType #}
+{# set entityId #}
+{# set parentId (facultative) #}
+{# set mentionStrategy (facultative) #}
+{# set alertTransKey (facultative) #}
+
+{% set parentId = parentId|default(0) %}
+{% set id = 'ladb_comment_'~entityType~'_'~entityId~'_'~parentId~'_new' %}
+{% set formSection = id %}
+{% set condenced = condenced is defined ? condenced : true %}
+
+<div id="{{ id }}" class="ladb-new">
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
+    {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+    <div class="ladb-content">
+        {% embed 'Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_create', { 'entityType':entityType, 'entityId':entityId, 'parentId':parentId }), 'galleryClasses':condenced ? 'ladb-pseudo-hidden' : '' } %}
+            {% block buttons %}
+                {% if alertTransKey is defined and alertTransKey is not empty %}
+                    <div class="alert alert-info">
+                        <div class="media">
+                            <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+                            <div class="media-body">{{ alertTransKey|trans|raw }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% include 'Common/_form-btn-loading.part.html.twig' with { 'id':'new_comment_'~entityType~'_'~entityId~'_'~parentId~'_btn', 'text':('default.publish'|trans()), 'classes':condenced ? 'ladb-pseudo-hidden btn-default' : 'btn-default' } %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    {% block script %}
+        <script>
+            $("#{{ form.body.vars.id }}")
+                    .bind("focus", function(e) {
+                        $("#{{ id }} .ladb-form-gallery").removeClass("ladb-pseudo-hidden");
+                        $("#new_comment_{{ entityType }}_{{ entityId }}_{{ parentId }}_btn").removeClass("ladb-pseudo-hidden");
+                        $(this)
+                            .unbind('focus')
+                            .markdown({ autofocus:true })
+                            .ladbTextcompletify({ maxCount: 5, mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'{% if mentionStrategy is defined %}, mentionStrategy: {{ mentionStrategy|raw }}{% endif %} });
+                    })
+        </script>
+    {% endblock %}
+</div>

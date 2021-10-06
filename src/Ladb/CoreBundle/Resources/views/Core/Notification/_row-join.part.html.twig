@@ -1,9 +1,0 @@
-{% extends 'LadbCoreBundle:Core/Notification:_row.part.html.twig' %}
-
-{% set icon = 'join' %}
-{% set entity = ladb_entity(notification.activity.join.entityType, notification.activity.join.entityId) %}
-
-{% block body %}
-    {% set isYour = entity.user is defined and entity.user == app.user %}
-    participe à {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
-{% endblock %}

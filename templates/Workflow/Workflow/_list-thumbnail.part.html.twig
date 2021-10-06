@@ -1,0 +1,19 @@
+{% extends 'Common/_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{% set entity = workflow %}
+{% set emptyWebPath = 'empty_workflow.png' %}
+{#{% if not workflow.isPublic %}#}
+    {#{% set showPathAdditionalParams = { 'layout':'workspace' } %}#}
+{#{% endif %}#}
+
+{% block title %}<i class="ladb-icon-workflow"></i> {{ parent() }}{% endblock %}
+
+{% block entityMetas %}
+    {% include 'Workflow/Workflow:_linkto-entity-metas.part.html.twig' %}
+    {{ parent() }}
+    {% if workflow.copyCount > 0 %}
+        <li class="ladb-counter"><i class="ladb-icon-duplicate"></i> <span>{{ workflow.copyCount|number_format(0, ',', ' ') }}</span></li>
+    {% endif %}
+{% endblock %}
+
+

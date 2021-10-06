@@ -1,0 +1,7 @@
+
+{# set find #}
+{# set classes (facultative) #}
+
+<a href="{{ path('core_find_show', { 'id':find.sluggedId }) }}" class="thumbnail{% if classes is defined %} {{ classes }}{% endif %}" data-tooltip="tooltip" title="{{ find.title }} {{ 'default.by'|trans() }} {{ find.user.displayname }}">
+    {% include 'Core/Picture/_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'128', 'height':'128', 'filterMode':'o', 'alt':find.title, 'attributes':'data-pin-nopin="true"', 'noMicrodata':true } %}
+</a>

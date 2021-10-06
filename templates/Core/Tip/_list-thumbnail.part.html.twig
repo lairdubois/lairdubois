@@ -1,0 +1,34 @@
+{# set tiny (facultative) #}
+
+{% set tiny = tiny|default(false) %}
+
+<div class="ladb-tip ladb-masonry-item ladb-masonry-column{% if masonryWide is defined and masonryWide %}-wide{% endif %}">
+    <div class="ladb-box ladb-box-hover" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(tip) }}'})">
+        <div class="ladb-content">
+            <div class="pull-right ladb-minitools">
+                <a href="{{ path('core_tip_list') }}">n°{{ tip.id }}</a>
+                {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_TIP") %}
+                    <a href="{{ path('core_tip_edit', { 'id':tip.id }) }}" class="ladb-horizontal-separator-left"><i class="ladb-icon-edit"></i></a>
+                    <a href="{{ path('core_tip_delete', { 'id':tip.id }) }}" class="ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
+                {% endif %}
+            </div>
+            <div class="ladb-heading"><i class="ladb-icon-tip ladb-icon-lg"></i> Le saviez vous ?</div>
+            <p>{{ tip.htmlBody|raw }}</p>
+            {% if tiny %}
+                <div class="text-right"><a href="{{ ladb_entity_url_action(tip) }}">En savoir plus...</a></div>
+            {% else %}
+                <ul class="ladb-counters">
+                    {% if tip.viewCount is defined and tip.viewCount >= 0 %}
+                        <li class="ladb-counter"><i class="ladb-icon-eye"></i> <span>{{ tip.viewCount|number_format(0, ',', ' ') }}</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+        {% if not tiny %}
+            <div class="ladb-footer">
+                {% include 'Common/_unviewed-bullet.part.html.twig' with { 'entity':tip } %}
+                {% include 'Common/_age.part.html.twig' with { 'entity':tip } %}
+            </div>
+        {% endif %}
+    </div>
+</div>

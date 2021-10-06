@@ -1,0 +1,11 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'event.event.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Event/Event:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% include 'Core/Member/_widget.part.html.twig' with { 'titleTransKey':'event.event.new', 'route':'core_event_new' } %}
+{% endblock %}

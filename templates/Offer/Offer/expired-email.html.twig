@@ -1,0 +1,18 @@
+{% extends ':email-layout.html.twig' %}
+
+{% block content %}
+    <p>Votre annonce <em>{{ offer.title }}</em> a expiré et a été automatiquement dépubliée.</p>
+    <table cellspacing="10" cellpadding="0">
+        <tbody>
+        {% include 'Common/_entity-email-row.part.html.twig' with { 'entity':offer } %}
+        </tbody>
+    </table>
+    {% if offer.publishCount < constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::MAX_PUBLISH_COUNT') %}
+        <p>Vous pouvez la renouvelez encore <strong>{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::MAX_PUBLISH_COUNT') - offer.publishCount }} fois</strong>.</p>
+        <p><em>Sans action de votre part, elle sera automatiquement supprimée {{ offer.oudatedDate|time_diff }}.</em></p>
+        <br><a href="{{ ladb_entity_url_action(offer) }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Renouveler</a>
+    {% else %}
+        <p><strong>Vous avez atteint le quota de renouvellement.</strong></p>
+        <p><em>Cette annonce sera automatiquement supprimée {{ offer.oudatedDate|time_diff }}.</em></p>
+    {% endif %}
+{% endblock %}

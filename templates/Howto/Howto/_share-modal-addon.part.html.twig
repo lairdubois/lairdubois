@@ -1,0 +1,37 @@
+<hr>
+<h4>{{ 'share.sticker.heading'|trans() }}</h4>
+<p>{{ 'share.sticker.help.howto'|trans()|raw }}</p>
+<p>{{ 'share.sticker.help.common'|trans()|raw }}</p>
+<ul class="nav nav-pills">
+    <li class="active"><a href="#ladb_sticker_bbcode" data-toggle="tab">BBCode</a></li>
+    <li><a href="#ladb_sticker_html" data-toggle="tab">HTML</a></li>
+    <li><a href="#ladb_sticker_preview" data-toggle="tab">Aperçu</a></li>
+</ul>
+<div class="tab-content ladb-margin-top">
+    <div class="tab-pane active" id="ladb_sticker_bbcode">
+        <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
+    </div>
+    <div class="tab-pane" id="ladb_sticker_html">
+        <textarea class="form-control" style="font-family: courier;" rows="5" onclick="$(this).focus(); $(this).select();"></textarea>
+    </div>
+    <div class="tab-pane" id="ladb_sticker_preview" style="height: 300px;">
+        {% include 'Common/_loading.part.html.twig' with { 'noHidden':true} %}
+        <p class="text-center"><img src="" height="300"></p>
+    </div>
+</div>
+<script>
+    $('#share_modal').on('show.bs.modal', function (e) {
+        $("#ladb_sticker_bbcode textarea").val("{{ include('Howto/Howto:_sticker.bbcode.twig')|escape('js') }}");
+        $("#ladb_sticker_html textarea").val("{{ include('Howto/Howto:_sticker.html.twig')|escape('js') }}");
+    })
+    $('a[href="#ladb_sticker_preview"]').on("shown.bs.tab", function (e) {
+        var img = $("#ladb_sticker_preview img");
+        if (img.attr("src") === "") {
+            var src = "{{ path('core_howto_sticker', { 'id':howto.id }) }}";
+            img.on("load", function() {
+                $("#ladb_sticker_preview .ladb-loading").remove();
+            });
+            img.attr("src", src);
+        }
+    });
+</script>

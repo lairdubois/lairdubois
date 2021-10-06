@@ -1,0 +1,4 @@
+{% extends ':email-layout.txt.twig' %}
+
+{% block content %}Le paiement de votre don de {{ donation.amountEur|number_format(2, ',', ' ') }}€ effectué le {{ donation.createdAt|date("d/m/Y") }} à {{ donation.createdAt|date("H:i") }} a bien été enregistré avec le numéro {{ donation.hashid }}.
+Merci pour votre soutien au projet L'Air du Bois !{% endblock %}

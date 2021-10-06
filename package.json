@@ -1,0 +1,51 @@
+{
+    "devDependencies": {
+        "@symfony/stimulus-bridge": "^2.0.0",
+        "@symfony/webpack-encore": "^1.0.0",
+        "core-js": "^3.0.0",
+        "regenerator-runtime": "^0.13.2",
+        "stimulus": "^2.0.0",
+        "webpack-notifier": "^1.6.0"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "blueimp-file-upload": "blueimp/jquery-file-upload",
+        "bootstrap": "3",
+        "bootstrap-datetimepicker": "^0.0.7",
+        "bootstrap-markdown": "^2.10.0",
+        "clndr": "^1.5.1",
+        "cornerslider": "^1.0.0",
+        "emojione": "^4.5.0",
+        "emojionearea": "^3.4.2",
+        "file-loader": "^6.2.0",
+        "html5shiv": "^3.7.3",
+        "icomoon": "^1.0.0",
+        "jquery": "^3.6.0",
+        "jquery-autocomplete": "^1.2.8",
+        "jquery-bar-rating": "^1.2.2",
+        "jquery-form": "^4.3.0",
+        "jquery-jscroll": "^0.0.2",
+        "jquery-lazy": "^1.7.11",
+        "jquery-scrollto": "^1.4.6",
+        "jquery-sticky": "^1.0.4",
+        "jquery-textcomplete": "^1.8.5",
+        "jquery-ui": "^1.12.1",
+        "jquery.panzoom": "^3.2.3",
+        "jqueryui": "^1.11.1",
+        "lazyloadxt": "^1.1.0",
+        "leaflet": "^1.7.1",
+        "less": "^4.1.2",
+        "less-loader": "^8",
+        "masonry": "^0.0.2",
+        "sass": "^1.42.1",
+        "sass-loader": "^11",
+        "uikit": "^3.7.4"
+    }
+}

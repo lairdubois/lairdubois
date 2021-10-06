@@ -1,0 +1,12 @@
+{% extends 'Workflow:Task/_form.html.twig' %}
+
+{% form_theme form 'Common/_form-theme.twig.twig' 'Block:_form-theme.html.twig' %}
+
+{% set id = 'task_new_modal' %}
+{% set title = 'workflow.task.new'|trans() %}
+{% set formAction = path('core_workflow_task_create', { 'id':workflow.id, 'sourceTaskId':sourceTaskId }) %}
+
+{% block buttons %}
+    {{ parent() }}
+    <button type="submit" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}">{{ 'default.save'|trans() }}</button>
+{% endblock %}

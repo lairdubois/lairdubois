@@ -1,0 +1,31 @@
+{% extends 'Promotion/Graphic:_form.html.twig' %}
+
+{% set pageTitle = 'promotion.graphic.new'|trans() %}
+{% set formAction = path('core_promotion_graphic_create') %}
+{% set hideWarning = hideWarning|default(false) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'promotion.graphic.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        {% include 'Common/_new-warning-modal.part.html.twig' with { 'id':'warning_graphic_modal', 'title':('promotion.graphic.new'|trans()), 'textTransKey':'promotion.graphic.new_warning', 'cancelPath':'core_promotion_graphic_list' } %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        <script>
+            $(document).ready(function() {
+                $("#warning_graphic_modal").modal();
+            });
+        </script>
+    {% endif %}
+{% endblock %}

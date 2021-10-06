@@ -1,0 +1,20 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageTitle = 'wonder.plan.list'|trans() %}
+{% set pageDescription = 'wonder.plan.description'|trans() %}
+{% set pageImage = asset('banner-plans-600x376.jpg') %}
+{% set pageSectionUrl = url('core_plan_list') %}
+{% set pageSectionName = 'wonder.plan.list'|trans %}
+
+{% set navSection = 'plans' %}
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Wonder/Plan:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Wonder/Plan:_list-n.part.html.twig' %}
+{% endblock %}

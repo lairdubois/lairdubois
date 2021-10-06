@@ -1,0 +1,13 @@
+
+{# set knowledge #}
+{# set value #}
+
+{% set fieldDef = knowledge.fieldDefs[value.parentEntityField] %}
+{% set fieldType = fieldDef[constant('ATTRIB_TYPE', knowledge)] %}
+{% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', knowledge)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', knowledge)] : null %}
+
+<div class="col-xs-4">
+    <div><i class="ladb-icon-proposal ladb-icon-fixed-center"></i> <a href="{{ ladb_entity_url_action(value) }}"><strong>{{ ('knowledge.'~knowledge.strippedName~'.field.'~value.parentEntityField)|trans() }}</strong></a></div>
+    <div class="ladb-subheading">{% include 'Common/_author.part.html.twig' with { 'entity':value } %}</div>
+</div>
+<div class="col-xs-8">{% include 'Knowledge/_field-value-proposal-'~fieldType~'.part.html.twig' with { 'knowledge':knowledge, 'value':value, 'clickable':false, 'size':128 } %}{% if fieldSuffix is not null %}&nbsp;<em>{{ fieldSuffix|raw }}</em>{% endif %}</div>

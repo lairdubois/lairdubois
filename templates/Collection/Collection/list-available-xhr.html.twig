@@ -1,0 +1,30 @@
+{% extends 'Common/Modal:_modal-content.part.html.twig' %}
+
+{% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
+
+{% set id = 'collections_modal' %}
+{% set title = '<i class="ladb-icon-collection-add"></i>&nbsp;'~('collection.collection.add'|trans()) %}
+{% set classes = 'modal-infinit' %}
+{% set embeddedBody = collections|length > 0  %}
+
+{% set autopagerContainerSelector = '#collections_modal .modal-body' %}
+
+{% block bodyInner %}
+    {% if collections|length == 0 %}
+        <p>Vous n'avez aucune collection pour l'instant.</p>
+    {% endif %}
+    {% include 'Collection/Collection:_list-available-n.part.html.twig' %}
+    {{ block('autopagerScript') }}
+{% endblock %}
+
+{% block body %}
+    {% if collections|length > 0 %}
+        <div class="ladb-help-block"><i class="ladb-icon-arrow-down"></i> Cochez pour enregistrer<span class="ladb-hidden-mobile"> / Décochez pour retirer</span></div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footerInner %}
+    <a href="{{ path('core_collection_new', { 'entityType':entity.type, 'entityId':entity.id }) }}" class="btn btn-default pull-left"><i class="ladb-icon-plus"></i> {{ 'collection.collection.new'|trans() }}</a>
+    <button class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</button>
+{% endblock %}

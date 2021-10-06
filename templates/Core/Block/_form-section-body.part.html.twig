@@ -1,0 +1,16 @@
+{% extends 'Common/_form-section.part.html.twig' %}
+
+{# set formSection (facultative) #}
+{# set mandatory (facultative) #}
+{# set title (facultative) #}
+{# set icon (facultative) #}
+{# set help (facultative) #}
+
+{% set icon = icon|default('body') %}
+{% set title = title|default('default.body'|trans()) %}
+{% set formSection = formSection|default('body_blocks') %}
+{% set classes = 'ladb-block-section' %}
+
+{% block body %}
+    {% include 'Core/Block:_form-section-body-inner.part.html.twig' %}
+{% endblock %}

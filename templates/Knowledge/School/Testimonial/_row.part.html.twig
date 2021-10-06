@@ -1,0 +1,52 @@
+<div id="ladb_testimonial_{{ testimonial.id }}" class="ladb-testimonial-row" itemprop="review" itemscope itemtype="http://schema.org/Review">
+    <div class="ladb-box ladb-highlightable">
+        <div class="ladb-box-inner">
+            <div class="ladb-content-box">
+                {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':testimonial.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+                <div class="ladb-heading">
+                    <div class="ladb-minitools">
+                        {% if not app.request.isxmlhttprequest %}
+                            <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers le témoignage :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ url('core_knowledge_school_testimonial_show', { 'id':testimonial.id }) }}\' onclick=\'$(this).focus(); $(this).select();\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
+                        {% endif %}
+                        {% if is_granted("ROLE_ADMIN") or testimonial.user == app.user %}
+                            <a href="{{ path('core_knowledge_school_testimonial_edit', { 'id':testimonial.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit"><i class="ladb-icon-edit"></i></a>
+                            <a href="#delete_testimonial_{{ testimonial.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete"><i class="ladb-icon-delete"></i></a>
+                            {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'delete_testimonial_'~testimonial.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+                                {% block bodyInner %}
+                                    <p>La suppression de ce témoignage entrainera la perte de toutes les informations qui lui sont relatives.</p>
+                                    <p>Confirmez l'action pour continuer.</p>
+                                {% endblock %}
+                                {% block footerInner %}
+                                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                    <a href="{{ path('core_knowledge_school_testimonial_delete', { 'id':testimonial.id }) }}" class="btn btn-danger ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+                        {% if testimonial.user != app.user %}
+                            {% include 'Core/Report:_widget-mini.part.html.twig' with { 'entityType':testimonial.type, 'entityId':testimonial.id } %}
+                        {% endif %}
+                    </div>
+                    {% include 'Common/_author.part.html.twig' with { 'entity':testimonial, 'hideBy':true } %}
+                    <div style="margin: 10px 0; color: #000; font-size: 110%;">
+                        {% include 'Knowledge/School/Testimonial:_period.part.html.twig' %}
+                        {% if testimonial.diploma %}
+                            <span{% if testimonial.fromYear > 0 %} class="ladb-horizontal-separator-left"{% endif %} style="color: #888;">{{ testimonial.diploma }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="ladb-content">
+                    <div itemprop="reviewBody">
+                        {{ testimonial.htmlBody|raw }}
+                    </div>
+                    {% include 'Common/_published-age.part.html.twig' with { 'entity':testimonial } %}
+                    {% if testimonial.updatedAt > testimonial.createdAt %}
+                        <span class="ladb-horizontal-separator-left">{% include 'Common/_updated-age.part.html.twig' with { 'entity':testimonial } %}</span>
+                    {% endif %}
+                    <div class="text-right">
+                        <a href="{{ path('core_message_thread_new_recipientusername', { 'recipientUsername':testimonial.user.usernameCanonical }) }}" class="btn btn-default btn-sm" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':testimonial.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.contact'|trans() }} {{ testimonial.user.displayName }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

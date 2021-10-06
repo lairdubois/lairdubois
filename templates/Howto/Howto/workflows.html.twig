@@ -1,0 +1,36 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageUrl = url('core_howto_workflows', { 'id':howto.id }) %}
+{% set pageTitle = 'Processus associés à '~howto.title %}
+{% set pageDescription = 'Processus associés au pas à pas' %}
+
+{% set navSection = 'howtos' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':howto } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if workflows.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            Aucun processus n'est associé à ce pas à pas.
+        </div>
+    {% else %}
+        {% embed 'Workflow:Workflow/_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_howto_workflows_filter' %}
+            {% set filterPathParameters = { 'id':howto.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ howto.workflowCount }} {{ 'workflow.workflow.choice.entities'|transchoice(howto.workflowCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Workflow:Workflow/_list-n.part.html.twig' %}
+{% endblock %}

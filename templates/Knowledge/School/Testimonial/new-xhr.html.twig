@@ -1,0 +1,23 @@
+{% extends 'Knowledge/School/Testimonial:_form.html.twig' %}
+
+{% set formAction = path('core_knowledge_school_testimonial_create', { 'id':school.id }) %}
+
+{% block title %}<i class="ladb-icon-plus"></i> {{ 'knowledge.school.testimonial.new'|trans() }}{% endblock %}
+
+{% block buttons %}
+    <div class="alert alert-info">
+        <div class="media">
+            <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+            <div class="media-body">
+                <h4>A lire avant de publier</h4>
+                <p>Ce témoignage vous permet d'exprimer de façon synthétique votre expérience au sein de l'école ou centre de formation : '<strong>{{ school.title }}</strong>'.</p>
+                <p>Pour en savoir plus sur les témoignages, lisez ce <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}" class="alert-link">sujet</a>.</p>
+                <p style="background-color: #d9534f; padding: 3px 7px; color: #fff;">
+                    <i class="ladb-icon-warning"></i> N'utilisez pas ce témoignage pour poser des questions sur l'école.
+                </p>
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.publish'|trans()), 'classes':'btn-primary' } %}
+{% endblock %}

@@ -1,0 +1,18 @@
+
+{# set tags #}
+{# set type #}
+
+<div class="ladb-metas">
+    <h4 class="ladb-heading">{{ 'tag.tags'|trans() }}</h4>
+    <div class="ladb-meta">
+        <ul class="ladb-tags">
+        {% block tags %}
+            {% for tag in tags %}
+                <li>{% include 'Core/Tag:_link.part.html.twig' %}</li>
+            {% else %}
+                <span class="ladb-translucent">{{ 'tag.none'|trans() }}</span>
+            {% endfor %}
+        {% endblock %}
+        </ul>
+    </div>
+</div>

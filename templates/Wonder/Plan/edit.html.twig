@@ -1,0 +1,20 @@
+{% extends 'Wonder/Plan:_form.html.twig' %}
+
+{% set pageTitle = 'wonder.plan.edit'|trans() %}
+{% set formAction = path('core_plan_update', { 'id':plan.id }) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'wonder.plan.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_plan_show', { 'id':plan.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block sections %}
+    {% if plan.isDraft %}
+        {% include 'Wonder/Plan:_draft-alert.part.html.twig' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

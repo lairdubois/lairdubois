@@ -1,0 +1,4 @@
+{% extends 'Core/Notification:_email.txt.twig' %}
+
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** vous invite à devenir membre du collectif "{{ row.invitation.team.displayName }}".
+{% endblock %}

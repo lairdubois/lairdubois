@@ -1,0 +1,18 @@
+
+{# set question #}
+{# set classes (facultative) #}
+{# set noAuthor (facultative) #}
+
+{% set noAuthor = noAuthor|default(false) %}
+
+<div{% if classes is defined %} class="{{ classes }}"{% endif %}>
+    <div>
+        <i class="ladb-icon-question"></i> <a href="{{ path('core_qa_question_show', { 'id':question.sluggedId }) }}">{{ question.title }}</a>
+    </div>
+    <small>
+        {% if not noAuthor %}
+            {% include 'Common/_author.part.html.twig' with { 'entity':question, 'noMicrodata':true } %}
+        {% endif %}
+        {% include 'Qa/Question/_answers-counter.part.html.twig' with { 'classes':(noAuthor ? '' : 'ladb-horizontal-separator-left') } %}
+    </small>
+</div>

@@ -1,8 +1,0 @@
-{% extends 'LadbCoreBundle:Core/Notification:_row.part.html.twig' %}
-
-{% set icon = 'student' %}
-{% set entity = notification.activity.testimonial.school %}
-
-{% block body %}
-    a ajouté son témoignage à {{ ('notification.the.knowledge_school')|trans() }} "<strong>{{ entity.title }}</strong>".
-{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'Common/Layout/_form.html.twig' %}
+
+{% set navSection = 'howtos' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.mainPicture.vars.id, 'maxPictureCount':1 } %}
+    {% include 'Qa/Question/_form-gallery-script.part.html.twig' with { 'fieldId':form.questions.vars.id, 'maxQuestionCount':4 } %}
+    {% include 'Wonder/Plan:_form-gallery-script.part.html.twig' with { 'fieldId':form.plans.vars.id, 'maxPlanCount':4 } %}
+    {% include 'Workflow:Workflow/_form-gallery-script.part.html.twig' with { 'fieldId':form.workflows.vars.id, 'maxWorkflowCount':10 } %}
+    {% include 'Knowledge/Provider:_form-gallery-script.part.html.twig' with { 'fieldId':form.providers.vars.id, 'maxProviderCount':10 } %}
+    {% include 'Knowledge/School:_form-gallery-script.part.html.twig' with { 'fieldId':form.schools.vars.id, 'maxSchoolCount':4 } %}
+    {% include 'Common/_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {% include 'Common/_form-sidenav-title.part.html.twig' %}
+    {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'title':('default.picture'|trans()) } %}
+    <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
+    {% include 'Common/_form-sidenav-body.part.html.twig' with { 'title':'Introduction' } %}
+    {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+    {% block articlesSidenav %}{% endblock %}
+    {% include 'Qa/Question/_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Workflow:Workflow/_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Knowledge/Provider:_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Knowledge/School:_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Core/License:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'howto.howto.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('howto.howto.form.help.title'|trans()) } %}
+    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_HD'), 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('howto.howto.form.help.main_picture'|trans()) } %}
+    {% embed 'Common/_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
+        {% block body %}
+            <div class="form-group">
+                <label>Nature</label>
+                <span class="help-block"><em>Indiquez la nature du contenu de votre pas à pas.</em></span>
+                {{ form_errors(form.kind) }}
+                {{ form_widget(form.kind) }}
+            </div>
+            <div class="form-group">
+                <label>Etat</label>
+                <p class="help-block"><i>{{ ('howto.howto.form.help.wip'|trans())|raw }}</i></p>
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.isWorkInProgress) }} En cours de réalisation ( <i class="ladb-icon-wip"></i> )
+                    </label>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% include 'Common/_form-section-body.part.html.twig' with { 'mandatory':true, 'title':'Introduction', 'help':('howto.howto.form.help.body'|trans()) } %}
+    {% include 'Core/Tag:_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre pas à pas.' } %}
+    {% block articlesSection %}{% endblock %}
+    {% include 'Qa/Question/_form-section-gallery.part.html.twig' with { 'maxQuestionCount':4, 'help':('howto.howto.form.help.questions'|trans()) } %}
+    {% include 'Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('howto.howto.form.help.plans'|trans()) } %}
+    {% include 'Workflow:Workflow/_form-section-gallery.part.html.twig' with { 'maxWorkflowCount':10, 'help':('howto.howto.form.help.workflows'|trans()) } %}
+    {% include 'Knowledge/Provider:_form-section-gallery.part.html.twig' with { 'maxProviderCount':10, 'help':('howto.howto.form.help.providers'|trans()) } %}
+    {% include 'Knowledge/School:_form-section-gallery.part.html.twig' with { 'maxSchoolCount':4, 'help':('howto.howto.form.help.schools'|trans()) } %}
+    {% include 'Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
+{% endblock %}

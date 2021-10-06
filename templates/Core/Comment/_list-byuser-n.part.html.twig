@@ -1,0 +1,12 @@
+{% extends 'Core/User:_list-items-byuser-n.part.html.twig' %}
+
+{# set items #}
+
+{% block subitems %}
+    {% for comment in item.comments %}
+        {% embed 'Core/Comment:_row.part.html.twig' with { 'classes':'ladb-user-groupby-item', 'noFooter':true } %}
+            {% block minitools %}{% endblock %}
+        {% endembed %}
+    {% endfor %}
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends 'Event/Event:_form.html.twig' %}
+
+{% set pageTitle = 'event.event.edit'|trans() %}
+{% set formAction = path('core_event_update', { 'id':event.id }) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'event.event.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_event_show', { 'id':event.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="ladb_do_up"> {{ 'default.do_up'|trans }}
+            </label>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block sections %}
+    {% if event.isDraft %}
+        {% include 'Event/Event:_draft-alert.part.html.twig' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

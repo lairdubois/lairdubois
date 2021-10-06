@@ -1,0 +1,13 @@
+{% extends 'Core/Tip:_form.html.twig' %}
+
+{% set pageTitle = 'core.tip.edit'|trans() %}
+{% set formAction = path('core_tip_update', { 'id':tip.id }) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'core.tip.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_tip_list') }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}

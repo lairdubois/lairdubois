@@ -1,0 +1,35 @@
+
+{% form_theme form 'Common/_form-theme.twig.twig' %}
+
+{# set actionPath #}
+{# set knowledge #}
+{# set field #}
+{# set form #}
+{# set label #}
+{# set cancelEdit (facultative) #}
+
+{% set actionPath = actionPath is defined ? actionPath : path('core_knowledge_value_create', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field }) %}
+{% set fieldType = knowledge.fieldDefs[field][constant('ATTRIB_TYPE', knowledge)] %}
+{% set fieldLabel = knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' %}
+{% set formSection = form.vars.id~'_data' %}
+
+<form action="{{ actionPath }}" method="post" novalidate class="ladb-value-proposal-form">
+    <fieldset>
+        {# Add quality and/or post-processor parameter if fieldType is picture and quality and/or post-processor is defined. Variable used in the following include. #}
+        {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') %}
+            {% if knowledge.fieldDefs[field][constant('ATTRIB_QUALITY', knowledge)] is defined %}
+                {% set quality = knowledge.fieldDefs[field][constant('ATTRIB_QUALITY', knowledge)] %}
+            {% endif %}
+            {% if knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] is defined %}
+                {% set postProcessor = knowledge.fieldDefs[field][constant('ATTRIB_POST_PROCESSOR', knowledge)] %}
+            {% endif %}
+        {% endif %}
+        {% include 'Knowledge/_form-fieldset-value-'~fieldType~'.part.html.twig' with { 'fieldLabel':fieldLabel } %}
+    </fieldset>
+    {% block buttons %}
+        {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
+    {% endblock %}
+    {% if fieldType == constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Picture::TYPE_STRIPPED_NAME') %}
+        {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.data.vars.id, 'maxPictureCount':1, 'editable':true } %}
+    {% endif %}
+</form>

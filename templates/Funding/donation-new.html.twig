@@ -1,0 +1,84 @@
+{% extends 'Common/Modal:_modal-content.part.html.twig' %}
+
+{% set id = 'new_modal' %}
+{% set title = 'funding.donate'|trans() %}
+
+{% block contentInner %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyInner %}
+    {% if validAmount %}
+        {% if app.user.emailConfirmed %}
+            <p class="text-center">
+                Vous êtes sur le point de faire un don de <strong>{{ amountEur|number_format(2, ',', ' ') }}€</strong> pour soutenir le projet <em>L'Air du Bois</em>.
+                <br>
+                Des frais de transaction seront prélevés sur cette somme par la plateforme de paiement et sont estimés au minimum à <strong>{{ feeEur|number_format(2, ',', ' ') }}€</strong>. <a href="https://stripe.com/fr/pricing">En savoir plus</a>.
+            </p>
+            <br>
+            <div class="row">
+                <div class="col-md-10 col-md-push-1 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="ladb-icon-credit-card ladb-icon-lg"></i> Paiement par carte bancaire
+                        </div>
+                        <div class="panel-body">
+                            <div style="position: relative;">
+                                <form id="stripe_payment_form">
+                                    <div class="row">
+                                        <div class="form-group col-xs-12">
+                                            <label for="stripe_card_number_element" class="control-label">Numéro de carte <i id="ladb_cc_icon"></i></label>
+                                            <div id="stripe_card_number_element" style="border: 1px solid #ddd; padding: 10px;"></div>
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label for="stripe_card_expiry_element" class="control-label">Date d'expiration</label>
+                                            <div id="stripe_card_expiry_element" style="border: 1px solid #ddd; padding: 10px;"></div>
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label for="stripe_card_cvc_element" class="control-label">Cryptogramme visuel</label>
+                                            <div id="stripe_card_cvc_element" style="border: 1px solid #ddd; padding: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <p class="help-block text-center">
+                                    <small><em><i class="ladb-icon-lock ladb-icon-lg"></i> La transation est assurée par <a href="https://stripe.com"><img src="{{ asset('/bundles/ladbcore/ladb/images/logo-stripe.svg') }}" width="40px"></a>.</em></small>
+                                    <br>
+                                    <small><em>Aucune donnée bancaire ne transite par le serveur de L'Air du Bois.</em></small>
+                                </p>
+                                {% embed 'Common/_loading-panel.part.html.twig' %}
+                                    {% block inner %}
+                                        <i class="ladb-icon-lock ladb-icon-lg"></i>
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <small class="help-block text-center">Vous receverez un récapitulatif par email à l'adresse <strong>{{ app.user.email }}</strong>.</small>
+        {% else %}
+            <div class="media">
+                <div class="media-left" style="padding-top: 5px;">
+                    <i class="ladb-icon-warning ladb-icon-lg"></i>
+                </div>
+                <div class="media-body">
+                    Avant de pouvoir effectuer un don, vous devez confirmer l'adresse e-mail associée à votre compte.
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <p>Le montant de votre don est invalide. Sa valeur doit être comprise entre <strong>{{ minAmountEur }}€</strong> et <strong>{{ maxAmountEur }}€</strong>.</p>
+    {% endif %}
+{% endblock %}
+
+{% block footerInner %}
+    <a id="ladb_donate_cancel_btn" href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    {% if validAmount %}
+        {% if app.user.emailConfirmed %}
+            <a id="ladb_donate_pay_btn" href="#" class="btn btn-primary" data-secret="{{ secret }}" data-customer-name="{{ customerName }}" data-loading-text="Transaction en cours...">Payer {{ amountEur|number_format(2, ',', ' ') }}€</a>
+        {% else %}
+            <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'Common/Modal:_modal-content.part.html.twig' %}
+
+{% form_theme form 'Common/_form-theme.twig.twig' 'Core/Block:_form-theme.html.twig' %}
+
+{% set id = 'new_vote_modal' %}
+{% set title = ('vote.tooltip.vote_'~way)|trans() %}
+
+{% block bodyInner %}
+    <p>Vous êtes sur le point d'indiquer votre {% if way == 'down' %}<strong class="ladb-color-danger">désaccord</strong>{% else %}<strong class="ladb-color-success">accord</strong>{% endif %} avec
+    {% if entity.type >= constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE') and entity.type < constant('\\Ladb\\CoreBundle\\Entity\\Wonder\\Creation::TYPE') %} {# Knowledge value #}
+        {% set fieldDef = parentEntity.fieldDefs[entity.parentEntityField] %}
+        {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
+        {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}
+        <strong>la proposition</strong> de {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':entity.user } %} pour le champ <em>{{ ('knowledge.'~parentEntity.strippedName~'.field.'~entity.parentEntityField)|trans() }}</em>.
+    {% else %}
+        <strong>{{ ('notification.the.'~ladb_entity_type_stripped_name(entity))|trans() }}</strong> de {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':entity.user } %}.
+    {% endif %}
+    </p>
+    <p>Expliquez votre choix : {% if way == 'down' %}<small class="ladb-color-danger">(Obligatoire)</small>{% else %}<small>(Facultatif)</small>{% endif %}</p>
+    {{ form_start(form, { 'action':path('core_vote_create', { 'entityType':entity.type, 'entityId':entity.id, 'way':way, 'orientation':orientation }), 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+        {{ form_errors(form.body) }}
+        {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize' } }) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    <a href="#" class="btn btn-{{ way == 'down' ? 'danger' : 'success' }} ladb-vote-btn"><i class="ladb-icon-arrow-{{ way }}"></i> {{ ('vote.tooltip.vote_'~way)|trans() }}</a>
+{% endblock %}

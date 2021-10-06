@@ -1,0 +1,31 @@
+{% extends "FOSUserBundle:layout.html.twig" %}
+
+{% block subtitle %}{{ 'resetting.request.heading'|trans() }}{% endblock %}
+
+{% block fos_user_content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-sm-push-3">
+            <div class="panel panel-default panel-lg">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'resetting.request.heading'|trans() }}</h1>
+                </div>
+                <form action="{{ path('fos_user_resetting_send_email') }}" method="POST">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {% if invalid_username is defined %}
+                                <ul class="alert alert-danger list-unstyled">
+                                    <li>{{ 'resetting.request.invalid_username'|trans({ '%username%':invalid_username })|raw }}</li>
+                                </ul>
+                            {% endif %}
+                            <label for="username">{{ 'resetting.request.username'|trans() }}</label>
+                            <input type="text" id="username" name="username" required="required" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <input type="submit" value="{{ 'resetting.request.submit'|trans() }}" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock fos_user_content %}

@@ -1,0 +1,6 @@
+{% apply spaceless %}
+
+{% set fieldChoices = fieldDef[constant('ATTRIB_CHOICES', knowledge)] is defined ? fieldDef[constant('ATTRIB_CHOICES', knowledge)] : null %}
+
+<span>{{ fieldChoices is not null ? fieldChoices[value.data] : value.data }}</span>
+{% endapply %}

@@ -1,0 +1,6 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        ga_tracking_id: "%env(GA_TRACKING_ID)%"
+        stripe_publishable_key: "%env(STRIPE_PUBLISHABLE_KEY)%"
+        websocket_uri: "%env(WEBSOCKET_URI)%"

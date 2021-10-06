@@ -1,0 +1,10 @@
+{% extends 'Common/_list-choice.html.twig' %}
+
+{% block body %}
+    {% include 'Wonder/Creation/_searchbox.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Wonder/Creation/_list-choice-n.part.html.twig' %}
+{% endblock %}

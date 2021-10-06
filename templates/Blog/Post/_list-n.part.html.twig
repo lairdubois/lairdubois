@@ -1,0 +1,13 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set posts #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set posts = entities %}{% endif %}
+
+{% block items %}
+    {% for post in posts %}
+        {% include 'Blog/Post/_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

@@ -1,0 +1,48 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% use 'Common/Blocks/map.blocks.html.twig' %}
+
+{% set pageTitle = 'knowledge.school.list'|trans() %}
+{% set pageDescription = 'knowledge.school.description'|trans() %}
+{% set pageImage = asset('banner-schools-600x376.jpg') %}
+{% set pageSectionUrl = url('core_school_list') %}
+{% set pageSectionName = 'knowledge.school.list'|trans %}
+
+{% set navSection = 'schools' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+{% set hideMapArea = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% include 'Common/_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Knowledge/School:_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-hidden-mobile">
+        <div class="panel-body">
+            Cet <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-que-lannuaire-ecoles' }) }}">annuaire</a> est complété et contrôlé collaborativement par la communauté. Si vous détectez des erreurs ou des manques, <a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}">apportez vos propositions</a> !
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Knowledge/School:_list-n.part.html.twig' %}
+{% endblock %}

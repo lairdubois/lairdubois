@@ -1,0 +1,10 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set followers #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for follower in followers %}
+        {% include 'Core/User:_list-row.part.html.twig' with { 'user':follower.user } %}
+    {% endfor %}
+{% endblock %}

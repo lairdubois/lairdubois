@@ -1,0 +1,36 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageUrl = url('core_workflow_rebounds', { 'id':workflow.id }) %}
+{% set pageTitle = 'Rebonds de '~workflow.title %}
+{% set pageDescription = 'Rebonds du processus' %}
+
+{% set navSection = 'workflows' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':workflow } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if workflows.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            Ce processus n'a aucun rebond
+        </div>
+    {% else %}
+        {% embed 'Workflow:Workflow/_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_workflow_rebounds_filter' %}
+            {% set filterPathParameters = { 'id':workflow.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ workflow.reboundCount }} {{ 'default.choice.rebounds'|transchoice(workflow.reboundCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Workflow:Workflow/_list-n.part.html.twig' %}
+{% endblock %}

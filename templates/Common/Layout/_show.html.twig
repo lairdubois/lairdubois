@@ -1,0 +1,136 @@
+{% extends 'layout.html.twig' %}
+
+{% if entity is defined %}
+    {% set pageUrl = pageUrl|default(ladb_entity_url_action(entity, 'show')) %}
+    {% set pageType = pageType|default('article') %}
+    {% set pageName = pageName|default(entity.title) %}
+    {% set pageTitle = pageTitle|default(pageName) %}
+    {% if entity.user is defined %}
+        {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.by'|trans()))~' '~entity.user.displayname %}
+    {% endif %}
+    {% if pageDescription is not defined and entity.bodyExtract is defined and entity.bodyExtract is not empty %}
+        {% set pageDescription = entity.bodyExtract %}
+    {% endif %}
+    {% if entity.user is defined %}
+        {% set pageAuthor = entity.user.displayname %}
+    {% endif %}
+    {% if pageImage is not defined %}
+        {% if entity.pictures is defined and entity.pictures is not empty %}
+            {% set pageImage = [] %}
+            {% for picture in entity.pictures %}
+                {% set pageImage = pageImage|merge([picture.webPath|imagine_filter('470x275o')]) %}
+            {% endfor %}
+            {% set pageImageWidth = '470' %}
+            {% set pageImageHeight = '275' %}
+        {% elseif entity.mainPicture is defined and entity.mainPicture is not null %}
+            {% set pageImage = (entity.mainPicture.webPath|imagine_filter('470x275o')) %}
+            {% set pageImageWidth = '470' %}
+            {% set pageImageHeight = '275' %}
+        {% endif %}
+    {% endif %}
+    {% set pageContentItemType = pageContentItemType|default('CreativeWork') %}
+    {% if entity.license is defined %}
+        {% set pageLicenseUrl = entity.license.contentUrl %}
+    {% endif %}
+{% endif %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set noStickyHeader = true %}
+
+{% use 'Common/Blocks/blueimp-gallery-widget.blocks.html.twig' %}
+{% use 'Common/Blocks/sharebuttons-widget.blocks.html.twig' %}
+
+{% block headPrefix %}{{ parent() }} article: http://ogp.me/ns/article#{% endblock %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    {% block headOpenGraphArticleMetas %}
+        {# OpenGraph metas #}
+        {% if entity is defined %}
+            {% if entity.user is defined and entity.user.meta.facebook is not null %}
+                <meta property="article:author" content="https://www.facebook.com/{{ entity.user.meta.facebook }}" />
+            {% endif %}
+            <meta property="article:publisher" content="LAirDuBois" />
+            <meta property="article:modified_time" content="{{ entity.updatedAt|date('c') }}" />
+            <meta property="article:published_time" content="{{ entity.createdAt|date('c') }}" />
+            <meta property="article:section" content="{{ (ladb_entity_type_stripped_name(entity, '.')~'.nav')|trans() }}" />
+            {% if entity.tags is defined %}
+                {% for tag in entity.tags %}
+                    <meta property="article:tag" content="{{ tag.label }}" />
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+{% endblock %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('blueimpGalleryStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Tooltips #}
+            setupTooltips();
+
+            {# Setup ScrollToTop button #}
+            $('#ladb_block_metas').ladbAppendScrollToTopBtn();
+
+            {# Setup Comment Widget #}
+            $('.ladb-comment-widget').ladbCommentWidget();
+
+            {# Intercept hash that starts with #_ scrollto behavior #}
+            if (window.location.hash && window.location.hash.startsWith('#_')) {
+                setTimeout(function() {
+                    var selector = window.location.hash.replace('#', '#ladb');   {# Change to a valid element ID like #ladb_XXX #}
+                    var $target = $(selector);
+                    $target.parents('.collapse').addClass('in');
+                    $target.ladbScrollTo(null, {
+                        onAfterHighlight: true
+                    });
+                }, 1000);
+            }
+
+        });
+    </script>
+    {{ block('blueimpGalleryJavascripts') }}
+    {% if entity.isPublic is defined and entity.isPublic or entity.isPublic is not defined %}
+        {{ block('sharebuttonsJavascript') }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ block('blueimpGalleryWidget') }}
+    {% if entity.isPublic is defined and entity.isPublic or entity.isPublic is not defined %}
+        {{ block('sharebuttonsFloatVertical') }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="row">
+        <div id="ladb_block_body" class="col-md-8 col-xs-12">
+            {% block contentBody %}{% endblock %}
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <div id="ladb_block_metas">
+                {% block contentMetas %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% block contentMetasPanel %}{% endblock %}
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+            <div id="ladb_block_suggest">
+                {% block contentSuggests %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    {% include 'Core/Report:_modal.part.html.twig' %}
+{% endblock %}

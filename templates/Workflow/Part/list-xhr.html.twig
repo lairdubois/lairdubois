@@ -1,0 +1,22 @@
+{% extends 'Common/Modal:_modal-content.part.html.twig' %}
+
+{% set id = 'ladb_part_list_modal' %}
+{% set title = 'workflow.part.list'|trans() %}
+
+{% block bodyInner %}
+    <div class="alert alert-warning ladb-part-empty-alert"{% if workflow.parts|length > 0 %} style="display: none;"{% endif %}>
+        {{ 'workflow.part.empty'|trans() }}
+    </div>
+    <table class="table table-bordered ladb-part-table" style="background-color: white;{% if workflow.parts|length == 0 %} display: none;{% endif %}">
+        <tbody>
+        {% for part in workflow.parts %}
+            {% include 'Workflow:Part/_row.part.html.twig' %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('core_workflow_part_new', { 'id':workflow.id }) }}" class="btn btn-default ladb-part-new-btn" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ 'workflow.part.add'|trans() }}</a>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+{% endblock %}

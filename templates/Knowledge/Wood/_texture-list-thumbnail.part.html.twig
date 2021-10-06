@@ -1,0 +1,27 @@
+{% extends 'Common/_masonry-list-thumbnail.part.html.twig' %}
+
+{# set texture #}
+
+{% set entity = texture %}
+{% set noMicrodata = true %}
+
+{% block onClickInner %}$('#texture_modal').modal({ remote:'{{ path('core_wood_texture_show', { 'id':texture.id }) }}' });{% endblock %}
+
+{% block title %}
+    {% if texture.value.legend is empty %}
+        {{ ('knowledge.wood.field.'~texture.value.parentEntityField)|trans() }}
+    {% else %}
+        {{ texture.value.legend|truncate(30) }}
+    {% endif %}
+{% endblock %}
+
+{% block image %}
+    {% include 'Core/Picture/_img.part.html.twig' with { 'picture':texture.singlePicture, 'width':282, 'height':280 } %}
+{% endblock %}
+
+{% block entityMetas %}
+    <li class="ladb-counter"><i class="ladb-icon-unpublish"></i> <span>{{ texture.downloadCount|number_format(0, ',', ' ') }}</span></li>
+{% endblock %}
+
+{% block footerOuter %}
+{% endblock %}

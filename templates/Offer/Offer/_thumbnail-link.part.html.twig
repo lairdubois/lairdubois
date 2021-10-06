@@ -1,0 +1,7 @@
+
+{# set offer #}
+{# set classes (facultative) #}
+
+<a href="{{ path('core_offer_show', { 'id':offer.sluggedId }) }}" class="thumbnail{% if classes is defined %} {{ classes }}{% endif %}" data-tooltip="tooltip" title="{{ offer.title }} {{ 'default.by'|trans() }} {{ offer.user.displayname }}">
+    {% include 'Core/Picture/_img.part.html.twig' with { 'picture':offer.mainPicture, 'width':'128', 'height':'128', 'filterMode':'o', 'alt':offer.title, 'attributes':'data-pin-nopin="true"', 'noMicrodata':true } %}
+</a>

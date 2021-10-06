@@ -1,0 +1,22 @@
+{% extends 'Core/User:_show-list.html.twig' %}
+
+{% block bodyContainerContent %}
+    {% if members.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            <strong>{{ user.username }}</strong> n'a pas de membres.
+        </div>
+    {% else %}
+        {% embed 'Core/User:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
+            {% set filterPath = 'core_user_show_members_filter' %}
+            {% set filterPathParameters = { 'username':user.usernameCanonical } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ user.meta.memberCount }} {{ 'team.choice.members'|transchoice(user.meta.memberCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Core/Member/_members-list-n.part.html.twig' %}
+{% endblock %}

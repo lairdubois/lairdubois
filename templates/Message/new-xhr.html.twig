@@ -1,0 +1,11 @@
+{% form_theme form 'Common/_form-theme.twig.twig' %}
+
+<div class="ladb-content ladb-new">
+    <div class="ladb-body">
+        {% embed 'Message:_form.html.twig' with { 'action':path('core_message_create', { 'threadId':thread.id }) } %}
+            {% block buttons %}
+                {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+</div>

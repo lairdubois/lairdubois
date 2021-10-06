@@ -1,0 +1,178 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% set entity = question %}
+
+{% set pageItemType = 'QAPage' %}
+{% set pageContentItemprop = 'mainEntity' %}
+{% set pageContentItemType = 'Question' %}
+{% set pageTitlePrefix = '[Question]' %}
+{% if question.mainPicture is null %}
+    {% set pageImage = asset('banner-questions-600x376.jpg') %}
+{% endif %}
+{% set pageSectionUrl = url('core_qa_question_list') %}
+{% set pageSectionName = 'qa.question.list'|trans %}
+
+{% set navSection = 'qa' %}
+{% set searchPath = path('core_qa_question_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == question.user.id %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/layout/qa.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.questionpage.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#container').ladbQuestionPage({
+                answerNewPath: '{{ path('core_qa_answer_new', { 'id':question.id }) }}'
+            });
+            $("#ladb_answers_nav_panel").sticky({
+                topSpacing: 70
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+        {% block adminItems %}
+            {{ parent() }}
+            <li role="separator" class="divider"></li>
+            <li><a href="#admin_converttooffer_question_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-offer"></i> {{ 'qa.question.converttooffer'|trans() }}</a></li>
+        {% endblock %}
+        {% block adminModals %}
+            {{ parent() }}
+            {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'admin_converttooffer_question_modal', 'title':('qa.question.converttooffer'|trans()) } %}
+                {% block bodyInner %}
+                    <p>La convertion transformera la question <strong>{{ question.title }}</strong> de <strong>{{ question.user.displayname }}</strong> en offre.</p>
+                    <p>Confirmez l'action pour continuer.</p>
+                {% endblock %}
+                {% block footerInner %}
+                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                    <a href="{{ path('core_qa_question_admin_converttooffer', { 'id':question.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if question.isDraft %}
+        {% include 'Qa/Question/_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-qa-question">
+        <div class="ladb-box">
+            <div class="ladb-box-inner row">
+                <div class="ladb-content-box col-sm-11 col-xs-12" itemprop="text">
+                    {% for block in question.bodyBlocks %}
+                        {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                    {% endfor %}
+                    {% if question.updatedAt > question.createdAt %}
+                        {% include 'Common/_updated-age.part.html.twig' with { 'entity':question } %}
+                    {% endif %}
+                    {% include 'Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'alertTransKey':(ownerUser ? '' : 'qa.question.comment_alert'), 'adminTools':[ { 'path':'core_comment_admin_converttoanswer', 'pathParams':{ 'questionId':question.id }, 'icon':'arrow-right', 'label':'Convertir en réponse' } ] } %}
+                </div>
+                <div class="col-sm-1 col-xs-12 ladb-hidden-mobile">
+                    <div class="ladb-full-height">?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ladb-show-content-section">
+        {% include 'Qa/Question/_answers-header.part.html.twig' %}
+        {% include 'Qa/Answer:_list.part.html.twig' %}
+        {% include 'Qa/Question/_answers-footer.part.html.twig' %}
+    </div>
+    {% include 'Core/Vote:_modals.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <a href="#" class="ladb-scrollto-btn" onclick="$('.ladb-qa-question-answers').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+            <i class="ladb-icon-answer ladb-icon-fixed-center"></i>
+            <strong itemprop="answerCount">{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'qa.answer.choice.entities'|transchoice(question.answerCount) }}</small>
+        </div>
+        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':question } %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% if question.creationCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-creation"></i>
+                <a href="{{ question.creationCount == 1 ? path('core_creation_show', { 'id':question.creations[0].sluggedId }) : path('core_qa_question_creations', { 'id':question.id }) }}">
+                    <strong>{{ question.creationCount }}</strong>
+                    <small>{{ 'wonder.creation.choice.entities'|transchoice(question.creationCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if question.planCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-plan"></i>
+                <a href="{{ question.planCount == 1 ? path('core_plan_show', { 'id':question.plans[0].sluggedId }) : path('core_qa_question_plans', { 'id':question.id }) }}">
+                    <strong>{{ question.planCount }}</strong>
+                    <small>{{ 'wonder.plan.choice.entities'|transchoice(question.planCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if question.howtoCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-howto"></i>
+                <a href="{{ question.howtoCount == 1 ? path('core_howto_show', { 'id':question.howtos[0].sluggedId }) : path('core_qa_question_howtos', { 'id':question.id }) }}">
+                    <strong>{{ question.howtoCount }}</strong>
+                    <small>{{ 'howto.howto.choice.entities'|transchoice(question.howtoCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
+    {% include 'Core/License:_metas.part.html.twig' with { 'license':question.license } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if userQuestions is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('qa.question.other_from')|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':question.user, 'noMicrodata':true } %}
+            </div>
+            <div class="panel-body">
+                {% for userQuestion in userQuestions %}
+                    {% include 'Qa/Question/_thumbnail-link.part.html.twig' with { 'question':userQuestion, 'noAuthor':true } %}
+                {% endfor %}
+                {% if question.user.meta.publicQuestionCount > 2 %}
+                    <div class="ladb-margin-top">
+                        <a href="{{ path('core_user_show_questions', { 'username':question.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if similarQuestions is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('qa.question.similar')|trans() }}
+            </div>
+            <div class="panel-body">
+                {% for similarQuestion in similarQuestions %}
+                    {% include 'Qa/Question/_thumbnail-link.part.html.twig' with { 'question':similarQuestion, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% include 'Qa/Answer:_nav-panel.part.html.twig' %}
+{% endblock %}
+

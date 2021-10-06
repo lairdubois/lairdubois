@@ -1,0 +1,38 @@
+{% extends 'Funding:_layout.html.twig' %}
+
+{% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
+
+{% set tab = 'donation-list' %}
+
+{% set masonry = false %}
+{% set masonryWide = false %}
+{% set noStickyHeader = true %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('autopagerScript') }}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="row">
+        <div class="col-sm-5 col-sm-push-7 col-xs-12">
+            {% include 'Funding:_list-stats.part.html.twig' %}
+        </div>
+        <div class="col-sm-7 col-sm-pull-5 col-xs-12">
+            {% embed 'Common/_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
+                {% set filterDefs = {
+                    'recent':       { 'label':'Récents', 'path':path('core_funding_admin_donation_list_filter', { 'filter':'recent' }) },
+                    'generous':     { 'label':'Généreux', 'path':path('core_funding_admin_donation_list_filter', { 'filter':'generous' }) },
+                } %}
+                {% block filterbarRightContent%}
+                    <span class="ladb-heading">{{ donationCount }} {{ 'funding.choice.donations'|transchoice(donationCount) }}</span>
+                {% endblock %}
+            {% endembed %}
+            {{ block('autopagerContainer') }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Funding:_donation-list-n.part.html.twig' %}
+{% endblock %}

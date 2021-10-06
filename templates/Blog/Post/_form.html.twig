@@ -1,0 +1,47 @@
+{% extends 'Common/Layout/_form.html.twig' %}
+
+{% set navSection = 'blog' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'formSection':'mainPicture', 'fieldId':form.mainPicture.vars.id, 'maxPictureCount':1 } %}
+    {% include 'Common/_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    {% include 'Common/_form-sidenav-title.part.html.twig' %}
+    {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'formSection':'mainPicture', 'title':('default.picture'|trans()) } %}
+    {% include 'Core/Block:_form-sidenav-body.part.html.twig' %}
+    <li><a href="#toc"><i class="ladb-icon-characteristics"></i> {{ 'default.toc'|trans() }}</a></li>
+    <li><a href="#highlight_level"><i class="ladb-icon-spotlight"></i> {{ 'faq.question.highlight_level'|trans() }}</a></li>
+    {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    {{ parent() }}
+    {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('blog.post.form.help.title'|trans()) } %}
+    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formSection':'mainPicture', 'formPictures':form.mainPicture, 'pictures':(form.vars.data.mainPicture is null ? [] : [ form.vars.data.mainPicture ]), 'maxPictureCount':1, 'title':('default.picture'|trans()), 'help':('blog.post.form.help.main_picture'|trans()) } %}
+    {% include 'Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true } %}
+    {% embed 'Common/_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.toc'|trans()), 'formSection':'toc' } %}
+        {% block body %}
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(form.hasToc) }}
+                        {{ 'faq.question.has_toc'|trans }}
+                    </label>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'Common/_form-section.part.html.twig' with { 'icon':'spotlight', 'title':('faq.question.highlight_level'|trans()), 'formSection':'highlight_level' } %}
+        {% block body %}
+            <div class="form-group">
+                {{ form_errors(form.highlightLevel) }}
+                {{ form_widget(form.highlightLevel) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% include 'Core/Tag:_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre sujet.' } %}
+{% endblock %}

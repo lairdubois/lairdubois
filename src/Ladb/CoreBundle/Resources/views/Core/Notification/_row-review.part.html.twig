@@ -1,9 +1,0 @@
-{% extends 'LadbCoreBundle:Core/Notification:_row.part.html.twig' %}
-
-{% set icon = 'review' %}
-{% set entity = ladb_entity(notification.activity.review.entityType, notification.activity.review.entityId) %}
-{% set isYour = entity.user is defined and entity.user == app.user %}
-
-{% block body %}
-    a ajouté son avis sur {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
-{% endblock %}

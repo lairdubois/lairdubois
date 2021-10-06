@@ -1,0 +1,29 @@
+{# set actionPath #}
+
+{% form_theme form 'Common/_form-theme.twig.twig' 'Core/Block:_form-theme.html.twig' %}
+
+<tr class="ladb-charge-row-form">
+    <td colspan="4" style="position: relative;">
+        {{ form_start(form, { 'action':actionPath, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+        {{ form_errors(form) }}
+        <table class="table table-bordered" style="margin-bottom: 10px;">
+            <tbody>
+            <tr>
+                <td>{{ form_errors(form.label) }}{{ form_widget(form.label) }}</td>
+                <td>{{ form_errors(form.dutyFreeAmount) }}{{ form_widget(form.dutyFreeAmount, { 'attr':{ 'class':'form-control ladb-amount' } }) }}</td>
+                <td>{{ form_errors(form.amount) }}{{ form_widget(form.amount, { 'attr':{ 'class':'form-control ladb-amount' } }) }}</td>
+                <td>{{ form_errors(form.amount) }}{{ form_widget(form.isRecurrent) }}</td>
+            </tr>
+            </tbody>
+        </table>
+        {{ form_end(form) }}
+        <div>
+            {% block buttons %}
+                <button class="btn btn-default ladb-charge-cancel-btn">Annuler</button>
+                <button class="btn btn-primary ladb-charge-save-btn">Enregistrer</button>
+            {% endblock %}
+        </div>
+        {% include 'Common/_loading-panel.part.html.twig' %}
+    </td>
+</tr>
+

@@ -1,0 +1,198 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% use 'Common/Blocks/map.blocks.html.twig' %}
+
+{% set entity = event %}
+
+{% set pageTitleBy = 'partagé par' %}
+{% set noMicrodataLocation = false %}
+{% set pageContentItemType = 'Event' %}
+{% set noMicrodataAge = true %}
+{% set noMicrodataAuthor = true %}
+{% set noMicrodataTag = true %}
+{% set noMicrodataCommentCount = true %}
+{% set pageSectionUrl = url('core_event_list') %}
+{% set pageSectionName = 'event.event.list'|trans %}
+
+{% set navSection = 'events' %}
+{% set searchPath = path('core_event_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == event.user.id %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% if hasMap %}
+        {{ block('mapAreaStylesheets') }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if hasMap %}
+        {{ block('mapAreaJavascripts') }}
+    {% endif %}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Feedback Widget #}
+            $('.ladb-feedback-widget').ladbFeedbackWidget();
+
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header:_entity-show-header.part.html.twig' %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if event.isDraft %}
+        {% include 'Event/Event:_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-event">
+        {% if event.cancelled %}
+            <meta itemprop="eventStatus" content="http://schema.org/EventCancelled">
+            <a class="btn btn-danger btn-block ladb-margin-bottom" onclick="$('#ladb_event_datetime').ladbScrollTo(null, { onAfterHighlight: true })">
+                <i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}
+            </a>
+        {% else %}
+            <meta itemprop="eventStatus" content="http://schema.org/EventScheduled">
+            {% include 'Core/Feedback:_contains-panel.part.html.twig' %}
+        {% endif %}
+        {% if event.pictures is defined %}
+            {% embed 'Common/_entity-showcase.part.html.twig' with { 'entity':event, 'pictures':event.pictures, 'alt':event.title, 'editable':(permissionContext.editable and permissionContext.isGrantedOwner) } %}
+                {% block picture0 %}
+                    {{ parent() }}
+                    {% include 'Event/Event:_event-calendar.part.html.twig' with { 'event':event, 'topRight':true } %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+        <div class="ladb-link">
+            {% set startDate = event.startDate %}
+            {% set startTime = event.startTime %}
+            {% set endDate = event.endDate %}
+            {% set endTime = event.endTime %}
+            <div id="ladb_event_datetime" class="media">
+                <div class="media-left">
+                    <i class="ladb-icon-calendar-month ladb-icon-lg"></i>
+                </div>
+                <div class="media-body ladb-event">
+                    <meta itemprop="startDate" content="{{ event.startAt|date('Y-m-dTH:i:s') }}">
+                    <meta itemprop="endDate" content="{{ (event.endAt is not null and event.endAt > event.startAt ? event.endAt : event.startAt)|date('Y-m-dTH:i:s') }}">
+                    {% if event.cancelled %}<del>{% endif %}
+                        <span class="ladb-full-date">{% if endDate is not null and endDate > startDate %}<span class="ladb-link-word">du</span>{% else %}<span class="ladb-link-word">le</span>{% endif %} {{ startDate|localizeddate('full', 'none') }}{% if startTime is not null %}{% if endTime is not null and endTime > startTime and (endDate == startDate or endDate is null) %} <span class="ladb-link-word">de</span>{% else %} <span class="ladb-link-word">à</span>{% endif %} <span class="ladb-time">{{ startTime|date('G:i') }}</span>{% endif %}{% if endDate is not null and endDate > startDate %} <span class="ladb-link-word">au</span> {{ endDate|localizeddate('full', 'none') }}{% endif %}{% if endTime is not null %} <span class="ladb-link-word">à</span> <span class="ladb-time">{{ endTime|date('G:i') }}{% endif %}</span></span>
+                    {% if event.cancelled %}</del>{% endif %}
+                    {% if event.cancelled %}
+                        <br><span class="label label-danger"><i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}</span>
+                    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_SCHEDULED') %}
+                        <br><span class="label label-info">{{ 'event.event.scheduled'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_starts'|trans() }} {{ event.startAt|time_diff() }}.</span>
+                    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_RUNNING') %}
+                        <br><span class="label label-success">{{ 'event.event.running'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_ends'|trans() }} {{ event.endAt|time_diff() }}.</span>
+                    {% elseif event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
+                        <br><span class="label label-default">{{ 'event.event.completed'|trans() }}</span> <span class="ladb-duration"> {{ 'event.event.event_was_completed'|trans() }} {{ event.endAt|time_diff() }}.</span>
+                    {% endif %}
+                    {% if event.online %}
+                        <div class="ladb-event-attendence-mode">
+                            <i class="ladb-icon-software ladb-icon-lg"></i> {{ 'event.event.online'|trans() }}
+                            <meta itemprop="eventAttendanceMode" content="https://schema.org/OnlineEventAttendanceMode">
+                        </div>
+                    {% else %}
+                        <meta itemprop="eventAttendanceMode" content="https://schema.org/OfflineEventAttendanceMode">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if event.location is defined and event.location is not null %}
+            <div class="ladb-link">
+                <i class="ladb-icon-location ladb-icon-fixed-center"></i>
+                {% if not noMicrodataLocation %}
+                    <span itemprop="location" itemscope itemtype="http://schema.org/Place">
+                        <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                {% endif %}
+                            {% if not noMicrodataLocation %}<span itemprop="addressLocality">{% endif %}{{ event.location ? event.location : '-' }}{% if not noMicrodataLocation %}</span>{% endif %}
+                {% if not noMicrodataLocation %}
+                        </span>
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if event.url is defined and event.url is not null %}
+            <div class="ladb-link">
+                <i class="ladb-icon-globe ladb-icon-fixed-center"></i> <a href="{{ event.url }}" target="_blank" rel="noreferrer noopener" itemprop="url">{{ event.url|ladb_url_truncate(true, 30) }}</a>
+            </div>
+        {% endif %}
+        {% if not event.isDraft and joinContext.isJoinable %}
+            <div class="ladb-join-row">
+                {% include 'Core/Join:_widget.part.html.twig' %}
+            </div>
+        {% endif %}
+        <hr>
+        <div class="ladb-body">
+            {% for block in event.bodyBlocks %}
+                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% if event.updatedAt > event.createdAt %}
+        {% include 'Common/_updated-age.part.html.twig' with { 'entity':event } %}
+    {% endif %}
+    {% if not permissionContext.isOwner %}
+        {% include 'Common/_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% include 'Core/Feedback:_widget.part.html.twig' %}
+    {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true } %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Join:_meta-counter.part.html.twig' %}
+        {% include 'Core/Feedback:_meta-counter.part.html.twig' %}
+        {% if hasMap %}
+            <div class="ladb-meta">
+                {% if hasMap %}
+                    {% include 'Common/_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'150px', 'markersUrl':path('core_event_location', { 'id':event.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':event.tags, 'type':'events' } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if userEvents is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('event.event.other_from')|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':event.user, 'noMicrodata':true } %}
+            </div>
+            <div class="panel-body row">
+                {% for userEvent in userEvents %}
+                    <div class="col-xs-6">
+                        {% include 'Event/Event:_thumbnail-link.part.html.twig' with { 'event':userEvent } %}
+                    </div>
+                {% endfor %}
+                {% if event.user.meta.publicEventCount > 2 %}
+                    <div class="col-xs-12 ladb-margin-top">
+                        <a href="{{ path('core_event_list', { 'q':('@author:'~event.user.usernamecanonical) }) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if similarEvents is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('event.event.similar')|trans() }}
+            </div>
+            <div class="panel-body row">
+                {% for similarEvent in similarEvents %}
+                    <div class="col-xs-6">
+                        {% include 'Event/Event:_thumbnail-link.part.html.twig' with { 'event':similarEvent, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

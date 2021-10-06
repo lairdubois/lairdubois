@@ -1,0 +1,11 @@
+{% extends 'Qa/Answer:_form.html.twig' %}
+
+{% set noLazyLoad = true %}
+{% set formAction = path('core_qa_answer_update', { 'id':answer.id }) %}
+
+{% block title %}<i class="ladb-icon-edit"></i> {{ 'qa.answer.edit'|trans() }}{% endblock %}
+
+{% block buttons %}
+    {{ parent() }}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
+{% endblock %}

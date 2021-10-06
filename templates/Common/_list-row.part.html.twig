@@ -1,0 +1,21 @@
+{# set entity #}
+{# set picture (facultative) #}
+{# set title (facultative) #}
+{# set showPath (facultative) #}
+{# set classes (facultative) #}
+
+{% set picture = picture|default(entity.mainPicture is defined ? entity.mainPicture : null) %}
+{% set title = title|default(entity.title) %}
+{% set showPath = showPath|default(ladb_entity_url_action(entity)) %}
+
+<div class="ladb-list-row{% if classes is defined %} {{ classes }}{% endif %}">
+    {% block rowInner %}
+        {% if picture %}
+            {% include 'Common/_avatar-link.part.html.twig' with { 'size':64, 'linkClasses':'ladb-avatar' } %}
+        {% endif %}
+        <div class="ladb-body">
+            {% block heading %}<h3 class="ladb-heading">{% block headingInner %}<a href="{{ showPath }}">{{ title }}</a>{% endblock %}</h3>{% endblock %}
+            {% block subheading %}<span class="ladb-subheading">{% block subheadingInner %}{% endblock %}</span>{% endblock %}
+        </div>
+    {% endblock %}
+</div>

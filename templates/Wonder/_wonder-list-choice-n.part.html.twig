@@ -1,0 +1,25 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set wonders #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for wonder in wonders %}
+        <div class="ladb-choice-row">
+            <div class="ladb-thumbnail">
+                <a href="{{ ladb_entity_url_action(wonder) }}" class="thumbnail" target="_blank">
+                    <img src="{{ wonder.mainPicture.webPath|imagine_filter('80x60o') }}">
+                </a>
+            </div>
+            <div class="ladb-tools">
+                <a href="#" class="btn btn-default" onclick="window.parent.{{ wonderType }}Added('{% filter escape('js') %}{% include 'Wonder:_wonder-form-thumbnail.part.html.twig' %}{% endfilter %}');">{{ 'default.choose'|trans() }}</a>
+            </div>
+            <div class="ladb-body">
+                <h4 class="ladb-heading">{{ wonder.title }}</h4>
+                <span class="ladb-subheading">
+                    {{ 'default.by'|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':wonder.user } %}<small class="ladb-age">{{ wonder.createdAt|time_diff() }}</small>
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

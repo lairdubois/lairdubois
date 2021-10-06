@@ -1,0 +1,45 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            var updated = false;
+            setupPopovers();
+            $(document).on('updated.ladb', function(event) {
+                updated = true;
+            });
+            $(document).on('hidden.bs.modal', function(event) {
+                if (event.target.id === "proposals_modal") {
+                    if (updated) {
+                        $(".ladb-loading").show();
+                        location.reload(true);
+                    } else {
+                        $(event.target)
+                                .removeData('bs.modal')
+                                .find(".modal-content").children().remove();
+                        $(event.target).find(".modal-content").append("<div class='modal-header'>{{ 'default.loading'|trans() }}</div>");
+                    }
+                }
+            });
+            $('.ladb-readmore').readmore({
+                moreLink: '<a href="#" class="ladb-readmore-more"><i class="ladb-icon-two-chevron-down"></i></a>',
+                lessLink: '<a href="#" class="ladb-readmore-less"><i class="ladb-icon-two-chevron-up"></i></a>',
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    {{ parent() }}
+    {% include 'Core/Vote:_modals.part.html.twig' %}
+    {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'proposals_modal', 'title':('knowledge.proposals'|trans()), 'classes':'modal-wide' } %}
+        {% block headerInner %}
+            {{ 'default.loading'|trans() }}
+        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
+    {% endembed %}
+{% endblock %}
+
+

@@ -1,0 +1,10 @@
+{% extends 'Common/_list-choice.html.twig' %}
+
+{% block body %}
+    {% include 'Knowledge/School:_searchbox.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Knowledge/School:_list-choice-n.part.html.twig' %}
+{% endblock %}

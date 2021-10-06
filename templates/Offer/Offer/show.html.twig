@@ -1,0 +1,214 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% use 'Common/Blocks/map.blocks.html.twig' %}
+
+{% set entity = offer %}
+
+{% if offer.isKindOffer %}
+    {% if offer.isCategoryJob %}
+        {% set pageContentItemType = 'JobPosting' %}
+        {% set pageContentNameItemprop = 'title' %}
+        {% set authorItemtype = 'Organization' %}
+        {% set authorItemprop = 'hiringOrganization' %}
+        {% set locationItemprop = 'jobLocation' %}
+    {% else %}
+        {% set pageContentItemType = 'Offer' %}
+        {% set authorItemprop = 'seller' %}
+        {% set locationItemprop = 'areaServed' %}
+    {% endif %}
+{% endif %}
+{% set pageSectionUrl = url('core_offer_list') %}
+{% set pageSectionName = 'offer.offer.list'|trans %}
+
+{% set navSection = 'offers' %}
+{% set searchPath = path('core_offer_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == offer.user.id %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% if hasMap %}
+        {{ block('mapAreaStylesheets') }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if hasMap %}
+        {{ block('mapAreaJavascripts') }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyMetas %}
+    {{ parent() }}
+    {% if offer.isKindOffer %}
+        {% if offer.isCategoryJob %}
+            <meta itemprop="datePosted" content="{{ entity.changedAt|date('Y-m-dTH:i:s') }}" />
+            <meta itemprop="validThrough" content="{{ entity.expiredDate|date('Y-m-dTH:i:s') }}" />
+        {% else %}
+            <meta itemprop="availabilityEnds" content="{{ entity.expiredDate|date('Y-m-dTH:i:s') }}" />
+            {% if offer.price %}
+                <meta itemprop="price" content="{{ offer.rawPrice }}" />
+                <meta itemprop="priceCurrency" content="{{ offer.currency }}" />
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header:_entity-show-header.part.html.twig' with { 'ownerCanAlwaysDelete':true, 'noMicrodataAge':true } %}
+        {% block adminItems %}
+            {{ parent() }}
+            <li role="separator" class="divider"></li>
+            <li><a href="#admin_converttoquestion_offer_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-question"></i> {{ 'offer.offer.converttoquestion'|trans() }}</a></li>
+        {% endblock %}
+        {% block adminModals %}
+            {{ parent() }}
+            {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'admin_converttoquestion_offer_modal', 'title':('offer.offer.converttoquestion'|trans()) } %}
+                {% block bodyInner %}
+                    <p>La convertion transformera l'annonce <strong>{{ offer.title }}</strong> de <strong>{{ offer.user.displayname }}</strong> en question.</p>
+                    <p>Confirmez l'action pour continuer.</p>
+                {% endblock %}
+                {% block footerInner %}
+                    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                    <a href="{{ path('core_offer_offer_admin_converttoquestion', { 'id':offer.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if offer.isDraft %}
+        {% include 'Offer/Offer:_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-offer">
+        {% if offer.pictures|length > 0 %}
+            {% include 'Common/_entity-showcase.part.html.twig' with { 'entity':offer, 'pictures':offer.pictures, 'alt':offer.title, 'editable':(permissionContext.editable and permissionContext.isGrantedOwner) } %}
+        {% endif %}
+        {% include 'Offer/Offer:_price.part.html.twig' %}
+        {% if offer.location is defined and offer.location is not null %}
+            <div class="ladb-link">
+                <i class="ladb-icon-location ladb-icon-fixed-center"></i>
+                <span itemprop="{{ locationItemprop|default('location') }}" itemscope itemtype="http://schema.org/Place">
+                    <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                        <span itemprop="addressLocality">{% include 'Offer/Offer:_location.part.html.twig' %}</span>
+                    </span>
+                </span>
+            </div>
+        {% endif %}
+        {% if offer.pictures|length or offer.price or offer.location %}
+            <hr>
+        {% endif %}
+        <div class="ladb-body">
+            {% for block in offer.bodyBlocks %}
+                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% if offer.updatedAt > offer.createdAt %}
+        {% include 'Common/_updated-age.part.html.twig' with { 'entity':offer } %}
+    {% endif %}
+    {% if not ownerUser %}
+        <div class="ladb-like-and-follow-row">
+            <a href="{{ path('core_offer_message_new', { 'id':offer.id }) }}" target="_blank" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
+        </div>
+    {% endif %}
+    {% if not offer.isDraft and (ownerUser or offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER')) %}
+        <div class="panel panel-default ladb-margin-top">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
+                    <div class="media-body">
+                        {% if ownerUser %}
+                            Cette annonce expirera <strong>{{ offer.expiredDate|time_diff }}</strong>.
+                        {% elseif offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') %}
+                            <div style="font-size: 90%;">
+                                <p>La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont <strong>sous la seule</strong> responsabilité de l'annonceur, {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':offer.user } %}.</p>
+                                <p><em>L'Air du Bois</em> en sa qualité d'hébergeur, conformément aux articles 6.I.2. et suivants de la loi nº2004-575 du 21 juin 2004, ne saurait donc en aucun cas être tenue responsable du contenu des Annonces publiées, ainsi que des messages et contenus échangés via la Messagerie et ne donne aucune garantie, expresse ou implicite, à cet égard.</p>
+                                <p><em>L'Air du Bois</em> rappelle que les machines pour le travail du bois sont dangereuses et nécessitent d'être branchées, vérifiées, entretenues et utilisées selon les règles de l'art.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true } %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment:_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+            <div class="ladb-meta">
+                <span class="pull-right">{{ ('offer.offer.kind_'~offer.kind)|trans }}</span>
+                <span><i class="ladb-icon-offer-kind-{{ offer.kind }} ladb-icon-fixed-center"></i> {{ 'offer.offer.kind'|trans }}</span>
+            </div>
+            <div class="ladb-meta">
+                <span class="pull-right">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
+                <span><i class="ladb-icon-list ladb-icon-fixed-center"></i> {{ 'offer.offer.category'|trans }}</span>
+            </div>
+            {% if offer.price %}
+                <div class="ladb-meta">
+                    <span class="pull-right">{% include 'Offer/Offer:_price.part.html.twig' %}</span>
+                    <span><i class="ladb-icon-funding ladb-icon-fixed-center"></i> {{ 'offer.offer.price'|trans }}</span>
+                </div>
+            {% endif %}
+            {% if offer.location %}
+                <div class="ladb-meta">
+                    <span class="pull-right">{% include 'Offer/Offer:_location.part.html.twig' %}</span>
+                    <span><i class="ladb-icon-location ladb-icon-fixed-center"></i>&nbsp;{{ 'default.location'|trans }}</span>
+                </div>
+            {% endif %}
+            {% if not ownerUser %}
+                <div class="ladb-btn">
+                    <a href="{{ path('core_offer_message_new', { 'id':offer.id }) }}" target="_blank" class="btn btn-primary btn-expand btn-lg" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
+                </div>
+            {% endif %}
+            {% if hasMap %}
+                {% include 'Common/_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'250px', 'markersUrl':path('core_offer_location', { 'id':offer.id }), 'classes':'ladb-map-thumbnail ladb-margin-top' } %}
+            {% endif %}
+        </div>
+    </div>
+    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':offer.tags, 'type':'offers', 'noMicrodata':true } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if userOffers is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('offer.offer.other_from')|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':offer.user, 'noMicrodata':true } %}
+            </div>
+            <div class="panel-body row">
+                {% for userOffer in userOffers %}
+                    <div class="col-xs-6">
+                        {% include 'Offer/Offer:_thumbnail-link.part.html.twig' with { 'offer':userOffer } %}
+                    </div>
+                {% endfor %}
+                {% if offer.user.meta.publicOfferCount > 2 %}
+                    <div class="col-xs-12 ladb-margin-top">
+                        <a href="{{ path('core_user_show_offers', { 'username':offer.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if similarOffers is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('offer.offer.similar')|trans() }}
+            </div>
+            <div class="panel-body row">
+                {% for similarOffer in similarOffers %}
+                    <div class="col-xs-6">
+                        {% include 'Offer/Offer:_thumbnail-link.part.html.twig' with { 'offer':similarOffer, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "FOSUserBundle:layout.html.twig" %}
+
+{% block subtitle %}{{ 'resetting.reset.heading'|trans() }}{% endblock %}
+
+{% form_theme form 'LadbCoreBundle:Common/_form-theme.twig.twig' %}
+
+{% block fos_user_content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-sm-push-3">
+            <div  class="panel panel-default panel-lg">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'resetting.reset.heading'|trans() }}</h1>
+                </div>
+                {{ form_start(form, { 'action':path('fos_user_resetting_reset', { 'token':token }), 'method':'POST' }) }}
+                    <div class="panel-body">
+                        {{ form_widget(form) }}
+                    </div>
+                    <div class="panel-footer">
+                        <input type="submit" value="{{ 'resetting.reset.submit'|trans() }}" class="btn btn-primary" />
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock fos_user_content %}

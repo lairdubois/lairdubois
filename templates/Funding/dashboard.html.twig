@@ -1,0 +1,97 @@
+{% extends 'Funding:_layout.html.twig' %}
+
+{% set tab = 'dashboard' %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/ladb/icons/ladbcc.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/jquery-circle-progress/jquery.circle-progress.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingdashboard.js'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingwidget.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% javascripts filter='?closure'
+            '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.fundingchargeinfos.js' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endif %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        $(document).ready(function() {
+
+            {% if is_granted('ROLE_USER') %}
+                $('.ladb-funding-widget').ladbFundingWidget({
+                    stripePublishableKey: '{{ stripe_publishable_key }}',
+                    autoShow: {% if autoShow %}true{% else %}false{% endif %},
+                    newUrl: '{{ path('core_funding_donation_new') }}',
+                    confirmedUrl: '{{ path('core_funding_donation_confirmed') }}',
+                    dashboardUrl: '{{ path('core_funding_dashboard') }}'
+                });
+            {% endif %}
+
+            $('.ladb-funding-dashboard').ladbFundingDashboard({
+                currentUrl: '{{ app.request.uri }}'
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Cette page vous permet de consulter et participer au financement de <em>L'Air du Bois</em>. <a href="{{ path('core_faq_question_show', { 'id':'comment-est-finance-l-air-du-bois' }) }}">En savoir plus</a>.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-xs-12">
+            {% include 'Funding:_dashboard.part.html.twig' %}
+        </div>
+        <div class="col-md-5 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Envie de contribuer ?</h4>
+                </div>
+                <div class="panel-body">
+                    <em>L'Air du Bois</em> a fait le pari de financer ses frais de fonctionnement uniquement par des dons volontaires.
+                    <ul>
+                        <li>Pour permettre à chacun de partager sa passion</li>
+                        <li>Pour rester indépendant</li>
+                        <li>Pour continuer à évoluer</li>
+                    </ul>
+                    <div style="margin: 20px 0;">
+                        <div class="ladb-funding-widget">
+                            <form action="{{ path('core_funding_donation_new') }}" class="form-inline text-center" method="get">
+                                <div class="form-group">
+                                    <div class="input-group input-group-lg">
+                                        <input name="amount_eur" id="ladb_donate_amount_input" type="tel" class="form-control input-lg text-right" maxlength="3" size="3" value="{{ amountEur|default(5) }}">
+                                        <div class="input-group-addon">€</div>
+                                    </div>
+                                </div>
+                                <button id="ladb_donate_btn" class="btn btn-primary btn-lg">Faire un don</button>
+                            </form>
+                            {% if is_granted("ROLE_USER") %}
+                                {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'new_modal', 'title':('funding.donate'|trans()) } %}
+                                    {% block bodyInner %}
+                                        {{ 'default.loading'|trans() }}
+                                    {% endblock %}
+                                    {% block footer %}{% endblock %}
+                                {% endembed %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

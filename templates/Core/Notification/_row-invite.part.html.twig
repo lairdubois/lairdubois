@@ -1,0 +1,14 @@
+{% extends 'Core/Notification:_row.part.html.twig' %}
+
+{% set icon = 'invite' %}
+
+{% block body %}
+    vous invite à rejoindre le collectif "<strong>{{ notification.activity.invitation.team.displayName }}</strong>".
+{% endblock %}
+
+{% block footer %}
+    <div style="text-align: center; margin-top: 5px;">
+        <a href="{{ path('core_member_invitation_accept', { 'id':notification.activity.invitation.id }) }}" class="btn btn-primary btn-sm" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'team.member_create'|trans }}</a>
+        <a href="{{ path('core_member_invitation_delete', { 'id':notification.activity.invitation.id }) }}" class="btn btn-default btn-sm" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'team.member_invitation_delete'|trans }}</a>
+    </div>
+{% endblock %}

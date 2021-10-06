@@ -1,0 +1,6 @@
+<div id="ladb_workflow_task_widget_{{ task.id }}" class="ladb-workflow-task-widget{% if readOnly %} ladb-readonly{% endif %}" style="left: {{ task.positionLeft }}px; top: {{ task.positionTop }}px;">
+    <div class="ladb-box-outer">
+        {% include 'Workflow:Task/_box.part.html.twig' %}
+    </div>
+    <div class="ladb-ep ladb-icon-arrow-down"></div>
+</div>

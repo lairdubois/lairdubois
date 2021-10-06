@@ -1,0 +1,18 @@
+# GosWebSocketBundle
+gos_web_socket:
+    shared_config: false
+    client:
+        firewall: main
+        session_handler: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+    server:
+        host: '%env(WEBSOCKET_HOST)%'
+        port: '%env(WEBSOCKET_PORT)%'
+        router:
+            resources:
+                -
+                    resource: '%kernel.project_dir%/config/pubsub/routing.yaml'
+                    type: 'yaml'
+    pushers:
+        wamp:
+            host: '%env(WEBSOCKET_HOST)%'
+            port: '%env(WEBSOCKET_PORT)%'

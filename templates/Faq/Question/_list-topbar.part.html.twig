@@ -1,0 +1,16 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'faq.question.list'|trans() %}
+{% set headingLevel = 2 %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Faq/Question:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightOuter %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ') %}{{ parent() }}{% endif %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{{ path('core_faq_question_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'faq.question.new'|trans() }}</span></a>
+{% endblock %}

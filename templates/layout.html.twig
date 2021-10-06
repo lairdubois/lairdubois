@@ -1,0 +1,263 @@
+{% extends "base.html.twig" %}
+
+{# set noStickyHeader (facultative) #}
+
+{% set bodyClass = (bodyClass is defined ? bodyClass~' ' : '')~'ladb-topbar-enabled ladb-bottombar-enabled ladb-leftbar-enabled' %}
+{% set topbarTranslucent = topbarTranslucent|default(false) %}
+{% set hideAboutAlert = hideAboutAlert|default(false) %}
+{% set listedEntityType = listedEntityType|default(null) %}
+
+{% block bodyJavascriptsInlineReady %}
+    {{ parent() }}
+    {% if is_granted("ROLE_USER") %}
+        $('body').ladbCounters({
+            countersPath: '{{ path('core_user_counters_me', { 'listed_entity_type':listedEntityType }) }}'
+        });
+    {% endif %}
+    {% if topbarTranslucent %}
+        $('.ladb-topbar').ladbTopbarTranslucent();
+    {% endif %}
+    {% if not noStickyHeader|default(false) %}
+        if (window.innerHeight > 640) {
+            $(".ladb-header").sticky({topSpacing: 50});
+        }
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% embed '_topbar.part.html.twig' %}
+        {% block topbarLeftContent %}
+            {{ parent() }}
+            <li class="ladb-visible-mobile"><a href="#ladb_offcanvas_leftbar" data-uk-offcanvas><i class="ladb-icon-reorder ladb-icon-lg"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-all' } %} <i class="ladb-icon-caret-right"></i></a></li>
+            {% if searchPath is defined %}
+                <li>{% include 'Core/Search/_widget.part.html.twig' with { 'searchFormClasses':'ladb-hidden-mobile' } %}</li>
+            {% endif %}
+        {% endblock %}
+        {% block topbarRightContent %}
+            {% if is_granted("ROLE_USER") %}
+                <li class="ladb-hidden-mobile">
+                    <a id="ladb_notification_btn" role="button" onclick="$('#notifications_modal').modal({ remote:'{{ path('core_notification_list') }}' }); $('#ladb_notification_badge').hide();">
+                        <i class="ladb-icon-notifications ladb-icon-lg"></i>{% if app.user.meta.freshNotificationCount > 0 %} <span id="ladb_notification_badge" class="badge badge-notification badge-notification-important ladb-notification-btn-badge">{{ app.user.meta.freshNotificationCount }}</span>{% endif %}
+                    </a>
+                </li>
+                <li class="ladb-hidden-mobile">
+                    <a href="{{ path('core_message_mailbox') }}"{% if navSection is defined and navSection == 'messages' %} class="ladb-active"{% endif %}>
+                        <i class="ladb-icon-message ladb-icon-lg"></i>{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important ladb-notification-btn-badge">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}
+                    </a>
+                </li>
+                <li><a href="#ladb_offcanvas_logged_user_nav" data-uk-offcanvas><i class="ladb-icon-caret-left"></i> {% if app.user.meta.unreadMessageCount > 0 or app.user.meta.freshNotificationCount > 0 %}<span id="ladb_notification_badge_sum" class="badge badge-notification badge-notification-important ladb-visible-mobile">{{ app.user.meta.unreadMessageCount + app.user.meta.freshNotificationCount }}</span>{% endif %}<span class="ladb-hidden-mobile ladb-hidden-tablet"> {{ app.user.displayname }}</span> {% include 'Core/User:_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %}</a></li>
+            {% else %}
+                <li><a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock ladb-icon-lg"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a></li>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+    {% embed '_bottombar.part.html.twig' %}
+        {% block bottomBarPromotionGraphicNotificationBadge %}
+            {{ parent() }}
+            {% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-promotion-graphics' } %}
+        {% endblock %}
+        {% block bottomBarBlogPostNotificationBadge %}
+            {{ parent() }}
+            {% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-blog-posts' } %}
+        {% endblock %}
+        {% block bottomBarFaqQuestionNotificationBadge %}
+            {{ parent() }}
+            {% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-faq-questions' } %}
+        {% endblock %}
+    {% endembed %}
+    {% if is_granted("ROLE_USER") %}
+        <div id="ladb_offcanvas_logged_user_nav" class="uk-offcanvas">
+            <div class="uk-offcanvas-bar uk-offcanvas-bar-flip">
+                <div class="uk-panel uk-margin-bottom-remove">
+                    <h3 class="uk-panel-title">{% include 'Core/User:_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %} {{ app.user.displayname }}</h3>
+                </div>
+                <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
+                    <li class="uk-nav-divider"></li>
+                    <li><a href="{{ path('core_user_show_me') }}"><i class="ladb-icon-profile"></i> {{ 'user.home'|trans() }}</a></li>
+                    <li><a role="button" onclick="$.UIkit.offcanvas.hide(false); $('#notifications_modal').modal({ remote:'{{ path('core_notification_list') }}' }); $('#ladb_notification_badge_offcanvas').hide();">{% if app.user.meta.freshNotificationCount > 0 %} <span id="ladb_notification_badge_offcanvas" class="badge badge-notification badge-notification-important pull-right">{{ app.user.meta.freshNotificationCount }}</span>{% endif %}<i class="ladb-icon-notifications"></i> {{ 'notification.nav'|trans() }}</a></li>
+                    <li><a href="{{ path('core_message_mailbox') }}">{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important pull-right">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}<i class="ladb-icon-message"></i> {{ 'message.nav'|trans() }}</a></li>
+                    <li><a href="{{ path('core_user_settings_me') }}"><i class="ladb-icon-settings ladb-icon-fixed-center"></i> {{ 'user.settings'|trans() }}</a></li>
+                    <li class="uk-nav-divider"></li>
+                    <li><a href="{{ path('core_user_show_teams', { 'username':app.user.usernameCanonical }) }}"><i class="ladb-icon-users ladb-icon-fixed-center"></i> Mes collectifs</a></li>
+                    <li><a href="{{ path('core_workflow_list', { 'q':'@mine' }) }}"><i class="ladb-icon-workflow ladb-icon-fixed-center"></i> {{ 'workflow.workflow.user_list'|trans }}</a></li>
+                    <li><a href="{{ path('core_collection_list', { 'q':'@mine' }) }}"><i class="ladb-icon-collection ladb-icon-fixed-center"></i> {{ 'collection.collection.user_list'|trans }}</a></li>
+                    <li><a href="{{ path('core_funding_user_donation_list') }}"><i class="ladb-icon-funding ladb-icon-fixed-center"></i> Mes dons</a></li>
+                    <li><a href="{{ path('core_youtook_user_list') }}"><i class="ladb-icon-video ladb-icon-fixed-center"></i> {{ 'youtook.user_list'|trans() }}</a></li>
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OPENCUTLIST') %}
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="{{ path('core_opencutlist_stats') }}"><i class="ladb-icon-statistics ladb-icon-fixed-center"></i> OpenCutList Stats</a></li>
+                    {% endif %}
+                    <li class="uk-nav-divider"></li>
+                    <li><a href="{{ path('fos_user_security_logout') }}"><i class="ladb-icon-off ladb-icon-fixed-center"></i> {{ 'user.logout'|trans() }}</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+    <div id="ladb_offcanvas_leftbar" class="uk-offcanvas">
+        <div class="uk-offcanvas-bar">
+            <div class="uk-panel">
+                {% include 'Core/Search/_widget.part.html.twig' with { 'searchFormClasses':'ladb-search-expended' } %}
+            </div>
+            <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
+                <li class="uk-nav-divider"></li>
+                <li><a href="{{ path('core_creation_list') }}"{% if navSection is defined and navSection == 'creations' %} class="ladb-active"{% endif %}><i class="ladb-icon-creation"></i>{{ 'wonder.creation.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-creations pull-right' } %}</a></li>
+                <li><a href="{{ path('core_qa_question_list') }}"{% if navSection is defined and navSection == 'qa' %} class="ladb-active"{% endif %}><i class="ladb-icon-question"></i>{{ 'qa.question.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-qa-questions pull-right' } %}</a></li>
+                <li><a href="{{ path('core_plan_list') }}"{% if navSection is defined and navSection == 'plans' %} class="ladb-active"{% endif %}><i class="ladb-icon-plan"></i>{{ 'wonder.plan.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-plans pull-right' } %}</a></li>
+                <li><a href="{{ path('core_howto_list') }}"{% if navSection is defined and navSection == 'howtos' %} class="ladb-active"{% endif %}><i class="ladb-icon-howto"></i>{{ 'howto.howto.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-howto-howtos pull-right' } %}</a></li>
+                <li><a href="{{ path('core_workshop_list') }}"{% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{{ 'wonder.workshop.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-workshops pull-right' } %}</a></li>
+                <li class="uk-nav-divider"></li>
+                <li><a href="{{ path('core_wood_list') }}"{% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{{ 'knowledge.wood.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-woods pull-right' } %}</a></li>
+                <li><a href="{{ path('core_book_list') }}"{% if navSection is defined and navSection == 'books' %} class="ladb-active"{% endif %}><i class="ladb-icon-book"></i>{{ 'knowledge.book.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-books pull-right' } %}</a></li>
+                <li><a href="{{ path('core_software_list') }}"{% if navSection is defined and navSection == 'softwares' %} class="ladb-active"{% endif %}><i class="ladb-icon-software"></i>{{ 'knowledge.software.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-softwares pull-right' } %}</a></li>
+                <li><a href="{{ path('core_collection_list') }}"{% if navSection is defined and navSection == 'collections' %} class="ladb-active"{% endif %}><i class="ladb-icon-collection"></i>{{ 'collection.collection.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-collection-collections pull-right' } %}</a></li>
+                <li class="uk-nav-divider"></li>
+                <li><a href="{{ path('core_provider_list') }}"{% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{{ 'knowledge.provider.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-providers pull-right' } %}</a></li>
+                <li><a href="{{ path('core_school_list') }}"{% if navSection is defined and navSection == 'schools' %} class="ladb-active"{% endif %}><i class="ladb-icon-school"></i>{{ 'knowledge.school.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-schools pull-right' } %}</a></li>
+                <li><a href="{{ path('core_user_list') }}"{% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-user"></i>{{ 'user.nav'|trans() }}</a></li>
+                <li><a href="{{ path('core_user_team_list') }}"{% if navSection is defined and navSection == 'teams' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i>{{ 'team.nav'|trans() }}</a></li>
+                <li class="uk-nav-divider"></li>
+                <li><a href="{{ path('core_find_list') }}"{% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-find"></i>{{ 'find.find.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-find-finds pull-right' } %}</a></li>
+                <li><a href="{{ path('core_event_list') }}"{% if navSection is defined and navSection == 'events' %} class="ladb-active"{% endif %}><i class="ladb-icon-event"></i>{{ 'event.event.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-event-events pull-right' } %}</a></li>
+                <li><a href="{{ path('core_offer_list') }}"{% if navSection is defined and navSection == 'offers' %}  class="ladb-active"{% endif %}><i class="ladb-icon-offer"></i>{{ 'offer.offer.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers pull-right' } %}</a></li>
+                <li class="uk-nav-divider"></li>
+                <li><a href="{{ path('core_workflow_list') }}"{% if navSection is defined and navSection == 'workflows' %} class="ladb-active"{% endif %}><i class="ladb-icon-workflow"></i>{{ 'workflow.workflow.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-workflow-workflows pull-right' } %}</a></li>
+                <li class="uk-nav-divider"></li>
+                <li><a href="{{ path('core_tip_list') }}"{% if navSection is defined and navSection == 'tip' %} class="ladb-active"{% endif %}><i class="ladb-icon-tip"></i>{{ 'core.tip.nav'|trans() }}</a></li>
+                <li><a href="{{ path('core_blog_post_list') }}"{% if navSection is defined and navSection == 'blog' %} class="ladb-active"{% endif %}><i class="ladb-icon-blog"></i>{{ 'blog.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-blog-posts pull-right' } %}</a></li>
+                <li><a href="{% if is_granted("ROLE_USER") and app.user.meta.unlistedFaqQuestionCount > 0 %}{{ path('core_faq_question_list', { 'q':'@sort-recent' }) }}{% else %}{{ path('core_faq_question_list') }}{% endif %}"{% if navSection is defined and navSection == 'faq' %} class="ladb-active"{% endif %}><i class="ladb-icon-help"></i>{{ 'faq.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-faq-questions pull-right' } %}</a></li>
+                <li><a href="{{ path('core_promotion_graphic_list') }}"{% if navSection is defined and navSection == 'promotion' %} class="ladb-active"{% endif %}><i class="ladb-icon-promote"></i>{{ 'promotion.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-promotion-graphics pull-right' } %}</a></li>
+            </ul>
+        </div>
+    </div>
+    <nav id="ladb_leftbar" class="ladb-leftbar ladb-no-print">
+        <a href="{{ path('core_creation_list') }}"{% if navSection is defined and navSection == 'creations' %} class="ladb-active"{% endif %}><i class="ladb-icon-creation"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-creations' } %}<div>{{ 'wonder.creation.nav'|trans() }}</div></a>
+        <a href="{{ path('core_qa_question_list') }}"{% if navSection is defined and navSection == 'qa' %} class="ladb-active"{% endif %}><i class="ladb-icon-question"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-qa-questions' } %}<div>{{ 'qa.question.nav'|trans() }}</div></a>
+        <a href="{{ path('core_plan_list') }}"{% if navSection is defined and navSection == 'plans' %} class="ladb-active"{% endif %}><i class="ladb-icon-plan"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-plans' } %}<div>{{ 'wonder.plan.nav'|trans() }}</div></a>
+        <a href="{{ path('core_howto_list') }}"{% if navSection is defined and navSection == 'howtos' %} class="ladb-active"{% endif %}><i class="ladb-icon-howto"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-howto-howtos' } %}<div>{{ 'howto.howto.nav'|trans() }}</div></a>
+        <a href="{{ path('core_workshop_list') }}"{% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-workshops' } %}<div>{{ 'wonder.workshop.nav'|trans() }}</div></a>
+        <div class="ladb-leftbar-subbar ladb-leftbar-subbar-4">
+            <div class="ladb-subbar-toggle{% if navSection is defined and (navSection in ['woods', 'books', 'softwares', 'collections']) %} ladb-nav-active{% endif %}">
+                <div class="ladb-toggle-handle"><i class="ladb-icon-more"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-catalogs' } %}<div>Catalogues</div></div>
+                <span class="ladb-toggle-arrow"></span>
+            </div>
+            <div class="ladb-subbar-panel">
+                <a href="{{ path('core_wood_list') }}"{% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-woods' } %}<div>{{ 'knowledge.wood.nav'|trans() }}</div></a>
+                <a href="{{ path('core_book_list') }}"{% if navSection is defined and navSection == 'books' %} class="ladb-active"{% endif %}><i class="ladb-icon-book"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-books' } %}<div>{{ 'knowledge.book.nav'|trans() }}</div></a>
+                <a href="{{ path('core_software_list') }}"{% if navSection is defined and navSection == 'softwares' %} class="ladb-active"{% endif %}><i class="ladb-icon-software"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-softwares' } %}<div>{{ 'knowledge.software.nav'|trans() }}</div></a>
+                <a href="{{ path('core_collection_list') }}"{% if navSection is defined and navSection == 'collections' %} class="ladb-active"{% endif %}><i class="ladb-icon-collection"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-collection-collections' } %}<div>{{ 'collection.collection.nav'|trans() }}</div></a>
+            </div>
+        </div>
+        <div class="ladb-leftbar-subbar ladb-leftbar-subbar-4">
+            <div class="ladb-subbar-toggle{% if navSection is defined and (navSection in ['providers', 'schools', 'users']) %} ladb-nav-active{% endif %}">
+                <div class="ladb-toggle-handle"><i class="ladb-icon-more"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-directories'  } %}<div>Annuaires</div></div>
+                <span class="ladb-toggle-arrow"></span>
+            </div>
+            <div class="ladb-subbar-panel">
+                <a href="{{ path('core_provider_list') }}"{% if navSection is defined and navSection == 'providers' %} class="ladb-active"{% endif %}><i class="ladb-icon-provider"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-providers' } %}<div>{{ 'knowledge.provider.nav'|trans() }}</div></a>
+                <a href="{{ path('core_school_list') }}"{% if navSection is defined and navSection == 'schools' %} class="ladb-active"{% endif %}><i class="ladb-icon-school"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-schools' } %}<div>Ecoles</div></a>
+                <a href="{{ path('core_user_list') }}"{% if navSection is defined and navSection == 'users' %} class="ladb-active"{% endif %}><i class="ladb-icon-user"></i><div>{{ 'user.nav'|trans() }}</div></a>
+                <a href="{{ path('core_user_team_list') }}"{% if navSection is defined and navSection == 'teams' %} class="ladb-active"{% endif %}><i class="ladb-icon-users"></i><div>{{ 'team.nav'|trans() }}</div></a>
+            </div>
+        </div>
+        <a href="{{ path('core_find_list') }}"{% if navSection is defined and navSection == 'finds' %} class="ladb-active"{% endif %}><i class="ladb-icon-find"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-find-finds' } %}<div>{{ 'find.find.nav'|trans() }}</div></a>
+        <a href="{{ path('core_event_list') }}"{% if navSection is defined and navSection == 'events' %} class="ladb-active"{% endif %}><i class="ladb-icon-event"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-event-events' } %}<div>{{ 'event.event.nav'|trans() }}</div></a>
+        <div class="ladb-leftbar-subbar ladb-leftbar-subbar-2 ladb-leftbar-subbar-folding">
+            <div class="ladb-subbar-toggle{% if navSection is defined and (navSection in ['offers', 'finds', 'events']) %} ladb-nav-active{% endif %}">
+                <div class="ladb-toggle-handle"><i class="ladb-icon-more"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-plus'  } %}<div>Plus</div></div>
+                <span class="ladb-toggle-arrow"></span>
+            </div>
+            <div class="ladb-subbar-panel">
+                <a href="{{ path('core_offer_list') }}"{% if navSection is defined and navSection == 'offers' %}  class="ladb-active"{% endif %}><i class="ladb-icon-offer"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-offer-offers' } %}<div>{{ 'offer.offer.nav'|trans() }}</div></a>
+                <a href="{{ path('core_workflow_list') }}"{% if navSection is defined and navSection == 'workflows' %} class="ladb-active"{% endif %}><i class="ladb-icon-workflow"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-workflow-workflows' } %}<div>{{ 'workflow.workflow.nav'|trans() }}</div></a>
+            </div>
+        </div>
+    </nav>
+    {{ parent() }}
+    {% if is_granted("ROLE_USER") %}{% include 'Core/Notification:_modal.part.html.twig' %}{% endif %}
+{% endblock %}
+
+{% block bodyHeader %}
+    <header>
+        <div class="ladb-alerts{% if topbarTranslucent %} ladb-alerts-translucent{% endif %}">
+            {% block alertsInner %}
+                {% if not is_granted("ROLE_USER") %}
+                    {% if not topbarTranslucent and not hideAboutAlert %}
+                        <div class="alert alert-info">
+                            <p style="margin-top: 5px;"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
+                            <p>
+{#                                TODO fix user urls#}
+{#                                <a href="{{ path('fos_user_registration_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>#}
+{#                                <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>#}
+                            </p>
+                        </div>
+                    {% endif %}
+                {% elseif not app.user.emailConfirmed %}
+                    <div class="alert alert-info">
+                        <p>
+                            {{ 'user.email_confirmation.body'|trans() }}
+                            <br>
+                            <a href="{{ path('core_user_email_check') }}" class="alert-link">{{ 'user.email_confirmation.check.action'|trans() }}</a> {{ 'default.or'|trans }} <a href="#email_check_modal" class="alert-link" data-toggle="modal">{{ 'user.email_confirmation.check.modal_action'|trans() }}</a>
+                        </p>
+                    </div>
+                    {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
+                        {% block bodyInner %}
+                            {{ 'user.email_confirmation.check.modal_body'|trans()|ladb_markdown|raw }}
+                        {% endblock %}
+                        {% block footerInner %}
+                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                            <a href="{{ path('core_user_email_check') }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
+                {% for key, message in app.session.flashbag.all %}
+                    <div class="alert alert-{{ key }}">
+                        {{ message[0]|raw }}
+                    </div>
+                {% endfor %}
+            {% endblock %}
+        </div>
+        {% block bodyHeaderContainer %}
+            <div class="ladb-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {% block bodyHeaderContainerContent %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </header>
+{% endblock %}
+
+{% block bodyContainer %}
+    <div id="content">
+        {% block bodyContainerContent %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block bodyFooter %}
+    <footer>
+        {% block bodyFooterContainer %}
+            <div class="ladb-footer" style="background: #fff; border-top: 1px solid #ddd;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {% block bodyFooterContainerContent %}
+                                <p class="ladb-footer-slogan"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>.</p>
+                                <p class="text-center">
+                                    <small>
+                                        <a href="{{ path('core_faq_question_show', { 'id':'qu-est-ce-que-l-air-du-bois' }) }}" class="ladb-horizontal-separator-right">Qu'est-ce que L'Air du Bois ?</a>
+                                        <a href="{{ path('core_faq_question_show', { 'id':'qui-est-derriere-l-air-du-bois' }) }}" class="ladb-horizontal-separator-right">Qui est derrière L'Air du Bois ?</a>
+                                        <a href="{{ path('core_faq_question_show', { 'id':'comment-est-finance-l-air-du-bois' }) }}" >Comment est financé L'Air du Bois ?</a>
+                                    </small>
+                                </p>
+                                <p class="ladb-footer-copyright">Découvrez, fabriquez, partagez.<br><a href="http://www.lairdubois.fr">www.lairdubois.fr</a></p>
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </footer>
+{% endblock %}

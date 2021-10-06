@@ -1,8 +1,0 @@
-{% extends 'LadbCoreBundle:Core/Notification:_row.part.html.twig' %}
-
-{% set icon = 'plus' %}
-{% set entity = ladb_entity(notification.activity.entityType, notification.activity.entityId) %}
-
-{% block body %}
-    {% if notification.activity.publisherUser != notification.activity.user %} <small class="text-muted">( via {% include 'LadbCoreBundle:Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.publisherUser, 'noMicrodata':true } %} )</small> {% endif %}a publié {{ ('notification.one_new.'~ladb_entity_type_stripped_name(entity))|trans() }}{% if entity.title is defined %} "<strong>{{ entity.title }}</strong>"{% endif %}.
-{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageUrl = url('core_school_howtos', { 'id':school.id }) %}
+{% set pageTitle = 'Pas à pas associés à '~school.title %}
+{% set pageDescription = 'Pas à pas associés à l\'école' %}
+
+{% set navSection = 'schools' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':school } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if howtos.count == 0 %}
+        <div class="alert alert-info ladb-margin-top">
+            Aucun pas à pas n'est associé à cette école.
+        </div>
+    {% else %}
+        <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+            <div class="panel-body">
+                Liste des pas à pas pour lesquels leurs auteurs ont associé l'école <a href="{{ ladb_entity_url_action(school) }}">{{ school.title }}</a>.
+            </div>
+        </div>
+        {% embed 'Howto/Howto:_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_school_howtos_filter' %}
+            {% set filterPathParameters = { 'id':school.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ school.howtos.count }} {{ 'howto.howto.choice.entities'|transchoice(school.howtos.count) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Howto/Howto:_list-n.part.html.twig' %}
+{% endblock %}

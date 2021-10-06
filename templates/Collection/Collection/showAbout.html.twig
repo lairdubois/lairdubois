@@ -1,0 +1,64 @@
+{% extends 'Collection/Collection/show.html.twig' %}
+
+{% block contentBody %}
+    {% if not collection.isPublic and collection.entryCount > 0 %}
+        {% include 'Collection/Collection/_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-collection">
+        {% if collection.htmlBody is not empty %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong><i class="ladb-icon-body"></i> Descriptif de la collection</strong>
+                </div>
+                <div class="panel-body">
+                    {{ collection.htmlBody|raw }}
+                </div>
+            </div>
+        {% endif %}
+        {% if collection.entryCount > 0 %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong><i class="ladb-icon-collection"></i> Contenu de la collection</strong>
+                </div>
+                <div class="panel-body" style="padding: 0;">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        {% for type, count in collection.entryTypeCounters if count > 0 %}
+                            <li style="display: block; height: 40px; border-bottom: 1px solid #eee; line-height: 40px; padding: 0 10px;">
+                                <i class="ladb-icon-{{ ladb_entity_type_icon(type) }} ladb-icon-lg"></i> <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ count }} {{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|trans({'count': count}) }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <div class="media">
+                    <div class="media-left">
+                        <i class="ladb-icon-plus ladb-icon-lg"></i>
+                    </div>
+                    <div class="media-body">
+                        <p>Cette collection est pour l'instant vide.</p>
+                        <p>Afin d'y ajouter des publications, rendez-vous sur la page de chacune d'entre elles et cliquez sur le bouton <strong><i class="ladb-icon-collection-add ladb-icon-lg"></i> Enregistrer...</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% if collection.updatedAt > collection.createdAt %}
+        {% include 'Common/_updated-age.part.html.twig' with { 'entity':collection } %}
+    {% endif %}
+    {% include 'Core/Comment:_widget.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like:_meta-counter.part.html.twig' %}
+        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+    </div>
+    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':collection.tags, 'type':'collections' } %}
+{% endblock %}

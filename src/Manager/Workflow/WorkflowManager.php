@@ -1,0 +1,330 @@
+<?php
+
+namespace App\Manager\Workflow;
+
+use App\Entity\Core\License;
+use App\Entity\Core\User;
+use App\Entity\Workflow\Label;
+use App\Entity\Workflow\Part;
+use App\Entity\Workflow\Run;
+use App\Entity\Workflow\Task;
+use App\Entity\Workflow\Workflow;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Manager\AbstractAuthoredPublicationManager;
+use App\Utils\SearchUtils;
+
+class WorkflowManager extends AbstractAuthoredPublicationManager {
+
+	const NAME = 'ladb_core.workflow_workflow_manager';
+
+	/////
+
+	public function publish(Workflow $workflow, $flush = true) {
+
+		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(-1);
+		$workflow->getUser()->getMeta()->incrementPublicWorkflowCount();
+
+		// Creations counter update
+		foreach ($workflow->getCreations() as $creation) {
+			$creation->incrementWorkflowCount(1);
+		}
+
+		// Plans counter update
+		foreach ($workflow->getPlans() as $plan) {
+			$plan->incrementWorkflowCount(1);
+		}
+
+		// Workshops counter update
+		foreach ($workflow->getWorkshops() as $workshop) {
+			$workshop->incrementWorkflowCount(1);
+		}
+
+		// Howtos counter update
+		foreach ($workflow->getHowtos() as $howto) {
+			$howto->incrementWorkflowCount(1);
+		}
+
+		// Inspirations counter update
+		foreach ($workflow->getInspirations() as $inspiration) {
+			$inspiration->incrementReboundCount(1);
+		}
+
+		parent::publishPublication($workflow, $flush);
+	}
+
+	public function unpublish(Workflow $workflow, $flush = true) {
+
+		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(1);
+		$workflow->getUser()->getMeta()->incrementPublicWorkflowCount(-1);
+
+		// Creations counter update
+		foreach ($workflow->getCreations() as $creation) {
+			$creation->incrementWorkflowCount(-1);
+		}
+
+		// Plans counter update
+		foreach ($workflow->getPlans() as $plan) {
+			$plan->incrementWorkflowCount(-1);
+		}
+
+		// Workshops counter update
+		foreach ($workflow->getWorkshops() as $workshop) {
+			$workshop->incrementWorkflowCount(-1);
+		}
+
+		// Howtos counter update
+		foreach ($workflow->getHowtos() as $howto) {
+			$howto->incrementWorkflowCount(-1);
+		}
+
+		// Inspirations counter update
+		foreach ($workflow->getInspirations() as $inspiration) {
+			$inspiration->incrementReboundCount(-1);
+		}
+
+		parent::unpublishPublication($workflow, $flush);
+	}
+
+	public function delete(Workflow $workflow, $withWitness = true, $flush = true) {
+
+		// Decrement user workflow count
+		if ($workflow->getIsPrivate()) {
+			$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(-1);
+		} else {
+			$workflow->getUser()->getMeta()->incrementPublicWorkflowCount(-1);
+		}
+
+		// Unlink creations
+		foreach ($workflow->getCreations() as $creation) {
+			$creation->removeWorkflow($workflow);
+		}
+
+		// Unlink plans
+		foreach ($workflow->getPlans() as $plan) {
+			$plan->removeWorkflow($workflow);
+		}
+
+		// Unlink workshops
+		foreach ($workflow->getWorkshops() as $workshop) {
+			$workshop->removeWorkflow($workflow);
+		}
+
+		// Unlink howtos
+		foreach ($workflow->getHowtos() as $howto) {
+			$howto->removeWorkflow($workflow);
+		}
+
+		// Unlink inspirations
+		foreach ($workflow->getInspirations() as $inspiration) {
+			$workflow->removeInspiration($inspiration);
+		}
+
+		parent::deletePublication($workflow, $withWitness, $flush);
+	}
+
+	public function copy(Workflow $workflow, User $user, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$duplicate = $workflow->getUser()->getId() === $user->getId();
+
+		$newWorkflow = new Workflow();
+		$newWorkflow->setVisibility(Workflow::VISIBILITY_PRIVATE);
+		$newWorkflow->setUser($user);
+		$newWorkflow->setTitle($workflow->getTitle().' - copie');
+		$newWorkflow->setMainPicture($workflow->getMainPicture());
+		$newWorkflow->setBody($workflow->getBody());
+		$newWorkflow->setHtmlBody($workflow->getHtmlBody());
+
+		// License
+		$newLicense = new License();
+		$newLicense->setAllowDerivs($workflow->getLicense()->getAllowDerivs());
+		$newLicense->setShareAlike($workflow->getLicense()->getShareAlike());
+		$newLicense->setAllowCommercial($workflow->getLicense()->getAllowCommercial());
+		$newWorkflow->setLicense($newLicense);
+
+		// Labels
+		$newLabels = array();
+		foreach ($workflow->getLabels() as $label) {
+
+			$newLabel = new Label();
+			$newLabel->setName($label->getName());
+			$newLabel->setColor($label->getColor());
+
+			$newWorkflow->addLabel($newLabel);
+
+			// Add the newly created label to a temporary array indexed on the original label id.
+			$newLabels[$label->getId()] = $newLabel;
+
+		}
+
+		// Parts
+		$newParts = array();
+		foreach ($workflow->getParts() as $part) {
+
+			$newPart = new Part();
+			$newPart->setNumber($part->getNumber());
+			$newPart->setName($part->getName());
+			$newPart->setCount($part->getCount());
+
+			$newWorkflow->addPart($newPart);
+
+			// Add the newly created part to a temporary array indexed on the original part id.
+			$newParts[$part->getId()] = $newPart;
+
+		}
+
+		// Tasks
+		$newTasks = array();
+		foreach ($workflow->getTasks() as $task) {		// 1st loop to generate all tasks
+
+			$newTask = new Task();
+			$newTask->setTitle($task->getTitle());
+			$newTask->setPositionLeft($task->getPositionLeft());
+			$newTask->setPositionTop($task->getPositionTop());
+			if ($duplicate) {
+				$newTask->setStatus($task->getStatus());
+				$newTask->setStartedAt($task->getStartedAt());
+				$newTask->setFinishedAt($task->getFinishedAt());
+				$newTask->setEstimatedDuration($task->getEstimatedDuration());
+				$newTask->setDuration($task->getDuration());
+				foreach ($task->getRuns() as $run) {
+					$newRun = new Run();
+					$newRun->setStartedAt($run->getStartedAt());
+					$newRun->setFinishedAt($run->getFinishedAt());
+					$newTask->addRun($newRun);
+				}
+			} else {
+				if ($task->getSourceTasks()->isEmpty()) {
+					$newTask->setStatus(Task::STATUS_WORKABLE);
+				} else {
+					$newTask->setStatus(Task::STATUS_PENDING);
+				}
+			}
+
+			$newWorkflow->addTask($newTask);
+			$newWorkflow->incrementTaskCount();
+
+			$newPartCount = 0;
+			foreach ($task->getParts() as $part) {
+				if (isset($newParts[$part->getId()])) {
+					$newTask->addPart($newParts[$part->getId()]);
+					$newPartCount++;
+				}
+			}
+			$newTask->setPartCount($newPartCount);
+
+			foreach ($task->getLabels() as $label) {
+				if (isset($newLabels[$label->getId()])) {
+					$newTask->addLabel($newLabels[$label->getId()]);
+				}
+			}
+
+			// Add the newly created task to a temporary array indexed on the original task id.
+			$newTasks[$task->getId()] = $newTask;
+
+		}
+		foreach ($workflow->getTasks() as $task) {		// 2nd loop to build the tree
+
+			$newTask = $newTasks[$task->getId()];
+			foreach ($task->getTargetTasks() as $targetTask) {
+				$newTask->addTargetTask($newTasks[$targetTask->getId()]);
+			}
+
+		}
+
+		// Tags
+		foreach ($workflow->getTags() as $tag) {
+			$newWorkflow->addTag($tag);
+		}
+
+		// Inspiration
+		if ($duplicate) {
+
+			// Workflow is owned -> just transfert inspirations
+			foreach ($workflow->getInspirations() as $inspiration) {
+				$newWorkflow->addInspiration($inspiration);
+			}
+
+		} else {
+
+			$newWorkflow->addInspiration($workflow);
+
+			// Increment copy count
+			$workflow->incrementCopyCount();
+
+			// Update index
+			$searchUtils = $this->get(SearchUtils::class);
+			$searchUtils->replaceEntityInIndex($workflow);
+
+		}
+
+		// Increment user workflow count
+		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount();
+
+		$om->persist($newWorkflow);
+		if ($flush) {
+			$om->flush();
+		}
+
+		// Dispatch publication event
+		$dispatcher = $this->get('event_dispatcher');
+		$dispatcher->dispatch(new PublicationEvent($newWorkflow), PublicationListener::PUBLICATION_CREATED);
+
+		return $newWorkflow;
+	}
+
+	public function restart(Workflow $workflow, User $user, $flush = true) {
+		$om = $this->getDoctrine()->getManager();
+
+		$totalEstimatedDuration = 0;
+
+		foreach ($workflow->getTasks() as $task) {		// 1st loop to generate all tasks
+
+			if ($task->getSourceTasks()->isEmpty()) {
+				$task->setStatus(Task::STATUS_WORKABLE);
+			} else {
+				$task->setStatus(Task::STATUS_PENDING);
+			}
+
+			// Reset timers
+			$task->setStartedAt(null);
+			$task->setFinishedAt(null);
+
+			// Clear runs
+			$task->resetRuns();
+
+			// Swap task duration to estimated
+			if ($task->getDuration() > 0) {
+				$task->setEstimatedDuration($task->getDuration());
+			}
+			$task->setDuration(0);
+
+			$totalEstimatedDuration += $task->getEstimatedDuration();
+		}
+
+		// Swap workflow duration to estimated
+		$workflow->setEstimatedDuration($totalEstimatedDuration);
+		$workflow->setDuration(0);
+
+		if ($flush) {
+			$om->flush();
+		}
+
+	}
+
+	//////
+
+	public function changeOwner(Workflow $workflow, User $user, $flush = true) {
+		parent::changeOwnerPublication($workflow, $user, $flush);
+	}
+
+	protected function updateUserCounterAfterChangeOwner(User $user, $by, $isPrivate) {
+		if ($isPrivate) {
+			$user->getMeta()->incrementPrivateWorkflowCount($by);
+		} else {
+			$user->getMeta()->incrementPublicWorkflowCount($by);
+		}
+	}
+
+}

@@ -1,0 +1,11 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'promotion.graphic.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Promotion/Graphic:_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% include 'Core/Member/_widget.part.html.twig' with { 'titleTransKey':'promotion.graphic.new', 'route':'core_promotion_graphic_new' } %}
+{% endblock %}

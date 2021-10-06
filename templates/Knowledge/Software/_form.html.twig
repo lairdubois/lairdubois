@@ -1,0 +1,64 @@
+{% extends 'Knowledge/_form.html.twig' %}
+
+{% set navSection = 'about' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'formSection':'icon', 'fieldId':form.iconValue.data.vars.id, 'maxPictureCount':1 } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    <li id="identity_sidenav"><a href="#identity"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.identity'|trans() }}</a></li>
+    <li id="icon_sidenav"><a href="#icon"><i class="ladb-icon-camera"></i> {{ 'knowledge.software.field.icon'|trans() }}</a></li>
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'knowledge.software.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    <section id="identity_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.identity'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-software-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_IDENTITY'), 'fieldLabel':('knowledge.software.field.identity'|trans()), 'isCompact':true } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ ('knowledge.software.help.identity')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.software.form.help.identity')|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="icon_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.software.field.icon'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'icon', 'form':form.iconValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_ICON'), 'fieldLabel':('knowledge.software.field.icon'|trans()), 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_LD'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ ('knowledge.software.help.icon')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.software.form.help.icon')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.software.form.help.legend')|trans({ '%field%':(('knowledge.software.field.icon')|trans())})|ladb_markdown|raw }}
+                            {{ ('knowledge.software.form.help.source')|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

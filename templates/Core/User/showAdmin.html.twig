@@ -1,0 +1,58 @@
+{% extends 'Core/User:show.html.twig' %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+
+{% block bodyContainerContent %}
+    <div class="row">
+        <div class="col-lg-4 col-xs-12">
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="pull-right">{{ user.id }}</span>
+                    <span>ID</span>
+                </div>
+                <div class="ladb-meta">
+                    <span class="pull-right"><a href="mailto:{{ user.email }}">{{ user.email }}</a>&nbsp;<i class="ladb-icon-bullet ladb-color-{{ user.emailConfirmed ? 'positive' : 'negative' }}"></i></span>
+                    <span>Email</span>
+                </div>
+                <div class="ladb-meta">
+                    <span class="pull-right">{{ user.username }}</span>
+                    <span>username</span>
+                </div>
+                <div class="ladb-meta">
+                    <span class="pull-right">{{ user.displayname }}</span>
+                    <span>displayname</span>
+                </div>
+                <div class="ladb-meta">
+                    <span>roles</span>
+                    <ul>
+                        {% for role in user.roles %}
+                            <li class="ladb-value">{{ role }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if registration is not null %}
+                    <h4 class="ladb-heading">Inscription</h4>
+                    <div class="ladb-meta">
+                        <span class="pull-right">{{ registration.createdAt|date('d/m/Y H:i:s') }}</span>
+                        <span>createdAt</span>
+                    </div>
+                    {% if registration.creator is not null %}
+                        <div class="ladb-meta">
+                            <span class="pull-right">{% include 'Core/User:_displayname-link.part.html.twig' with { 'user':registration.creator } %}</span>
+                            <span>creator</span>
+                        </div>
+                    {% endif %}
+                    <div class="ladb-meta">
+                        <span class="pull-right"></span>
+                        <span class="pull-right"><span>{{ registration.clientIp4 }}</span> <a href="http://ip-api.com/#{{ registration.clientIp4 }}" class="ladb-horizontal-separator-left" target="_blank" rel="noreferrer noopener">GeoIP</a>{% if not user.isTeam %} <a href="https://cleantalk.org/blacklists/{{ registration.clientIp4 }}" class="ladb-horizontal-separator-left" target="_blank">CleanTalk</a>{% endif %}</span>
+                        <span>clientIp4</span>
+                    </div>
+                    <div class="ladb-meta">
+                        <span class="pull-right"><a href= "http://www.useragentstring.com/?uas={{ registration.clientUserAgent|url_encode }}&getText=all" target="_blank" rel="noreferrer noopener">{{ registration.clientUserAgent|truncate(30) }}</a></span>
+                        <span>userAgent</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

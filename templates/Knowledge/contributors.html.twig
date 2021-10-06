@@ -1,0 +1,18 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header:_entity-header.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="ladb-filterbar ladb-filterbar-line">
+        <span class="ladb-heading pull-right">{{ entity.contributorCount }} {{ 'user.choice.contributors'|transchoice(entity.contributorCount) }}</span>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Core/User:_list-n.part.html.twig' %}
+{% endblock %}

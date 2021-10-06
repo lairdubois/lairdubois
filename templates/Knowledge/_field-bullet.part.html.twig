@@ -1,0 +1,22 @@
+{% apply spaceless %}
+
+    {# set values #}
+    {# set valueIndex #}
+
+    {% if values|length > 0 %}
+        <div class="pull-left">
+        {% if values[valueIndex].voteScore < 0 %}
+            <i class="ladb-icon-warning ladb-color-negative" data-popover="popover" data-trigger="hover" data-placement="top" data-container="body" data-content="{{ 'knowledge.bullet.choice.rejected'|trans({ '%count%':values[valueIndex].negativeVoteScore })|raw }}"></i>
+        {% elseif values[valueIndex].voteScore > 0 %}
+            <i class="ladb-icon-check-square ladb-color-positive" data-popover="popover" data-trigger="hover" data-placement="top" data-container="body" data-html="true" data-content="{{ 'knowledge.bullet.choice.verified'|trans({ '%count%':values[valueIndex].positiveVoteScore }) }}"></i>
+        {% else %}
+            {% if values[valueIndex].voteCount > 0 %}
+                <i class="ladb-icon-warning ladb-color-undetermined" data-popover="popover" data-trigger="hover" data-placement="top" data-container="body" data-html="true" data-content="{{ 'knowledge.bullet.undetermined'|trans() }}"></i>
+            {% else %}
+                <i class="ladb-icon-warning ladb-color-null" data-popover="popover" data-trigger="hover" data-placement="top" data-container="body" data-html="true" data-content="{{ 'knowledge.bullet.not_verified'|trans() }}"></i>
+            {% endif %}
+        {% endif %}
+        </div>
+    {% endif %}
+
+{% endapply %}
