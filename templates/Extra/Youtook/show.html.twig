@@ -3,7 +3,7 @@
 {% set pageUrl = ladb_entity_url_action(took, 'show', true, false) %}
 {% set pageType = 'video' %}
 {% set pageTitle = took.title %}
-{% set pageDescription = took.body|truncate(90) %}
+{% set pageDescription = took.body|u.truncate(90) %}
 {% set pageAuthor = took.channelTitle %}
 {% set pageImage = took.mainPicture.webPath|imagine_filter('470x275o') %}
 {% set pageImageWidth = '470' %}
@@ -81,7 +81,7 @@
         <div class="panel-body">
             {{ took.htmlBody|raw }}
             <hr>
-            <i class="ladb-icon-link"></i> <a href="{{ took.url }}" itemprop="url">{{ took.url|truncate(50) }}</a>
+            <i class="ladb-icon-link"></i> <a href="{{ took.url }}" itemprop="url">{{ took.url|u.truncate(50) }}</a>
             <br>
             <br>
             Découvrez toutes les vidéos de <strong>{{ took.channelTitle }}</strong> sur sa <a href="https://www.youtube.com/channel/{{ took.channelId }}">chaîne YouTube</a>.

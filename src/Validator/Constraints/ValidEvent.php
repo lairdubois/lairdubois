@@ -9,10 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidEvent extends Constraint {
 
-	public function validatedBy() {
-		return 'ladb_core.valid_event_validator';
-	}
-
 	public function getTargets() {
 		return self::CLASS_CONSTRAINT;
 	}

@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Form\DataTransformer\TagsToLabelsTransformer;
 use App\Form\Type\PolyCollectionType;
 use App\Entity\Find\Find;
@@ -27,7 +27,7 @@ class FindType extends AbstractType {
 	private $localisableUtils;
 	private $linkUtils;
 
-	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils, LinkUtils $linkUtils) {
+	public function __construct(ManagerRegistry $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils, LinkUtils $linkUtils) {
 		$this->om = $om;
 		$this->videoHostingUtils = $videoHostingUtils;
 		$this->localisableUtils = $localisableUtils;

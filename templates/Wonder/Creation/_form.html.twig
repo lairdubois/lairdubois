@@ -22,9 +22,9 @@
     {{ parent() }}
     {% include 'Common/_form-sidenav-title.part.html.twig' %}
     {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
-    {% include 'Core/Block:_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
+    {% include 'Core/Block/_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
     <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
-    {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+    {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
     {% include 'Wonder/Creation/_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'icon':'ladb-icon-inspiration' } %}
     {% include 'Qa/Question/_form-sidenav-gallery.part.html.twig' %}
     {% include 'Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
@@ -44,8 +44,8 @@
     </div>
     {{ parent() }}
     {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('wonder.creation.form.help.title'|trans()) } %}
-    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_HD'), 'title':('default.showcase'|trans), 'help':('wonder.creation.form.help.showcase'|trans()) } %}
-    {% include 'Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('wonder.creation.form.help.body'|trans()) } %}
+    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'quality':constant('App\\Entity\\Core\\Picture::QUALITY_HD'), 'title':('default.showcase'|trans), 'help':('wonder.creation.form.help.showcase'|trans()) } %}
+    {% include 'Core/Block/_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('wonder.creation.form.help.body'|trans()) } %}
     {% embed 'Common/_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
             {{ form_label(form.woods, ('knowledge.wood.choice.entities'|trans({'count': 2})|capitalize)) }}
@@ -66,7 +66,7 @@
             {{ form_widget(form.hardwares) }}
         {% endblock %}
     {% endembed %}
-    {% include 'Core/Tag:_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre création.' } %}
+    {% include 'Core/Tag/_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre création.' } %}
     {% include 'Wonder/Creation/_form-section-gallery.part.html.twig' with { 'maxCreationCount':4, 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'help':('wonder.creation.form.help.inspirations'|trans()), 'icon':'inspiration', 'linktoButtonLabel':('Ajouter une inspiration'), 'formCreations':form.inspirations, 'creations':form.vars.data.inspirations } %}
     {% include 'Qa/Question/_form-section-gallery.part.html.twig' with { 'maxQuestionCount':4, 'help':('wonder.creation.form.help.questions'|trans()) } %}
     {% include 'Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('wonder.creation.form.help.plans'|trans()) } %}

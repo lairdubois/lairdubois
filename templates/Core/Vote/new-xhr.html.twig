@@ -1,13 +1,13 @@
 {% extends 'Common/Modal:_modal-content.part.html.twig' %}
 
-{% form_theme form 'Common/_form-theme.twig.twig' 'Core/Block:_form-theme.html.twig' %}
+{% form_theme form 'Common/_form-theme.twig.twig' 'Core/Block/_form-theme.html.twig' %}
 
 {% set id = 'new_vote_modal' %}
 {% set title = ('vote.tooltip.vote_'~way)|trans() %}
 
 {% block bodyInner %}
     <p>Vous êtes sur le point d'indiquer votre {% if way == 'down' %}<strong class="ladb-color-danger">désaccord</strong>{% else %}<strong class="ladb-color-success">accord</strong>{% endif %} avec
-    {% if entity.type >= constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\Text::TYPE') and entity.type < constant('\\Ladb\\CoreBundle\\Entity\\Wonder\\Creation::TYPE') %} {# Knowledge value #}
+    {% if entity.type >= constant('App\\Entity\\Knowledge\\Value\\Text::TYPE') and entity.type < constant('App\\Entity\\Wonder\\Creation::TYPE') %} {# Knowledge value #}
         {% set fieldDef = parentEntity.fieldDefs[entity.parentEntityField] %}
         {% set fieldType = fieldDef[constant('ATTRIB_TYPE', parentEntity)] %}
         {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', parentEntity)] : null %}

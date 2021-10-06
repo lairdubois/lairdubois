@@ -423,6 +423,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v5.3.8"
+    },
     "symfony/framework-bundle": {
         "version": "5.2",
         "recipe": {
@@ -721,6 +724,9 @@
     },
     "twig/intl-extra": {
         "version": "v3.3.0"
+    },
+    "twig/string-extra": {
+        "version": "v3.3.3"
     },
     "twig/twig": {
         "version": "v3.3.0"

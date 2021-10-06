@@ -12,8 +12,8 @@
     {% include 'Common/_form-sidenav-title.part.html.twig' %}
     {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
     <li><a href="#content"><i class="ladb-icon-calendar-month"></i> Détails</a></li>
-    {% include 'Core/Block:_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
-    {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+    {% include 'Core/Block/_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
+    {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
 {% endblock %}
 
 {% block sections %}
@@ -182,6 +182,6 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% include 'Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('event.event.form.help.body'|trans()) } %}
-    {% include 'Core/Tag:_form-section.part.html.twig' with { 'help':('event.event.form.help.tags'|trans()) } %}
+    {% include 'Core/Block/_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('event.event.form.help.body'|trans()) } %}
+    {% include 'Core/Tag/_form-section.part.html.twig' with { 'help':('event.event.form.help.tags'|trans()) } %}
 {% endblock %}

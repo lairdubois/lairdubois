@@ -7,14 +7,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Form\DataTransformer\TagsToLabelsTransformer;
 
 class QuestionType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ManagerRegistry $om) {
 		$this->om = $om;
 	}
 

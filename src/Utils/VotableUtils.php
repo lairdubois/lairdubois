@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Model\AuthoredInterface;
 use App\Model\VotableParentInterface;
 use App\Model\VotableInterface;

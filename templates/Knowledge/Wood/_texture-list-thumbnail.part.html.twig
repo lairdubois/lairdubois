@@ -11,7 +11,7 @@
     {% if texture.value.legend is empty %}
         {{ ('knowledge.wood.field.'~texture.value.parentEntityField)|trans() }}
     {% else %}
-        {{ texture.value.legend|truncate(30) }}
+        {{ texture.value.legend|u.truncate(30) }}
     {% endif %}
 {% endblock %}
 

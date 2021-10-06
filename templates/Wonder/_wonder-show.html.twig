@@ -144,7 +144,7 @@
     <div class="ladb-wonder-body">
         {% if wonder.bodyBlocks is defined %}
             {% for block in wonder.bodyBlocks %}
-                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
             {% endfor %}
         {% else %}
             {{ wonder.htmlBody|raw }}
@@ -192,7 +192,7 @@
             {% endblock %}
         </div>
     {% endblock %}
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':wonder.tags } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':wonder.tags } %}
     {% include 'Core/License:_metas.part.html.twig' with { 'license':wonder.license } %}
 {% endblock %}
 

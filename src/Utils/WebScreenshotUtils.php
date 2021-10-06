@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use HeadlessChromium\Exception\CommunicationException;
 use HeadlessChromium\Exception\FilesystemException;
 use HeadlessChromium\Exception\NavigationExpired;

@@ -102,7 +102,7 @@
         {% endif %}
         <div class="ladb-body">
             {% for block in offer.bodyBlocks %}
-                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
             {% endfor %}
         </div>
     </div>
@@ -174,7 +174,7 @@
             {% endif %}
         </div>
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':offer.tags, 'type':'offers', 'noMicrodata':true } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':offer.tags, 'type':'offers', 'noMicrodata':true } %}
 {% endblock %}
 
 {% block contentSuggests %}

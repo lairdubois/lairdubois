@@ -3,11 +3,8 @@
 namespace App\Validator\Constraints;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use App\Entity\Core\UserWitness;
 use App\Fos\UserManager;
-use App\Utils\GlobalUtils;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use App\Entity\Core\User;

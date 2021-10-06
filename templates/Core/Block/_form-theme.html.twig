@@ -18,7 +18,7 @@
 {% endblock ladb_polycollection_widget %}
 
 {% block ladb_block_text_row %}
-    {% embed 'Core/Block:_form-row.part.html.twig' with { 'type':'text', 'icon':'body' } %}
+    {% embed 'Core/Block/_form-row.part.html.twig' with { 'type':'text', 'icon':'body' } %}
         {% block body %}
             {{ form_errors(form.body) }}
             {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize', 'rows':(form.body.vars.value is empty ? 15 : 0) } }) }}
@@ -43,7 +43,7 @@
 {% endblock ladb_block_text_row %}
 
 {% block ladb_block_gallery_row %}
-    {% embed 'Core/Block:_form-row.part.html.twig' with { 'type':'gallery', 'icon':'camera' } %}
+    {% embed 'Core/Block/_form-row.part.html.twig' with { 'type':'gallery', 'icon':'camera' } %}
         {% block body %}
             {% include 'Core/Picture/_form-gallery.part.html.twig' with { 'form':form, 'maxPictureCount':10, 'formSection':form.pictures.vars.id, 'sortable':true, 'hideTextOverlayWarning':true } %}
             {{ form_widget(form) }}
@@ -55,7 +55,7 @@
 {% endblock ladb_block_gallery_row %}
 
 {% block ladb_block_video_row %}
-    {% embed 'Core/Block:_form-row.part.html.twig' with { 'type':'video', 'icon':'video' } %}
+    {% embed 'Core/Block/_form-row.part.html.twig' with { 'type':'video', 'icon':'video' } %}
         {% block body %}
             {{ form_errors(form.url) }}
             <div class="input-group">

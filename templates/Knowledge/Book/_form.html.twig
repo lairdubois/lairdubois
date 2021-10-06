@@ -26,7 +26,7 @@
             <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.book.field.identity'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-book-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_IDENTITY'), 'fieldLabel':('knowledge.book.field.title'|trans()), 'isCompact':true } %}
+                    {% include 'Knowledge/_form-fieldset-value-book-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('App\\Entity\\Knowledge\\Book::FIELD_IDENTITY'), 'fieldLabel':('knowledge.book.field.title'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -45,7 +45,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.book.field.cover'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'cover', 'form':form.coverValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Book::FIELD_COVER'), 'fieldLabel':('knowledge.book.field.cover'|trans()), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'cover', 'form':form.coverValue, 'field':constant('App\\Entity\\Knowledge\\Book::FIELD_COVER'), 'fieldLabel':('knowledge.book.field.cover'|trans()), 'postProcessor':constant('App\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

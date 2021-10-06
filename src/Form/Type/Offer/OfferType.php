@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Utils\LocalisableUtils;
 use App\Form\DataTransformer\PicturesToIdsTransformer;
 use App\Form\DataTransformer\TagsToLabelsTransformer;
@@ -23,7 +23,7 @@ class OfferType extends AbstractType {
 	private $om;
 	private $localisableUtils;
 
-	public function __construct(ObjectManager $om, LocalisableUtils $localisableUtils) {
+	public function __construct(ManagerRegistry $om, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
 		$this->localisableUtils = $localisableUtils;
 	}

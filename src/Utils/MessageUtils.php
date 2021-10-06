@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Message\Message;
 use App\Entity\Message\MessageMeta;
 use App\Entity\Message\Thread;
@@ -16,7 +16,7 @@ class MessageUtils {
 	protected $om;
 	protected $fieldPreprocessorUtils;
 
-	public function __construct(ObjectManager $om, FieldPreprocessorUtils $fieldPreprocessorUtils) {
+	public function __construct(ManagerRegistry $om, FieldPreprocessorUtils $fieldPreprocessorUtils) {
 		$this->om = $om;
 		$this->fieldPreprocessorUtils = $fieldPreprocessorUtils;
 	}

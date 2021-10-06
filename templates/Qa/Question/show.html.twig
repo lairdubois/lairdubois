@@ -75,7 +75,7 @@
             <div class="ladb-box-inner row">
                 <div class="ladb-content-box col-sm-11 col-xs-12" itemprop="text">
                     {% for block in question.bodyBlocks %}
-                        {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                        {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
                     {% endfor %}
                     {% if question.updatedAt > question.createdAt %}
                         {% include 'Common/_updated-age.part.html.twig' with { 'entity':question } %}
@@ -139,7 +139,7 @@
             </div>
         {% endif %}
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
     {% include 'Core/License:_metas.part.html.twig' with { 'license':question.license } %}
 {% endblock %}
 

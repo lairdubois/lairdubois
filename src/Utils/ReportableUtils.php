@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Core\Report;
 use App\Model\ReportableInterface;
 

@@ -5,14 +5,14 @@ namespace App\Form\DataTransformer\Workflow;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Workflow\Workflow;
 
 class WorkflowsToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ManagerRegistry $om) {
 		$this->om = $om;
 	}
 

@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use App\Model\TaggableInterface;
 use App\Entity\Core\TagUsage;
@@ -13,7 +13,7 @@ class TagUtils {
 
 	protected $om;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ManagerRegistry $om) {
 		$this->om = $om;
 	}
 

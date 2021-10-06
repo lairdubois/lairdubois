@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Form\DataTransformer\Workflow\LabelsToIdsTransformer;
 use App\Form\DataTransformer\Workflow\PartsToIdsTransformer;
 
@@ -17,7 +17,7 @@ class TaskType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ManagerRegistry $om) {
 		$this->om = $om;
 	}
 

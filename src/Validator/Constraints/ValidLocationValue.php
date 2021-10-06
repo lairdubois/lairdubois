@@ -9,10 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidLocationValue extends Constraint {
 
-	public function validatedBy() {
-		return 'ladb_core.valid_location_value_validator';
-	}
-
 	public function getTargets() {
 		return self::CLASS_CONSTRAINT;
 	}

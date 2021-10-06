@@ -5,14 +5,14 @@ namespace App\Form\DataTransformer\Knowledge;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Knowledge\Provider;
 
 class ProvidersToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ManagerRegistry $om) {
 		$this->om = $om;
 	}
 

@@ -65,7 +65,7 @@
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':graphic.tags, 'type':'graphics' } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':graphic.tags, 'type':'graphics' } %}
     {% include 'Core/License:_metas.part.html.twig' with { 'license':graphic.license } %}
 {% endblock %}
 

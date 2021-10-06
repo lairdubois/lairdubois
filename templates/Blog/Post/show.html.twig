@@ -78,7 +78,7 @@
         {% include 'Core/Picture/_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title, 'noSizer':true, 'noLazyLoad':true } %}
         <div class="ladb-body" itemprop="articleBody">
             {% for block in post.bodyBlocks %}
-                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
             {% endfor %}
         </div>
         {% if post.updatedAt > post.createdAt %}
@@ -101,7 +101,7 @@
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':post.tags, 'type':'posts' } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':post.tags, 'type':'posts' } %}
 {% endblock %}
 
 {% block contentSuggests %}

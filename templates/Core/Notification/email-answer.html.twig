@@ -22,7 +22,7 @@
                     <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none; font-weight: bold;">{{ row.actorUser.displayname }}</a>
                     <p style="margin: 5px 0 0 0; padding: 0;">
                         {% for block in row.answer.bodyBlocks %}
-                            {% include 'Core/Block:_email-'~block.strippedName~'.part.html.twig' %}
+                            {% include 'Core/Block/_email-'~block.strippedName~'.part.html.twig' %}
                         {% endfor %}
                     </p>
                 </td>

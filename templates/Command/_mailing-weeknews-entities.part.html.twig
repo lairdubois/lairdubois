@@ -13,7 +13,7 @@
     <table cellspacing="10" cellpadding="0">
         <tbody>
         {% for entity in entities|slice(0, maxResults) %}
-            {% include 'Common/_entity-email-row.part.html.twig' with { 'subtitle':(entity.type == constant('\\Ladb\\CoreBundle\\Entity\\Howto\\Article::TYPE') ? entity.howto.title : null) } %}
+            {% include 'Common/_entity-email-row.part.html.twig' with { 'subtitle':(entity.type == constant('App\\Entity\\Howto\\Article::TYPE') ? entity.howto.title : null) } %}
         {% endfor %}
         {% if entities|length > maxResults and not noShowMore %}
             <tr>

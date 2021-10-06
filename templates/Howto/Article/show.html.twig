@@ -2,7 +2,7 @@
 
 {% set pageUrl = ladb_entity_url_action(article, 'show', true, false) %}
 {% set pageTitle = howto.title~' - '~article.title %}
-{% set pageDescription = article.body|striptags|truncate(200, true, '...') %}
+{% set pageDescription = article.body|striptags|u.truncate(200, true, '...') %}
 {% if article.mainPicture is not null %}
     {% set pageImage = (article.mainPicture.webPath|imagine_filter('400x400o')) %}
     {% set pageImageWidth = '400' %}

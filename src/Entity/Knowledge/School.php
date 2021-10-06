@@ -45,7 +45,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 	const FIELD_TRAINING_TYPES  = 'training_types';
 
 	public static $FIELD_DEFS = array(
-		School::FIELD_NAME           => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true, School::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\UniqueSchool', array('excludedId' => '@getId')))),
+		School::FIELD_NAME           => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true, School::ATTRIB_CONSTRAINTS => array(array('App\\Validator\\Constraints\\UniqueSchool', array('excludedId' => '@getId')))),
 		School::FIELD_LOGO           => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_MANDATORY => true, School::ATTRIB_QUALITY => \App\Entity\Core\Picture::QUALITY_LD, School::ATTRIB_POST_PROCESSOR => \App\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		School::FIELD_PHOTO          => array(School::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_WEBSITE        => array(School::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
@@ -55,7 +55,7 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 		School::FIELD_VIDEO    		 => array(School::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
 		School::FIELD_PUBLIC         => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false, School::ATTRIB_CHOICES => array(1 => 'Oui', 0 => 'Non')),
 		School::FIELD_BIRTH_YEAR     => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => false),
-		School::FIELD_DIPLOMAS       => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_FILTER_QUERY => '@diplomas:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul diplôme par proposition.')))),
+		School::FIELD_DIPLOMAS       => array(School::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_FILTER_QUERY => '@diplomas:"%q%"', Wood::ATTRIB_DATA_CONSTRAINTS => array(array('App\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul diplôme par proposition.')))),
 		School::FIELD_TRAINING_TYPES => array(School::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, School::ATTRIB_MULTIPLE => true, School::ATTRIB_CHOICES => array(0 => 'Continue', 1 => 'Alternance', 2 => 'Apprentissage', 4 => 'Professionnelle', 5 => 'Stage court', 6 => 'En ligne'), School::ATTRIB_USE_CHOICES_VALUE => true, School::ATTRIB_FILTER_QUERY => '@training-types:"%q%"'),
 	);
 

@@ -5,7 +5,7 @@ namespace App\Form\Type\Knowledge;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Form\Type\Knowledge\Value\SoftwareIdentityValueType;
 use App\Form\Type\Knowledge\Value\PictureValueType;
 

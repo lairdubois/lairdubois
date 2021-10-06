@@ -4,7 +4,7 @@ namespace App\Handler;
 
 use App\Entity\Core\User;
 use App\Manager\Core\PictureManager;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use App\Entity\Core\Picture;
 
@@ -18,7 +18,7 @@ class PictureUploadHandler extends \UploadHandler {
 	private $tokenStorage;
 	private $pictureManager;
 
-	function __construct(ObjectManager $om, TokenStorage $tokenStorage, PictureManager $pictureManager) {
+	function __construct(ManagerRegistry $om, TokenStorage $tokenStorage, PictureManager $pictureManager) {
 		$this->om = $om;
 		$this->tokenStorage = $tokenStorage;
 		$this->pictureManager = $pictureManager;

@@ -18,6 +18,7 @@ use App\Utils\MaybeUtils;
 use App\Utils\MentionUtils;
 use App\Utils\ReportableUtils;
 use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
 use App\Utils\TypableUtils;
 use App\Utils\ViewableUtils;
 use App\Utils\VotableUtils;
@@ -28,6 +29,7 @@ use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\MemcachedStore;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractController extends BaseController {
 
@@ -38,6 +40,7 @@ abstract class AbstractController extends BaseController {
         return array_merge(parent::getSubscribedServices(), array(
             'doctrine' => '?'.ManagerRegistry::class,
             'event_dispatcher' => '?'.EventDispatcherInterface::class,
+            'translator' => TranslatorInterface::class,
             ActivityUtils::class => '?'.ActivityUtils::class,
             BlockBodiedUtils::class => '?'.BlockBodiedUtils::class,
             CollectionnableUtils::class => '?'.CollectionnableUtils::class,
@@ -52,6 +55,7 @@ abstract class AbstractController extends BaseController {
             QuestionManager::class => '?'.QuestionManager::class,
             ReportableUtils::class => '?'.ReportableUtils::class,
             SearchUtils::class => '?'.SearchUtils::class,
+            TagUtils::class => '?'.TagUtils::class,
             TypableUtils::class => '?'.TypableUtils::class,
             ViewableUtils::class => '?'.ViewableUtils::class,
             VotableUtils::class => '?'.VotableUtils::class,

@@ -140,55 +140,55 @@ class NotificationRepository extends AbstractEntityRepository {
 	private function _applyCommonFilter(&$queryBuilder, $filter) {
 		if ('activity-mention' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Mention')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Mention')
 			;
 		} elseif ('activity-like' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Like')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Like')
 			;
 		} elseif ('activity-comment' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Comment')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Comment')
 			;
 		} elseif ('activity-follow' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Follow')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Follow')
 			;
 		} elseif ('activity-publish' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Publish')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Publish')
 			;
 		} elseif ('activity-vote' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Vote')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Vote')
 			;
 		} elseif ('activity-join' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Join')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Join')
 			;
 		} elseif ('activity-answer' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Answer')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Answer')
 			;
 		} elseif ('activity-testify' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Testify')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Testify')
 			;
 		} elseif ('activity-review' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Review')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Review')
 			;
 		} elseif ('activity-feedback' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Feedback')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Feedback')
 			;
 		} elseif ('activity-invite' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Invite')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Invite')
 			;
 		} elseif ('activity-request' == $filter) {
 			$queryBuilder
-				->andWhere('a INSTANCE OF \\Ladb\\CoreBundle\\Entity\\Core\\Activity\\Request')
+				->andWhere('a INSTANCE OF App\\Entity\\Core\\Activity\\Request')
 			;
 		}
 		$queryBuilder

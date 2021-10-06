@@ -9,10 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidDisplayname extends Constraint {
 
-	public function validatedBy() {
-		return 'ladb_core.valid_displayname_validator';
-	}
-
 	public function getTargets() {
 		return self::CLASS_CONSTRAINT;
 	}

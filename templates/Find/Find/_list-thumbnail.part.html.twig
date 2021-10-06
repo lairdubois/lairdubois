@@ -11,7 +11,7 @@
 
 {% block title %}
     <div style="padding-top: 10px;">
-        <i class="ladb-icon-{% if find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}video{% elseif find.kind == constant('\\Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}camera{% else %}globe{% endif %}"></i> {{ parent() }}
+        <i class="ladb-icon-{% if find.kind == constant('App\\Entity\\Find\\Find::KIND_VIDEO') %}video{% elseif find.kind == constant('App\\Entity\\Find\\Find::KIND_GALLERY') %}camera{% else %}globe{% endif %}"></i> {{ parent() }}
     </div>
 {% endblock %}
 

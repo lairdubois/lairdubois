@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
 use App\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
 use App\Form\DataTransformer\Input\WoodsToLabelsTransformer;
@@ -28,7 +28,7 @@ class CreationType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ManagerRegistry $om) {
 		$this->om = $om;
 	}
 

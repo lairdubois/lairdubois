@@ -1,4 +1,4 @@
-{% form_theme form 'Common/_form-theme.twig.twig' 'Core/Block:_form-theme.html.twig' %}
+{% form_theme form 'Common/_form-theme.twig.twig' 'Core/Block/_form-theme.html.twig' %}
 
 <div class="ladb-answer-form">
     <div class="ladb-box">
@@ -8,7 +8,7 @@
                 {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
                     {% block sections %}
                         {{ form_errors(form) }}
-                        {% include 'Core/Block:_form-section-body-inner.part.html.twig' with { 'hideFaqHelp':true } %}
+                        {% include 'Core/Block/_form-section-body-inner.part.html.twig' with { 'hideFaqHelp':true } %}
                     {% endblock %}
                     {{ form_rest(form) }}
                     <div class="ladb-margin-top">

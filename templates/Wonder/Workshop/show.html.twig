@@ -73,7 +73,7 @@
     </div>
     <div class="ladb-meta">
         <span class="pull-right">
-            {{ workshop.location ? (workshop.location|truncate(15)) : '-' }}
+            {{ workshop.location ? (workshop.location|u.truncate(15)) : '-' }}
         </span>
         <span><i class="ladb-icon-location"></i>&nbsp;{{ 'default.location'|trans() }}</span>
         {% if hasMap %}

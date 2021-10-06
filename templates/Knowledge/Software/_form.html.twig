@@ -26,7 +26,7 @@
             <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.software.field.identity'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-software-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_IDENTITY'), 'fieldLabel':('knowledge.software.field.identity'|trans()), 'isCompact':true } %}
+                    {% include 'Knowledge/_form-fieldset-value-software-identity.part.html.twig' with { 'form':form.identityValue, 'field':constant('App\\Entity\\Knowledge\\Software::FIELD_IDENTITY'), 'fieldLabel':('knowledge.software.field.identity'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -45,7 +45,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.software.field.icon'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'icon', 'form':form.iconValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Software::FIELD_ICON'), 'fieldLabel':('knowledge.software.field.icon'|trans()), 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_LD'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'icon', 'form':form.iconValue, 'field':constant('App\\Entity\\Knowledge\\Software::FIELD_ICON'), 'fieldLabel':('knowledge.software.field.icon'|trans()), 'quality':constant('App\\Entity\\Core\\Picture::QUALITY_LD'), 'postProcessor':constant('App\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

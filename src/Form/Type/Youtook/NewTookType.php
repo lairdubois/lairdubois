@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Core\Picture;
 use App\Utils\VideoHostingUtils;
 
@@ -18,7 +18,7 @@ class NewTookType extends AbstractType {
 	private $videoHostingUtils;
 	private $pictureManager;
 
-	public function __construct(ObjectManager $om, VideoHostingUtils $videoHostingUtils, PictureManager $pictureManager) {
+	public function __construct(ManagerRegistry $om, VideoHostingUtils $videoHostingUtils, PictureManager $pictureManager) {
 		$this->om = $om;
 		$this->videoHostingUtils = $videoHostingUtils;
 		$this->pictureManager = $pictureManager;

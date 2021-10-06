@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Find\Find;
 use App\Entity\Core\Picture;
 use App\Manager\Core\PictureManager;

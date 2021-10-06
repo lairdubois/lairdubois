@@ -9,10 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class BodyBlocks extends Constraint {
 
-	public function validatedBy() {
-		return 'ladb_core.body_blocks_validator';
-	}
-
 	public function getTargets() {
 		return self::CLASS_CONSTRAINT;
 	}

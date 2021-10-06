@@ -52,7 +52,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		Tool::FIELD_NAME         => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_FILTER_QUERY => '@name:"%q%"'),
 		Tool::FIELD_PHOTO        => array(Tool::ATTRIB_TYPE => Picture::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_MANDATORY => true, Tool::ATTRIB_POST_PROCESSOR => \App\Entity\Core\Picture::POST_PROCESSOR_SQUARE),
 		Tool::FIELD_MANUAL       => array(Tool::ATTRIB_TYPE => Pdf::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
-		Tool::FIELD_ENGLISH_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul nom anglais par proposition.')))),
+		Tool::FIELD_ENGLISH_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_DATA_CONSTRAINTS => array(array('App\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'un seul nom anglais par proposition.')))),
 		Tool::FIELD_PRODUCT_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
 		Tool::FIELD_BRAND        => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
 		Tool::FIELD_DESCRIPTION  => array(Tool::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
@@ -62,9 +62,9 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		Tool::FIELD_VOLTAGE      => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'V'),
 		Tool::FIELD_WEIGHT       => array(Tool::ATTRIB_TYPE => Decimal::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'kg'),
 		Tool::FIELD_DOCS         => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
-		Tool::FIELD_CATALOG_LINK => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\ExcludeDomainsLink', array('excludedDomainPaterns' => array('/amazon./i', '/fnac./i', '/manomano./i'), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.')))),
+		Tool::FIELD_CATALOG_LINK => array(Tool::ATTRIB_TYPE => Url::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_CONSTRAINTS => array(array('App\\Validator\\Constraints\\ExcludeDomainsLink', array('excludedDomainPaterns' => array('/amazon./i', '/fnac./i', '/manomano./i'), 'message' => 'Les liens vers les sites de revendeurs ou distributeurs et les liens affiliés ne sont pas autorisés ici.')))),
 		Tool::FIELD_VIDEO        => array(Tool::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
-		Tool::FIELD_UTILIZATION  => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_DATA_CONSTRAINTS => array(array('\\Ladb\\CoreBundle\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule utilisation par proposition.'))), Tool::ATTRIB_FILTER_QUERY => '@utilization:"%q%"'),
+		Tool::FIELD_UTILIZATION  => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true, Tool::ATTRIB_DATA_CONSTRAINTS => array(array('App\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule utilisation par proposition.'))), Tool::ATTRIB_FILTER_QUERY => '@utilization:"%q%"'),
 	);
 
 	/**

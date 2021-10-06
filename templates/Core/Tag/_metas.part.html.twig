@@ -8,7 +8,7 @@
         <ul class="ladb-tags">
         {% block tags %}
             {% for tag in tags %}
-                <li>{% include 'Core/Tag:_link.part.html.twig' %}</li>
+                <li>{% include 'Core/Tag/_link.part.html.twig' %}</li>
             {% else %}
                 <span class="ladb-translucent">{{ 'tag.none'|trans() }}</span>
             {% endfor %}

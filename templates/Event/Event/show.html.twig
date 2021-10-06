@@ -129,7 +129,7 @@
         <hr>
         <div class="ladb-body">
             {% for block in event.bodyBlocks %}
-                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
             {% endfor %}
         </div>
     </div>
@@ -158,7 +158,7 @@
             </div>
         {% endif %}
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':event.tags, 'type':'events' } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':event.tags, 'type':'events' } %}
 {% endblock %}
 
 {% block contentSuggests %}

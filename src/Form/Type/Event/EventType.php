@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Form\DataTransformer\TagsToLabelsTransformer;
 use App\Form\Type\PolyCollectionType;
 use App\Entity\Event\Event;
@@ -28,7 +28,7 @@ class EventType extends AbstractType {
 	private $localisableUtils;
 	private $linkUtils;
 
-	public function __construct(ObjectManager $om, LocalisableUtils $localisableUtils, LinkUtils $linkUtils) {
+	public function __construct(ManagerRegistry $om, LocalisableUtils $localisableUtils, LinkUtils $linkUtils) {
 		$this->om = $om;
 		$this->localisableUtils = $localisableUtils;
 		$this->linkUtils = $linkUtils;

@@ -7,7 +7,6 @@ use App\Controller\PublicationControllerTrait;
 use App\Entity\Core\Tip;
 use App\Entity\Offer\Offer;
 use App\Utils\MaybeUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

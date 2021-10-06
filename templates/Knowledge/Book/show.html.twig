@@ -11,7 +11,7 @@
 {% set pageSectionUrl = url('core_book_list') %}
 {% set pageSectionName = 'knowledge.book.list'|trans %}
 {% if book.summary %}
-    {% set pageDescription = book.summary|striptags|truncate(200, true, '...') %}
+    {% set pageDescription = book.summary|striptags|u.truncate(200, true, '...') %}
 {% else %}
     {% set pageDescription = book.title %}
 {% endif %}

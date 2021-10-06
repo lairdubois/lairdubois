@@ -9,10 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValueSource extends Constraint {
 
-	public function validatedBy() {
-		return 'ladb_core.value_source_validator';
-	}
-
 	public function getTargets() {
 		return self::CLASS_CONSTRAINT;
 	}

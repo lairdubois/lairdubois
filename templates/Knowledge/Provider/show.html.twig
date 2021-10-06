@@ -10,7 +10,7 @@
 {% set pageSectionName = 'knowledge.provider.list'|trans %}
 {% set pageTitle = provider.sign %}
 {% if provider.description %}
-    {% set pageDescription = provider.description|striptags|truncate(200, true, '...') %}
+    {% set pageDescription = provider.description|striptags|u.truncate(200, true, '...') %}
 {% else %}
     {% set pageDescription = ('knowledge.provider.field.sign'|trans)~': '~provider.sign %}
     {% if provider.products is not empty %}

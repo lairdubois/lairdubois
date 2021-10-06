@@ -9,7 +9,7 @@
 {% set pageSectionUrl = url('core_school_list') %}
 {% set pageSectionName = 'knowledge.school.list'|trans %}
 {% if school.description %}
-    {% set pageDescription = school.description|striptags|truncate(200, true, '...') %}
+    {% set pageDescription = school.description|striptags|u.truncate(200, true, '...') %}
 {% else %}
     {% set pageDescription = school.name %}
     {% if school.diplomas is not empty %}

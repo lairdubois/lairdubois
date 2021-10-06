@@ -12,7 +12,7 @@
     {% include 'Common/_form-sidenav-title.part.html.twig' %}
     {% include 'Common/_form-sidenav-body.part.html.twig' %}
     {% if workflow is not defined %}<div style="display:none">{% endif %}
-        {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+        {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
         {% include 'Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
         {% include 'Core/License:_form-sidenav.part.html.twig' %}
     {% if workflow is not defined %}</div>{% endif %}
@@ -23,7 +23,7 @@
     {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('workflow.workflow.form.help.title'|trans()) } %}
     {% include 'Common/_form-section-body.part.html.twig' with { 'mandatory':(workflow is defined ? workflow.isPublic : false), 'help':('workflow.workflow.form.help.body'|trans()) } %}
     {% if workflow is not defined %}<div style="display:none">{% endif %}
-        {% include 'Core/Tag:_form-section.part.html.twig' with { 'mandatory':(workflow is defined ? workflow.isPublic : false), 'help':('workflow.workflow.form.help.tags'|trans()) } %}
+        {% include 'Core/Tag/_form-section.part.html.twig' with { 'mandatory':(workflow is defined ? workflow.isPublic : false), 'help':('workflow.workflow.form.help.tags'|trans()) } %}
         {% include 'Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('workflow.workflow.form.help.plans'|trans()) } %}
         {% include 'Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
     {% if workflow is not defined %}</div>{% endif %}

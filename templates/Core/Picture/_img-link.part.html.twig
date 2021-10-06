@@ -15,7 +15,7 @@
                 {{ parent() }}
                 {% if hasOverlay %}
                     <figcaption class="uk-overlay-caption">
-                        <span class="ladb-legend">{{ picture.legend|truncate(50) }}</span>
+                        <span class="ladb-legend">{{ picture.legend|u.truncate(50) }}</span>
                     </figcaption>
                 {% endif %}
             {% if hasOverlay %}</div>{% endif %}

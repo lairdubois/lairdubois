@@ -36,7 +36,7 @@
                     <div class="ladb-title">{{ feedback.title }}</div>
                     <div>
                         {% for block in feedback.bodyBlocks %}
-                            {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                            {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
                         {% endfor %}
                     </div>
                 </div>

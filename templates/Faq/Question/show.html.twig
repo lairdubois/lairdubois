@@ -63,7 +63,7 @@
     <div class="ladb-question">
         <div class="ladb-body" itemprop="articleBody">
             {% for block in question.bodyBlocks %}
-                {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
             {% endfor %}
         </div>
     </div>
@@ -98,7 +98,7 @@
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
         {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
 {% endblock %}
 
 {% block contentSuggests %}

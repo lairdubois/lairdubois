@@ -26,7 +26,7 @@
                         {{ thread.lastMessageDate|time_diff() }}
                     </div>
                     <div class="ladb-subject">
-                        <a href="{{ path('core_message_thread_show', { 'id':thread.id }) }}">{{ thread.subject|truncate(100, true) }}</a>
+                        <a href="{{ path('core_message_thread_show', { 'id':thread.id }) }}">{{ thread.subject|u.truncate(100, true) }}</a>
                     </div>
                 </div>
             </div>

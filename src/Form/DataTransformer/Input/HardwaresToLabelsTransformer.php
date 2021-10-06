@@ -5,13 +5,13 @@ namespace App\Form\DataTransformer\Input;
 use App\Entity\Input\Hardware;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 
 class HardwaresToLabelsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ObjectManager $om) {
+	public function __construct(ManagerRegistry $om) {
 		$this->om = $om;
 	}
 

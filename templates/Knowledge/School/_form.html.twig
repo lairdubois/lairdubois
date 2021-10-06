@@ -26,7 +26,7 @@
             <p class="form-section-title"><i class="ladb-icon-school"></i> {{ 'knowledge.school.field.name'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\School::FIELD_NAME'), 'fieldLabel':('knowledge.school.field.name'|trans()), 'isCompact':true } %}
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('App\\Entity\\Knowledge\\School::FIELD_NAME'), 'fieldLabel':('knowledge.school.field.name'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -45,7 +45,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.school.field.logo'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'logo', 'form':form.logoValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\School::FIELD_LOGO'), 'fieldLabel':('knowledge.school.field.logo'|trans()), 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_LD'), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'logo', 'form':form.logoValue, 'field':constant('App\\Entity\\Knowledge\\School::FIELD_LOGO'), 'fieldLabel':('knowledge.school.field.logo'|trans()), 'quality':constant('App\\Entity\\Core\\Picture::QUALITY_LD'), 'postProcessor':constant('App\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

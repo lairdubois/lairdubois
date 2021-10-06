@@ -19,7 +19,7 @@
     <li><a href="#3dwarehouse"><i class="ladb-icon-3d"></i> 3D Warehouse</a></li>
     <li><a href="#fusion360"><i class="ladb-icon-3d"></i> Fusion 360</a></li>
     {% include 'Common/_form-sidenav-body.part.html.twig' %}
-    {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+    {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
     {% include 'Wonder/Plan:_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'icon':'ladb-icon-inspiration' } %}
     {% include 'Qa/Question/_form-sidenav-gallery.part.html.twig' %}
     {% include 'Knowledge/School:_form-sidenav-gallery.part.html.twig' %}
@@ -75,7 +75,7 @@
         {% endblock %}
     {% endembed %}
     {% include 'Common/_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('wonder.plan.form.help.body'|trans()) } %}
-    {% include 'Core/Tag:_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre plan.' } %}
+    {% include 'Core/Tag/_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre plan.' } %}
     {% include 'Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'help':('wonder.plan.form.help.inspirations'|trans()), 'icon':'ladb-icon-inspiration', 'addButtonHidden':true, 'formPlans':form.inspirations, 'plans':form.vars.data.inspirations, 'showInspirationWarning':true } %}
     {% include 'Qa/Question/_form-section-gallery.part.html.twig' with { 'maxQuestionCount':4, 'help':('wonder.plan.form.help.questions'|trans()) } %}
     {% include 'Knowledge/School:_form-section-gallery.part.html.twig' with { 'maxSchoolCount':4, 'help':('wonder.plan.form.help.schools'|trans()) } %}

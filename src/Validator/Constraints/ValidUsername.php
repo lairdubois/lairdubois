@@ -9,10 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidUsername extends Constraint {
 
-	public function validatedBy() {
-		return 'ladb_core.valid_username_validator';
-	}
-
 	public function getTargets() {
 		return self::CLASS_CONSTRAINT;
 	}

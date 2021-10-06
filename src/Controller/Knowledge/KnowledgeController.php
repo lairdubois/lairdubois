@@ -99,7 +99,7 @@ class KnowledgeController extends AbstractController {
 	}
 
 	private function _computeEntityClass($fieldType) {
-		return '\\Ladb\\CoreBundle\\Entity\\Knowledge\\Value\\'.implode('', array_map('ucfirst', explode('-', $fieldType)));
+		return 'App\\Entity\\Knowledge\\Value\\'.implode('', array_map('ucfirst', explode('-', $fieldType)));
 	}
 
 	private function _computeFormTypeFqcn($fieldType) {

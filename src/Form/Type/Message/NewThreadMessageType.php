@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Message;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use FOS\UserBundle\Model\UserManagerInterface;
 use App\Form\DataTransformer\UsersToUsernamesTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -18,7 +18,7 @@ class NewThreadMessageType extends AbstractType {
 	private $om;
 	private $userManager;
 
-	public function __construct(ObjectManager $om, UserManagerInterface $userManager) {
+	public function __construct(ManagerRegistry $om, UserManagerInterface $userManager = null) {
 		$this->om = $om;
 		$this->userManager = $userManager;
 	}

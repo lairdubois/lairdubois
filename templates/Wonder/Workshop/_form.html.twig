@@ -14,9 +14,9 @@
     {{ parent() }}
     {% include 'Common/_form-sidenav-title.part.html.twig' %}
     {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
-    {% include 'Core/Block:_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
+    {% include 'Core/Block/_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
     <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
-    {% include 'Core/Tag:_form-sidenav.part.html.twig' %}
+    {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
     {% include 'Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
     {% include 'Howto/Howto:_form-sidenav-gallery.part.html.twig' %}
     {% include 'Workflow:Workflow/_form-sidenav-gallery.part.html.twig' %}
@@ -32,8 +32,8 @@
     </div>
     {{ parent() }}
     {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('wonder.workshop.form.help.title'|trans()) } %}
-    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_HD'), 'title':('default.showcase'|trans), 'help':('wonder.workshop.form.help.showcase'|trans()) } %}
-    {% include 'Core/Block:_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('wonder.workshop.form.help.body'|trans()) } %}
+    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'quality':constant('App\\Entity\\Core\\Picture::QUALITY_HD'), 'title':('default.showcase'|trans), 'help':('wonder.workshop.form.help.showcase'|trans()) } %}
+    {% include 'Core/Block/_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('wonder.workshop.form.help.body'|trans()) } %}
     {% embed 'Common/_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
             <div class="form-group">
@@ -54,7 +54,7 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% include 'Core/Tag:_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre atelier.' } %}
+    {% include 'Core/Tag/_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre atelier.' } %}
     {% include 'Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('wonder.workshop.form.help.plans'|trans()) } %}
     {% include 'Howto/Howto:_form-section-gallery.part.html.twig' with { 'maxHowtoCount':4, 'help':('wonder.workshop.form.help.howtos'|trans()) } %}
     {% include 'Workflow:Workflow/_form-section-gallery.part.html.twig' with { 'maxWorkflowCount':4, 'help':('wonder.workshop.form.help.workflows'|trans()) } %}

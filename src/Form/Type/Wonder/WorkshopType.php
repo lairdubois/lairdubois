@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Form\DataTransformer\PicturesToIdsTransformer;
 use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
 use App\Form\DataTransformer\Howto\HowtosToIdsTransformer;
@@ -24,7 +24,7 @@ class WorkshopType extends AbstractType {
 	private $om;
 	private $localisableUtils;
 
-	public function __construct(ObjectManager $om, LocalisableUtils $localisableUtils) {
+	public function __construct(ManagerRegistry $om, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
 		$this->localisableUtils = $localisableUtils;
 	}

@@ -60,7 +60,7 @@ EOT
 		$currentUser = null;
 		$currentNotifications = array();
 
-		$notifications = $notificationRepository->findByPendingEmailAndActivityInstanceOf('\\Ladb\\CoreBundle\\Entity\\Core\\Activity\\'.ucfirst($activityStrippedName));
+		$notifications = $notificationRepository->findByPendingEmailAndActivityInstanceOf('App\\Entity\\Core\\Activity\\'.ucfirst($activityStrippedName));
 		if ($verbose) {
 			$output->writeln('<info>'.count($notifications).' notifications ('.$activityStrippedName.') to process...</info>');
 		}

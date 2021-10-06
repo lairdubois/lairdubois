@@ -9,10 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class SchoolTestimonial extends Constraint {
 
-	public function validatedBy() {
-		return 'ladb_core.school_testimonial_validator';
-	}
-
 	public function getTargets() {
 		return self::CLASS_CONSTRAINT;
 	}

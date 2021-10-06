@@ -62,7 +62,7 @@ class PolyCollectionResizeFormListener extends ResizeFormListener
             $type       = $prototype->getConfig()->getType()->getInnerType();
 
             if (null === $defaultType) {
-                $defaultType = $type;
+                $defaultType = $type instanceof FormTypeInterface ? get_class($type) : $type;
             }
 
             $typeKey = $type instanceof FormTypeInterface ? $type->getBlockPrefix() : $type;

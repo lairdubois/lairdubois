@@ -6,7 +6,7 @@
 {% set pageTitle = user.displayname %}
 {% set pageContentItemType = 'Person' %}
 {% if user.meta.biography is not null and user.meta.biography.htmlBody|length > 0 %}
-    {% set pageDescription = user.meta.biography.htmlBody|striptags|truncate(200, true, '...') %}
+    {% set pageDescription = user.meta.biography.htmlBody|striptags|u.truncate(200, true, '...') %}
 {% endif %}
 {% if user.avatar is not null %}
     {% set pageImage = user.avatar.webPath|imagine_filter('400x400o') %}

@@ -26,7 +26,7 @@
             <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.wood.field.name'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Wood::FIELD_NAME'), 'fieldLabel':('knowledge.wood.field.name'|trans()), 'isCompact':true } %}
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('App\\Entity\\Knowledge\\Wood::FIELD_NAME'), 'fieldLabel':('knowledge.wood.field.name'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -45,7 +45,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.wood.field.grain'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'grain', 'form':form.grainValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Wood::FIELD_GRAIN'), 'fieldLabel':('knowledge.wood.field.grain'|trans()), 'quality':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_HD') } %}
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'grain', 'form':form.grainValue, 'field':constant('App\\Entity\\Knowledge\\Wood::FIELD_GRAIN'), 'fieldLabel':('knowledge.wood.field.grain'|trans()), 'quality':constant('App\\Entity\\Core\\Picture::QUALITY_HD') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

@@ -206,7 +206,7 @@
             </div>
         {% endif %}
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
     {% include 'Core/License:_metas.part.html.twig' with { 'license':workflow.license } %}
 {% endblock %}
 

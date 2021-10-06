@@ -48,7 +48,7 @@
                         <span>clientIp4</span>
                     </div>
                     <div class="ladb-meta">
-                        <span class="pull-right"><a href= "http://www.useragentstring.com/?uas={{ registration.clientUserAgent|url_encode }}&getText=all" target="_blank" rel="noreferrer noopener">{{ registration.clientUserAgent|truncate(30) }}</a></span>
+                        <span class="pull-right"><a href= "http://www.useragentstring.com/?uas={{ registration.clientUserAgent|url_encode }}&getText=all" target="_blank" rel="noreferrer noopener">{{ registration.clientUserAgent|u.truncate(30) }}</a></span>
                         <span>userAgent</span>
                     </div>
                 {% endif %}

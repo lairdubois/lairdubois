@@ -23,7 +23,7 @@
                     <p style="margin: 5px 0 0 0; padding: 0;">
                         <strong>{{ row.feedback.title|raw }}</strong>
                         {% for block in row.feedback.bodyBlocks %}
-                            {% include 'Core/Block:_email-'~block.strippedName~'.part.html.twig' %}
+                            {% include 'Core/Block/_email-'~block.strippedName~'.part.html.twig' %}
                         {% endfor %}
                     </p>
                 </td>

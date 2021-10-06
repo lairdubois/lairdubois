@@ -13,7 +13,7 @@
     <div class="uk-overlay">
         <img src="{{ src|imagine_filter('128x128o') }}" width="128" height="128" data-pin-nopin="true">
         {% if editable %}
-            <div class="uk-overlay-caption ladb-legend">{% if picture is defined and picture.legend is not empty %}{{ picture.legend|truncate(50) }}{% else %}{{ 'picture.no_legend'|trans() }}{% endif %}</div>
+            <div class="uk-overlay-caption ladb-legend">{% if picture is defined and picture.legend is not empty %}{{ picture.legend|u.truncate(50) }}{% else %}{{ 'picture.no_legend'|trans() }}{% endif %}</div>
         {% endif %}
     </div>
     {% if picture is defined and picture.sourceUrl is not empty %}

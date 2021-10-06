@@ -169,7 +169,7 @@
                                         <h4>{{ 'share.social.heading'|trans() }}</h4>
                                         {% set sbUrl = ladb_entity_url_action(article) %}
                                         {% set sbTitle = article.title %}
-                                        {% set sbDescription = article.body|striptags|truncate(200, true, '...') %}
+                                        {% set sbDescription = article.body|striptags|u.truncate(200, true, '...') %}
                                         {% if article.mainPicture is not null %}
                                             {% set sbImage = (article.mainPicture.webPath|imagine_filter('600x600i')) %}
                                         {% endif %}
@@ -248,7 +248,7 @@
                     {% endif %}
                     <div class="ladb-body">
                         {% for block in article.bodyBlocks %}
-                            {% include 'Core/Block:_show-'~block.strippedName~'.part.html.twig' %}
+                            {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
                         {% endfor %}
                     </div>
                     <div class="ladb-ages">
@@ -436,7 +436,7 @@
             {% endif %}
         </div>
     </div>
-    {% include 'Core/Tag:_metas.part.html.twig' with { 'tags':howto.tags, 'type':'howtos' } %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':howto.tags, 'type':'howtos' } %}
     {% include 'Core/License:_metas.part.html.twig' with { 'license':howto.license } %}
 {% endblock %}
 

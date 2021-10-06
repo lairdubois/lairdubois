@@ -40,7 +40,7 @@
         <span class="btn btn-success ladb-fileinput-button">
             <i class="ladb-icon-plus"></i>&nbsp;
             <span>{{ (maxPictureCount > 1 ? 'picture.add_multiple' : 'picture.add_one')|trans() }}</span>
-            <input type="file" name="files[]" data-url="{{ path('core_picture_upload', { 'quality':quality|default(constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::QUALITY_SD')), 'postProcessor':postProcessor|default(constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_NONE')), 'owner':(owner.usernameCanonical|default(null)) }) }}"{% if maxPictureCount > 1 %} multiple{% endif %}>
+            <input type="file" name="files[]" data-url="{{ path('core_picture_upload', { 'quality':quality|default(constant('App\\Entity\\Core\\Picture::QUALITY_SD')), 'postProcessor':postProcessor|default(constant('App\\Entity\\Core\\Picture::POST_PROCESSOR_NONE')), 'owner':(owner.usernameCanonical|default(null)) }) }}"{% if maxPictureCount > 1 %} multiple{% endif %}>
         </span>
     </div>
     {% if not hideTextOverlayWarning %}
