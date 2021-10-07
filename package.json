@@ -18,12 +18,12 @@
     "dependencies": {
         "blueimp-file-upload": "blueimp/jquery-file-upload",
         "bootstrap": "3",
-        "bootstrap-datetimepicker": "^0.0.7",
         "bootstrap-markdown": "^2.10.0",
         "clndr": "^1.5.1",
         "cornerslider": "^1.0.0",
         "emojione": "^4.5.0",
         "emojionearea": "^3.4.2",
+        "eonasdan-bootstrap-datetimepicker": "^4",
         "file-loader": "^6.2.0",
         "html5shiv": "^3.7.3",
         "icomoon": "^1.0.0",
@@ -46,6 +46,6 @@
         "masonry": "^0.0.2",
         "sass": "^1.42.1",
         "sass-loader": "^11",
-        "uikit": "^3.7.4"
+        "uikit": "^2.7"
     }
 }

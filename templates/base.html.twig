@@ -124,6 +124,7 @@
                 {{ encore_entry_link_tags('app', null, '_default', {media: 'screen'}) }}
             {% endblock %}
             {% block headJavascripts %}
+                {{ encore_entry_script_tags('app_header') }}
                 {% if pageSectionUrl and pageSectionName %}
                     <script type="application/ld+json">
                     {

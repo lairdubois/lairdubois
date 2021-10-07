@@ -20,6 +20,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
+    .addEntry('app_header', './assets/app_header.js')
     .addEntry('app', './assets/app.js')
     .addEntry('qa', './assets/qa.js')
 
