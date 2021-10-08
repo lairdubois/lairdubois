@@ -4,7 +4,7 @@
 {# set followerContext #}
 
 <div class="ladb-like-and-follow-row">
-    {% include 'Core/Like:_widget.part.html.twig' %}
+    {% include 'Core/Like/_widget.part.html.twig' %}
     {% if not permissionContext.isGrantedOwner and followerContext is not null %}
         &nbsp;{% include 'Core/Follower:_widget.part.html.twig' %}
     {% endif %}

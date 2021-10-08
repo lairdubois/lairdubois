@@ -124,7 +124,7 @@ class KnowledgeController extends AbstractController {
 	/**
 	 * @Route("/{entityType}/{entityId}/contributors", requirements={"entityType" = "\d+","entityId" = "\d+"}, name="core_knowledge_contributors")
 	 * @Route("/{entityType}/{entityId}/contributors/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_knowledge_contributors_page")
-	 * @Template("Knowledge:contributors.html.twig")
+	 * @Template("Knowledge/contributors.html.twig")
 	 */
 	public function contributors(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -152,14 +152,14 @@ class KnowledgeController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Knowledge:contributors-xhr.html.twig', $parameters);
+			return $this->render('Knowledge/contributors-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 	}
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{field}/create", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+"}, methods={"POST"}, name="core_knowledge_value_create")
-	 * @Template("Knowledge:value-new-xhr.html.twig")
+	 * @Template("Knowledge/value-new-xhr.html.twig")
 	 */
 	public function createFieldValue(Request $request, $entityType, $entityId, $field) {
 		if (!$request->isXmlHttpRequest()) {
@@ -250,7 +250,7 @@ class KnowledgeController extends AbstractController {
 			$commentableUtils = $this->get(CommentableUtils::class);
 			$votableUtils = $this->get(VotableUtils::class);
 
-			return $this->render('Knowledge:value-create-xhr.html.twig', array(
+			return $this->render('Knowledge/value-create-xhr.html.twig', array(
 				'knowledge'       => $entity,
 				'field'           => $field,
 				'form'            => $form->createView(),
@@ -272,7 +272,7 @@ class KnowledgeController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{field}/{id}/edit", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+","id" = "\d+"}, name="core_knowledge_value_edit")
-	 * @Template("Knowledge:value-edit-xhr.html.twig")
+	 * @Template("Knowledge/value-edit-xhr.html.twig")
 	 */
 	public function editFieldValue(Request $request, $entityType, $entityId, $field, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -319,7 +319,7 @@ class KnowledgeController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{field}/{id}/update", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+","id" = "\d+"}, name="core_knowledge_value_update")
-	 * @Template("Knowledge:value-edit-xhr.html.twig")
+	 * @Template("Knowledge/value-edit-xhr.html.twig")
 	 */
 	public function updateFieldValue(Request $request, $entityType, $entityId, $field, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -377,7 +377,7 @@ class KnowledgeController extends AbstractController {
 			$commentableUtils = $this->get(CommentableUtils::class);
 			$votableUtils = $this->get(VotableUtils::class);
 
-			return $this->render('Knowledge:value-update-xhr.html.twig', array(
+			return $this->render('Knowledge/value-update-xhr.html.twig', array(
 				'knowledge'      => $entity,
 				'field'          => $field,
 				'value'          => $value,
@@ -397,7 +397,7 @@ class KnowledgeController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{field}/{id}/delete", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+", "id" = "\d+"}, name="core_knowledge_value_delete")
-	 * @Template("Knowledge:value-delete-xhr.html.twig")
+	 * @Template("Knowledge/value-delete-xhr.html.twig")
 	 */
 	public function deleteFieldValue(Request $request, $entityType, $entityId, $field, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -481,7 +481,7 @@ class KnowledgeController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{field}.xhr", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "[a-z_]+"}, name="core_knowledge_field_show")
-	 * @Template("Knowledge:field-show.html.twig")
+	 * @Template("Knowledge/field-show.html.twig")
 	 */
 	public function showField(Request $request, $entityType, $entityId, $field, $highlightedValueId = null) {
 		$knowledgeUtils = $this->get(KnowledgeUtils::class);
@@ -526,7 +526,7 @@ class KnowledgeController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Knowledge:field-show-xhr.html.twig', $parameters);
+			return $this->render('Knowledge/field-show-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -544,7 +544,7 @@ class KnowledgeController extends AbstractController {
 			throw $this->createNotFoundException('Unable to find Value entity (id='.$id.').');
 		}
 
-		return $this->forward('App\Entity\Knowledge/Knowledge:showField', array(
+		return $this->forward('App\Entity\Knowledge/Knowledge/showField', array(
 			'entityType'         => $value->getParentEntityType(),
 			'entityId'           => $value->getParentEntityId(),
 			'field'              => $value->getParentEntityField(),
@@ -554,7 +554,7 @@ class KnowledgeController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{fieldSrc}/{fieldDest}/{id}/admin/move", requirements={"entityType" = "\d+","entityId" = "\d+", "fieldSrc" = "\w+", "fieldDest" = "\w+", "id" = "\d+"}, name="core_knowledge_value_admin_move")
-	 * @Template("Knowledge:value-move-xhr.html.twig")
+	 * @Template("Knowledge/value-move-xhr.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_knowledge_value_admin_move)")
 	 */
 	public function adminMoveFieldValue(Request $request, $entityType, $entityId, $fieldSrc, $fieldDest, $id) {

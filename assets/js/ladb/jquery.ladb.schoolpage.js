@@ -112,7 +112,7 @@
             $form.submit();
         });
 
-        setupTextareas();
+        LADBCommon.setupTextareas();
 
         // Focus the first textarea
         $('textarea', $form).first().focus();
@@ -172,7 +172,7 @@
         this.$testimonialForm.ladbScrollTo(null, {
             onAfter: function() {
 
-                setupTextareas();
+                LADBCommon.setupTextareas();
 
                 // Focus the first textarea
                 $('textarea', $form).first().focus();
@@ -222,7 +222,7 @@
         var that = this;
 
         this.bind();
-        setupTextareas();
+        LADBCommon.setupTextareas();
 
     };
 

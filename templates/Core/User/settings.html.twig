@@ -18,7 +18,7 @@
         $(document).ready(function() {
             $('#container').ladbSettingsPage({
                 accountTypeFormFieldId: '{{ form.accountType.vars.id }}',
-                accountTypeBrandValue: '{{ constant('Ladb\\CoreBundle\\Entity\\Core\\User::ACCOUNT_TYPE_BRAND') }}',
+                accountTypeBrandValue: '{{ constant('App\\Entity\\Core\\User::ACCOUNT_TYPE_BRAND') }}',
                 swPath: '{{ asset('bundles/ladbcore/ladb/js/ladb-webpush-sw.js') }}',
                 serverKey: '{{ bentools_pusher.server_key | e('js') }}',
                 subscriptionUrl: '{{ path('bentools_webpush.subscription') }}'
@@ -100,7 +100,7 @@
                 <span class="help-block"><em>Indiquez qui se cache derrière ce compte.</em></span>
                 {{ form_errors(form.accountType) }}
                 {{ form_widget(form.accountType) }}
-                <div id="ladb_account_type_brand_warning_alert" class="alert alert-info media"{% if user.accountType != constant('Ladb\\CoreBundle\\Entity\\Core\\User::ACCOUNT_TYPE_BRAND') %} style="display: none;"{% endif %}>
+                <div id="ladb_account_type_brand_warning_alert" class="alert alert-info media"{% if user.accountType != constant('App\\Entity\\Core\\User::ACCOUNT_TYPE_BRAND') %} style="display: none;"{% endif %}>
                     <div class="media-left"><i class="ladb-icon-warning ladb-icon-lg"></i></div>
                     <div class="media-body">
                         <strong>Attention</strong>, en vous présentant en tant que <u>marque</u> sur <em>L'Air du Bois</em>,
@@ -155,10 +155,10 @@
                                                 $("#{{ form.location.vars.id }}").val(results[1].formatted_address);
                                                 markAsUnsaved();
                                             } else {
-                                                notifyError("{{ 'default.geocode.position_unavailable'|trans() }}");
+                                                LADBCommon.notifyError("{{ 'default.geocode.position_unavailable'|trans() }}");
                                             }
                                         } else {
-                                            notifyError("{{ 'default.geocode.unkonw_error'|trans() }} (status=" + status + ")");
+                                            LADBCommon.notifyError("{{ 'default.geocode.unkonw_error'|trans() }} (status=" + status + ")");
                                         }
                                         btn.button("reset");
                                     });
@@ -166,20 +166,20 @@
                                 function (error) {
                                     switch(error.code) {
                                         case error.PERMISSION_DENIED:
-                                            notifyError("{{ 'default.geocode.permission_denied'|trans() }}");
+                                            LADBCommon.notifyError("{{ 'default.geocode.permission_denied'|trans() }}");
                                             break;
                                         case error.POSITION_UNAVAILABLE:
-                                            notifyError("{{ 'default.geocode.position_unavailable'|trans() }}");
+                                            LADBCommon.notifyError("{{ 'default.geocode.position_unavailable'|trans() }}");
                                             break;
                                         default:
-                                            notifyError("{{ 'default.geocode.unkonw_error'|trans() }}");
+                                            LADBCommon.notifyError("{{ 'default.geocode.unkonw_error'|trans() }}");
                                             break;
                                     }
                                     btn.button("reset");
                                 },
                                 optn);
                     } else {
-                        notifyError("{{ 'default.geocode.unsupported_browser'|trans() }}");
+                        LADBCommon.notifyError("{{ 'default.geocode.unsupported_browser'|trans() }}");
                     }
                 }
             </script>

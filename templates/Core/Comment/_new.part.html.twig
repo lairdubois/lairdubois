@@ -14,9 +14,9 @@
 
 <div id="{{ id }}" class="ladb-new">
     {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
-    {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+    {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
     <div class="ladb-content">
-        {% embed 'Core/Comment:_form.part.html.twig' with { 'action':path('core_comment_create', { 'entityType':entityType, 'entityId':entityId, 'parentId':parentId }), 'galleryClasses':condenced ? 'ladb-pseudo-hidden' : '' } %}
+        {% embed 'Core/Comment/_form.part.html.twig' with { 'action':path('core_comment_create', { 'entityType':entityType, 'entityId':entityId, 'parentId':parentId }), 'galleryClasses':condenced ? 'ladb-pseudo-hidden' : '' } %}
             {% block buttons %}
                 {% if alertTransKey is defined and alertTransKey is not empty %}
                     <div class="alert alert-info">

@@ -11,7 +11,7 @@
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == collection.user.id %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% block subheading %}{{ parent() }}{% include 'Collection/Collection/_visibility-badge.part.html.twig' with { 'classes':'ladb-hidden-mobile ladb-margin-left' } %}{% endblock %}
     {% endembed %}
     <ul class="nav nav-tabs">

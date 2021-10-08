@@ -76,7 +76,7 @@
         $(document).ready(function() {
 
             {# Setup Tooltips #}
-            setupTooltips();
+            LADBCommon.setupTooltips();
 
             {# Setup ScrollToTop button #}
             $('#ladb_block_metas').ladbAppendScrollToTopBtn();
@@ -132,5 +132,5 @@
             </div>
         </div>
     </div>
-    {% include 'Core/Report:_modal.part.html.twig' %}
+    {% include 'Core/Report/_modal.part.html.twig' %}
 {% endblock %}

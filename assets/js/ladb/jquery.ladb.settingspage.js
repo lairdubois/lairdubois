@@ -109,7 +109,7 @@
     LadbSettingsPage.prototype.init = function() {
         var that = this;
 
-        this.webpush = new LadbWebPushClient({
+        this.webpush = new LADBWebPush.client({
             swPath: this.options.swPath,
             serverKey: this.options.serverKey,
             url: this.options.subscriptionUrl,

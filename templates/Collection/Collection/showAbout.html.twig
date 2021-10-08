@@ -47,18 +47,18 @@
     {% if collection.updatedAt > collection.createdAt %}
         {% include 'Common/_updated-age.part.html.twig' with { 'entity':collection } %}
     {% endif %}
-    {% include 'Core/Comment:_widget.part.html.twig' %}
+    {% include 'Core/Comment/_widget.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
     </div>
     {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':collection.tags, 'type':'collections' } %}
 {% endblock %}

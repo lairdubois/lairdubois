@@ -36,7 +36,7 @@
     {% if provider.state > 0 %}
         <div class="label label-danger" style="display: block; font-size: 100%; margin-bottom: 5px;"><i class="ladb-icon-warning"></i> {{ ('knowledge.provider.state_alert_'~provider.state)|trans() }}</div>
     {% endif %}
-    {% include 'Knowledge/Provider:_compact-infos.part.html.twig' %}
+    {% include 'Knowledge/Provider/_compact-infos.part.html.twig' %}
 {% endblock %}
 
 {% block footer %}

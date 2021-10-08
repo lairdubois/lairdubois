@@ -50,7 +50,7 @@
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
                     setupTooltips();
-                    lazyLoadReset($newRow);
+                    LADBCommon.lazyLoadReset($newRow);
                 }
             },
             error:function() {
@@ -279,14 +279,14 @@
                     $new.replaceWith($newNew);
                     that.bindNew($newNew);
                 } else {
-                    pictureGalleryRemoveAllPictures($new.attr('id'));
+                    LADBPictures.pictureGalleryRemoveAllPictures($new.attr('id'));
                     var $row = $(data);
                     $row.insertBefore($new);
                     $('ul.alert-danger', $new).remove();
                     $('.ladb-form-gallery-section', $new).collapse('hide');
                     that.bindRow($row.first());
                     setupTooltips();
-                    lazyLoadReset($row);
+                    LADBCommon.lazyLoadReset($row);
                 }
                 $('[type=submit]', $new).button('reset');
             },
@@ -344,7 +344,7 @@
 
         });
         $('.collapse').on('shown.bs.collapse', function () {
-            lazyLoadUpdate();
+            LADBCommon.lazyLoadUpdate();
         });
         this.layoutActivities();
 

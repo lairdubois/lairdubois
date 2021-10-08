@@ -13,7 +13,7 @@
 <div class="ladb-avatar-header">
     {% block headerInner %}
         {% if not noAuthorAvatar and entity.user is defined %}
-            {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':entity.user, 'size':64, 'linkClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } %}
+            {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':entity.user, 'size':64, 'linkClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } %}
         {% else %}
             <div class="ladb-avatar">{% include 'Common/_avatar.part.html.twig' with { 'size':64, 'noMicrodata':true, 'noLazyLoad':true } %}</div>
         {% endif %}

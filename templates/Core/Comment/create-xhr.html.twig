@@ -1,7 +1,7 @@
 
 {% set noLazyLoad = true %}
 
-{% include 'Core/Comment:_row.part.html.twig' %}
+{% include 'Core/Comment/_row.part.html.twig' %}
 {% if not comment.parent %}
     <div id="ladb_comment_{{ comment.id }}_group" class="ladb-comment-children-collapse collapse" data-ladb-new-path="{{ path('core_comment_new', { 'entityType':comment.entityType, 'entityId':comment.entityId, 'parentId':comment.id, 'alertTransKey':alertTransKey|default('') }) }}"></div>
 {% endif %}

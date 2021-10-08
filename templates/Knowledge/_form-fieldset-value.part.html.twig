@@ -87,7 +87,7 @@
             }
         }
         $("#{{ form.sourceType.vars.id }}").on("change", function() {
-            {% if cancelEdit %}cancelEditValueProposal();{% endif %}
+            {% if cancelEdit %}LADBValues.cancelEditValueProposal();{% endif %}
             var sourceType = parseInt($(this).val());
             apply{{ form.source.vars.id }}SourceType(sourceType);
         });

@@ -11,7 +11,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':howto } %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':howto } %}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -20,7 +20,7 @@
             Aucun processus n'est associé à ce pas à pas.
         </div>
     {% else %}
-        {% embed 'Workflow:Workflow/_list-filterbar.part.html.twig' %}
+        {% embed 'Workflow/Workflow/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_howto_workflows_filter' %}
             {% set filterPathParameters = { 'id':howto.id } %}
             {% block filterbarRightContent%}
@@ -32,5 +32,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Workflow:Workflow/_list-n.part.html.twig' %}
+    {% include 'Workflow/Workflow/_list-n.part.html.twig' %}
 {% endblock %}

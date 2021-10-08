@@ -6,16 +6,16 @@
 
 {% block items %}
     <div class="ladb-member-row" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A' && event.button == 0) { document.location = '{{ path(route) }}'; }">
-        {% include 'Core/User:_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}
+        {% include 'Core/User/_avatar.part.html.twig' with { 'user':app.user, 'imgClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}
         <div class="ladb-box">
-            <div>{% include 'Core/User:_displayname.part.html.twig' with { 'user':app.user } %}</div>
+            <div>{% include 'Core/User/_displayname.part.html.twig' with { 'user':app.user } %}</div>
         </div>
     </div>
     {% for member in members %}
         <div id="ladb_member_{{ member.id }}" class="ladb-member-row" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A' && event.button == 0) { document.location = '{{ path(route, { 'owner':member.team.usernameCanonical }) }}'; }">
-            {% include 'Core/User:_avatar.part.html.twig' with { 'user':member.team, 'imgClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}
+            {% include 'Core/User/_avatar.part.html.twig' with { 'user':member.team, 'imgClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}
             <div class="ladb-box">
-                <div>{% include 'Core/User:_displayname.part.html.twig' with { 'user':member.team } %}</div>
+                <div>{% include 'Core/User/_displayname.part.html.twig' with { 'user':member.team } %}</div>
             </div>
         </div>
     {% endfor %}

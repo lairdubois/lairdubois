@@ -1,4 +1,4 @@
-{% extends 'Core/User:_show-list.html.twig' %}
+{% extends 'Core/User/_show-list.html.twig' %}
 
 {% set upFilter = filter == 'up' %}
 
@@ -22,5 +22,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Core/Vote:_list-byuser-n.part.html.twig' %}
+    {% include 'Core/Vote/_list-byuser-n.part.html.twig' %}
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'Common/Modal:_modal-content.part.html.twig' %}
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
 
 {% set fieldDef = knowledge.fieldDefs[field] %}
 {% set fieldMultiple = fieldDef[constant('ATTRIB_MULTIPLE', knowledge)] %}
@@ -9,9 +9,9 @@
     {{ parent() }}
     <script>
         $('.ladb-comment-widget').ladbCommentWidget();
-        bindNewValueProposalAjaxForm();
-        setupPopovers();
-        setupTooltips();
+        LADBValues.bindNewValueProposalAjaxForm();
+        LADBCommon.setupPopovers();
+        LADBCommon.setupTooltips();
         $('[data-src]').Lazy();
         {% if values is empty %}
             $(".modal input[type=text]").first().focus();

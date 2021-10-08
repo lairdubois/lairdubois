@@ -1,4 +1,4 @@
-{% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'report_modal', 'title':('report.create'|trans()) } %}
+{% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'report_modal', 'title':('report.create'|trans()) } %}
     {% block contentInner %}
         <form id="report_modal_form" action="{{ path('core_report_create') }}" method="get">
             {{ parent() }}

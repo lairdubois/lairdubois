@@ -10,13 +10,13 @@
                 <div class="ladb-content col-sm-6 col-xs-12">
                     {% if item.user is not null %}
                         <div class="ladb-image">
-                            {% include 'Core/User:_avatar.part.html.twig' with { 'user':item.user, 'size':'64' } %}
+                            {% include 'Core/User/_avatar.part.html.twig' with { 'user':item.user, 'size':'64' } %}
                         </div>
                         <div class="ladb-heading">
-                            <h3><a href="#">{% include 'Core/User:_displayname-link.part.html.twig' with { 'user':item.user } %}</a></h3>
+                            <h3><a href="#">{% include 'Core/User/_displayname-link.part.html.twig' with { 'user':item.user } %}</a></h3>
                         </div>
                         <div class="ladb-subheading">
-                            {% include 'Core/User:_location-and-social.part.html.twig' with { 'user':item.user } %}
+                            {% include 'Core/User/_location-and-social.part.html.twig' with { 'user':item.user } %}
                         </div>
                     {% else %}
                         <div class="ladb-heading">

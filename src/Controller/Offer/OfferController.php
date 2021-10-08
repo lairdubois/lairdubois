@@ -44,7 +44,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_offer_new")
-	 * @Template("Offer/Offer:new.html.twig")
+	 * @Template("Offer/Offer/new.html.twig")
 	 */
 	public function new(Request $request) {
 
@@ -63,7 +63,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_offer_create")
-	 * @Template("Offer/Offer:new.html.twig")
+	 * @Template("Offer/Offer/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -180,7 +180,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_offer_edit")
-	 * @Template("Offer/Offer:edit.html.twig")
+	 * @Template("Offer/Offer/edit.html.twig")
 	 */
 	public function edit($id) {
 
@@ -200,7 +200,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_offer_update")
-	 * @Template("Offer/Offer:edit.html.twig")
+	 * @Template("Offer/Offer/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -298,7 +298,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_offer_widget")
-	 * @Template("Offer/Offer:widget-xhr.html.twig")
+	 * @Template("Offer/Offer/widget-xhr.html.twig")
 	 */
 	public function widget($id) {
 
@@ -312,7 +312,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/location.geojson", name="core_offer_location", defaults={"_format" = "json"})
-	 * @Template("Offer/Offer:location.geojson.twig")
+	 * @Template("Offer/Offer/location.geojson.twig")
 	 */
 	public function location($id) {
 
@@ -339,7 +339,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/card.xhr", name="core_offer_card")
-	 * @Template("Offer/Offer:card-xhr.html.twig")
+	 * @Template("Offer/Offer/card-xhr.html.twig")
 	 */
 	public function card(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -376,7 +376,7 @@ class OfferController extends AbstractController {
 				'%RECIPIENT%' => $offer->getUser()->getDisplayName(),
 				'%SENDER%'    => $this->getUser()->getDisplayName()
 			)),
-			'alertTemplate'     => 'App\Entity\Offer/Offer:_alert-new-thread.part.html.twig',
+			'alertTemplate'     => 'App\Entity\Offer/Offer/_alert-new-thread.part.html.twig',
 		));
 	}
 
@@ -384,7 +384,7 @@ class OfferController extends AbstractController {
 	 * @Route("/", name="core_offer_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_offer_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_offer_list_geojson")
-	 * @Template("Offer/Offer:list.html.twig")
+	 * @Template("Offer/Offer/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -586,7 +586,7 @@ class OfferController extends AbstractController {
 				'collection' => $collection,
 			));
 
-			return $this->render('Offer/Offer:list-xhr.geojson.twig', $parameters);
+			return $this->render('Offer/Offer/list-xhr.geojson.twig', $parameters);
 		}
 
 		// Dispatch publication event
@@ -594,7 +594,7 @@ class OfferController extends AbstractController {
 		$dispatcher->dispatch(new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()), PublicationListener::PUBLICATIONS_LISTED);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Offer/Offer:list-xhr.html.twig', $parameters);
+			return $this->render('Offer/Offer/list-xhr.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateOfferCount() > 0) {
@@ -612,7 +612,7 @@ class OfferController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_offer_show")
-	 * @Template("Offer/Offer:show.html.twig")
+	 * @Template("Offer/Offer/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

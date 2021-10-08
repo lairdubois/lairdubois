@@ -1,4 +1,4 @@
-{% extends 'Core/User:_show-list.html.twig' %}
+{% extends 'Core/User/_show-list.html.twig' %}
 
 {% block bodyContainerContent %}
     {% if items|length == 0 %}
@@ -21,5 +21,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Core/Comment:_list-byuser-n.part.html.twig' %}
+    {% include 'Core/Comment/_list-byuser-n.part.html.twig' %}
 {% endblock %}

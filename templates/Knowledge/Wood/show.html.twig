@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% set headingClasses = wood.nameRejected ? 'ladb-strikethrough' : null %}
         {% block subheadingInner %}
             {% if wood.availability == 1 %}
@@ -82,18 +82,18 @@
             {% include 'Common/_updated-age.part.html.twig' %}
         {% endif %}
         <div style="padding: 10px; text-align: center;">
-            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
-        {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')) } %}
+        {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')) } %}
     </div>
     {{ parent() }}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
         <div class="ladb-meta">
             <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
             {% if wood.contributorCount > 0 %}
@@ -105,7 +105,7 @@
                 </a>
             {% endif %}
         </div>
-        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':wood } %}
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':wood } %}
         <div class="ladb-meta{% if wood.textureCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-texture ladb-icon-fixed-center"></i>
             {% if wood.textureCount > 0 %}
@@ -125,7 +125,7 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if searchableCreationCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-creation ladb-icon-fixed-center"></i>
             {% if searchableCreationCount > 0 %}
@@ -149,5 +149,5 @@
             {% endif %}
         </div>
     </div>
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':wood.license } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':wood.license } %}
 {% endblock %}

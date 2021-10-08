@@ -12,7 +12,7 @@
                 </a>
             </div>
             <div class="ladb-tools">
-                <a href="#" class="btn btn-default" onclick="window.parent.providerAdded('{% filter escape('js') %}{% include 'Knowledge/Provider:_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+                <a href="#" class="btn btn-default" onclick="window.parent.providerAdded('{% filter escape('js') %}{% include 'Knowledge/Provider/_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
             </div>
             <div class="ladb-body">
                 <h4 class="ladb-heading">{{ provider.title }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}</h4>

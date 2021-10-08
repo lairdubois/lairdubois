@@ -4,9 +4,9 @@ namespace App\Utils;
 
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use App\Entity\Core\View;
-use App\Model\HiddableInterface;
 use App\Model\ViewableInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 class ViewableUtils extends AbstractContainerAwareUtils {
 
@@ -18,6 +18,12 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 		parent::__construct($container);
 		$this->om = $this->getDoctrine()->getManager();
 	}
+
+    public static function getSubscribedServices() {
+	    return array_merge(parent::getSubscribedServices(), array(
+            'logger' => '?'.LoggerInterface::class,
+        ));
+    }
 
 	/////
 

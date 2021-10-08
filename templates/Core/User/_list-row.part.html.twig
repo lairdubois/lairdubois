@@ -69,9 +69,9 @@
 {% endblock %}
 
 {% block headingInner %}
-    {% include 'Core/User:_displayname-link.part.html.twig' %}{% if user.isFullnameDisplayble %}&nbsp;<small>({{ user.fullname }})</small>{% endif %}
+    {% include 'Core/User/_displayname-link.part.html.twig' %}{% if user.isFullnameDisplayble %}&nbsp;<small>({{ user.fullname }})</small>{% endif %}
 {% endblock %}
 
 {% block subheadingInner %}
-    {% include 'Core/User:_location-and-social.part.html.twig' %}
+    {% include 'Core/User/_location-and-social.part.html.twig' %}
 {% endblock %}

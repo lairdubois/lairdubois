@@ -84,7 +84,7 @@ class VoteController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{way}/new", requirements={"entityType" = "\d+", "entityId" = "\d+", "way" = "up|down"}, name="core_vote_new")
-	 * @Template("Core/Vote:new-xhr.html.twig")
+	 * @Template("Core/Vote/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $entityType, $entityId, $way) {
 		if (!$request->isXmlHttpRequest()) {
@@ -166,7 +166,7 @@ class VoteController extends AbstractController {
 
 				if (!$form->isValid()) {
 
-					return $this->render('Core/Vote:new-xhr.html.twig', array(
+					return $this->render('Core/Vote/new-xhr.html.twig', array(
 						'orientation'  => $orientation,
 						'entity'       => $entity,
 						'parentEntity' => $parentEntity,
@@ -313,7 +313,7 @@ class VoteController extends AbstractController {
 
 			$votableUtils = $this->get(VotableUtils::class);
 
-			return $this->render('Core/Vote:create-xhr.html.twig', array(
+			return $this->render('Core/Vote/create-xhr.html.twig', array(
 				'orientation' => $orientation,
 				'voteContext' => $votableUtils->getVoteContext($entity, $this->getUser()),
 			));
@@ -397,7 +397,7 @@ class VoteController extends AbstractController {
 
 			$votableUtils = $this->get(VotableUtils::class);
 
-			return $this->render('Core/Vote:delete-xhr.html.twig', array(
+			return $this->render('Core/Vote/delete-xhr.html.twig', array(
 				'orientation' => $orientation,
 				'voteContext' => $votableUtils->getVoteContext($entity, $this->getUser()),
 			));
@@ -414,7 +414,7 @@ class VoteController extends AbstractController {
 	 * @Route("/p/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_vote_list_parent_entity")
 	 * @Route("/p/{entityType}/{entityId}/{filter}", requirements={"entityType" = "\d+", "entityId" = "\d+", "filter" = "positive|negative"}, name="core_vote_list_parent_entity_filter")
 	 * @Route("/p/{entityType}/{entityId}/{filter}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "filter" = "positive|negative", "page" = "\d+"}, name="core_vote_list_parent_entity_filter_page")
-	 * @Template("Core/Vote:list-byparent.html.twig")
+	 * @Template("Core/Vote/list-byparent.html.twig")
 	 */
 	public function showParentVotes(Request $request, $entityType, $entityId, $filter = 'positive', $page = 0) {
 
@@ -447,7 +447,7 @@ class VoteController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Vote:list-byparent-xhr.html.twig', $parameters);
+			return $this->render('Core/Vote/list-byparent-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;

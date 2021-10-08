@@ -13,8 +13,10 @@
             {% include 'Core/Picture/_img.part.html.twig' with { 'width':(wide ? '282' : '126'), 'height':(wide ? '280' : '170'), 'alt':knowledge.title, 'emptyWebPath':'empty_add.png', 'autoSizer':false } %}
             {% if values|length %}
                 {% set pictureCount = 0 %}
-                {% for value in values if value.voteScore >= 0 %}
-                    {% set pictureCount = pictureCount + 1 %}
+                {% for value in values %}
+                    {% if value.voteScore >= 0 %}
+                        {% set pictureCount = pictureCount + 1 %}
+                    {% endif %}
                 {% endfor %}
                 {% if pictureCount > 1 %}
                     <div class="ladb-picture-counter">+ {{ pictureCount - 1 }} <i class="ladb-icon-camera"></i></div>

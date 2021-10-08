@@ -3,7 +3,7 @@
 
 {% set noInteraction = noInteraction|default(false) %}
 
-{% include 'Core/User:_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+{% include 'Core/User/_avatar-link.part.html.twig' with { 'user':answer.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
 <div class="ladb-heading">
     <div class="ladb-minitools">
         {% if is_granted("ROLE_ADMIN") %}
@@ -22,7 +22,7 @@
         {% endif %}
         {% if is_granted("ROLE_ADMIN") %}
             <a href="#delete_answer_{{ answer.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete"><i class="ladb-icon-delete"></i></a>
-            {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'delete_answer_'~answer.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+            {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'delete_answer_'~answer.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
                 {% block bodyInner %}
                     <p>La suppression de cette réponse entrainera la perte de toutes les informations qui lui sont relatives.</p>
                     <p>Confirmez l'action pour continuer.</p>
@@ -34,7 +34,7 @@
             {% endembed %}
         {% endif %}
         {% if answer.user != app.user %}
-            {% include 'Core/Report:_widget-mini.part.html.twig' with { 'entityType':answer.type, 'entityId':answer.id } %}
+            {% include 'Core/Report/_widget-mini.part.html.twig' with { 'entityType':answer.type, 'entityId':answer.id } %}
         {% endif %}
     </div>
     {% include 'Common/_author.part.html.twig' with { 'entity':answer, 'hideBy':true } %}{% include 'Common/_age.part.html.twig' with { 'entity':answer, 'showEdited':true } %}

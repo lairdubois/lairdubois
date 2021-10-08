@@ -44,7 +44,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% block adminItems %}
             {{ parent() }}
             <li role="separator" class="divider"></li>
@@ -52,7 +52,7 @@
         {% endblock %}
         {% block adminModals %}
             {{ parent() }}
-            {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'admin_converttooffer_question_modal', 'title':('qa.question.converttooffer'|trans()) } %}
+            {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttooffer_question_modal', 'title':('qa.question.converttooffer'|trans()) } %}
                 {% block bodyInner %}
                     <p>La convertion transformera la question <strong>{{ question.title }}</strong> de <strong>{{ question.user.displayname }}</strong> en offre.</p>
                     <p>Confirmez l'action pour continuer.</p>
@@ -80,7 +80,7 @@
                     {% if question.updatedAt > question.createdAt %}
                         {% include 'Common/_updated-age.part.html.twig' with { 'entity':question } %}
                     {% endif %}
-                    {% include 'Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'alertTransKey':(ownerUser ? '' : 'qa.question.comment_alert'), 'adminTools':[ { 'path':'core_comment_admin_converttoanswer', 'pathParams':{ 'questionId':question.id }, 'icon':'arrow-right', 'label':'Convertir en réponse' } ] } %}
+                    {% include 'Core/Comment/_widget.part.html.twig' with { 'collapsible':true, 'alertTransKey':(ownerUser ? '' : 'qa.question.comment_alert'), 'adminTools':[ { 'path':'core_comment_admin_converttoanswer', 'pathParams':{ 'questionId':question.id }, 'icon':'arrow-right', 'label':'Convertir en réponse' } ] } %}
                 </div>
                 <div class="col-sm-1 col-xs-12 ladb-hidden-mobile">
                     <div class="ladb-full-height">?</div>
@@ -93,24 +93,24 @@
         {% include 'Qa/Answer:_list.part.html.twig' %}
         {% include 'Qa/Question/_answers-footer.part.html.twig' %}
     </div>
-    {% include 'Core/Vote:_modals.part.html.twig' %}
+    {% include 'Core/Vote/_modals.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
         <div class="ladb-meta">
             <a href="#" class="ladb-scrollto-btn" onclick="$('.ladb-qa-question-answers').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
             <i class="ladb-icon-answer ladb-icon-fixed-center"></i>
             <strong itemprop="answerCount">{{ question.answerCount|number_format(0, ',', ' ') }}</strong>
             <small>{{ 'qa.answer.choice.entities'|transchoice(question.answerCount) }}</small>
         </div>
-        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':question } %}
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':question } %}
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
         {% if question.creationCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-creation"></i>
@@ -140,14 +140,14 @@
         {% endif %}
     </div>
     {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':question.tags, 'type':'questions' } %}
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':question.license } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':question.license } %}
 {% endblock %}
 
 {% block contentSuggests %}
     {% if userQuestions is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('qa.question.other_from')|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':question.user, 'noMicrodata':true } %}
+                {{ ('qa.question.other_from')|trans() }} {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':question.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body">
                 {% for userQuestion in userQuestions %}

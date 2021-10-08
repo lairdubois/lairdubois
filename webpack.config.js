@@ -22,7 +22,12 @@ Encore
      */
     .addEntry('app_header', './assets/app_header.js')
     .addEntry('app', './assets/app.js')
+    .addEntry('book', './assets/book.js')
     .addEntry('qa', './assets/qa.js')
+    .addEntry('ladb_values', './assets/ladb_values.js')
+    // Vendors entry points
+    .addEntry('blueimp', './assets/blueimp.js')
+
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -82,7 +87,7 @@ Encore
 
     // Add images
     .copyFiles([
-        {from: './assets/ladb/images/', to: 'images/[path][name].[ext]', pattern: /\.(jpg|png|gif|jpeg)$/}
+        {from: './assets/ladb/images/', to: 'images/[path][name].[ext]', pattern: /\.(jpg|png|gif|jpeg|svg)$/}
     ])
 ;
 

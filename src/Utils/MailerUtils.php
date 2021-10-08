@@ -75,8 +75,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Confirmation de votre adresse e-mail',
-				$this->_renderTemplate('App\Entity\Core/User:email-confirmation.txt.twig', $parameters),
-				$this->_renderTemplate('App\Entity\Core/User:email-confirmation.html.twig', $parameters)
+				$this->_renderTemplate('App\Entity\Core/User/email-confirmation.txt.twig', $parameters),
+				$this->_renderTemplate('App\Entity\Core/User/email-confirmation.html.twig', $parameters)
 			);
 		}
 	}
@@ -133,7 +133,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de rapport d\'abus',
-			$this->_renderTemplate('App\Entity\Core/Report:email-notification.txt.twig', array( 'actorUser' => $actorUser, 'report' => $report, 'entity' => $entity ))
+			$this->_renderTemplate('App\Entity\Core/Report/email-notification.txt.twig', array( 'actorUser' => $actorUser, 'report' => $report, 'entity' => $entity ))
 		);
 	}
 
@@ -141,7 +141,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de nouvel utilisateur',
-			$this->_renderTemplate('App\Entity\Core/User:register-email-notification.txt.twig', array( 'actorUser' => $actorUser ))
+			$this->_renderTemplate('App\Entity\Core/User/register-email-notification.txt.twig', array( 'actorUser' => $actorUser ))
 		);
 	}
 
@@ -183,8 +183,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			$recipientUser->getEmail(),
 			'Votre annonce a expiré',
-			$this->_renderTemplate('App\Entity\Offer/Offer:expired-email.txt.twig', $parameters),
-			$this->_renderTemplate('App\Entity\Offer/Offer:expired-email.html.twig', $parameters)
+			$this->_renderTemplate('App\Entity\Offer/Offer/expired-email.txt.twig', $parameters),
+			$this->_renderTemplate('App\Entity\Offer/Offer/expired-email.html.twig', $parameters)
 		);
 		unset($parameters);
 	}

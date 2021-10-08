@@ -11,7 +11,7 @@
             var kind =  $("#{{ form.kind.vars.id }} input[type=radio]:checked").val();
             var category =  $("#{{ form.category.vars.id }} input[type=radio]:checked").val();
             if (kind !== undefined && category !== undefined) {
-                if (kind === '{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') }}' && category !== '{{ constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::CATEGORY_JOB') }}') {
+                if (kind === '{{ constant('App\\Entity\\Offer\\Offer::KIND_OFFER') }}' && category !== '{{ constant('App\\Entity\\Offer\\Offer::CATEGORY_JOB') }}') {
                     $('#{{ form.rawPrice.vars.id }}_container').show();
                 } else {
                     $('#{{ form.rawPrice.vars.id }}_container').hide();

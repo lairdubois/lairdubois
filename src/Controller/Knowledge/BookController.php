@@ -319,7 +319,7 @@ class BookController extends AbstractController {
 			function(&$filters) {
 
 				//$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lte' => 0 ));
-				//$filters[] = new \Elastica\Query\Range('coverRejected', array( 'lt' => 1 ));
+				//$filters[] = new \Elastica\Query\Range('coverRejected', array( 'lt' => true ));
 
 			},
 			'knowledge_book',

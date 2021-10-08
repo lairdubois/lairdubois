@@ -5,15 +5,15 @@
                 <i class="ladb-icon-warning"></i> Le compte <strong>{{ message.sender.displayName }}</strong> a été désactivé pour utilisation abusive de la plateforme.
             </div>
         {% endif %}
-        {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':message.sender, 'linkClasses':'pull-left' } %}
+        {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':message.sender, 'linkClasses':'pull-left' } %}
         <div class="ladb-content">
             <div class="ladb-heading">
-                {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':message.sender } %}{% include 'Common/_age.part.html.twig' with { 'entity':message, 'showEdited':true } %}
+                {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':message.sender } %}{% include 'Common/_age.part.html.twig' with { 'entity':message, 'showEdited':true } %}
                 <div class="pull-right ladb-minitools">
                     {% if message.sender == app.user %}
                         <a href="{{ path('core_message_edit', { 'id':message.id }) }}" class="ladb-message-edit" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>
                     {% else %}
-                        {% include 'Core/Report:_widget-mini.part.html.twig' with { 'entityType':message.type, 'entityId':message.id } %}
+                        {% include 'Core/Report/_widget-mini.part.html.twig' with { 'entityType':message.type, 'entityId':message.id } %}
                     {% endif %}
                 </div>
             </div>

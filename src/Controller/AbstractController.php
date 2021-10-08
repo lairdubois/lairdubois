@@ -13,10 +13,13 @@ use App\Utils\FeedbackableUtils;
 use App\Utils\FieldPreprocessorUtils;
 use App\Utils\GlobalUtils;
 use App\Utils\JoinableUtils;
+use App\Utils\KnowledgeUtils;
 use App\Utils\LikableUtils;
 use App\Utils\MaybeUtils;
 use App\Utils\MentionUtils;
+use App\Utils\PropertyUtils;
 use App\Utils\ReportableUtils;
+use App\Utils\ReviewableUtils;
 use App\Utils\SearchUtils;
 use App\Utils\TagUtils;
 use App\Utils\TypableUtils;
@@ -49,11 +52,14 @@ abstract class AbstractController extends BaseController {
             FieldPreprocessorUtils::class => '?'.FieldPreprocessorUtils::class,
             GlobalUtils::class => '?'.GlobalUtils::class,
             JoinableUtils::class => '?'.JoinableUtils::class,
+            KnowledgeUtils::class => '?'.KnowledgeUtils::class,
             LikableUtils::class => '?'.LikableUtils::class,
             MaybeUtils::class => '?'.MaybeUtils::class,
             MentionUtils::class => '?'.MentionUtils::class,
+            PropertyUtils::class => '?'.PropertyUtils::class,   
             QuestionManager::class => '?'.QuestionManager::class,
             ReportableUtils::class => '?'.ReportableUtils::class,
+            ReviewableUtils::class => '?'.ReviewableUtils::class,
             SearchUtils::class => '?'.SearchUtils::class,
             TagUtils::class => '?'.TagUtils::class,
             TypableUtils::class => '?'.TypableUtils::class,

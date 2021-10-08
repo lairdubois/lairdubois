@@ -44,7 +44,7 @@ class ProviderController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_provider_new")
-	 * @Template("Knowledge/Provider:new.html.twig")
+	 * @Template("Knowledge/Provider/new.html.twig")
 	 */
 	public function new() {
 
@@ -66,7 +66,7 @@ class ProviderController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_provider_create")
-	 * @Template("Knowledge/Provider:new.html.twig")
+	 * @Template("Knowledge/Provider/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -163,7 +163,7 @@ class ProviderController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/location.geojson", name="core_provider_location", defaults={"_format" = "json"})
-	 * @Template("Knowledge/Provider:location.geojson.twig")
+	 * @Template("Knowledge/Provider/location.geojson.twig")
 	 */
 	public function location(Request $request, $id) {
 
@@ -190,7 +190,7 @@ class ProviderController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_provider_widget")
-	 * @Template("Knowledge/Provider:widget-xhr.html.twig")
+	 * @Template("Knowledge/Provider/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 
@@ -206,7 +206,7 @@ class ProviderController extends AbstractController {
 	 * @Route("/", name="core_provider_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_provider_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_provider_list_geojson")
-	 * @Template("Knowledge/Provider:list.html.twig")
+	 * @Template("Knowledge/Provider/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -298,7 +298,7 @@ class ProviderController extends AbstractController {
 
 					case 'pro-only':
 
-						$filter = new \Elastica\Query\Range('saleToIndividuals', array( 'lt' => 1 ));
+						$filter = new \Elastica\Query\Range('saleToIndividuals', array( 'lt' => true ));
 						$filters[] = $filter;
 
 						break;
@@ -421,7 +421,7 @@ class ProviderController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$filters[] = new \Elastica\Query\Range('signRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('signRejected', array( 'lt' => true ));
 
 			},
 			'knowledge_provider',
@@ -454,7 +454,7 @@ class ProviderController extends AbstractController {
 				'collection' => $collection,
 			));
 
-			return $this->render('Knowledge/Provider:list-xhr.geojson.twig', $parameters);
+			return $this->render('Knowledge/Provider/list-xhr.geojson.twig', $parameters);
 		}
 
 		// Dispatch publication event
@@ -463,14 +463,14 @@ class ProviderController extends AbstractController {
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {
-				return $this->render('Knowledge/Provider:list-choice-xhr.html.twig', $parameters);
+				return $this->render('Knowledge/Provider/list-choice-xhr.html.twig', $parameters);
 			} else {
-				return $this->render('Knowledge/Provider:list-xhr.html.twig', $parameters);
+				return $this->render('Knowledge/Provider/list-xhr.html.twig', $parameters);
 			}
 		}
 
 		if ($layout == 'choice') {
-			return $this->render('Knowledge/Provider:list-choice.html.twig', $parameters);
+			return $this->render('Knowledge/Provider/list-choice.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -480,7 +480,7 @@ class ProviderController extends AbstractController {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_provider_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_provider_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_provider_creations_filter_page")
-	 * @Template("Knowledge/Provider:creations.html.twig")
+	 * @Template("Knowledge/Provider/creations.html.twig")
 	 */
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -521,7 +521,7 @@ class ProviderController extends AbstractController {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_provider_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_provider_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_provider_howtos_filter_page")
-	 * @Template("Knowledge/Provider:howtos.html.twig")
+	 * @Template("Knowledge/Provider/howtos.html.twig")
 	 */
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -560,7 +560,7 @@ class ProviderController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/card.xhr", name="core_provider_card")
-	 * @Template("Knowledge/Provider:card-xhr.html.twig")
+	 * @Template("Knowledge/Provider/card-xhr.html.twig")
 	 */
 	public function card(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -584,7 +584,7 @@ class ProviderController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_provider_show")
-	 * @Template("Knowledge/Provider:show.html.twig")
+	 * @Template("Knowledge/Provider/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

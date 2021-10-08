@@ -14,11 +14,11 @@
             {{ parent() }}
         </div>
         <div class="ladb-flex-footer">
-            {% include 'Offer/Offer:_price.part.html.twig' %}
+            {% include 'Offer/Offer/_price.part.html.twig' %}
             <span style="font-style: italic;">{{ ('offer.offer.category_'~offer.category)|trans }}</span>
             {% if offer.location is defined and offer.location is not null %}
                 <div>
-                    {% include 'Offer/Offer:_location.part.html.twig' %}
+                    {% include 'Offer/Offer/_location.part.html.twig' %}
                 </div>
             {% endif %}
         </div>

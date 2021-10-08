@@ -46,7 +46,7 @@ class CommentController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{parentId}/new", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, name="core_comment_new")
-	 * @Template("Core/Comment:new-xhr.html.twig")
+	 * @Template("Core/Comment/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $entityType, $entityId, $parentId = 0) {
 		if (!$request->isXmlHttpRequest()) {
@@ -81,7 +81,7 @@ class CommentController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{parentId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+", "parentId" = "\d+"}, methods={"POST"}, name="core_comment_create")
-	 * @Template("Core/Comment:new-xhr.html.twig")
+	 * @Template("Core/Comment/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $entityType, $entityId, $parentId = 0) {
 		if (!$request->isXmlHttpRequest()) {
@@ -128,7 +128,7 @@ class CommentController extends AbstractController {
 			$commentableUtils = $this->get(CommentableUtils::class);
 			$commentableUtils->finalizeNewComment($comment, $entity);
 
-			return $this->render('Core/Comment:create-xhr.html.twig', array( 'comment' => $comment ));
+			return $this->render('Core/Comment/create-xhr.html.twig', array( 'comment' => $comment ));
 		}
 
 		$commentUtils = $this->get(CommentableUtils::class);
@@ -145,7 +145,7 @@ class CommentController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_comment_edit")
-	 * @Template("Core/Comment:edit-xhr.html.twig")
+	 * @Template("Core/Comment/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -178,7 +178,7 @@ class CommentController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_comment_update")
-	 * @Template("Core/Comment:edit-xhr.html.twig")
+	 * @Template("Core/Comment/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -213,7 +213,7 @@ class CommentController extends AbstractController {
 			$mentionUtils = $this->get(MentionUtils::class);
 			$mentionUtils->processMentions($comment);
 
-			return $this->render('Core/Comment:update-xhr.html.twig', array( 'comment' => $comment ));
+			return $this->render('Core/Comment/update-xhr.html.twig', array( 'comment' => $comment ));
 		}
 
 		// Retrieve related entity
@@ -232,7 +232,7 @@ class CommentController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_comment_delete")
-	 * @Template("Core/Comment:delete-xhr.html.twig")
+	 * @Template("Core/Comment/delete-xhr.html.twig")
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -291,7 +291,7 @@ class CommentController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/admin/moveup", requirements={"id" = "\d+"}, name="core_comment_admin_moveup")
-	 * @Template("Core/Comment:moveup-xhr.html.twig")
+	 * @Template("Core/Comment/moveup-xhr.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_comment_admin_moveup)")
 	 */
 	public function adminMoveup($id) {

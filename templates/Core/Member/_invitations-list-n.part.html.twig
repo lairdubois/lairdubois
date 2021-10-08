@@ -6,7 +6,7 @@
 
 {% block items %}
     {% for invitation in invitations %}
-        {% embed 'Core/User:_list-row.part.html.twig' with { 'user':user.isTeam ? invitation.recipient : invitation.team } %}
+        {% embed 'Core/User/_list-row.part.html.twig' with { 'user':user.isTeam ? invitation.recipient : invitation.team } %}
             {% block rowInner %}
                 {{ parent() }}
                 <div class="ladb-row-metas">

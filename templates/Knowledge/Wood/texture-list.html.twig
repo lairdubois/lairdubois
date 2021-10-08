@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-header.part.html.twig' %}
+    {% include 'Common/Header/_entity-header.part.html.twig' %}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -32,13 +32,13 @@
             Les textures ci-dessous sont générées à partir des propositions de <em>Bois de fil</em> et de <em>Bois de bout</em> de l'essence <strong>{{ wood.title }}</strong> et sont destinées à être importées dans les logiciels de modélisations 3D.
         </div>
     </div>
-    {% embed 'Knowledge/Wood:_texture-list-filterbar.part.html.twig' %}
+    {% embed 'Knowledge/Wood/_texture-list-filterbar.part.html.twig' %}
         {% block filterbarRightContent%}
             <span class="ladb-heading">{{ textures.count }} {{ 'knowledge.wood.texture.choice.textures'|transchoice(textures.count) }}</span>
         {% endblock %}
     {% endembed %}
     {{ parent() }}
-    {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'texture_modal', 'title':('knowledge.wood.texture.choice.textures'|transchoice(0)) } %}
+    {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'texture_modal', 'title':('knowledge.wood.texture.choice.textures'|transchoice(0)) } %}
         {% block headerInner %}
             {{ 'default.loading'|trans() }}
         {% endblock %}
@@ -48,5 +48,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Knowledge/Wood:_texture-list-n.part.html.twig' %}
+    {% include 'Knowledge/Wood/_texture-list-n.part.html.twig' %}
 {% endblock %}

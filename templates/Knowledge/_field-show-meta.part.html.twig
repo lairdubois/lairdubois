@@ -51,9 +51,11 @@
                     <div class="ladb-value">{% include 'Knowledge/_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if valueIsRejected %} ladb-strikethrough{% endif %}{% if disabled %} text-muted{% endif %}">{{ Self.searchQueryLink(_context) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
                 {% else %}
                     {% set definedValueCount = 0 %}
-                    {% for value in values if value.voteScore >= 0 %}
-                        <div class="ladb-value">{% include 'Knowledge/_field-bullet.part.html.twig' with { 'valueIndex':loop.index0 } %}<div class="ladb-data{% if disabled %} text-muted{% endif %}">{{ Self.searchQueryLink(_context) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
-                        {%  set definedValueCount = definedValueCount + 1 %}
+                    {% for value in values %}
+                        {% if value.voteScore >= 0 %}
+                            <div class="ladb-value">{% include 'Knowledge/_field-bullet.part.html.twig' with { 'valueIndex':loop.index0 } %}<div class="ladb-data{% if disabled %} text-muted{% endif %}">{{ Self.searchQueryLink(_context) }}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}</div></div>
+                            {%  set definedValueCount = definedValueCount + 1 %}
+                        {% endif %}
                     {% endfor %}
                     {% if definedValueCount == 0 %}
                         <span class="ladb-value">{% include 'Knowledge/_field-bullet.part.html.twig' with { 'valueIndex':0 } %}<div class="ladb-data{% if disabled %} text-muted{% endif %}">-</div></span>

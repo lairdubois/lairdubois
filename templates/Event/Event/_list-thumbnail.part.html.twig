@@ -6,7 +6,7 @@
 {% set classes = 'ladb-no-overlay-caption' %}
 {% set headingClasses = event.cancelled ? 'ladb-strikethrough' : null %}
 
-{% if event.cancelled or event.status == constant('Ladb\\CoreBundle\\Entity\\Event\\Event::STATUS_COMPLETED') %}
+{% if event.cancelled or event.status == constant('App\\Entity\\Event\\Event::STATUS_COMPLETED') %}
     {% set imageClasses = 'ladb-desaturate ladb-translucent' %}
 {% endif %}
 
@@ -15,10 +15,10 @@
 {% endblock %}
 
 {% block image %}
-    {% include 'Event/Event:_status-label.part.html.twig' %}
+    {% include 'Event/Event/_status-label.part.html.twig' %}
     <div style="position: relative;">
         {{ parent() }}
-        {% include 'Event/Event:_event-calendar.part.html.twig' with { 'topRight':false } %}
+        {% include 'Event/Event/_event-calendar.part.html.twig' with { 'topRight':false } %}
     </div>
 {% endblock %}
 

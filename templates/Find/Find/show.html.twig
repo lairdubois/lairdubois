@@ -6,7 +6,7 @@
 
 {% set pageTitleBy = 'trouvé par' %}
 {% set noMicrodataLocation = false %}
-{% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') or find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') %}
+{% if find.kind == constant('App\\Entity\\Find\\Find::KIND_VIDEO') or find.kind == constant('App\\Entity\\Find\\Find::KIND_GALLERY') %}
     {% set pageContentItemType = 'CreativeWork' %}
     {% set noMicrodataLocation = true %}
 {% else %}
@@ -35,15 +35,15 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% include 'Common/Header/_entity-show-header.part.html.twig' %}
 {% endblock %}
 
 {% block contentBody %}
     {% if find.isDraft %}
-        {% include 'Find/Find:_draft-alert.part.html.twig' %}
+        {% include 'Find/Find/_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-find">
-        {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') %}
+        {% if find.kind == constant('App\\Entity\\Find\\Find::KIND_WEBSITE') %}
             <div class="ladb-thumb">
                 <a href="{{ find.content.url }}" target="_blank" rel="noreferrer noopener" class="thumbnail">
                     {% include 'Core/Picture/_img.part.html.twig' with { 'picture':find.mainPicture, 'width':'600', 'height':'600', 'filterMode':'i', 'alt':find.title, 'attribute':'data-pin-nopin="true"', 'emptyWebPath':'empty_find.png' } %}
@@ -57,7 +57,7 @@
                 </a>
             </div>
         {% endif %}
-        {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}
+        {% if find.kind == constant('App\\Entity\\Find\\Find::KIND_VIDEO') %}
             {{ ladb_video_player_frame(find.content.kind, find.content.embedIdentifier, 560, 420, 'ladb-margin-bottom thumbnail', true)|raw }}
         {% endif %}
         {% if find.content.pictures is defined %}
@@ -95,14 +95,14 @@
     {% if not permissionContext.isOwner %}
         {% include 'Common/_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% include 'Core/Comment:_widget.part.html.twig' %}
+    {% include 'Core/Comment/_widget.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
         {% if hasMap %}
             <div class="ladb-meta">
                 {% if hasMap %}
@@ -118,12 +118,12 @@
     {% if userFinds is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('find.find.other_from')|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}
+                {{ ('find.find.other_from')|trans() }} {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':find.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userFind in userFinds %}
                     <div class="col-xs-6">
-                        {% include 'Find/Find:_thumbnail-link.part.html.twig' with { 'find':userFind } %}
+                        {% include 'Find/Find/_thumbnail-link.part.html.twig' with { 'find':userFind } %}
                     </div>
                 {% endfor %}
                 {% if find.user.meta.publicFindCount > 2 %}
@@ -142,7 +142,7 @@
             <div class="panel-body row">
                 {% for similarFind in similarFinds %}
                     <div class="col-xs-6">
-                        {% include 'Find/Find:_thumbnail-link.part.html.twig' with { 'find':similarFind, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                        {% include 'Find/Find/_thumbnail-link.part.html.twig' with { 'find':similarFind, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}
             </div>

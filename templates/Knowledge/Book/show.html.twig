@@ -38,21 +38,15 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    {% stylesheets filter='less,?yui_css'
-        '@LadbCoreBundle/Resources/assets/less/jquery-barrating/ladb-stars.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-    {% endstylesheets %}
+    {{ encore_entry_link_tags('book', null, '_default', {media: 'screen'}) }}
 {% endblock %}
 
 {% block bodyMetas %}{% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/jquery-barrating/jquery.barrating.js'
-        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ encore_entry_script_tags('book') }}
+    {{ encore_entry_script_tags('ladb_values') }}
     <script>
         $(document).ready(function() {
 
@@ -64,7 +58,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% set headingClasses = book.identityRejected ? 'ladb-strikethrough' : null %}
         {% block headingInner %}
             {{ parent() }}{% if book.volume is not empty %}&nbsp;<small>({{ book.volume }})</small>{% endif %}
@@ -122,19 +116,19 @@
             {% include 'Common/_updated-age.part.html.twig' %}
         {% endif %}
         <div style="padding: 10px; text-align: center;">
-            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
         {% include 'Core/Review/_widget.part.html.twig' %}
-        {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.book.comment_alert' } %}
+        {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.book.comment_alert' } %}
     </div>
     {{ parent() }}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
         <div class="ladb-meta">
             <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
             {% if book.contributorCount > 0 %}
@@ -146,12 +140,12 @@
                 </a>
             {% endif %}
         </div>
-        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':book } %}
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':book } %}
         {% include 'Core/Review/_meta-counter.part.html.twig' with { 'entity':book } %}
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
     </div>
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':book.license, 'noMicrodata':true } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':book.license, 'noMicrodata':true } %}
 {% endblock %}

@@ -43,7 +43,7 @@ class SchoolController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_school_new")
-	 * @Template("Knowledge/School:new.html.twig")
+	 * @Template("Knowledge/School/new.html.twig")
 	 */
 	public function new() {
 
@@ -65,7 +65,7 @@ class SchoolController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_school_create")
-	 * @Template("Knowledge/School:new.html.twig")
+	 * @Template("Knowledge/School/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -160,7 +160,7 @@ class SchoolController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/location.geojson", name="core_school_location", defaults={"_format" = "json"})
-	 * @Template("Knowledge/School:location.geojson.twig")
+	 * @Template("Knowledge/School/location.geojson.twig")
 	 */
 	public function location(Request $request, $id) {
 
@@ -187,7 +187,7 @@ class SchoolController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_school_widget")
-	 * @Template("Knowledge/School:widget-xhr.html.twig")
+	 * @Template("Knowledge/School/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 
@@ -203,7 +203,7 @@ class SchoolController extends AbstractController {
 	 * @Route("/", name="core_school_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_school_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_school_list_geojson")
-	 * @Template("Knowledge/School:list.html.twig")
+	 * @Template("Knowledge/School/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -372,7 +372,7 @@ class SchoolController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => true ));
 
 			},
 			'knowledge_school',
@@ -405,7 +405,7 @@ class SchoolController extends AbstractController {
 				'collection' => $collection,
 			));
 
-			return $this->render('Knowledge/School:list-xhr.geojson.twig', $parameters);
+			return $this->render('Knowledge/School/list-xhr.geojson.twig', $parameters);
 		}
 
 		// Dispatch publication event
@@ -414,14 +414,14 @@ class SchoolController extends AbstractController {
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {
-				return $this->render('Knowledge/School:list-choice-xhr.html.twig', $parameters);
+				return $this->render('Knowledge/School/list-choice-xhr.html.twig', $parameters);
 			} else {
-				return $this->render('Knowledge/School:list-xhr.html.twig', $parameters);
+				return $this->render('Knowledge/School/list-xhr.html.twig', $parameters);
 			}
 		}
 
 		if ($layout == 'choice') {
-			return $this->render('Knowledge/School:list-choice.html.twig', $parameters);
+			return $this->render('Knowledge/School/list-choice.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -431,7 +431,7 @@ class SchoolController extends AbstractController {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_school_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_school_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_school_creations_filter_page")
-	 * @Template("Knowledge/School:creations.html.twig")
+	 * @Template("Knowledge/School/creations.html.twig")
 	 */
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -472,7 +472,7 @@ class SchoolController extends AbstractController {
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_school_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_school_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_school_plans_filter_page")
-	 * @Template("Knowledge/School:plans.html.twig")
+	 * @Template("Knowledge/School/plans.html.twig")
 	 */
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -513,7 +513,7 @@ class SchoolController extends AbstractController {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_school_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_school_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_school_howtos_filter_page")
-	 * @Template("Knowledge/School:howtos.html.twig")
+	 * @Template("Knowledge/School/howtos.html.twig")
 	 */
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -542,7 +542,7 @@ class SchoolController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -552,7 +552,7 @@ class SchoolController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/card.xhr", name="core_school_card")
-	 * @Template("Knowledge/School:card-xhr.html.twig")
+	 * @Template("Knowledge/School/card-xhr.html.twig")
 	 */
 	public function card(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -576,7 +576,7 @@ class SchoolController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_school_show")
-	 * @Template("Knowledge/School:show.html.twig")
+	 * @Template("Knowledge/School/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

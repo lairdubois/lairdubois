@@ -1,16 +1,10 @@
 {% block blueimpGalleryStylesheets %}
-    {% stylesheets filter='?yui_css'
-        '@LadbCoreBundle/Resources/assets/css/blueimp-gallery/blueimp-gallery.css' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-    {% endstylesheets %}
+
+    {{ encore_entry_link_tags('blueimp', null, '_default', {media: 'screen'}) }}
 {% endblock %}
 
 {% block blueimpGalleryJavascripts %}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/blueimp-gallery/blueimp-gallery.js'
-        '@LadbCoreBundle/Resources/assets/js/blueimp-gallery/jquery.blueimp-gallery.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ encore_entry_script_tags('blueimp') }}
 {% endblock %}
 
 {% block blueimpGalleryWidget %}

@@ -191,11 +191,11 @@
             {{ encore_entry_script_tags('app') }}
             <script>
                 {% if not noLazyLoad %}
-                    $(window).on('load orientationchange', lazyLoadUpdate);
+                    $(window).on('load orientationchange', LADBCommon.lazyLoadUpdate);
                 {% endif %}
                 $(document).ready(function() {
                     {% block bodyJavascriptsInlineReady %}
-                        setupTextareas();
+                        LADBCommon.setupTextareas();
                     {% endblock %}
                 });
             </script>

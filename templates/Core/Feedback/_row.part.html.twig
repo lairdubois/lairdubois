@@ -4,7 +4,7 @@
     <div class="ladb-box ladb-highlightable">
         <div class="ladb-box-inner">
             <div class="ladb-content-box">
-                {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':feedback.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+                {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':feedback.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
                 <div class="ladb-heading">
                     {% if not noMinitools %}
                         <div class="ladb-minitools">
@@ -14,7 +14,7 @@
                             {% if is_granted("ROLE_ADMIN") or feedback.user == app.user %}
                                 <a href="{{ path('core_feedback_edit', { 'id':feedback.id }) }}" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}" class="ladb-btn-edit" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-edit"></i></a>
                                 <a href="#delete_feedback_{{ feedback.id }}_modal" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" class="ladb-btn-delete ladb-minitool-danger"><i class="ladb-icon-delete"></i></a>
-                                {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'delete_feedback_'~feedback.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+                                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'delete_feedback_'~feedback.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
                                     {% block bodyInner %}
                                         <p>La suppression de ce retour d'expérience entrainera la perte de toutes les informations qui lui sont relatives.</p>
                                         <p>Confirmez l'action pour continuer.</p>
@@ -26,7 +26,7 @@
                                 {% endembed %}
                             {% endif %}
                             {% if feedback.user != app.user %}
-                                {% include 'Core/Report:_widget-mini.part.html.twig' with { 'entityType':feedback.type, 'entityId':feedback.id } %}
+                                {% include 'Core/Report/_widget-mini.part.html.twig' with { 'entityType':feedback.type, 'entityId':feedback.id } %}
                             {% endif %}
                         </div>
                     {% endif %}

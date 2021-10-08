@@ -24,7 +24,7 @@
                                 {{ 'default.by'|trans() }}&nbsp;<a href="{{ url('core_user_show', { 'username':mainEntity.user.usernameCanonical }) }}">{{ mainEntity.user.displayname }}</a>
                             {% endif %}
                             {% if mainEntity.age is defined %}
-                                <span class="ladb-age">{{ mainEntity.createdAt|time_diff }}</span>
+                                <span class="ladb-age">{{ mainEntity.createdAt|ago }}</span>
                             {% endif %}
                         </div>
                     {% endblock %}

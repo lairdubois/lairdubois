@@ -7,7 +7,7 @@
     <div class="ladb-shadow">
         <div class="container">
             <div class="ladb-caption">
-                {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':entity.user, 'size':'50', 'linkClasses':'ladb-avatar ladb-hidden-mobile', 'noMicrodata':true } %}
+                {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':entity.user, 'size':'50', 'linkClasses':'ladb-avatar ladb-hidden-mobile', 'noMicrodata':true } %}
                 <ul class="ladb-counters">
                     {% block counters %}
                         <li class="ladb-counter"><i class="ladb-icon-eye"></i> {{ entity.viewCount|number_format(0, ',', ' ') }}</li>

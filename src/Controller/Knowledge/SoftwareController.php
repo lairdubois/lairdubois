@@ -41,7 +41,7 @@ class SoftwareController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_software_new")
-	 * @Template("Knowledge/Software:new.html.twig")
+	 * @Template("Knowledge/Software/new.html.twig")
 	 */
 	public function new() {
 
@@ -63,7 +63,7 @@ class SoftwareController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_software_create")
-	 * @Template("Knowledge/Software:new.html.twig")
+	 * @Template("Knowledge/Software/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -163,7 +163,7 @@ class SoftwareController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_software_widget")
-	 * @Template("Knowledge/Software:widget-xhr.html.twig")
+	 * @Template("Knowledge/Software/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 
@@ -178,7 +178,7 @@ class SoftwareController extends AbstractController {
 	/**
 	 * @Route("/", name="core_software_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_software_list_page")
-	 * @Template("Knowledge/Software:list.html.twig")
+	 * @Template("Knowledge/Software/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -332,8 +332,8 @@ class SoftwareController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lt' => 1 ));
-				$filters[] = new \Elastica\Query\Range('iconRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lt' => true ));
+				$filters[] = new \Elastica\Query\Range('iconRejected', array( 'lt' => true ));
 
 			},
 			'knowledge_software',
@@ -350,7 +350,7 @@ class SoftwareController extends AbstractController {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Knowledge/Software:list-xhr.html.twig', $parameters);
+			return $this->render('Knowledge/Software/list-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -358,7 +358,7 @@ class SoftwareController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_software_show")
-	 * @Template("Knowledge/Software:show.html.twig")
+	 * @Template("Knowledge/Software/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

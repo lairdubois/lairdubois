@@ -132,7 +132,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/email/check", name="core_user_email_check")
-	 * @Template("Core/User:emailCheck.html.twig")
+	 * @Template("Core/User/emailCheck.html.twig")
 	 */
 	public function emailCheck() {
 		$userManager = $this->get(UserManager::class);
@@ -157,7 +157,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/email/confirm/{token}", name="core_user_email_confirm")
-	 * @Template("Core/User:emailConfirm.html.twig")
+	 * @Template("Core/User/emailConfirm.html.twig")
 	 */
 	public function emailConfirm($token) {
 		$userManager = $this->container->get(UserManager::class);
@@ -193,7 +193,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/email/unsubscribe/{list}/{encryptedEmail}", requirements={"list" = "notifications|weeknews"}, name="core_user_email_unsubscribe")
-	 * @Template("Core/User:emailUnsubscribe.html.twig")
+	 * @Template("Core/User/emailUnsubscribe.html.twig")
 	 */
 	public function emailUnsubscribe($list, $encryptedEmail) {
 		$userManager = $this->container->get(UserManager::class);
@@ -252,7 +252,7 @@ class UserController extends AbstractController {
 	 * @Route("/collectifs", defaults={"family"="team"}, name="core_user_team_list")
 	 * @Route("/collectifs/{page}", defaults={"family"="team"}, requirements={"page" = "\d+"}, name="core_userteam_list_page_")
 	 * @Route("/collectifs.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson", "family"="team"}, name="core_user_team_list_geojson")
-	 * @Template("Core/User:list.html.twig")
+	 * @Template("Core/User/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0, $layout = 'view', $family = 'user') {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -395,11 +395,11 @@ class UserController extends AbstractController {
 				'collection' => $collection,
 			));
 
-			return $this->render('Core/User:list-xhr.geojson.twig', $parameters);
+			return $this->render('Core/User/list-xhr.geojson.twig', $parameters);
 		}
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/User:list-xhr.html.twig', $parameters);
+			return $this->render('Core/User/list-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -417,7 +417,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/@{username}/parametres", name="core_user_settings")
-	 * @Template("Core/User:settings.html.twig")
+	 * @Template("Core/User/settings.html.twig")
 	 */
 	public function settings(Request $request, $username) {
 		$om = $this->getDoctrine()->getManager();
@@ -501,7 +501,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/@me/counters.json", name="core_user_counters_me", defaults={"_format" = "json"})
-	 * @Template("Core/User:counters-xhr.json.twig")
+	 * @Template("Core/User/counters-xhr.json.twig")
 	 */
 	public function counters(Request $request) {
 		if (!$request->isXmlHttpRequest()) {
@@ -573,7 +573,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/@{username}/location.geojson", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_location", defaults={"_format" = "json"})
-	 * @Template("Core/User:location.geojson.twig")
+	 * @Template("Core/User/location.geojson.twig")
 	 */
 	public function location(Request $request, $username) {
 		$user = $this->retrieveUserByUsername($username);
@@ -601,7 +601,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/@{username}/card.xhr", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_card")
-	 * @Template("Core/User:card-xhr.html.twig")
+	 * @Template("Core/User/card-xhr.html.twig")
 	 */
 	public function card(Request $request, $username) {
 		if (!$request->isXmlHttpRequest()) {
@@ -627,7 +627,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/@{username}/a-propos", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_about")
-	 * @Template("Core/User:showAbout.html.twig")
+	 * @Template("Core/User/showAbout.html.twig")
 	 */
 	public function showAbout($username) {
 		$user = $this->retrieveUserByUsername($username);
@@ -658,7 +658,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/coups-de-coeur", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_likes")
 	 * @Route("/@{username}/coups-de-coeur/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "sent|recieved"}, name="core_user_show_likes_filter")
 	 * @Route("/@{username}/coups-de-coeur/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_likes_filter_page")
-	 * @Template("Core/User:showLikes.html.twig")
+	 * @Template("Core/User/showLikes.html.twig")
 	 */
 	public function showLikes(Request $request, $username, $filter = "sent", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -683,7 +683,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Like:list-byuser-xhr.html.twig', $parameters);
+			return $this->render('Core/Like/list-byuser-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
@@ -701,7 +701,7 @@ class UserController extends AbstractController {
 	/**
 	 * @Route("/@{username}/commentaires", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_comments")
 	 * @Route("/@{username}/commentaires/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "page" = "\d+"}, name="core_user_show_comments_page")
-	 * @Template("Core/User:showComments.html.twig")
+	 * @Template("Core/User/showComments.html.twig")
 	 */
 	public function showComments(Request $request, $username, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -725,7 +725,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Comment:list-byuser-xhr.html.twig', $parameters);
+			return $this->render('Core/Comment/list-byuser-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
@@ -744,7 +744,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/votes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_votes")
 	 * @Route("/@{username}/votes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "positive|negative"}, name="core_user_show_votes_filter")
 	 * @Route("/@{username}/votes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "positive|negative", "page" = "\d+"}, name="core_user_show_votes_filter_page")
-	 * @Template("Core/User:showVotes.html.twig")
+	 * @Template("Core/User/showVotes.html.twig")
 	 */
 	public function showVotes(Request $request, $username, $filter = 'positive', $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -769,7 +769,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Vote:list-byuser-xhr.html.twig', $parameters);
+			return $this->render('Core/Vote/list-byuser-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
@@ -788,7 +788,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/reviews", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_reviews")
 	 * @Route("/@{username}/reviews/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_reviews_filter")
 	 * @Route("/@{username}/reviews/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_reviews_filter_page")
-	 * @Template("Core/User:showReviews.html.twig")
+	 * @Template("Core/User/showReviews.html.twig")
 	 */
 	public function showReviews(Request $request, $username, $filter = 'recent', $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -832,7 +832,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/feedbacks", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_feedbacks")
 	 * @Route("/@{username}/feedbacks/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_feedbacks_filter")
 	 * @Route("/@{username}/feedbacks/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_feedbacks_filter_page")
-	 * @Template("Core/User:showFeedbacks.html.twig")
+	 * @Template("Core/User/showFeedbacks.html.twig")
 	 */
 	public function showFeedbacks(Request $request, $username, $filter = "recent", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -878,7 +878,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/creations", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_creations")
 	 * @Route("/@{username}/creations/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_creations_filter")
 	 * @Route("/@{username}/creations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_creations_filter_page")
-	 * @Template("Core/User:showCreations.html.twig")
+	 * @Template("Core/User/showCreations.html.twig")
 	 */
 	public function showCreations(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -936,7 +936,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/ateliers", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workshops")
 	 * @Route("/@{username}/ateliers/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workshops_filter")
 	 * @Route("/@{username}/ateliers/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workshops_filter_page")
-	 * @Template("Core/User:showWorkshops.html.twig")
+	 * @Template("Core/User/showWorkshops.html.twig")
 	 */
 	public function showWorkshops(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -975,7 +975,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Workshop:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Workshop/list-xhr.html.twig', $parameters);
 		}
 
 		$followerUtils = $this->get(FollowerUtils::class);
@@ -996,7 +996,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/plans", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_plans")
 	 * @Route("/@{username}/plans/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_plans_filter")
 	 * @Route("/@{username}/plans/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_plans_filter_page")
-	 * @Template("Core/User:showPlans.html.twig")
+	 * @Template("Core/User/showPlans.html.twig")
 	 */
 	public function showPlans(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1054,7 +1054,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/pas-a-pas", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_howtos")
 	 * @Route("/@{username}/pas-a-pas/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_howtos_filter")
 	 * @Route("/@{username}/pas-a-pas/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_howtos_filter_page")
-	 * @Template("Core/User:showHowtos.html.twig")
+	 * @Template("Core/User/showHowtos.html.twig")
 	 */
 	public function showHowtos(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1093,7 +1093,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
@@ -1112,7 +1112,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/trouvailles", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_finds")
 	 * @Route("/@{username}/trouvailles/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_finds_filter")
 	 * @Route("/@{username}/trouvailles/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_finds_filter_page")
-	 * @Template("Core/User:showFinds.html.twig")
+	 * @Template("Core/User/showFinds.html.twig")
 	 */
 	public function showFinds(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1151,7 +1151,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Find/Find:list-xhr.html.twig', $parameters);
+			return $this->render('Find/Find/list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
@@ -1170,7 +1170,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/questions", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_questions")
 	 * @Route("/@{username}/questions/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_questions_filter")
 	 * @Route("/@{username}/questions/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_questions_filter_page")
-	 * @Template("Core/User:showQuestions.html.twig")
+	 * @Template("Core/User/showQuestions.html.twig")
 	 */
 	public function showQuestions(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1228,7 +1228,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/reponses", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_answers")
 	 * @Route("/@{username}/reponses/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_answers_filter")
 	 * @Route("/@{username}/reponses/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_answers_filter_page")
-	 * @Template("Core/User:showAnswers.html.twig")
+	 * @Template("Core/User/showAnswers.html.twig")
 	 */
 	public function showAnswers(Request $request, $username, $filter = "recent", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1274,7 +1274,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_graphics")
 	 * @Route("/@{username}/graphismes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_graphics_filter")
 	 * @Route("/@{username}/graphismes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_graphics_filter_page")
-	 * @Template("Core/User:showGraphics.html.twig")
+	 * @Template("Core/User/showGraphics.html.twig")
 	 */
 	public function showGraphics(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1332,7 +1332,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/processus", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workflows")
 	 * @Route("/@{username}/processus/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workflows_filter")
 	 * @Route("/@{username}/processus/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workflows_filter_page")
-	 * @Template("Core/User:showWorkflows.html.twig")
+	 * @Template("Core/User/showWorkflows.html.twig")
 	 */
 	public function showWorkflows(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1392,7 +1392,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/annonces", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_offers")
 	 * @Route("/@{username}/annonces/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_offers_filter")
 	 * @Route("/@{username}/annonces/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_offers_filter_page")
-	 * @Template("Core/User:showOffers.html.twig")
+	 * @Template("Core/User/showOffers.html.twig")
 	 */
 	public function showOffers(Request $request, $username, $filter = null, $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1431,7 +1431,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Offer/Offer:list-xhr.html.twig', $parameters);
+			return $this->render('Offer/Offer/list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
@@ -1450,7 +1450,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/abonnements", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_following")
 	 * @Route("/@{username}/abonnements/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_following_filter")
 	 * @Route("/@{username}/abonnements/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_following_filter_page")
-	 * @Template("Core/User:showFollowing.html.twig")
+	 * @Template("Core/User/showFollowing.html.twig")
 	 */
 	public function showFollowing(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1498,7 +1498,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/abonnes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_followers")
 	 * @Route("/@{username}/abonnes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_followers_filter")
 	 * @Route("/@{username}/abonnes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_followers_filter_page")
-	 * @Template("Core/User:showFollowers.html.twig")
+	 * @Template("Core/User/showFollowers.html.twig")
 	 */
 	public function showFollowers(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1540,7 +1540,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/membres", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_members")
 	 * @Route("/@{username}/membres/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_members_filter")
 	 * @Route("/@{username}/membres/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_members_filter_page")
-	 * @Template("Core/User:showMembers.html.twig")
+	 * @Template("Core/User/showMembers.html.twig")
 	 */
 	public function showMembers(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1579,7 +1579,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/invitations", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_invitations")
 	 * @Route("/@{username}/invitations/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_invitations_filter")
 	 * @Route("/@{username}/invitations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_invitations_filter_page")
-	 * @Template("Core/User:showInvitations.html.twig")
+	 * @Template("Core/User/showInvitations.html.twig")
 	 */
 	public function showInvitations(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1627,7 +1627,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/demandes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_requests")
 	 * @Route("/@{username}/demandes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_requests_filter")
 	 * @Route("/@{username}/demandes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_requests_filter_page")
-	 * @Template("Core/User:showRequests.html.twig")
+	 * @Template("Core/User/showRequests.html.twig")
 	 */
 	public function showRequests(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1675,7 +1675,7 @@ class UserController extends AbstractController {
 	 * @Route("/@{username}/collectifs", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_teams")
 	 * @Route("/@{username}/collectifs/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_teams_filter")
 	 * @Route("/@{username}/collectifs/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_teams_filter_page")
-	 * @Template("Core/User:showTeams.html.twig")
+	 * @Template("Core/User/showTeams.html.twig")
 	 */
 	public function showTeams(Request $request, $username, $filter = "popular-followers", $page = 0) {
 		$user = $this->retrieveUserByUsername($username);
@@ -1730,21 +1730,21 @@ class UserController extends AbstractController {
 
 		$CrawlerDetect = new CrawlerDetect();
 		if ($CrawlerDetect->isCrawler() || $user->getIsTeam() && !is_null($user->getMeta()->getBiography()) && !empty($user->getMeta()->getBiography()->getHtmlBody())) {	 /* Return about page for Crawlers */
-			$forwardController = 'App\Entity\Core/User:showAbout';
+			$forwardController = 'App\Entity\Core/User/showAbout';
 		} else if ($user->getIsTeam()) {
-			$forwardController = 'App\Entity\Core/User:showMembers';
+			$forwardController = 'App\Entity\Core/User/showMembers';
 		} else if ($user->getMeta()->getPublicCreationCount() > 0) {
-			$forwardController = 'App\Entity\Core/User:showCreations';
+			$forwardController = 'App\Entity\Core/User/showCreations';
 		} else if ($user->getMeta()->getPublicPlanCount() > 0) {
-			$forwardController = 'App\Entity\Core/User:showPlans';
+			$forwardController = 'App\Entity\Core/User/showPlans';
 		} else if ($user->getMeta()->getPublicHowtoCount() > 0) {
-			$forwardController = 'App\Entity\Core/User:showHowtos';
+			$forwardController = 'App\Entity\Core/User/showHowtos';
 		} else if ($user->getMeta()->getPublicWorkshopCount() > 0) {
-			$forwardController = 'App\Entity\Core/User:showWorkshops';
+			$forwardController = 'App\Entity\Core/User/showWorkshops';
 		} else if ($user->getMeta()->getPublicFindCount() > 0) {
-			$forwardController = 'App\Entity\Core/User:showFinds';
+			$forwardController = 'App\Entity\Core/User/showFinds';
 		} else {
-			$forwardController = 'App\Entity\Core/User:showAbout';
+			$forwardController = 'App\Entity\Core/User/showAbout';
 		}
 
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -1864,7 +1864,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("/@{username}/admin", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_admin")
-	 * @Template("Core/User:showAdmin.html.twig")
+	 * @Template("Core/User/showAdmin.html.twig")
 	 */
 	public function showAdmin($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {

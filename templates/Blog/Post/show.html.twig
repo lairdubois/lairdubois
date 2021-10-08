@@ -67,7 +67,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% include 'Common/Header/_entity-show-header.part.html.twig' %}
 {% endblock %}
 
 {% block contentBody %}
@@ -88,18 +88,18 @@
     {% if not permissionContext.isOwner %}
         {% include 'Common/_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% include 'Core/Comment:_widget.part.html.twig' %}
+    {% include 'Core/Comment/_widget.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
     </div>
     {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':post.tags, 'type':'posts' } %}
 {% endblock %}

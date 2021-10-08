@@ -42,7 +42,7 @@ class WoodController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_wood_new")
-	 * @Template("Knowledge/Wood:new.html.twig")
+	 * @Template("Knowledge/Wood/new.html.twig")
 	 */
 	public function new() {
 
@@ -64,7 +64,7 @@ class WoodController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_wood_create")
-	 * @Template("Knowledge/Wood:new.html.twig")
+	 * @Template("Knowledge/Wood/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -166,7 +166,7 @@ class WoodController extends AbstractController {
 	 * @Route("/{id}/textures", requirements={"id" = "\d+"}, name="core_wood_texture_list")
 	 * @Route("/{id}/textures/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_wood_texture_list_filter")
 	 * @Route("/{id}/textures/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_wood_texture_list_filter_page")
-	 * @Template("Knowledge/Wood:texture-list.html.twig")
+	 * @Template("Knowledge/Wood/texture-list.html.twig")
 	 */
 	public function textureList(Request $request, $id, $page = 0, $filter = 'all') {
 		$om = $this->getDoctrine()->getManager();
@@ -191,7 +191,7 @@ class WoodController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Knowledge/Wood:texture-list-xhr.html.twig', $parameters);
+			return $this->render('Knowledge/Wood/texture-list-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -238,7 +238,7 @@ class WoodController extends AbstractController {
 
 	/**
 	 * @Route("/textures/{id}", requirements={"id" = "\d+"}, name="core_wood_texture_show")
-	 * @Template("Knowledge/Wood:texture-show-xhr.html.twig")
+	 * @Template("Knowledge/Wood/texture-show-xhr.html.twig")
 	 */
 	public function textureShow(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -256,7 +256,7 @@ class WoodController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_wood_widget")
-	 * @Template("Knowledge/Wood:widget-xhr.html.twig")
+	 * @Template("Knowledge/Wood/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 
@@ -279,7 +279,7 @@ class WoodController extends AbstractController {
 	/**
 	 * @Route("/", name="core_wood_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_wood_list_page")
-	 * @Template("Knowledge/Wood:list.html.twig")
+	 * @Template("Knowledge/Wood/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -391,8 +391,8 @@ class WoodController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => 1 ));
-				$filters[] = new \Elastica\Query\Range('grainRejected', array( 'lt' => 1 ));
+				$filters[] = new \Elastica\Query\Range('nameRejected', array( 'lt' => true ));
+				$filters[] = new \Elastica\Query\Range('grainRejected', array( 'lt' => true ));
 
 			},
 			'knowledge_wood',
@@ -409,7 +409,7 @@ class WoodController extends AbstractController {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Knowledge/Wood:list-xhr.html.twig', $parameters);
+			return $this->render('Knowledge/Wood/list-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -417,7 +417,7 @@ class WoodController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_wood_show")
-	 * @Template("Knowledge/Wood:show.html.twig")
+	 * @Template("Knowledge/Wood/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

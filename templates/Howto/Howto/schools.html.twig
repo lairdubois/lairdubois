@@ -11,7 +11,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':howto } %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':howto } %}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -25,7 +25,7 @@
                 Liste des fournisseurs recencés par <a href="{{ path('core_user_show', { 'username':howto.user.usernameCanonical }) }}">{{ howto.user.displayname }}</a> pour la réalisation du pas à pas <a href="{{ ladb_entity_url_action(howto) }}">{{ howto.title }}</a>.
             </div>
         </div>
-        {% embed 'Knowledge/School:_list-filterbar.part.html.twig' %}
+        {% embed 'Knowledge/School/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_howto_schools_filter' %}
             {% set filterPathParameters = { 'id':howto.id } %}
             {% block filterbarRightContent%}
@@ -37,5 +37,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Knowledge/School:_list-n.part.html.twig' %}
+    {% include 'Knowledge/School/_list-n.part.html.twig' %}
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'Core/User:_show-list.html.twig' %}
+{% extends 'Core/User/_show-list.html.twig' %}
 
 {% block bodyContainerContent %}
     {% if followers.count == 0 %}
@@ -10,7 +10,7 @@
             {% endif %}
         </div>
     {% else %}
-        {% embed 'Core/User:_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
+        {% embed 'Core/User/_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
             {% set filterPath = 'core_user_show_followers_filter' %}
             {% set filterPathParameters = { 'username':user.usernameCanonical } %}
             {% block filterbarRightContent%}

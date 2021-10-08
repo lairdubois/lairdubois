@@ -1,4 +1,4 @@
-{% extends 'Common/Modal:_modal.part.html.twig' %}
+{% extends 'Common/Modal/_modal.part.html.twig' %}
 
 {% set id = 'edit_'~formSection~'_'~picture.id~'_modal' %}
 {% set title = 'picture.edit'|trans() %}
@@ -31,7 +31,7 @@
                 $("#{{ formSection }}_{{ picture.id }}_save_btn").button('reset');
             }
         });
-        setupTooltips();
+        LADBCommon.setupTooltips();
     </script>
 {% endblock %}
 
@@ -44,14 +44,14 @@
             {% endif %}
         </div>
         <div class="text-center ladb-margin-top">
-            <a href="#" class="btn btn-default" onclick="pictureGalleryRotatePreview($('#{{ id }}_preview'), $('#{{ form.rotation.vars.id }}'), -90); return false;" data-tooltip="tooltip" title="{{ 'picture.turn_left'|trans() }}"><i class="ladb-icon-rotate-left ladb-icon-lg"></i></a>
-            <a href="#" class="btn btn-default" onclick="pictureGalleryRotatePreview($('#{{ id }}_preview'), $('#{{ form.rotation.vars.id }}'), 90); return false;" data-tooltip="tooltip" title="{{ 'picture.turn_left'|trans() }}"><i class="ladb-icon-rotate-right ladb-icon-lg"></i></a>
+            <a href="#" class="btn btn-default" onclick="LADBPictures.pictureGalleryRotatePreview($('#{{ id }}_preview'), $('#{{ form.rotation.vars.id }}'), -90); return false;" data-tooltip="tooltip" title="{{ 'picture.turn_left'|trans() }}"><i class="ladb-icon-rotate-left ladb-icon-lg"></i></a>
+            <a href="#" class="btn btn-default" onclick="LADBPictures.pictureGalleryRotatePreview($('#{{ id }}_preview'), $('#{{ form.rotation.vars.id }}'), 90); return false;" data-tooltip="tooltip" title="{{ 'picture.turn_left'|trans() }}"><i class="ladb-icon-rotate-right ladb-icon-lg"></i></a>
         </div>
     </div>
     {% include 'Core/Picture/_fieldset.part.html.twig' %}
 {% endblock %}
 
 {% block footerInner %}
-    <a href="#" class="btn btn-default" onclick="pictureGalleryCancelEditPicture('{{ formSection }}', '{{ picture.id }}'); return false;">{{ 'default.cancel'|trans() }}</a>
+    <a href="#" class="btn btn-default" onclick="LADBPictures.pictureGalleryCancelEditPicture('{{ formSection }}', '{{ picture.id }}'); return false;">{{ 'default.cancel'|trans() }}</a>
     {% include 'Common/_form-btn-loading.part.html.twig' with { 'id':formSection~'_'~picture.id~'_save_btn', 'text':('default.save'|trans()), 'classes':'btn-primary' } %}
 {% endblock %}

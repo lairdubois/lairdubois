@@ -40,7 +40,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/new", name="core_workflow_new")
-	 * @Template("Workflow:Workflow/new.html.twig")
+	 * @Template("Workflow/Workflow/new.html.twig")
 	 */
 	public function new(Request $request) {
 
@@ -58,7 +58,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_workflow_create")
-	 * @Template("Workflow:Workflow/new.html.twig")
+	 * @Template("Workflow/Workflow/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -177,7 +177,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_edit")
-	 * @Template("Workflow:Workflow/edit.html.twig")
+	 * @Template("Workflow/Workflow/edit.html.twig")
 	 */
 	public function edit($id) {
 
@@ -197,7 +197,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_update")
-	 * @Template("Workflow:Workflow/edit.html.twig")
+	 * @Template("Workflow/Workflow/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -303,7 +303,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_workflow_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_howtos_filter_page")
-	 * @Template("Workflow:Workflow/howtos.html.twig")
+	 * @Template("Workflow/Workflow/howtos.html.twig")
 	 */
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -329,7 +329,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -341,7 +341,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_workflow_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_creations_filter_page")
-	 * @Template("Workflow:Workflow/creations.html.twig")
+	 * @Template("Workflow/Workflow/creations.html.twig")
 	 */
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -379,7 +379,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_workflow_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_plans_filter_page")
-	 * @Template("Workflow:Workflow/plans.html.twig")
+	 * @Template("Workflow/Workflow/plans.html.twig")
 	 */
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -417,7 +417,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_workflow_workshops")
 	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_workshops_filter")
 	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_workshops_filter_page")
-	 * @Template("Workflow:Workflow/workshops.html.twig")
+	 * @Template("Workflow/Workflow/workshops.html.twig")
 	 */
 	public function workshops(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -443,7 +443,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Workshop:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Workshop/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -455,7 +455,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_workflow_inspirations")
 	 * @Route("/{id}/inspirations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_inspirations_filter")
 	 * @Route("/{id}/inspirations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_inspirations_filter_page")
-	 * @Template("Workflow:Workflow/inspirations.html.twig")
+	 * @Template("Workflow/Workflow/inspirations.html.twig")
 	 */
 	public function inspirations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -481,7 +481,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Workflow:Workflow/list-xhr.html.twig', $parameters);
+			return $this->render('Workflow/Workflow/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -493,7 +493,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 * @Route("/{id}/rebonds", requirements={"id" = "\d+"}, name="core_workflow_rebounds")
 	 * @Route("/{id}/rebonds/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_workflow_rebounds_filter")
 	 * @Route("/{id}/rebonds/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_workflow_rebounds_filter_page")
-	 * @Template("Workflow:Workflow/rebounds.html.twig")
+	 * @Template("Workflow/Workflow/rebounds.html.twig")
 	 */
 	public function rebounds(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -519,7 +519,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Workflow:Workflow/list-xhr.html.twig', $parameters);
+			return $this->render('Workflow/Workflow/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -529,7 +529,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/restart_confirm", requirements={"id" = "\d+"}, name="core_workflow_restart_confirm")
-	 * @Template("Workflow:Workflow/restart-confirm-xhr.html.twig")
+	 * @Template("Workflow/Workflow/restart-confirm-xhr.html.twig")
 	 */
 	public function restartConfirm(Request $request, $id) {
 
@@ -581,7 +581,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/statistics", requirements={"id" = "\d+"}, name="core_workflow_statistics")
-	 * @Template("Workflow:Workflow/statistics-xhr.html.twig")
+	 * @Template("Workflow/Workflow/statistics-xhr.html.twig")
 	 */
 	public function statistics(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -612,7 +612,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}.html", name="core_workflow_show")
-	 * @Template("Workflow:Workflow/show.html.twig")
+	 * @Template("Workflow/Workflow/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$witnessManager = $this->get(WitnessManager::class);
@@ -646,7 +646,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 			$isBot = preg_match('/bot|spider|crawler|curl|facebookexternalhit|^$/i', $_SERVER['HTTP_USER_AGENT']);
 
 			if (!$isBot) {
-				return $this->render('Workflow:Workflow/show-workspace.html.twig', $parameters);
+				return $this->render('Workflow/Workflow/show-workspace.html.twig', $parameters);
 			}
 
 		}
@@ -667,7 +667,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	/**
 	 * @Route("/", name="core_workflow_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_workflow_list_page")
-	 * @Template("Workflow:Workflow/list.html.twig")
+	 * @Template("Workflow/Workflow/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -850,14 +850,14 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {
-				return $this->render('Workflow:Workflow/list-choice-xhr.html.twig', $parameters);
+				return $this->render('Workflow/Workflow/list-choice-xhr.html.twig', $parameters);
 			} else {
-				return $this->render('Workflow:Workflow/list-xhr.html.twig', $parameters);
+				return $this->render('Workflow/Workflow/list-xhr.html.twig', $parameters);
 			}
 		}
 
 		if ($layout == 'choice') {
-			return $this->render('Workflow:Workflow/list-choice.html.twig', $parameters);
+			return $this->render('Workflow/Workflow/list-choice.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -865,7 +865,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/internal/diagram", name="core_workflow_internal_diagram")
-	 * @Template("Workflow:Workflow/diagram.html.twig")
+	 * @Template("Workflow/Workflow/diagram.html.twig")
 	 */
 	public function internalDiagram($id) {
 

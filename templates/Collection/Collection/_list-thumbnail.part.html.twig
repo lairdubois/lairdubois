@@ -15,7 +15,7 @@
         </li>
     {% endfor %}
     <li class="ladb-counter">
-        {% include 'Collection/Collection:_publications-counter.part.html.twig' with { 'classes':collection.viewCount > 0 ? 'ladb-horizontal-separator-right pull-right' : '' } %}
+        {% include 'Collection/Collection/_publications-counter.part.html.twig' with { 'classes':collection.viewCount > 0 ? 'ladb-horizontal-separator-right pull-right' : '' } %}
     </li>
 {% endblock %}
 

@@ -5,6 +5,7 @@
         "core-js": "^3.0.0",
         "regenerator-runtime": "^0.13.2",
         "stimulus": "^2.0.0",
+        "webpack-modernizr-loader": "^5.0.0",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
@@ -19,7 +20,7 @@
         "autosize": "^4",
         "blueimp-file-upload": "blueimp/jquery-file-upload",
         "blueimp-gallery": "^1",
-        "bootstrap": "3",
+        "bootstrap": "^3.3",
         "bootstrap-markdown": "^2.10.0",
         "clndr": "^1.5.1",
         "cornerslider": "^1.0.0",
@@ -46,7 +47,8 @@
         "leaflet": "^1.7.1",
         "less": "^4.1.2",
         "less-loader": "^8",
-        "modernizr": "3.6",
+        "modernizr": "^3.11.8",
+        "readmore.js": "^2.0.4",
         "sass": "^1.42.1",
         "sass-loader": "^11",
         "uikit": "^2.7"

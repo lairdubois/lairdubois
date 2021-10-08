@@ -1,4 +1,4 @@
-{% extends 'Common/Layout:_show.html.twig' %}
+{% extends 'Common/Layout/_show.html.twig' %}
 
 {% set entity = knowledge %}
 
@@ -6,15 +6,13 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+
+    {{ encore_entry_script_tags('ladb_values') }}
     <script>
         $(document).ready(function() {
-            bindNewValueProposalAjaxForm();
-            setupPopovers();
-            setupTooltips();
+            LADBValues.bindNewValueProposalAjaxForm();
+            LADBCommon.setupPopovers();
+            LADBCommon.setupTooltips();
             $('[data-src]').Lazy();
             {% if values is empty %}
                 $("input[type=text]").first().focus();
@@ -36,7 +34,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-header.part.html.twig' with { 'backBtnLabel':('knowledge.back_to'|trans()) } %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'backBtnLabel':('knowledge.back_to'|trans()) } %}
 {% endblock %}
 
 {% block contentBody %}
@@ -51,9 +49,9 @@
             <a href="{{ ladb_entity_url_action(knowledge) }}" class="btn btn-default">{{ 'knowledge.back_to'|trans() }}</a>
         </div>
     </div>
-    {% include 'Core/Vote:_modals.part.html.twig' %}
+    {% include 'Core/Vote/_modals.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':knowledge.license } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':knowledge.license } %}
 {% endblock %}

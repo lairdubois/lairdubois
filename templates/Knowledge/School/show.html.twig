@@ -90,7 +90,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% set headingClasses = school.nameRejected ? 'ladb-strikethrough' : null %}
         {% block subheadingInner %}
             {% if school.website %}<span class="ladb-subblock"><i class="ladb-icon-globe"></i> <a href="{{ school.website }}" target="_blank" rel="noreferrer noopener">{{ school.website|ladb_url_truncate(true, 30, 0) }}</a></span> {% endif %}
@@ -127,24 +127,24 @@
             {% include 'Common/_updated-age.part.html.twig' %}
         {% endif %}
         <div style="padding: 10px 0 20px 0; text-align: center;">
-            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
         <hr class="ladb-divider">
         <div id="ladb_testimonial_list">
-            {% include 'Knowledge/School:_testimonials-header.part.html.twig' %}
+            {% include 'Knowledge/School/_testimonials-header.part.html.twig' %}
             {% include 'Knowledge/School/Testimonial:_list.part.html.twig' with { 'testimonials':school.testimonials } %}
-            {% include 'Knowledge/School:_testimonials-footer.part.html.twig' %}
+            {% include 'Knowledge/School/_testimonials-footer.part.html.twig' %}
         </div>
-        {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.school.comment_alert' } %}
+        {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.school.comment_alert' } %}
     </div>
     {{ parent() }}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
-        {% include 'Core/View:_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' with { 'noMicrodata':true }  %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
+        {% include 'Core/View/_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' with { 'noMicrodata':true }  %}
         <div class="ladb-meta">
             <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
             {% if school.contributorCount > 0 %}
@@ -156,7 +156,7 @@
                 </a>
             {% endif %}
         </div>
-        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':school } %}
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':school } %}
         <div class="ladb-meta{% if school.testimonialCount == 0 %} text-muted{% endif %}">
             <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_testimonial_list').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
             <i class="ladb-icon-student ladb-icon-fixed-center"></i>
@@ -168,7 +168,7 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
         {% if school.creationCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-creation"></i>
@@ -195,5 +195,5 @@
             </div>
         </div>
     {% endif %}
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':school.license, 'noMicrodata':true } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':school.license, 'noMicrodata':true } %}
 {% endblock %}

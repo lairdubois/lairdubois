@@ -9,7 +9,7 @@
     {% if collection.body is not empty and collection.tags|length >= 2 and collection.entryCount > 0 %}
         {{ parent() }}
     {% else %}
-        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
             {% block bodyInner %}
                 <div class="media">
                     <div class="media-left"><i class="ladb-icon-warning ladb-icon-xl"></i></div>

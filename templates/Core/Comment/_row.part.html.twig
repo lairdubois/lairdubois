@@ -29,18 +29,18 @@
                 <a href="{{ path('core_comment_delete', { 'id':comment.id }) }}" class="ladb-comment-delete ladb-minitool-danger" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-delete"></i></a>
             {% endif %}
             {% if comment.user != app.user %}
-                {% include 'Core/Report:_widget-mini.part.html.twig' with { 'entityType':comment.type, 'entityId':comment.id } %}
+                {% include 'Core/Report/_widget-mini.part.html.twig' with { 'entityType':comment.type, 'entityId':comment.id } %}
             {% endif %}
         </div>
     {% endblock %}
-    {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':comment.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
+    {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':comment.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true } %}
     <div class="ladb-content">
         <div class="ladb-heading">
             {% include 'Common/_author.part.html.twig' with { 'entity':comment, 'hideBy':true, 'itemprop':'creator' } %}{% include 'Common/_age.part.html.twig' with { 'entity':comment, 'itemprop':'dateCreated', 'showEdited':true } %}
         </div>
         <div class="ladb-body">
             {% if comment.vote %}
-                {% include 'Core/Vote:_badge.part.html.twig' with { 'vote':comment.vote} %}
+                {% include 'Core/Vote/_badge.part.html.twig' with { 'vote':comment.vote} %}
             {% endif %}
             <div{% if not noMicrodata %} itemprop="text"{% endif %}>{{ comment.htmlBody|raw }}</div>
             {% if comment.pictures is not empty %}

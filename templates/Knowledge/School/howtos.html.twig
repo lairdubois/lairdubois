@@ -11,7 +11,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':school } %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':school } %}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -25,7 +25,7 @@
                 Liste des pas à pas pour lesquels leurs auteurs ont associé l'école <a href="{{ ladb_entity_url_action(school) }}">{{ school.title }}</a>.
             </div>
         </div>
-        {% embed 'Howto/Howto:_list-filterbar.part.html.twig' %}
+        {% embed 'Howto/Howto/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_school_howtos_filter' %}
             {% set filterPathParameters = { 'id':school.id } %}
             {% block filterbarRightContent%}
@@ -37,5 +37,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Howto/Howto:_list-n.part.html.twig' %}
+    {% include 'Howto/Howto/_list-n.part.html.twig' %}
 {% endblock %}

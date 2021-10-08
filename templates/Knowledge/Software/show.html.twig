@@ -55,7 +55,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% set headingClasses = software.identityRejected ? 'ladb-strikethrough' : null %}
         {% block subheadingInner %}
             {% if software.isAddOn %}
@@ -119,19 +119,19 @@
             {% include 'Common/_updated-age.part.html.twig' %}
         {% endif %}
         <div style="padding: 10px; text-align: center;">
-            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
         {% include 'Core/Review/_widget.part.html.twig' %}
-        {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.software.comment_alert' } %}
+        {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.software.comment_alert' } %}
     </div>
     {{ parent() }}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
         <div class="ladb-meta">
             <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
             {% if software.contributorCount > 0 %}
@@ -143,7 +143,7 @@
                 </a>
             {% endif %}
         </div>
-        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':software } %}
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':software } %}
         {% include 'Core/Review/_meta-counter.part.html.twig' with { 'entity':software } %}
         {% if software.website %}
             <div class="ladb-btn">
@@ -168,7 +168,7 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
         {% if hostSoftware %}
             <div class="ladb-meta">
                 <i class="ladb-icon-software ladb-icon-fixed-center"></i>

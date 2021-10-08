@@ -7,9 +7,9 @@
     {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.mainPicture.vars.id, 'maxPictureCount':1 } %}
     {% include 'Qa/Question/_form-gallery-script.part.html.twig' with { 'fieldId':form.questions.vars.id, 'maxQuestionCount':4 } %}
     {% include 'Wonder/Plan:_form-gallery-script.part.html.twig' with { 'fieldId':form.plans.vars.id, 'maxPlanCount':4 } %}
-    {% include 'Workflow:Workflow/_form-gallery-script.part.html.twig' with { 'fieldId':form.workflows.vars.id, 'maxWorkflowCount':10 } %}
-    {% include 'Knowledge/Provider:_form-gallery-script.part.html.twig' with { 'fieldId':form.providers.vars.id, 'maxProviderCount':10 } %}
-    {% include 'Knowledge/School:_form-gallery-script.part.html.twig' with { 'fieldId':form.schools.vars.id, 'maxSchoolCount':4 } %}
+    {% include 'Workflow/Workflow/_form-gallery-script.part.html.twig' with { 'fieldId':form.workflows.vars.id, 'maxWorkflowCount':10 } %}
+    {% include 'Knowledge/Provider/_form-gallery-script.part.html.twig' with { 'fieldId':form.providers.vars.id, 'maxProviderCount':10 } %}
+    {% include 'Knowledge/School/_form-gallery-script.part.html.twig' with { 'fieldId':form.schools.vars.id, 'maxSchoolCount':4 } %}
     {% include 'Common/_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
 {% endblock %}
 
@@ -22,10 +22,10 @@
     {% block articlesSidenav %}{% endblock %}
     {% include 'Qa/Question/_form-sidenav-gallery.part.html.twig' %}
     {% include 'Wonder/Plan:_form-sidenav-gallery.part.html.twig' %}
-    {% include 'Workflow:Workflow/_form-sidenav-gallery.part.html.twig' %}
-    {% include 'Knowledge/Provider:_form-sidenav-gallery.part.html.twig' %}
-    {% include 'Knowledge/School:_form-sidenav-gallery.part.html.twig' %}
-    {% include 'Core/License:_form-sidenav.part.html.twig' %}
+    {% include 'Workflow/Workflow/_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Knowledge/Provider/_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Knowledge/School/_form-sidenav-gallery.part.html.twig' %}
+    {% include 'Core/License/_form-sidenav.part.html.twig' %}
 {% endblock %}
 
 {% block sections %}
@@ -62,8 +62,8 @@
     {% block articlesSection %}{% endblock %}
     {% include 'Qa/Question/_form-section-gallery.part.html.twig' with { 'maxQuestionCount':4, 'help':('howto.howto.form.help.questions'|trans()) } %}
     {% include 'Wonder/Plan:_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('howto.howto.form.help.plans'|trans()) } %}
-    {% include 'Workflow:Workflow/_form-section-gallery.part.html.twig' with { 'maxWorkflowCount':10, 'help':('howto.howto.form.help.workflows'|trans()) } %}
-    {% include 'Knowledge/Provider:_form-section-gallery.part.html.twig' with { 'maxProviderCount':10, 'help':('howto.howto.form.help.providers'|trans()) } %}
-    {% include 'Knowledge/School:_form-section-gallery.part.html.twig' with { 'maxSchoolCount':4, 'help':('howto.howto.form.help.schools'|trans()) } %}
-    {% include 'Core/License:_form-section.part.html.twig' with { 'form':form.license } %}
+    {% include 'Workflow/Workflow/_form-section-gallery.part.html.twig' with { 'maxWorkflowCount':10, 'help':('howto.howto.form.help.workflows'|trans()) } %}
+    {% include 'Knowledge/Provider/_form-section-gallery.part.html.twig' with { 'maxProviderCount':10, 'help':('howto.howto.form.help.providers'|trans()) } %}
+    {% include 'Knowledge/School/_form-section-gallery.part.html.twig' with { 'maxSchoolCount':4, 'help':('howto.howto.form.help.schools'|trans()) } %}
+    {% include 'Core/License/_form-section.part.html.twig' with { 'form':form.license } %}
 {% endblock %}

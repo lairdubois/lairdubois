@@ -20,7 +20,6 @@ class SearchUtils extends AbstractContainerAwareUtils {
     public static function getSubscribedServices()
     {
         return array_merge(parent::getSubscribedServices(), array(
-            GlobalUtils::class => '?'.GlobalUtils::class,
             'logger' => '?'.LoggerInterface::class,
             'fos_elastica.index_manager' => '?'.IndexManager::class,
         ));
@@ -46,7 +45,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		}
 
 		$globalUtils = $this->get(GlobalUtils::class);
-		$om = $this->getDoctrine()->getEntityManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve search session identifier
 		$session = $globalUtils->getSession();
@@ -124,7 +123,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		// Count
 		$type = $this->get('fos_elastica.index_manager')->getIndex($typeName);
 		try {
-			$resultSet = $type->find($elasticaQuery);
+			$resultSet = $type->search($elasticaQuery);
 			$count = $resultSet->getTotalHits();
 		} catch (\Exception $e) {
 			return 0;

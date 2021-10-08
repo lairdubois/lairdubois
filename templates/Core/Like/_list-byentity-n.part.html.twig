@@ -5,6 +5,6 @@
 
 {% block items %}
     {% for like in likes %}
-        {% include 'Core/User:_list-row.part.html.twig' with { 'user':like.user } %}
+        {% include 'Core/User/_list-row.part.html.twig' with { 'user':like.user } %}
     {% endfor %}
 {% endblock %}

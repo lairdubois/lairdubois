@@ -1,4 +1,4 @@
-{% extends 'Core/User:_show-list.html.twig' %}
+{% extends 'Core/User/_show-list.html.twig' %}
 
 {% set sentFilter = filter == 'sent' %}
 
@@ -40,5 +40,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Core/Like:_list-byuser-n.part.html.twig' %}
+    {% include 'Core/Like/_list-byuser-n.part.html.twig' %}
 {% endblock %}

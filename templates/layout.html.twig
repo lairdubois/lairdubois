@@ -45,7 +45,7 @@
                         <i class="ladb-icon-message ladb-icon-lg"></i>{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important ladb-notification-btn-badge">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}
                     </a>
                 </li>
-                <li><a href="#ladb_offcanvas_logged_user_nav" data-uk-offcanvas><i class="ladb-icon-caret-left"></i> {% if app.user.meta.unreadMessageCount > 0 or app.user.meta.freshNotificationCount > 0 %}<span id="ladb_notification_badge_sum" class="badge badge-notification badge-notification-important ladb-visible-mobile">{{ app.user.meta.unreadMessageCount + app.user.meta.freshNotificationCount }}</span>{% endif %}<span class="ladb-hidden-mobile ladb-hidden-tablet"> {{ app.user.displayname }}</span> {% include 'Core/User:_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %}</a></li>
+                <li><a href="#ladb_offcanvas_logged_user_nav" data-uk-offcanvas><i class="ladb-icon-caret-left"></i> {% if app.user.meta.unreadMessageCount > 0 or app.user.meta.freshNotificationCount > 0 %}<span id="ladb_notification_badge_sum" class="badge badge-notification badge-notification-important ladb-visible-mobile">{{ app.user.meta.unreadMessageCount + app.user.meta.freshNotificationCount }}</span>{% endif %}<span class="ladb-hidden-mobile ladb-hidden-tablet"> {{ app.user.displayname }}</span> {% include 'Core/User/_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %}</a></li>
             {% else %}
                 <li><a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock ladb-icon-lg"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a></li>
             {% endif %}
@@ -69,7 +69,7 @@
         <div id="ladb_offcanvas_logged_user_nav" class="uk-offcanvas">
             <div class="uk-offcanvas-bar uk-offcanvas-bar-flip">
                 <div class="uk-panel uk-margin-bottom-remove">
-                    <h3 class="uk-panel-title">{% include 'Core/User:_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %} {{ app.user.displayname }}</h3>
+                    <h3 class="uk-panel-title">{% include 'Core/User/_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %} {{ app.user.displayname }}</h3>
                 </div>
                 <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
                     <li class="uk-nav-divider"></li>
@@ -199,7 +199,7 @@
                             <a href="{{ path('core_user_email_check') }}" class="alert-link">{{ 'user.email_confirmation.check.action'|trans() }}</a> {{ 'default.or'|trans }} <a href="#email_check_modal" class="alert-link" data-toggle="modal">{{ 'user.email_confirmation.check.modal_action'|trans() }}</a>
                         </p>
                     </div>
-                    {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
+                    {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'email_check_modal', 'title':('user.email_confirmation.title'|trans()) } %}
                         {% block bodyInner %}
                             {{ 'user.email_confirmation.check.modal_body'|trans()|ladb_markdown|raw }}
                         {% endblock %}

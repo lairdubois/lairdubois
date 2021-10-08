@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Model\TypableInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
@@ -12,7 +13,14 @@ class TypableUtils extends AbstractContainerAwareUtils {
 
 	/////
 
-	public static function getStrippedName(TypableInterface $typable, $delimiter = '_', $capitalize = false) {
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), array(
+            'doctrine.orm.entity_manager' => '?'.EntityManagerInterface::class,
+        ));
+    }
+
+    public static function getStrippedName(TypableInterface $typable, $delimiter = '_', $capitalize = false) {
 		return self::getStrippedNameByType($typable->getType(), $delimiter, $capitalize);
 	}
 

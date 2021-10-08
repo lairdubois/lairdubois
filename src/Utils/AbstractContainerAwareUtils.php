@@ -22,7 +22,8 @@ abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface
             'security.token_storage' => '?'.TokenStorageInterface::class,
             'request_stack' => '?'.RequestStack::class,
             'router' => '?'.RouterInterface::class,
-            PaginatorUtils::class => '?'.PaginatorUtils::class
+            PaginatorUtils::class => '?'.PaginatorUtils::class,
+            GlobalUtils::class => '?'.GlobalUtils::class,
         );
     }
 

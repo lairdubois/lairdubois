@@ -12,7 +12,7 @@
 {% block bodyJavascriptsInlineReady %}
     {{ parent() }}
     {{ block('autopagerScriptCall') }}
-    setupTooltips();
+    LADBCommon.setupTooltips();
 {% endblock %}
 
 {% block bodyHeaderContainer %}{% if hideHeaderContainer is defined and not hideHeaderContainer %}{{ parent() }}{% endif %}{% endblock %}

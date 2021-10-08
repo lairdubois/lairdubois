@@ -48,7 +48,7 @@
         },
         processfail: function (e, data) {
             var file = data.files[data.index];
-            notifyFileError(file.name, file.error);
+            LADBCommon.notifyFileError(file.name, file.error);
         },
         send: function (e, data) {
             if ($("#{{ formSection }}_thumbnails li.ladb-resource").length >= {{ maxResourceCount }}) {
@@ -62,7 +62,7 @@
         done: function (e, data) {
             $.each(data.result.files, function (index, file) {
                 if (file.error) {
-                    notifyFileError(file.name, file.error);
+                    LADBCommon.notifyFileError(file.name, file.error);
                 } else {
                     $({{ formSection }}ThumnailTemplate
                             .replace(new RegExp("000", 'g'), file.id)
@@ -74,7 +74,7 @@
         },
         fail: function (e, data) {
             if (data.textStatus != undefined) {
-                notifyError(data.textStatus);
+                LADBCommon.notifyError(data.textStatus);
             }
         },
         stop: function (e) {

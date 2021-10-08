@@ -16,11 +16,11 @@
 <div id="ladb_vote_widget_{{ voteContext.votable.id }}" class="ladb-vote-widget{% if voteContext.votable.voteScore > 0 %} ladb-positive{% elseif voteContext.votable.voteScore < 0 %} ladb-negative{% elseif voteContext.votable.voteScore == 0 and voteContext.votable.voteCount > 0 %} ladb-undeterminated{% endif %}">
     <div class="ladb-vote-box row">
         <div class="{% if not (orientation == 'horizontal') %}col-sm-12 {% endif %}col-xs-4">
-            {% if voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
+            {% if voteContext.disableReason == constant('App\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
                 <a href="#not_connected_vote_modal" class="ladb-vote-up ladb-disabled" data-toggle="modal"><i class="ladb-icon-arrow-up"></i></a>
-            {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}
+            {% elseif voteContext.disableReason == constant('App\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}
                 <a href="#self_voting_vote_modal" class="ladb-vote-up ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
-            {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_EMAIL_CONFIRMED') %}
+            {% elseif voteContext.disableReason == constant('App\\Utils\\VotableUtils::DISABLE_REASON_NOT_EMAIL_CONFIRMED') %}
                 <a href="#not_email_confirmed_vote_modal" class="ladb-vote-up ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteUpTooltip }}"><i class="ladb-icon-arrow-up"></i></a>
             {% else %}
                 {% set bindJs = true %}
@@ -31,11 +31,11 @@
             {{ voteContext.votable.voteScore }}
         </div>
         <div class="{% if not (orientation == 'horizontal') %}col-sm-12 {% endif %}col-xs-4">
-            {% if voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
+            {% if voteContext.disableReason == constant('App\\Utils\\VotableUtils::DISABLE_REASON_NOT_CONNECTED') %}
                 <a href="#not_connected_vote_modal" class="ladb-vote-down ladb-disabled" data-toggle="modal"><i class="ladb-icon-arrow-down"></i></a>
-            {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}
+            {% elseif voteContext.disableReason == constant('App\\Utils\\VotableUtils::DISABLE_REASON_SELF_VOTING') %}
                 <a href="#self_voting_vote_modal" class="ladb-vote-down ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
-            {% elseif voteContext.disableReason == constant('Ladb\\CoreBundle\\Utils\\VotableUtils::DISABLE_REASON_NOT_EMAIL_CONFIRMED') %}
+            {% elseif voteContext.disableReason == constant('App\\Utils\\VotableUtils::DISABLE_REASON_NOT_EMAIL_CONFIRMED') %}
                 <a href="#not_email_confirmed_vote_modal" class="ladb-vote-down ladb-disabled ladb-undecorated-link" data-toggle="modal" data-tooltip="tooltip" title="{{ voteDownTooltip }}"><i class="ladb-icon-arrow-down"></i></a>
             {% else %}
                 {% set bindJs = true %}

@@ -12,12 +12,12 @@
                 </a>
             </div>
             <div class="ladb-tools">
-                <a href="#" class="btn btn-default" onclick="window.parent.workflowAdded('{% filter escape('js') %}{% include 'Workflow:Workflow/_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+                <a href="#" class="btn btn-default" onclick="window.parent.workflowAdded('{% filter escape('js') %}{% include 'Workflow/Workflow/_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
             </div>
             <div class="ladb-body">
                 <h4 class="ladb-heading">{{ workflow.title }}</h4>
                 <span class="ladb-subheading">
-                    par {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':workflow.user } %}<small class="ladb-age">{{ workflow.createdAt|time_diff() }}</small>
+                    par {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':workflow.user } %}<small class="ladb-age">{{ workflow.createdAt|ago() }}</small>
                 </span>
             </div>
         </div>

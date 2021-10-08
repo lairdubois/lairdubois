@@ -5,11 +5,11 @@
     <div class="ladb-box ladb-highlightable">
         <div class="ladb-box-inner row">
             <div class="ladb-side-bar col-sm-push-11 col-sm-1 col-xs-12">
-                {% include 'Core/Vote:_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.answer.vote_up_tooltip'|trans()), 'voteDownTooltip':('qa.answer.vote_down_tooltip'|trans()), 'popoverPlacement':'left' } %}
+                {% include 'Core/Vote/_widget.part.html.twig' with { 'voteContext':voteContext, 'voteUpTooltip':('qa.answer.vote_up_tooltip'|trans()), 'voteDownTooltip':('qa.answer.vote_down_tooltip'|trans()), 'popoverPlacement':'left' } %}
             </div>
             <div class="ladb-content-box col-sm-pull-1 col-sm-11 col-xs-12">
                 {% include 'Qa/Answer:_row-content.part.html.twig' %}
-                {% include 'Core/Comment:_widget.part.html.twig' with { 'collapsible':true, 'notCollapsed':(is_granted("ROLE_USER") and (answer.user == app.user or question.user == app.user)) } %}
+                {% include 'Core/Comment/_widget.part.html.twig' with { 'collapsible':true, 'notCollapsed':(is_granted("ROLE_USER") and (answer.user == app.user or question.user == app.user)) } %}
             </div>
         </div>
     </div>

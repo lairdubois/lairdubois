@@ -110,7 +110,7 @@
                     $row.replaceWith($newRow);
                     that.$hiddenRow = null;
                     that.bindAnswerRow($newRow);
-                    lazyLoadReset($newRow);
+                    LADBCommon.lazyLoadReset($newRow);
                 } else {
                     that.bindEditAnswerBox($row, data);
                 }
@@ -171,7 +171,7 @@
                     that.removeAnswerForm();
                     that.bindAnswerRow($row);
                     that.bindSorters();
-                    lazyLoadReset($row);
+                    LADBCommon.lazyLoadReset($row);
                 } else {
                     that.bindNewAnswerBox(data);
                 }
@@ -196,7 +196,7 @@
         this.$answerForm.ladbScrollTo(null, {
             onAfter: function() {
 
-                setupTextareas();
+                LADBCommon.setupTextareas();
 
                 // Focus the first textarea
                 $('textarea', $form).first().focus();
@@ -231,7 +231,7 @@
                     $('.ladb-answers-header', that.$element).replaceWith($header);
                     that.bindSorters();
                     that.bindRows();
-                    lazyLoadReset($answers);
+                    LADBCommon.lazyLoadReset($answers);
                 },
                 error: function () {
                     console.log('error');

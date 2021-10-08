@@ -35,7 +35,7 @@
                     $masonryInner.append(items);
                     $masonryInner.masonry('appended', items);
                 }
-                lazyLoadReset($masonryInner);
+                LADBCommon.lazyLoadReset($masonryInner);
                 setupTooltips();
             }
         });
@@ -54,7 +54,7 @@
                 stamp: ".ladb-masonry-stamp"
             });
         }
-        lazyLoadReset();
+        LADBCommon.lazyLoadReset();
 
     };
     

@@ -5,6 +5,6 @@
 
 {% block items %}
     {% for join in joins %}
-        {% include 'Core/User:_list-row.part.html.twig' with { 'user':join.user } %}
+        {% include 'Core/User/_list-row.part.html.twig' with { 'user':join.user } %}
     {% endfor %}
 {% endblock %}

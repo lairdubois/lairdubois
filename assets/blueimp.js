@@ -5,8 +5,9 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 
-import 'jquery-bar-rating';
-import './js/ladb/ladb-values'
+
+import './js/blueimp-gallery/blueimp-gallery';
+import './js/blueimp-gallery/jquery.blueimp-gallery';
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/book.less';
+import './css/blueimp-gallery/blueimp-gallery.css';

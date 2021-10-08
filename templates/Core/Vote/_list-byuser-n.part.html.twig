@@ -1,17 +1,17 @@
-{% extends 'Core/User:_list-items-byuser-n.part.html.twig' %}
+{% extends 'Core/User/_list-items-byuser-n.part.html.twig' %}
 
 {# set items #}
 
 {% block itemContentInner %}
     {{ parent() }}
     <div class="ladb-content-child">
-        {% include 'Core/Vote:_votable-row.part.html.twig' with { 'vote':item.vote, 'parentEntity':item.parentEntity, 'votable':item.entity } %}
+        {% include 'Core/Vote/_votable-row.part.html.twig' with { 'vote':item.vote, 'parentEntity':item.parentEntity, 'votable':item.entity } %}
     </div>
 {% endblock %}
 
 {% block subitems %}
     {% if item.vote.comment is not null %}
-        {% embed 'Core/Comment:_row.part.html.twig' with { 'comment':item.vote.comment, 'classes':'ladb-user-groupby-item', 'noFooter':true } %}
+        {% embed 'Core/Comment/_row.part.html.twig' with { 'comment':item.vote.comment, 'classes':'ladb-user-groupby-item', 'noFooter':true } %}
             {% block minitools %}{% endblock %}
         {% endembed %}
     {% else %}

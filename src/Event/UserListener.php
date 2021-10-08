@@ -61,7 +61,7 @@ class UserListener implements EventSubscriberInterface {
 		$adminUsername = $this->container->getParameter('admin_username');
 		$sender = $userManager->findUserByUsername($adminUsername);
 		if (!is_null($sender)) {
-			$messageUtils->composeThread($sender, array( $user ), 'Bienvenue !', $templating->render('Core/User:message-welcome.md.twig', array( 'recipientUser' => $user )), null, true);
+			$messageUtils->composeThread($sender, array( $user ), 'Bienvenue !', $templating->render('Core/User/message-welcome.md.twig', array( 'recipientUser' => $user )), null, true);
 		}
 
 		// Send admin email notification

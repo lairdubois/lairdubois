@@ -1,14 +1,14 @@
 <div class="ladb-box ladb-status-{{ readOnly ? '0' : task.status }}">
-    <button class="ladb-btn-done ladb-status-update-btn"{% if not readOnly %} data-action-status="{{ task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') ? constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') : constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE')}}" data-loading-text="<i class='ladb-icon-spinner'></i>"{% endif %}{% if readOnly or task.status < constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %} disabled{% endif %}>
-        {% if not readOnly and task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_DONE') %}<i class="ladb-icon-check"></i>{% endif %}
+    <button class="ladb-btn-done ladb-status-update-btn"{% if not readOnly %} data-action-status="{{ task.status == constant('App\\Entity\\Workflow\\Task::STATUS_DONE') ? constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') : constant('App\\Entity\\Workflow\\Task::STATUS_DONE')}}" data-loading-text="<i class='ladb-icon-spinner'></i>"{% endif %}{% if readOnly or task.status < constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') %} disabled{% endif %}>
+        {% if not readOnly and task.status == constant('App\\Entity\\Workflow\\Task::STATUS_DONE') %}<i class="ladb-icon-check"></i>{% endif %}
     </button>
     {% if not readOnly %}
         <div class="ladb-minitools pull-right">
-            {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') %}
-                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-play ladb-icon-lg"></i></button>
+            {% if task.status == constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') %}
+                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('App\\Entity\\Workflow\\Task::STATUS_RUNNING') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-play ladb-icon-lg"></i></button>
             {% endif %}
-            {% if task.status == constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_RUNNING') %}
-                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('Ladb\\CoreBundle\\Entity\\Workflow\\Task::STATUS_WORKABLE') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-pause ladb-icon-lg"></i></button>
+            {% if task.status == constant('App\\Entity\\Workflow\\Task::STATUS_RUNNING') %}
+                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-pause ladb-icon-lg"></i></button>
             {% endif %}
             <button class="ladb-minitools-btn ladb-btn-edit ladb-unselectable"><i class="ladb-icon-edit ladb-icon-lg"></i></button>
         </div>
@@ -16,7 +16,7 @@
     <div class="ladb-body">
         <div class="ladb-title ladb-unselectable">{{ task.title }}</div>
         {% if not durationsHidden %}
-            {% include 'Workflow:Workflow/_durations.part.html.twig' with { 'entity':task } %}
+            {% include 'Workflow/Workflow/_durations.part.html.twig' with { 'entity':task } %}
         {% endif %}
         {% if task.labels is not empty %}
             <div class="ladb-labels">

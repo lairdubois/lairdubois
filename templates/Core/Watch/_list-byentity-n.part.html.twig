@@ -5,6 +5,6 @@
 
 {% block items %}
     {% for watch in watchs %}
-        {% include 'Core/User:_list-row.part.html.twig' with { 'user':watch.user } %}
+        {% include 'Core/User/_list-row.part.html.twig' with { 'user':watch.user } %}
     {% endfor %}
 {% endblock %}

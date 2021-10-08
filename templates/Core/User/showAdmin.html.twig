@@ -1,4 +1,4 @@
-{% extends 'Core/User:show.html.twig' %}
+{% extends 'Core/User/show.html.twig' %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 
@@ -38,7 +38,7 @@
                     </div>
                     {% if registration.creator is not null %}
                         <div class="ladb-meta">
-                            <span class="pull-right">{% include 'Core/User:_displayname-link.part.html.twig' with { 'user':registration.creator } %}</span>
+                            <span class="pull-right">{% include 'Core/User/_displayname-link.part.html.twig' with { 'user':registration.creator } %}</span>
                             <span>creator</span>
                         </div>
                     {% endif %}

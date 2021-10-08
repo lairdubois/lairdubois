@@ -5,6 +5,6 @@
 
 {% block items %}
     {% for follower in followers %}
-        {% include 'Core/User:_list-row.part.html.twig' with { 'user':follower.followingUser } %}
+        {% include 'Core/User/_list-row.part.html.twig' with { 'user':follower.followingUser } %}
     {% endfor %}
 {% endblock %}

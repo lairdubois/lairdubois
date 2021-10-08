@@ -1,4 +1,4 @@
-{% extends 'Common/Modal:_modal-content.part.html.twig' %}
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
 
 {% set id = 'infos_modal' %}
 {% set title = title~'<br><small>'~(('month.long.'~(funding.date|date('M')|lower))|trans({}, 'date'))|capitalize~' '~funding.year~'</small>' %}

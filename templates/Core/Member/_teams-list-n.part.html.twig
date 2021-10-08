@@ -5,6 +5,6 @@
 
 {% block items %}
     {% for member in members %}
-        {% include 'Core/User:_list-row.part.html.twig' with { 'user':member.team } %}
+        {% include 'Core/User/_list-row.part.html.twig' with { 'user':member.team } %}
     {% endfor %}
 {% endblock %}

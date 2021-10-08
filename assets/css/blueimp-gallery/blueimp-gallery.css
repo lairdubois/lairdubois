@@ -88,20 +88,20 @@
   visibility: visible;
 }
 .blueimp-gallery > .slides > .slide-loading {
-  background: url(/bundles/ladbcore/blueimp-gallery/loading.gif) center no-repeat;
+  background: url(../../ladb/images/blueimp-gallery/loading.gif) center no-repeat;
   background-size: 64px 64px;
 }
 .blueimp-gallery-smil > .slides > .slide-loading {
-  background-image: url(/bundles/ladbcore/blueimp-gallery/loading.svg);
+  background-image: url(../../ladb/images/blueimp-gallery/loading.svg);
 }
 .blueimp-gallery > .slides > .slide-loading > .slide-content {
   opacity: 0;
 }
 .blueimp-gallery > .slides > .slide-error {
-  background: url(/bundles/ladbcore/blueimp-gallery/error.png) center no-repeat;
+  background: url(../../ladb/images/blueimp-gallery/error.png) center no-repeat;
 }
 .blueimp-gallery-svgasimg > .slides > .slide-error {
-  background-image: url(/bundles/ladbcore/blueimp-gallery/error.svg);
+  background-image: url(../../ladb/images/blueimp-gallery/error.svg);
 }
 .blueimp-gallery > .slides > .slide-error > .slide-content {
   display: none;
@@ -118,7 +118,7 @@
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
-  background: #222 url(/bundles/ladbcore/blueimp-gallery/prev.png) center no-repeat;
+  background: #222 url(../../ladb/images/blueimp-gallery/prev.png) center no-repeat;
   background-color: rgba(0, 0, 0, 0.5);
   border: 3px solid #fff;
   -webkit-border-radius: 30px;
@@ -131,13 +131,13 @@
 .blueimp-gallery-display > .next {
   right: 15px;
   left: auto;
-  background-image: url(/bundles/ladbcore/blueimp-gallery/next.png);
+  background-image: url(../../ladb/images/blueimp-gallery/next.png);
 }
 .blueimp-gallery-svgasimg > .prev {
-  background-image: url(/bundles/ladbcore/blueimp-gallery/prev.svg);
+  background-image: url(../../ladb/images/blueimp-gallery/prev.svg);
 }
 .blueimp-gallery-svgasimg > .next {
-  background-image: url(/bundles/ladbcore/blueimp-gallery/next.svg);
+  background-image: url(../../ladb/images/blueimp-gallery/next.svg);
 }
 .blueimp-gallery-display > .close {
   position: absolute;
@@ -145,13 +145,13 @@
   right: 15px;
   width: 30px;
   height: 30px;
-  background: url(/bundles/ladbcore/blueimp-gallery/close.png) center no-repeat;
+  background: url(../../ladb/images/blueimp-gallery/close.png) center no-repeat;
   opacity: 0.8;
   cursor: pointer;
   display: none;
 }
 .blueimp-gallery-svgasimg > .close {
-  background-image: url(/bundles/ladbcore/blueimp-gallery/close.svg);
+  background-image: url(../../ladb/images/blueimp-gallery/close.svg);
 }
 .blueimp-gallery > .title {
   position: absolute;
@@ -171,13 +171,13 @@
   bottom: 15px;
   width: 30px;
   height: 30px;
-  background: url(/bundles/ladbcore/blueimp-gallery/play-pause.png) 0 0 no-repeat;
+  background: url(../../ladb/images/blueimp-gallery/play-pause.png) 0 0 no-repeat;
   cursor: pointer;
   opacity: 0.5;
   display: none;
 }
 .blueimp-gallery-svgasimg > .play-pause {
-  background-image: url(/bundles/ladbcore/blueimp-gallery/play-pause.svg);
+  background-image: url(../../ladb/images/blueimp-gallery/play-pause.svg);
 }
 .blueimp-gallery-playing > .play-pause {
   background-position: -30px 0;

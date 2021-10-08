@@ -11,7 +11,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':workflow } %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':workflow } %}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -20,7 +20,7 @@
             Ce processus n'a aucune inspiration
         </div>
     {% else %}
-        {% embed 'Workflow:Workflow/_list-filterbar.part.html.twig' %}
+        {% embed 'Workflow/Workflow/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_workflow_inspirations_filter' %}
             {% set filterPathParameters = { 'id':workflow.id } %}
             {% block filterbarRightContent%}
@@ -32,5 +32,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Workflow:Workflow/_list-n.part.html.twig' %}
+    {% include 'Workflow/Workflow/_list-n.part.html.twig' %}
 {% endblock %}

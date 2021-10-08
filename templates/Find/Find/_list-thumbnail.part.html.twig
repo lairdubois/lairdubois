@@ -17,7 +17,7 @@
 
 {% block image %}
     {{ parent() }}
-    {% if find.kind == constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') %}
+    {% if find.kind == constant('App\\Entity\\Find\\Find::KIND_VIDEO') %}
         <div style="position: absolute; top: 50%; left: 50%; margin-left: -30px; margin-top: -40px; font-size: 60px; color: #fff; opacity: 0.8; text-shadow: 0 0 5px #000;"><i class="ladb-icon-follow"></i></div>
     {% endif %}
 {% endblock %}

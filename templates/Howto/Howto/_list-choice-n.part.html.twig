@@ -12,12 +12,12 @@
                 </a>
             </div>
             <div class="ladb-tools">
-                <a href="#" class="btn btn-default" onclick="window.parent.howtoAdded('{% filter escape('js') %}{% include 'Howto/Howto:_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+                <a href="#" class="btn btn-default" onclick="window.parent.howtoAdded('{% filter escape('js') %}{% include 'Howto/Howto/_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
             </div>
             <div class="ladb-body">
                 <h4 class="ladb-heading">{{ howto.title }}</h4>
                 <span class="ladb-subheading">
-                    par {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':howto.user } %}<small class="ladb-age">{{ howto.createdAt|time_diff() }}</small>
+                    par {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':howto.user } %}<small class="ladb-age">{{ howto.createdAt|ago() }}</small>
                 </span>
             </div>
         </div>

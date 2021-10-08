@@ -240,7 +240,7 @@
                 $(this).find("[id$=sortIndex]").val(index);
             });
             setupTooltips();
-            setupTextareas();
+            LADBCommon.setupTextareas();
         },
 
         /**

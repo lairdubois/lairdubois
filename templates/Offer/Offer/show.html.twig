@@ -56,7 +56,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' with { 'ownerCanAlwaysDelete':true, 'noMicrodataAge':true } %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' with { 'ownerCanAlwaysDelete':true, 'noMicrodataAge':true } %}
         {% block adminItems %}
             {{ parent() }}
             <li role="separator" class="divider"></li>
@@ -64,7 +64,7 @@
         {% endblock %}
         {% block adminModals %}
             {{ parent() }}
-            {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'admin_converttoquestion_offer_modal', 'title':('offer.offer.converttoquestion'|trans()) } %}
+            {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttoquestion_offer_modal', 'title':('offer.offer.converttoquestion'|trans()) } %}
                 {% block bodyInner %}
                     <p>La convertion transformera l'annonce <strong>{{ offer.title }}</strong> de <strong>{{ offer.user.displayname }}</strong> en question.</p>
                     <p>Confirmez l'action pour continuer.</p>
@@ -80,19 +80,19 @@
 
 {% block contentBody %}
     {% if offer.isDraft %}
-        {% include 'Offer/Offer:_draft-alert.part.html.twig' %}
+        {% include 'Offer/Offer/_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-offer">
         {% if offer.pictures|length > 0 %}
             {% include 'Common/_entity-showcase.part.html.twig' with { 'entity':offer, 'pictures':offer.pictures, 'alt':offer.title, 'editable':(permissionContext.editable and permissionContext.isGrantedOwner) } %}
         {% endif %}
-        {% include 'Offer/Offer:_price.part.html.twig' %}
+        {% include 'Offer/Offer/_price.part.html.twig' %}
         {% if offer.location is defined and offer.location is not null %}
             <div class="ladb-link">
                 <i class="ladb-icon-location ladb-icon-fixed-center"></i>
                 <span itemprop="{{ locationItemprop|default('location') }}" itemscope itemtype="http://schema.org/Place">
                     <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                        <span itemprop="addressLocality">{% include 'Offer/Offer:_location.part.html.twig' %}</span>
+                        <span itemprop="addressLocality">{% include 'Offer/Offer/_location.part.html.twig' %}</span>
                     </span>
                 </span>
             </div>
@@ -114,17 +114,17 @@
             <a href="{{ path('core_offer_message_new', { 'id':offer.id }) }}" target="_blank" class="btn btn-default" data-tooltip="tooltip" title="{{ 'message.sendTo'|trans({ '%NAME%':offer.user.displayname }) }}"><i class="ladb-icon-message"></i> {{ 'message.send'|trans() }}</a>
         </div>
     {% endif %}
-    {% if not offer.isDraft and (ownerUser or offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER')) %}
+    {% if not offer.isDraft and (ownerUser or offer.kind == constant('App\\Entity\\Offer\\Offer::KIND_OFFER')) %}
         <div class="panel panel-default ladb-margin-top">
             <div class="panel-body">
                 <div class="media">
                     <div class="media-left"><i class="ladb-icon-info ladb-icon-lg"></i></div>
                     <div class="media-body">
                         {% if ownerUser %}
-                            Cette annonce expirera <strong>{{ offer.expiredDate|time_diff }}</strong>.
-                        {% elseif offer.kind == constant('Ladb\\CoreBundle\\Entity\\Offer\\Offer::KIND_OFFER') %}
+                            Cette annonce expirera <strong>{{ offer.expiredDate|ago }}</strong>.
+                        {% elseif offer.kind == constant('App\\Entity\\Offer\\Offer::KIND_OFFER') %}
                             <div style="font-size: 90%;">
-                                <p>La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont <strong>sous la seule</strong> responsabilité de l'annonceur, {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':offer.user } %}.</p>
+                                <p>La qualité du produit, la transaction, le conditionnement, l'expédition, ainsi que le service après transaction relatifs à cette annonce sont <strong>sous la seule</strong> responsabilité de l'annonceur, {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':offer.user } %}.</p>
                                 <p><em>L'Air du Bois</em> en sa qualité d'hébergeur, conformément aux articles 6.I.2. et suivants de la loi nº2004-575 du 21 juin 2004, ne saurait donc en aucun cas être tenue responsable du contenu des Annonces publiées, ainsi que des messages et contenus échangés via la Messagerie et ne donne aucune garantie, expresse ou implicite, à cet égard.</p>
                                 <p><em>L'Air du Bois</em> rappelle que les machines pour le travail du bois sont dangereuses et nécessitent d'être branchées, vérifiées, entretenues et utilisées selon les règles de l'art.</p>
                             </div>
@@ -134,14 +134,14 @@
             </div>
         </div>
     {% endif %}
-    {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true } %}
+    {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true } %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
         <div class="ladb-metas">
             <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
             <div class="ladb-meta">
@@ -154,13 +154,13 @@
             </div>
             {% if offer.price %}
                 <div class="ladb-meta">
-                    <span class="pull-right">{% include 'Offer/Offer:_price.part.html.twig' %}</span>
+                    <span class="pull-right">{% include 'Offer/Offer/_price.part.html.twig' %}</span>
                     <span><i class="ladb-icon-funding ladb-icon-fixed-center"></i> {{ 'offer.offer.price'|trans }}</span>
                 </div>
             {% endif %}
             {% if offer.location %}
                 <div class="ladb-meta">
-                    <span class="pull-right">{% include 'Offer/Offer:_location.part.html.twig' %}</span>
+                    <span class="pull-right">{% include 'Offer/Offer/_location.part.html.twig' %}</span>
                     <span><i class="ladb-icon-location ladb-icon-fixed-center"></i>&nbsp;{{ 'default.location'|trans }}</span>
                 </div>
             {% endif %}
@@ -181,12 +181,12 @@
     {% if userOffers is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('offer.offer.other_from')|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':offer.user, 'noMicrodata':true } %}
+                {{ ('offer.offer.other_from')|trans() }} {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':offer.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userOffer in userOffers %}
                     <div class="col-xs-6">
-                        {% include 'Offer/Offer:_thumbnail-link.part.html.twig' with { 'offer':userOffer } %}
+                        {% include 'Offer/Offer/_thumbnail-link.part.html.twig' with { 'offer':userOffer } %}
                     </div>
                 {% endfor %}
                 {% if offer.user.meta.publicOfferCount > 2 %}
@@ -205,7 +205,7 @@
             <div class="panel-body row">
                 {% for similarOffer in similarOffers %}
                     <div class="col-xs-6">
-                        {% include 'Offer/Offer:_thumbnail-link.part.html.twig' with { 'offer':similarOffer, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                        {% include 'Offer/Offer/_thumbnail-link.part.html.twig' with { 'offer':similarOffer, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}
             </div>

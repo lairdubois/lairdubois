@@ -1,10 +1,10 @@
 {% extends 'Common/_list-choice.html.twig' %}
 
 {% block body %}
-    {% include 'Knowledge/Provider:_searchbox.part.html.twig' %}
+    {% include 'Knowledge/Provider/_searchbox.part.html.twig' %}
     {{ parent() }}
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Knowledge/Provider:_list-choice-n.part.html.twig' %}
+    {% include 'Knowledge/Provider/_list-choice-n.part.html.twig' %}
 {% endblock %}

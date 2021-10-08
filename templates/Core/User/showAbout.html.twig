@@ -1,4 +1,4 @@
-{% extends 'Core/User:show.html.twig' %}
+{% extends 'Core/User/show.html.twig' %}
 
 {% use 'Common/Blocks/map.blocks.html.twig' %}
 
@@ -108,12 +108,12 @@
                         <div class="panel-body">
                             <div class="ladb-metas">
                                 <div class="ladb-meta">
-                                    <span class="pull-right">{{ user.createdAt|time_diff() }}</span>
+                                    <span class="pull-right">{{ user.createdAt|ago() }}</span>
                                     <span><i class="ladb-icon-time"></i>&nbsp;{% if user.isTeam %}Créé{% else %}Inscrit{% endif %}</span>
                                 </div>
                                 {% if not user.isTeam %}
                                     <div class="ladb-meta">
-                                        <span class="pull-right">{{ user.lastLogin|time_diff() }}</span>
+                                        <span class="pull-right">{{ user.lastLogin|ago() }}</span>
                                         <span><i class="ladb-icon-play"></i>&nbsp;Dernière connexion</span>
                                     </div>
                                 {% endif %}

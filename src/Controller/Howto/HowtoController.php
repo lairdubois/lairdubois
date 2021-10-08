@@ -38,7 +38,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/new", name="core_howto_new")
-	 * @Template("Howto/Howto:new.html.twig")
+	 * @Template("Howto/Howto/new.html.twig")
 	 */
 	public function new(Request $request) {
 
@@ -56,7 +56,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_howto_create")
-	 * @Template("Howto/Howto:new.html.twig")
+	 * @Template("Howto/Howto/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -171,7 +171,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_edit")
-	 * @Template("Howto/Howto:edit.html.twig")
+	 * @Template("Howto/Howto/edit.html.twig")
 	 */
 	public function edit($id) {
 
@@ -191,7 +191,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_update")
-	 * @Template("Howto/Howto:edit.html.twig")
+	 * @Template("Howto/Howto/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -353,7 +353,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_widget")
-	 * @Template("Howto/Howto:widget-xhr.html.twig")
+	 * @Template("Howto/Howto/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 
@@ -378,7 +378,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	/**
 	 * @Route("/", name="core_howto_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_howto_list_page")
-	 * @Template("Howto/Howto:list.html.twig")
+	 * @Template("Howto/Howto/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -604,14 +604,14 @@ class HowtoController extends AbstractHowtoBasedController {
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {
-				return $this->render('Howto/Howto:list-choice-xhr.html.twig', $parameters);
+				return $this->render('Howto/Howto/list-choice-xhr.html.twig', $parameters);
 			} else {
-				return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+				return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 			}
 		}
 
 		if ($layout == 'choice') {
-			return $this->render('Howto/Howto:list-choice.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-choice.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateHowtoCount() > 0) {
@@ -631,7 +631,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_howto_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_creations_filter_page")
-	 * @Template("Howto/Howto:creations.html.twig")
+	 * @Template("Howto/Howto/creations.html.twig")
 	 */
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -669,7 +669,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_howto_workshops")
 	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workshops_filter")
 	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workshops_filter_page")
-	 * @Template("Howto/Howto:workshops.html.twig")
+	 * @Template("Howto/Howto/workshops.html.twig")
 	 */
 	public function workshops(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -695,7 +695,7 @@ class HowtoController extends AbstractHowtoBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Workshop:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Workshop/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -707,7 +707,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Route("/{id}/plans", requirements={"id" = "\d+"}, name="core_howto_plans")
 	 * @Route("/{id}/plans/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_plans_filter")
 	 * @Route("/{id}/plans/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_plans_filter_page")
-	 * @Template("Howto/Howto:plans.html.twig")
+	 * @Template("Howto/Howto/plans.html.twig")
 	 */
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -745,7 +745,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Route("/{id}/questions", requirements={"id" = "\d+"}, name="core_howto_questions")
 	 * @Route("/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_questions_filter")
 	 * @Route("/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_questions_filter_page")
-	 * @Template("Howto/Howto:questions.html.twig")
+	 * @Template("Howto/Howto/questions.html.twig")
 	 */
 	public function questions(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -783,7 +783,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Route("/{id}/processus", requirements={"id" = "\d+"}, name="core_howto_workflows")
 	 * @Route("/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_workflows_filter")
 	 * @Route("/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_workflows_filter_page")
-	 * @Template("Howto/Howto:workflows.html.twig")
+	 * @Template("Howto/Howto/workflows.html.twig")
 	 */
 	public function workflows(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -809,7 +809,7 @@ class HowtoController extends AbstractHowtoBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -821,7 +821,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Route("/{id}/fournisseurs", requirements={"id" = "\d+"}, name="core_howto_providers")
 	 * @Route("/{id}/fournisseurs/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_providers_filter")
 	 * @Route("/{id}/fournisseurs/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_providers_filter_page")
-	 * @Template("Howto/Howto:providers.html.twig")
+	 * @Template("Howto/Howto/providers.html.twig")
 	 */
 	public function providers(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -847,7 +847,7 @@ class HowtoController extends AbstractHowtoBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -859,7 +859,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 * @Route("/{id}/ecoles", requirements={"id" = "\d+"}, name="core_howto_schools")
 	 * @Route("/{id}/ecoles/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_howto_schools_filter")
 	 * @Route("/{id}/ecoles/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_howto_schools_filter_page")
-	 * @Template("Howto/Howto:schools.html.twig")
+	 * @Template("Howto/Howto/schools.html.twig")
 	 */
 	public function schools(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -885,7 +885,7 @@ class HowtoController extends AbstractHowtoBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -895,7 +895,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/{id}.html", name="core_howto_show")
-	 * @Template("Howto/Howto:show.html.twig")
+	 * @Template("Howto/Howto/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

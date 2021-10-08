@@ -45,16 +45,16 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% block headerToolsButtons %}
             {{ parent() }}
             <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-duplicate"></i><span class="ladb-visible-desktop">  {{ ownerUser ? 'default.duplicate'|trans() : 'default.copy'|trans() }}...</span></a>
         {% endblock %}
         {% block headerInner %}
             {{ parent() }}
-            {% include 'Workflow:Workflow/_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
+            {% include 'Workflow/Workflow/_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
         {% endblock %}
-        {% block subheading %}{{ parent() }}{% include 'Workflow:Workflow/_visibility-badge.part.html.twig' with { 'classes':'ladb-hidden-mobile ladb-margin-left' } %}{% endblock %}
+        {% block subheading %}{{ parent() }}{% include 'Workflow/Workflow/_visibility-badge.part.html.twig' with { 'classes':'ladb-hidden-mobile ladb-margin-left' } %}{% endblock %}
     {% endembed %}
 {% endblock %}
 
@@ -68,7 +68,7 @@
         </div>
     {% endif %}
     {% if not workflow.isPublic %}
-        {% include 'Workflow:Workflow/_draft-alert.part.html.twig' %}
+        {% include 'Workflow/Workflow/_draft-alert.part.html.twig' %}
     {% endif %}
     <div class="ladb-workflow">
         <a href="{{ path('core_workflow_show', { 'id':workflow.sluggedId, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
@@ -123,14 +123,14 @@
             {% endblock %}
         {% endembed %}
     {% endif %}
-    {% include 'Core/Comment:_widget.part.html.twig' %}
+    {% include 'Core/Comment/_widget.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if workflow.copyCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-duplicate ladb-icon-fixed-center"></i>
             <strong>{{ workflow.copyCount|number_format(0, ',', ' ') }}</strong>
@@ -148,7 +148,7 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
         {% if workflow.inspirationCount > 0 %}
             <div class="ladb-meta">
                 <i class="ladb-icon-inspiration ladb-icon-fixed-center"></i>
@@ -207,7 +207,7 @@
         {% endif %}
     </div>
     {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':workflow.license } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':workflow.license } %}
 {% endblock %}
 
 {% block contentLinkedTo %}

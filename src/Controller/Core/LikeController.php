@@ -43,7 +43,7 @@ class LikeController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_like_create")
-	 * @Template("Core/Like:create-xhr.html.twig")
+	 * @Template("Core/Like/create-xhr.html.twig")
 	 */
 	public function create(Request $request, $entityType, $entityId) {
 
@@ -130,7 +130,7 @@ class LikeController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_like_delete")
-	 * @Template("Core/Like:delete-xhr.html.twig")
+	 * @Template("Core/Like/delete-xhr.html.twig")
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -195,7 +195,7 @@ class LikeController extends AbstractController {
 	/**
 	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_like_list_byentity")
 	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_like_list_byentity_page")
-	 * @Template("Core/Like:list-byentity.html.twig")
+	 * @Template("Core/Like/list-byentity.html.twig")
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -221,7 +221,7 @@ class LikeController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Like:list-byentity-xhr.html.twig', $parameters);
+			return $this->render('Core/Like/list-byentity-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 	}

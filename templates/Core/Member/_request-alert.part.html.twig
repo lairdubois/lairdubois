@@ -1,7 +1,7 @@
 {# set request #}
 
 <div style="margin: 20px 0;">
-    <p>Vous avez une demande en attente pour rejoindre le collectif <strong>{% include 'Core/User:_displayname-link.part.html.twig' with { 'user':request.team, 'linkClasses':'alert-link', 'noBadge':true } %}</strong>.</p>
+    <p>Vous avez une demande en attente pour rejoindre le collectif <strong>{% include 'Core/User/_displayname-link.part.html.twig' with { 'user':request.team, 'linkClasses':'alert-link', 'noBadge':true } %}</strong>.</p>
     <div>
         <a href="{{ path('core_member_request_delete', { 'id':request.id }) }}" class="btn btn-default" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');">{{ 'team.member_request_delete'|trans }}</a>
     </div>

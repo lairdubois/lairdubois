@@ -44,7 +44,7 @@
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
                     setupTooltips();
-                    lazyLoadReset($newRow);
+                    LADBCommon.lazyLoadReset($newRow);
                 }
             },
             error:function() {
@@ -53,7 +53,7 @@
         });
 
         // Setup textearea
-        setupTextareas();
+        LADBCommon.setupTextareas();
 
     };
 
@@ -73,14 +73,14 @@
                     $new.replaceWith($newNew);
                     that.bindNew($newNew);
                 } else {
-                    pictureGalleryRemoveAllPictures($new.attr('id'));
+                    LADBPictures.pictureGalleryRemoveAllPictures($new.attr('id'));
                     var $row = $(data);
                     var $rowNew = $new.closest('.ladb-message-row');
                     $row.insertBefore($rowNew);
                     $('ul.alert-danger', $new).remove();
                     $('.ladb-form-gallery-section', $new).collapse('hide');
                     setupTooltips();
-                    lazyLoadReset($row);
+                    LADBCommon.lazyLoadReset($row);
                     $new.ladbScrollTo();
                     $('textarea', $new).focus();
                     that.bindRow($row);
@@ -93,7 +93,7 @@
         });
 
         // Setup textearea
-        setupTextareas();
+        LADBCommon.setupTextareas();
 
     };
 
@@ -183,7 +183,7 @@
         setupTooltips();
 
         // Setup textearea
-        setupTextareas();
+        LADBCommon.setupTextareas();
 
         // Intercept hash that starts with #_ scrollto behavior
         if (window.location.hash && window.location.hash.startsWith('#_')) {

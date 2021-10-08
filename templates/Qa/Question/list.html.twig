@@ -35,7 +35,7 @@
         {% include 'Core/Tip:_list-thumbnail-highlighted.part.html.twig' with { 'tip':highlightedTip, 'tiny':true, 'masonryWide':true } %}
     {% endif %}
     {% if highlightedOffer is defined and highlightedOffer %}
-        {% include 'Offer/Offer:_list-thumbnail-highlighted.part.html.twig' with { 'offer':highlightedOffer, 'masonryWide':true } %}
+        {% include 'Offer/Offer/_list-thumbnail-highlighted.part.html.twig' with { 'offer':highlightedOffer, 'masonryWide':true } %}
     {% endif %}
     {% include 'Qa/Question/_list-n.part.html.twig' %}
 {% endblock %}

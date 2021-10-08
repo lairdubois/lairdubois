@@ -10,7 +10,7 @@
 {% set hideHeaderContainer = false %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-header.part.html.twig' with { 'entity':howto } %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':howto } %}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -19,7 +19,7 @@
             Aucun atelier n'est associé à ce pas à pas.
         </div>
     {% else %}
-        {% embed 'Wonder/Workshop:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Workshop/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_howto_workshops_filter' %}
             {% set filterPathParameters = { 'id':howto.id } %}
             {% block filterbarRightContent%}
@@ -31,5 +31,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Wonder/Workshop:_list-n.part.html.twig' %}
+    {% include 'Wonder/Workshop/_list-n.part.html.twig' %}
 {% endblock %}

@@ -3,13 +3,13 @@ liip_imagine:
     resolvers:
         default:
             web_path:
-                web_root: "%kernel.project_dir%/../public"
+                web_root: "%kernel.project_dir%/public"
                 cache_prefix: media/cache
 
     loaders:
         default:
             filesystem:
-                data_root: "%kernel.project_dir%/../uploads"
+                data_root: "%kernel.project_dir%/uploads"
 
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: imagick

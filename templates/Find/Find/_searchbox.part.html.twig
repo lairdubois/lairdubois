@@ -10,9 +10,9 @@
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') }}" data-label="Sites Web" data-editable="false" data-unique="true" data-icon="link"><i class="ladb-icon-link"></i> Sites Web</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') }}" data-label="Vidéos" data-editable="false" data-unique="true" data-icon="video"><i class="ladb-icon-video"></i> Vidéos</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') }}" data-label="Photos" data-editable="false" data-unique="true" data-icon="camera"><i class="ladb-icon-camera"></i> Photos</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Find\\Find::KIND_WEBSITE') }}" data-label="Sites Web" data-editable="false" data-unique="true" data-icon="link"><i class="ladb-icon-link"></i> Sites Web</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Find\\Find::KIND_VIDEO') }}" data-label="Vidéos" data-editable="false" data-unique="true" data-icon="video"><i class="ladb-icon-video"></i> Vidéos</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Find\\Find::KIND_GALLERY') }}" data-label="Photos" data-editable="false" data-unique="true" data-icon="camera"><i class="ladb-icon-camera"></i> Photos</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
     {% if is_granted("ROLE_USER") %}
@@ -35,9 +35,9 @@
 {% endblock %}
 
 {% block searchboxShortcuts %}
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_WEBSITE') }}"><i class="ladb-icon-globe"></i> Sites Web</a></li>
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_VIDEO') }}"><i class="ladb-icon-video"></i> Vidéos</a></li>
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Find\\Find::KIND_GALLERY') }}"><i class="ladb-icon-camera"></i> Photos</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Find\\Find::KIND_WEBSITE') }}"><i class="ladb-icon-globe"></i> Sites Web</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Find\\Find::KIND_VIDEO') }}"><i class="ladb-icon-video"></i> Vidéos</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Find\\Find::KIND_GALLERY') }}"><i class="ladb-icon-camera"></i> Photos</a></li>
 {% endblock %}
 
 

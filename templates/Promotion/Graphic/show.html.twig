@@ -11,7 +11,7 @@
 {% set ownerUser = is_granted("ROLE_USER") and app.user.id == graphic.user.id %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% include 'Common/Header/_entity-show-header.part.html.twig' %}
 {% endblock %}
 
 {% block contentBody %}
@@ -30,14 +30,14 @@
     {% if not permissionContext.isOwner %}
         {% include 'Common/_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% include 'Core/Comment:_widget.part.html.twig' %}
+    {% include 'Core/Comment/_widget.part.html.twig' %}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if graphic.downloadCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-unpublish ladb-icon-fixed-center"></i>
             <strong>{{ graphic.downloadCount|number_format(0, ',', ' ') }}</strong>
@@ -63,10 +63,10 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
     </div>
     {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':graphic.tags, 'type':'graphics' } %}
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':graphic.license } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':graphic.license } %}
 {% endblock %}
 
 {% block contentSuggests %}

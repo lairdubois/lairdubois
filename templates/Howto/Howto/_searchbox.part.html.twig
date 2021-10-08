@@ -8,9 +8,9 @@
 {% block filtersDropdown %}
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
     <li class="divider"></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_TUTORIAL') }}" data-label="Tutos" data-editable="false" data-unique="true" data-icon="howto-tutorial"><i class="ladb-icon-howto-tutorial"></i> Tutos</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_TECHNICAL') }}" data-label="Techniques" data-editable="false" data-unique="true" data-icon="howto-technical"><i class="ladb-icon-howto-technical"></i> Techniques</a></li>
-    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_DOCUMENTATION') }}" data-label="Documentations" data-editable="false" data-unique="true" data-icon="howto-documentation"><i class="ladb-icon-howto-documentation"></i> Documentations</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Howto\\Howto::KIND_TUTORIAL') }}" data-label="Tutos" data-editable="false" data-unique="true" data-icon="howto-tutorial"><i class="ladb-icon-howto-tutorial"></i> Tutos</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Howto\\Howto::KIND_TECHNICAL') }}" data-label="Techniques" data-editable="false" data-unique="true" data-icon="howto-technical"><i class="ladb-icon-howto-technical"></i> Techniques</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Howto\\Howto::KIND_DOCUMENTATION') }}" data-label="Documentations" data-editable="false" data-unique="true" data-icon="howto-documentation"><i class="ladb-icon-howto-documentation"></i> Documentations</a></li>
     <li class="divider"></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-questions" data-label="Avec question" data-unique="true" data-icon="question"><i class="ladb-icon-question"></i> Avec question</a></li>
     <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="content-creations" data-label="Avec création" data-unique="true" data-icon="creation"><i class="ladb-icon-creation"></i> Avec création</a></li>
@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% block searchboxShortcuts %}
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_TUTORIAL') }}"><i class="ladb-icon-howto-tutorial"></i> Tutos</a></li>
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_TECHNICAL') }}"><i class="ladb-icon-howto-technical"></i> Techniques</a></li>
-    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('Ladb\\CoreBundle\\Entity\\Howto\\Howto::KIND_DOCUMENTATION') }}"><i class="ladb-icon-howto-documentation"></i> Documentations</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Howto\\Howto::KIND_TUTORIAL') }}"><i class="ladb-icon-howto-tutorial"></i> Tutos</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Howto\\Howto::KIND_TECHNICAL') }}"><i class="ladb-icon-howto-technical"></i> Techniques</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Howto\\Howto::KIND_DOCUMENTATION') }}"><i class="ladb-icon-howto-documentation"></i> Documentations</a></li>
 {% endblock %}

@@ -94,7 +94,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
         {% set headingClasses = provider.signRejected ? 'ladb-strikethrough' : null %}
         {% block headingInner %}
             {{ parent() }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}
@@ -159,19 +159,19 @@
             {% include 'Common/_updated-age.part.html.twig' %}
         {% endif %}
         <div style="padding: 10px; text-align: center;">
-            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext } %}
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
         </div>
         {% include 'Core/Review/_widget.part.html.twig' %}
-        {% include 'Core/Comment:_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.provider.comment_alert' } %}
+        {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.provider.comment_alert' } %}
     </div>
     {{ parent() }}
 {% endblock %}
 
 {% block contentMetasPanel %}
     <div class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
-        {% include 'Core/View:_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' with { 'noMicrodata':true }  %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
+        {% include 'Core/View/_meta-counter.part.html.twig' with { 'noMicrodata':true } %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' with { 'noMicrodata':true }  %}
         <div class="ladb-meta">
             <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
             {% if provider.contributorCount > 0 %}
@@ -183,13 +183,13 @@
                 </a>
             {% endif %}
         </div>
-        {% include 'Core/Vote:_meta-counter.part.html.twig' with { 'entity':provider } %}
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':provider } %}
         {% include 'Core/Review/_meta-counter.part.html.twig' with { 'entity':provider } %}
     </div>
     {% set hasWoods = provider.woodsValues is not empty or 'Bois massif' in provider.products %}
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
         {% if hasWoods %}
             <div class="ladb-meta{% if searchableWoodCount == 0 %} text-muted{% endif %}">
                 <i class="ladb-icon-wood ladb-icon-fixed-center"></i>
@@ -229,5 +229,5 @@
             </div>
         </div>
     {% endif %}
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':provider.license, 'noMicrodata':true } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':provider.license, 'noMicrodata':true } %}
 {% endblock %}

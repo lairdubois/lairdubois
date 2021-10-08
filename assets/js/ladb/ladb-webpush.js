@@ -1,6 +1,6 @@
 var LADBWebPush = (function () {
 
-    var LadbWebPushClient = function LadbWebPushClient(options) {
+    var client = function LadbWebPushClient(options) {
 
         return {
 
@@ -138,9 +138,9 @@ var LADBWebPush = (function () {
     };
 
     return {
-        LadbWebPushClient: LadbWebPushClient
+        client: client
     }
 
-});
+})();
 
 export default LADBWebPush;

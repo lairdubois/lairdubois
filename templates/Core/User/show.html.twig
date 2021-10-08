@@ -37,7 +37,7 @@
     {{ block('blueimpGalleryJavascripts') }}
     <script>
         $(document).ready(function() {
-            setupTooltips();
+            LADBCommon.setupTooltips();
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
@@ -58,12 +58,12 @@
 {% block bodyHeaderContainerContent %}
     <div class="ladb-avatar-header{% if hasBanner %} ladb-avatar-header-with-banner{% endif %}">
         <a href="{{ user.avatar.webPath|imagine_filter('1024x1024i') }}" data-gallery="avatar" class="ladb-avatar ladb-cursor-preview">
-            {% include 'Core/User:_avatar.part.html.twig' with { 'size':'128', 'noLazyLoad':true } %}
+            {% include 'Core/User/_avatar.part.html.twig' with { 'size':'128', 'noLazyLoad':true } %}
         </a>
         <div class="ladb-body">
-            <h1 class="ladb-heading"><span itemprop="name"{% if not user.enabled %} class="ladb-strikethrough"{% endif %}>{{ user.displayname }}</span>{% include 'Core/User:_account-type.part.html.twig' %}{% if user.isFullnameDisplayble %} <small>(<span itemprop="additionalName">{{ user.fullname }}</span>)</small>{% endif %}</h1>
+            <h1 class="ladb-heading"><span itemprop="name"{% if not user.enabled %} class="ladb-strikethrough"{% endif %}>{{ user.displayname }}</span>{% include 'Core/User/_account-type.part.html.twig' %}{% if user.isFullnameDisplayble %} <small>(<span itemprop="additionalName">{{ user.fullname }}</span>)</small>{% endif %}</h1>
             <span class="ladb-subheading">
-                {% include 'Core/User:_location-and-social.part.html.twig' %}
+                {% include 'Core/User/_location-and-social.part.html.twig' %}
             </span>
         </div>
         <div class="ladb-header-tools">
@@ -73,11 +73,11 @@
                 {% endif %}
                 {% if is_granted('ROLE_USER') and user.isTeam and user.meta.requestEnabled and not isGrantedOwner and invitation is null and request is null %}
                     <a class="btn btn-default" onclick="$('#member_request_modal').modal({ remote:'{{ path('core_member_request_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="{{ 'team.member_request'|trans() }}"><i class="ladb-icon-request"></i><span{% if is_granted('ROLE_ADMIN') %} class="ladb-hidden-mobile"{% endif %}> {{ 'team.request'|trans() }}...</span></a>
-                    {% include 'Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'member_request_modal', 'title':'<i class="ladb-icon-request"></i>&nbsp;'~('team.member_request'|trans()), 'classes':'modal-infinit' } %}
+                    {% include 'Common/Modal/_modal-empty-loading.part.html.twig' with { 'id':'member_request_modal', 'title':'<i class="ladb-icon-request"></i>&nbsp;'~('team.member_request'|trans()), 'classes':'modal-infinit' } %}
                 {% endif %}
                 {% if user.isTeam and isGrantedOwner %}
                     <a class="btn btn-default" onclick="$('#member_invitation_modal').modal({ remote:'{{ path('core_member_invitation_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="{{ 'team.member_invite'|trans() }}"><i class="ladb-icon-invite"></i> {{ 'team.invite'|trans() }}...</a>
-                    {% include 'Common/Modal:_modal-empty-loading.part.html.twig' with { 'id':'member_invitation_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;'~('team.member_invite'|trans()), 'classes':'modal-infinit' } %}
+                    {% include 'Common/Modal/_modal-empty-loading.part.html.twig' with { 'id':'member_invitation_modal', 'title':'<i class="ladb-icon-invite"></i>&nbsp;'~('team.member_invite'|trans()), 'classes':'modal-infinit' } %}
                 {% endif %}
                 {% if isOwner %}
                     <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}" class="btn btn-default"><i class="ladb-icon-settings"></i> {{ 'user.settings'|trans() }}</a>
@@ -114,7 +114,7 @@
                         </ul>
                     </div>
                     {% if user.isTeam and isGrantedOwner %}
-                        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'member_member_delete', 'title':'Quitter le collectif' } %}
+                        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'member_member_delete', 'title':'Quitter le collectif' } %}
                             {% block bodyInner %}
                                 {% if user.meta.memberCount > 1 %}
                                     <p>En quittant le collectif <strong>{{ user.displayname }}</strong> vous perdrez tous les droits de modification aux publications et à la messagerie du collectif.</p>
@@ -134,7 +134,7 @@
                         {% endembed %}
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
-                        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'empty_user_admin_modal', 'title':('default.emptying'|trans()) } %}
+                        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'empty_user_admin_modal', 'title':('default.emptying'|trans()) } %}
                             {% block bodyInner %}
                                 <p>La vidange du compte <strong>{{ user.displayname }}</strong> effacera toutes ces publications.</p>
                                 <p>Confirmez l'action pour continuer.</p>
@@ -144,7 +144,7 @@
                                 <a href="{{ path('core_user_admin_empty', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.empty'|trans() }}</a>
                             {% endblock %}
                         {% endembed %}
-                        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'delete_user_admin_modal', 'title':('default.deleting'|trans()) } %}
+                        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'delete_user_admin_modal', 'title':('default.deleting'|trans()) } %}
                             {% block bodyInner %}
                                 <p>La suppression du compte <strong>{{ user.displayname }}</strong> effacera toutes ces publications.</p>
                                 <p>Confirmez l'action pour continuer.</p>
@@ -154,7 +154,7 @@
                                 <a href="{{ path('core_user_admin_delete', { 'username':user.usernameCanonical }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
                             {% endblock %}
                         {% endembed %}
-                        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'converttoteam_user_admin_modal', 'title':'Convertir en collectif' } %}
+                        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'converttoteam_user_admin_modal', 'title':'Convertir en collectif' } %}
                             {% block bodyInner %}
                                 <p>La conversion du compte <strong>{{ user.displayname }}</strong> en collectif effacera toutes ces invitations et demandes et lui fera quitter tous les collectifs dont il est membre.</p>
                                 <p>Confirmez l'action pour continuer.</p>

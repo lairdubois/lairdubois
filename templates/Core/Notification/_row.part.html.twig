@@ -5,12 +5,12 @@
 <div id="ladb_notification_{{ notification.id }}" class="ladb-notification-row{% if notification.isListed and unlistedNotificationIds[notification.id] is not defined or notification.folder is not null %} ladb-listed{% endif %}{% if notification.isShown %} ladb-shown{% endif %}" onclick="if (event.target.tagName != 'A' && $(event.target).parent().prop('tagName') != 'A' && event.button == 0) { document.location = '{{ path('core_notification_show', { 'id':notification.id }) }}'; }">
     <div class="media">
         <div class="media-left">
-            {% include 'Core/User:_avatar-link.part.html.twig' with { 'user':notification.activity.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}
+            {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':notification.activity.user, 'linkClasses':'ladb-avatar', 'noMicrodata':true, 'noLazyLoad':true } only %}
         </div>
         <div class="media-body ladb-box">
             <div class="media">
                 <div class="media-body">
-                    {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':notification.activity.user } %}{% if notification.isFolder %}{% set otherChildrenActivityUsers = notification.otherChildrenActivityUsers|length %}{% if otherChildrenActivityUsers > 0 %} et <a data-toggle="collapse" href="#ladb_notification_children_{{ notification.id }}">{{ otherChildrenActivityUsers }} {{ 'user.choice.other_users'|transchoice(otherChildrenActivityUsers) }}</a>{% endif %}{% endif %} <a href="{{ path('core_notification_show', { 'id':notification.id }) }}" class="ladb-body-link">{% block body %}{% endblock %}</a>
+                    {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':notification.activity.user } %}{% if notification.isFolder %}{% set otherChildrenActivityUsers = notification.otherChildrenActivityUsers|length %}{% if otherChildrenActivityUsers > 0 %} et <a data-toggle="collapse" href="#ladb_notification_children_{{ notification.id }}">{{ otherChildrenActivityUsers }} {{ 'user.choice.other_users'|transchoice(otherChildrenActivityUsers) }}</a>{% endif %}{% endif %} <a href="{{ path('core_notification_show', { 'id':notification.id }) }}" class="ladb-body-link">{% block body %}{% endblock %}</a>
                 </div>
                 <div class="media-right">
                     {% if not notification.isShown %}<span class="pull-right" data-tooltip="tooltip" title="{{ 'default.unviewed'|trans() }}"><i class="ladb-icon-bullet{% if notification.isChildrenShown %}-outline{% endif %} ladb-icon-lg" style="color: #f77f00;"></i></span>{% endif %}

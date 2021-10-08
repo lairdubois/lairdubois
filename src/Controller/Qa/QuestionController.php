@@ -690,7 +690,7 @@ class QuestionController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(

@@ -1,4 +1,4 @@
-{% extends 'Wonder/Workshop:_form.html.twig' %}
+{% extends 'Wonder/Workshop/_form.html.twig' %}
 
 {% set pageTitle = 'wonder.workshop.edit'|trans() %}
 {% set formAction = path('core_workshop_update', { 'id':workshop.id }) %}
@@ -14,7 +14,7 @@
 
 {% block sections %}
     {% if workshop.isDraft %}
-        {% include 'Wonder/Workshop:_draft-alert.part.html.twig' %}
+        {% include 'Wonder/Workshop/_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
 {% endblock %}

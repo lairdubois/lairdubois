@@ -45,7 +45,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_event_new")
-	 * @Template("Event/Event:new.html.twig")
+	 * @Template("Event/Event/new.html.twig")
 	 */
 	public function new(Request $request) {
 
@@ -64,7 +64,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_event_create")
-	 * @Template("Event/Event:new.html.twig")
+	 * @Template("Event/Event/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -181,7 +181,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_event_edit")
-	 * @Template("Event/Event:edit.html.twig")
+	 * @Template("Event/Event/edit.html.twig")
 	 */
 	public function edit($id) {
 
@@ -201,7 +201,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_event_update")
-	 * @Template("Event/Event:edit.html.twig")
+	 * @Template("Event/Event/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -296,7 +296,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_event_widget")
-	 * @Template("Event/Event:widget-xhr.html.twig")
+	 * @Template("Event/Event/widget-xhr.html.twig")
 	 */
 	public function widget($id) {
 
@@ -310,7 +310,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/location.geojson", name="core_event_location", defaults={"_format" = "json"})
-	 * @Template("Event/Event:location.geojson.twig")
+	 * @Template("Event/Event/location.geojson.twig")
 	 */
 	public function location($id) {
 
@@ -336,7 +336,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/card.xhr", name="core_event_card")
-	 * @Template("Event/Event:card-xhr.html.twig")
+	 * @Template("Event/Event/card-xhr.html.twig")
 	 */
 	public function card(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -356,7 +356,7 @@ class EventController extends AbstractController {
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_event_list_page")
 	 * @Route(".json", defaults={"_format" = "json", "page"=-1, "layout"="json"}, name="core_event_list_json")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_event_list_geojson")
-	 * @Template("Event/Event:list.html.twig")
+	 * @Template("Event/Event/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -574,7 +574,7 @@ class EventController extends AbstractController {
 		));
 
 		if ($layout == 'json') {
-			return $this->render('Event/Event:list-xhr.json.twig', $parameters);
+			return $this->render('Event/Event/list-xhr.json.twig', $parameters);
 		}
 
 		if ($layout == 'geojson') {
@@ -608,7 +608,7 @@ class EventController extends AbstractController {
 				'collection' => $collection,
 			));
 
-			return $this->render('Find/Find:list-xhr.geojson.twig', $parameters);
+			return $this->render('Find/Find/list-xhr.geojson.twig', $parameters);
 		}
 
 		// Dispatch publication event
@@ -616,7 +616,7 @@ class EventController extends AbstractController {
 		$dispatcher->dispatch(new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()), PublicationListener::PUBLICATIONS_LISTED);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Event/Event:list-xhr.html.twig', $parameters);
+			return $this->render('Event/Event/list-xhr.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateEventCount() > 0) {
@@ -634,7 +634,7 @@ class EventController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_event_show")
-	 * @Template("Event/Event:show.html.twig")
+	 * @Template("Event/Event/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

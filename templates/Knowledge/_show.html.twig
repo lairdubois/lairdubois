@@ -5,7 +5,7 @@
     <script>
         $(document).ready(function() {
             var updated = false;
-            setupPopovers();
+            LADBCommon.setupPopovers();
             $(document).on('updated.ladb', function(event) {
                 updated = true;
             });
@@ -32,8 +32,8 @@
 
 {% block contentBody %}
     {{ parent() }}
-    {% include 'Core/Vote:_modals.part.html.twig' %}
-    {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'proposals_modal', 'title':('knowledge.proposals'|trans()), 'classes':'modal-wide' } %}
+    {% include 'Core/Vote/_modals.part.html.twig' %}
+    {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'proposals_modal', 'title':('knowledge.proposals'|trans()), 'classes':'modal-wide' } %}
         {% block headerInner %}
             {{ 'default.loading'|trans() }}
         {% endblock %}

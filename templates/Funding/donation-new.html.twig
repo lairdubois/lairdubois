@@ -1,4 +1,4 @@
-{% extends 'Common/Modal:_modal-content.part.html.twig' %}
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
 
 {% set id = 'new_modal' %}
 {% set title = 'funding.donate'|trans() %}
@@ -41,7 +41,7 @@
                                     </div>
                                 </form>
                                 <p class="help-block text-center">
-                                    <small><em><i class="ladb-icon-lock ladb-icon-lg"></i> La transation est assurée par <a href="https://stripe.com"><img src="{{ asset('/bundles/ladbcore/ladb/images/logo-stripe.svg') }}" width="40px"></a>.</em></small>
+                                    <small><em><i class="ladb-icon-lock ladb-icon-lg"></i> La transation est assurée par <a href="https://stripe.com"><img src="{{ asset('/build/images/logo-stripe.svg') }}" width="40px"></a>.</em></small>
                                     <br>
                                     <small><em>Aucune donnée bancaire ne transite par le serveur de L'Air du Bois.</em></small>
                                 </p>

@@ -441,7 +441,7 @@ class CreationController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Howto/Howto:list-xhr.html.twig', $parameters);
+			return $this->render('Howto/Howto/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -517,7 +517,7 @@ class CreationController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Knowledge/Provider:list-xhr.html.twig', $parameters);
+			return $this->render('Knowledge/Provider/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -555,7 +555,7 @@ class CreationController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Knowledge/School:list-xhr.html.twig', $parameters);
+			return $this->render('Knowledge/School/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(

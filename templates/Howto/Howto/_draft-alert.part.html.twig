@@ -8,7 +8,7 @@
     {% if howto.publishedArticleCount > 0 %}
         {{ parent() }}
     {% else %}
-        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
             {% block bodyInner %}
                 <p>Pour être publié, le pas à pas <strong>{{ howto.title }}</strong> doit contenir au moins un article.</p>
                 <p>Editez le pas à pas pour ajouter des articles.</p>

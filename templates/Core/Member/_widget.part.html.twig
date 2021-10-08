@@ -3,7 +3,7 @@
 
 {% if is_granted('ROLE_USER') and app.user.meta.teamCount > 0 %}
     <a class="btn btn-default" onclick="$('#members_modal').modal({ remote:'{{ path('core_member_list_session_teams', { 'title-trans-key':titleTransKey, 'route':route }) }}'});"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ titleTransKey|trans() }}</span></a>
-    {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'members_modal', 'title':'<i class="ladb-icon-plus"></i>&nbsp;'~(titleTransKey|trans()), 'classes':'modal-infinit' } %}
+    {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'members_modal', 'title':'<i class="ladb-icon-plus"></i>&nbsp;'~(titleTransKey|trans()), 'classes':'modal-infinit' } %}
         {% block bodyInner %}
             {% include 'Common/_loading.part.html.twig' with { 'noHidden':true } %}
         {% endblock %}

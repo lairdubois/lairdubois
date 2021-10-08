@@ -43,7 +43,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_find_new")
-	 * @Template("Find/Find:new.html.twig")
+	 * @Template("Find/Find/new.html.twig")
 	 */
 	public function new(Request $request) {
 
@@ -62,7 +62,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_find_create")
-	 * @Template("Find/Find:new.html.twig")
+	 * @Template("Find/Find/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -181,7 +181,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_find_edit")
-	 * @Template("Find/Find:edit.html.twig")
+	 * @Template("Find/Find/edit.html.twig")
 	 */
 	public function edit($id) {
 
@@ -201,7 +201,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_find_update")
-	 * @Template("Find/Find:edit.html.twig")
+	 * @Template("Find/Find/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -311,7 +311,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_find_widget")
-	 * @Template("Find/Find:widget-xhr.html.twig")
+	 * @Template("Find/Find/widget-xhr.html.twig")
 	 */
 	public function widget($id) {
 
@@ -325,7 +325,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/location.geojson", name="core_find_location", defaults={"_format" = "json"})
-	 * @Template("Find/Find:location.geojson.twig")
+	 * @Template("Find/Find/location.geojson.twig")
 	 */
 	public function location($id) {
 
@@ -352,7 +352,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/card.xhr", name="core_find_card")
-	 * @Template("Find/Find:card-xhr.html.twig")
+	 * @Template("Find/Find/card-xhr.html.twig")
 	 */
 	public function card(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -379,7 +379,7 @@ class FindController extends AbstractController {
 	 * @Route("/", name="core_find_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_find_list_page")
 	 * @Route(".geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_find_list_geojson")
-	 * @Template("Find/Find:list.html.twig")
+	 * @Template("Find/Find/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0, $layout = 'view') {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -570,7 +570,7 @@ class FindController extends AbstractController {
 				'collection' => $collection,
 			));
 
-			return $this->render('Find/Find:list-xhr.geojson.twig', $parameters);
+			return $this->render('Find/Find/list-xhr.geojson.twig', $parameters);
 		}
 
 		// Dispatch publication event
@@ -578,7 +578,7 @@ class FindController extends AbstractController {
 		$dispatcher->dispatch(new PublicationsEvent($searchParameters['entities'], !$request->isXmlHttpRequest()), PublicationListener::PUBLICATIONS_LISTED);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Find/Find:list-xhr.html.twig', $parameters);
+			return $this->render('Find/Find/list-xhr.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateFindCount() > 0) {
@@ -596,7 +596,7 @@ class FindController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_find_show")
-	 * @Template("Find/Find:show.html.twig")
+	 * @Template("Find/Find/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

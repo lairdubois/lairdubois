@@ -1,4 +1,4 @@
-{% extends 'Common/Header:_entity-avatar-header.part.html.twig' %}
+{% extends 'Common/Header/_entity-avatar-header.part.html.twig' %}
 
 {# set entity #}
 {# set likeContext (facultative) #}
@@ -13,13 +13,13 @@
 {% block headerToolsInner %}
     {% block headerToolsButtons %}
         {% if likeContext is defined and permissionContext.likable %}
-            {% include 'Core/Like:_widget.part.html.twig' with { 'likeContext':likeContext, 'noTextOnMobile':permissionContext.editable } %}
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext, 'noTextOnMobile':permissionContext.editable } %}
         {% endif %}
         {% if permissionContext.editable and permissionContext.isGrantedOwner %}
             <a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span{% if permissionContext.likable %} class="ladb-hidden-mobile"{% endif %}> {{ 'default.edit'|trans() }}</span></a>
         {% endif %}
         {% if collectionContext is defined %}
-            {% include 'Collection/Collection:_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
+            {% include 'Collection/Collection/_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
         {% endif %}
     {% endblock %}
     <div class="btn-group">
@@ -38,7 +38,7 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="#share_modal" data-toggle="modal"><i class="ladb-icon-share"></i> {{ 'default.share'|trans() }}...</a></li>
                     {% if not permissionContext.isGrantedOwner %}
-                        <li>{% include 'Core/Report:_widget-item.part.html.twig' with { 'entityType':entity.type, 'entityId':entity.id } %}</li>
+                        <li>{% include 'Core/Report/_widget-item.part.html.twig' with { 'entityType':entity.type, 'entityId':entity.id } %}</li>
                     {% endif %}
                 {% endif %}
                 {% if watchContext is defined and watchContext is not null and permissionContext.isGrantedUser %}
@@ -64,7 +64,7 @@
 {% block headerInner %}
     {{ parent() }}
     {% if isPublic %}
-        {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
             {% use 'Common/Blocks/sharebuttons-widget.blocks.html.twig' %}
             {% block bodyInner %}
                 <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -85,7 +85,7 @@
     {% if permissionContext.isGrantedAdmin and authored %}
         {% block adminModals %}
             {% if isPublic %}
-                {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'unpublish_entity_modal', 'title':('default.unpublishing'|trans()) } %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'unpublish_entity_modal', 'title':('default.unpublishing'|trans()) } %}
                     {% block bodyInner %}
                         <p>La dépublication de <strong>{{ entity.title }}</strong> la rendra invisible pour les autres utilisateurs.</p>
                         <p>Confirmez l'action pour continuer.</p>

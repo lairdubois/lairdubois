@@ -282,7 +282,7 @@ class CollectionController extends AbstractCollectionBasedController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_collection_widget")
-	 * @Template("Collection/Collection:widget-xhr.html.twig")
+	 * @Template("Collection/Collection/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 
@@ -475,7 +475,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	/**
 	 * @Route("/available/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_list_available")
 	 * @Route("/available/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_available_page")
-	 * @Template("Collection/Collection:list-available-xhr.html.twig")
+	 * @Template("Collection/Collection/list-available-xhr.html.twig")
 	 */
 	public function listAvailable($entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -507,7 +507,7 @@ class CollectionController extends AbstractCollectionBasedController {
 		);
 
 		if ($page > 0) {
-			return $this->render('Collection/Collection:list-available-n-xhr.html.twig', $parameters);
+			return $this->render('Collection/Collection/list-available-n-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -516,7 +516,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	/**
 	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_list_byentity")
 	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_collection_list_byentity_page")
-	 * @Template("Collection/Collection:list-byentity.html.twig")
+	 * @Template("Collection/Collection/list-byentity.html.twig")
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -539,7 +539,7 @@ class CollectionController extends AbstractCollectionBasedController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Collection/Collection:list-byentity-n-xhr.html.twig', $parameters);
+			return $this->render('Collection/Collection/list-byentity-n-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;

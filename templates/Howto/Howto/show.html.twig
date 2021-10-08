@@ -103,7 +103,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header:_entity-show-header.part.html.twig' with { 'shareModalAddonTemplate':'Howto/Howto:_share-modal-addon.part.html.twig' } %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' with { 'shareModalAddonTemplate':'Howto/Howto/_share-modal-addon.part.html.twig' } %}
     {% endembed %}
 {% endblock %}
 
@@ -121,9 +121,9 @@
 
 {% block contentBody %}
     {% if howto.isDraft %}
-        {% include 'Howto/Howto:_draft-alert.part.html.twig' %}
+        {% include 'Howto/Howto/_draft-alert.part.html.twig' %}
     {% endif %}
-    {% include 'Howto/Howto:_wip-alert.part.html.twig' %}
+    {% include 'Howto/Howto/_wip-alert.part.html.twig' %}
     <div class="ladb-howto">
         {% include 'Core/Picture/_img-link.part.html.twig' with { 'picture':howto.mainPicture, 'width':'594', 'height':'294', 'alt':howto.title, 'noMicrodata':true } %}
         <div class="ladb-body">
@@ -163,7 +163,7 @@
                             {% if not howto.isDraft and not article.isDraft %}
                                 <a href="#share_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.share'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-share"></i><span class="ladb-hidden-mobile"> {{ 'default.share'|trans() }}</span></a>
                                 &nbsp;
-                                {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
+                                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'share_article_'~article.id~'_modal', 'title':('howto.article.share'|trans()) } %}
                                     {% use 'Common/Blocks/sharebuttons-widget.blocks.html.twig' %}
                                     {% block bodyInner %}
                                         <h4>{{ 'share.social.heading'|trans() }}</h4>
@@ -229,7 +229,7 @@
                             {% endif %}
                             {% if is_granted("ROLE_ADMIN") and not article.isDraft %}
                                 <a href="#unpublish_howto_article_{{ article.id }}_modal" class="btn btn-default btn-sm" data-toggle="modal" title="{{ 'howto.article.unpublish'|trans() }}" data-tooltip="tooltip"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
-                                {% embed 'Common/Modal:_modal.part.html.twig' with { 'id':'unpublish_howto_article_'~article.id~'_modal', 'title':('default.unpublishing'|trans()) } %}
+                                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'unpublish_howto_article_'~article.id~'_modal', 'title':('default.unpublishing'|trans()) } %}
                                     {% block bodyInner %}
                                         <p>La dépublication de l'article <strong>{{ article.title }}</strong> le rendra invisible des autres utilisateurs.</p>
                                         <p>Confirmez l'action pour continuer.</p>
@@ -263,7 +263,7 @@
             {{ block('manageArticlesShortcutBlock') }}
         {% endif %}
         <br/>
-        {% include 'Howto/Howto:_wip-alert.part.html.twig' %}
+        {% include 'Howto/Howto/_wip-alert.part.html.twig' %}
         {% if not permissionContext.isOwner %}
             {% include 'Common/_like-and-follow.part.html.twig' %}
         {% endif %}
@@ -339,7 +339,7 @@
                 <div class="panel-body text-center"><i class="ladb-icon-warning"></i> Les commentaires sont temporairement désactivés pour ce pas à pas.</div>
             </div>
         {% else %}
-            {% include 'Core/Comment:_widget.part.html.twig' %}
+            {% include 'Core/Comment/_widget.part.html.twig' %}
         {% endif %}
     </div>
 {% endblock %}
@@ -347,9 +347,9 @@
 {% block contentMetasPanel %}
     {% include 'Core/Spotlight:_spotlight-meta.part.html.twig' %}
     <div id="ladb_common_metas" class="ladb-metas">
-        {% include 'Core/Like:_meta-counter.part.html.twig' %}
-        {% include 'Core/View:_meta-counter.part.html.twig' %}
-        {% include 'Core/Comment:_meta-counter.part.html.twig' %}
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
         {% if howto.referralCount > 0 %}
             <div class="ladb-meta">
                 <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_referer_widget').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
@@ -361,7 +361,7 @@
     </div>
     <div class="ladb-metas">
         <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
-        {% include 'Collection/Collection:_meta-counter.part.html.twig' %}
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
         <div class="ladb-meta{% if howto.questionCount == 0 %} text-muted{% endif %}">
             <i class="ladb-icon-question ladb-icon-fixed-center"></i>
             {% if howto.questionCount > 0 %}
@@ -437,19 +437,19 @@
         </div>
     </div>
     {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':howto.tags, 'type':'howtos' } %}
-    {% include 'Core/License:_metas.part.html.twig' with { 'license':howto.license } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':howto.license } %}
 {% endblock %}
 
 {% block contentSuggests %}
     {% if userHowtos is not empty %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ ('howto.howto.other_from')|trans() }} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':howto.user, 'noMicrodata':true } %}
+                {{ ('howto.howto.other_from')|trans() }} {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':howto.user, 'noMicrodata':true } %}
             </div>
             <div class="panel-body row">
                 {% for userHowto in userHowtos %}
                     <div class="col-xs-6">
-                        {% include 'Howto/Howto:_thumbnail-link.part.html.twig' with { 'howto':userHowto } %}
+                        {% include 'Howto/Howto/_thumbnail-link.part.html.twig' with { 'howto':userHowto } %}
                     </div>
                 {% endfor %}
                 {% if howto.user.meta.publicHowtoCount > 2 %}
@@ -468,7 +468,7 @@
             <div class="panel-body row">
                 {% for similarHowto in similarHowtos %}
                     <div class="col-xs-6">
-                        {% include 'Howto/Howto:_thumbnail-link.part.html.twig' with { 'howto':similarHowto, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                        {% include 'Howto/Howto/_thumbnail-link.part.html.twig' with { 'howto':similarHowto, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}
             </div>

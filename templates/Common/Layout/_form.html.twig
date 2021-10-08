@@ -85,7 +85,7 @@
 {% block alertsInner %}
     {% if owner is defined and owner is not null and owner != app.user %}
         <div class="alert alert-info" style="line-height: 30px; height: 40px;">
-            Vous agissez en tant que {% include 'Core/User:_avatar.part.html.twig' with { 'user':owner, 'size':20 } %} {% include 'Core/User:_displayname-link.part.html.twig' with { 'user':owner, 'linkClasses':'alert-link', 'noBadge':true } %}
+            Vous agissez en tant que {% include 'Core/User/_avatar.part.html.twig' with { 'user':owner, 'size':20 } %} {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':owner, 'linkClasses':'alert-link', 'noBadge':true } %}
         </div>
     {% endif %}
     {{ parent() }}
