@@ -4,12 +4,12 @@ namespace App\Command;
 
 use App\Entity\Core\Picture;
 use App\Entity\Core\Resource;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanupUploadsCommand extends ContainerAwareCommand {
+class CleanupUploadsCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -143,6 +143,8 @@ EOT
 		} else {
 			$output->writeln('<info>'.count($unusedFiles).' files to remove</info>');
 		}
+
+        return Command::SUCCESS;
 
 	}
 

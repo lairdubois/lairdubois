@@ -6,7 +6,7 @@ use App\Entity\Core\Member;
 use App\Model\IdentifiableInterface;
 use App\Model\MentionSourceInterface;
 use App\Model\TypableInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +21,7 @@ use App\Model\WatchableChildInterface;
 use App\Model\PublicationInterface;
 use App\Utils\TypableUtils;
 
-class CronNotificationPopulateCommand extends ContainerAwareCommand {
+class CronNotificationPopulateCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -474,6 +474,8 @@ EOT
 			$om->flush();
 		}
 
+        return Command::SUCCESS;
+
 	}
 
 	/////
@@ -489,7 +491,7 @@ EOT
 		if (!is_null($values)) {
 			$data = array_merge($data, $values);
 		}
-		$hashids = new \Hashids\Hashids($this->getContainer()->getParameter('secret'), 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+		$hashids = new \Hashids\Hashids($this->getParameter('secret'), 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
 		return $hashids->encode($data);
 	}
 

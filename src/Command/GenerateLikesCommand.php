@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Model\AuthoredInterface;
 use App\Utils\TypableUtils;
 
-class GenerateLikesCommand extends ContainerAwareCommand {
+class GenerateLikesCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -88,6 +88,8 @@ EOT
 		if ($forced) {
 			$om->flush();
 		}
+
+        return Command::SUCCESS;
 
 	}
 

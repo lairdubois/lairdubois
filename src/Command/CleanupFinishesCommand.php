@@ -2,14 +2,14 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanupFinishesCommand extends ContainerAwareCommand {
+class CleanupFinishesCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -37,7 +37,7 @@ EOT
 		try {
 			$finishes = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		$finishCounters = array();
@@ -59,7 +59,7 @@ EOT
 		try {
 			$creations = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($creations as $creation) {
@@ -95,6 +95,8 @@ EOT
 		} else {
 			$output->writeln('<info>'.$unusedFinishCount.' finishes to remove</info>');
 		}
+
+        return Command::SUCCESS;
 	}
 
 }

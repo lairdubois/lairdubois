@@ -3,12 +3,12 @@
 namespace App\Command;
 
 use App\Entity\Core\Resource;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateResourcesKindsCommand extends ContainerAwareCommand {
+class GenerateResourcesKindsCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -128,6 +128,8 @@ EOT
 		if ($forced) {
 			$om->flush();
 		}
+
+        return Command::SUCCESS;
 
 	}
 

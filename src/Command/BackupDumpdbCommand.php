@@ -2,15 +2,13 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class BackupDumpdbCommand extends ContainerAwareCommand {
+class BackupDumpdbCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -37,11 +35,14 @@ EOT
 		$ignoreTable = $input->getOption('ignore-table');
 		$where = $input->getOption('where');
 
-		$dbHost = $this->getContainer()->getParameter('database_host');
-		$dbPort = $this->getContainer()->getParameter('database_port');
-		$dbUser = $this->getContainer()->getParameter('database_user');
-		$dbPassword = $this->getContainer()->getParameter('database_password');
-		$dbName = $this->getContainer()->getParameter('database_name');
+
+        $dbUri = $this->getParameter('doctrine_uri');
+        // Todo set parameters from doctrine url
+		$dbHost = '';
+		$dbPort = '';
+		$dbUser = '';
+		$dbPassword = '';
+		$dbName = '';
 		$sqlFile = date('Ymd_His').'.'.$dbName.(!is_null($table) ? '.'.$table : '').'.sql';
 		$fs = new Filesystem();
 
@@ -90,7 +91,7 @@ EOT
 				$fs->remove($sqlFile);
 			} else {
 				$output->writeln('<error>A previous dump already exists. Use --overwrite to overwrite it.</error>');
-				return;
+                return Command::FAILURE;
 			}
 		}
 
@@ -100,7 +101,7 @@ EOT
 		$output->writeln(' '.$mysqldumpCommand);
 		if (system($mysqldumpCommand) === false) {
 			$output->writeln('<error>Error executing mysqldump command.</error>');
-			return;
+			return Command::FAILURE;
 		}
 
 		if ($compress && $fs->exists($sqlFile)) {
@@ -115,13 +116,13 @@ EOT
 			$tarCommand = 'gzip < '.$sqlFile.' > '.$gzFile;
 			if (system($tarCommand) === false) {
 				$output->writeln('<error>Error executing gzip command.</error>');
-				return;
+                return Command::FAILURE;
 			}
 
 		}
 
 		$output->writeln('<info>Dump complete at </info>'.$sqlFile.($compress ? '<info> and </info>'.$gzFile : ''));
-
+        return Command::SUCCESS;
 	}
 
 }

@@ -3,13 +3,13 @@
 namespace App\Command;
 
 use App\Utils\FieldPreprocessorUtils;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Core\Block\Text;
 
-class MigrateFindsCommand extends ContainerAwareCommand {
+class MigrateFindsCommand extends AbstractCommand {
 
 	private $toTransferCommentables = array();
 	private $toTransferVotables = array();
@@ -71,6 +71,8 @@ EOT
 		if ($forced) {
 			$om->flush();
 		}
+
+        return Command::SUCCESS;
 
 	}
 

@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateHeightRatio100Command extends ContainerAwareCommand {
+class GenerateHeightRatio100Command extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -98,6 +98,8 @@ EOT
 		$progress->finish();
 
 		$output->writeln('<comment>[Finished]</comment>');
+
+        return Command::SUCCESS;
 
 	}
 

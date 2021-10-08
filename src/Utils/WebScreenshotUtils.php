@@ -16,6 +16,13 @@ class WebScreenshotUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.web_screenshot_utils';
 
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), array(
+            PictureManager::class => '?'.PictureManager::class,
+        ));
+    }
+
 	/////
 
 	public function captureToPicture($url, $width, $height, $clipWidth = 0, $clipHeight = 0, $waitBeforeCapture = 0 /* in seconds */) {

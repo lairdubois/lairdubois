@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7006565e23b58099b3d1fb1d1478fa41",
+    "content-hash": "ab854e8c93fec5c7df4b0ced4e482f30",
     "packages": [
         {
             "name": "apix/log",
@@ -508,38 +508,33 @@
         },
         {
             "name": "chrome-php/chrome",
-            "version": "v0.9.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/chrome-php/headless-chromium-php.git",
-                "reference": "801c715eb0b7880c916a93db15cae2f09b82eeb8"
+                "url": "https://github.com/chrome-php/chrome.git",
+                "reference": "ce6ceb5cb556cdbc1792b5d30e1506ab7c6a406a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chrome-php/headless-chromium-php/zipball/801c715eb0b7880c916a93db15cae2f09b82eeb8",
-                "reference": "801c715eb0b7880c916a93db15cae2f09b82eeb8",
+                "url": "https://api.github.com/repos/chrome-php/chrome/zipball/ce6ceb5cb556cdbc1792b5d30e1506ab7c6a406a",
+                "reference": "ce6ceb5cb556cdbc1792b5d30e1506ab7c6a406a",
                 "shasum": ""
             },
             "require": {
                 "apix/log": "^1.2",
+                "chrome-php/wrench": "^1.0",
                 "evenement/evenement": "^3.0.1",
-                "php": "^7.1.3 || ^8.0",
-                "psr/log": "^1.0",
-                "symfony/filesystem": "^3.3|^4.0|^5.0",
-                "symfony/process": "^3.3|^4.0|^5.0",
-                "wrench/wrench": "^2.0"
+                "php": "^7.3 || ^8.0",
+                "psr/log": "^1.1",
+                "symfony/filesystem": "^4.4 || ^5.0 || ^6.0",
+                "symfony/process": "^4.4 || ^5.0 || ^6.0"
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.4.1",
-                "phpunit/phpunit": "^7.5.20 || ^8.5.13 || ^9.5.0",
-                "symfony/var-dumper": "^3.3|^4.0|^5.0"
+                "phpunit/phpunit": "^9.5.9",
+                "symfony/var-dumper": "^4.4 || ^5.0 || ^6.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.9-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "HeadlessChromium\\": "src/"
@@ -547,19 +542,15 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Fair"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Soufiane Ghzal",
-                    "email": "sghzal@gmail.com"
-                },
-                {
                     "name": "Graham Campbell",
-                    "email": "graham@alt-three.com"
+                    "email": "hello@gjcampbell.co.uk"
                 }
             ],
-            "description": "Instrument headless chrome/chromium instances",
+            "description": "Instrument headless chrome/chromium instances from PHP",
             "keywords": [
                 "browser",
                 "chrome",
@@ -571,10 +562,65 @@
                 "screenshot"
             ],
             "support": {
-                "issues": "https://github.com/chrome-php/headless-chromium-php/issues",
-                "source": "https://github.com/chrome-php/headless-chromium-php/tree/v0.9.0"
+                "issues": "https://github.com/chrome-php/chrome/issues",
+                "source": "https://github.com/chrome-php/chrome/tree/v1.1.0"
             },
-            "time": "2020-12-09T13:14:13+00:00"
+            "time": "2021-09-26T14:59:14+00:00"
+        },
+        {
+            "name": "chrome-php/wrench",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chrome-php/wrench.git",
+                "reference": "ec3618dd06ec8ecf5842a600a70b6ea99477467f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chrome-php/wrench/zipball/ec3618dd06ec8ecf5842a600a70b6ea99477467f",
+                "reference": "ec3618dd06ec8ecf5842a600a70b6ea99477467f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sockets": "*",
+                "php": "^7.3 || ^8.0",
+                "psr/log": "^1.1",
+                "symfony/polyfill-php80": "^1.22"
+            },
+            "conflict": {
+                "wrench/wrench": "*"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.4.1",
+                "phpunit/phpunit": "^9.5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wrench\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graham Campbell",
+                    "email": "hello@gjcampbell.co.uk"
+                }
+            ],
+            "description": "A simple PHP WebSocket implementation",
+            "keywords": [
+                "WebSockets",
+                "hybi",
+                "websocket"
+            ],
+            "support": {
+                "issues": "https://github.com/chrome-php/wrench/issues",
+                "source": "https://github.com/chrome-php/wrench/tree/v1.0.0"
+            },
+            "time": "2021-08-15T10:52:04+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -4049,29 +4095,23 @@
         },
         {
             "name": "jublonet/codebird-php",
-            "version": "3.1.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jublonet/codebird-php.git",
-                "reference": "100a8e8f1928a5738b4476f0caf83f2c2ba6da5b"
+                "reference": "61115a6c048c84be5db8ad1e53dac91191f8721e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jublonet/codebird-php/zipball/100a8e8f1928a5738b4476f0caf83f2c2ba6da5b",
-                "reference": "100a8e8f1928a5738b4476f0caf83f2c2ba6da5b",
+                "url": "https://api.github.com/repos/jublonet/codebird-php/zipball/61115a6c048c84be5db8ad1e53dac91191f8721e",
+                "reference": "61115a6c048c84be5db8ad1e53dac91191f8721e",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "~1.0",
                 "ext-hash": "*",
                 "ext-json": "*",
-                "lib-openssl": "*",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=3.7",
-                "satooshi/php-coveralls": ">=0.6",
-                "squizlabs/php_codesniffer": "2.*"
+                "lib-openssl": "*"
             },
             "type": "library",
             "autoload": {
@@ -4097,8 +4137,8 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Easy access to the Twitter REST API, Collections API, Streaming API, TON (Object Nest) API and Twitter Ads API — all from one PHP library.",
-            "homepage": "https://www.jublo.net/projects/codebird/php",
+            "description": "A Twitter library in PHP.",
+            "homepage": "http://www.jublo.net/projects/codebird/php",
             "keywords": [
                 "api",
                 "networking",
@@ -4109,7 +4149,7 @@
                 "issues": "https://github.com/jublonet/codebird-php/issues",
                 "source": "https://github.com/jublonet/codebird-php/releases"
             },
-            "time": "2016-02-15T18:38:55+00:00"
+            "time": "2014-12-13T17:07:05+00:00"
         },
         {
             "name": "knplabs/knp-time-bundle",
@@ -13320,73 +13360,6 @@
                 "source": "https://github.com/geocoder-php/php-common/tree/4.4.0"
             },
             "time": "2020-12-21T09:30:01+00:00"
-        },
-        {
-            "name": "wrench/wrench",
-            "version": "v2.0.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/varspool/Wrench.git",
-                "reference": "db89efbece7e8b7649e3bdd01f8133d2812163f1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/varspool/Wrench/zipball/db89efbece7e8b7649e3bdd01f8133d2812163f1",
-                "reference": "db89efbece7e8b7649e3bdd01f8133d2812163f1",
-                "shasum": ""
-            },
-            "require": {
-                "ext-sockets": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0",
-                "squizlabs/php_codesniffer": "*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Wrench": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "WTFPL"
-            ],
-            "authors": [
-                {
-                    "name": "Dominic Scheirlinck",
-                    "email": "dominic@varspool.com",
-                    "homepage": "http://www.somethingemporium.com/"
-                },
-                {
-                    "name": "Simon Samtleben",
-                    "email": "web@lemmingzshadow.net",
-                    "homepage": "http://lemmingzshadow.net/"
-                },
-                {
-                    "name": "Nico Kaiser",
-                    "email": "nico@kaiser.me",
-                    "homepage": "http://siriux.net/"
-                }
-            ],
-            "description": "PHP WebSocket client/server library",
-            "homepage": "http://github.com/varspool/Wrench",
-            "keywords": [
-                "WebSockets",
-                "hybi",
-                "websocket"
-            ],
-            "support": {
-                "issues": "https://github.com/varspool/Wrench/issues",
-                "source": "https://github.com/varspool/Wrench/tree/v2.0.11"
-            },
-            "time": "2020-06-09T13:10:49+00:00"
         }
     ],
     "packages-dev": [
@@ -13703,6 +13676,7 @@
     "platform": {
         "php": ">=7.4",
         "ext-ctype": "*",
+        "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*"
     },

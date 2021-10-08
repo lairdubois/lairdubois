@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Core\Member;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +14,7 @@ use App\Entity\Core\Spotlight;
 use App\Utils\MailerUtils;
 use App\Utils\TypableUtils;
 
-class CronSpotlightCommand extends ContainerAwareCommand {
+class CronSpotlightCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -275,21 +275,23 @@ EOT
 
 		}
 
+        return Command::SUCCESS;
+
 	}
 
 	private function _publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output) {
 
 		$success = false;
-		$status = $this->getContainer()->get('templating')->render('Command:_cron-spotlight-twitter-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$status = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-twitter-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		$mediaIds = '';
 		if ($verbose) {
 			$output->writeln('<info>Posting to Twitter (<fg=yellow>'.$status.'</fg=yellow>) ...</info>');
 		}
 
-		$consumerKey = $this->getContainer()->getParameter('twitter_consumer_key');
-		$consumerSecret = $this->getContainer()->getParameter('twitter_consumer_secret');
-		$accessToken = $this->getContainer()->getParameter('twitter_access_token');
-		$accessTokenSecret = $this->getContainer()->getParameter('twitter_access_secret');
+		$consumerKey = $this->getParameter('twitter_consumer_key');
+		$consumerSecret = $this->getParameter('twitter_consumer_secret');
+		$accessToken = $this->getParameter('twitter_access_token');
+		$accessTokenSecret = $this->getParameter('twitter_access_secret');
 
 		// Setup CodeBird
 		\Codebird\Codebird::setConsumerKey($consumerKey, $consumerSecret);
@@ -347,16 +349,16 @@ EOT
 	private function _publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output) {
 
 		$success = true;
-		$message = $this->getContainer()->get('templating')->render('Command:_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
-		$link = $this->getContainer()->get('templating')->render('Command:_cron-spotlight-facebook-link.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$message = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$link = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-facebook-link.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		if ($verbose) {
 			$output->writeln('<info>Posting to Facebook (<fg=yellow>'.$message.' '.$link.'</fg=yellow>) ...</info>');
 		}
 
-		$appId = $this->getContainer()->getParameter('facebook_app_id');
-		$appSecret = $this->getContainer()->getParameter('facebook_app_secret');
-		$pageId = $this->getContainer()->getParameter('facebook_page_id');
-		$accessToken = $this->getContainer()->getParameter('facebook_access_token');
+		$appId = $this->getParameter('facebook_app_id');
+		$appSecret = $this->getParameter('facebook_app_secret');
+		$pageId = $this->getParameter('facebook_page_id');
+		$accessToken = $this->getParameter('facebook_access_token');
 
 		try {
 
@@ -407,13 +409,13 @@ EOT
 
 	private function _publishOnMastodon($spotlight, $entity, $forced, $forcedMastodon, $verbose, $output) {
 
-		$status = $this->getContainer()->get('templating')->render('Command:_cron-spotlight-mastodon-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$status = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-mastodon-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		if ($verbose) {
 			$output->writeln('<info>Posting to Mastodon (<fg=yellow>'.$status.'</fg=yellow>) ...</info>');
 		}
 
-		$mastodonInstance = $this->getContainer()->getParameter('mastodon_instance');
-		$accessToken = $this->getContainer()->getParameter('mastodon_access_token');
+		$mastodonInstance = $this->getParameter('mastodon_instance');
+		$accessToken = $this->getParameter('mastodon_access_token');
 
 		$headers = array(
 			'Authorization: Bearer '.$accessToken,

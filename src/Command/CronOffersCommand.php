@@ -9,7 +9,7 @@ use App\Entity\Wonder\Creation;
 use App\Manager\Offer\OfferManager;
 use App\Model\StripableInterface;
 use App\Utils\WebScreenshotUtils;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +20,7 @@ use App\Utils\TypableUtils;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
-class CronOffersCommand extends ContainerAwareCommand {
+class CronOffersCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -142,6 +142,8 @@ EOT
 		if ($forced) {
 			$om->flush();
 		}
+
+        return Command::SUCCESS;
 
 	}
 }

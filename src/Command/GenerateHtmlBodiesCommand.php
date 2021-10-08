@@ -5,13 +5,13 @@ namespace App\Command;
 use App\Model\BlockBodiedInterface;
 use App\Model\BodiedInterface;
 use App\Utils\FieldPreprocessorUtils;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\BlockBodiedUtils;
 
-class GenerateHtmlBodiesCommand extends ContainerAwareCommand {
+class GenerateHtmlBodiesCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -87,6 +87,8 @@ EOT
 		} else {
 			$output->writeln('<info>'.$entityCount.' to generate</info>');
 		}
+
+        return Command::SUCCESS;
 
 	}
 

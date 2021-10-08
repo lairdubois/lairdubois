@@ -2,14 +2,14 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanupWoodsCommand extends ContainerAwareCommand {
+class CleanupWoodsCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -37,7 +37,7 @@ EOT
 		try {
 			$woods = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		$woodCounters = array();
@@ -59,7 +59,7 @@ EOT
 		try {
 			$creations = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($creations as $creation) {
@@ -95,6 +95,8 @@ EOT
 		} else {
 			$output->writeln('<info>'.$unusedWoodCount.' woods to remove</info>');
 		}
+
+        return Command::SUCCESS;
 	}
 
 }

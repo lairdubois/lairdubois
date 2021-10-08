@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\Core\Comment;
 use App\Entity\Qa\Answer;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +14,7 @@ use App\Utils\MailerUtils;
 use App\Utils\TypableUtils;
 use App\Model\WatchableChildInterface;
 
-class CronNotificationEmailCommand extends ContainerAwareCommand {
+class CronNotificationEmailCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -89,7 +89,7 @@ EOT
 			$typableUtils = $this->getContainer()->get(TypableUtils::class);
 			$mailerUtils = $this->getContainer()->get(MailerUtils::class);
 			$translator = $this->getContainer()->get('translator');
-			$templating = $this->getContainer()->get('templating');
+			$templating = $this->getContainer()->get('twig');
 
 			$rows = array();
 
@@ -300,6 +300,8 @@ EOT
 		if ($forced) {
 			$om->flush();
 		}
+
+        return Command::SUCCESS;
 
 	}
 

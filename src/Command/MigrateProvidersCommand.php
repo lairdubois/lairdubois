@@ -8,14 +8,14 @@ use App\Utils\CommentableUtils;
 use App\Utils\KnowledgeUtils;
 use App\Utils\PropertyUtils;
 use App\Utils\VotableUtils;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateProvidersCommand extends ContainerAwareCommand {
+class MigrateProvidersCommand extends AbstractCommand {
 
 	private $toTransferCommentables = array();
 	private $toTransferVotables = array();
@@ -152,6 +152,8 @@ EOT
 		if ($forced) {
 			$om->flush();
 		}
+
+        return Command::SUCCESS;
 
 	}
 

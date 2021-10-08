@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +14,7 @@ use App\Entity\Wonder\Plan;
 use App\Entity\Wonder\Workshop;
 use App\Entity\Blog\Post;
 
-class CleanupTagsCommand extends ContainerAwareCommand {
+class CleanupTagsCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -43,7 +43,7 @@ EOT
 		try {
 			$tags = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		$tagCounters = array();
@@ -65,7 +65,7 @@ EOT
 		try {
 			$creations = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($creations as $creation) {
@@ -89,7 +89,7 @@ EOT
 		try {
 			$plans = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($plans as $plan) {
@@ -113,7 +113,7 @@ EOT
 		try {
 			$workshops = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($workshops as $workshop) {
@@ -137,7 +137,7 @@ EOT
 		try {
 			$howtos = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($howtos as $howto) {
@@ -161,7 +161,7 @@ EOT
 		try {
 			$finds = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($finds as $find) {
@@ -185,7 +185,7 @@ EOT
 		try {
 			$posts = $queryBuilder->getQuery()->getResult();
 		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
+			return Command::FAILURE;
 		}
 
 		foreach ($posts as $post) {
@@ -241,6 +241,8 @@ EOT
 			$output->writeln('<info>'.$unusedTagCount.' tags to remove</info>');
 			$output->writeln('<info>'.$unusedTagUsageCount.' tagUsages to remove</info>');
 		}
+
+        return Command::SUCCESS;
 	}
 
 }

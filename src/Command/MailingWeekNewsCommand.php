@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\MailerUtils;
 
-class MailingWeekNewsCommand extends ContainerAwareCommand {
+class MailingWeekNewsCommand extends AbstractCommand {
 
 	use LockableTrait;
 
@@ -432,6 +432,8 @@ EOT
 			$output->writeln('<comment>[Finished]</comment>');
 
 		}
+
+        return Command::SUCCESS;
 
 	}
 

@@ -23,6 +23,9 @@
     "chrome-php/chrome": {
         "version": "v0.9.0"
     },
+    "chrome-php/wrench": {
+        "version": "v1.0.0"
+    },
     "clue/stream-filter": {
         "version": "v1.5.0"
     },
@@ -30,7 +33,7 @@
         "version": "v1.2.0"
     },
     "composer/installers": {
-        "version": "v1.10.0"
+        "version": "v1.12.0"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
@@ -203,7 +206,7 @@
         "version": "1.0.2"
     },
     "jublonet/codebird-php": {
-        "version": "3.1.0"
+        "version": "2.6.1"
     },
     "knplabs/knp-time-bundle": {
         "version": "v1.16.1"
@@ -799,8 +802,5 @@
     },
     "willdurand/geocoder": {
         "version": "4.4.0"
-    },
-    "wrench/wrench": {
-        "version": "v2.0.11"
     }
 }

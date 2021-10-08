@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,7 +16,7 @@ use App\Model\PicturedInterface;
 use App\Utils\PicturedUtils;
 use App\Utils\VideoHostingUtils;
 
-class CronSitemapsCommand extends ContainerAwareCommand {
+class CronSitemapsCommand extends AbstractCommand {
 
 	private $exportedVideosIdentifiers;
 
@@ -148,7 +148,7 @@ EOT
 
 		/////
 
-		$templating = $this->getContainer()->get('templating');
+		$templating = $this->getContainer()->get('twig');
 
 		if ($verbose) {
 			$output->write('<info>Building index sitemap...</info>');
@@ -160,13 +160,13 @@ EOT
 			$sitemaps[] = $this->_getEntitySitemap($def['className'], $def['section']);
 		}
 
-		$data = $templating->render('Command:_cron-sitemap-index.xml.twig', array(
+		$data = $templating->render('Command/_cron-sitemap-index.xml.twig', array(
 			'sitemaps' => $sitemaps,
 		));
 
 		if ($forced) {
 
-			$filename = dirname(__FILE__).'/../../../../web/sitemap-index.xml';
+			$filename = dirname(__FILE__).'/../../public/sitemap-index.xml';
 
 			if ($verbose) {
 				$output->write('<info> -> Wrinting '.$filename.' file...</info>');
@@ -185,18 +185,18 @@ EOT
 			}
 		}
 
-
+        return Command::SUCCESS;
 	}
 
 	private function _createSitemapFile($entityClassName, $entityName, $section, $forced, $verbose, OutputInterface $output, $slugged = true) {
-		$templating = $this->getContainer()->get('templating');
+		$templating = $this->getContainer()->get('twig');
 
 		if ($verbose) {
 			$output->writeln('<info>Building '.$section.' sitemap...</info>');
 		}
 
 		$urls = $this->_getEntityUrls($entityClassName, $entityName, $forced, $verbose, $output, $slugged);
-		$data = $templating->render('Command:_cron-sitemap-entities.xml.twig', array(
+		$data = $templating->render('Command/_cron-sitemap-entities.xml.twig', array(
 			'urls' => $urls,
 		));
 
@@ -204,7 +204,7 @@ EOT
 
 		if ($forced) {
 
-			$filename = dirname(__FILE__).'/../../../../web/sitemap-'.$section.'.xml';
+			$filename = dirname(__FILE__).'/../../public/sitemap-'.$section.'.xml';
 
 			if ($verbose) {
 				$output->write('<info> -> Wrinting '.$filename.' file...</info>');
@@ -222,6 +222,8 @@ EOT
 				$output->writeln('<comment> [Fake]</comment>');
 			}
 		}
+
+        return Command::SUCCESS;
 
 	}
 

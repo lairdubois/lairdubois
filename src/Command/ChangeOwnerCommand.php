@@ -13,14 +13,14 @@ use App\Model\HiddableInterface;
 use App\Model\MultiPicturedInterface;
 use App\Model\PublicationInterface;
 use App\Utils\TypableUtils;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ChangeOwnerCommand extends ContainerAwareCommand {
+class ChangeOwnerCommand extends AbstractCommand {
 
 	protected function configure() {
 		$this
@@ -52,7 +52,7 @@ EOT
 
 		if (is_null($targetUser)) {
 			$output->writeln('<error>Unknow unsername='.$targetUsername.'</error>', 0);
-			return;
+			return Command::FAILURE;
 		}
 
 		// Retrieve creation ////
@@ -73,6 +73,8 @@ EOT
 		} else {
 			$output->writeln('<fg=cyan>[Fake]</fg=cyan>');
 		}
+
+        return Command::SUCCESS;
 
 	}
 
