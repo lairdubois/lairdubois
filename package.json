@@ -16,7 +16,9 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "autosize": "^4",
         "blueimp-file-upload": "blueimp/jquery-file-upload",
+        "blueimp-gallery": "^1",
         "bootstrap": "3",
         "bootstrap-markdown": "^2.10.0",
         "clndr": "^1.5.1",
@@ -39,13 +41,15 @@
         "jquery-ui": "^1.12.1",
         "jquery.panzoom": "^3.2.3",
         "jqueryui": "^1.11.1",
+        "jscroll": "^2.3",
         "lazyloadxt": "^1.1.0",
         "leaflet": "^1.7.1",
         "less": "^4.1.2",
         "less-loader": "^8",
-        "masonry": "^0.0.2",
+        "modernizr": "3.6",
         "sass": "^1.42.1",
         "sass-loader": "^11",
         "uikit": "^2.7"
-    }
+    },
+    "version": "0.0.0"
 }

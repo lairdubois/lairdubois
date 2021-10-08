@@ -1,0 +1,10 @@
+{
+  "name": "masonry",
+  "repo": "components/masonry",
+  "description": "Cascading grid layout library",
+  "version": "3.2.2",
+  "scripts": ["masonry.pkgd.js"],
+  "files": ["masonry.pkgd.min.js"],
+  "license": "MIT",
+  "main": "masonry.pkgd.js"
+}
