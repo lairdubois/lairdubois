@@ -23,6 +23,9 @@
     "chrome-php/chrome": {
         "version": "v0.9.0"
     },
+    "clue/stream-filter": {
+        "version": "v1.5.0"
+    },
     "commerceguys/addressing": {
         "version": "v1.2.0"
     },
@@ -121,6 +124,9 @@
     "elasticsearch/elasticsearch": {
         "version": "v6.7.2"
     },
+    "emojione/emojione": {
+        "version": "4.5.0"
+    },
     "evenement/evenement": {
         "version": "v3.0.1"
     },
@@ -153,6 +159,12 @@
     },
     "gedmo/doctrine-extensions": {
         "version": "v3.0.3"
+    },
+    "geocoder-php/common-http": {
+        "version": "4.4.0"
+    },
+    "geocoder-php/google-maps-provider": {
+        "version": "4.6.0"
     },
     "giggsey/libphonenumber-for-php": {
         "version": "8.12.20"
@@ -258,6 +270,24 @@
             "src/Consumer/.gitignore"
         ]
     },
+    "php-http/discovery": {
+        "version": "1.14.1"
+    },
+    "php-http/guzzle6-adapter": {
+        "version": "v2.0.2"
+    },
+    "php-http/httplug": {
+        "version": "2.2.0"
+    },
+    "php-http/message": {
+        "version": "1.12.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "1.1.0"
+    },
     "phpseclib/phpseclib": {
         "version": "3.0.6"
     },
@@ -272,6 +302,9 @@
     },
     "psr/event-dispatcher": {
         "version": "1.0.0"
+    },
+    "psr/http-client": {
+        "version": "1.0.1"
     },
     "psr/http-message": {
         "version": "1.0.1"
@@ -448,6 +481,9 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
+    },
+    "symfony/http-client": {
+        "version": "v5.3.8"
     },
     "symfony/http-client-contracts": {
         "version": "v2.3.1"

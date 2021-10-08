@@ -239,7 +239,7 @@
                 }
                 $(this).find("[id$=sortIndex]").val(index);
             });
-            setupTooltips();
+            LADBCommon.setupTooltips();
             LADBCommon.setupTextareas();
         },
 

@@ -43,7 +43,7 @@
                     var $newRow = $(data);
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
-                    setupTooltips();
+                    LADBCommon.setupTooltips();
                     LADBCommon.lazyLoadReset($newRow);
                 }
             },
@@ -79,7 +79,7 @@
                     $row.insertBefore($rowNew);
                     $('ul.alert-danger', $new).remove();
                     $('.ladb-form-gallery-section', $new).collapse('hide');
-                    setupTooltips();
+                    LADBCommon.setupTooltips();
                     LADBCommon.lazyLoadReset($row);
                     $new.ladbScrollTo();
                     $('textarea', $new).focus();
@@ -180,7 +180,7 @@
         this.bind();
 
         // Setup tooltips
-        setupTooltips();
+        LADBCommon.setupTooltips();
 
         // Setup textearea
         LADBCommon.setupTextareas();

@@ -14,7 +14,7 @@ var LADBValues = (function () {
                     } else if ($(data)[i].tagName == "DIV") {
                         $(".ladb-page").replaceWith($(data)[i]);
                         $('.ladb-comment-widget').ladbCommentWidget();
-                        setupTooltips();
+                        LADBCommon.setupTooltips();
                         setupPopovers();
                         $(document).trigger("updated.ladb");
                         UIkit.notify("Proposition ajoutée !", {
@@ -44,7 +44,7 @@ var LADBValues = (function () {
                 } else {
                     $("#ladb_value_proposal_" + id).replaceWith(data);
                     $('.ladb-comment-widget').ladbCommentWidget();
-                    setupTooltips();
+                    LADBCommon.setupTooltips();
                     setupPopovers();
                     $(document).trigger("updated.ladb");
                 }
@@ -83,7 +83,7 @@ var LADBValues = (function () {
                 $(".ladb-page").replaceWith($(data));
                 $('.ladb-comment-widget').ladbCommentWidget();
                 //bindNewCommentAjaxForm();
-                setupTooltips();
+                LADBCommon.setupTooltips();
                 setupPopovers();
                 $(document).trigger("updated.ladb");
                 UIkit.notify("Proposition supprimée !", {
@@ -105,7 +105,7 @@ var LADBValues = (function () {
             success: function(data, textStatus, jqXHR) {
                 $(".ladb-page").replaceWith($(data));
                 $('.ladb-comment-widget').ladbCommentWidget();
-                setupTooltips();
+                LADBCommon.setupTooltips();
                 setupPopovers();
                 $(document).trigger("updated.ladb");
                 UIkit.notify("Proposition déplacée !", {

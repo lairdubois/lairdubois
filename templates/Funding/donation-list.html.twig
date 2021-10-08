@@ -1,4 +1,4 @@
-{% extends 'Funding:_layout.html.twig' %}
+{% extends 'Funding/_layout.html.twig' %}
 
 {% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
 
@@ -16,7 +16,7 @@
 {% block bodyContainerContent %}
     <div class="row">
         <div class="col-sm-5 col-sm-push-7 col-xs-12">
-            {% include 'Funding:_list-stats.part.html.twig' %}
+            {% include 'Funding/_list-stats.part.html.twig' %}
         </div>
         <div class="col-sm-7 col-sm-pull-5 col-xs-12">
             {% embed 'Common/_list-filterbar.part.html.twig' with { 'classes':'ladb-filterbar-line' } %}
@@ -34,5 +34,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Funding:_donation-list-n.part.html.twig' %}
+    {% include 'Funding/_donation-list-n.part.html.twig' %}
 {% endblock %}

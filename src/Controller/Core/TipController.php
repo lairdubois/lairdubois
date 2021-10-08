@@ -28,7 +28,7 @@ class TipController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_tip_new")
-	 * @Template("Core/Tip:new.html.twig")
+	 * @Template("Core/Tip/new.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_TIP')", statusCode=404, message="Not allowed (core_tip_new)")
 	 */
 	public function new() {
@@ -43,7 +43,7 @@ class TipController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_tip_create")
-	 * @Template("Core/Tip:new.html.twig")
+	 * @Template("Core/Tip/new.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_TIP')", statusCode=404, message="Not allowed (core_tip_create)")
 	 */
 	public function create(Request $request) {
@@ -84,7 +84,7 @@ class TipController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_tip_edit")
-	 * @Template("Core/Tip:edit.html.twig")
+	 * @Template("Core/Tip/edit.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_TIP')", statusCode=404, message="Not allowed (core_tip_edit)")
 	 */
 	public function edit($id) {
@@ -106,7 +106,7 @@ class TipController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_tip_update")
-	 * @Template("Core/Tip:edit.html.twig")
+	 * @Template("Core/Tip/edit.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_TIP')", statusCode=404, message="Not allowed (core_tip_update)")
 	 */
 	public function update(Request $request, $id) {
@@ -177,7 +177,7 @@ class TipController extends AbstractController {
 	/**
 	 * @Route("/", name="core_tip_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_tip_list_page")
-	 * @Template("Core/Tip:list.html.twig")
+	 * @Template("Core/Tip/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -244,7 +244,7 @@ class TipController extends AbstractController {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Tip:list-xhr.html.twig', $parameters);
+			return $this->render('Core/Tip/list-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -252,7 +252,7 @@ class TipController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_tip_show")
-	 * @Template("Core/Tip:show.html.twig")
+	 * @Template("Core/Tip/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

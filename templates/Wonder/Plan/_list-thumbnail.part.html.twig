@@ -1,4 +1,4 @@
-{% extends 'Wonder:_wonder-list-thumbnail.part.html.twig' %}
+{% extends 'Wonder/_wonder-list-thumbnail.part.html.twig' %}
 
 {% set wonder = plan %}
 
@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block entityMetas %}
-    {% include 'Wonder/Plan:_linkto-entity-metas.part.html.twig' %}
+    {% include 'Wonder/Plan/_linkto-entity-metas.part.html.twig' %}
     {{ parent() }}
     {% if wonder.downloadCount > 0 %}
         <li class="ladb-counter"><i class="ladb-icon-unpublish"></i> <span>{{ wonder.downloadCount|number_format(0, ',', ' ') }}</span></li>

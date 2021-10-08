@@ -49,7 +49,7 @@
                     var $newRow = $(data);
                     $row.replaceWith($newRow);
                     that.bindRow($newRow.first());
-                    setupTooltips();
+                    LADBCommon.setupTooltips();
                     LADBCommon.lazyLoadReset($newRow);
                 }
             },
@@ -285,7 +285,7 @@
                     $('ul.alert-danger', $new).remove();
                     $('.ladb-form-gallery-section', $new).collapse('hide');
                     that.bindRow($row.first());
-                    setupTooltips();
+                    LADBCommon.setupTooltips();
                     LADBCommon.lazyLoadReset($row);
                 }
                 $('[type=submit]', $new).button('reset');

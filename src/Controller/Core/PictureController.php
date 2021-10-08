@@ -22,6 +22,13 @@ class PictureController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), array(
+            PictureUploadHandler::class => '?'.PictureUploadHandler::class,
+        ));
+    }
+
 	private function assertEditableGranted(Picture $picture, $context = '') {
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {

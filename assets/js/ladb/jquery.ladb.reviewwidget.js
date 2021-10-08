@@ -62,7 +62,7 @@
 
         });
 
-        setupTooltips();
+        LADBCommon.setupTooltips();
 
     };
 

@@ -1,4 +1,4 @@
-{% extends 'Funding:_infos-xhr.html.twig' %}
+{% extends 'Funding/_infos-xhr.html.twig' %}
 
 {% set title = 'funding.charge_balance'|trans() %}
 
@@ -14,7 +14,7 @@
             {% endif %}
         </tr>
         {% for charge in funding.charges %}
-            {% include 'Funding:_charge-row.part.html.twig' %}
+            {% include 'Funding/_charge-row.part.html.twig' %}
         {% endfor %}
     </table>
     {% if is_granted('ROLE_ADMIN') %}

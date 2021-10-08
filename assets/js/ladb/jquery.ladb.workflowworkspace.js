@@ -437,7 +437,7 @@
             }
         }
 
-        setupTooltips();
+        LADBCommon.setupTooltips();
         setupPopovers();
 
     };

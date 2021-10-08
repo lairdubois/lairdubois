@@ -315,7 +315,7 @@
                         masonryWide: options.masonryWide
                     });
 
-                    setupTooltips();
+                    LADBCommon.setupTooltips();
 
                     if (!noPushState) {
 

@@ -37,7 +37,7 @@ class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_faq_question_new")
-	 * @Template("Faq/Question:new.html.twig")
+	 * @Template("Faq/Question/new.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_new)")
 	 */
 	public function new(Request $request) {
@@ -56,7 +56,7 @@ class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_faq_question_create")
-	 * @Template("Faq/Question:new.html.twig")
+	 * @Template("Faq/Question/new.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_create)")
 	 */
 	public function create(Request $request) {
@@ -173,7 +173,7 @@ class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_faq_question_edit")
-	 * @Template("Faq/Question:edit.html.twig")
+	 * @Template("Faq/Question/edit.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_edit)")
 	 */
 	public function edit($id) {
@@ -194,7 +194,7 @@ class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_faq_question_update")
-	 * @Template("Faq/Question:edit.html.twig")
+	 * @Template("Faq/Question/edit.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FAQ')", statusCode=404, message="Not allowed (core_faq_question_update)")
 	 */
 	public function update(Request $request, $id) {
@@ -275,7 +275,7 @@ class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_faq_question_widget")
-	 * @Template("Faq/Question:widget-xhr.html.twig")
+	 * @Template("Faq/Question/widget-xhr.html.twig")
 	 */
 	public function widget($id) {
 
@@ -298,7 +298,7 @@ class QuestionController extends AbstractController {
 	/**
 	 * @Route("/", name="core_faq_question_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_faq_question_list_page")
-	 * @Template("Faq/Question:list.html.twig")
+	 * @Template("Faq/Question/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -440,7 +440,7 @@ class QuestionController extends AbstractController {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Faq/Question:list-xhr.html.twig', $parameters);
+			return $this->render('Faq/Question/list-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -448,7 +448,7 @@ class QuestionController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", requirements={"slug" = "[a-z-]+"}, name="core_faq_question_show")
-	 * @Template("Faq/Question:show.html.twig")
+	 * @Template("Faq/Question/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

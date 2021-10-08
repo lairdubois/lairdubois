@@ -16,7 +16,7 @@ class AboutController extends AbstractController {
 	 * @Route("/", name="core_about")
 	 */
 	public function about() {
-		$response = $this->forward('App\Entity\Core/About:faq');
+		$response = $this->forward('App\Entity\Core/About/faq');
 		return $response;
 	}
 
@@ -29,7 +29,7 @@ class AboutController extends AbstractController {
 
 	/**
 	 * @Route("/mentions-legales.html", name="core_about_legals")
-	 * @Template("Core/About:legals.html.twig")
+	 * @Template("Core/About/legals.html.twig")
 	 */
 	public function legals() {
 		return array();
@@ -37,7 +37,7 @@ class AboutController extends AbstractController {
 
 	/**
 	 * @Route("/credits.html", name="core_about_credits")
-	 * @Template("Core/About:credits.html.twig")
+	 * @Template("Core/About/credits.html.twig")
 	 */
 	public function credits() {
 		$credits = array(

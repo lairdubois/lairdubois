@@ -337,7 +337,7 @@ class WorkshopController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Plan:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Plan/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -382,7 +382,7 @@ class WorkshopController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Plan:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Plan/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -420,7 +420,7 @@ class WorkshopController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Plan:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Plan/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(

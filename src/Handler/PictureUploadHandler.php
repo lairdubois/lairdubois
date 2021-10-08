@@ -7,20 +7,17 @@ use App\Manager\Core\PictureManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use App\Entity\Core\Picture;
+use Symfony\Component\Security\Core\Security;
 
-require_once(__DIR__.'/../../node_modules/blueimp-file-upload/server/php/UploadHandler.php');
-
-class PictureUploadHandler extends \UploadHandler {
+class PictureUploadHandler extends BaseUploadHandler {
 
 	const NAME = 'ladb_core.picture_upload_handler';
 
 	private $om;
-	private $tokenStorage;
 	private $pictureManager;
 
-	function __construct(ManagerRegistry $om, TokenStorage $tokenStorage, PictureManager $pictureManager) {
-		$this->om = $om;
-		$this->tokenStorage = $tokenStorage;
+	function __construct(ManagerRegistry $om, PictureManager $pictureManager) {
+		$this->om = $om->getManager();
 		$this->pictureManager = $pictureManager;
 	}
 
@@ -102,7 +99,7 @@ class PictureUploadHandler extends \UploadHandler {
 		if (parent::validate($uploaded_file, $file, $error, $index, $content_range)) {
 
 			list($img_width, $img_height) = $this->get_image_size($uploaded_file);
-			$minSize = $this->options['quality'] == Picture::QUALITY_HD ? Picture::QUALITY_HD_MIN_SIZE : $this->options['quality'] == Picture::QUALITY_SD ? Picture::QUALITY_SD_MIN_SIZE : Picture::QUALITY_LD_MIN_SIZE;
+			$minSize = $this->options['quality'] == Picture::QUALITY_HD ? Picture::QUALITY_HD_MIN_SIZE : ($this->options['quality'] == Picture::QUALITY_SD ? Picture::QUALITY_SD_MIN_SIZE : Picture::QUALITY_LD_MIN_SIZE);
 
 			// Check image size
 			if ($img_width < $minSize) {

@@ -22,7 +22,7 @@ class GraphicUtils extends AbstractContainerAwareUtils {
 		if ($zip->open($zipAbsolutePath, \ZipArchive::CREATE)) {
 
 			$zip->addFile($graphic->getResource()->getAbsolutePath(), $graphic->getResource()->getFilename());
-			$zip->addFromString('LisezMoi.txt', $this->get('templating')->render('Promotion/Graphic:readme.txt.twig', array( 'graphic' => $graphic )));
+			$zip->addFromString('LisezMoi.txt', $this->get('templating')->render('Promotion/Graphic/readme.txt.twig', array( 'graphic' => $graphic )));
 			$zip->close();
 			$graphic->setZipArchiveSize(filesize($zipAbsolutePath));
 

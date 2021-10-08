@@ -2,7 +2,7 @@
 /public/uploads
 /.idea/
 /bundles/
-
+/uploads
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

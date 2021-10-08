@@ -1,4 +1,4 @@
-{% extends 'Faq/Question:_form.html.twig' %}
+{% extends 'Faq/Question/_form.html.twig' %}
 
 {% set pageTitle = 'faq.question.edit'|trans() %}
 {% set formAction = path('core_faq_question_update', { 'id':question.id }) %}
@@ -14,7 +14,7 @@
 
 {% block sections %}
     {% if question.isDraft %}
-        {% include 'Faq/Question:_draft-alert.part.html.twig' %}
+        {% include 'Faq/Question/_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
 {% endblock %}

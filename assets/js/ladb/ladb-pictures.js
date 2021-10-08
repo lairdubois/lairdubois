@@ -76,14 +76,14 @@ var LADBPictures = (function () {
             dropZone: "#" + options.formSection + "_dropzone",
             messages: {
                 acceptFileTypes: "Type de fichier non accepté (JPEG et PNG seulement)",
-                maxFileSize: "Le fichier est trop volumineux (max " + formatFileSize(options.maxFileSize) + ")"
+                maxFileSize: "Le fichier est trop volumineux (max " + LADBCommon.formatFileSize(options.maxFileSize) + ")"
             },
             processstart: function(e) {
                 fileupload.find(".progress").first().show();
             },
             processfail: function (e, data) {
                 var file = data.files[data.index];
-                notifyFileError(file.name, file.error);
+                LADBCommon.notifyFileError(file.name, file.error);
             },
             send: function (e, data) {
                 if ($("#" + options.formSection + "_thumbnails li.ladb-picture").length >= options.maxPictureCount) {
@@ -97,7 +97,7 @@ var LADBPictures = (function () {
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     if (file.error) {
-                        notifyFileError(file.name, file.error);
+                        LADBCommon.notifyFileError(file.name, file.error);
                     } else {
                         $(options.thumnailTemplate
                             .replace(new RegExp("000", 'g'), file.id)
@@ -109,7 +109,7 @@ var LADBPictures = (function () {
             },
             fail: function (e, data) {
                 if (data.textStatus != undefined) {
-                    notifyError(data.textStatus);
+                    LADBCommon.notifyError(data.textStatus);
                 }
             },
             stop: function (e) {
@@ -119,7 +119,7 @@ var LADBPictures = (function () {
                 if (options.sortable) {
                     $("#" + options.formSection + "_thumbnails").sortable("refresh").sortable("refreshPositions");
                 }
-                setupTooltips();
+                LADBCommon.setupTooltips();
             }
         })
             .prop('disabled', !$.support.fileInput)

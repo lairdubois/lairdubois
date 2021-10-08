@@ -8,9 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use App\Entity\Core\Picture;
 use App\Entity\Core\Resource;
 
-require_once(__DIR__.'/../../node_modules/blueimp-file-upload/server/php/UploadHandler.php');
-
-class ResourceUploadHandler extends \UploadHandler {
+class ResourceUploadHandler extends BaseUploadHandler {
 
 	const NAME = 'ladb_core.resource_upload_handler';
 
@@ -47,7 +45,7 @@ class ResourceUploadHandler extends \UploadHandler {
 			$fileAbsolutePath = $this->options['upload_dir'].$file->name;
 			$fileExtension = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;
-			$resourceAbsolutePath = __DIR__.'/../../../../uploads/'.$resourcePath;
+			$resourceAbsolutePath = __DIR__.'/../../uploads/'.$resourcePath;
 
 			// Rename uploaded file to generated uniqid and move it from tmp to uploads folder
 			rename($fileAbsolutePath, $resourceAbsolutePath);

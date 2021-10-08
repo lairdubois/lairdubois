@@ -14,7 +14,7 @@
             {% endif %}
         </div>
     {% else %}
-        {% embed 'Promotion/Graphic:_list-filterbar.part.html.twig' %}
+        {% embed 'Promotion/Graphic/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_user_show_graphics_filter' %}
             {% set filterPathParameters = { 'username':user.usernameCanonical } %}
             {% set customFilterDefs = {
@@ -37,5 +37,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Promotion/Graphic:_list-n.part.html.twig' %}
+    {% include 'Promotion/Graphic/_list-n.part.html.twig' %}
 {% endblock %}

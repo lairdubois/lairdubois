@@ -69,7 +69,7 @@ class PlanUtils {
 			foreach ($plan->getResources() as $resource) {
 				$zip->addFile($resource->getAbsolutePath(), $resource->getFilename());
 			}
-			$zip->addFromString('LisezMoi.txt', $this->templating->render('Wonder/Plan:readme.txt.twig', array( 'plan' => $plan )));
+			$zip->addFromString('LisezMoi.txt', $this->templating->render('Wonder/Plan/readme.txt.twig', array( 'plan' => $plan )));
 			$zip->close();
 			$plan->setZipArchiveSize(filesize($zipAbsolutePath));
 

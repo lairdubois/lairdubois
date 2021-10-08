@@ -73,7 +73,7 @@
         });
 
         $('.ladb-comment-widget', $row).ladbCommentWidget();
-        setupTooltips();
+        LADBCommon.setupTooltips();
         setupPopovers();
 
     };

@@ -61,7 +61,7 @@
                 if (data.events) {
                     that.clndr.setEvents(data.events);
                 }
-                setupTooltips();
+                LADBCommon.setupTooltips();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);

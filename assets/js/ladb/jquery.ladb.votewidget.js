@@ -23,7 +23,7 @@
 
     LadbVoteWidget.prototype.replaceWidgetWith = function(data) {
         this.$element.replaceWith(data);
-        setupTooltips();
+        LADBCommon.setupTooltips();
         setupPopovers();
         $(document).trigger('updated.ladb');
     };

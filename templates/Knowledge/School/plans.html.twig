@@ -24,7 +24,7 @@
                 Liste des plans pour lesquels leurs auteurs ont associé l'école <a href="{{ ladb_entity_url_action(school) }}">{{ school.title }}</a>.
             </div>
         </div>
-        {% embed 'Wonder/Plan:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Plan/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_school_plans_filter' %}
             {% set filterPathParameters = { 'id':school.id } %}
             {% block filterbarRightContent%}
@@ -36,5 +36,5 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Wonder/Plan:_list-n.part.html.twig' %}
+    {% include 'Wonder/Plan/_list-n.part.html.twig' %}
 {% endblock %}

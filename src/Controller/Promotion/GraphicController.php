@@ -40,7 +40,7 @@ class GraphicController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_promotion_graphic_new")
-	 * @Template("Promotion/Graphic:new.html.twig")
+	 * @Template("Promotion/Graphic/new.html.twig")
 	 */
 	public function new(Request $request) {
 
@@ -58,7 +58,7 @@ class GraphicController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_promotion_graphic_create")
-	 * @Template("Promotion/Graphic:new.html.twig")
+	 * @Template("Promotion/Graphic/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -178,7 +178,7 @@ class GraphicController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_promotion_graphic_edit")
-	 * @Template("Promotion/Graphic:edit.html.twig")
+	 * @Template("Promotion/Graphic/edit.html.twig")
 	 */
 	public function edit($id) {
 
@@ -198,7 +198,7 @@ class GraphicController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_promotion_graphic_update")
-	 * @Template("Promotion/Graphic:edit.html.twig")
+	 * @Template("Promotion/Graphic/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -295,7 +295,7 @@ class GraphicController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_promotion_graphic_widget")
-	 * @Template("Promotion/Graphic:widget-xhr.html.twig")
+	 * @Template("Promotion/Graphic/widget-xhr.html.twig")
 	 */
 	public function widget($id) {
 
@@ -350,7 +350,7 @@ class GraphicController extends AbstractController {
 	/**
 	 * @Route("/", name="core_promotion_graphic_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_promotion_graphic_list_page")
-	 * @Template("Promotion/Graphic:list.html.twig")
+	 * @Template("Promotion/Graphic/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -504,7 +504,7 @@ class GraphicController extends AbstractController {
 		));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Promotion/Graphic:list-xhr.html.twig', $parameters);
+			return $this->render('Promotion/Graphic/list-xhr.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivateGraphicCount() > 0) {
@@ -522,7 +522,7 @@ class GraphicController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_promotion_graphic_show")
-	 * @Template("Promotion/Graphic:show.html.twig")
+	 * @Template("Promotion/Graphic/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

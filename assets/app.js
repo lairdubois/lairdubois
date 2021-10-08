@@ -12,20 +12,28 @@ import 'jquery-ui/ui/effect';
 import 'jquery-ui/ui/effects/effect-highlight';
 import 'jquery-ui/ui/widgets/droppable';
 import 'jquery-ui/ui/disable-selection';
-import 'jquery-autocomplete';
+import 'devbridge-autocomplete';
 import 'jquery-textcomplete';
 import 'jquery-lazy';
 import 'jquery-sticky';
+import 'jquery.scrollto';
 import 'jscroll';
+import moment from 'moment';
+global.moment = moment;
+// Todo retrieve only needed bootstrap components
 import 'bootstrap';
-import 'bootstrap-markdown/js/bootstrap-markdown';
 import 'eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker';
 import 'uikit';
+import 'uikit/src/js/components/notify';
 import 'readmore.js'
+import 'blueimp-file-upload';
+import 'emojionearea';
 
 // Old vendors not working properly with webpack encore1
+import './js/bootstrap-markdown/bootstrap-markdown-v1';
 import './js/modernizr/modernizr-custom';
 import './js/masonry/masonry.pkgd';
+import './js/infinite/collections';
 
 // Internal libs
 import './js/ladb/jquery.ladb.appendscrolltotopbtn';

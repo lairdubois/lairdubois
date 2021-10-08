@@ -1,4 +1,4 @@
-{% extends 'Promotion/Graphic:_form.html.twig' %}
+{% extends 'Promotion/Graphic/_form.html.twig' %}
 
 {% set pageTitle = 'promotion.graphic.edit'|trans() %}
 {% set formAction = path('core_promotion_graphic_update', { 'id':graphic.id }) %}
@@ -14,7 +14,7 @@
 
 {% block sections %}
     {% if graphic.isDraft %}
-        {% include 'Promotion/Graphic:_draft-alert.part.html.twig' %}
+        {% include 'Promotion/Graphic/_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
 {% endblock %}

@@ -157,7 +157,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de nouveau don',
-			$this->_renderTemplate('App\Entity\Funding:donation-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'donation' => $donation ))
+			$this->_renderTemplate('App\Entity\Funding/donation-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'donation' => $donation ))
 		);
 	}
 
@@ -169,8 +169,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			$recipientUser->getEmail(),
 			'Confirmation du paiement de votre don',
-			$this->_renderTemplate('App\Entity\Funding:payment-receipt-email.txt.twig', $parameters),
-			$this->_renderTemplate('App\Entity\Funding:payment-receipt-email.html.twig', $parameters)
+			$this->_renderTemplate('App\Entity\Funding/payment-receipt-email.txt.twig', $parameters),
+			$this->_renderTemplate('App\Entity\Funding/payment-receipt-email.html.twig', $parameters)
 		);
 		unset($parameters);
 	}

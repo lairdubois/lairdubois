@@ -36,7 +36,7 @@
                     $masonryInner.masonry('appended', items);
                 }
                 LADBCommon.lazyLoadReset($masonryInner);
-                setupTooltips();
+                LADBCommon.setupTooltips();
             }
         });
         if (this.options.masonry) {

@@ -26,10 +26,17 @@ use App\Utils\MailerUtils;
  */
 class FundingController extends AbstractController {
 
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), array(
+            FundingManager::class => '?'.FundingManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/", name="core_funding_dashboard")
 	 * @Route("/{year}/{month}", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_dashboard_year_month")
-	 * @Template("Funding:dashboard.html.twig")
+	 * @Template("Funding/dashboard.html.twig")
 	 */
 	public function dashboard(Request $request, $year = null, $month = null) {
 		$om = $this->getDoctrine()->getManager();
@@ -66,7 +73,7 @@ class FundingController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Funding:dashboard-xhr.html.twig', $parameters);
+			return $this->render('Funding/dashboard-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;
@@ -74,7 +81,6 @@ class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/{year}/{month}/infos/{panel}.xhr", requirements={"year" = "\d+", "month" = "\d+", "panel"="[a-z-]+"}, name="core_funding_infos")
-	 * @Template("Funding:infos-charge-balance.html.twig")
 	 */
 	public function infos(Request $request, $year = null, $month = null, $panel = null) {
 		if (!$request->isXmlHttpRequest()) {
@@ -100,13 +106,13 @@ class FundingController extends AbstractController {
 
 		switch ($panel) {
 			case 'charge-balance':
-				return $this->render('Funding:infos-charge-balance-xhr.html.twig', $parameters);
+				return $this->render('Funding/infos-charge-balance-xhr.html.twig', $parameters);
 			case 'donation-fee-balance':
-				return $this->render('Funding:infos-donation-fee-balance-xhr.html.twig', $parameters);
+				return $this->render('Funding/infos-donation-fee-balance-xhr.html.twig', $parameters);
 			case 'carried-forward-balance':
-				return $this->render('Funding:infos-carried-forward-balance-xhr.html.twig', $parameters);
+				return $this->render('Funding/infos-carried-forward-balance-xhr.html.twig', $parameters);
 			case 'donation-balance':
-				return $this->render('Funding:infos-donation-balance-xhr.html.twig', $parameters);
+				return $this->render('Funding/infos-donation-balance-xhr.html.twig', $parameters);
 		}
 
 		throw $this->createNotFoundException('Unknow infos panel (panel='.$panel.').');
@@ -114,7 +120,7 @@ class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/{year}/{month}/admin/charge/new", requirements={"year" = "\d+", "month" = "\d+"}, name="core_funding_admin_charge_new")
-	 * @Template("Funding:charge-new-xhr.html.twig")
+	 * @Template("Funding/charge-new-xhr.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_new)")
 	 */
 	public function chargeNew(Request $request, $year = null, $month = null) {
@@ -141,7 +147,7 @@ class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/{year}/{month}/admin/charge/create", requirements={"year" = "\d+", "month" = "\d+"}, methods={"POST"}, name="core_funding_admin_charge_create")
-	 * @Template("Funding:charge-new-xhr.html.twig")
+	 * @Template("Funding/charge-new-xhr.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_create)")
 	 */
 	public function chargeCreate(Request $request, $year = null, $month = null) {
@@ -173,7 +179,7 @@ class FundingController extends AbstractController {
 
 			$om->flush();
 
-			return $this->render('Funding:charge-create-xhr.html.twig', array(
+			return $this->render('Funding/charge-create-xhr.html.twig', array(
 				'charge' => $charge,
 			));
 		}
@@ -186,7 +192,7 @@ class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/admin/charge/{id}/edit", requirements={"id" = "\d+"}, name="core_funding_admin_charge_edit")
-	 * @Template("Funding:charge-edit-xhr.html.twig")
+	 * @Template("Funding/charge-edit-xhr.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_edit)")
 	 */
 	public function chargeEdit(Request $request, $id) {
@@ -212,7 +218,7 @@ class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/admin/charge/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_funding_admin_charge_update")
-	 * @Template("Funding:charge-update-xhr.html.twig")
+	 * @Template("Funding/charge-update-xhr.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_update)")
 	 */
 	public function chargeUpdate(Request $request, $id) {
@@ -245,7 +251,7 @@ class FundingController extends AbstractController {
 
 			$om->flush();
 
-			return $this->render('Funding:charge-update-xhr.html.twig', array(
+			return $this->render('Funding/charge-update-xhr.html.twig', array(
 				'charge' => $charge,
 			));
 		}
@@ -258,7 +264,7 @@ class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/admin/charge/{id}/delete", requirements={"id" = "\d+"}, name="core_funding_admin_charge_delete")
-	 * @Template("Funding:charge-delete-xhr.html.twig")
+	 * @Template("Funding/charge-delete-xhr.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN')", statusCode=404, message="Not allowed (core_funding_admin_charge_delete)")
 	 */
 	public function chargeDelete(Request $request, $id) {
@@ -291,7 +297,7 @@ class FundingController extends AbstractController {
 
 	/**
 	 * @Route("/donation/new", name="core_funding_donation_new")
-	 * @Template("Funding:donation-new.html.twig")
+	 * @Template("Funding/donation-new.html.twig")
 	 */
 	public function donationNew(Request $request) {
 
@@ -375,7 +381,7 @@ class FundingController extends AbstractController {
 
 		return new JsonResponse(array(
 			'success' => true,
-			'content' => $this->get('templating')->render('Funding:donation-confirmed.html.twig', array(
+			'content' => $this->get('templating')->render('Funding/donation-confirmed.html.twig', array(
 				'amountEur' => $amount / 100,
 			)),
 		));
@@ -498,7 +504,7 @@ class FundingController extends AbstractController {
 	/**
 	 * @Route("/donateurs", name="core_funding_donors")
 	 * @Route("/donateurs/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_donors_page")
-	 * @Template("Funding:donors.html.twig")
+	 * @Template("Funding/donors.html.twig")
 	 */
 	public function donors(Request $request, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -518,7 +524,7 @@ class FundingController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Funding:donors-xhr.html.twig', $parameters);
+			return $this->render('Funding/donors-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 
@@ -528,7 +534,7 @@ class FundingController extends AbstractController {
 	 * @Route("/mes-dons", name="core_funding_user_donation_list")
 	 * @Route("/mes-dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_user_donation_list_filter")
 	 * @Route("/mes-dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_user_donation_list_filter_page")
-	 * @Template("Funding:user-donation-list.html.twig")
+	 * @Template("Funding/user-donation-list.html.twig")
 	 */
 	public function userDonationList(Request $request, $filter = 'recent', $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -551,7 +557,7 @@ class FundingController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Funding:user-donation-list-xhr.html.twig', $parameters);
+			return $this->render('Funding/user-donation-list-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 
@@ -561,7 +567,7 @@ class FundingController extends AbstractController {
 	 * @Route("/admin/dons", name="core_funding_admin_donation_list")
 	 * @Route("/admin/dons/{filter}", requirements={"filter" = "\w+"}, name="core_funding_admin_donation_list_filter")
 	 * @Route("/admin/dons/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_funding_admin_donation_list_filter_page")
-	 * @Template("Funding:donation-list.html.twig")
+	 * @Template("Funding/donation-list.html.twig")
 	 */
 	public function donationList(Request $request, $filter = 'recent', $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -593,7 +599,7 @@ class FundingController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Funding:donation-list-xhr.html.twig', $parameters);
+			return $this->render('Funding/donation-list-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 

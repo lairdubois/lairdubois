@@ -9,10 +9,21 @@ use CommerceGuys\Addressing\Formatter\DefaultFormatter;
 use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use App\Model\LocalisableExtendedInterface;
 use App\Model\LocalisableInterface;
+use Geocoder\Provider\GoogleMaps\GoogleMaps;
+use Geocoder\Query\GeocodeQuery;
+use Http\Adapter\Guzzle6\Client;
+use Psr\Log\LoggerInterface;
 
 class LocalisableUtils extends AbstractContainerAwareUtils {
 
 	const NAME = 'ladb_core.localisable_utils';
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), array(
+            'logger' => '?'.LoggerInterface::class,
+        ));
+    }
 
 	/////
 
@@ -20,12 +31,11 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 		if (!is_null($localisable->getLocation())) {
 
 			$googleApiKey = $this->getParameter('google_api_key');
-			$adapter  = new \Ivory\HttpAdapter\CurlHttpAdapter();
-			$geocoder = new \Geocoder\Provider\GoogleMaps($adapter, null, null, true, $googleApiKey);
-			$geocoder->setLocale('fr_FR');
+			$adapter  = new Client();
+			$geocoder = new GoogleMaps($adapter, 'France', $googleApiKey);
 
 			try {
-				$response = $geocoder->geocode($localisable->getLocation());
+				$response = $geocoder->geocodeQuery(GeocodeQuery::create($localisable->getLocation()));
 			} catch (\Exception $e) {
 				$this->get('logger')->error($e);
 				return false;
@@ -36,8 +46,8 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 				$address = $response->first();
 
 				// Location
-				$localisable->setLatitude($address->getLatitude());
-				$localisable->setLongitude($address->getLongitude());
+				$localisable->setLatitude($address->getCoordinates()->getLatitude());
+				$localisable->setLongitude($address->getCoordinates()->getLongitude());
 
 				if ($localisable instanceof LocalisableExtendedInterface) {
 
@@ -98,7 +108,7 @@ class LocalisableUtils extends AbstractContainerAwareUtils {
 
 					$a = new Address();
 
-					$a = $a->withCountryCode($address->getCountryCode());
+					$a = $a->withCountryCode($address->getCountry()->getCode());
 					if ($address->getStreetNumber() && $address->getStreetName()) {
 						$a = $a->withAddressLine1($address->getStreetNumber().' '.$address->getStreetName());
 					} else if ($address->getStreetName()) {

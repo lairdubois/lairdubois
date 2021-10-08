@@ -1,4 +1,4 @@
-import autosize from 'autosize';
+import autosize from '../autosize/autosize';
 
 var LADBCommon = (function () {
 

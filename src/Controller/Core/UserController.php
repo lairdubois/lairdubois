@@ -1035,7 +1035,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Plan:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Plan/list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(
@@ -1313,7 +1313,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Promotion/Graphic:list-xhr.html.twig', $parameters);
+			return $this->render('Promotion/Graphic/list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(

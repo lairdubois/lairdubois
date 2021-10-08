@@ -24,7 +24,7 @@
 {% set sbImage = url('core_'~wonderType~'_strip', { 'id':wonder.id }) %} {# use Strip as shared image #}
 
 {% block bodyHeaderContainerContent %}
-    {% embed 'Common/Header/_entity-show-header.part.html.twig' with { 'shareModalAddonTemplate':'Wonder:_wonder-share-modal-addon.part.html.twig' } %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' with { 'shareModalAddonTemplate':'Wonder/_wonder-share-modal-addon.part.html.twig' } %}
         {% block adminItems %}
             {{ parent() }}
             {% if wonderType == 'creation' %}
@@ -205,7 +205,7 @@
             <div class="panel-body row">
                 {% for userWonder in userWonders %}
                     <div class="col-xs-6">
-                        {% include 'Wonder:_wonder-thumbnail-link.part.html.twig' with { 'wonder':userWonder } %}
+                        {% include 'Wonder/_wonder-thumbnail-link.part.html.twig' with { 'wonder':userWonder } %}
                     </div>
                 {% endfor %}
                 {% if attribute(wonder.user.meta, 'public'~(wonderType|capitalize)~'Count') > 2 %}
@@ -224,7 +224,7 @@
             <div class="panel-body row">
                 {% for similarWonder in similarWonders %}
                     <div class="col-xs-6">
-                        {% include 'Wonder:_wonder-thumbnail-link.part.html.twig' with { 'wonder':similarWonder, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                        {% include 'Wonder/_wonder-thumbnail-link.part.html.twig' with { 'wonder':similarWonder, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
                     </div>
                 {% endfor %}
             </div>

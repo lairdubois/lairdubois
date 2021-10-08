@@ -50,7 +50,7 @@ class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/new", name="core_plan_new")
-	 * @Template("Wonder/Plan:new.html.twig")
+	 * @Template("Wonder/Plan/new.html.twig")
 	 */
 	public function new(Request $request) {
 
@@ -68,7 +68,7 @@ class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_plan_create")
-	 * @Template("Wonder/Plan:new.html.twig")
+	 * @Template("Wonder/Plan/new.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -192,7 +192,7 @@ class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_plan_edit")
-	 * @Template("Wonder/Plan:edit.html.twig")
+	 * @Template("Wonder/Plan/edit.html.twig")
 	 */
 	public function edit($id) {
 
@@ -212,7 +212,7 @@ class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_plan_update")
-	 * @Template("Wonder/Plan:edit.html.twig")
+	 * @Template("Wonder/Plan/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -360,7 +360,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/questions", requirements={"id" = "\d+"}, name="core_plan_questions")
 	 * @Route("/{id}/questions/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_questions_filter")
 	 * @Route("/{id}/questions/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_questions_filter_page")
-	 * @Template("Wonder/Plan:questions.html.twig")
+	 * @Template("Wonder/Plan/questions.html.twig")
 	 */
 	public function questions(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -398,7 +398,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/pas-a-pas", requirements={"id" = "\d+"}, name="core_plan_howtos")
 	 * @Route("/{id}/pas-a-pas/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_howtos_filter")
 	 * @Route("/{id}/pas-a-pas/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_howtos_filter_page")
-	 * @Template("Wonder/Plan:howtos.html.twig")
+	 * @Template("Wonder/Plan/howtos.html.twig")
 	 */
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -436,7 +436,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/creations", requirements={"id" = "\d+"}, name="core_plan_creations")
 	 * @Route("/{id}/creations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_creations_filter")
 	 * @Route("/{id}/creations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_creations_filter_page")
-	 * @Template("Wonder/Plan:creations.html.twig")
+	 * @Template("Wonder/Plan/creations.html.twig")
 	 */
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -474,7 +474,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/processus", requirements={"id" = "\d+"}, name="core_plan_workflows")
 	 * @Route("/{id}/processus/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_workflows_filter")
 	 * @Route("/{id}/processus/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_workflows_filter_page")
-	 * @Template("Wonder/Plan:workflows.html.twig")
+	 * @Template("Wonder/Plan/workflows.html.twig")
 	 */
 	public function workflows(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -512,7 +512,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/ateliers", requirements={"id" = "\d+"}, name="core_plan_workshops")
 	 * @Route("/{id}/ateliers/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_workshops_filter")
 	 * @Route("/{id}/ateliers/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_workshops_filter_page")
-	 * @Template("Wonder/Plan:workshops.html.twig")
+	 * @Template("Wonder/Plan/workshops.html.twig")
 	 */
 	public function workshops(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -550,7 +550,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/ecoles", requirements={"id" = "\d+"}, name="core_plan_schools")
 	 * @Route("/{id}/ecoles/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_schools_filter")
 	 * @Route("/{id}/ecoles/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_schools_filter_page")
-	 * @Template("Wonder/Plan:schools.html.twig")
+	 * @Template("Wonder/Plan/schools.html.twig")
 	 */
 	public function schools(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -588,7 +588,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/inspirations", requirements={"id" = "\d+"}, name="core_plan_inspirations")
 	 * @Route("/{id}/inspirations/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_inspirations_filter")
 	 * @Route("/{id}/inspirations/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_inspirations_filter_page")
-	 * @Template("Wonder/Plan:inspirations.html.twig")
+	 * @Template("Wonder/Plan/inspirations.html.twig")
 	 */
 	public function inspirations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -614,7 +614,7 @@ class PlanController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Plan:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Plan/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -626,7 +626,7 @@ class PlanController extends AbstractController {
 	 * @Route("/{id}/rebonds", requirements={"id" = "\d+"}, name="core_plan_rebounds")
 	 * @Route("/{id}/rebonds/{filter}", requirements={"id" = "\d+", "filter" = "[a-z-]+"}, name="core_plan_rebounds_filter")
 	 * @Route("/{id}/rebonds/{filter}/{page}", requirements={"id" = "\d+", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_plan_rebounds_filter_page")
-	 * @Template("Wonder/Plan:rebounds.html.twig")
+	 * @Template("Wonder/Plan/rebounds.html.twig")
 	 */
 	public function rebounds(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -652,7 +652,7 @@ class PlanController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Wonder/Plan:list-xhr.html.twig', $parameters);
+			return $this->render('Wonder/Plan/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(
@@ -735,7 +735,7 @@ class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_plan_widget")
-	 * @Template("Wonder/Plan:widget-xhr.html.twig")
+	 * @Template("Wonder/Plan/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -761,7 +761,7 @@ class PlanController extends AbstractController {
 	/**
 	 * @Route("/", name="core_plan_list")
 	 * @Route("/{page}", requirements={"page" = "\d+"}, name="core_plan_list_page")
-	 * @Template("Wonder/Plan:list.html.twig")
+	 * @Template("Wonder/Plan/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0) {
 		$searchUtils = $this->get(SearchUtils::class);
@@ -987,14 +987,14 @@ class PlanController extends AbstractController {
 
 		if ($request->isXmlHttpRequest()) {
 			if ($layout == 'choice') {
-				return $this->render('Wonder/Plan:list-choice-xhr.html.twig', $parameters);
+				return $this->render('Wonder/Plan/list-choice-xhr.html.twig', $parameters);
 			} else {
-				return $this->render('Wonder/Plan:list-xhr.html.twig', $parameters);
+				return $this->render('Wonder/Plan/list-xhr.html.twig', $parameters);
 			}
 		}
 
 		if ($layout == 'choice') {
-			return $this->render('Wonder/Plan:list-choice.html.twig', $parameters);
+			return $this->render('Wonder/Plan/list-choice.html.twig', $parameters);
 		}
 
 		if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') && $this->getUser()->getMeta()->getPrivatePlanCount() > 0) {
@@ -1012,7 +1012,7 @@ class PlanController extends AbstractController {
 
 	/**
 	 * @Route("/{id}.html", name="core_plan_show")
-	 * @Template("Wonder/Plan:show.html.twig")
+	 * @Template("Wonder/Plan/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
