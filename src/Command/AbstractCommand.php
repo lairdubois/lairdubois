@@ -22,7 +22,7 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class AbstractCommand extends Command implements ServiceSubscriberInterface {
+abstract class AbstractCommand extends Command implements ServiceSubscriberInterface {
 
     protected ContainerInterface $container;
 
