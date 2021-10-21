@@ -8,7 +8,12 @@ use App\Entity\Core\Spotlight;
 use App\Entity\Core\User;
 use App\Entity\Message\Thread;
 use App\Entity\Core\Report;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Crypto\DkimSigner;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
 class MailerUtils extends AbstractContainerAwareUtils {
 
@@ -17,10 +22,18 @@ class MailerUtils extends AbstractContainerAwareUtils {
 	const LIST_NOTIFICATIONS = 'notifications';
 	const LIST_WEEKNEWS = 'weeknews';
 
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), array(
+            'twig' => '?'.Environment::class,
+            MailerInterface::class => MailerInterface::class,
+        ));
+    }
+
 	/////
 
 	private function _renderTemplate($name, array $parameters = array()) {
-		return $this->get('templating')->render($name, $parameters);
+		return $this->get('twig')->render($name, $parameters);
 	}
 
 	/////
@@ -40,28 +53,25 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			return;	// Invalid email
 		}
 
-		// Create the DKIM signer
-		$privateKey = file_get_contents(__DIR__.'/../../../../keys/private.pem');
-		$domainName = 'lairdubois.fr';
-		$selector = 'dkim';		// For dkim._domainkey.lairdubois.fr
-		$signer = new \Swift_Signers_DKIMSigner($privateKey, $domainName, $selector);
+        // Create the message instance
+        $message = (new Email())
+            ->from(new Address('noreply@lairdubois.fr', 'L\'Air du Bois'))
+            ->to($toEmail)
+            ->subject($subject)
+            ->text($body)
+        ;
 
-		// Create the message instance
-		$message = \Swift_Message::newInstance()
-			->attachSigner($signer)
-			->setFrom(array('noreply@lairdubois.fr' => 'L\'Air du Bois'))
-			->setTo($toEmail)
-			->setSubject($subject)
-			->setBody($body)
-
-		;
 		if (!is_null($listUnsubscribeLink)) {
 			$message->getHeaders()->addTextHeader('List-Unsubscribe', '<mailto:unsubscribe@lairdubois.fr?subject='.$listUnsubscribeLink.'>');
 		}
 		if (!is_null($htmlBody)) {
-			$message->addPart($htmlBody, 'text/html');
+			$message->html($htmlBody);
 		}
-		$this->get('mailer')->send($message);
+
+        $signer = new DkimSigner('file://'.__DIR__.'/../../keys/private.pem', 'lairdubois.fr', 'dkim');
+        $signedMessage = $signer->sign($message);
+
+		$this->get(MailerInterface::class)->send($signedMessage);
 	}
 
 	/////
@@ -75,8 +85,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Confirmation de votre adresse e-mail',
-				$this->_renderTemplate('App\Entity\Core/User/email-confirmation.txt.twig', $parameters),
-				$this->_renderTemplate('App\Entity\Core/User/email-confirmation.html.twig', $parameters)
+				$this->_renderTemplate('Core/User/email-confirmation.txt.twig', $parameters),
+				$this->_renderTemplate('Core/User/email-confirmation.html.twig', $parameters)
 			);
 		}
 	}
@@ -94,8 +104,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Notification de nouveau message de '.$actorUser->getDisplayname(),
-				$this->_renderTemplate('App\Entity\Message:email-notification.txt.twig', $parameters),
-				$this->_renderTemplate('App\Entity\Message:email-notification.html.twig', $parameters),
+				$this->_renderTemplate('Message/email-notification.txt.twig', $parameters),
+				$this->_renderTemplate('Message/email-notification.html.twig', $parameters),
 				$parameters['listUnsubscribeLink']
 			);
 		}
@@ -105,7 +115,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de détection de SPAM',
-			$this->_renderTemplate('App\Entity\Message:spam-email-notification.txt.twig', array( 'sender' => $sender, 'recipients' => $recipients, 'subject' => $subject, 'body' => $body ))
+			$this->_renderTemplate('Message/spam-email-notification.txt.twig', array( 'sender' => $sender, 'recipients' => $recipients, 'subject' => $subject, 'body' => $body ))
 		);
 	}
 
@@ -122,8 +132,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Notification de nouveau coup de projecteur',
-				$this->_renderTemplate('App\Entity\Command:spotlight-email-notification.txt.twig', $parameters),
-				$this->_renderTemplate('App\Entity\Command:spotlight-email-notification.html.twig', $parameters),
+				$this->_renderTemplate('Command/spotlight-email-notification.txt.twig', $parameters),
+				$this->_renderTemplate('Command/spotlight-email-notification.html.twig', $parameters),
 				$parameters['listUnsubscribeLink']
 			);
 		}
@@ -133,7 +143,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de rapport d\'abus',
-			$this->_renderTemplate('App\Entity\Core/Report/email-notification.txt.twig', array( 'actorUser' => $actorUser, 'report' => $report, 'entity' => $entity ))
+			$this->_renderTemplate('Core/Report/email-notification.txt.twig', array( 'actorUser' => $actorUser, 'report' => $report, 'entity' => $entity ))
 		);
 	}
 
@@ -141,7 +151,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de nouvel utilisateur',
-			$this->_renderTemplate('App\Entity\Core/User/register-email-notification.txt.twig', array( 'actorUser' => $actorUser ))
+			$this->_renderTemplate('Core/User/register-email-notification.txt.twig', array( 'actorUser' => $actorUser ))
 		);
 	}
 
@@ -149,7 +159,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de nouveau collectif',
-			$this->_renderTemplate('App\Entity\Core/User/Team:new-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'team' => $team ))
+			$this->_renderTemplate('Core/User/Team:new-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'team' => $team ))
 		);
 	}
 
@@ -157,7 +167,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de nouveau don',
-			$this->_renderTemplate('App\Entity\Funding/donation-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'donation' => $donation ))
+			$this->_renderTemplate('Funding/donation-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'donation' => $donation ))
 		);
 	}
 
@@ -169,8 +179,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			$recipientUser->getEmail(),
 			'Confirmation du paiement de votre don',
-			$this->_renderTemplate('App\Entity\Funding/payment-receipt-email.txt.twig', $parameters),
-			$this->_renderTemplate('App\Entity\Funding/payment-receipt-email.html.twig', $parameters)
+			$this->_renderTemplate('Funding/payment-receipt-email.txt.twig', $parameters),
+			$this->_renderTemplate('Funding/payment-receipt-email.html.twig', $parameters)
 		);
 		unset($parameters);
 	}
@@ -183,8 +193,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			$recipientUser->getEmail(),
 			'Votre annonce a expiré',
-			$this->_renderTemplate('App\Entity\Offer/Offer/expired-email.txt.twig', $parameters),
-			$this->_renderTemplate('App\Entity\Offer/Offer/expired-email.html.twig', $parameters)
+			$this->_renderTemplate('Offer/Offer/expired-email.txt.twig', $parameters),
+			$this->_renderTemplate('Offer/Offer/expired-email.html.twig', $parameters)
 		);
 		unset($parameters);
 	}
@@ -211,8 +221,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
 			$this->sendEmailMessage(
 				$recipientUser->getEmail(),
 				'Nouveautés l\'Air du Bois de la semaine',
-				$this->_renderTemplate('App\Entity\Command:mailing-weeknews-email.txt.twig', $parameters),
-				$this->_renderTemplate('App\Entity\Command:mailing-weeknews-email.html.twig', $parameters),
+				$this->_renderTemplate('Command/mailing-weeknews-email.txt.twig', $parameters),
+				$this->_renderTemplate('Command/mailing-weeknews-email.html.twig', $parameters),
 				$parameters['listUnsubscribeLink']
 			);
 			unset($parameters);

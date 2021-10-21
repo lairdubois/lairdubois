@@ -5,10 +5,17 @@ framework:
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            # async: '%env(MESSENGER_TRANSPORT_DSN)%'
-            # failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+            email_async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: email_message
+                    failure_transport: email_failed
+
+            email_failed:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: email_failed
 
         routing:
             # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': email_async
