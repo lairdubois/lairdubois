@@ -718,6 +718,36 @@ fos_elastica:
                     insert: false
                     update: false
                     delete: false
+        knowledge_tool:
+            properties:
+                name: { type: text, boost: 3, analyzer: name_analyzer }
+                nameKeyword: { type: keyword }
+                nameRejected: { type: boolean }
+                photoRejected: { type: boolean }
+                manualCount: { type: integer }
+                brand: { type: text, analyzer: exact_lowercase_analyzer }
+                englishName: { type: text, analyzer: name_analyzer }
+                productName: { type: text, analyzer: name_analyzer }
+                description: { type: text, analyzer: body_analyzer }
+                family: { type: text, analyzer: exact_lowercase_analyzer }
+                utilization: { analyzer: name_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                completion100: { type: integer }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                reviewCount: { type: integer }
+                averageRating: { type: float }
+            persistence:
+                driver: orm
+                model: App\Entity\Knowledge\Tool
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+
         core_tag:
             properties:
                 label: { type: text, analyzer: autocomplete_analyzer }

@@ -1,0 +1,14 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'knowledge.tool.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Knowledge/Tool/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}#not_email_confirmed_knowledge_modal" data-toggle="modal"{% else %}{{ path('core_tool_new') }}"{% endif %} class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'knowledge.tool.new'|trans() }}</span></a>
+    {% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}
+        {% include 'Knowledge/_new-not-email-confirmed-modal.part.html.twig' with { 'title':'knowledge.tool.new'|trans() } %}
+    {% endif %}
+{% endblock %}

@@ -56,7 +56,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 		Tool::FIELD_PRODUCT_NAME => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => true),
 		Tool::FIELD_BRAND        => array(Tool::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_FILTER_QUERY => '@brand:"%q%"'),
 		Tool::FIELD_DESCRIPTION  => array(Tool::ATTRIB_TYPE => Longtext::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false),
-		Tool::FIELD_FAMILY       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Outil de mesure', 3 => 'Electroportatif', 4 => 'Machine stationnaire', 5 => 'Gabarit'), Tool::ATTRIB_USE_CHOICES_VALUE => true, Tool::ATTRIB_FILTER_QUERY => '@family:"%q%"'),
+        Tool::FIELD_FAMILY       => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Outil à main', 2 => 'Outil de mesure', 3 => 'Electroportatif', 4 => 'Machine stationnaire', 6 => 'Machine semi-stationnaire', 5 => 'Gabarit'), Tool::ATTRIB_USE_CHOICES_VALUE => true, Tool::ATTRIB_FILTER_QUERY => '@family:"%q%"'),
 		Tool::FIELD_POWER_SUPPLY => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_CHOICES => array(1 => 'Filaire', 2 => 'Batterie')),
 		Tool::FIELD_POWER        => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'W'),
 		Tool::FIELD_VOLTAGE      => array(Tool::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Tool::ATTRIB_MULTIPLE => false, Tool::ATTRIB_SUFFIX => 'V'),
@@ -244,7 +244,7 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(name="catalog_link", type="string", nullable=true, length=255)
+	 * @ORM\Column(name="catalog_link", type="text", nullable=true)
 	 */
 	private $catalogLink;
 
@@ -484,6 +484,12 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 	public function getManualValues() {
 		return $this->manualValues;
 	}
+
+    // ManualCount /////
+
+    public function getManualCount() {
+        return $this->getManualValues()->count();
+    }
 
 	// Brand /////
 

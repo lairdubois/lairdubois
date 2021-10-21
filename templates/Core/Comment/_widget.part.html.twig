@@ -11,7 +11,7 @@
 {% set activitiesHidden = activitiesHidden|default(false) %}
 
 {% if commentContext is not null and (commentContext.isCommentable or commentContext.comments|length > 0) %}
-    <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget" class="ladb-comment-widget" data-ladb-entity-type="{{ commentContext.entityType }}" data-ladb-entity-id="{{ commentContext.entityId }}"{% if activitiesHidden %} data-ladb-activities-hidden="{{ activitiesHidden ? 'true' : 'false' }}"{% endif %}>
+    <div id="ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_widget" class="ladb-comment-widget ladb-no-print" data-ladb-entity-type="{{ commentContext.entityType }}" data-ladb-entity-id="{{ commentContext.entityId }}"{% if activitiesHidden %} data-ladb-activities-hidden="{{ activitiesHidden ? 'true' : 'false' }}"{% endif %}>
         {% if collapsible %}
             <div class="ladb-collapse-toggle">
                 <i class="ladb-icon-reply"></i> <a class="ladb-comment-new" data-ladb-new-container-selector="#ladb_comment_{{ commentContext.entityType }}_{{ commentContext.entityId }}_group" data-loading-text="{{ 'default.loading'|trans }}" style="color: #aaa;">{{ 'comment.new'|trans }}</a>

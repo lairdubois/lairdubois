@@ -38,7 +38,7 @@
         "jquery-sticky": "^1.0.4",
         "jquery-textcomplete": "^1.8.5",
         "jquery-ui": "^1.12.1",
-        "jquery.panzoom": "^3.2.3",
+        "jquery.panzoom": "^3",
         "jquery.scrollto": "^2.1.3",
         "jqueryui": "^1.11.1",
         "jscroll": "^2.3",

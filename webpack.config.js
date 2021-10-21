@@ -25,6 +25,9 @@ Encore
     .addEntry('book', './assets/book.js')
     .addEntry('event', './assets/event.js')
     .addEntry('qa', './assets/qa.js')
+    .addEntry('tool', './assets/tool.js')
+    .addEntry('workflow', './assets/workflow.js')
+    .addEntry('workflow_workspace', './assets/workflow_workspace.js')
     .addEntry('ladb_values', './assets/ladb_values.js')
     // Vendors entry points
     .addEntry('blueimp', './assets/blueimp.js')
@@ -85,6 +88,11 @@ Encore
     // Add icons
     .copyFiles([
         {from: './assets/ladb/fonts/', to: 'fonts/[path][name].[ext]', pattern: /\.(eot|svg|ttf|woff)$/}
+    ])
+
+    // Add pdfjs
+    .copyFiles([
+        {from: './assets/ladb/pdfjs/', to: 'pdfjs/[path][name].[ext]'}
     ])
 
     // Add images

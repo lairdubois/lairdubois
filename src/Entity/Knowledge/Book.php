@@ -3,9 +3,8 @@
 namespace App\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use App\Entity\Knowledge\Value\BookIdentity;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Knowledge\Value\BookIdentity;
 use App\Entity\Knowledge\Value\Price;
 use App\Entity\Knowledge\Value\Url;
 use App\Model\ReviewableInterface;
@@ -288,7 +287,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255)
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $catalogLink;
 

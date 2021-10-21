@@ -238,20 +238,20 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/boiseux/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_user_list_filter")
-	 * @Route("/boiseux/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_list_filter_page")
+	 * @Route("boiseux/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_user_list_filter")
+	 * @Route("boiseux/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_list_filter_page")
 	 */
 	public function goneList(Request $request, $filter, $page = 0) {
 		throw new \Symfony\Component\HttpKernel\Exception\GoneHttpException();
 	}
 
 	/**
-	 * @Route("/boiseux", name="core_user_list")
-	 * @Route("/boiseux/{page}", requirements={"page" = "\d+"}, name="core_user_list_page")
-	 * @Route("/boiseux.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_user_list_geojson")
-	 * @Route("/collectifs", defaults={"family"="team"}, name="core_user_team_list")
-	 * @Route("/collectifs/{page}", defaults={"family"="team"}, requirements={"page" = "\d+"}, name="core_userteam_list_page_")
-	 * @Route("/collectifs.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson", "family"="team"}, name="core_user_team_list_geojson")
+	 * @Route("boiseux", name="core_user_list")
+	 * @Route("boiseux/{page}", requirements={"page" = "\d+"}, name="core_user_list_page")
+	 * @Route("boiseux.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_user_list_geojson")
+	 * @Route("collectifs", defaults={"family"="team"}, name="core_user_team_list")
+	 * @Route("collectifs/{page}", defaults={"family"="team"}, requirements={"page" = "\d+"}, name="core_user_team_list_page")
+	 * @Route("collectifs.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson", "family"="team"}, name="core_user_team_list_geojson")
 	 * @Template("Core/User/list.html.twig")
 	 */
 	public function list(Request $request, $page = 0, $layout = 'view', $family = 'user') {
@@ -369,7 +369,7 @@ class UserController extends AbstractController {
 			},
 			'core_user',
 			\App\Entity\Core\User::CLASS_NAME,
-			$family == 'team' ? 'core_team_list_page' : 'core_user_list_page'
+            $family == 'team' ? 'core_user_team_list_page' : 'core_user_list_page'
 		);
 
 		$parameters = array_merge($searchParameters, array(
@@ -1767,7 +1767,7 @@ class UserController extends AbstractController {
 	// Team /////
 
 	/**
-	 * @Route("/collectifs/new", name="core_user_team_new")
+	 * @Route("collectifs/new", name="core_user_team_new")
 	 * @Template("Core/User/Team:new.html.twig")
 	 */
 	public function teamNew() {
@@ -1786,7 +1786,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/collectifs/create", methods={"POST"}, name="core_user_team_create")
+	 * @Route("collectifs/create", methods={"POST"}, name="core_user_team_create")
 	 * @Template("Core/User/Team:new.html.twig")
 	 */
 	public function teamCreate(Request $request) {

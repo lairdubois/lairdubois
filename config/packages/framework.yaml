@@ -3,6 +3,7 @@ framework:
     secret: '%env(APP_SECRET)%'
     default_locale: fr
     translator: { fallbacks: [ fr ] }
+    trusted_hosts: ['%env(APP_TRUSTED_HOST_REGEXP)%']
     #csrf_protection: true
     #http_method_override: trues
 

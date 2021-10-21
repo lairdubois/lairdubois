@@ -121,7 +121,7 @@
             <meta name="theme-color" content="#3E3B33">
             <meta name="application-name" content="L'Air du Bois">
             {% block headStylesheets %}
-                {{ encore_entry_link_tags('app', null, '_default', {media: 'screen'}) }}
+                {{ encore_entry_link_tags('app', null, '_default', {media: 'screen,print'}) }}
             {% endblock %}
             {% block headJavascripts %}
                 {{ encore_entry_script_tags('app_header') }}

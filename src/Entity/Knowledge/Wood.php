@@ -4,9 +4,9 @@ namespace App\Entity\Knowledge;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use App\Entity\Knowledge\Value\Url;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Knowledge\Value\Text;
+use App\Entity\Knowledge\Value\Url;
 use App\Entity\Knowledge\Value\Integer;
 use App\Entity\Knowledge\Value\Picture;
 

@@ -40,13 +40,24 @@ var LADBCommon = (function () {
         return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
     };
 
+    var lazyLoadAll = function () {
+        if ($lazy) {
+            $lazy.loadAll();
+        }
+    }
+
     var lazyLoadReset = function($container) {
+        if ($lazy) {
+            $lazy.destroy();
+            window.removeEventListener('beforeprint', lazyLoadAll);
+        }
         $lazy = $('[data-src]', $container).Lazy({
             effect: 'show',
             effectTime: 0,
             threshold: 0,
             chainable: false
         });
+        window.addEventListener('beforeprint', lazyLoadAll);
     };
 
     var lazyLoadUpdate = function() {

@@ -1,0 +1,16 @@
+
+{% set width = size|default('400') %}
+{% set height = size|default('400') %}
+{% set fullHtmlStyle = fullHtmlStyle|default(false) %}
+
+{% if fullHtmlStyle %}
+    <img src="{{ value.data.webPath|imagine_filter('64x64o') }}" width="64" height="64" style="border: 1px solid #ccc; background-color: #fff; padding: 4px;" alt="{{ entity.title|raw }}">
+{% else %}
+    <a href="{{ path('core_knowledge_value_view', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}" class="thumbnail ladb-cursor-preview">
+        {% include 'Core/Picture/_img.part.html.twig' with { 'picture':value.data.thumbnail, 'noLazyLoad':true } %}
+    </a>
+    <div class="text-center" style="margin-top: 10px;">
+        <a href="{{ path('core_knowledge_value_download', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}" class="btn btn-primary btn-md"><i class="ladb-icon-unpublish"></i> Télécharger</a>
+        <a href="{{ path('core_knowledge_value_view', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}" class="btn btn-default btn-md"><i class="ladb-icon-eye"></i> Consulter</a>
+    </div>
+{% endif %}

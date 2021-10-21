@@ -3473,7 +3473,7 @@ jquery-ui@^1.12.1:
   resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
   integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
 
-jquery.panzoom@^3.2.3:
+jquery.panzoom@^3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/jquery.panzoom/-/jquery.panzoom-3.2.3.tgz#66973cad34749f244c1317cdba4e1e779798d372"
   integrity sha512-TQ8tykmjJj//+8M3CIQ9RhCUukVy/UOsfwS/ecP6lRqEHA+qBXflfGoxLrabP1DZO15l9flV7GHsmLesjupT2A==

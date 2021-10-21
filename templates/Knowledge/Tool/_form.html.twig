@@ -1,0 +1,104 @@
+{% extends 'Knowledge/_form.html.twig' %}
+
+{% set navSection = 'about' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'formSection':'photo', 'fieldId':form.photoValue.data.vars.id, 'maxPictureCount':1 } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    <li id="name_sidenav"><a href="#name"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.name'|trans() }}</a></li>
+    <li id="product_name_sidenav"><a href="#product_name"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.product_name'|trans() }}</a></li>
+    <li id="brand_sidenav"><a href="#brand"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.brand'|trans() }}</a></li>
+    <li id="photo_sidenav"><a href="#photo"><i class="ladb-icon-camera"></i> {{ 'knowledge.tool.field.photo'|trans() }}</a></li>
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'knowledge.tool.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    <section id="name_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.name'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_NAME'), 'fieldLabel':('knowledge.tool.field.name'|trans()), 'isCompact':true } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ 'knowledge.tool.help.name'|trans()|ladb_markdown|raw }}
+                            {{ 'knowledge.tool.form.help.name'|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="brand_section">
+        <div class="form-section">
+            <p class="form-section-title">{{ 'knowledge.tool.field.brand'|trans() }} <em>(facultatif)</em></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.brandValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_BRAND'), 'fieldLabel':('knowledge.tool.field.brand'|trans()), 'isCompact':true } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ 'knowledge.tool.help.brand'|trans()|ladb_markdown|raw }}
+                            {{ 'knowledge.tool.form.help.brand'|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="product_name_section">
+        <div class="form-section">
+            <p class="form-section-title">{{ 'knowledge.tool.field.product_name'|trans() }} <em>(facultatif)</em></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.productNameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_PRODUCT_NAME'), 'fieldLabel':('knowledge.tool.field.product_name'|trans()), 'isCompact':true } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ 'knowledge.tool.help.product_name'|trans()|ladb_markdown|raw }}
+                            {{ 'knowledge.tool.form.help.product_name'|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="photo_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.tool.field.photo'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'photo', 'form':form.photoValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_PHOTO'), 'fieldLabel':('knowledge.tool.field.photo'|trans()), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ 'knowledge.tool.help.photo'|trans()|ladb_markdown|raw }}
+                            {{ 'knowledge.tool.form.help.photo'|trans()|ladb_markdown|raw }}
+                            {{ 'knowledge.tool.form.help.legend'|trans({ '%field%':(('knowledge.tool.field.photo')|trans())})|ladb_markdown|raw }}
+                            {{ 'knowledge.tool.form.help.source'|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

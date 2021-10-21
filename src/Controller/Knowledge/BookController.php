@@ -317,7 +317,7 @@ class BookController extends AbstractController {
 
 			},
 			function(&$filters) {
-
+                // Todo handle boolean search
 				//$filters[] = new \Elastica\Query\Range('identityRejected', array( 'lte' => 0 ));
 				//$filters[] = new \Elastica\Query\Range('coverRejected', array( 'lt' => true ));
 

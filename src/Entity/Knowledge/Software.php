@@ -67,7 +67,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 		Software::FIELD_VIDEO				         => array(Software::ATTRIB_TYPE => Video::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
 		Software::FIELD_OPERATING_SYSTEMS            => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Windows', 1 => 'Mac', 2 => 'Linux', 3 => 'Android', 4 => 'iOS'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@os:"%q%"'),
 		Software::FIELD_LICENSE_TYPE                 => array(Software::ATTRIB_TYPE => LinkableText::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => false),
-		Software::FIELD_PRICINGS                     => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Gratuit', 1 => 'Gratuit pour usage personnel', 2 => 'Gratuit avec fonctionnalités limitées', 3 => 'Payant'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@pricings:"%q%"'),
+        Software::FIELD_PRICINGS                     => array(Software::ATTRIB_TYPE => Integer::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_CHOICES => array(0 => 'Gratuit', 1 => 'Gratuit pour usage personnel', 2 => 'Gratuit avec fonctionnalités limitées', 3 => 'Payant', 4 => 'Financement participatif'), Software::ATTRIB_USE_CHOICES_VALUE => true, Software::ATTRIB_FILTER_QUERY => '@pricings:"%q%"'),
 		Software::FIELD_FEATURES                     => array(Software::ATTRIB_TYPE => Text::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@features:"%q%"', Software::ATTRIB_DATA_CONSTRAINTS => array(array('App\\Validator\\Constraints\\OneThing', array('message' => 'N\'indiquez qu\'une seule fonctionnalité par proposition.')))),
 		Software::FIELD_LANGUAGES                    => array(Software::ATTRIB_TYPE => Language::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@languages:"%q%"'),
 		Software::FIELD_SUPPORTED_FILES              => array(Software::ATTRIB_TYPE => FileExtension::TYPE_STRIPPED_NAME, Software::ATTRIB_MULTIPLE => true, Software::ATTRIB_FILTER_QUERY => '@supported-files:"%q%"'),
@@ -174,7 +174,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255)
+	 * @ORM\Column(type="string", nullable=true, length=2048)
 	 */
 	private $website;
 
@@ -213,7 +213,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255, name="source_core_repository")
+	 * @ORM\Column(type="string", nullable=true, length=2048, name="source_core_repository")
 	 */
 	private $sourceCodeRepository;
 
@@ -226,7 +226,7 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=255, name="source_docs")
+	 * @ORM\Column(type="text", nullable=true, name="source_docs")
 	 */
 	private $docs;
 

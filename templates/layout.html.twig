@@ -66,7 +66,7 @@
         {% endblock %}
     {% endembed %}
     {% if is_granted("ROLE_USER") %}
-        <div id="ladb_offcanvas_logged_user_nav" class="uk-offcanvas">
+        <div id="ladb_offcanvas_logged_user_nav" class="uk-offcanvas ladb-no-print">
             <div class="uk-offcanvas-bar uk-offcanvas-bar-flip">
                 <div class="uk-panel uk-margin-bottom-remove">
                     <h3 class="uk-panel-title">{% include 'Core/User/_avatar.part.html.twig' with { 'user':app.user, 'noLazyLoad':true, 'noMicrodata':true } %} {{ app.user.displayname }}</h3>
@@ -93,7 +93,7 @@
             </div>
         </div>
     {% endif %}
-    <div id="ladb_offcanvas_leftbar" class="uk-offcanvas">
+    <div id="ladb_offcanvas_leftbar" class="uk-offcanvas ladb-no-print">
         <div class="uk-offcanvas-bar">
             <div class="uk-panel">
                 {% include 'Core/Search/_widget.part.html.twig' with { 'searchFormClasses':'ladb-search-expended' } %}
@@ -107,6 +107,7 @@
                 <li><a href="{{ path('core_workshop_list') }}"{% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{{ 'wonder.workshop.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-workshops pull-right' } %}</a></li>
                 <li class="uk-nav-divider"></li>
                 <li><a href="{{ path('core_wood_list') }}"{% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{{ 'knowledge.wood.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-woods pull-right' } %}</a></li>
+                <li><a href="{{ path('core_tool_list') }}"{% if navSection is defined and navSection == 'tools' %} class="ladb-active"{% endif %}><i class="ladb-icon-tool"></i>{{ 'knowledge.tool.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-tools pull-right' } %}</a></li>
                 <li><a href="{{ path('core_book_list') }}"{% if navSection is defined and navSection == 'books' %} class="ladb-active"{% endif %}><i class="ladb-icon-book"></i>{{ 'knowledge.book.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-books pull-right' } %}</a></li>
                 <li><a href="{{ path('core_software_list') }}"{% if navSection is defined and navSection == 'softwares' %} class="ladb-active"{% endif %}><i class="ladb-icon-software"></i>{{ 'knowledge.software.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-softwares pull-right' } %}</a></li>
                 <li><a href="{{ path('core_collection_list') }}"{% if navSection is defined and navSection == 'collections' %} class="ladb-active"{% endif %}><i class="ladb-icon-collection"></i>{{ 'collection.collection.nav'|trans() }}{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-collection-collections pull-right' } %}</a></li>
@@ -135,13 +136,14 @@
         <a href="{{ path('core_plan_list') }}"{% if navSection is defined and navSection == 'plans' %} class="ladb-active"{% endif %}><i class="ladb-icon-plan"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-plans' } %}<div>{{ 'wonder.plan.nav'|trans() }}</div></a>
         <a href="{{ path('core_howto_list') }}"{% if navSection is defined and navSection == 'howtos' %} class="ladb-active"{% endif %}><i class="ladb-icon-howto"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-howto-howtos' } %}<div>{{ 'howto.howto.nav'|trans() }}</div></a>
         <a href="{{ path('core_workshop_list') }}"{% if navSection is defined and navSection == 'workshops' %} class="ladb-active"{% endif %}><i class="ladb-icon-workshop"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-wonder-workshops' } %}<div>{{ 'wonder.workshop.nav'|trans() }}</div></a>
-        <div class="ladb-leftbar-subbar ladb-leftbar-subbar-4">
+        <div class="ladb-leftbar-subbar ladb-leftbar-subbar-5">
             <div class="ladb-subbar-toggle{% if navSection is defined and (navSection in ['woods', 'books', 'softwares', 'collections']) %} ladb-nav-active{% endif %}">
                 <div class="ladb-toggle-handle"><i class="ladb-icon-more"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-catalogs' } %}<div>Catalogues</div></div>
                 <span class="ladb-toggle-arrow"></span>
             </div>
             <div class="ladb-subbar-panel">
                 <a href="{{ path('core_wood_list') }}"{% if navSection is defined and navSection == 'woods' %} class="ladb-active"{% endif %}><i class="ladb-icon-wood"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-woods' } %}<div>{{ 'knowledge.wood.nav'|trans() }}</div></a>
+                <a href="{{ path('core_tool_list') }}"{% if navSection is defined and navSection == 'tools' %} class="ladb-active"{% endif %}><i class="ladb-icon-tool"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-tools' } %}<div>{{ 'knowledge.tool.nav'|trans() }}</div></a>
                 <a href="{{ path('core_book_list') }}"{% if navSection is defined and navSection == 'books' %} class="ladb-active"{% endif %}><i class="ladb-icon-book"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-books' } %}<div>{{ 'knowledge.book.nav'|trans() }}</div></a>
                 <a href="{{ path('core_software_list') }}"{% if navSection is defined and navSection == 'softwares' %} class="ladb-active"{% endif %}><i class="ladb-icon-software"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-knowledge-softwares' } %}<div>{{ 'knowledge.software.nav'|trans() }}</div></a>
                 <a href="{{ path('core_collection_list') }}"{% if navSection is defined and navSection == 'collections' %} class="ladb-active"{% endif %}><i class="ladb-icon-collection"></i>{% include 'Common/_notification-counter-badge.part.html.twig' with { 'classes':'badge-nav-collection-collections' } %}<div>{{ 'collection.collection.nav'|trans() }}</div></a>
@@ -245,7 +247,7 @@
                         <div class="col-xs-12">
                             {% block bodyFooterContainerContent %}
                                 <p class="ladb-footer-slogan"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>.</p>
-                                <p class="text-center">
+                                <p class="text-center ladb-no-print">
                                     <small>
                                         <a href="{{ path('core_faq_question_show', { 'id':'qu-est-ce-que-l-air-du-bois' }) }}" class="ladb-horizontal-separator-right">Qu'est-ce que L'Air du Bois ?</a>
                                         <a href="{{ path('core_faq_question_show', { 'id':'qui-est-derriere-l-air-du-bois' }) }}" class="ladb-horizontal-separator-right">Qui est derrière L'Air du Bois ?</a>

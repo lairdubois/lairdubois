@@ -3,8 +3,9 @@
 namespace App\Controller\Knowledge;
 
 use App\Entity\Knowledge\Value\BaseValue;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Entity\Knowledge\Value\Pdf;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -21,7 +22,6 @@ use App\Utils\VotableUtils;
 use App\Utils\CommentableUtils;
 use App\Utils\WatchableUtils;
 use App\Utils\PaginatorUtils;
-use App\Utils\SearchUtils;
 use App\Utils\TypableUtils;
 use App\Utils\ActivityUtils;
 use App\Utils\PropertyUtils;
@@ -195,7 +195,7 @@ class KnowledgeController extends AbstractController {
 		$value = new $entityClass();
 		$value->setParentEntity($entity);
 		$value->setParentEntityField($field);    // Before form validation because it was used for the uniqueness
-		$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints));
+        $form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints, 'validation_groups' => array( 'Default', 'mandatory' )));
 		$form->handleRequest($request);
 		if ($form->isValid()) {
 
@@ -244,7 +244,7 @@ class KnowledgeController extends AbstractController {
 
 			// Regenerate en empty form
 			$value = new $entityClass();
-			$form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints));
+            $form = $this->createForm($formTypeFqcn, $value, array('choices' => $fieldChoices, 'dataConstraints' => $fieldDataConstraints, 'constraints' => $fieldConstraints, 'validation_groups' => array( 'Default', 'mandatory' )));
 			$values = $propertyUtils->getValue($entity, $field.'_values');
 
 			$commentableUtils = $this->get(CommentableUtils::class);
@@ -478,6 +478,80 @@ class KnowledgeController extends AbstractController {
 			'voteContexts'    => $votableUtils->getVoteContexts($values, $this->getUser()),
 		);
 	}
+
+    /**
+     * @Route("/{entityType}/{entityId}/{field}/{id}/download", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+","id" = "\d+"}, name="core_knowledge_value_download")
+     */
+    public function downloadFieldValue(Request $request, $entityType, $entityId, $field, $id) {
+        $om = $this->getDoctrine()->getManager();
+
+        // Retrieve related entity
+
+        $entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+        $entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
+
+        // Process field
+
+        $fieldDef = $this->_retieveFieldDef($entity, $field);
+
+        $fieldType = $fieldDef[AbstractKnowledge::ATTRIB_TYPE];
+
+        $entityClass = $this->_computeEntityClass($fieldType);
+
+        $valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+        $value = $this->_retrieveValue($valueRepository, $id);
+        if (!$value instanceof Pdf) {
+            throw $this->createNotFoundException('Only Pdf values allowed to download (core_knowledge_value_download)');
+        }
+
+        $resource = $value->getData();
+        $content = file_get_contents($resource->getAbsolutePath());
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'mime/type');
+        $response->headers->set('Content-Length', filesize($resource->getAbsolutePath()));
+        $response->headers->set('Content-Disposition', 'attachment;filename="lairdubois_'.$resource->getFilename().'"');
+        $response->headers->set('Cache-Control', 'max-age=300');
+        $response->headers->set('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 30000));
+
+        $response->setContent($content);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/{entityType}/{entityId}/{field}/{id}/view", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+","id" = "\d+"}, name="core_knowledge_value_view")
+     * @Template("Knowledge/value-view.html.twig")
+     */
+    public function viewFieldValue(Request $request, $entityType, $entityId, $field, $id) {
+        $om = $this->getDoctrine()->getManager();
+
+        // Retrieve related entity
+
+        $entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+        $entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
+
+        // Process field
+
+        $fieldDef = $this->_retieveFieldDef($entity, $field);
+
+        $fieldType = $fieldDef[AbstractKnowledge::ATTRIB_TYPE];
+
+        $entityClass = $this->_computeEntityClass($fieldType);
+
+        $valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+        $value = $this->_retrieveValue($valueRepository, $id);
+        if (!$value instanceof Pdf) {
+            throw $this->createNotFoundException('Only Pdf values allowed to view (core_knowledge_value_view)');
+        }
+
+        return array(
+            'knowledge' => $entity,
+            'value' => $value,
+            'field' => $field,
+            'pdfPath' => $this->generateUrl('core_knowledge_value_download', array( 'entityType' => $entityType, 'entityId' => $entityId, 'field' => $field, 'id' => $id )),
+        );
+    }
 
 	/**
 	 * @Route("/{entityType}/{entityId}/{field}.xhr", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "[a-z_]+"}, name="core_knowledge_field_show")
