@@ -174,6 +174,16 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 		return $str;
 	}
 
+    public function simulateTranschoice($message, $count, $parameters = array(), $catalog = 'messages')
+    {
+        if (!isset($parameters['%count%'])) {
+            $parameters['%count%'] = $count;
+        }
+        return $this->container->get('translator')->trans($message, $parameters, $catalog);
+    }
+
+    // Functions /////
+
 	public function entityFunction($type, $id) {
 		$typableUtils = $this->container->get(TypableUtils::class);
 		$typable = $typableUtils->findTypable($type, $id);
@@ -252,11 +262,4 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 		return $reflectionClass->isInstance($object);
 	}
 
-    public function simulateTranschoice($message, $count, $parameters = array(), $catalog = 'messages')
-    {
-        if(!isset($parameters['%count%'])) {
-            $parameters['%count%'] = $count;
-        }
-        return $this->container->get('translator')->trans($message, $parameters, $catalog);
-	}
 }

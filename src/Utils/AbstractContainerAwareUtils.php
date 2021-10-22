@@ -9,10 +9,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Twig\Environment;
 
 abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface {
 
 	protected $container;
+	protected $twig;
 
     public static function getSubscribedServices()
     {
@@ -22,6 +24,7 @@ abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface
             'security.token_storage' => '?'.TokenStorageInterface::class,
             'request_stack' => '?'.RequestStack::class,
             'router' => '?'.RouterInterface::class,
+            'templating' => '?'.Environment::class,
             PaginatorUtils::class => '?'.PaginatorUtils::class,
             GlobalUtils::class => '?'.GlobalUtils::class,
         );

@@ -9,9 +9,12 @@ use App\Utils\ActivityUtils;
 use App\Utils\BlockBodiedUtils;
 use App\Utils\CollectionnableUtils;
 use App\Utils\CommentableUtils;
+use App\Utils\ElasticaQueryUtils;
 use App\Utils\EmbeddableUtils;
+use App\Utils\ExplorableUtils;
 use App\Utils\FeedbackableUtils;
 use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
 use App\Utils\GlobalUtils;
 use App\Utils\JoinableUtils;
 use App\Utils\KnowledgeUtils;
@@ -49,9 +52,12 @@ abstract class AbstractController extends BaseController {
             BlockBodiedUtils::class => '?'.BlockBodiedUtils::class,
             CollectionnableUtils::class => '?'.CollectionnableUtils::class,
             CommentableUtils::class => '?'.CommentableUtils::class,
+            ElasticaQueryUtils::class => '?'.ElasticaQueryUtils::class,
             EmbeddableUtils::class => '?'.EmbeddableUtils::class,
+            ExplorableUtils::class => '?'.ExplorableUtils::class,
             FeedbackableUtils::class => '?'.FeedbackableUtils::class,
             FieldPreprocessorUtils::class => '?'.FieldPreprocessorUtils::class,
+            FollowerUtils::class => '?'.FollowerUtils::class,
             GlobalUtils::class => '?'.GlobalUtils::class,
             JoinableUtils::class => '?'.JoinableUtils::class,
             KnowledgeUtils::class => '?'.KnowledgeUtils::class,
