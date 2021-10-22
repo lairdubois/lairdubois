@@ -20,7 +20,7 @@
         </li>
         {% for type, count in collection.entryTypeCounters|filter( (type, count) => count > 0 ) %}
             <li{% if entityType == type %} class="active"{% endif %}>
-                <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|trans({'count': count})|capitalize }} <span class="badge badge-black">{{ count }}</span></a>
+                <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}">{{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|transchoice(count)|capitalize }} <span class="badge badge-black">{{ count }}</span></a>
             </li>
         {% endfor %}
     </ul>

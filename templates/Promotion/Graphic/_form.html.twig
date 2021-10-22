@@ -11,7 +11,7 @@
 {% block sidenav %}
     {{ parent() }}
     {% include 'Common/_form-sidenav-title.part.html.twig' %}
-    {% include 'Core/Resource/_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.files'|trans({'count': 2})|capitalize) } %}
+    {% include 'Core/Resource/_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.files'|transchoice(2)|capitalize) } %}
     {% include 'Common/_form-sidenav-body.part.html.twig' %}
     {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
     {% include 'Core/License/_form-sidenav.part.html.twig' %}
@@ -26,7 +26,7 @@
     </div>
     {{ parent() }}
     {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('promotion.graphic.form.help.title'|trans()) } %}
-    {% include 'Core/Resource/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formResources':form.resource, 'resources':(form.vars.data.resource is null ? [] : [ form.vars.data.resource ]), 'maxResourceCount':1, 'formSection':'resource', 'title':('default.choice.files'|trans({'count': 2})|capitalize), 'help':('promotion.graphic.form.help.resource'|trans()) } %}
+    {% include 'Core/Resource/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formResources':form.resource, 'resources':(form.vars.data.resource is null ? [] : [ form.vars.data.resource ]), 'maxResourceCount':1, 'formSection':'resource', 'title':('default.choice.files'|transchoice(2)|capitalize), 'help':('promotion.graphic.form.help.resource'|trans()) } %}
     {% include 'Common/_form-section-body.part.html.twig' with { 'mandatory':true, 'help':('promotion.graphic.form.help.body'|trans()) } %}
     {% include 'Core/Tag/_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre graphisme.' } %}
     {% include 'Core/License/_form-section.part.html.twig' with { 'form':form.license } %}

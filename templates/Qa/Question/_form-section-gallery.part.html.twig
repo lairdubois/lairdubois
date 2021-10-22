@@ -10,7 +10,7 @@
 
 {% set formSection = 'questions' %}
 {% set icon = icon|default('question') %}
-{% set title = title|default('qa.question.choice.entities'|trans({'count': 2})|capitalize) %}
+{% set title = title|default('qa.question.choice.entities'|transchoice(2)|capitalize) %}
 
 {% if formQuestions is not defined %}
     {% set formQuestions = form.questions %}

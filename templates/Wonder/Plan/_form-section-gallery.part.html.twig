@@ -11,7 +11,7 @@
 
 {% set formSection = 'plans' %}
 {% set icon = icon|default('plan') %}
-{% set title = title|default('wonder.plan.choice.entities'|trans({'count': 2})|capitalize) %}
+{% set title = title|default('wonder.plan.choice.entities'|transchoice(2)|capitalize) %}
 
 {% if formPlans is not defined %}
     {% set formPlans = form.plans %}

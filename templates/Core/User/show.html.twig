@@ -175,52 +175,52 @@
         </li>
         {% if user.isTeam %}
             <li{% if tab == 'members' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.members'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.memberCount > 0 %} badge-black{% endif %}">{{ user.meta.memberCount }}</span></a>
+                <a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.members'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.memberCount > 0 %} badge-black{% endif %}">{{ user.meta.memberCount }}</span></a>
             </li>
         {% endif %}
         {% if (is_granted('ROLE_ADMIN') or isGrantedOwner) and user.meta.invitationCount > 0 %}
             <li{% if tab == 'invitations' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.invitations'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.invitationCount > 0 %} badge-{% if user.isTeam %}black{% else %}danger{% endif %}{% endif %}">{{ user.meta.invitationCount }}</span></a>
+                <a href="{{ path('core_user_show_invitations', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.invitations'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.invitationCount > 0 %} badge-{% if user.isTeam %}black{% else %}danger{% endif %}{% endif %}">{{ user.meta.invitationCount }}</span></a>
             </li>
         {% endif %}
         {% if (is_granted('ROLE_ADMIN') or isGrantedOwner) and user.meta.requestCount > 0 %}
             <li{% if tab == 'requests' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_requests', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.requests'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.requestCount > 0 %} badge-{% if user.isTeam %}danger{% else %}black{% endif %}{% endif %}">{{ user.meta.requestCount }}</span></a>
+                <a href="{{ path('core_user_show_requests', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.requests'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.requestCount > 0 %} badge-{% if user.isTeam %}danger{% else %}black{% endif %}{% endif %}">{{ user.meta.requestCount }}</span></a>
             </li>
         {% endif %}
         {% if tab == 'teams' %}
             <li class="active">
-                <a href="{{ path('core_user_show_teams', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.entities'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.teamCount > 0 %} badge-black{% endif %}">{{ user.meta.teamCount }}</span></a>
+                <a href="{{ path('core_user_show_teams', { 'username':user.usernameCanonical }) }}">{{ 'team.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.teamCount > 0 %} badge-black{% endif %}">{{ user.meta.teamCount }}</span></a>
             </li>
         {% endif %}
         {% if tab == 'creations' or user.meta.publicCreationCount > 0 or isGrantedOwner and user.meta.privateCreationCount > 0 %}
             <li{% if tab == 'creations' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'wonder.creation.choice.entities'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.publicCreationCount > 0 %} badge-black{% endif %}">{{ user.meta.publicCreationCount }}</span>{% if isDraftVisible and user.meta.privateCreationCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateCreationCount }}</span>{% endif %}</a>
+                <a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{{ 'wonder.creation.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicCreationCount > 0 %} badge-black{% endif %}">{{ user.meta.publicCreationCount }}</span>{% if isDraftVisible and user.meta.privateCreationCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateCreationCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
         {% if tab == 'questions' or user.meta.publicQuestionCount > 0 or isGrantedOwner and user.meta.privateQuestionCount > 0 %}
             <li{% if tab == 'questions' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{{ 'qa.question.choice.entities'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.publicQuestionCount > 0 %} badge-black{% endif %}">{{ user.meta.publicQuestionCount }}</span>{% if isDraftVisible and user.meta.privateQuestionCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateQuestionCount }}</span>{% endif %}</a>
+                <a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{{ 'qa.question.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicQuestionCount > 0 %} badge-black{% endif %}">{{ user.meta.publicQuestionCount }}</span>{% if isDraftVisible and user.meta.privateQuestionCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateQuestionCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
         {% if tab == 'plans' or user.meta.publicPlanCount > 0 or isGrantedOwner and user.meta.privatePlanCount > 0 %}
             <li{% if tab == 'plans' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{{ 'wonder.plan.choice.entities'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.publicPlanCount > 0 %} badge-black{% endif %}">{{ user.meta.publicPlanCount }}</span>{% if isDraftVisible and user.meta.privatePlanCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privatePlanCount }}</span>{% endif %}</a>
+                <a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{{ 'wonder.plan.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicPlanCount > 0 %} badge-black{% endif %}">{{ user.meta.publicPlanCount }}</span>{% if isDraftVisible and user.meta.privatePlanCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privatePlanCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
         {% if tab == 'howtos' or user.meta.publicHowtoCount > 0 or isGrantedOwner and user.meta.privateHowtoCount > 0 %}
             <li{% if tab == 'howtos' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{{ 'howto.howto.choice.entities'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.publicHowtoCount > 0 %} badge-black{% endif %}">{{ user.meta.publicHowtoCount }}</span>{% if isDraftVisible and user.meta.privateHowtoCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateHowtoCount }}</span>{% endif %}</a>
+                <a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{{ 'howto.howto.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicHowtoCount > 0 %} badge-black{% endif %}">{{ user.meta.publicHowtoCount }}</span>{% if isDraftVisible and user.meta.privateHowtoCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateHowtoCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
         {% if tab == 'workshops' or user.meta.publicWorkshopCount > 0 or isGrantedOwner and user.meta.privateWorkshopCount > 0 %}
             <li{% if tab == 'workshops' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{{ 'wonder.workshop.choice.entities'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.publicWorkshopCount > 0 %} badge-black{% endif %}">{{ user.meta.publicWorkshopCount }}</span>{% if isDraftVisible and user.meta.privateWorkshopCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateWorkshopCount }}</span>{% endif %}</a>
+                <a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{{ 'wonder.workshop.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicWorkshopCount > 0 %} badge-black{% endif %}">{{ user.meta.publicWorkshopCount }}</span>{% if isDraftVisible and user.meta.privateWorkshopCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateWorkshopCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
         {% if tab == 'finds' or user.meta.publicFindCount > 0 or isGrantedOwner and user.meta.privateFindCount > 0 %}
             <li{% if tab == 'finds' %} class="active"{% endif %}>
-                <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{{ 'find.find.choice.entities'|trans({'count': 2})|capitalize }} <span class="badge{% if user.meta.publicFindCount > 0 %} badge-black{% endif %}">{{ user.meta.publicFindCount }}</span>{% if isDraftVisible and user.meta.privateFindCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateFindCount }}</span>{% endif %}</a>
+                <a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{{ 'find.find.choice.entities'|transchoice(2)|capitalize }} <span class="badge{% if user.meta.publicFindCount > 0 %} badge-black{% endif %}">{{ user.meta.publicFindCount }}</span>{% if isDraftVisible and user.meta.privateFindCount > 0 %} <span class="badge badge-warning">+{{ user.meta.privateFindCount }}</span>{% endif %}</a>
             </li>
         {% endif %}
         {% if is_granted('ROLE_ADMIN') %}

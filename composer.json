@@ -1,6 +1,8 @@
 {
+    "name": "lairdubois/lairdubois",
+    "license": "AGPLv3",
     "type": "project",
-    "license": "proprietary",
+    "description": "L'Air du Bois",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {

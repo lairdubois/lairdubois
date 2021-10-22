@@ -20,7 +20,7 @@
             {% set filterPath = 'core_user_show_howtos_filter' %}
             {% set filterPathParameters = { 'username':user.usernameCanonical } %}
             {% set customFilterDefs = {
-                'draft':    { 'label':('default.choice.draft'|trans({'count': 2})|capitalize), 'path':path('core_user_show_howtos_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
+                'draft':    { 'label':('default.choice.draft'|transchoice(2)|capitalize), 'path':path('core_user_show_howtos_filter', { 'username':user.usernameCanonical, 'filter':'draft' }), 'hidden':(not isDraftVisible) },
             } %}
             {% block filterbarRightContent%}
                 <span class="ladb-heading">

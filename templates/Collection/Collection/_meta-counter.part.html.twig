@@ -6,7 +6,7 @@
         <a href="{{ path('core_collection_list_byentity', { 'entityType':entity.type, 'entityId':entity.id }) }}">
     {% endif %}
             <strong>{{ entity.publicCollectionCount|number_format(0, ',', ' ') }}</strong>
-            <small>{{ 'collection.collection.choice.entities'|trans({'count': entity.publicCollectionCount}) }}</small>
+            <small>{{ 'collection.collection.choice.entities'|transchoice(entity.publicCollectionCount) }}</small>
     {% if entity.publicCollectionCount > 0 %}
         </a>
     {% endif %}

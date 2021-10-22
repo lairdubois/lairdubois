@@ -109,7 +109,7 @@ class License {
 	// StrippedName /////
 
 	public function getBadgeUrl() {
-		return '/bundles/ladbcore/ladb/images/cc/88x31/'.$this->getStrippedName().'.png';
+		return 'build/images/cc/88x31/'.$this->getStrippedName().'.png';
 	}
 
 	// StrippedName /////
@@ -130,7 +130,7 @@ class License {
 	// BadgeUrl /////
 
 	public function getMiniBadgeUrl() {
-		return '/bundles/ladbcore/ladb/images/cc/80x15/'.$this->getStrippedName().'.png';
+		return 'build/images/cc/80x15/'.$this->getStrippedName().'.png';
 	}
 
 	// ContentUrl /////

@@ -25,7 +25,7 @@
     {% include 'Core/Block/_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
     <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
     {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
-    {% include 'Wonder/Creation/_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'icon':'ladb-icon-inspiration' } %}
+    {% include 'Wonder/Creation/_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.inspirations'|transchoice(2)|capitalize), 'icon':'ladb-icon-inspiration' } %}
     {% include 'Qa/Question/_form-sidenav-gallery.part.html.twig' %}
     {% include 'Wonder/Plan/_form-sidenav-gallery.part.html.twig' %}
     {% include 'Howto/Howto/_form-sidenav-gallery.part.html.twig' %}
@@ -48,26 +48,26 @@
     {% include 'Core/Block/_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('wonder.creation.form.help.body'|trans()) } %}
     {% embed 'Common/_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
         {% block body %}
-            {{ form_label(form.woods, ('knowledge.wood.choice.entities'|trans({'count': 2})|capitalize)) }}
+            {{ form_label(form.woods, ('knowledge.wood.choice.entities'|transchoice(2)|capitalize)) }}
             {{ form_errors(form.woods) }}
             <p class="help-block">Indiquez la/les essence(s) utilisées. <i>Exemple : <strong>Hêtre,Chêne</strong></i></p>
             {{ form_widget(form.woods) }}
-            {{ form_label(form.tools, ('knowledge.tool.choice.entities'|trans({'count': 2})|capitalize)) }}
+            {{ form_label(form.tools, ('knowledge.tool.choice.entities'|transchoice(2)|capitalize)) }}
             {{ form_errors(form.tools) }}
             <p class="help-block">Indiquez les principaux outils utilisés. <i>Exemple : <strong>Rabot,Racloir</strong></i></p>
             {{ form_widget(form.tools) }}
-            {{ form_label(form.finishes, ('knowledge.finish.choice.entities'|trans({'count': 2})|capitalize)) }}
+            {{ form_label(form.finishes, ('knowledge.finish.choice.entities'|transchoice(2)|capitalize)) }}
             {{ form_errors(form.finishes) }}
             <p class="help-block">Indiquez la/les finitions utilisées. <i>Exemple : <strong>Teinte,Vernis</strong></i></p>
             {{ form_widget(form.finishes) }}
-            {{ form_label(form.hardwares, ('knowledge.hardware.choice.entities'|trans({'count': 2})|capitalize)) }}
+            {{ form_label(form.hardwares, ('knowledge.hardware.choice.entities'|transchoice(2)|capitalize)) }}
             {{ form_errors(form.hardwares) }}
             <p class="help-block">Indiquez la/les quincailleries utilisées. <i>Exemple : <strong>Coulisse,Charnière</strong></i></p>
             {{ form_widget(form.hardwares) }}
         {% endblock %}
     {% endembed %}
     {% include 'Core/Tag/_form-section.part.html.twig' with { 'help':'Indiquez les tags définissant votre création.' } %}
-    {% include 'Wonder/Creation/_form-section-gallery.part.html.twig' with { 'maxCreationCount':4, 'title':('default.choice.inspirations'|trans({'count': 2})|capitalize), 'help':('wonder.creation.form.help.inspirations'|trans()), 'icon':'inspiration', 'linktoButtonLabel':('Ajouter une inspiration'), 'formCreations':form.inspirations, 'creations':form.vars.data.inspirations } %}
+    {% include 'Wonder/Creation/_form-section-gallery.part.html.twig' with { 'maxCreationCount':4, 'title':('default.choice.inspirations'|transchoice(2)|capitalize), 'help':('wonder.creation.form.help.inspirations'|trans()), 'icon':'inspiration', 'linktoButtonLabel':('Ajouter une inspiration'), 'formCreations':form.inspirations, 'creations':form.vars.data.inspirations } %}
     {% include 'Qa/Question/_form-section-gallery.part.html.twig' with { 'maxQuestionCount':4, 'help':('wonder.creation.form.help.questions'|trans()) } %}
     {% include 'Wonder/Plan/_form-section-gallery.part.html.twig' with { 'maxPlanCount':4, 'help':('wonder.creation.form.help.plans'|trans()) } %}
     {% include 'Howto/Howto/_form-section-gallery.part.html.twig' with { 'maxHowtoCount':4, 'help':('wonder.creation.form.help.howtos'|trans()) } %}
