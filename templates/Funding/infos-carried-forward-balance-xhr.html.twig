@@ -1,0 +1,12 @@
+{% extends 'Funding/_infos-xhr.html.twig' %}
+
+{% set title = 'funding.carried_forward_balance'|trans() %}
+
+{% block bodyInner %}
+    <p>Les <em>reports</em> représentent la valeur de l'excédant du mois précédent reportée sur ce mois.</p>
+    {% if funding.carriedForwardBalanceEur > 0 %}
+        <p>Le mois précédent a compté un excédant de <strong>{{ funding.carriedForwardBalanceEur|number_format(2, ',', ' ') }}€</strong></p>
+    {% else %}
+        <p>Le mois précédent n'a compté <strong>aucun</strong> excédant.</p>
+    {% endif %}
+{% endblock %}

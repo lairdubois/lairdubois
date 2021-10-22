@@ -1,0 +1,798 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
+fos_elastica:
+    clients:
+        default: { url: '%env(ELASTICSEARCH_URL)%' }
+    index_templates:
+        common_config:
+            client: default
+            template: '*'
+            settings:
+                max_ngram_diff: 17
+                index:
+                    analysis:
+                        analyzer:
+                            title_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter: [ lowercase, asciifolding, fr_stemmer, fr_elision ]
+                            name_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter: [ lowercase, asciifolding, fr_elision ]
+                            body_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter: [ lowercase, asciifolding, fr_stemmer, fr_stop, fr_elision ]
+                            exact_lowercase_analyzer:
+                                type: custom
+                                tokenizer: keyword
+                                filter: [ lowercase, asciifolding ]
+                            autocomplete_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter: [ lowercase, asciifolding, autocomplete_ngram ]
+                        normalizer:
+                            title_normalizer:
+                                type: custom
+                                filter: [ lowercase, asciifolding, fr_elision ]
+                        filter:
+                            fr_stop:
+                                type: stop
+                                stopwords: _french_
+                            fr_stemmer:
+                                type: stemmer
+                                name: light_french
+                            fr_elision:
+                                type: elision
+                                articles: [ l, m, t, qu, n, s, j, d ]
+                            autocomplete_ngram:
+                                type: nGram
+                                min_gram: 3
+                                max_gram: 20
+    indexes:
+        core_user:
+            properties:
+                isTeam: { type: boolean }
+                displayname: { type: text, boost: 2, analyzer: name_analyzer }
+                fullname: { type: text, boost: 1, analyzer: name_analyzer }
+                username: { analyzer: exact_lowercase_analyzer }
+                createdAt: { type: date }
+                accountType: { type: short }
+                location: { type: text }
+                geoPoint: { type: geo_point }
+                meta:
+                    type: "object"
+                    properties:
+                        contributionCount: { type: integer }
+                        followerCount: { type: integer }
+                        recievedLikeCount: { type: integer }
+                        memberCount: { type: integer }
+                        skills:
+                            type: "object"
+                            properties:
+                                label:
+            persistence:
+                driver: orm
+                model: App\Entity\Core\User
+                provider:
+                    query_builder_method: "createIsEnabledQueryBuilder"
+                listener:
+                    update: false
+        core_tip:
+            properties:
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+            persistence:
+                driver: orm
+                model: App\Entity\Core\Tip
+                provider: ~
+                listener:
+                    update: false
+        wonder_creation:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                bodyBlockVideoCount: { type: integer }
+                feedbackCount: { type: integer }
+                questionCount: { type: integer }
+                planCount: { type: integer }
+                howtoCount: { type: integer }
+                workflowCount: { type: integer }
+                providerCount: { type: integer }
+                schoolCount: { type: integer }
+                inspirationCount: { type: integer }
+                reboundCount: { type: integer }
+                withEnabledSpotlight: { type: boolean }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+                woods:
+                    type: "object"
+                    properties:
+                        label: { type: text, analyzer: body_analyzer }
+                tools:
+                    type: "object"
+                    properties:
+                        label: { type: text, analyzer: body_analyzer }
+                finishes:
+                    type: "object"
+                    properties:
+                        label: { type: text, analyzer: body_analyzer }
+                hardwares:
+                    type: "object"
+                    properties:
+                        label: { type: text, analyzer: body_analyzer }
+                license:
+                    type: "object"
+                    properties:
+                        strippedname: { type: text, analyzer: exact_lowercase_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Wonder\Creation
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        wonder_workshop:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                area: { type: integer }
+                geoPoint: { type: geo_point }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                bodyBlockVideoCount: { type: integer }
+                feedbackCount: { type: integer }
+                planCount: { type: integer }
+                howtoCount: { type: integer }
+                workflowCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+                license:
+                    type: "object"
+                    properties:
+                        strippedname: { type: text, analyzer: exact_lowercase_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Wonder\Workshop
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        wonder_plan:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                downloadCount: { type: integer }
+                questionCount: { type: integer }
+                creationCount: { type: integer }
+                workshopCount: { type: integer }
+                howtoCount: { type: integer }
+                workflowCount: { type: integer }
+                schoolCount: { type: integer }
+                inspirationCount: { type: integer }
+                reboundCount: { type: integer }
+                kinds:
+                    type: "integer"
+                resources:
+                    type: "object"
+                    properties:
+                        fileExtension: { type: text }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+                license:
+                    type: "object"
+                    properties:
+                        strippedname: { type: text, analyzer: exact_lowercase_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Wonder\Plan
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        qa_question:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                answerCount: { type: integer }
+                positiveAnswerCount: { type: integer }
+                nullAnswerCount: { type: integer }
+                undeterminedAnswerCount: { type: integer }
+                negativeAnswerCount: { type: integer }
+                creationCount: { type: integer }
+                planCount: { type: integer }
+                howtoCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                answers:
+                    type: "object"
+                    properties:
+                        body: { type: text, analyzer: body_analyzer }
+                bestAnswer:
+                    type: "object"
+                    properties:
+                        body: { type: text, analyzer: body_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Qa\Question
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        howto_howto:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                bodyBlockVideoCount: { type: integer }
+                questionCount: { type: integer }
+                creationCount: { type: integer }
+                planCount: { type: integer }
+                workflowCount: { type: integer }
+                workshopCount: { type: integer }
+                providerCount: { type: integer }
+                schoolCount: { type: integer }
+                kind: { type: short }
+                isWorkInProgress: { type: boolean }
+                withEnabledSpotlight: { type: boolean }
+                articles:
+                    type: "object"
+                    properties:
+                        title: { type: text, boost: 3, analyzer: title_analyzer }
+                        body: { type: text, analyzer: body_analyzer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+                license:
+                    type: "object"
+                    properties:
+                        strippedname: { type: text, analyzer: exact_lowercase_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Howto\Howto
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        find_find:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                geoPoint: { type: geo_point }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                kind: { type: short }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Find\Find
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        event_event:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                startAt: { type: date }
+                endAt: { type: date }
+                cancelled: { type: boolean }
+                geoPoint: { type: geo_point }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                joinCount: { type: integer }
+                feedbackCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Event\Event
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        workflow_workflow:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                copyCount: { type: integer }
+                creationCount: { type: integer }
+                planCount: { type: integer }
+                howtoCount: { type: integer }
+                workshopCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Workflow\Workflow
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        collection_collection:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                entryCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Collection\Collection
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        promotion_graphic:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Promotion\Graphic
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        blog_post:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Blog\Post
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        faq_question:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                weight: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Faq\Question
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        offer_offer:
+            properties:
+                visibility: { type: integer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                body: { type: text, analyzer: body_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                kind: { type: short }
+                category: { type: integer }
+                rawPrice: { type: float }
+                geoPoint: { type: geo_point }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                user:
+                    type: "object"
+                    properties:
+                        username: { type: text, analyzer: name_analyzer }
+                        displayname: { type: text, analyzer: name_analyzer }
+                        fullname: { type: text, analyzer: name_analyzer }
+                tags:
+                    type: "object"
+                    properties:
+                        label: { type: text, boost: 2 }
+            persistence:
+                driver: orm
+                model: App\Entity\Offer\Offer
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        knowledge_wood:
+            properties:
+                titleWorkaround: { type: keyword, normalizer: title_normalizer }
+                title: { type: text, boost: 3, analyzer: title_analyzer }
+                name: { type: text, boost: 3, analyzer: name_analyzer }
+                nameRejected: { type: boolean }
+                grainRejected: { type: boolean }
+                scientificname: { type: text, analyzer: name_analyzer }
+                englishname: { type: text, analyzer: name_analyzer }
+                density: { type: integer }
+                origin: { type: text, analyzer: name_analyzer }
+                utilization: { type: text, analyzer: name_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                completion100: { type: integer }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+            persistence:
+                driver: orm
+                model: App\Entity\Knowledge\Wood
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        knowledge_provider:
+            properties:
+                sign: { type: text, boost: 2, analyzer: name_analyzer }
+                signRejected: { type: boolean }
+                brand: { type: text, analyzer: exact_lowercase_analyzer }
+                address: { type: text, analyzer: body_analyzer }
+                geographicalAreas: { type: text, analyzer: body_analyzer }
+                description: { type: text, analyzer: body_analyzer }
+                products: { type: text, analyzer: body_analyzer }
+                services: { type: text, analyzer: body_analyzer }
+                woodsWorkaround: { type: text, analyzer: body_analyzer }
+                branches: { type: text, analyzer: body_analyzer }
+                geoPoint: { type: geo_point }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                completion100: { type: integer }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                reviewCount: { type: integer }
+                creationCount: { type: integer }
+                howtoCount: { type: integer }
+                averageRating: { type: float }
+                inStoreSelling: { type: boolean }
+                mailOrderSelling: { type: boolean }
+                saleToIndividuals: { type: boolean }
+            persistence:
+                driver: orm
+                model: App\Entity\Knowledge\Provider
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        knowledge_school:
+            properties:
+                name: { type: text, boost: 3, analyzer: name_analyzer }
+                nameRejected: { type: boolean }
+                diplomas: { type: text, analyzer: name_analyzer }
+                trainingTypes: { type: text, analyzer: body_analyzer }
+                address: { type: text, analyzer: body_analyzer }
+                geographicalAreas: { type: text, analyzer: body_analyzer }
+                description: { type: text, analyzer: body_analyzer }
+                geoPoint: { type: geo_point }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                completion100: { type: integer }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                testimonialCount: { type: integer }
+                creationCount: { type: integer }
+                planCount: { type: integer }
+                howtoCount: { type: integer }
+            persistence:
+                driver: orm
+                model: App\Entity\Knowledge\School
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        knowledge_book:
+            properties:
+                identity: { type: text, boost: 2, analyzer: name_analyzer }
+                identityRejected: { type: boolean }
+                work: { type: text, analyzer: exact_lowercase_analyzer }
+                coverRejected: { type: boolean }
+                authors: { type: text, analyzer: name_analyzer }
+                editor: { type: text, analyzer: name_analyzer }
+                collection: { type: text, analyzer: name_analyzer }
+                publicDomain: { type: boolean }
+                subjects: { type: text, analyzer: body_analyzer }
+                summary: { type: text, analyzer: body_analyzer }
+                toc: { type: text, analyzer: body_analyzer }
+                language: { type: text, analyzer: name_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                completion100: { type: integer }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                reviewCount: { type: integer }
+                averageRating: { type: float }
+            persistence:
+                driver: orm
+                model: App\Entity\Knowledge\Book
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        knowledge_software:
+            properties:
+                name: { type: text, boost: 3, analyzer: name_analyzer }
+                identityRejected: { type: boolean }
+                isAddOn: { type: boolean }
+                hostSoftwareName: { type: text, analyzer: exact_lowercase_analyzer }
+                iconRejected: { type: boolean }
+                authors: { type: text, analyzer: name_analyzer }
+                publisher: { type: text, analyzer: name_analyzer }
+                openSource: { type: boolean }
+                operatingSystems: { type: text, analyzer: name_analyzer }
+                pricings: { type: text, analyzer: name_analyzer }
+                features: { type: text, analyzer: name_analyzer }
+                languages: { type: text, analyzer: name_analyzer }
+                supportedFiles: { type: text }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                completion100: { type: integer }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                reviewCount: { type: integer }
+                averageRating: { type: float }
+            persistence:
+                driver: orm
+                model: App\Entity\Knowledge\Software
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+        knowledge_tool:
+            properties:
+                name: { type: text, boost: 3, analyzer: name_analyzer }
+                nameKeyword: { type: keyword }
+                nameRejected: { type: boolean }
+                photoRejected: { type: boolean }
+                manualCount: { type: integer }
+                brand: { type: text, analyzer: exact_lowercase_analyzer }
+                englishName: { type: text, analyzer: name_analyzer }
+                productName: { type: text, analyzer: name_analyzer }
+                description: { type: text, analyzer: body_analyzer }
+                family: { type: text, analyzer: exact_lowercase_analyzer }
+                utilization: { analyzer: name_analyzer }
+                createdAt: { type: date }
+                changedAt: { type: date }
+                completion100: { type: integer }
+                viewCount: { type: integer }
+                likeCount: { type: integer }
+                commentCount: { type: integer }
+                reviewCount: { type: integer }
+                averageRating: { type: float }
+            persistence:
+                driver: orm
+                model: App\Entity\Knowledge\Tool
+                provider: ~
+                listener:
+                    insert: false
+                    update: false
+                    delete: false
+
+        core_tag:
+            properties:
+                label: { type: text, analyzer: autocomplete_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Core\Tag
+                provider: ~
+                listener: ~
+        input_skill:
+            properties:
+                label: { type: text, analyzer: autocomplete_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Input\Skill
+                provider: ~
+                listener: ~
+        input_wood:
+            properties:
+                label: { type: text, analyzer: autocomplete_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Input\Wood
+                provider: ~
+                listener: ~
+        input_tool:
+            properties:
+                label: { type: text, analyzer: autocomplete_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Input\Tool
+                provider: ~
+                listener: ~
+        input_finish:
+            properties:
+                label: { type: text, analyzer: autocomplete_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Input\Finish
+                provider: ~
+                listener: ~
+        input_hardware:
+            properties:
+                label: { type: text, analyzer: autocomplete_analyzer }
+            persistence:
+                driver: orm
+                model: App\Entity\Input\Hardware
+                provider: ~
+                listener: ~

@@ -1,0 +1,13 @@
+{% extends 'Faq/Question/_form.html.twig' %}
+
+{% set pageTitle = 'faq.question.new'|trans() %}
+{% set formAction = path('core_faq_question_create') %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'faq.question.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+

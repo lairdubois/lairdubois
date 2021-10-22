@@ -1,0 +1,22 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set schools #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for school in schools %}
+        <div class="ladb-choice-row">
+            <div class="ladb-thumbnail">
+                <a href="{{ path('core_school_show', { 'id':school.sluggedId }) }}" class="thumbnail" target="_blank">
+                    <img src="{{ (school.mainPicture is not null ? school.mainPicture.webPath : 'avatar.png')|imagine_filter('80x60o') }}">
+                </a>
+            </div>
+            <div class="ladb-tools">
+                <a href="#" class="btn btn-default" onclick="window.parent.schoolAdded('{% filter escape('js') %}{% include 'Knowledge/School/_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+            </div>
+            <div class="ladb-body">
+                <h4 class="ladb-heading">{{ school.title }}</h4>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

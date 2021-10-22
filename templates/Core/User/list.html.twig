@@ -1,0 +1,46 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% use 'Common/Blocks/map.blocks.html.twig' %}
+
+{% set pageTitle = (family == 'team' ? 'team.list' : 'user.list')|trans() %}
+{% set pageDescription = (family == 'team' ? 'team.description' : 'user.description')|trans() %}
+{% set pageImage = asset('banner-'~(family == 'team' ? 'teams' : 'users')~'-600x376.jpg') %}
+
+{% set navSection = family == 'team' ? 'teams' : 'users' %}
+{% set topbarTranslucent = false %}
+{% set hideHeaderContainer = false %}
+{% set hideMapArea = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% include 'Common/_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Core/User/_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if family == 'team' %}
+        <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+            <div class="panel-body">
+                Cet annuaire référence les <strong>collectifs</strong> de boiseux enregistrés sur <em>L'Air du Bois</em>. <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quun-collectif' }) }}">Qu'est-ce qu'un Collectif ?</a>
+            </div>
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Core/User/_list-n.part.html.twig' %}
+{% endblock %}

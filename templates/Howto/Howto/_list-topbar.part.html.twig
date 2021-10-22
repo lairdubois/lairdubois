@@ -1,0 +1,11 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'howto.howto.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Howto/Howto/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% include 'Core/Member/_widget.part.html.twig' with { 'titleTransKey':'howto.howto.new', 'route':'core_howto_new' } %}
+{% endblock %}

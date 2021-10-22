@@ -1,0 +1,28 @@
+{% extends 'Common/Modal/_modal.part.html.twig' %}
+
+{% set duplicate = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
+
+{% set title = ('default.'~(duplicate ? 'duplicating' : 'copying'))|trans() %}
+
+{# set id #}
+{# set workflow #}
+
+{% block bodyInner %}
+    <div class="media">
+        <div class="media-left"><i class="ladb-icon-duplicate ladb-icon-xl"></i></div>
+        <div class="media-body">
+            {% if duplicate %}
+                <p>La duplication du processus <strong>{{ workflow.title }}</strong> créera un nouveau processus privé en répliquant toutes les tâches, les étiquettes et les pièces.</p>
+                <p>Les états et les durées des tâches seront copiés.</p>
+            {% else %}
+                <p>La copie du processus <strong>{{ workflow.title }}</strong> créera un nouveau processus privé associé à votre compte en répliquant toutes les tâches, les étiquettes et les pièces.</p>
+            {% endif %}
+            <p>Confirmez l'action pour continuer.</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    <a href="{{ path('core_workflow_copy', { 'id':workflow.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-duplicate }}"></i> {{ ('default.'~(duplicate ? 'duplicate' : 'copy'))|trans() }}</a>
+{% endblock %}

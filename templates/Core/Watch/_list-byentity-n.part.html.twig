@@ -1,0 +1,10 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set watchs #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for watch in watchs %}
+        {% include 'Core/User/_list-row.part.html.twig' with { 'user':watch.user } %}
+    {% endfor %}
+{% endblock %}

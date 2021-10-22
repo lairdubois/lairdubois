@@ -1,9 +1,0 @@
-{% spaceless %}
-<div class="ladb-loading-panel"{% if not (noHidden|default(false)) %} style="display: none;"{% endif %}>
-    <div>
-        {% block inner %}
-            {% include 'LadbCoreBundle:Common:_loading.part.html.twig' with { 'noHidden':true, 'float':false } %}
-        {% endblock %}
-    </div>
-</div>
-{% endspaceless %}

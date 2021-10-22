@@ -1,0 +1,25 @@
+{% extends 'Workflow/Workflow/_form.html.twig' %}
+
+{% set pageTitle = 'workflow.workflow.new'|trans() %}
+{% set formAction = path('core_workflow_create') %}
+{% set hideWarning = hideWarning|default(false) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'workflow.workflow.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':'Enregistrer et continuer', 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block asideInner %}
+    {{ parent() }}
+    <div class="alert alert-warning">
+        <div class="media">
+            <div class="media-left"><i class="ladb-icon-key ladb-icon-lg"></i></div>
+            <div class="media-body">
+                Par défaut tous les nouveaux processus sont <strong>privés</strong>.
+            </div>
+        </div>
+    </div>
+{% endblock %}

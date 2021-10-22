@@ -1,0 +1,38 @@
+{% extends ':email-layout.html.twig' %}
+
+{% block content %}
+    <p style="margin: 5px 0 5px 0;">Voici les nouveautés <em>L'Air du Bois</em> de la semaine.</p>
+    {% if posts is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':posts, 'type':'post', 'typePrefix':'blog_', 'transPrefix':'blog.post' } %}
+    {% endif %}
+    {% if creations is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':creations, 'type':'creation', 'transPrefix':'wonder.creation' } %}
+    {% endif %}
+    {% if questions is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':questions, 'type':'question', 'typePrefix':'qa_', 'transPrefix':'qa.question', 'listSorter':'@sort-popular-answers:asc' } %}
+    {% endif %}
+    {% if plans is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':plans, 'type':'plan', 'transPrefix':'wonder.plan' } %}
+    {% endif %}
+    {% if howtos is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':howtos, 'type':'howto', 'transPrefix':'howto.howto' } %}
+    {% endif %}
+    {% if howtoArticles is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':howtoArticles, 'type':'article', 'typePrefix':'howto_', 'transPrefix':'howto.article', 'noShowMore':true } %}
+    {% endif %}
+    {% if woods is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':woods, 'type':'wood', 'transPrefix':'knowledge.wood' } %}
+    {% endif %}
+    {% if providers is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':providers, 'type':'provider', 'transPrefix':'knowledge.provider' } %}
+    {% endif %}
+    {% if schools is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':schools, 'type':'school', 'transPrefix':'knowledge.school' } %}
+    {% endif %}
+    {% if workshops is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':workshops, 'type':'workshop', 'transPrefix':'wonder.workshop' } %}
+    {% endif %}
+    {% if finds is not empty %}
+        {% include 'Command:_mailing-weeknews-entities.part.html.twig' with { 'entities':finds, 'type':'find', 'transPrefix':'find.find' } %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'Core/Notification/_row.part.html.twig' %}
+
+{% set icon = 'follow' %}
+
+{% block body %}
+    s'est abonné {% if notification.activity.follower.followingUser == app.user %}à votre compte{% else %}au compte de <em>{{ notification.activity.follower.followingUser.displayName }}</em>{% endif%}.
+{% endblock %}

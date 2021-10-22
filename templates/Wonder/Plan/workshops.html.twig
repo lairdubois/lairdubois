@@ -1,0 +1,35 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageUrl = url('core_plan_workshops', { 'id':plan.id }) %}
+{% set pageTitle = 'Ateliers associés à '~plan.title %}
+{% set pageDescription = 'Ateliers associés au plan' %}
+
+{% set navSection = 'plans' %}
+
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':plan } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if workshops.count == 0 %}
+        <div class="alert alert-info">
+            Aucun atelier n'est associé à ce plan.
+        </div>
+    {% else %}
+        {% embed 'Wonder/Workshop/_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_plan_workshops_filter' %}
+            {% set filterPathParameters = { 'id':plan.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ plan.workshopCount }} {{ 'wonder.workshop.choice.entities'|transchoice(plan.workshopCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Wonder/Workshop/_list-n.part.html.twig' %}
+{% endblock %}

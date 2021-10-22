@@ -1,0 +1,32 @@
+{% extends 'Wonder/Creation/_form.html.twig' %}
+
+{% set pageTitle = 'wonder.creation.new'|trans() %}
+{% set formAction = path('core_creation_create') %}
+{% set hideWarning = hideWarning|default(false) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'wonder.creation.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        {% include 'Common/_new-warning-modal.part.html.twig' with { 'id':'warning_creation_modal', 'title':('wonder.creation.new'|trans()), 'textTransKey':'wonder.creation.new_warning', 'cancelPath':'core_creation_list' } %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        <script>
+            $(document).ready(function() {
+                $("#warning_creation_modal").modal();
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+

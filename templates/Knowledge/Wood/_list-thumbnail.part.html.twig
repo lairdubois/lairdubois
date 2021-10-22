@@ -1,0 +1,42 @@
+{% extends 'Common/_masonry-list-thumbnail.part.html.twig' %}
+
+{# set wood #}
+
+{% set entity = wood %}
+{% set headingClasses = wood.nameRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = wood.nameRejected or wood.grainRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set pictureWidth = '282' %}
+{% set pictureHeight = '280' %}
+{% set pictureFilterMode = 'o' %}
+
+{% block title %}
+    {% if wood.family == 1 %}
+        <i class="ladb-icon-hardwood ladb-icon-lg"></i>
+    {% elseif wood.family == 2 %}
+        <i class="ladb-icon-resinous ladb-icon-lg"></i>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block image %}
+    {% if wood.grainRejected %}
+        <div class="ladb-box-barred">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block entityMetas %}
+    {% if wood.availability == 1 %}
+        <li class="ladb-linkto"><a href="#" data-tooltip="tooltip" title="{{ 'knowledge.wood.red_list'|trans() }}"><i class="ladb-icon-warning ladb-color-negative"></i></a></li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {% include 'Knowledge/_list-thumbnail-footer.part.html.twig' %}
+{% endblock %}
+
+

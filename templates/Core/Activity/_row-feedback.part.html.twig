@@ -1,0 +1,7 @@
+{% extends 'Core/Activity/_row.part.html.twig' %}
+
+{% set icon = 'feedback' %}
+{% set entity = ladb_entity(activity.feedback.entityType, activity.feedback.entityId) %}
+{% set activityScrollToId = 'ladb_feedback_'~activity.feedback.id %}
+
+{% block body %}a ajouté un retour d'expérience "<strong>{{ activity.feedback.title }}</strong>"{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'workflow.workflow.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Workflow/Workflow/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% include 'Core/Member/_widget.part.html.twig' with { 'titleTransKey':'workflow.workflow.new', 'route':'core_workflow_new' } %}
+{% endblock %}

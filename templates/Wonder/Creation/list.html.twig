@@ -1,0 +1,112 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% if homepage %}
+    {% set pageTitle = ('default.ladb'|trans())~' - '~('default.slogan'|trans()) %}
+    {% set titleSuffixHidden = true %}
+    {% set pageImage = asset('banner-600x376.jpg') %}
+{% else %}
+    {% set pageTitle = 'wonder.creation.list'|trans() %}
+    {% set pageDescription = 'wonder.creation.description'|trans() %}
+    {% set pageImage = asset('banner-creations-600x376.jpg') %}
+{% endif %}
+{% set pageSectionUrl = url('core_creation_list') %}
+{% set pageSectionName = 'wonder.creation.list'|trans %}
+{% set pageFeedRoute = 'core_creation_feed' %}
+
+{% set navSection = 'creations' %}
+{% set masonry = true %}
+{% set topbarTranslucent = homepage and spotlight is not null %}
+{% set hideHeaderContainer = homepage and spotlight is not null %}
+{% set countableEntityList = true %}
+
+{% block headJavascripts %}
+    {% if homepage %}
+        <script type="application/ld+json">
+        {
+           "@context": "http://schema.org",
+           "@type": "WebSite",
+           "name": "L'Air du Bois",
+           "url": "https://www.lairdubois.fr/",
+           "potentialAction": {
+             "@type": "SearchAction",
+             "target": "http://www.lairdubois.fr/creations?q={query}",
+             "query-input": "required name=query"
+           },
+           "sameAs": [ "https://www.facebook.com/LAirDuBois", "https://www.twitter.com/LAirDuBois", "https://mastodon.social/@lairdubois", "https://www.instagram.com/lairdubois/", "https://pinterest.com/lairdubois", "https://github.com/lairdubois" ]
+        }
+        </script>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if highlightedPost is defined and highlightedPost is not null %}
+        <script>
+            $(document).ready(function () {
+                if ($(window).width() >= 768) { {# exlude mobiles #}
+                    $("#ladb_corner_slider").cornerSlider({
+                        right: 20,
+                        bottom: 30,
+                        cookieName: 'POSTHIGHLIGHTCS',
+                        cookieValue: {{ highlightedPost.id }},
+                        cookieMinutesToExpiry: 525600 {# 1 year #}
+                    });
+                }
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% if homepage and spotlightEntity is defined and spotlightEntity is not null %}
+        {% include (constant('CLASS_NAME', spotlightEntity)|slice(11))~'/_spotlight.part.html.twig' with { 'entity':spotlightEntity } %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% if not homepage or spotlightEntity is not defined or spotlightEntity is null %}
+        {% include 'Wonder/Creation/_list-topbar.part.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if homepage and spotlightEntity is defined and spotlightEntity is not null %}
+        <div class="ladb-fake-header">
+            {% include 'Wonder/Creation/_list-topbar.part.html.twig' %}
+        </div>
+    {% endif %}
+    {{ parent() }}
+    {%  if highlightedPost is defined and highlightedPost is not null %}
+        {% include 'Blog/Post/_corner-slider-thumbnail.part.html.twig' with { 'post':highlightedPost } %}
+    {% endif %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% if homepage and runningEvents and runningEvents is not empty %}
+        <div class="ladb-masonry-item ladb-masonry-column">
+            <div class="ladb-box">
+                <div style="padding: 10px;">
+                    <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-event"></i> {{ runningEvents|length }} {{ 'find.find.choice.events'|trans({'count': runningEvents|length}) }} aujourd'hui !</div>
+                    <ul>
+                        {% for runningEvent in runningEvents %}
+                         <li><a href="{{ ladb_entity_url_action(runningEvent) }}">{{ runningEvent.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if highlightedCollection is defined and highlightedCollection %}
+        {% include 'Collection/Collection/_list-thumbnail-highlighted.part.html.twig' with { 'collection':highlightedCollection } %}
+    {% endif %}
+    {% if highlightedTip is defined and highlightedTip %}
+        {% include 'Core/Tip/_list-thumbnail-highlighted.part.html.twig' with { 'tip':highlightedTip, 'tiny':true } %}
+    {% endif %}
+    {% if highlightedOffer is defined and highlightedOffer %}
+        {% include 'Offer/Offer/_list-thumbnail-highlighted.part.html.twig' with { 'offer':highlightedOffer } %}
+    {% endif %}
+    {% include 'Wonder/Creation/_list-n.part.html.twig' %}
+{% endblock %}

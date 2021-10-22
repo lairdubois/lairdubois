@@ -1,0 +1,26 @@
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
+
+{% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
+
+{% set id = 'members_modal' %}
+{% set title = '<i class="ladb-icon-plus"></i>&nbsp;'~(titleTransKey|trans()) %}
+{% set classes = 'modal-infinit' %}
+{% set embeddedBody = members|length > 0  %}
+
+{% set autopagerContainerSelector = '#members_modal .modal-body' %}
+
+{% block body %}
+    {% if members|length > 0 %}
+        <div class="ladb-help-block"><i class="ladb-icon-arrow-down"></i> Choisissez sous quelle identité vous allez publier</div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyInner %}
+    {% if members|length == 0 %}
+        <p>Vous n'êtes membre d'aucun collectif.</p>
+    {% endif %}
+    {% include 'Core/Member/_list-session-teams-n.part.html.twig' %}
+    {{ block('autopagerScript') }}
+{% endblock %}
+

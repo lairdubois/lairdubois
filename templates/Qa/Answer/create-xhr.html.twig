@@ -1,0 +1,8 @@
+
+{% set noLazyLoad = true %}
+
+<div class="ladb-success">
+{% include 'Qa/Question/_answers-header.part.html.twig' %}
+{% include 'Qa/Answer/_row.part.html.twig' %}
+{% include 'Qa/Question/_answers-footer.part.html.twig' with { 'userAnswer':answer } %}
+</div>

@@ -1,0 +1,11 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'collection.collection.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Collection/Collection/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{{ path('core_collection_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'collection.collection.new'|trans() }}</span></a>
+{% endblock %}

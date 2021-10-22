@@ -1,0 +1,44 @@
+{% extends 'Core/User/_show-list.html.twig' %}
+
+{% set sentFilter = filter == 'sent' %}
+
+{% block bodyContainerContent %}
+    {% if items|length == 0 %}
+        <div class="alert alert-info">
+            {% if is_granted("ROLE_USER") and user.id == app.user.id %}
+                {% if sentFilter %}
+                    Vous n'avez pas encore envoyé de <strong>coup de coeur</strong> !
+                {% else %}
+                    Vous n'avez pas encore reçu de <strong>coup de coeur</strong> !
+                {% endif %}
+            {% else %}
+                {% if sentFilter %}
+                    <strong>{{ user.username }}</strong> n'a pas encore envoyé de coup de coeur.
+                {% else %}
+                    <strong>{{ user.username }}</strong> n'a pas encore reçu de coup de coeur.
+                {% endif %}
+            {% endif %}
+        </div>
+    {% else %}
+        {% embed 'Common/_list-filterbar.part.html.twig' with { 'classes':'ladb-margin-bottom' } %}
+            {% set filterDefs = {
+                'sent':        { 'label':'Envoyés', 'path':path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'sent' }) },
+                'recieved':    { 'label':'Reçus', 'path':path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'recieved' }) },
+            } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">
+                    {% if sentFilter %}
+                        {{ user.meta.sentLikeCount }} {{ 'like.choice.sent_likes'|transchoice(user.meta.sentLikeCount) }}
+                    {% else %}
+                        {{ user.meta.recievedLikeCount }} {{ 'like.choice.recieved_likes'|transchoice(user.meta.recievedLikeCount) }}
+                    {% endif %}
+                </span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Core/Like/_list-byuser-n.part.html.twig' %}
+{% endblock %}

@@ -1,8 +1,0 @@
-{% extends 'LadbCoreBundle:Core/Notification:_row.part.html.twig' %}
-
-{% set icon = 'answer' %}
-{% set entity = notification.activity.answer.question %}
-
-{% block body %}
-    a répondu à {{ ('notification.'~(entity.user is defined and entity.user == app.user ? 'your' : 'the')~'.qa_question')|trans() }} "<strong>{{ entity.title }}</strong>".
-{% endblock %}

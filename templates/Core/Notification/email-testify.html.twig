@@ -1,0 +1,41 @@
+{% extends 'Core/Notification/_email.html.twig' %}
+
+{# set row #}
+
+{% block rowContent %}
+    <p style="margin: 15px 0 5px 0;">
+        <strong>{{ row.actorUser.displayname }}</strong> a ajouté son témoignage à {{ ('notification.the.knowledge_school')|trans() }} <em>{{ row.entity.title|raw }}</em>.
+    </p>
+    <table cellspacing="10" cellpadding="0">
+        <tbody>
+        {% include 'Common/_entity-email-row.part.html.twig' with { 'entity':row.entity } %}
+        </tbody>
+    </table>
+    <p style="margin: 5px 0 5px 0;">
+        <table cellpadding="0" cellspacing="10" border="0" width="100%">
+            <tbody>
+            <tr>
+                <td width="32" valign="top">
+                    <img src="{{ (row.actorUser.avatar ? row.actorUser.avatar.webPath : 'avatar.png')|imagine_filter('32x32o') }}" width="32" height="32">
+                </td>
+                <td>
+                    <a href="{{ url('core_user_show', { 'username':row.actorUser.usernameCanonical }) }}" style="color: #f77f00; text-decoration: none; font-weight: bold;">{{ row.actorUser.displayname }}</a>
+                    <p style="margin: 5px 0 0 0; padding: 0;">
+                        <div>
+                            {% include 'Knowledge/School/Testimonial:_period.part.html.twig' with { 'testimonial':row.testimonial } %}
+                            {% if row.testimonial.diploma %}
+                                <span style="margin-left: 5px; border-left: 1px solid #ddd; padding-left: 5px; color: #888;">{{ row.testimonial.diploma }}</span>
+                            {% endif %}
+                        </div>
+                        {{ row.testimonial.htmlBody|raw }}
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td height="30"><a href="{{ ladb_entity_url_action(row.testimonial) }}" style="border: 1px solid #ddd; background: #f7f7f7; padding: 6px 12px; color: #333; text-decoration: none;">Voir le témoignage</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+{% endblock %}

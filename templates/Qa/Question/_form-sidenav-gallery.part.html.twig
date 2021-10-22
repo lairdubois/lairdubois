@@ -1,0 +1,5 @@
+
+{# set title (falcultative) #}
+{# set icon (falcultative) #}
+
+<li><a href="#questions"><i class="{{ icon|default('ladb-icon-question') }}"></i> {{ title is defined ? title : ('qa.question.choice.entities'|trans({'count': 2})|capitalize) }}</a></li>

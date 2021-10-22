@@ -1,0 +1,41 @@
+<div class="ladb-box ladb-status-{{ readOnly ? '0' : task.status }}">
+    <button class="ladb-btn-done ladb-status-update-btn"{% if not readOnly %} data-action-status="{{ task.status == constant('App\\Entity\\Workflow\\Task::STATUS_DONE') ? constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') : constant('App\\Entity\\Workflow\\Task::STATUS_DONE')}}" data-loading-text="<i class='ladb-icon-spinner'></i>"{% endif %}{% if readOnly or task.status < constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') %} disabled{% endif %}>
+        {% if not readOnly and task.status == constant('App\\Entity\\Workflow\\Task::STATUS_DONE') %}<i class="ladb-icon-check"></i>{% endif %}
+    </button>
+    {% if not readOnly %}
+        <div class="ladb-minitools pull-right">
+            {% if task.status == constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') %}
+                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('App\\Entity\\Workflow\\Task::STATUS_RUNNING') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-play ladb-icon-lg"></i></button>
+            {% endif %}
+            {% if task.status == constant('App\\Entity\\Workflow\\Task::STATUS_RUNNING') %}
+                <button class="ladb-minitools-btn ladb-btn-run ladb-status-update-btn ladb-unselectable" data-action-status="{{ constant('App\\Entity\\Workflow\\Task::STATUS_WORKABLE') }}" data-loading-text="<i class='ladb-icon-spinner'></i>"><i class="ladb-icon-task-pause ladb-icon-lg"></i></button>
+            {% endif %}
+            <button class="ladb-minitools-btn ladb-btn-edit ladb-unselectable"><i class="ladb-icon-edit ladb-icon-lg"></i></button>
+        </div>
+    {% endif %}
+    <div class="ladb-body">
+        <div class="ladb-title ladb-unselectable">{{ task.title }}</div>
+        {% if not durationsHidden %}
+            {% include 'Workflow/Workflow/_durations.part.html.twig' with { 'entity':task } %}
+        {% endif %}
+        {% if task.labels is not empty %}
+            <div class="ladb-labels">
+                {% for label in task.labels %}
+                    {% include 'Workflow:Label/_bullet.part.html.twig' %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if task.parts is not empty %}
+            <div class="ladb-parts">
+                <a data-toggle="collapse"><i class="ladb-icon-plan" data-container="body"></i> <span class="ladb-unselectable" style="font-size: 95%;">{{ task.partCount }} pièces</span><span class="caret"></span> </a>
+                <div class="collapse">
+                    <ul style="list-style: none; padding-left: 20px; margin-top: 5px;">
+                        {% for part in task.parts %}
+                            <li style="font-size: 90%; line-height: 20px;">{% include 'Workflow:Part/_span.part.html.twig' %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

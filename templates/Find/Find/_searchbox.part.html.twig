@@ -1,0 +1,44 @@
+{% extends 'Core/Search/_searchbox.part.html.twig' %}
+
+{% set placeholder = 'search.in.finds'|trans() %}
+{% set searchPath = path('core_find_list') %}
+{% set mapSearchPath = path('core_find_list_geojson') %}
+
+{% block filtersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="around" data-label="Autour de moi" data-editable="false" data-unique="true" data-geolocation="true" data-require-map="true" data-icon="geolocate"><i class="ladb-icon-geolocate ladb-icon-fixed-center"></i> Autour de moi</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="location" data-label="Localisation" data-editable="true" data-require-map="true" data-icon="location"><i class="ladb-icon-location ladb-icon-fixed-center"></i> Localisation</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="tag" data-label="Tag" data-editable="true" data-icon="tag" data-proposals-url="{{ path('core_search_typeahead_tags_json')|raw }}"><i class="ladb-icon-tag"></i> Tags</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Find\\Find::KIND_WEBSITE') }}" data-label="Sites Web" data-editable="false" data-unique="true" data-icon="link"><i class="ladb-icon-link"></i> Sites Web</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Find\\Find::KIND_VIDEO') }}" data-label="Vidéos" data-editable="false" data-unique="true" data-icon="video"><i class="ladb-icon-video"></i> Vidéos</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="kind" data-value="{{ constant('App\\Entity\\Find\\Find::KIND_GALLERY') }}" data-label="Photos" data-editable="false" data-unique="true" data-icon="camera"><i class="ladb-icon-camera"></i> Photos</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="author" data-label="Auteur" data-editable="true" data-unique="true" data-icon="user"><i class="ladb-icon-user"></i> Auteur</a></li>
+    {% if is_granted("ROLE_USER") %}
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="all" data-label="Mes trouvailles" data-unique="true" data-icon="globe"><i class="ladb-icon-find"></i> Mes trouvailles</a></li>
+        <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="mine" data-value="draft" data-label="Mes brouillons" data-unique="true" data-icon="draft"><i class="ladb-icon-draft"></i> Mes brouillons</a></li>
+    {% endif %}
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last7days" data-label="7 derniers jours" data-unique="true" data-icon="calendar-week"><i class="ladb-icon-calendar-week"></i> 7 derniers jours</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="filter" data-name="period" data-value="last30days" data-label="30 derniers jours" data-unique="true" data-icon="calendar-month"><i class="ladb-icon-calendar-month"></i> 30 derniers jours</a></li>
+{% endblock %}
+
+{% block sortersDropdown %}
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-recent" data-label="Récentes" data-unique="true" data-icon="time"><i class="ladb-icon-time"></i> Récentes</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-views" data-label="Plus vues" data-unique="true" data-icon="eye"><i class="ladb-icon-eye"></i> Plus vues</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-likes" data-label="Préférées" data-unique="true" data-icon="like"><i class="ladb-icon-like"></i> Préférées</a></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-popular-comments" data-label="Plus commentées" data-unique="true" data-icon="comment"><i class="ladb-icon-comment"></i> Plus commentées</a></li>
+    <li class="divider"></li>
+    <li><a class="ladb-smartsearch-facet" data-type="sorter" data-name="sort-random" data-label="Aléatoire" data-unique="true" data-random="true" data-icon="random"><i class="ladb-icon-random"></i> Aléatoire</a></li>
+{% endblock %}
+
+{% block searchboxShortcuts %}
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Find\\Find::KIND_WEBSITE') }}"><i class="ladb-icon-globe"></i> Sites Web</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Find\\Find::KIND_VIDEO') }}"><i class="ladb-icon-video"></i> Vidéos</a></li>
+    <li><a class="ladb-smartsearch-shortcut" data-query="@kind:{{ constant('App\\Entity\\Find\\Find::KIND_GALLERY') }}"><i class="ladb-icon-camera"></i> Photos</a></li>
+{% endblock %}
+
+
+

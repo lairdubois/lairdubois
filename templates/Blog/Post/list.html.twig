@@ -1,0 +1,28 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageTitle = 'blog.title'|trans() %}
+{% set pageDescription = 'blog.description'|trans() %}
+{% set pageImage = asset('banner-blog-600x376.jpg') %}
+{% set pageSectionUrl = url('core_blog_post_list') %}
+{% set pageSectionName = 'blog.post.list'|trans %}
+
+{% set navSection = 'blog' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Blog/Post/_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top ladb-margin-bottom">
+        <div class="panel-body">{{ 'blog.description'|trans() }}</div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Blog/Post/_list-n.part.html.twig' %}
+{% endblock %}

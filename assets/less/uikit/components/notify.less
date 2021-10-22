@@ -1,0 +1,37 @@
+
+@import "~uikit/src/less/components/notify.less";
+
+@import "../_variables";
+
+// Variables
+// ========================================================================
+
+@notify-position:                               (@ladb-topbar-height + 10px);
+@notify-z-index:                                @ladb-zindex-notify;
+@notify-width:                                  450px;
+
+/* ========================================================================
+   Addon: Notify
+ ========================================================================== */
+
+.hook-notify-message() {
+  border-width: 1px;
+  border-style: solid;
+  text-align: center;
+}
+
+.hook-notify-message-info() {
+  border-color: @notify-message-info-color;
+}
+
+.hook-notify-message-success() {
+  border-color: @notify-message-success-color;
+}
+
+.hook-notify-message-warning() {
+  border-color: @notify-message-warning-color;
+}
+
+.hook-notify-message-danger() {
+  border-color: @notify-message-danger-color;
+}

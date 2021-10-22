@@ -1,0 +1,123 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% set entity = post %}
+
+{% set pageContentItemType = 'BlogPosting' %}
+{% set pageContentNameItemprop = 'headline' %}
+{% set pageSectionUrl = url('core_blog_post_list') %}
+{% set pageSectionName = 'blog.post.list'|trans %}
+
+{% set navSection = 'blog' %}
+{% set searchPath = path('core_blog_post_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == post.user.id %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('tocify') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if post.hasToc %}
+        {{ encore_entry_script_tags('tocify') }}
+        <script>
+            $(function() {
+                if ($(window).width() >= 768) {
+                    $("#tocify_toc").tocify({
+                        context: ".ladb-post",
+                        ignoreSelector: ".modal-title",
+                        selectors: "h3,h4",
+                        theme: "none",
+                        smoothScroll: false,
+                        showEffect: "none",
+                        hideEffect: "none",
+                        extendPage: false,
+                        hashGenerator: "pretty",
+                        history: false,
+                        scrollTo: 100
+                    });
+                    $("#ladb_toc_panel").sticky({
+                        topSpacing: 70
+                    });
+                }
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block bodyMetas %}
+    {{ parent() }}
+    <meta itemprop="datePublished" content="{{ entity.createdAt|date('Y-m-dTH:i:s') }}" />
+    <meta itemprop="dateModified" content="{{ entity.updatedAt|date('Y-m-dTH:i:s') }}" />
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="{{ asset('favicon-512x512.jpg') }}">
+        </div>
+        <meta itemprop="name" content="L'Air du Bois">
+    </div>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header/_entity-show-header.part.html.twig' %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if post.isDraft %}
+        {% include 'Blog/Post/_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-post">
+        {% include 'Core/Picture/_img-link.part.html.twig' with { 'picture':post.mainPicture, 'width':'594', 'height':'294', 'filterMode':'o', 'alt':post.title, 'noSizer':true, 'noLazyLoad':true } %}
+        <div class="ladb-body" itemprop="articleBody">
+            {% for block in post.bodyBlocks %}
+                {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        </div>
+        {% if post.updatedAt > post.createdAt %}
+            {% include 'Common/_updated-age.part.html.twig' with { 'entity':post } %}
+        {% endif %}
+    </div>
+    {% if not permissionContext.isOwner %}
+        {% include 'Common/_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% include 'Core/Comment/_widget.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
+    </div>
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':post.tags, 'type':'posts' } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if similarPosts is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('blog.post.similar')|trans() }}
+            </div>
+            <div class="panel-body row">
+                {% for similarPost in similarPosts %}
+                    <div class="col-xs-6">
+                        {% include 'Blog/Post/_thumbnail-link.part.html.twig' with { 'post':similarPost, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% if post.hasToc %}
+        <div id="ladb_toc_panel" class="panel panel-default ladb-toc-panel ladb-hidden-mobile">
+            <div class="panel-heading">{{ 'default.toc'|trans() }}</div>
+            <div class="panel-body">
+                <div id="tocify_toc"></div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

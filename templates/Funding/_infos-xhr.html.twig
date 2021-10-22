@@ -1,0 +1,8 @@
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
+
+{% set id = 'infos_modal' %}
+{% set title = title~'<br><small>'~(('month.long.'~(funding.date|date('M')|lower))|trans({}, 'date'))|capitalize~' '~funding.year~'</small>' %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+{% endblock %}

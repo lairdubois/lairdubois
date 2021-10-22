@@ -1,0 +1,583 @@
+//
+// LADB Workflow
+//
+
+@import "../_variables.less";
+@import "../_mixins.less";
+
+@color-status-1: #ccc;
+@color-status-2: #5c96bc;
+@color-status-3: #5c96bc;
+@color-status-4: @ladb-brand-success;
+@color-readonly: #ccc;
+@color-grid: #f5f5f5;
+
+@bg-color-status-1: #eee;
+@bg-color-status-2: #fff;
+@bg-color-status-3: lighten(@color-status-3, 40%);
+@bg-color-status-4: lighten(@color-status-4, 40%);
+@bg-readonly: #eee;
+
+@task-widget-box-width: 340px;
+@label-bullet-width: 30px;
+@label-bullet-height: 10px;
+
+.ladb-workflow-workspace.ladb-diagram-only {
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  .ladb-workflow-board {
+    top: 0;
+  }
+
+  .ladb-workflow-task-diagram {
+    border: none;
+    background-color: #fff;
+    background-image: none;
+  }
+
+}
+
+.ladb-workflow-workspace {
+  position: absolute;
+  top: @ladb-topbar-height;
+  left: @ladb-leftbar-width;
+  right: 0;
+  bottom: @ladb-bottombar-height;
+  background-color: #f4f4f4;
+
+  header {
+    padding: 0 15px;
+  }
+
+  .ladb-workflow-board {
+    position: absolute;
+    top: 94px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    border-top: 1px solid @ladb-global-border;
+    background-image: url('../../../ladb/images/paper.jpg');
+    background-size: 400px 400px;
+
+    .ladb-panel-buttons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .ladb-toolbar {
+      position: absolute;
+      top : 10px;
+      left: 10px;
+      width: 35px;
+
+      .btn {
+        margin-bottom: 5px;
+        padding: 6px;
+      }
+
+    }
+
+    .ladb-loading-panel {
+      background-image: url('../../../ladb/images/paper.jpg');
+      background-size: 400px 400px;
+      opacity: 1;
+    }
+
+  }
+
+  .ladb-right-panel {
+    position: absolute;
+    height: 100%;
+    width: 400px;
+    top: 0;
+    right: 0;
+    padding: 0 !important;
+
+    .panel {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      border-right: none;
+      border-top: none;
+
+      .panel-body {
+        padding: 0;
+
+        &:first-child {
+          padding: 10px;
+
+          span {
+            display: block;
+            text-align: center;
+            font-size: 150%;
+          }
+
+        }
+
+        .ladb-no-task {
+          padding: 10px;
+        }
+
+      }
+
+      .panel-heading {
+        border-top: 1px solid @ladb-global-border;
+        border-bottom: 1px solid @ladb-global-border;
+
+        .badge.ladb-null {
+          background-color: @ladb-global-null-color;
+        }
+
+      }
+
+      .ladb-no-task {
+        color: @ladb-global-null-color;
+        font-size: 90%;
+      }
+
+    }
+
+    .ladb-workflow-status {
+      border-top: 1px solid @ladb-global-border;
+      padding: 10px;
+
+      .ladb-duration {
+        font-size: 120%;
+        text-align: center;
+
+        span {
+          display: inline-block;
+          white-space: nowrap;
+        }
+      }
+
+      .progress {
+        margin: 10px 0;
+      }
+
+    }
+
+  }
+
+  .ladb-workflow-task-diagram {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    overflow: hidden;
+
+    &.ladb-with-right-panel {
+      right: 400px;
+    }
+
+  }
+
+  .ladb-panzoom {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: visible;
+  }
+
+  .ladb-jtk-canvas {
+    position: absolute;
+
+    path, .jtk-endpoint {
+      cursor: pointer;
+    }
+
+    .jtk-drag-hover .ladb-box,
+    .jtk-drag-selected .ladb-box,
+    .jtk-source-hover .ladb-box,
+    .jtk-target-hover .ladb-box {
+      border-color: @ladb-brand-primary !important;
+    }
+
+  }
+
+}
+
+.ladb-workflow-task-row {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+
+  &:hover {
+    background: #f9f9f9;
+    cursor: pointer;
+
+    .ladb-box {
+      background: none;
+    }
+
+  }
+
+  &:last-child {
+    border: none;
+  }
+
+  .ladb-box {
+    background: #fff;
+
+    &.ladb-status-1 .ladb-body {
+      color: darken(@color-status-1, 20%);
+    }
+
+    .ladb-minitools-btn {
+      color: darken(@color-status-1, 20%);
+    }
+
+  }
+
+}
+
+.ladb-workflow-task-widget {
+  position: absolute;
+
+  &:hover > .ladb-ep {
+    display: block;
+  }
+
+  &.ladb-selected .ladb-box {
+    border-color: @ladb-brand-primary !important;
+  }
+
+  .ladb-box {
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    border-width: 2px;
+    border-style: solid;
+    width: @task-widget-box-width;
+    //.unselectable();
+
+    &.ladb-status-0 {
+      background-color: #fff;
+      border-color: #ccc;
+      border-style: dashed;
+    }
+
+    &.ladb-status-1 {
+      background-color: @bg-color-status-1;
+      border-color: @color-status-1;
+
+      .ladb-minitools-btn {
+        color: darken(@color-status-1, 20%);
+      }
+
+    }
+
+    &.ladb-status-2 {
+      background-color: @bg-color-status-2;
+      border-color: @color-status-2;
+
+      .ladb-minitools-btn {
+        color: darken(@color-status-2, 20%);
+      }
+
+    }
+
+    &.ladb-status-3 {
+      background-color: @bg-color-status-3;
+      border-color: @color-status-3;
+
+      .ladb-minitools-btn {
+        color: darken(@color-status-3, 20%);
+      }
+
+    }
+
+    &.ladb-status-4 {
+      background-color: @bg-color-status-4;
+      border-color: @color-status-4;
+
+      .ladb-minitools-btn {
+        color: darken(@color-status-4, 20%);
+      }
+
+    }
+
+  }
+
+  &.ladb-readonly {
+
+    .ladb-box {
+      background-color: @bg-readonly;
+      border-color: @color-readonly;
+    }
+
+    > .ladb-ep {
+      display: none !important;
+    }
+
+  }
+
+  .ladb-ep {
+    display: none;
+    z-index: 4;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    margin-left: -13px;
+    background-color: @ladb-brand-primary;
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+    line-height: 26px;
+    border-radius: 13px;
+
+    &:hover {
+      box-shadow: 0 0 6px #ccc;
+    }
+
+    &:active {
+      border: 2px solid #fff;
+    }
+
+  }
+
+}
+
+.ladb-workflow-task-widget, .ladb-workflow-task-row {
+
+  .ladb-body {
+    padding-left: 38px;
+    min-height: 28px;
+
+    .ladb-title {
+      margin-top: 4px;
+      font-size: 110%;
+    }
+
+    .ladb-duration {
+      margin-top: 4px;
+      font-size: 90%;
+      opacity: 0.9;
+    }
+
+    .ladb-labels {
+      margin-top: 4px;
+    }
+
+    .ladb-parts {
+      margin-top: 4px;
+
+      a {
+        color: #555;
+      }
+    }
+
+  }
+
+  .ladb-box {
+    position: relative;
+
+    .ladb-minitools-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      padding: 0;
+      line-height: 24px;
+
+      &:hover {
+        color: @ladb-brand-primary !important;
+      }
+
+    }
+
+    .ladb-btn-done {
+      float: left;
+      width: 28px;
+      height: 28px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      text-align: center;
+      padding: 0;
+      line-height: 24px;
+
+      &:hover {
+        border-color: #f77f00;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        border-color: #ccc !important;
+      }
+
+    }
+
+    .ladb-icon-duration:before, .ladb-icon-estimated-duration:before {
+      font-size: 150%;
+    }
+
+    .ladb-parts a {
+      cursor: pointer;
+    }
+
+  }
+
+}
+
+.ladb-workflow-label-row, .ladb-workflow-part-row {
+
+  td {
+    position: relative;
+  }
+
+  .ladb-minitools {
+    font-size: 110%;
+    float: right;
+  }
+
+}
+
+.ladb-workflow-label-row-form, .ladb-workflow-part-row-form {
+
+  td {
+    position: relative;
+  }
+
+}
+
+.ladb-workflow-label-bullet {
+  display: inline-block;
+  width: @label-bullet-width;
+  height: @label-bullet-height;
+  border-radius: @label-bullet-height / 2;
+  vertical-align: middle;
+}
+
+.ladb-workflow-label-span, .ladb-workflow-part-span {
+  line-height: @label-bullet-height;
+}
+
+.ladb-workflow-label-fake-select, .ladb-workflow-part-fake-select {
+
+  .dropdown-menu {
+    min-width: inherit !important;
+
+    li a {
+      padding-left: 25px;
+    }
+
+    .check-mark {
+      right: auto !important;
+      left: 8px;
+      margin-top: 3px !important;
+    }
+
+  }
+
+}
+
+/* Moernizr */
+
+html.touchevents {
+
+  .ladb-workflow-task-widget {
+
+    .ladb-ep {
+      display: block;
+    }
+
+  }
+
+}
+
+/* Responsive */
+
+// phone
+@media screen and (max-width: @ladb-screen-phone-max) {
+
+  .ladb-workflow-workspace {
+    left: 0;
+
+    header .ladb-avatar-header {
+
+      .ladb-header-tools {
+        margin: 0;
+      }
+
+    }
+
+    .ladb-workflow-board {
+      top: 62px;
+
+      .ladb-right-panel {
+        width: 95%;
+        .box-shadow(-40px 0 0 rgba(0,0,0,0.3));
+      }
+
+    }
+
+    .ladb-workflow-task-diagram {
+
+      &.ladb-with-right-panel {
+        display: table-cell;
+        right: 0;
+      }
+
+    }
+
+  }
+
+}
+
+// tablet
+@media screen and (min-width: @ladb-screen-tablet) and (max-width: @ladb-screen-tablet-max) {
+
+  .ladb-workflow-workspace {
+    left: @ladb-leftbar-width-tablet;
+
+    header .ladb-avatar-header {
+
+      .ladb-header-tools {
+        display: table-cell;
+        margin: 0;
+      }
+
+    }
+
+  }
+
+}
+
+/* Print */
+
+@media print {
+
+  .ladb-workflow-workspace {
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    .ladb-workflow-task-diagram {
+
+      &.ladb-with-right-panel {
+        right: 0;
+      }
+
+    }
+
+    .ladb-workflow-task-widget {
+
+      .ladb-box {
+        background-color: #fff !important;
+        border: 1px solid #000 !important;
+      }
+
+    }
+
+  }
+
+}

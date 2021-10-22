@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% set bodyClass = 'ladb-topbar-enabled ladb-bottombar-enabled' %}
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+
+{% block body %}
+    {% include '::_topbar.part.html.twig' %}
+    {% include '::_bottombar.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    <header>
+        {% for key, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="alert alert-{{ key }}">
+                    <p>{{ message|trans({}, 'FOSUserBundle')|raw }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </header>
+{% endblock %}
+
+{% block bodyContainer %}
+    {% block fos_user_content %}{% endblock %}
+{% endblock %}

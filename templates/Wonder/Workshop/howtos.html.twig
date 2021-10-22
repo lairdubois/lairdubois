@@ -1,0 +1,36 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageUrl = url('core_workshop_howtos', { 'id':workshop.id }) %}
+{% set pageTitle = 'Pas à pas associés à '~workshop.title %}
+{% set pageDescription = 'Pas à pas associés à l\'atelier' %}
+
+{% set navSection = 'workshops' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':workshop } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if howtos.count == 0 %}
+        <div class="alert alert-info">
+            Aucun pas à pas n'est associé à cet atelier.
+        </div>
+    {% else %}
+        {% embed 'Howto/Howto/_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_workshop_howtos_filter' %}
+            {% set filterPathParameters = { 'id':workshop.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ workshop.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(workshop.howtoCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Howto/Howto/_list-n.part.html.twig' %}
+{% endblock %}

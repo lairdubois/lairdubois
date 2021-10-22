@@ -1,0 +1,58 @@
+{% extends 'FOSUserBundle:layout.html.twig' %}
+
+{% set pageTitle = 'security.login.heading'|trans() %}
+
+{% block subtitle %}{{ 'security.login.heading'|trans() }}{% endblock %}
+
+{% block fos_user_content %}
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-xs-12">
+            <div class="ladb-login-panel panel panel-default panel-lg">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'security.login.heading'|trans() }}</h1>
+                </div>
+                <div class="panel-body row">
+                    <div class="ladb-login-body col-sm-6 col-xs-12">
+                        <form action="{{ path("fos_user_security_check") }}" method="post">
+                            {% if error %}
+                                <div class="alert alert-danger">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                </div>
+                            {% endif %}
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="_username">{{ 'security.login.username_email'|trans() }}</label>
+                                    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="_password">{{ 'security.login.password'|trans() }}</label>
+                                    <input type="password" id="password" name="_password" required="required" class="form-control" />
+                                </div>
+                                <div class="checkbox">
+                                    <label for="remember_me">
+                                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" checked />
+                                        {{ 'security.login.remember_me'|trans() }}
+                                    </label>
+                                </div>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                             </fieldset>
+                            <div class="text-right">
+                                <input type="submit" value="{{ 'security.login.submit'|trans() }}" class="btn btn-primary" />
+                                <small><a href="{{ path('fos_user_resetting_request') }}" class="pull-left" style="line-height: 45px;">{{ 'resetting.request.heading'|trans() }}</a></small>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ladb-register-body col-sm-6 col-xs-12">
+                        <h4>Nouveau sur L'Air du Bois ?</h4>
+                        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            Qu'est-ce que L'Air du Bois ? <a href="{{ path('core_about') }}">Découvrez-le</a>.
+        </div>
+    </div>
+{% endblock %}

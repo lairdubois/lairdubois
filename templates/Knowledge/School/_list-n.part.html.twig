@@ -1,0 +1,13 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set schools #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set schools = entities %}{% endif %}
+
+{% block items %}
+    {% for school in schools %}
+        {% include 'Knowledge/School/_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}
+

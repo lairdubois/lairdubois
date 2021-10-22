@@ -1,0 +1,9 @@
+
+{# set collectionContext #}
+
+{% if collectionContext is not null and collectionContext.isCollectionnable and is_granted("ROLE_USER") %}
+    <a class="btn btn-default" data-tooltip="tooltip" title="{{ 'collection.collection.add'|trans }}" onclick="$('#collections_modal').modal({ remote:'{{ path('core_collection_list_available', { 'entityType':collectionContext.entityType, 'entityId':collectionContext.entityId }) }}' });">
+        <i class="ladb-icon-collection-add"></i><span class="ladb-hidden-mobile2"> {{ 'collection.collection.add_short'|trans() }}...</span>
+    </a>
+    {% include 'Collection/Collection/_modal.part.html.twig' %}
+{% endif %}

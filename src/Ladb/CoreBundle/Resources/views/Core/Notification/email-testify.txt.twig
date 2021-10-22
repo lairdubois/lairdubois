@@ -1,5 +1,0 @@
-{% extends 'LadbCoreBundle:Core/Notification:_email.txt.twig' %}
-
-{% block rowContent %}**{{ row.actorUser.displayname|raw }}** a ajouté son témoignage à {{ ('notification.the.'~ladb_entity_type_stripped_name(row.entity))|trans() }} "{{ row.entity.title|raw }}"
-{% endblock %}
-

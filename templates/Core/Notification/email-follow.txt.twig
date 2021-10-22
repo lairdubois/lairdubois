@@ -1,0 +1,4 @@
+{% extends 'Core/Notification/_email.txt.twig' %}
+
+{% block rowContent %}**{{ row.actorUser.displayname|raw }}** s'est abonné à suivre {% if row.follower.followingUser == recipientUser %}vos publications{% else %}les publications de {{ row.follower.followingUser.displayName }}{% endif%}.
+{% endblock %}

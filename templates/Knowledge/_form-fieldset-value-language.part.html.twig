@@ -1,0 +1,6 @@
+{% extends 'Knowledge/_form-fieldset-value.part.html.twig' %}
+
+{% block dataFormGroup %}
+    {{ form_errors(form.rawLanguage) }}
+    {{ form_widget(form.rawLanguage, { 'attr':{ 'class':'form-control input-lg', 'placeholder':fieldLabel } }) }}
+{% endblock %}

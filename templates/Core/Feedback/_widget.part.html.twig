@@ -1,0 +1,14 @@
+{# set feedbackContext { 'entityType', 'entityId', 'feedbackCount', ['feedbacks'], 'isfeedbackable' } #}
+
+{% if feedbackContext is not null and (feedbackContext.isFeedbackable or feedbackContext.feedbacks|length > 0) %}
+    <hr class="ladb-divider">
+    <div id="ladb_feedback_widget" class="ladb-feedback-widget ladb-show-content-section">
+        {% include 'Core/Feedback/_feedbacks-header.part.html.twig' %}
+        <div class="ladb-feedbacks">
+            {% for feedback in feedbackContext.feedbacks %}
+                {% include 'Core/Feedback/_row.part.html.twig' %}
+            {% endfor %}
+        </div>
+        {% include 'Core/Feedback/_feedbacks-footer.part.html.twig' %}
+    </div>
+{% endif %}

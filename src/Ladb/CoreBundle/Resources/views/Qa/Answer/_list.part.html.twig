@@ -1,9 +1,0 @@
-{# set answers #}
-{# set voteContexts #}
-{# set commentContexts #}
-
-<div class="ladb-qa-question-answers">
-    {% for answer in answers %}
-        {% include 'LadbCoreBundle:Qa/Answer:_row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
-    {% endfor %}
-</div>

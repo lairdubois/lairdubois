@@ -1,0 +1,204 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyContainerFluid = true %}
+{% set navSection = 'workflows' %}
+{% set searchPath = path('core_workflow_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user == workflow.user %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" media="screen" />
+    {{ encore_entry_link_tags('workflow_workspace', null, '_default', {media: 'screen,print'}) }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.6.0/js/jsplumb.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+    {{ encore_entry_script_tags('workflow_workspace') }}
+    {{ ws_client() }}
+    <script>
+        $(document).ready(function() {
+            $('.ladb-workflow-workspace').ladbWorkflowWorkspace({
+                readOnly: {{ readOnly ? 'true' : 'false' }},
+                durationsHidden: {{ durationsHidden ? 'true' : 'false' }},
+                listTaskPath: '{{ path('core_workflow_task_list', { 'id':workflow.id }) }}'
+                {% if not readOnly %}
+                    ,
+                    wsUri: '{{ websocket_uri }}',
+                    wsChannel: 'workflow/{{ workflow.id }}',
+                    newTaskPath: '{{ path('core_workflow_task_new', { 'id':workflow.id }) }}',
+                    createTaskPath: '{{ path('core_workflow_task_create', { 'id':workflow.id }) }}',
+                    editTaskPath: '{{ path('core_workflow_task_edit', { 'id':workflow.id }) }}',
+                    updateTaskPath: '{{ path('core_workflow_task_update', { 'id':workflow.id }) }}',
+                    positionUpdateTaskPath: '{{ path('core_workflow_task_position_update', { 'id':workflow.id }) }}',
+                    statusUpdateTaskPath: '{{ path('core_workflow_task_status_update', { 'id':workflow.id }) }}',
+                    createTaskConnectionPath: '{{ path('core_workflow_task_connection_create', { 'id':workflow.id }) }}',
+                    deleteTaskConnectionPath: '{{ path('core_workflow_task_connection_delete', { 'id':workflow.id }) }}',
+                    listPartPath: '{{ path('core_workflow_part_list', { 'id':workflow.id }) }}',
+                    listLabelPath: '{{ path('core_workflow_label_list', { 'id':workflow.id }) }}',
+                    statisticsPath: '{{ path('core_workflow_statistics', { 'id':workflow.id }) }}',
+                    restartConfirmPath: '{{ path('core_workflow_restart_confirm', { 'id':workflow.id }) }}',
+                    restartPath: '{{ path('core_workflow_restart', { 'id':workflow.id }) }}'
+                {% endif %}
+            });
+            {% if readOnly %}
+                $('#readonly_modal').modal('show');
+            {% endif %}
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+{% endblock %}
+
+{% block bodyWrapperInner %}
+    <div class="ladb-workflow-workspace">
+        <header>
+            {% embed 'Common/Header/_entity-avatar-header.part.html.twig' with { 'entity':workflow } %}
+                {% block headerToolsInner %}
+                    {% if not ownerUser %}
+                        {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
+                    {% endif %}
+                    &nbsp;
+                    {% if not readOnly %}
+                        <button class="btn btn-success ladb-add-task-btn ladb-visible-desktop"><i class="ladb-icon-plus"></i> {{ 'workflow.task.new'|trans() }}</button>
+                        &nbsp;
+                        <button class="btn btn-default ladb-list-parts-btn ladb-visible-desktop"><i class="ladb-icon-plan"></i><span class="ladb-visible-desktop"> {{ 'workflow.part.list'|trans() }}</span></button>
+                        <button class="btn btn-default ladb-list-labels-btn ladb-visible-desktop"><i class="ladb-icon-bullet"></i><span class="ladb-visible-desktop">  {{ 'workflow.label.list'|trans() }}</span></button>
+                        <button class="btn btn-default ladb-statistics-btn ladb-visible-desktop"><i class="ladb-icon-statistics"></i><span class="ladb-visible-desktop">  {{ 'workflow.workflow.statistics'|trans() }}</span></button>
+                        <span class="ladb-visible-desktop">&nbsp;</span>
+                        <button class="btn btn-default ladb-restart-btn ladb-visible-desktop"><i class="ladb-icon-repeat"></i>  {{ 'default.restart'|trans() }}</button>
+                        <span class="ladb-visible-desktop">&nbsp;</span>
+                    {% elseif not ownerUser %}
+                        <a href="#copy_workflow_modal" class="btn btn-default ladb-visible-desktop" data-toggle="modal"><i class="ladb-icon-duplicate"></i><span class="ladb-visible-large-desktop">  {{ 'default.copy'|trans() }}</span></a>
+                    {% endif %}
+                    <div class="btn-group{% if readOnly and not ownerUser %} ladb-hidden-desktop{% endif %}">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ladb-icon-more"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% if not readOnly %}
+                                <li class="ladb-hidden-desktop"><a href="#" class="ladb-add-task-btn"><i class="ladb-icon-plus"></i> {{ 'workflow.task.new'|trans() }}</a></li>
+                                <li role="separator" class="divider ladb-hidden-desktop"></li>
+                                <li class="ladb-hidden-desktop"><a href="#" class="ladb-list-parts-btn"><i class="ladb-icon-plan"></i> {{ 'workflow.part.list'|trans() }}</a></li>
+                                <li class="ladb-hidden-desktop"><a href="#" class="ladb-list-labels-btn"><i class="ladb-icon-bullet"></i> {{ 'workflow.label.list'|trans() }}</a></li>
+                                <li class="ladb-hidden-desktop"><a href="#" class="ladb-statistics-btn"><i class="ladb-icon-statistics"></i> {{ 'workflow.workflow.statistics'|trans() }}</a></li>
+                                <li role="separator" class="divider ladb-hidden-desktop"></li>
+                                <li class="ladb-hidden-desktop"><a href="#" class="ladb-restart-btn"><i class="ladb-icon-repeat"></i> {{ 'default.restart'|trans() }}</a></li>
+                                <li role="separator" class="divider ladb-hidden-desktop"></li>
+                            {% endif %}
+                            <li><a href="#copy_workflow_modal" data-toggle="modal"><i class="ladb-icon-duplicate"></i>  {{ ownerUser ? 'default.duplicate'|trans() : 'default.copy'|trans() }}</a></li>
+                            {% if not readOnly %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('core_workflow_edit', { 'id':workflow.id }) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
+                                <li class="dropdown-item-danger"><a href="#delete_workflow_modal" data-toggle="modal"><i class="ladb-icon-delete"></i>  {{ 'default.delete'|trans() }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% include 'Workflow/Workflow/_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
+                    {% include 'Common/_delete-entity-modal.part.html.twig' with { 'id':'delete_workflow_modal', 'entityTitle':workflow.title, 'deletePath':path('core_workflow_delete', { 'id':workflow.id }) } %}
+                    &nbsp;
+                    <a id="ladb_layout_page_btn" class="btn btn-info" href="{{ ladb_entity_url_action(workflow) }}"><i class="ladb-icon-exit"></i><span class="ladb-visible-desktop">  Quitter le mode travail</span></a>
+                {% endblock %}
+                {% block subheading %}{{ parent() }}{% include 'Workflow/Workflow/_visibility-badge.part.html.twig' with { 'classes':'ladb-margin-left' } %}{% endblock %}
+            {% endembed %}
+        </header>
+        <div class="ladb-workflow-board">
+            <div class="ladb-workflow-task-diagram ladb-with-right-panel">
+                <div class="ladb-panzoom">
+                    <div class="ladb-jtk-canvas"></div>
+                </div>
+            </div>
+            <div class="ladb-panel-buttons ladb-no-print">
+                <button class="btn btn-default btn-sm ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-left"></i></button>
+            </div>
+            <div class="ladb-toolbar ladb-no-print">
+                <button class="btn btn-default ladb-zoom-all-btn"><i class="ladb-icon-zoom-all ladb-icon-lg"></i></button>
+                <button class="btn btn-default ladb-zoom-in-btn"><i class="ladb-icon-zoomin ladb-icon-lg"></i></button>
+                <button class="btn btn-default ladb-zoom-out-btn"><i class="ladb-icon-zoomout ladb-icon-lg"></i></button>
+                <button class="btn btn-default ladb-zoom-one-btn"><i class="ladb-icon-zoom-one ladb-icon-lg"></i></button>
+            </div>
+            <div class="ladb-right-panel ladb-no-print">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <button class="btn btn-default btn-sm pull-left ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-right"></i></button>
+                        <span class="ladb-heading">{{ 'workflow.task.list'|trans() }}</span>
+                    </div>
+                    {% if durationsHidden %}
+                        <div id="panel_body_hidden_status" class="panel-body" style="border-top: 1px solid #ddd;">
+                        </div>
+                    {% else %}
+                        {% include 'Workflow/Workflow/_workflow-status.part.html.twig' %}
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_3" class="badge badge-default pull-right">0</span>
+                                {{ 'workflow.task.status_3'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_3" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_2" class="badge badge-default pull-right">0</span>
+                                {{ 'workflow.task.status_2'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_2" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_1" class="badge badge-default pull-right">0</span>
+                                {{ 'workflow.task.status_1'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_1" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <span id="panel_heading_badge_status_4" class="badge badge-warning pull-right">0</span>
+                                {{ 'workflow.task.status_4'|trans() }}
+                            </h4>
+                        </div>
+                        <div id="panel_body_status_4" class="panel-body">
+                            <div class="ladb-no-task">{{ 'workflow.task.empty'|trans() }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% embed 'Common/_loading-panel.part.html.twig' with { 'noHidden':true } %}
+                {% block inner %}
+                    {{ parent() }}
+                    <div class="ladb-loading-status">Connexion en cours...</div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+        {% include 'Common/Modal/_modal-empty-loading.part.html.twig' with { 'id':'workflow_modal' } %}
+    </div>
+    {% if readOnly %}
+        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'readonly_modal', 'title':workflow.title } %}
+            {% block bodyInner %}
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-info ladb-icon-xl"></i></div>
+                    <div class="media-body">
+                        Ce processus vous est accessible en <strong>lecture seule</strong>.<br>
+                        Vous pouvez donc le consulter librement.<br>
+                        En revanche, pour l'utiliser ou le modifier, vous devrez le <em>copier</em> sur votre compte.
+                    </div>
+                </div>
+            {% endblock %}
+            {% block footerInner %}
+                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyFooter %}{% endblock %}

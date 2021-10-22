@@ -1,0 +1,8 @@
+{% extends 'Common/_form-thumbnail.part.html.twig' %}
+
+{% set entity = provider %}
+{% set entityStrippedName = 'provider' %}
+
+{% block overlayCaptionInner %}
+    {{ parent() }}{% if provider.store is not empty %}<br><small>({{ provider.store }})</small>{% endif %}
+{% endblock %}

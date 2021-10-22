@@ -1,0 +1,5 @@
+{% extends 'Common/_draft-alert.part.html.twig' %}
+
+{% set entity = find %}
+{% set alertMessage = 'Cette trouvaille est un brouillon. Elle n\'est visible que par vous.<br>Pour la rendre publique, vous devez la publier.' %}
+{% set modalMessage = 'La publication de la trouvaille <strong>'~find.title~'</strong> la rendra publique.' %}

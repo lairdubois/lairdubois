@@ -1,0 +1,268 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% set entity = workflow %}
+
+{% set pageSectionUrl = url('core_workflow_list') %}
+{% set pageSectionName = ('workflow.workflow.list')|trans %}
+
+{% set navSection = 'workflows' %}
+{% set searchPath = path('core_workflow_list') %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == workflow.user.id %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    {% if workflow.inspirationCount > 0 %}
+        {% for entity in workflow.inspirations %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.howtoCount > 0 %}
+        {% for entity in workflow.howtos %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.creationCount > 0 %}
+        {% for entity in workflow.creations %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.planCount > 0 %}
+        {% for entity in workflow.plans %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.workshopCount > 0 %}
+        {% for entity in workflow.workshops %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+    {% if workflow.reboundCount > 0 %}
+        {% for entity in workflow.rebounds %}
+            <meta property="og:see_also" content="{{ ladb_entity_url_action(entity) }}" />
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
+        {% block headerToolsButtons %}
+            {{ parent() }}
+            <a href="#copy_workflow_modal" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-duplicate"></i><span class="ladb-visible-desktop">  {{ ownerUser ? 'default.duplicate'|trans() : 'default.copy'|trans() }}...</span></a>
+        {% endblock %}
+        {% block headerInner %}
+            {{ parent() }}
+            {% include 'Workflow/Workflow/_copy-modal.part.html.twig' with { 'id':'copy_workflow_modal' } %}
+        {% endblock %}
+        {% block subheading %}{{ parent() }}{% include 'Workflow/Workflow/_visibility-badge.part.html.twig' with { 'classes':'ladb-hidden-mobile ladb-margin-left' } %}{% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if workflow.inspirationCount > 0 %}
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                {% set inspiration = workflow.inspirations.first %}
+                <i class="ladb-icon-inspiration ladb-color-inspiration ladb-icon-lg"></i>&nbsp;&nbsp;Inpiré de <a href="{{ ladb_entity_url_action(inspiration) }}" style="font-weight: bold;">{{ inspiration.title }}</a> {% include 'Common/_author.part.html.twig' with { 'entity':inspiration, 'noMicrodata':true } %}
+            </div>
+        </div>
+    {% endif %}
+    {% if not workflow.isPublic %}
+        {% include 'Workflow/Workflow/_draft-alert.part.html.twig' %}
+    {% endif %}
+    <div class="ladb-workflow">
+        <a href="{{ path('core_workflow_show', { 'id':workflow.sluggedId, 'layout':'workspace' }) }}" class="thumbnail ladb-cursor-preview">
+            {% include 'Core/Picture/_img.part.html.twig' with { 'picture':workflow.mainPicture, 'width':'600', 'height':'450', 'filterMode':'c', 'alt':workflow.title, 'attributes':'data-pin-nopin="true"', 'aClasses':'ladb-margin-top', 'emptyWebPath':'empty_workflow.png' } %}
+        </a>
+        <hr>
+        <div class="ladb-body">
+            {{ workflow.htmlBody|raw }}
+        </div>
+    </div>
+    {% if workflow.updatedAt > workflow.createdAt %}
+        {% include 'Common/_updated-age.part.html.twig' with { 'entity':workflow } %}
+    {% endif %}
+    {% if not permissionContext.isOwner %}
+        {% include 'Common/_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% if workflow.planCount > 0 or workflow.creationCount > 0 or workflow.howtoCount > 0 or workflow.workshopCount > 0 %}
+        {% embed 'Common/_linkedto-widget.part.html.twig' %}
+            {% block body %}
+                {% if workflow.planCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.planCount == 1 ? path('core_plan_show', { 'id':workflow.plans[0].sluggedId }) : path('core_workflow_plans', { 'id':workflow.id }),
+                        'picture':workflow.plans[0].mainPicture,
+                        'icon':'ladb-icon-plan',
+                        'caption': workflow.planCount~' '~('wonder.plan.choice.entities'|transchoice(workflow.planCount))
+                        } %}
+                {% endif %}
+                {% if workflow.creationCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.creationCount == 1 ? path('core_creation_show', { 'id':workflow.creations[0].sluggedId }) : path('core_workflow_creations', { 'id':workflow.id }),
+                        'picture':workflow.creations[0].mainPicture,
+                        'icon':'ladb-icon-creation',
+                        'caption': workflow.creationCount~' '~('wonder.creation.choice.entities'|transchoice(workflow.creationCount))
+                        } %}
+                {% endif %}
+                {% if workflow.howtoCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.howtoCount == 1 ? path('core_howto_show', { 'id':workflow.howtos[0].sluggedId }) : path('core_workflow_howtos', { 'id':workflow.id }),
+                        'picture':workflow.howtos[0].mainPicture,
+                        'icon':'ladb-icon-howto',
+                        'caption': workflow.howtoCount~' '~('howto.howto.choice.entities'|transchoice(workflow.howtoCount))
+                        } %}
+                {% endif %}
+                {% if workflow.workshopCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.workshopCount == 1 ? path('core_workshop_show', { 'id':workflow.workshops[0].sluggedId }) : path('core_workflow_workshops', { 'id':workflow.id }),
+                        'picture':workflow.workshops[0].mainPicture,
+                        'icon':'ladb-icon-workshop',
+                        'caption': workflow.workshopCount~' '~('wonder.workshop.choice.entities'|transchoice(workflow.workshopCount))
+                        } %}
+                {% endif %}
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {% include 'Core/Comment/_widget.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
+        <div class="ladb-meta{% if workflow.copyCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-duplicate ladb-icon-fixed-center"></i>
+            <strong>{{ workflow.copyCount|number_format(0, ',', ' ') }}</strong>
+            <small>{{ 'default.choice.copies'|transchoice(workflow.copyCount) }}</small>
+        </div>
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+        <div class="ladb-meta">
+            <span><i class="ladb-icon-workflow ladb-icon-fixed-center"></i>&nbsp;{{ workflow.taskCount }} {{ 'workflow.task.choice.entities'|transchoice(workflow.taskCount) }}</span>
+        </div>
+        <div class="ladb-btn">
+            <a href="{{ path('core_workflow_show', { 'id':workflow.sluggedId, 'layout':'workspace' }) }}" class="btn btn-info btn-expand btn-lg"><i class="ladb-icon-workflow ladb-icon-lg"></i> Ouvrir en mode travail</a>
+        </div>
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
+        {% if workflow.inspirationCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-inspiration ladb-icon-fixed-center"></i>
+                <a href="{{ workflow.inspirationCount == 1 ? path('core_workflow_show', { 'id':workflow.inspirations[0].sluggedId }) : path('core_workflow_inspirations', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.inspirationCount }}</strong>
+                    <small>{{ 'default.choice.inspirations'|transchoice(workflow.inspirationCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if workflow.creationCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-creation"></i>
+                <a href="{{ workflow.creationCount == 1 ? path('core_creation_show', { 'id':workflow.creations[0].sluggedId }) : path('core_workflow_creations', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.creationCount }}</strong>
+                    <small>{{ 'wonder.creation.choice.entities'|transchoice(workflow.creationCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        <div class="ladb-meta{% if workflow.planCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-plan ladb-icon-fixed-center"></i>
+            {% if workflow.planCount > 0 %}
+            <a href="{{ workflow.planCount == 1 ? path('core_plan_show', { 'id':workflow.plans[0].sluggedId }) : path('core_workflow_plans', { 'id':workflow.id }) }}">
+                {% endif %}
+                <strong>{{ workflow.planCount }}</strong>
+                <small>{{ 'wonder.plan.choice.entities'|transchoice(workflow.planCount) }}</small>
+                {% if workflow.planCount > 0 %}
+            </a>
+            {% endif %}
+        </div>
+        {% if workflow.howtoCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-howto"></i>
+                <a href="{{ workflow.howtoCount == 1 ? path('core_howto_show', { 'id':workflow.howtos[0].sluggedId }) : path('core_workflow_howtos', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.howtoCount }}</strong>
+                    <small>{{ 'howto.howto.choice.entities'|transchoice(workflow.howtoCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if workflow.workshopCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-workshop"></i>
+                <a href="{{ workflow.workshopCount == 1 ? path('core_workshop_show', { 'id':workflow.workshops[0].sluggedId }) : path('core_workflow_workshops', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.workshopCount }}</strong>
+                    <small>{{ 'wonder.workshop.choice.entities'|transchoice(workflow.workshopCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+        {% if workflow.reboundCount > 0 %}
+            <div class="ladb-meta">
+                <i class="ladb-icon-rebound ladb-icon-fixed-center"></i>
+                <a href="{{ path('core_workflow_rebounds', { 'id':workflow.id }) }}">
+                    <strong>{{ workflow.reboundCount }}</strong>
+                    <small>{{ 'default.choice.rebounds'|transchoice(workflow.reboundCount) }}</small>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':workflow.tags, 'type':'workflows' } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':workflow.license } %}
+{% endblock %}
+
+{% block contentLinkedTo %}
+    {% if workflow.inspirationCount > 0 or workflow.reboundCount > 0 or workflow.planCount > 0 or workflow.howtoCount > 0 or workflow.creationCount > 0 %}
+        {% embed 'Common/_linkedto-widget.part.html.twig' %}
+            {% block body %}
+                {% if workflow.inspirationCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.inspirationCount == 1 ? path('core_workflow_show', { 'id':workflow.inspirations[0].sluggedId }) : path('core_workflow_inspirations', { 'id':workflow.id }),
+                        'picture':workflow.inspirations[0].mainPicture,
+                        'icon':'ladb-icon-inspiration',
+                        'caption': workflow.inspirationCount~' '~('default.choice.inspirations'|transchoice(workflow.inspirationCount))
+                        } %}
+                {% endif %}
+                {% if workflow.planCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.planCount == 1 ? path('core_plan_show', { 'id':workflow.plans[0].sluggedId }) : path('core_creation_plans', { 'id':workflow.id }),
+                        'picture':workflow.plans[0].mainPicture,
+                        'icon':'ladb-icon-plan',
+                        'caption': workflow.planCount~' '~('wonder.plan.choice.entities'|transchoice(workflow.planCount))
+                        } %}
+                {% endif %}
+                {% if workflow.howtoCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.howtoCount == 1 ? path('core_howto_show', { 'id':workflow.howtos[0].sluggedId }) : path('core_creation_howtos', { 'id':workflow.id }),
+                        'picture':workflow.howtos[0].mainPicture,
+                        'icon':'ladb-icon-howto',
+                        'caption': workflow.howtoCount~' '~('howto.howto.choice.entities'|transchoice(workflow.howtoCount))
+                        } %}
+                {% endif %}
+                {% if workflow.creationCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.creationCount == 1 ? path('core_creation_show', { 'id':workflow.creations[0].sluggedId }) : path('core_workflow_creations', { 'id':workflow.id }),
+                        'picture':workflow.creations[0].mainPicture,
+                        'icon':'ladb-icon-creation',
+                        'caption': workflow.creationCount~' '~('wonder.creation.choice.entities'|transchoice(workflow.creationCount))
+                        } %}
+                {% endif %}
+                {% if workflow.workshopCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.workshopCount == 1 ? path('core_workshop_show', { 'id':workflow.workshop[0].sluggedId }) : path('core_workflow_workshops', { 'id':workflow.id }),
+                        'picture':workflow.workshops[0].mainPicture,
+                        'icon':'ladb-icon-workshop',
+                        'caption': workflow.workshopCount~' '~('wonder.workshop.choice.entities'|transchoice(workflow.workshopCount))
+                        } %}
+                {% endif %}
+                {% if workflow.reboundCount > 0 %}
+                    {% include 'Common/_linkedto-widget-item.part.html.twig' with {
+                        'path':workflow.reboundCount == 1 ? path('core_creation_show', { 'id':workflow.rebounds[0].sluggedId }) : path('core_creation_rebounds', { 'id':workflow.id }),
+                        'picture':workflow.rebounds[0].mainPicture,
+                        'icon':'ladb-icon-rebound',
+                        'caption': workflow.reboundCount~' '~('default.choice.rebounds'|transchoice(workflow.reboundCount))
+                        } %}
+                {% endif %}
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}

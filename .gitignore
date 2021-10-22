@@ -1,25 +1,26 @@
-/web/bundles/
-/web/media/
-/web/css/
-/web/js/
-/web/.htaccess
-/web/sitemap-*
-/app/bootstrap.php.cache
-/app/cache/*
-/app/config/parameters.yml
-/app/sessions/*
-/app/logs/*
-/app/spool/*
-/build/
-/backups/
+/public/.htaccess
+/public/uploads
+/.idea/
+/bundles/
+/uploads
+!/uploads/empty*
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
 /var/
-/components/
-/docs/private
-/downloads/
-/scripts/
-/uploads/
-/keys/
-/vendor
-/composer.phar
-.idea
-.DS_Store
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

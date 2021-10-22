@@ -1,0 +1,41 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageUrl = url('core_creation_schools', { 'id':creation.id }) %}
+{% set pageTitle = 'Ecoles associées à '~creation.title %}
+{% set pageDescription = 'Ecoles associées à la création' %}
+
+{% set navSection = 'creations' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':creation } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if schools.count == 0 %}
+        <div class="alert alert-info">
+            Aucune école n'est associée à cette création.
+        </div>
+    {% else %}
+        <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+            <div class="panel-body">
+                Liste des écoles recencées par <a href="{{ path('core_user_show', { 'username':creation.user.usernameCanonical }) }}">{{ creation.user.displayname }}</a> pour la réalisation de la création <a href="{{ ladb_entity_url_action(creation) }}">{{ creation.title }}</a>.
+            </div>
+        </div>
+        {% embed 'Knowledge/School/_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_creation_schools_filter' %}
+            {% set filterPathParameters = { 'id':creation.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ creation.schoolCount }} {{ 'knowledge.school.choice.entities'|transchoice(creation.schoolCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Knowledge/School/_list-n.part.html.twig' %}
+{% endblock %}

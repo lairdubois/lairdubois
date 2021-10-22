@@ -1,0 +1,33 @@
+{% extends 'Knowledge/Software/_form.html.twig' %}
+
+{% set pageTitle = 'knowledge.software.new'|trans() %}
+{% set formAction = path('core_software_create') %}
+{% set hideWarning = hideWarning|default(false) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-plus"></i> {{ 'knowledge.software.new'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.save'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        {% include 'Common/_new-warning-modal.part.html.twig' with { 'id':'warning_software_modal', 'title':('knowledge.software.new'|trans()), 'textTransKey':'knowledge.software.new_warning', 'cancelPath':'core_software_list' } %}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if not hideWarning %}
+        <script>
+            $(document).ready(function() {
+                $("#warning_software_modal").modal();
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+

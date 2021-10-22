@@ -1,6 +1,0 @@
-{% extends 'LadbCoreBundle::email-layout.txt.twig' %}
-
-{% block content %}
-{% if recipientUser == entity.user %}Votre{% else%}La{% endif%} publication "{{ entity.title|raw }}"{% if recipientUser != entity.user %} du collectif {{ entity.user.displayname }}{% endif%} vient d'être mise en avant sur la page d'accueil{% if twitterSuccess %} et la page Twitter{% endif %}{% if facebookSuccess %} et la page Facebook{% endif %}{% if mastodonSuccess %} et la page Mastodon{% endif %} de L'Air du Bois par un coup de projecteur, cliquez sur le lien suivant:
-{{ ladb_entity_url_action(entity) }}
-{% endblock %}

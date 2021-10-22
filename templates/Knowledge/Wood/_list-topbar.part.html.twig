@@ -1,0 +1,14 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'knowledge.wood.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Knowledge/Wood/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    <a href="{% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}#not_email_confirmed_knowledge_modal" data-toggle="modal"{% else %}{{ path('core_wood_new') }}"{% endif %} class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'knowledge.wood.new'|trans() }}</span></a>
+    {% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}
+        {% include 'Knowledge/_new-not-email-confirmed-modal.part.html.twig' with { 'title':'knowledge.wood.new'|trans() } %}
+    {% endif %}
+{% endblock %}

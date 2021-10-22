@@ -1,0 +1,28 @@
+{% extends 'Common/_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{# set howto #}
+
+{% set entity = howto %}
+{% set itemType = 'Article' %}
+
+{% block title %}
+    {% if howto.kind > constant('App\\Entity\\Howto\\Howto::KIND_NONE') %}<i class="ladb-icon-howto-{% if howto.kind == constant('App\\Entity\\Howto\\Howto::KIND_TUTORIAL') %}tutorial{% elseif howto.kind == constant('App\\Entity\\Howto\\Howto::KIND_TECHNICAL') %}technical{% elseif howto.kind == constant('App\\Entity\\Howto\\Howto::KIND_DOCUMENTATION') %}documentation{% endif %}" title="{{ ('howto.howto.kind_'~howto.kind)|trans }}" data-tooltip="tooltip"></i> {% endif %}{{ parent() }}
+{% endblock %}
+
+{% block entityMetas %}
+    {% include 'Howto/Howto/_linkto-entity-metas.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block headingBadges %}
+    {{ parent() }}
+    {% if howto.isWorkInProgress %}
+        <div class="ladb-draft-badge" title="{{ 'howto.howto.wip_tooltip'|trans() }}" data-tooltip="tooltip" style="float: right; background-color: #eee; color: #888;"><i class="ladb-icon-wip"></i> En cours</div>
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+    {% include 'Core/Resource/_spotlight-star.part.html.twig' %}
+{% endblock %}
+

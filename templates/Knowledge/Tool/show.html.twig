@@ -1,0 +1,168 @@
+{% extends 'Knowledge/_show.html.twig' %}
+
+{% set entity = tool %}
+
+{% set pageTitle = tool.title %}
+{% set pageContentItemType = 'Product' %}
+{% set pageSectionUrl = url('core_tool_list') %}
+{% set pageSectionName = 'knowledge.tool.list'|trans %}
+{% set pageDescription = tool.title %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set navSection = 'tools' %}
+{% set searchPath = path('core_tool_list') %}
+
+{% block headPrefix %}{{ parent() }} tool: http://ogp.me/ns/product#{% endblock %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+{% endblock %}
+
+{% block headOpenGraphArticleMetas %}{% endblock %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('tool', null, '_default', { media: 'screen' }) }}
+{% endblock %}
+
+{% block bodyMetas %}{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('tool') }}
+    {{ encore_entry_script_tags('ladb_values') }}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Review Widget #}
+            $('.ladb-review-widget').ladbReviewWidget();
+
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
+        {% set headingClasses = tool.nameRejected ? 'ladb-strikethrough' : null %}
+        {% block subheadingInner %}
+            {% if tool.brand %}<span class="ladb-subblock"><em>{{ tool.brand }}</em></span>{% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% include 'Knowledge/_completion-panel.part.html.twig' %}
+    <div class="ladb-knowledge-showcase row">
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_PHOTO', tool), 'picture':tool.photo, 'values':tool.photoValues, 'pictureBoxClasses':(tool.photoRejected ? 'ladb-box-barred' : null), 'itemprop':'image' } %}
+        {% include 'Knowledge/_field-show-showcase-pdf.part.html.twig' with { 'knowledge':tool, 'wide':true, 'field':constant('FIELD_MANUAL', tool), 'resource':tool.manual, 'values':tool.manualValues } %}
+    </div>
+    <div>
+        {% if searchableBrotherCount > 1 %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Le catalogue compte <a href="{{ path('core_tool_list', { 'q':'@name:"'~tool.name~'"'}) }}" rel="nofollow"><strong>{{ searchableBrotherCount }}</strong> {{ 'knowledge.tool.choice.entities'|transchoice(searchableBrotherCount) }}</a> similaires.</span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Outil</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_NAME', tool), 'data':tool.name, 'values':tool.nameValues, 'itemprop':'name' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_ENGLISH_NAME', tool), 'data':tool.englishName, 'values':tool.englishNameValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_BRAND', tool), 'data':tool.brand, 'values':tool.brandValues, 'itemprop':'brand' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_PRODUCT_NAME', tool), 'data':tool.productName, 'values':tool.productNameValues, 'itemprop':'sku' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_DESCRIPTION', tool), 'data':tool.description, 'values':tool.descriptionValues, 'itemprop':'description' } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Caractéristiques</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_FAMILY', tool), 'data':tool.family, 'values':tool.familyValues } %}
+            {% if tool.powerSupplyValues is not empty or tool.family == 'Electroportatif' %}
+                {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_POWER_SUPPLY', tool), 'data':tool.powerSupply, 'values':tool.powerSupplyValues, 'indented':true } %}
+            {% endif %}
+            {% if tool.powerValues is not empty or tool.family == 'Electroportatif' or tool.family == 'Machine stationnaire' %}
+                {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_POWER', tool), 'data':tool.power, 'values':tool.powerValues, 'indented':true } %}
+            {% endif %}
+            {% if tool.voltageValues is not empty or tool.family == 'Electroportatif' or tool.family == 'Machine stationnaire' %}
+                {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_VOLTAGE', tool), 'data':tool.voltage, 'values':tool.voltageValues, 'indented':true } %}
+            {% endif %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_WEIGHT', tool), 'data':tool.weight, 'values':tool.weightValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Divers</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_UTILIZATION', tool), 'data':tool.utilization, 'values':tool.utilizationValues } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Ressources</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_DOCS', tool), 'data':tool.docs, 'values':tool.docsValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_CATALOG_LINK', tool), 'data':tool.catalogLink, 'values':tool.catalogLinkValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':tool, 'field':constant('FIELD_VIDEO', tool), 'data':tool.video, 'values':tool.videoValues } %}
+        </div>
+        {% include 'Knowledge/_disclaimer-panel.part.html.twig' %}
+        {% if tool.updatedAt > tool.createdAt %}
+            {% include 'Common/_updated-age.part.html.twig' %}
+        {% endif %}
+        <div style="padding: 10px; text-align: center;">
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
+        </div>
+        {% include 'Core/Review/_widget.part.html.twig' %}
+        {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.tool.comment_alert' } %}
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
+            {% if tool.contributorCount > 0 %}
+                <a href="{{ path('core_knowledge_contributors', { 'entityType':tool.type, 'entityId':tool.id }) }}">
+            {% endif %}
+                <strong>{{ tool.contributorCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'user.choice.contributors'|transchoice(tool.contributorCount) }}</small>
+            {% if tool.contributorCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':tool } %}
+        {% include 'Core/Review/_meta-counter.part.html.twig' with { 'entity':tool } %}
+        {% if tool.manualCount > 0 %}
+            <div class="ladb-btn">
+                <div class="btn-group" style="display: flex;">
+                    <a class="btn btn-primary btn-expand btn-lg" style="flex: 1;" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':tool.type, 'entityId':tool.id, 'field':constant('FIELD_MANUAL', tool)}) }}' });"><i class="ladb-icon-file"></i> {{ 'knowledge.tool.choice.show_manuals'|transchoice(tool.manualCount) }}...</a>
+                </div>
+            </div>
+        {% endif %}
+        {% if tool.docs %}
+            <div class="ladb-btn">
+                <div class="btn-group" style="display: flex;">
+                    <a class="btn btn-default btn-expand btn-lg" style="flex: 1;" href="{{ tool.docs|split(',')[0] }}">{{ 'knowledge.tool.field.docs'|trans() }}</a>
+                    <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for doc in tool.docs|split(',') %}
+                            <li><a href="{{ doc }}" target="_blank" rel="noreferrer noopener">{{ doc|ladb_url_beautify|raw }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
+        <div class="ladb-meta{% if searchableCreationCount == 0 %} text-muted{% endif %}">
+            <i class="ladb-icon-creation ladb-icon-fixed-center"></i>
+            {% if searchableCreationCount > 0 %}
+                <a href="{{ path('core_creation_list', { 'q':'@tools:"'~tool.title~'"'}) }}" rel="nofollow">
+            {% endif %}
+                <strong>{{ searchableCreationCount }}</strong>
+                <small>{{ 'wonder.creation.choice.entities'|transchoice(searchableCreationCount) }}</small>
+            {% if searchableCreationCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

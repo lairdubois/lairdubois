@@ -1,0 +1,25 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set entity #}
+{# set collections #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for collection in collections %}
+        {% set disabled = (entity == collection) ? true : false %}
+        <div class="ladb-collection-row">
+            <div class="media">
+                <div class="media-left">
+                    {% include 'Collection/Entry/_widget.part.html.twig' with { 'entryContext':entryContexts[loop.index0], 'disabled':disabled } %}
+                </div>
+                <div class="media-body">
+                    <div style="font-size: 110%;">{% if disabled %}<del>{% endif %}{{ collection.title }}{% if disabled %}</del>{% endif %}</div>
+                    <div style="font-size: 80%;">{% include 'Collection/Collection/_publications-counter.part.html.twig' %}</div>
+                </div>
+                <div class="media-right">
+                    {% include 'Collection/Collection/_visibility-badge.part.html.twig' %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

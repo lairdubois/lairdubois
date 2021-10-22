@@ -1,0 +1,13 @@
+{% extends 'Common/_list-filterbar.part.html.twig' %}
+
+{# set wood #}
+
+{% set filterPath = filterPath|default('core_wood_texture_list_filter') %}
+{% set filterPathParameters = filterPathParameters|default({}) %}
+{% set baseFilterDefs = {
+    'all':               { 'label':'Toutes', 'path':path(filterPath, (filterPathParameters|merge({  'id':wood.id, 'filter':'all' }))) },
+    'grain':           { 'label':'Bois de fil', 'icon':'grain', 'path':path(filterPath, (filterPathParameters|merge({  'id':wood.id, 'filter':'grain' }))) },
+    'endgrain':          { 'label':'Bois de bout', 'icon':'endgrain', 'path':path(filterPath, (filterPathParameters|merge({  'id':wood.id, 'filter':'endgrain' }))) },
+} %}
+{% set filterDefs = baseFilterDefs %}
+

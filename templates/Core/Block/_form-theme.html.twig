@@ -1,0 +1,67 @@
+{% block ladb_polycollection_widget %}
+    {% apply spaceless %}
+        {% set attr = attr|merge({ 'data-form-widget':'collection' }) %}
+        {% if disabled %}
+            {% set attr = attr|merge({ 'data-disabled':1 }) %}
+        {% endif %}
+        {{ block('form_widget') }}
+        {% if prototypes is defined %}
+            <div>
+                {% set icons = { 'text':'body', 'gallery':'camera', 'video':'video' } %}
+                {% for longType, prototype in prototypes %}
+                    {% set type = longType|slice(0, (longType|length) - 6) %}   {# 11 = _block #}
+                    <a class="add_item btn btn-default" data-prototype="{{ form_row(prototype)|escape }}" href="#"><i class="ladb-icon-plus"></i>&nbsp;<i class="ladb-icon-{{ icons[type] }}"></i><span class="ladb-hidden-mobile ladb-hidden-tablet">&nbsp;Insérer un {{ ('block.'~type)|trans() }}</span></a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endapply %}
+{% endblock ladb_polycollection_widget %}
+
+{% block ladb_block_text_row %}
+    {% embed 'Core/Block/_form-row.part.html.twig' with { 'type':'text', 'icon':'body' } %}
+        {% block body %}
+            {{ form_errors(form.body) }}
+            {{ form_widget(form.body, { 'attr':{ 'class':'form-control ladb-autosize', 'rows':(form.body.vars.value is empty ? 15 : 0) } }) }}
+        {% endblock %}
+        {% block footer %}
+            <script>
+                var init{{ form.vars.id }} = function() {
+                    $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                        mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                    });
+                };
+                if (document.readyState === "complete") {
+                    init{{ form.vars.id }}();
+                } else {
+                    $(document).ready(function() {
+                        init{{ form.vars.id }}();
+                    });
+                }
+            </script>
+        {% endblock %}
+    {% endembed %}
+{% endblock ladb_block_text_row %}
+
+{% block ladb_block_gallery_row %}
+    {% embed 'Core/Block/_form-row.part.html.twig' with { 'type':'gallery', 'icon':'camera' } %}
+        {% block body %}
+            {% include 'Core/Picture/_form-gallery.part.html.twig' with { 'form':form, 'maxPictureCount':10, 'formSection':form.pictures.vars.id, 'sortable':true, 'hideTextOverlayWarning':true } %}
+            {{ form_widget(form) }}
+        {% endblock %}
+        {% block footer %}
+            {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':10, 'formSection':form.pictures.vars.id, 'sortable':true } %}
+        {% endblock %}
+    {% endembed %}
+{% endblock ladb_block_gallery_row %}
+
+{% block ladb_block_video_row %}
+    {% embed 'Core/Block/_form-row.part.html.twig' with { 'type':'video', 'icon':'video' } %}
+        {% block body %}
+            {{ form_errors(form.url) }}
+            <div class="input-group">
+                <span class="input-group-addon">{% if form.url.vars.data is not null %}<i class="{{ ladb_video_icon_class(form.vars.data.kind) }}"></i>{% else %}http://{% endif %}</span>
+                {{ form_widget(form.url, { 'attr':{ 'class':'form-control', 'placeholder':'Lien de la vidéo' } }) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock ladb_block_video_row %}

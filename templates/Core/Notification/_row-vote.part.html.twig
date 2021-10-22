@@ -1,0 +1,18 @@
+{% extends 'Core/Notification/_row.part.html.twig' %}
+
+{% set icon = 'check' %}
+{% set vote = notification.activity.vote %}
+{% set entity = ladb_entity(vote.parentEntityType, vote.parentEntityId) %}
+{% set activityEntity = ladb_entity(vote.entityType, vote.entityId) %}
+
+{% block body %}
+    a accordé un <strong class="ladb-color-{{ vote.score > 0 ? 'positive' : 'negative' }}">{{ (vote.score > 0 ? 'vote.choice.positive_votes' : 'vote.choice.negative_votes')|transchoice(1) }}</strong> à
+    {% if activityEntity.type >= 10 and activityEntity.type < 100 %} {# Knowledge value #}
+        {% set fieldDef = entity.fieldDefs[vote.parentEntityField] %}
+        {% set fieldType = fieldDef[constant('ATTRIB_TYPE', entity)] %}
+        {% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', entity)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', entity)] : null %}
+        votre proposition pour le champ <em>{{ ('knowledge.'~entity.strippedName~'.field.'~activityEntity.parentEntityField)|trans() }}</em> de "<strong>{{ entity.title|raw }}</strong>".
+    {% else %}
+        {{ ('notification.your.'~ladb_entity_type_stripped_name(activityEntity))|trans() }} à {{ ('notification.the.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
+    {% endif %}
+{% endblock %}

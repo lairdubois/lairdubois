@@ -1,0 +1,64 @@
+{% extends 'Knowledge/_form.html.twig' %}
+
+{% set navSection = 'about' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'formSection':'logo', 'fieldId':form.logoValue.data.vars.id, 'maxPictureCount':1 } %}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    <li id="name_sidenav"><a href="#name"><i class="ladb-icon-school"></i> {{ 'knowledge.school.field.name'|trans() }}</a></li>
+    <li id="logo_sidenav"><a href="#logo"><i class="ladb-icon-camera"></i> {{ 'knowledge.school.field.logo'|trans() }}</a></li>
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'knowledge.school.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    <section id="name_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-school"></i> {{ 'knowledge.school.field.name'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('App\\Entity\\Knowledge\\School::FIELD_NAME'), 'fieldLabel':('knowledge.school.field.name'|trans()), 'isCompact':true } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ ('knowledge.school.help.name')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.school.form.help.name')|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="logo_section">
+        <div class="form-section">
+            <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.school.field.logo'|trans() }} <span class="ladb-mandatory">*</span></p>
+            <div class="row">
+                <div class="col-sm-7 col-xs-12">
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'logo', 'form':form.logoValue, 'field':constant('App\\Entity\\Knowledge\\School::FIELD_LOGO'), 'fieldLabel':('knowledge.school.field.logo'|trans()), 'quality':constant('App\\Entity\\Core\\Picture::QUALITY_LD'), 'postProcessor':constant('App\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                        <div class="panel-body small">
+                            {{ ('knowledge.school.help.logo')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.school.form.help.logo')|trans()|ladb_markdown|raw }}
+                            {{ ('knowledge.school.form.help.legend')|trans({ '%field%':(('knowledge.school.field.logo')|trans())})|ladb_markdown|raw }}
+                            {{ ('knowledge.school.form.help.source')|trans()|ladb_markdown|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{# set entity #}
+
+{% if entity.spotlight is not null and entity.spotlight.enabled %}
+    <div class="ladb-spotlight-badge" data-popover="popover" data-trigger="hover" data-placement="top" data-html="true" data-container="body" data-content="{{ 'default.spotlight_popover'|trans({ '%age%':(entity.spotlight.createdAt|ago()) }) }}">
+        <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quun-coup-de-projecteur' }) }}"><i class="ladb-icon-spotlight"></i> {{ 'default.spotlight'|trans() }}</a>
+    </div>
+{% endif %}

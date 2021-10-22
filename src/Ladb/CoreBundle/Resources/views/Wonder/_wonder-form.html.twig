@@ -1,6 +1,0 @@
-{% extends 'LadbCoreBundle:Common:Layout/_form.html.twig' %}
-
-{% block bodyJavascripts %}
-    {{ parent() }}
-    {% include 'LadbCoreBundle:Core/Picture:_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':form.vars.data.maxPictureCount, 'sortable':true } %}
-{% endblock %}

@@ -1,0 +1,3 @@
+{# set collection #}
+
+<span class="{% if collection.entryCount == 0 %}ladb-color-negative{% endif %}{% if classes is defined %} {{ classes }}{% endif %}">{{ collection.entryCount|number_format(0, ',', ' ') }} {{ 'default.choice.publications'|trans({'count': collection.entryCount}) }}</span>

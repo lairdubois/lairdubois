@@ -1,0 +1,15 @@
+{% apply spaceless %}
+
+{# set entity #}
+{# set itemprop (facultative) #}
+{# set noMicrodata (facultative) #}
+{# set noMicrodataAge (facultative) #}
+{# set noEdited (facultative) #}
+
+{% set noMicrodata = noMicrodata|default(false) %}
+{% set noMicrodataAge = noMicrodata or noMicrodataAge|default(false) %}
+{% set showEdited = showEdited|default(false) %}
+{% set itemprop = itemprop|default('dateCreated') %}
+
+<div class="ladb-age{% if classes is defined %} {{ classes }}{% endif %}">{% if not noMicrodataAge %}<time datetime="{{ entity.createdAt|date('Y-m-d H:i:s') }}" itemprop="{{ itemprop }}">{% endif %}{{ entity.createdAt|ago }}{% if not noMicrodataAge %}</time>{% endif %}{% if showEdited and entity.updatedAt is defined and entity.updatedAt is not null and entity.updatedAt > entity.createdAt %}<span class="ladb-edited" title="Dernière modification {{ entity.updatedAt|ago }}" data-tooltip="tooltip"> ( Modifié )</span>{% endif %}</div>
+{% endapply %}

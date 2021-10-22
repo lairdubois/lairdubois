@@ -1,0 +1,43 @@
+{% block form_errors %}
+    {% apply spaceless %}
+        {% if errors|length > 0 %}
+            <ul class="list-unstyled alert alert-danger">
+                {% for error in errors %}
+                    <li>{{
+                    error.messagePluralization is null
+                    ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                    : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                    }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endapply %}
+{% endblock form_errors %}
+
+{% block form_widget_simple %}
+    {% apply spaceless %}
+        {% set type = type|default('text') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %} class="form-control"/>
+    {% endapply %}
+{% endblock form_widget_simple %}
+
+{% block choice_widget_expanded %}
+    {% apply spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+        </div>
+    {% endapply %}
+{% endblock choice_widget_expanded %}
+
+{% block radio_widget %}
+    {% apply spaceless %}
+        <div class="radio">
+            <label>
+                <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+                {{ label|raw }}
+            </label>
+        </div>
+    {% endapply %}
+{% endblock radio_widget %}

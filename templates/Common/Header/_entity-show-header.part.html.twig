@@ -1,0 +1,101 @@
+{% extends 'Common/Header/_entity-avatar-header.part.html.twig' %}
+
+{# set entity #}
+{# set likeContext (facultative) #}
+{# set collectionContext (facultative) #}
+{# set watchContext (facultative) #}
+{# set ownerCanDelete (facultative) #}
+
+{% set authored = entity.user is defined %}
+{% set ownerCanAlwaysDelete = ownerCanAlwaysDelete|default(false) %}
+{% set isPublic = entity.isPublic is defined ? entity.isPublic : true %}
+
+{% block headerToolsInner %}
+    {% block headerToolsButtons %}
+        {% if likeContext is defined and permissionContext.likable %}
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext, 'noTextOnMobile':permissionContext.editable } %}
+        {% endif %}
+        {% if permissionContext.editable and permissionContext.isGrantedOwner %}
+            <a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}" class="btn btn-default"><i class="ladb-icon-edit"></i><span{% if permissionContext.likable %} class="ladb-hidden-mobile"{% endif %}> {{ 'default.edit'|trans() }}</span></a>
+        {% endif %}
+        {% if collectionContext is defined %}
+            {% include 'Collection/Collection/_widget.part.html.twig' with { 'collectionContext':collectionContext } %}
+        {% endif %}
+    {% endblock %}
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="ladb-icon-more"></i> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            {% block headerToolsItems %}
+                {% if permissionContext.editable and not permissionContext.isGrantedOwner %}
+                    <li><a href="{{ ladb_entity_url_action(entity, 'edit', false, false) }}"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a></li>
+                {% endif %}
+                {% if permissionContext.deletable %}
+                    <li class="dropdown-item-danger"><a href="#delete_entity_modal" data-toggle="modal"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}...</a></li>
+                {% endif %}
+                {% if isPublic %}
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#share_modal" data-toggle="modal"><i class="ladb-icon-share"></i> {{ 'default.share'|trans() }}...</a></li>
+                    {% if not permissionContext.isGrantedOwner %}
+                        <li>{% include 'Core/Report/_widget-item.part.html.twig' with { 'entityType':entity.type, 'entityId':entity.id } %}</li>
+                    {% endif %}
+                {% endif %}
+                {% if watchContext is defined and watchContext is not null and permissionContext.isGrantedUser %}
+                    <li role="separator" class="divider"></li>
+                    <li class="dropdown-header"><i class="ladb-icon-notifications"></i> {{ 'notification.nav'|trans }}</li>
+                    <li class="text-center">{% include 'Core/Watch/_widget.part.html.twig' with { 'watchContext':watchContext } %}</li>
+                {% endif %}
+                {% if permissionContext.isGrantedAdmin and authored %}
+                    {% block adminItems %}
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header"><i class="ladb-icon-admin"></i> Admin</li>
+                        <li><a href="{{ ladb_entity_url_action(entity, entity.isLocked ? 'unlock' : 'lock', true, false) }}"><i class="ladb-icon-{% if entity.isLocked %}unlock{% else %}lock{% endif %} ladb-icon-fixed-center"></i> {{ (entity.isLocked ? 'default.unlock' : 'default.lock')|trans() }}</a></li>
+                        {% if isPublic %}
+                            <li><a href="#unpublish_entity_modal" data-toggle="modal"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}...</a></li>
+                        {% endif %}
+                    {% endblock %}
+                {% endif %}
+            {% endblock %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block headerInner %}
+    {{ parent() }}
+    {% if isPublic %}
+        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'share_modal', 'title':('default.share'|trans()) } %}
+            {% use 'Common/Blocks/sharebuttons-widget.blocks.html.twig' %}
+            {% block bodyInner %}
+                <h4>{{ 'share.social.heading'|trans() }}</h4>
+                {% set sbTooltipPlacement = 'top' %}
+                {{ block('sharebuttonsInlineHorizontal') }}
+                {% if shareModalAddonTemplate is defined %}
+                    {{ include(shareModalAddonTemplate) }}
+                {% endif %}
+            {% endblock %}
+            {% block footerInner %}
+                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {% if permissionContext.deletable %}
+        {% include 'Common/_delete-entity-modal.part.html.twig' with { 'id':'delete_entity_modal', 'entityTitle':entity.title, 'deletePath':ladb_entity_url_action(entity, 'delete', false, false) } %}
+    {% endif %}
+    {% if permissionContext.isGrantedAdmin and authored %}
+        {% block adminModals %}
+            {% if isPublic %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'unpublish_entity_modal', 'title':('default.unpublishing'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La dépublication de <strong>{{ entity.title }}</strong> la rendra invisible pour les autres utilisateurs.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ ladb_entity_url_action(entity, 'unpublish', false, false) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-unpublish"></i> {{ 'default.unpublish'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+        {% endblock %}
+    {% endif %}
+{% endblock %}

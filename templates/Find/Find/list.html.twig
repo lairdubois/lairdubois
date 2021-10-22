@@ -1,0 +1,39 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% use 'Common/Blocks/map.blocks.html.twig' %}
+
+{% set pageTitle = 'find.find.list'|trans() %}
+{% set pageDescription = 'find.find.description'|trans() %}
+{% set pageImage = asset('banner-finds-600x376.jpg') %}
+{% set pageSectionUrl = url('core_find_list') %}
+{% set pageSectionName = 'find.find.list'|trans %}
+
+{% set navSection = 'finds' %}
+{% set masonry = true %}
+{% set topbarTranslucent = false %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+{% set hideMapArea = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% include 'Common/_map-area.part.html.twig' with { 'classes':'ladb-map-banner' } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Find/Find/_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Find/Find/_list-n.part.html.twig' %}
+{% endblock %}

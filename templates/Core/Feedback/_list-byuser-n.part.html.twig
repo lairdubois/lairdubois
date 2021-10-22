@@ -1,0 +1,12 @@
+{% extends 'Core/User/_list-items-byuser-n.part.html.twig' %}
+
+{# set items #}
+
+{% block subitems %}
+    {% for feedback in item.feedbacks %}
+        {% embed 'Core/Feedback/_row.part.html.twig' with { 'classes':'ladb-user-groupby-item', 'noMinitools':true } %}
+            {% block minitools %}{% endblock %}
+        {% endembed %}
+    {% endfor %}
+{% endblock %}
+

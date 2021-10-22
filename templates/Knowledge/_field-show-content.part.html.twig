@@ -1,0 +1,69 @@
+{% set fieldDef = knowledge.fieldDefs[field] %}
+{% set fieldMultiple = fieldDef[constant('ATTRIB_MULTIPLE', knowledge)] %}
+
+<div id="ladb_new_value_proposal" class="ladb-value-proposal" onclick="LADBValues.cancelEditValueProposal();"{% if values is not empty %} style="display: none;"{% endif %}>
+    {% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-warning ladb-icon-lg"></i></div>
+                    <div class="media-body">
+                        l'adresse e-mail associée à votre compte doit être confirmée avant de pouvoir ajouter une proposition.
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="ladb-box  ladb-margin-bottom">
+            {% if form is not null %}
+                <div class="ladb-box-inner row">
+                    <div class="col-xs-12">
+                        <h4><i class="ladb-icon-plus"></i> {{ 'knowledge.add_proposal_of'|trans() }} <em>{{ ('knowledge.'~knowledge.strippedName~'.field.'~field)|trans() }}</em></h4>
+                    </div>
+                    <div class="col-sm-7 col-xs-12">
+                        {% include 'Knowledge/_form-value.part.html.twig' with { 'cancelEdit':true } %}
+                    </div>
+                    <div class="col-sm-5 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><i class="ladb-icon-help"></i> {{ 'default.help'|trans() }}</div>
+                            <div class="panel-body small">
+                                {{ ('knowledge.'~knowledge.strippedName~'.help.'~field)|trans()|ladb_markdown|raw }}
+                                {% if ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans() != 'knowledge.'~knowledge.strippedName~'.form.help.'~field %}
+                                    {{ ('knowledge.'~knowledge.strippedName~'.form.help.'~field)|trans()|ladb_markdown|raw }}
+                                {% endif %}
+                                {{ ('knowledge.wood.form.help.legend')|trans({ '%field%':(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())})|ladb_markdown|raw }}
+                                {{ ('knowledge.wood.form.help.source')|trans()|ladb_markdown|raw }}
+                                <hr>
+                                <div class="media">
+                                    <div class="media-left"><i class="ladb-icon-help"></i></div>
+                                    <div class="media-body"><a href="{{ path('core_faq_question_show', { 'id':'comment-contribuer-aux-contenus-collaboratifs' }) }}">Comment contribuer aux contenus collaboratifs ?</a></div>
+                                </div>&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div style="padding: 20px;">
+                    <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter une proposition.
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+<div id="ladb_proposal_list">
+    {% embed 'Knowledge/_value-list.part.html.twig' %}
+        {% block headerRightInner %}
+            <button class="btn btn-default" onclick="$('#ladb_new_value_proposal').toggle(); $(this).hide();"><i class="ladb-icon-plus"></i> <span class="ladb-hidden-mobile">Ajouter une proposition</span></button>
+        {% endblock %}
+    {% endembed %}
+</div>
+{% if values is not empty %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <i class="ladb-icon-info"></i> {{ ('knowledge.info.'~(fieldMultiple ? 'multiple' : 'single')~'_proposal')|trans() }}
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,15 @@
+{% extends 'Funding/_infos-xhr.html.twig' %}
+
+{% set title = 'funding.donation_fee_balance'|trans() %}
+
+{% block bodyInner %}
+    <p>Les <em>frais de transaction</em> représentent la somme des frais prélevés par la plateforme de paiement <a href="https://stripe.com/fr/pricing">Stripe</a> pour le mois.</p>
+    <p>Cette somme est variable, puisque directement corrélée avec le nombre et la valeur des transactions des dons.</p>
+    {% if funding.donationFeeBalanceEur > 0 %}
+        <p>Ce mois compte <strong>{{ funding.donationFeeBalanceEur|number_format(2, ',', ' ') }}€</strong> de frais pour <strong>{{ funding.donationCount }}</strong> {{ 'funding.choice.transactions'|transchoice(funding.donationCount) }}.
+        {% if funding.donationCount > 1 %}<br>Soit une moyenne de <strong>{{ (funding.donationFeeBalanceEur / funding.donationCount)|number_format(2, ',' ,' ') }}€</strong> par transaction.{% endif %}
+        </p>
+    {% else %}
+        <p>Ce mois ne compte <strong>aucun</strong> frais de transaction.</p>
+    {% endif %}
+{% endblock %}

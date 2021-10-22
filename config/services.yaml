@@ -1,0 +1,68 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    # Inject needed environment variables in container parameter for easing migration sf 3.4 -> 5.3
+    memcached_host: '%env(MEMCACHED_HOST)%'
+    memcached_port: '%env(MEMCACHED_PORT)%'
+    google_api_key: '%env(GOOGLE_API_KEY)%'
+    doctrine_uri: '%env(resolve:DATABASE_URL)%'
+    chromium: '%env(CHROMIUM)%'
+    twitter_consumer_key: '%env(TWITTER_CONSUMER_KEY)%'
+    twitter_consumer_secret: '%env(TWITTER_CONSUMERSECRET)%'
+    twitter_access_token: '%env(TWITTER_ACCESS_TOKEN)%'
+    twitter_access_secret: '%env(TWITTER_ACCESS_SECRET)%'
+    facebook_app_id: '%env(FACEBOOK_APP_ID)%'
+    facebook_app_secret: '%env(FACEBOOK_APP_SECRET)%'
+    facebook_page_id: '%env(FACEBOOK_PAGE_ID)%'
+    facebook_access_token: '%env(FACEBOOK_ACCESS_TOKEN)%'
+    pinterest_client_id: '%env(PINTEREST_CLIENT_ID)%'
+    pinterest_client_secret: '%env(PINTEREST_CLIENT_SECRET)%'
+    pinterest_access_token: '%env(PINTEREST_ACCESS_TOKEN)%'
+    mastodon_instance: '%env(MASTODON_INSTANCE)%'
+    mastodon_access_token: '%env(MASTODON_ACCESS_TOKEN)%'
+    stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
+    stripe_publishable_key: '%env(STRIPE_PUBLISHABLE_KEY)%'
+    stripe_endpoint_secret: '%env(STRIPE_ENDPOINT_SECRET)%'
+    funding_min_amount_eur: '%env(FUNDING_MIN_AMOUNT_EUR)%'
+    funding_max_amount_eur: '%env(FUNDING_MAX_AMOUNT_EUR)%'
+    bentools_webpush.public_key: '%env(BENTOOLS_WEBPUSH_PUBLIC_KEY)%'
+    bentools_webpush.private_key: '%env(BENTOOLS_WEBPUSH_PRIVATE_KEY)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+            - '../src/Form/DataTransformer'
+            - '../src/Form/EventListener'
+            - '../src/Form/Model'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            - '%env(DATABASE_URL)%'
+
+    App\Imagine\ImageOptimizerPostProcessor:
+        tags:
+            - { name: liip_imagine.filter.post_processor, post_processor: ladb_imageoptimizer }

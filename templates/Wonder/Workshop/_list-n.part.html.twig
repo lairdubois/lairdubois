@@ -1,0 +1,12 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set workshops #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set workshops = entities %}{% endif %}
+
+{% block items %}
+    {% for workshop in workshops %}
+        {% include 'Wonder/Workshop/_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

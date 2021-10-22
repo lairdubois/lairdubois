@@ -1,0 +1,7 @@
+[url={{ ladb_entity_url_action(howto) }}?referer=1][img]{{ url('core_howto_sticker', { 'id':howto.id }) }}[/img][/url]
+
+[b]{{ 'howto.article.list'|trans() }} :[/b]
+
+{% for article in howto.articles|filter(a => not a.isDraft) %}
+ - [url={{ ladb_entity_url_action(article) }}?referer=1]{{ article.title }}[/url]
+{% endfor %}

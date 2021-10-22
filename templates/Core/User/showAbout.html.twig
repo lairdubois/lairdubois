@@ -1,0 +1,326 @@
+{% extends 'Core/User/show.html.twig' %}
+
+{% use 'Common/Blocks/map.blocks.html.twig' %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set isOwner = is_granted("ROLE_USER") and user.id == app.user.id %}
+{% set hasBiography = user.meta.biography is not null and (user.meta.biography.htmlBody|length) > 0 %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {% if hasMap %}
+        {{ block('mapAreaStylesheets') }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% if hasMap %}
+        {{ block('mapAreaJavascripts') }}
+    {% endif %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="row">
+        <div class="col-md-8 col-xs-12">
+            {% if not isOwner and not hasBiography and not hasMap and testimonials is empty %}
+                <div style="font-size: 200px; text-align: center; color: #ddd;">
+                    <i class="ladb-icon-{% if user.isTeam %}users{% else %}user{% endif %}"></i>
+                </div>
+            {% endif %}
+            {% if hasBiography or isOwner %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            {% if user.isTeam %}
+                                <i class="ladb-icon-users ladb-icon-lg"></i> Qui sommes-nous ?
+                            {% else %}
+                               <i class="ladb-icon-user ladb-icon-lg"></i> Qui suis-je ?
+                            {% endif %}
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+                        {% if hasBiography %}
+                            {{ user.meta.biography.htmlBody|raw }}
+                        {% elseif isOwner %}
+                            <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}#biography" class="ladb-fake-biography hidden-xs"><i class="ladb-icon-plus"></i> {{ 'user.add_biography'|trans() }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if hasMap or isOwner %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong><i class="ladb-icon-locate ladb-icon-lg"></i>
+                            {% if user.isTeam %}
+                                Où sommes-nous ?
+                            {% else %}
+                                Où suis-je ?
+                            {% endif %}
+                        </strong>
+                    </div>
+                    <div>
+                        {% if hasMap %}
+                            <div style="margin: 4px;">
+                                {% include 'Common/_map-area.part.html.twig' with { 'autoInit':true, 'mapHeight':'350px', 'caption':user.location, 'markersUrl':path('core_user_location', { 'username':user.username }) } %}
+                            </div>
+                        {% elseif isOwner %}
+                            <div style="margin: 15px;">
+                                <a href="{{ path('core_user_settings', { 'username':user.usernameCanonical }) }}#location" class="ladb-fake-location visible-lg"><i class="ladb-icon-plus"></i> {{ 'user.add_location'|trans() }}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if testimonials is not empty %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong><i class="ladb-icon-student ladb-icon-lg"></i> Mes témoignages de formation</strong>
+                    </div>
+                    <div class="panel-body">
+                        {% for testimonial in testimonials %}
+                            <div class="media"{% if not loop.last %} style="border-bottom: 1px solid #eee"{% endif %}>
+                                <div class="media-left">
+                                    {% include 'Core/Picture/_img.part.html.twig' with { 'picture':testimonial.school.mainPicture, 'width':64, 'height':64, 'alt':testimonial.school.title, 'noSizer':true, 'imgClasses':'img-rounded' } %}
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading" style="font-size: 120%; font-weight: bold;">
+                                        {% include 'Knowledge/School/Testimonial:_period.part.html.twig' %}
+                                        <a href="{{ path('core_school_show', { 'id':testimonial.school.sluggedId }) }}" class="ladb-horizontal-separator-left">{{ testimonial.school.title }}</a>
+                                    </div>
+                                    {% if testimonial.diploma %}
+                                        <div style="margin: 5px 0; font-size: 110%; color: #888;">{{ testimonial.diploma }}</div>
+                                    {% endif %}
+                                    <div style="margin: 10px 0;">
+                                        {{ testimonial.htmlBody|raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <div id="ladb_block_metas">
+                {% block contentMetas %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="ladb-metas">
+                                <div class="ladb-meta">
+                                    <span class="pull-right">{{ user.createdAt|ago() }}</span>
+                                    <span><i class="ladb-icon-time"></i>&nbsp;{% if user.isTeam %}Créé{% else %}Inscrit{% endif %}</span>
+                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta">
+                                        <span class="pull-right">{{ user.lastLogin|ago() }}</span>
+                                        <span><i class="ladb-icon-play"></i>&nbsp;Dernière connexion</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="ladb-metas">
+                                <h4 class="ladb-heading">{{ 'skill.skills'|trans() }}</h4>
+                                <div class="ladb-meta">
+                                    {% if (user.meta.skills|length) > 0 %}
+                                        <ul>
+                                            {% for skill in user.meta.skills %}
+                                                <li class="ladb-value"><a href="{{ path('core_user_list', { 'q':'@skill:"'~skill.label~'"' }) }}" class="ladb-cursor-filter ladb-text-color" rel="nofollow">{{ skill.label }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <small><span class="text-muted">{{ 'skill.none'|trans() }}</span></small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="ladb-metas">
+                                <h4 class="ladb-heading">Relations</h4>
+                                {% if user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.memberCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.memberCount > 0 %}<a href="{{ path('core_user_show_members', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.memberCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'team.choice.members'|transchoice(user.meta.memberCount) }}</small>
+                                            {% if user.meta.memberCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% else %}
+                                    <div class="ladb-meta{% if user.meta.teamCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.teamCount > 0 %}<a href="{{ path('core_user_show_teams', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.teamCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'team.choice.entities'|transchoice(user.meta.teamCount) }}</small>
+                                            {% if user.meta.teamCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.followingCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.followingCount > 0 %}<a href="{{ path('core_user_show_following', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.followingCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'follower.choice.following'|transchoice(user.meta.followingCount) }}</small>
+                                        {% if user.meta.followingCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
+                                <div class="ladb-meta{% if user.meta.followerCount == 0 %} text-muted{% endif %}">
+                                    {% if user.meta.followerCount > 0 %}<a href="{{ path('core_user_show_followers', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.followerCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'follower.choice.entities'|transchoice(user.meta.followerCount) }}</small>
+                                    {% if user.meta.followerCount > 0 %}</a>{% endif %}
+                                </div>
+                            </div>
+                            <div class="ladb-metas">
+                                <h4 class="ladb-heading">Popularité</h4>
+                                <div class="ladb-meta{% if user.meta.recievedLikeCount == 0 %} text-muted{% endif %}">
+                                    {% if user.meta.recievedLikeCount > 0 %}<a href="{{ path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'recieved' }) }}">{% endif %}
+                                        <strong>{{ user.meta.recievedLikeCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'like.choice.recieved_likes'|transchoice(user.meta.recievedLikeCount) }}</small>
+                                    {% if user.meta.recievedLikeCount > 0 %}</a>{% endif %}
+                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.sentLikeCount == 0 %} text-muted{% endif %}">
+                                        {% if user.meta.sentLikeCount > 0 %}<a href="{{ path('core_user_show_likes_filter', { 'username':user.usernameCanonical, 'filter':'sent' }) }}">{% endif %}
+                                            <strong>{{ user.meta.sentLikeCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'like.choice.sent_likes'|transchoice(user.meta.sentLikeCount) }}</small>
+                                        {% if user.meta.sentLikeCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="ladb-metas">
+                                <h4 class="ladb-heading">Contributions</h4>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.commentCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-comment"></i>
+                                        {% if user.meta.commentCount > 0 %}<a href="{{ path('core_user_show_comments', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.commentCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'comment.choice.entities'|transchoice(user.meta.commentCount) }}</small>
+                                        {% if user.meta.commentCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.reviewCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-review"></i>
+                                        {% if user.meta.reviewCount > 0 %}<a href="{{ path('core_user_show_reviews', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.reviewCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'review.default.choice.entities'|transchoice(user.meta.reviewCount) }}</small>
+                                        {% if user.meta.reviewCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.feedbackCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-feedback"></i>
+                                        {% if user.meta.feedbackCount > 0 %}<a href="{{ path('core_user_show_feedbacks', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.feedbackCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'feedback.default.choice.entities'|transchoice(user.meta.feedbackCount) }}</small>
+                                        {% if user.meta.feedbackCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
+                                <div class="ladb-meta{% if user.meta.publicCreationCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-creation"></i>
+                                    {% if user.meta.publicCreationCount > 0 %}<a href="{{ path('core_user_show_creations', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicCreationCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'wonder.creation.choice.entities'|transchoice(user.meta.publicCreationCount) }}</small>
+                                    {% if user.meta.publicCreationCount > 0 %}</a>{% endif %}
+                                </div>
+                                <div class="ladb-meta{% if user.meta.publicQuestionCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-question"></i>
+                                    {% if user.meta.publicQuestionCount > 0 %}<a href="{{ path('core_user_show_questions', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicQuestionCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'qa.question.choice.entities'|transchoice(user.meta.publicQuestionCount) }}</small>
+                                    {% if user.meta.publicQuestionCount > 0 %}</a>{% endif %}
+                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.answerCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-answer"></i>
+                                        {% if user.meta.answerCount > 0 %}<a href="{{ path('core_user_show_answers', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                            <strong>{{ user.meta.answerCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'qa.answer.choice.entities'|transchoice(user.meta.answerCount) }}</small>
+                                        {% if user.meta.answerCount > 0 %}</a>{% endif %}
+                                    </div>
+                                {% endif %}
+                                <div class="ladb-meta{% if user.meta.publicPlanCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-plan"></i>
+                                    {% if user.meta.publicPlanCount > 0 %}<a href="{{ path('core_user_show_plans', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicPlanCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'wonder.plan.choice.entities'|transchoice(user.meta.publicPlanCount) }}</small>
+                                    {% if user.meta.publicPlanCount > 0 %}</a>{% endif %}
+                                </div>
+                                <div class="ladb-meta{% if user.meta.publicHowtoCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-howto"></i>
+                                    {% if user.meta.publicHowtoCount > 0 %}<a href="{{ path('core_user_show_howtos', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicHowtoCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'howto.howto.choice.entities'|transchoice(user.meta.publicHowtoCount) }}</small>
+                                    {% if user.meta.publicHowtoCount > 0 %}</a>{% endif %}
+                                </div>
+                                <div class="ladb-meta{% if user.meta.publicWorkflowCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-workflow"></i>
+                                    {% if user.meta.publicWorkflowCount > 0 %}<a href="{{ path('core_user_show_workflows', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicWorkflowCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'workflow.workflow.choice.entities'|transchoice(user.meta.publicWorkflowCount) }}</small>
+                                    {% if user.meta.publicWorkflowCount > 0 %}</a>{% endif %}
+                                </div>
+                                <div class="ladb-meta{% if user.meta.publicWorkshopCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-workshop"></i>
+                                    {% if user.meta.publicWorkshopCount > 0 %}<a href="{{ path('core_user_show_workshops', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicWorkshopCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'wonder.workshop.choice.entities'|transchoice(user.meta.publicWorkshopCount) }}</small>
+                                        {% if user.meta.publicWorkshopCount > 0 %}</a>{% endif %}
+                                </div>
+                                <div class="ladb-meta{% if user.meta.publicFindCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-find"></i>
+                                    {% if user.meta.publicFindCount > 0 %}<a href="{{ path('core_user_show_finds', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicFindCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'find.find.choice.entities'|transchoice(user.meta.publicFindCount) }}</small>
+                                    {% if user.meta.publicFindCount > 0 %}</a>{% endif %}
+                                </div>
+                                <div class="ladb-meta{% if user.meta.publicEventCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-event"></i>
+                                    {% if user.meta.publicEventCount > 0 %}<a href="{{ path('core_event_list', { 'q':('@author:'~user.usernameCanonical) }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicEventCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'event.event.choice.entities'|transchoice(user.meta.publicEventCount) }}</small>
+                                    {% if user.meta.publicEventCount > 0 %}</a>{% endif %}
+                                </div>
+                                {% if not user.isTeam %}
+                                    <div class="ladb-meta{% if user.meta.publicCollectionCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-collection"></i>
+                                        {% if user.meta.publicCollectionCount > 0 %}<a href="{{ path('core_collection_list', { 'q':('@author:'~user.usernameCanonical) }) }}">{% endif %}
+                                            <strong>{{ user.meta.publicCollectionCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'collection.collection.choice.entities'|transchoice(user.meta.publicCollectionCount) }}</small>
+                                        {% if user.meta.publicCollectionCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.positiveVoteCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-arrow-up"></i>
+                                        {% if user.meta.positiveVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'positive' }) }}">{% endif %}
+                                            <strong>{{ user.meta.positiveVoteCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'vote.choice.positive_votes'|transchoice(user.meta.positiveVoteCount) }}</small>
+                                        {% if user.meta.positiveVoteCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.negativeVoteCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-arrow-down"></i>
+                                        {% if user.meta.negativeVoteCount > 0 %}<a href="{{ path('core_user_show_votes_filter', { 'username':user.usernameCanonical, 'filter':'negative' }) }}">{% endif %}
+                                            <strong>{{ user.meta.negativeVoteCount|number_format(0, ',', ' ') }}</strong>
+                                            <small>{{ 'vote.choice.negative_votes'|transchoice(user.meta.negativeVoteCount) }}</small>
+                                        {% if user.meta.negativeVoteCount > 0 %}</a>{% endif %}
+                                    </div>
+                                    <div class="ladb-meta{% if user.meta.proposalCount == 0 %} text-muted{% endif %}">
+                                        <i class="ladb-icon-proposal"></i>
+                                        <strong>{{ user.meta.proposalCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'default.choice.proposals'|transchoice(user.meta.proposalCount) }}</small>
+                                    </div>
+                                {% endif %}
+                                <div class="ladb-meta{% if user.meta.publicOfferCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-offer"></i>
+                                    {% if user.meta.publicOfferCount > 0 %}<a href="{{ path('core_offer_list', { 'q':'@author:'~user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicOfferCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'offer.offer.choice.entities'|transchoice(user.meta.publicOfferCount) }}</small>
+                                    {% if user.meta.publicOfferCount > 0 %}</a>{% endif %}
+                                </div>
+                                <div class="ladb-meta{% if user.meta.publicGraphicCount == 0 %} text-muted{% endif %}">
+                                    <i class="ladb-icon-promote"></i>
+                                    {% if user.meta.publicGraphicCount > 0 %}<a href="{{ path('core_user_show_graphics', { 'username':user.usernameCanonical }) }}">{% endif %}
+                                        <strong>{{ user.meta.publicGraphicCount|number_format(0, ',', ' ') }}</strong>
+                                        <small>{{ 'promotion.graphic.choice.entities'|transchoice(user.meta.publicGraphicCount) }}</small>
+                                    {% if user.meta.publicGraphicCount > 0 %}</a>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+            <div id="ladb_block_suggest">
+                {% block contentSuggests %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

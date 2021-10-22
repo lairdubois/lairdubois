@@ -1,0 +1,18 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header/_entity-header.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="ladb-filterbar ladb-filterbar-line">
+        <span class="ladb-heading pull-right">{{ watchs.count }} {{ 'watch.choice.entities'|transchoice(watchs.count) }}</span>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Core/Watch/_list-byentity-n.part.html.twig' %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{% set entity = knowledge %}
+
+{% set pageTitle = entity.title~' - '~(('knowledge.proposals_of'|trans())~' '~(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())) %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('ladb_values') }}
+    <script>
+        $(document).ready(function() {
+            LADBValues.bindNewValueProposalAjaxForm();
+            LADBCommon.setupPopovers();
+            LADBCommon.setupTooltips();
+            $('[data-src]').Lazy();
+            {% if values is empty %}
+                $("input[type=text]").first().focus();
+            {% endif %}
+            {% if highlightedValueId is not null %}
+                if (!window.location.hash) {
+                    setTimeout(function() {
+                        var selector = '#ladb_value_proposal_{{ highlightedValueId }}';
+                        var $target = $(selector);
+                        $target.parents('.collapse').addClass('in');
+                        $target.ladbScrollTo(null, {
+                            onAfterHighlight: true
+                        });
+                    }, 1000);
+                }
+            {% endif %}
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'backBtnLabel':('knowledge.back_to'|trans()) } %}
+{% endblock %}
+
+{% block contentBody %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 style="font-size: 20px; margin: 0;">{{ (('knowledge.proposals_of'|trans())~' <em>'~(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())~'</em>')|raw }}</h2>
+        </div>
+        <div class="panel-body">
+            {% include 'Knowledge/_field-show-content.part.html.twig' %}
+        </div>
+        <div class="panel-footer text-center">
+            <a href="{{ ladb_entity_url_action(knowledge) }}" class="btn btn-default">{{ 'knowledge.back_to'|trans() }}</a>
+        </div>
+    </div>
+    {% include 'Core/Vote/_modals.part.html.twig' %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':knowledge.license } %}
+{% endblock %}

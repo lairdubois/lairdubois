@@ -1,0 +1,28 @@
+{# set answers #}
+
+{% if answers|length > 0 %}
+    <div id="ladb_answers_nav_panel" class="panel panel-default ladb-answers-nav-panel ladb-toc-panel ladb-hidden-mobile">
+        <div class="panel-heading"><i class="ladb-icon-answer"></i> Navigation</div>
+        <div class="panel-body">
+            <ul>
+                {% for answer in answers %}
+                    <li class="ladb-answer-nav-item">
+                        <div class="media">
+                            <div class="media-left">
+                                {{ loop.index }}.
+                            </div>
+                            <div class="media-body">
+                                <div><a href="#" onclick="$('#ladb_answer_{{ answer.id }}').ladbScrollTo(event, { onAfterHighlight: true }); return false;">Réponse de <strong>{% include 'Core/User/_displayname.part.html.twig' with { 'user':answer.user } %}</strong></a>{% include 'Core/User/_account-type.part.html.twig' with { 'user':answer.user } %}</div>
+                                <small class="ladb-color-null">{% include 'Common/_age.part.html.twig' with { 'entity':answer, 'noMicrodata':true } %} <span class="ladb-horizontal-separator-left"><i class="ladb-icon-comment"></i> {{ answer.commentCount }}</span></small>
+                            </div>
+                            <div class="media-right" style="white-space: nowrap;">
+                                {% if answer.isBestAnswer %}<span class="ladb-color-best-answer"><i class="ladb-icon-favorite"></i></span>{% endif %}
+                                <span class="ladb-badge {% if answer.voteScore > 0 %}ladb-positive{% elseif answer.voteScore < 0 %}ladb-negative{% elseif answer.positiveVoteScore == answer.negativeVoteScore and answer.positiveVoteScore != 0 %}ladb-undeterminated{% endif %}">{{ answer.voteScore }}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

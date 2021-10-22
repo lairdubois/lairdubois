@@ -1,0 +1,82 @@
+
+{# set knowledge #}
+{# set field #}
+
+{% set entity = value %}
+{% set fieldDef = knowledge.fieldDefs[field] %}
+{% set fieldType = fieldDef[constant('ATTRIB_TYPE', knowledge)] %}
+{% set fieldSuffix = fieldDef[constant('ATTRIB_SUFFIX', knowledge)] is defined ? fieldDef[constant('ATTRIB_SUFFIX', knowledge)] : null %}
+{% set fieldMandatory = fieldDef[constant('ATTRIB_MANDATORY', knowledge)] is defined and fieldDef[constant('ATTRIB_MANDATORY', knowledge)] %}
+{% set isDisplayGrid = value.isDisplayGrid and not (noDisplayGrid|default(false)) %}
+{% set noMicrodata = true %}
+
+<div id="ladb_value_proposal_{{ value.id }}" class="ladb-value-proposal{% if isDisplayGrid %} ladb-value-proposal-grid col-sm-6{% endif %} col-xs-12">
+    <div class="ladb-box ladb-highlightable">
+        <div class="ladb-box-inner row">
+            <div class="{% if not isDisplayGrid %}col-sm-push-11 col-sm-1 {% endif %}col-xs-12">
+                {% include 'Core/Vote/_widget.part.html.twig' with { 'voteUpTooltip':('knowledge.tooltip.vote_up'|trans()), 'voteDownTooltip':('knowledge.tooltip.vote_down'|trans()), 'orientation':(isDisplayGrid ? 'horizontal' : 'auto')  } %}
+            </div>
+            <div class="{% if not isDisplayGrid %}col-sm-pull-1 col-sm-11 {% endif %}col-xs-12">
+                <div class="ladb-content-box">
+                    <div class="ladb-editable ">
+                        <div class="ladb-content">
+                            <div class="ladb-value">
+                                {% include 'Knowledge/_field-value-proposal-'~fieldType~'.part.html.twig' %}{% if fieldSuffix is not null %}<em> {{ fieldSuffix|raw }}</em>{% endif %}
+                            </div>
+                            <div class="ladb-value-footer">
+                                {% if value.legend is not null %}
+                                    <div class="ladb-legend">{{ value.legend }}</div>
+                                {% endif %}
+                                {% if value.source %}
+                                    {% set isLink = value.sourceType == constant('SOURCE_TYPE_WEBSITE', value) %}
+                                    <div class="ladb-source">{{ 'knowledge.proposal_value.source'|trans() }} : {% if isLink %}<a href="{{ value.source }}" target="_blank" rel="noreferrer noopener">{% endif %}{% if value.sourceType == constant('SOURCE_TYPE_PERSONAL', value) %}Connaissances personnelles{% elseif isLink %}{{ value.source|ladb_url_truncate }}{% else %}{{ value.source }}{% endif %}{% if isLink %}</a>{% endif %}</div>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') and value.moderationScore != 0 %}
+                                    <div class="ladb-moderation-score"><i class="ladb-icon-admin"></i> {{ 'knowledge.proposal_value.moderation_score'|trans() }} : <strong>{{ value.moderationScore }}</strong></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="ladb-footer">
+                            <div class="ladb-minitools">
+                                {% if is_granted("ROLE_ADMIN") %}
+                                    <div class="dropup">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
+                                        <ul class="dropdown-menu">
+                                            {% for fieldDest, fieldDestDef in knowledge.fieldDefs|filter( (fieldDest, fieldDestDef) => fieldDestDef[constant('ATTRIB_TYPE', knowledge)] == fieldType and fieldDest != field) %}
+                                                <li><a href="#" onclick="LADBValues.moveValueProposal({{ value.id }}, '{{ path('core_knowledge_value_admin_move', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'fieldSrc':value.parentEntityField, 'fieldDest':fieldDest, 'id':value.id }) }}');return false;"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} '{{ ('knowledge.'~knowledge.strippedName~'.field.'~fieldDest)|trans() }}'</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers la proposition :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ url('core_knowledge_value_show', { 'id':value.id }) }}\' onclick=\'$(this).focus(); $(this).select();\'><span class=\'input-group-btn\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
+                                {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 %}
+                                    <a href="#" onclick="LADBValues.editValueProposal({{ value.id }}, '{{ path('core_knowledge_value_edit', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
+                                {% endif %}
+                                {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 and not fieldMandatory %}
+                                    <a href="#delete_value_proposal_{{ value.id }}_modal" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
+                                    {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'delete_value_proposal_'~value.id~'_modal', 'title':('default.deletion'|trans()), 'appendTo':'body' } %}
+                                        {% block bodyInner %}
+                                            <p>La suppression de cette proposition entrainera la perte de toutes les informations qui lui sont relatives.</p>
+                                            <p>Confirmez l'action pour continuer.</p>
+                                        {% endblock %}
+                                        {% block footerInner %}
+                                            <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                                            <a href="#" onclick="$(this).button('loading');LADBValues.deleteValueProposal({{ value.id }}, '{{ path('core_knowledge_value_delete', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                                        {% endblock %}
+                                    {% endembed %}
+                                {% endif %}
+                            </div>
+                            {% include 'Common/_author.part.html.twig' %}{% include 'Common/_age.part.html.twig' with { 'classes':'ladb-visible-desktop' } %}
+                        </div>
+                        {% if value.user == app.user and value.voteCount == 0 %}
+                            <small class="help-block ladb-margin-top"><i class="ladb-icon-info"></i> Vous pouvez <strong>Editer</strong>{% if not fieldMandatory %} ou <strong>Supprimer</strong>{% endif %} votre proposition jusqu'à ce qu'elle ait reçu au moins une vérification.</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="ladb-comments">
+                    {% include 'Core/Comment/_widget.part.html.twig' with { 'collapsible':true, 'notCollapsed':(value.user == app.user and value.commentCount > 0) } %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

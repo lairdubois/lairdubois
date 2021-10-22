@@ -1,0 +1,32 @@
+{# set formSection #}
+{# set fieldId #}
+{# set maxPictureCount #}
+{# set editable (facultative) #}
+{# set sortable (facultative) #}
+
+{% set formSection = formSection is defined ? formSection : 'pictures' %}
+{% set acceptedFileTypes = acceptedFileTypes is defined ? acceptedFileTypes : constant('App\\Entity\\Core\\Picture::ACCEPTED_FILE_TYPE') %}
+{% set loadMaxFileSize = maxFileSize is defined ? maxFileSize : constant('App\\Entity\\Core\\Picture::LOAD_MAX_FILE_SIZE') %}
+{% set maxFileSize = maxFileSize is defined ? maxFileSize : constant('App\\Entity\\Core\\Picture::MAX_FILE_SIZE') %}
+{% set editable = editable is defined ? editable : true %}
+{% set sortable = sortable is defined ? sortable : false %}
+
+<script>
+    var {{ formSection }}PictureGalleryInit = function() {
+        LADBPictures.pictureGalleryInit({
+            formSection: "{{ formSection }}",
+            fieldId: "{{ fieldId }}",
+            maxPictureCount: {{ maxPictureCount }},
+            acceptedFileTypes: {{ acceptedFileTypes }},
+            loadMaxFileSize: {{ loadMaxFileSize }},
+            maxFileSize: {{ maxFileSize }},
+            thumnailTemplate: "{% apply spaceless %}{{ include('Core/Picture/_form-thumbnail.part.html.twig', { 'formSection':formSection, 'editable':editable, 'sortable':sortable } , with_context = false)|escape('js') }}{% endapply %}",
+            sortable: {{ sortable ? 'true' : 'false' }}
+        });
+    };
+    if (document.readyState == "complete") {
+        {{ formSection }}PictureGalleryInit();
+    } else {
+        $(document).ready({{ formSection }}PictureGalleryInit);
+    }
+</script>

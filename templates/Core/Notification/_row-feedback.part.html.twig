@@ -1,0 +1,9 @@
+{% extends 'Core/Notification/_row.part.html.twig' %}
+
+{% set icon = 'feedback' %}
+{% set entity = ladb_entity(notification.activity.feedback.entityType, notification.activity.feedback.entityId) %}
+{% set isYour = entity.user is defined and entity.user == app.user %}
+
+{% block body %}
+    a ajouté un retour d'expérience sur {{ ('notification.'~(isYour ? 'your' : 'the')~'.'~ladb_entity_type_stripped_name(entity))|trans() }} "<strong>{{ entity.title }}</strong>".
+{% endblock %}

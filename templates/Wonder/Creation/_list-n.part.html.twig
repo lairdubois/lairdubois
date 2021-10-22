@@ -1,0 +1,12 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set creations #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set creations = entities %}{% endif %}
+
+{% block items %}
+    {% for creation in creations %}
+        {% include 'Wonder/Creation/_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

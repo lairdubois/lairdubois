@@ -1,8 +1,0 @@
-
-{# set showPath #}
-{# set graphic #}
-{# set classes (facultative) #}
-
-<a href="{{ ladb_entity_url_action(graphic) }}" class="thumbnail{% if classes is defined %} {{ classes }}{% endif %}" data-tooltip="tooltip" title="{{ graphic.title }} {{ 'default.by'|trans() }} {{ graphic.user.displayname }}">
-    {% include 'LadbCoreBundle:Core/Picture:_img.part.html.twig' with { 'picture':graphic.mainPicture, 'width':'128', 'height':'128', 'filterMode':'o', 'alt':graphic.title, 'attributes':'data-pin-nopin="true"', 'noMicrodata':true } %}
-</a>

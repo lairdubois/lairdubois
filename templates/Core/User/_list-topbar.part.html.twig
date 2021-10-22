@@ -1,0 +1,37 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = (family == 'team' ? 'team.list' : 'user.list')|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Core/User/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% if family == 'team' %}
+        {% if is_granted('ROLE_USER') %}
+            {% if not app.user.emailConfirmed %}
+                <a href="#modal_user_team_new" class="btn btn-default" data-toggle="modal"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'team.new'|trans() }}</span></a>
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'modal_user_team_new', 'title':'team.new'|trans() } %}
+                    {% block bodyInner %}
+                        <div class="media">
+                            <div class="media-left" style="padding-top: 5px;">
+                                <i class="ladb-icon-warning ladb-icon-lg"></i>
+                            </div>
+                            <div class="media-body">
+                                Avant de pouvoir créer un collectif, vous devez confirmer l'adresse e-mail associée à votre compte.
+                            </div>
+                        </div>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
+                        <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+            {% else %}
+                <a href="{{ path('core_user_team_new') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'team.new'|trans() }}</span></a>
+            {% endif %}
+        {% endif %}
+    {% elseif not is_granted("ROLE_USER") %}
+        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'user.register'|trans() }}</span></a>
+    {% endif %}
+{% endblock %}

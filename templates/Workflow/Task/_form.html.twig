@@ -1,0 +1,55 @@
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
+
+{% form_theme form 'Common/_form-theme.twig.twig' 'Core/Block/_form-theme.html.twig' %}
+
+{# set formAction #}
+
+{% block bodyInner %}
+    {{ form_start(form, { 'action':formAction, 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+    {% block formInner %}
+        <div class="form-group">
+            {{ form_label(form.title) }}
+            {{ form_errors(form.title) }}
+            {{ form_widget(form.title, { 'attr':{ 'class':'form-control input-lg' } }) }}
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-xs-12">
+                <i class="ladb-icon-estimated-duration"></i> {{ form_label(form.estimatedDuration) }}
+                {{ form_errors(form.estimatedDuration) }}
+                {{ form_widget(form.estimatedDuration) }}
+            </div>
+            <div class="form-group col-sm-6 col-xs-12">
+                <i class="ladb-icon-duration"></i> {{ form_label(form.duration) }}
+                {{ form_errors(form.duration) }}
+                {{ form_widget(form.duration) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.labels) }}
+            {{ form_errors(form.labels) }}
+            {{ form_widget(form.labels) }}
+            <select class="ladb-workflow-label-fake-select form-control" data-ladb-mapped-input="#{{ form.labels.vars.id }}" multiple>
+                {% for label in workflow.labels %}
+                    <option data-content="{% apply spaceless %}{% filter escape %}{% include 'Workflow:Label/_span.part.html.twig' %}{% endfilter %}{% endapply %}" value="{{ label.id }}">{{ label.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.parts) }}
+            {{ form_errors(form.parts) }}
+            {{ form_widget(form.parts) }}
+            <select class="ladb-workflow-part-fake-select form-control" data-ladb-mapped-input="#{{ form.parts.vars.id }}" multiple>
+                {% for part in workflow.parts %}
+                    <option data-content="{% apply spaceless %}{% filter escape %}{% include 'Workflow:Part/_span.part.html.twig' %}{% endfilter %}{% endapply %}" value="{{ part.id }}">{{ part.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endblock %}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block footerInner %}
+    {% block buttons %}
+        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    {% endblock %}
+{% endblock %}

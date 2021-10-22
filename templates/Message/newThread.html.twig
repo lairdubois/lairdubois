@@ -1,0 +1,116 @@
+{% extends 'Message:_layout.html.twig' %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set tab = 'new_thread' %}
+
+{% form_theme form 'Common/_form-theme.twig.twig' %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.css" media="screen" />
+    {% stylesheets filter='less,?yui_css'
+        '@LadbCoreBundle/Resources/assets/less/selectize/selectize.ladb.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
+    <script>
+        $('#{{ form.recipients.vars.id }}').selectize({
+            plugins: ['remove_button'],
+            valueField: 'username',
+            searchField: [ 'displayname', 'username' ],
+            create: false,
+            maxItems: 20,
+            closeAfterSelect: true,
+            selectOnTab: true,
+            placeholder: 'Saisissez le nom d\'un boiseu ou d\'un collectif',
+            {% if form.vars.data.recipients|length > 0 %}
+                options: [
+                    {% for recipent in form.vars.data.recipients %}
+                    {
+                        username: "{{ recipent.username }}",
+                        displayname: "{{ recipent.displayname }}",
+                        avatar: "{{ recipent.avatar.webPath|imagine_filter('32x32o') }}"
+                    }{% if loop.last == false %},{% endif %}
+                    {% endfor %}
+                ],
+            {% endif %}
+            render: {
+                item: function(item) {
+                    return '<div class="ladb-selectize-item"><img src="' + item.avatar + '" width="20" height="20"><span class="ladb-selectize-displayname">' + item.displayname + '</span></div>';
+                },
+                option: function(item, escape) {
+                    return '<div class="ladb-selectize-option media">' +
+                        '<div class="media-left"><img src="' + item.avatar + '" width="32" height="32"></div>' +
+                        '<div class="media-body">' +
+                            '<div class="ladb-selectize-displayname">' + escape(item.displayname) + '</div> ' +
+                            '<div class="ladb-selectize-username">@' + escape(item.username) + '</div>' +
+                        '</div>' +
+                        '</div>';
+                }
+            },
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ path('core_search_typeahead_users_json') }}',
+                    type: 'GET',
+                    data: {
+                        q: query,
+                    },
+                    error: function(e) {
+                        callback();
+                    },
+                    success: function(res) {
+                        callback(res.suggestions);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div id="message-reply">
+        <div class="ladb-box">
+            <div class="ladb-body">
+                {{ form_start(form, { 'action':path('core_message_thread_create'), 'method':'post', attr:{ novalidate: 'novalidate' } }) }}
+                    <div class="form-group">
+                        {{ form_label(form.recipients, 'Destinataires') }}
+                        {{ form_errors(form.recipients) }}
+                        {{ form_widget(form.recipients, { 'attr': { 'class':'form-control' } }) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.subject, 'Objet') }}
+                        {{ form_errors(form.subject) }}
+                        {{ form_widget(form.subject, { 'attr': { 'class':'form-control' } }) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.body, 'Message') }}
+                        {{ form_errors(form.body) }}
+                        {{ form_widget(form.body, { 'attr': { 'rows':'10', 'class':'form-control ladb-autosize' } }) }}
+                        {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':4, 'hideTextOverlayWarning':true, 'sortable':true } %}
+                        {% include 'Core/Picture/_form-gallery-collapse.part.html.twig' %}
+                        <script>
+                            if (document.readyState === "complete") {
+                                $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                                    mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                                });
+                            } else {
+                                $(document).ready(function() {
+                                    $("#{{ form.body.vars.id }}").markdown().ladbTextcompletify({
+                                        mentionQueryPath: '{{ path('core_search_typeahead_users_json') }}'
+                                    });
+                                });
+                            }
+                        </script>
+                    </div>
+                    {% include alertTemplate|default('Message:_alert-new-thread.part.html.twig') %}
+                    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

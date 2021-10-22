@@ -1,0 +1,36 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageUrl = url('core_plan_howtos', { 'id':plan.id }) %}
+{% set pageTitle = 'Pas à pas associés à '~plan.title %}
+{% set pageDescription = 'Pas à pas associés au plan' %}
+
+{% set navSection = 'plans' %}
+
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Common/Header/_entity-header.part.html.twig' with { 'entity':plan } %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {% if howtos.count == 0 %}
+        <div class="alert alert-info">
+            Aucun pas à pas n'est associé à cette création.
+        </div>
+    {% else %}
+        {% embed 'Howto/Howto/_list-filterbar.part.html.twig' %}
+            {% set filterPath = 'core_plan_howtos_filter' %}
+            {% set filterPathParameters = { 'id':plan.id } %}
+            {% block filterbarRightContent%}
+                <span class="ladb-heading">{{ plan.howtoCount }} {{ 'howto.howto.choice.entities'|transchoice(plan.howtoCount) }}</span>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Howto/Howto/_list-n.part.html.twig' %}
+{% endblock %}

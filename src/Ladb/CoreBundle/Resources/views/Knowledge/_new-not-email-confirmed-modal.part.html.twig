@@ -1,9 +1,0 @@
-{% embed 'LadbCoreBundle:Common/Modal:_modal.part.html.twig' with { 'id':'not_email_confirmed_knowledge_modal', 'appendTo':'body' } %}
-    {% block bodyInner %}
-        <p>L'adresse e-mail associée à votre compte doit être confirmée avant de pouvoir publier.</p>
-    {% endblock %}
-    {% block footerInner %}
-        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-        <a href="{{ path('core_user_email_check') }}" class="btn btn-primary">{{ 'user.email_confirmation.check.action'|trans() }}</a>
-    {% endblock %}
-{% endembed %}

@@ -1,0 +1,12 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
+
+{# set users #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for user in users %}
+        {% include 'Core/User/_list-row.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

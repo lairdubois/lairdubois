@@ -1,0 +1,11 @@
+{% extends ':email-layout.txt.twig' %}
+
+{% block content %}
+    Un nouveau don vient d'être enregistré par {{ actorUser.displayname|raw }}.
+
+    {{ url('core_user_show', { 'username':actorUser.usernameCanonical }) }}
+
+    hashid = {{ donation.hashid }}
+    amount = {{ donation.amountEur|number_format(2, ',', ' ') }}€
+    fee = {{ donation.feeEur|number_format(2, ',', ' ') }}€
+{% endblock %}

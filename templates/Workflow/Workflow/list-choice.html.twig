@@ -1,0 +1,10 @@
+{% extends 'Common/_list-choice.html.twig' %}
+
+{% block body %}
+    {% include 'Workflow/Workflow/_searchbox.part.html.twig' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Workflow/Workflow/_list-choice-n.part.html.twig' %}
+{% endblock %}

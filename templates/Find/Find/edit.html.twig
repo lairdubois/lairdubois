@@ -1,0 +1,27 @@
+{% extends 'Find/Find/_form.html.twig' %}
+
+{% set pageTitle = 'find.find.edit'|trans() %}
+{% set formAction = path('core_find_update', { 'id':find.id }) %}
+
+{% block sidenavHeading %}
+    <i class="ladb-icon-edit"></i> {{ 'find.find.edit'|trans() }}
+{% endblock %}
+
+{% block form_buttons %}
+    <a href="{{ path('core_find_show', { 'id':find.sluggedId }) }}" class="btn btn-default btn-block">{{ 'default.close'|trans() }}</a>
+    {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.update'|trans()), 'classes':'ladb-form-save-btn btn-primary btn-block' } %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="ladb_do_up"> {{ 'default.do_up'|trans }}
+            </label>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block sections %}
+    {% if find.isDraft %}
+        {% include 'Find/Find/_draft-alert.part.html.twig' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

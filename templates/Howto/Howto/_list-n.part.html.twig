@@ -1,0 +1,12 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set howtos #}
+{# set nextPageUrl #}
+
+{% if entities is defined %}{% set howtos = entities %}{% endif %}
+
+{% block items %}
+    {% for howto in howtos %}
+        {% include 'Howto/Howto/_list-thumbnail.part.html.twig' %}
+    {% endfor %}
+{% endblock %}

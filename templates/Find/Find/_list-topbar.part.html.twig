@@ -1,0 +1,11 @@
+{% extends 'Common/_list-topbar.part.html.twig' %}
+
+{% set heading = 'find.find.list'|trans() %}
+
+{% block listTopbarMiddleInner %}
+    {% include 'Find/Find/_searchbox.part.html.twig' %}
+{% endblock %}
+
+{% block listTopbarRightInner %}
+    {% include 'Core/Member/_widget.part.html.twig' with { 'titleTransKey':'find.find.new', 'route':'core_find_new' } %}
+{% endblock %}

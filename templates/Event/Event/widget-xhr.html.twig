@@ -1,0 +1,16 @@
+{% extends 'Common/_entity-widget.html.twig' %}
+
+{% set entity = event %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    {% if event.cancelled %}
+        <span class="label label-danger"><i class="ladb-icon-warning"></i> {{ 'event.event.cancelled'|trans() }}</span>
+    {% elseif event.status == constant('App\\Entity\\Event\\Event::STATUS_SCHEDULED') %}
+        <span class="label label-info">{{ event.startAt|ago()|capitalize }}</span>
+    {% elseif event.status == constant('App\\Entity\\Event\\Event::STATUS_RUNNING') %}
+        <span class="label label-success">{{ 'event.event.running'|trans() }}</span>
+    {% elseif event.status == constant('App\\Entity\\Event\\Event::STATUS_COMPLETED') %}
+        <span class="label label-default">{{ 'event.event.completed'|trans() }}</span>
+    {% endif %}
+{% endblock %}

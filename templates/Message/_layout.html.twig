@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% set pageTitle = 'message.mailbox'|trans() %}
+
+{% set navSection = 'messages' %}
+
+{% block bodyHeaderContainerContent %}
+    {% block tools %}{% endblock %}
+    <h1 class="ladb-heading"><i class="ladb-icon-message"></i> {{ 'message.list'|trans() }}</h1>
+    <ul class="nav nav-tabs">
+        <li{% if tab == 'inbox' %} class="active"{% endif %}><a href="{{ path('core_message_mailbox') }}"><i class="ladb-icon-inbox"></i> {{ 'message.mailbox'|trans() }}{% if app.user.meta.unreadMessageCount > 0 %} <span class="badge badge-notification badge-notification-important">{{ app.user.meta.unreadMessageCount }}</span>{% endif %}</a></li>
+        <li{% if tab == 'new_thread' %} class="active"{% endif %}><a href="{{ path('core_message_thread_new' )}}"><i class="ladb-icon-new-thread"></i> {{ 'message.thread.new'|trans() }}</a></li>
+        {% if tab == 'show_thread' %}
+            <li class="active"><a href="#">Conversation</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

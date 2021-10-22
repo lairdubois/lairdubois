@@ -1,0 +1,31 @@
+{
+    "name": "components/masonry",
+    "description": "Cascading grid layout library",
+    "type": "component",
+    "homepage": "http://masonry.desandro.com",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/desandro/masonry/issues",
+        "source": "https://github.com/desandro/masonry"
+    },
+    "authors": [
+        {
+            "name": "David DeSandro",
+            "homepage": "http://desandro.com"
+        }
+    ],
+    "extra": {
+        "component": {
+            "main": "masonry.pkgd.js",
+            "scripts": [
+                "masonry.pkgd.js"
+            ],
+            "files": [
+                "masonry.pkgd.min.js"
+            ],
+            "shim": {
+                "exports": "Masonry"
+            }
+        }
+    }
+}

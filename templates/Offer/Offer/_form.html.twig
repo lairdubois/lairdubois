@@ -1,0 +1,92 @@
+{% extends 'Common/Layout/_form.html.twig' %}
+
+{% set navSection = 'offers' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'fieldId':form.pictures.vars.id, 'maxPictureCount':form.vars.data.maxPictureCount, 'sortable':true } %}
+    {% include 'Common/_form-token-script.part.html.twig' with { 'fieldId':form.tags.vars.id, 'proposals':tagProposals, 'proposalsHelp':('tag.token.proposals.help'|trans()), 'help':('tag.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_tags_json')|raw) } %}
+    <script>
+        function ladbOfferCheckPriceVisibility() {
+            var kind =  $("#{{ form.kind.vars.id }} input[type=radio]:checked").val();
+            var category =  $("#{{ form.category.vars.id }} input[type=radio]:checked").val();
+            if (kind !== undefined && category !== undefined) {
+                if (kind === '{{ constant('App\\Entity\\Offer\\Offer::KIND_OFFER') }}' && category !== '{{ constant('App\\Entity\\Offer\\Offer::CATEGORY_JOB') }}') {
+                    $('#{{ form.rawPrice.vars.id }}_container').show();
+                } else {
+                    $('#{{ form.rawPrice.vars.id }}_container').hide();
+                }
+            }
+        }
+        $("#{{ form.kind.vars.id }} input[type=radio]").on('change', function(e) {
+            ladbOfferCheckPriceVisibility();
+        });
+        $("#{{ form.category.vars.id }} input[type=radio]").on('change', function(e) {
+            ladbOfferCheckPriceVisibility();
+        });
+        ladbOfferCheckPriceVisibility();
+    </script>
+{% endblock %}
+
+{% block sidenav %}
+    {% include 'Common/_form-sidenav-title.part.html.twig' %}
+    {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
+    {% include 'Core/Block/_form-sidenav-body.part.html.twig' with { 'title':('default.descriptive'|trans) } %}
+    <li><a href="#characteristics"><i class="ladb-icon-characteristics"></i> {{ 'default.characteristics'|trans() }}</a></li>
+    {% include 'Core/Tag/_form-sidenav.part.html.twig' %}
+{% endblock %}
+
+{% block sections %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{ 'offer.offer.new_warning'|trans()|raw }}</p>
+            <em>{{ 'default.warning.may_be_rejected'|trans() }}</em>
+        </div>
+    </div>
+    {{ parent() }}
+    {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('offer.offer.form.help.title'|trans()) } %}
+    {% include 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'quality':constant('App\\Entity\\Core\\Picture::QUALITY_HD'), 'title':('default.showcase'|trans), 'help':('offer.offer.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
+    {% include 'Core/Block/_form-section-body.part.html.twig' with { 'mandatory':true, 'title':('default.descriptive'|trans()), 'help':('offer.offer.form.help.body'|trans()) } %}
+    {% embed 'Common/_form-section.part.html.twig' with { 'icon':'characteristics', 'title':('default.characteristics'|trans()), 'formSection':'characteristics' } %}
+        {% block body %}
+            <div class="form-group">
+                {{ form_label(form.kind, 'offer.offer.kind'|trans()) }} <span class="ladb-mandatory">*</span>
+                {{ form_errors(form.kind) }}
+                {{ form_widget(form.kind) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.category, 'offer.offer.category'|trans()) }} <span class="ladb-mandatory">*</span>
+                {{ form_errors(form.category) }}
+                {{ form_widget(form.category) }}
+            </div>
+            <div id="{{ form.rawPrice.vars.id }}_container" class="row" style="display: none;">
+                <div class="form-group col-xs-4">
+                    {{ form_label(form.rawPrice, 'offer.offer.price'|trans()) }}
+                    {{ form_errors(form.rawPrice) }}
+                    {{ form_widget(form.rawPrice) }}
+                </div>
+                <div class="form-group col-xs-4">
+                    {{ form_label(form.currency, 'knowledge.proposal_value.currency'|trans()) }}
+                    {{ form_errors(form.currency) }}
+                    {{ form_widget(form.currency, { 'attr':{ 'class':'form-control' } }) }}
+                </div>
+                <div class="form-group col-xs-4">
+                    {{ form_label(form.priceSuffix, 'offer.offer.price_suffix'|trans()) }}<small class="ladb-hidden-mobile"> - le lot, le m3, ...</small>
+                    {{ form_errors(form.priceSuffix) }}
+                    {{ form_widget(form.priceSuffix) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.location, 'default.location'|trans()) }}
+                {{ form_errors(form.location) }}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="ladb-icon-location"></i></span>
+                    {{ form_widget(form.location) }}
+                </div>
+            </div>
+            <hr>
+            <p class="help-block"><i class="ladb-icon-help"></i> <a href="{{ path('core_faq_question_show', { 'id':'comment-bien-rediger-son-annonce-de-recherche-demploi-apprentissage-ou-stage' }) }}">Comment bien rédiger son annonce de recherche d'Emploi, Apprentissage ou Stage ?</a> </p>
+        {% endblock %}
+    {% endembed %}
+    {% include 'Core/Tag/_form-section.part.html.twig' with { 'help':('offer.offer.form.help.tags'|trans()) } %}
+{% endblock %}

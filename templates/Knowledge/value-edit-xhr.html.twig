@@ -1,0 +1,8 @@
+{% extends 'Knowledge/_form-value.part.html.twig' %}
+
+{% set actionPath = path('core_knowledge_value_update', { 'entityType':knowledge.type, 'entityId':knowledge.id, 'field':field, 'id':form.vars.data.id }) %}
+
+{% block buttons %}
+    <a href="#" class="btn btn-default" onclick="LADBValues.cancelEditValueProposal();return false;">{{ 'default.cancel'|trans() }}</a>
+    {{ parent() }}
+{% endblock %}

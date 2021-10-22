@@ -1,0 +1,27 @@
+{% extends 'Common/Layout/_form.html.twig' %}
+
+{% set navSection = 'blog' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block sidenav %}
+    {{ parent() }}
+    {% include 'Common/_form-sidenav-body.part.html.twig' %}
+    <li><a href="#url"><i class="ladb-icon-link"></i> Lien</a></li>
+{% endblock %}
+
+{% block sections %}
+    {{ parent() }}
+    {% include 'Common/_form-section-body.part.html.twig' with { 'mandatory':true, 'rows':4 } %}
+    {% embed 'Common/_form-section.part.html.twig' with { 'icon':'link', 'title':'Lien', 'formSection':'url' } %}
+        {% block body %}
+            {{ form_errors(form.url) }}
+            <div class="input-group">
+                <span class="input-group-addon"><i class="ladb-icon-link"></i></span>
+                {{ form_widget(form.url) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

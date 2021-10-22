@@ -1,0 +1,17 @@
+{% form_theme form 'Common/_form-theme.twig.twig' %}
+
+{{ form_start(form, { 'action':path('core_youtook_create'), 'method':'POST', 'attr':{ 'novalidate':'novalidate' } }) }}
+    {{ form_errors(form.url) }}
+    <div class="ladb-input-box ladb-input-box-lg">
+        <div class="ladb-input-box-inner">
+            <div class="ladb-input-box-left">
+                <i class="ladb-icon-plus"></i>
+            </div>
+            <div class="ladb-input">
+                {{ form_widget(form.url, { 'attr':{ 'novalidate':'novalidate', 'placeholder':'Collez ici votre lien YouTube' } }) }}
+            </div>
+            <div class="ladb-input-box-right"></div>
+        </div>
+    </div>
+    {#<button class="btn btn-default btn-lg">Took</button>#}
+{{ form_end(form) }}

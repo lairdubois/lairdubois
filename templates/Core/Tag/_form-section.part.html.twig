@@ -1,0 +1,14 @@
+{% extends 'Common/_form-section.part.html.twig' %}
+
+{# set help #}
+{# set mandatory (facultative) #}
+
+{% set icon = 'tag' %}
+{% set title = 'tag.tags'|trans() %}
+{% set formSection = 'tags' %}
+
+{% block body %}
+    {% if help is defined %}<p class="help-block"><i>{{ help|raw }}</i></p>{% endif %}
+    {{ form_errors(form.tags) }}
+    {{ form_widget(form.tags) }}
+{% endblock %}

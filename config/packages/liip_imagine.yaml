@@ -1,0 +1,180 @@
+# See dos how to configure the bundle: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    resolvers:
+        default:
+            web_path:
+                web_root: "%kernel.project_dir%/public"
+                cache_prefix: media/cache
+
+    loaders:
+        default:
+            filesystem:
+                data_root: "%kernel.project_dir%/uploads"
+
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: imagick
+    cache: default
+    data_loader: default
+    default_image: null
+    controller:
+        filter_action: liip_imagine.controller:filterAction
+        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+
+    filter_sets:
+        cache: ~
+
+        # Outbound
+
+        20x20o:
+            filters:
+                thumbnail: { size: [ 20, 20 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        32x32o:
+            filters:
+                thumbnail: { size: [ 32, 32 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        50x50o: # Spotlight avatar
+            filters:
+                thumbnail: { size: [ 50, 50 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        64x64o:
+            filters:
+                thumbnail: { size: [ 64, 64 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        80x60o: # Find linkedTo
+            filters:
+                thumbnail: { size: [ 80, 60 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        128x128o:
+            filters:
+                thumbnail: { size: [ 128, 128 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        126x170o: # Wood (showcase small)
+            filters:
+                thumbnail: { size: [ 126, 170 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        180x180o: # Block gallery (small)
+            filters:
+                upscale: { min: [ 180, 180 ] }
+                thumbnail: { size: [ 180, 180 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        282x280o: # Wood (showcase wide + cards + list thumbnail)
+            filters:
+                upscale: { min: [ 282, 280 ] }
+                thumbnail: { size: [ 282, 280 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        282x200o: # Provider (showcase wide)
+            filters:
+                upscale: { min: [ 282, 200 ] }
+                thumbnail: { size: [ 282, 200 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        400x400o: # Page image
+            filters:
+                thumbnail: { size: [ 400, 400 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        470x275o: # Page video thumbnail
+            filters:
+                thumbnail: { size: [ 470, 275 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        505x180o: # Banner
+            filters:
+                thumbnail: { size: [ 505, 180 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+        594x294o: # Blog main picture + Feed
+            filters:
+                thumbnail: { size: [ 594, 294 ], mode: outbound, allow_upscale: true }
+            post_processors:
+                ladb_imageoptimizer: { }
+        514x695o: # Showcase 4/3 portrait
+            filters:
+                thumbnail: { size: [ 514, 695 ], mode: outbound, allow_upscale: true }
+            post_processors:
+                ladb_imageoptimizer: { }
+        600x400o: # Find website thumbnail
+            filters:
+                thumbnail: { size: [ 600, 400 ], mode: outbound, allow_upscale: true }
+            post_processors:
+                ladb_imageoptimizer: { }
+        600x450o: # Block gallery (large)
+            filters:
+                upscale: { min: [ 600, 450 ] }
+                thumbnail: { size: [ 600, 450 ], mode: outbound, allow_upscale: true }
+            post_processors:
+                ladb_imageoptimizer: { }
+        800x350o: # Spotlight
+            filters:
+                thumbnail: { size: [ 800, 350 ], mode: outbound }
+            post_processors:
+                ladb_imageoptimizer: { }
+
+        # Inset
+
+        64x64i:
+            filters:
+                thumbnail: { size: [ 64, 64 ], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: { }
+        240x300i:
+            filters:
+                thumbnail: { size: [ 240, 300 ], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: { }
+        300x300i: # Picture form
+            filters:
+                thumbnail: { size: [ 300, 300 ], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: { }
+        300x550i: # list thumbnail
+            filters:
+                thumbnail: { size: [ 300, 550 ], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: { }
+        600x600i: # Showcase & Share
+            filters:
+                thumbnail: { size: [ 600, 600 ], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: { }
+        800x800i: # Spotlight
+            filters:
+                thumbnail: { size: [ 800, 800 ], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: { }
+        1024x1024i: # Full gallery picture
+            filters:
+                thumbnail: { size: [ 1024, 1024 ], mode: inset }
+            post_processors:
+                ladb_imageoptimizer: { }
+
+        # Crop
+
+        600x450c: # Workflow (showcase)
+            filters:
+                crop: { size: [ 600, 450 ], start: [ 0, 1 ] }
+            post_processors:
+                ladb_imageoptimizer: { }
+
+        # Widen
+
+        564w: # Strip
+            filters:
+                relative_resize: { widen: 564 }
+            post_processors:
+                ladb_imageoptimizer: { }
+        598w: # Sticker
+            filters:
+                relative_resize: { widen: 598 }
+            post_processors:
+                ladb_imageoptimizer: { }

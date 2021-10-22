@@ -1,0 +1,9 @@
+{% extends 'Core/Activity/_row.part.html.twig' %}
+
+{% set icon = 'plus' %}
+{% set entity = ladb_entity(activity.entityType, activity.entityId) %}
+{% if entity is ladb_instanceof('App\\Model\\ChildInterface') %}
+    {% set activityScrollToId = 'ladb_'~(ladb_entity_type_stripped_name(entity))~'_'~entity.id %}
+{% endif %}
+
+{% block body %}{% if activity.publisherUser != activity.user %} <small class="text-muted">( via {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':activity.publisherUser, 'noMicrodata':true } %} )</small> {% endif %}a publié {{ ('notification.the.'~ladb_entity_type_stripped_name(entity))|trans() }}{% if entity.title is defined %} "<strong>{{ entity.title }}</strong>"{% endif %}{% endblock %}

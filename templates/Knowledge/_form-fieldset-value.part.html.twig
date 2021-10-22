@@ -1,0 +1,112 @@
+{# set form #}
+{# set label #}
+{# set cancelEdit (facultative) #}
+{# set isCompact (facultative) #}
+
+{% set cancelEdit = cancelEdit is defined ? cancelEdit : false %}
+{% set fieldLabel = fieldLabel|default('') %}
+{% set isCompact = isCompact|default(false) %}
+
+{% block dataFormGroupOuter %}
+    {{ form_errors(form) }}
+    <div class="form-group">
+        {% block dataFormGroup %}{% endblock %}
+    </div>
+{% endblock %}
+{% if not isCompact %}<hr>{% endif %}
+<div class="form-group{% if isCompact %} hide{% endif %}">
+    {{ form_label(form.legend, ('knowledge.proposal_value.legend'|trans())) }}&nbsp;{{ 'knowledge.proposal_value.of_value'|trans({ '%fieldLabel%':fieldLabel })|raw }}&nbsp;<small>(Facultatif)</small>
+    {{ form_errors(form.legend) }}
+    {{ form_widget(form.legend, { 'attr':{ 'class':'form-control' } }) }}
+</div>
+<div class="form-group{% if isCompact %} hide{% endif %}">
+    {% if sourcesHistory is defined %}
+        <div id="{{ form.source.vars.id }}_history" class="dropdown pull-right">
+            <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="ladb-icon-history"></i> {{ 'knowledge.history'|trans }}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                {% for sourcesHistoryItem in sourcesHistory %}
+                    <li><a href="#" class="ladb-source-history-item" data-ladb-source-type="{{ sourcesHistoryItem[0] }}" data-ladb-source="{{ sourcesHistoryItem[1] }}">[{{ ('knowledge.source_type_'~sourcesHistoryItem[0])|trans }}]{% if sourcesHistoryItem[1] is not empty %} {{ sourcesHistoryItem[1]|u.truncate }}{% endif %}</a></li>
+                {% else %}
+                    <li class="disabled"><a href="#">Vide</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {{ form_label(form.source, 'knowledge.proposal_value.source'|trans()) }}&nbsp;{{ 'knowledge.proposal_value.of_value'|trans({ '%fieldLabel%':fieldLabel })|raw }}
+    {{ form_errors(form.source) }}
+    {{ form_widget(form.source) }}
+    {{ form_widget(form.sourceType, { 'attr':{ 'class':'form-control' } }) }}
+    <div id="{{ form.source.vars.id }}_website_input_group"{% if form.sourceType.vars.data != 2 %} style="display: none;"{% endif %} class="input-group ladb-margin-top">
+        <span class="input-group-addon"><i class="ladb-icon-link"></i></span>
+        <input type="url"{% if form.source.vars.data is not null and form.sourceType.vars.data == 2 %} value="{{ form.source.vars.data }}"{% endif %} placeholder="Lien vers la source" class="form-control">
+    </div>
+    <div id="{{ form.source.vars.id }}_other_input_group"{% if form.sourceType.vars.data != 3 %} style="display: none;"{% endif %} class="ladb-margin-top">
+        <input type="text"{% if form.source.vars.data is not null and form.sourceType.vars.data == 3 %} value="{{ form.source.vars.data }}"{% endif %} placeholder="Nom de la source" class="form-control">
+    </div>
+    {% block sourceWarning %}{% endblock %}
+    <div{% if not is_granted('ROLE_ADMIN') or form.moderationScore.vars.data is null %} class="hide"{% endif %}>
+        <hr>
+        <i class="ladb-icon-admin"></i>&nbsp;{{ form_label(form.source, 'knowledge.proposal_value.moderation_score'|trans()) }}
+        {{ form_errors(form.moderationScore) }}
+        {{ form_widget(form.moderationScore, { 'attr':{ 'class':'form-control' } }) }}
+    </div>
+    <script>
+        {% if isCompact %}
+            $("#{{ form.sourceType.vars.id }}").val('1');   {# Set source to 1 = "Connaissances personnelles" #}
+        {% endif %}
+        $("#{{ form.source.vars.id }}_website_input_group input").on("change keydown paste input", function() {
+            $("#{{ form.source.vars.id }}").val($(this).val());
+        });
+        $("#{{ form.source.vars.id }}_other_input_group input").on("change keydown paste input", function() {
+            $("#{{ form.source.vars.id }}").val($(this).val());
+        });
+        function apply{{ form.source.vars.id }}SourceType(sourceType) {
+            switch (sourceType) {
+                case 1:
+                    $("#{{ form.source.vars.id }}").val("");
+                    $("#{{ form.source.vars.id }}_website_input_group").hide();
+                    $("#{{ form.source.vars.id }}_other_input_group").hide();
+                    break;
+                case 2:
+                    $("#{{ form.source.vars.id }}").val($("#{{ form.source.vars.id }}_website_input_group input").val());
+                    $("#{{ form.source.vars.id }}_website_input_group").show().find("input").focus();
+                    $("#{{ form.source.vars.id }}_other_input_group").hide();
+                    break;
+                case 3:
+                    $("#{{ form.source.vars.id }}").val($("#{{ form.source.vars.id }}_other_input_group input").val());
+                    $("#{{ form.source.vars.id }}_website_input_group").hide();
+                    $("#{{ form.source.vars.id }}_other_input_group").show().find("input").focus();
+                    break;
+                default:
+                    $("#{{ form.source.vars.id }}").val("");
+                    $("#{{ form.source.vars.id }}_website_input_group").hide();
+                    $("#{{ form.source.vars.id }}_other_input_group").hide();
+            }
+        }
+        $("#{{ form.sourceType.vars.id }}").on("change", function() {
+            {% if cancelEdit %}LADBValues.cancelEditValueProposal();{% endif %}
+            var sourceType = parseInt($(this).val());
+            apply{{ form.source.vars.id }}SourceType(sourceType);
+        });
+        $("#{{ form.source.vars.id }}_history a.ladb-source-history-item").click(function() {
+            var sourceType = parseInt($(this).data('ladb-source-type'));
+            var source = $(this).data('ladb-source');
+            $("#{{ form.sourceType.vars.id }}").val(sourceType);
+            switch (sourceType) {
+                case 2:
+                    $("#{{ form.source.vars.id }}_website_input_group input").val(source);
+                    break;
+                case 3:
+                    $("#{{ form.source.vars.id }}_other_input_group input").val(source);
+                    break;
+            }
+            apply{{ form.source.vars.id }}SourceType(sourceType)
+        });
+    </script>
+</div>
+{% block restFormGroup %}
+    {{ form_rest(form) }}
+{% endblock %}

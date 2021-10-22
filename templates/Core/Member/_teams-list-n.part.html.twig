@@ -1,0 +1,10 @@
+{% extends 'Common/_list-n.part.html.twig' %}
+
+{# set members #}
+{# set nextPageUrl #}
+
+{% block items %}
+    {% for member in members %}
+        {% include 'Core/User/_list-row.part.html.twig' with { 'user':member.team } %}
+    {% endfor %}
+{% endblock %}

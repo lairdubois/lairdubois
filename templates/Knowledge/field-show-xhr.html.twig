@@ -1,0 +1,28 @@
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
+
+{% set fieldDef = knowledge.fieldDefs[field] %}
+{% set fieldMultiple = fieldDef[constant('ATTRIB_MULTIPLE', knowledge)] %}
+{% set id = field~'_modal' %}
+{% set title = ('knowledge.proposals_of'|trans())~' <em>'~(('knowledge.'~knowledge.strippedName~'.field.'~field)|trans())~'</em>' %}
+
+{% block contentInner %}
+    {{ parent() }}
+    <script>
+        $('.ladb-comment-widget').ladbCommentWidget();
+        LADBValues.bindNewValueProposalAjaxForm();
+        LADBCommon.setupPopovers();
+        LADBCommon.setupTooltips();
+        $('[data-src]').Lazy();
+        {% if values is empty %}
+            $(".modal input[type=text]").first().focus();
+        {% endif %}
+    </script>
+{% endblock %}
+
+{% block bodyInner %}
+    {% include 'Knowledge/_field-show-content.part.html.twig' %}
+{% endblock %}
+
+{% block footerInner %}
+    <button class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</button>
+{% endblock %}

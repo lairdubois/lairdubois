@@ -1,0 +1,50 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% use 'Common/Blocks/map.blocks.html.twig' %}
+
+{% set pageTitle = 'offer.offer.list'|trans() %}
+{% set pageDescription = 'offer.offer.description'|trans() %}
+{% set pageImage = asset('banner-offers-600x376.jpg') %}
+{% set pageSectionUrl = url('core_offer_list') %}
+{% set pageSectionName = 'offer.offer.list'|trans %}
+
+{% set navSection = 'offers' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+{% set hideMapArea = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('mapAreaStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('mapAreaJavascripts') }}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+        <div class="panel-body">
+            Cette rubrique vous permet de publier vos <strong>petites-annonces</strong>. <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-annonce' }) }}">En savoir plus</a>.
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainer %}
+    {% if offers|length > 0 %}
+        {% include 'Common/_map-area.part.html.twig' with { 'classes':'ladb-map-banner'} %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Offer/Offer/_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Offer/Offer/_list-n.part.html.twig' %}
+{% endblock %}

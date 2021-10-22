@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
+
+{%  set bodyClass = 'ladb-embedded' %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('autopagerScript') }}
+{% endblock %}
+
+{% block body %}
+    <br/>
+    {{ block('autopagerContainer') }}
+{% endblock %}

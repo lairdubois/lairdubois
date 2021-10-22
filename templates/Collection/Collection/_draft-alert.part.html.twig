@@ -1,0 +1,33 @@
+{% extends 'Common/_draft-alert.part.html.twig' %}
+
+{% set entity = collection %}
+{% set alertMessage = 'Cette collection est privée. Vous seul pouvez la consulter.<br>Pour la rendre visible de tous, vous devez la publier.<br><br>En rendant visible à tous votre collection, vous faites profiter chaque visiteur de votre vision d\'un classement particulier. Un bel effort collectif !' %}
+{% set modalMessage = 'La publication de la collection <strong>'~collection.title~'</strong> la rendra publique.' %}
+{% set icon = 'key' %}
+
+{% block modal %}
+    {% if collection.body is not empty and collection.tags|length >= 2 and collection.entryCount > 0 %}
+        {{ parent() }}
+    {% else %}
+        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'publish_modal', 'title':('default.publishing'|trans()) } %}
+            {% block bodyInner %}
+                <div class="media">
+                    <div class="media-left"><i class="ladb-icon-warning ladb-icon-xl"></i></div>
+                    <div class="media-body">
+                        <p>Attention, avant de pouvoir être publiée, la collection <strong>{{ collection.title }}</strong> doit avoir :</p>
+                        <ul>
+                            <li><strong>une description</strong></li>
+                            <li>au moins <strong>deux tags</strong></li>
+                            <li>contenir au moins <strong>une publication</strong></li>
+                        </ul>
+                        <p>Editez la collection pour ajouter les éléments manquants.</p>
+                    </div>
+                </div>
+            {% endblock %}
+            {% block footerInner %}
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ 'default.cancel'|trans() }}</button>
+                <a href="{{ ladb_entity_url_action(collection, 'edit', true, false) }}#body" class="btn btn-default"><i class="ladb-icon-edit"></i> {{ 'default.edit'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
+
+{% set id = 'texture_modal' %}
+{% set title = ('knowledge.wood.texture.choice.textures'|transchoice(0)|capitalize)~' '~texture.wood.title~' ('~(('knowledge.wood.field.'~texture.value.parentEntityField)|trans())~')' %}
+
+{% block bodyInner %}
+    <div class="row">
+        <div class="col-xs-6">
+            {% include 'Core/Picture/_img.part.html.twig' with { 'picture':texture.value.data, 'width':282, 'height':280, 'noLazyLoad':true } %}
+            {{ 'knowledge.wood.texture.single_picture'|trans() }}
+        </div>
+        <div class="col-xs-6">
+            {% include 'Core/Picture/_img.part.html.twig' with { 'picture':texture.mosaicPicture, 'width':282, 'height':280, 'noLazyLoad':true } %}
+            {{ 'knowledge.wood.texture.mosaic_picture'|trans() }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+    <a href="{{ path('core_wood_texture_download', { 'id':texture.id }) }}" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading'); setTimeout(function() { $('#{{ id }}').modal('hide'); }, 1000);"><i class="ladb-icon-unpublish"></i> {{ 'knowledge.wood.texture.download'|trans() }}</a>
+{% endblock %}
+

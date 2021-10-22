@@ -1,0 +1,18 @@
+{% extends 'Wonder/_wonder-list-thumbnail.part.html.twig' %}
+
+{% set wonder = plan %}
+
+{% block image %}
+    {{ parent() }}
+    {% if plan.sketchup3DWarehouseEmbedIdentifier or plan.a360Url %}
+        <div class="ladb-image-overlay" data-tooltip="tooltip" title="Visualisation 3D"><i class="ladb-icon-3d ladb-icon-lg"></i></div>
+    {% endif %}
+{% endblock %}
+
+{% block entityMetas %}
+    {% include 'Wonder/Plan/_linkto-entity-metas.part.html.twig' %}
+    {{ parent() }}
+    {% if wonder.downloadCount > 0 %}
+        <li class="ladb-counter"><i class="ladb-icon-unpublish"></i> <span>{{ wonder.downloadCount|number_format(0, ',', ' ') }}</span></li>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'Common/_masonry-list-thumbnail.part.html.twig' %}
+
+{# set tool #}
+
+{% set entity = tool %}
+{% set classes = 'ladb-no-overlay-caption' %}
+{% set headingClasses = tool.nameRejected ? 'ladb-text-barred' : null %}
+{% set imgClasses = tool.nameRejected or tool.photoRejected ? 'ladb-desaturate ladb-translucent' : null %}
+{% set pictureWidth = '282' %}
+{% set pictureHeight = '280' %}
+{% set pictureFilterMode = 'o' %}
+
+{% block title %}
+    {{ parent() }}{% if tool.brand is not empty %}&nbsp;<div><small>({{ tool.brand }})</small></div>{% endif %}
+{% endblock %}
+
+{% block image %}
+    <div style="padding: 10px;">
+    {% if tool.photoRejected %}
+        <div class="ladb-box-barred">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+    </div>
+    {% if tool.manualCount > 0 %}
+        <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'knowledge.tool.choice.contains_manuals'|transchoice(tool.manualCount, { '%count%':tool.manualCount }) }}"><i class="ladb-icon-file"></i></div>
+    {% endif %}
+{% endblock %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    {% include 'Core/Review/_thumbnail-meta-counter.part.html.twig' %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'Knowledge/_list-thumbnail-footer.part.html.twig' %}
+{% endblock %}
+
+

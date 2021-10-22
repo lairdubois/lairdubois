@@ -1,0 +1,20 @@
+{% extends 'Common/_form-section.part.html.twig' %}
+
+{# set formResources #}
+{# set resource #}
+{# set maxResourceCount #}
+{# set title (falcultative) #}
+{# set help (facultative) #}
+{# set mandatory (facultative) #}
+{# set formSection (facultative) #}
+{# set sortable (facultative) #}
+
+{% set icon = 'file' %}
+{% set title = title|default('Fichiers') %}
+{% set formSection = formSection is defined ? formSection : 'resources' %}
+{% set mandatory = mandatory is defined ? mandatory : false %}
+{% set sortable = sortable is defined ? sortable : false %}
+
+{% block body %}
+    {% include 'Core/Resource/_form-gallery.part.html.twig' %}
+{% endblock %}

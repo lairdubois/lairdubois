@@ -1,0 +1,41 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageTitle = 'qa.question.list'|trans() %}
+{% set pageDescription = 'qa.question.description'|trans() %}
+{% set pageImage = asset('banner-questions-600x376.jpg') %}
+{% set pageSectionUrl = url('core_qa_question_list') %}
+{% set pageSectionName = 'qa.question.list'|trans %}
+
+{% set navSection = 'qa' %}
+{% set masonry = true %}
+{% set masonryWide = true %}
+{% set hideHeaderContainer = false %}
+{% set countableEntityList = true %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('qa', null, '_default', {media: 'screen'}) }}
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% include 'Qa/Question/_list-topbar.part.html.twig' %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="panel panel-default ladb-margin-remove ladb-margin-top">
+        <div class="panel-body">
+            Cette rubrique vous permet de poser vos questions à la communauté. <a href="{{ path('core_faq_question_show', { 'id':'quest-ce-quune-question' }) }}">En savoir plus</a>.
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% if highlightedTip is defined and highlightedTip %}
+        {% include 'Core/Tip/_list-thumbnail-highlighted.part.html.twig' with { 'tip':highlightedTip, 'tiny':true, 'masonryWide':true } %}
+    {% endif %}
+    {% if highlightedOffer is defined and highlightedOffer %}
+        {% include 'Offer/Offer/_list-thumbnail-highlighted.part.html.twig' with { 'offer':highlightedOffer, 'masonryWide':true } %}
+    {% endif %}
+    {% include 'Qa/Question/_list-n.part.html.twig' %}
+{% endblock %}

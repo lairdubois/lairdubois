@@ -1,0 +1,18 @@
+{% extends 'Workflow:Task/_form.html.twig' %}
+
+{% form_theme form 'Common/_form-theme.twig.twig' 'Block:_form-theme.html.twig' %}
+
+{% set id = 'task_new_modal' %}
+{% set title = 'workflow.task.edit'|trans() %}
+{% set formAction = path('core_workflow_task_update', { 'id':workflow.id }) %}
+
+{% block formInner %}
+    <input type="hidden" name="taskId" value="{{ task.id }}">
+    {{ parent() }}
+{% endblock %}
+
+{% block buttons %}
+    <a href="{{ path('core_workflow_task_delete', { 'id':workflow.id, 'taskId':task.id }) }}" class="btn btn-danger pull-left ladb-btn-delete" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i><span class="ladb-visible-desktop"> {{ 'default.delete'|trans() }}</span></a>
+    {{ parent() }}
+    <button type="submit" class="btn btn-primary" data-loading-text="{{ 'default.loading'|trans() }}">{{ 'default.update'|trans() }}</button>
+{% endblock %}

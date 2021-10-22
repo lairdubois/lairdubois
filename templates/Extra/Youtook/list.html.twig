@@ -1,0 +1,15 @@
+{% extends 'Common/Layout/_list.html.twig' %}
+
+{% set pageTitle = 'youtook.list'|trans() %}
+{% set pageDescription = 'youtook.description'|trans() %}
+
+{% set masonry = true %}
+{% set hideHeaderContainer = false %}
+
+{% block bodyHeaderContainerContent %}
+    <h1 class="ladb-heading">{{ 'youtook.list'|trans() }}</h1>
+{% endblock %}
+
+{% block autopagerContainerInner %}
+    {% include 'Extra/Youtook/_list-n.part.html.twig' %}
+{% endblock %}

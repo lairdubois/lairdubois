@@ -1,0 +1,35 @@
+
+{# set spotlight #}
+{# set entity #}
+
+<div class="ladb-header-spotlight" data-src="{{ entity.mainPicture.webPath|imagine_filter('800x800i') }}" style="background-position: {{ entity.mainPicture.centerX100 }}% {{ entity.mainPicture.centerY100 }}%;" onclick="$(this).ladbBoxLinkClick(event, { location:'{{ ladb_entity_url_action(entity) }}'});">
+    <div class="ladb-open"><i class="ladb-icon-zoomin"></i></div>
+    <div class="ladb-shadow">
+        <div class="container">
+            <div class="ladb-caption">
+                {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':entity.user, 'size':'50', 'linkClasses':'ladb-avatar ladb-hidden-mobile', 'noMicrodata':true } %}
+                <ul class="ladb-counters">
+                    {% block counters %}
+                        <li class="ladb-counter"><i class="ladb-icon-eye"></i> {{ entity.viewCount|number_format(0, ',', ' ') }}</li>
+                        {% if entity.commentCount is defined and entity.commentCount > 0 %}
+                            <li class="ladb-counter ladb-hidden-mobile"><i class="ladb-icon-comment"></i> {{ entity.commentCount|number_format(0, ',', ' ') }}</li>
+                        {% endif %}
+                        {% if entity.likeCount is defined and entity.likeCount > 0 %}
+                            <li class="ladb-counter"><i class="ladb-icon-like"></i> {{ entity.likeCount|number_format(0, ',', ' ') }}</li>
+                        {% endif %}
+                        {% if entity.feedbackCount is defined and entity.feedbackCount > 0 %}
+                            <li class="ladb-counter ladb-color-feedback"><i class="ladb-icon-feedback"></i> {{ entity.feedbackCount|number_format(0, ',', ' ') }}</li>
+                        {% endif %}
+                    {% endblock %}
+                </ul>
+                <div class="ladb-body">
+                    <h2 class="ladb-heading" ><i class="ladb-icon-{{ ladb_entity_type_stripped_name(entity) }}"></i> {{ entity.title|raw }}</h2>
+                    <span class="ladb-subheading">
+                        {% include 'Common/_author.part.html.twig' with { 'noMicrodata':true } %}{% include 'Common/_age.part.html.twig' with { 'classes':'ladb-hidden-mobile' } %}
+                    </span>
+                </div>
+            </div>
+            <div class="ladb-overlap"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
+
+{% set id = 'ladb_label_list_modal' %}
+{% set title = 'workflow.label.list'|trans() %}
+
+{% block bodyInner %}
+    <div class="alert alert-warning ladb-label-empty-alert"{% if workflow.labels|length > 0 %} style="display: none;"{% endif %}>
+        {{ 'workflow.label.empty'|trans() }}
+    </div>
+    <table class="table table-bordered ladb-label-table" style="background-color: white;{% if workflow.labels|length == 0 %} display: none;{% endif %}">
+        <tbody>
+        {% for label in workflow.labels %}
+            {% include 'Workflow:Label/_row.part.html.twig' %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('core_workflow_label_new', { 'id':workflow.id }) }}" class="btn btn-default ladb-label-new-btn" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ 'workflow.label.add'|trans() }}</a>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+{% endblock %}

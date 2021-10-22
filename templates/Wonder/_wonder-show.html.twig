@@ -1,0 +1,233 @@
+{% extends 'Common/Layout/_show.html.twig' %}
+
+{# set wonder #}
+{# set wonderType #}
+{# set userWonders #}
+{# set similarWonders #}
+
+{% set entity = wonder %}
+
+{% set pageSectionUrl = url('core_'~wonderType~'_list') %}
+{% set pageSectionName = ('wonder.'~wonderType~'.list')|trans %}
+
+{% set navSection = wonderType~'s' %}
+{% set searchPath = path('core_'~wonderType~'_list') %}
+{% set transType = wonderType %}
+
+{% set showPath = 'core_'~wonderType~'_show' %}
+{% set editPath = 'core_'~wonderType~'_edit' %}
+{% set deletePath = 'core_'~wonderType~'_delete' %}
+{% set unpublishPath = 'core_'~wonderType~'_unpublish' %}
+
+{% set ownerUser = is_granted("ROLE_USER") and app.user.id == wonder.user.id %}
+
+{% set sbImage = url('core_'~wonderType~'_strip', { 'id':wonder.id }) %} {# use Strip as shared image #}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' with { 'shareModalAddonTemplate':'Wonder/_wonder-share-modal-addon.part.html.twig' } %}
+        {% block adminItems %}
+            {{ parent() }}
+            {% if wonderType == 'creation' %}
+                <li role="separator" class="divider"></li>
+                <li><a href="#admin_converttoworkshop_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-workshop"></i> {{ 'wonder.creation.converttoworkshop'|trans() }}</a></li>
+                <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'wonder.creation.converttohowto'|trans() }}</a></li>
+                <li><a href="#admin_converttofind_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-find"></i> {{ 'wonder.creation.converttofind'|trans() }}</a></li>
+                <li><a href="#admin_converttoquestion_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-question"></i> {{ 'wonder.creation.converttoquestion'|trans() }}</a></li>
+                <li><a href="#admin_converttooffer_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-offer"></i> {{ 'wonder.creation.converttooffer'|trans() }}</a></li>
+            {% endif %}
+            {% if wonderType == 'workshop' %}
+                <li role="separator" class="divider"></li>
+                <li><a href="#admin_converttocreation_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-creation"></i> {{ 'wonder.workshop.converttocreation'|trans() }}</a></li>
+                <li><a href="#admin_converttohowto_wonder_modal" data-toggle="modal"><i class="ladb-icon-arrow-right"></i> <i class="ladb-icon-howto"></i> {{ 'wonder.workshop.converttohowto'|trans() }}</a></li>
+            {% endif %}
+        {% endblock %}
+        {% block adminModals %}
+            {{ parent() }}
+            {% if wonderType == 'creation' %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttoworkshop_wonder_modal', 'title':('wonder.creation.converttoworkshop'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en atelier.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_creation_admin_converttoworkshop', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('wonder.creation.converttohowto'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en pas à pas.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_creation_admin_converttohowto', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttofind_wonder_modal', 'title':('wonder.creation.converttofind'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en trouvaille.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_creation_admin_converttofind', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttoquestion_wonder_modal', 'title':('wonder.creation.converttoquestion'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en question.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_creation_admin_converttoquestion', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttooffer_wonder_modal', 'title':('wonder.creation.converttooffer'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera la création <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en annonce.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_creation_admin_converttooffer', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+            {% if wonderType == 'workshop' %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttocreation_wonder_modal', 'title':('wonder.workshop.converttocreation'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera l'atelier <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en création.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_workshop_admin_converttocreation', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+                {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'admin_converttohowto_wonder_modal', 'title':('wonder.workshop.converttohowto'|trans()) } %}
+                    {% block bodyInner %}
+                        <p>La convertion transformera l'atelier <strong>{{ wonder.title }}</strong> de <strong>{{ wonder.user.displayname }}</strong> en pas à pas.</p>
+                        <p>Confirmez l'action pour continuer.</p>
+                    {% endblock %}
+                    {% block footerInner %}
+                        <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                        <a href="{{ path('core_workshop_admin_converttohowto', { 'id':wonder.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-arrow-right"></i> {{ 'default.convert'|trans() }}</a>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block bodyContainerContent %}
+    {{ parent() }}
+    {% if referral is defined and referral is not null and referral.displayRedirectionWarning %}
+        {% include 'Core/Referer/_referral-modal.part.html.twig' %}
+        <script>
+            $(window).load(function() {
+                $("#referral_modal").modal('show');
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block contentBody %}
+    {% if wonder.isDraft %}
+        {% include 'Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
+    {% endif %}
+    {% block wonderShowcase %}
+        {% include 'Common/_entity-showcase.part.html.twig' with { 'entity':wonder, 'pictures':wonder.pictures, 'alt':wonder.title, 'editable':(permissionContext.editable and permissionContext.isGrantedOwner) } %}
+        <hr>
+    {% endblock %}
+    <div class="ladb-wonder-body">
+        {% if wonder.bodyBlocks is defined %}
+            {% for block in wonder.bodyBlocks %}
+                {% include 'Core/Block/_show-'~block.strippedName~'.part.html.twig' %}
+            {% endfor %}
+        {% else %}
+            {{ wonder.htmlBody|raw }}
+        {% endif %}
+    </div>
+    {% if wonder.updatedAt > wonder.createdAt %}
+        {% include 'Common/_updated-age.part.html.twig' with { 'entity':wonder } %}
+    {% endif %}
+    {% if not permissionContext.isOwner %}
+        {% include 'Common/_like-and-follow.part.html.twig' %}
+    {% endif %}
+    {% block contentLinkedTo %}{% endblock %}
+    {% if wonder.referralCount > 0 %}
+        {% include 'Core/Referer/_widget.part.html.twig' with { 'referrals':wonder.referrals } %}
+    {% endif %}
+    {% block contentFeedbacks %}{% endblock %}
+    {% include 'Core/Comment/_widget.part.html.twig' with { 'commentContext':commentContext } %}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    {% block wonderMetas %}
+        <div class="ladb-metas">
+            {% block baseMetas %}
+                {% include 'Core/Like/_meta-counter.part.html.twig' %}
+                {% include 'Core/View/_meta-counter.part.html.twig' %}
+                {% include 'Core/Comment/_meta-counter.part.html.twig' %}
+                {% if wonder.referralCount > 0 %}
+                    <div class="ladb-meta">
+                        <a href="#" class="ladb-scrollto-btn" onclick="$('#ladb_referer_widget').ladbScrollTo(event);"><i class="ladb-icon-arrow-down"></i></a>
+                        <i class="ladb-icon-referral ladb-icon-fixed-center"></i>
+                        <strong>{{ wonder.referralCount|number_format(0, ',', ' ') }}</strong>
+                        <small>{{ 'referer.choice.referrals'|transchoice(wonder.referralCount) }}</small>
+                    </div>
+                {% endif %}
+            {% endblock %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">{{ 'default.characteristics'|trans() }}</h4>
+            {% block characteristicsMetas %}{% endblock %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+            {% block linksMetas %}
+                {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+    {% include 'Core/Tag/_metas.part.html.twig' with { 'tags':wonder.tags } %}
+    {% include 'Core/License/_metas.part.html.twig' with { 'license':wonder.license } %}
+{% endblock %}
+
+{% block contentSuggests %}
+    {% if userWonders is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('wonder.'~transType~'.other_from')|trans() }} {% include 'Core/User/_displayname-link.part.html.twig' with { 'user':wonder.user, 'noMicrodata':true } %}
+            </div>
+            <div class="panel-body row">
+                {% for userWonder in userWonders %}
+                    <div class="col-xs-6">
+                        {% include 'Wonder/_wonder-thumbnail-link.part.html.twig' with { 'wonder':userWonder } %}
+                    </div>
+                {% endfor %}
+                {% if attribute(wonder.user.meta, 'public'~(wonderType|capitalize)~'Count') > 2 %}
+                    <div class="col-xs-12 ladb-margin-top">
+                        <a href="{{ path('core_user_show_'~wonderType~'s', { 'username':wonder.user.usernamecanonical}) }}" class="btn btn-link btn-xs">{{ 'default.see_more'|trans() }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if similarWonders is not null %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ ('wonder.'~transType~'.similar')|trans() }}
+            </div>
+            <div class="panel-body row">
+                {% for similarWonder in similarWonders %}
+                    <div class="col-xs-6">
+                        {% include 'Wonder/_wonder-thumbnail-link.part.html.twig' with { 'wonder':similarWonder, 'classes':(loop.last ? null : 'ladb-margin-bottom') } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

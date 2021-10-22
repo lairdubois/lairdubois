@@ -1,0 +1,22 @@
+{% extends 'Common/_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{% set gender = 'f' %}
+{% set entity = collection %}
+{% set emptyWebPath = 'empty_collection.png' %}
+{% set classes = 'ladb-masonry-column-wide-rounded' %}
+
+{% block title %}<i class="ladb-icon-collection"></i> {{ parent() }}{% endblock %}
+
+{% block entityMetas %}
+    {{ parent() }}
+    {% for type, count in collection.entryTypeCounters if count > 0 %}
+        <li class="ladb-linkto">
+            <a href="{{ path('core_collection_show_type', { 'id':collection.id, 'entityType':type }) }}" data-tooltip="tooltip" title="{{ count }} {{ (ladb_entity_type_stripped_name(type, '.')~'.choice.entities')|trans({'count': count}) }}"><i class="ladb-icon-{{ ladb_entity_type_icon(type) }}"></i></a>
+        </li>
+    {% endfor %}
+    <li class="ladb-counter">
+        {% include 'Collection/Collection/_publications-counter.part.html.twig' with { 'classes':collection.viewCount > 0 ? 'ladb-horizontal-separator-right pull-right' : '' } %}
+    </li>
+{% endblock %}
+
+

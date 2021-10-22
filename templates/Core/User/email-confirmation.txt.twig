@@ -1,0 +1,10 @@
+{% extends ':email-layout.txt.twig' %}
+
+{% block content %}
+La confirmation de votre adresse e-mail vous donnera un accès complet à toutes les fonctionnalités de L'Air du Bois et toutes les futures notifications seront envoyées à cette adresse.
+
+Pour confirmer votre adresse e-mail, merci de cliquez sur le lien ci-dessous (ou copiez/collez l'URL dans votre navigateur) :
+{{ url('core_user_email_confirm', { 'token':token }) }}
+{% endblock %}
+
+{% block footer %}{% endblock %}

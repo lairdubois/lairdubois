@@ -1,0 +1,7 @@
+{% block mapAreaStylesheets %}
+    {{ encore_entry_link_tags('leaflet', null, '_default', {media: 'screen'}) }}
+{% endblock %}
+
+{% block mapAreaJavascripts %}
+    {{ encore_entry_script_tags('leaflet') }}
+{% endblock %}

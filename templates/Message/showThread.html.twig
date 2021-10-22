@@ -1,0 +1,80 @@
+{% extends 'Message:_layout.html.twig' %}
+
+{% use 'Common/Blocks/blueimp-gallery-widget.blocks.html.twig' %}
+
+{% set tab = 'show_thread' %}
+{% set bodyClass = 'ladb-no-footer' %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ block('blueimpGalleryStylesheets') }}
+{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ block('blueimpGalleryJavascripts') }}
+    {% javascripts filter='?closure'
+        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.threadpage.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function () {
+
+            {# Setup Thread page #}
+            $('.ladb-thread').ladbThreadPage();
+
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ block('blueimpGalleryWidget') }}
+{% endblock %}
+
+{% block tools %}
+    <div class="ladb-header-tools pull-right">
+        {% include 'Core/Report/_widget-button.part.html.twig' with { 'entityType':thread.type, 'entityId':thread.id } %}
+        <a href="#delete_thread_modal" class="btn btn-danger" data-toggle="modal"><i class="ladb-icon-delete"></i><span class="ladb-hidden-mobile"> {{ 'default.delete'|trans() }}</span></a>
+        {% embed 'Common/Modal/_modal.part.html.twig' with { 'id':'delete_thread_modal', 'title':('default.deletion'|trans()) } %}
+            {% block bodyInner %}
+                <p>La suppression de la conversation "<strong>{{ thread.subject }}</strong>" entrainera l'effacement de tous les messages qu'elle contient.</p>
+                <p>Confirmez l'action pour continuer.</p>
+            {% endblock %}
+            {% block footerInner %}
+                <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
+                <a href="{{ path('core_message_thread_delete', { 'id':thread.id }) }}" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}" onclick="$(this).button('loading');"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+            {% endblock %}
+        {% endembed %}
+    </div>
+{% endblock %}
+
+{% block bodyContainerContent %}
+    <div class="ladb-thread">
+        <h2 class="ladb-subject">{{ thread.subject }}</h2>
+        <div class="ladb-participants">
+            <span><strong>{{ thread.participants|length }}</strong> participants</span>
+            {% for participant in thread.participants %}
+                {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':participant } %}
+            {% endfor %}
+        </div>
+        <div class="ladb-messages">
+            {% for message in thread.messages %}
+                {% include 'Message:_row.part.html.twig' %}
+            {% endfor %}
+            {% if not thread.announcement %}
+                <div class="ladb-message-row ladb-message-mine">
+                    <div class="ladb-message">
+                        {% include 'Core/User/_avatar-link.part.html.twig' with { 'user':app.user, 'linkClasses':'pull-left', 'noMicrodata':true } %}
+                        <div class="ladb-content ladb-fake-new">
+                            <button class="btn btn-default btn-block" data-ladb-new-path="{{ path('core_message_new', { 'threadId':thread.id }) }}" data-loading-text="{{ 'default.loading'|trans }}">Votre message...</button>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% include 'Core/Report/_modal.part.html.twig' %}
+{% endblock %}
+
+{% block bodyFooter %}{% endblock %}

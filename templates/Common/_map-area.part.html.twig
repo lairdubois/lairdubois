@@ -1,0 +1,33 @@
+
+{# set mapAreaId (facultative) #}
+{# set caption (facultative) #}
+{# set autoInit (facultative) #}
+{# set markersUrl (facultative) #}
+{# set classes (facultative) #}
+{# set hideMapArea (facultative) #}
+
+{% set mapAreaId = mapAreaId|default('ladb_map_area') %}
+{% set autoInit = autoInit|default(false) %}
+{% set hideMapArea = hideMapArea|default(false) %}
+
+<div class="ladb-map-box{% if classes is defined %} {{ classes }}{% endif %}{% if hideMapArea %} hidden{% endif %} ladb-no-print">
+    <div id="{{ mapAreaId }}" class="ladb-map-area">
+        <div class="ladb-map-area-overlay ladb-cursor-preview"></div>
+        <div class="ladb-map-area-controls">
+            <div class="btn ladb-map-area-btn ladb-map-area-btn-zoom"><i class="ladb-icon-zoomin ladb-icon-lg"></i></div>
+        </div>
+        <div id="{{ mapAreaId }}_map"></div>
+    </div>
+    {% if caption is defined %}
+        <small><i class="ladb-icon-location"></i> {{ caption }}</small>
+    {% endif %}
+</div>
+{% if autoInit %}
+    <script>
+        $(document).ready(function() {
+            $('#{{ mapAreaId }}').ladbMapArea({
+                {% if markersUrl is defined %}markersUrl: '{{ markersUrl }}'{% endif %}
+            });
+        });
+    </script>
+{% endif %}

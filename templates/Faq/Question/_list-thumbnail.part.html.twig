@@ -1,0 +1,7 @@
+{% extends 'Common/_masonry-list-thumbnail-wide.part.html.twig' %}
+
+{% set entity = question %}
+
+{% block title %}{% if question.icon is not empty %}<i class="ladb-icon-{{ question.icon }}"></i>&nbsp;{% endif %}{{ parent() }}{% endblock %}
+
+{% block imageOuter %}{% endblock %}

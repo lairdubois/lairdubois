@@ -1,0 +1,36 @@
+{% extends 'Common/Modal/_modal-content.part.html.twig' %}
+
+{% set id = 'ladb_statistics_modal' %}
+{% set title = 'workflow.workflow.statistics'|trans() %}
+
+{% block bodyInner %}
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [{% for data in dataDurationsPerLabel %}'{{ data.name }}'{% if not loop.last %},{% endif %}{% endfor %}],
+                datasets: [{
+                    label: 'Temps passé',
+                    data: [{% for data in dataDurationsPerLabel %}{{ data.duration }}{% if not loop.last %},{% endif %}{% endfor %}],
+                    backgroundColor: [{% for data in dataDurationsPerLabel %}'{{ data.color }}'{% if not loop.last %},{% endif %}{% endfor %}],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Durées réelles par étiquettes en minutes'
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block footerInner %}
+    <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.close'|trans() }}</a>
+{% endblock %}

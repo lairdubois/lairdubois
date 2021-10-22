@@ -1,0 +1,150 @@
+{% extends 'Knowledge/_show.html.twig' %}
+
+{% set entity = book %}
+
+{% set pageTitle = book.title %}
+{% if book.authors %}
+    {% set pageTitle = pageTitle~' '~(pageTitleBy|default('default.of'|trans()))~' '~book.authors %}
+{% endif %}
+{% set pageContentItemType = 'Book' %}
+{% set pageType = 'book' %}
+{% set pageSectionUrl = url('core_book_list') %}
+{% set pageSectionName = 'knowledge.book.list'|trans %}
+{% if book.summary %}
+    {% set pageDescription = book.summary|striptags|u.truncate(200, true, '...') %}
+{% else %}
+    {% set pageDescription = book.title %}
+{% endif %}
+
+{% set bodyContainerClasses = 'ladb-margin-top' %}
+{% set navSection = 'books' %}
+{% set searchPath = path('core_book_list') %}
+
+{% block headPrefix %}{{ parent() }} book: http://ogp.me/ns/book#{% endblock %}
+
+{% block headOpenGraphMetas %}
+    {{ parent() }}
+    {% if book.isbn %}
+        <meta property="book:isbn" content="{{ book.isbn }}" />
+    {% endif %}
+    {% if book.subjects %}
+        {% for subject in book.subjects|split(',') %}
+            <meta property="book:tag" content="{{ subject }}" />
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block headOpenGraphArticleMetas %}{% endblock %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('book', null, '_default', {media: 'screen'}) }}
+{% endblock %}
+
+{% block bodyMetas %}{% endblock %}
+
+{% block bodyJavascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('book') }}
+    {{ encore_entry_script_tags('ladb_values') }}
+    <script>
+        $(document).ready(function() {
+
+            {# Setup Review Widget #}
+            $('.ladb-review-widget').ladbReviewWidget();
+
+        });
+    </script>
+{% endblock %}
+
+{% block bodyHeaderContainerContent %}
+    {% embed 'Common/Header/_entity-show-header.part.html.twig' %}
+        {% set headingClasses = book.identityRejected ? 'ladb-strikethrough' : null %}
+        {% block headingInner %}
+            {{ parent() }}{% if book.volume is not empty %}&nbsp;<small>({{ book.volume }})</small>{% endif %}
+        {% endblock %}
+        {% block subheadingInner %}
+            {% if book.publicDomain %}
+                <span data-tooltip="tooltip" title="{{ 'knowledge.book.field.public_domain'|trans() }}"><i class="ladb-icon-public-domain ladb-icon-lg"></i></span>
+            {% endif %}
+            {% if book.authors %}<span class="ladb-subblock">{{ 'default.of'|trans() }} {% for author in book.authors|split(',') %}<a href="{{ path('core_book_list') }}?q=@authors:%22{{ author }}%22">{{ author }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</span> {% endif %}
+            {% if book.editor %}<span class="ladb-subblock{% if book.authors %} ladb-horizontal-separator-left{% endif %}"><em>{{ book.editor }}</em></span>{% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBody %}
+    {% include 'Knowledge/_completion-panel.part.html.twig' %}
+    <div class="ladb-knowledge-showcase row">
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':book, 'wide':true, 'field':constant('FIELD_COVER', book), 'picture':book.cover, 'values':book.coverValues, 'pictureBoxClasses':(book.coverRejected ? 'ladb-box-barred' : null) } %}
+        {% include 'Knowledge/_field-show-showcase-picture.part.html.twig' with { 'knowledge':book, 'wide':true, 'field':constant('FIELD_BACK_COVER', book), 'picture':book.backCover, 'values':book.backCoverValues } %}
+    </div>
+    <div>
+        {% if searchableVolumeCount > 1 %}
+            <div class="ladb-metas">
+                <div class="ladb-meta">
+                    <span class="ladb-key"><i class="ladb-icon-info"></i> Cet ouvrage compte <a href="{{ path('core_book_list', { 'q':'@work:"'~book.work~'"'}) }}" rel="nofollow"><strong>{{ searchableVolumeCount }}</strong> {{ 'knowledge.book.choice.volumes'|transchoice(searchableVolumeCount) }}</a> référencés.</span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Ouvrage</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_IDENTITY', book), 'data':book.identity, 'values':book.identityValues, 'itemprop':'name' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_AUTHORS', book), 'data':book.authors, 'values':book.authorsValues, 'itemprop':'author' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_EDITOR', book), 'data':book.editor, 'values':book.editorValues, 'itemprop':'editor' } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Contenu</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUMMARY', book), 'data':book.summary, 'values':book.summaryValues, 'itemprop':'description' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_TOC', book), 'data':book.toc, 'values':book.TocValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_SUBJECTS', book), 'data':book.subjects, 'values':book.subjectsValues, 'itemprop':'keywords' } %}
+        </div>
+        <div class="ladb-metas">
+            <h4 class="ladb-heading">Détails</h4>
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_COLLECTION', book), 'data':book.collection, 'values':book.collectionValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_LANGUAGE', book), 'data':book.language, 'values':book.languageValues, 'itemprop':'inLanguage' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_TRANSLATED', book), 'data':book.translated, 'values':book.translatedValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PAGE_COUNT', book), 'data':book.pageCount, 'values':book.pageCountValues, 'itemprop':'numberOfPages' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_ISBN', book), 'data':book.isbn, 'values':book.isbnValues, 'itemprop':'isbn' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PUBLISH_YEAR', book), 'data':book.publishYear, 'values':book.publishYearValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PUBLIC_DOMAIN', book), 'data':book.publicDomain, 'values':book.publicDomainValues } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_CATALOG_LINK', book), 'data':book.catalogLink, 'values':book.catalogLinkValues, 'itemprop':'url' } %}
+            {% include 'Knowledge/_field-show-meta.part.html.twig' with { 'knowledge':book, 'field':constant('FIELD_PRICE', book), 'data':book.price, 'values':book.priceValues } %}
+        </div>
+        {% include 'Knowledge/_disclaimer-panel.part.html.twig' %}
+        {% if book.updatedAt > book.createdAt %}
+            {% include 'Common/_updated-age.part.html.twig' %}
+        {% endif %}
+        <div style="padding: 10px; text-align: center;">
+            {% include 'Core/Like/_widget.part.html.twig' with { 'likeContext':likeContext } %}
+        </div>
+        {% include 'Core/Review/_widget.part.html.twig' %}
+        {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.book.comment_alert' } %}
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block contentMetasPanel %}
+    <div class="ladb-metas">
+        {% include 'Core/Like/_meta-counter.part.html.twig' %}
+        {% include 'Core/View/_meta-counter.part.html.twig' %}
+        {% include 'Core/Comment/_meta-counter.part.html.twig' %}
+        <div class="ladb-meta">
+            <i class="ladb-icon-contributor ladb-icon-fixed-center"></i>
+            {% if book.contributorCount > 0 %}
+                <a href="{{ path('core_knowledge_contributors', { 'entityType':book.type, 'entityId':book.id }) }}">
+            {% endif %}
+                <strong>{{ book.contributorCount|number_format(0, ',', ' ') }}</strong>
+                <small>{{ 'user.choice.contributors'|transchoice(book.contributorCount) }}</small>
+            {% if book.contributorCount > 0 %}
+                </a>
+            {% endif %}
+        </div>
+        {% include 'Core/Vote/_meta-counter.part.html.twig' with { 'entity':book } %}
+        {% include 'Core/Review/_meta-counter.part.html.twig' with { 'entity':book } %}
+    </div>
+    <div class="ladb-metas">
+        <h4 class="ladb-heading">{{ 'default.links'|trans() }}</h4>
+        {% include 'Collection/Collection/_meta-counter.part.html.twig' %}
+    </div>
+{% endblock %}

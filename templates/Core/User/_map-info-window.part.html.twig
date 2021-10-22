@@ -1,0 +1,11 @@
+{% set user = localisable %}
+
+<div class="ladb-list-row" style="border: none;">
+    {% include 'Core/User/_avatar-link.part.html.twig' with { 'size':'64', 'linkClasses':'ladb-avatar' } %}
+    <div class="ladb-body">
+        <h3 class="ladb-heading">{% include 'Core/User/_displayname-link.part.html.twig' %}{% if user.isFullnameDisplayble %} <small>({{ user.fullname }})</small>{% endif %}</h3>
+        <span class="ladb-subheading">
+            {% include 'Core/User/_location-and-social.part.html.twig' %}
+        </span>
+    </div>
+</div>
