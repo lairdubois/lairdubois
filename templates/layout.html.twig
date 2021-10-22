@@ -88,7 +88,7 @@
                         <li><a href="{{ path('core_opencutlist_stats') }}"><i class="ladb-icon-statistics ladb-icon-fixed-center"></i> OpenCutList Stats</a></li>
                     {% endif %}
                     <li class="uk-nav-divider"></li>
-                    <li><a href="{{ path('fos_user_security_logout') }}"><i class="ladb-icon-off ladb-icon-fixed-center"></i> {{ 'user.logout'|trans() }}</a></li>
+                    <li><a href="{{ path('_security_logout') }}"><i class="ladb-icon-off ladb-icon-fixed-center"></i> {{ 'user.logout'|trans() }}</a></li>
                 </ul>
             </div>
         </div>
@@ -187,9 +187,8 @@
                         <div class="alert alert-info">
                             <p style="margin-top: 5px;"><strong>L'Air du Bois</strong> est une plateforme <a href="{{ path('core_about_credits') }}" class="alert-link">Open Source</a> de partage collaboratif ouverte à tous les amoureux du <strong>travail du bois</strong>. <small><a href="{{ path('core_faq_question_list') }}" class="alert-link">(En savoir plus)</a></small></p>
                             <p>
-{#                                TODO fix user urls#}
-{#                                <a href="{{ path('fos_user_registration_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>#}
-{#                                <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>#}
+                                <a href="{{ path('_security_register') }}" rel="nofollow" class="btn btn-sm btn-primary"><i class="ladb-icon-plus"></i> {{ 'user.register'|trans() }}</a>
+                                <a href="{{ path('core_smartlogin') }}" rel="nofollow" class="btn btn-sm btn-default"><i class="ladb-icon-lock"></i><span class="ladb-hidden-mobile"> {{ 'user.login'|trans() }}</span></a>
                             </p>
                         </div>
                     {% endif %}

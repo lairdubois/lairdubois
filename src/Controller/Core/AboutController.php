@@ -16,7 +16,7 @@ class AboutController extends AbstractController {
 	 * @Route("/", name="core_about")
 	 */
 	public function about() {
-		$response = $this->forward('App\Entity\Core/About/faq');
+		$response = $this->forward('App\Controller\Core\AboutController::faq');
 		return $response;
 	}
 

@@ -4,6 +4,7 @@ namespace App\Entity\Core;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -23,7 +24,7 @@ use App\Model\SitemapableTrait;
  * @LadbAssert\ValidUsername()
  * @LadbAssert\ValidDisplayname()
  */
-class User implements UserInterface, IndexableInterface, SitemapableInterface, LocalisableInterface {
+class User implements UserInterface, PasswordAuthenticatedUserInterface, IndexableInterface, SitemapableInterface, LocalisableInterface {
 
 	use IndexableTrait, SitemapableTrait, LocalisableTrait;
 
@@ -196,17 +197,17 @@ class User implements UserInterface, IndexableInterface, SitemapableInterface, L
 	/////
 
 	public function __construct() {
-        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->enabled = false;
-        $this->roles = array();
-		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
-	}
+                 $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+                 $this->enabled = false;
+                 $this->roles = array();
+         		$this->skills = new \Doctrine\Common\Collections\ArrayCollection();
+         	}
 
 	// ID /////
 
 	public function getId() {
-		return $this->id;
-	}
+         		return $this->id;
+         	}
 
     /**
      * @return string
@@ -283,7 +284,7 @@ class User implements UserInterface, IndexableInterface, SitemapableInterface, L
     /**
      * {@inheritdoc}
      */
-    public function getPassword() {
+    public function getPassword(): ?string {
         return $this->password;
     }
 
@@ -315,10 +316,6 @@ class User implements UserInterface, IndexableInterface, SitemapableInterface, L
      */
     public function getRoles() {
         $roles = $this->roles;
-
-        foreach ($this->getGroups() as $group) {
-            $roles = array_merge($roles, $group->getRoles());
-        }
 
         // we need to make sure to have at least one role
         $roles[] = static::ROLE_DEFAULT;

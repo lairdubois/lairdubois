@@ -367,7 +367,7 @@ class OfferController extends AbstractController {
 
 		$translator = $this->get('translator');
 
-		return $this->forward('App\Entity\Message/Thread:new', array(
+		return $this->forward('App\Controller\Message\ThreadController::new', array(
 			'recipientUsername' => $offer->getUser()->getUsernameCanonical(),
 			'subject'           => $translator->trans('offer.offer.contact.subject', array('%TITLE%' => $offer->getTitle())),
 			'message'           => $translator->trans('offer.offer.contact.body', array(
@@ -603,7 +603,7 @@ class OfferController extends AbstractController {
 			$draftCount = $this->getUser()->getMeta()->getPrivateOfferCount();
 
 			// Flashbag
-			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->trans('offer.offer.choice.draft_alert', array( 'count' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
+			$this->get('session')->getFlashBag()->add('info', '<i class="ladb-icon-warning"></i> '.$this->get('translator')->trans('offer.offer.choice.draft_alert', array( '%count%' => $draftCount )).' <small><a href="'.$draftPath.'" class="alert-link">('.$this->get('translator')->trans('default.show_my_drafts').')</a></small>');
 
 		}
 

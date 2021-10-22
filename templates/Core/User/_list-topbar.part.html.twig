@@ -32,6 +32,6 @@
             {% endif %}
         {% endif %}
     {% elseif not is_granted("ROLE_USER") %}
-        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'user.register'|trans() }}</span></a>
+        <a href="{{ path('_security_register') }}" class="btn btn-default"><i class="ladb-icon-plus"></i><span class="ladb-hidden-mobile"> {{ 'user.register'|trans() }}</span></a>
     {% endif %}
 {% endblock %}

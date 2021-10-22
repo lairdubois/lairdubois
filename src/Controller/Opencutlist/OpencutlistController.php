@@ -4,7 +4,6 @@ namespace App\Controller\Opencutlist;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -116,7 +115,7 @@ class OpencutlistController extends AbstractController {
 	/**
 	 * @Route("/stats", name="core_opencutlist_stats")
 	 * @Route("/stats/{page}", requirements={"page" = "\d+"}, name="core_opencutlist_stats_page")
-	 * @Template("Opencutlist:stats.html.twig")
+	 * @Template("Opencutlist/stats.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_OPENCUTLIST')", statusCode=404, message="Not allowed (core_opencutlist_stats)")
 	 */
 	public function stats(Request $request, $page = 0) {

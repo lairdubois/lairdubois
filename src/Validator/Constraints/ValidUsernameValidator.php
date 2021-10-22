@@ -119,7 +119,6 @@ class ValidUsernameValidator extends ConstraintValidator {
 	public function validate($value, Constraint $constraint) {
 		if ($value instanceof User) {
 
-
 			if (in_array($value->getUsernameCanonical(), self::UNAUTHORIZED_USERNAMES)) {
 				$this->context->buildViolation('Ce nom d\'utilisateur n\'est pas autorisé.')
 					->atPath('username')
@@ -144,9 +143,9 @@ class ValidUsernameValidator extends ConstraintValidator {
 			$userRepository = $this->om->getRepository(User::class);
 			$currentUser = $value->getId() ? $userRepository->findOneById($value->getId()) : null;
 
-			$user = $this->userManager->findUserByUsername($value->getUsername());
+			$user = $userRepository->findOneByUsername($value->getUsername());
 			if (is_null($user)) {
-				$user = $this->userManager->findUserByDisplayname($value->getUsername());
+				$user = $userRepository->findOneByDisplayname($value->getUsername());
 			}
 
 			$exists = !is_null($user) && is_null($currentUser) || !is_null($user) && !is_null($currentUser) && $user !== $currentUser;

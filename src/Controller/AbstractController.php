@@ -21,6 +21,7 @@ use App\Utils\KnowledgeUtils;
 use App\Utils\LikableUtils;
 use App\Utils\MaybeUtils;
 use App\Utils\MentionUtils;
+use App\Utils\PaginatorUtils;
 use App\Utils\PropertyUtils;
 use App\Utils\ReportableUtils;
 use App\Utils\ReviewableUtils;
@@ -64,6 +65,7 @@ abstract class AbstractController extends BaseController {
             LikableUtils::class => '?'.LikableUtils::class,
             MaybeUtils::class => '?'.MaybeUtils::class,
             MentionUtils::class => '?'.MentionUtils::class,
+            PaginatorUtils::class => '?'.PaginatorUtils::class,
             PropertyUtils::class => '?'.PropertyUtils::class,   
             QuestionManager::class => '?'.QuestionManager::class,
             ReportableUtils::class => '?'.ReportableUtils::class,

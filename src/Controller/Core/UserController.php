@@ -1730,21 +1730,21 @@ class UserController extends AbstractController {
 
 		$CrawlerDetect = new CrawlerDetect();
 		if ($CrawlerDetect->isCrawler() || $user->getIsTeam() && !is_null($user->getMeta()->getBiography()) && !empty($user->getMeta()->getBiography()->getHtmlBody())) {	 /* Return about page for Crawlers */
-			$forwardController = 'App/Entity/Core/User/showAbout';
+			$forwardController = 'App\Controller\Core\UserController::showAbout';
 		} else if ($user->getIsTeam()) {
-			$forwardController = 'App/Entity/Core/User/showMembers';
+			$forwardController = 'App\Controller\Core\UserController::showMembers';
 		} else if ($user->getMeta()->getPublicCreationCount() > 0) {
-			$forwardController = 'App/Entity/Core/User/showCreations';
+			$forwardController = 'App\Controller\Core\UserController::showCreations';
 		} else if ($user->getMeta()->getPublicPlanCount() > 0) {
-			$forwardController = 'App/Entity/Core/User/showPlans';
+			$forwardController = 'App\Controller\Core\UserController::showPlans';
 		} else if ($user->getMeta()->getPublicHowtoCount() > 0) {
-			$forwardController = 'App/Entity/Core/User/showHowtos';
+			$forwardController = 'App\Controller\Core\UserController::showHowtos';
 		} else if ($user->getMeta()->getPublicWorkshopCount() > 0) {
-			$forwardController = 'App/Entity/Core/User/showWorkshops';
+			$forwardController = 'App\Controller\Core\UserController::showWorkshops';
 		} else if ($user->getMeta()->getPublicFindCount() > 0) {
-			$forwardController = 'App/Entity/Core/User/showFinds';
+			$forwardController = 'App\Controller\Core\UserController::showFinds';
 		} else {
-			$forwardController = 'App/Entity/Core/User/showAbout';
+			$forwardController = 'App\Controller\Core\UserController::showAbout';
 		}
 
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {

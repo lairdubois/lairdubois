@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Core\User;
 use App\Entity\Core\UserWitness;
-use App\Fos\UserManager;
 
 trait UserControllerTrait {
 
 	protected function retrieveUserByUsername($username) {
-		$userManager = $this->get(UserManager::class);
+        $om = $this->getDoctrine()->getManager();
+        $userRepository = $om->getRepository(User::CLASS_NAME);
 
-		$user = $userManager->findUserByUsername($username);
+		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
 
 			// Try to load user witness
-			$om = $this->getDoctrine()->getManager();
 			$userWitnessRepository = $om->getRepository(UserWitness::class);
 			$userWitness = $userWitnessRepository->findOneByUsername($username);
 			if (is_null($userWitness) || is_null($userWitness->getUser())) {

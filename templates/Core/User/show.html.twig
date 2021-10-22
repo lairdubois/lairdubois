@@ -26,10 +26,7 @@
     {{ parent() }}
     {{ block('blueimpGalleryStylesheets') }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.css" media="screen" />
-    {% stylesheets filter='less,?yui_css'
-        '@LadbCoreBundle/Resources/assets/less/selectize/selectize.ladb.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-    {% endstylesheets %}
+    {{ encore_entry_link_tags('selectize') }}
 {% endblock %}
 
 {% block bodyJavascripts %}

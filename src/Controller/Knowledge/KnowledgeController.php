@@ -618,7 +618,7 @@ class KnowledgeController extends AbstractController {
 			throw $this->createNotFoundException('Unable to find Value entity (id='.$id.').');
 		}
 
-		return $this->forward('App\Entity\Knowledge/Knowledge/showField', array(
+		return $this->forward('App\Controller\Knowledge\KnowledgeController::showField', array(
 			'entityType'         => $value->getParentEntityType(),
 			'entityId'           => $value->getParentEntityId(),
 			'field'              => $value->getParentEntityField(),

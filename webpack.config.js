@@ -36,6 +36,7 @@ Encore
     .addEntry('leaflet', './assets/leaflet.js')
     .addEntry('tocify', './assets/tocify.js')
     .addEntry('barrating', './assets/barrating.js')
+    .addEntry('selectize', './assets/selectize.js')
 
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

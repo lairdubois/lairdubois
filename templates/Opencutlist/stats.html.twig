@@ -99,7 +99,7 @@
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}
-    {% include 'Opencutlist:_list-topbar.part.html.twig' %}
+    {% include 'Opencutlist/_list-topbar.part.html.twig' %}
 {% endblock %}
 
 {% block bodyContainerContent %}
@@ -115,16 +115,16 @@
             </div>
         </div>
         <div class="col-md-3 col-xs-12">
-            {% include 'Opencutlist:_country-panel.part.html.twig' with { 'title':'Upgrades', 'data':downloadsByCountry, 'totalCount':downloadsCount , 'color':'FD6586' } %}
+            {% include 'Opencutlist/_country-panel.part.html.twig' with { 'title':'Upgrades', 'data':downloadsByCountry, 'totalCount':downloadsCount , 'color':'FD6586' } %}
         </div>
         <div class="col-md-3 col-xs-12">
-            {% include 'Opencutlist:_country-panel.part.html.twig' with { 'title':'Manifests', 'data':manifestsByCountry, 'totalCount':manifestsCount, 'color':'3DA4E8' } %}
+            {% include 'Opencutlist/_country-panel.part.html.twig' with { 'title':'Manifests', 'data':manifestsByCountry, 'totalCount':manifestsCount, 'color':'3DA4E8' } %}
         </div>
         <div class="col-md-3 col-xs-12">
-            {% include 'Opencutlist:_country-panel.part.html.twig' with { 'title':'Tutorials', 'data':tutorialsByCountry, 'totalCount':tutorialsCount, 'color':'71D4A9' } %}
+            {% include 'Opencutlist/_country-panel.part.html.twig' with { 'title':'Tutorials', 'data':tutorialsByCountry, 'totalCount':tutorialsCount, 'color':'71D4A9' } %}
         </div>
         <div class="col-md-3 col-xs-12">
-            {% include 'Opencutlist:_country-panel.part.html.twig' with { 'title':'Docs', 'data':docsByCountry, 'totalCount':docsCount, 'color':'FED06E' } %}
+            {% include 'Opencutlist/_country-panel.part.html.twig' with { 'title':'Docs', 'data':docsByCountry, 'totalCount':docsCount, 'color':'FED06E' } %}
         </div>
     </div>
     {{ parent() }}
@@ -132,5 +132,5 @@
 
 {% block autopagerContainerInner %}
     <h2>{{ accesses.count }} requêtes</h2>
-    {% include 'Opencutlist:_list-n.part.html.twig' %}
+    {% include 'Opencutlist/_list-n.part.html.twig' %}
 {% endblock %}
