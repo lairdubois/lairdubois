@@ -19,7 +19,7 @@
             Aucune création n'est associée à ce processus.
         </div>
     {% else %}
-        {% embed 'Wonder/Creation:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Creation/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_workflow_creations_filter' %}
             {% set filterPathParameters = { 'id':workflow.id } %}
             {% block filterbarRightContent%}

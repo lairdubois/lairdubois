@@ -19,7 +19,7 @@
             Cette création n'a aucune inspiration
         </div>
     {% else %}
-        {% embed 'Wonder/Creation:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Creation/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_creation_inspirations_filter' %}
             {% set filterPathParameters = { 'id':creation.id } %}
             {% block filterbarRightContent%}

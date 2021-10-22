@@ -24,7 +24,7 @@ class NotificationController extends AbstractController {
 	 * @Route("/", name="core_notification_list")
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_notification_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_notification_list_filter_page")
-	 * @Template("Core/Notification:list-xhr.html.twig")
+	 * @Template("Core/Notification/list-xhr.html.twig")
 	 */
 	public function list(Request $request, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -71,7 +71,7 @@ class NotificationController extends AbstractController {
 		);
 
 		if ($page > 0) {
-			return $this->render('Core/Notification:list-n-xhr.html.twig', $parameters);
+			return $this->render('Core/Notification/list-n-xhr.html.twig', $parameters);
 		}
 
 		return $parameters;

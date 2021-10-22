@@ -268,8 +268,8 @@ EOT
 			);
 
 			$subject = $translator->transChoice('notification.choice.'.$activityStrippedName, count($notifications));
-			$body = $templating->render('Core/Notification:email-'.$activityStrippedName.'.txt.twig', $parameters);
-			$htmlBody = $templating->render('Core/Notification:email-'.$activityStrippedName.'.html.twig', $parameters);
+			$body = $templating->render('Core/Notification/email-'.$activityStrippedName.'.txt.twig', $parameters);
+			$htmlBody = $templating->render('Core/Notification/email-'.$activityStrippedName.'.html.twig', $parameters);
 
 			if ($verbose) {
 				$output->write('<info>--> Sending email to <fg=white>@'.$recipientUser->getDisplayname().'</fg=white> <fg=yellow>('.count($rows).' '.$activityStrippedName.')</fg=yellow>...</info>');

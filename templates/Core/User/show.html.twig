@@ -69,7 +69,7 @@
         <div class="ladb-header-tools">
             {% block headerToolsInner %}
                 {% if followerContext is not null and not isGrantedOwner %}
-                    {% include 'Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext } %}
+                    {% include 'Core/Follower/_widget.part.html.twig' with { 'followerContext':followerContext } %}
                 {% endif %}
                 {% if is_granted('ROLE_USER') and user.isTeam and user.meta.requestEnabled and not isGrantedOwner and invitation is null and request is null %}
                     <a class="btn btn-default" onclick="$('#member_request_modal').modal({ remote:'{{ path('core_member_request_new', { 'teamId':user.id }) }}'});" data-tooltip="tooltip" title="{{ 'team.member_request'|trans() }}"><i class="ladb-icon-request"></i><span{% if is_granted('ROLE_ADMIN') %} class="ladb-hidden-mobile"{% endif %}> {{ 'team.request'|trans() }}...</span></a>

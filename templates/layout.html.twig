@@ -175,7 +175,7 @@
         </div>
     </nav>
     {{ parent() }}
-    {% if is_granted("ROLE_USER") %}{% include 'Core/Notification:_modal.part.html.twig' %}{% endif %}
+    {% if is_granted("ROLE_USER") %}{% include 'Core/Notification/_modal.part.html.twig' %}{% endif %}
 {% endblock %}
 
 {% block bodyHeader %}

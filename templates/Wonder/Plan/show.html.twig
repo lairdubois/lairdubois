@@ -9,10 +9,7 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.planpage.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ encore_entry_script_tags('plan') }}
     <script>
         $(document).ready(function() {
             $('#container').ladbPlanPage({
@@ -80,7 +77,7 @@
     <div class="ladb-meta">
         <span class="pull-right">
             {% for kind in plan.kinds %}
-                {% include 'Core/Resource:_meta-kind-'~kind~'.part.html.twig' %}{% if not loop.last %}, {% endif %}
+                {% include 'Core/Resource/_meta-kind-'~kind~'.part.html.twig' %}{% if not loop.last %}, {% endif %}
             {% endfor %}
         </span>
         <span><i class="ladb-icon-info ladb-icon-fixed-center"></i>&nbsp;Format</span>

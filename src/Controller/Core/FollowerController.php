@@ -20,7 +20,7 @@ class FollowerController extends AbstractController {
 
 	/**
 	 * @Route("/{followingUserId}/create", requirements={"followingUserId" = "\d+"}, name="core_follower_create")
-	 * @Template("Core/Follower:create-xhr.html.twig")
+	 * @Template("Core/Follower/create-xhr.html.twig")
 	 */
 	public function create(Request $request, $followingUserId) {
 
@@ -82,7 +82,7 @@ class FollowerController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_follower_delete")
-	 * @Template("Core/Follower:delete-xhr.html.twig")
+	 * @Template("Core/Follower/delete-xhr.html.twig")
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

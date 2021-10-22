@@ -35,7 +35,7 @@ class WatchController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_watch_create")
-	 * @Template("Core/Watch:create-xhr.html.twig")
+	 * @Template("Core/Watch/create-xhr.html.twig")
 	 */
 	public function create(Request $request, $entityType, $entityId) {
 
@@ -72,7 +72,7 @@ class WatchController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_watch_delete")
-	 * @Template("Core/Watch:delete-xhr.html.twig")
+	 * @Template("Core/Watch/delete-xhr.html.twig")
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -115,7 +115,7 @@ class WatchController extends AbstractController {
 	/**
 	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_watch_list_byentity")
 	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_watch_list_byentity_page")
-	 * @Template("Core/Watch:list-byentity.html.twig")
+	 * @Template("Core/Watch/list-byentity.html.twig")
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -141,7 +141,7 @@ class WatchController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Watch:list-byentity-xhr.html.twig', $parameters);
+			return $this->render('Core/Watch/list-byentity-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 	}

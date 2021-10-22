@@ -19,7 +19,7 @@
             Aucune création n'est associée à ce pas à pas.
         </div>
     {% else %}
-        {% embed 'Wonder/Creation:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Creation/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_howto_creations_filter' %}
             {% set filterPathParameters = { 'id':howto.id } %}
             {% block filterbarRightContent%}

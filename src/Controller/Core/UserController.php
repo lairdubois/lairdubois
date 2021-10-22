@@ -857,7 +857,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Feedback:list-byuser-xhr.html.twig', $parameters);
+			return $this->render('Core/Feedback/list-byuser-xhr.html.twig', $parameters);
 		}
 
 		$followerUtils = $this->get(FollowerUtils::class);
@@ -1253,7 +1253,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Qa/Answer:list-byuser-xhr.html.twig', $parameters);
+			return $this->render('Qa/Answer/list-byuser-xhr.html.twig', $parameters);
 		}
 
 		$followerUtils = $this->get(FollowerUtils::class);
@@ -1477,7 +1477,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Follower:following-list-xhr.html.twig', $parameters);
+			return $this->render('Core/Follower/following-list-xhr.html.twig', $parameters);
 		}
 
 		$followerUtils = $this->get(FollowerUtils::class);
@@ -1525,7 +1525,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Follower:followers-list-xhr.html.twig', $parameters);
+			return $this->render('Core/Follower/followers-list-xhr.html.twig', $parameters);
 		}
 
 		$followerUtils = $this->get(FollowerUtils::class);
@@ -1702,7 +1702,7 @@ class UserController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Follower:teams-list-xhr.html.twig', $parameters);
+			return $this->render('Core/Follower/teams-list-xhr.html.twig', $parameters);
 		}
 
 		return $this->_fillCommonShowParameters($user, array_merge($parameters, array(

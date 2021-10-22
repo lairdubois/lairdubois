@@ -24,7 +24,7 @@ class YoutookController extends AbstractController {
 
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_youtook_create")
-	 * @Template("Extra/Youtook:create-xhr.html.twig")
+	 * @Template("Extra/Youtook/create-xhr.html.twig")
 	 */
 	public function create(Request $request) {
 
@@ -78,7 +78,7 @@ class YoutookController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_youtook_edit")
-	 * @Template("Extra/Youtook:edit.html.twig")
+	 * @Template("Extra/Youtook/edit.html.twig")
 	 */
 	public function edit($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -102,7 +102,7 @@ class YoutookController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_youtook_update")
-	 * @Template("Extra/Youtook:edit.html.twig")
+	 * @Template("Extra/Youtook/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -182,7 +182,7 @@ class YoutookController extends AbstractController {
 	 * @Route("/", name="core_youtook_list")
 	 * @Route("/{filter}", requirements={"filter" = "\w+"}, name="core_youtook_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_youtook_list_filter_page")
-	 * @Template("Extra/Youtook:list.html.twig")
+	 * @Template("Extra/Youtook/list.html.twig")
 	 */
 	public function list(Request $request, $filter = 'all', $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -207,7 +207,7 @@ class YoutookController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Extra/Youtook:list-xhr.html.twig', $parameters);
+			return $this->render('Extra/Youtook/list-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 	}
@@ -216,7 +216,7 @@ class YoutookController extends AbstractController {
 	 * @Route("/mes-tooks", name="core_youtook_user_list")
 	 * @Route("/mes-tooks/{filter}", requirements={"filter" = "\w+"}, name="core_youtook_user_list_filter")
 	 * @Route("/mes-tooks/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_youtook_user_list_filter_page")
-	 * @Template("Extra/Youtook:userList.html.twig")
+	 * @Template("Extra/Youtook/userList.html.twig")
 	 */
 	public function userList(Request $request, $filter = 'all', $page = 0) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -245,14 +245,14 @@ class YoutookController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Extra/Youtook:list-xhr.html.twig', $parameters);
+			return $this->render('Extra/Youtook/list-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 	}
 
 	/**
 	 * @Route("/{id}.html", name="core_youtook_show")
-	 * @Template("Extra/Youtook:show.html.twig")
+	 * @Template("Extra/Youtook/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

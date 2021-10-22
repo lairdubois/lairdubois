@@ -44,7 +44,7 @@
                 {% if watchContext is defined and watchContext is not null and permissionContext.isGrantedUser %}
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-header"><i class="ladb-icon-notifications"></i> {{ 'notification.nav'|trans }}</li>
-                    <li class="text-center">{% include 'Core/Watch:_widget.part.html.twig' with { 'watchContext':watchContext } %}</li>
+                    <li class="text-center">{% include 'Core/Watch/_widget.part.html.twig' with { 'watchContext':watchContext } %}</li>
                 {% endif %}
                 {% if permissionContext.isGrantedAdmin and authored %}
                     {% block adminItems %}

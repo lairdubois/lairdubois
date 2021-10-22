@@ -28,7 +28,7 @@
                     {% endblock %}
                 </span>
             {% endblock %}
-            {% if followerContext is defined and followerContext is not null and permissionContext is defined and not permissionContext.isGrantedOwner %}<span style="padding-left: 10px;" class="ladb-hidden-mobile">{% include 'Core/Follower:_widget.part.html.twig' with { 'followerContext':followerContext, 'tiny':true } %}</span>{% endif %}
+            {% if followerContext is defined and followerContext is not null and permissionContext is defined and not permissionContext.isGrantedOwner %}<span style="padding-left: 10px;" class="ladb-hidden-mobile">{% include 'Core/Follower/_widget.part.html.twig' with { 'followerContext':followerContext, 'tiny':true } %}</span>{% endif %}
         </div>
         {% block headerTools %}
             <div class="ladb-header-tools">

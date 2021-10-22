@@ -19,7 +19,7 @@
             Aucune création n'est associé à ce plan.
         </div>
     {% else %}
-        {% embed 'Wonder/Creation:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Creation/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_plan_creations_filter' %}
             {% set filterPathParameters = { 'id':plan.id } %}
             {% block filterbarRightContent%}

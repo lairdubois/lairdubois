@@ -4,7 +4,7 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {% include 'Core/Resource:_form-gallery-script.part.html.twig' with { 'fieldId':form.resources.vars.id, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources' } %}
+    {% include 'Core/Resource/_form-gallery-script.part.html.twig' with { 'fieldId':form.resources.vars.id, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources' } %}
     {% include 'Wonder/Plan/_form-gallery-script.part.html.twig' with { 'fieldId':form.inspirations.vars.id, 'maxPlanCount':4, 'excludedId':(plan is defined ? plan.id : null) } %}
     {% include 'Qa/Question/_form-gallery-script.part.html.twig' with { 'fieldId':form.questions.vars.id, 'maxQuestionCount':4 } %}
     {% include 'Knowledge/School/_form-gallery-script.part.html.twig' with { 'fieldId':form.schools.vars.id, 'maxSchoolCount':4 } %}
@@ -14,7 +14,7 @@
 {% block sidenav %}
     {{ parent() }}
     {% include 'Common/_form-sidenav-title.part.html.twig' %}
-    {% include 'Core/Resource:_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.files'|trans({'count': 2})|capitalize) } %}
+    {% include 'Core/Resource/_form-sidenav-gallery.part.html.twig' with { 'title':('default.choice.files'|trans({'count': 2})|capitalize) } %}
     {% include 'Core/Picture/_form-sidenav-gallery.part.html.twig' with { 'title':('default.showcase'|trans) } %}
     <li><a href="#3dwarehouse"><i class="ladb-icon-3d"></i> 3D Warehouse</a></li>
     <li><a href="#fusion360"><i class="ladb-icon-3d"></i> Fusion 360</a></li>
@@ -35,7 +35,7 @@
     </div>
     {{ parent() }}
     {% include 'Common/_form-section-title.part.html.twig' with { 'mandatory':true, 'help':('wonder.plan.form.help.title'|trans()) } %}
-    {% include 'Core/Resource:_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formResources':form.resources, 'resources':form.vars.data.resources, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources', 'title':('default.choice.files'|trans({'count': 2})|capitalize), 'help':('wonder.plan.form.help.resource'|trans()) } %}
+    {% include 'Core/Resource/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'formResources':form.resources, 'resources':form.vars.data.resources, 'maxResourceCount':form.vars.data.maxResourceCount, 'formSection':'resources', 'title':('default.choice.files'|trans({'count': 2})|capitalize), 'help':('wonder.plan.form.help.resource'|trans()) } %}
     {% embed 'Core/Picture/_form-section-gallery.part.html.twig' with { 'mandatory':true, 'sortable':true, 'title':('default.showcase'|trans), 'help':('wonder.plan.form.help.showcase'|trans()), 'hideTextOverlayWarning':true } %}
         {% block body %}
             {{ parent() }}

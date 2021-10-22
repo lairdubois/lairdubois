@@ -1,4 +1,4 @@
-{% extends 'Howto/Article:_form.html.twig' %}
+{% extends 'Howto/Article/_form.html.twig' %}
 
 {% set pageTitle = 'howto.article.edit'|trans() %}
 {% set formAction = path('core_howto_article_update', { 'id':article.id, 'rtu':rtu }) %}
@@ -18,7 +18,7 @@
 
 {% block sections %}
     {% if article.isDraft %}
-        {% include 'Howto/Article:_draft-alert.part.html.twig' %}
+        {% include 'Howto/Article/_draft-alert.part.html.twig' %}
     {% endif %}
     {{ parent() }}
 {% endblock %}

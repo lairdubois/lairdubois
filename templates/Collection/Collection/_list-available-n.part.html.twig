@@ -10,7 +10,7 @@
         <div class="ladb-collection-row">
             <div class="media">
                 <div class="media-left">
-                    {% include 'Collection/Entry:_widget.part.html.twig' with { 'entryContext':entryContexts[loop.index0], 'disabled':disabled } %}
+                    {% include 'Collection/Entry/_widget.part.html.twig' with { 'entryContext':entryContexts[loop.index0], 'disabled':disabled } %}
                 </div>
                 <div class="media-body">
                     <div style="font-size: 110%;">{% if disabled %}<del>{% endif %}{{ collection.title }}{% if disabled %}</del>{% endif %}</div>

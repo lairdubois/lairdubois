@@ -57,13 +57,13 @@
 {% endblock %}
 
 {% block contentBody %}
-    {% include 'Core/Feedback:_contains-panel.part.html.twig' %}
+    {% include 'Core/Feedback/_contains-panel.part.html.twig' %}
     {{ parent() }}
 {% endblock %}
 
 {% block baseMetas %}
     {{ parent() }}
-    {% include 'Core/Feedback:_meta-counter.part.html.twig' %}
+    {% include 'Core/Feedback/_meta-counter.part.html.twig' %}
 {% endblock %}
 
 {% block characteristicsMetas %}
@@ -153,5 +153,5 @@
 {% endblock %}
 
 {% block contentFeedbacks %}
-    {% include 'Core/Feedback:_widget.part.html.twig' %}
+    {% include 'Core/Feedback/_widget.part.html.twig' %}
 {% endblock %}

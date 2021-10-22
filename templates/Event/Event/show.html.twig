@@ -57,7 +57,7 @@
             </a>
         {% else %}
             <meta itemprop="eventStatus" content="http://schema.org/EventScheduled">
-            {% include 'Core/Feedback:_contains-panel.part.html.twig' %}
+            {% include 'Core/Feedback/_contains-panel.part.html.twig' %}
         {% endif %}
         {% if event.pictures is defined %}
             {% embed 'Common/_entity-showcase.part.html.twig' with { 'entity':event, 'pictures':event.pictures, 'alt':event.title, 'editable':(permissionContext.editable and permissionContext.isGrantedOwner) } %}
@@ -123,7 +123,7 @@
         {% endif %}
         {% if not event.isDraft and joinContext.isJoinable %}
             <div class="ladb-join-row">
-                {% include 'Core/Join:_widget.part.html.twig' %}
+                {% include 'Core/Join/_widget.part.html.twig' %}
             </div>
         {% endif %}
         <hr>
@@ -139,7 +139,7 @@
     {% if not permissionContext.isOwner %}
         {% include 'Common/_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% include 'Core/Feedback:_widget.part.html.twig' %}
+    {% include 'Core/Feedback/_widget.part.html.twig' %}
     {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true } %}
 {% endblock %}
 
@@ -148,8 +148,8 @@
         {% include 'Core/Like/_meta-counter.part.html.twig' %}
         {% include 'Core/View/_meta-counter.part.html.twig' %}
         {% include 'Core/Comment/_meta-counter.part.html.twig' %}
-        {% include 'Core/Join:_meta-counter.part.html.twig' %}
-        {% include 'Core/Feedback:_meta-counter.part.html.twig' %}
+        {% include 'Core/Join/_meta-counter.part.html.twig' %}
+        {% include 'Core/Feedback/_meta-counter.part.html.twig' %}
         {% if hasMap %}
             <div class="ladb-meta">
                 {% if hasMap %}

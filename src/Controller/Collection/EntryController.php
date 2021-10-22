@@ -20,7 +20,7 @@ class EntryController extends AbstractCollectionBasedController {
 
 	/**
 	 * @Route("/{id}/entry/{entityType}/{entityId}/create", requirements={"id" = "\d+", "entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_entry_create")
-	 * @Template("Collection/Entry:create-xhr.html.twig")
+	 * @Template("Collection/Entry/create-xhr.html.twig")
 	 */
 	public function create($id, $entityType, $entityId) {
 
@@ -51,7 +51,7 @@ class EntryController extends AbstractCollectionBasedController {
 
 	/**
 	 * @Route("/{id}/entry/{entityType}/{entityId}/delete", requirements={"id" = "\d+", "entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_entry_delete")
-	 * @Template("Collection/Entry:delete-xhr.html.twig")
+	 * @Template("Collection/Entry/delete-xhr.html.twig")
 	 */
 	public function delete($id, $entityType, $entityId) {
 		$om = $this->getDoctrine()->getManager();

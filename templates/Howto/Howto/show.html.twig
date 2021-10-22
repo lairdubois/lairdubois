@@ -110,7 +110,7 @@
 {% block bodyContainerContent %}
     {{ parent() }}
     {% if referral is defined and referral is not null and referral.displayRedirectionWarning %}
-        {% include 'Core/Referer:_referral-modal.part.html.twig' %}
+        {% include 'Core/Referer/_referral-modal.part.html.twig' %}
         <script>
             $(window).load(function() {
                 $("#referral_modal").modal('show');
@@ -203,8 +203,8 @@
                                             </div>
                                             <script>
                                                 $('#share_article_{{ article.id }}_modal').on('show.bs.modal', function (e) {
-                                                    $("#ladb_article_{{ article.id }}_sticker_bbcode textarea").val("{{ include('Howto/Article:_sticker.bbcode.twig')|escape('js') }}");
-                                                    $("#ladb_article_{{ article.id }}_sticker_html textarea").val("{{ include('Howto/Article:_sticker.html.twig')|escape('js') }}");
+                                                    $("#ladb_article_{{ article.id }}_sticker_bbcode textarea").val("{{ include('Howto/Article/_sticker.bbcode.twig')|escape('js') }}");
+                                                    $("#ladb_article_{{ article.id }}_sticker_html textarea").val("{{ include('Howto/Article/_sticker.html.twig')|escape('js') }}");
                                                 })
                                                 $('a[href="#ladb_article_{{ article.id }}_sticker_preview"]').on("shown.bs.tab", function (e) {
                                                     var img = $("#ladb_article_{{ article.id }}_sticker_preview img");
@@ -244,7 +244,7 @@
                         <h2>{{ article.title }}</h2>
                     </div>
                     {% if article.isDraft and not howto.isDraft %}
-                        {% include 'Howto/Article:_draft-alert.part.html.twig' %}
+                        {% include 'Howto/Article/_draft-alert.part.html.twig' %}
                     {% endif %}
                     <div class="ladb-body">
                         {% for block in article.bodyBlocks %}
@@ -332,7 +332,7 @@
             {% endembed %}
         {% endif %}
         {% if howto.referralCount > 0 %}
-            {% include 'Core/Referer:_widget.part.html.twig' with { 'referrals':howto.referrals } %}
+            {% include 'Core/Referer/_widget.part.html.twig' with { 'referrals':howto.referrals } %}
         {% endif %}
         {% if howto.id == 237 %} {# Workround to prevent OutOfMemory a a specific Howto #}
             <div class="panel panel-default ladb-margin-top">
@@ -345,7 +345,7 @@
 {% endblock %}
 
 {% block contentMetasPanel %}
-    {% include 'Core/Spotlight:_spotlight-meta.part.html.twig' %}
+    {% include 'Core/Resource/_spotlight-meta.part.html.twig' %}
     <div id="ladb_common_metas" class="ladb-metas">
         {% include 'Core/Like/_meta-counter.part.html.twig' %}
         {% include 'Core/View/_meta-counter.part.html.twig' %}

@@ -35,7 +35,7 @@ class AnswerController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/reponses/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
-	 * @Template("Qa/Answer:new-xhr.html.twig")
+	 * @Template("Qa/Answer/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -56,7 +56,7 @@ class AnswerController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/reponses/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_create")
-	 * @Template("Qa/Answer:new-xhr.html.twig")
+	 * @Template("Qa/Answer/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -130,7 +130,7 @@ class AnswerController extends AbstractController {
 			$commentableUtils = $this->get(CommentableUtils::class);
 			$votableUtils = $this->get(VotableUtils::class);
 
-			return $this->render('Qa/Answer:create-xhr.html.twig', array(
+			return $this->render('Qa/Answer/create-xhr.html.twig', array(
 				'question'       => $question,
 				'answer'         => $answer,
 				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),
@@ -146,7 +146,7 @@ class AnswerController extends AbstractController {
 
 	/**
 	 * @Route("/reponses/{id}/edit", requirements={"id" = "\d+"}, name="core_qa_answer_edit")
-	 * @Template("Qa/Answer:edit-xhr.html.twig")
+	 * @Template("Qa/Answer/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -174,7 +174,7 @@ class AnswerController extends AbstractController {
 
 	/**
 	 * @Route("/reponses/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_qa_answer_update")
-	 * @Template("Qa/Answer:edit-xhr.html.twig")
+	 * @Template("Qa/Answer/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -224,7 +224,7 @@ class AnswerController extends AbstractController {
 			$commentableUtils = $this->get(CommentableUtils::class);
 			$votableUtils = $this->get(VotableUtils::class);
 
-			return $this->render('Qa/Answer:update-xhr.html.twig', array(
+			return $this->render('Qa/Answer/update-xhr.html.twig', array(
 				'question'       => $answer->getQuestion(),
 				'answer'         => $answer,
 				'commentContext' => $commentableUtils->getCommentContext($answer, $this->getUser(), false),
@@ -335,7 +335,7 @@ class AnswerController extends AbstractController {
 	/**
 	 * @Route("/{id}/reponses", requirements={"id" = "\d+"}, name="core_qa_answer_list")
 	 * @Route("/{id}/reponses/{sorter}", requirements={"id" = "\d+", "sorter" = "[a-z-]+"}, name="core_qa_answer_list_sorter")
-	 * @Template("Qa/Answer:list-xhr.html.twig")
+	 * @Template("Qa/Answer/list-xhr.html.twig")
 	 */
 	public function list(Request $request, $id, $sorter = 'score') {
 		if (!$request->isXmlHttpRequest()) {

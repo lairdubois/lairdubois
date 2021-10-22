@@ -124,7 +124,7 @@
 {% block bodyContainerContent %}
     {{ parent() }}
     {% if referral is defined and referral is not null and referral.displayRedirectionWarning %}
-        {% include 'Core/Referer:_referral-modal.part.html.twig' %}
+        {% include 'Core/Referer/_referral-modal.part.html.twig' %}
         <script>
             $(window).load(function() {
                 $("#referral_modal").modal('show');
@@ -158,7 +158,7 @@
     {% endif %}
     {% block contentLinkedTo %}{% endblock %}
     {% if wonder.referralCount > 0 %}
-        {% include 'Core/Referer:_widget.part.html.twig' with { 'referrals':wonder.referrals } %}
+        {% include 'Core/Referer/_widget.part.html.twig' with { 'referrals':wonder.referrals } %}
     {% endif %}
     {% block contentFeedbacks %}{% endblock %}
     {% include 'Core/Comment/_widget.part.html.twig' with { 'commentContext':commentContext } %}

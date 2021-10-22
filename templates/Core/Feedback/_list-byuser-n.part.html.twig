@@ -4,7 +4,7 @@
 
 {% block subitems %}
     {% for feedback in item.feedbacks %}
-        {% embed 'Core/Feedback:_row.part.html.twig' with { 'classes':'ladb-user-groupby-item', 'noMinitools':true } %}
+        {% embed 'Core/Feedback/_row.part.html.twig' with { 'classes':'ladb-user-groupby-item', 'noMinitools':true } %}
             {% block minitools %}{% endblock %}
         {% endembed %}
     {% endfor %}

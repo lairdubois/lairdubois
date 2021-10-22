@@ -44,7 +44,7 @@ class JoinController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/create", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_join_create")
-	 * @Template("Core/Join:create-xhr.html.twig")
+	 * @Template("Core/Join/create-xhr.html.twig")
 	 */
 	public function create(Request $request, $entityType, $entityId) {
 
@@ -123,7 +123,7 @@ class JoinController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="core_join_delete")
-	 * @Template("Core/Join:delete-xhr.html.twig")
+	 * @Template("Core/Join/delete-xhr.html.twig")
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -179,7 +179,7 @@ class JoinController extends AbstractController {
 	/**
 	 * @Route("/{entityType}/{entityId}", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_join_list_byentity")
 	 * @Route("/{entityType}/{entityId}/{page}", requirements={"entityType" = "\d+", "entityId" = "\d+", "page" = "\d+"}, name="core_join_list_byentity_page")
-	 * @Template("Core/Join:list-byentity.html.twig")
+	 * @Template("Core/Join/list-byentity.html.twig")
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
@@ -205,7 +205,7 @@ class JoinController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Core/Join:list-byentity-xhr.html.twig', $parameters);
+			return $this->render('Core/Join/list-byentity-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 	}

@@ -5,12 +5,12 @@
 
 {% block items %}
     {% for notification in notifications %}
-        {% include 'Core/Notification:_row-'~notification.activity.strippedName~'.part.html.twig' %}
+        {% include 'Core/Notification/_row-'~notification.activity.strippedName~'.part.html.twig' %}
         {% if notification.isFolder %}
             <div id="ladb_notification_children_{{ notification.id }}" class="ladb-notification-children collapse">
                 <div class="ladb-notification-children-inner">
                     {% for child in notification.children %}
-                        {% include 'Core/Notification:_row-'~child.activity.strippedName~'.part.html.twig' with { 'notification':child } %}
+                        {% include 'Core/Notification/_row-'~child.activity.strippedName~'.part.html.twig' with { 'notification':child } %}
                     {% endfor %}
                 </div>
             </div>

@@ -9,6 +9,7 @@ use App\Utils\ActivityUtils;
 use App\Utils\BlockBodiedUtils;
 use App\Utils\CollectionnableUtils;
 use App\Utils\CommentableUtils;
+use App\Utils\EmbeddableUtils;
 use App\Utils\FeedbackableUtils;
 use App\Utils\FieldPreprocessorUtils;
 use App\Utils\GlobalUtils;
@@ -48,6 +49,7 @@ abstract class AbstractController extends BaseController {
             BlockBodiedUtils::class => '?'.BlockBodiedUtils::class,
             CollectionnableUtils::class => '?'.CollectionnableUtils::class,
             CommentableUtils::class => '?'.CommentableUtils::class,
+            EmbeddableUtils::class => '?'.EmbeddableUtils::class,
             FeedbackableUtils::class => '?'.FeedbackableUtils::class,
             FieldPreprocessorUtils::class => '?'.FieldPreprocessorUtils::class,
             GlobalUtils::class => '?'.GlobalUtils::class,

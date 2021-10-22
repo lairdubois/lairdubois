@@ -43,7 +43,7 @@ class FeedbackController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/new", requirements={"entityType" = "\d+", "entityId" = "\d+"}, name="core_feedback_new")
-	 * @Template("Core/Feedback:new-xhr.html.twig")
+	 * @Template("Core/Feedback/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $entityType, $entityId) {
 		if (!$request->isXmlHttpRequest()) {
@@ -67,7 +67,7 @@ class FeedbackController extends AbstractController {
 
 	/**
 	 * @Route("/{entityType}/{entityId}/create",requirements={"entityType" = "\d+", "entityId" = "\d+"}, methods={"POST"}, name="core_feedback_create")
-	 * @Template("Core/Feedback:new-xhr.html.twig")
+	 * @Template("Core/Feedback/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $entityType, $entityId) {
 		if (!$request->isXmlHttpRequest()) {
@@ -130,7 +130,7 @@ class FeedbackController extends AbstractController {
 
 			$feedbackableUtils = $this->get(FeedbackableUtils::class);
 
-			return $this->render('Core/Feedback:create-xhr.html.twig', array(
+			return $this->render('Core/Feedback/create-xhr.html.twig', array(
 				'entity'          => $entity,
 				'feedback'        => $feedback,
 				'feedbackContext' => $feedbackableUtils->getFeedbackContext($entity, false),
@@ -145,7 +145,7 @@ class FeedbackController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_feedback_edit")
-	 * @Template("Core/Feedback:edit-xhr.html.twig")
+	 * @Template("Core/Feedback/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -173,7 +173,7 @@ class FeedbackController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_feedback_update")
-	 * @Template("Core/Feedback:edit-xhr.html.twig")
+	 * @Template("Core/Feedback/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -221,7 +221,7 @@ class FeedbackController extends AbstractController {
 
 			$feedbackableUtils = $this->get(FeedbackableUtils::class);
 
-			return $this->render('Core/Feedback:update-xhr.html.twig', array(
+			return $this->render('Core/Feedback/update-xhr.html.twig', array(
 				'entity'          => $entity,
 				'feedback'        => $feedback,
 				'feedbackContext' => $feedbackableUtils->getFeedbackContext($entity, false),

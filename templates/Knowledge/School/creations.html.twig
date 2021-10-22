@@ -24,7 +24,7 @@
                 Liste des créations pour lesquelles leurs auteurs ont associé l'école <a href="{{ ladb_entity_url_action(school) }}">{{ school.title }}</a> pour les réaliser.
             </div>
         </div>
-        {% embed 'Wonder/Creation:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Creation/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_school_creations_filter' %}
             {% set filterPathParameters = { 'id':school.id } %}
             {% block filterbarRightContent%}

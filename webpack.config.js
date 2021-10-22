@@ -24,6 +24,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('book', './assets/book.js')
     .addEntry('event', './assets/event.js')
+    .addEntry('plan', './assets/plan.js')
     .addEntry('qa', './assets/qa.js')
     .addEntry('tool', './assets/tool.js')
     .addEntry('workflow', './assets/workflow.js')

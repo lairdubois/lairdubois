@@ -479,7 +479,7 @@ class CreationController extends AbstractController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Workflow/Workflow:list-xhr.html.twig', $parameters);
+			return $this->render('Workflow/Workflow/list-xhr.html.twig', $parameters);
 		}
 
 		return array_merge($parameters, array(

@@ -24,7 +24,7 @@
                 Liste des créations pour lesquelles leurs auteurs ont indiqué se fournir chez <a href="{{ ladb_entity_url_action(provider) }}">{{ provider.title }}</a> pour les réaliser.
             </div>
         </div>
-        {% embed 'Wonder/Creation:_list-filterbar.part.html.twig' %}
+        {% embed 'Wonder/Creation/_list-filterbar.part.html.twig' %}
             {% set filterPath = 'core_provider_creations_filter' %}
             {% set filterPathParameters = { 'id':provider.id } %}
             {% block filterbarRightContent%}

@@ -1,4 +1,4 @@
-{% extends 'Core/Notification:_email.txt.twig' %}
+{% extends 'Core/Notification/_email.txt.twig' %}
 
 {% block rowContent %}**{{ row.actorUser.displayname|raw }}** a commenté
 {% if row.childEntity is not null and row.childEntity.type >= 10 and row.childEntity.type < 100 %} {# Knowledge value #} %}

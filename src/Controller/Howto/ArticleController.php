@@ -39,7 +39,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/pas-a-pas/{id}/articles/new", requirements={"id" = "\d+"}, name="core_howto_article_new")
-	 * @Template("Howto/Article:new.html.twig")
+	 * @Template("Howto/Article/new.html.twig")
 	 */
 	public function new(Request $request, $id) {
 
@@ -59,7 +59,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/pas-a-pas/{id}/articles/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_create")
-	 * @Template("Howto/Article:new.html.twig")
+	 * @Template("Howto/Article/new.html.twig")
 	 */
 	public function create(Request $request, $id) {
 
@@ -160,7 +160,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/pas-a-pas/articles/{id}/edit", requirements={"id" = "\d+"}, name="core_howto_article_edit")
-	 * @Template("Howto/Article:edit.html.twig")
+	 * @Template("Howto/Article/edit.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 
@@ -186,7 +186,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/pas-a-pas/articles/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_howto_article_update")
-	 * @Template("Howto/Article:edit.html.twig")
+	 * @Template("Howto/Article/edit.html.twig")
 	 */
 	public function update(Request $request, $id) {
 
@@ -282,7 +282,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/pas-a-pas/articles/{id}/widget", requirements={"id" = "\d+"}, name="core_howto_article_widget")
-	 * @Template("Howto/Article:widget-xhr.html.twig")
+	 * @Template("Howto/Article/widget-xhr.html.twig")
 	 */
 	public function widget(Request $request, $id) {
 
@@ -354,7 +354,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 	/**
 	 * @Route("/pas-a-pas/articles/{id}.html", name="core_howto_article_show")
-	 * @Template("Howto/Article:show.html.twig")
+	 * @Template("Howto/Article/show.html.twig")
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

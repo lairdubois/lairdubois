@@ -38,10 +38,10 @@
     {% if notifications|length == 0 %}
         <p>Aucune notification pour le moment.</p>
     {% endif %}
-    {% include 'Core/Notification:_list-n.part.html.twig' %}
+    {% include 'Core/Notification/_list-n.part.html.twig' %}
     {{ block('autopagerScript') }}
 {% endblock %}
 
 {% block footerInner %}
-    {% include 'Core/Notification:_webpush-tip.part.html.twig' %}
+    {% include 'Core/Notification/_webpush-tip.part.html.twig' %}
 {% endblock %}

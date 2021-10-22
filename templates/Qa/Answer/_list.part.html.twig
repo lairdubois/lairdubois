@@ -4,6 +4,6 @@
 
 <div class="ladb-qa-question-answers">
     {% for answer in answers %}
-        {% include 'Qa/Answer:_row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
+        {% include 'Qa/Answer/_row.part.html.twig' with { 'voteContext':voteContexts[answer.id], 'commentContext':commentContexts[answer.id] } %}
     {% endfor %}
 </div>

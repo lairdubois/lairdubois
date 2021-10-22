@@ -287,7 +287,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/widget", requirements={"id" = "\d+"}, name="core_workflow_widget")
-	 * @Template("Workflow/Workflow:widget-xhr.html.twig")
+	 * @Template("Workflow/Workflow/widget-xhr.html.twig")
 	 */
 	public function widget($id) {
 
