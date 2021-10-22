@@ -3,7 +3,7 @@
 <br>
 <strong>{{ 'howto.article.list'|trans() }} :</strong>
 <ul>
-    {% for article in howto.articles if not article.isDraft %}
+    {% for article in howto.articles|filter(a => not a.isDraft) %}
         <li><a href="{{ ladb_entity_url_action(article) }}?referer=1">{{ article.title|raw|escape('html') }}</a></li>
     {% endfor %}
 </ul>

@@ -4,7 +4,6 @@ namespace App\Fos;
 
 use FOS\UserBundle\Model\UserInterface;
 use App\Entity\Core\User;
-use App\Utils\MailerUtils;
 
 class UserManager {
 
@@ -14,8 +13,7 @@ class UserManager {
 		return $this->findUserBy(array('displaynameCanonical' => $this->getCanonicalFieldsUpdater()->canonicalizeUsername($displayname)));
 	}
 
-    public function findUserByUsername($username)
-    {
+    public function findUserByUsername($username) {
         return null;
 	}
 

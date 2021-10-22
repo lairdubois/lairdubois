@@ -16,10 +16,7 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ encore_entry_script_tags('ladb_values') }}
 {% endblock %}
 
 {% block bodyHeaderContainerContent %}

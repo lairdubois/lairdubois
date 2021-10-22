@@ -60,21 +60,14 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    {% stylesheets filter='less,?yui_css'
-        '@LadbCoreBundle/Resources/assets/less/ladb/layout/school.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-    {% endstylesheets %}
+    {{ encore_entry_link_tags('school') }}
     {{ block('mapAreaStylesheets') }}
 {% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('ladb_values') }}
     {{ block('mapAreaJavascripts') }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.schoolpage.js'
-        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
     <script>
         $(document).ready(function() {
             $('#container').ladbSchoolPage({
@@ -132,7 +125,7 @@
         <hr class="ladb-divider">
         <div id="ladb_testimonial_list">
             {% include 'Knowledge/School/_testimonials-header.part.html.twig' %}
-            {% include 'Knowledge/School/Testimonial:_list.part.html.twig' with { 'testimonials':school.testimonials } %}
+            {% include 'Knowledge/School/Testimonial/_list.part.html.twig' with { 'testimonials':school.testimonials } %}
             {% include 'Knowledge/School/_testimonials-footer.part.html.twig' %}
         </div>
         {% include 'Core/Comment/_widget.part.html.twig' with { 'noMicrodata':true, 'activitiesHidden':(not is_granted('ROLE_USER')), 'alertTransKey':'knowledge.school.comment_alert' } %}

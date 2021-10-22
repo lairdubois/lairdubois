@@ -26,6 +26,7 @@ Encore
     .addEntry('event', './assets/event.js')
     .addEntry('plan', './assets/plan.js')
     .addEntry('qa', './assets/qa.js')
+    .addEntry('school', './assets/school.js')
     .addEntry('tool', './assets/tool.js')
     .addEntry('workflow', './assets/workflow.js')
     .addEntry('workflow_workspace', './assets/workflow_workspace.js')
@@ -33,6 +34,8 @@ Encore
     // Vendors entry points
     .addEntry('blueimp', './assets/blueimp.js')
     .addEntry('leaflet', './assets/leaflet.js')
+    .addEntry('tocify', './assets/tocify.js')
+    .addEntry('barrating', './assets/barrating.js')
 
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

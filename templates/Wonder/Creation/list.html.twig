@@ -60,7 +60,7 @@
 
 {% block bodyHeaderContainer %}
     {% if homepage and spotlightEntity is defined and spotlightEntity is not null %}
-{# TODO solve CLASS path       {% include constant('CLASS_NAME', spotlightEntity)~'/_spotlight.part.html.twig' with { 'entity':spotlightEntity } %}#}
+        {% include (constant('CLASS_NAME', spotlightEntity)|slice(11))~'/_spotlight.part.html.twig' with { 'entity':spotlightEntity } %}
     {% else %}
         {{ parent() }}
     {% endif %}

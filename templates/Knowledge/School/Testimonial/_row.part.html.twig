@@ -28,7 +28,7 @@
                     </div>
                     {% include 'Common/_author.part.html.twig' with { 'entity':testimonial, 'hideBy':true } %}
                     <div style="margin: 10px 0; color: #000; font-size: 110%;">
-                        {% include 'Knowledge/School/Testimonial:_period.part.html.twig' %}
+                        {% include 'Knowledge/School/Testimonial/_period.part.html.twig' %}
                         {% if testimonial.diploma %}
                             <span{% if testimonial.fromYear > 0 %} class="ladb-horizontal-separator-left"{% endif %} style="color: #888;">{{ testimonial.diploma }}</span>
                         {% endif %}

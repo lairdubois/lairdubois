@@ -17,7 +17,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 #RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 RUN pecl install apcu imagick memcached zip
-RUN docker-php-ext-install exif gd gmp opcache pdo pdo_mysql sockets zip pcntl
+RUN docker-php-ext-install exif gd gmp opcache pdo pdo_mysql sockets zip pcntl intl
 RUN docker-php-ext-enable apcu imagick memcached
 
 # Increase memory limit

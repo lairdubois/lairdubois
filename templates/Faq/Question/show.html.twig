@@ -13,20 +13,14 @@
 {% block headStylesheets %}
     {{ parent() }}
     {% if question.hasToc %}
-        {% stylesheets filter='?yui_css'
-            '@LadbCoreBundle/Resources/assets/css/jquery-tocify/jquery.tocify.css' %}
-            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-        {% endstylesheets %}
+        {{ encore_entry_link_tags('tocify') }}
     {% endif %}
 {% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
     {% if question.hasToc %}
-        {% javascripts filter='?closure'
-            '@LadbCoreBundle/Resources/assets/js/jquery-tocify/jquery.tocify.js' %}
-            <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+        {{ encore_entry_script_tags('tocify') }}
         <script>
             $(function() {
                 if ($(window).width() >= 768) {

@@ -2,6 +2,6 @@
 
 [b]{{ 'howto.article.list'|trans() }} :[/b]
 
-{% for article in howto.articles if not article.isDraft %}
+{% for article in howto.articles|filter(a => not a.isDraft) %}
  - [url={{ ladb_entity_url_action(article) }}?referer=1]{{ article.title }}[/url]
 {% endfor %}

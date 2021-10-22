@@ -54,18 +54,12 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    {% stylesheets filter='?yui_css'
-        '@LadbCoreBundle/Resources/assets/css/jquery-tocify/jquery.tocify.css' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-    {% endstylesheets %}
+    {{ encore_entry_link_tags('tocify') }}
 {% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/jquery-tocify/jquery.tocify.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ encore_entry_script_tags('tocify') }}
     <script>
         $(function() {
             if ($(window).width() >= 768) {
@@ -132,7 +126,7 @@
         {% if howto.articles.count > 1 %}
             <h4>{{ 'howto.article.list'|trans() }}</h4>
             <ul>
-                {% for article in howto.articles if not article.isDraft or article.isDraft and showDraft %}
+                {% for article in howto.articles|filter(a => not a.isDraft or a.isDraft and showDraft) %}
                     <li>
                         <a href="#{{ article.sluggedId }}">{{ article.title }}</a>
                         {% if article.bodyBlockVideoCount > 0 %}<i class="ladb-icon-video"></i>{% endif %}
@@ -154,7 +148,7 @@
     {% endblock %}
     <div id="ladb_tocable">
         <div id="ladb_articles">
-            {% for article in howto.articles if not article.isDraft or article.isDraft and showDraft %}
+            {% for article in howto.articles|filter(a => not a.isDraft or a.isDraft and showDraft) %}
                 <hr>
                 <a id="{{ article.sluggedId }}" class="ladb-offsetted-anchor"></a>
                 <div id="ladb_howto_article_{{ article.id }}" class="ladb-howto-article">
@@ -345,7 +339,7 @@
 {% endblock %}
 
 {% block contentMetasPanel %}
-    {% include 'Core/Resource/_spotlight-meta.part.html.twig' %}
+    {% include 'Core/Spotlight/_spotlight-meta.part.html.twig' %}
     <div id="ladb_common_metas" class="ladb-metas">
         {% include 'Core/Like/_meta-counter.part.html.twig' %}
         {% include 'Core/View/_meta-counter.part.html.twig' %}

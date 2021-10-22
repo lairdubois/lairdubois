@@ -24,5 +24,37 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connexion$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/rejoindre$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/media/cache/resolve/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/email/check$, role: ROLE_USER }
+        - { path: ^/email/confirm, role: ROLE_USER }
+
+        - { path: ^/@me$, role: ROLE_USER }
+        - { path: /parametres$, role: ROLE_USER }
+        - { path: ^/messagerie, role: ROLE_USER }
+        - { path: ^/notifications, role: ROLE_USER }
+        - { path: /mes-dons$, role: ROLE_USER }
+        - { path: /mes-tooks$, role: ROLE_USER }
+
+        - { path: /new$, role: ROLE_USER }
+        - { path: /create$, role: ROLE_USER }
+        - { path: /lock$, role: ROLE_USER }
+        - { path: /unlock$, role: ROLE_USER }
+        - { path: /publish$, role: ROLE_USER }
+        - { path: /unpublish$, role: ROLE_USER }
+        - { path: /update$, role: ROLE_USER }
+        - { path: /edit$, role: ROLE_USER }
+        - { path: /delete$, role: ROLE_USER }
+        - { path: /chown$, role: ROLE_USER }
+        - { path: /copy$, role: ROLE_USER }
+        - { path: /accept, role: ROLE_USER }
+        - { path: /upload$, role: ROLE_USER }
+
+        - { path: /internal/, role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: /internal/, role: ROLE_ADMIN }
+

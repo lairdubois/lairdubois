@@ -61,21 +61,15 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    {% stylesheets filter='less,?yui_css'
-        '@LadbCoreBundle/Resources/assets/less/jquery-barrating/ladb-stars.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
-    {% endstylesheets %}
+    {{ encore_entry_link_tags('barrating') }}
     {{ block('mapAreaStylesheets') }}
 {% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('barrating') }}
+    {{ encore_entry_script_tags('ladb_values') }}
     {{ block('mapAreaJavascripts') }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/jquery-barrating/jquery.barrating.js'
-        '@LadbCoreBundle/Resources/assets/js/ladb/ladb-values.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
     <script>
         $(document).ready(function() {
 
