@@ -57,6 +57,7 @@ class SecurityController extends AbstractController  {
             $user->setCreatedAt(new \DateTime());
             $user->setDisplayname($user->getUsername());
             $user->setDisplaynameCanonical(strtolower($user->getUsername()));
+            $user->setEnabled(true);
 
             $entityManager->persist($user);
             $entityManager->flush();

@@ -10,7 +10,8 @@ RUN apt-get update -y --fix-missing && apt-get install -y \
     libmagickwand-dev --no-install-recommends \
     libpng-dev \
     libzip-dev \
-    memcached
+    memcached \
+    unzip
 
 # Get composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

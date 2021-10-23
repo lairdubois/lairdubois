@@ -43,8 +43,7 @@ abstract class AbstractController extends BaseController {
 
 	const LOCK_TTL_CREATE_ACTION = 3;		// 3 seconds
 
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             'doctrine' => '?'.ManagerRegistry::class,
             'event_dispatcher' => '?'.EventDispatcherInterface::class,
