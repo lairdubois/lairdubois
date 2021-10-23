@@ -2,6 +2,7 @@
 /public/uploads
 /.idea/
 /bundles/
+/downloads
 /uploads
 !/uploads/empty*
 ###> symfony/framework-bundle ###
