@@ -27,6 +27,7 @@ Encore
     .addEntry('plan', './assets/plan.js')
     .addEntry('qa', './assets/qa.js')
     .addEntry('school', './assets/school.js')
+    .addEntry('settings', './assets/settings.js')
     .addEntry('tool', './assets/tool.js')
     .addEntry('workflow', './assets/workflow.js')
     .addEntry('workflow_workspace', './assets/workflow_workspace.js')

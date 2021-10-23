@@ -1,4 +1,4 @@
-{% extends 'Message:_layout.html.twig' %}
+{% extends 'Message/_layout.html.twig' %}
 
 {% use 'Common/Blocks/list-autopager.blocks.html.twig' %}
 
@@ -27,12 +27,12 @@
             'sent': { 'label':'Envoyées', 'path':path('core_message_mailbox_filter', { 'filter':'sent' }) },
         } %}
         {% block filterbarRightContent%}
-            <span class="ladb-heading">{{ threadCount }} {% transchoice threadCount %}[0,1]conversation|]1,Inf]conversations{% endtranschoice %}</span>
+            <span class="ladb-heading">{{ threadCount }} {{ '[0,1]conversation|]1,Inf]conversations'|transchoice(threadCount) }}</span>
         {% endblock %}
     {% endembed %}
     {{ block('autopagerContainer') }}
 {% endblock %}
 
 {% block autopagerContainerInner %}
-    {% include 'Message:_thread-list-n.part.html.twig' %}
+    {% include 'Message/_thread-list-n.part.html.twig' %}
 {% endblock %}

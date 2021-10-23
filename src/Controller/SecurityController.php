@@ -84,4 +84,12 @@ class SecurityController extends AbstractController  {
         throw new \LogicException('TODO fos_user_resetting_request.');
     }
 
+
+    /**
+     * @Route("/fos_user_change_password", name="fos_user_change_password")
+     */
+    public function fos_user_change_password() {
+        throw new \LogicException('TODO fos_user_change_password.');
+    }
+
 }

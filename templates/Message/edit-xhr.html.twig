@@ -4,7 +4,7 @@
 
 <div class="ladb-edit">
     <div class="ladb-body">
-        {% embed 'Message:_form.html.twig' with { 'action':path('core_message_update', { 'id':message.id }) } %}
+        {% embed 'Message/_form.html.twig' with { 'action':path('core_message_update', { 'id':message.id }) } %}
             {% block buttons %}
                 <a href="#" class="btn btn-default ladb-message-cancel-edit">{{ 'default.cancel'|trans() }}</a>
                 {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()), 'classes':'btn-primary' } %}

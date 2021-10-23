@@ -1,4 +1,4 @@
-{% extends 'Message:_layout.html.twig' %}
+{% extends 'Message/_layout.html.twig' %}
 
 {% set bodyContainerClasses = 'ladb-margin-top' %}
 {% set tab = 'new_thread' %}
@@ -107,7 +107,7 @@
                             }
                         </script>
                     </div>
-                    {% include alertTemplate|default('Message:_alert-new-thread.part.html.twig') %}
+                    {% include alertTemplate|default('Message/_alert-new-thread.part.html.twig') %}
                     {% include 'Common/_form-btn-loading.part.html.twig' with { 'text':('default.send'|trans()) } %}
                 {{ form_end(form) }}
             </div>

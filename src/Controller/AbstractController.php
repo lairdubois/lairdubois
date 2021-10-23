@@ -19,6 +19,7 @@ use App\Utils\GlobalUtils;
 use App\Utils\JoinableUtils;
 use App\Utils\KnowledgeUtils;
 use App\Utils\LikableUtils;
+use App\Utils\LocalisableUtils;
 use App\Utils\MaybeUtils;
 use App\Utils\MentionUtils;
 use App\Utils\PaginatorUtils;
@@ -61,6 +62,7 @@ abstract class AbstractController extends BaseController {
             GlobalUtils::class => '?'.GlobalUtils::class,
             JoinableUtils::class => '?'.JoinableUtils::class,
             KnowledgeUtils::class => '?'.KnowledgeUtils::class,
+            LocalisableUtils::class => '?'.LocalisableUtils::class,
             LikableUtils::class => '?'.LikableUtils::class,
             MaybeUtils::class => '?'.MaybeUtils::class,
             MentionUtils::class => '?'.MentionUtils::class,

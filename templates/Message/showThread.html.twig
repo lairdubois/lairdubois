@@ -1,4 +1,4 @@
-{% extends 'Message:_layout.html.twig' %}
+{% extends 'Message/_layout.html.twig' %}
 
 {% use 'Common/Blocks/blueimp-gallery-widget.blocks.html.twig' %}
 
@@ -60,7 +60,7 @@
         </div>
         <div class="ladb-messages">
             {% for message in thread.messages %}
-                {% include 'Message:_row.part.html.twig' %}
+                {% include 'Message/_row.part.html.twig' %}
             {% endfor %}
             {% if not thread.announcement %}
                 <div class="ladb-message-row ladb-message-mine">

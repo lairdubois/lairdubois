@@ -10,18 +10,15 @@
     {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'formSection':'banner', 'fieldId':form.meta.banner.vars.id, 'maxPictureCount':1 } %}
     {% include 'Common/_form-token-script.part.html.twig' with { 'fieldId':form.meta.skills.vars.id, 'help':('skill.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_skills_json')|raw) } %}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.settingspage.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ encore_entry_script_tags('settings') }}
     <script>
         $(document).ready(function() {
             $('#container').ladbSettingsPage({
                 accountTypeFormFieldId: '{{ form.accountType.vars.id }}',
                 accountTypeBrandValue: '{{ constant('App\\Entity\\Core\\User::ACCOUNT_TYPE_BRAND') }}',
                 swPath: '{{ asset('bundles/ladbcore/ladb/js/ladb-webpush-sw.js') }}',
-                serverKey: '{{ bentools_pusher.server_key | e('js') }}',
-                subscriptionUrl: '{{ path('bentools_webpush.subscription') }}'
+                {# TODO serverKey: '{{ bentools_pusher.server_key | e('js') }}', #}
+                {# TODO subscriptionUrl: '{{ path('bentools_webpush.subscription') }}' #}
             });
         });
     </script>

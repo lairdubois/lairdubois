@@ -25,7 +25,7 @@ class ThreadController extends AbstractThreadController {
 	/**
 	 * @Route("/thread/new", name="core_message_thread_new", defaults={"recipientUsername" = null, "announcement" = false})
 	 * @Route("/thread/to/{recipientUsername}/new", requirements={"recipientUsername" = "[a-zA-Z0-9]+"}, name="core_message_thread_new_recipientusername", defaults={"announcement" = false})
-	 * @Template("Message:newThread.html.twig")
+	 * @Template("Message/newThread.html.twig")
 	 */
 	public function new($recipientUsername, $subject = null, $message = null, $alertTemplate =  null) {
 		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
@@ -61,7 +61,7 @@ class ThreadController extends AbstractThreadController {
 
 	/**
 	 * @Route("/thread/create", methods={"POST"}, name="core_message_thread_create")
-	 * @Template("Message:newThread.html.twig")
+	 * @Template("Message/newThread.html.twig")
 	 */
 	public function create(Request $request) {
 		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
@@ -122,7 +122,7 @@ class ThreadController extends AbstractThreadController {
 
 	/**
 	 * @Route("/thread/{id}/delete", requirements={"id" = "\d+"}, name="core_message_thread_delete")
-	 * @Template("Message:deleteThread.html.twig")
+	 * @Template("Message/deleteThread.html.twig")
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
@@ -155,7 +155,7 @@ class ThreadController extends AbstractThreadController {
 
 	/**
 	 * @Route("/thread/{id}", requirements={"id" = "\d+"}, name="core_message_thread_show")
-	 * @Template("Message:showThread.html.twig")
+	 * @Template("Message/showThread.html.twig")
 	 */
 	public function show($id) {
 
@@ -214,7 +214,7 @@ class ThreadController extends AbstractThreadController {
 	 * @Route("/", name="core_message_mailbox")
 	 * @Route("/{filter}", requirements={"filter" = "\w+"}, name="core_message_mailbox_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "\w+", "page" = "\d+"}, name="core_message_mailbox_filter_page")
-	 * @Template("Message:mailbox.html.twig")
+	 * @Template("Message/mailbox.html.twig")
 	 */
 	public function mailbox(Request $request, $filter = 'all', $page = 0) {
 		$om = $this->getDoctrine()->getManager();
