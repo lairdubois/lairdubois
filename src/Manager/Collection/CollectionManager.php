@@ -13,10 +13,6 @@ use App\Utils\TypableUtils;
 
 class CollectionManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.collection_collection_manager';
-
-	/////
-
 	public function publish(Collection $collection, $flush = true) {
 
 		$collection->getUser()->getMeta()->incrementPrivateCollectionCount(-1);

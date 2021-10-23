@@ -4,18 +4,15 @@ namespace App\Controller\Event;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
-use App\Entity\Core\Member;
 use App\Utils\CollectionnableUtils;
 use App\Utils\FeedbackableUtils;
 use App\Utils\LocalisableUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Form\Type\Event\EventType;
 use App\Entity\Event\Event;
-use App\Entity\Event\Content\Gallery;
 use App\Model\LocalisableInterface;
 use App\Utils\LikableUtils;
 use App\Utils\WatchableUtils;
@@ -23,7 +20,6 @@ use App\Utils\CommentableUtils;
 use App\Utils\FollowerUtils;
 use App\Utils\TagUtils;
 use App\Utils\FieldPreprocessorUtils;
-use App\Utils\PicturedUtils;
 use App\Utils\SearchUtils;
 use App\Utils\ExplorableUtils;
 use App\Event\PublicationEvent;
@@ -33,7 +29,6 @@ use App\Manager\Event\EventManager;
 use App\Manager\Core\WitnessManager;
 use App\Model\HiddableInterface;
 use App\Utils\BlockBodiedUtils;
-use App\Utils\EventUtils;
 use App\Utils\JoinableUtils;
 
 /**

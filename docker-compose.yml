@@ -36,7 +36,7 @@ services:
   elasticsearch:
     image: elasticsearch:7.14.2
     environment:
-      - cluster.name=docker-cluster
+      - cluster.name=lairdubois
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"

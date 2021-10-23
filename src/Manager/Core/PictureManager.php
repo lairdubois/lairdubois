@@ -7,10 +7,6 @@ use App\Entity\Core\Picture;
 
 class PictureManager extends AbstractManager {
 
-	const NAME = 'ladb_core.core_picture_manager';
-
-	/////
-
 	public function createEmpty($fileExtension = 'jpg', $persist = true) {
 
 		$picture = new Picture();

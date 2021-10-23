@@ -7,14 +7,13 @@ use App\Manager\Knowledge\School\TestimonialManager;
 
 class SchoolManager extends AbstractKnowledgeManager {
 
-	const NAME = 'ladb_core.knowledge_school_manager';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            TestimonialManager::class => '?'.TestimonialManager::class,
+            '?'.TestimonialManager::class,
         ));
     }
+
+    /////
 
 	public function delete(School $school, $withWitness = true, $flush = true) {
 

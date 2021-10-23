@@ -19,10 +19,6 @@ use App\Utils\WatchableUtils;
 
 class OfferManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.offer_offer_manager';
-
-	/////
-
 	public function publish(Offer $offer, $flush = true) {
 
 		$offer->getUser()->getMeta()->incrementPrivateOfferCount(-1);

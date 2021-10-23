@@ -4,10 +4,6 @@ namespace App\Utils;
 
 class OpenGraphUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.open_graph_utils';
-
-	/////
-
 	public function scrape($openGraphId) {
 
 		$appId = $this->getParameter('facebook_app_id');

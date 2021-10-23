@@ -8,14 +8,13 @@ use App\Utils\ActivityUtils;
 
 class MemberRequestManager extends AbstractManager {
 
-	const NAME = 'ladb_core.core_member_request_manager';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            ActivityUtils::class => '?'.ActivityUtils::class,
+            '?'.ActivityUtils::class,
         ));
     }
+
+    /////
 
 	public function create(\App\Entity\Core\User $team, \App\Entity\Core\User $sender, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

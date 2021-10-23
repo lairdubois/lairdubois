@@ -7,8 +7,6 @@ use App\Utils\ReviewableUtils;
 
 class ProviderManager extends AbstractKnowledgeManager {
 
-	const NAME = 'ladb_core.knowledge_provider_manager';
-
 	public function delete(Provider $provider, $withWitness = true, $flush = true) {
 
 		// Unlink creations

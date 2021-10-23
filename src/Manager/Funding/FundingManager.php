@@ -11,10 +11,6 @@ use App\Utils\JoinableUtils;
 
 class FundingManager extends AbstractManager {
 
-	const NAME = 'ladb_core.funding_funding_manager';
-
-	/////
-
 	public function getOrCreateCurrent() {
 		$om = $this->getDoctrine()->getManager();
 		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);

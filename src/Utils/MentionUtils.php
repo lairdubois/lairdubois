@@ -10,10 +10,6 @@ use App\Model\MentionSourceInterface;
 
 class MentionUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.mention_utils';
-
-	/////
-
 	public function deleteMentions(MentionSourceInterface $entity, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$mentionRepository = $om->getRepository(Mention::CLASS_NAME);

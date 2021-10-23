@@ -8,14 +8,13 @@ use App\Utils\ActivityUtils;
 
 class MemberInvitationManager extends AbstractManager {
 
-	const NAME = 'ladb_core.core_member_invitation_manager';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            ActivityUtils::class => '?'.ActivityUtils::class,
+            '?'.ActivityUtils::class,
         ));
     }
+
+    /////
 
 	public function create(\App\Entity\Core\User $team, \App\Entity\Core\User $sender, \App\Entity\Core\User $recipient, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

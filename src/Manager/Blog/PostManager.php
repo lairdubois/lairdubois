@@ -7,10 +7,6 @@ use App\Manager\AbstractPublicationManager;
 
 class PostManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.blog_post_manager';
-
-	/////
-
 	public function publish(Post $post, $flush = true) {
 		parent::publishPublication($post, $flush);
 	}

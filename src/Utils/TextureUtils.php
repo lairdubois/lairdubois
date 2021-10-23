@@ -13,10 +13,6 @@ use App\Entity\Knowledge\Value\Picture;
 
 class TextureUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.texture_utils';
-
-	/////
-
 	public function createTexture(Wood $wood, Picture $value, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 

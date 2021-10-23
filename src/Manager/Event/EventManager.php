@@ -10,10 +10,6 @@ use App\Utils\JoinableUtils;
 
 class EventManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.event_event_manager';
-
-	/////
-
 	public function publish(Event $event, $flush = true) {
 
 		$event->getUser()->getMeta()->incrementPrivateEventCount(-1);

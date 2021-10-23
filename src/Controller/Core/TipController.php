@@ -3,16 +3,13 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Manager\Core\WitnessManager;
 use App\Manager\Core\TipManager;
-use App\Model\HiddableInterface;
 use App\Entity\Core\Tip;
 use App\Form\Type\Core\TipType;
 use App\Utils\SearchUtils;

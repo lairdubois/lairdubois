@@ -3,18 +3,16 @@
 namespace App\Utils;
 
 use App\Entity\Core\Resource;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Entity\Wonder\Plan;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 class PlanUtils {
-
-	const NAME = 'ladb_core.plan_utils';
 
 	protected $templating;
 	protected $router;
 
-	public function __construct($templating, Router $router) {
+	public function __construct(Environment $templating, RouterInterface $router) {
 		$this->templating = $templating;
 		$this->router = $router;
 	}
@@ -83,7 +81,7 @@ class PlanUtils {
 	}
 
 	public function getZipAbsolutePath(Plan $plan) {
-		$downloadAbsolutePath = __DIR__ . '/../../../../downloads/';
+		$downloadAbsolutePath = __DIR__ . '/../../downloads/';
 		return $downloadAbsolutePath.'plan_'.$plan->getId().'.zip';
 	}
 

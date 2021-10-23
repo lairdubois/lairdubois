@@ -20,10 +20,6 @@ use App\Model\PicturedInterface;
 
 class StripableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.stripable_utils';
-
-	/////
-
 	public function generateStrip(StripableInterface $stripable) {
 
 		$pictureCount = 0;
@@ -88,12 +84,12 @@ class StripableUtils extends AbstractContainerAwareUtils {
 
 		$x = $footerPadding;
 		if ($stripable instanceof AuthoredInterface) {
-			$footerUserFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Bold.ttf', 10, $palette->color('333', 100));
+			$footerUserFont = new Font(__DIR__.'/../../assets/private/fonts/OpenSans-Bold.ttf', 10, $palette->color('333', 100));
 			$footerUserText = '@'.$stripable->getUser()->getDisplayName();
 			$stripImage->draw()->text($footerUserText, $footerUserFont, new Point($x, $stripSize->getHeight() - $footerHeight + ($footerHeight - $footerUserFont->box($footerUserText)->getHeight()) / 2));
 			$x += $footerUserFont->box($footerUserText)->getWidth();
 		}
-		$footerUrlFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Regular.ttf', 10, $palette->color('555', 100));
+		$footerUrlFont = new Font(__DIR__.'/../../assets/private/fonts/OpenSans-Regular.ttf', 10, $palette->color('555', 100));
 		$footerUrlText = ($stripable instanceof AuthoredInterface ? ' | ' : '').'www.lairdubois.fr';
 		$stripImage->draw()->text($footerUrlText, $footerUrlFont, new Point($x, $stripSize->getHeight() - $footerHeight + ($footerHeight - $footerUrlFont->box($footerUrlText)->getHeight()) / 2));
 

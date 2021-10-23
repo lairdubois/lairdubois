@@ -20,10 +20,6 @@ use App\Utils\WatchableUtils;
 
 class WorkshopManager extends AbstractWonderManager {
 
-	const NAME = 'ladb_core.wonder_workshop_manager';
-
-	/////
-
 	public function publish(Workshop $workshop, $flush = true) {
 
 		$workshop->getUser()->getMeta()->incrementPrivateWorkshopCount(-1);

@@ -4,12 +4,10 @@ namespace App\Controller\Message;
 
 use App\Entity\Message\MessageMeta;
 use App\Fos\UserManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\Entity\Core\Member;
-use App\Utils\WebpushNotificationUtils;
 use App\Entity\Message\Thread;
 use App\Utils\PaginatorUtils;
 use App\Utils\MessageUtils;

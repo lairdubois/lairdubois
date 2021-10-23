@@ -4,10 +4,6 @@ namespace App\Utils;
 
 class ElasticaQueryUtils {
 
-	const NAME = 'ladb_core.elastica_query_utils';
-
-	/////
-
 	public function createShouldMatchPhraseQuery($field, $values) {
 		$subQueries = explode(',', $values);
 		$filter = new \Elastica\Query\BoolQuery();

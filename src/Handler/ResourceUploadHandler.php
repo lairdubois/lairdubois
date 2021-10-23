@@ -2,6 +2,8 @@
 
 namespace App\Handler;
 
+use App\Utils\GlobalUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Manager\Core\PictureManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -13,12 +15,12 @@ class ResourceUploadHandler extends BaseUploadHandler {
 	const NAME = 'ladb_core.resource_upload_handler';
 
 	private $om;
-	private $tokenStorage;
+	private $globalUtils;
 	private $pictureManager;
 
-	function __construct(ManagerRegistry $om, TokenStorage $tokenStorage, PictureManager $pictureManager) {
+	function __construct(EntityManagerInterface $om, GlobalUtils $globalUtils, PictureManager $pictureManager) {
 		$this->om = $om;
-		$this->tokenStorage = $tokenStorage;
+		$this->globalUtils = $globalUtils;
 		$this->pictureManager = $pictureManager;
 	}
 
@@ -41,7 +43,7 @@ class ResourceUploadHandler extends BaseUploadHandler {
 		);
 		if (empty($file->error)) {
 
-			$user = $this->tokenStorage->getToken()->getUser();
+			$user = $this->globalUtils->getUser();
 			$fileAbsolutePath = $this->options['upload_dir'].$file->name;
 			$fileExtension = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
 			$resourcePath = sha1(uniqid(mt_rand(), true)).'.'.$fileExtension;

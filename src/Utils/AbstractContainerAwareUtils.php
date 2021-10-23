@@ -15,10 +15,12 @@ use Twig\Environment;
 abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface {
 
 	protected $container;
-	protected $twig;
 
-    public static function getSubscribedServices()
-    {
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
+    }
+
+    public static function getSubscribedServices() {
         return array(
             'doctrine' => '?'.ManagerRegistry::class,
             'parameter_bag' => '?'.ParameterBagInterface::class,
@@ -26,14 +28,9 @@ abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface
             'request_stack' => '?'.RequestStack::class,
             'router' => '?'.RouterInterface::class,
             'templating' => '?'.Environment::class,
-            PaginatorUtils::class => '?'.PaginatorUtils::class,
-            PictureManager::class => '?'.PictureManager::class,
-            GlobalUtils::class => '?'.GlobalUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.GlobalUtils::class,
         );
-    }
-
-    public function __construct(ContainerInterface $container) {
-		$this->container = $container;
     }
 
 	/////

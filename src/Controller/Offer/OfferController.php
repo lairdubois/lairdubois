@@ -6,15 +6,12 @@ use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
 use App\Utils\CollectionnableUtils;
 use App\Utils\LocalisableUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Form\Type\Offer\OfferType;
 use App\Entity\Offer\Offer;
-use App\Entity\Offer\Content\Gallery;
-use App\Model\LocalisableInterface;
 use App\Utils\LikableUtils;
 use App\Utils\WatchableUtils;
 use App\Utils\CommentableUtils;
@@ -31,8 +28,6 @@ use App\Manager\Offer\OfferManager;
 use App\Manager\Core\WitnessManager;
 use App\Model\HiddableInterface;
 use App\Utils\BlockBodiedUtils;
-use App\Utils\OfferUtils;
-use App\Utils\JoinableUtils;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**

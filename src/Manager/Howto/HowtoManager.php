@@ -9,10 +9,6 @@ use App\Manager\Core\WitnessManager;
 
 class HowtoManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.howto_howto_manager';
-
-	/////
-
 	public function publish(Howto $howto, $flush = true) {
 
 		$howto->getUser()->getMeta()->incrementPrivateHowtoCount(-1);

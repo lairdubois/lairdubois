@@ -2,9 +2,7 @@
 
 namespace App\Controller\Wonder;
 
-use App\Controller\CustomOwnerControllerTrait;
 use App\Controller\PublicationControllerTrait;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,7 +46,15 @@ class PlanController extends AbstractController {
 
 	use PublicationControllerTrait;
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PlanUtils::class,
+            '?'.PicturedUtils::class,
+            '?'.StripableUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/new", name="core_plan_new")
 	 * @Template("Wonder/Plan/new.html.twig")
 	 */

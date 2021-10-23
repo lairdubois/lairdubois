@@ -8,10 +8,6 @@ use App\Manager\AbstractAuthoredPublicationManager;
 
 class GraphicManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.promotion_graphic_manager';
-
-	/////
-
 	public function publish(Graphic $graphic, $flush = true) {
 
 		$graphic->getUser()->getMeta()->incrementPrivateGraphicCount(-1);

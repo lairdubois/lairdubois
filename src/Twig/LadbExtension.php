@@ -24,15 +24,14 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 		$this->container = $container;
 	}
 
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array(
             'router' => '?'.RouterInterface::class,
             'translator' => '?'.TranslatorInterface::class,
-            UserManager::class => '?'.UserManager::class,
-            UrlUtils::class => '?'.UrlUtils::class,
-            TypableUtils::class => '?'.TypableUtils::class,
-            VideoHostingUtils::class => '?'.VideoHostingUtils::class,
+            '?'.UserManager::class,
+            '?'.UrlUtils::class,
+            '?'.TypableUtils::class,
+            '?'.VideoHostingUtils::class,
         );
     }
 

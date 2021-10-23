@@ -13,18 +13,16 @@ use App\Utils\SearchUtils;
 
 class CommentManager extends AbstractManager {
 
-	const NAME = 'ladb_core.core_comment_manager';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            BlockBodiedUtils::class => '?'.BlockBodiedUtils::class,
-            CommentableUtils::class => '?'.CommentableUtils::class,
-            FieldPreprocessorUtils::class => '?'.FieldPreprocessorUtils::class,
-            SearchUtils::class => '?'.SearchUtils::class,
-
+            '?'.BlockBodiedUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.SearchUtils::class,
         ));
     }
+
+    /////
 
 	public function delete(Comment $comment, $flush = true) {
 		parent::deleteEntity($comment, $flush);

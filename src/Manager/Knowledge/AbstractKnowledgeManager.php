@@ -12,15 +12,16 @@ use App\Utils\VotableUtils;
 
 abstract class AbstractKnowledgeManager extends AbstractPublicationManager {
 
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            ActivityUtils::class => '?'.ActivityUtils::class,
-            PropertyUtils::class => '?'.PropertyUtils::class,
-            ReviewableUtils::class => '?'.ReviewableUtils::class,
-            VotableUtils::class => '?'.VotableUtils::class,
+            '?'.ActivityUtils::class,
+            '?'.PropertyUtils::class,
+            '?'.ReviewableUtils::class,
+            '?'.VotableUtils::class,
         ));
     }
+
+    /////
 
 	protected function deleteKnowledge(AbstractKnowledge $knowledge, $withWitness = true, $flush = true) {
 

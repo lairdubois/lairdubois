@@ -8,12 +8,9 @@ use App\Utils\ActivityUtils;
 
 class TestimonialManager extends AbstractManager {
 
-	const NAME = 'ladb_core.knowledge_school_testimonial_manager';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            ActivityUtils::class => '?'.ActivityUtils::class,
+            '?'.ActivityUtils::class,
         ));
     }
 

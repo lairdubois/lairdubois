@@ -4,12 +4,10 @@ namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\Entity\Core\Follower;
 use App\Entity\Core\User;
-use App\Utils\MailerUtils;
 use App\Utils\FollowerUtils;
 use App\Utils\ActivityUtils;
 

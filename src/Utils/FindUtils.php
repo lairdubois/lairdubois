@@ -9,10 +9,7 @@ use App\Manager\Core\PictureManager;
 
 class FindUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.find_utils';
-
 	public function generateMainPicture(Find $find) {
-		$om = $this->getDoctrine()->getManager();
 		$webScreenshotUtils = $this->get(WebScreenshotUtils::class);
 		$videoHostingUtils = $this->get(VideoHostingUtils::class);
 

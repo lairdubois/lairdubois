@@ -16,10 +16,6 @@ use App\Model\WatchableInterface;
 
 class CommentableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.commentable_utils';
-
-	/////
-
 	public function finalizeNewComment(Comment $comment, CommentableInterface $commentable) {
 		$om = $this->getDoctrine()->getManager();
 

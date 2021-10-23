@@ -10,8 +10,6 @@ use Psr\Log\LoggerInterface;
 
 class ViewableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.viewable_utils';
-
 	private $om;
 
 	public function __construct(ContainerInterface $container) {
@@ -43,11 +41,11 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		$CrawlerDetect = new CrawlerDetect();
 		if ($CrawlerDetect->isCrawler()) {
-			$this->container->get('logger')->info('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
+			$this->get('logger')->info('Crawler detected and excluded from processShownView : '.$_SERVER['HTTP_USER_AGENT']);
 			return;	// Exclude bots
 		}
 
-		$globalUtils = $this->container->get(GlobalUtils::class);
+		$globalUtils = $this->get(GlobalUtils::class);
 		$user = $globalUtils->getUser();
 		if (is_null($user)) {
 
@@ -71,7 +69,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 		try {
 
 			// Publish a view in queue
-			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
+			$producer = $this->get('old_sound_rabbit_mq.view_producer');
 			$producer->publish(serialize(array(
 				'kind'       => View::KIND_SHOWN,
 				'entityType' => $viewable->getType(),
@@ -80,7 +78,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			)));
 
 		} catch (\Exception $e) {
-			$this->container->get('logger')->error('Failed to publish shown view process in queue', array ( 'exception' => $e));
+			$this->get('logger')->error('Failed to publish shown view process in queue', array ( 'exception' => $e));
 		}
 
 	}
@@ -109,7 +107,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 		try {
 
 			// Publish a view in queue
-			$producer = $this->container->get('old_sound_rabbit_mq.view_producer');
+			$producer = $this->get('old_sound_rabbit_mq.view_producer');
 			$producer->publish(serialize(array(
 				'kind'       => View::KIND_LISTED,
 				'entityType' => $entityType,
@@ -118,7 +116,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 			)));
 
 		} catch (\Exception $e) {
-			$this->container->get('logger')->error('Failed to publish shown view process in queue.');
+			$this->get('logger')->error('Failed to publish shown view process in queue.');
 		}
 
 	}

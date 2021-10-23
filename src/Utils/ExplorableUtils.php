@@ -8,8 +8,6 @@ use App\Repository\AbstractEntityRepository;
 
 class ExplorableUtils {
 
-	const NAME = 'ladb_core.explorable_utils';
-
 	protected $searchUtils;
 
 	public function __construct(SearchUtils $searchUtils) {

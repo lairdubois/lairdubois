@@ -8,10 +8,6 @@ use App\Manager\AbstractAuthoredPublicationManager;
 
 class FindManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.find_find_manager';
-
-	/////
-
 	public function publish(Find $find, $flush = true) {
 
 		$find->getUser()->getMeta()->incrementPrivateFindCount(-1);

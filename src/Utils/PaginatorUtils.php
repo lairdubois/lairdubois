@@ -6,10 +6,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaginatorUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.paginator_utils';
-
-	/////
-
 	private function _removeEmptyParameters(array $parameters) {
 		$fullParameters = array();
 		foreach($parameters as $key => $value) {

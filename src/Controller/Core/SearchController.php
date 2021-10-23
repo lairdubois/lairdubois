@@ -3,11 +3,9 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Utils\PaginatorUtils;
 use App\Utils\SearchUtils;
 
 /**

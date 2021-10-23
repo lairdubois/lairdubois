@@ -6,8 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class VideoHostingUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.video_hosting_utils';
-
 	const KIND_UNKNOW = 0;
 	const KIND_YOUTUBE = 1;
 	const KIND_DAILYMOTION = 2;

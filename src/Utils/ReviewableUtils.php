@@ -9,10 +9,6 @@ use App\Model\ReviewableInterface;
 
 class ReviewableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.reviewable_utils';
-	
-	/////
-
 	public function deleteReviews(ReviewableInterface $reviewable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$reviewRepository = $om->getRepository(Review::CLASS_NAME);

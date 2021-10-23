@@ -7,10 +7,6 @@ use App\Entity\Knowledge\Value\BaseValue;
 
 class KnowledgeUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.knowledge_utils';
-
-	/////
-
 	public function computeCompletionPercent(AbstractKnowledge $knowledge) {
 		$propertyUtils = $this->get(PropertyUtils::class);
 		$fieldDefs = $knowledge->getFieldDefs();

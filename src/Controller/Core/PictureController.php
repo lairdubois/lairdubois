@@ -5,7 +5,6 @@ namespace App\Controller\Core;
 use App\Controller\PublicationControllerTrait;
 use App\Entity\Core\Member;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Imagine\Gd\Imagine;
@@ -22,10 +21,9 @@ class PictureController extends AbstractController {
 
 	use PublicationControllerTrait;
 
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            PictureUploadHandler::class => '?'.PictureUploadHandler::class,
+            '?'.PictureUploadHandler::class,
         ));
     }
 

@@ -7,8 +7,6 @@ use App\Entity\Promotion\Graphic;
 
 class GraphicUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.graphic_utils';
-
 	public function createZipArchive(Graphic $graphic) {
 		$zipAbsolutePath = $this->getZipAbsolutePath($graphic);
 

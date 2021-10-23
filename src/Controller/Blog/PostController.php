@@ -6,7 +6,6 @@ use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
 use App\Model\HiddableInterface;
 use App\Utils\CollectionnableUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

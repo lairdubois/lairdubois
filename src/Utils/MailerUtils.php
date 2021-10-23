@@ -17,16 +17,13 @@ use Twig\Environment;
 
 class MailerUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.mailer_utils';
-
 	const LIST_NOTIFICATIONS = 'notifications';
 	const LIST_WEEKNEWS = 'weeknews';
 
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             'twig' => '?'.Environment::class,
-            MailerInterface::class => MailerInterface::class,
+            '?'.MailerInterface::class,
         ));
     }
 

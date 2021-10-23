@@ -24,10 +24,7 @@ use App\Utils\WatchableUtils;
 
 abstract class AbstractPublicationManager extends AbstractManager {
 
-
-	/////
-
-	public function lock(AbstractPublication $publication, $flush = true) {
+    public function lock(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
 		$publication->setIsLocked(true);
@@ -81,7 +78,7 @@ abstract class AbstractPublicationManager extends AbstractManager {
 		}
 
 		// Process mentions
-		$mentionUtils = $this->container->get(MentionUtils::class);
+		$mentionUtils = $this->get(MentionUtils::class);
 		$mentionUtils->processMentions($publication);
 
 		// Delete the witness (if it exists)

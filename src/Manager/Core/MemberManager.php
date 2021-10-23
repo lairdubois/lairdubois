@@ -7,8 +7,6 @@ use App\Manager\AbstractManager;
 
 class MemberManager extends AbstractManager {
 
-	const NAME = 'ladb_core.core_member_manager';
-
 	public function create(\App\Entity\Core\User $team, \App\Entity\Core\User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 

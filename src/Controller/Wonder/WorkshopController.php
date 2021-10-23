@@ -3,11 +3,9 @@
 namespace App\Controller\Wonder;
 
 use App\Controller\AbstractController;
-use App\Controller\CustomOwnerControllerTrait;
 use App\Controller\PublicationControllerTrait;
 use App\Utils\CollectionnableUtils;
 use App\Utils\FeedbackableUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

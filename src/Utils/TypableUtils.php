@@ -9,12 +9,7 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 
 class TypableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.typable_utils';
-
-	/////
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             'doctrine.orm.entity_manager' => '?'.EntityManagerInterface::class,
         ));

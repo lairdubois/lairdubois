@@ -12,8 +12,6 @@ use App\Manager\AbstractManager;
 
 class WitnessManager extends AbstractManager {
 
-	const NAME = 'ladb_core.core_witness_manager';
-
 	public function deleteByPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$witnessRepository = $om->getRepository(Witness::CLASS_NAME);

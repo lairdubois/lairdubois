@@ -17,10 +17,6 @@ use App\Utils\VotableUtils;
 
 class AnswerManager extends AbstractManager {
 
-	const NAME = 'ladb_core.qa_answer_manager';
-
-	/////
-
 	public function delete(Answer $answer, $flush = true) {
 
 		$question = $answer->getQuestion();

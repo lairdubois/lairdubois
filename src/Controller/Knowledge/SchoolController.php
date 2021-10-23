@@ -4,9 +4,7 @@ namespace App\Controller\Knowledge;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
-use App\Entity\Knowledge\Provider;
 use App\Utils\KnowledgeUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -24,7 +22,6 @@ use App\Utils\CommentableUtils;
 use App\Utils\LikableUtils;
 use App\Utils\WatchableUtils;
 use App\Utils\SearchUtils;
-use App\Utils\PropertyUtils;
 use App\Utils\CollectionnableUtils;
 use App\Form\Type\Knowledge\NewSchoolType;
 use App\Form\Model\NewSchool;

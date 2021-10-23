@@ -6,8 +6,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ActivityUtils {
 
-	const NAME = 'ladb_core.activity_utils';
-
 	protected $om;
 
 	public function __construct(ManagerRegistry $om) {

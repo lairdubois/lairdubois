@@ -10,10 +10,6 @@ use App\Model\MultiPicturedInterface;
 
 class PicturedUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.pictured_utils';
-
-	/////
-
 	public function resetPictures($entity) {
 		if ($entity instanceof MultiPicturedInterface) {
 			$entity->resetPictures();

@@ -17,8 +17,6 @@ use App\Model\HiddableInterface;
 
 class UserUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.user_utils';
-
 	const COUNTABLE_TYPES = array(
 		\App\Entity\Wonder\Creation::TYPE,
 		\App\Entity\Qa\Question::TYPE,
@@ -39,6 +37,14 @@ class UserUtils extends AbstractContainerAwareUtils {
 		\App\Entity\Blog\Post::TYPE,
 		\App\Entity\Faq\Question::TYPE,
 	);
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PictureManager::class,
+            '?'.PropertyUtils::class,
+            '?'.TypableUtils::class,
+        ));
+    }
 
 	/////
 

@@ -7,7 +7,6 @@ use App\Controller\PublicationControllerTrait;
 use App\Utils\CollectionnableUtils;
 use App\Utils\ElasticaQueryUtils;
 use App\Utils\KnowledgeUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -29,11 +28,9 @@ use App\Utils\CommentableUtils;
 use App\Utils\LikableUtils;
 use App\Utils\LocalisableUtils;
 use App\Utils\PaginatorUtils;
-use App\Utils\PropertyUtils;
 use App\Utils\SearchUtils;
 use App\Utils\WatchableUtils;
 use App\Utils\ReviewableUtils;
-
 
 /**
  * @Route("/fournisseurs")

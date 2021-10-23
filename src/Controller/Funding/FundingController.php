@@ -3,7 +3,6 @@
 namespace App\Controller\Funding;
 
 use Stripe\Exception\ApiErrorException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,10 +25,9 @@ use App\Utils\MailerUtils;
  */
 class FundingController extends AbstractController {
 
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            FundingManager::class => '?'.FundingManager::class,
+            '?'.FundingManager::class,
         ));
     }
 

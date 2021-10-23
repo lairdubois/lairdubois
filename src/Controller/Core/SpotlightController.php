@@ -3,47 +3,10 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
-use App\Entity\Core\Tip;
-use App\Utils\MaybeUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Knowledge\School;
-use App\Entity\Qa\Question;
-use App\Utils\CollectionnableUtils;
-use App\Manager\Wonder\CreationManager;
-use App\Manager\Core\WitnessManager;
-use App\Entity\Workflow\Workflow;
-use App\Model\HiddableInterface;
-use App\Utils\StripableUtils;
-use App\Form\Type\Wonder\CreationType;
-use App\Utils\PaginatorUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\ExplorableUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\SearchUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\PicturedUtils;
-use App\Utils\EmbeddableUtils;
 use App\Utils\TypableUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Entity\Blog\Post;
-use App\Entity\Howto\Howto;
-use App\Entity\Knowledge\Provider;
 use App\Entity\Core\Spotlight;
-use App\Entity\Wonder\Plan;
-use App\Entity\Wonder\Creation;
-use App\Entity\Core\View;
-use App\Entity\Find\Find;
 
 /**
  * @Route("/spotlights")

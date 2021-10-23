@@ -15,10 +15,6 @@ use App\Model\HiddableInterface;
 
 class CryptoUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.crypto_utils';
-
-	/////
-
 	public function encryptString($data) {
 		return base64_encode(openssl_encrypt($data, 'aes-256-ctr', $this->getParameter('secret'), 0, '1234567812345678'));
 	}

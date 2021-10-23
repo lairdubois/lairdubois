@@ -7,10 +7,6 @@ use App\Entity\Wonder\Plan;
 
 class PlanManager extends AbstractWonderManager {
 
-	const NAME = 'ladb_core.wonder_plan_manager';
-
-	/////
-
 	public function publish(Plan $plan, $flush = true) {
 
 		$plan->getUser()->getMeta()->incrementPrivatePlanCount(-1);

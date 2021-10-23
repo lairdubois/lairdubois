@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GlobalUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.global_utils';
-
 	/**
 	 * Returns the security context service.
 	 *

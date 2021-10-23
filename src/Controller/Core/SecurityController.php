@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Core;
 
+use App\Controller\AbstractController;
 use App\Entity\Core\User;
 use App\Form\Type\Security\RegisterType;
+use App\Utils\StringUtils;
 use App\Utils\UserUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -41,7 +42,7 @@ class SecurityController extends AbstractController  {
     /**
      * @Route("/register", name="_security_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserUtils $userUtils) {
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserUtils $userUtils, StringUtils $stringUtils) {
 
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
@@ -49,7 +50,7 @@ class SecurityController extends AbstractController  {
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user->setUsernameCanonical(strtolower($user->getUsername()));
+            $user->setUsernameCanonical($stringUtils->canonicalize($user->getUsername()));
             $user->setEmailCanonical(strtolower($user->getEmail()));
             $user->setPassword($passwordHasher->hashPassword(
                 $user,
@@ -57,7 +58,7 @@ class SecurityController extends AbstractController  {
             ));
             $user->setCreatedAt(new \DateTime());
             $user->setDisplayname($user->getUsername());
-            $user->setDisplaynameCanonical(strtolower($user->getUsername()));
+            $user->setDisplaynameCanonical($stringUtils->canonicalize($user->getUsername()));
             $user->setEnabled(true);
 
             $userUtils->createDefaultAvatar($user, false);

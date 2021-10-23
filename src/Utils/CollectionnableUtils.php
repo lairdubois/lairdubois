@@ -14,10 +14,6 @@ use App\Model\PicturedInterface;
 
 class CollectionnableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.collectionnable_utils';
-
-	/////
-
 	public function createEntry(CollectionnableInterface $collectionnable, Collection $collection) {
 		$om = $this->getDoctrine()->getManager();
 		$pictureManager = $this->get(PictureManager::class);

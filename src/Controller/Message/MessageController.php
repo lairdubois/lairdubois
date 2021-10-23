@@ -2,7 +2,6 @@
 
 namespace App\Controller\Message;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -10,8 +9,6 @@ use App\Entity\Message\Message;
 use App\Entity\Message\MessageMeta;
 use App\Utils\FieldPreprocessorUtils;
 use App\Form\Type\Message\ReplyMessageType;
-use App\Utils\MailerUtils;
-use App\Utils\WebpushNotificationUtils;
 
 /**
  * @Route("/messagerie")

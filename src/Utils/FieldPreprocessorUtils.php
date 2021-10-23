@@ -11,13 +11,10 @@ use App\Parser\Markdown\LadbMarkdown;
 
 class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.field_preprocessor_utils';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            UserManager::class => '?'.UserManager::class,
-            UrlUtils::class => '?'.UrlUtils::class,
+            '?'.UserManager::class,
+            '?'.UrlUtils::class,
         ));
     }
 

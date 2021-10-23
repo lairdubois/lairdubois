@@ -10,20 +10,17 @@ use App\Model\BlockBodiedInterface;
 use App\Model\BodiedInterface;
 use App\Model\MultiPicturedInterface;
 use App\Model\TimestampableInterface;
+use Psr\Container\ContainerInterface;
 
-class BlockBodiedUtils {
+class BlockBodiedUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.block_bodied_utils';
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.VideoHostingUtils::class,
+        ));
+    }
 
-	protected $om;
-	protected $videoHostingUtils;
-
-	public function __construct(ManagerRegistry $om, VideoHostingUtils $videoHostingUtils) {
-		$this->om = $om;
-		$this->videoHostingUtils = $videoHostingUtils;
-	}
-
-	/////
+    /////
 
 	public function copyBodyTo(BodiedInterface $entitySrc, BlockBodiedInterface $entityDest, $sortIndex = 0) {
 
@@ -131,7 +128,7 @@ class BlockBodiedUtils {
 
 			// Check video blocks
 			if ($block instanceof Video) {
-				$kindAndEmbedIdentifier = $this->videoHostingUtils->getKindAndEmbedIdentifier($block->getUrl());
+				$kindAndEmbedIdentifier = $this->get(VideoHostingUtils::class)->getKindAndEmbedIdentifier($block->getUrl());
 				$block->setKind($kindAndEmbedIdentifier['kind']);
 				$block->setEmbedIdentifier($kindAndEmbedIdentifier['embedIdentifier']);
 				$videoBlockCount++;
@@ -143,10 +140,11 @@ class BlockBodiedUtils {
 
 		// Remove unused blocks
 		if (!is_null($originalBlocks)) {
+		    $om = $this->getDoctrine()->getManager();
 			$blocks = $entity->getBodyBlocks();
 			foreach ($originalBlocks as $block) {
 				if (false === $blocks->contains($block)) {
-					$this->om->remove($block);
+					$om->remove($block);
 				}
 			}
 		}

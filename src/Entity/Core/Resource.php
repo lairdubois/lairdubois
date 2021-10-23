@@ -105,7 +105,7 @@ class Resource {
 
 	protected function getUploadRootDir() {
 		// the absolute directory path where uploaded documents should be saved
-		return __DIR__.'/../../../../../'.$this->getUploadDir();
+		return __DIR__.'/../../../'.$this->getUploadDir();
 	}
 
 	protected function getUploadDir() {

@@ -11,8 +11,6 @@ use App\Entity\Core\User;
 
 class VotableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.votable_utils';
-
 	const DISABLE_REASON_NONE = 0;
 	const DISABLE_REASON_NOT_CONNECTED = 1;
 	const DISABLE_REASON_SELF_VOTING = 2;

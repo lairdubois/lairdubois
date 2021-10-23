@@ -16,10 +16,6 @@ use App\Utils\SearchUtils;
 
 class WorkflowManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.workflow_workflow_manager';
-
-	/////
-
 	public function publish(Workflow $workflow, $flush = true) {
 
 		$workflow->getUser()->getMeta()->incrementPrivateWorkflowCount(-1);

@@ -7,12 +7,18 @@ use App\Utils\ReviewableUtils;
 
 class ToolManager extends AbstractKnowledgeManager {
 
-	const NAME = 'ladb_core.knowledge_tool_manager';
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ReviewableUtils::class,
+        ));
+    }
 
-	public function delete(Tool $tool, $withWitness = true, $flush = true) {
+    /////
+
+    public function delete(Tool $tool, $withWitness = true, $flush = true) {
 
 		// Delete reviews
-		$reviewableUtils = $this->get(ReviewableUtils::NAME);
+		$reviewableUtils = $this->get(ReviewableUtils::class);
 		$reviewableUtils->deleteReviews($tool, false);
 
 		parent::deleteKnowledge($tool, $withWitness, $flush);

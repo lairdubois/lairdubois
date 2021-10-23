@@ -3,8 +3,6 @@
 namespace App\Controller\Knowledge;
 
 use App\Controller\PublicationControllerTrait;
-use App\Entity\Knowledge\Value\Picture;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

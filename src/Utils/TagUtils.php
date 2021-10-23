@@ -7,19 +7,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use App\Model\TaggableInterface;
 use App\Entity\Core\TagUsage;
 
-class TagUtils {
-
-	const NAME = 'ladb_core.tag_utils';
-
-	protected $om;
-
-	public function __construct(ManagerRegistry $om) {
-		$this->om = $om;
-	}
-
-	/////
+class TagUtils extends AbstractContainerAwareUtils {
 
 	public function useTaggableTags(TaggableInterface $taggable, $previouslyUsedTags = null) {
+        $om = $this->getDoctrine()->getManager();
 
 		$tags = $taggable->getTags();
 		if (is_null($previouslyUsedTags)) {
@@ -41,7 +32,7 @@ class TagUtils {
 		}
 		$entityType = $taggable->getType();
 
-		$tagUsageRepository = $this->om->getRepository(TagUsage::CLASS_NAME);
+		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
 		foreach ($newUsedTags as $tag) {
 
 			$tagUsage = $tagUsageRepository->findOneByTagAndEntityType($tag, $entityType);
@@ -51,20 +42,22 @@ class TagUtils {
 				$tagUsage->setTag($tag);
 				$tagUsage->setEntityType($entityType);
 
-				$this->om->persist($tagUsage);
+				$om->persist($tagUsage);
 			}
 			$tagUsage->incrementScore();
 
 		}
 
-		$this->om->flush();
+		$om->flush();
 
 	}
 
 	public function getProposals(TaggableInterface $taggable, $maxResults = 30) {
+        $om = $this->getDoctrine()->getManager();
+
 		$proposals = array();
 
-		$tagUsageRepository = $this->om->getRepository(TagUsage::CLASS_NAME);
+		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
 		$tagUsages = $tagUsageRepository->findByEntityType($taggable->getType(), $maxResults);
 		if (!is_null($tagUsages)) {
 			foreach ($tagUsages as $tagUsage) {

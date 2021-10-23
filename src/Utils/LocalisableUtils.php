@@ -16,10 +16,7 @@ use Psr\Log\LoggerInterface;
 
 class LocalisableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.localisable_utils';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             'logger' => '?'.LoggerInterface::class,
         ));

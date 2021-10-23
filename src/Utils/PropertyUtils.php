@@ -4,10 +4,6 @@ namespace App\Utils;
 
 class PropertyUtils {
 
-	const NAME = 'ladb_core.property_utils';
-
-	/////
-
 	public function camelCasePropertyAccessor($accessor, $propertyPath) {
 		$terms = explode('_', $propertyPath);
 		$result = $accessor;

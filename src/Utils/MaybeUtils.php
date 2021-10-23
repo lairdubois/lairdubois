@@ -8,12 +8,9 @@ use App\Model\ReportableInterface;
 
 class MaybeUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.maybe_utils';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            GlobalUtils::class => '?'.GlobalUtils::class,
+            '?'.GlobalUtils::class,
         ));
     }
 

@@ -5,7 +5,6 @@ namespace App\Controller\Core;
 use App\Controller\AbstractController;
 use App\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\Entity\Core\Like;

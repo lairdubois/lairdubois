@@ -135,7 +135,7 @@
 
 {% block contentBody %}
     {% if wonder.isDraft %}
-        {% include 'Wonder/'~(wonderType|capitalize)~':_draft-alert.part.html.twig' %}
+        {% include 'Wonder/'~(wonderType|capitalize)~'/_draft-alert.part.html.twig' %}
     {% endif %}
     {% block wonderShowcase %}
         {% include 'Common/_entity-showcase.part.html.twig' with { 'entity':wonder, 'pictures':wonder.pictures, 'alt':wonder.title, 'editable':(permissionContext.editable and permissionContext.isGrantedOwner) } %}

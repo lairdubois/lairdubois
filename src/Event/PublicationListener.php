@@ -8,6 +8,7 @@ use App\Model\MentionSourceInterface;
 use App\Model\RepublishableInterface;
 use App\Utils\FeedbackableUtils;
 use App\Utils\MentionUtils;
+use Doctrine\Persistence\ManagerRegistry;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -59,7 +60,29 @@ class PublicationListener implements EventSubscriberInterface, ServiceSubscriber
 		$this->container = $container;
 	}
 
-	public static function getSubscribedEvents() {
+    public static function getSubscribedServices() {
+        return array(
+            'doctrine' => '?'.ManagerRegistry::class,
+            'liip_imagine.filter.manager' => '?'.FilterManager::class,
+            'liip_imagine.cache.manager' => '?'.CacheManager::class,
+            'liip_imagine.data.manager' => '?'.DataManager::class,
+            '?'.OpenGraphUtils::class,
+            '?'.ActivityUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.GlobalUtils::class,
+            '?'.FeedbackableUtils::class,
+            '?'.LikableUtils::class,
+            '?'.MentionUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.TypableUtils::class,
+            '?'.UserUtils::class,
+            '?'.ViewableUtils::class,
+            '?'.WatchableUtils::class,
+        );
+    }
+
+    public static function getSubscribedEvents() {
 		return array(
 			PublicationListener::PUBLICATION_CREATED              => 'onPublicationCreated',
 			PublicationListener::PUBLICATION_CREATED_FROM_CONVERT => 'onPublicationCreatedFromConvert',
@@ -74,26 +97,6 @@ class PublicationListener implements EventSubscriberInterface, ServiceSubscriber
 			PublicationListener::PUBLICATIONS_LISTED              => 'onPublicationsListed',
 		);
 	}
-
-    public static function getSubscribedServices()
-    {
-        return array(
-            'liip_imagine.filter.manager' => '?'.FilterManager::class,
-            'liip_imagine.cache.manager' => '?'.CacheManager::class,
-            'liip_imagine.data.manager' => '?'.DataManager::class,
-            OpenGraphUtils::class => '?'.OpenGraphUtils::class,
-            ActivityUtils::class => '?'.ActivityUtils::class,
-            CommentableUtils::class => '?'.CommentableUtils::class,
-            GlobalUtils::class => '?'.GlobalUtils::class,
-            FeedbackableUtils::class => '?'.FeedbackableUtils::class,
-            LikableUtils::class => '?'.LikableUtils::class,
-            MentionUtils::class => '?'.MentionUtils::class,
-            SearchUtils::class => '?'.SearchUtils::class,
-            TypableUtils::class => '?'.TypableUtils::class,
-            ViewableUtils::class => '?'.ViewableUtils::class,
-            WatchableUtils::class => '?'.WatchableUtils::class,
-        );
-    }
 
 	/////
 

@@ -8,10 +8,6 @@ use App\Model\ReportableInterface;
 
 class ReportableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.reportable_utils';
-
-	/////
-
 	public function deleteReports(ReportableInterface $likable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$reportRepository = $om->getRepository(Report::CLASS_NAME);

@@ -10,8 +10,6 @@ use App\Entity\Core\User;
 
 class MemberUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.member_utils';
-
 	public function deleteMembersByTeam(User $team, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);

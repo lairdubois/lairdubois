@@ -58,7 +58,15 @@ class UserController extends AbstractController {
 
 	use UserControllerTrait;
 
-	private function _isGrantedOwner(User $user) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.UserUtils::class,
+        ));
+    }
+
+    /////
+
+    private function _isGrantedOwner(User $user) {
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 			$om = $this->getDoctrine()->getManager();

@@ -6,8 +6,6 @@ use App\Entity\Knowledge\Book;
 
 class BookUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.book_utils';
-
 	public function computeAverageRating(Book $book) {
 		$ratingSum = 0;
 		$reviewCount = 0;

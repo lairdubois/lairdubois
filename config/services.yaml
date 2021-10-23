@@ -36,6 +36,10 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+#            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_creation"
+#            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_plan"
+            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_workshop"
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

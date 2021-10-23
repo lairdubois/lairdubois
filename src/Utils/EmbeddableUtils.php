@@ -25,10 +25,6 @@ use App\Model\PicturedInterface;
 
 class EmbeddableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.embeddable_utils';
-
-	/////
-
 	public function generateSticker(BasicEmbeddableInterface $embeddable) {
 
 		$pictureCount = 0;
@@ -151,7 +147,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 					0
 				);
 
-				$moreFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Bold.ttf', $moreFontSize, $palette->color('fff'));
+				$moreFont = new Font(__DIR__.'/../../assets/private/fonts/OpenSans-Bold.ttf', $moreFontSize, $palette->color('fff'));
 				$moreText = '+'.($pictureCount - $imageCount);
 				$moreBox = $moreFont->box($moreText);
 				$stickerImage->draw()->text($moreText, $moreFont, new Point($x + ($imageHeight - $moreBox->getWidth()) / 2, $y + ($imageHeight - $moreBox->getHeight()) / 2));
@@ -160,9 +156,9 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 			if ($i == 0) {
 
 				$user = $embeddable->getUser();
-				$titleFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Bold.ttf', $titleFontSize, $palette->color('fff'));
-				$subtitleFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Regular.ttf', $subtitleFontSize, $palette->color('fff'));
-				$authorFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Regular.ttf', $authorFontSize, $palette->color('fff', 70));
+				$titleFont = new Font(__DIR__.'/../../assets/private/fonts/OpenSans-Bold.ttf', $titleFontSize, $palette->color('fff'));
+				$subtitleFont = new Font(__DIR__.'/../../assets/private/fonts/OpenSans-Regular.ttf', $subtitleFontSize, $palette->color('fff'));
+				$authorFont = new Font(__DIR__.'/../../assets/private/fonts/OpenSans-Regular.ttf', $authorFontSize, $palette->color('fff', 70));
 				$overlayY = $y;
 
 				$avatar = $user->getAvatar();
@@ -207,7 +203,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 			}
 		}
 
-		$footerFont = new Font(__DIR__.'/../Resources/private/fonts/OpenSans-Regular.ttf', 10, $palette->color('000', 20));
+		$footerFont = new Font(__DIR__.'/../../assets/private/fonts/OpenSans-Regular.ttf', 10, $palette->color('000', 20));
 		$stickerImage->draw()->text('www.lairdubois.fr', $footerFont, new Point(5, $stickerSize->getHeight() - $footerHeight + ($footerHeight - $footerFont->box('www.lairdubois.fr')->getHeight()) / 2));
 
 		$licence = $embeddable instanceof LicensedInterface ? $embeddable->getLicense() : ($embeddable instanceof ChildInterface && $embeddable->getParentEntity() instanceof LicensedInterface ? $embeddable->getParentEntity()->getLicense() : null);

@@ -22,10 +22,6 @@ use App\Utils\WatchableUtils;
 
 class QuestionManager extends AbstractAuthoredPublicationManager {
 
-	const NAME = 'ladb_core.qa_question_manager';
-
-	/////
-
 	public function publish(Question $question, $flush = true) {
 
 		$question->getUser()->getMeta()->incrementPrivateQuestionCount(-1);

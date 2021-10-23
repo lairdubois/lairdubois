@@ -12,8 +12,6 @@ use App\Model\IndexableInterface;
 
 class ResourceUtils {
 
-	const NAME = 'ladb_core.resource_utils';
-
 	public function getKindFromStrippedName($strippedName) {
 		if (is_string($strippedName)) {
 			switch (strtolower($strippedName)) {

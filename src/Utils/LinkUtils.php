@@ -4,10 +4,6 @@ namespace App\Utils;
 
 class LinkUtils {
 
-	const NAME = 'ladb_core.link_utils';
-
-	/////
-
 	public function getCanonicalUrl($url) {
 
 		$ch = curl_init($url);

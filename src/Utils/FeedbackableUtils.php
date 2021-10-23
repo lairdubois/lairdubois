@@ -12,10 +12,6 @@ use App\Model\JoinableInterface;
 
 class FeedbackableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.feedbackable_utils';
-	
-	/////
-
 	public function deleteFeedbacks(FeedbackableInterface $feedbackable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);

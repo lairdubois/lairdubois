@@ -7,8 +7,6 @@ use App\Utils\ReviewableUtils;
 
 class SoftwareManager extends AbstractKnowledgeManager {
 
-	const NAME = 'ladb_core.knowledge_software_manager';
-
 	public function delete(Software $software, $withWitness = true, $flush = true) {
 
 		// Delete reviews

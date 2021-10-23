@@ -5,7 +5,6 @@ namespace App\Controller\Core;
 use App\Entity\Qa\Question;
 use App\Manager\Core\CommentManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

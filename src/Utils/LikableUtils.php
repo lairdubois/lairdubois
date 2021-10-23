@@ -12,10 +12,6 @@ use App\Entity\Core\User;
 
 class LikableUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.likable_utils';
-
-	/////
-
 	public function deleteLikes(LikableInterface $likable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$likeRepository = $om->getRepository(Like::CLASS_NAME);

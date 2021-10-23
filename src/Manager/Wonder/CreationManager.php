@@ -20,10 +20,6 @@ use App\Utils\WatchableUtils;
 
 class CreationManager extends AbstractWonderManager {
 
-	const NAME = 'ladb_core.wonder_creation_manager';
-
-	/////
-
 	public function publish(Creation $creation, $flush = true) {
 
 		$creation->getUser()->getMeta()->incrementPrivateCreationCount(-1);

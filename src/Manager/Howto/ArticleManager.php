@@ -10,10 +10,6 @@ use App\Utils\SearchUtils;
 
 class ArticleManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.howto_article_manager';
-
-	/////
-
 	public function publish(Article $article, $flush = true) {
 
 		$howto = $article->getHowto();

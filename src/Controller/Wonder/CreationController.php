@@ -2,16 +2,13 @@
 
 namespace App\Controller\Wonder;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Controller\AbstractController;
-use App\Controller\CustomOwnerControllerTrait;
 use App\Controller\PublicationControllerTrait;
-use App\Entity\Core\Member;
 use App\Entity\Core\Tip;
 use App\Entity\Event\Event;
 use App\Entity\Offer\Offer;
@@ -58,7 +55,15 @@ class CreationController extends AbstractController {
 
 	use PublicationControllerTrait;
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.CreationManager::class,
+            '?'.PicturedUtils::class,
+            '?'.StripableUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/new", name="core_creation_new")
 	 * @Template("Wonder/Creation/new.html.twig")
 	 */

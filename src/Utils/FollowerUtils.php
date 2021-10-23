@@ -10,8 +10,6 @@ use App\Entity\Core\User;
 
 class FollowerUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.follower_utils';
-
 	public function deleteFollowersByUser(User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$followerRepository = $om->getRepository(Follower::CLASS_NAME);

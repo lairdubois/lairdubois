@@ -2,10 +2,9 @@
 
 namespace App\Utils;
 
-use Elastica\Document;
 use App\Entity\Stats\Search;
 use FOS\ElasticaBundle\Index\IndexManager;
-use FOS\ElasticaBundle\Manager\RepositoryManagerInterface;
+use FOS\ElasticaBundle\Persister\ObjectPersister;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -15,13 +14,14 @@ use App\Model\IndexableInterface;
 
 class SearchUtils extends AbstractContainerAwareUtils {
 
-	const NAME = 'ladb_core.search_utils';
-
-    public static function getSubscribedServices()
-    {
+    public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             'logger' => '?'.LoggerInterface::class,
             'fos_elastica.index_manager' => '?'.IndexManager::class,
+//            'fos_elastica.object_persister.wonder_creation' => '?'.ObjectPersister::class,
+//            'fos_elastica.object_persister.wonder_plan' => '?'.ObjectPersister::class,
+            'fos_elastica.object_persister.wonder_workshop' => '?'.ObjectPersister::class,
+            /* TODO : Find a way to bind other ObjectPersister */
         ));
     }
 
@@ -32,7 +32,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		if (preg_match('@\\\\([\w]+)\\\\([\w]+)$@', $classname, $matches)) {
 			$familyName = $matches[1];
 			$typeName = $matches[2];
-			return $this->get('fos_elastica.index_manager')->getIndex($familyName.'_'.$typeName.'.'.$familyName.'_'.$typeName);
+			return $this->get('fos_elastica.object_persister.'.$familyName.'_'.$typeName);
 		}
 		return null;
 	}
@@ -121,9 +121,9 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		}
 
 		// Count
-		$type = $this->get('fos_elastica.index_manager')->getIndex($typeName);
+		$index = $this->get('fos_elastica.index_manager')->getIndex($typeName);
 		try {
-			$resultSet = $type->search($elasticaQuery);
+			$resultSet = $index->search($elasticaQuery);
 			$count = $resultSet->getTotalHits();
 		} catch (\Exception $e) {
 			return 0;

@@ -3,7 +3,6 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Handler\ResourceUploadHandler;
 
@@ -12,7 +11,13 @@ use App\Handler\ResourceUploadHandler;
  */
 class ResourceController extends AbstractController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ResourceUploadHandler::class,
+        ));
+    }
+
+    /**
 	 * @Route("/upload", name="core_resource_upload")
 	 */
 	public function upload() {

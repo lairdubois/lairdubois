@@ -7,10 +7,6 @@ use App\Manager\AbstractPublicationManager;
 
 class QuestionManager extends AbstractPublicationManager {
 
-	const NAME = 'ladb_core.faq_question_manager';
-
-	/////
-
 	public function publish(Question $question, $flush = true) {
 		parent::publishPublication($question, $flush);
 	}

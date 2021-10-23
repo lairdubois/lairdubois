@@ -11,8 +11,6 @@ use App\Entity\Core\User;
 
 class MessageUtils {
 
-	const NAME = 'ladb_core.message_utils';
-
 	protected $om;
 	protected $fieldPreprocessorUtils;
 
