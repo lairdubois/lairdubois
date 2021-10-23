@@ -206,7 +206,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		);
 		$avatarImage = $imagine->create($avatarSize, $palette->color($backgroundColor));
 
-		$font = new Font(__DIR__.'/../Resources/private/fonts/ClassicRaw.ttf', $fontSize, $palette->color($foregroundColor));
+		$font = new Font(__DIR__.'/../../assets/private/fonts/ClassicRaw.ttf', $fontSize, $palette->color($foregroundColor));
 		$avatarImage->draw()->text(
 			$letter,
 			$font,

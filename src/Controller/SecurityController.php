@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Core\User;
 use App\Form\Type\Security\RegisterType;
+use App\Utils\UserUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,7 @@ class SecurityController extends AbstractController  {
     /**
      * @Route("/register", name="_security_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager) {
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserUtils $userUtils) {
 
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
@@ -58,6 +59,8 @@ class SecurityController extends AbstractController  {
             $user->setDisplayname($user->getUsername());
             $user->setDisplaynameCanonical(strtolower($user->getUsername()));
             $user->setEnabled(true);
+
+            $userUtils->createDefaultAvatar($user, false);
 
             $entityManager->persist($user);
             $entityManager->flush();

@@ -5,6 +5,7 @@ RUN apt-get update -y --fix-missing && apt-get install -y \
     chromium-l10n \
     git \
     imagemagick \
+    libfreetype6-dev \
     libgmp-dev \
     libmemcached-dev \
     libmagickwand-dev --no-install-recommends \
@@ -16,7 +17,7 @@ RUN apt-get update -y --fix-missing && apt-get install -y \
 # Get composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-#RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN pecl install apcu imagick memcached zip
 RUN docker-php-ext-install exif gd gmp opcache pdo pdo_mysql sockets zip pcntl intl
 RUN docker-php-ext-enable apcu imagick memcached

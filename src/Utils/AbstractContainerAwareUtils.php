@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Manager\Core\PictureManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -26,6 +27,7 @@ abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface
             'router' => '?'.RouterInterface::class,
             'templating' => '?'.Environment::class,
             PaginatorUtils::class => '?'.PaginatorUtils::class,
+            PictureManager::class => '?'.PictureManager::class,
             GlobalUtils::class => '?'.GlobalUtils::class,
         );
     }
