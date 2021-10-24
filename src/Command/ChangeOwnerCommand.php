@@ -2,22 +2,11 @@
 
 namespace App\Command;
 
-use App\Entity\Core\Block\Gallery;
 use App\Entity\Core\User;
-use App\Entity\Wonder\Creation;
-use App\Fos\UserManager;
-use App\Manager\Wonder\CreationManager;
-use App\Model\AuthoredInterface;
-use App\Model\BlockBodiedInterface;
-use App\Model\HiddableInterface;
-use App\Model\MultiPicturedInterface;
-use App\Model\PublicationInterface;
 use App\Utils\TypableUtils;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ChangeOwnerCommand extends AbstractContainerAwareCommand {
@@ -47,8 +36,8 @@ EOT
 
 		// Retrieve target user ////
 
-		$userManager = $this->get(UserManager::class);
-		$targetUser = $userManager->findUserByUsername($targetUsername);
+		$userRepository = $om->getRemository(User::class);
+		$targetUser = $userRepository->findOneByUsername($targetUsername);
 
 		if (is_null($targetUser)) {
 			$output->writeln('<error>Unknow unsername='.$targetUsername.'</error>', 0);

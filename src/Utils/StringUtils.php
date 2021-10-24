@@ -4,7 +4,7 @@ namespace App\Utils;
 
 class StringUtils {
 
-    public function canonicalize(string $string) {
+    public function canonicalize(string $string = null) {
         $oldLocale = setlocale(LC_ALL, '0');
         setlocale(LC_ALL, 'en_US.UTF-8');
         $result = str_replace('°', '', $string);

@@ -2,8 +2,8 @@
 
 namespace App\Validator\Constraints;
 
+use App\Utils\StringUtils;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Fos\DisplaynameCanonicalizer;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use App\Entity\Core\User;
@@ -11,11 +11,11 @@ use App\Entity\Core\User;
 class ValidDisplaynameValidator extends ConstraintValidator {
 
     protected ManagerRegistry $om;
-    protected DisplaynameCanonicalizer $displaynameCanonicalizer;
+    protected StringUtils $stringUtils;
 
-    public function __construct(ManagerRegistry $om, DisplaynameCanonicalizer $displaynameCanonicalizer) {
+    public function __construct(ManagerRegistry $om, StringUtils $stringUtils) {
         $this->om = $om;
-        $this->displaynameCanonicalizer = $displaynameCanonicalizer;
+        $this->stringUtils = $stringUtils;
     }
 
 	/**
@@ -30,7 +30,7 @@ class ValidDisplaynameValidator extends ConstraintValidator {
 		if ($value instanceof User) {
 
 			try {
-				$displaynameCanonical = $this->displaynameCanonicalizer->canonicalize($value->getDisplayname());
+				$displaynameCanonical = $this->stringUtils->canonicalize($value->getDisplayname());
 			} catch(\Exception $e) {
 				$this->context->buildViolation('Ce nom est invalide.')
 					->atPath('displayname')

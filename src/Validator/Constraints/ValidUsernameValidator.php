@@ -94,18 +94,10 @@ class ValidUsernameValidator extends ConstraintValidator {
 
 	);
 
-    /**
-     * @var ManagerRegistry
-     */
     protected ManagerRegistry $om;
-    /**
-     * @var UserManager
-     */
-    protected UserManager $userManager;
 
-    public function __construct(ManagerRegistry $om, UserManager $userManager) {
+    public function __construct(ManagerRegistry $om) {
         $this->om = $om;
-        $this->userManager = $userManager;
     }
 
 	/**
