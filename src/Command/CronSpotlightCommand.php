@@ -3,20 +3,29 @@
 namespace App\Command;
 
 use App\Entity\Core\Member;
+use App\Entity\Core\Spotlight;
+use App\Model\IndexableInterface;
+use App\Utils\MailerUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TypableUtils;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Facebook\FacebookSession;
-use App\Model\IndexableInterface;
-use App\Utils\SearchUtils;
-use App\Entity\Core\Spotlight;
-use App\Utils\MailerUtils;
-use App\Utils\TypableUtils;
 
-class CronSpotlightCommand extends AbstractCommand {
+class CronSpotlightCommand extends AbstractContainerAwareCommand {
 
-	protected function configure() {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.MailerUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    /////
+
+    protected function configure() {
 		$this
 			->setName('ladb:cron:spotlight')
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force updating')
@@ -42,9 +51,9 @@ EOT
 		$forcedMastodon = $input->getOption('force-mastodon');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$spotlightRepository = $om->getRepository(Spotlight::CLASS_NAME);
-		$typableUtils = $this->getContainer()->get(TypableUtils::class);
+		$typableUtils = $this->get(TypableUtils::class);
 
 		// Retrieve current spotlight
 
@@ -224,7 +233,7 @@ EOT
 				if ($entity instanceof IndexableInterface && $entity->isIndexable()) {
 
 					// Search index update
-					$searchUtils = $this->getContainer()->get(SearchUtils::class);
+					$searchUtils = $this->get(SearchUtils::class);
 					$searchUtils->replaceEntityInIndex($entity);
 
 				}
@@ -241,7 +250,7 @@ EOT
 				}
 
 				// Email notification
-				$mailerUtils = $this->getContainer()->get(MailerUtils::class);
+				$mailerUtils = $this->get(MailerUtils::class);
 				if ($verbose) {
 					$output->write('<info>Sending notification to '.$entity->getUser()->getDisplayname().'...</info>');
 				}
@@ -282,7 +291,7 @@ EOT
 	private function _publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output) {
 
 		$success = false;
-		$status = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-twitter-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$status = $this->get('twig')->render('Command/_cron-spotlight-twitter-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		$mediaIds = '';
 		if ($verbose) {
 			$output->writeln('<info>Posting to Twitter (<fg=yellow>'.$status.'</fg=yellow>) ...</info>');
@@ -349,8 +358,8 @@ EOT
 	private function _publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output) {
 
 		$success = true;
-		$message = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
-		$link = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-facebook-link.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$message = $this->get('twig')->render('Command/_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$link = $this->get('twig')->render('Command/_cron-spotlight-facebook-link.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		if ($verbose) {
 			$output->writeln('<info>Posting to Facebook (<fg=yellow>'.$message.' '.$link.'</fg=yellow>) ...</info>');
 		}
@@ -409,7 +418,7 @@ EOT
 
 	private function _publishOnMastodon($spotlight, $entity, $forced, $forcedMastodon, $verbose, $output) {
 
-		$status = $this->getContainer()->get('twig')->render('Command/_cron-spotlight-mastodon-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
+		$status = $this->get('twig')->render('Command/_cron-spotlight-mastodon-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		if ($verbose) {
 			$output->writeln('<info>Posting to Mastodon (<fg=yellow>'.$status.'</fg=yellow>) ...</info>');
 		}

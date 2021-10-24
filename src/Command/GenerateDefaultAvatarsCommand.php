@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\UserUtils;
 
-class GenerateDefaultAvatarsCommand extends AbstractCommand {
+class GenerateDefaultAvatarsCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -28,8 +28,8 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$userUtils = $this->getContainer()->get(UserUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$userUtils = $this->get(UserUtils::class);
 
 		// Count users /////
 

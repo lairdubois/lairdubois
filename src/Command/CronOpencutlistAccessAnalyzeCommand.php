@@ -7,10 +7,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
 
-class CronOpencutlistAccessAnalyzeCommand extends AbstractCommand {
+class CronOpencutlistAccessAnalyzeCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -30,7 +28,7 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		if ($verbose) {
 			$output->write('<info>Retriving fresh access...</info>');
@@ -105,6 +103,5 @@ EOT
 		}
 
         return Command::SUCCESS;
-
 	}
 }

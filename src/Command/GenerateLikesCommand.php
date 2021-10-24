@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Model\AuthoredInterface;
 use App\Utils\TypableUtils;
 
-class GenerateLikesCommand extends AbstractCommand {
+class GenerateLikesCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -28,7 +28,7 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve users
 

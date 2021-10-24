@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Model\HiddableInterface;
 
-class GenerateVisibilityCommand extends AbstractCommand {
+class GenerateVisibilityCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -52,7 +52,7 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getDoctrine()->getManager();
 
 		$entityCount = 0;
 

@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,12 +17,26 @@ use App\Model\LicensedInterface;
 use App\Model\PicturedInterface;
 use App\Utils\PicturedUtils;
 use App\Utils\VideoHostingUtils;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
-class CronSitemapsCommand extends AbstractCommand {
+class CronSitemapsCommand extends AbstractContainerAwareCommand {
 
 	private $exportedVideosIdentifiers;
 
-	protected function configure() {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            'assets.packages' => '?'.Packages::class,
+            'router' => '?'.RouterInterface::class,
+            'twig' => '?'.Environment::class,
+            '?'.PicturedUtils::class,
+            '?'.VideoHostingUtils::class,
+        ));
+    }
+
+    /////
+
+    protected function configure() {
 		$this
 			->setName('ladb:cron:sitemaps')
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force updating')
@@ -148,7 +164,7 @@ EOT
 
 		/////
 
-		$templating = $this->getContainer()->get('twig');
+		$templating = $this->get('twig');
 
 		if ($verbose) {
 			$output->write('<info>Building index sitemap...</info>');
@@ -189,7 +205,7 @@ EOT
 	}
 
 	private function _createSitemapFile($entityClassName, $entityName, $section, $forced, $verbose, OutputInterface $output, $slugged = true) {
-		$templating = $this->getContainer()->get('twig');
+		$templating = $this->get('twig');
 
 		if ($verbose) {
 			$output->writeln('<info>Building '.$section.' sitemap...</info>');
@@ -224,17 +240,16 @@ EOT
 		}
 
         return Command::SUCCESS;
-
 	}
 
 	/////
 
 	private function _getEntityUrls($entityClassName, $entityName, $forced, $verbose, OutputInterface $output, $slugged = true) {
-		$router = $this->getContainer()->get('router');
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$router = $this->get('router');
+		$om = $this->getDoctrine()->getManager();
 		$entityRepository = $om->getRepository($entityClassName);
-		$picturedUtils = $this->getContainer()->get(PicturedUtils::class);
-		$videoHostingUtils = $this->getContainer()->get(VideoHostingUtils::class);
+		$picturedUtils = $this->get(PicturedUtils::class);
+		$videoHostingUtils = $this->get(VideoHostingUtils::class);
 
 		$urls = array();
 		$entities = $entityRepository->findAll();
@@ -372,7 +387,7 @@ EOT
 	/////
 
 	private function _getEntitySitemap($entityClassName, $section) {
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$entityRepository = $om->getRepository($entityClassName);
 		$lastCreatedEntity = $entityRepository->findLastCreated();
 		$lastUpdatedEntity = $entityRepository->findLastUpdated();
@@ -386,7 +401,7 @@ EOT
 			$lastmod = date_format(new \DateTime(), 'Y-m-d\TH:i:sP');
 		}
 		return array(
-			'loc'     => $this->getContainer()->get('assets.packages')->getUrl('/sitemap-'.$section.'.xml', 'sitemaps'),
+			'loc'     => $this->get('assets.packages')->getUrl('/sitemap-'.$section.'.xml', 'sitemaps'),
 			'lastmod' => $lastmod,
 		);
 	}

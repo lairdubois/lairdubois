@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateSpotlightsCommand extends AbstractCommand {
+class MigrateSpotlightsCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -26,7 +26,7 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getDoctrine()->getManager();
 
 		// Retrieve resources
 

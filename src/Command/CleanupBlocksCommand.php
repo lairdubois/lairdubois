@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CleanupBlocksCommand extends AbstractCommand {
+class CleanupBlocksCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -24,7 +24,7 @@ EOT
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Extract bodyBlocks /////
 

@@ -14,7 +14,7 @@ use App\Entity\Wonder\Plan;
 use App\Entity\Wonder\Workshop;
 use App\Entity\Blog\Post;
 
-class CleanupTagsCommand extends AbstractCommand {
+class CleanupTagsCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -29,7 +29,7 @@ EOT
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
 
 		// Extract tags /////

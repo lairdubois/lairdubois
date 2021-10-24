@@ -21,9 +21,18 @@ use App\Model\WatchableChildInterface;
 use App\Model\PublicationInterface;
 use App\Utils\TypableUtils;
 
-class CronNotificationPopulateCommand extends AbstractCommand {
+class CronNotificationPopulateCommand extends AbstractContainerAwareCommand {
 
-	protected function configure() {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.AbstractActivity::class,
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    /////
+
+    protected function configure() {
 		$this
 			->setName('ladb:cron:notification:populate')
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force updating')
@@ -41,11 +50,11 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$activityRepository = $om->getRepository(AbstractActivity::CLASS_NAME);
+		$om = $this->getDoctrine()->getManager();
+		$activityRepository = $om->getRepository(AbstractActivity::class);
 		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
 		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
-		$typableUtils = $this->getContainer()->get(TypableUtils::class);
+		$typableUtils = $this->get(TypableUtils::class);
 
 		$notifiedUsers = array();
 		$groupIdentifiers = array();
@@ -475,7 +484,6 @@ EOT
 		}
 
         return Command::SUCCESS;
-
 	}
 
 	/////
@@ -491,7 +499,7 @@ EOT
 		if (!is_null($values)) {
 			$data = array_merge($data, $values);
 		}
-		$hashids = new \Hashids\Hashids($this->getParameter('secret'), 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+		$hashids = new \Hashids\Hashids($this->getParameter('app_secret'), 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
 		return $hashids->encode($data);
 	}
 

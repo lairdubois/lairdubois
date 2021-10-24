@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\PropertyUtils;
 
-class GenerateContributionCountersCommand extends AbstractCommand {
+class GenerateContributionCountersCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -27,8 +27,8 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$propertyUtils = $this->getContainer()->get(PropertyUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$propertyUtils = $this->get(PropertyUtils::class);
 
 		$defs = array(
 			array(
@@ -183,7 +183,7 @@ EOT
 
 	private function _computeEntitiesCountersByUser($entityClassName, $entityName, $hiddable, $user, $forced, $verbose, OutputInterface $output) {
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve Entities
 

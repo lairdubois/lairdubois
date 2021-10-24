@@ -20,9 +20,18 @@ use App\Utils\TypableUtils;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
-class CronOffersCommand extends AbstractCommand {
+class CronOffersCommand extends AbstractContainerAwareCommand {
 
-	protected function configure() {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.OfferManager::class,
+            '?'.MailerUtils::class,
+        ));
+    }
+
+    /////
+
+    protected function configure() {
 		$this
 			->setName('ladb:cron:offers')
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force updating')
@@ -40,9 +49,9 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$offerManager = $this->getContainer()->get(OfferManager::class);
-		$mailerUtils = $this->getContainer()->get(MailerUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$offerManager = $this->get(OfferManager::class);
+		$mailerUtils = $this->get(MailerUtils::class);
 
 		// Retrieve OUTDATED offers
 
@@ -144,6 +153,5 @@ EOT
 		}
 
         return Command::SUCCESS;
-
 	}
 }

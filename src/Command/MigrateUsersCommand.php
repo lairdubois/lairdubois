@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateUsersCommand extends AbstractCommand {
+class MigrateUsersCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -31,10 +31,10 @@ EOT
 		$verbose = $input->getOption('verbose');
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$userRepository = $om->getRepository(User::class);
-		$userManager = $this->getContainer()->get(UserManager::class);
-		$displaynameCanonicalizer = $this->getContainer()->get(DisplaynameCanonicalizer::class);
+		$userManager = $this->get(UserManager::class);
+		$displaynameCanonicalizer = $this->get(DisplaynameCanonicalizer::class);
 
 		// Count users /////
 

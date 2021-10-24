@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InitCommand extends AbstractCommand {
+class InitCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this

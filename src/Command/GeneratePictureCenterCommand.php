@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GeneratePictureCenterCommand extends AbstractCommand {
+class GeneratePictureCenterCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -28,7 +28,7 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Count pictures /////
 

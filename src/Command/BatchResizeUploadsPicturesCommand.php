@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Core\Picture;
 
-class BatchResizeUploadsPicturesCommand extends AbstractCommand {
+class BatchResizeUploadsPicturesCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this

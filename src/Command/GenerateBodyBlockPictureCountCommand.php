@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\BlockBodiedUtils;
 
-class GenerateBodyBlockPictureCountCommand extends AbstractCommand {
+class GenerateBodyBlockPictureCountCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -55,8 +55,8 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$blockBodiedUtils = $this->getContainer()->get(BlockBodiedUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$blockBodiedUtils = $this->get(BlockBodiedUtils::class);
 
 		$entityCount = 0;
 

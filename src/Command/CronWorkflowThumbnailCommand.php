@@ -2,25 +2,28 @@
 
 namespace App\Command;
 
-use DirkGroenen\Pinterest\Pinterest;
-use App\Entity\Howto\Howto;
-use App\Entity\Wonder\Creation;
-use App\Model\StripableInterface;
-use App\Utils\WebScreenshotUtils;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Facebook\FacebookSession;
-use App\Entity\Core\Spotlight;
-use App\Utils\MailerUtils;
 use App\Utils\TypableUtils;
+use App\Utils\WebScreenshotUtils;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
-class CronWorkflowThumbnailCommand extends AbstractCommand {
+class CronWorkflowThumbnailCommand extends AbstractContainerAwareCommand {
 
-	protected function configure() {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            'router' => '?'.RouterInterface::class,
+            '?'.TypableUtils::class,
+            '?'.WebScreenshotUtils::class,
+        ));
+    }
+
+    /////
+
+    protected function configure() {
 		$this
 			->setName('ladb:cron:workflow:thumbnails')
 			->addOption('force', null, InputOption::VALUE_NONE, 'Force updating')
@@ -38,9 +41,9 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$webScreenshotUtils = $this->getContainer()->get(WebScreenshotUtils::class);
-		$router = $this->getContainer()->get('router');
+		$om = $this->getDoctrine()->getManager();
+		$webScreenshotUtils = $this->get(WebScreenshotUtils::class);
+		$router = $this->get('router');
 
 		// Retrieve workflows
 

@@ -3,18 +3,27 @@
 namespace App\Command;
 
 use App\Entity\Core\Comment;
+use App\Entity\Core\Notification;
+use App\Entity\Core\User;
 use App\Entity\Qa\Answer;
+use App\Model\WatchableChildInterface;
+use App\Utils\MailerUtils;
+use App\Utils\TypableUtils;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Entity\Core\User;
-use App\Entity\Core\Notification;
-use App\Utils\MailerUtils;
-use App\Utils\TypableUtils;
-use App\Model\WatchableChildInterface;
 
-class CronNotificationEmailCommand extends AbstractCommand {
+class CronNotificationEmailCommand extends AbstractContainerAwareCommand {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.MailerUtils::class,
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    /////
 
 	protected function configure() {
 		$this
@@ -34,7 +43,7 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
 
 		$this->_processActivityByActivityStrippedName(\App\Entity\Core\Activity\Comment::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
@@ -53,7 +62,8 @@ EOT
 		$this->_processActivityByActivityStrippedName(\App\Entity\Core\Activity\Invite::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\App\Entity\Core\Activity\Request::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 
-	}
+        return Command::SUCCESS;
+    }
 
 	private function _processActivityByActivityStrippedName($activityStrippedName, $output, $forced, $verbose, $om, $notificationRepository) {
 
@@ -86,10 +96,10 @@ EOT
 	private function _processUserNotifications(User $recipientUser, $notifications, $activityStrippedName, $output, $forced, $verbose, $om) {
 		if ($this->_isNotificationEnabledByActivityStrippedName($recipientUser, $activityStrippedName) && $recipientUser->getEmailConfirmed()) {
 
-			$typableUtils = $this->getContainer()->get(TypableUtils::class);
-			$mailerUtils = $this->getContainer()->get(MailerUtils::class);
-			$translator = $this->getContainer()->get('translator');
-			$templating = $this->getContainer()->get('twig');
+			$typableUtils = $this->get(TypableUtils::class);
+			$mailerUtils = $this->get(MailerUtils::class);
+			$translator = $this->get('translator');
+			$templating = $this->get('twig');
 
 			$rows = array();
 

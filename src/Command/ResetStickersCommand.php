@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ResetStickersCommand extends AbstractCommand {
+class ResetStickersCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -25,8 +25,8 @@ EOT
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$embaddableUtils = $this->getContainer()->get(EmbeddableUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$embaddableUtils = $this->get(EmbeddableUtils::class);
 
 		$resetStickerCount = 0;
 

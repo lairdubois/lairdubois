@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateTagUsagesCommand extends AbstractCommand {
+class GenerateTagUsagesCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -25,7 +25,7 @@ EOT
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Check creations /////
 
@@ -158,7 +158,7 @@ EOT
 	}
 
 	private function _generateTagUsages(TaggableInterface $taggable) {
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
 		foreach ($taggable->getTags() as $tag) {
 			$tagUsage = $tagUsageRepository->findOneByTagAndEntityType($tag, $taggable->getType());

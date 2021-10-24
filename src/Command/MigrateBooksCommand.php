@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateBooksCommand extends AbstractCommand {
+class MigrateBooksCommand extends AbstractContainerAwareCommand {
 
 	private $toTransferCommentables = array();
 	private $toTransferVotables = array();
@@ -34,7 +34,7 @@ EOT
 
 	private function _convertValues($book, $oldValues, $output) {
 
-		$knowledgeUtils = $this->getContainer()->get(KnowledgeUtils::class);
+		$knowledgeUtils = $this->get(KnowledgeUtils::class);
 
 		foreach ($oldValues as $oldValue) {
 
@@ -76,9 +76,9 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$commentableUtils = $this->getContainer()->get(CommentableUtils::class);
-		$votableUtils = $this->getContainer()->get(VotableUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$commentableUtils = $this->get(CommentableUtils::class);
+		$votableUtils = $this->get(VotableUtils::class);
 
 		// Retrieve Books
 

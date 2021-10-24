@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Model\AuthoredInterface;
 use App\Utils\TypableUtils;
 
-class GenerateTexturesCommand extends AbstractCommand {
+class GenerateTexturesCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -29,8 +29,8 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$textureUtils = $this->getContainer()->get(TextureUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$textureUtils = $this->get(TextureUtils::class);
 
 		// Retrieve Woods
 

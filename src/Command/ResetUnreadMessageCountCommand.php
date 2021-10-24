@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Message\MessageMeta;
 
-class ResetUnreadMessageCountCommand extends AbstractCommand {
+class ResetUnreadMessageCountCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -28,7 +28,7 @@ EOT
 		$verbose = $input->getOption('verbose');
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$messageMetaRepository = $om->getRepository(MessageMeta::CLASS_NAME);
 
 		// Count users /////

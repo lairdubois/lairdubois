@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\BlockBodiedUtils;
 
-class GenerateHtmlBodiesCommand extends AbstractCommand {
+class GenerateHtmlBodiesCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -60,8 +60,8 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$filedProcessoUtils = $this->getContainer()->get(FieldPreprocessorUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$filedProcessoUtils = $this->get(FieldPreprocessorUtils::class);
 
 		$entityCount = 0;
 

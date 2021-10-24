@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Core\Block\Text;
 
-class MigrateFindsCommand extends AbstractCommand {
+class MigrateFindsCommand extends AbstractContainerAwareCommand {
 
 	private $toTransferCommentables = array();
 	private $toTransferVotables = array();
@@ -29,8 +29,8 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$fieldPreprocessorUtils = $this->getContainer()->get(FieldPreprocessorUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::class);
 
 		// Retrieve Finds
 

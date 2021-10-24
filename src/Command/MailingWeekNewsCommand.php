@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\MailerUtils;
 
-class MailingWeekNewsCommand extends AbstractCommand {
+class MailingWeekNewsCommand extends AbstractContainerAwareCommand {
 
 	use LockableTrait;
 
@@ -37,8 +37,8 @@ EOT
 		$verbose = $input->getOption('verbose');
 		$limit = $input->getOption('limit');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$mailerUtils = $this->getContainer()->get(MailerUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$mailerUtils = $this->get(MailerUtils::class);
 
 		$now = new \DateTime();
 		$date = $now->sub(new \DateInterval('P7D'));	// 7 days

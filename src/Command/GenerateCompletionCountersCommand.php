@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Utils\PropertyUtils;
 
-class GenerateCompletionCountersCommand extends AbstractCommand {
+class GenerateCompletionCountersCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -29,8 +29,8 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$knowledgeUtils = $this->getContainer()->get(KnowledgeUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$knowledgeUtils = $this->get(KnowledgeUtils::class);
 
 		$defs = array(
 			array(
@@ -83,7 +83,7 @@ EOT
 
 	private function _computeEntitiesCountersByUser($entityClassName, $entityName, $hiddable, $user, $forced, $verbose, OutputInterface $output) {
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve Entities
 

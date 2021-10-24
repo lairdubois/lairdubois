@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Core\User;
 use App\Utils\ActivityUtils;
 
-class CleanupLikesCommand extends AbstractCommand {
+class CleanupLikesCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -26,9 +26,9 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 		$userRepository = $om->getRepository(User::CLASS_NAME);
-		$activityUtils = $this->getContainer()->get(ActivityUtils::class);
+		$activityUtils = $this->get(ActivityUtils::class);
 
 		$sql = '
 			SELECT count(id) as counter, entity_type, entity_id, user_id

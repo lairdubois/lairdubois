@@ -24,7 +24,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Core\Block\Text;
 
-class MigrateEventsCommand extends AbstractCommand {
+class MigrateEventsCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -41,8 +41,8 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$fieldPreprocessorUtils = $this->getContainer()->get(FieldPreprocessorUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::class);
 
 		// Retrieve Finds
 
@@ -93,7 +93,7 @@ EOT
 			$event->setUrl($find->getContent()->getUrl());
 			$event->setCancelled($find->getContent()->getCancelled());
 
-			$blockBodiedUtils = $this->getContainer()->get(BlockBodiedUtils::class);
+			$blockBodiedUtils = $this->get(BlockBodiedUtils::class);
 			$blockBodiedUtils->copyBlocksTo($find, $event);
 
 			foreach ($find->getContent()->getPictures() as $picture) {
@@ -105,7 +105,7 @@ EOT
 			}
 
 			// Setup event's htmlBody
-			$fieldPreprocessorUtils = $this->getContainer()->get(FieldPreprocessorUtils::class);
+			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::class);
 			$fieldPreprocessorUtils->preprocessFields($event);
 
 			if ($forced) {
@@ -122,47 +122,47 @@ EOT
 			}
 
 			// Transfer views
-			$viewableUtils = $this->getContainer()->get(ViewableUtils::class);
+			$viewableUtils = $this->get(ViewableUtils::class);
 			$viewableUtils->transferViews($find, $event, false);
 
 			// Transfer likes
-			$likableUtils = $this->getContainer()->get(LikableUtils::class);
+			$likableUtils = $this->get(LikableUtils::class);
 			$likableUtils->transferLikes($find, $event, false);
 
 			// Transfer comments
-			$commentableUtils = $this->getContainer()->get(CommentableUtils::class);
+			$commentableUtils = $this->get(CommentableUtils::class);
 			$commentableUtils->transferComments($find, $event, false);
 
 			// Transfer watches
-			$watchableUtils = $this->getContainer()->get(WatchableUtils::class);
+			$watchableUtils = $this->get(WatchableUtils::class);
 			$watchableUtils->transferWatches($find, $event, false);
 
 			// Transfer joins
-			$joinableUtils = $this->getContainer()->get(JoinableUtils::class);
+			$joinableUtils = $this->get(JoinableUtils::class);
 			$joinableUtils->transferJoins($find, $event, false);
 
 			// Transfer collections
-			$collectionnableUtils = $this->getContainer()->get(CollectionnableUtils::class);
+			$collectionnableUtils = $this->get(CollectionnableUtils::class);
 			$collectionnableUtils->transferCollections($find, $event, false);
 
 			// transfer reports
-			$reportableUtils = $this->getContainer()->get(ReportableUtils::class);
+			$reportableUtils = $this->get(ReportableUtils::class);
 			$reportableUtils->transferReports($find, $event, false);
 
 			// Transfer publish activities
-			$activityUtils = $this->getContainer()->get(ActivityUtils::class);
+			$activityUtils = $this->get(ActivityUtils::class);
 			$activityUtils->transferPublishActivities($find->getType(), $find->getId(), $event->getType(), $event->getId(), false);
 
 			// Create the witness
-			$witnessManager = $this->getContainer()->get(WitnessManager::class);
+			$witnessManager = $this->get(WitnessManager::class);
 			$witnessManager->createConvertedByPublication($find, $event, false);
 
 			// Dispatch publications event
-			$dispatcher = $this->getContainer()->get('event_dispatcher');
+			$dispatcher = $this->get('event_dispatcher');
 			$dispatcher->dispatch(new PublicationEvent($event), PublicationListener::PUBLICATION_CREATED_FROM_CONVERT);
 
 			// Delete the find
-			$findManager = $this->getContainer()->get(FindManager::class);
+			$findManager = $this->get(FindManager::class);
 			$findManager->delete($find, false, false);
 
 			$output->writeln('<comment>[Done]</comment>');

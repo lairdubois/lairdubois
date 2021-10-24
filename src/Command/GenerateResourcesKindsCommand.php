@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateResourcesKindsCommand extends AbstractCommand {
+class GenerateResourcesKindsCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -26,7 +26,7 @@ EOT
 		$forced = $input->getOption('force');
 		$verbose = $input->getOption('verbose');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve resources
 

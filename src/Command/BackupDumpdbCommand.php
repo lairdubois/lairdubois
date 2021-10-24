@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class BackupDumpdbCommand extends AbstractCommand {
+class BackupDumpdbCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this

@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ChangeOwnerCommand extends AbstractCommand {
+class ChangeOwnerCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -43,11 +43,11 @@ EOT
 		$entityType = $input->getOption('entity-type');
 		$entityId = $input->getOption('entity-id');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve target user ////
 
-		$userManager = $this->getContainer()->get(UserManager::class);
+		$userManager = $this->get(UserManager::class);
 		$targetUser = $userManager->findUserByUsername($targetUsername);
 
 		if (is_null($targetUser)) {
@@ -57,7 +57,7 @@ EOT
 
 		// Retrieve creation ////
 
-		$typableUtils = $this->getContainer()->get(TypableUtils::class);
+		$typableUtils = $this->get(TypableUtils::class);
 		$typable = $typableUtils->findTypable($entityType, $entityId);
 
 		$output->write('<info>Changing Owner of typable="'.$typable->getTitle().'" to targetUser='.$targetUser->getDisplayName().'...</info>');

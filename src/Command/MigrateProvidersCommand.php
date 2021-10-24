@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateProvidersCommand extends AbstractCommand {
+class MigrateProvidersCommand extends AbstractContainerAwareCommand {
 
 	private $toTransferCommentables = array();
 	private $toTransferVotables = array();
@@ -33,8 +33,8 @@ EOT
 
 	private function _convertValues($provider, $oldValues, $field, $choices, $output) {
 
-		$propertyUtils = $this->getContainer()->get(PropertyUtils::class);
-		$knowledgeUtils = $this->getContainer()->get(KnowledgeUtils::class);
+		$propertyUtils = $this->get(PropertyUtils::class);
+		$knowledgeUtils = $this->get(KnowledgeUtils::class);
 
 		foreach ($oldValues as $oldValue) {
 
@@ -88,9 +88,9 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
-		$commentableUtils = $this->getContainer()->get(CommentableUtils::class);
-		$votableUtils = $this->getContainer()->get(VotableUtils::class);
+		$om = $this->getDoctrine()->getManager();
+		$commentableUtils = $this->get(CommentableUtils::class);
+		$votableUtils = $this->get(VotableUtils::class);
 
 		// Retrieve Providers
 

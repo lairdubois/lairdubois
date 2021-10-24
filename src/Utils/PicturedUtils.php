@@ -10,7 +10,15 @@ use App\Model\MultiPicturedInterface;
 
 class PicturedUtils extends AbstractContainerAwareUtils {
 
-	public function resetPictures($entity) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            'liip_imagine.cache.manager' => '?'.CacheManager::class,
+        ));
+    }
+
+    /////
+
+    public function resetPictures($entity) {
 		if ($entity instanceof MultiPicturedInterface) {
 			$entity->resetPictures();
 		}

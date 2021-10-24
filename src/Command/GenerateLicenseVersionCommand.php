@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Core\Vote;
 
-class GenerateLicenseVersionCommand extends AbstractCommand {
+class GenerateLicenseVersionCommand extends AbstractContainerAwareCommand {
 
 	protected function configure() {
 		$this
@@ -25,7 +25,7 @@ EOT
 
 		$forced = $input->getOption('force');
 
-		$om = $this->getContainer()->get('doctrine')->getManager();
+		$om = $this->getDoctrine()->getManager();
 
 		// Retrieve Licenses
 
