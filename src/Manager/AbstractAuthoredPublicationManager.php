@@ -4,12 +4,10 @@ namespace App\Manager;
 
 use App\Entity\AbstractAuthoredPublication;
 use App\Entity\Core\Block\Gallery;
-use App\Entity\Core\Feedback;
 use App\Entity\Core\Like;
 use App\Entity\Core\User;
 use App\Model\AuthoredInterface;
 use App\Model\BlockBodiedInterface;
-use App\Model\FeedbackableInterface;
 use App\Model\IndexableInterface;
 use App\Model\MultiPicturedInterface;
 use App\Model\PicturedInterface;
@@ -17,7 +15,15 @@ use App\Utils\SearchUtils;
 
 abstract class AbstractAuthoredPublicationManager extends AbstractPublicationManager {
 
-	protected function changeOwnerPublication(AbstractAuthoredPublication $publication, User $targetUser, $flush = true) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.SearchUtils::class,
+        ));
+    }
+
+    /////
+
+    protected function changeOwnerPublication(AbstractAuthoredPublication $publication, User $targetUser, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
 		$originUser = $publication->getUser();

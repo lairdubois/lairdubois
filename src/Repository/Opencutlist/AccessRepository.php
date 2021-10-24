@@ -60,7 +60,7 @@ class AccessRepository extends AbstractEntityRepository {
 			$valueIndex += 1;
 			$stmt->bindValue($valueIndex, $locale);
 		}
-		$stmt->execute();
+		$stmt->executeStatement();
 
 		return $stmt->fetchAll();
 	}

@@ -48,6 +48,40 @@ class UserRepository extends AbstractEntityRepository {
         }
     }
 
+    public function findOneByEmail($email) {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select(array( 'u' ))
+            ->from($this->getEntityName(), 'u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->setMaxResults(1)
+        ;
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findOneByConfirmationToken($confirmationToken) {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder
+            ->select(array( 'u' ))
+            ->from($this->getEntityName(), 'u')
+            ->where('u.confirmationToken = :confirmationToken')
+            ->setParameter('confirmationToken', $confirmationToken)
+            ->setMaxResults(1)
+        ;
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
 	/////
 
 	public function countDonors() {

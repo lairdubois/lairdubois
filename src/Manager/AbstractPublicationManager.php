@@ -21,8 +21,25 @@ use App\Utils\LikableUtils;
 use App\Utils\MentionUtils;
 use App\Utils\ReportableUtils;
 use App\Utils\WatchableUtils;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 
 abstract class AbstractPublicationManager extends AbstractManager {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            'event_dispatcher' => '?'.EventDispatcherInterface::class,
+            '?'.WitnessManager::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.LikableUtils::class,
+            '?'.MentionUtils::class,
+            '?'.ReportableUtils::class,
+            '?'.WatchableUtils::class,
+        ));
+    }
+
+    /////
 
     public function lock(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();

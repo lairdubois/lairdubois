@@ -77,7 +77,6 @@ abstract class AbstractController extends BaseController {
             '?'.VotableUtils::class,
             '?'.WatchableUtils::class,
             '?'.WitnessManager::class,
-            '?'.UserManager::class,
         ));
     }
 

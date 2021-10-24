@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Entity\Core\User;
 use App\Fos\UserManager;
 use App\Model\BlockBodiedInterface;
 use App\Model\BodiedInterface;
@@ -13,7 +14,6 @@ class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            '?'.UserManager::class,
             '?'.UrlUtils::class,
         ));
     }
@@ -55,7 +55,7 @@ class FieldPreprocessorUtils extends AbstractContainerAwareUtils {
 	public function preprocessHtmlBodyField(HtmlBodiedInterface $bodied) {
 
 		// Render HTML Body
-		$parser = new LadbMarkdown($this->get(UserManager::class), $this->get('router'), $this->get(UrlUtils::class));
+		$parser = new LadbMarkdown($this->getDoctrine()->getManager()->getRepository(User::CLASS_NAME), $this->get('router'), $this->get(UrlUtils::class));
 		$htmlBody = $parser->parse($bodied->getBody());
 		$bodied->setHtmlBody($htmlBody);
 

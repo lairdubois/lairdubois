@@ -72,7 +72,7 @@ class MemberController extends AbstractController {
 		$this->createLock('core_member_invitation_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get(UserManager::class);
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
 		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
 		$memberRepository = $om->getRepository(Member::CLASS_NAME);
@@ -90,7 +90,7 @@ class MemberController extends AbstractController {
 				continue;
 			}
 
-			$recipient = $userManager->findUserByUsername($username);
+			$recipient = $userRepository->findOneByUsername($username);
 			// Check if recipient exists or is enabled or is team
 			if (is_null($recipient) || !$recipient->isEnabled() || $recipient->getIsTeam()) {
 				$this->get('session')->getFlashBag()->add('error', '<i class="ladb-icon-warning"></i> '.$recipient.' est invalide.');

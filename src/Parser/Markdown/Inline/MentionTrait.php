@@ -24,7 +24,7 @@ trait MentionTrait {
 	}
 
 	protected function renderMention($block) {
-		$user = $this->userManager->findUserByUsername($this->renderAbsy($block[1]));
+		$user = $this->userRepository->findOneByUsername($this->renderAbsy($block[1]));
 		if (!is_null($user)) {
 			return '<a href="/@'.$user->getUsernameCanonical().'" class="ladb-mention"><span>'.$user->getDisplayName().'</span></a>';
 		}

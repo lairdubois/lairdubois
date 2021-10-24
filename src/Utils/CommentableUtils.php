@@ -13,10 +13,25 @@ use App\Model\DraftableInterface;
 use App\Model\IndexableInterface;
 use App\Model\WatchableChildInterface;
 use App\Model\WatchableInterface;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
 class CommentableUtils extends AbstractContainerAwareUtils {
 
-	public function finalizeNewComment(Comment $comment, CommentableInterface $commentable) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            'liip_imagine.cache.manager' => '?'.CacheManager::class,
+            '?'.ActivityUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.MentionUtils::class,
+            '?'.SearchUtils::class,
+            '?'.WatchableUtils::class,
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    /////
+
+    public function finalizeNewComment(Comment $comment, CommentableInterface $commentable) {
 		$om = $this->getDoctrine()->getManager();
 
 		$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::class);

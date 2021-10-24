@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class LadbMarkdown extends Parser {
 
-	private $userManager;
+	private $userRepository;
 	private $router;
 	private $urlUtils;
 
@@ -66,8 +66,8 @@ class LadbMarkdown extends Parser {
 
 	/////
 
-	public function __construct($userManager, $router, $urlUtils) {
-		$this->userManager = $userManager;
+	public function __construct($userRepository, $router, $urlUtils) {
+		$this->userRepository = $userRepository;
 		$this->router = $router;
 		$this->urlUtils = $urlUtils;
 	}

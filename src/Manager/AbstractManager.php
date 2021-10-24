@@ -2,26 +2,9 @@
 
 namespace App\Manager;
 
-use App\Manager\Core\WitnessManager;
-use App\Manager\Qa\QuestionManager;
-use App\Utils\ActivityUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\CollectionnableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FeedbackableUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\JoinableUtils;
-use App\Utils\LikableUtils;
-use App\Utils\MentionUtils;
-use App\Utils\ReportableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\TypableUtils;
-use App\Utils\ViewableUtils;
-use App\Utils\VotableUtils;
-use App\Utils\WatchableUtils;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 abstract class AbstractManager implements ServiceSubscriberInterface {
@@ -32,27 +15,12 @@ abstract class AbstractManager implements ServiceSubscriberInterface {
 		$this->container = $container;
 	}
 
+    /////
+
     public static function getSubscribedServices() {
         return array(
             'doctrine' => '?'.ManagerRegistry::class,
-            'event_dispatcher' => '?'.EventDispatcherInterface::class,
-            '?'.ActivityUtils::class,
-            '?'.BlockBodiedUtils::class,
-            '?'.CollectionnableUtils::class,
-            '?'.CommentableUtils::class,
-            '?'.FeedbackableUtils::class,
-            '?'.FieldPreprocessorUtils::class,
-            '?'.JoinableUtils::class,
-            '?'.LikableUtils::class,
-            '?'.MentionUtils::class,
-            '?'.QuestionManager::class,
-            '?'.ReportableUtils::class,
-            '?'.SearchUtils::class,
-            '?'.TypableUtils::class,
-            '?'.ViewableUtils::class,
-            '?'.VotableUtils::class,
-            '?'.WatchableUtils::class,
-            '?'.WitnessManager::class,
+            'parameter_bag' => '?'.ParameterBagInterface::class,
         );
     }
 
@@ -62,7 +30,11 @@ abstract class AbstractManager implements ServiceSubscriberInterface {
 		return $this->container->get($id);
 	}
 
-	public function getDoctrine() {
+    public function getParameter($name) {
+        return $this->get('parameter_bag')->get($name);
+    }
+
+    public function getDoctrine() {
 		if (!$this->container->has('doctrine')) {
 			throw new \LogicException('The DoctrineBundle is not registered in your application.');
 		}

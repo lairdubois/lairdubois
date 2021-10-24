@@ -28,7 +28,20 @@ use App\Utils\MentionUtils;
  */
 class CommentController extends AbstractController {
 
-	private function _retrieveRelatedEntity($entityType, $entityId) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PicturedUtils::class,
+            '?'.SearchUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.TypableUtils::class,
+            '?'.MentionUtils::class,
+        ));
+    }
+
+    /////
+
+    private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::class);
 		try {
 			$entity = $typableUtils->findTypable($entityType, $entityId);

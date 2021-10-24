@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     # Inject needed environment variables in container parameter for easing migration sf 3.4 -> 5.3
+    admin_username: '%env(ADMIN_USERNAME)%'
     memcached_host: '%env(MEMCACHED_HOST)%'
     memcached_port: '%env(MEMCACHED_PORT)%'
     google_api_key: '%env(GOOGLE_API_KEY)%'
@@ -37,19 +38,18 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-#            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_creation"
+            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_creation"
 #            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_plan"
-            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_workshop"
+#            FOS\ElasticaBundle\Persister\ObjectPersister: "@fos_elastica.object_persister.wonder_workshop"
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Model/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
             - '../src/Form/DataTransformer'
             - '../src/Form/EventListener'
             - '../src/Form/Model'

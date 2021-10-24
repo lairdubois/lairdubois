@@ -2,6 +2,7 @@
 
 namespace App\Controller\Message;
 
+use App\Entity\Core\User;
 use App\Entity\Message\MessageMeta;
 use App\Fos\UserManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,8 +34,9 @@ class ThreadController extends AbstractThreadController {
 		$newThreadMessage = new NewThreadMessage();
 
 		if (!is_null($recipientUsername)) {
-			$userManager = $this->get(UserManager::class);
-			$recipient = $userManager->findUserByUsername($recipientUsername);
+		    $om = $this->getDoctrine()->getManager();
+		    $userRepository = $om->getRepository(User::CLASS_NAME);
+			$recipient = $userRepository->findOneByUsername($recipientUsername);
 			if (is_null($recipient)) {
 				throw $this->createNotFoundException('User not found (core_message_thread_new_recipientusername)');
 			}

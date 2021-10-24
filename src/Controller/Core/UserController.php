@@ -168,12 +168,13 @@ class UserController extends AbstractController {
 	 * @Template("Core/User/emailConfirm.html.twig")
 	 */
 	public function emailConfirm($token) {
-		$userManager = $this->container->get(UserManager::class);
+	    $om = $this->getDoctrine()->getManager();
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 
 		$invalidToken = false;
 		$invalidUser = false;
 
-		$user = $userManager->findUserByConfirmationToken($token);
+		$user = $userRepository->findOneByConfirmationToken($token);
 		if (null === $user) {
 			$invalidToken = true;
 		} else if ($this->getUser()->getId() != $user->getId()) {
@@ -185,7 +186,7 @@ class UserController extends AbstractController {
 			$user->setConfirmationToken(null);
 			$user->setEmailConfirmed(true);
 
-			$userManager->updateUser($user);
+			$om->flush();
 
 			// Flashbag
 			$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.email_confirmation.confirm.success', array( '%email%' => $user->getEmail() )));
@@ -204,12 +205,13 @@ class UserController extends AbstractController {
 	 * @Template("Core/User/emailUnsubscribe.html.twig")
 	 */
 	public function emailUnsubscribe($list, $encryptedEmail) {
-		$userManager = $this->container->get(UserManager::class);
+        $om = $this->getDoctrine()->getManager();
+        $userRepository = $om->getRepository(User::CLASS_NAME);
 
 		$invalidEmail = false;
 
 		$email = $this->get(CryptoUtils::class)->decryptString($encryptedEmail);
-		$user = $userManager->findUserByEmail($email);
+		$user = $userRepository->findOneByEmail($email);
 		if (null === $user) {
 			$invalidEmail = true;
 		}
@@ -234,7 +236,7 @@ class UserController extends AbstractController {
 
 			}
 
-			$userManager->updateUser($user);
+			$om->flush();
 
 		}
 
@@ -483,8 +485,8 @@ class UserController extends AbstractController {
 				}
 
 				// Final update of user entity
-				$userManager = $this->get(UserManager::class);
-				$userManager->updateUser($user, true);
+                // TODO : Process empty display name
+                $om->flush();
 
 				// Search index update
 				$searchUtils = $this->get(SearchUtils::class);
@@ -1879,9 +1881,10 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$userManager = $this->get(UserManager::class);
+		$om = $this->getDoctrine()->getManager();
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 
-		$user = $userManager->findUserByUsername($username);
+		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
 			throw $this->createNotFoundException('User not found');
 		}
@@ -1904,10 +1907,10 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get(UserManager::class);
+        $om = $this->getDoctrine()->getManager();
+        $userRepository = $om->getRepository(User::CLASS_NAME);
 
-		$user = $userManager->findUserByUsername($username);
+		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
 			throw $this->createNotFoundException('User not found');
 		}
@@ -1964,10 +1967,11 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$userManager = $this->get(UserManager::class);
+        $om = $this->getDoctrine()->getManager();
+		$userRepository = $om->getRepository(User::CLASS_NAME);
 		$manipulator = $this->get('fos_user.util.user_manipulator');
 
-		$user = $userManager->findUserByUsername($username);
+		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
 			throw $this->createNotFoundException('User not found');
 		}
@@ -1992,10 +1996,11 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$userManager = $this->get(UserManager::class);
+        $om = $this->getDoctrine()->getManager();
+        $userRepository = $om->getRepository(User::CLASS_NAME);
 		$manipulator = $this->get('fos_user.util.user_manipulator');
 
-		$user = $userManager->findUserByUsername($username);
+		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
 			throw $this->createNotFoundException('User not found');
 		}
@@ -2020,10 +2025,10 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get(UserManager::class);
+        $om = $this->getDoctrine()->getManager();
+        $userRepository = $om->getRepository(User::CLASS_NAME);
 
-		$user = $userManager->findUserByUsername($username);
+		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
 			throw $this->createNotFoundException('User not found');
 		}
@@ -2059,10 +2064,10 @@ class UserController extends AbstractController {
 			throw $this->createNotFoundException('Access denied');
 		}
 
-		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get(UserManager::class);
+        $om = $this->getDoctrine()->getManager();
+        $userRepository = $om->getRepository(User::CLASS_NAME);
 
-		$user = $userManager->findUserByUsername($username);
+		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
 			throw $this->createNotFoundException('User not found');
 		}

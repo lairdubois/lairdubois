@@ -18,9 +18,9 @@ class SearchUtils extends AbstractContainerAwareUtils {
         return array_merge(parent::getSubscribedServices(), array(
             'logger' => '?'.LoggerInterface::class,
             'fos_elastica.index_manager' => '?'.IndexManager::class,
-//            'fos_elastica.object_persister.wonder_creation' => '?'.ObjectPersister::class,
+            'fos_elastica.object_persister.wonder_creation' => '?'.ObjectPersister::class,
 //            'fos_elastica.object_persister.wonder_plan' => '?'.ObjectPersister::class,
-            'fos_elastica.object_persister.wonder_workshop' => '?'.ObjectPersister::class,
+//            'fos_elastica.object_persister.wonder_workshop' => '?'.ObjectPersister::class,
             /* TODO : Find a way to bind other ObjectPersister */
         ));
     }

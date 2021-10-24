@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\Core\User;
 use App\Utils\UrlUtils;
 use App\Utils\VideoHostingUtils;
 use App\Parser\Markdown\LadbMarkdown;
@@ -28,7 +29,6 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
         return array(
             'router' => '?'.RouterInterface::class,
             'translator' => '?'.TranslatorInterface::class,
-            '?'.UserManager::class,
             '?'.UrlUtils::class,
             '?'.TypableUtils::class,
             '?'.VideoHostingUtils::class,
@@ -95,7 +95,7 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 	}
 
 	public function markdownFilter($str) {
-		$parser = new LadbMarkdown($this->container->get(UserManager::class), $this->container->get('router'), $this->container->get(UrlUtils::class));
+		$parser = new LadbMarkdown($this->container->get('doctrine')->getManager()->getRepository(User::CLASS_NAME), $this->container->get('router'), $this->container->get(UrlUtils::class));
 		return $parser->parse($str);
 	}
 

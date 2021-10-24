@@ -3,7 +3,6 @@
 namespace App\Manager\Wonder;
 
 use App\Entity\Core\User;
-use App\Entity\Howto\Article;
 use App\Entity\Wonder\Creation;
 use App\Event\PublicationEvent;
 use App\Event\PublicationListener;
@@ -19,6 +18,19 @@ use App\Utils\ViewableUtils;
 use App\Utils\WatchableUtils;
 
 class CreationManager extends AbstractWonderManager {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.FeedbackableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.ReportableUtils::class,
+            '?'.ViewableUtils::class,
+        ));
+    }
+
+    /////
 
 	public function publish(Creation $creation, $flush = true) {
 

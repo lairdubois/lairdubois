@@ -5,6 +5,7 @@ namespace App\Controller\Core;
 use App\Controller\AbstractController;
 use App\Entity\Core\User;
 use App\Form\Type\Security\RegisterType;
+use App\Manager\Core\UserManager;
 use App\Utils\StringUtils;
 use App\Utils\UserUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,7 +43,7 @@ class SecurityController extends AbstractController  {
     /**
      * @Route("/register", name="_security_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserUtils $userUtils, StringUtils $stringUtils) {
+    public function register(Request $request, UserManager $userManager, UserUtils $userUtils) {
 
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
@@ -50,21 +51,9 @@ class SecurityController extends AbstractController  {
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user->setUsernameCanonical($stringUtils->canonicalize($user->getUsername()));
-            $user->setEmailCanonical(strtolower($user->getEmail()));
-            $user->setPassword($passwordHasher->hashPassword(
-                $user,
-                $form->get('plainPassword')->getData()
-            ));
-            $user->setCreatedAt(new \DateTime());
-            $user->setDisplayname($user->getUsername());
-            $user->setDisplaynameCanonical($stringUtils->canonicalize($user->getUsername()));
-            $user->setEnabled(true);
+            $userUtils->createDefaultAvatar($user);
 
-            $userUtils->createDefaultAvatar($user, false);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $userManager->createFromEntity($user, $form->get('plainPassword')->getData());
 
             return $this->render('Security/Registration/confirmed.html.twig', array(
                 'user' => $user,

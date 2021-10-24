@@ -7,11 +7,8 @@ use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Imagine\Image\Palette\RGB;
-use App\Entity\AbstractPublication;
-use App\Entity\Core\Picture;
 use App\Entity\Core\User;
 use App\Entity\Core\View;
-use App\Fos\UserManager;
 use App\Manager\Core\PictureManager;
 use App\Model\HiddableInterface;
 
@@ -83,8 +80,8 @@ class UserUtils extends AbstractContainerAwareUtils {
 		}
 
 		if ($updated) {
-			$userManager = $this->get(UserManager::class);
-			$userManager->updateUser($user);
+		    $om = $this->getDoctrine()->getManager();
+		    $om->flush();
 		}
 
 	}
@@ -161,8 +158,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 					$propertyUtils->setValue($meta, $unlistedCountPropertyPath, $count);
 
 					if ($flush) {
-						$userManager = $this->get(UserManager::class);
-						$userManager->updateUser($user);
+					    $om->flush();
 					}
 
 					return true;

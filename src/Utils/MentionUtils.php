@@ -3,14 +3,22 @@
 namespace App\Utils;
 
 use App\Entity\Core\Mention;
-use App\Fos\UserManager;
+use App\Entity\Core\User;
 use App\Model\BodiedInterface;
 use App\Model\HiddableInterface;
 use App\Model\MentionSourceInterface;
 
 class MentionUtils extends AbstractContainerAwareUtils {
 
-	public function deleteMentions(MentionSourceInterface $entity, $flush = true) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+        ));
+    }
+
+    /////
+
+    public function deleteMentions(MentionSourceInterface $entity, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$mentionRepository = $om->getRepository(Mention::CLASS_NAME);
 
@@ -45,6 +53,7 @@ class MentionUtils extends AbstractContainerAwareUtils {
 			return;		// Do nothing for non public entities
 		}
 		if ($entity instanceof BodiedInterface) {
+            $om = $this->getDoctrine()->getManager();
 
 			// Retrieve entity body
 			$body = $entity->getBody();
@@ -62,17 +71,17 @@ class MentionUtils extends AbstractContainerAwareUtils {
 			$mentionedUsernames = array_unique($mentionedUsernames);
 
 			// Retrieve mentioned users
-			$userMananger = $this->get(UserManager::class);
+            $userRepository = $om->getRepository(User::CLASS_NAME);
 			$mentionedUsers = array();
 			foreach ($mentionedUsernames as $username) {
-				$user = $userMananger->findUserByUsername($username);
+				$user = $userRepository->findOneByUsername($username);
 				if (!is_null($user) && !in_array($user, $mentionedUsers)) {
 					$mentionedUsers[] = $user;
 				}
 			}
 
 			// Retrieve mentions
-			$mentionRepository = $this->getDoctrine()->getRepository(Mention::CLASS_NAME);
+			$mentionRepository = $om->getRepository(Mention::CLASS_NAME);
 			$mentions = $mentionRepository->findByEntityTypeAndEntityId($entity->getType(), $entity->getId());
 
 			$mentionsToRemove = array();

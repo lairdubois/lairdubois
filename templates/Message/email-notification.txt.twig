@@ -1,4 +1,4 @@
-{% extends ':email-layout.txt.twig' %}
+{% extends 'email-layout.txt.twig' %}
 
 {% block content %}
 {% if originRecipientUser == recipientUser %}Vous avez{% else%}{{ originRecipientUser.displayname }} a{% endif%} avez reçu un nouveau message de la part de **{{ actorUser.displayname|raw }}** sur le sujet "{{ thread.subject|raw }}".

@@ -7,7 +7,7 @@ use App\Entity\Wonder\Plan;
 
 class PlanManager extends AbstractWonderManager {
 
-	public function publish(Plan $plan, $flush = true) {
+    public function publish(Plan $plan, $flush = true) {
 
 		$plan->getUser()->getMeta()->incrementPrivatePlanCount(-1);
 		$plan->getUser()->getMeta()->incrementPublicPlanCount();

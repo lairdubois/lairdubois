@@ -1,8 +1,8 @@
 /public/.htaccess
 /public/uploads
 /.idea/
-/bundles/
 /downloads
+/keys
 /uploads
 !/uploads/empty*
 ###> symfony/framework-bundle ###

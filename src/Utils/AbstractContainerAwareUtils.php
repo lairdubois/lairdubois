@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-use App\Manager\Core\PictureManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -19,6 +18,8 @@ abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface
     public function __construct(ContainerInterface $container) {
         $this->container = $container;
     }
+
+    /////
 
     public static function getSubscribedServices() {
         return array(
