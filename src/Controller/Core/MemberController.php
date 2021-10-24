@@ -3,7 +3,6 @@
 namespace App\Controller\Core;
 
 use Elastica\Exception\NotFoundException;
-use App\Fos\UserManager;
 use App\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +24,17 @@ use App\Utils\PaginatorUtils;
  */
 class MemberController extends AbstractController {
 
-	private function _retrieveTeam($teamId) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.MemberInvitationManager::class,
+            '?'.MemberRequestManager::class,
+            '?'.MemberManager::class,
+        ));
+    }
+
+    /////
+
+    private function _retrieveTeam($teamId) {
 		$om = $this->getDoctrine()->getManager();
 		$userRepository = $om->getRepository(User::CLASS_NAME);
 

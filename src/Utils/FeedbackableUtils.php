@@ -12,7 +12,15 @@ use App\Model\JoinableInterface;
 
 class FeedbackableUtils extends AbstractContainerAwareUtils {
 
-	public function deleteFeedbacks(FeedbackableInterface $feedbackable, $flush = true) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+        ));
+    }
+
+    /////
+
+    public function deleteFeedbacks(FeedbackableInterface $feedbackable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
 		$activityUtils = $this->get(ActivityUtils::class);

@@ -35,10 +35,10 @@ class UserManager extends AbstractManager {
         $user->setUsername($username);
         $user->setEmail($email);
 
-        return $this->createFromEntity($user, $plainPassword, $roles);
+        return $this->createFromEntity($user, $roles);
     }
 
-    public function createFromEntity(User $user, string $plainPassword, array $roles = null) {
+    public function createFromEntity(User $user, array $roles = null) {
         $om = $this->getDoctrine()->getManager();
         $userRepository = $om->getRepository(User::CLASS_NAME);
         $stringUtils = $this->get(StringUtils::class);
@@ -61,7 +61,7 @@ class UserManager extends AbstractManager {
 
         // Fill fields /////
 
-        $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+        $user->setPassword($passwordHasher->hashPassword($user, $user->getPlainPassword()));
         $user->setCreatedAt(new \DateTime());
         $user->setDisplayname($user->getUsername());
         if (!is_null($roles)) {

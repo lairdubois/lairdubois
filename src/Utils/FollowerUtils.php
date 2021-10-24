@@ -2,15 +2,20 @@
 
 namespace App\Utils;
 
-use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Core\Follower;
-use App\Model\TypableInterface;
-use App\Model\TitledInterface;
 use App\Entity\Core\User;
 
 class FollowerUtils extends AbstractContainerAwareUtils {
 
-	public function deleteFollowersByUser(User $user, $flush = true) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+        ));
+    }
+
+    /////
+
+    public function deleteFollowersByUser(User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
 		$activityUtils = $this->get(ActivityUtils::class);

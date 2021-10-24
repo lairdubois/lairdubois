@@ -31,7 +31,6 @@ class RegisterType extends AbstractType {
             ->add('email', EmailType::class)
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
-                'mapped' => false,
                 'attr' => array( 'autocomplete' => 'new-password' ),
                 'first_options' => ['label' => 'form.password'],
                 'second_options' => ['label' => 'form.password_confirmation'],

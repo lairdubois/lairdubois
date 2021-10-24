@@ -8,6 +8,7 @@ use App\Utils\VideoHostingUtils;
 use App\Parser\Markdown\LadbMarkdown;
 use App\Utils\TypableUtils;
 use App\Fos\UserManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -27,6 +28,7 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 
     public static function getSubscribedServices() {
         return array(
+            'doctrine' => '?'.ManagerRegistry::class,
             'router' => '?'.RouterInterface::class,
             'translator' => '?'.TranslatorInterface::class,
             '?'.UrlUtils::class,

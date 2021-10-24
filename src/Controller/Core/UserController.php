@@ -2,6 +2,7 @@
 
 namespace App\Controller\Core;
 
+use App\Manager\Core\UserManager;
 use Elastica\Exception\NotFoundException;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use App\Controller\AbstractController;
@@ -16,7 +17,6 @@ use App\Entity\Core\Vote;
 use App\Entity\Offer\Offer;
 use App\Form\Type\Core\UserTeamSettingsType;
 use App\Form\Type\Core\UserTeamType;
-use App\Fos\UserManager;
 use App\Manager\Core\MemberInvitationManager;
 use App\Manager\Core\MemberManager;
 use App\Manager\Core\MemberRequestManager;
@@ -61,6 +61,9 @@ class UserController extends AbstractController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.UserUtils::class,
+            '?'.MemberInvitationManager::class,
+            '?'.MemberRequestManager::class,
+            '?'.MemberManager::class,
         ));
     }
 
@@ -107,7 +110,7 @@ class UserController extends AbstractController {
 			if (!is_null($memberInvitation)) {
 
 				// Flashbag
-				$this->get('session')->getFlashBag()->add('info', $this->get('templating')->render('Core/Member/_invitation-alert.part.html.twig', array(
+				$this->get('session')->getFlashBag()->add('info', $this->render('Core/Member/_invitation-alert.part.html.twig', array(
 					'invitation' => $memberInvitation,
 				)));
 
@@ -117,7 +120,7 @@ class UserController extends AbstractController {
 			if (!is_null($memberRequest)) {
 
 				// Flashbag
-				$this->get('session')->getFlashBag()->add('info', $this->get('templating')->render('Core/Member/_request-alert.part.html.twig', array(
+				$this->get('session')->getFlashBag()->add('info', $this->render('Core/Member/_request-alert.part.html.twig', array(
 					'request' => $memberRequest,
 				)));
 
@@ -1785,9 +1788,7 @@ class UserController extends AbstractController {
 			throw new NotFoundException('Not allowed (core_user_team_new)');
 		}
 
-		$userManager = $this->get(UserManager::class);
-
-		$team = $userManager->createUser();
+		$team = new User();
 		$form = $this->createForm(UserTeamType::class, $team);
 
 		return array(
@@ -1799,7 +1800,7 @@ class UserController extends AbstractController {
 	 * @Route("collectifs/create", methods={"POST"}, name="core_user_team_create")
 	 * @Template("Core/User/Team:new.html.twig")
 	 */
-	public function teamCreate(Request $request) {
+	public function teamCreate(Request $request, UserManager $userManager) {
 		if (!$this->getUser()->getEmailConfirmed()) {
 			throw new NotFoundException('Not allowed (core_user_team_create)');
 		}
@@ -1807,28 +1808,19 @@ class UserController extends AbstractController {
 		$this->createLock('core_user_team_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$userManager = $this->get(UserManager::class);
 
-		$team = $userManager->createUser();
-		$team->setEnabled(true);
+		$team = new User();
 		$team->setEmail(uniqid('', true).'-team@lairdubois.fr');		// Fake email - to bypass Registration validation on this field
-		$team->setPlainPassword(bin2hex(random_bytes(20)));									// Put a random password - to bypass Registration validation on this field AND avoid logon on this account
+		$team->setPlainPassword(bin2hex(random_bytes(20)));								// Put a random password - to bypass Registration validation on this field AND avoid logon on this account
 		$form = $this->createForm(UserTeamType::class, $team);
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
 
-			// Default avatar
-			if (is_null($team->getAvatar())) {
-				$userUtils = $this->get(UserUtils::class);
-				$userUtils->createDefaultAvatar($team);
-			}
+            $team->setIsTeam(true);
+            $team->getMeta()->setRequestEnabled(true);
 
-			$team->setIsTeam(true);
-			$team->setEmailCanonical($team->getEmail());
-			$team->addRole('ROLE_TEAM');
-			$team->getMeta()->setRequestEnabled(true);
-			$userManager->updateUser($team);
+		    $userManager->createFromEntity($team, array( 'ROLE_TEAM' ));
 
 			// Add team's creator as first member
 			$memberManager = $this->get(MemberManager::class);

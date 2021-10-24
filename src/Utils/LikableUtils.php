@@ -12,7 +12,15 @@ use App\Entity\Core\User;
 
 class LikableUtils extends AbstractContainerAwareUtils {
 
-	public function deleteLikes(LikableInterface $likable, $flush = true) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+        ));
+    }
+
+    /////
+
+    public function deleteLikes(LikableInterface $likable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 		$likeRepository = $om->getRepository(Like::CLASS_NAME);
 		$activityUtils = $this->get(ActivityUtils::class);

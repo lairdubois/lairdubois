@@ -43,7 +43,7 @@ class SecurityController extends AbstractController  {
     /**
      * @Route("/register", name="_security_register")
      */
-    public function register(Request $request, UserManager $userManager, UserUtils $userUtils) {
+    public function register(Request $request, UserManager $userManager) {
 
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
@@ -51,9 +51,7 @@ class SecurityController extends AbstractController  {
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $userUtils->createDefaultAvatar($user);
-
-            $userManager->createFromEntity($user, $form->get('plainPassword')->getData());
+            $userManager->createFromEntity($user);
 
             return $this->render('Security/Registration/confirmed.html.twig', array(
                 'user' => $user,
