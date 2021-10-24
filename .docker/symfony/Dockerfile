@@ -29,5 +29,6 @@ RUN echo 'memory_limit = 4G' >> /usr/local/etc/php/conf.d/docker-php-memlimit.in
 COPY /.docker/symfony/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 
 # Générate DKIM keys
+RUN mkdir keys
 RUN openssl genrsa -out keys/private.pem 1024
 RUN openssl rsa -in keys/private.pem -outform PEM -pubout -out keys/public.pem

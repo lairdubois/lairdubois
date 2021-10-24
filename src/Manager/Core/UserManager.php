@@ -57,7 +57,7 @@ class UserManager extends AbstractManager {
             throw new \Exception('No email.');
         }
 
-        // TODO : Add full validation process
+        // TODO : Add better validation process
 
         // Fill fields /////
 
@@ -67,6 +67,10 @@ class UserManager extends AbstractManager {
         if (!is_null($roles)) {
             $user->setRoles($roles);
         }
+
+        // TODO : just for debug purpose
+        $user->setEmailConfirmed(true);
+        // TODO : just for debug purpose
 
         // Canonicalize fields
         $user->setUsernameCanonical($stringUtils->canonicalize($user->getUsername()));
