@@ -46,7 +46,7 @@ class PlanRepository extends AbstractEntityRepository {
 			->select(array( 'p', 'u', 'uav', 'mp', 'ps', 'cts', 'wks', 'hws', 'wfs', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'p')
 			->innerJoin('p.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->innerJoin('p.mainPicture', 'mp')
 			->leftJoin('p.pictures', 'ps')
 			->leftJoin('p.creations', 'cts')

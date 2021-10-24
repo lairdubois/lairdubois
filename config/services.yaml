@@ -68,6 +68,9 @@ services:
         arguments:
             - '%env(DATABASE_URL)%'
 
+    FOS\ElasticaBundle\Persister\PersisterRegistry:
+        alias: 'fos_elastica.persister_registry'
+
     App\Imagine\ImageOptimizerPostProcessor:
         tags:
             - { name: liip_imagine.filter.post_processor, post_processor: ladb_imageoptimizer }

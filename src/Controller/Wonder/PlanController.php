@@ -48,6 +48,7 @@ class PlanController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.PlanManager::class,
             '?'.PlanUtils::class,
             '?'.PicturedUtils::class,
             '?'.StripableUtils::class,
