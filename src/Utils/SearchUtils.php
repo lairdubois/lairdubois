@@ -4,7 +4,8 @@ namespace App\Utils;
 
 use App\Entity\Stats\Search;
 use FOS\ElasticaBundle\Index\IndexManager;
-use FOS\ElasticaBundle\Persister\ObjectPersister;
+use FOS\ElasticaBundle\Persister\PersisterRegistry;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -14,14 +15,23 @@ use App\Model\IndexableInterface;
 
 class SearchUtils extends AbstractContainerAwareUtils {
 
+    protected array $objectPersisters = array();
+    protected PersisterRegistry $persisterRegistry;
+
+    public function __construct(ContainerInterface $container, PersisterRegistry $persisterRegistry)
+    {
+        parent::__construct($container);
+
+        // Even if we add it in subscribed services, it is not available
+        // So use dependency injection to inject service in constructor
+        $this->persisterRegistry = $persisterRegistry;
+    }
+
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             'logger' => '?'.LoggerInterface::class,
             'fos_elastica.index_manager' => '?'.IndexManager::class,
-            'fos_elastica.object_persister.wonder_creation' => '?'.ObjectPersister::class,
-//            'fos_elastica.object_persister.wonder_plan' => '?'.ObjectPersister::class,
-//            'fos_elastica.object_persister.wonder_workshop' => '?'.ObjectPersister::class,
-            /* TODO : Find a way to bind other ObjectPersister */
+            // 'fos_elastica.persister_registry' => PersisterRegistry::class,
         ));
     }
 
@@ -32,7 +42,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
 		if (preg_match('@\\\\([\w]+)\\\\([\w]+)$@', $classname, $matches)) {
 			$familyName = $matches[1];
 			$typeName = $matches[2];
-			return $this->get('fos_elastica.object_persister.'.$familyName.'_'.$typeName);
+			return $this->persisterRegistry->getPersister($familyName.'_'.$typeName);
 		}
 		return null;
 	}
