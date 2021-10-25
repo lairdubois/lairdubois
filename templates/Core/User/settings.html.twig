@@ -16,7 +16,7 @@
             $('#container').ladbSettingsPage({
                 accountTypeFormFieldId: '{{ form.accountType.vars.id }}',
                 accountTypeBrandValue: '{{ constant('App\\Entity\\Core\\User::ACCOUNT_TYPE_BRAND') }}',
-                swPath: '{{ asset('bundles/ladbcore/ladb/js/ladb-webpush-sw.js') }}',
+                swPath: '{{ asset('build/js/ladb-webpush-sw.js') }}',
                 {# TODO serverKey: '{{ bentools_pusher.server_key | e('js') }}', #}
                 {# TODO subscriptionUrl: '{{ path('bentools_webpush.subscription') }}' #}
             });

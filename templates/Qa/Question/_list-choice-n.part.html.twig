@@ -12,7 +12,7 @@
                 </a>
             </div>
             <div class="ladb-tools">
-                <a href="#" class="btn btn-default" onclick="window.parent.questionAdded('{% filter escape('js') %}{% include 'Qa/Question/_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+                <a href="#" class="btn btn-default" onclick="window.parent.questionAdded('{% apply escape('js') %}{% include 'Qa/Question/_form-thumbnail.part.html.twig' %}{% endapply %}');">Choisir</a>
             </div>
             <div class="ladb-body">
                 <h4 class="ladb-heading">{{ question.title }}</h4>
