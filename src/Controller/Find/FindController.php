@@ -8,7 +8,6 @@ use App\Utils\LocalisableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Form\Type\Find\FindType;
 use App\Entity\Find\Find;
 use App\Entity\Find\Content\Gallery;
@@ -38,6 +37,12 @@ use App\Utils\FindUtils;
 class FindController extends AbstractController {
 
 	use PublicationControllerTrait;
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.FindManager::class,
+        ));
+    }
 
 	/**
 	 * @Route("/new", name="core_find_new")

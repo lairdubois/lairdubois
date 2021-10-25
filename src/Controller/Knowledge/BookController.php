@@ -36,6 +36,12 @@ class BookController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.BookManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_book_new")
 	 * @Template("Knowledge/Book/new.html.twig")

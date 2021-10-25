@@ -43,6 +43,12 @@ class WorkshopController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.WorkshopManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_workshop_new")
 	 * @Template("Wonder/Workshop/new.html.twig")

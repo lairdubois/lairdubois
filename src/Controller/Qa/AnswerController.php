@@ -32,6 +32,12 @@ class AnswerController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.AnswerManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/{id}/reponses/new", requirements={"id" = "\d+"}, name="core_qa_answer_new")
 	 * @Template("Qa/Answer/new-xhr.html.twig")

@@ -38,6 +38,12 @@ class WoodController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.WoodManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_wood_new")
 	 * @Template("Knowledge/Wood/new.html.twig")

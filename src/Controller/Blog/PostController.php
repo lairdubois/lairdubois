@@ -34,6 +34,12 @@ class PostController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PostManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_blog_post_new")
 	 * @Template("Blog/Post/new.html.twig")

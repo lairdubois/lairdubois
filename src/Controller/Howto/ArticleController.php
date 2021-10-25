@@ -22,6 +22,12 @@ use App\Manager\Core\WitnessManager;
 
 class ArticleController extends AbstractHowtoBasedController {
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ArticleManager::class,
+        ));
+    }
+
 	use PublicationControllerTrait;
 
 	private function _updateHowtoBlockVideoCount($howto) {

@@ -36,6 +36,12 @@ class ToolController extends AbstractController {
 
     use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ToolManager::class,
+        ));
+    }
+
     /**
      * @Route("/new", name="core_tool_new")
      * @Template("Knowledge/Tool/new.html.twig")

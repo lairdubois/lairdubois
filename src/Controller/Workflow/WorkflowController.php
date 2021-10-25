@@ -6,7 +6,6 @@ use App\Controller\PublicationControllerTrait;
 use App\Utils\CollectionnableUtils;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\Type\Workflow\WorkflowType;
@@ -28,7 +27,6 @@ use App\Entity\Howto\Howto;
 use App\Entity\Wonder\Creation;
 use App\Entity\Wonder\Plan;
 use App\Entity\Wonder\Workshop;
-use App\Model\HiddableInterface;
 use App\Utils\PaginatorUtils;
 
 /**
@@ -37,6 +35,12 @@ use App\Utils\PaginatorUtils;
 class WorkflowController extends AbstractWorkflowBasedController {
 
 	use PublicationControllerTrait;
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.WorkflowManager::class,
+        ));
+    }
 
 	/**
 	 * @Route("/new", name="core_workflow_new")

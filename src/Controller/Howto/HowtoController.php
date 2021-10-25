@@ -36,6 +36,12 @@ class HowtoController extends AbstractHowtoBasedController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.HowtoManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_howto_new")
 	 * @Template("Howto/Howto/new.html.twig")

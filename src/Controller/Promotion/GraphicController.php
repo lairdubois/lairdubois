@@ -36,6 +36,12 @@ class GraphicController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.GraphicManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_promotion_graphic_new")
 	 * @Template("Promotion/Graphic/new.html.twig")

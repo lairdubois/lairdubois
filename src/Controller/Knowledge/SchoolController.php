@@ -38,6 +38,12 @@ class SchoolController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.SchoolManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_school_new")
 	 * @Template("Knowledge/School/new.html.twig")
