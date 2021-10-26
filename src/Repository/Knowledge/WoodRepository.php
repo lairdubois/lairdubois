@@ -22,7 +22,7 @@ class WoodRepository extends AbstractKnowledgeRepository {
 			->select(array( 'count(w.id)' ))
 			->from($this->getEntityName(), 'w')
 			->where('REGEXP(w.name, :regexp) = true')
-			->setParameter('regexp', '(^|,)('.$name.')($|,)')
+			->setParameter('regexp', '(^|,)('.preg_quote($name).')($|,)')
 		;
 
 		if ($excludedId > 0) {

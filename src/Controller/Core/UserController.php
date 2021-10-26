@@ -1781,7 +1781,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("collectifs/new", name="core_user_team_new")
-	 * @Template("Core/User/Team:new.html.twig")
+	 * @Template("Core/User/Team/new.html.twig")
 	 */
 	public function teamNew() {
 		if (!$this->getUser()->getEmailConfirmed()) {
@@ -1798,7 +1798,7 @@ class UserController extends AbstractController {
 
 	/**
 	 * @Route("collectifs/create", methods={"POST"}, name="core_user_team_create")
-	 * @Template("Core/User/Team:new.html.twig")
+	 * @Template("Core/User/Team/new.html.twig")
 	 */
 	public function teamCreate(Request $request, UserManager $userManager) {
 		if (!$this->getUser()->getEmailConfirmed()) {

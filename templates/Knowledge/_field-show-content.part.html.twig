@@ -1,7 +1,7 @@
 {% set fieldDef = knowledge.fieldDefs[field] %}
 {% set fieldMultiple = fieldDef[constant('ATTRIB_MULTIPLE', knowledge)] %}
 
-<div id="ladb_new_value_proposal" class="ladb-value-proposal" onclick="LADBValues.cancelEditValueProposal();"{% if values is not empty %} style="display: none;"{% endif %}>
+<div id="ladb_new_value_proposal" class="ladb-value-proposal" onclick="cancelEditValueProposal();"{% if values is not empty %} style="display: none;"{% endif %}>
     {% if is_granted('ROLE_USER') and not app.user.emailConfirmed %}
         <div class="panel panel-default">
             <div class="panel-body">

@@ -47,7 +47,7 @@ class CreationRepository extends AbstractEntityRepository {
 			->select(array( 'c', 'u', 'uav', 'mp', 'sp', 'ps', 'bbs', 'wds', 'tls', 'fhs', 'pls', 'hws', 'wfs', 'pds', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'c')
 			->innerJoin('c.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->innerJoin('c.mainPicture', 'mp')
 			->leftJoin('c.spotlight', 'sp')
 			->leftJoin('c.pictures', 'ps')

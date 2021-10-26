@@ -20,6 +20,7 @@ use App\Utils\CommentableUtils;
 use App\Utils\LikableUtils;
 use App\Utils\MentionUtils;
 use App\Utils\ReportableUtils;
+use App\Utils\TypableUtils;
 use App\Utils\WatchableUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -35,6 +36,7 @@ abstract class AbstractPublicationManager extends AbstractManager {
             '?'.LikableUtils::class,
             '?'.MentionUtils::class,
             '?'.ReportableUtils::class,
+            '?'.TypableUtils::class,
             '?'.WatchableUtils::class,
         ));
     }

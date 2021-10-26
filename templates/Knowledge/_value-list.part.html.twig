@@ -17,7 +17,7 @@
     {% if values is not empty %}
         <div class="ladb-proposal-list-header row">
             <div class="ladb-heading col-sm-8 col-xs-10">
-                <span>{{ values|length }} {{ 'default.choice.proposals'|trans({'%count%': values|length}) }}</span>
+                <span>{{ values|length }} {{ 'default.choice.proposals'|transchoice(values|length) }}</span>
                 <ul>
                     <li class="ladb-color-positive" data-tooltip="tooltip" title="Propositions validées">{{ positiveCount }} <i class="ladb-icon-check-square"></i></li>
                     <li class="ladb-color-null" data-tooltip="tooltip" title="Propositions non vérifiées">{{ nullCount }} <i class="ladb-icon-warning"></i></li>

@@ -28,7 +28,7 @@
             <p class="form-section-title"><i class="ladb-icon-title"></i> {{ 'knowledge.tool.field.name'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_NAME'), 'fieldLabel':('knowledge.tool.field.name'|trans()), 'isCompact':true } %}
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.nameValue, 'field':constant('\\App\\Entity\\Knowledge\\Tool::FIELD_NAME'), 'fieldLabel':('knowledge.tool.field.name'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -47,7 +47,7 @@
             <p class="form-section-title">{{ 'knowledge.tool.field.brand'|trans() }} <em>(facultatif)</em></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.brandValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_BRAND'), 'fieldLabel':('knowledge.tool.field.brand'|trans()), 'isCompact':true } %}
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.brandValue, 'field':constant('\\App\\Entity\\Knowledge\\Tool::FIELD_BRAND'), 'fieldLabel':('knowledge.tool.field.brand'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -66,7 +66,7 @@
             <p class="form-section-title">{{ 'knowledge.tool.field.product_name'|trans() }} <em>(facultatif)</em></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.productNameValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_PRODUCT_NAME'), 'fieldLabel':('knowledge.tool.field.product_name'|trans()), 'isCompact':true } %}
+                    {% include 'Knowledge/_form-fieldset-value-text.part.html.twig' with { 'form':form.productNameValue, 'field':constant('\\App\\Entity\\Knowledge\\Tool::FIELD_PRODUCT_NAME'), 'fieldLabel':('knowledge.tool.field.product_name'|trans()), 'isCompact':true } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">
@@ -85,7 +85,7 @@
             <p class="form-section-title"><i class="ladb-icon-camera"></i> {{ 'knowledge.tool.field.photo'|trans() }} <span class="ladb-mandatory">*</span></p>
             <div class="row">
                 <div class="col-sm-7 col-xs-12">
-                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'photo', 'form':form.photoValue, 'field':constant('\\Ladb\\CoreBundle\\Entity\\Knowledge\\Tool::FIELD_PHOTO'), 'fieldLabel':('knowledge.tool.field.photo'|trans()), 'postProcessor':constant('\\Ladb\\CoreBundle\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
+                    {% include 'Knowledge/_form-fieldset-value-picture.part.html.twig' with { 'formSection':'photo', 'form':form.photoValue, 'field':constant('\\App\\Entity\\Knowledge\\Tool::FIELD_PHOTO'), 'fieldLabel':('knowledge.tool.field.photo'|trans()), 'postProcessor':constant('\\App\\Entity\\Core\\Picture::POST_PROCESSOR_SQUARE') } %}
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="panel panel-default">

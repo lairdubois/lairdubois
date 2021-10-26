@@ -5,6 +5,7 @@ namespace App\Controller\Find;
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
 use App\Utils\LocalisableUtils;
+use App\Utils\WebScreenshotUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -41,6 +42,7 @@ class FindController extends AbstractController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.FindManager::class,
+            '?'.FindUtils::class,
         ));
     }
 

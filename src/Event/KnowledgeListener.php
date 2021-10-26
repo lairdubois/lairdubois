@@ -2,18 +2,27 @@
 
 namespace App\Event;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Utils\TextureUtils;
 use App\Utils\KnowledgeUtils;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
-class KnowledgeListener implements EventSubscriberInterface {
+class KnowledgeListener implements EventSubscriberInterface, ServiceSubscriberInterface {
 
 	const FIELD_VALUE_ADDED = 'ladb.knowledge.field_value_added';
 	const FIELD_VALUE_UPDATED = 'ladb.knowledge.field_value_updated';
 	const FIELD_VALUE_REMOVED = 'ladb.knowledge.field_value_removed';
 
 	private $container;
+
+    public static function getSubscribedServices()
+    {
+        return array(
+            '?'.KnowledgeUtils::class,
+            '?'.TextureUtils::class,
+        );
+    }
 
 	public function __construct(ContainerInterface $container) {
 		$this->container = $container;
@@ -99,5 +108,4 @@ class KnowledgeListener implements EventSubscriberInterface {
 		}
 
 	}
-
 }

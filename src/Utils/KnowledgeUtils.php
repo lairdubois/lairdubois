@@ -7,6 +7,12 @@ use App\Entity\Knowledge\Value\BaseValue;
 
 class KnowledgeUtils extends AbstractContainerAwareUtils {
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PropertyUtils::class,
+        ));
+    }
+
 	public function computeCompletionPercent(AbstractKnowledge $knowledge) {
 		$propertyUtils = $this->get(PropertyUtils::class);
 		$fieldDefs = $knowledge->getFieldDefs();

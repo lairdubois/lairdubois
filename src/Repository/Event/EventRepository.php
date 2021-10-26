@@ -42,7 +42,7 @@ class EventRepository extends AbstractEntityRepository {
 			->select(array( 'f', 'u', 'uav', 'mp', 'bbs', 'tgs' ))
 			->from($this->getEntityName(), 'f')
 			->innerJoin('f.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->innerJoin('f.mainPicture', 'mp')
 			->leftJoin('f.bodyBlocks', 'bbs')
 			->leftJoin('f.tags', 'tgs')

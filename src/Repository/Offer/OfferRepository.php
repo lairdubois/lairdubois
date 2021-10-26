@@ -43,7 +43,7 @@ class OfferRepository extends AbstractEntityRepository {
 			->select(array( 'o', 'u', 'uav', 'mp', 'bbs', 'tgs' ))
 			->from($this->getEntityName(), 'o')
 			->innerJoin('o.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->leftJoin('o.mainPicture', 'mp')
 			->leftJoin('o.bodyBlocks', 'bbs')
 			->leftJoin('o.tags', 'tgs')

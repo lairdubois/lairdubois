@@ -35,7 +35,7 @@ class GraphicRepository extends AbstractEntityRepository {
 			->select(array( 'g', 'u', 'uav', 'mp', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'g')
 			->innerJoin('g.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->innerJoin('g.mainPicture', 'mp')
 			->leftJoin('g.tags', 'tgs')
 			->innerJoin('g.license', 'l')
