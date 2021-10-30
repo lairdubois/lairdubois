@@ -2,23 +2,20 @@
 
 namespace App\Form\Type\Core;
 
-use App\Entity\Core\User;
+use App\Form\DataTransformer\Input\SkillsToLabelsTransformer;
+use App\Form\DataTransformer\PictureToIdTransformer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\PictureToIdTransformer;
-use App\Form\DataTransformer\Input\SkillsToLabelsTransformer;
 use Symfony\Component\Validator\Constraints\Valid;
 
 class UserMetaSettingsType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 

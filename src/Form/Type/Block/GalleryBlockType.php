@@ -15,7 +15,7 @@ class GalleryBlockType extends BlockType {
 		$builder
 			->add($builder
 					->create('pictures', TextType::class, array( 'attr' => array( 'class' => 'ladb-pseudo-hidden' ) ))
-					->addModelTransformer(new PicturesToIdsTransformer($options['em']))
+					->addModelTransformer(new PicturesToIdsTransformer($options['om']))
 			)
 		;
 	}

@@ -3,15 +3,15 @@
 namespace App\Form\DataTransformer\Input;
 
 use App\Entity\Input\Wood;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ManagerRegistry;
 
 class WoodsToLabelsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -39,7 +39,7 @@ class WoodsToLabelsTransformer implements DataTransformerInterface {
 
 		$woods = array();
 		$labelsArray = preg_split("/[,;]+/", $labelsString);
-		$repository = $this->om->getRepository('App\Entity\Input\Wood');
+		$repository = $this->om->getRepository(Wood::class);
 		foreach ($labelsArray as $label) {
 			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'-]{2,}$/", $label)) {
 				continue;

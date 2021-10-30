@@ -3,6 +3,11 @@
 namespace App\Form\Type\Offer;
 
 use App\Entity\Offer\Offer;
+use App\Form\DataTransformer\PicturesToIdsTransformer;
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use App\Form\Type\PolyCollectionType;
+use App\Utils\LocalisableUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
@@ -12,18 +17,13 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Utils\LocalisableUtils;
-use App\Form\DataTransformer\PicturesToIdsTransformer;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
-use App\Form\Type\PolyCollectionType;
 
 class OfferType extends AbstractType {
 
 	private $om;
 	private $localisableUtils;
 
-	public function __construct(ManagerRegistry $om, LocalisableUtils $localisableUtils) {
+	public function __construct(EntityManagerInterface $om, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
 		$this->localisableUtils = $localisableUtils;
 	}
@@ -45,7 +45,7 @@ class OfferType extends AbstractType {
 				'allow_delete' => true,
 				'by_reference' => false,
 				'options'      => array(
-					'em' => $this->om,
+					'om' => $this->om,
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))

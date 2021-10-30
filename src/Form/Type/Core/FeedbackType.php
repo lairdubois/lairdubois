@@ -2,8 +2,8 @@
 
 namespace App\Form\Type\Core;
 
-use Doctrine\Persistence\ManagerRegistry;
 use App\Form\Type\PolyCollectionType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +13,7 @@ class FeedbackType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -30,7 +30,7 @@ class FeedbackType extends AbstractType {
 				'allow_delete'    => true,
 				'by_reference'    => false,
 				'options'         => array(
-					'em' => $this->om,
+					'om' => $this->om,
 				),
 				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))

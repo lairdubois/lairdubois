@@ -2,16 +2,16 @@
 
 namespace App\Form\DataTransformer\Input;
 
+use App\Entity\Input\Skill;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Input\Skill;
 
 class SkillsToLabelsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -39,7 +39,7 @@ class SkillsToLabelsTransformer implements DataTransformerInterface {
 
 		$skills = array();
 		$labelsArray = preg_split("/[,;]+/", $labelsString);
-		$repository = $this->om->getRepository('App\Entity\Input\Skill');
+		$repository = $this->om->getRepository(Skill::class);
 		foreach ($labelsArray as $label) {
 			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'-]{2,}$/", $label)) {
 				continue;

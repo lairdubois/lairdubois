@@ -2,17 +2,17 @@
 
 namespace App\Form\DataTransformer;
 
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Core\Picture;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use App\Entity\Core\Picture;
 
 class PictureToIdTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -38,7 +38,7 @@ class PictureToIdTransformer implements DataTransformerInterface {
 			throw new TransformationFailedException();
 		}
 		$picture = $this->om
-			->getRepository(Picture::CLASS_NAME)
+			->getRepository(Picture::class)
 			->find($id);
 		if (is_null($picture)) {
 			throw new TransformationFailedException();

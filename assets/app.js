@@ -1,10 +1,3 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
-
 import 'jquery-form';
 import 'jquery-ui';
 import 'jquery-ui/ui/widgets/sortable';
@@ -18,9 +11,6 @@ import 'jquery-lazy';
 import 'jquery-sticky';
 import 'jquery.scrollto';
 import 'jscroll';
-import moment from 'moment';
-global.moment = moment;
-// Todo retrieve only needed bootstrap components
 import 'bootstrap';
 import 'eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker';
 import 'uikit';
@@ -28,6 +18,9 @@ import 'uikit/src/js/components/notify';
 import 'readmore.js'
 import 'blueimp-file-upload';
 import 'emojionearea';
+
+import moment from 'moment';
+global.moment = moment;
 
 // Old vendors not working properly with webpack encore1
 import './js/bootstrap-markdown/bootstrap-markdown-v1';

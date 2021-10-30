@@ -2,16 +2,16 @@
 
 namespace App\Form\DataTransformer;
 
+use App\Entity\Core\Tag;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Core\Tag;
 
 class TagsToLabelsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 

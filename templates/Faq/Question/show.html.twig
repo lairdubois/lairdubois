@@ -13,14 +13,14 @@
 {% block headStylesheets %}
     {{ parent() }}
     {% if question.hasToc %}
-        {{ encore_entry_link_tags('tocify') }}
+        {{ encore_entry_link_tags('lib_tocify') }}
     {% endif %}
 {% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
     {% if question.hasToc %}
-        {{ encore_entry_script_tags('tocify') }}
+        {{ encore_entry_script_tags('lib_tocify') }}
         <script>
             $(function() {
                 if ($(window).width() >= 768) {

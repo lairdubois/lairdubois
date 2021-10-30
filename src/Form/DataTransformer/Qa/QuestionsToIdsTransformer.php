@@ -2,17 +2,17 @@
 
 namespace App\Form\DataTransformer\Qa;
 
+use App\Entity\Qa\Question;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Qa\Question;
 
 class QuestionsToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -39,7 +39,7 @@ class QuestionsToIdsTransformer implements DataTransformerInterface {
 
 		$questions = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository(Question::CLASS_NAME);
+		$repository = $this->om->getRepository(Question::class);
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);
 			if ($id == 0) {

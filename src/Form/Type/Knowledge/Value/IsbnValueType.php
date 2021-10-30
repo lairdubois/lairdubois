@@ -2,6 +2,7 @@
 
 namespace App\Form\Type\Knowledge\Value;
 
+use Biblys\Isbn\Isbn;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -23,10 +24,9 @@ class IsbnValueType extends AbstractValueType {
 
 				$rawIsbn = $value->getRawIsbn();
 
-				$isbn = new \Biblys\Isbn\Isbn($rawIsbn);
-				if ($isbn->isValid()) {
+				if (Isbn::isParsable($rawIsbn)) {
 
-					$formatedIsbn = $isbn->format('ISBN-13');
+					$formatedIsbn = Isbn::convertToIsbn13($rawIsbn);
 					$value->setData($formatedIsbn);
 
 				}

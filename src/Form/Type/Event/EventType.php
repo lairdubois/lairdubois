@@ -6,7 +6,7 @@ use App\Form\DataTransformer\PicturesToIdsTransformer;
 use App\Form\DataTransformer\TagsToLabelsTransformer;
 use App\Form\Type\PolyCollectionType;
 use App\Utils\LocalisableUtils;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,7 +21,7 @@ class EventType extends AbstractType {
 	private $om;
 	private $localisableUtils;
 
-	public function __construct(ManagerRegistry $om, LocalisableUtils $localisableUtils) {
+	public function __construct(EntityManagerInterface $om, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
 		$this->localisableUtils = $localisableUtils;
 	}
@@ -39,7 +39,7 @@ class EventType extends AbstractType {
 				'allow_delete' => true,
 				'by_reference' => false,
 				'options'      => array(
-					'em' => $this->om,
+					'om' => $this->om,
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))

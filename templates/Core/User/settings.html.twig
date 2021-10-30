@@ -10,7 +10,7 @@
     {% include 'Core/Picture/_form-gallery-script.part.html.twig' with { 'formSection':'banner', 'fieldId':form.meta.banner.vars.id, 'maxPictureCount':1 } %}
     {% include 'Common/_form-token-script.part.html.twig' with { 'fieldId':form.meta.skills.vars.id, 'help':('skill.token.help'|trans()), 'typeaheadSourcePath':(path('core_search_typeahead_input_skills_json')|raw) } %}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    {{ encore_entry_script_tags('settings') }}
+    {{ encore_entry_script_tags('user_settings') }}
     <script>
         $(document).ready(function() {
             $('#container').ladbSettingsPage({

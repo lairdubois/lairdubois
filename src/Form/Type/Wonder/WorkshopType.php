@@ -2,7 +2,15 @@
 
 namespace App\Form\Type\Wonder;
 
+use App\Form\DataTransformer\Howto\HowtosToIdsTransformer;
+use App\Form\DataTransformer\PicturesToIdsTransformer;
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
+use App\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
+use App\Form\Type\Core\LicenseType;
 use App\Form\Type\PolyCollectionType;
+use App\Utils\LocalisableUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -10,21 +18,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\PicturesToIdsTransformer;
-use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
-use App\Form\DataTransformer\Howto\HowtosToIdsTransformer;
-use App\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
-use App\Form\Type\Core\LicenseType;
-use App\Utils\LocalisableUtils;
 
 class WorkshopType extends AbstractType {
 
 	private $om;
 	private $localisableUtils;
 
-	public function __construct(ManagerRegistry $om, LocalisableUtils $localisableUtils) {
+	public function __construct(EntityManagerInterface $om, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
 		$this->localisableUtils = $localisableUtils;
 	}
@@ -46,7 +46,7 @@ class WorkshopType extends AbstractType {
 				'allow_delete' => true,
 				'by_reference' => false,
 				'options'      => array(
-					'em' => $this->om,
+					'om' => $this->om,
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))

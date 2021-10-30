@@ -2,33 +2,33 @@
 
 namespace App\Form\Type\Wonder;
 
+use App\Form\DataTransformer\Howto\HowtosToIdsTransformer;
+use App\Form\DataTransformer\Input\FinishesToLabelsTransformer;
 use App\Form\DataTransformer\Input\HardwaresToLabelsTransformer;
+use App\Form\DataTransformer\Input\ToolsToLabelsTransformer;
+use App\Form\DataTransformer\Input\WoodsToLabelsTransformer;
+use App\Form\DataTransformer\Knowledge\ProvidersToIdsTransformer;
+use App\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
+use App\Form\DataTransformer\PicturesToIdsTransformer;
+use App\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use App\Form\DataTransformer\Wonder\CreationsToIdsTransformer;
+use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
+use App\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
+use App\Form\Type\Core\LicenseType;
+use App\Form\Type\PolyCollectionType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
-use App\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
-use App\Form\DataTransformer\Input\WoodsToLabelsTransformer;
-use App\Form\DataTransformer\Input\FinishesToLabelsTransformer;
-use App\Form\DataTransformer\Input\ToolsToLabelsTransformer;
-use App\Form\DataTransformer\PicturesToIdsTransformer;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
-use App\Form\DataTransformer\Wonder\CreationsToIdsTransformer;
-use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
-use App\Form\DataTransformer\Howto\HowtosToIdsTransformer;
-use App\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
-use App\Form\DataTransformer\Knowledge\ProvidersToIdsTransformer;
-use App\Form\Type\Core\LicenseType;
-use App\Form\Type\PolyCollectionType;
 
 class CreationType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -49,7 +49,7 @@ class CreationType extends AbstractType {
 				'allow_delete' => true,
 				'by_reference' => false,
 				'options'      => array(
-					'em' => $this->om,
+					'om' => $this->om,
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))

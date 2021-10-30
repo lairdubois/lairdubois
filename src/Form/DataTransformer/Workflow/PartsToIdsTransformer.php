@@ -2,6 +2,8 @@
 
 namespace App\Form\DataTransformer\Workflow;
 
+use App\Entity\Workflow\Part;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -11,7 +13,7 @@ class PartsToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -38,7 +40,7 @@ class PartsToIdsTransformer implements DataTransformerInterface {
 
 		$parts = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository('App\Entity\Workflow\Part');
+		$repository = $this->om->getRepository(Part::class);
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);
 			if ($id == 0) {

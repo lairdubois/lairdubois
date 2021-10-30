@@ -3,20 +3,20 @@
 namespace App\Form\Type\Collection;
 
 use App\Form\DataTransformer\PictureToIdTransformer;
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
 
 class CollectionType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 

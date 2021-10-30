@@ -3,25 +3,25 @@
 namespace App\Form\Type\Wonder;
 
 use App\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
+use App\Form\DataTransformer\PicturesToIdsTransformer;
 use App\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
+use App\Form\DataTransformer\ResourcesToIdsTransformer;
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
+use App\Form\Type\Core\LicenseType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\PicturesToIdsTransformer;
-use App\Form\DataTransformer\ResourcesToIdsTransformer;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
-use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
-use App\Form\Type\Core\LicenseType;
 
 class PlanType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 

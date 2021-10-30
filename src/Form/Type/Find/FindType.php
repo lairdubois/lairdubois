@@ -2,36 +2,33 @@
 
 namespace App\Form\Type\Find;
 
+use App\Entity\Find\Content\Video;
+use App\Entity\Find\Content\Website;
+use App\Entity\Find\Find;
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use App\Form\Type\PolyCollectionType;
+use App\Utils\LinkUtils;
+use App\Utils\LocalisableUtils;
+use App\Utils\VideoHostingUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
-use App\Form\Type\PolyCollectionType;
-use App\Entity\Find\Find;
-use App\Entity\Find\Content\Website;
-use App\Entity\Find\Content\Video;
-use App\Utils\VideoHostingUtils;
-use App\Utils\LocalisableUtils;
-use App\Utils\LinkUtils;
 
 class FindType extends AbstractType {
 
 	private $om;
 	private $videoHostingUtils;
 	private $localisableUtils;
-	private $linkUtils;
 
-	public function __construct(ManagerRegistry $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils, LinkUtils $linkUtils) {
+	public function __construct(EntityManagerInterface $om, VideoHostingUtils $videoHostingUtils, LocalisableUtils $localisableUtils) {
 		$this->om = $om;
 		$this->videoHostingUtils = $videoHostingUtils;
 		$this->localisableUtils = $localisableUtils;
-		$this->linkUtils = $linkUtils;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -47,7 +44,7 @@ class FindType extends AbstractType {
 				'allow_delete' => true,
 				'by_reference' => false,
 				'options'      => array(
-					'em' => $this->om,
+					'om' => $this->om,
 				),
 				'constraints'  => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))

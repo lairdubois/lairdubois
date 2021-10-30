@@ -19,13 +19,13 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('qa') }}
+    {{ encore_entry_link_tags('qa_question') }}
 {% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('qa') }}
-    {{ encore_entry_script_tags('tocify') }}
+    {{ encore_entry_script_tags('qa_question') }}
+    {{ encore_entry_script_tags('lib_tocify') }}
     <script>
         $(document).ready(function() {
             $('#container').ladbQuestionPage({

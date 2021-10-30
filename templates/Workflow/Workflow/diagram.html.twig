@@ -4,7 +4,7 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('workflow', null, '_default', {media: 'screen,print'}) }}
+    {{ encore_entry_link_tags('workflow_workflow') }}
 {% endblock %}
 
 {% block bodyJavascripts %}
@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-    {{ encore_entry_script_tags('workflow') }}
+    {{ encore_entry_script_tags('workflow_workflow') }}
     {{ ws_client() }}
     <script>
         $(document).ready(function() {

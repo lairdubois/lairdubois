@@ -2,17 +2,17 @@
 
 namespace App\Form\DataTransformer;
 
+use App\Entity\Core\Resource;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Core\Resource;
 
 class ResourceToIdTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -38,7 +38,7 @@ class ResourceToIdTransformer implements DataTransformerInterface {
 			throw new TransformationFailedException();
 		}
 		$resource = $this->om
-			->getRepository(Resource::CLASS_NAME)
+			->getRepository(Resource::class)
 			->find($id);
 		if (is_null($resource)) {
 			throw new TransformationFailedException();

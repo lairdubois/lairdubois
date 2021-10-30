@@ -2,16 +2,16 @@
 
 namespace App\Form\DataTransformer\Input;
 
+use App\Entity\Input\Tool;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Input\Tool;
 
 class ToolsToLabelsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -39,7 +39,7 @@ class ToolsToLabelsTransformer implements DataTransformerInterface {
 
 		$tools = array();
 		$labelsArray = preg_split("/[,;]+/", $labelsString);
-		$repository = $this->om->getRepository('App\Entity\Input\Tool');
+		$repository = $this->om->getRepository(Tool::class);
 		foreach ($labelsArray as $label) {
 			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'-]{2,}$/", $label)) {
 				continue;

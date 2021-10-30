@@ -9,7 +9,7 @@
 {% block headStylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" media="screen" />
-    {{ encore_entry_link_tags('workflow_workspace', null, '_default', {media: 'screen,print'}) }}
+    {{ encore_entry_link_tags('workflow_workflow_workspace') }}
 {% endblock %}
 
 {% block bodyJavascripts %}
@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
     <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
     <script src="{{ asset('bundles/goswebsocket/js/websocket.min.js') }}"></script>
-    {{ encore_entry_script_tags('workflow_workspace') }}
+    {{ encore_entry_script_tags('workflow_workflow_workspace') }}
 
     <script>
         var websocket = GosSocket.connect('ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}');

@@ -2,19 +2,19 @@
 
 namespace App\Form\Type\Qa;
 
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use App\Form\Type\PolyCollectionType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
-use App\Form\Type\PolyCollectionType;
 
 class QuestionType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -31,7 +31,7 @@ class QuestionType extends AbstractType {
 				'allow_delete'    => true,
 				'by_reference'    => false,
 				'options'         => array(
-					'em' => $this->om,
+					'om' => $this->om,
 				),
 				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))

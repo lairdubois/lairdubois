@@ -2,29 +2,29 @@
 
 namespace App\Form\Type\Howto;
 
+use App\Entity\Howto\Howto;
+use App\Form\DataTransformer\Howto\ArticlesToIdsTransformer;
+use App\Form\DataTransformer\Knowledge\ProvidersToIdsTransformer;
+use App\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
+use App\Form\DataTransformer\PictureToIdTransformer;
+use App\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
+use App\Form\DataTransformer\TagsToLabelsTransformer;
+use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
+use App\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
+use App\Form\Type\Core\LicenseType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Howto\Howto;
-use App\Form\DataTransformer\Qa\QuestionsToIdsTransformer;
-use App\Form\DataTransformer\Knowledge\SchoolsToIdsTransformer;
-use App\Form\DataTransformer\PictureToIdTransformer;
-use App\Form\DataTransformer\TagsToLabelsTransformer;
-use App\Form\DataTransformer\Howto\ArticlesToIdsTransformer;
-use App\Form\DataTransformer\Wonder\PlansToIdsTransformer;
-use App\Form\DataTransformer\Knowledge\ProvidersToIdsTransformer;
-use App\Form\DataTransformer\Workflow\WorkflowsToIdsTransformer;
-use App\Form\Type\Core\LicenseType;
 
 class HowtoType extends AbstractType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 

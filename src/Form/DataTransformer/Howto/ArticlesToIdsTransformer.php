@@ -2,17 +2,17 @@
 
 namespace App\Form\DataTransformer\Howto;
 
+use App\Entity\Howto\Article;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Howto\Article;
 
 class ArticlesToIdsTransformer implements DataTransformerInterface {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 
@@ -39,7 +39,7 @@ class ArticlesToIdsTransformer implements DataTransformerInterface {
 
 		$articles = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository(Article::CLASS_NAME);
+		$repository = $this->om->getRepository(Article::class);
 		$sortIndex = 0;
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);
