@@ -3,17 +3,23 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Utils\SearchUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Utils\SearchUtils;
 
 /**
  * @Route("/rechercher")
  */
 class SearchController extends AbstractController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.SearchUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/", name="core_search")
 	 * @Route("/creations", name="core_search_creations")
 	 */

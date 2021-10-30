@@ -4,32 +4,32 @@ namespace App\Controller\Event;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Event\Event;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Event\EventType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Event\EventManager;
+use App\Model\HiddableInterface;
+use App\Model\LocalisableInterface;
+use App\Utils\BlockBodiedUtils;
 use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ExplorableUtils;
 use App\Utils\FeedbackableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\JoinableUtils;
+use App\Utils\LikableUtils;
 use App\Utils\LocalisableUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Form\Type\Event\EventType;
-use App\Entity\Event\Event;
-use App\Model\LocalisableInterface;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\SearchUtils;
-use App\Utils\ExplorableUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Manager\Event\EventManager;
-use App\Manager\Core\WitnessManager;
-use App\Model\HiddableInterface;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\JoinableUtils;
 
 /**
  * @Route("/evenements")
@@ -40,7 +40,21 @@ class EventController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.EventManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FeedbackableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.JoinableUtils::class,
+            '?'.LikableUtils::class,
+            '?'.LocalisableUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

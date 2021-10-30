@@ -2,13 +2,13 @@
 
 namespace App\Controller\Workflow;
 
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\Entity\Workflow\Task;
+use App\Entity\Workflow\Workflow;
+use App\Form\Type\Workflow\TaskType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Workflow\Workflow;
-use App\Entity\Workflow\Task;
-use App\Form\Type\Workflow\TaskType;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @Route("/processus")

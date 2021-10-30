@@ -10,7 +10,15 @@ use App\Utils\SearchUtils;
 
 class ArticleManager extends AbstractPublicationManager {
 
-	public function publish(Article $article, $flush = true) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.SearchUtils::class,
+        ));
+    }
+
+    /////
+
+    public function publish(Article $article, $flush = true) {
 
 		$howto = $article->getHowto();
 
@@ -31,7 +39,7 @@ class ArticleManager extends AbstractPublicationManager {
 
 	}
 
-	public function unpublish(Article $article, $flush = true) {
+    public function unpublish(Article $article, $flush = true) {
 
 		$howto = $article->getHowto();
 

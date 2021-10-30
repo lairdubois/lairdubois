@@ -4,28 +4,28 @@ namespace App\Controller\Blog;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Blog\Post;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Blog\PostType;
+use App\Manager\Blog\PostManager;
+use App\Manager\Core\WitnessManager;
 use App\Model\HiddableInterface;
+use App\Utils\BlockBodiedUtils;
 use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ExplorableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Blog\Post;
-use App\Form\Type\Blog\PostType;
-use App\Utils\TagUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\ExplorableUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Manager\Blog\PostManager;
-use App\Manager\Core\WitnessManager;
 
 /**
  * @Route("/blog")
@@ -37,6 +37,17 @@ class PostController extends AbstractController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.PostManager::class,
+            '?'.WitnessManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

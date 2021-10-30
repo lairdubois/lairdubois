@@ -4,26 +4,27 @@ namespace App\Controller\Qa;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Qa\Answer;
+use App\Entity\Qa\Question;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Form\Type\Qa\AnswerType;
+use App\Manager\Qa\AnswerManager;
+use App\Manager\Qa\QuestionManager;
+use App\Utils\ActivityUtils;
+use App\Utils\BlockBodiedUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\FieldPreprocessorUtils;
 use App\Utils\MentionUtils;
+use App\Utils\SearchUtils;
+use App\Utils\VotableUtils;
+use App\Utils\WatchableUtils;
 use App\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Qa\Question;
-use App\Entity\Qa\Answer;
-use App\Form\Type\Qa\AnswerType;
-use App\Utils\CommentableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\VotableUtils;
-use App\Manager\Qa\AnswerManager;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Manager\Qa\QuestionManager;
-use App\Utils\ActivityUtils;
-use App\Utils\WatchableUtils;
+
 
 /**
  * @Route("/questions")
@@ -35,6 +36,15 @@ class AnswerController extends AbstractController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.AnswerManager::class,
+            '?'.QuestionManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.MentionUtils::class,
+            '?'.SearchUtils::class,
+            '?'.VotableUtils::class,
+            '?'.WatchableUtils::class,
+            '?'.WebpushNotificationUtils::class,
         ));
     }
 

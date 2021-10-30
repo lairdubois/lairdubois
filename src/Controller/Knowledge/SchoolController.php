@@ -4,32 +4,32 @@ namespace App\Controller\Knowledge;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Howto\Howto;
+use App\Entity\Knowledge\School;
+use App\Entity\Wonder\Creation;
+use App\Entity\Wonder\Plan;
+use App\Event\KnowledgeEvent;
+use App\Event\KnowledgeListener;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Model\NewSchool;
+use App\Form\Type\Knowledge\NewSchoolType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Knowledge\SchoolManager;
+use App\Utils\ActivityUtils;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
 use App\Utils\KnowledgeUtils;
+use App\Utils\LikableUtils;
+use App\Utils\LocalisableUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Wonder\Plan;
-use App\Entity\Howto\Howto;
-use App\Entity\Wonder\Creation;
-use App\Entity\Knowledge\School;
-use App\Manager\Knowledge\SchoolManager;
-use App\Manager\Core\WitnessManager;
-use App\Utils\LocalisableUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\CollectionnableUtils;
-use App\Form\Type\Knowledge\NewSchoolType;
-use App\Form\Model\NewSchool;
-use App\Event\PublicationsEvent;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\KnowledgeEvent;
-use App\Event\KnowledgeListener;
 
 /**
  * @Route("/ecoles")
@@ -40,7 +40,17 @@ class SchoolController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.SchoolManager::class,
+            '?'.ActivityUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.KnowledgeUtils::class,
+            '?'.LikableUtils::class,
+            '?'.LocalisableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

@@ -2,26 +2,26 @@
 
 namespace App\Controller\Core;
 
+use App\Controller\AbstractController;
+use App\Entity\Core\Comment;
+use App\Entity\Knowledge\Value\BaseValue;
 use App\Entity\Qa\Question;
+use App\Form\Type\Core\CommentType;
 use App\Manager\Core\CommentManager;
+use App\Model\CommentableInterface;
+use App\Model\HiddableInterface;
+use App\Model\IndexableInterface;
+use App\Model\WatchableChildInterface;
+use App\Utils\CommentableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\MentionUtils;
+use App\Utils\PicturedUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TypableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\AbstractController;
-use App\Entity\Knowledge\Value\BaseValue;
-use App\Entity\Core\Comment;
-use App\Form\Type\Core\CommentType;
-use App\Model\CommentableInterface;
-use App\Model\WatchableChildInterface;
-use App\Model\IndexableInterface;
-use App\Model\HiddableInterface;
-use App\Utils\PicturedUtils;
-use App\Utils\SearchUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\TypableUtils;
-use App\Utils\MentionUtils;
 
 /**
  * @Route("/commentaires")
@@ -30,12 +30,13 @@ class CommentController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            '?'.PicturedUtils::class,
-            '?'.SearchUtils::class,
+            '?'.CommentManager::class,
             '?'.CommentableUtils::class,
             '?'.FieldPreprocessorUtils::class,
-            '?'.TypableUtils::class,
             '?'.MentionUtils::class,
+            '?'.PicturedUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TypableUtils::class,
         ));
     }
 

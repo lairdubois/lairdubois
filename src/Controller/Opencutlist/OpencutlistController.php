@@ -2,21 +2,27 @@
 
 namespace App\Controller\Opencutlist;
 
+use App\Controller\AbstractController;
+use App\Entity\Opencutlist\Access;
+use App\Utils\PaginatorUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\AbstractController;
-use App\Entity\Opencutlist\Access;
-use App\Utils\PaginatorUtils;
 
 /**
  * @Route("/opencutlist")
  */
 class OpencutlistController extends AbstractController {
 
-	private function _createAccess(Request $request, $env, $kind) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PaginatorUtils::class,
+        ));
+    }
+
+    private function _createAccess(Request $request, $env, $kind) {
 		$om = $this->getDoctrine()->getManager();
 
 		$oclVersion = $request->get('v');

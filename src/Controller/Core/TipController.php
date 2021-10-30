@@ -3,27 +3,36 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\Tip;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Core\TipType;
+use App\Manager\Core\TipManager;
+use App\Manager\Core\WitnessManager;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\SearchUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Manager\Core\WitnessManager;
-use App\Manager\Core\TipManager;
-use App\Entity\Core\Tip;
-use App\Form\Type\Core\TipType;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
 
 /**
  * @Route("/astuces")
  */
 class TipController extends AbstractController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.TipManager::class,
+            '?'.WitnessManager::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.SearchUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/new", name="core_tip_new")
 	 * @Template("Core/Tip/new.html.twig")
 	 * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_TIP')", statusCode=404, message="Not allowed (core_tip_new)")

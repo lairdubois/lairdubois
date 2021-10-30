@@ -3,29 +3,41 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\Like;
+use App\Model\AuthoredInterface;
+use App\Model\HiddableInterface;
+use App\Model\IndexableInterface;
+use App\Model\LikableInterface;
+use App\Model\WatchableInterface;
+use App\Utils\ActivityUtils;
+use App\Utils\LikableUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TypableUtils;
+use App\Utils\WatchableUtils;
 use App\Utils\WebpushNotificationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\Core\Like;
-use App\Model\IndexableInterface;
-use App\Model\LikableInterface;
-use App\Model\AuthoredInterface;
-use App\Model\HiddableInterface;
-use App\Model\WatchableInterface;
-use App\Utils\WatchableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\LikableUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\TypableUtils;
 
 /**
  * @Route("/likes")
  */
 class LikeController extends AbstractController {
 
-	private function _retrieveRelatedEntity($entityType, $entityId) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.LikableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TypableUtils::class,
+            '?'.WatchableUtils::class,
+            '?'.WebpushNotificationUtils::class,
+        ));
+    }
+
+    private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::class);
 		try {
 			$entity = $typableUtils->findTypable($entityType, $entityId);

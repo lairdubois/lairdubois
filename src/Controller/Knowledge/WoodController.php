@@ -2,34 +2,34 @@
 
 namespace App\Controller\Knowledge;
 
+use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Knowledge\Value\Text;
+use App\Entity\Knowledge\Wood;
+use App\Event\KnowledgeEvent;
+use App\Event\KnowledgeListener;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Model\NewWood;
+use App\Form\Type\Knowledge\NewWoodType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Knowledge\WoodManager;
+use App\Utils\ActivityUtils;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ElasticaQueryUtils;
+use App\Utils\KnowledgeUtils;
+use App\Utils\LikableUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TextureUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\AbstractController;
-use App\Form\Type\Knowledge\NewWoodType;
-use App\Form\Model\NewWood;
-use App\Entity\Knowledge\Wood;
-use App\Entity\Knowledge\Value\Text;
-use App\Utils\CollectionnableUtils;
-use App\Utils\KnowledgeUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\TextureUtils;
-use App\Utils\ElasticaQueryUtils;
-use App\Utils\ActivityUtils;
-use App\Manager\Knowledge\WoodManager;
-use App\Manager\Core\WitnessManager;
-use App\Event\PublicationsEvent;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\KnowledgeEvent;
-use App\Event\KnowledgeListener;
 
 /**
  * @Route("/xylotheque")
@@ -40,7 +40,18 @@ class WoodController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.WoodManager::class,
+            '?'.ActivityUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ElasticaQueryUtils::class,
+            '?'.KnowledgeUtils::class,
+            '?'.LikableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TextureUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

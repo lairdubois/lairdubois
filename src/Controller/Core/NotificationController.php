@@ -3,19 +3,28 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\Notification;
+use App\Utils\PaginatorUtils;
+use App\Utils\TypableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\Core\Notification;
-use App\Utils\TypableUtils;
-use App\Utils\PaginatorUtils;
 
 /**
  * @Route("/notifications")
  */
 class NotificationController extends AbstractController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PaginatorUtils::class,
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    /////
+
+    /**
 	 * @Route("/", name="core_notification_list")
 	 * @Route("/{filter}", requirements={"filter" = "[a-z-]+"}, name="core_notification_list_filter")
 	 * @Route("/{filter}/{page}", requirements={"filter" = "[a-z-]+", "page" = "\d+"}, name="core_notification_list_filter_page")

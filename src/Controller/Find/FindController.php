@@ -4,33 +4,33 @@ namespace App\Controller\Find;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
-use App\Utils\LocalisableUtils;
-use App\Utils\WebScreenshotUtils;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Form\Type\Find\FindType;
-use App\Entity\Find\Find;
 use App\Entity\Find\Content\Gallery;
-use App\Model\LocalisableInterface;
-use App\Utils\CollectionnableUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\PicturedUtils;
-use App\Utils\SearchUtils;
-use App\Utils\ExplorableUtils;
+use App\Entity\Find\Find;
 use App\Event\PublicationEvent;
 use App\Event\PublicationListener;
 use App\Event\PublicationsEvent;
-use App\Manager\Find\FindManager;
+use App\Form\Type\Find\FindType;
 use App\Manager\Core\WitnessManager;
+use App\Manager\Find\FindManager;
 use App\Model\HiddableInterface;
+use App\Model\LocalisableInterface;
 use App\Utils\BlockBodiedUtils;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ExplorableUtils;
+use App\Utils\FieldPreprocessorUtils;
 use App\Utils\FindUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
+use App\Utils\LocalisableUtils;
+use App\Utils\PicturedUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\WatchableUtils;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 
 /**
  * @Route("/trouvailles")
@@ -41,8 +41,21 @@ class FindController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.FindManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
             '?'.FindUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.LocalisableUtils::class,
+            '?'.PicturedUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

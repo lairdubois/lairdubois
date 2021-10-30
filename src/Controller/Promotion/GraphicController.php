@@ -4,30 +4,30 @@ namespace App\Controller\Promotion;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Promotion\Graphic;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Promotion\GraphicType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Promotion\GraphicManager;
+use App\Model\HiddableInterface;
 use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ExplorableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\GraphicUtils;
+use App\Utils\LikableUtils;
+use App\Utils\PicturedUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Manager\Core\WitnessManager;
-use App\Manager\Promotion\GraphicManager;
-use App\Model\HiddableInterface;
-use App\Entity\Promotion\Graphic;
-use App\Form\Type\Promotion\GraphicType;
-use App\Utils\SearchUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\GraphicUtils;
-use App\Utils\ExplorableUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\PicturedUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
 
 /**
  * @Route("/promouvoir")
@@ -38,7 +38,19 @@ class GraphicController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.GraphicManager::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.GraphicUtils::class,
+            '?'.LikableUtils::class,
+            '?'.PicturedUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

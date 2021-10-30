@@ -3,26 +3,37 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\Review;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Form\Type\Core\ReviewType;
+use App\Model\HiddableInterface;
+use App\Model\ReviewableInterface;
+use App\Utils\ActivityUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\ReviewableUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TypableUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\TypableUtils;
-use App\Model\ReviewableInterface;
-use App\Form\Type\Core\ReviewType;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Entity\Core\Review;
-use App\Model\HiddableInterface;
-use App\Utils\ReviewableUtils;
 
 /**
  * @Route("/reviews")
  */
 class ReviewController extends AbstractController {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.ReviewableUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TypableUtils::class,
+            '?'.WatchableUtils::class,
+        ));
+    }
 
 	private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::class);

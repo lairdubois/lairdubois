@@ -2,51 +2,52 @@
 
 namespace App\Controller\Wonder;
 
+use App\Controller\AbstractController;
+use App\Controller\PublicationControllerTrait;
+use App\Entity\Blog\Post;
+use App\Entity\Core\Spotlight;
+use App\Entity\Core\Tip;
+use App\Entity\Core\View;
+use App\Entity\Event\Event;
+use App\Entity\Howto\Howto;
+use App\Entity\Knowledge\Provider;
+use App\Entity\Knowledge\School;
+use App\Entity\Offer\Offer;
+use App\Entity\Qa\Question;
+use App\Entity\Wonder\Creation;
+use App\Entity\Wonder\Plan;
+use App\Entity\Workflow\Workflow;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Wonder\CreationType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Wonder\CreationManager;
+use App\Model\HiddableInterface;
+use App\Utils\BlockBodiedUtils;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ElasticaQueryUtils;
+use App\Utils\EmbeddableUtils;
+use App\Utils\ExplorableUtils;
+use App\Utils\FeedbackableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
+use App\Utils\MaybeUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\PicturedUtils;
+use App\Utils\SearchUtils;
+use App\Utils\StripableUtils;
+use App\Utils\TagUtils;
+use App\Utils\TypableUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\AbstractController;
-use App\Controller\PublicationControllerTrait;
-use App\Entity\Core\Tip;
-use App\Entity\Event\Event;
-use App\Entity\Offer\Offer;
-use App\Utils\ElasticaQueryUtils;
-use App\Utils\FeedbackableUtils;
-use App\Utils\MaybeUtils;
-use App\Entity\Knowledge\School;
-use App\Entity\Qa\Question;
-use App\Utils\CollectionnableUtils;
-use App\Manager\Wonder\CreationManager;
-use App\Manager\Core\WitnessManager;
-use App\Entity\Workflow\Workflow;
-use App\Model\HiddableInterface;
-use App\Utils\StripableUtils;
-use App\Form\Type\Wonder\CreationType;
-use App\Utils\PaginatorUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\ExplorableUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\SearchUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\PicturedUtils;
-use App\Utils\EmbeddableUtils;
-use App\Utils\TypableUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Entity\Blog\Post;
-use App\Entity\Howto\Howto;
-use App\Entity\Knowledge\Provider;
-use App\Entity\Core\Spotlight;
-use App\Entity\Wonder\Plan;
-use App\Entity\Wonder\Creation;
-use App\Entity\Core\View;
+
 
 /**
  * @Route("/creations")
@@ -57,9 +58,26 @@ class CreationController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.CreationManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ElasticaQueryUtils::class,
+            '?'.EmbeddableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FeedbackableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.MaybeUtils::class,
+            '?'.PaginatorUtils::class,
             '?'.PicturedUtils::class,
+            '?'.SearchUtils::class,
             '?'.StripableUtils::class,
+            '?'.TagUtils::class,
+            '?'.TypableUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

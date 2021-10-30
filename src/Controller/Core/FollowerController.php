@@ -3,20 +3,27 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\Follower;
+use App\Entity\Core\User;
+use App\Utils\ActivityUtils;
+use App\Utils\FollowerUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\Core\Follower;
-use App\Entity\Core\User;
-use App\Utils\FollowerUtils;
-use App\Utils\ActivityUtils;
 
 /**
  * @Route("/followers")
  */
 class FollowerController extends AbstractController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.FollowerUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/{followingUserId}/create", requirements={"followingUserId" = "\d+"}, name="core_follower_create")
 	 * @Template("Core/Follower/create-xhr.html.twig")
 	 */

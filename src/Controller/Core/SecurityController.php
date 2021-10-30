@@ -6,14 +6,9 @@ use App\Controller\AbstractController;
 use App\Entity\Core\User;
 use App\Form\Type\Security\RegisterType;
 use App\Manager\Core\UserManager;
-use App\Utils\StringUtils;
-use App\Utils\UserUtils;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SecurityController extends AbstractController  {
 

@@ -3,8 +3,8 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Handler\ResourceUploadHandler;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/resources")

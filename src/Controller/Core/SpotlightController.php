@@ -4,16 +4,22 @@ namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\TypableUtils;
 use App\Entity\Core\Spotlight;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/spotlights")
  */
 class SpotlightController extends AbstractController {
 
-	private function _retrieveRelatedEntity($entityType, $entityId) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::class);
 		try {
 			$entity = $typableUtils->findTypable($entityType, $entityId);

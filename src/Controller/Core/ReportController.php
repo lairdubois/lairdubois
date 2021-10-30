@@ -3,17 +3,23 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\Entity\Core\Report;
 use App\Utils\MailerUtils;
 use App\Utils\TypableUtils;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/reports")
  */
 class ReportController extends AbstractController {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.MailerUtils::class,
+            '?'.TypableUtils::class,
+        ));
+    }
 
 	/**
 	 * @Route("/create", name="core_report_create")

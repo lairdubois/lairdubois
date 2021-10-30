@@ -2,30 +2,42 @@
 
 namespace App\Controller\Core;
 
+use App\Controller\AbstractController;
+use App\Entity\Core\Feedback;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Form\Type\Core\FeedbackType;
+use App\Model\FeedbackableInterface;
+use App\Model\HiddableInterface;
+use App\Utils\ActivityUtils;
+use App\Utils\BlockBodiedUtils;
+use App\Utils\FeedbackableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\MentionUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TypableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Controller\AbstractController;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\MentionUtils;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\TypableUtils;
-use App\Model\FeedbackableInterface;
-use App\Form\Type\Core\FeedbackType;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Entity\Core\Feedback;
-use App\Model\HiddableInterface;
-use App\Utils\FeedbackableUtils;
 
 /**
  * @Route("/feedbacks")
  */
 class FeedbackController extends AbstractController {
 
-	private function _retrieveRelatedEntity($entityType, $entityId) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.FeedbackableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.MentionUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::class);
 		try {
 			$entity = $typableUtils->findTypable($entityType, $entityId);

@@ -2,12 +2,12 @@
 
 namespace App\Controller\Workflow;
 
+use App\Entity\Workflow\Part;
+use App\Entity\Workflow\Task;
+use App\Form\Type\Workflow\PartType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Workflow\Task;
-use App\Entity\Workflow\Part;
-use App\Form\Type\Workflow\PartType;
 
 /**
  * @Route("/processus")

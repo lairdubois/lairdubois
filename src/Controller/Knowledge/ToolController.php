@@ -4,30 +4,30 @@ namespace App\Controller\Knowledge;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Knowledge\Tool;
+use App\Entity\Knowledge\Value\Text;
+use App\Event\KnowledgeEvent;
+use App\Event\KnowledgeListener;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Model\NewTool;
+use App\Form\Type\Knowledge\NewToolType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Knowledge\ToolManager;
+use App\Utils\ActivityUtils;
 use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ElasticaQueryUtils;
+use App\Utils\KnowledgeUtils;
+use App\Utils\LikableUtils;
 use App\Utils\ReviewableUtils;
+use App\Utils\SearchUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Form\Type\Knowledge\NewToolType;
-use App\Form\Model\NewTool;
-use App\Entity\Knowledge\Tool;
-use App\Entity\Knowledge\Value\Text;
-use App\Utils\CommentableUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\ElasticaQueryUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\KnowledgeUtils;
-use App\Manager\Knowledge\ToolManager;
-use App\Manager\Core\WitnessManager;
-use App\Event\PublicationsEvent;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\KnowledgeEvent;
-use App\Event\KnowledgeListener;
 
 /**
  * @Route("/outils")
@@ -38,7 +38,17 @@ class ToolController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.ToolManager::class,
+            '?'.ActivityUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ElasticaQueryUtils::class,
+            '?'.KnowledgeUtils::class,
+            '?'.LikableUtils::class,
+            '?'.ReviewableUtils::class,
+            '?'.SearchUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

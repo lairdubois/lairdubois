@@ -18,6 +18,19 @@ abstract class AbstractHowtoBasedController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.EmbeddableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.GlobalUtils::class,
+            '?'.LikableUtils::class,
+            '?'.WatchableUtils::class,
+        ));
+    }
+
 	protected function computeShowParameters(Howto $howto, $request) {
 		$om = $this->getDoctrine()->getManager();
 		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);

@@ -2,21 +2,26 @@
 
 namespace App\Controller\Collection;
 
+use App\Entity\Collection\Entry;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Utils\CollectionnableUtils;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Model\HiddableInterface;
-use App\Utils\CollectionnableUtils;
-use App\Entity\Collection\Entry;
 
 /**
  * @Route("/collections")
  */
 class EntryController extends AbstractCollectionBasedController {
 
-	/////
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.CollectionnableUtils::class,
+        ));
+    }
+
+    /////
 
 	/**
 	 * @Route("/{id}/entry/{entityType}/{entityId}/create", requirements={"id" = "\d+", "entityType" = "\d+", "entityId" = "\d+"}, name="core_collection_entry_create")

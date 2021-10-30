@@ -3,17 +3,23 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\Entity\Core\Referer\Referral;
 use App\Utils\TypableUtils;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @Route("/referer")
  */
 class RefererController extends AbstractController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/referral/{id}/delete", requirements={"id" = "\d+"}, name="core_referer_referral_delete")
 	 */
 	public function referralDelete($id) {

@@ -2,17 +2,17 @@
 
 namespace App\Controller\Core;
 
+use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
 use App\Entity\Core\Member;
+use App\Entity\Core\Picture;
+use App\Form\Model\EditPicture;
+use App\Form\Type\Core\EditPictureType;
+use App\Handler\PictureUploadHandler;
+use Imagine\Gd\Imagine;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Imagine\Gd\Imagine;
-use App\Controller\AbstractController;
-use App\Entity\Core\Picture;
-use App\Form\Model\EditPicture;
-use App\Handler\PictureUploadHandler;
-use App\Form\Type\Core\EditPictureType;
 
 /**
  * @Route("/pictures")

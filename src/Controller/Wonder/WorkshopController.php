@@ -4,37 +4,37 @@ namespace App\Controller\Wonder;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
+use App\Entity\Howto\Howto;
+use App\Entity\Wonder\Plan;
+use App\Entity\Wonder\Workshop;
+use App\Entity\Workflow\Workflow;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Wonder\WorkshopType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Wonder\WorkshopManager;
+use App\Model\HiddableInterface;
+use App\Utils\BlockBodiedUtils;
 use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\EmbeddableUtils;
+use App\Utils\ExplorableUtils;
 use App\Utils\FeedbackableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
+use App\Utils\LocalisableUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\PicturedUtils;
+use App\Utils\SearchUtils;
+use App\Utils\StripableUtils;
+use App\Utils\TagUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Howto\Howto;
-use App\Entity\Wonder\Plan;
-use App\Entity\Wonder\Workshop;
-use App\Form\Type\Wonder\WorkshopType;
-use App\Utils\PaginatorUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\SearchUtils;
-use App\Utils\ExplorableUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\PicturedUtils;
-use App\Utils\EmbeddableUtils;
-use App\Utils\StripableUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Manager\Core\WitnessManager;
-use App\Manager\Wonder\WorkshopManager;
-use App\Entity\Workflow\Workflow;
-use App\Model\HiddableInterface;
-use App\Utils\LocalisableUtils;
 
 /**
  * @Route("/ateliers")
@@ -45,7 +45,24 @@ class WorkshopController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.WorkshopManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.EmbeddableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FeedbackableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.LocalisableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.PicturedUtils::class,
+            '?'.SearchUtils::class,
+            '?'.StripableUtils::class,
+            '?'.TagUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

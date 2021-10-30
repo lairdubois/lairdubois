@@ -3,18 +3,18 @@
 namespace App\Controller\Knowledge\School;
 
 use App\Controller\AbstractController;
+use App\Entity\Knowledge\School;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Form\Type\Knowledge\School\TestimonialType;
+use App\Manager\Knowledge\School\TestimonialManager;
+use App\Utils\ActivityUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\ActivityUtils;
-use App\Entity\Knowledge\School;
-use App\Form\Type\Knowledge\School\TestimonialType;
-use App\Manager\Knowledge\School\TestimonialManager;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
 
 /**
  * @Route("/ecoles")
@@ -24,6 +24,10 @@ class TestimonialController extends AbstractController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.TestimonialManager::class,
+            '?'.ActivityUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

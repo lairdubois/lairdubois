@@ -2,32 +2,32 @@
 
 namespace App\Controller\Howto;
 
+use App\Controller\PublicationControllerTrait;
+use App\Entity\Howto\Howto;
+use App\Entity\Knowledge\Provider;
+use App\Entity\Knowledge\School;
+use App\Entity\Qa\Question;
+use App\Entity\Wonder\Creation;
+use App\Entity\Wonder\Plan;
+use App\Entity\Wonder\Workshop;
+use App\Entity\Workflow\Workflow;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Howto\HowtoType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Howto\HowtoManager;
+use App\Model\HiddableInterface;
+use App\Utils\EmbeddableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\StripableUtils;
+use App\Utils\TagUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\PublicationControllerTrait;
-use App\Entity\Knowledge\School;
-use App\Entity\Qa\Question;
-use App\Entity\Workflow\Workflow;
-use App\Model\HiddableInterface;
-use App\Utils\StripableUtils;
-use App\Entity\Wonder\Creation;
-use App\Entity\Wonder\Plan;
-use App\Entity\Wonder\Workshop;
-use App\Entity\Howto\Howto;
-use App\Entity\Knowledge\Provider;
-use App\Form\Type\Howto\HowtoType;
-use App\Utils\PaginatorUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\SearchUtils;
-use App\Utils\EmbeddableUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Manager\Howto\HowtoManager;
-use App\Manager\Core\WitnessManager;
 
 /**
  * @Route("/pas-a-pas")
@@ -38,7 +38,13 @@ class HowtoController extends AbstractHowtoBasedController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.HowtoManager::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.StripableUtils::class,
+            '?'.TagUtils::class,
         ));
     }
 

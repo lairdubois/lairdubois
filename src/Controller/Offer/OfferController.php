@@ -4,31 +4,31 @@ namespace App\Controller\Offer;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
-use App\Utils\CollectionnableUtils;
-use App\Utils\LocalisableUtils;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Form\Type\Offer\OfferType;
 use App\Entity\Offer\Offer;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\TagUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\PicturedUtils;
-use App\Utils\SearchUtils;
-use App\Utils\ExplorableUtils;
 use App\Event\PublicationEvent;
 use App\Event\PublicationListener;
 use App\Event\PublicationsEvent;
-use App\Manager\Offer\OfferManager;
+use App\Form\Type\Offer\OfferType;
 use App\Manager\Core\WitnessManager;
+use App\Manager\Offer\OfferManager;
 use App\Model\HiddableInterface;
 use App\Utils\BlockBodiedUtils;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ExplorableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
+use App\Utils\LocalisableUtils;
+use App\Utils\PicturedUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\WatchableUtils;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/annonces")
@@ -39,7 +39,20 @@ class OfferController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.OfferManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.LocalisableUtils::class,
+            '?'.PicturedUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

@@ -3,19 +3,27 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\Watch;
+use App\Model\WatchableInterface;
+use App\Utils\PaginatorUtils;
+use App\Utils\TypableUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Utils\WatchableUtils;
-use App\Utils\TypableUtils;
-use App\Utils\PaginatorUtils;
-use App\Model\WatchableInterface;
-use App\Entity\Core\Watch;
 
 /**
  * @Route("/watches")
  */
 class WatchController extends AbstractController {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PaginatorUtils::class,
+            '?'.TypableUtils::class,
+            '?'.WatchableUtils::class,
+        ));
+    }
 
 	private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::class);

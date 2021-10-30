@@ -2,30 +2,40 @@
 
 namespace App\Controller\Core;
 
+use App\Controller\AbstractController;
+use App\Entity\Core\Comment;
+use App\Entity\Core\Vote;
+use App\Event\VotableEvent;
+use App\Event\VotableListener;
+use App\Form\Model\NewVote;
+use App\Form\Type\Core\NewVoteType;
+use App\Model\AuthoredInterface;
+use App\Model\VotableInterface;
+use App\Model\VotableParentInterface;
+use App\Utils\ActivityUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\TypableUtils;
+use App\Utils\VotableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Controller\AbstractController;
-use App\Entity\Core\Comment;
-use App\Form\Model\NewVote;
-use App\Form\Type\Core\NewVoteType;
-use App\Model\AuthoredInterface;
-use App\Utils\CommentableUtils;
-use App\Model\VotableInterface;
-use App\Model\VotableParentInterface;
-use App\Utils\VotableUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\TypableUtils;
-use App\Entity\Core\Vote;
-use App\Event\VotableEvent;
-use App\Event\VotableListener;
 
 /**
  * @Route("/votes")
  */
 class VoteController extends AbstractController {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.TypableUtils::class,
+            '?'.VotableUtils::class,
+        ));
+    }
 
 	private function _retriveRelatedEntityRepository($entityType) {
 

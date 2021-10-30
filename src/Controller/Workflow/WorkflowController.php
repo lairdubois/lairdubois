@@ -3,31 +3,31 @@
 namespace App\Controller\Workflow;
 
 use App\Controller\PublicationControllerTrait;
-use App\Utils\CollectionnableUtils;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use App\Form\Type\Workflow\WorkflowType;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\TagUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\LikableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\WatchableUtils;
-use App\Entity\Workflow\Workflow;
-use App\Entity\Workflow\Task;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Manager\Workflow\WorkflowManager;
-use App\Manager\Core\WitnessManager;
 use App\Entity\Howto\Howto;
 use App\Entity\Wonder\Creation;
 use App\Entity\Wonder\Plan;
 use App\Entity\Wonder\Workshop;
+use App\Entity\Workflow\Task;
+use App\Entity\Workflow\Workflow;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Workflow\WorkflowType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Workflow\WorkflowManager;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
 use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\WatchableUtils;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @Route("/processus")
@@ -38,7 +38,17 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.WorkflowManager::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

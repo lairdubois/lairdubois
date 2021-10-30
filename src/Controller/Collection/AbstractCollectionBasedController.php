@@ -3,14 +3,19 @@
 namespace App\Controller\Collection;
 
 use App\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\Collection\Collection;
 use App\Model\CollectionnableInterface;
 use App\Utils\TypableUtils;
 
 abstract class AbstractCollectionBasedController extends AbstractController {
 
-	protected function _retrieveCollection($id) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.TypableUtils::class,
+        ));
+    }
+
+    protected function _retrieveCollection($id) {
 		$om = $this->getDoctrine()->getManager();
 		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
 

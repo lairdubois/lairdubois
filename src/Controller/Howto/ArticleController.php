@@ -2,29 +2,34 @@
 
 namespace App\Controller\Howto;
 
+use App\Controller\PublicationControllerTrait;
+use App\Entity\Howto\Article;
+use App\Entity\Howto\Howto;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Form\Type\Howto\HowtoArticleType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Howto\ArticleManager;
+use App\Utils\BlockBodiedUtils;
+use App\Utils\EmbeddableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\MentionUtils;
+use App\Utils\SearchUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\PublicationControllerTrait;
-use App\Entity\Howto\Howto;
-use App\Entity\Howto\Article;
-use App\Form\Type\Howto\HowtoArticleType;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\SearchUtils;
-use App\Utils\EmbeddableUtils;
-use App\Utils\MentionUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Manager\Howto\ArticleManager;
-use App\Manager\Core\WitnessManager;
 
 class ArticleController extends AbstractHowtoBasedController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.ArticleManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.MentionUtils::class,
+            '?'.SearchUtils::class,
         ));
     }
 

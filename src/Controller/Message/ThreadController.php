@@ -23,6 +23,7 @@ class ThreadController extends AbstractThreadController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.MessageUtils::class,
+            '?'.PaginatorUtils::class,
         ));
     }
 

@@ -2,20 +2,26 @@
 
 namespace App\Controller\Message;
 
+use App\Entity\Message\Message;
+use App\Entity\Message\MessageMeta;
+use App\Form\Type\Message\ReplyMessageType;
+use App\Utils\FieldPreprocessorUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\Message\Message;
-use App\Entity\Message\MessageMeta;
-use App\Utils\FieldPreprocessorUtils;
-use App\Form\Type\Message\ReplyMessageType;
 
 /**
  * @Route("/messagerie")
  */
 class MessageController extends AbstractThreadController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.FieldPreprocessorUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/thread/{threadId}/new", requirements={"threadId" = "\d+"}, name="core_message_new")
 	 * @Template("Message/new-xhr.html.twig")
 	 */

@@ -2,34 +2,47 @@
 
 namespace App\Controller\Knowledge;
 
+use App\Controller\AbstractController;
+use App\Entity\Core\User;
+use App\Entity\Knowledge\AbstractKnowledge;
 use App\Entity\Knowledge\Value\BaseValue;
 use App\Entity\Knowledge\Value\Pdf;
+use App\Event\KnowledgeEvent;
+use App\Event\KnowledgeListener;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Model\WatchableInterface;
+use App\Utils\ActivityUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\KnowledgeUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\PropertyUtils;
+use App\Utils\TypableUtils;
+use App\Utils\VotableUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\AbstractController;
-use App\Entity\Core\User;
-use App\Entity\Knowledge\AbstractKnowledge;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\KnowledgeEvent;
-use App\Event\KnowledgeListener;
-use App\Model\WatchableInterface;
-use App\Utils\KnowledgeUtils;
-use App\Utils\VotableUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\TypableUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\PropertyUtils;
 
 /**
  * @Route("/knowledge")
  */
 class KnowledgeController extends AbstractController {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.KnowledgeUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.PropertyUtils::class,
+            '?'.TypableUtils::class,
+            '?'.VotableUtils::class,
+            '?'.WatchableUtils::class,
+        ));
+    }
 
 	private function _retrieveRelatedEntityRepository($entityType) {
 

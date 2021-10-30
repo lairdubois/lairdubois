@@ -2,22 +2,22 @@
 
 namespace App\Controller\Core;
 
-use Elastica\Exception\NotFoundException;
-use App\Utils\WebpushNotificationUtils;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\Controller\AbstractController;
+use App\Entity\Core\Member;
+use App\Entity\Core\MemberInvitation;
 use App\Entity\Core\MemberRequest;
+use App\Entity\Core\User;
 use App\Manager\Core\MemberInvitationManager;
 use App\Manager\Core\MemberManager;
 use App\Manager\Core\MemberRequestManager;
 use App\Utils\FollowerUtils;
-use App\Utils\SearchUtils;
-use App\Entity\Core\Member;
-use App\Entity\Core\User;
-use App\Controller\AbstractController;
-use App\Entity\Core\MemberInvitation;
 use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\WebpushNotificationUtils;
+use Elastica\Exception\NotFoundException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @Route("/members")
@@ -29,6 +29,10 @@ class MemberController extends AbstractController {
             '?'.MemberInvitationManager::class,
             '?'.MemberRequestManager::class,
             '?'.MemberManager::class,
+            '?'.FollowerUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.WebpushNotificationUtils::class,
         ));
     }
 

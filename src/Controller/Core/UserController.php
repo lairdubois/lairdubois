@@ -2,54 +2,54 @@
 
 namespace App\Controller\Core;
 
-use App\Manager\Core\UserManager;
-use Elastica\Exception\NotFoundException;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use App\Controller\AbstractController;
 use App\Controller\UserControllerTrait;
+use App\Entity\Core\Comment;
 use App\Entity\Core\Feedback;
+use App\Entity\Core\Follower;
+use App\Entity\Core\Like;
 use App\Entity\Core\Member;
 use App\Entity\Core\MemberInvitation;
 use App\Entity\Core\MemberRequest;
+use App\Entity\Core\Registration;
 use App\Entity\Core\Review;
 use App\Entity\Core\User;
+use App\Entity\Core\UserWitness;
 use App\Entity\Core\Vote;
+use App\Entity\Find\Find;
+use App\Entity\Howto\Howto;
+use App\Entity\Knowledge\School\Testimonial;
 use App\Entity\Offer\Offer;
+use App\Entity\Promotion\Graphic;
+use App\Entity\Qa\Answer;
+use App\Entity\Qa\Question;
+use App\Entity\Wonder\Creation;
+use App\Entity\Wonder\Plan;
+use App\Entity\Wonder\Workshop;
+use App\Entity\Workflow\Workflow;
+use App\Form\Type\Core\UserSettingsType;
 use App\Form\Type\Core\UserTeamSettingsType;
 use App\Form\Type\Core\UserTeamType;
 use App\Manager\Core\MemberInvitationManager;
 use App\Manager\Core\MemberManager;
 use App\Manager\Core\MemberRequestManager;
+use App\Manager\Core\UserManager;
+use App\Utils\CryptoUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
+use App\Utils\LocalisableUtils;
+use App\Utils\MailerUtils;
+use App\Utils\PaginatorUtils;
 use App\Utils\PropertyUtils;
+use App\Utils\SearchUtils;
 use App\Utils\TypableUtils;
+use App\Utils\UserUtils;
+use Elastica\Exception\NotFoundException;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\Core\UserWitness;
-use App\Entity\Knowledge\School\Testimonial;
-use App\Entity\Promotion\Graphic;
-use App\Entity\Qa\Answer;
-use App\Entity\Qa\Question;
-use App\Entity\Workflow\Workflow;
-use App\Entity\Core\Comment;
-use App\Entity\Find\Find;
-use App\Entity\Core\Follower;
-use App\Entity\Howto\Howto;
-use App\Entity\Core\Like;
-use App\Entity\Wonder\Creation;
-use App\Entity\Wonder\Plan;
-use App\Entity\Wonder\Workshop;
-use App\Entity\Core\Registration;
-use App\Form\Type\Core\UserSettingsType;
-use App\Utils\CryptoUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\LocalisableUtils;
-use App\Utils\MailerUtils;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\LikableUtils;
-use App\Utils\UserUtils;
 
 /**
  * @Route("/")
@@ -60,11 +60,21 @@ class UserController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
-            '?'.UserUtils::class,
-            '?'.MailerUtils::class,
             '?'.MemberInvitationManager::class,
-            '?'.MemberRequestManager::class,
             '?'.MemberManager::class,
+            '?'.MemberRequestManager::class,
+            '?'.UserManager::class,
+            '?'.CryptoUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.LocalisableUtils::class,
+            '?'.MailerUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.PropertyUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TypableUtils::class,
+            '?'.UserUtils::class,
         ));
     }
 

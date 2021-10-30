@@ -4,13 +4,6 @@ namespace App\Controller\Knowledge;
 
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
-use App\Utils\CollectionnableUtils;
-use App\Utils\ElasticaQueryUtils;
-use App\Utils\KnowledgeUtils;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Entity\Howto\Howto;
 use App\Entity\Knowledge\Provider;
 use App\Entity\Wonder\Creation;
@@ -24,13 +17,20 @@ use App\Form\Type\Knowledge\NewProviderType;
 use App\Manager\Core\WitnessManager;
 use App\Manager\Knowledge\ProviderManager;
 use App\Utils\ActivityUtils;
+use App\Utils\CollectionnableUtils;
 use App\Utils\CommentableUtils;
+use App\Utils\ElasticaQueryUtils;
+use App\Utils\KnowledgeUtils;
 use App\Utils\LikableUtils;
 use App\Utils\LocalisableUtils;
 use App\Utils\PaginatorUtils;
+use App\Utils\ReviewableUtils;
 use App\Utils\SearchUtils;
 use App\Utils\WatchableUtils;
-use App\Utils\ReviewableUtils;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/fournisseurs")
@@ -41,7 +41,19 @@ class ProviderController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.ProviderManager::class,
+            '?'.ActivityUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ElasticaQueryUtils::class,
+            '?'.KnowledgeUtils::class,
+            '?'.LikableUtils::class,
+            '?'.LocalisableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.ReviewableUtils::class,
+            '?'.SearchUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

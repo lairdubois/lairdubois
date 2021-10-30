@@ -3,30 +3,41 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\Join;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Model\HiddableInterface;
+use App\Model\IndexableInterface;
+use App\Model\JoinableInterface;
+use App\Model\PublicationInterface;
+use App\Model\WatchableInterface;
+use App\Utils\ActivityUtils;
+use App\Utils\JoinableUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TypableUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\Core\Join;
-use App\Model\PublicationInterface;
-use App\Model\WatchableInterface;
-use App\Model\IndexableInterface;
-use App\Model\JoinableInterface;
-use App\Model\HiddableInterface;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Utils\WatchableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\JoinableUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\TypableUtils;
 
 /**
  * @Route("/joins")
  */
 class JoinController extends AbstractController {
 
-	private function _retrieveRelatedEntity($entityType, $entityId) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ActivityUtils::class,
+            '?'.JoinableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TypableUtils::class,
+            '?'.WatchableUtils::class,
+        ));
+    }
+
+    private function _retrieveRelatedEntity($entityType, $entityId) {
 		$typableUtils = $this->get(TypableUtils::class);
 		try {
 			$entity = $typableUtils->findTypable($entityType, $entityId);

@@ -3,28 +3,28 @@
 namespace App\Controller\Collection;
 
 use App\Controller\PublicationControllerTrait;
-use App\Entity\Collection\Entry;
-use App\Utils\CollectionnableUtils;
-use App\Utils\PaginatorUtils;
-use App\Utils\TypableUtils;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\TagUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\LikableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\WatchableUtils;
 use App\Entity\Collection\Collection;
+use App\Entity\Collection\Entry;
 use App\Event\PublicationEvent;
 use App\Event\PublicationListener;
 use App\Event\PublicationsEvent;
-use App\Manager\Core\WitnessManager;
-use App\Manager\Collection\CollectionManager;
-use App\Model\HiddableInterface;
 use App\Form\Type\Collection\CollectionType;
+use App\Manager\Collection\CollectionManager;
+use App\Manager\Core\WitnessManager;
+use App\Model\HiddableInterface;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\TypableUtils;
+use App\Utils\WatchableUtils;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @Route("/collections")
@@ -36,6 +36,17 @@ class CollectionController extends AbstractCollectionBasedController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.CollectionManager::class,
+            '?'.WitnessManager::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.TypableUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

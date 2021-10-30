@@ -5,35 +5,35 @@ namespace App\Controller\Qa;
 use App\Controller\AbstractController;
 use App\Controller\PublicationControllerTrait;
 use App\Entity\Core\Tip;
+use App\Entity\Howto\Howto;
 use App\Entity\Offer\Offer;
+use App\Entity\Qa\Question;
+use App\Entity\Wonder\Creation;
+use App\Entity\Wonder\Plan;
+use App\Event\PublicationEvent;
+use App\Event\PublicationListener;
+use App\Event\PublicationsEvent;
+use App\Form\Type\Qa\QuestionType;
+use App\Manager\Core\WitnessManager;
+use App\Manager\Qa\QuestionManager;
+use App\Model\HiddableInterface;
+use App\Utils\BlockBodiedUtils;
+use App\Utils\CollectionnableUtils;
+use App\Utils\CommentableUtils;
+use App\Utils\ExplorableUtils;
+use App\Utils\FieldPreprocessorUtils;
+use App\Utils\FollowerUtils;
+use App\Utils\LikableUtils;
 use App\Utils\MaybeUtils;
+use App\Utils\PaginatorUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\VotableUtils;
+use App\Utils\WatchableUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Qa\Question;
-use App\Entity\Howto\Howto;
-use App\Entity\Wonder\Creation;
-use App\Entity\Wonder\Plan;
-use App\Utils\CollectionnableUtils;
-use App\Utils\PaginatorUtils;
-use App\Form\Type\Qa\QuestionType;
-use App\Utils\TagUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\FollowerUtils;
-use App\Utils\LikableUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\SearchUtils;
-use App\Utils\FieldPreprocessorUtils;
-use App\Utils\BlockBodiedUtils;
-use App\Utils\ExplorableUtils;
-use App\Utils\VotableUtils;
-use App\Event\PublicationEvent;
-use App\Event\PublicationListener;
-use App\Event\PublicationsEvent;
-use App\Manager\Qa\QuestionManager;
-use App\Manager\Core\WitnessManager;
-use App\Model\HiddableInterface;
 
 /**
  * @Route("/questions")
@@ -44,7 +44,21 @@ class QuestionController extends AbstractController {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
+            '?'.WitnessManager::class,
             '?'.QuestionManager::class,
+            '?'.BlockBodiedUtils::class,
+            '?'.CollectionnableUtils::class,
+            '?'.CommentableUtils::class,
+            '?'.ExplorableUtils::class,
+            '?'.FieldPreprocessorUtils::class,
+            '?'.FollowerUtils::class,
+            '?'.LikableUtils::class,
+            '?'.MaybeUtils::class,
+            '?'.PaginatorUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TagUtils::class,
+            '?'.VotableUtils::class,
+            '?'.WatchableUtils::class,
         ));
     }
 

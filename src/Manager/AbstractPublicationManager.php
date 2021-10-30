@@ -24,7 +24,6 @@ use App\Utils\TypableUtils;
 use App\Utils\WatchableUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 abstract class AbstractPublicationManager extends AbstractManager {
 
     public static function getSubscribedServices() {

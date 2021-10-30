@@ -3,10 +3,9 @@
 namespace App\Controller\Core;
 
 use App\Controller\AbstractController;
+use App\Entity\Core\TagUsage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Core\TagUsage;
-
 
 /**
  * @Route("/tags")
