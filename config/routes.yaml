@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+bentools_webpush:
+  resource: '@WebPushBundle/Resources/config/routing.xml'
+  prefix: /webpush

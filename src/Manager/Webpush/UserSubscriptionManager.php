@@ -2,18 +2,18 @@
 
 namespace App\Manager\Webpush;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\Webpush\UserSubscription;
 use BenTools\WebPushBundle\Model\Subscription\UserSubscriptionInterface;
 use BenTools\WebPushBundle\Model\Subscription\UserSubscriptionManagerInterface;
-use App\Entity\Webpush\UserSubscription;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserSubscriptionManager implements UserSubscriptionManagerInterface  {
 
-	private $doctrine;
+	private $om;
 
-	public function __construct(ManagerRegistry $doctrine) {
-		$this->doctrine = $doctrine;
+	public function __construct(EntityManagerInterface $om) {
+		$this->om = $om;
 	}
 
 	public function factory(UserInterface $user, string $subscriptionHash, array $subscription, array $options = array()): UserSubscriptionInterface {
@@ -25,32 +25,32 @@ class UserSubscriptionManager implements UserSubscriptionManagerInterface  {
 	}
 
 	public function getUserSubscription(UserInterface $user, string $subscriptionHash): ?UserSubscriptionInterface {
-		return $this->doctrine->getManager()->getRepository(UserSubscription::class)->findOneBy([
+		return $this->om->getRepository(UserSubscription::class)->findOneBy([
 			'user' => $user,
 			'subscriptionHash' => $subscriptionHash,
 		]);
 	}
 
 	public function findByUser(UserInterface $user): iterable {
-		return $this->doctrine->getManager()->getRepository(UserSubscription::class)->findBy([
+		return $this->om->getRepository(UserSubscription::class)->findBy([
 			'user' => $user,
 		]);
 	}
 
 	public function findByHash(string $subscriptionHash): iterable {
-		return $this->doctrine->getManager()->getRepository(UserSubscription::class)->findBy([
+		return $this->om->getRepository(UserSubscription::class)->findBy([
 			'subscriptionHash' => $subscriptionHash,
 		]);
 	}
 
 	public function save(UserSubscriptionInterface $userSubscription): void {
-		$this->doctrine->getManager()->persist($userSubscription);
-		$this->doctrine->getManager()->flush();
+		$this->om->persist($userSubscription);
+		$this->om->flush();
 	}
 
 	public function delete(UserSubscriptionInterface $userSubscription): void {
-		$this->doctrine->getManager()->remove($userSubscription);
-		$this->doctrine->getManager()->flush();
+		$this->om->remove($userSubscription);
+		$this->om->flush();
 	}
 
 }

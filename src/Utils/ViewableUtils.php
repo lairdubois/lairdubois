@@ -2,11 +2,13 @@
 
 namespace App\Utils;
 
+use App\Messenger\ViewMessage;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use App\Entity\Core\View;
 use App\Model\ViewableInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ViewableUtils extends AbstractContainerAwareUtils {
 
@@ -20,6 +22,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
     public static function getSubscribedServices() {
 	    return array_merge(parent::getSubscribedServices(), array(
             'logger' => '?'.LoggerInterface::class,
+            '?'.MessageBusInterface::class,
         ));
     }
 
@@ -68,14 +71,13 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		try {
 
-			// Publish a view in queue
-			$producer = $this->get('old_sound_rabbit_mq.view_producer');
-			$producer->publish(serialize(array(
-				'kind'       => View::KIND_SHOWN,
-				'entityType' => $viewable->getType(),
-				'entityIds'  => array($viewable->getId()),
-				'userId'     => !is_null($user) ? $user->getId() : null,
-			)));
+		    $messageBus = $this->get(MessageBusInterface::class);
+            $messageBus->dispatch(new ViewMessage(
+                View::KIND_SHOWN,
+				$viewable->getType(),
+				array( $viewable->getId() ),
+				!is_null($user) ? $user->getId() : null,
+            ));
 
 		} catch (\Exception $e) {
 			$this->get('logger')->error('Failed to publish shown view process in queue', array ( 'exception' => $e));
@@ -106,14 +108,13 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 		try {
 
-			// Publish a view in queue
-			$producer = $this->get('old_sound_rabbit_mq.view_producer');
-			$producer->publish(serialize(array(
-				'kind'       => View::KIND_LISTED,
-				'entityType' => $entityType,
-				'entityIds'  => $entityIds,
-				'userId'     => !is_null($user) ? $user->getId() : null,
-			)));
+            $messageBus = $this->get(MessageBusInterface::class);
+            $messageBus->dispatch(new ViewMessage(
+                View::KIND_LISTED,
+                $entityType,
+                $entityIds,
+                !is_null($user) ? $user->getId() : null,
+            ));
 
 		} catch (\Exception $e) {
 			$this->get('logger')->error('Failed to publish shown view process in queue.');

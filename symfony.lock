@@ -14,6 +14,9 @@
     "biblys/isbn": {
         "version": "2.4.0"
     },
+    "brick/math": {
+        "version": "0.9.3"
+    },
     "cboden/ratchet": {
         "version": "v0.4.3"
     },
@@ -248,31 +251,6 @@
     "pagerfanta/pagerfanta": {
         "version": "v2.7.1"
     },
-    "paragonie/constant_time_encoding": {
-        "version": "v2.4.0"
-    },
-    "paragonie/random_compat": {
-        "version": "v9.99.100"
-    },
-    "paragonie/sodium_compat": {
-        "version": "v1.14.0"
-    },
-    "php-amqplib/php-amqplib": {
-        "version": "v3.0.0"
-    },
-    "php-amqplib/rabbitmq-bundle": {
-        "version": "1.12",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.12",
-            "ref": "ce3ca2e4577270c4f518539aa6b9e878998fcfef"
-        },
-        "files": [
-            "config/packages/old_sound_rabbit_mq.yaml",
-            "src/Consumer/.gitignore"
-        ]
-    },
     "php-http/discovery": {
         "version": "1.14.1"
     },
@@ -291,9 +269,6 @@
     "php-http/promise": {
         "version": "1.1.0"
     },
-    "phpseclib/phpseclib": {
-        "version": "3.0.6"
-    },
     "ps/image-optimizer": {
         "version": "2.0.4"
     },
@@ -307,6 +282,9 @@
         "version": "1.0.0"
     },
     "psr/http-client": {
+        "version": "1.0.1"
+    },
+    "psr/http-factory": {
         "version": "1.0.1"
     },
     "psr/http-message": {
@@ -786,18 +764,6 @@
         "version": "v1.3.10"
     },
     "web-token/jwt-signature-algorithm-ecdsa": {
-        "version": "v1.3.10"
-    },
-    "web-token/jwt-signature-algorithm-eddsa": {
-        "version": "v1.3.10"
-    },
-    "web-token/jwt-signature-algorithm-hmac": {
-        "version": "v1.3.10"
-    },
-    "web-token/jwt-signature-algorithm-none": {
-        "version": "v1.3.10"
-    },
-    "web-token/jwt-signature-algorithm-rsa": {
         "version": "v1.3.10"
     },
     "web-token/jwt-util-ecc": {

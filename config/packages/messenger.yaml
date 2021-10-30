@@ -16,6 +16,17 @@ framework:
                 options:
                     queue_name: email_failed
 
+            view_async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: view_message
+
+            webpush_notification_async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: webpush_notification_message
+
         routing:
-            # Route your messages to the transports
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': email_async
+            'App\Messenger\ViewMessage': view_async
+            'App\Messenger\WebpushNotificationMessage': webpush_notification_async

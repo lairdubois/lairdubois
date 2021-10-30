@@ -8,11 +8,13 @@ use App\Entity\Core\User;
 use App\Entity\Message\Thread;
 use App\Entity\Qa\Answer;
 use App\Entity\Qa\Question;
+use App\Messenger\WebpushNotificationMessage;
 use App\Model\LikableInterface;
-use BenTools\WebPushBundle\Model\Message\Notification;
-use BenTools\WebPushBundle\Registry\WebPushManagerRegistry;
+use BenTools\WebPushBundle\Model\Message\PushNotification;
+use BenTools\WebPushBundle\Model\Subscription\UserSubscriptionManagerRegistry;
+use BenTools\WebPushBundle\Sender\PushMessageSender;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Minishlink\WebPush\WebPush;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class WebpushNotificationUtils extends AbstractContainerAwareUtils {
@@ -21,6 +23,9 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
         return array_merge(parent::getSubscribedServices(), array(
             'liip_imagine.cache.manager' => '?'.CacheManager::class,
             '?'.TypableUtils::class,
+            '?'.MessageBusInterface::class,
+            '?'.UserSubscriptionManagerRegistry::class,
+            '?'.PushMessageSender::class,
         ));
     }
 
@@ -44,7 +49,7 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 
 	public function enqueueNewMemberInvitationNotification(MemberInvitation $memberInvitation) {
 		$this->enqueueNotification(
-			$memberInvitation->getRecipient(),
+			$memberInvitation->getRecipient()->getId(),
 			$memberInvitation->getSender()->getDisplayname().' vous invite à rejoindre le collectif '.$memberInvitation->getTeam()->getDisplayname(),
 			$this->get('liip_imagine.cache.manager')->getBrowserPath($memberInvitation->getTeam()->getAvatar()->getWebPath(), '128x128o'),
 			$this->get('router')->generate('core_user_show', array( 'username' => $memberInvitation->getTeam()->getUsernameCanonical()), UrlGeneratorInterface::ABSOLUTE_URL)
@@ -53,7 +58,7 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 
 	public function enqueueIncomingMessageNotification(User $recipient, User $sender, Thread $thread) {
 		$this->enqueueNotification(
-			$recipient,
+			$recipient->getId(),
 			'Nouveau message de '.$sender->getDisplayname(),
 			$this->get('liip_imagine.cache.manager')->getBrowserPath($sender->getAvatar()->getWebPath(), '128x128o'),
 			$this->get('router')->generate('core_message_thread_show', array( 'id' => $thread->getId()), UrlGeneratorInterface::ABSOLUTE_URL)
@@ -61,54 +66,70 @@ class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 	}
 
 	public function enqueueNotification($userId, $body, $icon, $link) {
-		try {
-			$producer = $this->container->get('old_sound_rabbit_mq.webpush_notification_producer');
-			$producer->publish(serialize(array(
-				'userId' => $userId,
-				'body'   => $body,
-				'icon'   => $icon,
-				'link'   => $link,
-			)));
-		} catch (\Exception $e) {
-
-		}
+        $messageBus = $this->get(MessageBusInterface::class);
+        $messageBus->dispatch(new WebpushNotificationMessage(
+            $userId,
+            $body,
+            $icon,
+            $link
+        ));
 	}
 
 	/////
 
 	public function sendNotification(User $user, string $body, string $icon = 'https://www.lairdubois.fr/favicon-144x144.png', string $link = 'https://www.lairdubois.fr') {
 
-		$webpush = $this->container->get(WebPush::class);
-		$managers = $this->container->get(WebPushManagerRegistry::class);
-		$myUserManager = $managers->getManager($user);
+        $userSubscriptionManager = $this->get(UserSubscriptionManagerRegistry::class);
+        $sender = $this->get(PushMessageSender::class);
 
-		foreach ($myUserManager->findByUser($user) as $subscription) {
-			$webpush->sendNotification(
-				$subscription->getEndpoint(),
-				new Notification([
-					'title' => 'L\'Air du Bois',
-					'body'  => $body,
-					'icon'  => $icon,
-					'data'  => [
-						'link' => $link,
-					],
-				]),
-				$subscription->getPublicKey(),
-				$subscription->getAuthToken()
-			);
-		}
-		$results = $webpush->flush();
+        $subscriptions = $userSubscriptionManager->findByUser($user);
+        $notification = new PushNotification('L\'Air du Bois', array(
+            PushNotification::BODY => $body,
+            PushNotification::ICON => $icon,
+            PushNotification::DATA => array(
+                'link' => $link,
+            ),
+        ));
 
-		// Delete expired subscriptions
-		if (is_array($results)) {
-			foreach ($results as $result) {
-				if (!empty($result['expired'])) {
-					foreach ($myUserManager->findByHash($myUserManager->hash($result['endpoint'])) as $subscription) {
-						$myUserManager->delete($subscription);
-					}
-				}
-			}
-		}
+        $responses = $sender->push($notification->createMessage(), $subscriptions);
+
+        foreach ($responses as $response) {
+            if ($response->isExpired()) {
+                $userSubscriptionManager->delete($response->getSubscription());
+            }
+        }
+
+//		$webpush = $this->container->get(WebPush::class);
+//		$managers = $this->container->get(WebPushManagerRegistry::class);
+//		$myUserManager = $managers->getManager($user);
+//
+//		foreach ($myUserManager->findByUser($user) as $subscription) {
+//			$webpush->sendNotification(
+//				$subscription->getEndpoint(),
+//				new Notification([
+//					'title' => 'L\'Air du Bois',
+//					'body'  => $body,
+//					'icon'  => $icon,
+//					'data'  => [
+//						'link' => $link,
+//					],
+//				]),
+//				$subscription->getPublicKey(),
+//				$subscription->getAuthToken()
+//			);
+//		}
+//		$results = $webpush->flush();
+//
+//		// Delete expired subscriptions
+//		if (is_array($results)) {
+//			foreach ($results as $result) {
+//				if (!empty($result['expired'])) {
+//					foreach ($myUserManager->findByHash($myUserManager->hash($result['endpoint'])) as $subscription) {
+//						$myUserManager->delete($subscription);
+//					}
+//				}
+//			}
+//		}
 
 	}
 

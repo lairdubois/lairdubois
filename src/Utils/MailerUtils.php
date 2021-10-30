@@ -58,6 +58,8 @@ class MailerUtils extends AbstractContainerAwareUtils {
             ->text($body)
         ;
 
+        $message->getHeaders()->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply');
+
 		if (!is_null($listUnsubscribeLink)) {
 			$message->getHeaders()->addTextHeader('List-Unsubscribe', '<mailto:unsubscribe@lairdubois.fr?subject='.$listUnsubscribeLink.'>');
 		}
