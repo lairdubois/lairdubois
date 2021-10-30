@@ -30,7 +30,7 @@ class BlockType extends AbstractType {
 			->setRequired(array(
 				'em',
 			))
-			->setAllowedTypes('em', 'Doctrine\Persistence\ManagerRegistry')
+			->setAllowedTypes('em', 'Doctrine\ORM\EntityManagerInterface')
 		;
 	}
 

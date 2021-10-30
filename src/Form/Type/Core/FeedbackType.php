@@ -30,7 +30,7 @@ class FeedbackType extends AbstractType {
 				'allow_delete'    => true,
 				'by_reference'    => false,
 				'options'         => array(
-					'om' => $this->om,
+					'em' => $this->om,
 				),
 				'constraints'     => array(new \Symfony\Component\Validator\Constraints\Valid())
 			))
