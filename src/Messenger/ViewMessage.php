@@ -9,7 +9,7 @@ class ViewMessage {
     private array $entityIds;
     private int $userId;
 
-    public function __construct(int $kind, int $entityType, array $entityIds, int $userId = null) {
+    public function __construct(int $kind, int $entityType, array $entityIds, ?int $userId = null) {
         $this->kind = $kind;
         $this->entityType = $entityType;
         $this->entityIds = $entityIds;
