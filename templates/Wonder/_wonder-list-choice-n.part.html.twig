@@ -12,7 +12,7 @@
                 </a>
             </div>
             <div class="ladb-tools">
-                <a href="#" class="btn btn-default" onclick="window.parent.{{ wonderType }}Added('{% filter escape('js') %}{% include 'Wonder/_wonder-form-thumbnail.part.html.twig' %}{% endfilter %}');">{{ 'default.choose'|trans() }}</a>
+                <a href="#" class="btn btn-default" onclick="window.parent.{{ wonderType }}Added('{% apply escape('js') %}{% include 'Wonder/_wonder-form-thumbnail.part.html.twig' %}{% endapply %}');">{{ 'default.choose'|trans() }}</a>
             </div>
             <div class="ladb-body">
                 <h4 class="ladb-heading">{{ wonder.title }}</h4>

@@ -14,6 +14,12 @@ use App\Model\PicturedInterface;
 
 class CollectionnableUtils extends AbstractContainerAwareUtils {
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PictureManager::class,
+        ));
+    }
+
 	public function createEntry(CollectionnableInterface $collectionnable, Collection $collection) {
 		$om = $this->getDoctrine()->getManager();
 		$pictureManager = $this->get(PictureManager::class);

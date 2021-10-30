@@ -98,7 +98,7 @@ class FindRepository extends AbstractEntityRepository {
 			->select(array( 'f', 'u', 'uav', 'mp', 'bbs', 'ct', 'tgs' ))
 			->from($this->getEntityName(), 'f')
 			->innerJoin('f.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->leftJoin('f.mainPicture', 'mp')
 			->leftJoin('f.bodyBlocks', 'bbs')
 			->leftJoin('f.content', 'ct')

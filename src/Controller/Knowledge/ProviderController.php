@@ -39,6 +39,12 @@ class ProviderController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.ProviderManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_provider_new")
 	 * @Template("Knowledge/Provider/new.html.twig")

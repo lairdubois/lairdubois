@@ -156,7 +156,7 @@ class MailerUtils extends AbstractContainerAwareUtils {
 		$this->sendEmailMessage(
 			'contact@lairdubois.fr',
 			'Notification de nouveau collectif',
-			$this->_renderTemplate('Core/User/Team:new-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'team' => $team ))
+			$this->_renderTemplate('Core/User/Team/new-email-notification.txt.twig', array( 'actorUser' => $actorUser, 'team' => $team ))
 		);
 	}
 

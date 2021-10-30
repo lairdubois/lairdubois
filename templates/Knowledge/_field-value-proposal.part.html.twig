@@ -42,15 +42,17 @@
                                     <div class="dropup">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ladb-icon-admin"></i></a>
                                         <ul class="dropdown-menu">
-                                            {% for fieldDest, fieldDestDef in knowledge.fieldDefs|filter( (fieldDest, fieldDestDef) => fieldDestDef[constant('ATTRIB_TYPE', knowledge)] == fieldType and fieldDest != field) %}
-                                                <li><a href="#" onclick="LADBValues.moveValueProposal({{ value.id }}, '{{ path('core_knowledge_value_admin_move', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'fieldSrc':value.parentEntityField, 'fieldDest':fieldDest, 'id':value.id }) }}');return false;"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} '{{ ('knowledge.'~knowledge.strippedName~'.field.'~fieldDest)|trans() }}'</a></li>
+                                            {% for fieldDest, fieldDestDef in knowledge.fieldDefs %}
+                                                {% if fieldDestDef[constant('ATTRIB_TYPE', knowledge)] == fieldType and fieldDest != field %}
+                                                <li><a href="#" onclick="moveValueProposal({{ value.id }}, '{{ path('core_knowledge_value_admin_move', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'fieldSrc':value.parentEntityField, 'fieldDest':fieldDest, 'id':value.id }) }}');return false;"><i class="ladb-icon-arrow-right"></i> {{ 'default.move_to'|trans() }} '{{ ('knowledge.'~knowledge.strippedName~'.field.'~fieldDest)|trans() }}'</a></li>
+                                                {% endif %}
                                             {% endfor %}
                                         </ul>
                                     </div>
                                 {% endif %}
                                 <a href="#" onclick="bootbox.dialog({ title:'{{ 'default.get_link'|trans() }}', message:'<p>Lien direct vers la proposition :</p><input type=\'text\' class=\'form-control\' style=\'font-family: courier;\' value=\'{{ url('core_knowledge_value_show', { 'id':value.id }) }}\' onclick=\'$(this).focus(); $(this).select();\'><span class=\'input-group-btn\'>', backdrop: true, buttons: { cancel: { label: '{{ 'default.close'|trans() }}', className: 'btn-default' } } }); return false;" data-tooltip="tooltip" title="{{ 'default.get_link'|trans() }}" class="ladb-minitool"><i class="ladb-icon-link"></i></a>
                                 {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 %}
-                                    <a href="#" onclick="LADBValues.editValueProposal({{ value.id }}, '{{ path('core_knowledge_value_edit', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
+                                    <a href="#" onclick="editValueProposal({{ value.id }}, '{{ path('core_knowledge_value_edit', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" data-tooltip="tooltip" title="{{ 'default.edit'|trans() }}"><i class="ladb-icon-edit"></i></a>
                                 {% endif %}
                                 {% if is_granted("ROLE_ADMIN") or value.user == app.user and value.voteCount == 0 and not fieldMandatory %}
                                     <a href="#delete_value_proposal_{{ value.id }}_modal" class="ladb-minitool-danger" data-toggle="modal" data-tooltip="tooltip" title="{{ 'default.delete'|trans() }}"><i class="ladb-icon-delete"></i></a>
@@ -61,7 +63,7 @@
                                         {% endblock %}
                                         {% block footerInner %}
                                             <a href="#" class="btn btn-default" data-dismiss="modal">{{ 'default.cancel'|trans() }}</a>
-                                            <a href="#" onclick="$(this).button('loading');LADBValues.deleteValueProposal({{ value.id }}, '{{ path('core_knowledge_value_delete', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
+                                            <a href="#" onclick="$(this).button('loading');deleteValueProposal({{ value.id }}, '{{ path('core_knowledge_value_delete', { 'entityType':value.parentEntityType, 'entityId':value.parentEntityId, 'field':value.parentEntityField, 'id':value.id }) }}');return false;" class="btn btn-danger" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-delete"></i> {{ 'default.delete'|trans() }}</a>
                                         {% endblock %}
                                     {% endembed %}
                                 {% endif %}

@@ -28,7 +28,7 @@ class WorkflowRepository extends AbstractEntityRepository {
 			->select(array( 'w', 'u', 'uav', 'mp', 'cts', 'pls', 'wks', 'hws' ))
 			->from($this->getEntityName(), 'w')
 			->innerJoin('w.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->leftJoin('w.mainPicture', 'mp')
 			->leftJoin('w.creations', 'cts')
 			->leftJoin('w.plans', 'pls')

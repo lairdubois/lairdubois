@@ -42,7 +42,7 @@ class WorkshopRepository extends AbstractEntityRepository {
 			->select(array( 'w', 'u', 'uav', 'mp', 'ps', 'bbs', 'pls', 'hws', 'wfs', 'tgs', 'l' ))
 			->from($this->getEntityName(), 'w')
 			->innerJoin('w.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->innerJoin('w.mainPicture', 'mp')
 			->leftJoin('w.pictures', 'ps')
 			->leftJoin('w.bodyBlocks', 'bbs')

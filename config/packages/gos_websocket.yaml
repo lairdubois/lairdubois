@@ -1,6 +1,6 @@
 # GosWebSocketBundle
 gos_web_socket:
-    shared_config: false
+    shared_config: true
     client:
         firewall: main
         session_handler: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler

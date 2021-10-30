@@ -34,6 +34,12 @@ class QuestionController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.QuestionManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_faq_question_new")
 	 * @Template("Faq/Question/new.html.twig")

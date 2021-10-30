@@ -12,7 +12,7 @@
                 </a>
             </div>
             <div class="ladb-tools">
-                <a href="#" class="btn btn-default" onclick="window.parent.howtoAdded('{% filter escape('js') %}{% include 'Howto/Howto/_form-thumbnail.part.html.twig' %}{% endfilter %}');">Choisir</a>
+                <a href="#" class="btn btn-default" onclick="window.parent.howtoAdded('{% apply escape('js') %}{% include 'Howto/Howto/_form-thumbnail.part.html.twig' %}{% endapply %}');">Choisir</a>
             </div>
             <div class="ladb-body">
                 <h4 class="ladb-heading">{{ howto.title }}</h4>

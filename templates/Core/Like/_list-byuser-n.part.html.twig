@@ -4,7 +4,8 @@
 {# set nextPageUrl #}
 
 {% block items %}
-    {% for item in items if item.likables is not empty %}
+    {% for item in items %}
+        {% if item.likables is not empty %}
         <div class="ladb-like-thumbnail">
             <div class="ladb-box row">
                 <div class="ladb-content col-sm-6 col-xs-12">
@@ -38,6 +39,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     {% endfor %}
 {% endblock %}
 

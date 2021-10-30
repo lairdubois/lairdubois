@@ -7,10 +7,8 @@ use App\Entity\Collection\Entry;
 use App\Utils\CollectionnableUtils;
 use App\Utils\PaginatorUtils;
 use App\Utils\TypableUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use App\Utils\FieldPreprocessorUtils;
 use App\Utils\TagUtils;
@@ -34,6 +32,12 @@ use App\Form\Type\Collection\CollectionType;
 class CollectionController extends AbstractCollectionBasedController {
 
 	use PublicationControllerTrait;
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.CollectionManager::class,
+        ));
+    }
 
 	/**
 	 * @Route("/new", name="core_collection_new")

@@ -21,6 +21,12 @@ use App\Manager\Core\WitnessManager;
  */
 class YoutookController extends AbstractController {
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.TookManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/create", methods={"POST"}, name="core_youtook_create")
 	 * @Template("Extra/Youtook/create-xhr.html.twig")

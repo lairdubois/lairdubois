@@ -9,6 +9,16 @@ use App\Manager\Core\PictureManager;
 
 class FindUtils extends AbstractContainerAwareUtils {
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.PropertyUtils::class,
+            '?'.WebScreenshotUtils::class,
+            '?'.VideoHostingUtils::class,
+            '?'.OpenGraphUtils::class,
+            '?'.PictureManager::class,
+        ));
+    }
+
 	public function generateMainPicture(Find $find) {
 		$webScreenshotUtils = $this->get(WebScreenshotUtils::class);
 		$videoHostingUtils = $this->get(VideoHostingUtils::class);

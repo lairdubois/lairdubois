@@ -168,6 +168,7 @@ class ReviewController extends AbstractController {
 		return array(
 			'review' => $review,
 			'form'   => $form->createView(),
+            'entity' => $review,
 		);
 	}
 

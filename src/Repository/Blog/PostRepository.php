@@ -39,7 +39,7 @@ class PostRepository extends AbstractEntityRepository {
 			->select(array( 'p', 'u', 'uav', 'mp', 'bbs', 'tgs' ))
 			->from($this->getEntityName(), 'p')
 			->innerJoin('p.user', 'u')
-			->innerJoin('u.avatar', 'uav')
+			->leftJoin('u.avatar', 'uav')
 			->innerJoin('p.mainPicture', 'mp')
 			->leftJoin('p.bodyBlocks', 'bbs')
 			->leftJoin('p.tags', 'tgs')

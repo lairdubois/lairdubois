@@ -38,6 +38,12 @@ class EventController extends AbstractController {
 
 	use PublicationControllerTrait;
 
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.EventManager::class,
+        ));
+    }
+
 	/**
 	 * @Route("/new", name="core_event_new")
 	 * @Template("Event/Event/new.html.twig")

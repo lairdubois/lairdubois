@@ -108,7 +108,7 @@ class UserRepository extends AbstractEntityRepository {
 		$queryBuilder
 			->select(array( 'u', 'av', 'm' ))
 			->from($this->getEntityName(), 'u')
-			->innerJoin('u.avatar', 'av')
+			->leftJoin('u.avatar', 'av')
 			->leftJoin('u.meta', 'm')
 			->where($queryBuilder->expr()->in('u.id', $ids))
 		;
